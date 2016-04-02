@@ -37,6 +37,20 @@ public func == (lhs: Bluetooth.UUID, rhs: Bluetooth.UUID) -> Bool {
     }
 }
 
+// MARK: - Hashable
+
+extension Bluetooth.UUID: Hashable {
+    
+    public var hashValue: Int {
+        
+        switch self {
+            
+        case let .Bit16(value): return value.hashValue
+        case let .Bit128(value): return value.hashValue
+        }
+    }
+}
+
 // MARK: - DataConvertible
 
 extension Bluetooth.UUID: DataConvertible {
