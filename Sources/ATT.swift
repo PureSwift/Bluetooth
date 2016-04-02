@@ -218,7 +218,7 @@ public enum ATTOpcodeType {
 /// ATT attribute permission bitfield values. Permissions are grouped as
 /// "Access", "Encryption", "Authentication", and "Authorization". A bitmask of
 /// permissions is a byte that encodes a combination of these.
-public enum ATTAttributePermission: UInt8 {
+public enum ATTAttributePermission: UInt8, BitMaskOption {
     
     // Access
     case Read                                       = 0x01
@@ -229,6 +229,7 @@ public enum ATTAttributePermission: UInt8 {
     case ReadEncrypt                                = 0x04
     case WriteEncrypt                               = 0x08
     
+    /* Not Used
     // Authentication
     public static let  Authentication               = [ReadAuthentication, WriteAuthentication]
     case ReadAuthentication                         = 0x10
@@ -237,6 +238,7 @@ public enum ATTAttributePermission: UInt8 {
     // Authorization
     case Authorized                                 = 0x40
     case None                                       = 0x80
+    */
 }
 
 
