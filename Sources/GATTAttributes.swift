@@ -77,12 +77,12 @@ public extension GATT {
         
         public var UUID: Bluetooth.UUID
         
-        public var value: [UInt8]
+        public var value: Data
         
         public var permissions: [Permission]
         
         public init(UUID: Bluetooth.UUID = .Bit128(SwiftFoundation.UUID()),
-                    value: [UInt8] = [],
+                    value: Data = Data(),
                     permissions: [Permission] = []) {
             
             self.UUID = UUID
