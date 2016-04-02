@@ -114,7 +114,7 @@ public extension SwiftFoundation.UUID {
 
 // MARK: - Darwin Support
 
-#if os(OSX) || os(iOS) || os(WatchOS) || os(tvOS)
+#if os(OSX) || os(iOS) || os(tvOS)
     
     import CoreBluetooth
     import protocol SwiftFoundation.FoundationConvertible
