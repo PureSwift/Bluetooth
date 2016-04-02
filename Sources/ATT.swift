@@ -229,7 +229,8 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
     case ReadEncrypt                                = 0x04
     case WriteEncrypt                               = 0x08
     
-    /* Not Used
+    // The following have no effect on Darwin
+    
     // Authentication
     public static let  Authentication               = [ReadAuthentication, WriteAuthentication]
     case ReadAuthentication                         = 0x10
@@ -238,7 +239,6 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
     // Authorization
     case Authorized                                 = 0x40
     case None                                       = 0x80
-    */
 }
 
 
