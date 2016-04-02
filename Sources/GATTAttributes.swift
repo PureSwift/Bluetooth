@@ -49,11 +49,11 @@ public extension GATT {
         
         public var value: Data
         
-        public var descriptors: [Descriptor]
-        
         public var permissions: [Permission]
         
         public var properties: [Property]
+        
+        public var descriptors: [Descriptor]
         
         public init(UUID: Bluetooth.UUID,
                     value: Data = Data(),
@@ -74,9 +74,9 @@ public extension GATT {
         
         public var UUID: Bluetooth.UUID
         
-        public var permissions: [Permission]
-        
         public var value: [UInt8]
+        
+        public var permissions: [Permission]
         
         public init(UUID: Bluetooth.UUID, value: [UInt8] = [], permissions: [Permission] = []) {
             
