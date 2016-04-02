@@ -10,6 +10,23 @@
 		6EE84DBB1CAF5C7C00A40C4D /* Bluetooth.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EE84DC21CAF5C7C00A40C4D /* Bluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE84DB71CAF5C7C00A40C4D /* Bluetooth.framework */; };
 		6EE84DD51CAF603000A40C4D /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DD41CAF603000A40C4D /* UUID.swift */; };
+		6EE84DE11CAF7EE800A40C4D /* GATTAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DE01CAF7EE800A40C4D /* GATTAttributes.swift */; };
+		6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DE21CAF80AE00A40C4D /* Address.swift */; };
+		6EE84DE61CAF828800A40C4D /* PSM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DE41CAF828800A40C4D /* PSM.swift */; };
+		6EE84DE71CAF828800A40C4D /* ATT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DE51CAF828800A40C4D /* ATT.swift */; };
+		6EE84DE91CAF85AE00A40C4D /* GATT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DE81CAF85AE00A40C4D /* GATT.swift */; };
+		6EE84DED1CAF881B00A40C4D /* ATTProtocolDataUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DEC1CAF881B00A40C4D /* ATTProtocolDataUnit.swift */; };
+		6EE84DF81CAF891E00A40C4D /* HCIEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */; };
+		6EE84DF91CAF891E00A40C4D /* HCIGeneralEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DEF1CAF891E00A40C4D /* HCIGeneralEvent.swift */; };
+		6EE84DFA1CAF891E00A40C4D /* HCIGeneralEventParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF01CAF891E00A40C4D /* HCIGeneralEventParameter.swift */; };
+		6EE84DFB1CAF891E00A40C4D /* LowEnergyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF11CAF891E00A40C4D /* LowEnergyEvent.swift */; };
+		6EE84DFC1CAF891E00A40C4D /* LowEnergyEventParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF21CAF891E00A40C4D /* LowEnergyEventParameter.swift */; };
+		6EE84DFD1CAF891E00A40C4D /* HCICommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF31CAF891E00A40C4D /* HCICommand.swift */; };
+		6EE84DFE1CAF891E00A40C4D /* LinkControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF41CAF891E00A40C4D /* LinkControlCommand.swift */; };
+		6EE84DFF1CAF891E00A40C4D /* LinkControlCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */; };
+		6EE84E001CAF891E00A40C4D /* LowEnergyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF61CAF891E00A40C4D /* LowEnergyCommand.swift */; };
+		6EE84E011CAF891E00A40C4D /* LowEnergyCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF71CAF891E00A40C4D /* LowEnergyCommandParameter.swift */; };
+		6EE84E061CAF8AD500A40C4D /* HCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84E051CAF8AD500A40C4D /* HCI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +48,23 @@
 		6EE84DD41CAF603000A40C4D /* UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUID.swift; sourceTree = "<group>"; };
 		6EE84DD61CAF63C300A40C4D /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; name = Cartfile; path = ../Cartfile; sourceTree = "<group>"; };
 		6EE84DD71CAF63C300A40C4D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
+		6EE84DE01CAF7EE800A40C4D /* GATTAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTAttributes.swift; sourceTree = "<group>"; };
+		6EE84DE21CAF80AE00A40C4D /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		6EE84DE41CAF828800A40C4D /* PSM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSM.swift; sourceTree = "<group>"; };
+		6EE84DE51CAF828800A40C4D /* ATT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATT.swift; sourceTree = "<group>"; };
+		6EE84DE81CAF85AE00A40C4D /* GATT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATT.swift; sourceTree = "<group>"; };
+		6EE84DEC1CAF881B00A40C4D /* ATTProtocolDataUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATTProtocolDataUnit.swift; sourceTree = "<group>"; };
+		6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIEvent.swift; sourceTree = "<group>"; };
+		6EE84DEF1CAF891E00A40C4D /* HCIGeneralEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIGeneralEvent.swift; sourceTree = "<group>"; };
+		6EE84DF01CAF891E00A40C4D /* HCIGeneralEventParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIGeneralEventParameter.swift; sourceTree = "<group>"; };
+		6EE84DF11CAF891E00A40C4D /* LowEnergyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyEvent.swift; sourceTree = "<group>"; };
+		6EE84DF21CAF891E00A40C4D /* LowEnergyEventParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyEventParameter.swift; sourceTree = "<group>"; };
+		6EE84DF31CAF891E00A40C4D /* HCICommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCICommand.swift; sourceTree = "<group>"; };
+		6EE84DF41CAF891E00A40C4D /* LinkControlCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkControlCommand.swift; sourceTree = "<group>"; };
+		6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkControlCommandParameter.swift; sourceTree = "<group>"; };
+		6EE84DF61CAF891E00A40C4D /* LowEnergyCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyCommand.swift; sourceTree = "<group>"; };
+		6EE84DF71CAF891E00A40C4D /* LowEnergyCommandParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyCommandParameter.swift; sourceTree = "<group>"; };
+		6EE84E051CAF8AD500A40C4D /* HCI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,10 +127,51 @@
 		6EE84DD11CAF5DC800A40C4D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6EE84DE21CAF80AE00A40C4D /* Address.swift */,
 				6EE84DD41CAF603000A40C4D /* UUID.swift */,
+				6EE84DE41CAF828800A40C4D /* PSM.swift */,
+				6EE84DE51CAF828800A40C4D /* ATT.swift */,
+				6EE84DEC1CAF881B00A40C4D /* ATTProtocolDataUnit.swift */,
+				6EE84DE81CAF85AE00A40C4D /* GATT.swift */,
+				6EE84DE01CAF7EE800A40C4D /* GATTAttributes.swift */,
+				6EE84E021CAF892300A40C4D /* HCI */,
 			);
 			name = Sources;
 			path = ../Sources;
+			sourceTree = "<group>";
+		};
+		6EE84E021CAF892300A40C4D /* HCI */ = {
+			isa = PBXGroup;
+			children = (
+				6EE84E051CAF8AD500A40C4D /* HCI.swift */,
+				6EE84E031CAF894200A40C4D /* Event */,
+				6EE84E041CAF894F00A40C4D /* Command */,
+			);
+			name = HCI;
+			sourceTree = "<group>";
+		};
+		6EE84E031CAF894200A40C4D /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */,
+				6EE84DEF1CAF891E00A40C4D /* HCIGeneralEvent.swift */,
+				6EE84DF01CAF891E00A40C4D /* HCIGeneralEventParameter.swift */,
+				6EE84DF11CAF891E00A40C4D /* LowEnergyEvent.swift */,
+				6EE84DF21CAF891E00A40C4D /* LowEnergyEventParameter.swift */,
+			);
+			name = Event;
+			sourceTree = "<group>";
+		};
+		6EE84E041CAF894F00A40C4D /* Command */ = {
+			isa = PBXGroup;
+			children = (
+				6EE84DF31CAF891E00A40C4D /* HCICommand.swift */,
+				6EE84DF41CAF891E00A40C4D /* LinkControlCommand.swift */,
+				6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */,
+				6EE84DF61CAF891E00A40C4D /* LowEnergyCommand.swift */,
+				6EE84DF71CAF891E00A40C4D /* LowEnergyCommandParameter.swift */,
+			);
+			name = Command;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,7 +282,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EE84DF81CAF891E00A40C4D /* HCIEvent.swift in Sources */,
+				6EE84E061CAF8AD500A40C4D /* HCI.swift in Sources */,
+				6EE84DFF1CAF891E00A40C4D /* LinkControlCommandParameter.swift in Sources */,
+				6EE84E001CAF891E00A40C4D /* LowEnergyCommand.swift in Sources */,
+				6EE84DFD1CAF891E00A40C4D /* HCICommand.swift in Sources */,
+				6EE84DED1CAF881B00A40C4D /* ATTProtocolDataUnit.swift in Sources */,
+				6EE84DE61CAF828800A40C4D /* PSM.swift in Sources */,
+				6EE84DE91CAF85AE00A40C4D /* GATT.swift in Sources */,
+				6EE84DFE1CAF891E00A40C4D /* LinkControlCommand.swift in Sources */,
+				6EE84DFB1CAF891E00A40C4D /* LowEnergyEvent.swift in Sources */,
+				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
+				6EE84DFA1CAF891E00A40C4D /* HCIGeneralEventParameter.swift in Sources */,
+				6EE84DE11CAF7EE800A40C4D /* GATTAttributes.swift in Sources */,
+				6EE84DE71CAF828800A40C4D /* ATT.swift in Sources */,
+				6EE84E011CAF891E00A40C4D /* LowEnergyCommandParameter.swift in Sources */,
+				6EE84DF91CAF891E00A40C4D /* HCIGeneralEvent.swift in Sources */,
 				6EE84DD51CAF603000A40C4D /* UUID.swift in Sources */,
+				6EE84DFC1CAF891E00A40C4D /* LowEnergyEventParameter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
