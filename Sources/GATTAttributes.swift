@@ -9,72 +9,80 @@
 import struct SwiftFoundation.UUID
 import struct SwiftFoundation.Data
 
-/// GATT Service
-public struct Service {
+public extension GATT {
     
-    public var UUID: Bluetooth.UUID
+    public typealias Permission = ATT.AttributePermission
     
-    public var primary: Bool
-    
-    public var characteristics: [Characteristic]
-    
-    public var includedServices: [IncludedService]
-    
-    public init(UUID: Bluetooth.UUID, primary: Bool = true, characteristics: [Characteristic] = [], includedServices: [IncludedService] = []) {
+    /// GATT Service
+    public struct Service {
         
-        self.UUID = UUID
-        self.characteristics = characteristics
-        self.primary = primary
+        public var UUID: Bluetooth.UUID
         
+        public var primary: Bool
+        
+        public var characteristics: [Characteristic]
+        
+        public var includedServices: [IncludedService]
+        
+        public init(UUID: Bluetooth.UUID, primary: Bool = true, characteristics: [Characteristic] = [], includedServices: [IncludedService] = []) {
+            
+            self.UUID = UUID
+            self.characteristics = characteristics
+            self.primary = primary
+            self.includedServices = includedServices
+        }
     }
-}
-
-/// GATT Included Service Declaration
-public struct IncludedService {
     
-    // TODO: Implement Included Service
-}
-
-/// GATT Characteristic
-public struct Characteristic {
-    
-    public var UUID: Bluetooth.UUID
-    
-    public var value: Data
-    
-    public var descriptors: [Descriptor]
-    
-    public var permissions: [Permission]
-    
-    public var properties: [Property]
-    
-    public init(UUID: Bluetooth.UUID,
-                value: Data = Data(),
-                permissions: [Permission] = [],
-                properties: [Property] = [],
-                descriptors: [Descriptor] = []) {
+    /// GATT Included Service Declaration
+    public struct IncludedService {
         
-        self.UUID = UUID
-        self.value = value
-        self.permissions = permissions
-        self.descriptors = descriptors
-        self.properties = properties
+        // TODO: Implement Included Service
     }
-}
-
-/// GATT Characteristic Descriptor
-public struct Descriptor {
     
-    public var UUID: Bluetooth.UUID
-    
-    public var permissions: [Permission]
-    
-    public var value: [UInt8]
-    
-    public init(UUID: Bluetooth.UUID, value: [UInt8] = [], permissions: [Permission] = []) {
+    /// GATT Characteristic
+    public struct Characteristic {
         
-        self.UUID = UUID
-        self.value = value
-        self.permissions = permissions
+        public typealias Descriptor = GATT.Descriptor
+        public typealias Property = GATT.CharacteristicProperty
+        
+        public var UUID: Bluetooth.UUID
+        
+        public var value: Data
+        
+        public var descriptors: [Descriptor]
+        
+        public var permissions: [Permission]
+        
+        public var properties: [Property]
+        
+        public init(UUID: Bluetooth.UUID,
+                    value: Data = Data(),
+                    permissions: [Permission] = [],
+                    properties: [Property] = [],
+                    descriptors: [Descriptor] = []) {
+            
+            self.UUID = UUID
+            self.value = value
+            self.permissions = permissions
+            self.descriptors = descriptors
+            self.properties = properties
+        }
+    }
+    
+    /// GATT Characteristic Descriptor
+    public struct Descriptor {
+        
+        public var UUID: Bluetooth.UUID
+        
+        public var permissions: [Permission]
+        
+        public var value: [UInt8]
+        
+        public init(UUID: Bluetooth.UUID, value: [UInt8] = [], permissions: [Permission] = []) {
+            
+            self.UUID = UUID
+            self.value = value
+            self.permissions = permissions
+        }
     }
 }
