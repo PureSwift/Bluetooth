@@ -108,7 +108,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     public static let length = 3
     
     /// Client Rx MTU
-    var clientMTU: UInt16
+    public var clientMTU: UInt16
     
     public init(clientMTU: UInt16 = 0) {
         
