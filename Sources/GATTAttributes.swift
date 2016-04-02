@@ -24,7 +24,10 @@ public extension GATT {
         
         public var includedServices: [IncludedService]
         
-        public init(UUID: Bluetooth.UUID, primary: Bool = true, characteristics: [Characteristic] = [], includedServices: [IncludedService] = []) {
+        public init(UUID: Bluetooth.UUID = .Bit128(SwiftFoundation.UUID()),
+                    primary: Bool = true,
+                    characteristics: [Characteristic] = [],
+                    includedServices: [IncludedService] = []) {
             
             self.UUID = UUID
             self.characteristics = characteristics
@@ -55,7 +58,7 @@ public extension GATT {
         
         public var descriptors: [Descriptor]
         
-        public init(UUID: Bluetooth.UUID,
+        public init(UUID: Bluetooth.UUID = .Bit128(SwiftFoundation.UUID()),
                     value: Data = Data(),
                     permissions: [Permission] = [],
                     properties: [Property] = [],
@@ -78,7 +81,9 @@ public extension GATT {
         
         public var permissions: [Permission]
         
-        public init(UUID: Bluetooth.UUID, value: [UInt8] = [], permissions: [Permission] = []) {
+        public init(UUID: Bluetooth.UUID = .Bit128(SwiftFoundation.UUID()),
+                    value: [UInt8] = [],
+                    permissions: [Permission] = []) {
             
             self.UUID = UUID
             self.value = value
