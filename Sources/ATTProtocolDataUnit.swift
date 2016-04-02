@@ -1,6 +1,6 @@
 //
 //  ATTProtocolDataUnit.swift
-//  BluetoothLinux
+//  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 3/1/16.
 //  Copyright © 2016 PureSwift. All rights reserved.
