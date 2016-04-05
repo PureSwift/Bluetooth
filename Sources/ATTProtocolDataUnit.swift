@@ -6,7 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import struct SwiftFoundation.UUID
+import SwiftFoundation
 
 // MARK: - Protocol Definition
 
@@ -38,20 +38,13 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorType {
     public var attributeHandle: UInt16
     
     /// The reason why the request has generated an error response.
-    public var errorCode: UInt8
+    public var errorCode: ATT.Error
     
     public init(requestOpcode: ATT.Opcode, attributeHandle: UInt16, error: ATT.Error) {
         
         self.requestOpcode = requestOpcode
         self.attributeHandle = attributeHandle
-        self.errorCode = error.rawValue
-    }
-    
-    public init(requestOpcode: ATT.Opcode, attributeHandle: UInt16, errorCode: UInt8) {
-        
-        self.requestOpcode = requestOpcode
-        self.attributeHandle = attributeHandle
-        self.errorCode = errorCode
+        self.errorCode = error
     }
     
     public static let attributeOpcode = ATT.Opcode.ErrorResponse
@@ -69,11 +62,12 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorType {
         let errorByte               = byteValue[4]
         
         guard attributeOpcodeByte == ATTErrorResponse.attributeOpcode.rawValue,
-            let requestOpcode = ATTOpcode(rawValue: requestOpcodeByte)
+            let requestOpcode = ATTOpcode(rawValue: requestOpcodeByte),
+            let errorCode = ATTError(rawValue: errorByte)
             else { return nil }
         
         self.requestOpcode = requestOpcode
-        self.errorCode = errorByte
+        self.errorCode = errorCode
         self.attributeHandle = UInt16(littleEndian: (attributeHandleByte1, attributeHandleByte2))
     }
     
@@ -85,7 +79,7 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorType {
         bytes[1] = requestOpcode.rawValue
         bytes[2] = attributeHandle.littleEndianBytes.0
         bytes[3] = attributeHandle.littleEndianBytes.1
-        bytes[4] = errorCode
+        bytes[4] = errorCode.rawValue
         
         return bytes
     }
@@ -354,7 +348,11 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                 case .Bit128:
                     
-                    let uuid = SwiftFoundation.UUID(byteValue: (pairBytes[2], pairBytes[3], pairBytes[4], pairBytes[5], pairBytes[6], pairBytes[7], pairBytes[8], pairBytes[9], pairBytes[10], pairBytes[11], pairBytes[12], pairBytes[13], pairBytes[14], pairBytes[15], pairBytes[16], pairBytes[17]))
+                    let uuidBytes = Array(pairBytes[2 ... 17])
+                    
+                    let data = SwiftFoundation.Data(byteValue: (isBigEndian ? uuidBytes.reverse() : uuidBytes))
+                    
+                    let uuid = SwiftFoundation.UUID(data: data)!
                     
                      bit128Pairs.append((handle, uuid))
                 }
@@ -391,9 +389,9 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let handleBytes = pair.0.littleEndianBytes
                     
-                    let uuidBytes = pair.1.byteValue
+                    let uuidBytes = Bluetooth.UUID.Bit128(pair.1).littleEndian
                     
-                    bytes += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1, uuidBytes.2, uuidBytes.3, uuidBytes.4, uuidBytes.5, uuidBytes.6, uuidBytes.7, uuidBytes.8, uuidBytes.9, uuidBytes.10, uuidBytes.11, uuidBytes.12, uuidBytes.13, uuidBytes.14, uuidBytes.15]
+                    bytes += [handleBytes.0, handleBytes.1] + uuidBytes
                 }
             }
             
@@ -643,9 +641,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
             
         case .UUID128:
             
-            let value = SwiftFoundation.UUID(byteValue: (byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20]))
-            
-            self.attributeType = .Bit128(value)
+            self.attributeType = Bluetooth.UUID(littleEndian: [byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20]])!
         }
     }
     
@@ -655,7 +651,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         
         let endHandleBytes = endHandle.littleEndianBytes
         
-        return [self.dynamicType.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + attributeType.toData().byteValue
+        return [self.dynamicType.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + attributeType.littleEndian
     }
     
     private enum Length: Int {
@@ -1158,9 +1154,7 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
             
         case .UUID128:
             
-            let value = SwiftFoundation.UUID(byteValue: (byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20]))
-        
-        self.type = .Bit128(value)
+        self.type = Bluetooth.UUID(littleEndian: Array(byteValue[5 ... 20]))!
         }
     }
     
@@ -1170,7 +1164,7 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
         
         let endHandleBytes = endHandle.littleEndianBytes
         
-        return [ATTReadByGroupTypeRequest.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + type.toData().byteValue
+        return [ATTReadByGroupTypeRequest.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + type.littleEndian
     }
     
     private enum Length: Int {
