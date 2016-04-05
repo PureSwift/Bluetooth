@@ -47,8 +47,7 @@ extension Address: RawRepresentable {
     
     public var rawValue: String {
         
-        // little endian
-        let bytes = [byteValue.0, byteValue.1, byteValue.2, byteValue.3, byteValue.4, byteValue.5]
+        let bytes = [byteValue.5, byteValue.4, byteValue.3, byteValue.2, byteValue.1, byteValue.0]
         
         var string = ""
         
@@ -56,13 +55,13 @@ extension Address: RawRepresentable {
             
             string += byte.toHexadecimal()
             
-            if index != bytes.endIndex {
+            if index != bytes.count - 1 {
                 
                 string += ":"
             }
         }
         
-        assert(string.utf8.count == 17)
+        assert(string.utf8.count == 17, "\"\(string)\" should be 17 characters")
         
         return string
     }

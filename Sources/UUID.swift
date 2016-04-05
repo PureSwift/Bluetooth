@@ -127,7 +127,7 @@ public extension Bluetooth.UUID {
     /// Creates an UUID from its little-endian representation, changing the byte order if necessary.
     init?(littleEndian: [UInt8]) {
         
-        let byteValue = isBigEndian ? littleEndian.reverse() : littleEndian
+        let byteValue = isBigEndian ? littleEndian : littleEndian.reverse()
         
         guard let UUID = Bluetooth.UUID(data: Data(byteValue: byteValue))
             else { return nil }
@@ -139,7 +139,7 @@ public extension Bluetooth.UUID {
         
         let byteValue = self.toData().byteValue
         
-        return isBigEndian ? byteValue.reverse() : byteValue
+        return isBigEndian ? byteValue : byteValue.reverse()
     }
 }
 
