@@ -61,14 +61,14 @@ public extension LinkControlCommand {
             
             self.pscanRepMode = byteValue[6]
             self.pscanMode = byteValue[7]
-            self.clockOffset = UInt16(littleEndian: (byteValue[8], byteValue[9]))
+            self.clockOffset = UInt16(bytes: (byteValue[8], byteValue[9])).littleEndian
         }
         
         public var byteValue: [UInt8] {
             
             let address = self.address.byteValue
             
-            let clockOffsetBytes = clockOffset.littleEndianBytes
+            let clockOffsetBytes = clockOffset.littleEndian.bytes
             
             return [address.0, address.1, address.2, address.3, address.4, address.5, pscanRepMode, pscanMode, clockOffsetBytes.0, clockOffsetBytes.1]
         }

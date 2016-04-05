@@ -81,8 +81,8 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let minimumIntervalBytes = interval.minimum.littleEndianBytes
-            let maximumIntervalBytes = interval.maximum.littleEndianBytes
+            let minimumIntervalBytes = interval.minimum.littleEndian.bytes
+            let maximumIntervalBytes = interval.maximum.littleEndian.bytes
             
             return [minimumIntervalBytes.0, minimumIntervalBytes.1,
                 maximumIntervalBytes.0, maximumIntervalBytes.1,

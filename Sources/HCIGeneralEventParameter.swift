@@ -29,7 +29,7 @@ public extension HCIGeneralEvent {
                 else { return nil }
             
             self.numberOfCommandPackets = byteValue[0]
-            self.opcode = UInt16(littleEndian: (byteValue[1], byteValue[2]))
+            self.opcode = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
         }
     }
     
@@ -51,7 +51,7 @@ public extension HCIGeneralEvent {
             
             self.status = byteValue[0]
             self.ncmd = byteValue[1]
-            self.opcode = UInt16(littleEndian: (byteValue[2], byteValue[3]))
+            self.opcode = UInt16(bytes: (byteValue[2], byteValue[3])).littleEndian
         }
     }
     
