@@ -185,40 +185,15 @@ public extension SwiftFoundation.UUID {
             
             let data = Data(foundation: foundation.data)
             
-            switch data.byteValue.count {
-                
-            case 2:
-                
-                let littleEndian = UInt16(bytes: (data.byteValue[0], data.byteValue[1])).littleEndian
-                
-                let value = UInt16(littleEndian: littleEndian)
-                
-                self = .Bit16(value)
-                
-            case 16:
-                
-                self = .Bit128(SwiftFoundation.UUID(data: data)!)
-                
-            default: fatalError("Invalid \(foundation)")
-            }
+            guard let UUID = Bluetooth.UUID(data: data)
+                else { fatalError("Could not create Bluetooth UUID from \(foundation)") }
+            
+            self = UUID
         }
         
         public func toFoundation() -> CBUUID {
             
-            switch self {
-                
-            case let .Bit16(value):
-                
-                let littleEndian = value.littleEndian.bytes
-                
-                let bytes = isBigEndian ? [littleEndian.1, littleEndian.0] : [littleEndian.0, littleEndian.1]
-                
-                return CBUUID(data: Data(byteValue: bytes).toFoundation())
-                
-            case let .Bit128(value):
-                
-                return CBUUID(NSUUID: value.toFoundation())
-            }
+            return CBUUID(data: self.toData().toFoundation())
         }
     }
     
