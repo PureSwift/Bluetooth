@@ -47,6 +47,7 @@ extension Address: RawRepresentable {
     
     public var rawValue: String {
         
+        // little endian
         let bytes = [byteValue.5, byteValue.4, byteValue.3, byteValue.2, byteValue.1, byteValue.0]
         
         var string = ""

@@ -74,6 +74,7 @@ extension Bluetooth.UUID: Hashable {
 
 // MARK: - DataConvertible
 
+// Bluetooth UUIDs are always little endian
 extension Bluetooth.UUID: DataConvertible {
     
     public init?(data: Data) {
@@ -92,7 +93,16 @@ extension Bluetooth.UUID: DataConvertible {
         // 128 bit
         case 16:
             
-            let value = SwiftFoundation.UUID(byteValue: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15]))
+            let value: SwiftFoundation.UUID
+            
+            if isBigEndian {
+                
+                value = SwiftFoundation.UUID(byteValue: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15]))
+            }
+            else {
+                
+                value = SwiftFoundation.UUID(byteValue: (byteValue[15], byteValue[14], byteValue[13], byteValue[12], byteValue[11], byteValue[10], byteValue[9], byteValue[8], byteValue[7], byteValue[6], byteValue[5], byteValue[4], byteValue[3], byteValue[2], byteValue[1], byteValue[0]))
+            }
             
             self = .Bit128(value)
             
@@ -114,7 +124,19 @@ extension Bluetooth.UUID: DataConvertible {
             
             let bytes = value.byteValue
             
-            return Data(byteValue: [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15])
+            let data: Data
+            
+            if isBigEndian {
+                
+                data = Data(byteValue: [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15])
+                
+            } else {
+                
+                // little endian
+                data = Data(byteValue: [bytes.15, bytes.14, bytes.13, bytes.12, bytes.11, bytes.10, bytes.9, bytes.8, bytes.7, bytes.6, bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0])
+            }
+            
+            return data
         }
     }
 }

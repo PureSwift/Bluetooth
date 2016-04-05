@@ -54,8 +54,6 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorType {
         self.errorCode = errorCode
     }
     
-    // ATTProtocolDataUnit
-    
     public static let attributeOpcode = ATT.Opcode.ErrorResponse
     
     public static let length = 5
