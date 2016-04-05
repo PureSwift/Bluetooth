@@ -51,7 +51,7 @@ extension Address: RawRepresentable {
         
         var string = ""
         
-        for (index, byte) in bytes.enumerate() {
+        for (index, byte) in bytes.enumerated() {
             
             string += byte.toHexadecimal()
             

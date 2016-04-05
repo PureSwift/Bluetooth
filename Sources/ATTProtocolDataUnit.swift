@@ -29,7 +29,7 @@ public protocol ATTProtocolDataUnit {
 /// and to provide the reason.
 ///
 /// - Note: The Write Command does not generate an Error Response.
-public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorType {
+public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorProtocol {
     
     /// The request that generated this error response
     public var requestOpcode: ATT.Opcode
@@ -73,7 +73,7 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorType {
     
     public var byteValue: [UInt8] {
         
-        var bytes = [UInt8](count: ATTErrorResponse.length, repeatedValue: 0)
+        var bytes = [UInt8](repeating: 0, count: ATTErrorResponse.length)
         
         bytes[0] = ATTErrorResponse.attributeOpcode.rawValue
         bytes[1] = requestOpcode.rawValue
@@ -122,7 +122,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        var bytes = [UInt8](count: ATTErrorResponse.length, repeatedValue: 0)
+        var bytes = [UInt8](repeating: 0, count: ATTMaximumTransmissionUnitRequest.length)
         
         bytes[0] = self.dynamicType.attributeOpcode.rawValue
         
@@ -166,7 +166,7 @@ public struct ATTMaximumTranssmissionUnitResponse: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        var bytes = [UInt8](count: self.dynamicType.length, repeatedValue: 0)
+        var bytes = [UInt8](repeating: 0, count: self.dynamicType.length)
         
         bytes[0] = self.dynamicType.attributeOpcode.rawValue
         
@@ -216,7 +216,7 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        var bytes = [UInt8](count: self.dynamicType.length, repeatedValue: 0)
+        var bytes = [UInt8](repeating: 0, count: self.dynamicType.length)
         
         bytes[0] = self.dynamicType.attributeOpcode.rawValue
         
@@ -258,7 +258,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         
         let attributeOpcodeByte = byteValue[0]
         let formatByte = byteValue[1]
-        let remainderData = Array(byteValue.suffixFrom(2))
+        let remainderData = Array(byteValue.suffix(2))
         
         guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue,
             let format = Format(rawValue: formatByte),
@@ -350,7 +350,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let uuidBytes = Array(pairBytes[2 ... 17])
                     
-                    let data = SwiftFoundation.Data(byteValue: (isBigEndian ? uuidBytes.reverse() : uuidBytes))
+                    let data = SwiftFoundation.Data(byteValue: (isBigEndian ? uuidBytes.reversed() : uuidBytes))
                     
                     let uuid = SwiftFoundation.UUID(data: data)!
                     
@@ -453,7 +453,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
         if byteValue.count >= 7 {
             
             // rest of data is attribute
-            self.attributeValue = Array(byteValue.suffixFrom(7))
+            self.attributeValue = Array(byteValue.suffix(7))
             
         } else {
             
@@ -513,7 +513,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         let handleCount = handleBytesCount / handleLength
         
         // preallocate handles for better performance
-        var handles = [HandlesInformation](count: handleCount, repeatedValue: HandlesInformation())
+        var handles = [HandlesInformation](repeating: HandlesInformation(), count: handleCount)
         
         for index in 0 ..< handleCount {
             
@@ -536,15 +536,15 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         let handlesDataByteCount = handlesInformationList.count * HandlesInformation.length
         
         // preallocate memory to avoid performance penalty by increasing buffer
-        var handlesData = [UInt8](count: handlesDataByteCount, repeatedValue: 0)
+        var handlesData = [UInt8](repeating: 0, count: handlesDataByteCount)
         
-        for (handleIndex, handle) in handlesInformationList.enumerate() {
+        for (handleIndex, handle) in handlesInformationList.enumerated() {
             
             let startByteIndex = handleIndex * HandlesInformation.length
             
             let byteRange = startByteIndex ..< startByteIndex + HandlesInformation.length
             
-            handlesData.replaceRange(byteRange, with: handle.byteValue)
+            handlesData.replaceSubrange(byteRange, with: handle.byteValue)
         }
         
         return [self.dynamicType.attributeOpcode.rawValue] + handlesData
@@ -722,7 +722,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
         
         let attributeDataCount = attributeDataByteCount / attributeDataLength
         
-        var attributeData = [AttributeData](count: attributeDataCount, repeatedValue: AttributeData())
+        var attributeData = [AttributeData](repeating: AttributeData(), count: attributeDataCount)
         
         for index in 0 ..< attributeDataCount  {
             
@@ -782,7 +782,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
                 
                 let startingIndex = AttributeData.length
                 
-                self.value = Array(byteValue.suffixFrom(startingIndex))
+                self.value = Array(byteValue.suffix(startingIndex))
                 
             } else {
                 
@@ -869,7 +869,7 @@ public struct ATTReadResponse: ATTProtocolDataUnit {
         
         if byteValue.count > ATTReadRequest.length {
             
-            self.attributeValue = Array(byteValue.suffixFrom(1))
+            self.attributeValue = Array(byteValue.suffix(1))
             
         } else {
             
@@ -964,7 +964,7 @@ public struct ATTReadBlobResponse: ATTProtocolDataUnit {
         
         if byteValue.count > ATTReadBlobResponse.length {
                 
-            self.partAttributeValue = Array(byteValue.suffixFrom(1))
+            self.partAttributeValue = Array(byteValue.suffix(1))
                 
         } else {
             
@@ -1020,7 +1020,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
             else { return nil }
         
         // preallocate handle buffer
-        var handles = [UInt16](count: handleCount, repeatedValue: 0)
+        var handles = [UInt16](repeating: 0, count: handleCount)
         
         for index in 0 ..< handleCount {
             
@@ -1038,7 +1038,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
         
         let type = ATTReadBlobResponse.self
         
-        var handlesBytes = [UInt8](count: handles.count * 2, repeatedValue: 0)
+        var handlesBytes = [UInt8](repeating: 0, count: handles.count * 2)
         
         for handle in handles {
             
@@ -1087,7 +1087,7 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
             
         if byteValue.count > 1 {
             
-            self.values = Array(byteValue.suffixFrom(1))
+            self.values = Array(byteValue.suffix(1))
             
         } else {
             
@@ -1236,7 +1236,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
         guard attributeDataBytesCount % length == 0
             else { return nil }
         
-        var attributeDataList = [AttributeData](count: attributeCount, repeatedValue: AttributeData())
+        var attributeDataList = [AttributeData](repeating: AttributeData(), count: attributeCount)
         
         for index in 0 ..< attributeCount {
                 
@@ -1300,7 +1300,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             
             if byteValue.count > 4 {
                 
-                self.value = Array(byteValue.suffixFrom(4))
+                self.value = Array(byteValue.suffix(4))
                 
             } else {
                 
@@ -1360,7 +1360,7 @@ public struct ATTWriteRequest: ATTProtocolDataUnit {
         
         if byteValue.count > ATTWriteRequest.length {
             
-            self.value = Array(byteValue.suffixFrom(3))
+            self.value = Array(byteValue.suffix(3))
             
         } else {
             
@@ -1448,7 +1448,7 @@ public struct ATTWriteCommand: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.value = Array(byteValue.suffixFrom(3))
+            self.value = Array(byteValue.suffix(3))
             
         } else {
             
@@ -1579,7 +1579,7 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.partValue = Array(byteValue.suffixFrom(5))
+            self.partValue = Array(byteValue.suffix(5))
             
         } else {
             
@@ -1643,7 +1643,7 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
             
         if byteValue.count > type.length {
                 
-            self.partValue = Array(byteValue.suffixFrom(5))
+            self.partValue = Array(byteValue.suffix(5))
                 
         } else {
                 
@@ -1777,7 +1777,7 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.value = Array(byteValue.suffixFrom(3))
+            self.value = Array(byteValue.suffix(3))
             
         } else {
             
@@ -1827,7 +1827,7 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.value = Array(byteValue.suffixFrom(3))
+            self.value = Array(byteValue.suffix(3))
             
         } else {
             
