@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-               BuildableName = "Bluetooth OS X.framework"
-               BlueprintName = "Bluetooth OS X"
+               BlueprintIdentifier = "6EF45FA21CC6D04D001F7A39"
+               BuildableName = "Bluetooth iOS.framework"
+               BlueprintName = "Bluetooth iOS"
                ReferencedContainer = "container:Bluetooth.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,26 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6EE84DC01CAF5C7C00A40C4D"
-               BuildableName = "BluetoothTests.xctest"
-               BlueprintName = "BluetoothTests"
-               ReferencedContainer = "container:Bluetooth.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-            BuildableName = "Bluetooth OS X.framework"
-            BlueprintName = "Bluetooth OS X"
-            ReferencedContainer = "container:Bluetooth.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -64,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-            BuildableName = "Bluetooth OS X.framework"
-            BlueprintName = "Bluetooth OS X"
+            BlueprintIdentifier = "6EF45FA21CC6D04D001F7A39"
+            BuildableName = "Bluetooth iOS.framework"
+            BlueprintName = "Bluetooth iOS"
             ReferencedContainer = "container:Bluetooth.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-            BuildableName = "Bluetooth OS X.framework"
-            BlueprintName = "Bluetooth OS X"
+            BlueprintIdentifier = "6EF45FA21CC6D04D001F7A39"
+            BuildableName = "Bluetooth iOS.framework"
+            BlueprintName = "Bluetooth iOS"
             ReferencedContainer = "container:Bluetooth.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
