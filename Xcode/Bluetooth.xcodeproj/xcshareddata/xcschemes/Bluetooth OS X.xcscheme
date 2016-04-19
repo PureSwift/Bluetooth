@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-               BuildableName = "Bluetooth OS X.framework"
+               BuildableName = "Bluetooth.framework"
                BlueprintName = "Bluetooth OS X"
                ReferencedContainer = "container:Bluetooth.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-            BuildableName = "Bluetooth OS X.framework"
+            BuildableName = "Bluetooth.framework"
             BlueprintName = "Bluetooth OS X"
             ReferencedContainer = "container:Bluetooth.xcodeproj">
          </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-            BuildableName = "Bluetooth OS X.framework"
+            BuildableName = "Bluetooth.framework"
             BlueprintName = "Bluetooth OS X"
             ReferencedContainer = "container:Bluetooth.xcodeproj">
          </BuildableReference>
@@ -83,7 +83,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6EE84DB61CAF5C7C00A40C4D"
-            BuildableName = "Bluetooth OS X.framework"
+            BuildableName = "Bluetooth.framework"
             BlueprintName = "Bluetooth OS X"
             ReferencedContainer = "container:Bluetooth.xcodeproj">
          </BuildableReference>
