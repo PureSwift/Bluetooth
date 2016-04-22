@@ -258,7 +258,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         
         let attributeOpcodeByte = byteValue[0]
         let formatByte = byteValue[1]
-        let remainderData = Array(byteValue.suffix(2))
+        let remainderData = Array(byteValue.suffix(from: 2))
         
         guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue,
             let format = Format(rawValue: formatByte),
@@ -453,7 +453,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
         if byteValue.count >= 7 {
             
             // rest of data is attribute
-            self.attributeValue = Array(byteValue.suffix(7))
+            self.attributeValue = Array(byteValue.suffix(from: 7))
             
         } else {
             
@@ -782,7 +782,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
                 
                 let startingIndex = AttributeData.length
                 
-                self.value = Array(byteValue.suffix(startingIndex))
+                self.value = Array(byteValue.suffix(from: startingIndex))
                 
             } else {
                 
@@ -869,7 +869,7 @@ public struct ATTReadResponse: ATTProtocolDataUnit {
         
         if byteValue.count > ATTReadRequest.length {
             
-            self.attributeValue = Array(byteValue.suffix(1))
+            self.attributeValue = Array(byteValue.suffix(from: 1))
             
         } else {
             
@@ -964,7 +964,7 @@ public struct ATTReadBlobResponse: ATTProtocolDataUnit {
         
         if byteValue.count > ATTReadBlobResponse.length {
                 
-            self.partAttributeValue = Array(byteValue.suffix(1))
+            self.partAttributeValue = Array(byteValue.suffix(from: 1))
                 
         } else {
             
@@ -1087,7 +1087,7 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
             
         if byteValue.count > 1 {
             
-            self.values = Array(byteValue.suffix(1))
+            self.values = Array(byteValue.suffix(from: 1))
             
         } else {
             
@@ -1300,7 +1300,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             
             if byteValue.count > 4 {
                 
-                self.value = Array(byteValue.suffix(4))
+                self.value = Array(byteValue.suffix(from: 4))
                 
             } else {
                 
@@ -1360,7 +1360,7 @@ public struct ATTWriteRequest: ATTProtocolDataUnit {
         
         if byteValue.count > ATTWriteRequest.length {
             
-            self.value = Array(byteValue.suffix(3))
+            self.value = Array(byteValue.suffix(from: 3))
             
         } else {
             
@@ -1448,7 +1448,7 @@ public struct ATTWriteCommand: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.value = Array(byteValue.suffix(3))
+            self.value = Array(byteValue.suffix(from: 3))
             
         } else {
             
@@ -1579,7 +1579,7 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.partValue = Array(byteValue.suffix(5))
+            self.partValue = Array(byteValue.suffix(from: 5))
             
         } else {
             
@@ -1643,7 +1643,7 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
             
         if byteValue.count > type.length {
                 
-            self.partValue = Array(byteValue.suffix(5))
+            self.partValue = Array(byteValue.suffix(from: 5))
                 
         } else {
                 
@@ -1777,7 +1777,7 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.value = Array(byteValue.suffix(3))
+            self.value = Array(byteValue.suffix(from: 3))
             
         } else {
             
@@ -1827,7 +1827,7 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
         
         if byteValue.count > type.length {
             
-            self.value = Array(byteValue.suffix(3))
+            self.value = Array(byteValue.suffix(from: 3))
             
         } else {
             
