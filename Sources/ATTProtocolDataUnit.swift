@@ -914,9 +914,9 @@ public struct ATTReadBlobRequest: ATTProtocolDataUnit {
         guard attributeOpcodeByte == ATTReadBlobRequest.attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[0], byteValue[1])).littleEndian
+        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
         
-        self.offset = UInt16(bytes: (byteValue[2], byteValue[3])).littleEndian
+        self.offset = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
     }
     
     public var byteValue: [UInt8] {
