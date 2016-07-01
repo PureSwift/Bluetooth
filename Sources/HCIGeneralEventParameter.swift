@@ -72,11 +72,11 @@ public extension HCIGeneralEvent {
                 else { return nil }
             
             self.status = byteValue[0]
-            self.address = Address(byteValue: (byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6]))
+            self.address = Address(bytes: (byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6]))
             
             let nameBytes = Array(byteValue[7 ..< HCI.MaximumNameLength])
             
-            guard let name = String(UTF8Data: Data(byteValue: nameBytes))
+            guard let name = String(UTF8Data: Data(bytes: nameBytes))
                 else { return nil }
             
             self.name = name

@@ -57,7 +57,7 @@ public extension LinkControlCommand {
             guard byteValue.count == RemoteNameRequestParameter.length
                 else { return nil }
             
-            self.address = Address(byteValue: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5]))
+            self.address = Address(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5]))
             
             self.pscanRepMode = byteValue[6]
             self.pscanMode = byteValue[7]
@@ -66,7 +66,7 @@ public extension LinkControlCommand {
         
         public var byteValue: [UInt8] {
             
-            let address = self.address.byteValue
+            let address = self.address.bytes
             
             let clockOffsetBytes = clockOffset.littleEndian.bytes
             

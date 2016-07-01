@@ -6,8 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import struct SwiftFoundation.UUID
-import struct SwiftFoundation.Data
+import SwiftFoundation
 
 public extension GATT {
     
@@ -16,7 +15,7 @@ public extension GATT {
     /// GATT Service
     public struct Service {
         
-        public var UUID: Bluetooth.UUID
+        public var UUID: BluetoothUUID
         
         public var primary: Bool
         
@@ -24,7 +23,7 @@ public extension GATT {
         
         public var includedServices: [IncludedService]
         
-        public init(UUID: Bluetooth.UUID = .Bit128(SwiftFoundation.UUID()),
+        public init(UUID: BluetoothUUID = BluetoothUUID(),
                     primary: Bool = true,
                     characteristics: [Characteristic] = [],
                     includedServices: [IncludedService] = []) {
@@ -48,7 +47,7 @@ public extension GATT {
         public typealias Descriptor = GATT.Descriptor
         public typealias Property = GATT.CharacteristicProperty
         
-        public var UUID: Bluetooth.UUID
+        public var UUID: BluetoothUUID
         
         public var value: Data
         
@@ -58,7 +57,7 @@ public extension GATT {
         
         public var descriptors: [Descriptor]
         
-        public init(UUID: Bluetooth.UUID = .Bit128(SwiftFoundation.UUID()),
+        public init(UUID: BluetoothUUID = BluetoothUUID(),
                     value: Data = Data(),
                     permissions: [Permission] = [],
                     properties: [Property] = [],
@@ -75,13 +74,13 @@ public extension GATT {
     /// GATT Characteristic Descriptor
     public struct Descriptor {
         
-        public var UUID: Bluetooth.UUID
+        public var UUID: BluetoothUUID
         
         public var value: Data
         
         public var permissions: [Permission]
         
-        public init(UUID: Bluetooth.UUID = .Bit128(SwiftFoundation.UUID()),
+        public init(UUID: BluetoothUUID = BluetoothUUID(),
                     value: Data = Data(),
                     permissions: [Permission] = []) {
             

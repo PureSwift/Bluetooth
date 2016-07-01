@@ -67,7 +67,7 @@ public extension LowEnergyCommand {
         public init(interval: (minimum: UInt16, maximum: UInt16) = (0x0800, 0x0800),
             advertisingType: AdvertisingChannelHeader = AdvertisingChannelHeader(),
             addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.Public, .Public),
-            directAddress: Address = Address(byteValue: (0,0,0,0,0,0)),
+            directAddress: Address = Address(bytes: (0,0,0,0,0,0)),
             channelMap: ChannelMap = ChannelMap(),
             filterPolicy: FilterPolicy = FilterPolicy()) {
             
@@ -89,7 +89,7 @@ public extension LowEnergyCommand {
                 advertisingType.rawValue,
                 addressType.own.rawValue,
                 addressType.direct.rawValue,
-                directAddress.byteValue.0, directAddress.byteValue.1, directAddress.byteValue.2, directAddress.byteValue.3, directAddress.byteValue.4, directAddress.byteValue.5, channelMap.rawValue, filterPolicy.rawValue]
+                directAddress.bytes.0, directAddress.bytes.1, directAddress.bytes.2, directAddress.bytes.3, directAddress.bytes.4, directAddress.bytes.5, channelMap.rawValue, filterPolicy.rawValue]
         }
         
         public enum ChannelMap: UInt8 {

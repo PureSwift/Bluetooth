@@ -15,7 +15,7 @@
 import SwiftFoundation
 
 /// Bluetooth Address type.
-public struct Address: ByteValueType {
+public struct Address: ByteValue {
     
     // MARK: - ByteValueType
     
@@ -24,13 +24,13 @@ public struct Address: ByteValueType {
     
     // MARK: - Properties
     
-    public var byteValue: ByteValue
+    public var bytes: ByteValue
     
     // MARK: - Initialization
     
-    public init(byteValue: ByteValue = (0,0,0,0,0,0)) {
+    public init(bytes: ByteValue = (0,0,0,0,0,0)) {
         
-        self.byteValue = byteValue
+        self.bytes = bytes
     }
 }
 
@@ -40,22 +40,22 @@ extension Address: RawRepresentable {
     
     public init?(rawValue: String) {
         
-        self.byteValue = (0,0,0,0,0,0)
+        self.bytes = (0,0,0,0,0,0)
         
         fatalError("Bluetooth address parsing not implemented")
     }
     
     public var rawValue: String {
         
-        let bytes = [byteValue.5, byteValue.4, byteValue.3, byteValue.2, byteValue.1, byteValue.0]
+        let byteValue = [bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0]
         
         var string = ""
         
-        for (index, byte) in bytes.enumerated() {
+        for (index, byte) in byteValue.enumerated() {
             
             string += byte.toHexadecimal()
             
-            if index != bytes.count - 1 {
+            if index != byteValue.count - 1 {
                 
                 string += ":"
             }
@@ -73,12 +73,12 @@ extension Address: Equatable { }
 
 public func == (lhs: Address, rhs: Address) -> Bool {
     
-    return lhs.byteValue.0 == rhs.byteValue.0
-        && lhs.byteValue.1 == rhs.byteValue.1
-        && lhs.byteValue.2 == rhs.byteValue.2
-        && lhs.byteValue.3 == rhs.byteValue.3
-        && lhs.byteValue.4 == rhs.byteValue.4
-        && lhs.byteValue.5 == rhs.byteValue.5
+    return lhs.bytes.0 == rhs.bytes.0
+        && lhs.bytes.1 == rhs.bytes.1
+        && lhs.bytes.2 == rhs.bytes.2
+        && lhs.bytes.3 == rhs.bytes.3
+        && lhs.bytes.4 == rhs.bytes.4
+        && lhs.bytes.5 == rhs.bytes.5
 }
 
 // MARK: - CustomStringConvertible

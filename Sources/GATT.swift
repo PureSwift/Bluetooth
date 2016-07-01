@@ -6,7 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import protocol SwiftFoundation.BitMaskOption
+import SwiftFoundation
 
 /// Bluetooth GATT protocol
 public struct GATT {
@@ -26,11 +26,11 @@ public struct GATT {
         }
         
         /// Initializes from a Bluetooth UUID
-        public init?(UUID: Bluetooth.UUID) {
+        public init?(UUID: BluetoothUUID) {
             
             switch UUID  {
                 
-            case let .Bit16(value):
+            case let .bit16(value):
                 
                 guard let gatt = GATT.UUID(rawValue: value)
                     else { return nil }
@@ -42,9 +42,9 @@ public struct GATT {
         }
         
         /// Returns a Bluetooth UUID initialized with the `rawValue` of this GATT UUID.
-        public func toUUID() -> Bluetooth.UUID {
+        public func toUUID() -> BluetoothUUID {
             
-            return .Bit16(rawValue)
+            return .bit16(rawValue)
         }
     }
     
