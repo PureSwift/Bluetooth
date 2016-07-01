@@ -214,17 +214,17 @@ public extension UUID {
     
     public extension BluetoothUUID {
         
-        public init(foundation: CBUUID) {
+        public init(coreBluetooth: CBUUID) {
             
-            let data = foundation.data as Data
+            let data = coreBluetooth.data as Data
             
             guard let UUID = BluetoothUUID(data: data)
-                else { fatalError("Could not create Bluetooth UUID from \(foundation)") }
+                else { fatalError("Could not create Bluetooth UUID from \(coreBluetooth)") }
             
             self = UUID
         }
         
-        public func toFoundation() -> CBUUID {
+        public func toCoreBluetooth() -> CBUUID {
             
             return CBUUID(data: self.toData())
         }
