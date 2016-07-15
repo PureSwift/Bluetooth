@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6EA91C231D38A7AC007CAE0A /* JSON.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EA91C1F1D38A79F007CAE0A /* JSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6EA91C241D38A7AC007CAE0A /* SwiftFoundation.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EA91C211D38A79F007CAE0A /* SwiftFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6EB2EA041CD5A8A7000CF975 /* HCIEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */; };
 		6EB2EA051CD5A8A7000CF975 /* HCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84E051CAF8AD500A40C4D /* HCI.swift */; };
 		6EB2EA061CD5A8A7000CF975 /* LinkControlCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */; };
@@ -77,7 +79,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6EA91C1C1D38A766007CAE0A /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6EA91C231D38A7AC007CAE0A /* JSON.framework in Copy Frameworks */,
+				6EA91C241D38A7AC007CAE0A /* SwiftFoundation.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6EA91C1F1D38A79F007CAE0A /* JSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSON.framework; sourceTree = "<group>"; };
+		6EA91C211D38A79F007CAE0A /* SwiftFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftFoundation.framework; sourceTree = "<group>"; };
 		6EB2EA1D1CD5A8A7000CF975 /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EE84DB71CAF5C7C00A40C4D /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bluetooth.h; sourceTree = "<group>"; };
@@ -140,11 +159,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6EA91C1D1D38A77B007CAE0A /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				6EA91C1E1D38A79F007CAE0A /* Mac */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		6EA91C1E1D38A79F007CAE0A /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				6EA91C1F1D38A79F007CAE0A /* JSON.framework */,
+				6EA91C211D38A79F007CAE0A /* SwiftFoundation.framework */,
+			);
+			name = Mac;
+			path = ../Carthage/Build/Mac;
+			sourceTree = "<group>";
+		};
 		6EE84DAD1CAF5C7C00A40C4D = {
 			isa = PBXGroup;
 			children = (
 				6EE84DD61CAF63C300A40C4D /* Cartfile */,
 				6EE84DD71CAF63C300A40C4D /* Package.swift */,
+				6EA91C1D1D38A77B007CAE0A /* Dependencies */,
 				6EE84DD11CAF5DC800A40C4D /* Sources */,
 				6EE84DB91CAF5C7C00A40C4D /* Bluetooth */,
 				6EE84DC51CAF5C7C00A40C4D /* BluetoothTests */,
@@ -303,6 +341,7 @@
 				6EE84DBD1CAF5C7C00A40C4D /* Sources */,
 				6EE84DBE1CAF5C7C00A40C4D /* Frameworks */,
 				6EE84DBF1CAF5C7C00A40C4D /* Resources */,
+				6EA91C1C1D38A766007CAE0A /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -681,8 +720,10 @@
 		6EE84DCF1CAF5C7C00A40C4D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = $SRCROOT/../Carthage/Build/Mac;
 				INFOPLIST_FILE = BluetoothTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.pureswift.BluetoothTests;
@@ -693,8 +734,10 @@
 		6EE84DD01CAF5C7C00A40C4D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = $SRCROOT/../Carthage/Build/Mac;
 				INFOPLIST_FILE = BluetoothTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.pureswift.BluetoothTests;
