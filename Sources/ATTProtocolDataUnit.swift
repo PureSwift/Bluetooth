@@ -29,7 +29,7 @@ public protocol ATTProtocolDataUnit {
 /// and to provide the reason.
 ///
 /// - Note: The Write Command does not generate an Error Response.
-public struct ATTErrorResponse: ATTProtocolDataUnit, ErrorProtocol {
+public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     
     /// The request that generated this error response
     public var requestOpcode: ATT.Opcode

@@ -63,7 +63,7 @@ public enum HCIOpcodeGroupField: UInt16 {
 }
 
 /// Bluetooth HCI Errors
-public enum HCIError: UInt8, ErrorProtocol {
+public enum HCIError: UInt8, Error {
     
     case UnknownCommand                     = 0x01
     case NoConnection

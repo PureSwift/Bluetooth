@@ -50,7 +50,7 @@ public struct ATT {
 }
 
 /// Error codes for Error response PDU.
-public enum ATTError: UInt8, ErrorProtocol {
+public enum ATTError: UInt8, Error {
     
     /// The attribute handle given was not valid on this server.
     case InvalidHandle                              = 0x01
