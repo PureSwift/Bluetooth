@@ -215,10 +215,8 @@ public extension UUID {
     public extension BluetoothUUID {
         
         public init(coreBluetooth: CBUUID) {
-            
-            let data = coreBluetooth.data as Data
-            
-            guard let UUID = BluetoothUUID(data: data)
+                        
+            guard let UUID = BluetoothUUID(data: coreBluetooth.data)
                 else { fatalError("Could not create Bluetooth UUID from \(coreBluetooth)") }
             
             self = UUID

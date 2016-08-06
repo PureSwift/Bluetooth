@@ -109,12 +109,12 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        guard byteValue.count == self.dynamicType.length
+        guard byteValue.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.clientMTU = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
@@ -124,7 +124,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
         
         var bytes = [UInt8](repeating: 0, count: ATTMaximumTransmissionUnitRequest.length)
         
-        bytes[0] = self.dynamicType.attributeOpcode.rawValue
+        bytes[0] = type(of: self).attributeOpcode.rawValue
         
         let mtuBytes = self.clientMTU.littleEndian.bytes
         
@@ -153,12 +153,12 @@ public struct ATTMaximumTranssmissionUnitResponse: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        guard byteValue.count == self.dynamicType.length
+        guard byteValue.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.serverMTU = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
@@ -166,9 +166,9 @@ public struct ATTMaximumTranssmissionUnitResponse: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        var bytes = [UInt8](repeating: 0, count: self.dynamicType.length)
+        var bytes = [UInt8](repeating: 0, count: type(of: self).length)
         
-        bytes[0] = self.dynamicType.attributeOpcode.rawValue
+        bytes[0] = type(of: self).attributeOpcode.rawValue
         
         let mtuBytes = self.serverMTU.littleEndian.bytes
         
@@ -202,12 +202,12 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        guard byteValue.count == self.dynamicType.length
+        guard byteValue.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.startHandle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
@@ -216,9 +216,9 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        var bytes = [UInt8](repeating: 0, count: self.dynamicType.length)
+        var bytes = [UInt8](repeating: 0, count: type(of: self).length)
         
-        bytes[0] = self.dynamicType.attributeOpcode.rawValue
+        bytes[0] = type(of: self).attributeOpcode.rawValue
         
         let startHandleBytes = self.startHandle.littleEndian.bytes
         let endHandleBytes = self.endHandle.littleEndian.bytes
@@ -260,7 +260,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         let formatByte = byteValue[1]
         let remainderData = Array(byteValue.suffix(from: 2))
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue,
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
             let format = Format(rawValue: formatByte),
             let data = Data(byteValue: remainderData, format: format)
             else { return nil }
@@ -271,7 +271,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     public var byteValue: [UInt8] {
         
         // first 2 bytes are opcode and format
-        return [self.dynamicType.attributeOpcode.rawValue, data.format.rawValue] + data.byteValue
+        return [type(of: self).attributeOpcode.rawValue, data.format.rawValue] + data.byteValue
     }
     
     public enum Format: UInt8 {
@@ -440,7 +440,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.startHandle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
@@ -469,7 +469,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
         
         let attributeTypeBytes = self.attributeType.littleEndian.bytes
         
-        return [self.dynamicType.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1, attributeTypeBytes.0, attributeTypeBytes.1] + attributeValue
+        return [type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1, attributeTypeBytes.0, attributeTypeBytes.1] + attributeValue
     }
 }
 
@@ -501,7 +501,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         let handleLength = HandlesInformation.length
@@ -547,7 +547,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             handlesData.replaceSubrange(byteRange, with: handle.byteValue)
         }
         
-        return [self.dynamicType.attributeOpcode.rawValue] + handlesData
+        return [type(of: self).attributeOpcode.rawValue] + handlesData
     }
     
     /// Handles Information
@@ -624,7 +624,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.startHandle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
@@ -651,7 +651,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         
         let endHandleBytes = endHandle.littleEndian.bytes
         
-        return [self.dynamicType.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + attributeType.littleEndian
+        return [type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + attributeType.littleEndian
     }
     
     private enum Length: Int {
@@ -711,7 +711,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == self.dynamicType.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         let attributeDataLength = Int(byteValue[1])
@@ -743,7 +743,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
         
         let valueLength = UInt8(2 + data[0].value.count)
         
-        var bytes = [self.dynamicType.attributeOpcode.rawValue, valueLength]
+        var bytes = [type(of: self).attributeOpcode.rawValue, valueLength]
         
         for attributeData in data {
             
