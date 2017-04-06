@@ -6,7 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import SwiftFoundation
+import Foundation
 
 /// Bluetooth GATT protocol
 public struct GATT {

@@ -6,7 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import SwiftFoundation
+import Foundation
 
 // MARK: - Protocol Definition
 
@@ -350,7 +350,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let uuidBytes = Array(pairBytes[2 ... 17])
                     
-                    let data = SwiftFoundation.Data(bytes: isBigEndian ? uuidBytes.reversed() : uuidBytes)
+                    let data = Foundation.Data(bytes: isBigEndian ? uuidBytes.reversed() : uuidBytes)
                     
                     let uuid = UUID(data: data)!
                     

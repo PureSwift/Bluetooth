@@ -12,7 +12,7 @@
     import Darwin.C
 #endif
 
-import SwiftFoundation
+import Foundation
 
 /// Bluetooth Address type.
 public struct Address: ByteValue {

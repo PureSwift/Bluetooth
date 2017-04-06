@@ -6,8 +6,6 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import SwiftFoundation
-
 /// Bluetooth HCI
 public struct HCI {
     

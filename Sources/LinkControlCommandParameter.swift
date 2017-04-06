@@ -12,8 +12,6 @@
     import Darwin.C
 #endif
 
-import SwiftFoundation
-
 public extension LinkControlCommand {
     
     public struct InquiryParameter: HCICommandParameter {
