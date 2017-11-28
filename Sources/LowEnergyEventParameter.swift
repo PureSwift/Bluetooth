@@ -6,7 +6,6 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-/*
 public extension LowEnergyEvent {
     
     public struct ConnectionCompleteParameter: HCIEventParameter {
@@ -31,4 +30,6 @@ public extension LowEnergyEvent {
             fatalError("Not implemented")
         }
     }
-}*/
+}
+
+// LE Advertising Report Event

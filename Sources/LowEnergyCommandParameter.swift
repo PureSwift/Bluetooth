@@ -15,7 +15,7 @@ public extension LowEnergyCommand {
     /// - Note: Only the significant part of the Advertising Data is transmitted in the advertising packets.
     public struct SetAdvertisingDataParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.SetAdvertisingData
+        public static let command = LowEnergyCommand.setAdvertisingData
         public static let length = 32
         
         /// The number of significant bytes.
@@ -49,7 +49,7 @@ public extension LowEnergyCommand {
     /// Used by the Host to set the advertising parameters.
     public struct SetAdvertisingParametersParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.SetAdvertisingParameters
+        public static let command = LowEnergyCommand.setAdvertisingParameters
         public static let length = 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1
         
         /// Interval for non-directed advertising.
@@ -126,7 +126,7 @@ public extension LowEnergyCommand {
     /// LE Set Advertise Enable Command
     public struct SetAdvertiseEnableParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.SetAdvertiseEnable
+        public static let command = LowEnergyCommand.setAdvertiseEnable
         public static let length = 1
         
         public var enabled: Bool
@@ -147,7 +147,7 @@ public extension LowEnergyCommand {
     /// LE Set Scan Response Data Command
     public struct SetScanResponseDataParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.SetScanResponseData // 0x0009
+        public static let command = LowEnergyCommand.setScanResponseData // 0x0009
         public static let length = 32
         
         /// The number of significant bytes.
@@ -182,7 +182,7 @@ public extension LowEnergyCommand {
     /// Scanning is used to discover advertising devices nearby.
     public struct SetScanEnableParameter: HCICommandParameter { // HCI_LE_Set_Scan_Enable
         
-        public static let command = LowEnergyCommand.SetScanEnable // 0x000C
+        public static let command = LowEnergyCommand.setScanEnable // 0x000C
         public static let length = 2
         
         /// Whether scanning is enabled or disabled.
@@ -224,7 +224,7 @@ public extension LowEnergyCommand {
     /// if it is the Command Disallowed error code shall be used.
     public struct SetScanParametersParameter: HCICommandParameter { // HCI_LE_Set_Scan_Parameters
         
-        public static let command = LowEnergyCommand.SetScanParameters // 0x000B
+        public static let command = LowEnergyCommand.setScanParameters // 0x000B
         public static let length = 1 + 2 + 2 + 1 + 1
         
         /// Controls the type of scan to perform
