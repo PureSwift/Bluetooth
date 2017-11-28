@@ -6,6 +6,7 @@
 //  Copyright © 2017 PureSwift. All rights reserved.
 //
 
+/// Identifies a Bluetooth Group member company. 
 public struct CompanyIdentifier: RawRepresentable {
     
     public var rawValue: UInt16
@@ -2118,7 +2119,7 @@ extension CompanyIdentifier: CustomStringConvertible {
         case UInt16.max: // 65535
             return "Internal use Company ID"
         default:
-            return "Unknown Company"
+            return "Unknown Company (\(rawValue))"
         }
     }
 }
