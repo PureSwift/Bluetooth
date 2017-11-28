@@ -26,6 +26,8 @@ public extension LowEnergyCommand {
         
         public init(data: LowEnergyAdvertisingData, length: UInt8) {
             
+            precondition(length <= 31, "LE Advertising Data can only be 31 octets")
+            
             self.length = length
             self.data = data
         }
@@ -155,6 +157,8 @@ public extension LowEnergyCommand {
         public var data: LowEnergyScanData // Scan_Response_Data
         
         public init(data: LowEnergyScanData, length: UInt8) {
+            
+            precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
             
             self.length = length
             self.data = data
