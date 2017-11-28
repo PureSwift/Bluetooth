@@ -8,9 +8,10 @@
 
 public extension LowEnergyEvent {
     
+    /// LE Connection Complete
     public struct ConnectionCompleteParameter: HCIEventParameter {
         
-        public static let event = LowEnergyEvent.ConnectionComplete
+        public static let event = LowEnergyEvent.connectionComplete
         public static let length = 18
         
         public var status: UInt8 = 0
@@ -23,8 +24,6 @@ public extension LowEnergyEvent {
         public var supervisionTimeout: UInt16 = 0
         public var masterClockAccuracy: UInt8 = 0
         
-        public init() { }
-        
         public init?(byteValue: [UInt8]) {
             
             fatalError("Not implemented")
@@ -32,4 +31,3 @@ public extension LowEnergyEvent {
     }
 }
 
-// LE Advertising Report Event
