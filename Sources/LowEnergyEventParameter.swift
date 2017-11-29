@@ -77,7 +77,7 @@ public extension LowEnergyEvent {
         
         public struct Report {
             
-            public static let length = 1 + 1 + 6 + 1 + /* 0 - 31 */ 0 + 2
+            public static let length = 1 + 1 + 6 + 1 + /* 0 - 31 */ 0 + 1
             
             public let event: Event
             
@@ -127,12 +127,9 @@ public extension LowEnergyEvent {
                 guard byteValue.count == (Report.length + length)
                     else { return nil }
                 
-                let rssiBytes = (byteValue[9 + length],
-                                 byteValue[9 + length + 1])
-                
-                let rssiValue = Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: rssiBytes)))
-                
-                self.rssi = RSSI(rawValue: rssiValue)
+                // last byte
+                let rssiByte = Int8(bitPattern: byteValue[9 + length])
+                self.rssi = RSSI(rawValue: rssiByte)
             }
             
             public enum Event: UInt8 { // Event_Type
@@ -160,9 +157,9 @@ public extension LowEnergyEvent {
             /// Units: dBm
             public struct RSSI: RawRepresentable, Equatable, Comparable, Hashable {
                 
-                public let rawValue: Int16
+                public let rawValue: Int8
                 
-                public init?(rawValue: Int16) {
+                public init?(rawValue: Int8) {
                     
                     guard -127 <= rawValue,
                         rawValue <= +20
