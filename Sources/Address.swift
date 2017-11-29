@@ -17,6 +17,8 @@ import Foundation
 /// Bluetooth address.
 public struct Address: ByteValue {
     
+    public static let zero = Address()
+    
     // MARK: - ByteValueType
     
     /// Raw Bluetooth Address 6 byte (48 bit) value.
@@ -31,6 +33,19 @@ public struct Address: ByteValue {
     public init(bytes: ByteValue = (0,0,0,0,0,0)) {
         
         self.bytes = bytes
+    }
+}
+
+// MARK: - Data
+
+public extension Address {
+    
+    public init?(data: Data) {
+        
+        guard data.count == 6
+            else { return nil }
+        
+        self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
     }
 }
 
@@ -101,16 +116,47 @@ public extension Address {
 
 extension Address: RawRepresentable {
     
+    /// Initialize a Bluetooth Address from its little endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public init?(rawValue: String) {
         
-        self.bytes = (0,0,0,0,0,0)
+        // verify string
+        guard rawValue.utf8.count == 17
+            else { return nil }
         
-        fatalError("Bluetooth address parsing not implemented")
+        var bytes = [UInt8](repeating: 0, count: 6)
+        
+        // parse bytes
+        let success = rawValue.withCString { (cString) -> Bool in
+            
+            // parse
+            var cString = cString
+            for index in (0 ..< 6) {
+                
+                let number = strtol(cString, nil, 16)
+                
+                guard let byte = UInt8.init(exactly: number)
+                    else { return false }
+                
+                bytes[index] = byte
+                cString = cString.advanced(by: 3)
+            }
+            
+            return true
+        }
+        
+        guard success else { return nil }
+        
+        guard let address = Address(data: Data(bytes))
+            else { return nil }
+        
+        self.init(littleEndian: address)
     }
     
     public var rawValue: String {
         
-        let byteValue = [bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0]
+        let bytes = self.littleEndian.bytes
+        
+        let byteValue = [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5]
         
         var string = ""
         
@@ -132,16 +178,17 @@ extension Address: RawRepresentable {
 
 // MARK: - Equatable
 
-extension Address: Equatable { }
-
-public func == (lhs: Address, rhs: Address) -> Bool {
+extension Address: Equatable {
     
-    return lhs.bytes.0 == rhs.bytes.0
-        && lhs.bytes.1 == rhs.bytes.1
-        && lhs.bytes.2 == rhs.bytes.2
-        && lhs.bytes.3 == rhs.bytes.3
-        && lhs.bytes.4 == rhs.bytes.4
-        && lhs.bytes.5 == rhs.bytes.5
+    public static func == (lhs: Address, rhs: Address) -> Bool {
+        
+        return lhs.bytes.0 == rhs.bytes.0
+            && lhs.bytes.1 == rhs.bytes.1
+            && lhs.bytes.2 == rhs.bytes.2
+            && lhs.bytes.3 == rhs.bytes.3
+            && lhs.bytes.4 == rhs.bytes.4
+            && lhs.bytes.5 == rhs.bytes.5
+    }
 }
 
 // MARK: - CustomStringConvertible
