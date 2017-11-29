@@ -22,9 +22,9 @@ public extension LowEnergyCommand {
         public var length: UInt8
         
         /// 31 octets of advertising data. 
-        public var data: LowEnergyAdvertisingData
+        public var data: LowEnergyResponseData
         
-        public init(data: LowEnergyAdvertisingData, length: UInt8) {
+        public init(data: LowEnergyResponseData, length: UInt8) {
             
             precondition(length <= 31, "LE Advertising Data can only be 31 octets")
             
@@ -196,9 +196,9 @@ public extension LowEnergyCommand {
         public var length: UInt8 // Scan_Response_Data_Length
         
         /// 31 octets of scan response data.
-        public var data: LowEnergyScanData // Scan_Response_Data
+        public var data: LowEnergyResponseData // Scan_Response_Data
         
-        public init(data: LowEnergyScanData, length: UInt8) {
+        public init(data: LowEnergyResponseData, length: UInt8) {
             
             precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
             
@@ -394,18 +394,6 @@ public extension LowEnergyCommand {
 
 // MARK: - Supporting Types
 
-/// Bluetooth Low Energy Address type
-public enum LowEnergyAddressType: UInt8 {
-    
-    case `public` = 0x00
-    case random = 0x01
-    
-    public init() { self = .public }
-}
-
-/// 31 Byte LE Advertising Data
-public typealias LowEnergyAdvertisingData = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
-
-/// 31 Byte LE Scan Data
-public typealias LowEnergyScanData = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+/// 31 Byte LE Advertising or Scan Response Data
+public typealias LowEnergyResponseData = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
 
