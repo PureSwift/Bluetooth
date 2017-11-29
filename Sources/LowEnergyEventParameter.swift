@@ -61,15 +61,15 @@ public extension LowEnergyEvent {
             reports.reserveCapacity(reportCount)
             
             var offset = 1
-            for reportIndex in 0 ..< reportCount {
+            for _ in 0 ..< reportCount {
                 
                 let reportBytes = [UInt8](byteValue.suffix(from: offset))
                 
                 guard let report = Report(byteValue: reportBytes)
                     else { return nil }
                 
-                reports.append(report)
                 offset += Report.length + report.data.count
+                reports.append(report)
             }
             
             self.reports = reports
@@ -85,9 +85,6 @@ public extension LowEnergyEvent {
             
             public let address: Bluetooth.Address // Address
             
-            /// The number of significant bytes.
-            public var length: UInt8 // Length_Data
-            
             /// Advertising or scan response data
             public let data: [UInt8] // Data
             
@@ -100,7 +97,35 @@ public extension LowEnergyEvent {
             
             public init?(byteValue: [UInt8]) {
                 
+                guard byteValue.count >= Report.length
+                    else { return nil }
                 
+                // parse enums
+                guard let event = Event(rawValue: byteValue[0]),
+                    let addressType = LowEnergyAddressType(rawValue: byteValue[1])
+                    else { return nil }
+                
+                let address = Address(littleEndian:
+                    Address(bytes: (byteValue[2],
+                                    byteValue[3],
+                                    byteValue[4],
+                                    byteValue[5],
+                                    byteValue[6],
+                                    byteValue[7])))
+                
+                let length = Int(byteValue[8])
+                
+                self.event = event
+                self.addressType = addressType
+                self.address = address
+                self.data = [UInt8](byteValue[9 ..< (9 + length)])
+                
+                let rssiBytes = (byteValue[9 + length],
+                                 byteValue[9 + length + 1])
+                
+                let rssiValue = Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: rssiBytes)))
+                
+                self.rssi = RSSI(rawValue: rssiValue)
             }
             
             public enum Event: UInt8 { // Event_Type
