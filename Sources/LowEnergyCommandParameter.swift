@@ -342,10 +342,20 @@ public extension LowEnergyCommand {
     /// LE Create Connection Command
     /// 
     /// The LE Create Connection command is used to create a Link Layer connection to a connectable advertiser.
+    ///
+    /// When the Controller receives the LE Create Connection Command, the Controller sends the Command Status 
+    /// event to the Host. An LE Connection Complete event shall be generated when a connection is created 
+    /// or the connection creation procedure is cancelled.
+    ///
+    /// - Note: No Command Complete event is sent by the Controller to indicate that this command has been completed.
+    /// Instead, the LE Connection Complete event indicates that this command has been completed.
+    ///
+    /// - Warning: The Host shall not issue this command when another `LE Create Connection Command` is pending
+    /// in the Controller; if this does occur the Controller shall return the Command Disallowed error code shall be used.
     public struct CreateConnectionParameter: HCICommandParameter { // LE_Create_Connection
         
         public static let command = LowEnergyCommand.createConnection // 0x000C
-        public static let length = 0
+        public static let length = 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2
         
         /// Recommendation from the Host on how long the Controller should scan.
         ///
@@ -369,7 +379,7 @@ public extension LowEnergyCommand {
         public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
         
         /// Public Device Address or Random Device Address of the device to be connected.
-        public let peerAddress: LowEnergyAddressType // Peer_Address
+        public let peerAddress: Address // Peer_Address
         
         /// The Link Layer shall set the address in the `CONNECT_REQ` packets 
         /// to either the Public Device Address or the Random Device Addressed 
@@ -386,19 +396,86 @@ public extension LowEnergyCommand {
         /// Defines the maximum allowed connection latency.
         public let connectionLatency: ConnectionLatency
         
+        /// Supervision timeout for the LE Link.
+        ///
+        /// Defines the link supervision timeout for the connection. 
+        ///
+        /// - Note: The `supervisionTimeout` in milliseconds shall be
+        /// larger than the `connectionInterval.miliseconds.upperBound` in milliseconds.
+        public let supervisionTimeout: SupervisionTimeout
+        
+        /// Connection Length
+        ///
+        /// Informative parameters providing the Controller with the expected minimum 
+        /// and maximum length of the connection needed for this LE connection.
+        public let connectionLength: ConnectionLength
+        
         public init(scanInterval: LowEnergyScanTimeInterval = .default,
                     scanWindow: LowEnergyScanTimeInterval = .default,
                     initiatorFilterPolicy: InitiatorFilterPolicy = .peerAddress,
-                    peerAddressType: LowEnergyAddressType = .public) {
+                    peerAddressType: LowEnergyAddressType = .public,
+                    peerAddress: Address,
+                    ownAddressType: LowEnergyAddressType = .public,
+                    connectionInterval: ConnectionInterval = .full,
+                    connectionLatency: ConnectionLatency = .zero,
+                    supervisionTimeout: SupervisionTimeout = .max,
+                    connectionLength: ConnectionLength = .full) {
             
             precondition(scanWindow <= scanInterval, "LE_Scan_Window shall be less than or equal to LE_Scan_Interval")
+            precondition(supervisionTimeout.miliseconds > connectionInterval.miliseconds.upperBound, "The Supervision_Timeout in milliseconds shall be larger than the Conn_Interval_Max in milliseconds.")
             
-            fatalError()
+            self.scanInterval = scanInterval
+            self.scanWindow = scanWindow
+            self.initiatorFilterPolicy = initiatorFilterPolicy
+            self.peerAddressType = peerAddressType
+            self.peerAddress = peerAddress
+            self.ownAddressType = ownAddressType
+            self.connectionInterval = connectionInterval
+            self.connectionLatency = connectionLatency
+            self.supervisionTimeout = supervisionTimeout
+            self.connectionLength = connectionLength
         }
         
         public var byteValue: [UInt8] {
             
-            fatalError()
+            let scanIntervalBytes = scanInterval.rawValue.littleEndian.bytes
+            let scanWindowBytes = scanWindow.rawValue.littleEndian.bytes
+            let initiatorFilterPolicyByte = initiatorFilterPolicy.rawValue
+            let peerAddressTypeByte = peerAddressType.rawValue
+            let peerAddressBytes = peerAddress.littleEndian.bytes
+            let ownAddressTypeByte = ownAddressType.rawValue
+            let connectionIntervalMinBytes = connectionInterval.rawValue.lowerBound.littleEndian.bytes
+            let connectionIntervalMaxBytes = connectionInterval.rawValue.upperBound.littleEndian.bytes
+            let connectionLatencyBytes = connectionLatency.rawValue.littleEndian.bytes
+            let supervisionTimeoutBytes = supervisionTimeout.rawValue.littleEndian.bytes
+            let connectionLengthMinBytes = connectionLength.rawValue.lowerBound.littleEndian.bytes
+            let connectionLengthMaxBytes = connectionLength.rawValue.upperBound.littleEndian.bytes
+            
+            return [scanIntervalBytes.0,
+                    scanIntervalBytes.1,
+                    scanWindowBytes.0,
+                    scanWindowBytes.1,
+                    initiatorFilterPolicyByte,
+                    peerAddressTypeByte,
+                    peerAddressBytes.0,
+                    peerAddressBytes.1,
+                    peerAddressBytes.2,
+                    peerAddressBytes.3,
+                    peerAddressBytes.4,
+                    peerAddressBytes.5,
+                    ownAddressTypeByte,
+                    connectionIntervalMinBytes.0,
+                    connectionIntervalMinBytes.1,
+                    connectionIntervalMaxBytes.0,
+                    connectionIntervalMaxBytes.1,
+                    connectionLatencyBytes.0,
+                    connectionLatencyBytes.1,
+                    supervisionTimeoutBytes.0,
+                    supervisionTimeoutBytes.1,
+                    connectionLengthMinBytes.0,
+                    connectionLengthMinBytes.1,
+                    connectionLengthMaxBytes.0,
+                    connectionLengthMaxBytes.1]
         }
         
         /// Used to determine whether the White List is used.
@@ -429,23 +506,29 @@ public extension LowEnergyCommand {
             public static let max: UInt16 = 0x0C80
             
             /// Maximum interval range.
-            public static let full = ConnectionInterval.min ... ConnectionInterval.max
+            public static let full = ConnectionInterval(ConnectionInterval.min ... ConnectionInterval.max)
             
             public let rawValue: RawValue
             
             public init?(rawValue: RawValue) {
                 
-                assert(ConnectionInterval.full.lowerBound == ConnectionInterval.min)
-                assert(ConnectionInterval.full.upperBound == ConnectionInterval.max)
+                assert(ConnectionInterval.full.rawValue.lowerBound == ConnectionInterval.min)
+                assert(ConnectionInterval.full.rawValue.upperBound == ConnectionInterval.max)
                 
                 guard rawValue.lowerBound >= ConnectionInterval.min,
                     rawValue.upperBound <= ConnectionInterval.max
                     else { return nil }
                 
-                assert(rawValue.clamped(to: ConnectionInterval.full) == rawValue)
-                assert(rawValue.overlaps(ConnectionInterval.full))
+                assert(rawValue.clamped(to: ConnectionInterval.full.rawValue) == rawValue)
+                assert(rawValue.overlaps(ConnectionInterval.full.rawValue))
                 
                 self.rawValue = rawValue
+            }
+            
+            // private API, unsafe
+            private init(_ unchecked: RawValue) {
+                
+                self.rawValue = unchecked
             }
             
             /// Time = N * 1.25 msec
@@ -470,7 +553,9 @@ public extension LowEnergyCommand {
         /// Slave latency for the connection in number of connection events.
         ///
         /// Range: 0x0000 to 0x01F4
-        public struct ConnectionLatency: RawRepresentable {
+        public struct ConnectionLatency: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static var zero: ConnectionLatency { return ConnectionLatency() }
             
             public let rawValue: UInt16
             
@@ -497,6 +582,108 @@ public extension LowEnergyCommand {
             public var hashValue: Int {
                 
                 return Int(rawValue)
+            }
+            
+            // Comparable
+            public static func < (lhs: ConnectionLatency, rhs: ConnectionLatency) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+        }
+        
+        /// Supervision Timeout
+        /// 
+        /// Supervision timeout for the LE Link.
+        /// Range: 0x000A to 0x0C80
+        /// Time = N * 10 msec
+        /// Time Range: 100 msec to 32 seconds
+        ///
+        /// - SeeAlso: [Vol 6] Part B, Section 4.5.2
+        public struct SupervisionTimeout: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            /// 100 msec
+            public static let min = SupervisionTimeout(0x000A)
+            
+            /// 32 seconds
+            public static let max = SupervisionTimeout(0x0C80)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupervisionTimeout.min.rawValue,
+                    rawValue <= SupervisionTimeout.max.rawValue
+                    else { return nil }
+                
+                assert((SupervisionTimeout.min.rawValue ... SupervisionTimeout.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 10 msec
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 10
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupervisionTimeout, rhs: SupervisionTimeout) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupervisionTimeout, rhs: SupervisionTimeout) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Information parameter about the minimum length of connection needed for this LE connection.
+        ///
+        /// Range: 0x0000 – 0xFFFF
+        /// Time = N * 0.625 msec.
+        public struct ConnectionLength: RawRepresentable, Equatable {
+            
+            public typealias RawValue = CountableClosedRange<UInt16>
+            
+            /// Maximum interval range.
+            public static let full = ConnectionLength(rawValue: .min ... .max)
+            
+            public let rawValue: RawValue
+            
+            public init(rawValue: RawValue) {
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 0.625 msec.
+            public var miliseconds: ClosedRange<Double> {
+                
+                let ms = Double(0.625)
+                
+                let min = Double(rawValue.lowerBound) * ms
+                
+                let max = Double(rawValue.upperBound) * ms
+                
+                return min ... max
+            }
+            
+            // Equatable
+            public static func == (lhs: ConnectionLength, rhs: ConnectionLength) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
             }
         }
     }

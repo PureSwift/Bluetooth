@@ -157,6 +157,7 @@ public extension LowEnergyEvent {
             /// Units: dBm
             public struct RSSI: RawRepresentable, Equatable, Comparable, Hashable {
                 
+                /// Units: dBm
                 public let rawValue: Int8
                 
                 public init?(rawValue: Int8) {
