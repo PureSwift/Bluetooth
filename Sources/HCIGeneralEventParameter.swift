@@ -86,7 +86,7 @@ public extension HCIGeneralEvent {
     public struct LowEnergyMetaParameter: HCIEventParameter {
         
         public static let event = HCIGeneralEvent.LowEnergyMeta
-        public static let length = 1 // Why?
+        public static let length = 1 // 1 ... HCI.maximumEventSize
         
         public var subevent: UInt8 = 0
         public var data = [UInt8]()

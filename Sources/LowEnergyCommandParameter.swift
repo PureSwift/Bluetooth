@@ -55,7 +55,7 @@ public extension LowEnergyCommand {
         /// Interval for non-directed advertising.
         public var interval: (minimum: UInt16, maximum: UInt16)
         
-        public var advertisingType: AdvertisingChannelHeader
+        public var advertisingType: AdvertisingType
         
         public var addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType)
         
@@ -67,8 +67,8 @@ public extension LowEnergyCommand {
         public var filterPolicy: FilterPolicy
         
         public init(interval: (minimum: UInt16, maximum: UInt16) = (0x0800, 0x0800),
-            advertisingType: AdvertisingChannelHeader = AdvertisingChannelHeader(),
-            addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.Public, .Public),
+            advertisingType: AdvertisingType = AdvertisingType(),
+            addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.public, .public),
             directAddress: Address = Address(bytes: (0,0,0,0,0,0)),
             channelMap: ChannelMap = ChannelMap(),
             filterPolicy: FilterPolicy = FilterPolicy()) {
@@ -94,32 +94,74 @@ public extension LowEnergyCommand {
                 directAddress.bytes.0, directAddress.bytes.1, directAddress.bytes.2, directAddress.bytes.3, directAddress.bytes.4, directAddress.bytes.5, channelMap.rawValue, filterPolicy.rawValue]
         }
         
+        public enum AdvertisingType: UInt8 {
+            
+            /// Connectable undirected advertising event
+            case undirected         = 0x00
+            
+            /// Connectable directed advertising event
+            case directed           = 0x01
+            
+            /// Scannable undirected advertising event
+            case scannable          = 0x02
+            
+            /// Non-connectable undirected advertising event
+            case nonConnectable     = 0x03
+            
+            public init() { self = .undirected }
+        }
+        
         public enum ChannelMap: UInt8 {
             
             /// Default (all channels enabled)
-            case All                    = 0b00000111
-            case Channel37              = 0b00000001
-            case Channel38              = 0b00000010
-            case Channel39              = 0b00000100
+            case all                    = 0b00000111
+            case channel37              = 0b00000001
+            case channel38              = 0b00000010
+            case channel39              = 0b00000100
             
-            public init() { self = ChannelMap.All }
+            public init() { self = .all }
         }
         
         public enum FilterPolicy: UInt8 {
             
-            /// Allow Scan Request from Any, Allow Connect Request from Any (default).
-            case AnyScanConnect         = 0x00
+            /// Allow Scan Request from Any,
+            /// Allow Connect Request from Any (default).
+            case any                    = 0x00
             
-            /// Allow Scan Request from White List Only, Allow Connect Request from Any.
-            case WhiteListScan          = 0x01
+            /// Allow Scan Request from White List Only, 
+            /// Allow Connect Request from Any.
+            case whiteListScan          = 0x01
             
-            /// Allow Scan Request from Any, Allow Connect Request from White List Only.
-            case WhiteListConnect       = 0x02
+            /// Allow Scan Request from Any, 
+            /// Allow Connect Request from White List Only.
+            case whiteListConnect       = 0x02
             
-            /// Allow Scan Request from White List Only, Allow Connect Request from White List Only.
-            case WhiteListScanConnect   = 0x03
+            /// Allow Scan Request from White List Only, 
+            /// Allow Connect Request from White List Only.
+            case whiteListScanConnect   = 0x03
             
-            public init() { self = FilterPolicy.AnyScanConnect }
+            public init() { self = .any }
+            
+            public init(whiteListScan: Bool, whiteListConnect: Bool) {
+                
+                switch (whiteListScan, whiteListConnect) {
+                    
+                case (false, false): self = .any
+                case (true, false): self = .whiteListScan
+                case (false, true): self = .whiteListConnect
+                case (true, true): self = .whiteListScanConnect
+                }
+            }
+            
+            public var whiteList: (scan: Bool, connect: Bool) {
+                
+                switch self {
+                case .any:                      return (false, false)
+                case .whiteListScan:            return (true, false)
+                case .whiteListConnect:         return (false, true)
+                case .whiteListScanConnect:     return (true, true)
+                }
+            }
         }
     }
     
@@ -246,7 +288,7 @@ public extension LowEnergyCommand {
         public init(type: ScanType = ScanType(),
                     interval: TimeInterval = .default,
                     window: TimeInterval = .default,
-                    addressType: LowEnergyAddressType = .Public,
+                    addressType: LowEnergyAddressType = .public,
                     filterPolicy: FilterPolicy = .accept) {
             
             precondition(window <= interval, "LE_Scan_Window shall be less than or equal to LE_Scan_Interval")
@@ -355,10 +397,10 @@ public extension LowEnergyCommand {
 /// Bluetooth Low Energy Address type
 public enum LowEnergyAddressType: UInt8 {
     
-    case Public = 0x00
-    case Random = 0x01
+    case `public` = 0x00
+    case random = 0x01
     
-    public init() { self = .Public }
+    public init() { self = .public }
 }
 
 /// 31 Byte LE Advertising Data
@@ -367,19 +409,3 @@ public typealias LowEnergyAdvertisingData = (UInt8, UInt8, UInt8, UInt8, UInt8, 
 /// 31 Byte LE Scan Data
 public typealias LowEnergyScanData = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
 
-public enum AdvertisingChannelHeader: UInt8 {
-    
-    /// Connectable undirected advertising event
-    case Undirected         = 0x00
-    
-    /// Connectable directed advertising event
-    case Directed           = 0x01
-    
-    /// Scannable undirected advertising event
-    case Scannable          = 0x02
-    
-    /// Non-connectable undirected advertising event
-    case NonConnectable     = 0x03
-    
-    public init() { self = .Undirected }
-}

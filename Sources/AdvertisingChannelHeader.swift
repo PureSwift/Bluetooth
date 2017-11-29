@@ -33,5 +33,7 @@ public enum AdvertisingChannelHeader: UInt8 {
     /// Scannable undirected advertising event
     case scannableAdvertising           = 0b0110 // ADV_SCAN_IND
     
+    // 0111-1111 reserved
+    
     public init() { self = .undirectedAdvertising }
 }
