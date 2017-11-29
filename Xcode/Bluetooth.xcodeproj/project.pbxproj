@@ -19,6 +19,7 @@
 		6E572AD71FCE763C00CDC763 /* LowEnergyAddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E32291B1FCE4C4F0035605D /* LowEnergyAddressType.swift */; };
 		6E572AD81FCE763E00CDC763 /* AdvertisingChannelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */; };
 		6E572AD91FCE763F00CDC763 /* AdvertisingChannelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */; };
+		6E6AD98D1FCE8E4F007F0250 /* BluetoothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */; };
 		6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
 		6E704C781E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
 		6E704C791E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
@@ -131,6 +132,8 @@
 		6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyIdentifier.swift; sourceTree = "<group>"; };
 		6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvertisingChannelHeader.swift; sourceTree = "<group>"; };
 		6E32291B1FCE4C4F0035605D /* LowEnergyAddressType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyAddressType.swift; sourceTree = "<group>"; };
+		6E6AD9891FCE8E4F007F0250 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
+		6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothTests.swift; sourceTree = "<group>"; };
 		6E704C761E95C32D00484A22 /* BitMaskOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitMaskOption.swift; sourceTree = "<group>"; };
 		6E704C7A1E95C34D00484A22 /* ByteValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByteValue.swift; sourceTree = "<group>"; };
 		6E704C7E1E95C3EE00484A22 /* Endianness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endianness.swift; sourceTree = "<group>"; };
@@ -201,6 +204,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E6AD9881FCE8E4F007F0250 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6E6AD9891FCE8E4F007F0250 /* LinuxMain.swift */,
+				6E6AD98A1FCE8E4F007F0250 /* BluetoothTests */,
+			);
+			name = Tests;
+			path = ../Tests;
+			sourceTree = "<group>";
+		};
+		6E6AD98A1FCE8E4F007F0250 /* BluetoothTests */ = {
+			isa = PBXGroup;
+			children = (
+				6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */,
+			);
+			path = BluetoothTests;
+			sourceTree = "<group>";
+		};
 		6E704C961E95C4B300484A22 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +241,7 @@
 				6EE84DD61CAF63C300A40C4D /* Cartfile */,
 				6EE84DD71CAF63C300A40C4D /* Package.swift */,
 				6EE84DD11CAF5DC800A40C4D /* Sources */,
+				6E6AD9881FCE8E4F007F0250 /* Tests */,
 				6EE84DB91CAF5C7C00A40C4D /* Bluetooth */,
 				6EE84DC51CAF5C7C00A40C4D /* BluetoothTests */,
 				6EE84DB81CAF5C7C00A40C4D /* Products */,
@@ -563,6 +585,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E6AD98D1FCE8E4F007F0250 /* BluetoothTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
