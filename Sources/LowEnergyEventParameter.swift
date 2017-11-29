@@ -40,7 +40,7 @@ public extension LowEnergyEvent {
     public struct AdvertisingReportEventParameter: HCIEventParameter {
         
         public static let event = LowEnergyEvent.advertisingReport
-        public static let length = 1 + Report.length // must have alteast one report
+        public static let length = 1 + Report.length // must have at least one report
         
         public let reports: [Report]
         
@@ -83,7 +83,7 @@ public extension LowEnergyEvent {
             
             public let addressType: LowEnergyAddressType // Address_Type
             
-            public let address: Bluetooth.Address // Address
+            public let address: Address // Address
             
             /// Advertising or scan response data
             public let data: [UInt8] // Data
@@ -118,7 +118,14 @@ public extension LowEnergyEvent {
                 self.event = event
                 self.addressType = addressType
                 self.address = address
-                self.data = [UInt8](byteValue[9 ..< (9 + length)])
+                
+                let data = [UInt8](byteValue[9 ..< (9 + length)])
+                assert(data.count == length)
+                self.data = data
+                
+                // not enough bytes
+                guard byteValue.count == (Report.length + length)
+                    else { return nil }
                 
                 let rssiBytes = (byteValue[9 + length],
                                  byteValue[9 + length + 1])
