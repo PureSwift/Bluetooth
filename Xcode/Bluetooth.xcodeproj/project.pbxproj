@@ -13,6 +13,7 @@
 		6E3229141FCDD40C0035605D /* CompanyIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */; };
 		6E3229151FCDD6420035605D /* CompanyIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */; };
 		6E3229161FCDD6430035605D /* CompanyIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */; };
+		6E32291A1FCE45480035605D /* AdvertisingChannelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */; };
 		6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
 		6E704C781E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
 		6E704C791E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
@@ -123,6 +124,7 @@
 /* Begin PBXFileReference section */
 		6E32290F1FCDC47F0035605D /* HCIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIError.swift; sourceTree = "<group>"; };
 		6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyIdentifier.swift; sourceTree = "<group>"; };
+		6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvertisingChannelHeader.swift; sourceTree = "<group>"; };
 		6E704C761E95C32D00484A22 /* BitMaskOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitMaskOption.swift; sourceTree = "<group>"; };
 		6E704C7A1E95C34D00484A22 /* ByteValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByteValue.swift; sourceTree = "<group>"; };
 		6E704C7E1E95C3EE00484A22 /* Endianness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endianness.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				6EE84DE81CAF85AE00A40C4D /* GATT.swift */,
 				6EE84DE01CAF7EE800A40C4D /* GATTAttributes.swift */,
 				6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */,
+				6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */,
 				6EE84E021CAF892300A40C4D /* HCI */,
 			);
 			name = Sources;
@@ -528,6 +531,7 @@
 				6EE84DFB1CAF891E00A40C4D /* LowEnergyEvent.swift in Sources */,
 				6E704C871E95C41C00484A22 /* Range.swift in Sources */,
 				6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */,
+				6E32291A1FCE45480035605D /* AdvertisingChannelHeader.swift in Sources */,
 				6E704C7B1E95C34D00484A22 /* ByteValue.swift in Sources */,
 				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
 				6E704C7F1E95C3EE00484A22 /* Endianness.swift in Sources */,
