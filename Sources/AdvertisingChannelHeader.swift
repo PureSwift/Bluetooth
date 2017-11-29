@@ -9,6 +9,7 @@
 /// Advertising channel PDU Header’s PDU Type
 ///
 /// - Note: The actual value is 4 bits.
+/// 
 /// - SeeAlso: BLUETOOTH SPECIFICATION Version 4.0 [Vol 6] p39
 public enum AdvertisingChannelHeader: UInt8 {
     

@@ -38,7 +38,7 @@ extension CompanyIdentifier: CustomStringConvertible {
     
     public var description: String {
         
-        switch (rawValue) {
+        switch rawValue {
         case 0:
             return "Ericsson Technology Licensing"
         case 1:

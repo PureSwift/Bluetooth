@@ -74,6 +74,8 @@ extension BluetoothUUID: Hashable {
     }
 }
 
+// MARK: - RawRepresentable
+
 extension BluetoothUUID: RawRepresentable {
     
     /// Initialize from a 128-bit UUID string.
