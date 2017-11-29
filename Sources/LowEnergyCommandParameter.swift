@@ -365,31 +365,40 @@ public extension LowEnergyCommand {
         /// parameters specify the address type and address of the advertising device to connect to.
         public let initiatorFilterPolicy: InitiatorFilterPolicy // Initiator_Filter_Policy
         
-        ///
+        /// The address type (Public or Random) of the device to be connected.
         public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
         
         /// Public Device Address or Random Device Address of the device to be connected.
         public let peerAddress: LowEnergyAddressType // Peer_Address
         
-        ///
+        /// The Link Layer shall set the address in the `CONNECT_REQ` packets 
+        /// to either the Public Device Address or the Random Device Addressed 
+        /// based on the `ownAddressType` property.
         public let ownAddressType: LowEnergyAddressType // Own_Address_Type
         
-        /// 
-        public let connectionInterval:  // Conn_Interval_Min:
+        /// Value for the connection event interval.
+        ///
+        /// Defines the minimum and maximum allowed connection interval.
+        public let connectionInterval: ConnectionInterval  // Conn_Interval_Min, Conn_Interval_Max
+        
+        /// Slave latency for the connection in number of connection events.
+        ///
+        /// Defines the maximum allowed connection latency.
+        public let connectionLatency: ConnectionLatency
         
         public init(scanInterval: LowEnergyScanTimeInterval = .default,
                     scanWindow: LowEnergyScanTimeInterval = .default,
                     initiatorFilterPolicy: InitiatorFilterPolicy = .peerAddress,
-                    peerAddressType: LowEnergyAddressType = .public, ) {
+                    peerAddressType: LowEnergyAddressType = .public) {
             
             precondition(scanWindow <= scanInterval, "LE_Scan_Window shall be less than or equal to LE_Scan_Interval")
             
-            
+            fatalError()
         }
         
         public var byteValue: [UInt8] {
             
-            
+            fatalError()
         }
         
         /// Used to determine whether the White List is used.
@@ -404,9 +413,91 @@ public extension LowEnergyCommand {
             case whiteList
         }
         
-        public struct ConnectionInterval {
+        /// Value for connection event interval
+        /// 
+        /// Range: 0x0006 to 0x0C80
+        /// Time = N * 1.25 msec
+        /// Time Range: 7.5 msec to 4 seconds.
+        public struct ConnectionInterval: RawRepresentable, Equatable {
             
-            public let 
+            public typealias RawValue = CountableClosedRange<UInt16>
+            
+            /// 7.5 msec
+            public static let min: UInt16 = 0x0006
+            
+            /// 4000 msec
+            public static let max: UInt16 = 0x0C80
+            
+            /// Maximum interval range.
+            public static let full = ConnectionInterval.min ... ConnectionInterval.max
+            
+            public let rawValue: RawValue
+            
+            public init?(rawValue: RawValue) {
+                
+                assert(ConnectionInterval.full.lowerBound == ConnectionInterval.min)
+                assert(ConnectionInterval.full.upperBound == ConnectionInterval.max)
+                
+                guard rawValue.lowerBound >= ConnectionInterval.min,
+                    rawValue.upperBound <= ConnectionInterval.max
+                    else { return nil }
+                
+                assert(rawValue.clamped(to: ConnectionInterval.full) == rawValue)
+                assert(rawValue.overlaps(ConnectionInterval.full))
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 1.25 msec
+            public var miliseconds: ClosedRange<Double> {
+                
+                let ms = Double(1.25)
+                
+                let min = Double(rawValue.lowerBound) * ms
+                
+                let max = Double(rawValue.upperBound) * ms
+                
+                return min ... max
+            }
+            
+            // Equatable
+            public static func == (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+        }
+        
+        /// Slave latency for the connection in number of connection events.
+        ///
+        /// Range: 0x0000 to 0x01F4
+        public struct ConnectionLatency: RawRepresentable {
+            
+            public let rawValue: UInt16
+            
+            public init() {
+                
+                self.rawValue = 0
+            }
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue <= 0x01F4
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: ConnectionLatency, rhs: ConnectionLatency) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
         }
     }
 }
