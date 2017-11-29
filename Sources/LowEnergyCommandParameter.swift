@@ -269,21 +269,23 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setScanParameters // 0x000B
         public static let length = 1 + 2 + 2 + 1 + 1
         
+        public typealias TimeInterval = LowEnergyScanTimeInterval
+        
         /// Controls the type of scan to perform
-        public var type: ScanType // LE_Scan_Type
+        public let type: ScanType // LE_Scan_Type
         
         /// This is defined as the time interval from when the Controller 
         /// started its last LE scan until it begins the subsequent LE scan.
-        public var interval: TimeInterval // LE_Scan_Interval
+        public let interval: TimeInterval // LE_Scan_Interval
         
         /// The duration of the LE scan.
         /// Should be less than or equal to `interval`.
-        public var window: TimeInterval // LE_Scan_Window
+        public let window: TimeInterval // LE_Scan_Window
         
         /// Determines the address used (Public or Random Device Address) when performing active scan.
-        public var addressType: LowEnergyAddressType // Own_Address_Type
+        public let addressType: LowEnergyAddressType // Own_Address_Type
         
-        public var filterPolicy: FilterPolicy
+        public let filterPolicy: FilterPolicy
         
         public init(type: ScanType = ScanType(),
                     interval: TimeInterval = .default,
@@ -323,60 +325,6 @@ public extension LowEnergyCommand {
             public init() { self = .passive }
         }
         
-        /// LE Scan Time Interval
-        ///
-        /// Range: 0x0004 to 0x4000
-        public struct TimeInterval: RawRepresentable, Equatable, Comparable, Hashable {
-            
-            /// 2.5 msec
-            public static let min = TimeInterval(0x0004)
-            
-            /// 10.24 seconds
-            public static let max = TimeInterval(0x4000)
-            
-            /// 10 ms
-            public static let `default` = TimeInterval(0x0010)
-            
-            public let rawValue: UInt16
-            
-            public init?(rawValue: UInt16) {
-                
-                guard rawValue >= TimeInterval.min.rawValue,
-                    rawValue <= TimeInterval.max.rawValue
-                    else { return nil }
-                
-                self.rawValue = rawValue
-            }
-            
-            public var miliseconds: Double {
-                
-                return Double(rawValue) * 0.625
-            }
-            
-            // Private, unsafe
-            private init(_ rawValue: UInt16) {
-                self.rawValue = rawValue
-            }
-            
-            // Equatable
-            public static func == (lhs: TimeInterval, rhs: TimeInterval) -> Bool {
-                
-                return lhs.rawValue == rhs.rawValue
-            }
-            
-            // Comparable
-            public static func < (lhs: TimeInterval, rhs: TimeInterval) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
-        }
-        
         public enum FilterPolicy: UInt8 { // Scanning_Filter_Policy
             
             /// Accept all advertisement packets (default).
@@ -390,6 +338,77 @@ public extension LowEnergyCommand {
             case ignore = 0x1
         }
     }
+    
+    /// LE Create Connection Command
+    /// 
+    /// The LE Create Connection command is used to create a Link Layer connection to a connectable advertiser.
+    public struct CreateConnectionParameter: HCICommandParameter { // LE_Create_Connection
+        
+        public static let command = LowEnergyCommand.createConnection // 0x000C
+        public static let length = 0
+        
+        /// Recommendation from the Host on how long the Controller should scan.
+        ///
+        /// This is defined as the time interval from when the Controller started 
+        /// its last LE scan until it begins the subsequent LE scan.
+        public let scanInterval: LowEnergyScanTimeInterval // LE_Scan_Interval
+        
+        /// Recommendation from the Host on how frequently the Controller should scan.
+        ///
+        /// Amount of time for the duration of the LE scan. 
+        /// - Note: `scanWindow` shall be less than or equal to `scanInterval`.
+        /// If both are set to the same value, scanning should run continuously.
+        public let scanWindow: LowEnergyScanTimeInterval // LE_Scan_Window
+        
+        /// Used to determine whether the White List is used. 
+        /// If the White List is not used, the Peer_Address_Type and the Peer_Address
+        /// parameters specify the address type and address of the advertising device to connect to.
+        public let initiatorFilterPolicy: InitiatorFilterPolicy // Initiator_Filter_Policy
+        
+        ///
+        public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
+        
+        /// Public Device Address or Random Device Address of the device to be connected.
+        public let peerAddress: LowEnergyAddressType // Peer_Address
+        
+        ///
+        public let ownAddressType: LowEnergyAddressType // Own_Address_Type
+        
+        /// 
+        public let connectionInterval:  // Conn_Interval_Min:
+        
+        public init(scanInterval: LowEnergyScanTimeInterval = .default,
+                    scanWindow: LowEnergyScanTimeInterval = .default,
+                    initiatorFilterPolicy: InitiatorFilterPolicy = .peerAddress,
+                    peerAddressType: LowEnergyAddressType = .public, ) {
+            
+            precondition(scanWindow <= scanInterval, "LE_Scan_Window shall be less than or equal to LE_Scan_Interval")
+            
+            
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            
+        }
+        
+        /// Used to determine whether the White List is used.
+        public enum InitiatorFilterPolicy: UInt8 {
+            
+            /// White list is not used to determine which advertiser to connect to.
+            /// `peerAddressType` and `peerAddress` shall be used.
+            case peerAddress
+            
+            /// White list is used to determine which advertiser to connect to.
+            /// `peerAddressType` and `peerAddress` shall be ignored.
+            case whiteList
+        }
+        
+        public struct ConnectionInterval {
+            
+            public let 
+        }
+    }
 }
 
 // MARK: - Supporting Types
@@ -397,3 +416,59 @@ public extension LowEnergyCommand {
 /// 31 Byte LE Advertising or Scan Response Data
 public typealias LowEnergyResponseData = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
 
+/// LE Scan Time Interval
+///
+/// Range: 0x0004 to 0x4000
+/// Time = N * 0.625 msec
+/// Time Range: 2.5 msec to 10240 msec
+public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable, Hashable {
+    
+    /// 2.5 msec
+    public static let min = LowEnergyScanTimeInterval(0x0004)
+    
+    /// 10.24 seconds
+    public static let max = LowEnergyScanTimeInterval(0x4000)
+    
+    /// 10 ms
+    public static let `default` = LowEnergyScanTimeInterval(0x0010)
+    
+    public let rawValue: UInt16
+    
+    public init?(rawValue: UInt16) {
+        
+        guard rawValue >= LowEnergyScanTimeInterval.min.rawValue,
+            rawValue <= LowEnergyScanTimeInterval.max.rawValue
+            else { return nil }
+        
+        self.rawValue = rawValue
+    }
+    
+    /// Time = N * 0.625 msec
+    public var miliseconds: Double {
+        
+        return Double(rawValue) * 0.625
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyScanTimeInterval, rhs: LowEnergyScanTimeInterval) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyScanTimeInterval, rhs: LowEnergyScanTimeInterval) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
