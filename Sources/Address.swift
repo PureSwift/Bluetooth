@@ -47,6 +47,11 @@ public extension Address {
         
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
     }
+    
+    public var data: Data {
+        
+        return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
+    }
 }
 
 // MARK: - Byte Swap
@@ -126,7 +131,7 @@ extension Address: RawRepresentable {
         var bytes = [UInt8](repeating: 0, count: 6)
         
         // parse bytes
-        let success = rawValue.withCString { (cString) -> Bool in
+        guard rawValue.withCString({ (cString) -> Bool in
             
             // parse
             var cString = cString
@@ -142,19 +147,18 @@ extension Address: RawRepresentable {
             }
             
             return true
-        }
-        
-        guard success else { return nil }
+            
+        }) else { return nil }
         
         guard let address = Address(data: Data(bytes))
             else { return nil }
         
-        self.init(littleEndian: address)
+        self.init(bigEndian: address)
     }
     
     public var rawValue: String {
         
-        let bytes = self.littleEndian.bytes
+        let bytes = self.bigEndian.bytes
         
         let byteValue = [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5]
         
