@@ -102,7 +102,7 @@ public extension HCIGeneralEvent {
             
             if byteValue.count > 1 {
                 
-                self.data = Array(byteValue.suffix(1))
+                self.data = Array(byteValue.suffix(from: 1))
                 
             } else {
                 
