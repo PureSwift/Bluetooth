@@ -33,6 +33,8 @@ public extension LowEnergyEvent {
         /// Time Range: 100 msec to 32 seconds
         public typealias SupervisionTimeout = LowEnergySupervisionTimeout
         
+        public typealias Status = HCIStatus
+        
         /// `0x00` if Connection successfully completed.
         /// `HCIError` value otherwise.
         public let status: Status
@@ -80,7 +82,7 @@ public extension LowEnergyEvent {
         /// The `masterClockAccuracy` parameter is only valid for a slave.
         ///
         /// On a master, this parameter shall be set to 0x00.
-        public let masterClockAccuracy: MasterClockAccuracy // Status
+        public let masterClockAccuracy: MasterClockAccuracy // Master_Clock_Accuracy
         
         public init?(byteValue: [UInt8]) {
             
@@ -130,36 +132,6 @@ public extension LowEnergyEvent {
             self.latency = latency
             self.supervisionTimeout = supervisionTimeout
             self.masterClockAccuracy = masterClockAccuracy
-        }
-        
-        /// Event Status Code
-        public enum Status: RawRepresentable {
-            
-            case success
-            case error(HCIError)
-            
-            public init?(rawValue: UInt8) {
-                
-                if rawValue == 0 {
-                    
-                    self = .success
-                    
-                } else {
-                    
-                    guard let error = HCIError(rawValue: rawValue)
-                        else { return nil }
-                    
-                    self = .error(error)
-                }
-            }
-            
-            public var rawValue: UInt8 {
-                
-                switch self {
-                case .success: return 0x00
-                case let .error(error): return error.rawValue
-                }
-            }
         }
         
         /// Connection role

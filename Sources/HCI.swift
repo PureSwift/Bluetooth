@@ -32,6 +32,8 @@ public struct HCI {
     public typealias Error                  = HCIError
     
     public typealias Version                = HCIVersion
+    
+    public typealias Status                 = HCIStatus
 }
 
 /// HCI Opcode Group Field
@@ -60,4 +62,34 @@ public enum HCIOpcodeGroupField: UInt16 {
     
     /// Vendor specific commands
     case vendor = 0x3f
+}
+
+/// HCI Status Code
+public enum HCIStatus: RawRepresentable {
+    
+    case success
+    case error(HCIError)
+    
+    public init?(rawValue: UInt8) {
+        
+        if rawValue == 0 {
+            
+            self = .success
+            
+        } else {
+            
+            guard let error = HCIError(rawValue: rawValue)
+                else { return nil }
+            
+            self = .error(error)
+        }
+    }
+    
+    public var rawValue: UInt8 {
+        
+        switch self {
+        case .success: return 0x00
+        case let .error(error): return error.rawValue
+        }
+    }
 }

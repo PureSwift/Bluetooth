@@ -32,4 +32,19 @@ public protocol HCICommandParameter {
     var byteValue: [UInt8] { get }
 }
 
-
+/// The return value (not event) returned by an HCI command. 
+public protocol HCICommandReturnParameter {
+    
+    associatedtype HCICommandType: HCICommand
+    
+    static var command: HCICommandType { get }
+    
+    // The return parameter status code.
+    var status: HCIStatus { get }
+    
+    /// Length of the command return parameter when encoded to data.
+    static var length: Int { get }
+    
+    // Attempt to initialize command return parameter from data.
+    init?(byteValue: [UInt8])
+}

@@ -632,6 +632,36 @@ public extension LowEnergyCommand {
     }
 }
 
+// MARK: - Command Return Parameters
+
+public extension LowEnergyCommand {
+    
+    /// LE Read White List Size
+    ///
+    /// The command is used to read the total number of white list entries that can be stored in the Controller.
+    public struct ReadWhiteListSizeReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readWhiteListSize
+        public static let length = 2
+        
+        /// The HCI command status
+        public let status: HCIStatus // Status
+        
+        /// The white list size.
+        public let size: UInt8 // White_List_Size
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == ReadWhiteListSizeReturnParameter.length,
+                let status = HCIStatus(rawValue: byteValue[0])
+                else { return nil }
+            
+            self.status = status
+            self.size = byteValue[1]
+        }
+    }
+}
+
 // MARK: - Supporting Types
 
 /// 31 Byte LE Advertising or Scan Response Data
