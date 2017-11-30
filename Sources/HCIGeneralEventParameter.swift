@@ -88,17 +88,16 @@ public extension HCIGeneralEvent {
         public static let event = HCIGeneralEvent.LowEnergyMeta
         public static let length = 1 // 1 ... HCI.maximumEventSize
         
-        public var subevent: UInt8 = 0
-        public var data = [UInt8]()
-        
-        public init() { }
+        public let subevent: LowEnergyEvent
+        public let data: [UInt8]
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count >= LowEnergyMetaParameter.length
+            guard byteValue.count >= LowEnergyMetaParameter.length,
+                let subevent = LowEnergyEvent(rawValue: byteValue[0])
                 else { return nil }
             
-            self.subevent = byteValue[0]
+            self.subevent = subevent
             
             if byteValue.count > 1 {
                 

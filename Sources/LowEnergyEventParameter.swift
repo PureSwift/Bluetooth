@@ -117,8 +117,6 @@ public extension LowEnergyEvent {
             guard let status = Status(rawValue: statusByte),
                 let role = Role(rawValue: roleByte),
                 let peerAddressType = LowEnergyAddressType(rawValue: peerAddressTypeByte),
-                let interval = ConnectionInterval(rawValue: intervalRawValue),
-                let latency = ConnectionInterval(rawValue: latencyRawValue),
                 let supervisionTimeout = SupervisionTimeout(rawValue: supervisionTimeoutRaw),
                 let masterClockAccuracy = MasterClockAccuracy(rawValue: masterClockAccuracyByte)
                 else { return nil }
@@ -128,8 +126,8 @@ public extension LowEnergyEvent {
             self.role = role
             self.peerAddressType = peerAddressType
             self.peerAddress = peerAddress
-            self.interval = interval
-            self.latency = latency
+            self.interval = ConnectionInterval(rawValue: intervalRawValue)
+            self.latency = ConnectionInterval(rawValue: latencyRawValue)
             self.supervisionTimeout = supervisionTimeout
             self.masterClockAccuracy = masterClockAccuracy
         }
@@ -159,13 +157,7 @@ public extension LowEnergyEvent {
             
             public let rawValue: UInt16
             
-            public init?(rawValue: UInt16) {
-                
-                guard rawValue >= ConnectionInterval.min.rawValue,
-                    rawValue <= ConnectionInterval.max.rawValue
-                    else { return nil }
-                
-                assert((ConnectionInterval.min.rawValue ... ConnectionInterval.max.rawValue).contains(rawValue))
+            public init(rawValue: UInt16) {
                 
                 self.rawValue = rawValue
             }
