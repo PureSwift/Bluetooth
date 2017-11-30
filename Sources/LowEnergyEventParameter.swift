@@ -111,15 +111,25 @@ public extension LowEnergyEvent {
             
             let masterClockAccuracyByte = byteValue[17]
             
+            // Parse enums and values ranges
             guard let status = Status(rawValue: statusByte),
                 let role = Role(rawValue: roleByte),
                 let peerAddressType = LowEnergyAddressType(rawValue: peerAddressTypeByte),
                 let interval = ConnectionInterval(rawValue: intervalRawValue),
                 let latency = ConnectionInterval(rawValue: latencyRawValue),
-                let 
+                let supervisionTimeout = SupervisionTimeout(rawValue: supervisionTimeoutRaw),
+                let masterClockAccuracy = MasterClockAccuracy(rawValue: masterClockAccuracyByte)
                 else { return nil }
             
-            
+            self.status = status
+            self.handle = handle
+            self.role = role
+            self.peerAddressType = peerAddressType
+            self.peerAddress = peerAddress
+            self.interval = interval
+            self.latency = latency
+            self.supervisionTimeout = supervisionTimeout
+            self.masterClockAccuracy = masterClockAccuracy
         }
         
         /// Event Status Code
