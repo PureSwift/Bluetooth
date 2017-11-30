@@ -92,4 +92,12 @@ public enum HCIStatus: RawRepresentable {
         case let .error(error): return error.rawValue
         }
     }
+    
+    public var error: HCIError? {
+        
+        switch self {
+        case .success: return nil
+        case let .error(error): return error
+        }
+    }
 }
