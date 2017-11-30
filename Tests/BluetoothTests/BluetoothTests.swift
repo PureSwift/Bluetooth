@@ -14,7 +14,8 @@ final class BluetoothTests: XCTestCase {
     
     static let allTests = [
         ("testAddress", testAddress),
-        ("testDataParsing", testDataParsing)
+        ("testParseAdvertisingReportData", testParseAdvertisingReportData),
+        ("testCommandStatusEvent", testCommandStatusEvent)
         ]
     
     func testAddress() {
@@ -32,7 +33,7 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(address == Address(bigEndian: Address(bytes: addressBytes)))
     }
     
-    func testDataParsing() {
+    func testParseAdvertisingReportData() {
         
         func parseAdvertisingReport(_ readBytes: Int, _ data: [UInt8]) -> [Address] {
             
@@ -66,4 +67,64 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(parseAdvertisingReport(readBytes, data) == [Address(rawValue: "59:80:ED:81:EE:35")!])
         }
     }
+    
+    func testCommandStatusEvent() {
+        
+        func parseEvent(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> HCIGeneralEvent.CommandStatusParameter? {
+            
+            let headerData = Array(eventBuffer[1 ..< 1 + HCIEventHeader.length])
+            let eventData = Array(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
+            
+            guard let eventHeader = HCIEventHeader(bytes: headerData)
+                else { return nil }
+            
+            XCTAssert(eventHeader.event == headerData[0])
+            XCTAssert(eventHeader.parameterLength == headerData[1])
+            
+            XCTAssert(eventHeader.event == HCIGeneralEvent.CommandStatus.rawValue)
+            
+            guard let event = HCIGeneralEvent.CommandStatusParameter(byteValue: eventData)
+                else { return nil }
+            
+            return event
+        }
+        
+        do {
+            
+            let readBytes = 7
+            let data: [UInt8] = [4, 15, 4, 11, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            
+            guard let event = parseEvent(readBytes, data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(event.status == HCIError.aclConnectionExists.rawValue)
+        }
+    }
 }
+
+/// HCI Event Packet Header
+internal struct HCIEventHeader {
+    
+    static let length = 2
+    
+    var event: UInt8 = 0
+    
+    var parameterLength: UInt8 = 0
+    
+    init() { }
+    
+    init?(bytes: [UInt8]) {
+        
+        guard bytes.count == HCIEventHeader.length
+            else { return nil }
+        
+        self.event = bytes[0]
+        self.parameterLength = bytes[1]
+    }
+    
+    var byteValue: [UInt8] {
+        
+        return [event, parameterLength]
+    }
+}
+
