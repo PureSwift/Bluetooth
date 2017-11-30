@@ -138,12 +138,7 @@ public extension BluetoothUUID {
             
             let bytes = value.bytes
             
-            var byteValue: [UInt8] = [0, 0]
-            
-            byteValue[0] = bytes.0
-            byteValue[1] = bytes.1
-            
-            return Data(bytes: byteValue)
+            return Data(bytes: [bytes.0, bytes.1])
             
         case let .bit128(value):
             

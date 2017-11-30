@@ -642,22 +642,17 @@ public extension LowEnergyCommand {
     public struct ReadWhiteListSizeReturnParameter: HCICommandReturnParameter {
         
         public static let command = LowEnergyCommand.readWhiteListSize
-        public static let length = 2
-        
-        /// The HCI command status
-        public let status: HCIStatus // Status
+        public static let length = 1
         
         /// The white list size.
         public let size: UInt8 // White_List_Size
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == ReadWhiteListSizeReturnParameter.length,
-                let status = HCIStatus(rawValue: byteValue[0])
+            guard byteValue.count == ReadWhiteListSizeReturnParameter.length
                 else { return nil }
             
-            self.status = status
-            self.size = byteValue[1]
+            self.size = byteValue[0]
         }
     }
 }

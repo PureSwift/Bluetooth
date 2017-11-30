@@ -39,9 +39,6 @@ public protocol HCICommandReturnParameter {
     
     static var command: HCICommandType { get }
     
-    // The return parameter status code.
-    var status: HCIStatus { get }
-    
     /// Length of the command return parameter when encoded to data.
     static var length: Int { get }
     
