@@ -1,5 +1,5 @@
 # Bluetooth
-[![Build Status](https://travis-ci.org/PureSwift/Bluetooth.svg?branch=travisCI)](https://travis-ci.org/PureSwift/Bluetooth)
+[![Build Status](https://travis-ci.org/PureSwift/Bluetooth.svg?branch=master)](https://travis-ci.org/PureSwift/Bluetooth)
 
 Pure Swift Bluetooth Definitions
 
