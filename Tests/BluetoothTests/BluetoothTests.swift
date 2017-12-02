@@ -143,6 +143,17 @@ final class BluetoothTests: XCTestCase {
             print("Connection handle: ", event.handle)
         }
     }
+    
+    func testATTOpcode() {
+        
+        XCTAssert(ATTOpcode.MaximumTransmissionUnitRequest.request == nil)
+        XCTAssert(ATTOpcode.MaximumTransmissionUnitRequest.response == .MaximumTransmissionUnitResponse)
+        XCTAssert(ATTOpcode.MaximumTransmissionUnitRequest.type == .Request)
+        
+        XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.response == nil)
+        XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.request == .MaximumTransmissionUnitRequest)
+        XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.type == .Response)
+    }
 }
 
 internal func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> T? {

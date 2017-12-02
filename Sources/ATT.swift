@@ -202,6 +202,46 @@ public enum ATTOpcode: UInt8 {
         
         }
     }
+    
+    private static let requestResponseMap: [(request: ATTOpcode,  response: ATTOpcode)] = [
+        (MaximumTransmissionUnitRequest,     MaximumTransmissionUnitResponse),
+        (FindInformationRequest,             FindInformationResponse),
+        (FindByTypeRequest,                  FindByTypeResponse),
+        (ReadByTypeRequest,                  ReadByTypeResponse),
+        (ReadRequest,                        ReadResponse),
+        (ReadBlobRequest,                    ReadBlobResponse),
+        (ReadMultipleRequest,                ReadMultipleResponse),
+        (ReadByGroupTypeRequest,             ReadByGroupTypeResponse),
+        (WriteRequest,                       WriteResponse),
+        (PreparedWriteRequest,               PreparedWriteResponse),
+        (ExecuteWriteRequest,                ExecuteWriteResponse)
+    ]
+    
+    private static let responsesByRequest: [ATTOpcode: ATTOpcode] = {
+        
+        var dictionary = [ATTOpcode: ATTOpcode](minimumCapacity: requestResponseMap.count)
+        requestResponseMap.forEach { dictionary[$0.request] = $0.response }
+        return dictionary
+    }()
+    
+    private static let requestsByResponse: [ATTOpcode: ATTOpcode] = {
+        
+        var dictionary = [ATTOpcode: ATTOpcode](minimumCapacity: requestResponseMap.count)
+        requestResponseMap.forEach { dictionary[$0.response] = $0.request }
+        return dictionary
+    }()
+    
+    /// Get the equivalent response for the current request opcode (if applicable).
+    public var response: ATTOpcode? {
+        
+        return ATTOpcode.responsesByRequest[self]
+    }
+    
+    /// Get the equivalent request for the current response opcode (if applicable).
+    public var request: ATTOpcode? {
+        
+        return ATTOpcode.requestsByResponse[self]
+    }
 }
 
 /// ATT protocol opcode categories.
