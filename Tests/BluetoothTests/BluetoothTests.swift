@@ -16,7 +16,8 @@ final class BluetoothTests: XCTestCase {
         ("testAddress", testAddress),
         ("testParseAdvertisingReportData", testParseAdvertisingReportData),
         ("testCommandStatusEvent", testCommandStatusEvent),
-        ("testLEConnection", testLEConnection)
+        ("testLEConnection", testLEConnection),
+        ("testATTOpcode", testATTOpcode)
         ]
     
     func testAddress() {
