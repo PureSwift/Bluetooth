@@ -17,7 +17,11 @@ import Foundation
 /// Bluetooth address.
 public struct Address: ByteValue {
     
-    public static let zero = Address()
+    public static var zero: Address { return Address(bytes: (0, 0, 0, 0, 0, 0)) }
+    
+    public static var any: Address { return Address(bytes: (0, 0, 0, 0, 0, 0)) }
+    
+    public static var none: Address { return Address(bytes: (0xff, 0xff, 0xff, 0xff, 0xff, 0xff)) }
     
     // MARK: - ByteValueType
     
