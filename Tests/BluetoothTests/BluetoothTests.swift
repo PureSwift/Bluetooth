@@ -247,6 +247,16 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(decoded.type == .bit16(0x2800))
             XCTAssert(decoded.type != .bit16(0x0028))
         }
+        
+        do {
+            
+            let data: [UInt8] = [17, 6, 1, 0, 5, 0, 0, 24, 6, 0, 9, 0, 1, 24, 16, 0, 20, 0, 10, 24]
+            
+            guard let pdu = ATTReadByGroupTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.data.isEmpty == false)
+        }
     }
 }
 
