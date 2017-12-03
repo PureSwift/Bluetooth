@@ -349,7 +349,11 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let uuidBytes = Array(pairBytes[2 ... 17])
                     
-                    let data = Foundation.Data(bytes: isBigEndian ? uuidBytes.reversed() : uuidBytes)
+                    #if _endian(little)
+                    let data = Foundation.Data(bytes: uuidBytes)
+                    #else
+                    let data = Foundation.Data(bytes: uuidBytes.reversed()) // byteSwapped
+                    #endif
                     
                     let uuid = UUID(data: data)!
                     

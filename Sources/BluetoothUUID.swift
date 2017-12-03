@@ -130,7 +130,7 @@ public extension BluetoothUUID {
         }
     }
     
-    public func toData() -> Data {
+    public var data: Data {
         
         switch self {
             
@@ -154,22 +154,50 @@ public extension BluetoothUUID {
 public extension BluetoothUUID {
     
     /// Creates an UUID from its little-endian representation, changing the byte order if necessary.
-    init?(littleEndian: [UInt8]) {
+    init?(littleEndian byteValue: [UInt8]) {
         
-        let byteValue = isBigEndian ? littleEndian : littleEndian.reversed()
-        
-        guard let UUID = BluetoothUUID(data: Data(bytes: byteValue))
+        guard let littleEndianUUID = BluetoothUUID(data: Data(bytes: byteValue))
             else { return nil }
         
-        self = UUID
+        switch littleEndianUUID {
+            
+        case let .bit16(value):
+            
+            let currentEndian = UInt16(littleEndian: value)
+            
+            self = .bit16(currentEndian)
+            
+        case let .bit128(value):
+            
+            #if _endian(little)
+            let currentEndian = value
+            #else
+            let currentEndian = UUID(uuid: (value.bytes.5, value.bytes.4, value.bytes.3, value.bytes.2, value.bytes.1, value.bytes.0))
+            #endif
+            
+            self = .bit128(currentEndian)
+        }
     }
     
     /// Exports the UUID bytes in its little endian representation,  changing the byte order if necessary.
     var littleEndian: [UInt8] {
         
-        let byteValue = Array(self.toData())
-        
-        return isBigEndian ? byteValue : byteValue.reversed()
+        switch self {
+            
+        case let .bit16(value):
+            
+            let bytes = value.littleEndian.bytes
+            
+            return [bytes.0, bytes.1]
+            
+        case let .bit128(value):
+            
+            #if _endian(little)
+            return [UInt8](value.toData())
+            #else
+            return [UInt8](value.toData().reversed()) // byteSwapped
+            #endif
+        }
     }
 }
 
@@ -221,7 +249,7 @@ public extension UUID {
         
         public func toCoreBluetooth() -> CBUUID {
             
-            return CBUUID(data: self.toData())
+            return CBUUID(data: self.data)
         }
     }
     
