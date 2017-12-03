@@ -137,7 +137,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
 ///  Exchange MTU Response
 ///
 /// The *Exchange MTU Response* is sent in reply to a received *Exchange MTU Request*.
-public struct ATTMaximumTranssmissionUnitResponse: ATTProtocolDataUnit {
+public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.MaximumTransmissionUnitResponse
     public static let length = 3
