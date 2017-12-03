@@ -31,6 +31,9 @@ public protocol ATTProtocolDataUnit {
 /// - Note: The Write Command does not generate an Error Response.
 public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     
+    public static let attributeOpcode = ATT.Opcode.ErrorResponse
+    public static let length = 5
+    
     /// The request that generated this error response
     public var requestOpcode: ATT.Opcode
     
@@ -46,10 +49,6 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
         self.attributeHandle = attributeHandle
         self.errorCode = error
     }
-    
-    public static let attributeOpcode = ATT.Opcode.ErrorResponse
-    
-    public static let length = 5
     
     public init?(byteValue: [UInt8]) {
         
@@ -122,7 +121,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        var bytes = [UInt8](repeating: 0, count: ATTMaximumTransmissionUnitRequest.length)
+        var bytes = [UInt8](repeating: 0, count: type(of: self).length)
         
         bytes[0] = type(of: self).attributeOpcode.rawValue
         

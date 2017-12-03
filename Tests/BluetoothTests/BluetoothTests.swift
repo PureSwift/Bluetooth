@@ -155,6 +155,18 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.request == .MaximumTransmissionUnitRequest)
         XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.type == .Response)
     }
+    
+    func testATTErrorResponse() {
+        
+        let data: [UInt8] = [1, 16, 1, 0, 10]
+        
+        guard let errorResponse = ATTErrorResponse(byteValue: data)
+            else { XCTFail("Could not parse"); return }
+        
+        XCTAssert(errorResponse.errorCode == .AttributeNotFound)
+        XCTAssert(errorResponse.requestOpcode == .ReadByGroupTypeRequest)
+        XCTAssert(errorResponse.attributeHandle == 0x0001)
+    }
 }
 
 internal func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> T? {
