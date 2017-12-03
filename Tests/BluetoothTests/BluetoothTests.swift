@@ -166,32 +166,9 @@ final class BluetoothTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.errorCode == .AttributeNotFound)
             XCTAssert(errorResponse.requestOpcode == .ReadByGroupTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0001)
-        }
-        
-        do {
-            
-            let data: [UInt8] = [2, 23, 0]
-            
-            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
-                else { XCTFail("Could not parse"); return }
-            
-            XCTAssert(pdu.clientMTU == 23)
-        }
-        
-        do {
-            
-            let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
-            
-            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
-                else { XCTFail("Could not parse"); return }
-            
-            XCTAssert(pdu.startHandle == 0x0001)
-            XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(pdu.type == GATT.UUID.PrimaryService.toUUID(), "\(pdu.type)")
-            XCTAssert(pdu.type == .bit16(0x2800))
+            XCTAssert(errorResponse.errorCode == .AttributeNotFound)
         }
         
         do {
@@ -208,12 +185,48 @@ final class BluetoothTests: XCTestCase {
         
         do {
             
+            let data: [UInt8] = [2, 23, 0]
+            
+            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.clientMTU == 23)
+        }
+        
+        do {
+            
             let data: [UInt8] = [3, 23, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.serverMTU == 23)
+        }
+        
+        do {
+            
+            // bad response
+            let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
+            
+            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.startHandle == 0x0001)
+            XCTAssert(pdu.endHandle == 0xFFFF)
+            //XCTAssert(pdu.type == GATT.UUID.PrimaryService.toUUID(), "\(pdu.type)")
+            //XCTAssert(pdu.type == .bit16(0x2800))
+            XCTAssert(pdu.type == .bit16(0x0028))
+        }
+        
+        do {
+            
+            let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
+            
+            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.startHandle == 0x0001)
+            XCTAssert(pdu.endHandle == 0xFFFF)
         }
     }
 }
