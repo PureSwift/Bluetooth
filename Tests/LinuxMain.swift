@@ -8,4 +8,8 @@
 import XCTest
 @testable import BluetoothTests
 
-XCTMain([testCase(BluetoothTests.allTests)])
+XCTMain([
+    testCase(BluetoothTests.allTests),
+    testCase(HCITests.allTests),
+    testCase(AttributeProtocolTests.allTests)
+    ])
