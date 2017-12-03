@@ -30,4 +30,16 @@ final class BluetoothTests: XCTestCase {
         
         XCTAssert(address == Address(bigEndian: Address(bytes: addressBytes)))
     }
+    
+    func testUUID() {
+        
+        do {
+            
+            /// refersed C7A8D570-E023-4FB8-E511-72F9E24FF160
+            let uuidString = "60F14FE2-F972-11E5-B84F-23E070D5A8C7"
+            let uuid = BluetoothUUID.bit128(UUID(rawValue: uuidString)!)
+            
+            XCTAssert(uuid.rawValue == uuidString)
+        }
+    }
 }

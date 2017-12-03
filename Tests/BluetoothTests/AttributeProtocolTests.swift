@@ -40,6 +40,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(errorResponse.requestOpcode == .ReadByGroupTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0001)
             XCTAssert(errorResponse.errorCode == .AttributeNotFound)
+            XCTAssert(errorResponse.byteValue == data)
         }
         
         do {
@@ -52,6 +53,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(errorResponse.requestOpcode == .ReadByTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0000)
             XCTAssert(errorResponse.errorCode == .RequestNotSupported)
+            XCTAssert(errorResponse.byteValue == data)
         }
         
         do {
@@ -62,6 +64,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.clientMTU == 23)
+            XCTAssert(pdu.byteValue == data)
         }
         
         do {
@@ -72,6 +75,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.serverMTU == 23)
+            XCTAssert(pdu.byteValue == data)
         }
         
         do {
@@ -85,6 +89,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(pdu.type == .bit16(0x0028))
+            XCTAssert(pdu.byteValue == data)
             
             // correct values
             //XCTAssert(pdu.type == GATT.UUID.PrimaryService.toUUID(), "\(pdu.type)")
@@ -118,6 +123,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(decoded.type == GATT.UUID.PrimaryService.toUUID(), "\(decoded.type)")
             XCTAssert(decoded.type == .bit16(0x2800))
             XCTAssert(decoded.type != .bit16(0x0028))
+            XCTAssert(decoded.byteValue == pdu.byteValue)
         }
         
         do {
@@ -128,6 +134,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.data.isEmpty == false)
+            XCTAssert(pdu.byteValue == data)
         }
     }
 }
