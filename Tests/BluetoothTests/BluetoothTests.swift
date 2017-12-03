@@ -17,7 +17,8 @@ final class BluetoothTests: XCTestCase {
         ("testParseAdvertisingReportData", testParseAdvertisingReportData),
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
-        ("testATTOpcode", testATTOpcode)
+        ("testATTOpcode", testATTOpcode),
+        ("testATTProtocolDataUnit", testATTProtocolDataUnit)
         ]
     
     func testAddress() {
@@ -156,9 +157,64 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.type == .Response)
     }
     
+    func testATTProtocolDataUnit() {
         
+        do {
+            
+            let data: [UInt8] = [1, 16, 1, 0, 10]
+            
+            guard let errorResponse = ATTErrorResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(errorResponse.errorCode == .AttributeNotFound)
+            XCTAssert(errorResponse.requestOpcode == .ReadByGroupTypeRequest)
+            XCTAssert(errorResponse.attributeHandle == 0x0001)
+        }
         
+        do {
+            
+            let data: [UInt8] = [2, 23, 0]
+            
+            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.clientMTU == 23)
+        }
         
+        do {
+            
+            let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
+            
+            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.startHandle == 0x0001)
+            XCTAssert(pdu.endHandle == 0xFFFF)
+            XCTAssert(pdu.type == GATT.UUID.PrimaryService.toUUID(), "\(pdu.type)")
+            XCTAssert(pdu.type == .bit16(0x2800))
+        }
+        
+        do {
+            
+            let data: [UInt8] = [1, 8, 0, 0, 6]
+            
+            guard let errorResponse = ATTErrorResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(errorResponse.requestOpcode == .ReadByTypeRequest)
+            XCTAssert(errorResponse.attributeHandle == 0x0000)
+            XCTAssert(errorResponse.errorCode == .RequestNotSupported)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [3, 23, 0]
+            
+            guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.serverMTU == 23)
+        }
     }
 }
 
