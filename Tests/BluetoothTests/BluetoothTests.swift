@@ -205,7 +205,7 @@ final class BluetoothTests: XCTestCase {
         
         do {
             
-            // bad response
+            // bad response / malformed data
             let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
             
             guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
@@ -213,20 +213,39 @@ final class BluetoothTests: XCTestCase {
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
+            XCTAssert(pdu.type == .bit16(0x0028))
+            
+            // correct values
             //XCTAssert(pdu.type == GATT.UUID.PrimaryService.toUUID(), "\(pdu.type)")
             //XCTAssert(pdu.type == .bit16(0x2800))
-            XCTAssert(pdu.type == .bit16(0x0028))
         }
         
         do {
             
-            let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
+            let pdu = ATTReadByGroupTypeRequest(startHandle: 0x0001,
+                                                endHandle: 0xFFFF,
+                                                type: GATT.UUID.PrimaryService.toUUID())
             
-            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+            XCTAssert(pdu.type == GATT.UUID.PrimaryService.toUUID(), "\(pdu.type)")
+            XCTAssert(pdu.type == .bit16(0x2800))
+            XCTAssert(pdu.type != .bit16(0x0028))
+            
+            let data: [UInt8] = pdu.byteValue
+            
+            XCTAssert(data != [16, 1, 0, 255, 255, 40, 0], "Produced malformed data")
+            XCTAssert(data == [16, 1, 0, 255, 255, 0, 40])
+            
+            guard let decoded = ATTReadByGroupTypeRequest(byteValue: pdu.byteValue)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.startHandle == 0x0001)
-            XCTAssert(pdu.endHandle == 0xFFFF)
+            XCTAssert(decoded.startHandle == pdu.startHandle)
+            XCTAssert(decoded.endHandle == pdu.endHandle)
+            XCTAssert(decoded.type == pdu.type)
+            XCTAssert(decoded.type.data == pdu.type.data)
+            XCTAssert(decoded.type.littleEndian == pdu.type.littleEndian)
+            XCTAssert(decoded.type == GATT.UUID.PrimaryService.toUUID(), "\(decoded.type)")
+            XCTAssert(decoded.type == .bit16(0x2800))
+            XCTAssert(decoded.type != .bit16(0x0028))
         }
     }
 }
