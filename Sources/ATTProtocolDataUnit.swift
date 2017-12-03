@@ -564,10 +564,10 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         public static let length = 2 + 2
         
         /// Found Attribute Handle
-        var foundAttribute: UInt16
+        public var foundAttribute: UInt16
         
         /// Group End Handle
-        var groupEnd: UInt16
+        public var groupEnd: UInt16
         
         public init(foundAttribute: UInt16 = 0, groupEnd: UInt16 = 0) {
             
