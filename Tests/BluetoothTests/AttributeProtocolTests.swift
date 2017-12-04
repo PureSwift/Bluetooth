@@ -147,7 +147,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian.data)
+            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.data)
         }
         
         do {
