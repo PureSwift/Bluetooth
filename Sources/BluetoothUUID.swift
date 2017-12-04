@@ -6,7 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import struct Foundation.UUID
+import Foundation
 
 /// Bluetooth UUID
 public enum BluetoothUUID {
@@ -321,7 +321,6 @@ public extension Foundation.UUID {
 
 #if os(macOS) || os(iOS) || os(tvOS)
     
-    import Foundation
     import CoreBluetooth
     
     public extension BluetoothUUID {
