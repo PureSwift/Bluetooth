@@ -139,19 +139,6 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            // find C7A8D570-E023-4FB8-E511-72F9E24FF160
-            let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 96, 241, 79, 226, 249, 114, 17, 229, 184, 79, 35, 224, 112, 213, 168, 199]
-            
-            guard let pdu = ATTFindByTypeRequest(byteValue: data)
-                else { XCTFail("Could not parse"); return }
-            
-            XCTAssert(pdu.startHandle == 0x0001)
-            XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.data)
-        }
-        
-        do {
-            
             // service UUID
             let uuidString = "60F14FE2-F972-11E5-B84F-23E070D5A8C7"
             
@@ -168,6 +155,47 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(Data(pdu.data[0].value) == BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
             XCTAssert(BluetoothUUID(littleEndian:
                 BluetoothUUID(data: Data(pdu.data[0].value))!).rawValue == uuidString)
+        }
+        
+        do {
+            
+            // find C7A8D570-E023-4FB8-E511-72F9E24FF160
+            let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 96, 241, 79, 226, 249, 114, 17, 229, 184, 79, 35, 224, 112, 213, 168, 199]
+            
+            guard let pdu = ATTFindByTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.startHandle == 0x0001)
+            XCTAssert(pdu.endHandle == 0xFFFF)
+            XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndianData)
+        }
+        
+        do {
+            
+            // find 60F14FE2-F972-11E5-B84F-23E070D5A8C7
+            let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
+            
+            guard let pdu = ATTFindByTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.startHandle == 0x0001)
+            XCTAssert(pdu.endHandle == 0xFFFF)
+            XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndianData)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [7, 40, 0, 48, 0]
+            
+            guard let pdu = ATTFindByTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            guard let foundHandle = pdu.handlesInformationList.first,
+                pdu.handlesInformationList.count == 1
+                else { XCTFail("Invalid response"); return }
+            
+            XCTAssert(foundHandle.foundAttribute == 40)
+            XCTAssert(foundHandle.groupEnd == 48)
         }
     }
 }
