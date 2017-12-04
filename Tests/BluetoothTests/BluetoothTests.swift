@@ -42,6 +42,7 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(uuid.rawValue == "0x2800") // big endian representation
             XCTAssert(uuid.littleEndian.data == Data([0x00, 0x28]))
             XCTAssert(uuid.littleEndian.data != Data([0x28, 0x00]))
+            XCTAssert(uuid.bigEndian.data == Data([0x28, 0x00]))
         }
         
         do {

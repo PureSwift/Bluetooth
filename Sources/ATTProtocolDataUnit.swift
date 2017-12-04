@@ -357,7 +357,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let uuid = UUID(data: data)!
                     
-                     bit128Pairs.append((handle, uuid))
+                    bit128Pairs.append((handle, uuid))
                 }
             }
             
