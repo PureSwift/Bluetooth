@@ -156,7 +156,18 @@ public extension UInt128 {
 
 // MARK: - NSUUID
 
-public extension UUID {
+public extension UInt128 {
+    
+    public init(uuid: Foundation.UUID) {
+        
+        /// UUID is always big endian
+        let bigEndian = UInt128(bytes: uuid.uuid)
+        
+        self.init(bigEndian: bigEndian)
+    }
+}
+
+public extension Foundation.UUID {
     
     public init(_ value: UInt128) {
         
