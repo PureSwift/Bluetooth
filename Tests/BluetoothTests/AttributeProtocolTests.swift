@@ -165,11 +165,11 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.data.first?.endGroupHandle == 48)
             XCTAssert(pdu.data[0].value == [0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]) // proper little endian representation
             XCTAssert(pdu.data[0].value != [0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]) // invalid data
-            XCTAssert(Data(pdu.data[0].value) == BluetoothUUID.bit128(UUID.init(uuidString: uuidString)!).littleEndian.data)
+            XCTAssert(Data(pdu.data[0].value) == BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
             //XCTAssert(BluetoothUUID(littleEndian:
             //    BluetoothUUID(data: Data(pdu.data[0].value))!)!.rawValue == uuidString)
             
-            print(BluetoothUUID.bit128(UUID.init(uuidString: uuidString)!).littleEndian.data.map { $0.toHexadecimal() })
+            //print(BluetoothUUID.bit128(UUID.init(uuidString: uuidString)!).littleEndian.data.map { $0.toHexadecimal() })
             print(pdu.data[0].value.map { $0.toHexadecimal() })
         }
     }
