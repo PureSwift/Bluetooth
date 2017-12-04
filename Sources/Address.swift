@@ -125,7 +125,7 @@ public extension Address {
 
 extension Address: RawRepresentable {
     
-    /// Initialize a Bluetooth Address from its little endian string representation (e.g. `00:1A:7D:DA:71:13`).
+    /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public init?(rawValue: String) {
         
         // verify string
