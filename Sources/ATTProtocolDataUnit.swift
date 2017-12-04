@@ -281,10 +281,11 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         /// A list of 1 or more handles with their 128-bit UUIDs.
         case bit128     = 0x02
         
-        public init(UUID: BluetoothUUID) {
+        public init?(uuid: BluetoothUUID) {
             
-            switch UUID {
+            switch uuid {
             case .bit16(_): self = .bit16
+            case .bit32(_): return nil
             case .bit128(_): self = .bit128
             }
         }
@@ -304,7 +305,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         case bit16([(UInt16, UInt16)])
         
         /// Handle and 128-bit UUIDs
-        case bit128([(UInt16, UUID)])
+        case bit128([(UInt16, UInt128)])
         
         /// The data's format.
         public var format: Format {
@@ -327,7 +328,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
             
             var bit16Pairs: [(UInt16, UInt16)] = []
             
-            var bit128Pairs: [(UInt16, UUID)] = []
+            var bit128Pairs: [(UInt16, UInt128)] = []
             
             for pairIndex in 0 ..< pairCount {
                 
@@ -335,27 +336,23 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                 
                 let pairBytes = Array(byteValue[byteIndex ..< byteIndex + pairLength])
                 
-                let handle = UInt16(bytes: (pairBytes[0], pairBytes[1])).littleEndian
+                let handle = UInt16(littleEndian: UInt16(bytes: (pairBytes[0], pairBytes[1])))
                 
                 switch format {
                     
                 case .bit16:
                     
-                    let uuid = UInt16(bytes: (pairBytes[2], pairBytes[3])).littleEndian
+                    let uuid = UInt16(littleEndian: UInt16(bytes: (pairBytes[2], pairBytes[3])))
                     
                     bit16Pairs.append((handle, uuid))
                     
                 case .bit128:
                     
-                    let uuidBytes = Array(pairBytes[2 ... 17])
+                    let uuidBytes = Foundation.Data((pairBytes[2 ... 17]))
                     
-                    #if _endian(little)
-                    let data = Foundation.Data(bytes: uuidBytes)
-                    #else
-                    let data = Foundation.Data(bytes: uuidBytes.reversed()) // byteSwapped
-                    #endif
+                    assert(uuidBytes.count == UInt128.length)
                     
-                    let uuid = UUID(data: data)!
+                    let uuid = UInt128(littleEndian: UInt128(data: uuidBytes)!)
                     
                     bit128Pairs.append((handle, uuid))
                 }
@@ -392,9 +389,9 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let handleBytes = pair.0.littleEndian.bytes
                     
-                    let uuidBytes = BluetoothUUID.bit128(pair.1).littleEndian.data
+                    let uuidBytes = pair.1.littleEndian.bytes
                     
-                    bytes += [handleBytes.0, handleBytes.1] + uuidBytes
+                    bytes += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1]
                 }
             }
             
@@ -663,11 +660,12 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         case UUID16     = 7
         case UUID128    = 21
         
-        init(UUID: BluetoothUUID) {
+        init?(uuid: BluetoothUUID) {
             
-            switch UUID {
+            switch uuid {
                 
             case .bit16(_): self = .UUID16
+            case .bit32(_): return nil
             case .bit128(_): self = .UUID128
             }
         }
@@ -1177,12 +1175,13 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
         case UUID16     = 7
         case UUID128    = 21
         
-        init(UUID: BluetoothUUID) {
+        init?(uuid: BluetoothUUID) {
             
-            switch UUID {
+            switch uuid {
             
-        case .bit16(_): self = .UUID16
-        case .bit128(_): self = .UUID128
+            case .bit16(_): self = .UUID16
+            case .bit32(_): return nil
+            case .bit128(_): self = .UUID128
             }
         }
     }

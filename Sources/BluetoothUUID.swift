@@ -77,14 +77,14 @@ extension BluetoothUUID: RawRepresentable {
             
         case 4:
             
-            guard let value = UInt16(rawValue)
+            guard let value = UInt16(rawValue, radix: 16)
                 else { return nil }
             
             self = .bit16(value)
             
         case 8:
             
-            guard let value = UInt32(rawValue)
+            guard let value = UInt32(rawValue, radix: 16)
                 else { return nil }
             
             self = .bit32(value)
