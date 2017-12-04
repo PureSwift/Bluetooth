@@ -136,5 +136,40 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.data.isEmpty == false)
             XCTAssert(pdu.byteValue == data)
         }
+        
+        do {
+            
+            // find C7A8D570-E023-4FB8-E511-72F9E24FF160
+            let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 96, 241, 79, 226, 249, 114, 17, 229, 184, 79, 35, 224, 112, 213, 168, 199]
+            
+            guard let pdu = ATTFindByTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.startHandle == 0x0001)
+            XCTAssert(pdu.endHandle == 0xFFFF)
+            XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian)
+        }
+        
+        do {
+            
+            // service UUID
+            let uuidString = "60F14FE2-F972-11E5-B84F-23E070D5A8C7"
+            
+            let data: [UInt8] = [17, 20, 40, 0, 48, 0, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
+            
+            guard let pdu = ATTReadByGroupTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.data.count == 1)
+            XCTAssert(pdu.data.first?.attributeHandle == 40)
+            XCTAssert(pdu.data.first?.endGroupHandle == 48)
+            XCTAssert(pdu.data[0].value == [0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]) // proper little endian representation
+            XCTAssert(pdu.data[0].value != [0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]) // invalid data
+            XCTAssert(pdu.data[0].value == BluetoothUUID.bit128(UUID.init(uuidString: uuidString)!).littleEndian)
+            XCTAssert(BluetoothUUID(littleEndian:  pdu.data[0].value)?.rawValue == uuidString)
+            
+            print(BluetoothUUID.bit128(UUID.init(uuidString: uuidString)!).littleEndian.map { $0.toHexadecimal() })
+            print(pdu.data[0].value.map { $0.toHexadecimal() })
+        }
     }
 }
