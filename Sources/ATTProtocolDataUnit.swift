@@ -577,8 +577,8 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             guard byteValue.count == HandlesInformation.length
                 else { return nil }
             
-            self.foundAttribute = UInt16(bytes: (byteValue[0], byteValue[1])).littleEndian
-            self.groupEnd = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+            self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            self.groupEnd = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
         }
         
         public var byteValue: [UInt8] {
