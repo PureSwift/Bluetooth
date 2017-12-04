@@ -95,9 +95,7 @@ extension BluetoothUUID: RawRepresentable {
             guard let uuid = UUID(uuidString: rawValue)
                 else { return nil }
             
-            let bigEndian = UInt128(bytes: uuid.uuid)
-            
-            self = BluetoothUUID.init(bigEndian: .bit128(bigEndian))
+            self = .bit128(UInt128(uuid: uuid))
             
         default:
             
@@ -289,7 +287,7 @@ public extension BluetoothUUID {
     /// Initialize from a `Foundation.UUID`.
     public init(uuid: UUID) {
         
-        self.init(bigEndian: BluetoothUUID(data: uuid.data)!)
+        self.init(bigEndian: .bit128(UInt128(uuid: uuid)))
     }
     
     /// Bluetooth Base UUID (big endian)
