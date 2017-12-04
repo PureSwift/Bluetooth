@@ -73,7 +73,7 @@ extension BluetoothUUID: RawRepresentable {
     /// - Example: "60F14FE2-F972-11E5-B84F-23E070D5A8C7", "000000A8", "00A8"
     public init?(rawValue: String) {
         
-        switch rawValue.count {
+        switch rawValue.utf8.count {
             
         case 4:
             
