@@ -58,6 +58,19 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
+            let data: [UInt8] = [1, 16, 49, 0, 10]
+            
+            guard let errorResponse = ATTErrorResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(errorResponse.requestOpcode == .ReadByGroupTypeRequest)
+            XCTAssert(errorResponse.attributeHandle == 49)
+            XCTAssert(errorResponse.errorCode == .AttributeNotFound)
+            XCTAssert(errorResponse.byteValue == data)
+        }
+        
+        do {
+            
             let data: [UInt8] = [2, 23, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
@@ -155,6 +168,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(Data(pdu.data[0].value) == BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
             XCTAssert(BluetoothUUID(littleEndian:
                 BluetoothUUID(data: Data(pdu.data[0].value))!).rawValue == uuidString)
+            XCTAssert(pdu.byteValue == data)
         }
         
         do {
@@ -168,6 +182,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndianData)
+            XCTAssert(pdu.byteValue == data)
         }
         
         do {
@@ -181,6 +196,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndianData)
+            XCTAssert(pdu.byteValue == data)
         }
         
         do {
@@ -196,6 +212,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(foundHandle.foundAttribute == 40)
             XCTAssert(foundHandle.groupEnd == 48)
+            XCTAssert(pdu.byteValue == data)
         }
     }
 }
