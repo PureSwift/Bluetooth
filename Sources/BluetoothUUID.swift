@@ -264,6 +264,24 @@ public extension BluetoothUUID {
     }
 }
 
+// MARK: - Little Endian
+
+public extension BluetoothUUID {
+    
+    public init?(littleEndianData data: [UInt8]) {
+        
+        guard let littleEndian = BluetoothUUID(data: Data(data))
+            else { return nil }
+        
+        self.init(littleEndian: littleEndian)
+    }
+    
+    public var littleEndianData: [UInt8] {
+        
+        return [UInt8](self.littleEndian.data)
+    }
+}
+
 // MARK: - NSUUID Conversion
 
 public extension BluetoothUUID {
