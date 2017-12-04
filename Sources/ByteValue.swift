@@ -1,4 +1,4 @@
-﻿//
+//
 //  ByteValueType.swift
 //  SwiftFoundation
 //
@@ -18,11 +18,4 @@ public protocol ByteValue: Equatable {
     
     /// Initializes with the primitive the primitive byte type.
     init(bytes: ByteValue)
-}
-
-// MARK: - Equatable
-
-public func == <T: ByteValue> (lhs: T, rhs: T) -> Bool where T.ByteValue: Equatable {
-    
-    return lhs.bytes == rhs.bytes
 }
