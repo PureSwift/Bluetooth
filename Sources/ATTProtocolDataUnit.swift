@@ -392,7 +392,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let handleBytes = pair.0.littleEndian.bytes
                     
-                    let uuidBytes = BluetoothUUID.bit128(pair.1).littleEndian
+                    let uuidBytes = BluetoothUUID.bit128(pair.1).littleEndian.data
                     
                     bytes += [handleBytes.0, handleBytes.1] + uuidBytes
                 }
@@ -644,7 +644,8 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
             
         case .UUID128:
             
-            self.attributeType = BluetoothUUID(littleEndian: [byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20]])!
+            self.attributeType = BluetoothUUID(littleEndian:
+                BluetoothUUID(data: Data([byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20]]))!)
         }
     }
     
@@ -654,7 +655,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         
         let endHandleBytes = endHandle.littleEndian.bytes
         
-        return [type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + attributeType.littleEndian
+        return [type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + [UInt8](attributeType.littleEndian.data)
     }
     
     private enum Length: Int {
@@ -1157,7 +1158,8 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
             
         case .UUID128:
             
-        self.type = BluetoothUUID(littleEndian: Array(byteValue[5 ... 20]))!
+        self.type = BluetoothUUID(littleEndian:
+            BluetoothUUID(data: Data(byteValue[5 ... 20]))!)
         }
     }
     
@@ -1167,7 +1169,7 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
         
         let endHandleBytes = endHandle.littleEndian.bytes
         
-        return [ATTReadByGroupTypeRequest.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + type.littleEndian
+        return [ATTReadByGroupTypeRequest.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + [UInt8](type.littleEndian.data)
     }
     
     private enum Length: Int {

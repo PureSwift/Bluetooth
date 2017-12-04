@@ -93,11 +93,13 @@ extension BluetoothUUID: RawRepresentable {
             
         case let .bit16(value):
             
-            let bytes = value.bytes
+            let bytes = value.bigEndian.bytes
             
-            return bytes.0.toHexadecimal() + bytes.1.toHexadecimal()
+            return "0x" + bytes.0.toHexadecimal() + bytes.1.toHexadecimal()
             
-        case let .bit128(UUID): return UUID.rawValue
+        case let .bit128(UUID):
+            
+            return UUID.rawValue
         }
     }
 }
@@ -108,7 +110,7 @@ public extension BluetoothUUID {
     
     public init?(data: Data) {
         
-        let byteValue = Array(data)
+        let byteValue = data
         
         switch byteValue.count {
             
@@ -149,86 +151,92 @@ public extension BluetoothUUID {
     }
 }
 
-// MARK: - Little Endian Bytes
+// MARK: - Byte Swap
 
 public extension BluetoothUUID {
     
-    /// Creates an UUID from its little-endian representation, changing the byte order if necessary.
-    init?(littleEndian byteValue: [UInt8]) {
-        
-        guard let littleEndianUUID = BluetoothUUID(data: Data(bytes: byteValue))
-            else { return nil }
-        
-        switch littleEndianUUID {
-            
-        case let .bit16(value):
-            
-            let currentEndian = UInt16(littleEndian: value)
-            
-            self = .bit16(currentEndian)
-            
-        case let .bit128(value):
-            
-            #if _endian(little)
-            let currentEndian = value
-            #else
-            let currentEndian = UUID(uuid: (value.bytes.5, value.bytes.4, value.bytes.3, value.bytes.2, value.bytes.1, value.bytes.0))
-            #endif
-            
-            self = .bit128(currentEndian)
-        }
-    }
-    
-    /// Exports the UUID bytes in its little endian representation,  changing the byte order if necessary.
-    var littleEndian: [UInt8] {
+    /// A representation of this Bluetooth UUID with the byte order swapped.
+    public var byteSwapped: BluetoothUUID {
         
         switch self {
             
         case let .bit16(value):
             
-            let bytes = value.littleEndian.bytes
-            
-            return [bytes.0, bytes.1]
+            return .bit16(value.byteSwapped)
             
         case let .bit128(value):
             
-            #if _endian(little)
-            return [UInt8](value.toData())
-            #else
-            return [UInt8](value.toData().reversed()) // byteSwapped
-            #endif
+            return .bit128(UUID(uuid: (value.bytes.15,
+                                       value.bytes.14,
+                                       value.bytes.13,
+                                       value.bytes.12,
+                                       value.bytes.11,
+                                       value.bytes.10,
+                                       value.bytes.9,
+                                       value.bytes.8,
+                                       value.bytes.7,
+                                       value.bytes.6,
+                                       value.bytes.5,
+                                       value.bytes.4,
+                                       value.bytes.3,
+                                       value.bytes.2,
+                                       value.bytes.1,
+                                       value.bytes.0)))
         }
+    }
+    
+    /// Creates an address from its little-endian representation, changing the
+    /// byte order if necessary.
+    ///
+    /// - Parameter value: A value to use as the little-endian representation of
+    ///   the new address.
+    public init(littleEndian value: BluetoothUUID) {
+        #if _endian(little)
+            self = value
+        #else
+            self = value.byteSwapped
+        #endif
+    }
+    
+    /// Creates an address from its big-endian representation, changing the byte
+    /// order if necessary.
+    ///
+    /// - Parameter value: A value to use as the big-endian representation of the
+    ///   new address.
+    public init(bigEndian value: BluetoothUUID) {
+        #if _endian(big)
+            self = value
+        #else
+            self = value.byteSwapped
+        #endif
+    }
+    
+    /// The little-endian representation of this address.
+    ///
+    /// If necessary, the byte order of this value is reversed from the typical
+    /// byte order of this address. On a little-endian platform, for any
+    /// address `x`, `x == x.littleEndian`.
+    public var littleEndian: BluetoothUUID {
+        #if _endian(little)
+            return self
+        #else
+            return byteSwapped
+        #endif
+    }
+    
+    /// The big-endian representation of this address.
+    ///
+    /// If necessary, the byte order of this value is reversed from the typical
+    /// byte order of this address. On a big-endian platform, for any
+    /// address `x`, `x == x.bigEndian`.
+    public var bigEndian: BluetoothUUID {
+        #if _endian(big)
+            return self
+        #else
+            return byteSwapped
+        #endif
     }
 }
-
-// MARK: - UUID Conversion
-
-/* Need to fix for endianess
-public extension UUID {
-    
-    /// Converts a Bluetooth UUID to a universal UUID.
-    init(_ UUID: BluetoothUUID) {
-        
-        switch UUID {
-            
-        case let .bit128(value):
-            
-            self.init(byteValue: value.byteValue)
-            
-        case let .bit16(value):
-            
-            let bytes = value.littleEndian.bytes
-            
-            var byteValue = BluetoothUUID.BaseUUID.byteValue
-            
-            // replace empty bytes with UInt16 bytes
-            byteValue.0 = bytes.0
-            byteValue.1 = bytes.1
-            
-            self.init(byteValue: byteValue)
-        }
-    }
-}*/
 
 // MARK: - Darwin Support
 
