@@ -25,8 +25,6 @@ public extension Sequence where Self.Iterator.Element: BitMaskOption, Self.Itera
     
     func optionsBitmask() -> Self.Iterator.Element.RawValue {
         
-        let array = self.filter { (_) -> Bool in return true }
-        
-        return Self.Iterator.Element.bitmask(options: array)
+        return Self.Iterator.Element.bitmask(options: Array(self))
     }
 }
