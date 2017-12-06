@@ -37,7 +37,7 @@ final class BluetoothTests: XCTestCase {
         do {
             
             let uuidString = "2800" // big endian representation
-            let uuidValue = GATT.UUID.PrimaryService.rawValue // 0x2800
+            let uuidValue = GATT.UUID.primaryService.rawValue // 0x2800
             let uuid = BluetoothUUID.bit16(uuidValue)
             
             XCTAssert(uuid.rawValue == uuidString)

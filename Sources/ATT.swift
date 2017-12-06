@@ -261,24 +261,33 @@ public enum ATTOpcodeType {
 public enum ATTAttributePermission: UInt8, BitMaskOption {
     
     // Access
-    case Read                                       = 0x01
-    case Write                                      = 0x02
+    case read                                       = 0x01
+    case write                                      = 0x02
     
     // Encryption
-    public static let Encrypt                       = [ReadEncrypt, WriteEncrypt]
-    case ReadEncrypt                                = 0x04
-    case WriteEncrypt                               = 0x08
+    public static let encrypt                       = Set<ATTAttributePermission>([.readEncrypt, .writeEncrypt])
+    case readEncrypt                                = 0x04
+    case writeEncrypt                               = 0x08
     
     // The following have no effect on Darwin
     
     // Authentication
-    public static let  Authentication               = [ReadAuthentication, WriteAuthentication]
-    case ReadAuthentication                         = 0x10
-    case WriteAuthentication                        = 0x20
+    public static let  authentication               = Set<ATTAttributePermission>([.readAuthentication, .writeAuthentication])
+    case readAuthentication                         = 0x10
+    case writeAuthentication                        = 0x20
     
     // Authorization
-    case Authorized                                 = 0x40
-    case None                                       = 0x80
+    case authorized                                 = 0x40
+    case noAuthorization                            = 0x80
+    
+    public static let all: Set<ATTAttributePermission> = [.read,
+                                                          .write,
+                                                          .readEncrypt,
+                                                          .writeEncrypt,
+                                                          .readAuthentication,
+                                                          .writeAuthentication,
+                                                          .authorized,
+                                                          .noAuthorization]
 }
 
 
