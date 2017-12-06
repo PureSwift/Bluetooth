@@ -9,23 +9,23 @@
 /// Protocol/Service Multiplexer (PSM).
 public enum ProtocolServiceMultiplexer: UInt8 {
     
-    case SDP        = 0x0001
-    case RFCOMM     = 0x0003
-    case TCS        = 0x0005
-    case CTP        = 0x0007
-    case BNEP       = 0x000F
-    case HIDC       = 0x0011
-    case HIDI       = 0x0013
-    case UPNP       = 0x0015
-    case AVCTP      = 0x0017
-    case AVDTP      = 0x0019
+    case sdp        = 0x0001
+    case rfcomm     = 0x0003
+    case tcs        = 0x0005
+    case ctp        = 0x0007
+    case bnep       = 0x000F
+    case hidc       = 0x0011
+    case hidi       = 0x0013
+    case upnp       = 0x0015
+    case avctp      = 0x0017
+    case avdtp      = 0x0019
     
     /// Advanced Control - Browsing
-    case AVCTP13    = 0x001B
+    case avctp13    = 0x001B
     
     /// Unrestricted Digital Information Profile C-Plane
-    case UDICP      = 0x001D
+    case udicp      = 0x001D
     
     /// Attribute Protocol
-    case ATT        = 0x001F
+    case att        = 0x001F
 }

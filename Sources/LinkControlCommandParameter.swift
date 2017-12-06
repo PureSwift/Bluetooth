@@ -16,7 +16,7 @@ public extension LinkControlCommand {
     
     public struct InquiryParameter: HCICommandParameter {
         
-        public static let command = LinkControlCommand.Inquiry
+        public static let command = LinkControlCommand.inquiry
         
         public static let length = 5
         
@@ -36,7 +36,7 @@ public extension LinkControlCommand {
     
     public struct RemoteNameRequestParameter: HCICommandParameter {
         
-        public static let command = LinkControlCommand.RemoteNameRequest
+        public static let command = LinkControlCommand.remoteNameRequest
         
         public static let length = 10
         

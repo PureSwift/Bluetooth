@@ -14,7 +14,7 @@ public extension HCIGeneralEvent {
     
     public struct CommandCompleteParameter: HCIEventParameter {
         
-        public static let event = HCIGeneralEvent.CommandComplete
+        public static let event = HCIGeneralEvent.commandComplete
         public static let length = 3
         
         /// The Number of HCI command packets which are allowed to be sent to the Controller from the Host.
@@ -35,7 +35,7 @@ public extension HCIGeneralEvent {
     
     public struct CommandStatusParameter: HCIEventParameter {
         
-        public static let event = HCIGeneralEvent.CommandStatus
+        public static let event = HCIGeneralEvent.commandStatus
         public static let length = 4
         
         public var status: UInt8 = 0
@@ -57,7 +57,7 @@ public extension HCIGeneralEvent {
     
     public struct RemoteNameRequestCompleteParameter: HCIEventParameter {
         
-        public static let event = HCIGeneralEvent.RemoteNameRequestComplete
+        public static let event = HCIGeneralEvent.remoteNameRequestComplete
         public static let length = 255
         
         public var status: UInt8 = 0
@@ -85,7 +85,7 @@ public extension HCIGeneralEvent {
     
     public struct LowEnergyMetaParameter: HCIEventParameter {
         
-        public static let event = HCIGeneralEvent.LowEnergyMeta
+        public static let event = HCIGeneralEvent.lowEnergyMeta
         public static let length = 1 // 1 ... HCI.maximumEventSize
         
         public let subevent: LowEnergyEvent

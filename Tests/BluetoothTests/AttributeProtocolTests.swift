@@ -19,13 +19,13 @@ final class AttributeProtocolTests: XCTestCase {
     
     func testATTOpcode() {
         
-        XCTAssert(ATTOpcode.MaximumTransmissionUnitRequest.request == nil)
-        XCTAssert(ATTOpcode.MaximumTransmissionUnitRequest.response == .MaximumTransmissionUnitResponse)
-        XCTAssert(ATTOpcode.MaximumTransmissionUnitRequest.type == .Request)
+        XCTAssert(ATTOpcode.maximumTransmissionUnitRequest.request == nil)
+        XCTAssert(ATTOpcode.maximumTransmissionUnitRequest.response == .maximumTransmissionUnitResponse)
+        XCTAssert(ATTOpcode.maximumTransmissionUnitRequest.type == .request)
         
-        XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.response == nil)
-        XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.request == .MaximumTransmissionUnitRequest)
-        XCTAssert(ATTOpcode.MaximumTransmissionUnitResponse.type == .Response)
+        XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.response == nil)
+        XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.request == .maximumTransmissionUnitRequest)
+        XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.type == .response)
     }
     
     func testATTProtocolDataUnit() {
@@ -37,9 +37,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.requestOpcode == .ReadByGroupTypeRequest)
+            XCTAssert(errorResponse.requestOpcode == .readByGroupTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0001)
-            XCTAssert(errorResponse.errorCode == .AttributeNotFound)
+            XCTAssert(errorResponse.errorCode == .attributeNotFound)
             XCTAssert(errorResponse.byteValue == data)
         }
         
@@ -50,9 +50,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.requestOpcode == .ReadByTypeRequest)
+            XCTAssert(errorResponse.requestOpcode == .readByTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0000)
-            XCTAssert(errorResponse.errorCode == .RequestNotSupported)
+            XCTAssert(errorResponse.errorCode == .requestNotSupported)
             XCTAssert(errorResponse.byteValue == data)
         }
         
@@ -63,9 +63,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.requestOpcode == .ReadByGroupTypeRequest)
+            XCTAssert(errorResponse.requestOpcode == .readByGroupTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 49)
-            XCTAssert(errorResponse.errorCode == .AttributeNotFound)
+            XCTAssert(errorResponse.errorCode == .attributeNotFound)
             XCTAssert(errorResponse.byteValue == data)
         }
         
