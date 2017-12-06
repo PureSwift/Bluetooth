@@ -54,7 +54,7 @@
     
 #endif
 
-internal extension BitMaskOption {
+public extension BitMaskOption {
     
     /// Whether the enum case is present in the raw value.
     @inline(__always)
