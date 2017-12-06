@@ -83,10 +83,16 @@ public struct GATT {
     }
     
     /// GATT Characteristic Extended Properties Bitfield values.
+    /// 
+    /// The Characteristic Extended Properties bit field describes additional 
+    /// properties on how the Characteristic Value can be used, or how the characteristic 
+    /// descriptors can be accessed.
     public enum CharacteristicExtendedProperty: UInt8 {
         
+        /// If set, permits reliable writes of the Characteristic Value.
         case reliableWrite          = 0x01
         
-        // TODO: All CharacteristicExtendedProperty
+        ///
+        case writableAuxiliaries    = 0x02
     }
 }
