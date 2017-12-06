@@ -13,7 +13,7 @@ import Foundation
 /// Bluetooth ATT protocol
 public struct ATT {
     
-    public static let PSM: ProtocolServiceMultiplexer   = .ATT
+    public static let PSM: ProtocolServiceMultiplexer   = .att
     
     public static let CID: UInt16                       = 4
     
@@ -53,168 +53,168 @@ public struct ATT {
 public enum ATTError: UInt8, Error {
     
     /// The attribute handle given was not valid on this server.
-    case InvalidHandle                              = 0x01
+    case invalidHandle                              = 0x01
     
     /// The attribute cannot be read.
-    case ReadNotPermitted                           = 0x02
+    case readNotPermitted                           = 0x02
     
     /// The attribute cannot be written.
-    case WriteNotPermitted                          = 0x03
+    case writeNotPermitted                          = 0x03
     
     /// The attribute PDU was invalid.
-    case InvalidPDU                                 = 0x04
+    case invalidPDU                                 = 0x04
     
     /// The attribute requires authentication before it can be read or written.
-    case Authentication                             = 0x05
+    case authentication                             = 0x05
     
     /// Attribute server does not support the request received from the client.
-    case RequestNotSupported                        = 0x06
+    case requestNotSupported                        = 0x06
     
     /// Offset specified was past the end of the attribute.
-    case InvalidOffset                              = 0x07
+    case invalidOffset                              = 0x07
     
     /// The attribute requires authorization before it can be read or written.
-    case InsufficientAuthorization                  = 0x08
+    case insufficientAuthorization                  = 0x08
     
     /// Too many prepare writes have been queued.
-    case PrepareQueueFull                           = 0x09
+    case prepareQueueFull                           = 0x09
     
     /// No attribute found within the given attribute handle range.
-    case AttributeNotFound                          = 0x0A
+    case attributeNotFound                          = 0x0A
     
     /// The attribute cannot be read or written using the *Read Blob Request*. 
-    case AttributeNotLong                           = 0x0B
+    case attributeNotLong                           = 0x0B
     
     /// The *Encryption Key Size* used for encrypting this link is insufficient.
-    case InsufficientEncryptionKeySize              = 0x0C
+    case insufficientEncryptionKeySize              = 0x0C
     
     /// The attribute value length is invalid for the operation.
-    case InvalidAttributeValueLength                = 0x0D
+    case invalidAttributeValueLength                = 0x0D
     
     /// The attribute request that was requested has encountered an error that was unlikely, 
     /// and therefore could not be completed as requested.
-    case UnlikelyError                              = 0x0E
+    case unlikelyError                              = 0x0E
     
     /// The attribute requires encryption before it can be read or written.
-    case InsufficientEncryption                     = 0x0F
+    case insufficientEncryption                     = 0x0F
     
     /// The attribute type is not a supported grouping attribute as defined by a higher layer specification.
-    case UnsupportedGroupType                       = 0x10
+    case unsupportedGroupType                       = 0x10
     
     /// Insufficient Resources to complete the request.
-    case InsufficientResources                      = 0x11
+    case insufficientResources                      = 0x11
 }
 
 /// ATT protocol opcodes.
 public enum ATTOpcode: UInt8 {
     
     // Masks
-    public static let CommandMask                   = 0x40
-    public static let SignedMask                    = 0x80
+    public static let commandMask                   = 0x40
+    public static let signedMask                    = 0x80
     
     /// Error response
-    case ErrorResponse                              = 0x01
+    case errorResponse                              = 0x01
     
     // Exchange MTU
-    case MaximumTransmissionUnitRequest             = 0x02
-    case MaximumTransmissionUnitResponse            = 0x03
+    case maximumTransmissionUnitRequest             = 0x02
+    case maximumTransmissionUnitResponse            = 0x03
     
     // Find Information
-    case FindInformationRequest                     = 0x04
-    case FindInformationResponse                    = 0x05
+    case findInformationRequest                     = 0x04
+    case findInformationResponse                    = 0x05
     
     // Find By Type Value
-    case FindByTypeRequest                          = 0x06
-    case FindByTypeResponse                         = 0x07
+    case findByTypeRequest                          = 0x06
+    case findByTypeResponse                         = 0x07
     
     // Read By Type
-    case ReadByTypeRequest                          = 0x08
-    case ReadByTypeResponse                         = 0x09
+    case readByTypeRequest                          = 0x08
+    case readByTypeResponse                         = 0x09
     
     // Read
-    case ReadRequest                                = 0x0a
-    case ReadResponse                               = 0x0b
+    case readRequest                                = 0x0a
+    case readResponse                               = 0x0b
     
     // Read Blob
-    case ReadBlobRequest                            = 0x0c
-    case ReadBlobResponse                           = 0x0d
+    case readBlobRequest                            = 0x0c
+    case readBlobResponse                           = 0x0d
     
     // Read Multiple
-    case ReadMultipleRequest                        = 0x0e
-    case ReadMultipleResponse                       = 0x0f
+    case readMultipleRequest                        = 0x0e
+    case readMultipleResponse                       = 0x0f
     
     // Read By Group Type
-    case ReadByGroupTypeRequest                     = 0x10
-    case ReadByGroupTypeResponse                    = 0x11
+    case readByGroupTypeRequest                     = 0x10
+    case readByGroupTypeResponse                    = 0x11
     
     // Write
-    case WriteRequest                               = 0x12
-    case WriteResponse                              = 0x13
-    case WriteCommand                               = 0x52
-    case SignedWriteCommand                         = 0xD2
+    case writeRequest                               = 0x12
+    case writeResponse                              = 0x13
+    case writeCommand                               = 0x52
+    case signedWriteCommand                         = 0xD2
     
     // Prepare Write
-    case PreparedWriteRequest                       = 0x16
-    case PreparedWriteResponse                      = 0x17
+    case preparedWriteRequest                       = 0x16
+    case preparedWriteResponse                      = 0x17
     
     // Execute Write
-    case ExecuteWriteRequest                        = 0x18
-    case ExecuteWriteResponse                       = 0x19
+    case executeWriteRequest                        = 0x18
+    case executeWriteResponse                       = 0x19
     
     // Handle Value
-    case HandleValueNotification                    = 0x1B
-    case HandleValueIndication                      = 0x1D
-    case HandleValueConfirmation                    = 0x1E
+    case handleValueNotification                    = 0x1B
+    case handleValueIndication                      = 0x1D
+    case handleValueConfirmation                    = 0x1E
     
     /// Specifies the opcode category.
     public var type: ATT.OpcodeType {
         
         switch self {
         
-        case .ErrorResponse:                    return .Response
-        case .MaximumTransmissionUnitRequest:   return .Request
-        case .MaximumTransmissionUnitResponse:  return .Response
-        case .FindInformationRequest:           return .Request
-        case .FindInformationResponse:          return .Response
-        case .FindByTypeRequest:                return .Request
-        case .FindByTypeResponse:               return .Response
-        case .ReadByTypeRequest:                return .Request
-        case .ReadByTypeResponse:               return .Response
-        case .ReadRequest:                      return .Request
-        case .ReadResponse:                     return .Response
-        case .ReadBlobRequest:                  return .Request
-        case .ReadBlobResponse:                 return .Response
-        case .ReadMultipleRequest:              return .Request
-        case .ReadMultipleResponse:             return .Response
-        case .ReadByGroupTypeRequest:           return .Request
-        case .ReadByGroupTypeResponse:          return .Response
-        case .WriteRequest:                     return .Request
-        case .WriteResponse:                    return .Response
-        case .WriteCommand:                     return .Command
-        case .SignedWriteCommand:               return .Command
-        case .PreparedWriteRequest:             return .Request
-        case .PreparedWriteResponse:            return .Response
-        case .ExecuteWriteRequest:              return .Request
-        case .ExecuteWriteResponse:             return .Response
-        case .HandleValueNotification:          return .Notification
-        case .HandleValueIndication:            return .Indication
-        case .HandleValueConfirmation:          return .Confirmation
+        case .errorResponse:                    return .response
+        case .maximumTransmissionUnitRequest:   return .request
+        case .maximumTransmissionUnitResponse:  return .response
+        case .findInformationRequest:           return .request
+        case .findInformationResponse:          return .response
+        case .findByTypeRequest:                return .request
+        case .findByTypeResponse:               return .response
+        case .readByTypeRequest:                return .request
+        case .readByTypeResponse:               return .response
+        case .readRequest:                      return .request
+        case .readResponse:                     return .response
+        case .readBlobRequest:                  return .request
+        case .readBlobResponse:                 return .response
+        case .readMultipleRequest:              return .request
+        case .readMultipleResponse:             return .response
+        case .readByGroupTypeRequest:           return .request
+        case .readByGroupTypeResponse:          return .response
+        case .writeRequest:                     return .request
+        case .writeResponse:                    return .response
+        case .writeCommand:                     return .command
+        case .signedWriteCommand:               return .command
+        case .preparedWriteRequest:             return .request
+        case .preparedWriteResponse:            return .response
+        case .executeWriteRequest:              return .request
+        case .executeWriteResponse:             return .response
+        case .handleValueNotification:          return .notification
+        case .handleValueIndication:            return .indication
+        case .handleValueConfirmation:          return .confirmation
         
         }
     }
     
     private static let requestResponseMap: [(request: ATTOpcode,  response: ATTOpcode)] = [
-        (MaximumTransmissionUnitRequest,     MaximumTransmissionUnitResponse),
-        (FindInformationRequest,             FindInformationResponse),
-        (FindByTypeRequest,                  FindByTypeResponse),
-        (ReadByTypeRequest,                  ReadByTypeResponse),
-        (ReadRequest,                        ReadResponse),
-        (ReadBlobRequest,                    ReadBlobResponse),
-        (ReadMultipleRequest,                ReadMultipleResponse),
-        (ReadByGroupTypeRequest,             ReadByGroupTypeResponse),
-        (WriteRequest,                       WriteResponse),
-        (PreparedWriteRequest,               PreparedWriteResponse),
-        (ExecuteWriteRequest,                ExecuteWriteResponse)
+        (maximumTransmissionUnitRequest,     maximumTransmissionUnitResponse),
+        (findInformationRequest,             findInformationResponse),
+        (findByTypeRequest,                  findByTypeResponse),
+        (readByTypeRequest,                  readByTypeResponse),
+        (readRequest,                        readResponse),
+        (readBlobRequest,                    readBlobResponse),
+        (readMultipleRequest,                readMultipleResponse),
+        (readByGroupTypeRequest,             readByGroupTypeResponse),
+        (writeRequest,                       writeResponse),
+        (preparedWriteRequest,               preparedWriteResponse),
+        (executeWriteRequest,                executeWriteResponse)
     ]
     
     private static let responsesByRequest: [ATTOpcode: ATTOpcode] = {
@@ -247,12 +247,12 @@ public enum ATTOpcode: UInt8 {
 /// ATT protocol opcode categories.
 public enum ATTOpcodeType {
     
-    case Request
-    case Response
-    case Command
-    case Indication
-    case Notification
-    case Confirmation
+    case request
+    case response
+    case command
+    case indication
+    case notification
+    case confirmation
 }
 
 /// ATT attribute permission bitfield values. Permissions are grouped as

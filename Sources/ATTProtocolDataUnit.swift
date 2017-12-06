@@ -31,7 +31,7 @@ public protocol ATTProtocolDataUnit {
 /// - Note: The Write Command does not generate an Error Response.
 public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     
-    public static let attributeOpcode = ATT.Opcode.ErrorResponse
+    public static let attributeOpcode = ATT.Opcode.errorResponse
     public static let length = 5
     
     /// The request that generated this error response
@@ -95,7 +95,7 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
 /// The *Client Rx MTU* parameter shall be set to the maximum size of the attribute protocol PDU that the client can receive.
 public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.MaximumTransmissionUnitRequest
+    public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitRequest
     public static let length = 3
     
     /// Client Rx MTU
@@ -139,7 +139,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
 /// The *Exchange MTU Response* is sent in reply to a received *Exchange MTU Request*.
 public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.MaximumTransmissionUnitResponse
+    public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitResponse
     public static let length = 3
     
     /// Server Rx MTU
@@ -186,7 +186,7 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
 /// This allows a client to discover the list of attributes and their types on a server.
 public struct ATTFindInformationRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.FindInformationRequest
+    public static let attributeOpcode = ATT.Opcode.findInformationRequest
     public static let length = 5
     
     public var startHandle: UInt16
@@ -238,7 +238,7 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
 /// and contains information about this server.
 public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.FindInformationRequest
+    public static let attributeOpcode = ATT.Opcode.findInformationRequest
     
     /// Length ranges from 6, to the maximum MTU size.
     public static let length = 8
@@ -409,7 +409,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
 /// - Note: Generic Attribute Profile defines grouping of attributes by attribute type.
 public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.FindByTypeRequest
+    public static let attributeOpcode = ATT.Opcode.findByTypeRequest
     
     /// Minimum length.
     public static let length = 1 + 2 + 2 + 2 + 0
@@ -479,7 +479,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
 /// and contains information about this server.
 public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.FindByTypeResponse
+    public static let attributeOpcode = ATT.Opcode.findByTypeResponse
     
     /// Minimum length.
     public static let length = 1 + HandlesInformation.length
@@ -599,7 +599,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
 /// attribute type is known but the handle is not known.
 public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadByTypeRequest
+    public static let attributeOpcode = ATT.Opcode.readByTypeRequest
     
     /// First requested handle number
     public var startHandle: UInt16
@@ -678,7 +678,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
 /// and contains the handles and values of the attributes that have been read.
 public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadByTypeResponse
+    public static let attributeOpcode = ATT.Opcode.readByTypeResponse
     
     /// Minimum length
     public static let length = 1 + 1 + AttributeData.length
@@ -807,7 +807,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
 /// and return its value in a *Read Response*.
 public struct ATTReadRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadRequest
+    public static let attributeOpcode = ATT.Opcode.readRequest
     public static let length = 1 + 2
     
     public var handle: UInt16
@@ -846,7 +846,7 @@ public struct ATTReadRequest: ATTProtocolDataUnit {
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
 public struct ATTReadResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadResponse
+    public static let attributeOpcode = ATT.Opcode.readResponse
     
     /// Minimum length
     public static let length = 1 + 0
@@ -891,7 +891,7 @@ public struct ATTReadResponse: ATTProtocolDataUnit {
 /// at a given offset and return a specific part of the value in a *Read Blob Response*.
 public struct ATTReadBlobRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadBlobRequest
+    public static let attributeOpcode = ATT.Opcode.readBlobRequest
     public static let length = 1 + 2 + 2
     
     /// The handle of the attribute to be read.
@@ -937,7 +937,7 @@ public struct ATTReadBlobRequest: ATTProtocolDataUnit {
 /// and contains part of the value of the attribute that has been read.
 public struct ATTReadBlobResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadBlobResponse
+    public static let attributeOpcode = ATT.Opcode.readBlobResponse
     
     /// Minimum length
     public static let length = 1 + 0
@@ -989,7 +989,7 @@ public struct ATTReadBlobResponse: ATTProtocolDataUnit {
 /// The knowledge of whether attributes have a known fixed size is defined in a higher layer specification.
 public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadMultipleRequest
+    public static let attributeOpcode = ATT.Opcode.readMultipleRequest
     
     /// Minimum length
     public static let length = 1 + 4
@@ -1063,7 +1063,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
 /// contains the values of the attributes that have been read.
 public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadMultipleResponse
+    public static let attributeOpcode = ATT.Opcode.readMultipleResponse
     
     /// Minimum length
     public static let length = 1 + 0
@@ -1112,7 +1112,7 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
 /// the type of a grouping attribute as defined by a higher layer specification, but the handle is not known.
 public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadByGroupTypeRequest
+    public static let attributeOpcode = ATT.Opcode.readByGroupTypeRequest
     
     /// First requested handle number.
     public var startHandle: UInt16
@@ -1195,7 +1195,7 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
 public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ReadByGroupTypeResponse
+    public static let attributeOpcode = ATT.Opcode.readByGroupTypeResponse
     
     /// Minimum length
     public static let length = 1 + 1 + 4
@@ -1331,7 +1331,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
 /// and acknowledge that this has been achieved in a *Write Response*.
 public struct ATTWriteRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.WriteRequest
+    public static let attributeOpcode = ATT.Opcode.writeRequest
     
     /// Minimum length
     public static let length = 3
@@ -1388,7 +1388,7 @@ public struct ATTWriteRequest: ATTProtocolDataUnit {
 /// and acknowledges that the attribute has been successfully written.
 public struct ATTWriteResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.WriteResponse
+    public static let attributeOpcode = ATT.Opcode.writeResponse
     public static let length = 1
     
     public init() { }
@@ -1419,7 +1419,7 @@ public struct ATTWriteResponse: ATTProtocolDataUnit {
 /// The *Write Command* is used to request the server to write the value of an attribute, typically into a control-point attribute.
 public struct ATTWriteCommand: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.WriteCommand
+    public static let attributeOpcode = ATT.Opcode.writeCommand
     
     /// Minimum length
     public static let length = 3
@@ -1478,7 +1478,7 @@ public struct ATTSignedWriteCommand: ATTProtocolDataUnit {
     
     public typealias Signature = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    public static let attributeOpcode = ATT.Opcode.SignedWriteCommand
+    public static let attributeOpcode = ATT.Opcode.signedWriteCommand
     
     /// Minimum length
     public static let length = 1 + 2 + 0 + 12
@@ -1544,7 +1544,7 @@ public struct ATTSignedWriteCommand: ATTProtocolDataUnit {
 /// so that the client can verify that the value was received correctly.
 public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.PreparedWriteRequest
+    public static let attributeOpcode = ATT.Opcode.preparedWriteRequest
     
     /// Minimum length
     public static let length = 1 + 2 + 2 + 0
@@ -1608,7 +1608,7 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
 /// and acknowledges that the value has been successfully received and placed in the prepare write queue.
 public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.PreparedWriteResponse
+    public static let attributeOpcode = ATT.Opcode.preparedWriteResponse
     
     /// Minimum length
     public static let length = 1 + 2 + 2 + 0
@@ -1674,7 +1674,7 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
 /// This request shall be handled by the server as an atomic operation.
 public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ExecuteWriteRequest
+    public static let attributeOpcode = ATT.Opcode.executeWriteRequest
     public static let length = 1 + 1
     
     public var flag: Flag
@@ -1723,7 +1723,7 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
 /// The *Execute Write Response* is sent in response to a received *Execute Write Request*.
 public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.ExecuteWriteResponse
+    public static let attributeOpcode = ATT.Opcode.executeWriteResponse
     public static let length = 1
     
     public init() { }
@@ -1743,7 +1743,7 @@ public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        return [ATT.Opcode.ExecuteWriteResponse.rawValue]
+        return [ATT.Opcode.executeWriteResponse.rawValue]
     }
 }
 
@@ -1754,7 +1754,7 @@ public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
 /// A server can send a notification of an attribute’s value at any time.
 public struct ATTHandleValueNotification: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.HandleValueNotification
+    public static let attributeOpcode = ATT.Opcode.handleValueNotification
     
     /// minimum length
     public static let length = 1 + 2 + 0
@@ -1804,7 +1804,7 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit {
 /// A server can send an indication of an attribute’s value.
 public struct ATTHandleValueIndication: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.HandleValueIndication
+    public static let attributeOpcode = ATT.Opcode.handleValueIndication
     
     /// Minimum length
     public static let length = 1 + 2 + 0
@@ -1855,7 +1855,7 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
 /// and confirms that the client has received an indication of the given attribute.
 public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.HandleValueConfirmation
+    public static let attributeOpcode = ATT.Opcode.handleValueConfirmation
     public static let length = 1
     
     public init() { }

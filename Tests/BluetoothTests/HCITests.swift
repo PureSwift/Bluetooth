@@ -67,7 +67,7 @@ final class HCITests: XCTestCase {
             XCTAssert(eventHeader.event == headerData[0])
             XCTAssert(eventHeader.parameterLength == headerData[1])
             
-            XCTAssert(eventHeader.event == HCIGeneralEvent.CommandStatus.rawValue)
+            XCTAssert(eventHeader.event == HCIGeneralEvent.commandStatus.rawValue)
             
             guard let event = HCIGeneralEvent.CommandStatusParameter(byteValue: eventData)
                 else { return nil }
