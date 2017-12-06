@@ -114,9 +114,9 @@ final class AttributeProtocolTests: XCTestCase {
             // discover all primary services
             let pdu = ATTReadByGroupTypeRequest(startHandle: 0x0001,
                                                 endHandle: 0xFFFF,
-                                                type: GATT.UUID.PrimaryService.toUUID())
+                                                type: GATT.UUID.primaryService.toUUID())
             
-            XCTAssert(pdu.type == GATT.UUID.PrimaryService.toUUID(), "\(pdu.type)")
+            XCTAssert(pdu.type == GATT.UUID.primaryService.toUUID(), "\(pdu.type)")
             XCTAssert(pdu.type == .bit16(0x2800))
             XCTAssert(pdu.type != .bit16(0x0028))
             
@@ -133,7 +133,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(decoded.type == pdu.type)
             XCTAssert(decoded.type.data == pdu.type.data)
             XCTAssert(decoded.type.littleEndian == pdu.type.littleEndian)
-            XCTAssert(decoded.type == GATT.UUID.PrimaryService.toUUID(), "\(decoded.type)")
+            XCTAssert(decoded.type == GATT.UUID.primaryService.toUUID(), "\(decoded.type)")
             XCTAssert(decoded.type == .bit16(0x2800))
             XCTAssert(decoded.type != .bit16(0x0028))
             XCTAssert(decoded.byteValue == pdu.byteValue)

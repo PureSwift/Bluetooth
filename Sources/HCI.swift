@@ -43,7 +43,7 @@ public enum HCIOpcodeGroupField: UInt16 {
     case linkControl = 0x01
     
     /// Link Policy
-    case LlinkPolicy = 0x02
+    case linkPolicy = 0x02
     
     /// Host Controller and Baseband
     case hostController = 0x03
