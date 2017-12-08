@@ -214,5 +214,22 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(foundHandle.groupEnd == 48)
             XCTAssert(pdu.byteValue == data)
         }
+        
+        do {
+            
+            let data: [UInt8] = [9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
+            
+            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.byteValue == data)
+            
+            guard let foundCharacteristicData = pdu.data.first,
+                pdu.data.count == 1
+                else { XCTFail("Invalid response"); return }
+            
+            XCTAssert(foundCharacteristicData.handle == 41)
+            XCTAssert(foundCharacteristicData.value.isEmpty == false)
+        }
     }
 }
