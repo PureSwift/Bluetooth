@@ -42,7 +42,7 @@ public struct GATT {
         }
         
         /// Returns a Bluetooth UUID initialized with the `rawValue` of this GATT UUID.
-        public func toUUID() -> BluetoothUUID {
+        public var uuid: BluetoothUUID {
             
             return .bit16(rawValue)
         }
