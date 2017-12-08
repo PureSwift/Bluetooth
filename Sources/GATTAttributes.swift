@@ -15,7 +15,7 @@ public extension GATT {
     /// GATT Service
     public struct Service {
         
-        public var UUID: BluetoothUUID
+        public var uuid: BluetoothUUID
         
         public var primary: Bool
         
@@ -23,12 +23,12 @@ public extension GATT {
         
         public var includedServices: [IncludedService]
         
-        public init(UUID: BluetoothUUID = BluetoothUUID(),
+        public init(uuid: BluetoothUUID = BluetoothUUID(),
                     primary: Bool = true,
                     characteristics: [Characteristic] = [],
                     includedServices: [IncludedService] = []) {
             
-            self.UUID = UUID
+            self.uuid = uuid
             self.characteristics = characteristics
             self.primary = primary
             self.includedServices = includedServices
@@ -47,7 +47,7 @@ public extension GATT {
         public typealias Descriptor = GATT.Descriptor
         public typealias Property = GATT.CharacteristicProperty
         
-        public var UUID: BluetoothUUID
+        public var uuid: BluetoothUUID
         
         public var value: Data
         
@@ -57,13 +57,13 @@ public extension GATT {
         
         public var descriptors: [Descriptor]
         
-        public init(UUID: BluetoothUUID = BluetoothUUID(),
+        public init(uuid: BluetoothUUID = BluetoothUUID(),
                     value: Data = Data(),
                     permissions: [Permission] = [],
                     properties: [Property] = [],
                     descriptors: [Descriptor] = []) {
             
-            self.UUID = UUID
+            self.uuid = uuid
             self.value = value
             self.permissions = permissions
             self.descriptors = descriptors
@@ -74,17 +74,17 @@ public extension GATT {
     /// GATT Characteristic Descriptor
     public struct Descriptor {
         
-        public var UUID: BluetoothUUID
+        public var uuid: BluetoothUUID
         
         public var value: Data
         
         public var permissions: [Permission]
         
-        public init(UUID: BluetoothUUID = BluetoothUUID(),
+        public init(uuid: BluetoothUUID = BluetoothUUID(),
                     value: Data = Data(),
                     permissions: [Permission] = []) {
             
-            self.UUID = UUID
+            self.uuid = uuid
             self.value = value
             self.permissions = permissions
         }
