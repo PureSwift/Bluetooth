@@ -39,8 +39,8 @@
     
     public extension Sequence where Element: BitMaskOption {
     
-        /// Convert Swift enums for option flags into their raw values OR'd.
-        var flags: Element.RawValue {
+        /// Convert Swift enums for bit mask options into their raw values OR'd.
+        var rawValue: Element.RawValue {
     
             @inline(__always)
             get { return reduce(0, { $0 | $1.rawValue }) }
@@ -51,8 +51,8 @@
     
     public extension Sequence where Iterator.Element: BitMaskOption {
         
-        /// Convert Swift enums for option flags into their raw values OR'd.
-        var flags: Iterator.Element.RawValue {
+        /// Convert Swift enums for bit mask options into their raw values OR'd.
+        var rawValue: Iterator.Element.RawValue {
             
             @inline(__always)
             get { return reduce(0, { $0 | $1.rawValue }) }
@@ -71,12 +71,12 @@ public extension BitMaskOption {
     }
     
     @inline(__always)
-    static func from(flags: RawValue) -> Set<Self> {
+    static func from(rawValue: RawValue) -> Set<Self> {
         
         #if swift(>=4.0)
-            return Self.all.filter({ $0.isContained(in: flags) })
+            return Self.all.filter({ $0.isContained(in: rawValue) })
         #elseif swift(>=3.0.2)
-            return Set(Array(Self.all).filter({ $0.isContained(in: flags) }))
+            return Set(Array(Self.all).filter({ $0.isContained(in: rawValue) }))
         #endif
     }
 }
@@ -160,7 +160,7 @@ public extension BitMaskOptionSet {
     
     public init<S: Sequence>(_ sequence: S) where S.Iterator.Element == Element {
         
-        self.rawValue = sequence.flags
+        self.rawValue = sequence.rawValue
     }
 }
 
@@ -170,7 +170,7 @@ public extension BitMaskOptionSet {
     
     public var set: Set<Element> {
         
-        get { return Element.from(flags: rawValue) }
+        get { return Element.from(rawValue: rawValue) }
     }
 }
 
