@@ -14,7 +14,8 @@ final class BluetoothTests: XCTestCase {
     
     static let allTests = [
         ("testAddress", testAddress),
-        ("testUUID", testUUID)
+        ("testUUID", testUUID),
+        ("testBitMaskOption", testBitMaskOption)
         ]
     
     func testAddress() {
@@ -66,6 +67,59 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(uuid.bigEndian.data == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
             XCTAssert(BluetoothUUID.init(littleEndian: BluetoothUUID.init(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
             XCTAssert(BluetoothUUID(littleEndianData: [0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]) == uuid)
+        }
+    }
+    
+    func testBitMaskOption() {
+        
+        do {
+            
+            // set conversion
+            let all = BitMaskOptionSet(ATT.AttributePermission.all)
+            
+            XCTAssert(all.contains(ATT.AttributePermission.all))
+            XCTAssert(all.count == ATT.AttributePermission.all.count)
+            XCTAssert(all.count == 8)
+            XCTAssert(Set(all) == ATT.AttributePermission.all)
+            XCTAssert(all == BitMaskOptionSet<ATT.AttributePermission>.all)
+            XCTAssert(all.contains(ATT.AttributePermission.encrypt))
+            XCTAssert(all.contains(ATT.AttributePermission.authentication))
+            XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(.read) == false)
+            XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(ATT.AttributePermission.all) == false)
+        }
+        
+        do {
+            
+            // Sets are as large as a single element
+            XCTAssert(MemoryLayout<BitMaskOptionSet<GATT.CharacteristicProperty>>.size == MemoryLayout<GATT.CharacteristicProperty>.size)
+            
+            // create empty set
+            var set = BitMaskOptionSet<GATT.CharacteristicProperty>()
+            XCTAssert(set.count == 0)
+            XCTAssert(set.isEmpty)
+            XCTAssert(set.rawValue == 0)
+            
+            // insert value
+            set.insert(.read)
+            XCTAssert(set.rawValue == GATT.CharacteristicProperty.read.rawValue)
+            XCTAssert(set.count == 1)
+            XCTAssert(set.isEmpty == false)
+            
+            // cant store duplicates
+            set.insert(.read)
+            XCTAssert(set.rawValue == GATT.CharacteristicProperty.read.rawValue)
+            XCTAssert(set.count == 1)
+            XCTAssert(set.isEmpty == false)
+            
+            // can store different values
+            set.insert(.write)
+            XCTAssert(set.rawValue == (GATT.CharacteristicProperty.read.rawValue | GATT.CharacteristicProperty.write.rawValue))
+            XCTAssert(set.count == 2)
+            XCTAssert(set.isEmpty == false)
+            
+            // comparison with other collections
+            XCTAssert(set.contains([.read, .write]))
+            XCTAssert(set == [.read, .write])
         }
     }
 }
