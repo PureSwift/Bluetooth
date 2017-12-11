@@ -73,7 +73,7 @@ public extension BitMaskOption {
     @inline(__always)
     static func from(flags: RawValue) -> Set<Self> {
         
-        #if swift(>=4.0) || swift(>=3.2)
+        #if swift(>=4.0)
             return Self.all.filter({ $0.isContained(in: flags) })
         #elseif swift(>=3.0.2)
             return Set(Array(Self.all).filter({ $0.isContained(in: flags) }))

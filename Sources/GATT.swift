@@ -83,10 +83,7 @@ public struct GATT {
                                                               .signedWrite,
                                                               .extendedProperties]
         
-        #if swift(>=3.1)
-        #elseif swift(>=3.0)
         public typealias RawValue = UInt8
-        #endif
     }
     
     /// GATT Characteristic Extended Properties Bitfield values.
