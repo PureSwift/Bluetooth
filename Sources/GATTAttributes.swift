@@ -51,16 +51,16 @@ public extension GATT {
         
         public var value: Data
         
-        public var permissions: [Permission]
+        public var permissions: BitMaskOptionSet<Permission>
         
-        public var properties: [Property]
+        public var properties: BitMaskOptionSet<Property>
         
         public var descriptors: [Descriptor]
         
         public init(uuid: BluetoothUUID = BluetoothUUID(),
                     value: Data = Data(),
-                    permissions: [Permission] = [],
-                    properties: [Property] = [],
+                    permissions: BitMaskOptionSet<Permission> = [],
+                    properties: BitMaskOptionSet<Property> = [],
                     descriptors: [Descriptor] = []) {
             
             self.uuid = uuid
@@ -78,11 +78,11 @@ public extension GATT {
         
         public var value: Data
         
-        public var permissions: [Permission]
+        public var permissions: BitMaskOptionSet<Permission>
         
         public init(uuid: BluetoothUUID = BluetoothUUID(),
                     value: Data = Data(),
-                    permissions: [Permission] = []) {
+                    permissions: BitMaskOptionSet<Permission> = []) {
             
             self.uuid = uuid
             self.value = value
