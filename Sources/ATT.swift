@@ -265,14 +265,14 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
     case write                                      = 0x02
     
     // Encryption
-    public static let encrypt                       = Set<ATTAttributePermission>([.readEncrypt, .writeEncrypt])
+    public static let encrypt                       = BitMaskOptionSet<ATTAttributePermission>([.readEncrypt, .writeEncrypt])
     case readEncrypt                                = 0x04
     case writeEncrypt                               = 0x08
     
     // The following have no effect on Darwin
     
     // Authentication
-    public static let  authentication               = Set<ATTAttributePermission>([.readAuthentication, .writeAuthentication])
+    public static let  authentication               = BitMaskOptionSet<ATTAttributePermission>([.readAuthentication, .writeAuthentication])
     case readAuthentication                         = 0x10
     case writeAuthentication                        = 0x20
     
