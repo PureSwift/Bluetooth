@@ -68,6 +68,20 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(BluetoothUUID.init(littleEndian: BluetoothUUID.init(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
             XCTAssert(BluetoothUUID(littleEndianData: [0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]) == uuid)
         }
+        
+        do {
+            
+            let uuidString = "FEA9" // BluetoothUUID(rawValue: "FEA9")
+            let uuidValue: UInt16 = 0xFEA9 // 65193 Savant Systems LLC
+            
+            guard let uuid = BluetoothUUID(rawValue: uuidString)
+                else { XCTFail("Could not parse UUID string"); return }
+            
+            XCTAssert(uuid.rawValue == uuidString)
+            XCTAssert(uuid.littleEndian.data == Data([uuidValue.littleEndian.bytes.0, uuidValue.littleEndian.bytes.1]))
+            XCTAssert(uuid.name == "Savant Systems LLC")
+            XCTAssert("\(uuid)" == "FEA9 (Savant Systems LLC)", "\(uuid)")
+        }
     }
     
     func testBitMaskOption() {

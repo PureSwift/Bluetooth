@@ -50,7 +50,14 @@ extension BluetoothUUID: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue
+        if let name = self.name {
+            
+            return "\(rawValue) (\(name))"
+            
+        } else {
+            
+            return rawValue
+        }
     }
 }
 
