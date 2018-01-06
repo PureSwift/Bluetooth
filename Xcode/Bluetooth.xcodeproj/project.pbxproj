@@ -61,6 +61,9 @@
 		6EB2EA141CD5A8A7000CF975 /* BluetoothUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DD41CAF603000A40C4D /* BluetoothUUID.swift */; };
 		6EB2EA151CD5A8A7000CF975 /* LowEnergyEventParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF21CAF891E00A40C4D /* LowEnergyEventParameter.swift */; };
 		6EB2EA181CD5A8A7000CF975 /* Bluetooth.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */; };
+		6EB45EF12001398100AE5A42 /* DefinedUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */; };
+		6EB45EF22001398100AE5A42 /* DefinedUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */; };
 		6EE84DBB1CAF5C7C00A40C4D /* Bluetooth.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EE84DC21CAF5C7C00A40C4D /* Bluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE84DB71CAF5C7C00A40C4D /* Bluetooth.framework */; };
 		6EE84DD51CAF603000A40C4D /* BluetoothUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DD41CAF603000A40C4D /* BluetoothUUID.swift */; };
@@ -146,6 +149,7 @@
 		6E704C921E95C4AB00484A22 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		6E704C971E95C6A500484A22 /* UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUID.swift; sourceTree = "<group>"; };
 		6EB2EA1D1CD5A8A7000CF975 /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefinedUUID.swift; sourceTree = "<group>"; };
 		6EE84DB71CAF5C7C00A40C4D /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bluetooth.h; sourceTree = "<group>"; };
 		6EE84DBC1CAF5C7C00A40C4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -285,6 +289,7 @@
 				6E704C7A1E95C34D00484A22 /* ByteValue.swift */,
 				6EE84DE21CAF80AE00A40C4D /* Address.swift */,
 				6EE84DD41CAF603000A40C4D /* BluetoothUUID.swift */,
+				6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */,
 				6EE910241FDE5841007AD3EA /* UInt128.swift */,
 				6EE84DE41CAF828800A40C4D /* PSM.swift */,
 				6EE84DE51CAF828800A40C4D /* ATT.swift */,
@@ -446,7 +451,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = PureSwift;
 				TargetAttributes = {
 					6EE84DB61CAF5C7C00A40C4D = {
@@ -532,6 +537,7 @@
 				6EB2EA0E1CD5A8A7000CF975 /* Address.swift in Sources */,
 				6EB2EA0F1CD5A8A7000CF975 /* HCIGeneralEventParameter.swift in Sources */,
 				6E704C951E95C4AB00484A22 /* String.swift in Sources */,
+				6EB45EF22001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6EE910291FDE585C007AD3EA /* HCIVersion.swift in Sources */,
 				6E704C9A1E95C6A500484A22 /* UUID.swift in Sources */,
 				6EB2EA101CD5A8A7000CF975 /* GATTAttributes.swift in Sources */,
@@ -570,6 +576,7 @@
 				6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */,
 				6E32291A1FCE45480035605D /* AdvertisingChannelHeader.swift in Sources */,
 				6E704C7B1E95C34D00484A22 /* ByteValue.swift in Sources */,
+				6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
 				6E2809891FCF499100B2D68E /* HCIVersion.swift in Sources */,
 				6EE84DFA1CAF891E00A40C4D /* HCIGeneralEventParameter.swift in Sources */,
@@ -616,6 +623,7 @@
 				6EF45FAE1CC6D04D001F7A39 /* Address.swift in Sources */,
 				6EF45FAF1CC6D04D001F7A39 /* HCIGeneralEventParameter.swift in Sources */,
 				6E704C941E95C4AB00484A22 /* String.swift in Sources */,
+				6EB45EF12001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6EE910281FDE585B007AD3EA /* HCIVersion.swift in Sources */,
 				6E704C991E95C6A500484A22 /* UUID.swift in Sources */,
 				6EF45FB01CC6D04D001F7A39 /* GATTAttributes.swift in Sources */,
@@ -694,14 +702,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -750,14 +764,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
