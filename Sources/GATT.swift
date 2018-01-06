@@ -53,9 +53,23 @@ public struct GATT {
     /// GATT Characteristic Descriptors
     public enum CharacteristicDescriptor: UInt16 {
         
-        case extendedProperty       = 0x2900
+        /// Characteristic Extended Properties
+        case extendedProperties     = 0x2900
         
-        // TODO: All Characteristic Descriptors
+        /// Characteristic User Description Descriptor
+        case userDescription        = 0x2901
+        
+        /// Client Characteristic Configuration Descriptor
+        case clientConfiguration    = 0x2902
+        
+        /// Server Characteristic Configuration Descriptor
+        case serverConfiguration    = 0x2903
+        
+        /// Characteristic Format Descriptor
+        case format                 = 0x2904
+        
+        /// Characteristic Aggregate Format Descriptor
+        case aggregateFormat        = 0x2905
     }
     
     /// GATT Characteristic Properties Bitfield valuess
