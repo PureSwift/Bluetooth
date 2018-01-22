@@ -10,6 +10,10 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
+#if os(macOS) || os(iOS)
+import CoreBluetooth
+#endif
+
 final class BluetoothTests: XCTestCase {
     
     static let allTests = [
@@ -136,4 +140,55 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(set == [.read, .write])
         }
     }
+    
+    #if os(macOS) || os(iOS)
+    
+    func testCoreBluetooth() {
+        
+        do {
+            
+            let uuid = BluetoothUUID.bit16(0xFEA9)
+            
+            let coreBluetoothUUID = uuid.toCoreBluetooth()
+            
+            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
+            
+            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+        }
+        
+        do {
+            
+            let uuid = BluetoothUUID() // 128 bit
+            
+            let coreBluetoothUUID = uuid.toCoreBluetooth()
+            
+            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
+            
+            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+        }
+        
+        do {
+            
+            let coreBluetoothUUID = CBUUID(string: "FEA9")
+            
+            let uuid = BluetoothUUID(coreBluetooth: coreBluetoothUUID)
+            
+            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
+            
+            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+        }
+        
+        do {
+            
+            let coreBluetoothUUID = CBUUID(string: "68753A44-4D6F-1226-9C60-0050E4C00067")
+            
+            let uuid = BluetoothUUID(coreBluetooth: coreBluetoothUUID)
+            
+            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
+            
+            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+        }
+    }
+    
+    #endif
 }
