@@ -1062,7 +1062,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
 /// The read response is sent in reply to a received *Read Multiple Request* and
 /// contains the values of the attributes that have been read.
 ///
-/// - Note: a client should not use this request for attributes when the Set Of Values parameter
+/// - Note: A client should not use this request for attributes when the Set Of Values parameter
 /// could be `(ATT_MTU–1)` as it will not be possible to determine if the last attribute value
 /// is complete, or if it overflowed.
 public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
@@ -1072,12 +1072,9 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     /// Minimum length
     public static let length = 1 + 0
     
-    public let values: [[UInt8]]
+    public let values: [UInt8]
     
-    public init?(values: [[UInt8]]) {
-        
-        guard values.count >= 2
-            else { return nil }
+    public init?(values: [UInt8]) {
         
         self.values = values
     }
@@ -1110,7 +1107,7 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
         // in the request in the order that they were requested. If the Set Of Values parameter is longer than
         // (ATT_MTU–1) then only the first (ATT_MTU–1) octets shall be included in this response.
         
-        return [ATTReadMultipleResponse.attributeOpcode.rawValue] + values.reduce([UInt8](), { $0.0 + $0.1 })
+        return [ATTReadMultipleResponse.attributeOpcode.rawValue] + values
     }
 }
 
