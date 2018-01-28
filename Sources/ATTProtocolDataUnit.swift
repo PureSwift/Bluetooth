@@ -994,7 +994,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
     /// Minimum length
     public static let length = 1 + 4
     
-    public var handles: [UInt16]
+    public let handles: [UInt16]
     
     public init?(handles: [UInt16]) {
         
@@ -1061,6 +1061,10 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
 ///
 /// The read response is sent in reply to a received *Read Multiple Request* and
 /// contains the values of the attributes that have been read.
+///
+/// - Note: a client should not use this request for attributes when the Set Of Values parameter
+/// could be `(ATT_MTU–1)` as it will not be possible to determine if the last attribute value
+/// is complete, or if it overflowed.
 public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.readMultipleResponse
@@ -1068,9 +1072,12 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     /// Minimum length
     public static let length = 1 + 0
     
-    public var values: [UInt8]
+    public let values: [[UInt8]]
     
-    public init(values: [UInt8] = []) {
+    public init?(values: [[UInt8]]) {
+        
+        guard values.count >= 2
+            else { return nil }
         
         self.values = values
     }
@@ -1099,9 +1106,11 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTReadBlobResponse.self
+        // The Set Of Values parameter shall be a concatenation of attribute values for each of the attribute handles
+        // in the request in the order that they were requested. If the Set Of Values parameter is longer than
+        // (ATT_MTU–1) then only the first (ATT_MTU–1) octets shall be included in this response.
         
-        return [type.attributeOpcode.rawValue] + values
+        return [ATTReadMultipleResponse.attributeOpcode.rawValue] + values.reduce([UInt8](), { $0.0 + $0.1 })
     }
 }
 
