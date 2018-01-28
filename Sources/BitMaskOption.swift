@@ -185,6 +185,16 @@ extension BitMaskOptionSet: Equatable {
     }
 }
 
+// MARK: - CustomStringConvertible
+
+extension BitMaskOptionSet: CustomStringConvertible {
+    
+    public var description: String {
+        
+        get { return set.sorted(by: { $0.0.rawValue < $0.1.rawValue }).description }
+    }
+}
+
 // MARK: - Hashable
 
 extension BitMaskOptionSet: Hashable {
