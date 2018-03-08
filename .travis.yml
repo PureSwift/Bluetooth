@@ -20,4 +20,38 @@ env:
   - SWIFT_VERSION=swift-3.0.2-RELEASE
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu14.04/usr/bin:"${PATH}" ; fi
+  - swift testlanguage: generic
+matrix:
+   include:
+      # Test Ubuntu Linux 14.04 / Swift 3.0.2
+       - os: linux
+         dist: trusty
+         sudo: required
+      # Test Xcode 8.3 / Swift 3.1.1
+       - os: osx
+         osx_image: xcode8.3
+      # Test Xcode 9.2 / Swift 3.2 - 4.0
+       - os: osx
+         osx_image: xcode9.2
+addons:
+  apt:
+    packages:
+    - clang
+    - pkg-config
+install:
+  # Install Swift 3.0.2 on Ubuntu Linux 14.04
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then SWIFT_DIR=tests ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir $SWIFT_DIR ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl https://swift.org/builds/swift-3.0.2-release/ubuntu1404/swift-3.0.2-RELEASE/swift-3.0.2-RELEASE-ubuntu14.04.tar.gz -s | tar xz -C $SWIFT_DIR &> /dev/null ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install clang ; fi
+env:
+  - SWIFT_VERSION=swift-3.0.2-RELEASE
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu14.04/usr/bin:"${PATH}" ; fi
+  # Run Unit Tests
   - swift test
+  # Compile with Xcode
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth\ OS\ X ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth\ iOS ; fi
