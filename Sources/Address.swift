@@ -199,6 +199,20 @@ extension Address: Equatable {
     }
 }
 
+// MARK: - Hashable
+
+extension Address: Hashable {
+    
+    public var hashValue: Int {
+        
+        let int64Bytes = (bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, UInt8(0),  UInt8(0)) // 2 bytes for padding
+        
+        let int64Value = unsafeBitCast(int64Bytes, to: Int64.self)
+        
+        return int64Value.hashValue
+    }
+}
+
 // MARK: - CustomStringConvertible
 
 extension Address: CustomStringConvertible {
