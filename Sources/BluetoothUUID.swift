@@ -342,7 +342,7 @@ public extension Foundation.UUID {
 
 // MARK: - CoreBluetooth Support
 
-#if os(macOS) || os(iOS) || os(tvOS)
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
     
     import CoreBluetooth
     

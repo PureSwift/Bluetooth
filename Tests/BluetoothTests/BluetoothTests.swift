@@ -10,7 +10,7 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
-#if os(macOS) || os(iOS)
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 import CoreBluetooth
 #endif
 
@@ -141,7 +141,7 @@ final class BluetoothTests: XCTestCase {
         }
     }
     
-    #if os(macOS) || os(iOS)
+    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
     
     func testCoreBluetooth() {
         
