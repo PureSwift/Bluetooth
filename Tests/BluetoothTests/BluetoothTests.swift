@@ -33,8 +33,8 @@ final class BluetoothTests: XCTestCase {
             else { XCTFail("Could not parse"); return }
         
         XCTAssert(address.rawValue == addressString, "\(address.rawValue)")
-        
         XCTAssert(address == Address(bigEndian: Address(bytes: addressBytes)))
+        XCTAssert(address.hashValue != 0)
     }
     
     func testUUID() {
@@ -141,7 +141,7 @@ final class BluetoothTests: XCTestCase {
         }
     }
     
-    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+    #if os(macOS) || os(iOS) || os(tvOS) || (os(watchOS) && swift(>=3.2))
     
     func testCoreBluetooth() {
         
