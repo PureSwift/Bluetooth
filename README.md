@@ -1,5 +1,5 @@
 <p align="center">
- <img src="https://github.com/PureSwift/Bluetooth/raw/master/Assets/PureSwiftBluetooth.png" alt="Bluetooth"/>
+ <img src="https://github.com/PureSwift/Bluetooth/raw/master/Assets/PureSwiftBluetooth.png" alt="Bluetooth" style="width: 400px;"/>
 </p>
 
 [![Swift][swift-badge]][swift-url]
