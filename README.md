@@ -1,4 +1,4 @@
-![Bluetooth](./Assets/PureSwiftBluetooth.png)
+![Bluetooth](https://github.com/PureSwift/Bluetooth/raw/master/Assets/PureSwiftBluetooth.png)
 
 [![Swift][swift-badge]][swift-url]
 [![Platform][platform-badge]][platform-url]
