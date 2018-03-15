@@ -1,6 +1,4 @@
-<p align="center">
- <img src="https://github.com/PureSwift/Bluetooth/raw/master/Assets/PureSwiftBluetooth.png" alt="Bluetooth" style="width: 400px;"/>
-</p>
+![Bluetooth](./Assets/PureSwiftBluetooth.png)
 
 [![Swift][swift-badge]][swift-url]
 [![Platform][platform-badge]][platform-url]
