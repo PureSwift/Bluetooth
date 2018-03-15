@@ -1,10 +1,13 @@
-# Bluetooth
+<p align="center">
+ <img src="https://github.com/PureSwift/Bluetooth/raw/master/Assets/PureSwiftBluetooth.png" alt="Bluetooth"/>
+</p>
 
 [![Swift][swift-badge]][swift-url]
 [![Platform][platform-badge]][platform-url]
 [![Release][release-badge]][release-url]
 [![Build Status][build-status-badge]][build-status-url]
 [![License][mit-badge]][mit-url]
+[![CodeBeat][codebeat-badge]][codebeat-url]
 
 [![SPM compatible][spm-badge]][spm-url]
 [![Carthage compatible][carthage-badge]][carthage-url]
@@ -74,3 +77,5 @@ License
 [spm-url]: https://github.com/apple/swift-package-manager
 [carthage-badge]: https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat
 [carthage-url]: https://github.com/Carthage/Carthage
+[codebeat-badge]: https://codebeat.co/badges/3eaf4fc3-6514-4f2d-83d5-ffd879f319d2
+[codebeat-url]: https://codebeat.co/projects/github-com-pureswift-bluetooth-master
