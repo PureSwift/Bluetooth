@@ -25,9 +25,6 @@ public protocol HCICommandParameter {
     
     static var command: HCICommandType { get }
     
-    /// Length of the command when encoded to data.
-    static var length: Int { get }
-    
     /// Converts command parameter to raw bytes.
     var byteValue: [UInt8] { get }
 }
