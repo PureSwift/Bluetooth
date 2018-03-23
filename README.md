@@ -70,7 +70,7 @@ License
 [build-status-badge]: https://travis-ci.org/PureSwift/Bluetooth.svg?branch=master
 [build-status-url]: https://travis-ci.org/PureSwift/Bluetooth
 [release-badge]: https://img.shields.io/github/release/PureSwift/Bluetooth.svg
-[release-url]: https://github.com/PureSwift/SwiftFoundation/releases
+[release-url]: https://github.com/PureSwift/BluetoothLinux/releases
 [spm-badge]: https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat
 [spm-url]: https://github.com/apple/swift-package-manager
 [carthage-badge]: https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat
