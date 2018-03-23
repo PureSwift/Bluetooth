@@ -75,6 +75,36 @@
 		6E704C981E95C6A500484A22 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C971E95C6A500484A22 /* UUID.swift */; };
 		6E704C991E95C6A500484A22 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C971E95C6A500484A22 /* UUID.swift */; };
 		6E704C9A1E95C6A500484A22 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C971E95C6A500484A22 /* UUID.swift */; };
+		6E740C3B20657ED3006589F6 /* LinkPolicyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3A20657ED3006589F6 /* LinkPolicyCommand.swift */; };
+		6E740C3D20657EEB006589F6 /* HostControllerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3C20657EEB006589F6 /* HostControllerCommand.swift */; };
+		6E740C3E20657EEB006589F6 /* HostControllerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3C20657EEB006589F6 /* HostControllerCommand.swift */; };
+		6E740C3F20657EEB006589F6 /* HostControllerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3C20657EEB006589F6 /* HostControllerCommand.swift */; };
+		6E740C4020657EEB006589F6 /* HostControllerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3C20657EEB006589F6 /* HostControllerCommand.swift */; };
+		6E740C4120657EEF006589F6 /* LinkPolicyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3A20657ED3006589F6 /* LinkPolicyCommand.swift */; };
+		6E740C4220657EEF006589F6 /* LinkPolicyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3A20657ED3006589F6 /* LinkPolicyCommand.swift */; };
+		6E740C4320657EF0006589F6 /* LinkPolicyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C3A20657ED3006589F6 /* LinkPolicyCommand.swift */; };
+		6E740C4520657F25006589F6 /* InformationalParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4420657F25006589F6 /* InformationalParametersCommand.swift */; };
+		6E740C4620657F25006589F6 /* InformationalParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4420657F25006589F6 /* InformationalParametersCommand.swift */; };
+		6E740C4720657F25006589F6 /* InformationalParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4420657F25006589F6 /* InformationalParametersCommand.swift */; };
+		6E740C4820657F25006589F6 /* InformationalParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4420657F25006589F6 /* InformationalParametersCommand.swift */; };
+		6E740C4A20657F35006589F6 /* StatusParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4920657F35006589F6 /* StatusParametersCommand.swift */; };
+		6E740C4B20657F35006589F6 /* StatusParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4920657F35006589F6 /* StatusParametersCommand.swift */; };
+		6E740C4C20657F35006589F6 /* StatusParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4920657F35006589F6 /* StatusParametersCommand.swift */; };
+		6E740C4D20657F35006589F6 /* StatusParametersCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4920657F35006589F6 /* StatusParametersCommand.swift */; };
+		6E740C4F20657F46006589F6 /* TestingCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4E20657F46006589F6 /* TestingCommand.swift */; };
+		6E740C5020657F46006589F6 /* TestingCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4E20657F46006589F6 /* TestingCommand.swift */; };
+		6E740C5120657F46006589F6 /* TestingCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4E20657F46006589F6 /* TestingCommand.swift */; };
+		6E740C5220657F46006589F6 /* TestingCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C4E20657F46006589F6 /* TestingCommand.swift */; };
+		6E740C5420657F6B006589F6 /* VendorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5320657F6A006589F6 /* VendorCommand.swift */; };
+		6E740C5520657F6B006589F6 /* VendorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5320657F6A006589F6 /* VendorCommand.swift */; };
+		6E740C5620657F6B006589F6 /* VendorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5320657F6A006589F6 /* VendorCommand.swift */; };
+		6E740C5720657F6B006589F6 /* VendorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5320657F6A006589F6 /* VendorCommand.swift */; };
+		6E740C5920658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5820658006006589F6 /* LinkPolicyCommandParameter.swift */; };
+		6E740C5A20658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5820658006006589F6 /* LinkPolicyCommandParameter.swift */; };
+		6E740C5B20658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5820658006006589F6 /* LinkPolicyCommandParameter.swift */; };
+		6E740C5C20658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5820658006006589F6 /* LinkPolicyCommandParameter.swift */; };
+		6E740C6720659CE8006589F6 /* HCITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5D206586D3006589F6 /* HCITests.swift */; };
+		6E740C6820659CEF006589F6 /* AttributeProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */; };
 		6EB2EA041CD5A8A7000CF975 /* HCIEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */; };
 		6EB2EA051CD5A8A7000CF975 /* HCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84E051CAF8AD500A40C4D /* HCI.swift */; };
 		6EB2EA061CD5A8A7000CF975 /* LinkControlCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */; };
@@ -182,6 +212,15 @@
 		6E704C8E1E95C45800484A22 /* Hexadecimal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hexadecimal.swift; sourceTree = "<group>"; };
 		6E704C921E95C4AB00484A22 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		6E704C971E95C6A500484A22 /* UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUID.swift; sourceTree = "<group>"; };
+		6E740C3A20657ED3006589F6 /* LinkPolicyCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPolicyCommand.swift; sourceTree = "<group>"; };
+		6E740C3C20657EEB006589F6 /* HostControllerCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostControllerCommand.swift; sourceTree = "<group>"; };
+		6E740C4420657F25006589F6 /* InformationalParametersCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationalParametersCommand.swift; sourceTree = "<group>"; };
+		6E740C4920657F35006589F6 /* StatusParametersCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusParametersCommand.swift; sourceTree = "<group>"; };
+		6E740C4E20657F46006589F6 /* TestingCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingCommand.swift; sourceTree = "<group>"; };
+		6E740C5320657F6A006589F6 /* VendorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorCommand.swift; sourceTree = "<group>"; };
+		6E740C5820658006006589F6 /* LinkPolicyCommandParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPolicyCommandParameter.swift; sourceTree = "<group>"; };
+		6E740C5D206586D3006589F6 /* HCITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCITests.swift; sourceTree = "<group>"; };
+		6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeProtocolTests.swift; sourceTree = "<group>"; };
 		6EB2EA1D1CD5A8A7000CF975 /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefinedUUID.swift; sourceTree = "<group>"; };
 		6EE84DB71CAF5C7C00A40C4D /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -266,6 +305,8 @@
 			isa = PBXGroup;
 			children = (
 				6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */,
+				6E740C5D206586D3006589F6 /* HCITests.swift */,
+				6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
@@ -377,8 +418,15 @@
 				6EE84DF31CAF891E00A40C4D /* HCICommand.swift */,
 				6EE84DF41CAF891E00A40C4D /* LinkControlCommand.swift */,
 				6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */,
+				6E740C3A20657ED3006589F6 /* LinkPolicyCommand.swift */,
+				6E740C5820658006006589F6 /* LinkPolicyCommandParameter.swift */,
+				6E740C4420657F25006589F6 /* InformationalParametersCommand.swift */,
+				6E740C3C20657EEB006589F6 /* HostControllerCommand.swift */,
+				6E740C4920657F35006589F6 /* StatusParametersCommand.swift */,
 				6EE84DF61CAF891E00A40C4D /* LowEnergyCommand.swift */,
 				6EE84DF71CAF891E00A40C4D /* LowEnergyCommandParameter.swift */,
+				6E740C4E20657F46006589F6 /* TestingCommand.swift */,
+				6E740C5320657F6A006589F6 /* VendorCommand.swift */,
 			);
 			name = Command;
 			sourceTree = "<group>";
@@ -527,10 +575,11 @@
 					};
 					6EE84DB61CAF5C7C00A40C4D = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0920;
 					};
 					6EE84DC01CAF5C7C00A40C4D = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0920;
 					};
 				};
 			};
@@ -598,16 +647,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E740C5C20658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */,
 				6E49B23E20532D45002EA5DC /* HCIEvent.swift in Sources */,
+				6E740C5220657F46006589F6 /* TestingCommand.swift in Sources */,
 				6E49B23F20532D45002EA5DC /* HCI.swift in Sources */,
 				6E49B24020532D45002EA5DC /* LinkControlCommandParameter.swift in Sources */,
 				6E49B24120532D45002EA5DC /* LowEnergyCommand.swift in Sources */,
 				6E49B24220532D45002EA5DC /* HCICommand.swift in Sources */,
 				6E49B24320532D45002EA5DC /* AdvertisingChannelHeader.swift in Sources */,
 				6E49B24420532D45002EA5DC /* ATTProtocolDataUnit.swift in Sources */,
+				6E740C4020657EEB006589F6 /* HostControllerCommand.swift in Sources */,
 				6E49B24520532D45002EA5DC /* PSM.swift in Sources */,
 				6E49B24620532D45002EA5DC /* GATT.swift in Sources */,
 				6E49B24720532D45002EA5DC /* LinkControlCommand.swift in Sources */,
+				6E740C4D20657F35006589F6 /* StatusParametersCommand.swift in Sources */,
 				6E49B24820532D45002EA5DC /* Hexadecimal.swift in Sources */,
 				6E49B24920532D45002EA5DC /* LowEnergyEvent.swift in Sources */,
 				6E49B24A20532D45002EA5DC /* Range.swift in Sources */,
@@ -618,6 +671,7 @@
 				6E49B24F20532D45002EA5DC /* String.swift in Sources */,
 				6E49B25020532D45002EA5DC /* DefinedUUID.swift in Sources */,
 				6E49B25120532D45002EA5DC /* HCIVersion.swift in Sources */,
+				6E740C4820657F25006589F6 /* InformationalParametersCommand.swift in Sources */,
 				6E49B25220532D45002EA5DC /* UUID.swift in Sources */,
 				6E49B25320532D45002EA5DC /* GATTAttributes.swift in Sources */,
 				6E49B25420532D45002EA5DC /* HCIError.swift in Sources */,
@@ -628,6 +682,8 @@
 				6E49B25920532D45002EA5DC /* LowEnergyAddressType.swift in Sources */,
 				6E49B25A20532D45002EA5DC /* CompanyIdentifier.swift in Sources */,
 				6E49B25B20532D45002EA5DC /* BluetoothUUID.swift in Sources */,
+				6E740C4320657EF0006589F6 /* LinkPolicyCommand.swift in Sources */,
+				6E740C5720657F6B006589F6 /* VendorCommand.swift in Sources */,
 				6E49B25C20532D45002EA5DC /* Integer.swift in Sources */,
 				6E49B25D20532D45002EA5DC /* LowEnergyEventParameter.swift in Sources */,
 			);
@@ -637,16 +693,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E740C5B20658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */,
 				6EB2EA041CD5A8A7000CF975 /* HCIEvent.swift in Sources */,
+				6E740C5120657F46006589F6 /* TestingCommand.swift in Sources */,
 				6EB2EA051CD5A8A7000CF975 /* HCI.swift in Sources */,
 				6EB2EA061CD5A8A7000CF975 /* LinkControlCommandParameter.swift in Sources */,
 				6EB2EA071CD5A8A7000CF975 /* LowEnergyCommand.swift in Sources */,
 				6EB2EA081CD5A8A7000CF975 /* HCICommand.swift in Sources */,
 				6E572AD91FCE763F00CDC763 /* AdvertisingChannelHeader.swift in Sources */,
 				6EB2EA091CD5A8A7000CF975 /* ATTProtocolDataUnit.swift in Sources */,
+				6E740C3F20657EEB006589F6 /* HostControllerCommand.swift in Sources */,
 				6EB2EA0A1CD5A8A7000CF975 /* PSM.swift in Sources */,
 				6EB2EA0B1CD5A8A7000CF975 /* GATT.swift in Sources */,
 				6EB2EA0C1CD5A8A7000CF975 /* LinkControlCommand.swift in Sources */,
+				6E740C4C20657F35006589F6 /* StatusParametersCommand.swift in Sources */,
 				6E704C911E95C45800484A22 /* Hexadecimal.swift in Sources */,
 				6EB2EA0D1CD5A8A7000CF975 /* LowEnergyEvent.swift in Sources */,
 				6E704C891E95C41C00484A22 /* Range.swift in Sources */,
@@ -657,6 +717,7 @@
 				6E704C951E95C4AB00484A22 /* String.swift in Sources */,
 				6EB45EF22001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6EE910291FDE585C007AD3EA /* HCIVersion.swift in Sources */,
+				6E740C4720657F25006589F6 /* InformationalParametersCommand.swift in Sources */,
 				6E704C9A1E95C6A500484A22 /* UUID.swift in Sources */,
 				6EB2EA101CD5A8A7000CF975 /* GATTAttributes.swift in Sources */,
 				6E3229121FCDCB790035605D /* HCIError.swift in Sources */,
@@ -667,6 +728,8 @@
 				6E572AD71FCE763C00CDC763 /* LowEnergyAddressType.swift in Sources */,
 				6E3229161FCDD6430035605D /* CompanyIdentifier.swift in Sources */,
 				6EB2EA141CD5A8A7000CF975 /* BluetoothUUID.swift in Sources */,
+				6E740C4220657EEF006589F6 /* LinkPolicyCommand.swift in Sources */,
+				6E740C5620657F6B006589F6 /* VendorCommand.swift in Sources */,
 				6E704C861E95C41C00484A22 /* Integer.swift in Sources */,
 				6EB2EA151CD5A8A7000CF975 /* LowEnergyEventParameter.swift in Sources */,
 			);
@@ -676,7 +739,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E740C5920658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */,
 				6EE84DF81CAF891E00A40C4D /* HCIEvent.swift in Sources */,
+				6E740C4F20657F46006589F6 /* TestingCommand.swift in Sources */,
 				6E32291C1FCE4C4F0035605D /* LowEnergyAddressType.swift in Sources */,
 				6EE910251FDE5841007AD3EA /* UInt128.swift in Sources */,
 				6EE84E061CAF8AD500A40C4D /* HCI.swift in Sources */,
@@ -687,8 +752,10 @@
 				6EE84DED1CAF881B00A40C4D /* ATTProtocolDataUnit.swift in Sources */,
 				6EE84DE61CAF828800A40C4D /* PSM.swift in Sources */,
 				6EE84DE91CAF85AE00A40C4D /* GATT.swift in Sources */,
+				6E740C4A20657F35006589F6 /* StatusParametersCommand.swift in Sources */,
 				6EE84DFE1CAF891E00A40C4D /* LinkControlCommand.swift in Sources */,
 				6E704C8F1E95C45800484A22 /* Hexadecimal.swift in Sources */,
+				6E740C3B20657ED3006589F6 /* LinkPolicyCommand.swift in Sources */,
 				6EE84DFB1CAF891E00A40C4D /* LowEnergyEvent.swift in Sources */,
 				6E704C871E95C41C00484A22 /* Range.swift in Sources */,
 				6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */,
@@ -696,6 +763,8 @@
 				6E704C7B1E95C34D00484A22 /* ByteValue.swift in Sources */,
 				6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
+				6E740C4520657F25006589F6 /* InformationalParametersCommand.swift in Sources */,
+				6E740C3D20657EEB006589F6 /* HostControllerCommand.swift in Sources */,
 				6E2809891FCF499100B2D68E /* HCIVersion.swift in Sources */,
 				6EE84DFA1CAF891E00A40C4D /* HCIGeneralEventParameter.swift in Sources */,
 				6E704C931E95C4AB00484A22 /* String.swift in Sources */,
@@ -706,6 +775,7 @@
 				6EE84E011CAF891E00A40C4D /* LowEnergyCommandParameter.swift in Sources */,
 				6EE84DF91CAF891E00A40C4D /* HCIGeneralEvent.swift in Sources */,
 				6EE84DD51CAF603000A40C4D /* BluetoothUUID.swift in Sources */,
+				6E740C5420657F6B006589F6 /* VendorCommand.swift in Sources */,
 				6E704C841E95C41C00484A22 /* Integer.swift in Sources */,
 				6EE84DFC1CAF891E00A40C4D /* LowEnergyEventParameter.swift in Sources */,
 			);
@@ -715,7 +785,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E740C6720659CE8006589F6 /* HCITests.swift in Sources */,
 				6E6AD98D1FCE8E4F007F0250 /* BluetoothTests.swift in Sources */,
+				6E740C6820659CEF006589F6 /* AttributeProtocolTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,16 +795,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E740C5A20658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */,
 				6EF45FA41CC6D04D001F7A39 /* HCIEvent.swift in Sources */,
+				6E740C5020657F46006589F6 /* TestingCommand.swift in Sources */,
 				6EF45FA51CC6D04D001F7A39 /* HCI.swift in Sources */,
 				6EF45FA61CC6D04D001F7A39 /* LinkControlCommandParameter.swift in Sources */,
 				6EF45FA71CC6D04D001F7A39 /* LowEnergyCommand.swift in Sources */,
 				6EF45FA81CC6D04D001F7A39 /* HCICommand.swift in Sources */,
 				6E572AD81FCE763E00CDC763 /* AdvertisingChannelHeader.swift in Sources */,
 				6EF45FA91CC6D04D001F7A39 /* ATTProtocolDataUnit.swift in Sources */,
+				6E740C3E20657EEB006589F6 /* HostControllerCommand.swift in Sources */,
 				6EF45FAA1CC6D04D001F7A39 /* PSM.swift in Sources */,
 				6EF45FAB1CC6D04D001F7A39 /* GATT.swift in Sources */,
 				6EF45FAC1CC6D04D001F7A39 /* LinkControlCommand.swift in Sources */,
+				6E740C4B20657F35006589F6 /* StatusParametersCommand.swift in Sources */,
 				6E704C901E95C45800484A22 /* Hexadecimal.swift in Sources */,
 				6EF45FAD1CC6D04D001F7A39 /* LowEnergyEvent.swift in Sources */,
 				6E704C881E95C41C00484A22 /* Range.swift in Sources */,
@@ -743,6 +819,7 @@
 				6E704C941E95C4AB00484A22 /* String.swift in Sources */,
 				6EB45EF12001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6EE910281FDE585B007AD3EA /* HCIVersion.swift in Sources */,
+				6E740C4620657F25006589F6 /* InformationalParametersCommand.swift in Sources */,
 				6E704C991E95C6A500484A22 /* UUID.swift in Sources */,
 				6EF45FB01CC6D04D001F7A39 /* GATTAttributes.swift in Sources */,
 				6E3229111FCDCB780035605D /* HCIError.swift in Sources */,
@@ -753,6 +830,8 @@
 				6E572AD61FCE763B00CDC763 /* LowEnergyAddressType.swift in Sources */,
 				6E3229151FCDD6420035605D /* CompanyIdentifier.swift in Sources */,
 				6EF45FB41CC6D04D001F7A39 /* BluetoothUUID.swift in Sources */,
+				6E740C4120657EEF006589F6 /* LinkPolicyCommand.swift in Sources */,
+				6E740C5520657F6B006589F6 /* VendorCommand.swift in Sources */,
 				6E704C851E95C41C00484A22 /* Integer.swift in Sources */,
 				6EF45FB51CC6D04D001F7A39 /* LowEnergyEventParameter.swift in Sources */,
 			);
