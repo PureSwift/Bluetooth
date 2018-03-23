@@ -86,4 +86,40 @@ public extension HostControllerBasebandCommand {
             case address
         }
     }
+    
+    /**
+     The Write Local Name command provides the ability to modify the user-friendly name for the BR/EDR Controller.
+     */
+    public struct WriteLocalNameParameter: HCICommandParameter {
+        
+        public static let command = HostControllerBasebandCommand.writeLocalName
+        
+        public static let length = 248
+        
+        public let localName: String
+        
+        public init?(localName: String) {
+            
+            guard localName.utf8.count <= type(of: self).length
+                else { return nil }
+            
+            self.localName = localName
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let maxLength = type(of: self).length
+            
+            var bytes = [UInt8](localName.utf8)
+            
+            assert(bytes.count <= maxLength)
+            
+            if bytes.count < type(of: self).length {
+                
+                bytes += [UInt8](repeating: 0x00, count: maxLength - bytes.count)
+            }
+            
+            return bytes
+        }
+    }
 }

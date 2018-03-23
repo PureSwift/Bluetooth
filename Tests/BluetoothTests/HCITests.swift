@@ -17,8 +17,65 @@ final class HCITests: XCTestCase {
     static let allTests = [
         ("testAdvertisingReport", testAdvertisingReport),
         ("testCommandStatusEvent", testCommandStatusEvent),
-        ("testLEConnection", testLEConnection)
+        ("testLEConnection", testLEConnection),
+        ("testWriteLocalName", testWriteLocalName)
     ]
+    
+    func testWriteLocalName() {
+        
+        typealias WriteLocalNameParameter = HostControllerBasebandCommand.WriteLocalNameParameter
+        
+        XCTAssert((WriteLocalNameParameter(localName: "")?.byteValue ?? []) == [UInt8].init(repeating: 0x00, count: WriteLocalNameParameter.length))
+        
+        // test local name lenght == 248
+        do {
+            let localNameParameter = String(repeating: "M", count: WriteLocalNameParameter.length) //248
+            
+            guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localNameParameter)
+                else { XCTFail(); return  }
+            
+            XCTAssert(writeLocalNameParameter.byteValue.isEmpty == false)
+            XCTAssert(writeLocalNameParameter.byteValue.count == WriteLocalNameParameter.length)
+        }
+        
+        // test local name shorter than 248 octets
+        do{
+            
+            let localName = String(repeating: "M", count: 10)
+            
+            let data: [UInt8] = [UInt8](localName.utf8) + [UInt8](repeating: 0x00, count: WriteLocalNameParameter.length - 10)
+            
+            guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localName)
+                else { XCTFail(); return }
+            
+            XCTAssert(writeLocalNameParameter.byteValue == data)
+        }
+        
+        // test local name longer than 248
+        do {
+            let localNameParameter = String(repeating: "M", count: 260)
+            
+            let writeLocalNameParameter = WriteLocalNameParameter(localName: localNameParameter)
+            
+            XCTAssert(writeLocalNameParameter == nil, "WriteLocalNameParameter was created with local name longer than 248")
+        }
+        
+        // compare byte localname
+        do {
+            
+            let localName = String(repeating: "M", count: 248)
+            
+            guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localName)
+                else { XCTFail(); return  }
+            
+            XCTAssert(writeLocalNameParameter.localName == localName)
+            XCTAssert(writeLocalNameParameter.byteValue.isEmpty == false)
+            
+            let data = [UInt8](repeating: 77, count: 248)
+            
+            XCTAssert(writeLocalNameParameter.byteValue == data, "Local Name is not generating correct bytes")
+        }
+    }
     
     func testAdvertisingReport() {
         
@@ -129,6 +186,8 @@ final class HCITests: XCTestCase {
             print("Connection handle: ", event.handle)
         }
     }
+    
+    
 }
 
 @inline(__always)
