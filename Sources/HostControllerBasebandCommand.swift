@@ -51,4 +51,14 @@ public enum HostControllerBasebandCommand: UInt16, HCICommand {
      If there is a contradiction between event filters, the latest set event filter will override older ones. An example is an incoming connection attempt where more than one Connection Setup filter matches the incoming connection attempt, but the Auto-Accept_Flag has different values in the different filters.
      */
     case setEventFilter = 0x0005
+    
+    /**
+     The Write_Local_Name command provides the ability to modify the user- friendly name for the BR/EDR Controller.
+     */
+    case writeLocalName = 0x0013
+    
+    /**
+     The Read_Local_Name command provides the ability to read the stored user- friendly name for the BR/EDR Controller.
+     */
+    case  readLocalName = 0x0014
 }

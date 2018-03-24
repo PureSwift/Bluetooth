@@ -86,4 +86,66 @@ public extension HostControllerBasebandCommand {
             case address
         }
     }
+    
+    /**
+     The Write Local Name command provides the ability to modify the user-friendly name for the BR/EDR Controller.
+     */
+    public struct WriteLocalNameParameter: HCICommandParameter {
+        
+        public static let command = HostControllerBasebandCommand.writeLocalName
+        
+        public static let length = 248
+        
+        public let localName: String
+        
+        public init?(localName: String) {
+            
+            guard localName.utf8.count <= type(of: self).length
+                else { return nil }
+            
+            self.localName = localName
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let maxLength = type(of: self).length
+            
+            var bytes = [UInt8](localName.utf8)
+            
+            assert(bytes.count <= maxLength)
+            
+            if bytes.count < type(of: self).length {
+                
+                bytes += [UInt8](repeating: 0x00, count: maxLength - bytes.count)
+            }
+            
+            return bytes
+        }
+    }
+}
+
+// MARK: - Command Return Parameters
+
+public extension HostControllerBasebandCommand {
+    
+    /// LE Read Local name param
+    ///
+    /// The command is used to read the total number of white list entries that can be stored in the Controller.
+    public struct ReadLocalNameReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = HostControllerBasebandCommand.readLocalName
+        public static let length = 248
+        
+        public let localName: String
+        
+        public init?(byteValue: [UInt8]) {
+            
+            var data = unsafeBitCast(byteValue, to: [Int8].self)
+            
+            guard let localName = String(validatingUTF8: &data)
+                else { return nil }
+            
+            self.localName = localName
+        }
+    }
 }
