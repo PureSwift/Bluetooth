@@ -123,3 +123,29 @@ public extension HostControllerBasebandCommand {
         }
     }
 }
+
+// MARK: - Command Return Parameters
+
+public extension HostControllerBasebandCommand {
+    
+    /// LE Read Local name param
+    ///
+    /// The command is used to read the total number of white list entries that can be stored in the Controller.
+    public struct ReadLocalNameReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = HostControllerBasebandCommand.readLocalName
+        public static let length = 248
+        
+        public let localName: String
+        
+        public init?(byteValue: [UInt8]) {
+            
+            var data = unsafeBitCast(byteValue, to: [Int8].self)
+            
+            guard let localName = String(validatingUTF8: &data)
+                else { return nil }
+            
+            self.localName = localName
+        }
+    }
+}
