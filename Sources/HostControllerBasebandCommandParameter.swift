@@ -122,15 +122,39 @@ public extension HostControllerBasebandCommand {
             return bytes
         }
     }
+    
+    /**
+     Write Connection Accept Timeout Command
+     
+     This command writes the value for the Connection Accept Timeout configuration parameter.
+     */
+    public struct WriteConnectionAcceptTimeoutParameter: HCICommandParameter {
+        
+        public static let command = HostControllerBasebandCommand.writeConnectionAcceptTimeout
+        
+        public var timeout: ConnectionAcceptTimeout
+        
+        public init(timeout: ConnectionAcceptTimeout) {
+            
+            self.timeout = timeout
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let timeoutBytes = timeout.rawValue.littleEndian.bytes
+            
+            return [timeoutBytes.0, timeoutBytes.1]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
 
 public extension HostControllerBasebandCommand {
     
-    /// LE Read Local name param
+    /// Read Local Name Command
     ///
-    /// The command is used to read the total number of white list entries that can be stored in the Controller.
+    /// The Read Local Name command provides the ability to read the stored user-friendly name for the BR/EDR Controller.
     public struct ReadLocalNameReturnParameter: HCICommandReturnParameter {
         
         public static let command = HostControllerBasebandCommand.readLocalName
@@ -147,5 +171,93 @@ public extension HostControllerBasebandCommand {
             
             self.localName = localName
         }
+    }
+    
+    /// Read Connection Accept Timeout Command
+    ///
+    /// This command reads the value for the Connection Accept Timeout configuration parameter.
+    public struct ReadConnectionAcceptTimeoutReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = HostControllerBasebandCommand.readConnectionAcceptTimeout
+        public static let length = ConnectionAcceptTimeout.length
+        
+        public let timeout: ConnectionAcceptTimeout
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            
+            guard let timeout = ConnectionAcceptTimeout(rawValue: rawValue)
+                else { return nil }
+            
+            self.timeout = timeout
+        }
+    }
+}
+
+// MARK: - Supporting Types
+
+/// Connection Accept Timeout measured in Number of BR/EDR Baseband slots.
+///
+/// - Note: Interval Length = N * 0.625 ms (1 Baseband slot)
+///
+/// Range for N: 0x0001 – 0xB540
+///
+/// Time Range: 0.625 ms - 29 s
+public struct ConnectionAcceptTimeout: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    public static let length = MemoryLayout<RawValue>.size
+    
+    /// 0.625 ms
+    public static let min = ConnectionAcceptTimeout(0x0001)
+    
+    /// 29 seconds
+    public static let max = ConnectionAcceptTimeout(0xB540)
+    
+    public let rawValue: UInt16
+    
+    public init?(rawValue: UInt16) {
+        
+        guard rawValue >= type(of: self).min.rawValue,
+            rawValue <= type(of: self).max.rawValue
+            else { return nil }
+        
+        self.rawValue = rawValue
+        
+        assert((type(of: self).min.rawValue ... type(of: self).max.rawValue).contains(rawValue))
+    }
+    
+    /// Time = N * 0.625 ms
+    ///
+    /// Time Range: 0.625 ms - 29 s
+    public var miliseconds: Double {
+        
+        return Double(rawValue) * 0.625
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: ConnectionAcceptTimeout, rhs: ConnectionAcceptTimeout) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: ConnectionAcceptTimeout, rhs: ConnectionAcceptTimeout) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
     }
 }
