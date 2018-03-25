@@ -53,12 +53,28 @@ public enum HostControllerBasebandCommand: UInt16, HCICommand {
     case setEventFilter = 0x0005
     
     /**
-     The Write_Local_Name command provides the ability to modify the user- friendly name for the BR/EDR Controller.
+     The Write Local Name command provides the ability to modify the user- friendly name for the BR/EDR Controller.
      */
     case writeLocalName = 0x0013
     
     /**
-     The Read_Local_Name command provides the ability to read the stored user- friendly name for the BR/EDR Controller.
+     Read Connection Accept Timeout Command
+     
+     The Read Local Name command provides the ability to read the stored user- friendly name for the BR/EDR Controller.
      */
     case  readLocalName = 0x0014
+    
+    /**
+     Read Connection Accept Timeout Command
+     
+     This command reads the value for the Connection Accept Timeout configuration parameter.
+     */
+    case readConnectionAcceptTimeout = 0x0015
+    
+    /**
+     Write Connection Accept Timeout Command
+     
+     This command writes the value for the Connection Accept Timeout configuration parameter.
+     */
+    case writeConnectionAcceptTimeout = 0x0016
 }

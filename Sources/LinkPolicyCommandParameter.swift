@@ -111,14 +111,13 @@ public extension LinkPolicyCommand {
                 self.rawValue = unchecked
             }
             
-            /// Time = N * 1.25ms - 40.9 s
+            /// Time = N * 0.625 ms
+            /// N * 1.25ms - 40.9 s
             public var miliseconds: ClosedRange<Double> {
                 
-                func toMiliseconds(_ value: RawValue.Element) -> Double {
+                func toMiliseconds(_ value: UInt16) -> Double {
                     
-                    let ms = Double(1.25)
-                    
-                    return (Double(value) * ms) - (40.9 * 1000)
+                    return Double(value) * Double(0.625)
                 }
                 
                 let min = toMiliseconds(rawValue.lowerBound)
