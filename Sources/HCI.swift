@@ -34,6 +34,12 @@ public struct HCI {
     public typealias Version                = HCIVersion
     
     public typealias Status                 = HCIStatus
+    
+    public typealias PacketHeader           = HCIPacketHeader
+    
+    public typealias CommandHeader          = HCICommandHeader
+    
+    public typealias EventHeader            = HCIEventHeader
 }
 
 /// HCI Opcode Group Field
