@@ -94,7 +94,7 @@ public extension HostControllerBasebandCommand {
         
         public static let command = HostControllerBasebandCommand.writeLocalName
         
-        public static let length = 248
+        public static let length = HCI.maximumNameLength
         
         public let localName: String
         
@@ -158,7 +158,7 @@ public extension HostControllerBasebandCommand {
     public struct ReadLocalNameReturnParameter: HCICommandReturnParameter {
         
         public static let command = HostControllerBasebandCommand.readLocalName
-        public static let length = 248
+        public static let length = HCI.maximumNameLength //248
         
         public let localName: String
         

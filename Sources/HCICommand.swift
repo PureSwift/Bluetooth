@@ -16,6 +16,17 @@ public protocol HCICommand: RawRepresentable {
     var rawValue: HCIOpcodeCommandField { get }
 }
 
+public extension HCICommand {
+    
+    /// The packed HCI command opcode.
+    public var opcode: UInt16 {
+        
+        let commandField = self.rawValue
+        let groupField = Self.opcodeGroupField.rawValue
+        return (commandField & 0x03ff) | (groupField << 10)
+    }
+}
+
 public typealias HCIOpcodeCommandField = UInt16
 
 /// HCI Command Parameter.
