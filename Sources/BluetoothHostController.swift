@@ -15,7 +15,7 @@ public protocol BluetoothHostControllerInterface {
     /// The default controller on the host.
     static var `default`: Self? { get }
     
-    /// The Bluetooth Address of the adapter.
+    /// The Bluetooth Address of the controller.
     var address: Address { get }
     
     
@@ -38,7 +38,7 @@ public enum BluetoothHostControllerError: Error {
     case garbageResponse(Data)
 }
 
-public extension BluetoothHostController {
+public extension BluetoothHostControllerInterface {
     
     static var `default`: Self? {
         
