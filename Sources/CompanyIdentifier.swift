@@ -37,8 +37,8 @@ extension CompanyIdentifier: Hashable {
 extension CompanyIdentifier: CustomStringConvertible {
     
     public var description: String {
-      
-      return companyIdentifiers[rawValue] ?? "Unknown Company (\(rawValue))"
+        
+        return companyIdentifiers[rawValue] ?? "Unknown Company (\(rawValue))"
     }
 }
 
