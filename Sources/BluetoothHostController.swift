@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// Bluetooth HCI controller.
 public protocol BluetoothHostControllerInterface {
     
