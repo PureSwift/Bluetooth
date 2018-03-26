@@ -18,7 +18,23 @@ public protocol BluetoothHostControllerInterface {
     /// The Bluetooth Address of the controller.
     var address: Address { get }
     
+    /// Send an HCI command to the controller.
+    func deviceCommand <T: HCICommand> (_ command: T) throws
     
+    /// Send an HCI command with parameters to the controller.
+    func deviceCommand <T: HCICommandParameter> (_ commandParameter: T) throws
+    
+    /// Send a command to the controller and wait for response.
+    func deviceRequest<C: HCICommand>(_ command: C, timeout: Int) throws
+    
+    /// Send a command to the controller and wait for response.
+    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: Int) throws
+    
+    /// Sends a command to the device and waits for a response.
+    func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (commandParameter: CP, eventParameterType: EP.Type, timeout: Int) throws -> EP
+    
+    /// Sends a command to the device and waits for a response with return parameter values.
+    func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType : Return.Type, timeout: Int) throws -> Return
 }
 
 /// Bluetooth HCI errors

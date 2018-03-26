@@ -25,6 +25,9 @@ public struct HCI {
     
     public static let typeLength            = 1
     
+    /// Default timeout of HCI commands in miliseconds. 
+    public static let defaultTimeout        = 1000
+    
     // MARK: - Typealiases
     
     public typealias OpcodeGroupField       = HCIOpcodeGroupField
