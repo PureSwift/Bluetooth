@@ -17,24 +17,24 @@ public struct ATT {
     
     public static let CID: UInt16                       = 4
     
-    public static let MinimumPDULength                  = 1  /* At least 1 byte for the opcode. */
+    public static let minimumPDULength                  = 1  /* At least 1 byte for the opcode. */
     
     /// ATT Timeout, in miliseconds
-    public static let Timeout: Int                      = 30000 /* 30000 ms */
+    public static let timeout: Int                      = 30000 /* 30000 ms */
     
     /// Length of signature in write signed packet.
-    public static let SignatureLength                   = 12
+    public static let signatureLength                   = 12
     
-    public static let MaximumValueLength                = 512
+    public static let maximumValueLength                = 512
     
     /// ATT MTU constants
     public struct MTU {
         
         public struct LowEnergy {
             
-            public static let Default                   = 23
+            public static let `default`                   = 23
             
-            public static let Maximum                   = 517
+            public static let `maximum`                   = 517
         }
     }
     

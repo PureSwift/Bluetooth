@@ -8,7 +8,7 @@
 
 import struct Foundation.Data
 
-public extension String {
+internal extension String {
     
     init?(UTF8Data: Data) {
         
