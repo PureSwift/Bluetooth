@@ -209,7 +209,7 @@ public extension HostControllerBasebandCommand {
 /// Time Range: 0.625 ms - 29 s
 public struct ConnectionAcceptTimeout: RawRepresentable, Equatable, Hashable, Comparable {
     
-    public static let length = MemoryLayout<RawValue>.size
+    public static let length = MemoryLayout<UInt16>.size
     
     /// 0.625 ms
     public static let min = ConnectionAcceptTimeout(0x0001)
