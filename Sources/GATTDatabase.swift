@@ -6,6 +6,8 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// GATT Database
 public struct GATTDatabase {
     
