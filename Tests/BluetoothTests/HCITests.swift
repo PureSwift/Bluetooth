@@ -237,31 +237,3 @@ fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ ev
     
     return event
 }
-
-// MARK: - Suporting Types
-
-/// HCI Event Packet Header
-internal struct HCIEventHeader {
-    
-    static let length = 2
-    
-    var event: UInt8 = 0
-    
-    var parameterLength: UInt8 = 0
-    
-    init() { }
-    
-    init?(bytes: [UInt8]) {
-        
-        guard bytes.count == HCIEventHeader.length
-            else { return nil }
-        
-        self.event = bytes[0]
-        self.parameterLength = bytes[1]
-    }
-    
-    var byteValue: [UInt8] {
-        
-        return [event, parameterLength]
-    }
-}

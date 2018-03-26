@@ -1,6 +1,6 @@
 //
 //  ScanResponse.swift
-//  BluetoothLinux
+//  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 11/27/17.
 //  Copyright © 2017 PureSwift. All rights reserved.
@@ -20,7 +20,7 @@ public extension BluetoothHostControllerInterface {
     /// - Parameter commandTimeout: The timeout to use for each HCI command.
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
-    func setLowEnergyScanResponse(_ data: LowEnergyResponseData, length: UInt8, commandTimeout: Int = 1000) throws {
+    func setLowEnergyScanResponse(_ data: LowEnergyResponseData, length: UInt8, commandTimeout: Int = HCI.defaultTimeout) throws {
         
         precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
         
@@ -43,7 +43,7 @@ public extension BluetoothHostControllerInterface {
     /// - Parameter commandTimeout: The timeout to use for each HCI command.
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
-    func setLowEnergyScanResponse(_ data: Data, commandTimeout: Int = 1000) throws {
+    func setLowEnergyScanResponse(_ data: Data, commandTimeout: Int = HCI.defaultTimeout) throws {
         
         precondition(data.count <= 31, "LE Scan Response Data can only be 31 octets")
         
