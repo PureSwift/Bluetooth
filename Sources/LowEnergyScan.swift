@@ -1,12 +1,12 @@
 //
-//  ScanResponse.swift
+//  LowEnergyScan.swift
 //  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 11/27/17.
 //  Copyright © 2017 PureSwift. All rights reserved.
 //
 
-import struct Foundation.Data
+import Foundation
 
 public extension BluetoothHostControllerInterface {
     
