@@ -291,5 +291,3 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
     
     public typealias RawValue = UInt8
 }
-
-

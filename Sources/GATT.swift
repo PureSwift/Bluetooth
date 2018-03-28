@@ -74,7 +74,6 @@ public struct GATT {
     
     /// GATT Characteristic Properties Bitfield valuess
     public enum CharacteristicProperty: UInt8, BitMaskOption {
-
         
         case broadcast              = 0x01
         case read                   = 0x02

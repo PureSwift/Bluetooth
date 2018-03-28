@@ -52,6 +52,5 @@ public extension BluetoothHostControllerInterface {
     
     public func updateLowEnergyConnection(handle: UInt16) throws {
         
-        
     }
 }

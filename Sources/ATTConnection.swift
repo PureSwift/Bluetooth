@@ -147,10 +147,9 @@ public final class ATTConnection {
             // Set `incomingRequest` to false to indicate that no request is pending
             incomingRequest = false
             
-            // Fall through to the next case
-            fallthrough
-            
-        case .command, .notification, .confirmation:
+        case .command,
+             .notification,
+             .confirmation:
             
             break
         }
