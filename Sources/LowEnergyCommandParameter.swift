@@ -287,9 +287,9 @@ public extension LowEnergyCommand {
         
         public let filterPolicy: FilterPolicy
         
-        public init(type: ScanType = ScanType(),
-                    interval: TimeInterval = .default,
-                    window: TimeInterval = .default,
+        public init(type: ScanType = .passive,
+                    interval: TimeInterval = TimeInterval(0x01E0),
+                    window: TimeInterval = TimeInterval(0x0030),
                     addressType: LowEnergyAddressType = .public,
                     filterPolicy: FilterPolicy = .accept) {
             
@@ -412,8 +412,8 @@ public extension LowEnergyCommand {
         /// and maximum length of the connection needed for this LE connection.
         public let connectionLength: ConnectionLength
         
-        public init(scanInterval: LowEnergyScanTimeInterval = .default,
-                    scanWindow: LowEnergyScanTimeInterval = .default,
+        public init(scanInterval: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(10),
+                    scanWindow: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(10),
                     initiatorFilterPolicy: InitiatorFilterPolicy = .peerAddress,
                     peerAddressType: LowEnergyAddressType = .public,
                     peerAddress: Address,
@@ -675,9 +675,6 @@ public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable
     /// 10.24 seconds
     public static let max = LowEnergyScanTimeInterval(0x4000)
     
-    /// 10 ms
-    public static let `default` = LowEnergyScanTimeInterval(0x0010)
-    
     public let rawValue: UInt16
     
     public init?(rawValue: UInt16) {
@@ -696,7 +693,7 @@ public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable
     }
     
     // Private, unsafe
-    private init(_ rawValue: UInt16) {
+    fileprivate init(_ rawValue: UInt16) {
         self.rawValue = rawValue
     }
     
