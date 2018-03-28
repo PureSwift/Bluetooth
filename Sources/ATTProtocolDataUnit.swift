@@ -689,7 +689,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     public init?(data: [AttributeData]) {
         
         // must have at least one attribute data
-        guard data.count > 0 else { return nil }
+        guard data.isEmpty == false else { return nil }
         
         let length = data[0].value.count
         
@@ -1711,12 +1711,12 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
     public enum Flag: UInt8 {
         
         /// Cancel all prepared writes.
-        case Cancel = 0x00
+        case cancel = 0x00
         
         /// Immediately write all pending prepared values.
-        case Write  = 0x01
+        case write  = 0x01
             
-        public init() { self = .Cancel }
+        public init() { self = .cancel }
     }
 }
 

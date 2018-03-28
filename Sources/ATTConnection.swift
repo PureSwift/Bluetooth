@@ -9,18 +9,18 @@
 import Foundation
 
 /// Manages a Bluetooth connection using the ATT protocol.
-public final class ATTConnection  {
+public final class ATTConnection {
     
     // MARK: - Properties
     
     /// Actual number of bytes for PDU ATT exchange.
-    public var maximumTransmissionUnit: Int = ATT.MTU.LowEnergy.default {
+    public var maximumTransmissionUnit: Int = ATT.MaximumTransmissionUnit.LowEnergy.default {
         
         willSet {
             
             // enforce value range
-            assert(newValue >= ATT.MTU.LowEnergy.default)
-            assert(newValue <= ATT.MTU.LowEnergy.maximum)
+            assert(newValue >= ATT.MaximumTransmissionUnit.LowEnergy.default)
+            assert(newValue <= ATT.MaximumTransmissionUnit.LowEnergy.maximum)
         }
     }
     
@@ -118,7 +118,6 @@ public final class ATTConnection  {
         guard let sendOperation = pickNextSendOpcode()
             else { return false }
         
-        
         assert(sendOperation.data.count <= maximumTransmissionUnit, "Trying to send \(sendOperation.data.count) bytes when MTU is \(maximumTransmissionUnit)")
         
         //print("Sending data... (\(sendOpcode.data.count) bytes)")
@@ -208,8 +207,7 @@ public final class ATTConnection  {
     /// Adds a PDU to the queue to send.
     ///
     /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
-    public func send <PDU: ATTProtocolDataUnit> (_ pdu: PDU,
-                      response: (callback: (AnyResponse) -> (), ATTProtocolDataUnit.Type)? = nil) -> UInt? {
+    public func send <PDU: ATTProtocolDataUnit> (_ pdu: PDU, response: (callback: (AnyResponse) -> (), ATTProtocolDataUnit.Type)? = nil) -> UInt? {
         
         let attributeOpcode = PDU.attributeOpcode
         
@@ -498,7 +496,6 @@ public final class ATTConnection  {
         
         // attempt to change security level on Socket IO
         do { try self.socket.setSecurityLevel(security) }
-        
         catch { return false }
         
         return true
@@ -547,7 +544,9 @@ public enum ATTResponse <Value: ATTProtocolDataUnit> {
         case let .error(error):
             self = .error(error)
         case let .value(value):
+            // swiftlint:disable force_cast
             let specializedValue = value as! Value
+            // swiftlint:enable all
             self = .value(specializedValue)
         }
     }

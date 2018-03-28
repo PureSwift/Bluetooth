@@ -28,7 +28,7 @@ public struct ATT {
     public static let maximumValueLength                = 512
     
     /// ATT MTU constants
-    public struct MTU {
+    public struct MaximumTransmissionUnit {
         
         public struct LowEnergy {
             

@@ -28,7 +28,7 @@ public struct GATT {
         /// Initializes from a Bluetooth UUID
         public init?(uuid: BluetoothUUID) {
             
-            switch uuid  {
+            switch uuid {
                 
             case let .bit16(value):
                 

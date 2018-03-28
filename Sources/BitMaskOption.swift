@@ -205,7 +205,7 @@ extension BitMaskOptionSet: Hashable {
     }
 }
 
-// MARK: -  ExpressibleByArrayLiteral
+// MARK: - ExpressibleByArrayLiteral
 
 extension BitMaskOptionSet: ExpressibleByArrayLiteral {
     
