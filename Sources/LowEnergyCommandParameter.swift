@@ -655,6 +655,36 @@ public extension LowEnergyCommand {
             self.size = byteValue[0]
         }
     }
+    
+    /// LE Create Connection Cancel
+    ///
+    /// The command is used to cancel the LE_Create_Connection or LE_Extended_Create_Connection commands.
+    ///
+    /// This command shall only be issued after the LE_Create_Connection or LE_Extended_Create_Connection commands have been issued,
+    /// a Command Status event has been received for the LE Create Connection or LE_Extended_Create_Connection commands,
+    /// and before the LE Connection Complete or LE Enhanced Connection Complete events.
+    public struct CreateConnectionCancelParameter: HCICommandReturnParameter {
+        
+        public static var length: Int = 1
+        
+        public static let command = LowEnergyCommand.createConnectionCancel // 0x000E
+        
+        /// 0x00 E_Create_Connection_Cancel command succeeded.
+        /// or
+        /// 0x01 LE_Create_Connection_Cancel command failed.
+        public let status: Int8
+        
+        public init?(byteValue: [UInt8]) {
+            
+            var data = unsafeBitCast(byteValue, to: [Int8].self)
+            
+            if(data.count != 1){
+                self.status = data[0]
+            } else {
+                return nil
+            }
+        }
+    }
 }
 
 // MARK: - Supporting Types
