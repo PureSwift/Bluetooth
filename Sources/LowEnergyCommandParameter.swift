@@ -669,13 +669,43 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.createConnectionCancel // 0x000E
         
-        /// 0x00 E_Create_Connection_Cancel command succeeded.
+        /// 0x00 LE_Create_Connection_Cancel command succeeded.
         /// or
         /// 0x01 LE_Create_Connection_Cancel command failed.
         public let status: Int8
         
         public init?(byteValue: [UInt8]) {
             
+            var data = unsafeBitCast(byteValue, to: [Int8].self)
+            
+            if(data.count != 1){
+                self.status = data[0]
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    /// LE Clear White List Command
+    ///
+    /// The command is used to clear the White List stored in the Controller.
+    ///
+    /// This command can be used at any time except when:
+    /// * any advertising filter policy uses the White List and advertising is enabled.
+    /// * the scanning filter policy uses the White List and scanning is enabled.
+    /// * the initiator filter policy uses the White List and an LE_Create_Connection command is outstanding.
+    public struct ClearWhiteListParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.clearWhiteList // 0x0010
+        
+        public static var length: Int = 1
+        
+        /// 0x00 LE_Clear_White_List command succeeded.
+        /// or
+        /// 0x01 LE_Clear_White_List command failed.
+        public let status: Int8
+        
+        public init?(byteValue: [UInt8]) {
             var data = unsafeBitCast(byteValue, to: [Int8].self)
             
             if(data.count != 1){
