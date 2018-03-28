@@ -160,8 +160,6 @@ public final class GATTClient {
          
          */
         
-        
-        
     }
     
     /// Read Characteristic Value
@@ -270,7 +268,6 @@ public final class GATTClient {
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
     public func registerNotifications() {
-        
         
     }
     
@@ -873,7 +870,6 @@ public final class GATTClient {
             }
             
             let offset = Int(operation.lastRequest.offset) + operation.lastRequest.partValue.count
-            
             
             if offset < operation.data.count {
                 

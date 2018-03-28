@@ -785,4 +785,3 @@ internal extension GATTDatabase {
         return results
     }
 }
-

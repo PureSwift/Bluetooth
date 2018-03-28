@@ -11,6 +11,7 @@ disabled_rules: # rule identifiers to exclude from running
   - statement_position
   - line_length
   - unused_optional_binding
+  - redundant_discardable_let
 opt_in_rules: # some rules are only opt-in
   - empty_count
   # Find all the available rules by running:
@@ -21,18 +22,15 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Xcode
   - Assets
-
-# configurable rules can be customized from this configuration file
-# binary rules can set their severity level
+cyclomatic_complexity:
+  warning: 15
+  error: 20
 force_cast: error # implicitly
 force_try:
   severity: error # explicitly
-# they can set both implicitly with an array
 type_body_length:
-  - 300 # warning
-  - 400 # error
-# naming rules can set warnings/errors for min_length and max_length
-# additionally they can set excluded names
+  - 900 # warning
+  - 1000 # error
 type_name:
   min_length: 2 # only warning
   max_length: # warning and error
@@ -46,4 +44,4 @@ identifier_name:
     - id
     - URL
     - GlobalAPIKey
-reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
+reporter: "xcode"
