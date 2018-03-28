@@ -19,9 +19,6 @@ public extension BluetoothHostControllerInterface {
                        shouldContinue: () -> (Bool),
                        foundDevice: (LowEnergyScannedDevice) -> ()) throws {
         
-        // set parameters first
-        try deviceRequest(parameters, timeout: timeout)
-        
         // macro for enabling / disabling scan
         func enableScan(_ isEnabled: Bool = true) throws {
             
@@ -32,10 +29,17 @@ public extension BluetoothHostControllerInterface {
             catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
         }
         
+        // disable scanning first
+        do { try enableScan(false) }
+        catch HCIError.commandDisallowed { } // ignore error
+        
+        // set parameters
+        try deviceRequest(parameters, timeout: timeout)
+        
         // enable scanning
         try enableScan()
         
-        // disable scanning
+        // disable scanning after completion
         defer { do { try enableScan(false) } catch { /* ignore all errors disabling scanning */ } }
         
         // poll for scanned devices
@@ -58,7 +62,7 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyScan(duration: TimeInterval = 10,
                        filterDuplicates: Bool = true,
                        parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
-                       commandTimeout timeout: Int = 1000) throws -> [LowEnergyScannedDevice] {
+                       commandTimeout timeout: Int = HCI.defaultTimeout) throws -> [LowEnergyScannedDevice] {
         
         let startDate = Date()
         let endDate = startDate + duration
