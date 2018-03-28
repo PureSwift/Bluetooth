@@ -640,28 +640,26 @@ public extension LowEnergyCommand {
     /// * the scanning filter policy uses the White List and scanning is enabled.
     /// * the initiator filter policy uses the White List and a create connection command is outstanding.
     ///
-    /// When a Controller cannot add a device to the White List because there is no space available, it shall return the error code Memory Capacity Exceeded (0x07).
+    /// When a Controller cannot add a device to the White List because there is no space available,
+    /// it shall return the error code Memory Capacity Exceeded (0x07).
     ///
-    /// Address is ignored when Address_Type is set to 0xFF.
-    public struct AddDeviceToWhileListParameter: HCICommandParameter {
+    /// Address is ignored when Address Type is set to 0xFF.
+    public struct AddDeviceToWhiteListParameter: HCICommandParameter {
         
         public static let command = LowEnergyCommand.addDeviceToWhiteList
         
-         public let addressType: LowEnergyAddressType
+        /// The white list device. 
+        public var device: LowEnergyWhiteListDevice
         
-        public let address: Address
-        
-        public init(addressType: LowEnergyAddressType = .public,
-                    address: Address) {
-        
-            self.addressType = addressType
-            self.address = address
+        public init(device: LowEnergyWhiteListDevice) {
+            
+            self.device = device
         }
         
         public var byteValue: [UInt8] {
             
-            let addressType = self.addressType.rawValue
-            let addressBytes = self.address.littleEndian.bytes
+            let addressType = self.device.addressType.rawValue
+            let addressBytes = self.device.address.littleEndian.bytes
             
             return [addressType,
                     addressBytes.0,
@@ -671,6 +669,7 @@ public extension LowEnergyCommand {
                     addressBytes.4,
                     addressBytes.5]
         }
+        
     }
 }
 
@@ -697,72 +696,49 @@ public extension LowEnergyCommand {
             self.size = byteValue[0]
         }
     }
-    
-    /// LE Create Connection Cancel
-    ///
-    /// The command is used to cancel the LE_Create_Connection or LE_Extended_Create_Connection commands.
-    ///
-    /// This command shall only be issued after the LE_Create_Connection or LE_Extended_Create_Connection commands have been issued,
-    /// a Command Status event has been received for the LE Create Connection or LE_Extended_Create_Connection commands,
-    /// and before the LE Connection Complete or LE Enhanced Connection Complete events.
-    public struct CreateConnectionCancelParameter: HCICommandReturnParameter {
-        
-        public static var length: Int = 1
-        
-        public static let command = LowEnergyCommand.createConnectionCancel // 0x000E
-        
-        /// 0x00 LE_Create_Connection_Cancel command succeeded.
-        /// or
-        /// 0x01 LE_Create_Connection_Cancel command failed.
-        public let status: Int8
-        
-        public init?(byteValue: [UInt8]) {
-            
-            var data = unsafeBitCast(byteValue, to: [Int8].self)
-            
-            if(data.count != 1){
-                self.status = data[0]
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    /// LE Clear White List Command
-    ///
-    /// The command is used to clear the White List stored in the Controller.
-    ///
-    /// This command can be used at any time except when:
-    /// * any advertising filter policy uses the White List and advertising is enabled.
-    /// * the scanning filter policy uses the White List and scanning is enabled.
-    /// * the initiator filter policy uses the White List and an LE_Create_Connection command is outstanding.
-    public struct ClearWhiteListParameter: HCICommandReturnParameter {
-        
-        public static let command = LowEnergyCommand.clearWhiteList // 0x0010
-        
-        public static var length: Int = 1
-        
-        /// 0x00 LE_Clear_White_List command succeeded.
-        /// or
-        /// 0x01 LE_Clear_White_List command failed.
-        public let status: Int8
-        
-        public init?(byteValue: [UInt8]) {
-            var data = unsafeBitCast(byteValue, to: [Int8].self)
-            
-            if(data.count != 1){
-                self.status = data[0]
-            } else {
-                return nil
-            }
-        }
-    }
 }
 
 // MARK: - Supporting Types
 
 /// 31 Byte LE Advertising or Scan Response Data
 public typealias LowEnergyResponseData = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+
+/// LE White List Address Type
+public enum LowEnergyWhiteListAddressType: UInt8 {
+    
+    /// Public Device Address
+    case `public` = 0x00
+    
+    /// Random Device Address
+    case random = 0x01
+    
+    /// Devices sending anonymous advertisements
+    case anonymous = 0xFF
+}
+
+/// LE White List Device Entry
+public enum LowEnergyWhiteListDevice {
+    
+    case `public`(Address)
+    case random(Address)
+    case anonymous
+    
+    public var addressType: LowEnergyWhiteListAddressType {
+        switch self {
+        case .public: return .public
+        case .random: return .random
+        case .anonymous: return .anonymous
+        }
+    }
+    
+    public var address: Address {
+        switch self {
+        case let .public(address): return address
+        case let .random(address): return address
+        case .anonymous: return .any
+        }
+    }
+}
 
 /// LE Scan Time Interval
 ///
