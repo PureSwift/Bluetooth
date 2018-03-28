@@ -669,7 +669,43 @@ public extension LowEnergyCommand {
                     addressBytes.4,
                     addressBytes.5]
         }
+    }
+    
+    /// LE Remove Device From White List Command
+    ///
+    /// The command is used to remove a single device from the White List stored in the Controller.
+    ///
+    /// This command can be used at any time except when:
+    /// * any advertising filter policy uses the White List and advertising is enabled.
+    /// * the scanning filter policy uses the White List and scanning is enabled.
+    /// * the initiator filter policy uses the White List and a create connection command is outstanding.
+    ///
+    /// Address is ignored when Address_Type is set to 0xFF.
+    public struct RemoveDeviceToWhiteListParameter: HCICommandParameter {
         
+        public static let command = LowEnergyCommand.removeDeviceFromWhiteList
+        
+        /// The white list device.
+        public var device: LowEnergyWhiteListDevice
+        
+        public init(device: LowEnergyWhiteListDevice) {
+            
+            self.device = device
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let addressType = self.device.addressType.rawValue
+            let addressBytes = self.device.address.littleEndian.bytes
+            
+            return [addressType,
+                    addressBytes.0,
+                    addressBytes.1,
+                    addressBytes.2,
+                    addressBytes.3,
+                    addressBytes.4,
+                    addressBytes.5]
+        }
     }
 }
 
