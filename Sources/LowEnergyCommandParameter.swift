@@ -630,6 +630,48 @@ public extension LowEnergyCommand {
             }
         }
     }
+    
+    /// LE Add Device To White List Command
+    ///
+    /// The command is used to add a single device to the White List stored in the Controller.
+    ///
+    /// This command can be used at any time except when:
+    /// * any advertising filter policy uses the White List and advertising is enabled.
+    /// * the scanning filter policy uses the White List and scanning is enabled.
+    /// * the initiator filter policy uses the White List and a create connection command is outstanding.
+    ///
+    /// When a Controller cannot add a device to the White List because there is no space available, it shall return the error code Memory Capacity Exceeded (0x07).
+    ///
+    /// Address is ignored when Address_Type is set to 0xFF.
+    public struct AddDeviceToWhileListParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.addDeviceToWhiteList
+        
+         public let addressType: LowEnergyAddressType
+        
+        public let address: Address
+        
+        public init(addressType: LowEnergyAddressType = .public,
+                    address: Address) {
+        
+            self.addressType = addressType
+            self.address = address
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let addressType = self.addressType.rawValue
+            let addressBytes = self.address.littleEndian.bytes
+            
+            return [addressType,
+                    addressBytes.0,
+                    addressBytes.1,
+                    addressBytes.2,
+                    addressBytes.3,
+                    addressBytes.4,
+                    addressBytes.5]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
