@@ -379,4 +379,40 @@ public extension LowEnergyEvent {
             }
         }
     }
+    
+    public struct ReadRemoteUsedFeaturesCompleteParameter: HCIEventParameter {
+    
+        public static let event = LowEnergyEvent.readRemoteUsedFeaturesComplete // 0x04
+        
+        public static let length: Int = 11
+        
+        public typealias Status = HCIStatus
+        
+        /// `0x00` if Connection successfully completed.
+        /// `HCIError` value otherwise.
+        public let status: Status
+        
+        /// Connection Handle
+        ///
+        /// Range: 0x0000-0x0EFF (all other values reserved for future use)
+        public let handle: UInt16 // Connection_Handle
+        
+        public let leFeatures: LowEnergyFeatureSet
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count >= ReadRemoteUsedFeaturesCompleteParameter.length
+                else { return nil }
+            
+            let statusByte = byteValue[0]
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            
+            guard let status = Status(rawValue: statusByte)
+                else { return nil }
+            
+            self.status = status
+            self.handle = handle
+            self.leFeatures = LowEnergyFeatureSet.init(arrayLiteral: [LowEnergyFeature.])
+        }
+    }
 }
