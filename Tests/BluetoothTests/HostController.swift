@@ -103,7 +103,26 @@ internal struct TestHostController: BluetoothHostControllerInterface {
         return response
     }
     
-
+    /// Sends a command to the device and waits for a response with return parameter values.
+    mutating func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (commandParameter: CP, commandReturnType : Return.Type, timeout: Int) throws -> Return {
+        
+        assert(CP.command.opcode == Return.command.opcode)
+        
+        let data = try hciRequest(commandReturnType.command,
+                                  commandParameterData: commandParameter.byteValue,
+                                  eventParameterLength: commandReturnType.length + 1) // status code + parameters
+        
+        guard let statusByte = data.first
+            else { fatalError("Missing status byte!") }
+        
+        guard statusByte == 0x00
+            else { throw HCIError(rawValue: statusByte)! }
+        
+        guard let response = Return(byteValue: Array(data.suffix(from: 1)))
+            else { throw BluetoothHostControllerError.garbageResponse(Data(data)) }
+        
+        return response
+    }
     
     /// Polls and waits for events.
     mutating func pollEvent <T: HCIEventParameter> (_ eventParameterType: T.Type,

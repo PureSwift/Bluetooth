@@ -391,12 +391,12 @@ public extension LowEnergyCommand {
         /// Value for the connection event interval.
         ///
         /// Defines the minimum and maximum allowed connection interval.
-        public let connectionInterval: ConnectionInterval  // Conn_Interval_Min, Conn_Interval_Max
+        public let connectionInterval: LowEnergyConnectionInterval  // Conn_Interval_Min, Conn_Interval_Max
         
         /// Slave latency for the connection in number of connection events.
         ///
         /// Defines the maximum allowed connection latency.
-        public let connectionLatency: ConnectionLatency
+        public let connectionLatency: LowEnergyConnectionLatency
         
         /// Supervision timeout for the LE Link.
         ///
@@ -418,8 +418,8 @@ public extension LowEnergyCommand {
                     peerAddressType: LowEnergyAddressType = .public,
                     peerAddress: Address,
                     ownAddressType: LowEnergyAddressType = .public,
-                    connectionInterval: ConnectionInterval = .full,
-                    connectionLatency: ConnectionLatency = .zero,
+                    connectionInterval: LowEnergyConnectionInterval = .full,
+                    connectionLatency: LowEnergyConnectionLatency = .zero,
                     supervisionTimeout: SupervisionTimeout = .max,
                     connectionLength: LowEnergyConnectionLength = .full) {
             
@@ -597,12 +597,12 @@ public extension LowEnergyCommand {
         /// Value for the connection event interval.
         ///
         /// Defines the minimum and maximum allowed connection interval.
-        public let connectionInterval: ConnectionInterval  // Conn_Interval_Min, Conn_Interval_Max
+        public let connectionInterval: LowEnergyConnectionInterval  // Conn_Interval_Min, Conn_Interval_Max
         
         /// Slave latency for the connection in number of connection events.
         ///
         /// Defines the maximum allowed connection latency.
-        public let connectionLatency: ConnectionLatency
+        public let connectionLatency: LowEnergyConnectionLatency
         
         /// Supervision timeout for the LE Link.
         ///
@@ -619,8 +619,8 @@ public extension LowEnergyCommand {
         public let connectionLength: LowEnergyConnectionLength
         
         public init(connectionHandle: UInt16,
-                    connectionInterval: ConnectionInterval = .full,
-                    connectionLatency: ConnectionLatency = .zero,
+                    connectionInterval: LowEnergyConnectionInterval = .full,
+                    connectionLatency: LowEnergyConnectionLatency = .zero,
                     supervisionTimeout: SupervisionTimeout = .max,
                     connectionLength: LowEnergyConnectionLength = .full) {
             
@@ -700,7 +700,7 @@ public extension LowEnergyCommand {
         
         public let connectionHandle: UInt16 //Connection_Handle
         
-        public init(connectionHandle: UInt16){
+        public init(connectionHandle: UInt16) {
             self.connectionHandle = connectionHandle
         }
         
@@ -739,35 +739,36 @@ public extension LowEnergyCommand {
             self.size = byteValue[0]
         }
     }
-}
-
-/// LE Read Channel Map Command
-///
-/// The command returns the current Channel_Map for the specified Connection_Handle. The returned value indicates the state
-/// of the Channel_Map specified by the last transmitted or received Channel_Map (in a CONNECT_IND or LL_CHANNEL_MAP_IND message)
-/// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
-public struct ReadChannelMapParameter: HCICommandReturnParameter {
     
-    public static let command = LowEnergyCommand.readChannelMap
-
-    public static var length: Int = 7
-    
-    public let connectionHandle: UInt16 // Connection_Handle
-    
-    /// This parameter contains 37 1-bit fields.
-    /// The Nth such field (in the range 0 to 36) contains the value for the link layer channel index n.
-    /// Channel n is unused = 0.
-    /// Channel n is used = 1.
-    /// The most significant bits are reserved for future use.
-    public let channelMap: LowEnergyChannelMap // Channel_Map
-    
-    public init?(byteValue: [UInt8]) {
-        guard byteValue.count == ReadChannelMapParameter.length
-            else { return nil }
+    /// LE Read Channel Map Command
+    ///
+    /// The command returns the current Channel_Map for the specified Connection_Handle. The returned value indicates the state
+    /// of the Channel_Map specified by the last transmitted or received Channel_Map (in a CONNECT_IND or LL_CHANNEL_MAP_IND message)
+    /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
+    public struct ReadChannelMapReturnParameter: HCICommandReturnParameter {
         
-        connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        public static let command = LowEnergyCommand.readChannelMap
         
-        channelMap = (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6])
+        public static var length: Int = 7
+        
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        /// This parameter contains 37 1-bit fields.
+        /// The Nth such field (in the range 0 to 36) contains the value for the link layer channel index n.
+        /// Channel n is unused = 0.
+        /// Channel n is used = 1.
+        /// The most significant bits are reserved for future use.
+        public let channelMap: LowEnergyChannelMap // Channel_Map
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            
+            channelMap = (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6])
+        }
     }
 }
 
@@ -778,7 +779,7 @@ public struct ReadChannelMapParameter: HCICommandReturnParameter {
 /// Range: 0x0006 to 0x0C80
 /// Time = N * 1.25 msec
 /// Time Range: 7.5 msec to 4 seconds.
-public struct ConnectionInterval: RawRepresentable, Equatable {
+public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
     
     public typealias RawValue = CountableClosedRange<UInt16>
     
@@ -789,21 +790,21 @@ public struct ConnectionInterval: RawRepresentable, Equatable {
     public static let max: UInt16 = 0x0C80
     
     /// Maximum interval range.
-    public static let full = ConnectionInterval(ConnectionInterval.min ... ConnectionInterval.max)
+    public static let full = LowEnergyConnectionInterval(.min ... .max)
     
     public let rawValue: RawValue
     
     public init?(rawValue: RawValue) {
         
-        assert(ConnectionInterval.full.rawValue.lowerBound == ConnectionInterval.min)
-        assert(ConnectionInterval.full.rawValue.upperBound == ConnectionInterval.max)
+        assert(LowEnergyConnectionInterval.full.rawValue.lowerBound == LowEnergyConnectionInterval.min)
+        assert(LowEnergyConnectionInterval.full.rawValue.upperBound == LowEnergyConnectionInterval.max)
         
-        guard rawValue.lowerBound >= ConnectionInterval.min,
-            rawValue.upperBound <= ConnectionInterval.max
+        guard rawValue.lowerBound >= LowEnergyConnectionInterval.min,
+            rawValue.upperBound <= LowEnergyConnectionInterval.max
             else { return nil }
         
-        assert(rawValue.clamped(to: ConnectionInterval.full.rawValue) == rawValue)
-        assert(rawValue.overlaps(ConnectionInterval.full.rawValue))
+        assert(rawValue.clamped(to: LowEnergyConnectionInterval.full.rawValue) == rawValue)
+        assert(rawValue.overlaps(LowEnergyConnectionInterval.full.rawValue))
         
         self.rawValue = rawValue
     }
@@ -827,7 +828,7 @@ public struct ConnectionInterval: RawRepresentable, Equatable {
     }
     
     // Equatable
-    public static func == (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
+    public static func == (lhs: LowEnergyConnectionInterval, rhs: LowEnergyConnectionInterval) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
@@ -836,9 +837,9 @@ public struct ConnectionInterval: RawRepresentable, Equatable {
 /// Slave latency for the connection in number of connection events.
 ///
 /// Range: 0x0000 to 0x01F3
-public struct ConnectionLatency: RawRepresentable, Equatable, Hashable, Comparable {
+public struct LowEnergyConnectionLatency: RawRepresentable, Equatable, Hashable, Comparable {
     
-    public static var zero: ConnectionLatency { return ConnectionLatency() }
+    public static var zero: LowEnergyConnectionLatency { return LowEnergyConnectionLatency() }
     
     public let rawValue: UInt16
     
@@ -856,7 +857,7 @@ public struct ConnectionLatency: RawRepresentable, Equatable, Hashable, Comparab
     }
     
     // Equatable
-    public static func == (lhs: ConnectionLatency, rhs: ConnectionLatency) -> Bool {
+    public static func == (lhs: LowEnergyConnectionLatency, rhs: LowEnergyConnectionLatency) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
@@ -868,7 +869,7 @@ public struct ConnectionLatency: RawRepresentable, Equatable, Hashable, Comparab
     }
     
     // Comparable
-    public static func < (lhs: ConnectionLatency, rhs: ConnectionLatency) -> Bool {
+    public static func < (lhs: LowEnergyConnectionLatency, rhs: LowEnergyConnectionLatency) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
     }

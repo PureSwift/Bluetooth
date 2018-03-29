@@ -51,11 +51,11 @@ public extension BluetoothHostControllerInterface {
     }
     
     mutating func updateLowEnergyConnection(handle: UInt16,
-                                          connectionInterval: ConnectionInterval = .full,
-                                          connectionLatency: ConnectionLatency = .zero,
-                                          supervisionTimeout: LowEnergySupervisionTimeout = .max,
-                                          connectionLength: LowEnergyConnectionLength = .full,
-                                          commandTimeout timeout: Int = HCI.defaultTimeout) throws {
+                                            connectionInterval: LowEnergyConnectionInterval = .full,
+                                            connectionLatency: LowEnergyConnectionLatency = .zero,
+                                            supervisionTimeout: LowEnergySupervisionTimeout = .max,
+                                            connectionLength: LowEnergyConnectionLength = .full,
+                                            commandTimeout timeout: Int = HCI.defaultTimeout) throws {
         
         let parameters = LowEnergyCommand.UpdateConnectionParameter(connectionHandle: handle,
                                                                     connectionInterval: connectionInterval,
