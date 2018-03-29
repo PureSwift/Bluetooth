@@ -66,7 +66,7 @@ public func iBeacon(uuid: Foundation.UUID,
 public extension BluetoothHostControllerInterface {
     
     /// Enable iBeacon functionality.
-    func iBeacon(uuid: Foundation.UUID = UUID(),
+    mutating func iBeacon(uuid: Foundation.UUID = UUID(),
                  major: UInt16,
                  minor: UInt16,
                  rssi: Int8,
