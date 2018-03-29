@@ -42,7 +42,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     /// Send a command to the controller and wait for response.
     mutating func deviceRequest<C: HCICommand>(_ command: C, timeout: Int) throws {
         
-        let data = try hciRequest(command)
+        let data = try hciRequest(command, eventParameterLength: 1)
         
         guard let statusByte = data.first
             else { fatalError("Missing status byte!") }
@@ -54,7 +54,9 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     /// Send a command to the controller and wait for response.
     mutating func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: Int) throws {
         
-        let data = try hciRequest(CP.command, commandParameterData: commandParameter.byteValue)
+        let data = try hciRequest(CP.command,
+                                  commandParameterData: commandParameter.byteValue,
+                                  eventParameterLength: 1)
         
         guard let statusByte = data.first
             else { fatalError("Missing status byte!") }
@@ -137,8 +139,8 @@ internal struct TestHostController: BluetoothHostControllerInterface {
         for eventBuffer in testCommand.events {
             
             let actualBytesRead = eventBuffer.count
-            let headerData = Array(eventBuffer[1 ..< 1 + HCIEventHeader.length])
-            let eventData = Array(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
+            let headerData = Array(eventBuffer[0 ..< 0 + HCIEventHeader.length])
+            let eventData = Array(eventBuffer[(0 + HCIEventHeader.length) ..< actualBytesRead])
             
             guard let eventHeader = HCIEventHeader(bytes: headerData)
                 else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: headerData)) }
