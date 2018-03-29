@@ -67,11 +67,11 @@ public extension LowEnergyCommand {
         public var filterPolicy: FilterPolicy
         
         public init(interval: (minimum: UInt16, maximum: UInt16) = (0x0800, 0x0800),
-            advertisingType: AdvertisingType = AdvertisingType(),
-            addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.public, .public),
-            directAddress: Address = Address(bytes: (0,0,0,0,0,0)),
-            channelMap: ChannelMap = ChannelMap(),
-            filterPolicy: FilterPolicy = FilterPolicy()) {
+                    advertisingType: AdvertisingType = AdvertisingType(),
+                    addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.public, .public),
+                    directAddress: Address = Address(bytes: (0,0,0,0,0,0)),
+                    channelMap: ChannelMap = ChannelMap(),
+                    filterPolicy: FilterPolicy = FilterPolicy()) {
             
             self.interval = interval
             self.advertisingType = advertisingType

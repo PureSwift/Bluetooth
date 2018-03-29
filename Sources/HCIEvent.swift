@@ -33,4 +33,3 @@ public protocol HCIEventParameter {
     /// Attempt to initialize event parameter from data. 
     init?(byteValue: [UInt8])
 }
-

@@ -527,5 +527,5 @@ internal let definedUUIDs: [UInt16: String] = [
     0xfe66: "Intel Corporation",
     /* SDO defined */
     0xfffe: "Alliance for Wireless Power (A4WP)",
-    0xfffd: "Fast IDentity Online Alliance (FIDO)",
+    0xfffd: "Fast IDentity Online Alliance (FIDO)"
 ]

@@ -28,7 +28,7 @@ public struct GATT {
         /// Initializes from a Bluetooth UUID
         public init?(uuid: BluetoothUUID) {
             
-            switch uuid  {
+            switch uuid {
                 
             case let .bit16(value):
                 
@@ -74,7 +74,6 @@ public struct GATT {
     
     /// GATT Characteristic Properties Bitfield valuess
     public enum CharacteristicProperty: UInt8, BitMaskOption {
-
         
         case broadcast              = 0x01
         case read                   = 0x02

@@ -38,7 +38,7 @@ public final class GATTServer {
     }
     
     public init(socket: L2CAPSocketProtocol,
-                maximumTransmissionUnit: Int = ATT.MTU.LowEnergy.default,
+                maximumTransmissionUnit: Int = ATT.MaximumTransmissionUnit.LowEnergy.default,
                 maximumPreparedWrites: Int = 50) {
         
         // set initial MTU and register handlers
@@ -285,7 +285,7 @@ public final class GATTServer {
         
         let serverMTU = UInt16(connection.maximumTransmissionUnit)
         
-        let finalMTU = max(min(pdu.clientMTU, serverMTU), UInt16(ATT.MTU.LowEnergy.default))
+        let finalMTU = max(min(pdu.clientMTU, serverMTU), UInt16(ATT.MaximumTransmissionUnit.LowEnergy.default))
         
         // Respond with the server MTU
         let _ = connection.send(ATTMaximumTransmissionUnitResponse(serverMTU: serverMTU))
@@ -663,7 +663,7 @@ public final class GATTServer {
         
         switch pdu.flag {
             
-        case .Write:
+        case .write:
             
             var newValues = [UInt16: Data]()
             
@@ -698,7 +698,7 @@ public final class GATTServer {
                 database.write(newValue, forAttribute: handle)
             }
             
-        case .Cancel: break // queue always cleared
+        case .cancel: break // queue always cleared
         }
         
         preparedWrites = []
@@ -785,4 +785,3 @@ internal extension GATTDatabase {
         return results
     }
 }
-

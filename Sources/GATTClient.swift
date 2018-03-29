@@ -30,7 +30,7 @@ public final class GATTClient {
     }
     
     public init(socket: L2CAPSocketProtocol,
-                maximumTransmissionUnit: Int = ATT.MTU.LowEnergy.default,
+                maximumTransmissionUnit: Int = ATT.MaximumTransmissionUnit.LowEnergy.default,
                 log: ((String) -> ())? = nil) {
         
         self.connection = ATTConnection(socket: socket)
@@ -160,8 +160,6 @@ public final class GATTClient {
          
          */
         
-        
-        
     }
     
     /// Read Characteristic Value
@@ -270,7 +268,6 @@ public final class GATTClient {
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
     public func registerNotifications() {
-        
         
     }
     
@@ -472,8 +469,8 @@ public final class GATTClient {
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/WriteCharacteristicValue.png)
      */
     private func writeCharacteristicValue(_ characteristic: Characteristic,
-                                         data: Data,
-                                         completion: @escaping (GATTClientResponse<()>) -> ()) {
+                                          data: Data,
+                                          completion: @escaping (GATTClientResponse<()>) -> ()) {
         
         // The Attribute Protocol Write Request is used to for this sub-procedure.
         // The Attribute Handle parameter shall be set to the Characteristic Value Handle.
@@ -496,9 +493,9 @@ public final class GATTClient {
     ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/WriteLongCharacteristicValues.png)
      */
     private func writeLongCharacteristicValue(_ characteristic: Characteristic,
-                                             data: Data,
-                                             reliableWrites: Bool = false,
-                                             completion: @escaping (GATTClientResponse<()>) -> ()) {
+                                              data: Data,
+                                              reliableWrites: Bool = false,
+                                              completion: @escaping (GATTClientResponse<()>) -> ()) {
         
         // The Attribute Protocol Prepare Write Request and Execute Write Request are used to perform this sub-procedure.
         // The Attribute Handle parameter shall be set to the Characteristic Value Handle of the Characteristic Value to be written.
@@ -874,7 +871,6 @@ public final class GATTClient {
             
             let offset = Int(operation.lastRequest.offset) + operation.lastRequest.partValue.count
             
-            
             if offset < operation.data.count {
                 
                 // write next part
@@ -895,7 +891,7 @@ public final class GATTClient {
                 
                 // all data sent
                 
-                let pdu = ATTExecuteWriteRequest(flag: .Write)
+                let pdu = ATTExecuteWriteRequest(flag: .write)
                 
                 send(pdu) { [unowned self] in self.executeWrite($0, operation: operation) }
             }
