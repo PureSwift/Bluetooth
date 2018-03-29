@@ -410,7 +410,7 @@ public extension LowEnergyCommand {
         ///
         /// Informative parameters providing the Controller with the expected minimum 
         /// and maximum length of the connection needed for this LE connection.
-        public let connectionLength: ConnectionLength
+        public let connectionLength: LowEnergyConnectionLength
         
         public init(scanInterval: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(10),
                     scanWindow: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(10),
@@ -421,7 +421,7 @@ public extension LowEnergyCommand {
                     connectionInterval: ConnectionInterval = .full,
                     connectionLatency: ConnectionLatency = .zero,
                     supervisionTimeout: SupervisionTimeout = .max,
-                    connectionLength: ConnectionLength = .full) {
+                    connectionLength: LowEnergyConnectionLength = .full) {
             
             precondition(scanWindow <= scanInterval, "LE_Scan_Window shall be less than or equal to LE_Scan_Interval")
             precondition(supervisionTimeout.miliseconds > connectionInterval.miliseconds.upperBound, "The Supervision_Timeout in milliseconds shall be larger than the Conn_Interval_Max in milliseconds.")
@@ -616,13 +616,13 @@ public extension LowEnergyCommand {
         ///
         /// Informative parameters providing the Controller with the expected minimum
         /// and maximum length of the connection needed for this LE connection.
-        public let connectionLength: ConnectionLength
+        public let connectionLength: LowEnergyConnectionLength
         
         public init(connectionHandle: UInt16,
                     connectionInterval: ConnectionInterval = .full,
                     connectionLatency: ConnectionLatency = .zero,
                     supervisionTimeout: SupervisionTimeout = .max,
-                    connectionLength: ConnectionLength = .full) {
+                    connectionLength: LowEnergyConnectionLength = .full) {
             
             precondition(supervisionTimeout.miliseconds > connectionInterval.miliseconds.upperBound, "The Supervision_Timeout in milliseconds shall be larger than the Conn_Interval_Max in milliseconds.")
             
@@ -977,12 +977,12 @@ public struct LowEnergySupervisionTimeout: RawRepresentable, Equatable, Hashable
 ///
 /// Range: 0x0000 – 0xFFFF
 /// Time = N * 0.625 msec.
-public struct ConnectionLength: RawRepresentable, Equatable {
+public struct LowEnergyConnectionLength: RawRepresentable, Equatable {
     
     public typealias RawValue = CountableClosedRange<UInt16>
     
     /// Maximum interval range.
-    public static let full = ConnectionLength(rawValue: .min ... .max)
+    public static let full = LowEnergyConnectionLength(rawValue: .min ... .max)
     
     public let rawValue: RawValue
     
@@ -1004,7 +1004,7 @@ public struct ConnectionLength: RawRepresentable, Equatable {
     }
     
     // Equatable
-    public static func == (lhs: ConnectionLength, rhs: ConnectionLength) -> Bool {
+    public static func == (lhs: LowEnergyConnectionLength, rhs: LowEnergyConnectionLength) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }

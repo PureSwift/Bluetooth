@@ -54,7 +54,7 @@ public extension BluetoothHostControllerInterface {
                                           connectionInterval: ConnectionInterval = .full,
                                           connectionLatency: ConnectionLatency = .zero,
                                           supervisionTimeout: LowEnergySupervisionTimeout = .max,
-                                          connectionLength: ConnectionLength = .full,
+                                          connectionLength: LowEnergyConnectionLength = .full,
                                           commandTimeout timeout: Int = HCI.defaultTimeout) throws {
         
         let parameters = LowEnergyCommand.UpdateConnectionParameter(connectionHandle: handle,
