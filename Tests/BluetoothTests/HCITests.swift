@@ -55,7 +55,7 @@ final class HCITests: XCTestCase {
             XCTAssert(localName == returnedLocalName, "\(localName) == \(returnedLocalName)")
         }
     }
- 
+    
     func testWriteLocalName() {
         
         typealias WriteLocalNameParameter = HostControllerBasebandCommand.WriteLocalNameParameter
