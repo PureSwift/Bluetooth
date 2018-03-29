@@ -714,6 +714,36 @@ public extension LowEnergyCommand {
             ]
         }
     }
+    
+    /// LE Read Remote Features Command
+    ///
+    /// The command requests, from the remote device identified by the connection handle,
+    /// the features used on the connection and the features supported by the remote device.
+    ///
+    /// This command may be issued on both the master and slave.
+    ///
+    /// Note: If a connection already exists between the two devices and the features have already been fetched on that connection,
+    //// the Controller may use a cached copy of the features.
+    public struct ReadRemoteUsedFeaturesParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.readRemoteUsedFeatures
+        
+        public let connectionHandle: UInt16 //Connection_Handle
+        
+        public init(connectionHandle: UInt16) {
+            self.connectionHandle = connectionHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1
+            ]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
