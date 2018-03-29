@@ -14,10 +14,10 @@ public extension BluetoothHostControllerInterface {
     
     /// Scan LE devices.
     mutating func lowEnergyScan(filterDuplicates: Bool = true,
-                       parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
-                       commandTimeout timeout: Int = HCI.defaultTimeout,
-                       shouldContinue: () -> (Bool),
-                       foundDevice: (LowEnergyScannedDevice) -> ()) throws {
+                                parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
+                                commandTimeout timeout: Int = HCI.defaultTimeout,
+                                shouldContinue: () -> (Bool),
+                                foundDevice: (LowEnergyScannedDevice) -> ()) throws {
         
         // macro for enabling / disabling scan
         func enableScan(_ isEnabled: Bool = true) throws {
@@ -60,9 +60,9 @@ public extension BluetoothHostControllerInterface {
     
     /// Scan LE devices for the specified time period.
     mutating func lowEnergyScan(duration: TimeInterval = 10,
-                       filterDuplicates: Bool = true,
-                       parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
-                       commandTimeout timeout: Int = HCI.defaultTimeout) throws -> [LowEnergyScannedDevice] {
+                                filterDuplicates: Bool = true,
+                                parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
+                                commandTimeout timeout: Int = HCI.defaultTimeout) throws -> [LowEnergyScannedDevice] {
         
         let startDate = Date()
         let endDate = startDate + duration
