@@ -688,6 +688,32 @@ public extension LowEnergyCommand {
             ]
         }
     }
+    
+    /// LE Read Channel Map Command
+    ///
+    /// The command returns the current Channel_Map for the specified Connection_Handle. The returned value indicates the state
+    /// of the Channel_Map specified by the last transmitted or received Channel_Map (in a CONNECT_IND or LL_CHANNEL_MAP_IND message)
+    /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
+    public struct ReadChannelMapParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.readChannelMap
+        
+        public let connectionHandle: UInt16 //Connection_Handle
+        
+        public init(connectionHandle: UInt16){
+            self.connectionHandle = connectionHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1
+            ]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -712,6 +738,36 @@ public extension LowEnergyCommand {
             
             self.size = byteValue[0]
         }
+    }
+}
+
+/// LE Read Channel Map Command
+///
+/// The command returns the current Channel_Map for the specified Connection_Handle. The returned value indicates the state
+/// of the Channel_Map specified by the last transmitted or received Channel_Map (in a CONNECT_IND or LL_CHANNEL_MAP_IND message)
+/// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
+public struct ReadChannelMapParameter: HCICommandReturnParameter {
+    
+    public static let command = LowEnergyCommand.readChannelMap
+
+    public static var length: Int = 7
+    
+    public let connectionHandle: UInt16 // Connection_Handle
+    
+    /// This parameter contains 37 1-bit fields.
+    /// The Nth such field (in the range 0 to 36) contains the value for the link layer channel index n.
+    /// Channel n is unused = 0.
+    /// Channel n is used = 1.
+    /// The most significant bits are reserved for future use.
+    public let channelMap: LowEnergyChannelMap // Channel_Map
+    
+    public init?(byteValue: [UInt8]) {
+        guard byteValue.count == ReadChannelMapParameter.length
+            else { return nil }
+        
+        connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        
+        channelMap = (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6])
     }
 }
 
