@@ -13,7 +13,7 @@ public extension BluetoothHostControllerInterface {
     public typealias LowEnergyScannedDevice = LowEnergyEvent.AdvertisingReportEventParameter.Report
     
     /// Scan LE devices.
-    func lowEnergyScan(filterDuplicates: Bool = true,
+    mutating func lowEnergyScan(filterDuplicates: Bool = true,
                        parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
                        commandTimeout timeout: Int = HCI.defaultTimeout,
                        shouldContinue: () -> (Bool),
@@ -59,7 +59,7 @@ public extension BluetoothHostControllerInterface {
     }
     
     /// Scan LE devices for the specified time period.
-    func lowEnergyScan(duration: TimeInterval = 10,
+    mutating func lowEnergyScan(duration: TimeInterval = 10,
                        filterDuplicates: Bool = true,
                        parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
                        commandTimeout timeout: Int = HCI.defaultTimeout) throws -> [LowEnergyScannedDevice] {
@@ -88,7 +88,7 @@ public extension BluetoothHostControllerInterface {
     /// - Parameter commandTimeout: The timeout to use for each HCI command.
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
-    func setLowEnergyScanResponse(_ data: LowEnergyResponseData, length: UInt8, commandTimeout: Int = HCI.defaultTimeout) throws {
+    mutating func setLowEnergyScanResponse(_ data: LowEnergyResponseData, length: UInt8, commandTimeout: Int = HCI.defaultTimeout) throws {
         
         precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
         
@@ -111,7 +111,7 @@ public extension BluetoothHostControllerInterface {
     /// - Parameter commandTimeout: The timeout to use for each HCI command.
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
-    func setLowEnergyScanResponse(_ data: Data, commandTimeout: Int = HCI.defaultTimeout) throws {
+    mutating func setLowEnergyScanResponse(_ data: Data, commandTimeout: Int = HCI.defaultTimeout) throws {
         
         precondition(data.count <= 31, "LE Scan Response Data can only be 31 octets")
         
