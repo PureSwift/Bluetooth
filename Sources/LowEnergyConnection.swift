@@ -8,10 +8,10 @@
 
 public extension BluetoothHostControllerInterface {
     
-    public func lowEnergyCreateConnection(address peerAddress: Address,
-                                          type peerAddressType: LowEnergyAddressType = .public,
-                                          ownAddressType: LowEnergyAddressType = .public,
-                                          commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt16 {
+    mutating func lowEnergyCreateConnection(address peerAddress: Address,
+                                            type peerAddressType: LowEnergyAddressType = .public,
+                                            ownAddressType: LowEnergyAddressType = .public,
+                                            commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt16 {
         
         let parameters = LowEnergyCommand.CreateConnectionParameter(peerAddressType: peerAddressType,
                                                                     peerAddress: peerAddress,
@@ -20,8 +20,8 @@ public extension BluetoothHostControllerInterface {
         return try lowEnergyCreateConnection(parameters: parameters, commandTimeout: timeout)
     }
     
-    public func lowEnergyCreateConnection(parameters: LowEnergyCommand.CreateConnectionParameter,
-                                          commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt16 {
+    mutating func lowEnergyCreateConnection(parameters: LowEnergyCommand.CreateConnectionParameter,
+                                            commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt16 {
         
         // connect with specified parameters
         let event = try deviceRequest(commandParameter: parameters,
@@ -44,13 +44,13 @@ public extension BluetoothHostControllerInterface {
     /// This command shall only be issued after the LE_Create_Connection command has been issued,
     /// a Command Status event has been received for the LE Create Connection command and before 
     /// the LE Connection Complete event.
-    public func lowEnergyCreateConnectionCancel(commandTimeout timeout: Int = HCI.defaultTimeout) throws {
+    mutating func lowEnergyCreateConnectionCancel(commandTimeout timeout: Int = HCI.defaultTimeout) throws {
         
         // cancel connection
         try deviceRequest(LowEnergyCommand.createConnectionCancel, timeout: timeout)
     }
     
-    public func updateLowEnergyConnection(handle: UInt16) throws {
+    mutating func updateLowEnergyConnection(handle: UInt16) throws {
         
     }
 }
