@@ -77,7 +77,7 @@ public struct HCIEventHeader: HCIPacketHeader {
     
     public static let length = 2
     
-    public var event: UInt8
+    public var event: HCIGeneralEvent
     
     public var parameterLength: UInt8
     
@@ -86,12 +86,17 @@ public struct HCIEventHeader: HCIPacketHeader {
         guard bytes.count == type(of: self).length
             else { return nil }
         
-        self.event = bytes[0]
+        let eventByte = bytes[0]
+        
+        guard let event = HCIGeneralEvent(rawValue: eventByte)
+            else { return nil }
+        
+        self.event = event
         self.parameterLength = bytes[1]
     }
     
     public var byteValue: [UInt8] {
         
-        return [event, parameterLength]
+        return [event.rawValue, parameterLength]
     }
 }

@@ -11,7 +11,7 @@ public extension BluetoothHostControllerInterface {
     /// LE Read White List Size Command
     ///
     /// Used to read the total number of white list entries that can be stored in the Controller.
-    public func lowEnergyReadWhiteListSize(commandTimeout timeout: Int = HCI.defaultTimeout) throws -> Int {
+    mutating func lowEnergyReadWhiteListSize(commandTimeout timeout: Int = HCI.defaultTimeout) throws -> Int {
         
         let sizeReturnParameter = try deviceRequest(LowEnergyCommand.ReadWhiteListSizeReturnParameter.self, timeout: timeout)
         
