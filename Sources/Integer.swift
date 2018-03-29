@@ -54,4 +54,3 @@ public extension UInt32 {
         return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8).self)
     }
 }
-

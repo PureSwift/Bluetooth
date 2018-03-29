@@ -284,9 +284,9 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         public init?(uuid: BluetoothUUID) {
             
             switch uuid {
-            case .bit16(_): self = .bit16
-            case .bit32(_): return nil
-            case .bit128(_): self = .bit128
+            case .bit16: self = .bit16
+            case .bit32: return nil
+            case .bit128: self = .bit128
             }
         }
         
@@ -311,10 +311,8 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         public var format: Format {
             
             switch self {
-                
-            case .bit16(_): return .bit16
-            case .bit128(_): return .bit128
-                
+            case .bit16: return .bit16
+            case .bit128: return .bit128
             }
         }
         
@@ -664,9 +662,9 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
             
             switch uuid {
                 
-            case .bit16(_): self = .UUID16
-            case .bit32(_): return nil
-            case .bit128(_): self = .UUID128
+            case .bit16: self = .UUID16
+            case .bit32: return nil
+            case .bit128: self = .UUID128
             }
         }
     }
@@ -689,7 +687,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     public init?(data: [AttributeData]) {
         
         // must have at least one attribute data
-        guard data.count > 0 else { return nil }
+        guard data.isEmpty == false else { return nil }
         
         let length = data[0].value.count
         
@@ -726,7 +724,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
         
         var attributeData = [AttributeData](repeating: AttributeData(), count: attributeDataCount)
         
-        for index in 0 ..< attributeDataCount  {
+        for index in 0 ..< attributeDataCount {
             
             let byteIndex = 2 + (index * attributeDataLength)
             
@@ -1105,7 +1103,6 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     }
 }
 
-
 /// Read by Group Type Request
 ///
 /// The *Read By Group Type Request* is used to obtain the values of attributes where the attribute type is known,
@@ -1179,9 +1176,9 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
             
             switch uuid {
             
-            case .bit16(_): self = .UUID16
-            case .bit32(_): return nil
-            case .bit128(_): self = .UUID128
+            case .bit16: self = .UUID16
+            case .bit32: return nil
+            case .bit128: self = .UUID128
             }
         }
     }
@@ -1711,12 +1708,12 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
     public enum Flag: UInt8 {
         
         /// Cancel all prepared writes.
-        case Cancel = 0x00
+        case cancel = 0x00
         
         /// Immediately write all pending prepared values.
-        case Write  = 0x01
+        case write  = 0x01
             
-        public init() { self = .Cancel }
+        public init() { self = .cancel }
     }
 }
 
@@ -1880,5 +1877,3 @@ public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
         return [type.attributeOpcode.rawValue]
     }
 }
-
-

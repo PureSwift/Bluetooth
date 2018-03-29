@@ -1,0 +1,47 @@
+disabled_rules: # rule identifiers to exclude from running
+  - colon
+  - comma
+  - control_statement
+  - trailing_whitespace
+  - nesting
+  - implicit_getter
+  - void_return
+  - large_tuple
+  - file_length
+  - statement_position
+  - line_length
+  - unused_optional_binding
+  - redundant_discardable_let
+opt_in_rules: # some rules are only opt-in
+  - empty_count
+  # Find all the available rules by running:
+  # swiftlint rules
+included: # paths to include during linting. `--path` is ignored if present.
+  - Sources
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Carthage
+  - Xcode
+  - Assets
+cyclomatic_complexity:
+  warning: 15
+  error: 20
+force_cast: error # implicitly
+force_try:
+  severity: error # explicitly
+type_body_length:
+  - 900 # warning
+  - 1000 # error
+type_name:
+  min_length: 2 # only warning
+  max_length: # warning and error
+    warning: 50
+    error: 60
+  excluded: iPhone # excluded via string
+identifier_name:
+  min_length: # only min_length
+    error: 3 # only error
+  excluded: # excluded via string array
+    - id
+    - URL
+    - GlobalAPIKey
+reporter: "xcode"

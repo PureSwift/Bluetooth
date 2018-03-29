@@ -88,4 +88,3 @@ public enum LinkControlCommand: UInt16, HCICommand {
     /// Read LMP Handle
     case readLMPHandle              = 0x0020
 }
-
