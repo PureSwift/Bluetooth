@@ -39,7 +39,7 @@ public protocol BluetoothHostControllerInterface {
     mutating func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType : Return.Type, timeout: Int) throws -> Return
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    mutating func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (commandParameter: CP, commandReturnType : Return.Type, timeout: Int) throws -> Return
+    mutating func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP,_ commandReturnType: Return.Type, timeout: Int) throws -> Return
     
     /// Polls and waits for events.
     mutating func pollEvent <T: HCIEventParameter> (_ eventParameterType: T.Type,
