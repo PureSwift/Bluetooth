@@ -186,10 +186,10 @@ internal struct TestHostController: BluetoothHostControllerInterface {
                 // success!
                 //try done()
                 
-                let commandParameterLength = HCIGeneralEvent.CommandCompleteParameter.length
-                let data = eventData.suffix(commandParameterLength)
+                let commandCompleteParameterLength = HCIGeneralEvent.CommandCompleteParameter.length
+                let data = eventData.suffix(eventParameterLength)
                 
-                let dataLength = min(data.count, eventParameterLength)
+                let dataLength = max(data.count, commandCompleteParameterLength)
                 return Array(data.suffix(dataLength))
                 
             case .remoteNameRequestComplete:
