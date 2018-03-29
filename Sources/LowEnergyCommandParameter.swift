@@ -674,7 +674,7 @@ public extension LowEnergyCommand {
         /// At least one channel shall be marked as unknown.
         public let channelMap : LowEnergyChannelMap  //Channel_Map
         
-        public init(channelMap : LowEnergyChannelMap){
+        public init(channelMap : LowEnergyChannelMap) {
             self.channelMap = channelMap
         }
         
