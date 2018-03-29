@@ -36,4 +36,4 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty && exit ${PIPESTATUS[0]} ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty && exit ${PIPESTATUS[0]} ; fi
 after_success:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash <(curl -s https://codecov.io/bash) -t uuid-repo-token ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash <(curl -s https://codecov.io/bash) ; fi
