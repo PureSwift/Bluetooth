@@ -137,17 +137,17 @@ internal struct TestHostController: BluetoothHostControllerInterface {
         for eventBuffer in testCommand.events {
             
             let actualBytesRead = eventBuffer.count
-            let headerData = Array(eventBuffer[0 ..< HCIEventHeader.length])
-            let eventData = Array(eventBuffer[(HCIEventHeader.length) ..< actualBytesRead])
+            let headerData = Array(eventBuffer[1 ..< 1 + HCIEventHeader.length])
+            let eventData = Array(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
             
             guard let eventHeader = HCIEventHeader(bytes: headerData)
                 else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: headerData)) }
             
-            log("Event header: \(eventHeader)")
+            log("Event: \(eventHeader.event)")
             
             switch eventHeader.event {
                 
-            case HCIGeneralEvent.commandStatus.rawValue:
+            case .commandStatus:
                 
                 let parameterData = Array(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandStatusParameter.length)))
                 
@@ -172,7 +172,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
                 let dataLength = min(eventData.count, eventParameterLength)
                 return Array(eventData.suffix(dataLength))
                 
-            case HCIGeneralEvent.commandComplete.rawValue:
+            case .commandComplete:
                 
                 let parameterData = Array(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandCompleteParameter.length)))
                 
@@ -190,9 +190,9 @@ internal struct TestHostController: BluetoothHostControllerInterface {
                 let dataLength = min(data.count, eventParameterLength)
                 return Array(data.suffix(dataLength))
                 
-            case HCIGeneralEvent.remoteNameRequestComplete.rawValue:
+            case .remoteNameRequestComplete:
                 
-                guard eventHeader.event == event else { break }
+                guard eventHeader.event.rawValue == event else { break }
                 
                 let parameterData = Array(eventData.prefix(min(eventData.count, HCIGeneralEvent.RemoteNameRequestCompleteParameter.length)))
                 
@@ -213,7 +213,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
                 let dataLength = min(eventData.count - 1, eventParameterLength)
                 return Array(eventData.suffix(dataLength))
                 
-            case HCIGeneralEvent.lowEnergyMeta.rawValue:
+            case .lowEnergyMeta:
                 
                 let parameterData = eventData
                 
@@ -231,7 +231,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
             // all other events
             default:
                 
-                guard eventHeader.event == event else { break }
+                guard eventHeader.event.rawValue == event else { break }
                 
                 //try done()
                 let dataLength = min(eventData.count, eventParameterLength)
