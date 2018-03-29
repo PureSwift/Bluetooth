@@ -42,13 +42,13 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     /// Send a command to the controller and wait for response.
     mutating func deviceRequest<C: HCICommand>(_ command: C, timeout: Int) throws {
         
-        
+        try hciCommand(C.command)
     }
     
     /// Send a command to the controller and wait for response.
     mutating func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: Int) throws {
         
-        
+        try hciCommand(CP.command, parameterData: commandParameter.byteValue)
     }
     
     /// Sends a command to the device and waits for a response.
@@ -77,26 +77,41 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     
     var log: (String) -> ()
     
+    var commands = [Command]()
+    
     // MARK: - Private
     
     private mutating func hciCommand<T: HCICommand>(_ command: T,
-                                                    parameterData: [UInt8] = []) throws {
+                                                    parameterData: [UInt8] = [],
+                                                    event: UInt8 = 0,
+                                                    eventParameterLength: Int = 0) throws -> [UInt8] {
         
         log("\(#function) \(command) \(parameterData.count) bytes")
         
-        // parse
+        let opcode = command.opcode
+        
+        guard let testCommand = commands.first(where: { $0.opcode == opcode }),
+            testCommand.opcode == opcode,
+            testCommand.parameter == parameterData
+            else { throw Error.invalidCommand }
+        
         
     }
 }
 
 internal extension TestHostController {
     
+    enum Error: Swift.Error {
+        
+        case invalidCommand
+    }
+    
     struct Command {
         
-        var commandOpcode: UInt16
+        var opcode: UInt16
         
         var parameter: [UInt8]
         
-        var 
+        var events: [[UInt8]]
     }
 }
