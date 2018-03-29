@@ -50,7 +50,19 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(LowEnergyCommand.createConnectionCancel, timeout: timeout)
     }
     
-    mutating func updateLowEnergyConnection(handle: UInt16) throws {
+    mutating func updateLowEnergyConnection(handle: UInt16,
+                                            connectionInterval: LowEnergyConnectionInterval = .full,
+                                            connectionLatency: LowEnergyConnectionLatency = .zero,
+                                            supervisionTimeout: LowEnergySupervisionTimeout = .max,
+                                            connectionLength: LowEnergyConnectionLength = .full,
+                                            commandTimeout timeout: Int = HCI.defaultTimeout) throws {
         
+        let parameters = LowEnergyCommand.UpdateConnectionParameter(connectionHandle: handle,
+                                                                    connectionInterval: connectionInterval,
+                                                                    connectionLatency: connectionLatency,
+                                                                    supervisionTimeout: supervisionTimeout,
+                                                                    connectionLength: connectionLength)
+        
+        try deviceRequest(parameters, timeout: timeout)
     }
 }
