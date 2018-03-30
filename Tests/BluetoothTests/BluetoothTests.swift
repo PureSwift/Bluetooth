@@ -186,6 +186,11 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(rawValue.bigEndian.bytes.6 == bigEndianByteValue.6)
             XCTAssert(rawValue.bigEndian.bytes.7 == bigEndianByteValue.7)
             XCTAssert(UInt64(bigEndian: UInt64(bytes: bigEndianByteValue)) == rawValue)
+            
+            for feature in featureSet {
+                
+                XCTAssert(LowEnergyFeature.all.contains(feature))
+            }
         }
     }
     
