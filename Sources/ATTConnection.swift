@@ -105,7 +105,9 @@ public final class ATTConnection {
             
             try handle(request: recievedData, opcode: opcode)
             
-        case .command, .notification, .indication:
+        case .command,
+             .notification,
+             .indication:
             
             // For all other opcodes notify the upper layer of the PDU and let them act on it.
             try handle(notify: recievedData, opcode: opcode)
@@ -288,8 +290,6 @@ public final class ATTConnection {
         
         // actual PDU length
         let length = data.count
-        
-        //print("\(length) encoded bytes")
         
         /// MTU must be large enough to hold PDU. 
         guard length <= maximumTransmissionUnit else { return nil }
