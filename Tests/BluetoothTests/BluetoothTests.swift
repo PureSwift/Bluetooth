@@ -154,7 +154,10 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(featureSet.rawValue != LowEnergyFeature.connectionParametersRequestProcedure.rawValue)
             XCTAssert(featureSet.rawValue != LowEnergyFeature.ping.rawValue)
             XCTAssert(LowEnergyFeature(rawValue: featureSet.rawValue) == nil)
+            
+            #if swift(>=3.2)
             XCTAssert(LowEnergyFeature.RawValue.bitWidth == LowEnergyFeatureSet.RawValue.bitWidth)
+            #endif
             
             XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == MemoryLayout<LowEnergyFeature.RawValue>.size)
             
