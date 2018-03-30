@@ -15,7 +15,8 @@ final class AttributeProtocolTests: XCTestCase {
     static let allTests = [
         ("testATTOpcode", testATTOpcode),
         ("testATTProtocolDataUnit", testATTProtocolDataUnit),
-        ("testGATTClientData", testGATTClientData)
+        ("testGATTClientData", testGATTClientData),
+        ("testGATT", testGATT)
     ]
     
     func testATTOpcode() {
@@ -281,69 +282,70 @@ final class AttributeProtocolTests: XCTestCase {
             print("Value: \(value)")
         }
         
-        // client
-        
+        // server
         let serverSocket = TestL2CAPSocket()
-        let clientSocket = TestL2CAPSocket()
-        clientSocket.target = serverSocket
+        let server = GATTServer(socket: serverSocket)
+        server.log = { print("GATT Server: " + $0) }
+        server.connection.log = { print("Server ATT: " + $0) }
+        server.database = database
         
+        // client
+        let clientSocket = TestL2CAPSocket()
         let client = GATTClient(socket: clientSocket)
         client.log = { print("GATT Client: " + $0) }
+        server.connection.log = { print("Client ATT: " + $0) }
+        
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
         
         // queue operations
+        var discoverAllPrimaryServices = false
         client.discoverAllPrimaryServices {
             print("discoverAllPrimaryServices")
             dump($0)
+            discoverAllPrimaryServices = true
         }
         
-        
-        
+        // fake sockets
         do {
             
-            let server = GATTServer(socket: serverSocket)
-            
-            server.log = { print("GATT Server: " + $0) }
-            
-            server.database = database
-            
-            while serverSocket.buffer.isEmpty == false {
+            repeat {
                 
                 var pendingWrite = true
                 
+                // write
+                while pendingWrite {
+                    
+                    pendingWrite = try client.write()
+                }
+                
+                // read
+                while clientSocket.receivedData.isEmpty == false {
+                    
+                    try client.read()
+                }
+                
+                // server
+                pendingWrite = true
+                
+                // write
                 while pendingWrite {
                     
                     pendingWrite = try server.write()
                 }
                 
-                try server.read()
-            }
-        }
-            
-        catch { XCTFail("Error: \(error)") }
-        
-        // server
-        do {
-            
-            let server = GATTServer(socket: serverSocket)
-            
-            server.log = { print("GATT Server: " + $0) }
-            
-            server.database = database
-            
-            while serverSocket.buffer.isEmpty == false {
-                
-                var pendingWrite = true
-                
-                while pendingWrite {
+                // read
+                while serverSocket.receivedData.isEmpty == false {
                     
-                    pendingWrite = try server.write()
+                    try server.read()
                 }
                 
-                try server.read()
-            }
+            } while clientSocket.receivedData.isEmpty == false || serverSocket.receivedData.isEmpty == false
         }
-            
+        
         catch { XCTFail("Error: \(error)") }
+        
+        XCTAssert(discoverAllPrimaryServices)
     }
 }
 

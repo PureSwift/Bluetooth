@@ -26,6 +26,8 @@ public final class ATTConnection {
     
     public let socket: L2CAPSocketProtocol
     
+    public var log: ((String) -> ())?
+    
     // MARK: - Private Properties
     
     /// There's a pending incoming request.
@@ -70,11 +72,11 @@ public final class ATTConnection {
     /// Performs the actual IO for recieving data.
     public func read() throws {
         
-        //print("Will read")
+        log?("Will read")
         
         let recievedData = try socket.recieve(maximumTransmissionUnit)
         
-        //print("Recieved data")
+        log?("Recieved data")
         
         // valid PDU data length
         guard recievedData.count >= ATT.minimumPDULength
@@ -86,7 +88,7 @@ public final class ATTConnection {
         guard let opcode = ATT.Opcode(rawValue: opcodeByte)
             else { throw Error.garbageResponse(recievedData) }
         
-       // print("Recieved opcode \(opcode)")
+        log?("Recieved opcode \(opcode)")
         
         // Act on the received PDU based on the opcode type
         switch opcode.type {
@@ -113,20 +115,20 @@ public final class ATTConnection {
     /// Performs the actual IO for sending data.
     public func write() throws -> Bool {
         
-        //print("Will write")
+        log?("Will write")
         
         guard let sendOperation = pickNextSendOpcode()
             else { return false }
         
         assert(sendOperation.data.count <= maximumTransmissionUnit, "Trying to send \(sendOperation.data.count) bytes when MTU is \(maximumTransmissionUnit)")
         
-        //print("Sending data... (\(sendOpcode.data.count) bytes)")
+        log?("Sending data... (\(sendOperation.data.count) bytes)")
         
         try socket.send(Data(bytes: sendOperation.data))
         
         let opcode = sendOperation.opcode
         
-        //print("Did write \(opcode)")
+        log?("Did write \(opcode)")
         
         /* Based on the operation type, set either the pending request or the
         * pending indication. If it came from the write queue, then there is
