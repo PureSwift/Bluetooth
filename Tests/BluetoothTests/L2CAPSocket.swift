@@ -35,7 +35,10 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     /// Target socket.
     weak var target: TestL2CAPSocket?
     
-    private(set) var receivedData = Data()
+    private(set) var receivedData = Data() {
+        
+        didSet { print("L2CAP Socket buffer \([UInt8](receivedData))") }
+    }
     
     init(protocolServiceMultiplexer: UInt16 = UInt16(ATT.PSM.rawValue),
          channelIdentifier: UInt16 = ATT.CID) {
@@ -62,7 +65,17 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
         
         // slice buffer
         if data.isEmpty == false {
-             receivedData = Data(receivedData.suffix(from: data.count - 1))
+            
+            let suffixIndex = data.count
+            
+            if receivedData.count >= suffixIndex {
+                
+                receivedData = Data(receivedData.suffix(from: data.count))
+                
+            } else {
+                
+                receivedData = Data(receivedData.suffix(from: data.count))
+            }
         }
        
         return data
