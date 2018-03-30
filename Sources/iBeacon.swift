@@ -48,12 +48,12 @@ public func iBeacon(uuid: Foundation.UUID,
     dataParameter.data.23 = littleUUIDBytes[14]
     dataParameter.data.24 = littleUUIDBytes[15]
     
-    let majorBytes = major.bytes
+    let majorBytes = major.littleEndian.bytes
     
     dataParameter.data.25 = majorBytes.1
     dataParameter.data.26 = majorBytes.0
     
-    let minorBytes = minor.bytes
+    let minorBytes = minor.littleEndian.bytes
     
     dataParameter.data.27 = minorBytes.1
     dataParameter.data.28 = minorBytes.0

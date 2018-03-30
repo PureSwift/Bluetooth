@@ -24,8 +24,8 @@ public extension BluetoothHostControllerInterface {
                                             commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt16 {
         
         // connect with specified parameters
-        let event = try deviceRequest(commandParameter: parameters,
-                                      eventParameterType: LowEnergyEvent.ConnectionCompleteParameter.self,
+        let event = try deviceRequest(parameters,
+                                      LowEnergyEvent.ConnectionCompleteParameter.self,
                                       timeout: timeout)
         
         switch event.status {

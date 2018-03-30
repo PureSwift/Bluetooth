@@ -54,3 +54,18 @@ public extension UInt32 {
         return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8).self)
     }
 }
+
+public extension UInt64 {
+    
+    /// Initializes value from four bytes.
+    public init(bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)) {
+        
+        self = unsafeBitCast(bytes, to: UInt64.self)
+    }
+    
+    /// Converts to four bytes.
+    public var bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8) {
+        
+        return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8).self)
+    }
+}
