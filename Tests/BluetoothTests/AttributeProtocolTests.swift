@@ -347,7 +347,7 @@ final class AttributeProtocolTests: XCTestCase {
                     
                     for characteristic in characteristics {
                         
-                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == service.uuid })
+                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == characteristic.uuid })
                             else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
                         
                         validateCharacteristic(characteristic, test: testCharacteristic)
@@ -377,7 +377,7 @@ final class AttributeProtocolTests: XCTestCase {
                     
                     for characteristic in characteristics {
                         
-                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == service.uuid })
+                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == characteristic.uuid })
                             else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
                         
                         validateCharacteristic(characteristic, test: testCharacteristic)
