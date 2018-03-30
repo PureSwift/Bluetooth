@@ -20,7 +20,10 @@ final class BluetoothTests: XCTestCase {
         ("testAddress", testAddress),
         ("testUUID", testUUID),
         ("testBitMaskOption", testBitMaskOption),
-        ("testUUIDStringParse", testUUIDStringParse)
+        ("testUUIDStringParsePerformance", testUUIDStringParsePerformance),
+        ("testUUIDStringPerformance", testUUIDStringPerformance),
+        ("testUUIDDataParsePerformance", testUUIDDataParsePerformance),
+        ("testUUIDDataPerformance", testUUIDDataPerformance)
         ]
     
     func testAddress() {
@@ -89,18 +92,32 @@ final class BluetoothTests: XCTestCase {
         }
     }
     
-    func testUUIDStringParse() {
+    func testUUIDStringParsePerformance() {
         
-        let uuids = randomUUIDs
+        let uuids = randomUUIDs.map { $0.uuidString }
         
         measure { uuids.forEach { _ = BluetoothUUID(rawValue: $0) } }
     }
     
-    func testUUIDString() {
+    func testUUIDStringPerformance() {
         
-        let uuids = randomUUIDs.map { BluetoothUUID(rawValue: $0)! }
+        let uuids = randomUUIDs.map { BluetoothUUID(uuid: $0) }
         
         measure { uuids.forEach { let _ = $0.rawValue } }
+    }
+    
+    func testUUIDDataParsePerformance() {
+        
+        let uuids = randomUUIDs.map { $0.data }
+        
+        measure { uuids.forEach { _ = BluetoothUUID(data: $0) } }
+    }
+    
+    func testUUIDDataPerformance() {
+        
+        let uuids = randomUUIDs.map { BluetoothUUID(uuid: $0) }
+        
+        measure { uuids.forEach { let _ = $0.data } }
     }
     
     func testBitMaskOption() {
@@ -263,19 +280,33 @@ final class BluetoothTests: XCTestCase {
     
     func testCoreBluetoothUUIDStringParse() {
         
-        let uuids = randomUUIDs
+        let uuids = randomUUIDs.map { $0.uuidString }
         
         measure { uuids.forEach { _ = CBUUID(string: $0) } }
     }
     
     func testCoreBluetoothUUIDString() {
         
-        let uuids = randomUUIDs.map { CBUUID(string: $0) }
+        let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
         
         measure { uuids.forEach { let _ = $0.uuidString } }
+    }
+    
+    func testCoreBluetoothUUIDDataParsePerformance() {
+        
+        let uuids = randomUUIDs.map { $0.data }
+        
+        measure { uuids.forEach { _ = CBUUID(data: $0) } }
+    }
+    
+    func testCoreBluetoothUUIDDataPerformance() {
+        
+        let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
+        
+        measure { uuids.forEach { let _ = $0.data } }
     }
     
     #endif
 }
 
-let randomUUIDs = (1 ... 100000).map { _ in UUID().uuidString }
+let randomUUIDs = (1 ... 100000).map { _ in UUID() }
