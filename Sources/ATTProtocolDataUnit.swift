@@ -1700,9 +1700,9 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTPrepareWriteResponse.self
+        let attributeOpcode = type(of: self).attributeOpcode
         
-        return [type.attributeOpcode.rawValue, flag.rawValue]
+        return [attributeOpcode.rawValue, flag.rawValue]
     }
     
     public enum Flag: UInt8 {
