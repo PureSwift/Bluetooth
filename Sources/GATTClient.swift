@@ -874,7 +874,7 @@ public final class GATTClient {
             if offset < operation.data.count {
                 
                 // write next part
-                let length = connection.maximumTransmissionUnit - 5
+                let length = connection.maximumTransmissionUnit - ATTPrepareWriteRequest.length // 5
                 let attributeValuePart = [UInt8](operation.data[offset ..<  offset + length])
                 assert(attributeValuePart.count == length)
                 

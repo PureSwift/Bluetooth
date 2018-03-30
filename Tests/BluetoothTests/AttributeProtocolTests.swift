@@ -434,7 +434,9 @@ final class AttributeProtocolTests: XCTestCase {
                         
                     case let .value(value):
                         
-                        XCTAssert(value == value)
+                        // TODO: Validate written value
+                        break
+                        //XCTAssert(value == value)
                     }
                 }
             }
