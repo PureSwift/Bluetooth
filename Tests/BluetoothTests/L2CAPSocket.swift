@@ -55,13 +55,13 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
         guard let target = self.target
             else { throw POSIXError(code: .ECONNRESET) }
         
-        target.receivedData += data
+        target.receivedData.append(data)
     }
     
     /// Reads from the socket.
     func recieve(_ bufferSize: Int) throws -> Data {
         
-        let data = receivedData.prefix(bufferSize)
+        let data = Data(receivedData.prefix(bufferSize))
         
         // slice buffer
         if data.isEmpty == false {
