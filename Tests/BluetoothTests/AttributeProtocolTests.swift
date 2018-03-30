@@ -14,7 +14,8 @@ final class AttributeProtocolTests: XCTestCase {
     
     static let allTests = [
         ("testATTOpcode", testATTOpcode),
-        ("testATTProtocolDataUnit", testATTProtocolDataUnit)
+        ("testATTProtocolDataUnit", testATTProtocolDataUnit),
+        ("testGATTClientData", testGATTClientData)
     ]
     
     func testATTOpcode() {
@@ -262,6 +263,61 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(characteristicDeclaration.properties == characteristic.properties)
         }
     }
+    
+    func testGATT() {
+        
+        let database = generateDB()
+        
+        print("GATT Database:")
+        
+        for attribute in database.attributes {
+            
+            let type: Any = GATT.UUID.init(uuid: attribute.uuid as BluetoothUUID) ?? attribute.uuid
+            
+            let value: Any = BluetoothUUID(littleEndianData: [UInt8](attribute.value)) ?? String(UTF8Data: attribute.value) ?? attribute.value
+            
+            print("\(attribute.handle) - \(type)")
+            print("Permissions: \(attribute.permissions)")
+            print("Value: \(value)")
+        }
+        
+        let serverSocket = TestL2CAPSocket()
+        
+        do {
+            
+            let server = GATTServer(socket: serverSocket)
+            
+            server.log = { print("GATT Server: " + $0) }
+            
+            server.database = database
+            /*
+            while true {
+                
+                var pendingWrite = true
+                
+                while pendingWrite {
+                    
+                    pendingWrite = try server.write()
+                }
+                
+                try server.read()
+            }*/
+        }
+            
+        catch { XCTFail("Error: \(error)") }
+    }
+}
+
+private func generateDB() -> GATTDatabase {
+    
+    var database = GATTDatabase()
+    
+    for service in TestProfile.services {
+        
+        let _ = database.add(service: service)
+    }
+    
+    return database
 }
 
 public struct TestProfile {
@@ -269,14 +325,19 @@ public struct TestProfile {
     public typealias Service = GATT.Service
     public typealias Characteristic = GATT.Characteristic
     
-    public static let services = [TestProfile.TestService]
+    public static let services: [Service] = [
+        TestService,
+        TestDefinedService
+    ]
     
     public static let TestService = Service(uuid: BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!,
                                             primary: true,
-                                            characteristics: [TestProfile.Read,
-                                                              TestProfile.ReadBlob,
-                                                              TestProfile.Write,
-                                                              TestProfile.WriteBlob])
+                                            characteristics: [
+                                                TestProfile.Read,
+                                                TestProfile.ReadBlob,
+                                                TestProfile.Write,
+                                                TestProfile.WriteBlob
+        ])
     
     public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
                                             value: "Test Read-Only".toUTF8Data(),
@@ -301,4 +362,13 @@ public struct TestProfile {
                                                  properties: [.write])
     
     public static let WriteBlobValue = Data(bytes: [UInt8](repeating: 1, count: 512))
+    
+    public static let TestDefinedService = Service(uuid: BluetoothUUID.bit16(0xFEA9),
+                                                   primary: true,
+                                                   characteristics: [
+                                                    TestProfile.Read,
+                                                    TestProfile.ReadBlob,
+                                                    TestProfile.Write,
+                                                    TestProfile.WriteBlob
+        ])
 }
