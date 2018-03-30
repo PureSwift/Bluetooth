@@ -744,6 +744,71 @@ public extension LowEnergyCommand {
             ]
         }
     }
+    
+    /// LE Encrypt Command
+    ///
+    /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
+    /// and returns the Encrypted_Data to the Host.
+    /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+    public struct EncryptParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.encrypt
+        
+        /// 128 bit key for the encryption of the data given in the command.
+        /// The most significant octet of the key corresponds to key[0] using the notation specified in FIPS 197.
+        public let key: UInt128 //Key
+        
+        /// 128 bit data block that is requested to be encrypted.
+        /// The most significant octet of the PlainText_Data corresponds to in[0] using the notation specified in FIPS 197.
+        public let data: UInt128 //Plaintext_Data
+        
+        public init(key: UInt128, data: UInt128) {
+        
+            self.key = key
+            self.data = data
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let keyBytes = key.littleEndian.bytes
+            let dataBytes = data.littleEndian.bytes
+            
+            return [
+                keyBytes.0,
+                keyBytes.1,
+                keyBytes.2,
+                keyBytes.3,
+                keyBytes.4,
+                keyBytes.5,
+                keyBytes.6,
+                keyBytes.7,
+                keyBytes.8,
+                keyBytes.9,
+                keyBytes.10,
+                keyBytes.11,
+                keyBytes.12,
+                keyBytes.13,
+                keyBytes.14,
+                keyBytes.15,
+                dataBytes.0,
+                dataBytes.1,
+                dataBytes.2,
+                dataBytes.3,
+                dataBytes.4,
+                dataBytes.5,
+                dataBytes.6,
+                dataBytes.7,
+                dataBytes.8,
+                dataBytes.9,
+                dataBytes.10,
+                dataBytes.11,
+                dataBytes.12,
+                dataBytes.13,
+                dataBytes.14,
+                dataBytes.15
+            ]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -779,7 +844,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readChannelMap
         
-        public static var length: Int = 7
+        public static let length: Int = 7
         
         public let connectionHandle: UInt16 // Connection_Handle
         
@@ -798,6 +863,33 @@ public extension LowEnergyCommand {
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
             
             channelMap = (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6])
+        }
+    }
+    
+    /// LE Encrypt Command
+    ///
+    /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
+    /// and returns the Encrypted_Data to the Host.
+    /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+    public struct EncryptReturnParameter: HCICommandReturnParameter {
+
+        public static let command = LowEnergyCommand.encrypt
+        
+        public static let length: Int = 16
+        
+        /// 128 bit encrypted data block.
+        /// The most significant octet of the Encrypted_Data corresponds to out[0] using the notation specified in FIPS 197.
+        public let encryptedData: UInt128
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            guard let encryptedData = UInt128(data: Data(byteValue))
+                else { return nil }
+            
+            self.encryptedData = encryptedData
         }
     }
 }
