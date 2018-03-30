@@ -16,9 +16,9 @@
 
  The bit positions for each Link Layer Feature shall be as shown in Table 4.4. This table also shows if these bits are valid between Controllers. If a bit is shown as not valid, using ‘N’, then this bit shall be ignored upon receipt by the peer Controller.
  */
-public enum LowEnergyFeature: UInt16, BitMaskOption {
+public enum LowEnergyFeature: UInt64, BitMaskOption {
     
-    public typealias RawValue = 
+    public typealias RawValue = UInt64
     
     /// LE Encryption
     case encryption                                     = 0b0000000000000001
@@ -33,13 +33,13 @@ public enum LowEnergyFeature: UInt16, BitMaskOption {
     case slaveInitiatedFeaturesExchange                 = 0b0000000000001000
     
     /// LE Ping
-    case lePing                                         = 0b0000000000010000
+    case ping                                           = 0b0000000000010000
     
     /// LE Data Packet Length Extension
-    case leDataPacketLengthExtension                    = 0b0000000000100000
+    case dataPacketLengthExtension                      = 0b0000000000100000
     
-    /// LL Privacy
-    case elPrivacy                                      = 0b0000000001000000
+    /// LE Privacy
+    case privacy                                        = 0b0000000001000000
     
     /// Extended Scanner Filter Policies
     case extendedScannerFilterPolicies                  = 0b0000000010000000
@@ -54,37 +54,36 @@ public enum LowEnergyFeature: UInt16, BitMaskOption {
     case stableModulationIndexReceiver                  = 0b0000010000000000
     
     /// LE Coded PHY
-    case leCodedPhy                                     = 0b0000100000000000
+    case codedPhy                                       = 0b0000100000000000
     
     /// LE Extended Advertising
-    case leExtendedAdvertising                          = 0b0001000000000000
+    case extendedAdvertising                            = 0b0001000000000000
     
     /// LE Periodic Advertising
-    case lePeriodicAdvertising                          = 0b0010000000000000
+    case periodicAdvertising                            = 0b0010000000000000
     
     /// Channel Selection Algorithm #2
     case channelSelectionAlgorithm2                     = 0b0100000000000000
     
-    ///LE Power Class 1
-    case lePowerClass1                                  = 0b1000000000000000
+    /// LE Power Class 1
+    case powerClass1                                    = 0b1000000000000000
     
     public static let all: Set<LowEnergyFeature> = [.encryption,
                                                     .connectionParametersRequestProcedure,
                                                     .extendedRejectIndication,
                                                     .slaveInitiatedFeaturesExchange,
-                                                    .lePing,
-                                                    .leDataPacketLengthExtension,
-                                                    .leDataPacketLengthExtension,
-                                                    .elPrivacy,
+                                                    .ping,
+                                                    .dataPacketLengthExtension,
+                                                    .privacy,
                                                     .extendedScannerFilterPolicies,
                                                     .le2mPhy,
                                                     .stableModulationIndexTransmitter,
                                                     .stableModulationIndexReceiver,
-                                                    .leCodedPhy,
-                                                    .leExtendedAdvertising,
-                                                    .lePeriodicAdvertising,
+                                                    .codedPhy,
+                                                    .extendedAdvertising,
+                                                    .periodicAdvertising,
                                                     .channelSelectionAlgorithm2,
-                                                    .lePowerClass1]
+                                                    .powerClass1]
 }
 
 // MARK: - CustomStringConvertible
@@ -130,22 +129,22 @@ public extension LowEnergyFeature {
 /// FeatureSet field’s bit mapping to Controller features
 internal let featureSet: [LowEnergyFeature: (isValid: Bool, name: String)] = [
     
-    .encryption: (true, "LE Encryption"),
-    .connectionParametersRequestProcedure: (true, "Connection Parameters Request Procedure"),
-    .extendedRejectIndication: (true, "Extended Reject Indication"),
-    .slaveInitiatedFeaturesExchange: (true, "Slave-initiated Features Exchange"),
-    .lePing: (false, "LE Ping"),
-    .leDataPacketLengthExtension: (true, "LE Data Packet Length Extension"),
-    .elPrivacy: (false, "LL Privacy"),
-    .extendedScannerFilterPolicies: (true, "Extended Scanner Filter Policies"),
-    .le2mPhy: (true, "LE 2M PHY"),
-    .stableModulationIndexTransmitter: (true, "Stable Modulation Index - Transmitter"),
-    .stableModulationIndexReceiver: (true, "Stable Modulation Index - Receiver"),
-    .leCodedPhy: (true, "LE Coded PHY"),
-    .leExtendedAdvertising: (false, "LE Extended Advertising"),
-    .lePeriodicAdvertising: (false, "LE Periodic Advertising"),
-    .channelSelectionAlgorithm2: (true, "Channel Selection Algorithm #2"),
-    .lePowerClass1: (true, "LE Power Class 1")
+    .encryption:                                (true, "LE Encryption"),
+    .connectionParametersRequestProcedure:      (true, "Connection Parameters Request Procedure"),
+    .extendedRejectIndication:                  (true, "Extended Reject Indication"),
+    .slaveInitiatedFeaturesExchange:            (true, "Slave-initiated Features Exchange"),
+    .ping:                                      (false, "LE Ping"),
+    .dataPacketLengthExtension:                 (true, "LE Data Packet Length Extension"),
+    .privacy:                                   (false, "LL Privacy"),
+    .extendedScannerFilterPolicies:             (true, "Extended Scanner Filter Policies"),
+    .le2mPhy:                                   (true, "LE 2M PHY"),
+    .stableModulationIndexTransmitter:          (true, "Stable Modulation Index - Transmitter"),
+    .stableModulationIndexReceiver:             (true, "Stable Modulation Index - Receiver"),
+    .codedPhy:                                  (true, "LE Coded PHY"),
+    .extendedAdvertising:                       (false, "LE Extended Advertising"),
+    .periodicAdvertising:                       (false, "LE Periodic Advertising"),
+    .channelSelectionAlgorithm2:                (true, "Channel Selection Algorithm #2"),
+    .powerClass1:                               (true, "LE Power Class 1")
 ]
 
 // MARK: - Supporting Types
