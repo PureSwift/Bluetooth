@@ -35,7 +35,7 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     /// Target socket.
     weak var target: TestL2CAPSocket?
     
-    private(set) var buffer = Data()
+    private(set) var receivedData = Data()
     
     init(protocolServiceMultiplexer: UInt16 = UInt16(ATT.PSM.rawValue),
          channelIdentifier: UInt16 = ATT.CID) {
@@ -52,17 +52,17 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
         guard let target = self.target
             else { throw POSIXError(code: .ECONNRESET) }
         
-        target.buffer += data
+        target.receivedData += data
     }
     
     /// Reads from the socket.
     func recieve(_ bufferSize: Int) throws -> Data {
         
-        let data = buffer.prefix(bufferSize)
+        let data = receivedData.prefix(bufferSize)
         
         // slice buffer
         if data.isEmpty == false {
-             buffer = buffer.suffix(from: data.count - 1)
+             receivedData = Data(receivedData.suffix(from: data.count - 1))
         }
        
         return data
