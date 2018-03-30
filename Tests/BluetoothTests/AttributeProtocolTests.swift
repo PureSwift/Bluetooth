@@ -284,7 +284,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         // server
         let serverSocket = TestL2CAPSocket()
-        let server = GATTServer(socket: serverSocket)
+        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
         server.log = { print("GATT Server: " + $0) }
         server.connection.log = { print("Server ATT: " + $0) }
         server.database = database
@@ -399,7 +399,7 @@ final class AttributeProtocolTests: XCTestCase {
                 
                 client.readCharacteristic(characteristic) {
                     
-                    print("Discover Characteristics by UUID")
+                    print("Read Characteristic")
                     dump($0)
                     
                     switch $0 {
@@ -410,6 +410,31 @@ final class AttributeProtocolTests: XCTestCase {
                     case let .value(value):
                         
                         XCTAssert(value == testCharacteristic.value)
+                    }
+                }
+            }
+            
+            if testCharacteristic.properties.contains(.write), testCharacteristic.permissions.contains(.write) {
+                
+                guard characteristic.properties.contains(.write)
+                    else { XCTFail("Cannot write to charactertistic \(characteristic.uuid)"); return }
+                
+                guard let (data, reliableWrites) = TestProfile.WriteValues[testCharacteristic.uuid]
+                    else { fatalError("missing test data") }
+                
+                client.writeCharacteristic(characteristic, data: data, reliableWrites: reliableWrites) {
+                    
+                    print("Write Characteristic")
+                    dump($0)
+                    
+                    switch $0 {
+                    case let .error(error):
+                        
+                        XCTFail("\(error)")
+                        
+                    case let .value(value):
+                        
+                        XCTAssert(value == value)
                     }
                 }
             }
@@ -481,7 +506,9 @@ public struct TestProfile {
                                                 TestProfile.Read,
                                                 TestProfile.ReadBlob,
                                                 TestProfile.Write,
-                                                TestProfile.WriteBlob
+                                                TestProfile.WriteBlob,
+                                                TestProfile.WriteWithoutResponse,
+                                                TestProfile.WriteBlobWithoutResponse
         ])
     
     public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
@@ -501,6 +528,11 @@ public struct TestProfile {
     
     public static let WriteValue = "Test Write".toUTF8Data()
     
+    public static let WriteWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "AFE458FE-55BE-4D99-8C22-82FACE077D86")!,
+                                             value: Data(),
+                                             permissions: [.write],
+                                             properties: [.write, .writeWithoutResponse])
+    
     public static let WriteBlob = Characteristic(uuid: BluetoothUUID(rawValue: "2FDDB448-F96F-11E5-A891-23E070D5A8C7")!,
                                                  value: Data(),
                                                  permissions: [.write],
@@ -508,12 +540,26 @@ public struct TestProfile {
     
     public static let WriteBlobValue = Data(bytes: [UInt8](repeating: 1, count: 512))
     
+    public static let WriteBlobWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "D4A6E516-C867-4582-BF66-0A02BD854613")!,
+                                                 value: Data(),
+                                                 permissions: [.write],
+                                                 properties: [.write, .writeWithoutResponse])
+    
     public static let TestDefinedService = Service(uuid: BluetoothUUID.bit16(0xFEA9),
                                                    primary: true,
                                                    characteristics: [
                                                     TestProfile.Read,
                                                     TestProfile.ReadBlob,
                                                     TestProfile.Write,
-                                                    TestProfile.WriteBlob
+                                                    TestProfile.WriteBlob,
+                                                    TestProfile.WriteWithoutResponse,
+                                                    TestProfile.WriteBlobWithoutResponse
         ])
+    
+    public static let WriteValues: [BluetoothUUID: (data: Data, reliableWrites: Bool)] = [
+        Write.uuid: (WriteValue, true),
+        WriteBlob.uuid: (WriteBlobValue, true),
+        WriteWithoutResponse.uuid: (WriteValue, false),
+        WriteBlobWithoutResponse.uuid: (WriteBlobValue, false)
+    ]
 }
