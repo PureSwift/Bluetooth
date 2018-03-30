@@ -281,7 +281,22 @@ final class AttributeProtocolTests: XCTestCase {
             print("Value: \(value)")
         }
         
+        // client
+        
         let serverSocket = TestL2CAPSocket()
+        let clientSocket = TestL2CAPSocket()
+        clientSocket.target = serverSocket
+        
+        let client = GATTClient(socket: clientSocket)
+        client.log = { print("GATT Client: " + $0) }
+        
+        // queue operations
+        client.discoverAllPrimaryServices {
+            print("discoverAllPrimaryServices")
+            dump($0)
+        }
+        
+        
         
         do {
             
@@ -290,8 +305,8 @@ final class AttributeProtocolTests: XCTestCase {
             server.log = { print("GATT Server: " + $0) }
             
             server.database = database
-            /*
-            while true {
+            
+            while serverSocket.buffer.isEmpty == false {
                 
                 var pendingWrite = true
                 
@@ -301,7 +316,31 @@ final class AttributeProtocolTests: XCTestCase {
                 }
                 
                 try server.read()
-            }*/
+            }
+        }
+            
+        catch { XCTFail("Error: \(error)") }
+        
+        // server
+        do {
+            
+            let server = GATTServer(socket: serverSocket)
+            
+            server.log = { print("GATT Server: " + $0) }
+            
+            server.database = database
+            
+            while serverSocket.buffer.isEmpty == false {
+                
+                var pendingWrite = true
+                
+                while pendingWrite {
+                    
+                    pendingWrite = try server.write()
+                }
+                
+                try server.read()
+            }
         }
             
         catch { XCTFail("Error: \(error)") }
