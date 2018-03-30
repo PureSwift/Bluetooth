@@ -889,8 +889,10 @@ public final class GATTClient {
                 
             } else {
                 
-                // all data sent
+                assert(offset == operation.data.count)
+                assert(operation.receivedData == operation.sentData)
                 
+                // all data sent
                 let pdu = ATTExecuteWriteRequest(flag: .write)
                 
                 send(pdu) { [unowned self] in self.executeWrite($0, operation: operation) }
