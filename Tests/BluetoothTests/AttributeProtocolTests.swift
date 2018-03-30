@@ -298,20 +298,76 @@ final class AttributeProtocolTests: XCTestCase {
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
         
-        // queue operations
-        client.discoverAllPrimaryServices {
-            print("discoverAllPrimaryServices")
-            dump($0)
-            switch $0 {
-            case let .error(error):
+        func discoverAllPrimaryServices() {
+            
+            client.discoverAllPrimaryServices {
                 
-                XCTFail("\(error)")
+                print("Discover All Primary Services")
+                dump($0)
                 
-            case let .value(value):
-                
-                XCTAssert(value.map({ $0.uuid }) == TestProfile.services.map { $0.uuid })
+                switch $0 {
+                case let .error(error):
+                    
+                    XCTFail("\(error)")
+                    
+                case let .value(services):
+                    
+                    XCTAssert(services.map({ $0.uuid }) == TestProfile.services.map { $0.uuid })
+                    
+                    for service in services {
+                        
+                        discoverAllCharacteristics(of: service)
+                        
+                        guard let testService = TestProfile.services.first(where: { $0.uuid == service.uuid })
+                            else { XCTFail("Invalid service \(service.uuid)"); return }
+                        
+                        testService.characteristics.forEach { discoverCharacteristics(of: service, by: $0.uuid) }
+                    }
+                }
             }
         }
+        
+        func discoverAllCharacteristics(of service: GATTClient.Service) {
+            
+            client.discoverAllCharacteristics(of: service) {
+                
+                print("Discover All Characteristics of a Service")
+                dump($0)
+                
+                switch $0 {
+                case let .error(error):
+                    
+                    XCTFail("\(error)")
+                    
+                case let .value(value):
+                    
+                    break
+                }
+            }
+        }
+        
+        func discoverCharacteristics(of service: GATTClient.Service,
+                                     by uuid: BluetoothUUID) {
+            
+            client.discoverCharacteristics(of: service, by: uuid) {
+                
+                print("Discover Characteristics by UUID")
+                dump($0)
+                
+                switch $0 {
+                case let .error(error):
+                    
+                    XCTFail("\(error)")
+                    
+                case let .value(value):
+                    
+                    break
+                }
+            }
+        }
+        
+        // queue operations
+        discoverAllPrimaryServices()
         
         // fake sockets
         do {
