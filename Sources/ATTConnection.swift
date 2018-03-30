@@ -72,11 +72,11 @@ public final class ATTConnection {
     /// Performs the actual IO for recieving data.
     public func read() throws {
         
-        log?("Will read")
+        log?("Attempt read")
         
         let recievedData = try socket.recieve(maximumTransmissionUnit)
         
-        log?("Recieved data")
+        log?("Recieved data (\(recievedData.count) bytes)")
         
         // valid PDU data length
         guard recievedData.count >= ATT.minimumPDULength
@@ -115,7 +115,7 @@ public final class ATTConnection {
     /// Performs the actual IO for sending data.
     public func write() throws -> Bool {
         
-        log?("Will write")
+        log?("Attempt write")
         
         guard let sendOperation = pickNextSendOpcode()
             else { return false }

@@ -293,7 +293,7 @@ final class AttributeProtocolTests: XCTestCase {
         let clientSocket = TestL2CAPSocket()
         let client = GATTClient(socket: clientSocket)
         client.log = { print("GATT Client: " + $0) }
-        server.connection.log = { print("Client ATT: " + $0) }
+        client.connection.log = { print("Client ATT: " + $0) }
         
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
