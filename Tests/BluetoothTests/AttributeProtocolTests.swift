@@ -299,53 +299,52 @@ final class AttributeProtocolTests: XCTestCase {
         serverSocket.target = clientSocket // weak references
         
         // queue operations
-        var discoverAllPrimaryServices = false
         client.discoverAllPrimaryServices {
             print("discoverAllPrimaryServices")
             dump($0)
-            discoverAllPrimaryServices = true
+            switch $0 {
+            case let .error(error):
+                
+                XCTFail("\(error)")
+                
+            case let .value(value):
+                
+                XCTAssert(value.map({ $0.uuid }) == TestProfile.services.map { $0.uuid })
+            }
         }
         
         // fake sockets
         do {
             
+            var didWrite = false
             repeat {
                 
-                var pendingWrite = true
+                didWrite = false
                 
-                // write
-                while pendingWrite {
+                while try client.write() {
                     
-                    pendingWrite = try client.write()
+                    didWrite = true
                 }
                 
-                // read
-                while clientSocket.receivedData.isEmpty == false {
-                    
-                    try client.read()
-                }
-                
-                // server
-                pendingWrite = true
-                
-                // write
-                while pendingWrite {
-                    
-                    pendingWrite = try server.write()
-                }
-                
-                // read
                 while serverSocket.receivedData.isEmpty == false {
                     
                     try server.read()
                 }
                 
-            } while clientSocket.receivedData.isEmpty == false || serverSocket.receivedData.isEmpty == false
+                while try server.write() {
+                    
+                    didWrite = true
+                }
+                
+                while clientSocket.receivedData.isEmpty == false {
+                    
+                    try client.read()
+                }
+                
+            } while didWrite
         }
         
         catch { XCTFail("Error: \(error)") }
-        
-        XCTAssert(discoverAllPrimaryServices)
     }
 }
 
