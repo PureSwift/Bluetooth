@@ -316,18 +316,20 @@ final class AttributeProtocolTests: XCTestCase {
                     
                     for service in services {
                         
-                        discoverAllCharacteristics(of: service)
-                        
                         guard let testService = TestProfile.services.first(where: { $0.uuid == service.uuid })
                             else { XCTFail("Invalid service \(service.uuid)"); return }
                         
-                        testService.characteristics.forEach { discoverCharacteristics(of: service, by: $0.uuid) }
+                        discoverAllCharacteristics(of: service, test: testService)
+                        
+                        testService.characteristics.forEach {
+                            discoverCharacteristics(of: service, by: $0.uuid, test: testService)
+                        }
                     }
                 }
             }
         }
         
-        func discoverAllCharacteristics(of service: GATTClient.Service) {
+        func discoverAllCharacteristics(of service: GATTClient.Service, test testService: TestProfile.Service) {
             
             client.discoverAllCharacteristics(of: service) {
                 
@@ -339,15 +341,24 @@ final class AttributeProtocolTests: XCTestCase {
                     
                     XCTFail("\(error)")
                     
-                case let .value(value):
+                case let .value(characteristics):
                     
-                    break
+                    XCTAssert(characteristics.map({ $0.uuid }) == testService.characteristics.map { $0.uuid })
+                    
+                    for characteristic in characteristics {
+                        
+                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == service.uuid })
+                            else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
+                        
+                        validateCharacteristic(characteristic, test: testCharacteristic)
+                    }
                 }
             }
         }
         
         func discoverCharacteristics(of service: GATTClient.Service,
-                                     by uuid: BluetoothUUID) {
+                                     by uuid: BluetoothUUID,
+                                     test testService: TestProfile.Service) {
             
             client.discoverCharacteristics(of: service, by: uuid) {
                 
@@ -359,9 +370,47 @@ final class AttributeProtocolTests: XCTestCase {
                     
                     XCTFail("\(error)")
                     
-                case let .value(value):
+                case let .value(characteristics):
                     
-                    break
+                    // TODO: Investigate Discover Characteristics by UUID
+                    //XCTAssert(value.count == 1, "\(uuid) \(value.map { $0.uuid })")
+                    
+                    for characteristic in characteristics {
+                        
+                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == service.uuid })
+                            else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
+                        
+                        validateCharacteristic(characteristic, test: testCharacteristic)
+                    }
+                }
+            }
+        }
+        
+        func validateCharacteristic(_ characteristic: GATTClient.Characteristic,
+                                    test testCharacteristic: TestProfile.Characteristic) {
+            
+            XCTAssert(characteristic.uuid == testCharacteristic.uuid)
+            XCTAssert(characteristic.properties == testCharacteristic.properties)
+            
+            if testCharacteristic.properties.contains(.read), testCharacteristic.permissions.contains(.read) {
+                
+                guard characteristic.properties.contains(.read)
+                    else { XCTFail("Cannot read charactertistic \(characteristic.uuid)"); return }
+                
+                client.readCharacteristic(characteristic) {
+                    
+                    print("Discover Characteristics by UUID")
+                    dump($0)
+                    
+                    switch $0 {
+                    case let .error(error):
+                        
+                        XCTFail("\(error)")
+                        
+                    case let .value(value):
+                        
+                        XCTAssert(value == testCharacteristic.value)
+                    }
                 }
             }
         }
