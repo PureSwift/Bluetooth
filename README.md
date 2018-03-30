@@ -3,8 +3,9 @@
 [![Swift][swift-badge]][swift-url]
 [![Platform][platform-badge]][platform-url]
 [![Release][release-badge]][release-url]
-[![Build Status][build-status-badge]][build-status-url]
 [![License][mit-badge]][mit-url]
+
+[![Build Status][build-status-badge]][build-status-url]
 [![CodeBeat][codebeat-badge]][codebeat-url]
 [![CodeCov.io][codecov-badge]][codecov-url]
 [![Docs][docs-badge]][docs-url]
@@ -79,7 +80,7 @@ License
 [carthage-url]: https://github.com/Carthage/Carthage
 [codebeat-badge]: https://codebeat.co/badges/3eaf4fc3-6514-4f2d-83d5-ffd879f319d2
 [codebeat-url]: https://codebeat.co/projects/github-com-pureswift-bluetooth-master
-[codecov-badge]: https://img.shields.io/codecov/c/github/codecov/example-python/master.svg
+[codecov-badge]: https://img.shields.io/codecov/c/github/PureSwift/Bluetooth/master.svg
 [codecov-url]: https://codecov.io/gh/PureSwift/Bluetooth/branch/master
 [docs-badge]: http://pureswift.github.io/Bluetooth/docs/badge.svg
 [docs-url]: http://pureswift.github.io/Bluetooth/docs/
