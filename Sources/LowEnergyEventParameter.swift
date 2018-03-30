@@ -397,22 +397,33 @@ public extension LowEnergyEvent {
         /// Range: 0x0000-0x0EFF (all other values reserved for future use)
         public let handle: UInt16 // Connection_Handle
         
-        public let leFeatures: LowEnergyFeatureSet
+        /// LE features of the remote controller.
+        public let features: LowEnergyFeatureSet
         
         public init?(byteValue: [UInt8]) {
-            guard byteValue.count >= ReadRemoteUsedFeaturesCompleteParameter.length
+            
+            guard byteValue.count == ReadRemoteUsedFeaturesCompleteParameter.length
                 else { return nil }
             
             let statusByte = byteValue[0]
             
             let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
             
+            let featuresRawValue = UInt64(littleEndian: UInt64(bytes: (byteValue[3],
+                                                                       byteValue[4],
+                                                                       byteValue[5],
+                                                                       byteValue[6],
+                                                                       byteValue[7],
+                                                                       byteValue[8],
+                                                                       byteValue[9],
+                                                                       byteValue[10])))
+            
             guard let status = Status(rawValue: statusByte)
                 else { return nil }
             
             self.status = status
             self.handle = handle
-            self.leFeatures = LowEnergyFeatureSet.init(arrayLiteral: [LowEnergyFeature.])
+            self.features = LowEnergyFeatureSet(rawValue: featuresRawValue)
         }
     }
 }

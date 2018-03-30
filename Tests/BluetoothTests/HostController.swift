@@ -66,8 +66,8 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     }
     
     /// Sends a command to the device and waits for a response.
-    mutating func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (commandParameter: CP,
-                                                                                  eventParameterType: EP.Type,
+    mutating func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (_ commandParameter: CP,
+                                                                                  _ eventParameterType: EP.Type,
                                                                                   timeout: Int) throws -> EP {
         
         let command = CP.command
@@ -104,7 +104,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     }
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    mutating func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (commandParameter: CP, commandReturnType : Return.Type, timeout: Int) throws -> Return {
+    mutating func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType : Return.Type, timeout: Int) throws -> Return {
         
         assert(CP.command.opcode == Return.command.opcode)
         
