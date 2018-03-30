@@ -892,6 +892,27 @@ public extension LowEnergyCommand {
             self.encryptedData = encryptedData
         }
     }
+    
+    /// LE Rand Command
+    ///
+    /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
+    public struct RandomReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.random
+        
+        public static let length: Int = 8
+        
+        /// Random Number
+        public let randomNumber: UInt64 //Random_Number
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            self.randomNumber = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+        }
+    }
 }
 
 // MARK: - Supporting Types

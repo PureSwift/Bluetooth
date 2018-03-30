@@ -22,4 +22,14 @@ public extension BluetoothHostControllerInterface {
         
         return returnParameters.encryptedData
     }
+    
+    /// LE Rand Command
+    ///
+    /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
+    mutating func lowEnergyRandom(commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt64 {
+        
+        let returnParameters = try deviceRequest(LowEnergyCommand.RandomReturnParameter.self, timeout: timeout)
+        
+        return returnParameters.randomNumber
+    }
 }
