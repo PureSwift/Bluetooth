@@ -10,21 +10,21 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    func enableLowEnergyAdvertising(_ enabled: Bool = true, timeout: Int = HCI.defaultTimeout) throws {
+    func enableLowEnergyAdvertising(_ enabled: Bool = true, timeout: HCICommandTimeout = .default) throws {
         
         let parameter = LowEnergyCommand.SetAdvertiseEnableParameter(enabled: enabled)
         
         try deviceRequest(parameter, timeout: timeout)
     }
     
-    func setLowEnergyAdvertisingData(_ data: LowEnergyResponseData, length: UInt8, timeout: Int = HCI.defaultTimeout) throws {
+    func setLowEnergyAdvertisingData(_ data: LowEnergyResponseData, length: UInt8, timeout: HCICommandTimeout = .default) throws {
         
         let parameter = LowEnergyCommand.SetAdvertisingDataParameter(data: data, length: length)
         
         try deviceRequest(parameter, timeout: timeout)
     }
     
-    func setLowEnergyAdvertisingData(data: Data, timeout: Int = HCI.defaultTimeout) throws {
+    func setLowEnergyAdvertisingData(data: Data, timeout: HCICommandTimeout = .default) throws {
         
         precondition(data.count <= 31, "LE Advertising Data can only be 31 octets")
         
