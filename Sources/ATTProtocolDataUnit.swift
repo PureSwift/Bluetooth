@@ -1347,19 +1347,17 @@ public struct ATTWriteRequest: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        let type = ATTWriteRequest.self
-        
-        guard byteValue.count >= type.length
+        guard byteValue.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
         
-        if byteValue.count > ATTWriteRequest.length {
+        if byteValue.count > type(of: self).length {
             
             self.value = Array(byteValue.suffix(from: 3))
             
@@ -1371,11 +1369,9 @@ public struct ATTWriteRequest: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTWriteRequest.self
-        
         let handleBytes = handle.littleEndian.bytes
         
-        return [type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
+        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
     }
 }
 
@@ -1392,22 +1388,18 @@ public struct ATTWriteResponse: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        let type = ATTWriteResponse.self
-        
-        guard byteValue.count == type.length
+        guard byteValue.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
     }
     
     public var byteValue: [UInt8] {
         
-        let type = ATTWriteResponse.self
-        
-        return [type.attributeOpcode.rawValue]
+        return [type(of: self).attributeOpcode.rawValue]
     }
 }
 
@@ -1435,19 +1427,17 @@ public struct ATTWriteCommand: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        let type = ATTWriteCommand.self
-        
-        guard byteValue.count >= type.length
+        guard byteValue.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
         
-        if byteValue.count > type.length {
+        if byteValue.count > type(of: self).length {
             
             self.value = Array(byteValue.suffix(from: 3))
             
@@ -1459,11 +1449,9 @@ public struct ATTWriteCommand: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTWriteCommand.self
-        
         let handleBytes = handle.littleEndian.bytes
         
-        return [type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
+        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
     }
 }
 
@@ -1564,23 +1552,21 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        let type = ATTPrepareWriteRequest.self
-        
-        guard byteValue.count >= type.length
+        guard byteValue.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
         
-        self.offset = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+        self.offset = UInt16(littleEndian: UInt16(bytes: (byteValue[3], byteValue[4])))
         
-        if byteValue.count > type.length {
+        if byteValue.count > type(of: self).length {
             
-            self.partValue = Array(byteValue.suffix(from: 5))
+            self.partValue = Array(byteValue.suffix(from: type(of: self).length))
             
         } else {
             
@@ -1590,13 +1576,11 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTPrepareWriteRequest.self
-        
         let handleBytes = handle.littleEndian.bytes
         
         let offsetBytes = offset.littleEndian.bytes
         
-        return [type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1] + partValue
+        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1] + partValue
     }
 }
 
@@ -1627,24 +1611,22 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
     }
     
     public init?(byteValue: [UInt8]) {
-            
-        let type = ATTPrepareWriteResponse.self
-            
-        guard byteValue.count >= type.length
+        
+        guard byteValue.count >= type(of: self).length
             else { return nil }
             
         let attributeOpcodeByte = byteValue[0]
             
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
             
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
             
-        self.offset = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+        self.offset = UInt16(littleEndian: UInt16(bytes: (byteValue[3], byteValue[4])))
             
-        if byteValue.count > type.length {
+        if byteValue.count > type(of: self).length {
                 
-            self.partValue = Array(byteValue.suffix(from: 5))
+            self.partValue = Array(byteValue.suffix(from: type(of: self).length))
                 
         } else {
                 
@@ -1654,13 +1636,11 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTPrepareWriteResponse.self
-                
         let handleBytes = handle.littleEndian.bytes
                 
         let offsetBytes = offset.littleEndian.bytes
                 
-        return [type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1] + partValue
+        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1] + partValue
     }
 }
 
@@ -1676,22 +1656,20 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
     
     public var flag: Flag
     
-    public init(flag: Flag = Flag()) {
+    public init(flag: Flag) {
         
         self.flag = flag
     }
     
     public init?(byteValue: [UInt8]) {
         
-        let type = ATTExecuteWriteRequest.self
-        
-        guard byteValue.count == type.length
+        guard byteValue.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         let flagByte = byteValue[1]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue,
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
             let flag = Flag(rawValue: flagByte)
             else { return nil }
         
@@ -1712,8 +1690,6 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
         
         /// Immediately write all pending prepared values.
         case write  = 0x01
-            
-        public init() { self = .cancel }
     }
 }
 
@@ -1740,7 +1716,9 @@ public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        return [ATT.Opcode.executeWriteResponse.rawValue]
+        let attributeOpcode = type(of: self).attributeOpcode
+        
+        return [attributeOpcode.rawValue]
     }
 }
 

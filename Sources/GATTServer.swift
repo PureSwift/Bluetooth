@@ -16,9 +16,9 @@ public final class GATTServer {
     
     public var database = GATTDatabase()
     
-    public var willRead: ((_ UUID: BluetoothUUID, _ value: Data, _ offset: Int) -> ATT.Error?)?
+    public var willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATT.Error?)?
     
-    public var willWrite: ((_ UUID: BluetoothUUID, _ value: Data, _ newValue: Data) -> ATT.Error?)?
+    public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATT.Error?)?
     
     public let maximumPreparedWrites: Int
     
@@ -205,7 +205,7 @@ public final class GATTServer {
         let newData = Data(bytes: value)
         
         // validate application errors with write callback
-        if let error = willWrite?(attribute.uuid, attribute.value, newData) {
+        if let error = willWrite?(attribute.uuid, handle, attribute.value, newData) {
             
             doResponse(errorResponse(opcode, error, handle))
             return
@@ -270,7 +270,7 @@ public final class GATTServer {
         value = Array(value.prefix(connection.maximumTransmissionUnit - 1))
         
         // validate application errors with read callback
-        if let error = willRead?(attribute.uuid, Data(bytes: value), Int(offset)) {
+        if let error = willRead?(attribute.uuid, handle, Data(bytes: value), Int(offset)) {
             
             errorResponse(opcode, error, handle)
             return nil
@@ -595,7 +595,7 @@ public final class GATTServer {
             let attribute = database[handle]
             
             // validate application errors with read callback
-            if let error = willRead?(attribute.uuid, attribute.value, 0) {
+            if let error = willRead?(attribute.uuid, handle, attribute.value, 0) {
                 
                 errorResponse(opcode, error, handle)
                 return
@@ -685,7 +685,7 @@ public final class GATTServer {
                 let attribute = database[handle]
                 
                 // validate application errors with write callback
-                if let error = willWrite?(attribute.uuid, attribute.value, newValue) {
+                if let error = willWrite?(attribute.uuid, handle, attribute.value, newValue) {
                     
                     errorResponse(opcode, error, handle)
                     return
