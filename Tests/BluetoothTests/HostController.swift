@@ -10,10 +10,10 @@ import Foundation
 import Bluetooth
 
 /// Test Bluetooth Host Controller
-internal struct TestHostController: BluetoothHostControllerInterface {
+internal final class TestHostController: BluetoothHostControllerInterface {
     
     /// All controllers on the host.
-    static let controllers: [TestHostController] = [TestHostController()]
+    static var controllers: [TestHostController] { return [TestHostController()] }
     
     /// The default controller on the host.
     static var `default`: TestHostController? { return controllers.first }
@@ -28,19 +28,19 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     let address: Address
     
     /// Send an HCI command to the controller.
-    mutating func deviceCommand <T: HCICommand> (_ command: T) throws {
+    func deviceCommand <T: HCICommand> (_ command: T) throws {
         
         let _ = try hciRequest(command)
     }
     
     /// Send an HCI command with parameters to the controller.
-    mutating func deviceCommand <T: HCICommandParameter> (_ commandParameter: T) throws {
+    func deviceCommand <T: HCICommandParameter> (_ commandParameter: T) throws {
         
         let _ = try hciRequest(T.command, commandParameterData: commandParameter.byteValue)
     }
     
     /// Send a command to the controller and wait for response.
-    mutating func deviceRequest<C: HCICommand>(_ command: C, timeout: Int) throws {
+    func deviceRequest<C: HCICommand>(_ command: C, timeout: Int) throws {
         
         let data = try hciRequest(command, eventParameterLength: 1)
         
@@ -52,7 +52,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     }
     
     /// Send a command to the controller and wait for response.
-    mutating func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: Int) throws {
+    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: Int) throws {
         
         let data = try hciRequest(CP.command,
                                   commandParameterData: commandParameter.byteValue,
@@ -66,7 +66,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     }
     
     /// Sends a command to the device and waits for a response.
-    mutating func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (_ commandParameter: CP,
+    func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (_ commandParameter: CP,
                                                                                   _ eventParameterType: EP.Type,
                                                                                   timeout: Int) throws -> EP {
         
@@ -86,7 +86,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     }
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    mutating func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType : Return.Type, timeout: Int) throws -> Return {
+    func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType : Return.Type, timeout: Int) throws -> Return {
         
         let data = try hciRequest(commandReturnType.command,
                                   eventParameterLength: commandReturnType.length + 1) // status code + parameters
@@ -104,7 +104,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     }
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    mutating func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType : Return.Type, timeout: Int) throws -> Return {
+    func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType : Return.Type, timeout: Int) throws -> Return {
         
         assert(CP.command.opcode == Return.command.opcode)
         
@@ -125,7 +125,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     }
     
     /// Polls and waits for events.
-    mutating func pollEvent <T: HCIEventParameter> (_ eventParameterType: T.Type,
+    func pollEvent <T: HCIEventParameter> (_ eventParameterType: T.Type,
                                            shouldContinue: () -> (Bool),
                                            event: (T) throws -> ()) throws {
         
@@ -171,7 +171,7 @@ internal struct TestHostController: BluetoothHostControllerInterface {
     
     // MARK: - Private
     
-    private mutating func hciRequest<T: HCICommand>(_ command: T,
+    private func hciRequest<T: HCICommand>(_ command: T,
                                                     commandParameterData: [UInt8] = [],
                                                     event: UInt8 = 0,
                                                     eventParameterLength: Int = 0) throws -> [UInt8] {
