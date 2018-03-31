@@ -533,8 +533,8 @@ public struct TestProfile {
                                                 TestProfile.ReadBlob,
                                                 TestProfile.Write,
                                                 TestProfile.WriteBlob,
-                                                //TestProfile.WriteWithoutResponse,
-                                                //TestProfile.WriteBlobWithoutResponse
+                                                TestProfile.WriteWithoutResponse,
+                                                TestProfile.WriteBlobWithoutResponse
         ])
     
     public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
@@ -576,10 +576,10 @@ public struct TestProfile {
                                                    characteristics: [
                                                     TestProfile.Read,
                                                     TestProfile.ReadBlob,
-                                                    //TestProfile.Write,
-                                                    //TestProfile.WriteBlob,
-                                                    //TestProfile.WriteWithoutResponse,
-                                                    //TestProfile.WriteBlobWithoutResponse
+                                                    TestProfile.Write,
+                                                    TestProfile.WriteBlob,
+                                                    TestProfile.WriteWithoutResponse,
+                                                    TestProfile.WriteBlobWithoutResponse
         ])
     
     public static let WriteValues: [BluetoothUUID: (data: Data, reliableWrites: Bool)] = [
