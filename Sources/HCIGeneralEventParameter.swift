@@ -76,7 +76,7 @@ public extension HCIGeneralEvent {
             
             let nameBytes = Array(byteValue[7 ..< HCI.maximumNameLength])
             
-            guard let name = String(UTF8Data: Data(bytes: nameBytes))
+            guard let name = String(data: Data(bytes: nameBytes), encoding: .utf8)
                 else { return nil }
             
             self.name = name
