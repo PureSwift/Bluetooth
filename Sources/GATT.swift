@@ -87,7 +87,7 @@ public struct GATT {
         
         case extendedProperties     = 0x80
         
-        public static let all: Set<CharacteristicProperty> = [.broadcast,
+        public static let all: Set<GATT.CharacteristicProperty> = [.broadcast,
                                                               .read,
                                                               .writeWithoutResponse,
                                                               .write,

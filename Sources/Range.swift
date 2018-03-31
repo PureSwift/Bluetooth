@@ -6,6 +6,10 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+#if swift(>=4.0)
+public typealias Integer = BinaryInteger
+#endif
+
 public extension Range where Bound: Integer {
     
     func isSubset(_ other: Range) -> Bool {

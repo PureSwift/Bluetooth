@@ -16,8 +16,20 @@
     public protocol BitMaskOption: RawRepresentable, Hashable where RawValue: FixedWidthInteger {
     
         /// All the cases of the enum.
-        static var all: BitMaskOptionSet<Self> { get }
+        static var all: Set<Self> { get }
     
+    }
+    
+#elseif swift(>=3.2)
+    
+    /// Enum that represents a bit mask flag / option.
+    ///
+    /// Basically `Swift.OptionSet` for enums.
+    public protocol BitMaskOption: RawRepresentable, Hashable where RawValue: Integer {
+        
+        /// All the cases of the enum.
+        static var all: Set<Self> { get }
+        
     }
     
 #elseif swift(>=3.0.2)

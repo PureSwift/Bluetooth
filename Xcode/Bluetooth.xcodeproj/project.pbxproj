@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		51F08807206EE47000B7609C /* LowEnergyEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F08806206EE47000B7609C /* LowEnergyEncryption.swift */; };
 		6E0245D820683DBD007FB15E /* HCIPacketHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0245D720683DBD007FB15E /* HCIPacketHeader.swift */; };
 		6E0245D920683DBD007FB15E /* HCIPacketHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0245D720683DBD007FB15E /* HCIPacketHeader.swift */; };
 		6E0245DA20683DBD007FB15E /* HCIPacketHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0245D720683DBD007FB15E /* HCIPacketHeader.swift */; };
@@ -38,7 +39,6 @@
 		6E49B24C20532D45002EA5DC /* ByteValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C7A1E95C34D00484A22 /* ByteValue.swift */; };
 		6E49B24D20532D45002EA5DC /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DE21CAF80AE00A40C4D /* Address.swift */; };
 		6E49B24E20532D45002EA5DC /* HCIGeneralEventParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF01CAF891E00A40C4D /* HCIGeneralEventParameter.swift */; };
-		6E49B24F20532D45002EA5DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C921E95C4AB00484A22 /* String.swift */; };
 		6E49B25020532D45002EA5DC /* DefinedUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */; };
 		6E49B25120532D45002EA5DC /* HCIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2809881FCF499100B2D68E /* HCIVersion.swift */; };
 		6E49B25220532D45002EA5DC /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C971E95C6A500484A22 /* UUID.swift */; };
@@ -130,9 +130,6 @@
 		6E704C8F1E95C45800484A22 /* Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C8E1E95C45800484A22 /* Hexadecimal.swift */; };
 		6E704C901E95C45800484A22 /* Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C8E1E95C45800484A22 /* Hexadecimal.swift */; };
 		6E704C911E95C45800484A22 /* Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C8E1E95C45800484A22 /* Hexadecimal.swift */; };
-		6E704C931E95C4AB00484A22 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C921E95C4AB00484A22 /* String.swift */; };
-		6E704C941E95C4AB00484A22 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C921E95C4AB00484A22 /* String.swift */; };
-		6E704C951E95C4AB00484A22 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C921E95C4AB00484A22 /* String.swift */; };
 		6E704C981E95C6A500484A22 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C971E95C6A500484A22 /* UUID.swift */; };
 		6E704C991E95C6A500484A22 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C971E95C6A500484A22 /* UUID.swift */; };
 		6E704C9A1E95C6A500484A22 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C971E95C6A500484A22 /* UUID.swift */; };
@@ -271,6 +268,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		51F08806206EE47000B7609C /* LowEnergyEncryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyEncryption.swift; sourceTree = "<group>"; };
 		6E0245D720683DBD007FB15E /* HCIPacketHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIPacketHeader.swift; sourceTree = "<group>"; };
 		6E14247F206CFFC500BF72BC /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		6E2809881FCF499100B2D68E /* HCIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIVersion.swift; sourceTree = "<group>"; };
@@ -300,7 +298,6 @@
 		6E704C821E95C41C00484A22 /* Integer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Integer.swift; sourceTree = "<group>"; };
 		6E704C831E95C41C00484A22 /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
 		6E704C8E1E95C45800484A22 /* Hexadecimal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hexadecimal.swift; sourceTree = "<group>"; };
-		6E704C921E95C4AB00484A22 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		6E704C971E95C6A500484A22 /* UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUID.swift; sourceTree = "<group>"; };
 		6E738B55206D920C00CEB343 /* LowEnergyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyFeature.swift; sourceTree = "<group>"; };
 		6E740C3A20657ED3006589F6 /* LinkPolicyCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPolicyCommand.swift; sourceTree = "<group>"; };
@@ -388,6 +385,7 @@
 		6E60A31D20696DD300E42351 /* Host Controller */ = {
 			isa = PBXGroup;
 			children = (
+				51F08806206EE47000B7609C /* LowEnergyEncryption.swift */,
 				6E60A2BE2068928400E42351 /* BluetoothHostController.swift */,
 				6E60A2E62069582500E42351 /* LowEnergyAdvertising.swift */,
 				6E60A2F020695B2700E42351 /* LowEnergyScan.swift */,
@@ -440,7 +438,6 @@
 			isa = PBXGroup;
 			children = (
 				6E704C8E1E95C45800484A22 /* Hexadecimal.swift */,
-				6E704C921E95C4AB00484A22 /* String.swift */,
 				6E704C821E95C41C00484A22 /* Integer.swift */,
 				6E704C831E95C41C00484A22 /* Range.swift */,
 				6E704C971E95C6A500484A22 /* UUID.swift */,
@@ -839,7 +836,6 @@
 				6E49B24D20532D45002EA5DC /* Address.swift in Sources */,
 				6E49B24E20532D45002EA5DC /* HCIGeneralEventParameter.swift in Sources */,
 				6E60A2C22068928400E42351 /* BluetoothHostController.swift in Sources */,
-				6E49B24F20532D45002EA5DC /* String.swift in Sources */,
 				6E49B25020532D45002EA5DC /* DefinedUUID.swift in Sources */,
 				6E60A2EA2069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
 				6E49B25120532D45002EA5DC /* HCIVersion.swift in Sources */,
@@ -903,7 +899,6 @@
 				6EB2EA0E1CD5A8A7000CF975 /* Address.swift in Sources */,
 				6EB2EA0F1CD5A8A7000CF975 /* HCIGeneralEventParameter.swift in Sources */,
 				6E60A2C12068928400E42351 /* BluetoothHostController.swift in Sources */,
-				6E704C951E95C4AB00484A22 /* String.swift in Sources */,
 				6EB45EF22001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E60A2E92069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
 				6EE910291FDE585C007AD3EA /* HCIVersion.swift in Sources */,
@@ -971,6 +966,7 @@
 				6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6EE84DFC1CAF891E00A40C4D /* LowEnergyEventParameter.swift in Sources */,
 				6EE84E011CAF891E00A40C4D /* LowEnergyCommandParameter.swift in Sources */,
+				51F08807206EE47000B7609C /* LowEnergyEncryption.swift in Sources */,
 				6E60A2F120695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
 				6E740C4520657F25006589F6 /* InformationalParametersCommand.swift in Sources */,
@@ -981,7 +977,6 @@
 				6E2809891FCF499100B2D68E /* HCIVersion.swift in Sources */,
 				6EE84DFA1CAF891E00A40C4D /* HCIGeneralEventParameter.swift in Sources */,
 				6E738B56206D920C00CEB343 /* LowEnergyFeature.swift in Sources */,
-				6E704C931E95C4AB00484A22 /* String.swift in Sources */,
 				6E704C981E95C6A500484A22 /* UUID.swift in Sources */,
 				6EE84DE11CAF7EE800A40C4D /* GATTAttributes.swift in Sources */,
 				6E3229101FCDC47F0035605D /* HCIError.swift in Sources */,
@@ -1043,7 +1038,6 @@
 				6EF45FAE1CC6D04D001F7A39 /* Address.swift in Sources */,
 				6EF45FAF1CC6D04D001F7A39 /* HCIGeneralEventParameter.swift in Sources */,
 				6E60A2C02068928400E42351 /* BluetoothHostController.swift in Sources */,
-				6E704C941E95C4AB00484A22 /* String.swift in Sources */,
 				6EB45EF12001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E60A2E82069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
 				6EE910281FDE585B007AD3EA /* HCIVersion.swift in Sources */,

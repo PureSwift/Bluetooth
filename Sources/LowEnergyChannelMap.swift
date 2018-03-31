@@ -15,7 +15,7 @@ public extension BluetoothHostControllerInterface {
     /// Returns the current Channel_Map for the specified Connection_Handle. The returned value indicates the state
     /// of the Channel_Map specified by the last transmitted or received Channel_Map (in a CONNECT_IND or LL_CHANNEL_MAP_IND message)
     /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
-    mutating func lowEnergyReadChannelMap(handle: UInt16, commandTimeout timeout: Int = HCI.defaultTimeout) throws -> LowEnergyChannelMap {
+    func lowEnergyReadChannelMap(handle: UInt16, commandTimeout timeout: Int = HCI.defaultTimeout) throws -> LowEnergyChannelMap {
         
         let parameters = LowEnergyCommand.ReadChannelMapParameter(connectionHandle: handle)
         
