@@ -21,30 +21,30 @@ public protocol BluetoothHostControllerInterface {
     var address: Address { get }
     
     /// Send an HCI command to the controller.
-    func deviceCommand <T: HCICommand> (_ command: T) throws
+    func deviceCommand <C: HCICommand> (_ command: C) throws
     
     /// Send an HCI command with parameters to the controller.
-    func deviceCommand <T: HCICommandParameter> (_ commandParameter: T) throws
+    func deviceCommand <CP: HCICommandParameter> (_ commandParameter: CP) throws
     
     /// Send a command to the controller and wait for response.
-    func deviceRequest<C: HCICommand>(_ command: C, timeout: Int) throws
+    func deviceRequest<C: HCICommand>(_ command: C, timeout: HCICommandTimeout) throws
     
     /// Send a command to the controller and wait for response.
-    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: Int) throws
+    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: HCICommandTimeout) throws
     
     /// Sends a command to the device and waits for a response.
-    func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (_ commandParameter: CP, _ eventParameterType: EP.Type, timeout: Int) throws -> EP
+    func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (_ commandParameter: CP, _ eventParameterType: EP.Type, timeout: HCICommandTimeout) throws -> EP
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType : Return.Type, timeout: Int) throws -> Return
+    func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType : Return.Type, timeout: HCICommandTimeout) throws -> Return
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: Int) throws -> Return
+    func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout) throws -> Return
     
     /// Polls and waits for events.
-    func pollEvent <T: HCIEventParameter> (_ eventParameterType: T.Type,
-                                           shouldContinue: () -> (Bool),
-                                           event: (T) throws -> ()) throws
+    func pollEvent <EP: HCIEventParameter> (_ eventParameterType: EP.Type,
+                                            shouldContinue: () -> (Bool),
+                                            event: (EP) throws -> ()) throws
 }
 
 /// Bluetooth HCI errors

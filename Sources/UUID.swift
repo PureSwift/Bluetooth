@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension UUID {
+public extension UUID {
     
     public static var length: Int { return 16 }
     public static var stringLength: Int { return 36 }
@@ -47,7 +47,7 @@ extension UUID: RawRepresentable {
     }
 }
 
-extension UUID {
+public extension UUID {
     
     public init?(data: Data) {
         

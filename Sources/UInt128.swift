@@ -57,6 +57,33 @@ extension UInt128: Hashable {
     }
 }
 
+// MARK: - CustomStringConvertible
+
+extension UInt128: CustomStringConvertible {
+    
+    public var description: String {
+        
+        let bytes = self.bigEndian.bytes
+        
+        return bytes.0.toHexadecimal()
+            + bytes.1.toHexadecimal()
+            + bytes.2.toHexadecimal()
+            + bytes.3.toHexadecimal()
+            + bytes.4.toHexadecimal()
+            + bytes.5.toHexadecimal()
+            + bytes.6.toHexadecimal()
+            + bytes.7.toHexadecimal()
+            + bytes.8.toHexadecimal()
+            + bytes.9.toHexadecimal()
+            + bytes.10.toHexadecimal()
+            + bytes.11.toHexadecimal()
+            + bytes.12.toHexadecimal()
+            + bytes.13.toHexadecimal()
+            + bytes.14.toHexadecimal()
+            + bytes.15.toHexadecimal()
+    }
+}
+
 // MARK: - Data Convertible
 
 public extension UInt128 {
