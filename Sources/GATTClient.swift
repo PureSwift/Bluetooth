@@ -281,7 +281,7 @@ public final class GATTClient {
     }
     
     @inline(__always)
-    private func send <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (_ request: Request, response: @escaping (ATTResponse<Response>) -> ()) {
+    private func send <Request: ATTProtocolDataUnit, Response> (_ request: Request, response: @escaping (ATTResponse<Response>) -> ()) {
         
         log?("Request: \(request)")
         
