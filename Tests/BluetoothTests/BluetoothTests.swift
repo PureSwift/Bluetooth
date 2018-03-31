@@ -23,7 +23,8 @@ final class BluetoothTests: XCTestCase {
         ("testUUIDStringParsePerformance", testUUIDStringParsePerformance),
         ("testUUIDStringPerformance", testUUIDStringPerformance),
         ("testUUIDDataParsePerformance", testUUIDDataParsePerformance),
-        ("testUUIDDataPerformance", testUUIDDataPerformance)
+        ("testUUIDDataPerformance", testUUIDDataPerformance),
+        ("testUInt128", testUInt128)
         ]
     
     func testAddress() {
@@ -39,6 +40,15 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(address.rawValue == addressString, "\(address.rawValue)")
         XCTAssert(address == Address(bigEndian: Address(bytes: addressBytes)))
         XCTAssert(address.hashValue != 0)
+    }
+    
+    func testUInt128() {
+        
+        let uuid = UUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!
+        
+        let value = UInt128(uuid: uuid)
+        
+        XCTAssert(value.description == "60F14FE2F97211E5B84F23E070D5A8C7")
     }
     
     func testUUID() {
