@@ -315,6 +315,21 @@ final class AttributeProtocolTests: XCTestCase {
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
         
+        var writtenValues = [UInt16: Data]()
+        
+        func clientWillWriteServer(uuid: BluetoothUUID, handle: UInt16, value: Data, newValue: Data) -> ATT.Error? {
+            
+            print("\(#function) \(uuid) (\(handle))")
+            
+            writtenValues[handle] = newValue
+            
+            print(value.map { $0.toHexadecimal() })
+            
+            return nil
+        }
+        
+        server.willWrite = clientWillWriteServer
+        
         func discoverAllPrimaryServices() {
             
             client.discoverAllPrimaryServices {
@@ -449,11 +464,12 @@ final class AttributeProtocolTests: XCTestCase {
                         
                         XCTFail("\(error)")
                         
-                    case let .value(value):
+                    case .value:
                         
-                        // TODO: Validate written value
-                        break
-                        //XCTAssert(value == value)
+                        guard let writtenValue = writtenValues[characteristic.handle.value]
+                            else { XCTFail("Did not write \(characteristic.uuid)"); return }
+                        
+                        XCTAssert(writtenValue == data, "\(characteristic.uuid) \(writtenValue) == \(data)")
                     }
                 }
             }
@@ -514,8 +530,8 @@ public struct TestProfile {
                                                 TestProfile.ReadBlob,
                                                 TestProfile.Write,
                                                 TestProfile.WriteBlob,
-                                                TestProfile.WriteWithoutResponse,
-                                                TestProfile.WriteBlobWithoutResponse
+                                                //TestProfile.WriteWithoutResponse,
+                                                //TestProfile.WriteBlobWithoutResponse
         ])
     
     public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
@@ -545,7 +561,7 @@ public struct TestProfile {
                                                  permissions: [.write],
                                                  properties: [.write])
     
-    public static let WriteBlobValue = Data(bytes: [UInt8](repeating: 1, count: 512))
+    public static let WriteBlobValue = Data(bytes: [UInt8](repeating: 0xAA, count: 512))
     
     public static let WriteBlobWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "D4A6E516-C867-4582-BF66-0A02BD854613")!,
                                                  value: Data(),
@@ -557,10 +573,10 @@ public struct TestProfile {
                                                    characteristics: [
                                                     TestProfile.Read,
                                                     TestProfile.ReadBlob,
-                                                    TestProfile.Write,
-                                                    TestProfile.WriteBlob,
-                                                    TestProfile.WriteWithoutResponse,
-                                                    TestProfile.WriteBlobWithoutResponse
+                                                    //TestProfile.Write,
+                                                    //TestProfile.WriteBlob,
+                                                    //TestProfile.WriteWithoutResponse,
+                                                    //TestProfile.WriteBlobWithoutResponse
         ])
     
     public static let WriteValues: [BluetoothUUID: (data: Data, reliableWrites: Bool)] = [
