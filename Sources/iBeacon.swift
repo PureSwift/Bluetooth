@@ -66,12 +66,12 @@ public func iBeacon(uuid: Foundation.UUID,
 public extension BluetoothHostControllerInterface {
     
     /// Enable iBeacon functionality.
-    mutating func iBeacon(uuid: Foundation.UUID = UUID(),
-                          major: UInt16,
-                          minor: UInt16,
-                          rssi: Int8,
-                          interval: UInt16 = 100,
-                          timeout: Int = HCI.defaultTimeout) throws {
+    func iBeacon(uuid: Foundation.UUID = UUID(),
+                 major: UInt16,
+                 minor: UInt16,
+                 rssi: Int8,
+                 interval: UInt16 = 100,
+                 timeout: Int = HCI.defaultTimeout) throws {
         
         // set advertising parameters
         let advertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter(interval: (interval, interval))
