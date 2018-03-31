@@ -198,6 +198,10 @@
 		6EB45EF12001398100AE5A42 /* DefinedUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */; };
 		6EB45EF22001398100AE5A42 /* DefinedUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */; };
 		6ECBCF0B206E683C00312117 /* L2CAPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */; };
+		6ECBCF18206FBD0F00312117 /* HCICommandTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBCF17206FBD0F00312117 /* HCICommandTimeout.swift */; };
+		6ECBCF19206FBD0F00312117 /* HCICommandTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBCF17206FBD0F00312117 /* HCICommandTimeout.swift */; };
+		6ECBCF1A206FBD0F00312117 /* HCICommandTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBCF17206FBD0F00312117 /* HCICommandTimeout.swift */; };
+		6ECBCF1B206FBD0F00312117 /* HCICommandTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBCF17206FBD0F00312117 /* HCICommandTimeout.swift */; };
 		6EE84DBB1CAF5C7C00A40C4D /* Bluetooth.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EE84DC21CAF5C7C00A40C4D /* Bluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE84DB71CAF5C7C00A40C4D /* Bluetooth.framework */; };
 		6EE84DD51CAF603000A40C4D /* BluetoothUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DD41CAF603000A40C4D /* BluetoothUUID.swift */; };
@@ -314,6 +318,7 @@
 		6EB2EA1D1CD5A8A7000CF975 /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefinedUUID.swift; sourceTree = "<group>"; };
 		6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L2CAPSocket.swift; sourceTree = "<group>"; };
+		6ECBCF17206FBD0F00312117 /* HCICommandTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCICommandTimeout.swift; sourceTree = "<group>"; };
 		6EE84DB71CAF5C7C00A40C4D /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bluetooth.h; sourceTree = "<group>"; };
 		6EE84DBC1CAF5C7C00A40C4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -519,6 +524,7 @@
 				6EE84E051CAF8AD500A40C4D /* HCI.swift */,
 				6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */,
 				6EE84DF31CAF891E00A40C4D /* HCICommand.swift */,
+				6ECBCF17206FBD0F00312117 /* HCICommandTimeout.swift */,
 				6E32290F1FCDC47F0035605D /* HCIError.swift */,
 				6E0245D720683DBD007FB15E /* HCIPacketHeader.swift */,
 				6E2809881FCF499100B2D68E /* HCIVersion.swift */,
@@ -812,6 +818,7 @@
 				6E49B23E20532D45002EA5DC /* HCIEvent.swift in Sources */,
 				6E740C5220657F46006589F6 /* TestingCommand.swift in Sources */,
 				6E60A323206979CF00E42351 /* iBeacon.swift in Sources */,
+				6ECBCF1B206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6E49B23F20532D45002EA5DC /* HCI.swift in Sources */,
 				6E49B24020532D45002EA5DC /* LinkControlCommandParameter.swift in Sources */,
 				6E49B24120532D45002EA5DC /* LowEnergyCommand.swift in Sources */,
@@ -875,6 +882,7 @@
 				6EB2EA041CD5A8A7000CF975 /* HCIEvent.swift in Sources */,
 				6E740C5120657F46006589F6 /* TestingCommand.swift in Sources */,
 				6E60A322206979CF00E42351 /* iBeacon.swift in Sources */,
+				6ECBCF1A206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6EB2EA051CD5A8A7000CF975 /* HCI.swift in Sources */,
 				6EB2EA061CD5A8A7000CF975 /* LinkControlCommandParameter.swift in Sources */,
 				6EB2EA071CD5A8A7000CF975 /* LowEnergyCommand.swift in Sources */,
@@ -969,6 +977,7 @@
 				51F08807206EE47000B7609C /* LowEnergyEncryption.swift in Sources */,
 				6E60A2F120695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
+				6ECBCF18206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6E740C4520657F25006589F6 /* InformationalParametersCommand.swift in Sources */,
 				6E60A31920696D3E00E42351 /* HostControllerLocalName.swift in Sources */,
 				6E60A2F620695B6500E42351 /* LowEnergyConnection.swift in Sources */,
@@ -1014,6 +1023,7 @@
 				6EF45FA41CC6D04D001F7A39 /* HCIEvent.swift in Sources */,
 				6E740C5020657F46006589F6 /* TestingCommand.swift in Sources */,
 				6E60A321206979CF00E42351 /* iBeacon.swift in Sources */,
+				6ECBCF19206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6EF45FA51CC6D04D001F7A39 /* HCI.swift in Sources */,
 				6EF45FA61CC6D04D001F7A39 /* LinkControlCommandParameter.swift in Sources */,
 				6EF45FA71CC6D04D001F7A39 /* LowEnergyCommand.swift in Sources */,

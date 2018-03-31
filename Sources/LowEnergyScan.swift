@@ -15,7 +15,7 @@ public extension BluetoothHostControllerInterface {
     /// Scan LE devices.
     func lowEnergyScan(filterDuplicates: Bool = true,
                        parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
-                       commandTimeout timeout: Int = HCI.defaultTimeout,
+                       timeout: HCICommandTimeout = .default,
                        shouldContinue: () -> (Bool),
                        foundDevice: (LowEnergyScannedDevice) -> ()) throws {
         
@@ -62,7 +62,7 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyScan(duration: TimeInterval = 10,
                        filterDuplicates: Bool = true,
                        parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
-                       commandTimeout timeout: Int = HCI.defaultTimeout) throws -> [LowEnergyScannedDevice] {
+                       timeout: HCICommandTimeout = .default) throws -> [LowEnergyScannedDevice] {
         
         let startDate = Date()
         let endDate = startDate + duration
@@ -71,7 +71,7 @@ public extension BluetoothHostControllerInterface {
         
         try lowEnergyScan(filterDuplicates: filterDuplicates,
                           parameters: parameters,
-                          commandTimeout: timeout,
+                          timeout: timeout,
                           shouldContinue: { Date() < endDate },
                           foundDevice: { foundDevices.append($0) })
         
@@ -88,7 +88,7 @@ public extension BluetoothHostControllerInterface {
     /// - Parameter commandTimeout: The timeout to use for each HCI command.
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
-    func setLowEnergyScanResponse(_ data: LowEnergyResponseData, length: UInt8, commandTimeout: Int = HCI.defaultTimeout) throws {
+    func setLowEnergyScanResponse(_ data: LowEnergyResponseData, length: UInt8, timeout: HCICommandTimeout = .default) throws {
         
         precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
         
@@ -97,7 +97,7 @@ public extension BluetoothHostControllerInterface {
         
         //print("Setting Scan Response Data")
         
-        try deviceRequest(setScanResponseDataCommand, timeout: commandTimeout)
+        try deviceRequest(setScanResponseDataCommand, timeout: timeout)
     }
     
     /// Set the LE Scan Response
@@ -111,12 +111,12 @@ public extension BluetoothHostControllerInterface {
     /// - Parameter commandTimeout: The timeout to use for each HCI command.
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
-    func setLowEnergyScanResponse(_ data: Data, commandTimeout: Int = HCI.defaultTimeout) throws {
+    func setLowEnergyScanResponse(_ data: Data, timeout: HCICommandTimeout = .default) throws {
         
         precondition(data.count <= 31, "LE Scan Response Data can only be 31 octets")
         
         let bytes: LowEnergyResponseData = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23], data[24], data[25], data[26], data[27], data[28], data[29], data[30])
         
-        try setLowEnergyScanResponse(bytes, length: UInt8(data.count), commandTimeout: commandTimeout)
+        try setLowEnergyScanResponse(bytes, length: UInt8(data.count), timeout: timeout)
     }
 }

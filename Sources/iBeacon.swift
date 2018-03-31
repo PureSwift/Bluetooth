@@ -71,7 +71,7 @@ public extension BluetoothHostControllerInterface {
                  minor: UInt16,
                  rssi: Int8,
                  interval: UInt16 = 100,
-                 timeout: Int = HCI.defaultTimeout) throws {
+                 timeout: HCICommandTimeout = .default) throws {
         
         // set advertising parameters
         let advertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter(interval: (interval, interval))

@@ -14,7 +14,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
     /// and returns the Encrypted_Data to the Host.
-    func lowEnergyEncrypt(key: UInt128, data: UInt128, commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt128 {
+    func lowEnergyEncrypt(key: UInt128, data: UInt128, timeout: HCICommandTimeout = .default) throws -> UInt128 {
         
         let parameters = LowEnergyCommand.EncryptParameter(key: key, data: data)
         
@@ -26,7 +26,7 @@ public extension BluetoothHostControllerInterface {
     /// LE Rand Command
     ///
     /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
-    func lowEnergyRandom(commandTimeout timeout: Int = HCI.defaultTimeout) throws -> UInt64 {
+    func lowEnergyRandom(timeout: HCICommandTimeout = .default) throws -> UInt64 {
         
         let returnParameters = try deviceRequest(LowEnergyCommand.RandomReturnParameter.self, timeout: timeout)
         
