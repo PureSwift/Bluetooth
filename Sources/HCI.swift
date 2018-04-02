@@ -71,7 +71,7 @@ public enum HCIOpcodeGroupField: UInt16 {
 }
 
 /// HCI Status Code
-public enum HCIStatus: RawRepresentable {
+public enum HCIStatus: RawRepresentable, CustomStringConvertible {
     
     case success
     case error(HCIError)
@@ -104,6 +104,14 @@ public enum HCIStatus: RawRepresentable {
         switch self {
         case .success: return nil
         case let .error(error): return error
+        }
+    }
+    
+    public var description: String {
+        
+        switch self {
+        case .success: return "Success"
+        case let .error(error): return error.description
         }
     }
 }
