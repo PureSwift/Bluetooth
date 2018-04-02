@@ -841,6 +841,14 @@ public extension LowEnergyCommand {
         /// 128 bit long term key.
         public let longTermKey: UInt128 //Long_Term_Key
         
+        public init(connectionHandle: UInt16, randomNumber: UInt64, encryptedDiversifier: UInt16, longTermKey: UInt128) {
+            
+            self.connectionHandle = connectionHandle
+            self.randomNumber = randomNumber
+            self.encryptedDiversifier = encryptedDiversifier
+            self.longTermKey = longTermKey
+        }
+        
         public var byteValue: [UInt8] {
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             let randomNumberBytes = randomNumber.littleEndian.bytes
