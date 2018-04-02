@@ -15,12 +15,26 @@ import Foundation
 final class HCITests: XCTestCase {
     
     static let allTests = [
+        ("testName", testName),
         ("testAdvertisingReport", testAdvertisingReport),
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
         ("testWriteLocalName", testWriteLocalName),
         ("testReadLocalName", testReadLocalName)
     ]
+    
+    func testName() {
+        
+        XCTAssert(LinkControlCommand.acceptConnection.name == "Accept Connection Request")
+        XCTAssert(LinkPolicyCommand.holdMode.name == "Hold Mode")
+        XCTAssert(InformationalParametersCommand.readLocalVersionInformation.name == "Read Local Version Information")
+        XCTAssert(HostControllerBasebandCommand.readLocalName.name == "Read Local Name")
+        XCTAssert(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
+        XCTAssert(LowEnergyCommand.createConnection.name == "LE Create Connection")
+        
+        XCTAssert(HCIGeneralEvent.commandComplete.name == "Command Complete")
+        XCTAssert(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
+    }
     
     func testReadLocalName() {
         
@@ -247,8 +261,7 @@ final class HCITests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(event.status == .success)
-            
-            print("Connection handle: ", event.handle)
+            XCTAssert(event.handle == 71)
         }
     }
     
