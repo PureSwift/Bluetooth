@@ -23,4 +23,10 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
     
     /// LE Long Term Key Request
     case longTermKeyRequest                 = 0x05
+    
+    /// LE Encryption Change
+    case encryptionChange                   = 0x08
+    
+    /// LE Encryption Key Refresh Complete
+    case encryptionKeyRefreshComplete       = 0x30
 }
