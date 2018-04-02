@@ -88,3 +88,77 @@ public enum LinkControlCommand: UInt16, HCICommand {
     /// Read LMP Handle
     case readLMPHandle              = 0x0020
 }
+
+// MARK: - Name
+
+public extension LinkControlCommand {
+    
+    public var name: String {
+        
+        return type(of: self).names[Int(rawValue)]
+    }
+    
+    private static let names = [
+        "Unknown",
+        "Inquiry",
+        "Inquiry Cancel",
+        "Periodic Inquiry Mode",
+        "Exit Periodic Inquiry Mode",
+        "Create Connection",
+        "Disconnect",
+        "Add SCO Connection",
+        "Create Connection Cancel",
+        "Accept Connection Request",
+        "Reject Connection Request",
+        "Link Key Request Reply",
+        "Link Key Request Negative Reply",
+        "PIN Code Request Reply",
+        "PIN Code Request Negative Reply",
+        "Change Connection Packet Type",
+        "Unknown",
+        "Authentication Requested",
+        "Unknown",
+        "Set Connection Encryption",
+        "Unknown",
+        "Change Connection Link Key",
+        "Unknown",
+        "Master Link Key",
+        "Unknown",
+        "Remote Name Request",
+        "Remote Name Request Cancel",
+        "Read Remote Supported Features",
+        "Read Remote Extended Features",
+        "Read Remote Version Information",
+        "Unknown",
+        "Read Clock Offset",
+        "Read LMP Handle",
+        "Unknown",
+        "Unknown",
+        "Unknown",
+        "Unknown",
+        "Unknown",
+        "Unknown",
+        "Unknown",
+        "Setup Synchronous Connection",
+        "Accept Synchronous Connection",
+        "Reject Synchronous Connection",
+        "IO Capability Request Reply",
+        "User Confirmation Request Reply",
+        "User Confirmation Request Negative Reply",
+        "User Passkey Request Reply",
+        "User Passkey Request Negative Reply",
+        "Remote OOB Data Request Reply",
+        "Unknown",
+        "Unknown",
+        "Remote OOB Data Request Negative Reply",
+        "IO Capability Request Negative Reply",
+        "Create Physical Link",
+        "Accept Physical Link",
+        "Disconnect Physical Link",
+        "Create Logical Link",
+        "Accept Logical Link",
+        "Disconnect Logical Link",
+        "Logical Link Cancel",
+        "Flow Spec Modify"
+    ]
+}

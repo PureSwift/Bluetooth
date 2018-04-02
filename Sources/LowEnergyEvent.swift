@@ -30,3 +30,22 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
     /// LE Encryption Key Refresh Complete
     case encryptionKeyRefreshComplete       = 0x30
 }
+
+// MARK: - Name
+
+public extension LowEnergyEvent {
+    
+    public var name: String {
+        
+        return type(of: self).names[Int(rawValue)]
+    }
+    
+    private static let names = [
+        "Unknown",
+        "LE Connection Complete",
+        "LE Advertising Report",
+        "LE Connection Update Complete",
+        "LE Read Remote Used Features Complete",
+        "LE Long Term Key Request"
+    ]
+}

@@ -13,11 +13,21 @@
 #endif
 
 /// HCI Event Opcode
-public protocol HCIEvent: RawRepresentable {
+public protocol HCIEvent: RawRepresentable, Hashable, CustomStringConvertible {
     
     init?(rawValue: UInt8)
     
     var rawValue: UInt8 { get }
+    
+    var name: String { get }
+}
+
+public extension HCIEvent {
+    
+    var description: String {
+        
+        return name
+    }
 }
 
 public protocol HCIEventParameter {

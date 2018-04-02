@@ -7,13 +7,24 @@
 //
 
 /// HCI Command.
-public protocol HCICommand: RawRepresentable {
+public protocol HCICommand: RawRepresentable, Hashable, CustomStringConvertible {
     
     static var opcodeGroupField: HCIOpcodeGroupField { get }
     
     init?(rawValue: HCIOpcodeCommandField)
     
     var rawValue: HCIOpcodeCommandField { get }
+    
+    /// Human readable name of the HCI command. 
+    var name: String { get }
+}
+
+public extension HCICommand {
+    
+    public var description: String {
+        
+        return name
+    }
 }
 
 public extension HCICommand {
