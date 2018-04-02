@@ -33,6 +33,10 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.randomNumber
     }
     
+    /// LE Start Encryption Command
+    ///
+    /// The command is used to authenticate the given encryption key associated with the remote device specified
+    /// by the Connection_Handle, and once authenticated will encrypt the connection.
     func lowEnergyStartEncryption(connectionHandle: UInt16, randomNumber: UInt64, encryptedDiversifier: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) throws {
         
         let command = LowEnergyCommand.StartEncryptionParameter(connectionHandle: connectionHandle,randomNumber: randomNumber, encryptedDiversifier: encryptedDiversifier, longTermKey: longTermKey)
