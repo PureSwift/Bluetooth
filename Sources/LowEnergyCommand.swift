@@ -47,3 +47,48 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case readResolvedListSize           = 0x002A
     case setAddressResolutionEnable     = 0x002D
 }
+
+// MARK: - Name
+
+public extension LowEnergyCommand {
+    
+    public var name: String {
+        
+        return type(of: self).names[Int(rawValue)]
+    }
+    
+    private static let names = [
+        "Unknown",
+        "LE Set Event Mask",
+        "LE Read Buffer Size",
+        "LE Read Local Supported Features",
+        "Unknown",
+        "LE Set Random Address",
+        "LE Set Advertising Parameters",
+        "LE Read Advertising Channel Tx Power",
+        "LE Set Advertising Data",
+        "LE Set Scan Response Data",
+        "LE Set Advertise Enable",
+        "LE Set Scan Parameters",
+        "LE Set Scan Enable",
+        "LE Create Connection",
+        "LE Create Connection Cancel",
+        "LE Read White List Size",
+        "LE Clear White List",
+        "LE Add Device To White List",
+        "LE Remove Device From White List",
+        "LE Connection Update",
+        "LE Set Host Channel Classification",
+        "LE Read Channel Map",
+        "LE Read Remote Used Features",
+        "LE Encrypt",
+        "LE Rand",
+        "LE Start Encryption",
+        "LE Long Term Key Request Reply",
+        "LE Long Term Key Request Negative Reply",
+        "LE Read Supported States",
+        "LE Receiver Test",
+        "LE Transmitter Test",
+        "LE Test End"
+    ]
+}
