@@ -32,4 +32,11 @@ public extension BluetoothHostControllerInterface {
         
         return returnParameters.randomNumber
     }
+    
+    func lowEnergyStartEncryption(connectionHandle: UInt16, randomNumber: UInt64, encryptedDiversifier: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) throws {
+        
+        let command = LowEnergyCommand.StartEncryptionParameter(connectionHandle: connectionHandle,randomNumber: randomNumber, encryptedDiversifier: encryptedDiversifier, longTermKey: longTermKey)
+        
+        try deviceRequest(command, timeout: timeout)
+    }
 }
