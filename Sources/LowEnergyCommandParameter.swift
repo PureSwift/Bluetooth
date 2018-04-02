@@ -1031,11 +1031,11 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
     /// Time = N * 1.25 msec
     public var miliseconds: ClosedRange<Double> {
         
-        let ms = Double(1.25)
+        let miliseconds = Double(1.25)
         
-        let min = Double(rawValue.lowerBound) * ms
+        let min = Double(rawValue.lowerBound) * miliseconds
         
-        let max = Double(rawValue.upperBound) * ms
+        let max = Double(rawValue.upperBound) * miliseconds
         
         return min ... max
     }
@@ -1264,11 +1264,11 @@ public struct LowEnergyConnectionLength: RawRepresentable, Equatable {
     /// Time = N * 0.625 msec.
     public var miliseconds: ClosedRange<Double> {
         
-        let ms = Double(0.625)
+        let miliseconds = Double(0.625)
         
-        let min = Double(rawValue.lowerBound) * ms
+        let min = Double(rawValue.lowerBound) * miliseconds
         
-        let max = Double(rawValue.upperBound) * ms
+        let max = Double(rawValue.upperBound) * miliseconds
         
         return min ... max
     }
