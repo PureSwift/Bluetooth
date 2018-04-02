@@ -176,7 +176,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                                                     event: UInt8 = 0,
                                                     eventParameterLength: Int = 0) throws -> [UInt8] {
         
-        log("\(#function) \(command) \(commandParameterData.count) bytes")
+        log("\(#function) \(command) (\(commandParameterData.count) bytes)")
         
         let commandHeader = HCICommandHeader(command: command, parameterLength: UInt8(commandParameterData.count))
         let opcode = commandHeader.opcode
