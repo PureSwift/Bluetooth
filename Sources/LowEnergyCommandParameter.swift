@@ -850,6 +850,7 @@ public extension LowEnergyCommand {
         }
         
         public var byteValue: [UInt8] {
+            
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             let randomNumberBytes = randomNumber.littleEndian.bytes
             let encryptedDiversifierBytes = encryptedDiversifier.littleEndian.bytes
@@ -903,13 +904,16 @@ public extension LowEnergyCommand {
         public let longTermKey: UInt128 //Long_Term_Key
         
         public init(connectionHandle: UInt16, longTermKey: UInt128) {
+            
             self.connectionHandle = connectionHandle
             self.longTermKey = longTermKey
         }
         
         public var byteValue: [UInt8] {
+            
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             let longTermKeyBytes = longTermKey.littleEndian.bytes
+            
             return [
                 connectionHandleBytes.0,
                 connectionHandleBytes.1,
@@ -945,16 +949,74 @@ public extension LowEnergyCommand {
         public let connectionHandle: UInt16 //Connection_Handle
         
         public init(connectionHandle: UInt16) {
+            
             self.connectionHandle = connectionHandle
         }
         
         public var byteValue: [UInt8] {
+            
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
         
             return [
                 connectionHandleBytes.0,
                 connectionHandleBytes.1
             ]
+        }
+    }
+    
+    /// LE Receiver Test Command
+    ///
+    /// This command is used to start a test where the DUT receives test reference
+    /// packets at a fixed interval. The tester generates the test reference packets.
+    public struct ReceiverTestParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.receiverTest //0x001D
+        
+        /// N = (F – 2402) / 2
+        /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
+        public let rxChannel: RxChannel //RX_Channel
+        
+        public init(rxChannel: RxChannel) {
+            
+            self.rxChannel = rxChannel
+        }
+        
+        public var byteValue: [UInt8] {
+            let rxChannelByte = rxChannel.rawValue.littleEndian
+            return [ rxChannelByte ]
+        }
+    }
+    
+    /// LE Transmitter Test Command
+    ///
+    /// This command is used to start a test where the DUT generates test reference packets
+    /// at a fixed interval. The Controller shall transmit at maximum power.
+    ///
+    /// An LE Controller supporting the LE_Transmitter_Test command shall support Packet_Payload values 0x00,
+    /// 0x01 and 0x02. An LE Controller may support other values of Packet_Payload.
+    public struct TransmitterTestParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.transmitterTest //0x001E
+        
+        /// N = (F – 2402) / 2
+        /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
+        public let rxChannel: RxChannel //RX_Channel
+        
+        public let lengthOfTestData: UInt8
+        
+        public let packetpayload: PacketPayload
+        
+        public init(rxChannel: RxChannel, lengthOfTestData: UInt8, packetpayload: PacketPayload) {
+            
+            self.rxChannel = rxChannel
+            self.lengthOfTestData = lengthOfTestData
+            self.packetpayload = packetpayload
+        }
+        
+        public var byteValue: [UInt8] {
+            let rxChannelByte = rxChannel.rawValue.littleEndian
+            let packetpayloadByte = packetpayload.rawValue.littleEndian
+            return [ rxChannelByte, packetpayloadByte ]
         }
     }
 }
@@ -1107,9 +1169,40 @@ public extension LowEnergyCommand {
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
         }
     }
+    
+    //TODO not finished
+    public struct ReadSupportedStatesReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readSupportedStates //0x001C
+        
+        public static let length: Int = 8
+        
+        public init?(byteValue: [UInt8]) {
+        
+        }
+        
+        /*
+        public enum LeStates: UInt64 {
+            
+            case scannablAdvertisingState = UInt64(bytes: (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00))
+        }
+         */
+    }
 }
 
 // MARK: - Supporting Types
+
+public enum PacketPayload: UInt8 { // Packet_Payload
+    
+    case prb29Sequence       = 0x00
+    case repeated11110000    = 0x01
+    case repeated10101010    = 0x02
+    case prbs15Sequence      = 0x03
+    case repeated11111111    = 0x04
+    case repeated00000000    = 0x05
+    case repeated00001111    = 0x06
+    case repeated01010101    = 0x07
+}
 
 /// Value for connection event interval
 ///
@@ -1306,6 +1399,51 @@ public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable
         
         return Int(rawValue)
     }
+}
+
+public struct RxChannel: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    /// 100 msec
+    public static let min = RxChannel(0x00)
+    
+    /// 32 seconds
+    public static let max = RxChannel(0x27)
+    
+    public var rawValue: UInt8
+    
+    public init?(rawValue: UInt8) {
+        guard rawValue >= RxChannel.min.rawValue,
+            rawValue <= RxChannel.max.rawValue
+            else { return nil }
+        
+        assert((RxChannel.min.rawValue ... RxChannel.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: RxChannel, rhs: RxChannel) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: RxChannel, rhs: RxChannel) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+    
 }
 
 /// Supervision Timeout
