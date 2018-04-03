@@ -932,6 +932,31 @@ public extension LowEnergyCommand {
             ]
         }
     }
+    
+    /// LE Long Term Key Request Negative Reply Command
+    ///
+    /// The command is used to reply to an LE Long Term Key Request event
+    /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
+    public struct LongTermKeyRequestNegativeReplyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.ltkNegativeReply
+        
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 //Connection_Handle
+        
+        public init(connectionHandle: UInt16) {
+            self.connectionHandle = connectionHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+        
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1
+            ]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -1044,6 +1069,29 @@ public extension LowEnergyCommand {
     public struct LongTermKeyRequestReplyReturnParameter: HCICommandReturnParameter {
         
         public static let command = LowEnergyCommand.ltkReply
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// LE Long Term Key Request Negative Reply Command
+    ///
+    /// The command is used to reply to an LE Long Term Key Request event
+    /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
+    public struct LongTermKeyRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.ltkNegativeReply
         
         public static let length: Int = 2
         
