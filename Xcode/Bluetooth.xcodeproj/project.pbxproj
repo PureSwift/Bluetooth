@@ -233,6 +233,10 @@
 		6EE910271FDE5841007AD3EA /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE910241FDE5841007AD3EA /* UInt128.swift */; };
 		6EE910281FDE585B007AD3EA /* HCIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2809881FCF499100B2D68E /* HCIVersion.swift */; };
 		6EE910291FDE585C007AD3EA /* HCIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2809881FCF499100B2D68E /* HCIVersion.swift */; };
+		6EED642A207413F30077CECE /* LowEnergyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED6429207413F30077CECE /* LowEnergyState.swift */; };
+		6EED642B207413F30077CECE /* LowEnergyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED6429207413F30077CECE /* LowEnergyState.swift */; };
+		6EED642C207413F30077CECE /* LowEnergyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED6429207413F30077CECE /* LowEnergyState.swift */; };
+		6EED642D207413F30077CECE /* LowEnergyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED6429207413F30077CECE /* LowEnergyState.swift */; };
 		6EF45FA41CC6D04D001F7A39 /* HCIEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */; };
 		6EF45FA51CC6D04D001F7A39 /* HCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84E051CAF8AD500A40C4D /* HCI.swift */; };
 		6EF45FA61CC6D04D001F7A39 /* LinkControlCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */; };
@@ -353,6 +357,7 @@
 		6EE84DF71CAF891E00A40C4D /* LowEnergyCommandParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyCommandParameter.swift; sourceTree = "<group>"; };
 		6EE84E051CAF8AD500A40C4D /* HCI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCI.swift; sourceTree = "<group>"; };
 		6EE910241FDE5841007AD3EA /* UInt128.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt128.swift; sourceTree = "<group>"; };
+		6EED6429207413F30077CECE /* LowEnergyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyState.swift; sourceTree = "<group>"; };
 		6EF45FBD1CC6D04D001F7A39 /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -522,6 +527,7 @@
 				6E60A30E2069603700E42351 /* L2CAPSocket.swift */,
 				6E60A31F206979CF00E42351 /* iBeacon.swift */,
 				6E738B55206D920C00CEB343 /* LowEnergyFeature.swift */,
+				6EED6429207413F30077CECE /* LowEnergyState.swift */,
 				6E60A31E2069711600E42351 /* Attribute Protocol */,
 				6E60A31D20696DD300E42351 /* Host Controller */,
 				6EE84E021CAF892300A40C4D /* HCI */,
@@ -884,6 +890,7 @@
 				6E60A3122069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6E60A2FE20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
 				6E740C5720657F6B006589F6 /* VendorCommand.swift in Sources */,
+				6EED642D207413F30077CECE /* LowEnergyState.swift in Sources */,
 				6E49B25C20532D45002EA5DC /* Integer.swift in Sources */,
 				6E49B25D20532D45002EA5DC /* LowEnergyEventParameter.swift in Sources */,
 			);
@@ -949,6 +956,7 @@
 				6E60A3112069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6E60A2FD20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
 				6E740C5620657F6B006589F6 /* VendorCommand.swift in Sources */,
+				6EED642C207413F30077CECE /* LowEnergyState.swift in Sources */,
 				6E704C861E95C41C00484A22 /* Integer.swift in Sources */,
 				6EB2EA151CD5A8A7000CF975 /* LowEnergyEventParameter.swift in Sources */,
 			);
@@ -996,6 +1004,7 @@
 				6EE84E011CAF891E00A40C4D /* LowEnergyCommandParameter.swift in Sources */,
 				51F08807206EE47000B7609C /* LowEnergyEncryption.swift in Sources */,
 				6E60A2F120695B2700E42351 /* LowEnergyScan.swift in Sources */,
+				6EED642A207413F30077CECE /* LowEnergyState.swift in Sources */,
 				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
 				6ECBCF18206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6E740C4520657F25006589F6 /* InformationalParametersCommand.swift in Sources */,
@@ -1094,6 +1103,7 @@
 				6E60A3102069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6E60A2FC20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
 				6E740C5520657F6B006589F6 /* VendorCommand.swift in Sources */,
+				6EED642B207413F30077CECE /* LowEnergyState.swift in Sources */,
 				6E704C851E95C41C00484A22 /* Integer.swift in Sources */,
 				6EF45FB51CC6D04D001F7A39 /* LowEnergyEventParameter.swift in Sources */,
 			);
