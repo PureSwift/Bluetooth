@@ -27,6 +27,25 @@ public enum LowEnergyState: UInt8, BitMaskOption {
                                                   .highDutyCycleDirectedAdvertising]
 }
 
+public extension LowEnergyState {
+    
+    public var name: String {
+        
+        guard let name = lowEnergyStateNames[self]
+            else { fatalError() }
+        
+        return name
+    }
+}
+
+extension LowEnergyState: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return name
+    }
+}
+
 /// The states and state combinations that the link layer supports.
 public enum LowEnergyStateSet: UInt64 {
     
@@ -57,4 +76,21 @@ internal let lowEnergyStates: [LowEnergyStateSet: (BitMaskOptionSet<LowEnergySta
     .state1: ([.scannableAdvertising]),
     .state2: ([.connectableAdvertising]),
     .state3: ([.highDutyCycleDirectedAdvertising])
+]
+
+internal let lowEnergyStateNames: [LowEnergyState: String] = [
+    .scannableAdvertising: "Scannable Advertising State",
+    .connectableAdvertising: "Connectable Advertising State",
+    .nonConnectableAdvertising: "Non-connectable Advertising State",
+    .highDutyCycleDirectedAdvertising: "High Duty Cycle Directed Advertising State"
+    /*
+{  4, "Low Duty Cycle Directed Advertising State"
+{  5, "Active Scanning State"
+{  6, "Passive Scanning State"
+{  7, "Initiating State"
+{  8, "Connection State (Master Role)"
+{  9, "Connection State (Slave Role)"
+{ 10, "Master Role & Master Role"
+{ 11, "Slave Role & Slave Role"
+{ 12, "Master Role & Slave Role"*/
 ]
