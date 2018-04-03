@@ -68,6 +68,9 @@ public enum LowEnergyFeature: UInt64, BitMaskOption {
     /// LE Power Class 1
     case powerClass1                                    = 0b1000000000000000
     
+    /// Minimum Number of Used Channels Procedure
+    case minimumNumberofUsedChannelsProcedure           = 0b10000000000000000
+    
     public static let all: Set<LowEnergyFeature> = [.encryption,
                                                     .connectionParametersRequestProcedure,
                                                     .extendedRejectIndication,
@@ -83,7 +86,8 @@ public enum LowEnergyFeature: UInt64, BitMaskOption {
                                                     .extendedAdvertising,
                                                     .periodicAdvertising,
                                                     .channelSelectionAlgorithm2,
-                                                    .powerClass1]
+                                                    .powerClass1,
+                                                    .minimumNumberofUsedChannelsProcedure]
 }
 
 // MARK: - CustomStringConvertible
@@ -144,7 +148,8 @@ internal let featureSet: [LowEnergyFeature: (isValid: Bool, name: String)] = [
     .extendedAdvertising:                       (false, "LE Extended Advertising"),
     .periodicAdvertising:                       (false, "LE Periodic Advertising"),
     .channelSelectionAlgorithm2:                (true, "Channel Selection Algorithm #2"),
-    .powerClass1:                               (true, "LE Power Class 1")
+    .powerClass1:                               (true, "LE Power Class 1"),
+    .minimumNumberofUsedChannelsProcedure:      (false, "Minimum Number of Used Channels Procedure")
 ]
 
 // MARK: - Supporting Types
