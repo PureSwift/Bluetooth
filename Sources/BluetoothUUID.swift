@@ -195,7 +195,7 @@ public extension BluetoothUUID {
 
 // MARK: - Byte Swap
 
-public extension BluetoothUUID {
+extension BluetoothUUID: ByteSwap {
     
     /// A representation of this Bluetooth UUID with the byte order swapped.
     public var byteSwapped: BluetoothUUID {
@@ -214,58 +214,6 @@ public extension BluetoothUUID {
             
             return .bit128(value.byteSwapped)
         }
-    }
-    
-    /// Creates an UUID from its little-endian representation, changing the
-    /// byte order if necessary.
-    ///
-    /// - Parameter value: A value to use as the little-endian representation of
-    ///   the new UUID.
-    public init(littleEndian value: BluetoothUUID) {
-        #if _endian(little)
-            self = value
-        #else
-            self = value.byteSwapped
-        #endif
-    }
-    
-    /// Creates an UUID from its big-endian representation, changing the byte
-    /// order if necessary.
-    ///
-    /// - Parameter value: A value to use as the big-endian representation of the
-    ///   new UUID.
-    public init(bigEndian value: BluetoothUUID) {
-        #if _endian(big)
-            self = value
-        #else
-            self = value.byteSwapped
-        #endif
-    }
-    
-    /// The little-endian representation of this UUID.
-    ///
-    /// If necessary, the byte order of this value is reversed from the typical
-    /// byte order of this UUID. On a little-endian platform, for any
-    /// UUID `x`, `x == x.littleEndian`.
-    public var littleEndian: BluetoothUUID {
-        #if _endian(little)
-            return self
-        #else
-            return byteSwapped
-        #endif
-    }
-    
-    /// The big-endian representation of this UUID.
-    ///
-    /// If necessary, the byte order of this value is reversed from the typical
-    /// byte order of this UUID. On a big-endian platform, for any
-    /// UUID `x`, `x == x.bigEndian`.
-    public var bigEndian: BluetoothUUID {
-        #if _endian(big)
-            return self
-        #else
-            return byteSwapped
-        #endif
     }
 }
 

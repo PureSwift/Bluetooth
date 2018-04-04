@@ -18,4 +18,7 @@ public protocol ByteValue: Equatable {
     
     /// Initializes with the primitive the primitive byte type.
     init(bytes: ByteValue)
+    
+    /// The number of bits used for the underlying binary representation of values of this type.
+    static var bitWidth: Int { get }
 }

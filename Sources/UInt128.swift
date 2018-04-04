@@ -14,6 +14,8 @@ public struct UInt128: ByteValue {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
+    public static var bitWidth: Int { return 128 }
+    
     public var bytes: ByteValue
     
     public init(bytes: ByteValue) {
@@ -105,7 +107,7 @@ public extension UInt128 {
 
 // MARK: - Byte Swap
 
-public extension UInt128 {
+extension UInt128: ByteSwap {
     
     /// A representation of this integer with the byte order swapped.
     public var byteSwapped: UInt128 {
@@ -126,58 +128,6 @@ public extension UInt128 {
                                bytes.2,
                                bytes.1,
                                bytes.0))
-    }
-    
-    /// Creates an integer from its little-endian representation, changing the
-    /// byte order if necessary.
-    ///
-    /// - Parameter value: A value to use as the little-endian representation of
-    ///   the new integer.
-    public init(littleEndian value: UInt128) {
-        #if _endian(little)
-            self = value
-        #else
-            self = value.byteSwapped
-        #endif
-    }
-    
-    /// Creates an integer from its big-endian representation, changing the byte
-    /// order if necessary.
-    ///
-    /// - Parameter value: A value to use as the big-endian representation of the
-    ///   new integer.
-    public init(bigEndian value: UInt128) {
-        #if _endian(big)
-            self = value
-        #else
-            self = value.byteSwapped
-        #endif
-    }
-    
-    /// The little-endian representation of this integer.
-    ///
-    /// If necessary, the byte order of this value is reversed from the typical
-    /// byte order of this integer. On a little-endian platform, for any
-    /// integer `x`, `x == x.littleEndian`.
-    public var littleEndian: UInt128 {
-        #if _endian(little)
-            return self
-        #else
-            return byteSwapped
-        #endif
-    }
-    
-    /// The big-endian representation of this integer.
-    ///
-    /// If necessary, the byte order of this value is reversed from the typical
-    /// byte order of this integer. On a big-endian platform, for any
-    /// integer `x`, `x == x.bigEndian`.
-    public var bigEndian: UInt128 {
-        #if _endian(big)
-            return self
-        #else
-            return byteSwapped
-        #endif
     }
 }
 
