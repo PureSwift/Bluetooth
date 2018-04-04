@@ -1170,6 +1170,28 @@ public extension LowEnergyCommand {
         }
     }
     
+    /// LE Test End Command
+    ///
+    /// This command is used to stop any test which is in progress. The Number_Of_Packets
+    /// for a transmitter test shall be reported as 0x0000. The Number_Of_Packets is an unsigned number
+    /// and contains the number of received packets.
+    public struct TestEndReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.testEnd
+        
+        public static let length: Int = 2
+        
+        public let numberOfPackets: UInt16
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            numberOfPackets = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
     //TODO not finished
     public struct ReadSupportedStatesReturnParameter: HCICommandReturnParameter {
         
@@ -1177,7 +1199,7 @@ public extension LowEnergyCommand {
         
         public static let length: Int = 8
         
-        public let leStatus: LowEnergyStateSet
+        //public let leStatus: LowEnergyStateSet
         
         public init?(byteValue: [UInt8]) {
             
@@ -1186,7 +1208,7 @@ public extension LowEnergyCommand {
             
             let leStatus = UInt64(littleEndian: UInt64(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
             
-            //self.leStatus = LowEnergyStateSet. leStatus
+            //TODO self.leStatus = LowEnergyStateSet. leStatus
         }
     }
 }
