@@ -280,43 +280,51 @@ public extension BluetoothUUID {
 }
 
 public extension UInt128 {
-
     
-}
-    
-    /// Forceably convert to `UInt128` value.
-    public func toUInt128() -> UInt128 {
+    /// Forceably convert `BluetoothUUID` to `UInt128` value.
+    public init(_ bluetoothUUID: BluetoothUUID) {
         
-        switch self {
+        switch bluetoothUUID {
             
         case let .bit16(value):
             
             let bytes = value.bigEndian.bytes
             
-            var uuid = BluetoothUUID.baseUUID
+            var bigEndianValue = BluetoothUUID.baseUUID
             
-            uuid.bytes.2 = bytes.0
-            uuid.bytes.3 = bytes.1
+            bigEndianValue.bytes.2 = bytes.0
+            bigEndianValue.bytes.3 = bytes.1
             
-            return uuid
+            self.init(bigEndian: bigEndianValue)
             
         case let .bit32(value):
             
             let bytes = value.bigEndian.bytes
             
-            var uuid = BluetoothUUID.baseUUID
+            var bigEndianValue = BluetoothUUID.baseUUID
             
-            uuid.bytes.0 = bytes.0
-            uuid.bytes.1 = bytes.1
-            uuid.bytes.2 = bytes.2
-            uuid.bytes.3 = bytes.3
+            bigEndianValue.bytes.0 = bytes.0
+            bigEndianValue.bytes.1 = bytes.1
+            bigEndianValue.bytes.2 = bytes.2
+            bigEndianValue.bytes.3 = bytes.3
             
-            return uuid
+            self.init(bigEndian: bigEndianValue)
             
         case let .bit128(value):
             
-            return value
+            self = value
         }
+    }
+}
+
+public extension BluetoothUUID {
+    
+    /// Forceably convert `BluetoothUUID` to `UInt128` value.
+    var bit128: BluetoothUUID {
+        
+        let value = UInt128(self)
+        
+        return .bit128(value)
     }
 }
 
@@ -336,11 +344,13 @@ public extension Foundation.UUID {
     /// Initialize and convert from a Bluetooth UUID.
     public init(bluetooth uuid: BluetoothUUID) {
         
-        self = UUID(value.toUInt128())
+        let value = UInt128(uuid)
+        
+        self.init(value)
     }
 }
 
-// MARK: - CoreBluetooth Support
+// MARK: - CoreBluetooth Conversion
 
 #if os(macOS) || os(iOS) || os(tvOS) || (os(watchOS) && swift(>=3.2))
     
