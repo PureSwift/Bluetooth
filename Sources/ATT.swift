@@ -166,41 +166,45 @@ public enum ATTOpcode: UInt8 {
     case handleValueIndication                      = 0x1D
     case handleValueConfirmation                    = 0x1E
     
+    internal static let opcodeTypes: [ATTOpcode: ATTOpcodeType] = [
+        
+        .errorResponse:                    .response,
+        .maximumTransmissionUnitRequest:   .request,
+        .maximumTransmissionUnitResponse:  .response,
+        .findInformationRequest:           .request,
+        .findInformationResponse:          .response,
+        .findByTypeRequest:                .request,
+        .findByTypeResponse:               .response,
+        .readByTypeRequest:                .request,
+        .readByTypeResponse:               .response,
+        .readRequest:                      .request,
+        .readResponse:                     .response,
+        .readBlobRequest:                  .request,
+        .readBlobResponse:                 .response,
+        .readMultipleRequest:              .request,
+        .readMultipleResponse:             .response,
+        .readByGroupTypeRequest:           .request,
+        .readByGroupTypeResponse:          .response,
+        .writeRequest:                     .request,
+        .writeResponse:                    .response,
+        .writeCommand:                     .command,
+        .signedWriteCommand:               .command,
+        .preparedWriteRequest:             .request,
+        .preparedWriteResponse:            .response,
+        .executeWriteRequest:              .request,
+        .executeWriteResponse:             .response,
+        .handleValueNotification:          .notification,
+        .handleValueIndication:            .indication,
+        .handleValueConfirmation:          .confirmation
+    ]
+    
     /// Specifies the opcode category.
     public var type: ATT.OpcodeType {
         
-        switch self {
+        guard let opcodeType = type(of: self).opcodeTypes[self]
+            else { fatalError("Missing mapped type for \(self)") }
         
-        case .errorResponse:                    return .response
-        case .maximumTransmissionUnitRequest:   return .request
-        case .maximumTransmissionUnitResponse:  return .response
-        case .findInformationRequest:           return .request
-        case .findInformationResponse:          return .response
-        case .findByTypeRequest:                return .request
-        case .findByTypeResponse:               return .response
-        case .readByTypeRequest:                return .request
-        case .readByTypeResponse:               return .response
-        case .readRequest:                      return .request
-        case .readResponse:                     return .response
-        case .readBlobRequest:                  return .request
-        case .readBlobResponse:                 return .response
-        case .readMultipleRequest:              return .request
-        case .readMultipleResponse:             return .response
-        case .readByGroupTypeRequest:           return .request
-        case .readByGroupTypeResponse:          return .response
-        case .writeRequest:                     return .request
-        case .writeResponse:                    return .response
-        case .writeCommand:                     return .command
-        case .signedWriteCommand:               return .command
-        case .preparedWriteRequest:             return .request
-        case .preparedWriteResponse:            return .response
-        case .executeWriteRequest:              return .request
-        case .executeWriteResponse:             return .response
-        case .handleValueNotification:          return .notification
-        case .handleValueIndication:            return .indication
-        case .handleValueConfirmation:          return .confirmation
-        
-        }
+        return opcodeType
     }
     
     private static let requestResponseMap: [(request: ATTOpcode,  response: ATTOpcode)] = [
