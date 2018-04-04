@@ -510,7 +510,7 @@ public extension LowEnergyCommand {
     /// Address is ignored when Address Type is set to 0xFF.
     public struct AddDeviceToWhiteListParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.addDeviceToWhiteList
+        public static let command = LowEnergyCommand.addDeviceToWhiteList //0x0011
         
         /// The white list device. 
         public var device: LowEnergyWhiteListDevice
@@ -547,7 +547,7 @@ public extension LowEnergyCommand {
     /// Address is ignored when Address_Type is set to 0xFF.
     public struct RemoveDeviceToWhiteListParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.removeDeviceFromWhiteList
+        public static let command = LowEnergyCommand.removeDeviceFromWhiteList //0x0012
         
         /// The white list device.
         public var device: LowEnergyWhiteListDevice
@@ -592,7 +592,7 @@ public extension LowEnergyCommand {
         
         public typealias SupervisionTimeout = LowEnergySupervisionTimeout
         
-        public static let command = LowEnergyCommand.connectionUpdate
+        public static let command = LowEnergyCommand.connectionUpdate //0x0013
         
         public let connectionHandle: UInt16 //Connection_Handle
         
@@ -667,7 +667,7 @@ public extension LowEnergyCommand {
     /// until the Controller is reset using the Reset command
     public struct SetHostChannelClassificationParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.setHostChannelClassification
+        public static let command = LowEnergyCommand.setHostChannelClassification //0x0014
         
         /// This parameter contains 37 1-bit fields.
         /// The nth such field (in the range 0 to 36) contains the value for the link layer channel index n.
@@ -698,7 +698,7 @@ public extension LowEnergyCommand {
     /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
     public struct ReadChannelMapParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.readChannelMap
+        public static let command = LowEnergyCommand.readChannelMap //0x0015
         
         public let connectionHandle: UInt16 //Connection_Handle
         
@@ -728,7 +728,7 @@ public extension LowEnergyCommand {
     //// the Controller may use a cached copy of the features.
     public struct ReadRemoteUsedFeaturesParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.readRemoteUsedFeatures
+        public static let command = LowEnergyCommand.readRemoteUsedFeatures //0x0016
         
         public let connectionHandle: UInt16 //Connection_Handle
         
@@ -754,7 +754,7 @@ public extension LowEnergyCommand {
     /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
     public struct EncryptParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.encrypt
+        public static let command = LowEnergyCommand.encrypt //0x0017
         
         /// 128 bit key for the encryption of the data given in the command.
         /// The most significant octet of the key corresponds to key[0] using the notation specified in FIPS 197.
@@ -827,7 +827,7 @@ public extension LowEnergyCommand {
     /// This command shall only be used when the local device’s role is Master.
     public struct StartEncryptionParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.startEncryption
+        public static let command = LowEnergyCommand.startEncryption //0x0019
         
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
         public let connectionHandle: UInt16 //Connection_Handle
@@ -895,7 +895,7 @@ public extension LowEnergyCommand {
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
     public struct LongTermKeyRequestReplyParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.ltkReply
+        public static let command = LowEnergyCommand.ltkReply //0x001A
         
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
         public let connectionHandle: UInt16 //Connection_Handle
@@ -943,7 +943,7 @@ public extension LowEnergyCommand {
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
     public struct LongTermKeyRequestNegativeReplyParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.ltkNegativeReply
+        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
         
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
         public let connectionHandle: UInt16 //Connection_Handle
@@ -1030,7 +1030,7 @@ public extension LowEnergyCommand {
     /// The command is used to read the total number of white list entries that can be stored in the Controller.
     public struct ReadWhiteListSizeReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.readWhiteListSize
+        public static let command = LowEnergyCommand.readWhiteListSize //0x000F
         public static let length = 1
         
         /// The white list size.
@@ -1052,7 +1052,7 @@ public extension LowEnergyCommand {
     /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
     public struct ReadChannelMapReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.readChannelMap
+        public static let command = LowEnergyCommand.readChannelMap //0x0015
         
         public static let length: Int = 7
         
@@ -1083,7 +1083,7 @@ public extension LowEnergyCommand {
     /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
     public struct EncryptReturnParameter: HCICommandReturnParameter {
 
-        public static let command = LowEnergyCommand.encrypt
+        public static let command = LowEnergyCommand.encrypt //0x0017
         
         public static let length: Int = 16
         
@@ -1108,7 +1108,7 @@ public extension LowEnergyCommand {
     /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
     public struct RandomReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.random
+        public static let command = LowEnergyCommand.random //0x0018
         
         public static let length: Int = 8
         
@@ -1130,7 +1130,7 @@ public extension LowEnergyCommand {
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
     public struct LongTermKeyRequestReplyReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.ltkReply
+        public static let command = LowEnergyCommand.ltkReply //0x001A
         
         public static let length: Int = 2
         
@@ -1153,7 +1153,7 @@ public extension LowEnergyCommand {
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
     public struct LongTermKeyRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.ltkNegativeReply
+        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
         
         public static let length: Int = 2
         
@@ -1177,7 +1177,7 @@ public extension LowEnergyCommand {
     /// and contains the number of received packets.
     public struct TestEndReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.testEnd
+        public static let command = LowEnergyCommand.testEnd //0x001F
         
         public static let length: Int = 2
         
