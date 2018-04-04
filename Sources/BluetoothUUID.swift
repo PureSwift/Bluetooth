@@ -273,30 +273,21 @@ public extension BluetoothUUID {
 
 public extension BluetoothUUID {
     
-    
-}
-
-// MARK: - NSUUID Conversion
-
-public extension BluetoothUUID {
-    
-    /// Initialize from a `Foundation.UUID`.
-    public init(uuid: UUID) {
-        
-        self = .bit128(UInt128(uuid: uuid))
-    }
-    
     /// Bluetooth Base UUID (big endian)
-    fileprivate static var baseUUID: UUID { return UUID(uuid: (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00,
-                                                               0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB)) }
+    internal static var baseUUID: UInt128 { return UInt128(bytes: (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00,
+                                                                   0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB)) }
+    
 }
 
-public extension Foundation.UUID {
+public extension UInt128 {
+
     
-    /// Initialize and convert from a Bluetooth UUID.
-    public init(bluetooth uuid: BluetoothUUID) {
+}
+    
+    /// Forceably convert to `UInt128` value.
+    public func toUInt128() -> UInt128 {
         
-        switch uuid {
+        switch self {
             
         case let .bit16(value):
             
@@ -304,10 +295,10 @@ public extension Foundation.UUID {
             
             var uuid = BluetoothUUID.baseUUID
             
-            uuid.bytes.0 = bytes.0
-            uuid.bytes.1 = bytes.1
+            uuid.bytes.2 = bytes.0
+            uuid.bytes.3 = bytes.1
             
-            self = uuid
+            return uuid
             
         case let .bit32(value):
             
@@ -320,12 +311,32 @@ public extension Foundation.UUID {
             uuid.bytes.2 = bytes.2
             uuid.bytes.3 = bytes.3
             
-            self = uuid
+            return uuid
             
         case let .bit128(value):
             
-            self = UUID(value)
+            return value
         }
+    }
+}
+
+// MARK: - NSUUID Conversion
+
+public extension BluetoothUUID {
+    
+    /// Initialize from a `Foundation.UUID`.
+    public init(uuid: UUID) {
+        
+        self = .bit128(UInt128(uuid: uuid))
+    }
+}
+
+public extension Foundation.UUID {
+    
+    /// Initialize and convert from a Bluetooth UUID.
+    public init(bluetooth uuid: BluetoothUUID) {
+        
+        self = UUID(value.toUInt128())
     }
 }
 
