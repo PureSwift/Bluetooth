@@ -30,7 +30,7 @@ public struct Address: ByteValue {
     
     // MARK: - Initialization
     
-    public init(bytes: ByteValue = (0,0,0,0,0,0)) {
+    public init(bytes: ByteValue = (0, 0, 0, 0, 0, 0)) {
         
         self.bytes = bytes
     }
