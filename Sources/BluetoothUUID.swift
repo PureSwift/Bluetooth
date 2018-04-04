@@ -243,7 +243,7 @@ public extension UInt128 {
             bigEndianValue.bytes.2 = bytes.0
             bigEndianValue.bytes.3 = bytes.1
             
-            self.init(bigEndian: bigEndianValue)
+            self = UInt128(bigEndian: bigEndianValue)
             
         case let .bit32(value):
             
@@ -256,7 +256,7 @@ public extension UInt128 {
             bigEndianValue.bytes.2 = bytes.2
             bigEndianValue.bytes.3 = bytes.3
             
-            self.init(bigEndian: bigEndianValue)
+            self = UInt128(bigEndian: bigEndianValue)
             
         case let .bit128(value):
             
