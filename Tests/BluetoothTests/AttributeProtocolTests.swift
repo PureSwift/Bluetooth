@@ -183,7 +183,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndianData)
+            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian.data)
             XCTAssert(pdu.byteValue == data)
         }
         
@@ -197,7 +197,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndianData)
+            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian.data)
             XCTAssert(pdu.byteValue == data)
         }
         
@@ -287,7 +287,7 @@ final class AttributeProtocolTests: XCTestCase {
                 
                 let type: Any = GATT.UUID.init(uuid: attribute.uuid as BluetoothUUID) ?? attribute.uuid
                 
-                let value: Any = BluetoothUUID(littleEndianData: [UInt8](attribute.value)) ?? String(data: attribute.value, encoding: .utf8) ?? attribute.value
+                let value: Any = BluetoothUUID(data: attribute.value)?.littleEndian ?? String(data: attribute.value, encoding: .utf8) ?? attribute.value
                 
                 print("\(attribute.handle) - \(type)")
                 print("Permissions: \(attribute.permissions)")

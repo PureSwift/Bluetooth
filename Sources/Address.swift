@@ -17,16 +17,12 @@ import Foundation
 /// Bluetooth address.
 public struct Address: ByteValue {
     
-    public static var zero: Address { return Address(bytes: (0, 0, 0, 0, 0, 0)) }
-    
-    public static var any: Address { return Address(bytes: (0, 0, 0, 0, 0, 0)) }
-    
-    public static var none: Address { return Address(bytes: (0xff, 0xff, 0xff, 0xff, 0xff, 0xff)) }
-    
     // MARK: - ByteValueType
     
     /// Raw Bluetooth Address 6 byte (48 bit) value.
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+    
+    public static var bitWidth: Int { return 48 }
     
     // MARK: - Properties
     
@@ -34,10 +30,25 @@ public struct Address: ByteValue {
     
     // MARK: - Initialization
     
-    public init(bytes: ByteValue = (0,0,0,0,0,0)) {
+    public init(bytes: ByteValue = (0, 0, 0, 0, 0, 0)) {
         
         self.bytes = bytes
     }
+}
+
+public extension Address {
+    
+    /// The minimum representable value in this type.
+    public static var min: Address { return Address(bytes: (.min, .min, .min, .min, .min, .min)) }
+    
+    /// The maximum representable value in this type.
+    public static var max: Address { return Address(bytes: (.max, .max, .max, .max, .max, .max)) }
+    
+    public static var zero: Address { return .min }
+    
+    public static var any: Address { return .zero }
+    
+    public static var none: Address { return .max }
 }
 
 // MARK: - Data
@@ -60,64 +71,12 @@ public extension Address {
 
 // MARK: - Byte Swap
 
-public extension Address {
+extension Address: ByteSwap {
     
     /// A representation of this address with the byte order swapped.
     public var byteSwapped: Address {
         
         return Address(bytes: (bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
-    }
-    
-    /// Creates an address from its little-endian representation, changing the
-    /// byte order if necessary.
-    ///
-    /// - Parameter value: A value to use as the little-endian representation of
-    ///   the new address.
-    public init(littleEndian value: Address) {
-        #if _endian(little)
-            self = value
-        #else
-            self = value.byteSwapped
-        #endif
-    }
-    
-    /// Creates an address from its big-endian representation, changing the byte
-    /// order if necessary.
-    ///
-    /// - Parameter value: A value to use as the big-endian representation of the
-    ///   new address.
-    public init(bigEndian value: Address) {
-        #if _endian(big)
-            self = value
-        #else
-            self = value.byteSwapped
-        #endif
-    }
-    
-    /// The little-endian representation of this address.
-    ///
-    /// If necessary, the byte order of this value is reversed from the typical
-    /// byte order of this address. On a little-endian platform, for any
-    /// address `x`, `x == x.littleEndian`.
-    public var littleEndian: Address {
-        #if _endian(little)
-            return self
-        #else
-            return byteSwapped
-        #endif
-    }
-    
-    /// The big-endian representation of this address.
-    ///
-    /// If necessary, the byte order of this value is reversed from the typical
-    /// byte order of this address. On a big-endian platform, for any
-    /// address `x`, `x == x.bigEndian`.
-    public var bigEndian: Address {
-        #if _endian(big)
-            return self
-        #else
-            return byteSwapped
-        #endif
     }
 }
 
@@ -143,7 +102,7 @@ extension Address: RawRepresentable {
                 
                 let number = strtol(cString, nil, 16)
                 
-                guard let byte = UInt8.init(exactly: number)
+                guard let byte = UInt8(exactly: number)
                     else { return false }
                 
                 bytes[index] = byte
@@ -155,7 +114,7 @@ extension Address: RawRepresentable {
         }) else { return nil }
         
         guard let address = Address(data: Data(bytes))
-            else { return nil }
+            else { fatalError("Could not initialize \(Address.self) from \(bytes)") }
         
         self.init(bigEndian: address)
     }

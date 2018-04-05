@@ -177,7 +177,7 @@ public extension GATTDatabase {
             
             let endGroupBytes = endGroupHandle.littleEndian.bytes
             
-            return [handleBytes.0, handleBytes.1, endGroupBytes.0, endGroupBytes.1] + serviceUUID.littleEndianData
+            return [handleBytes.0, handleBytes.1, endGroupBytes.0, endGroupBytes.1] + [UInt8](serviceUUID.littleEndian.data)
         }
     }
     
@@ -231,11 +231,11 @@ public extension GATTDatabase {
                 
                 let propertiesMask = characteristic.properties.rawValue
                 let valueHandleBytes = (handle + 1).littleEndian.bytes
-                let value = [propertiesMask, valueHandleBytes.0, valueHandleBytes.1] + characteristic.uuid.littleEndianData
+                let value: Data = [propertiesMask, valueHandleBytes.0, valueHandleBytes.1] + characteristic.uuid.littleEndian.data
                 
                 return Attribute(handle: currentHandle,
                                  uuid: GATT.UUID.characteristic.uuid,
-                                 value: Data(bytes: value),
+                                 value: value,
                                  permissions: [.read])
             }()
             
