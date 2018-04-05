@@ -285,17 +285,3 @@ fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ ev
     
     return event
 }
-
-// MARK: - XCTest Linux Support
-
-#if swift(>=3.2)
-#elseif os(Linux) && swift(>=3.0)
-public func XCTAssertNoThrow<T>(_ expression: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    
-    do { let _ = try expression() }
-    catch {
-        print("threw error \"\(error)\"")
-        XCTFail(message(), file: file, line: line)
-    }
-}
-#endif

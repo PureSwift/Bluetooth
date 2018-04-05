@@ -29,7 +29,7 @@ public func iBeacon(uuid: Foundation.UUID,
     
     // set UUID bytes
     
-    let littleUUIDBytes = BluetoothUUID(uuid: uuid).littleEndianData
+    let littleUUIDBytes = BluetoothUUID(uuid: uuid).littleEndian.data
     
     dataParameter.data.9 = littleUUIDBytes[0]
     dataParameter.data.10 = littleUUIDBytes[1]
