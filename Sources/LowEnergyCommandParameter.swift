@@ -1052,10 +1052,7 @@ public extension LowEnergyCommand {
         
         public let localIrk: UInt128 //Local_IRK
         
-        public init(peerIdentifyAddressType: UInt8,
-            peerIdentifyAddress: UInt64,
-            peerIrk: UInt128,
-            localIrk: UInt128){
+        public init(peerIdentifyAddressType: UInt8, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128) {
         
             self.peerIdentifyAddressType = peerIdentifyAddressType
             self.peerIdentifyAddress = peerIdentifyAddress
@@ -1143,7 +1140,51 @@ public extension LowEnergyCommand {
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
         public init(peerIdentifyAddressType: UInt8,
-                    peerIdentifyAddress: UInt64){
+                    peerIdentifyAddress: UInt64) {
+            
+            self.peerIdentifyAddressType = peerIdentifyAddressType
+            self.peerIdentifyAddress = peerIdentifyAddress
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
+            
+            return [
+                peerIdentifyAddressType,
+                peerIdentifyAddressBytes.0,
+                peerIdentifyAddressBytes.1,
+                peerIdentifyAddressBytes.2,
+                peerIdentifyAddressBytes.3,
+                peerIdentifyAddressBytes.4,
+                peerIdentifyAddressBytes.5,
+                peerIdentifyAddressBytes.6,
+                peerIdentifyAddressBytes.7
+            ]
+        }
+    }
+    
+    /// LE Read Peer Resolvable Address Command
+    ///
+    /// The command is used to get the current peer Resolvable Private Address
+    /// being used for the corresponding peer Public and Random (static) Identity Address.
+    /// The peer’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code Unknown
+    /// Connection Identifier (0x02).
+    public struct ReadPeerResolvableAddressParameter: HCICommandParameter { //HCI_LE_Read_ Peer_Resolvable_Address
+        
+        public static let command = LowEnergyCommand.readPeerResolvableAddress //0x002B
+        
+        public let peerIdentifyAddressType: UInt8 //Peer_Identity_Address_Type
+        
+        public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
+        
+        public init(peerIdentifyAddressType: UInt8,
+                    peerIdentifyAddress: UInt64) {
             
             self.peerIdentifyAddressType = peerIdentifyAddressType
             self.peerIdentifyAddress = peerIdentifyAddress
@@ -1356,6 +1397,59 @@ public extension LowEnergyCommand {
             let leStatus = UInt64(littleEndian: UInt64(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
             
             //TODO self.leStatus = LowEnergyStateSet. leStatus
+        }
+    }
+    
+    /// LE Read Resolving List Size Command
+    ///
+    /// The command is used to read the total number of address translation entries
+    /// in the resolving list that can be stored in the Controller.
+    /// Note: The number of entries that can be stored is not fixed and
+    /// the Controller can change it at any time (e.g. because the memory
+    /// used to store the list can also be used for other purposes).
+    public struct ReadResolvingListSizeReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readResolvedListSize //0x002A
+        
+        public static let length: Int = 1
+        
+        public let resolvingListSize: UInt8 //Resolving_List_Size
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            self.resolvingListSize = byteValue[0]
+        }
+    }
+    
+    /// LE Read Peer Resolvable Address Command
+    ///
+    /// The command is used to get the current peer Resolvable Private Address
+    /// being used for the corresponding peer Public and Random (static) Identity Address.
+    /// The peer’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code Unknown
+    /// Connection Identifier (0x02).
+    public struct ReadPeerResolvableAddressReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readPeerResolvableAddress //0x002B
+        
+        public static let length: Int = 6
+        
+        /// Resolvable Private Address being used by the peer device
+        public let peerResolvableAddress: UInt64 //Peer_Resolvable_Address
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            self.peerResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
         }
     }
 }
