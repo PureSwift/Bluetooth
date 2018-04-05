@@ -542,6 +542,59 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(decodedDump, testDump)
         }
+        
+        // server
+        let serverSocket = TestL2CAPSocket()
+        serverSocket.forceTarget = false
+        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
+        server.log = { print("GATT Server: " + $0) }
+        server.connection.log = { print("Server ATT: " + $0) }
+        //server.database = database
+        
+        // client
+        let clientSocket = TestL2CAPSocket()
+        serverSocket.forceTarget = false
+        let client = GATTClient(socket: clientSocket)
+        client.log = { print("GATT Client: " + $0) }
+        client.connection.log = { print("Client ATT: " + $0) }
+        
+        // fake sockets
+        do {
+            
+            var didWrite = false
+            repeat {
+                
+                didWrite = false
+                
+                while try client.write() {
+                    
+                    didWrite = true
+                }
+                
+                while serverSocket.receivedData.isEmpty == false {
+                    
+                    try server.read()
+                }
+                
+                while try server.write() {
+                    
+                    didWrite = true
+                }
+                
+                while clientSocket.receivedData.isEmpty == false {
+                    
+                    try client.read()
+                }
+                
+            } while didWrite
+        }
+            
+        catch { XCTFail("Error: \(error)") }
+        
+        XCTAssertEqual(server.connection.maximumTransmissionUnit, 512)
+        XCTAssertNotEqual(server.connection.maximumTransmissionUnit, ATT.MaximumTransmissionUnit.LowEnergy.default)
+        XCTAssertEqual(client.connection.maximumTransmissionUnit, 512)
+        XCTAssertNotEqual(client.connection.maximumTransmissionUnit, ATT.MaximumTransmissionUnit.LowEnergy.default)
     }
     
     func testServiceDiscovery() {
