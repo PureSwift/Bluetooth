@@ -80,6 +80,11 @@ final class AddressTests: XCTestCase {
             "0x234567u9",
             "01234567890",
             "@aXX:XX:XX:XX:&&",
+            "AA:BB:CC:DD:$$",
+            "AA:BB:CC:DD:^^",
+            "12C:BB:CC:DD:EE",
+            "12C:BB:CC:DD:E",
+            "FFFF::7D:DA:71:13",
             "00:1A:7D:DA:71:13a"
         ]
         
