@@ -27,7 +27,16 @@ final class BluetoothTests: XCTestCase {
         XCTAssertTrue(level < .high)
         XCTAssertTrue(SecurityLevel.low < .high)
     }
+    
+    func testCompanyIdentifier() {
         
+        let company: CompanyIdentifier = 76 // Apple
+        
+        XCTAssertEqual(company.description, "Apple, Inc.")
+        XCTAssertEqual(company.hashValue, 76)
+        XCTAssertNotEqual(company, 77)
+    }
+    
     func testBitMaskOption() {
         
         do {
