@@ -17,6 +17,8 @@ public extension UUID {
 
 extension UUID: ByteValue {
     
+    public static var bitWidth: Int { return 128 }
+    
     @inline(__always)
     public init(bytes: uuid_t) {
         
