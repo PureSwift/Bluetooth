@@ -15,9 +15,6 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     /// All controllers on the host.
     static var controllers: [TestHostController] { return [TestHostController()] }
     
-    /// The default controller on the host.
-    static var `default`: TestHostController? { return controllers.first }
-    
     init(address: Address = .any) {
         
         self.address = address

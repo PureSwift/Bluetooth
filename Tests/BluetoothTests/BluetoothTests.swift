@@ -60,6 +60,14 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(POSIXError.fromErrno?.code.rawValue ?? 0, errno)
     }
     
+    func testHCIVersion() {
+        
+        XCTAssertEqual(HCIVersion.v4_0.description, "4.0")
+        XCTAssertEqual(HCIVersion.v4_1.description, "4.1")
+        XCTAssertEqual(HCIVersion.v4_2.description, "4.2")
+        XCTAssertEqual(HCIVersion.v5_0.description, "5.0")
+    }
+    
     func testLowEnergyFeature() {
         
         var featureSet: LowEnergyFeatureSet = [.encryption, .connectionParametersRequestProcedure, .ping]
