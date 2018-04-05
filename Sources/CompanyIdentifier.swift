@@ -17,6 +17,8 @@ public struct CompanyIdentifier: RawRepresentable {
     }
 }
 
+// MARK: - Equatable
+
 extension CompanyIdentifier: Equatable {
     
     @inline(__always)
@@ -26,6 +28,8 @@ extension CompanyIdentifier: Equatable {
     }
 }
 
+// MARK: - Hashable
+
 extension CompanyIdentifier: Hashable {
     
     public var hashValue: Int {
@@ -34,6 +38,8 @@ extension CompanyIdentifier: Hashable {
     }
 }
 
+// MARK: - CustomStringConvertible
+
 extension CompanyIdentifier: CustomStringConvertible {
     
     public var description: String {
@@ -41,6 +47,18 @@ extension CompanyIdentifier: CustomStringConvertible {
         return companyIdentifiers[rawValue] ?? "Unknown Company (\(rawValue))"
     }
 }
+
+// MARK: - ExpressibleByIntegerLiteral
+
+extension CompanyIdentifier: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
+    }
+}
+
+// MARK: - Name List
 
 internal let companyIdentifiers: [UInt16: String] = [
   0: "Ericsson Technology Licensing",
