@@ -1044,7 +1044,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.addDeviceToResolvedList //0x0027
         
-        public let peerIdentifyAddressType: UInt8 //Peer_Identity_Address_Type
+        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
         
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
@@ -1052,7 +1052,7 @@ public extension LowEnergyCommand {
         
         public let localIrk: UInt128 //Local_IRK
         
-        public init(peerIdentifyAddressType: UInt8, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128) {
+        public init(peerIdentifyAddressType: PeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128) {
         
             self.peerIdentifyAddressType = peerIdentifyAddressType
             self.peerIdentifyAddress = peerIdentifyAddress
@@ -1062,12 +1062,13 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
+            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             let peerIrkBytes = peerIrk.littleEndian.bytes
             let localIrkBytes = localIrk.littleEndian.bytes
             
             return [
-                    peerIdentifyAddressType,
+                    peerIdentifyAddressTypeBytes,
                     peerIdentifyAddressBytes.0,
                     peerIdentifyAddressBytes.1,
                     peerIdentifyAddressBytes.2,
@@ -1135,11 +1136,11 @@ public extension LowEnergyCommand {
     
         public static let command = LowEnergyCommand.removeDeviceFromResolvedList //0x0028
         
-        public let peerIdentifyAddressType: UInt8 //Peer_Identity_Address_Type
+        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
         
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
-        public init(peerIdentifyAddressType: UInt8,
+        public init(peerIdentifyAddressType: PeerIdentifyAddressType,
                     peerIdentifyAddress: UInt64) {
             
             self.peerIdentifyAddressType = peerIdentifyAddressType
@@ -1148,10 +1149,11 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
+            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
             return [
-                peerIdentifyAddressType,
+                peerIdentifyAddressTypeBytes,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
                 peerIdentifyAddressBytes.2,
@@ -1179,11 +1181,11 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readPeerResolvableAddress //0x002B
         
-        public let peerIdentifyAddressType: UInt8 //Peer_Identity_Address_Type
+        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
         
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
-        public init(peerIdentifyAddressType: UInt8,
+        public init(peerIdentifyAddressType: PeerIdentifyAddressType,
                     peerIdentifyAddress: UInt64) {
             
             self.peerIdentifyAddressType = peerIdentifyAddressType
@@ -1192,10 +1194,56 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
+            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
             return [
-                peerIdentifyAddressType,
+                peerIdentifyAddressTypeBytes,
+                peerIdentifyAddressBytes.0,
+                peerIdentifyAddressBytes.1,
+                peerIdentifyAddressBytes.2,
+                peerIdentifyAddressBytes.3,
+                peerIdentifyAddressBytes.4,
+                peerIdentifyAddressBytes.5,
+                peerIdentifyAddressBytes.6,
+                peerIdentifyAddressBytes.7
+            ]
+        }
+    }
+    
+    /// LE Read Local Resolvable Address Command
+    ///
+    /// The command is used to get the current local Resolvable Private Address
+    //// being used for the corresponding peer Identity Address.
+    /// The local’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code
+    /// Unknown Connection Identifier (0x02).
+    public struct ReadLocalResolvableAddressParameter: HCICommandParameter { //HCI_LE_Read_Local_ Resolvable_Address
+        
+        public static let command = LowEnergyCommand.readLocalResolvableAddress //0x002C
+        
+        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
+        
+        public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
+        
+        public init(peerIdentifyAddressType: PeerIdentifyAddressType,
+                    peerIdentifyAddress: UInt64) {
+            
+            self.peerIdentifyAddressType = peerIdentifyAddressType
+            self.peerIdentifyAddress = peerIdentifyAddress
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
+            let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
+            
+            return [
+                peerIdentifyAddressTypeBytes,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
                 peerIdentifyAddressBytes.2,
@@ -1452,9 +1500,42 @@ public extension LowEnergyCommand {
             self.peerResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
         }
     }
+    
+    /// LE Read Local Resolvable Address Command
+    ///
+    /// The command is used to get the current local Resolvable Private Address
+    //// being used for the corresponding peer Identity Address.
+    /// The local’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code
+    /// Unknown Connection Identifier (0x02).
+    public struct ReadLocalResolvableAddressReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readLocalResolvableAddress //0x002C
+        
+        public static let length: Int = 6
+        
+        /// Resolvable Private Address being used by the local device
+        public let localResolvableAddress: UInt64 //Local_Resolvable_Address
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+        }
+    }
 }
 
 // MARK: - Supporting Types
+
+public enum PeerIdentifyAddressType: UInt8 { //Peer_Identity_Address_Type
+    case publicIdentifyAddress = 0x00
+    case randomIdentifyAddress = 0x01
+}
 
 public enum PacketPayload: UInt8 { // Packet_Payload
     
