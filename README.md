@@ -46,9 +46,21 @@ let package = Package(
 github "PureSwift/Bluetooth"
 ```
 
-# Documentation
+## Documentation
 
-Read the documentation [here](http://pureswift.github.io/Bluetooth/docs/). For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/tree/gh-pages) branch.
+Documentation can be generated with [Jazzy](https://github.com/realm/jazzy).
+
+```
+jazzy --source-directory Bluetooth
+```
+
+Read the documentation [here](http://pureswift.github.io/Bluetooth/docs/).
+For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/tree/gh-pages) branch.
+
+## Code Coverage
+
+- [codecov.io]([codecov-url]) 
+- [xcov][xcov-url]
 
 ## See Also
 
@@ -84,3 +96,4 @@ License
 [codecov-url]: https://codecov.io/gh/PureSwift/Bluetooth/branch/master
 [docs-badge]: http://pureswift.github.io/Bluetooth/docs/badge.svg
 [docs-url]: http://pureswift.github.io/Bluetooth/docs/
+[xcov-url]: http://pureswift.github.io/Bluetooth/xcov
