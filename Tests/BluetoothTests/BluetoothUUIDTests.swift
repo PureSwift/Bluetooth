@@ -93,15 +93,15 @@ final class BluetoothUUIDTests: XCTestCase {
                 
             case .bit16:
                 
-                XCTAssertEqual(test.bluetooth.rawValue.count, 4)
+                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 4)
                 
             case .bit32:
                 
-                XCTAssertEqual(test.bluetooth.rawValue.count, 8)
+                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 8)
                 
             case .bit128:
                 
-                XCTAssertEqual(test.bluetooth.rawValue.count, UUID.stringLength)
+                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, UUID.stringLength)
             }
         }
     }
@@ -156,7 +156,7 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssertEqual(uuid.hashValue, uuidValue.hashValue)
         XCTAssertNotEqual(uuid.hashValue, 0)
         XCTAssertEqual(uuid, .bit16(uuidValue))
-        XCTAssertNotEqual(uuid, .bit16(uuidValue + 1))
+        XCTAssertNotEqual(uuid, .bit16(0xFEAA))
         XCTAssertNotEqual(uuid, .bit128(UInt128()))
         XCTAssertNotEqual(uuid, .bit32(0x12345678))
         
@@ -184,7 +184,7 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssertNotEqual(uuid.hashValue, 0)
         XCTAssertEqual(uuid, uuid)
         XCTAssertEqual(uuid, .bit32(uuidValue))
-        XCTAssertNotEqual(uuid, .bit32(uuidValue + 1))
+        XCTAssertNotEqual(uuid, .bit32(0x1234))
         XCTAssertNotEqual(uuid, .bit16(0xFEA9))
         XCTAssertNotEqual(uuid, .bit128(UInt128()))
         
