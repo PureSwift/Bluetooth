@@ -514,6 +514,33 @@ final class AttributeProtocolTests: XCTestCase {
         
         catch { XCTFail("Error: \(error)") }
     }
+    
+    func testMTUExchange() {
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
+             [0x02, 0x00, 0x02]),
+            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
+             [0x03, 0x00, 0x02])
+        ]
+        
+        for (testPDU, testData) in testPDUs {
+            
+            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
+                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            
+            dump(decodedPDU)
+            
+            XCTAssertEqual(decodedPDU.byteValue, testData)
+            
+            var decodedDump = ""
+            dump(decodedPDU, to: &decodedDump)
+            var testDump = ""
+            dump(testPDU, to: &testDump)
+            
+            XCTAssertEqual(decodedDump, testDump)
+        }
+    }
 }
 
 public struct TestProfile {

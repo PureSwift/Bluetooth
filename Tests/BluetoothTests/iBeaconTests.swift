@@ -91,6 +91,5 @@ final class iBeaconTests: XCTestCase {
         XCTAssertEqual(advertisingData.data.28, testData.28)
         XCTAssertEqual(advertisingData.data.29, testData.29)
         XCTAssertEqual(advertisingData.data.30, testData.30)
-        
     }
 }
