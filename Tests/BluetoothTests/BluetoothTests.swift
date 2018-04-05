@@ -20,9 +20,12 @@ final class BluetoothTests: XCTestCase {
         ("testBitMaskOption", testBitMaskOption)
     ]
     
-    func test() {
+    func testSecurityLevel() {
         
+        let level = SecurityLevel()
         
+        XCTAssertTrue(level < .high)
+        XCTAssertTrue(SecurityLevel.low < .high)
     }
         
     func testBitMaskOption() {
