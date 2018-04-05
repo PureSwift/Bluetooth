@@ -19,6 +19,8 @@ final class BluetoothTests: XCTestCase {
     static let allTests = [
         ("testSecurityLevel", testSecurityLevel),
         ("testCompanyIdentifier", testCompanyIdentifier),
+        ("testHCICommandTimeout", testHCICommandTimeout),
+        ("testPOSIXError", testPOSIXError),
         ("testLowEnergyFeature", testLowEnergyFeature),
         ("testBitMaskOption", testBitMaskOption),
     ]
@@ -37,6 +39,7 @@ final class BluetoothTests: XCTestCase {
         
         XCTAssertEqual(company.description, "Apple, Inc.")
         XCTAssertEqual(company.hashValue, 76)
+        XCTAssertNotEqual(company.hashValue, 0)
         XCTAssertNotEqual(company, 77)
     }
     
@@ -50,6 +53,11 @@ final class BluetoothTests: XCTestCase {
         XCTAssertNotEqual(timeout, 2000)
         XCTAssertEqual(timeout.hashValue, timeout.rawValue.hashValue)
         XCTAssertEqual(timeout.description, "1.0 seconds")
+    }
+    
+    func testPOSIXError() {
+        
+        XCTAssertEqual(POSIXError.fromErrno?.code.rawValue, errno)
     }
     
     func testLowEnergyFeature() {
