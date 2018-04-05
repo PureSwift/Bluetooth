@@ -35,6 +35,9 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     /// Target socket.
     weak var target: TestL2CAPSocket?
     
+    /// Target must not be nil or else an error is thrown.
+    var forceTarget: Bool = true
+    
     private(set) var receivedData = Data() {
         
         didSet { print("L2CAP Socket buffer \([UInt8](receivedData))") }
@@ -52,10 +55,13 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     /// Write to the socket.
     func send(_ data: Data) throws {
         
-        guard let target = self.target
-            else { throw POSIXError(code: .ECONNRESET) }
+        if forceTarget {
+            
+            guard self.target != nil
+                else { throw POSIXError(code: .ECONNRESET) }
+        }
         
-        target.receivedData.append(data)
+        self.target?.receivedData.append(data)
     }
     
     /// Reads from the socket.
@@ -80,6 +86,4 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
        
         return data
     }
-    
-    
 }
