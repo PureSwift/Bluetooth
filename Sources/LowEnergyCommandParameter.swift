@@ -982,8 +982,8 @@ public extension LowEnergyCommand {
         }
         
         public var byteValue: [UInt8] {
-            let rxChannelByte = rxChannel.rawValue.littleEndian
-            return [ rxChannelByte ]
+            
+            return [rxChannel.rawValue]
         }
     }
     
@@ -1004,19 +1004,20 @@ public extension LowEnergyCommand {
         
         public let lengthOfTestData: UInt8
         
-        public let packetpayload: PacketPayload
+        public let packetPayload: PacketPayload
         
-        public init(rxChannel: RxChannel, lengthOfTestData: UInt8, packetpayload: PacketPayload) {
+        public init(rxChannel: RxChannel,
+                    lengthOfTestData: UInt8,
+                    packetPayload: PacketPayload) {
             
             self.rxChannel = rxChannel
             self.lengthOfTestData = lengthOfTestData
-            self.packetpayload = packetpayload
+            self.packetPayload = packetPayload
         }
         
         public var byteValue: [UInt8] {
-            let rxChannelByte = rxChannel.rawValue.littleEndian
-            let packetpayloadByte = packetpayload.rawValue.littleEndian
-            return [ rxChannelByte, packetpayloadByte ]
+            
+            return [rxChannel.rawValue, packetPayload.rawValue]
         }
     }
     
