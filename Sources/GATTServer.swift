@@ -326,13 +326,13 @@ public final class GATTServer {
         
         for (index, attribute) in data.enumerated() {
             
-            let value = attribute.UUID.littleEndianData
+            let value = [UInt8](attribute.uuid.littleEndian.data)
             
             if index > 0 {
                 
                 let lastAttribute = data[index - 1]
                 
-                guard value.count == lastAttribute.UUID.littleEndianData.count
+                guard value.count == lastAttribute.uuid.littleEndian.data.count
                     else { break } // stop appending
             }
             
@@ -726,11 +726,11 @@ private extension GATTServer {
 internal extension GATTDatabase {
     
     /// Used for Service discovery. Should return tuples with the Service start handle, end handle and UUID.
-    func readByGroupType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [(start: UInt16, end: UInt16, UUID: BluetoothUUID)] {
+    func readByGroupType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] {
         
         let handleRange = handle.end < UInt16.max ? Range(handle.start ... handle.end) : Range(handle.start ..< handle.end)
         
-        var data: [(start: UInt16, end: UInt16, UUID: BluetoothUUID)] = []
+        var data: [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] = []
         
         for group in attributeGroups {
             
@@ -740,7 +740,7 @@ internal extension GATTDatabase {
             
             guard groupRange.isSubset(handleRange) else { continue }
             
-            let serviceUUID = BluetoothUUID(littleEndianData: Array(group.service.value))!
+            let serviceUUID = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(group.service.value))!)
             
             data.append((group.startHandle, group.endHandle, serviceUUID))
         }

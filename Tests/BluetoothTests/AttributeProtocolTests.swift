@@ -16,7 +16,8 @@ final class AttributeProtocolTests: XCTestCase {
         ("testATTOpcode", testATTOpcode),
         ("testATTProtocolDataUnit", testATTProtocolDataUnit),
         ("testGATTClientData", testGATTClientData),
-        ("testGATT", testGATT)
+        ("testGATT", testGATT),
+        ("testMTUExchange", testMTUExchange)
     ]
     
     func testATTOpcode() {
@@ -183,7 +184,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndianData)
+            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian.data)
             XCTAssert(pdu.byteValue == data)
         }
         
@@ -197,7 +198,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(pdu.attributeValue == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndianData)
+            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian.data)
             XCTAssert(pdu.byteValue == data)
         }
         
@@ -287,7 +288,7 @@ final class AttributeProtocolTests: XCTestCase {
                 
                 let type: Any = GATT.UUID.init(uuid: attribute.uuid as BluetoothUUID) ?? attribute.uuid
                 
-                let value: Any = BluetoothUUID(littleEndianData: [UInt8](attribute.value)) ?? String(data: attribute.value, encoding: .utf8) ?? attribute.value
+                let value: Any = BluetoothUUID(data: attribute.value)?.littleEndian ?? String(data: attribute.value, encoding: .utf8) ?? attribute.value
                 
                 print("\(attribute.handle) - \(type)")
                 print("Permissions: \(attribute.permissions)")
@@ -513,6 +514,64 @@ final class AttributeProtocolTests: XCTestCase {
         }
         
         catch { XCTFail("Error: \(error)") }
+    }
+    
+    func testMTUExchange() {
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
+             [0x02, 0x00, 0x02]),
+            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
+             [0x03, 0x00, 0x02])
+        ]
+        
+        // decode and compare
+        for (testPDU, testData) in testPDUs {
+            
+            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
+                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            
+            dump(decodedPDU)
+            
+            XCTAssertEqual(decodedPDU.byteValue, testData)
+            
+            var decodedDump = ""
+            dump(decodedPDU, to: &decodedDump)
+            var testDump = ""
+            dump(testPDU, to: &testDump)
+            
+            XCTAssertEqual(decodedDump, testDump)
+        }
+    }
+    
+    func testServiceDiscovery() {
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
+             [0x02, 0x00, 0x02]),
+            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
+             [0x03, 0x00, 0x02]),
+            (ATTReadByGroupTypeRequest(startHandle: 0x01, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+             [0x10, 0x01, 0x00, 0xff, 0xff, 0x00, 0x28])
+        ]
+        
+        // decode and compare
+        for (testPDU, testData) in testPDUs {
+            
+            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
+                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            
+            dump(decodedPDU)
+            
+            XCTAssertEqual(decodedPDU.byteValue, testData)
+            
+            var decodedDump = ""
+            dump(decodedPDU, to: &decodedDump)
+            var testDump = ""
+            dump(testPDU, to: &testDump)
+            
+            XCTAssertEqual(decodedDump, testDump)
+        }
     }
 }
 

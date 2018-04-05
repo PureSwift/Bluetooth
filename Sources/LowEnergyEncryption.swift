@@ -1,6 +1,6 @@
 //
 //  LowEnergyEncryption.swift
-//  Bluetooth-macOS
+//  Bluetooth
 //
 //  Created by Marco Estrella on 3/30/18.
 //  Copyright © 2018 PureSwift. All rights reserved.
