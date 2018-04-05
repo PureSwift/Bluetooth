@@ -446,10 +446,10 @@
 		6E6AD98A1FCE8E4F007F0250 /* BluetoothTests */ = {
 			isa = PBXGroup;
 			children = (
+				6E65DF84207552EE005BD2A0 /* AddressTests.swift */,
 				6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */,
 				6E65DF802075135E005BD2A0 /* UUIDTests.swift */,
 				6E65DF82207552E4005BD2A0 /* UInt128Tests.swift */,
-				6E65DF84207552EE005BD2A0 /* AddressTests.swift */,
 				6E740C5D206586D3006589F6 /* HCITests.swift */,
 				6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */,
 				6E14247F206CFFC500BF72BC /* HostController.swift */,
