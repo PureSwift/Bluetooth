@@ -59,7 +59,7 @@ For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/
 
 ## Code Coverage
 
-- [codecov.io]([codecov-url]) 
+- [codecov.io][codecov-url]
 - [xcov][xcov-url]
 
 ## See Also
