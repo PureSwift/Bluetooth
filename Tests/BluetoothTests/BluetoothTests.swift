@@ -57,7 +57,7 @@ final class BluetoothTests: XCTestCase {
     
     func testPOSIXError() {
         
-        XCTAssertEqual(POSIXError.fromErrno?.code.rawValue, errno)
+        XCTAssertEqual(POSIXError.fromErrno?.code.rawValue ?? 0, errno)
     }
     
     func testLowEnergyFeature() {
