@@ -47,6 +47,7 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case readResolvedListSize           = 0x002A
     case setAddressResolutionEnable     = 0x002D
     case readPeerResolvableAddress      = 0x002B
+    case readLocalResolvableAddress      = 0x002C
 }
 
 // MARK: - Name
