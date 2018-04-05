@@ -25,9 +25,12 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to start a test where the DUT generates test reference packets
     /// at a fixed interval. The Controller shall transmit at maximum power.
-    func lowEnergyTransmitterTest(rxChannel: RxChannel, lengthOfTestData: UInt8, packetpayload: PacketPayload, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyTransmitterTest(rxChannel: RxChannel,
+                                  lengthOfTestData: UInt8,
+                                  packetPayload: PacketPayload,
+                                  timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = LowEnergyCommand.TransmitterTestParameter(rxChannel: rxChannel, lengthOfTestData: lengthOfTestData, packetpayload: packetpayload)
+        let parameters = LowEnergyCommand.TransmitterTestParameter(rxChannel: rxChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload)
         
         try deviceRequest(parameters, timeout: timeout)
     }
