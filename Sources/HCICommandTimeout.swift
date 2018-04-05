@@ -37,7 +37,7 @@ extension HCICommandTimeout: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt) {
         
-        self.rawValue = value
+        self.init(rawValue: value)
     }
 }
 

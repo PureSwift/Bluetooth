@@ -34,6 +34,8 @@ final class HCITests: XCTestCase {
         
         XCTAssert(HCIGeneralEvent.commandComplete.name == "Command Complete")
         XCTAssert(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
+        
+        XCTAssertTrue(HCIError.unknownCommand.description == "Unknown HCI Command")
     }
     
     func testReadLocalName() {
