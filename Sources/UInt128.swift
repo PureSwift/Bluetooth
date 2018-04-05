@@ -18,10 +18,22 @@ public struct UInt128: ByteValue {
     
     public var bytes: ByteValue
     
-    public init(bytes: ByteValue) {
+    public init(bytes: ByteValue = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)) {
         
         self.bytes = bytes
     }
+}
+
+public extension UInt128 {
+    
+    /// The minimum representable value in this type.
+    public static var min: UInt128 { return UInt128(bytes: (.min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min)) }
+    
+    /// The maximum representable value in this type.
+    public static var max: UInt128 { return UInt128(bytes: (.max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max)) }
+    
+    /// The value with all bits set to zero.
+    public static var zero: UInt128 { return .min }
 }
 
 // MARK: - Equatable
