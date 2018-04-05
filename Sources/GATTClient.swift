@@ -568,8 +568,10 @@ public final class GATTClient {
             // store PDU values
             for serviceData in pdu.data {
                 
-                guard let serviceUUID = BluetoothUUID(littleEndianData: serviceData.value)
+                guard let littleEndianServiceUUID = BluetoothUUID(data: Data(serviceData.value))
                     else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                
+                let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
                 
                 let service = Service(uuid: serviceUUID,
                                       type: operation.type,
@@ -647,7 +649,7 @@ public final class GATTClient {
                 let pdu = ATTFindByTypeRequest(startHandle: operation.start,
                                                endHandle: operation.end,
                                                attributeType: operation.type.rawValue,
-                                               attributeValue: serviceUUID.littleEndianData)
+                                               attributeValue: [UInt8](serviceUUID.littleEndian.data))
                 
                 send(pdu) { [unowned self] in self.findByType($0, operation: operation) }
                 

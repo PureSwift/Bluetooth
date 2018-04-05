@@ -10,6 +10,11 @@ import XCTest
 
 XCTMain([
     testCase(BluetoothTests.allTests),
+    testCase(AddressTests.allTests),
+    testCase(BluetoothUUIDTests.allTests),
+    testCase(UUIDTests.allTests),
+    testCase(UInt128Tests.allTests),
+    testCase(iBeaconTests.allTests),
     testCase(HCITests.allTests),
     testCase(AttributeProtocolTests.allTests)
     ])
