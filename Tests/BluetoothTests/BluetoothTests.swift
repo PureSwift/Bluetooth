@@ -17,7 +17,10 @@ import CoreBluetooth
 final class BluetoothTests: XCTestCase {
     
     static let allTests = [
-        ("testBitMaskOption", testBitMaskOption)
+        ("testSecurityLevel", testSecurityLevel),
+        ("testCompanyIdentifier", testCompanyIdentifier),
+        ("testLowEnergyFeature", testLowEnergyFeature),
+        ("testBitMaskOption", testBitMaskOption),
     ]
     
     func testSecurityLevel() {
@@ -25,16 +28,79 @@ final class BluetoothTests: XCTestCase {
         let level = SecurityLevel()
         
         XCTAssertTrue(level < .high)
-        XCTAssertTrue(SecurityLevel.low < .high)
+        XCTAssertTrue(.low < .high)
     }
     
     func testCompanyIdentifier() {
         
-        let company: CompanyIdentifier = 76 // Apple
+        let company: CompanyIdentifier = 76 // Apple, Inc.
         
         XCTAssertEqual(company.description, "Apple, Inc.")
         XCTAssertEqual(company.hashValue, 76)
         XCTAssertNotEqual(company, 77)
+    }
+    
+    func testLowEnergyFeature() {
+        
+        var featureSet: LowEnergyFeatureSet = [.encryption, .connectionParametersRequestProcedure, .ping]
+        XCTAssert(featureSet.count == 3)
+        XCTAssert(featureSet.isEmpty == false)
+        XCTAssert(featureSet.contains(.encryption))
+        XCTAssert(featureSet.contains(.connectionParametersRequestProcedure))
+        XCTAssert(featureSet.contains(.ping))
+        XCTAssert(featureSet.contains(.le2mPhy) == false)
+        
+        XCTAssert(featureSet.rawValue != LowEnergyFeature.encryption.rawValue)
+        XCTAssert(featureSet.rawValue != LowEnergyFeature.connectionParametersRequestProcedure.rawValue)
+        XCTAssert(featureSet.rawValue != LowEnergyFeature.ping.rawValue)
+        XCTAssert(LowEnergyFeature(rawValue: featureSet.rawValue) == nil)
+        
+        #if swift(>=3.2)
+        XCTAssert(LowEnergyFeature.RawValue.bitWidth == LowEnergyFeatureSet.RawValue.bitWidth)
+        XCTAssert(LowEnergyFeature.RawValue.bitWidth == MemoryLayout<LowEnergyFeature.RawValue>.size * 8)
+        XCTAssert(LowEnergyFeature.RawValue.bitWidth == 64)
+        #endif
+        
+        XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == MemoryLayout<LowEnergyFeature.RawValue>.size)
+        XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == 8) // 64 bit
+        
+        featureSet = .all
+        XCTAssert(featureSet.isEmpty == false)
+        XCTAssert(featureSet.count == LowEnergyFeature.all.count)
+        XCTAssert(featureSet.containsAll)
+        
+        typealias Bit64 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+        let bigEndianByteValue: Bit64 = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01)
+        let littleEndianByteValue: Bit64 = (0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
+        let rawValue: UInt64 = 0b01
+        
+        XCTAssert(rawValue.littleEndian.bytes.0 == littleEndianByteValue.0)
+        XCTAssert(rawValue.littleEndian.bytes.1 == littleEndianByteValue.1)
+        XCTAssert(rawValue.littleEndian.bytes.2 == littleEndianByteValue.2)
+        XCTAssert(rawValue.littleEndian.bytes.3 == littleEndianByteValue.3)
+        XCTAssert(rawValue.littleEndian.bytes.4 == littleEndianByteValue.4)
+        XCTAssert(rawValue.littleEndian.bytes.5 == littleEndianByteValue.5)
+        XCTAssert(rawValue.littleEndian.bytes.6 == littleEndianByteValue.6)
+        XCTAssert(rawValue.littleEndian.bytes.7 == littleEndianByteValue.7)
+        XCTAssert(UInt64(littleEndian: UInt64(bytes: littleEndianByteValue)) == rawValue)
+        
+        XCTAssert(rawValue.bigEndian.bytes.0 == bigEndianByteValue.0)
+        XCTAssert(rawValue.bigEndian.bytes.1 == bigEndianByteValue.1)
+        XCTAssert(rawValue.bigEndian.bytes.2 == bigEndianByteValue.2)
+        XCTAssert(rawValue.bigEndian.bytes.3 == bigEndianByteValue.3)
+        XCTAssert(rawValue.bigEndian.bytes.4 == bigEndianByteValue.4)
+        XCTAssert(rawValue.bigEndian.bytes.5 == bigEndianByteValue.5)
+        XCTAssert(rawValue.bigEndian.bytes.6 == bigEndianByteValue.6)
+        XCTAssert(rawValue.bigEndian.bytes.7 == bigEndianByteValue.7)
+        XCTAssert(UInt64(bigEndian: UInt64(bytes: bigEndianByteValue)) == rawValue)
+        
+        featureSet.forEach { XCTAssert(LowEnergyFeature.all.contains($0)) }
+        
+        featureSet.removeAll()
+        
+        XCTAssertEqual(featureSet.rawValue, 0)
+        XCTAssertEqual(featureSet.count, 0)
+        XCTAssertEqual(featureSet.hashValue, 0)
     }
     
     func testBitMaskOption() {
@@ -87,62 +153,6 @@ final class BluetoothTests: XCTestCase {
             // comparison with other collections
             XCTAssert(set.contains([.read, .write]))
             XCTAssert(set == [.read, .write])
-        }
-        
-        do {
-            
-            var featureSet: LowEnergyFeatureSet = [.encryption, .connectionParametersRequestProcedure, .ping]
-            XCTAssert(featureSet.count == 3)
-            XCTAssert(featureSet.isEmpty == false)
-            XCTAssert(featureSet.contains(.encryption))
-            XCTAssert(featureSet.contains(.connectionParametersRequestProcedure))
-            XCTAssert(featureSet.contains(.ping))
-            XCTAssert(featureSet.contains(.le2mPhy) == false)
-            
-            XCTAssert(featureSet.rawValue != LowEnergyFeature.encryption.rawValue)
-            XCTAssert(featureSet.rawValue != LowEnergyFeature.connectionParametersRequestProcedure.rawValue)
-            XCTAssert(featureSet.rawValue != LowEnergyFeature.ping.rawValue)
-            XCTAssert(LowEnergyFeature(rawValue: featureSet.rawValue) == nil)
-            
-            #if swift(>=3.2)
-            XCTAssert(LowEnergyFeature.RawValue.bitWidth == LowEnergyFeatureSet.RawValue.bitWidth)
-            #endif
-            
-            XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == MemoryLayout<LowEnergyFeature.RawValue>.size)
-            
-            featureSet = .all
-            XCTAssert(featureSet.isEmpty == false)
-            XCTAssert(featureSet.count == LowEnergyFeature.all.count)
-            
-            typealias Bit64 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
-            let bigEndianByteValue: Bit64 = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01)
-            let littleEndianByteValue: Bit64 = (0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
-            let rawValue: UInt64 = 0b01
-            
-            XCTAssert(rawValue.littleEndian.bytes.0 == littleEndianByteValue.0)
-            XCTAssert(rawValue.littleEndian.bytes.1 == littleEndianByteValue.1)
-            XCTAssert(rawValue.littleEndian.bytes.2 == littleEndianByteValue.2)
-            XCTAssert(rawValue.littleEndian.bytes.3 == littleEndianByteValue.3)
-            XCTAssert(rawValue.littleEndian.bytes.4 == littleEndianByteValue.4)
-            XCTAssert(rawValue.littleEndian.bytes.5 == littleEndianByteValue.5)
-            XCTAssert(rawValue.littleEndian.bytes.6 == littleEndianByteValue.6)
-            XCTAssert(rawValue.littleEndian.bytes.7 == littleEndianByteValue.7)
-            XCTAssert(UInt64(littleEndian: UInt64(bytes: littleEndianByteValue)) == rawValue)
-            
-            XCTAssert(rawValue.bigEndian.bytes.0 == bigEndianByteValue.0)
-            XCTAssert(rawValue.bigEndian.bytes.1 == bigEndianByteValue.1)
-            XCTAssert(rawValue.bigEndian.bytes.2 == bigEndianByteValue.2)
-            XCTAssert(rawValue.bigEndian.bytes.3 == bigEndianByteValue.3)
-            XCTAssert(rawValue.bigEndian.bytes.4 == bigEndianByteValue.4)
-            XCTAssert(rawValue.bigEndian.bytes.5 == bigEndianByteValue.5)
-            XCTAssert(rawValue.bigEndian.bytes.6 == bigEndianByteValue.6)
-            XCTAssert(rawValue.bigEndian.bytes.7 == bigEndianByteValue.7)
-            XCTAssert(UInt64(bigEndian: UInt64(bytes: bigEndianByteValue)) == rawValue)
-            
-            for feature in featureSet {
-                
-                XCTAssert(LowEnergyFeature.all.contains(feature))
-            }
         }
     }
 }
