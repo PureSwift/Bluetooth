@@ -40,6 +40,18 @@ final class BluetoothTests: XCTestCase {
         XCTAssertNotEqual(company, 77)
     }
     
+    func testHCICommandTimeout() {
+        
+        let timeout: HCICommandTimeout = 1000
+        
+        XCTAssertEqual(timeout, .default)
+        XCTAssertEqual(timeout.duration, 1.0)
+        XCTAssertEqual(timeout.rawValue, 1000)
+        XCTAssertNotEqual(timeout, 2000)
+        XCTAssertEqual(timeout.hashValue, timeout.rawValue.hashValue)
+        XCTAssertEqual(timeout.description, "1.0 seconds")
+    }
+    
     func testLowEnergyFeature() {
         
         var featureSet: LowEnergyFeatureSet = [.encryption, .connectionParametersRequestProcedure, .ping]
