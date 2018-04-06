@@ -16,7 +16,8 @@ final class AttributeProtocolTests: XCTestCase {
         ("testATTOpcode", testATTOpcode),
         ("testATTProtocolDataUnit", testATTProtocolDataUnit),
         ("testGATTClientData", testGATTClientData),
-        ("testGATT", testGATT)
+        ("testGATT", testGATT),
+        ("testMTUExchange", testMTUExchange)
     ]
     
     func testATTOpcode() {
@@ -513,6 +514,64 @@ final class AttributeProtocolTests: XCTestCase {
         }
         
         catch { XCTFail("Error: \(error)") }
+    }
+    
+    func testMTUExchange() {
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
+             [0x02, 0x00, 0x02]),
+            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
+             [0x03, 0x00, 0x02])
+        ]
+        
+        // decode and compare
+        for (testPDU, testData) in testPDUs {
+            
+            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
+                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            
+            dump(decodedPDU)
+            
+            XCTAssertEqual(decodedPDU.byteValue, testData)
+            
+            var decodedDump = ""
+            dump(decodedPDU, to: &decodedDump)
+            var testDump = ""
+            dump(testPDU, to: &testDump)
+            
+            XCTAssertEqual(decodedDump, testDump)
+        }
+    }
+    
+    func testServiceDiscovery() {
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
+             [0x02, 0x00, 0x02]),
+            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
+             [0x03, 0x00, 0x02]),
+            (ATTReadByGroupTypeRequest(startHandle: 0x01, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+             [0x10, 0x01, 0x00, 0xff, 0xff, 0x00, 0x28])
+        ]
+        
+        // decode and compare
+        for (testPDU, testData) in testPDUs {
+            
+            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
+                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            
+            dump(decodedPDU)
+            
+            XCTAssertEqual(decodedPDU.byteValue, testData)
+            
+            var decodedDump = ""
+            dump(decodedPDU, to: &decodedDump)
+            var testDump = ""
+            dump(testPDU, to: &testDump)
+            
+            XCTAssertEqual(decodedDump, testDump)
+        }
     }
 }
 

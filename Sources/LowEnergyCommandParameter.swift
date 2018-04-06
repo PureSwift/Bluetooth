@@ -1240,11 +1240,10 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
             return [
-                peerIdentifyAddressTypeBytes,
+                peerIdentifyAddressType.rawValue,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
                 peerIdentifyAddressBytes.2,
