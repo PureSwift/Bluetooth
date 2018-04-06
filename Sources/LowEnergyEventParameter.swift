@@ -283,7 +283,7 @@ public extension LowEnergyEvent {
             /// Size: 1 Octet (signed integer) 
             /// Range: -127 ≤ N ≤ +20
             /// Units: dBm
-            public let rssi: RSSI? // RSSI
+            public let rssi: RSSI // RSSI
             
             public init?(byteValue: [UInt8]) {
                 
@@ -319,7 +319,11 @@ public extension LowEnergyEvent {
                 
                 // last byte
                 let rssiByte = Int8(bitPattern: byteValue[9 + length])
-                self.rssi = RSSI(rawValue: rssiByte)
+                
+                guard let rssi = RSSI(rawValue: rssiByte)
+                    else { return nil }
+                
+                self.rssi = rssi
             }
             
             public enum Event: UInt8 { // Event_Type
