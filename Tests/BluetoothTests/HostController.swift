@@ -132,18 +132,20 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         
         while shouldContinue() {
             
-            guard let message = queue.popFirst()
+            guard let message = queue.first
                 else { return } // should be continue but we dont want to wait for tests
             
             switch message {
                 
             case let .event(eventBuffer):
                 
+                queue.removeFirst()
+                
                 let actualBytesRead = eventBuffer.count
-                let eventData = Array(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
+                let eventData = Array(eventBuffer[HCIEventHeader.length ..< actualBytesRead])
                 
                 // filter other events
-                guard let eventDataCodeByte = eventData.first,
+                guard let eventDataCodeByte = eventBuffer.first,
                     eventDataCodeByte == eventCode.rawValue
                     else { continue }
                 
@@ -155,7 +157,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             case .command:
                 
                 // filter commands
-                continue
+                return // should be continue but we dont want to wait for tests
             }
         }
     }
@@ -186,8 +188,16 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         
         // validate command
         guard testCommand.0 == opcode,
-            testCommand.1 == commandData
-            else { throw Error.invalidCommand }
+            testCommand.1 == commandData else {
+                
+                print("Provided command \(opcode)")
+                print(commandData)
+                
+                print("Expected command \(testCommand.0)")
+                print(testCommand.1)
+                
+                throw Error.invalidCommand
+        }
         
         while queue.isEmpty == false {
             
@@ -199,8 +209,8 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             case let .event(eventBuffer):
                 
                 let actualBytesRead = eventBuffer.count
-                let headerData = Array(eventBuffer[0 ..< 0 + HCIEventHeader.length])
-                let eventData = Array(eventBuffer[(0 + HCIEventHeader.length) ..< actualBytesRead])
+                let headerData = Array(eventBuffer[0 ..< HCIEventHeader.length])
+                let eventData = Array(eventBuffer[(HCIEventHeader.length) ..< actualBytesRead])
                 
                 guard let eventHeader = HCIEventHeader(bytes: headerData)
                     else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: headerData)) }
