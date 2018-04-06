@@ -7,7 +7,7 @@
 //
 
 /// Possible Low Energy States and roles.
-public enum LowEnergyState: UInt8, BitMaskOption {
+public enum LowEnergyState: Int, BitMaskOption {
     
     /// Scannable Advertising State
     case scannableAdvertising                   = 0b01 // 0x0001  // LE_STATE_SCAN_ADV
@@ -21,23 +21,23 @@ public enum LowEnergyState: UInt8, BitMaskOption {
     /// High Duty Cycle Directed Advertising State
     case highDutyCycleDirectedAdvertising       = 0b1000 // LE_STATE_HIGH_DIRECT_ADV 0x0008
     
-    case lowDutyCycleDirectedAsvertising        = 0b1010 // LE_STATE_LOW_DIRECT_ADV 0x0010
+    case lowDutyCycleDirectedAdvertising        = 0b10000 // LE_STATE_LOW_DIRECT_ADV 0x0010
     
-    case activeScanning                         = 0b10100 // LE_STATE_ACTIVE_SCAN 0x0020
+    case activeScanning                         = 0b100000 // LE_STATE_ACTIVE_SCAN 0x0020
     
-    case passiveScanning                        = 0b101000 // LE_STATE_PASSIVE_SCAN 0x0040
+    case passiveScanning                        = 0b1000000 // LE_STATE_PASSIVE_SCAN 0x0040
     
-    case initiating                             = 0b1010000 // LE_STATE_INITIATING 0x0080
+    case initiating                             = 0b10000000 // LE_STATE_INITIATING 0x0080
     
-    case connectionMaster                       = 0b1100100 // LE_STATE_MASTER_MASTER 0x0100
+    case connectionMaster                       = 0b100000000 // LE_STATE_MASTER_MASTER 0x0100
     
-    case connectionSlave                        = 0b11001000 // LE_STATE_SLAVE_SLAVE 0x0200
+    case connectionSlave                        = 0b1000000000 // LE_STATE_SLAVE_SLAVE 0x0200
     
     public static let all: Set<LowEnergyState> = [.scannableAdvertising,
                                                   .connectableAdvertising,
                                                   .nonConnectableAdvertising,
                                                   .highDutyCycleDirectedAdvertising,
-                                                  .lowDutyCycleDirectedAsvertising,
+                                                  .lowDutyCycleDirectedAdvertising,
                                                   .activeScanning,
                                                   .passiveScanning,
                                                   .initiating,
@@ -157,18 +157,18 @@ internal let lowEnergyStates: [LowEnergyStateSet: (BitMaskOptionSet<LowEnergySta
     .state26: ([.passiveScanning, .connectionSlave]),
     .state27: ([.activeScanning, .connectionSlave]),
     .state28: ([.initiating, .connectionMaster]),
-    .state29: ([.lowDutyCycleDirectedAsvertising]),
-    .state30: ([.lowDutyCycleDirectedAsvertising, .passiveScanning]),
-    .state31: ([.lowDutyCycleDirectedAsvertising, .activeScanning]),
+    .state29: ([.lowDutyCycleDirectedAdvertising]),
+    .state30: ([.lowDutyCycleDirectedAdvertising, .passiveScanning]),
+    .state31: ([.lowDutyCycleDirectedAdvertising, .activeScanning]),
     .state32: ([.connectableAdvertising, .initiating]),
     .state33: ([.highDutyCycleDirectedAdvertising, .initiating]),
-    .state34: ([.lowDutyCycleDirectedAsvertising, .initiating]),
+    .state34: ([.lowDutyCycleDirectedAdvertising, .initiating]),
     .state35: ([.connectableAdvertising, .connectionMaster]),
     .state36: ([.highDutyCycleDirectedAdvertising, .connectionMaster]),
-    .state37: ([.lowDutyCycleDirectedAsvertising, .connectionMaster]),
+    .state37: ([.lowDutyCycleDirectedAdvertising, .connectionMaster]),
     .state38: ([.connectableAdvertising, .connectionSlave]),
     .state39: ([.highDutyCycleDirectedAdvertising, .connectionSlave]),
-    .state40: ([.lowDutyCycleDirectedAsvertising, .connectionSlave]),
+    .state40: ([.lowDutyCycleDirectedAdvertising, .connectionSlave]),
     .state41: ([.initiating, .connectionSlave])
     
 ]
@@ -178,7 +178,7 @@ internal let lowEnergyStateNames: [LowEnergyState: String] = [
     .connectableAdvertising          : "Connectable Advertising State",
     .nonConnectableAdvertising       : "Non-connectable Advertising State",
     .highDutyCycleDirectedAdvertising: "High Duty Cycle Directed Advertising State",
-    .lowDutyCycleDirectedAsvertising : "Low Duty Cycle Directed Advertising State",
+    .lowDutyCycleDirectedAdvertising : "Low Duty Cycle Directed Advertising State",
     .activeScanning                  : "Active Scanning State",
     .passiveScanning                 : "Passive Scanning State",
     .initiating                      : "Initiating State",

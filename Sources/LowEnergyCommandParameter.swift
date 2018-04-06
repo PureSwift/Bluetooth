@@ -1537,23 +1537,26 @@ public extension LowEnergyCommand {
         }
     }
     
-    //TODO not finished
+    /// LE Read Supported States
     public struct ReadSupportedStatesReturnParameter: HCICommandReturnParameter {
         
         public static let command = LowEnergyCommand.readSupportedStates //0x001C
         
         public static let length: Int = 8
         
-        //public let leStatus: LowEnergyStateSet
+        public let state: LowEnergyStateSet
         
         public init?(byteValue: [UInt8]) {
             
             guard byteValue.count == type(of:self).length
                 else { return nil }
             
-            let leStatus = UInt64(littleEndian: UInt64(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
+            let stateRawValue = UInt64(littleEndian: UInt64(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
             
-            //TODO self.leStatus = LowEnergyStateSet. leStatus
+            guard let state = LowEnergyStateSet(rawValue: stateRawValue)
+                else { return nil }
+            
+            self.state = state
         }
     }
     
