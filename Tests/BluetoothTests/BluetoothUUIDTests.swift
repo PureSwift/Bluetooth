@@ -278,28 +278,28 @@ final class BluetoothUUIDTests: XCTestCase {
         }
     }
     
-    func testPerfomanceStringParseCoreBluetooth() {
+    func testCoreBluetoothPerfomanceStringParse() {
         
         let uuids = randomUUIDs.map { $0.uuidString }
         
         measure { uuids.forEach { _ = CBUUID(string: $0) } }
     }
     
-    func testPerfomanceStringCoreBluetooth() {
+    func testCoreBluetoothPerfomanceString() {
         
         let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
         
         measure { uuids.forEach { let _ = $0.uuidString } }
     }
     
-    func testPerformanceDataParseCoreBluetooth() {
+    func testCoreBluetoothPerformanceDataParse() {
         
         let uuids = randomUUIDs.map { $0.data }
         
         measure { uuids.forEach { _ = CBUUID(data: $0) } }
     }
     
-    func testPerformanceDataCoreBluetooth() {
+    func testCoreBluetoothPerformanceData() {
         
         let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
         

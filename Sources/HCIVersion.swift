@@ -6,9 +6,11 @@
 //  Copyright © 2017 PureSwift. All rights reserved.
 //
 
-/// Bluetooth version
+// swiftlint:disable identifier_name
+
+/// Bluetooth Host Controller Interface version.
 public enum HCIVersion: UInt8, Equatable, Hashable {
-    // swiftlint:disable identifier_name
+    
     case v1_0b      = 0x00
     case v1_1       = 0x01
     case v1_2       = 0x02
@@ -19,8 +21,9 @@ public enum HCIVersion: UInt8, Equatable, Hashable {
     case v4_1       = 0x07
     case v4_2       = 0x08
     case v5_0       = 0x09
-    // swiftlint:enable identifier_name
 }
+
+// swiftlint:enable identifier_name
 
 // MARK: - CustomStringConvertible
 
