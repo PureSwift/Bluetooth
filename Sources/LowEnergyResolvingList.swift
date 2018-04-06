@@ -61,7 +61,7 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyReadPeerResolvableAddress(peerIdentifyAddressType: PeerIdentifyAddressType, peerIdentifyAddress: UInt64, timeout: HCICommandTimeout = .default) throws -> UInt64 {
         
         let parameters = LowEnergyCommand.ReadPeerResolvableAddressParameter(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
-        
+
         let returnParameters = try deviceRequest(parameters, LowEnergyCommand.ReadPeerResolvableAddressReturnParameter.self, timeout: timeout)
         
         return returnParameters.peerResolvableAddress
@@ -79,6 +79,20 @@ public extension BluetoothHostControllerInterface {
         let returnParameters = try deviceRequest(parameters, LowEnergyCommand.ReadLocalResolvableAddressReturnParameter.self, timeout: timeout)
         
         return returnParameters.localResolvableAddress
+    }
+    
+    func lowEnergySetAddressResolutionEnable(addressResolutionEnable: LowEnergyCommand.SetAddressResolutionEnableParameter.AddressResolutionEnable, timeout: HCICommandTimeout = .default) throws {
+        
+        let parameters = LowEnergyCommand.SetAddressResolutionEnableParameter(addressResolutionEnable: addressResolutionEnable)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    func lowEnergySetResolvablePrivateAddressTimeoutParameter(rpaTimeout: LowEnergyCommand.SetResolvablePrivateAddressTimeoutParameter.RPATimeout, timeout: HCICommandTimeout = .default) throws {
+        
+        let parameters = LowEnergyCommand.SetResolvablePrivateAddressTimeoutParameter(rpaTimeout: rpaTimeout)
+        
+        try deviceRequest(parameters, timeout: timeout)
     }
 
 }
