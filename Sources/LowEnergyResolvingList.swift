@@ -81,6 +81,9 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.localResolvableAddress
     }
     
+    /// LE Set Address Resolution Enable Command
+    ///
+    /// The command is used to enable resolution of Resolvable Private Addresses in the Controller.
     func lowEnergySetAddressResolutionEnable(addressResolutionEnable: LowEnergyCommand.SetAddressResolutionEnableParameter.AddressResolutionEnable, timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.SetAddressResolutionEnableParameter(addressResolutionEnable: addressResolutionEnable)
@@ -88,11 +91,29 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(parameters, timeout: timeout)
     }
     
+    /// LE Set Resolvable Private Address Timeout Command
+    ///
+    /// The command set the length of time the Controller uses a Resolvable Private Address before a new resolvable private address is generated and starts being used.
     func lowEnergySetResolvablePrivateAddressTimeoutParameter(rpaTimeout: LowEnergyCommand.SetResolvablePrivateAddressTimeoutParameter.RPATimeout, timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.SetResolvablePrivateAddressTimeoutParameter(rpaTimeout: rpaTimeout)
         
         try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Read Maximum Data Length Command
+    ///
+    /// This ommand allows the Host to read the Controller’s maximum supported payload octets
+    /// and packet duration times for transmission and reception
+    func lowEnergy(timeout: HCICommandTimeout = .default) throws -> (LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxTxOctets,
+            LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxTxTime,
+            LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxRxOctets,
+            LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxRxTime) {
+        
+        let value = try deviceRequest(LowEnergyCommand.ReadMaximumDataLengthReturnParameter.self,
+                                      timeout: timeout)
+        
+        return (value.supportedMaxTxOctets, value.supportedMaxTxTime, value.supportedMaxRxOctets, value.supportedMaxRxTime)
     }
 
 }

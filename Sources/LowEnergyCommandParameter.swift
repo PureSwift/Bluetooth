@@ -1304,63 +1304,68 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setResolvablePrivateAddressTimeout //0x002E
         
+        /// Default: N= 0x0384 (900 s or 15 minutes)
+        public static let defaultRpaTimeout = RPATimeout(0x0384)
+        
         /// RPA_Timeout measured in s
         /// Range for N: 0x0001 – 0xA1B8 (1 s – approximately 11.5 hours)
         /// Default: N= 0x0384 (900 s or 15 minutes)
         public let rpaTimeout: RPATimeout //RPA_Timeout
         
-        public init(rpaTimeout: RPATimeout) {
+        public init(rpaTimeout: RPATimeout = defaultRpaTimeout) {
             self.rpaTimeout = rpaTimeout
         }
         
         public var byteValue: [UInt8] {
             
-            let rpaTimeoutBytes = rpaTimeout.rawValue.lowerBound.littleEndian.bytes
+            let rpaTimeoutBytes = rpaTimeout.rawValue.littleEndian.bytes
             
             return [rpaTimeoutBytes.0,
                     rpaTimeoutBytes.1]
         }
         
-        public struct RPATimeout: RawRepresentable, Equatable {
+        /// RPA_Timeout measured in s
+        /// Range for N: 0x0001 – 0xA1B8 (1 s – approximately 11.5 hours)
+        public struct RPATimeout: RawRepresentable, Equatable, Comparable, Hashable {
             
-            public typealias RawValue = CountableClosedRange<UInt16>
+            /// 2.5 msec
+            public static let min = RPATimeout(0x0001)
             
-            /// 1 s
-            public static let min: UInt16 = 0x0001
+            /// 10.24 seconds
+            public static let max = RPATimeout(0xA1B8)
             
-            /// 11.5 hours
-            public static let max: UInt16 = 0xA1B8
+            public let rawValue: UInt16
             
-            /// Maximum interval range.
-            public static let full = RPATimeout(.min ... .max)
-            
-            public let rawValue: RawValue
-            
-            public init?(rawValue: RawValue) {
+            public init?(rawValue: UInt16) {
                 
-                assert(RPATimeout.full.rawValue.lowerBound == LowEnergyConnectionInterval.min)
-                assert(RPATimeout.full.rawValue.upperBound == LowEnergyConnectionInterval.max)
-                
-                guard rawValue.lowerBound >= RPATimeout.min,
-                    rawValue.upperBound <= RPATimeout.max
+                guard rawValue >= RPATimeout.min.rawValue,
+                    rawValue <= RPATimeout.max.rawValue
                     else { return nil }
-                
-                assert(rawValue.clamped(to: RPATimeout.full.rawValue) == rawValue)
-                assert(rawValue.overlaps(RPATimeout.full.rawValue))
                 
                 self.rawValue = rawValue
             }
             
-            // private API, unsafe
-            private init(_ unchecked: RawValue) {
-                
-                self.rawValue = unchecked
+            // Private, unsafe
+            fileprivate init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
             }
             
             // Equatable
             public static func == (lhs: RPATimeout, rhs: RPATimeout) -> Bool {
                 
                 return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: RPATimeout, rhs: RPATimeout) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
             }
         }
     }
@@ -1638,6 +1643,239 @@ public extension LowEnergyCommand {
                 else { return nil }
             
             self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+        }
+    }
+    
+    /// LE Read Maximum Data Length Command
+    ///
+    /// The command allows the Host to read the Controller’s maximum supported payload octets
+    /// and packet duration times for transmission and reception.
+    public struct ReadMaximumDataLengthReturnParameter: HCICommandReturnParameter { //HCI_LE_Read_Maximum_Data_ Length 1323
+        
+        public static let command = LowEnergyCommand.readMaximumDataLength //0x002F
+        
+        public static let length: Int = 8
+        
+        /// Maximum number of payload octets that the local Controller supports for transmission
+        /// of a single Link Layer packet on a data connection.
+        public let supportedMaxTxOctets: SupportedMaxTxOctets
+        
+        /// Maximum time, in microseconds, that the local Controller supports for transmission of
+        /// a single Link Layer packet on a data connection.
+        public let supportedMaxTxTime: SupportedMaxTxTime
+        
+        /// Maximum number of payload octets that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        public let supportedMaxRxOctets: SupportedMaxRxOctets
+        
+        /// Maximum time, in microseconds, that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        public let supportedMaxRxTime: SupportedMaxRxTime
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            guard let supportedMaxTxOctets = SupportedMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1]))))
+                else { return nil }
+            
+            guard let supportedMaxTxTime = SupportedMaxTxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3]))))
+                else { return nil }
+            
+            guard let supportedMaxRxOctets = SupportedMaxRxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5]))))
+                else { return nil }
+            
+            guard let supportedMaxRxTime = SupportedMaxRxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7]))))
+                else { return nil }
+            
+            self.supportedMaxTxOctets = supportedMaxTxOctets
+            self.supportedMaxTxTime = supportedMaxTxTime
+            self.supportedMaxRxOctets = supportedMaxRxOctets
+            self.supportedMaxRxTime = supportedMaxRxTime
+        }
+        
+        /// Maximum time, in microseconds, that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        /// Range 0x0148-0x4290
+        public struct SupportedMaxRxTime: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxRxTime(0x0148)
+            
+            public static let max = SupportedMaxRxTime(0x4290)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxRxTime.min.rawValue,
+                    rawValue <= SupportedMaxRxTime.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxRxTime.min.rawValue ... SupportedMaxRxTime.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxRxTime, rhs: SupportedMaxRxTime) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxRxTime, rhs: SupportedMaxRxTime) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Maximum number of payload octets that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        /// Range 0x001B-0x00FB
+        public struct SupportedMaxRxOctets: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxRxOctets(0x001B)
+            
+            public static let max = SupportedMaxRxOctets(0x00FB)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxRxOctets.min.rawValue,
+                    rawValue <= SupportedMaxRxOctets.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxRxOctets.min.rawValue ... SupportedMaxRxOctets.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Maximum time, in microseconds, that the local Controller supports for transmission of
+        /// a single Link Layer packet on a data connection.
+        /// Range 0x0148-0x4290
+        public struct SupportedMaxTxTime: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxTxTime(0x0148)
+            
+            public static let max = SupportedMaxTxTime(0x4290)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxTxTime.min.rawValue,
+                    rawValue <= SupportedMaxTxTime.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxTxTime.min.rawValue ... SupportedMaxTxTime.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxTxTime, rhs: SupportedMaxTxTime) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxTxTime, rhs: SupportedMaxTxTime) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Maximum number of payload octets that the local Controller supports for transmission
+        /// of a single Link Layer packet on a data connection.
+        /// Range 0x001B-0x00FB
+        public struct SupportedMaxTxOctets: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxTxOctets(0x001B)
+            
+            public static let max = SupportedMaxTxOctets(0x00FB)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxTxOctets.min.rawValue,
+                    rawValue <= SupportedMaxTxOctets.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxTxOctets.min.rawValue ... SupportedMaxTxOctets.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxTxOctets, rhs: SupportedMaxTxOctets) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxTxOctets, rhs: SupportedMaxTxOctets) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
         }
     }
 }
