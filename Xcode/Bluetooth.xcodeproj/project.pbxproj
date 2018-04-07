@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
+		5138F5D920786E5700EC4C50 /* LowEnergyPhyCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5138F5D820786E5700EC4C50 /* LowEnergyPhyCommands.swift */; };
 		51F08807206EE47000B7609C /* LowEnergyEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F08806206EE47000B7609C /* LowEnergyEncryption.swift */; };
 		51F0880B2073CD3500B7609C /* LongTermKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F0880A2073CD3500B7609C /* LongTermKeyRequest.swift */; };
 		51F0880D20740C9600B7609C /* LowEnergyTestCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F0880C20740C9600B7609C /* LowEnergyTestCommands.swift */; };
@@ -294,6 +295,7 @@
 
 /* Begin PBXFileReference section */
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
+		5138F5D820786E5700EC4C50 /* LowEnergyPhyCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyPhyCommands.swift; sourceTree = "<group>"; };
 		51F08806206EE47000B7609C /* LowEnergyEncryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyEncryption.swift; sourceTree = "<group>"; };
 		51F0880A2073CD3500B7609C /* LongTermKeyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongTermKeyRequest.swift; sourceTree = "<group>"; };
 		51F0880C20740C9600B7609C /* LowEnergyTestCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyTestCommands.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 				51F0880A2073CD3500B7609C /* LongTermKeyRequest.swift */,
 				51F0880C20740C9600B7609C /* LowEnergyTestCommands.swift */,
 				511A657A2075B61400538116 /* LowEnergyResolvingList.swift */,
+				5138F5D820786E5700EC4C50 /* LowEnergyPhyCommands.swift */,
 			);
 			name = "Host Controller";
 			sourceTree = "<group>";
@@ -1029,6 +1032,7 @@
 				6E704C7B1E95C34D00484A22 /* ByteValue.swift in Sources */,
 				6ECBCF21206FC3A200312117 /* Array.swift in Sources */,
 				6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */,
+				5138F5D920786E5700EC4C50 /* LowEnergyPhyCommands.swift in Sources */,
 				6EE84DFC1CAF891E00A40C4D /* LowEnergyEventParameter.swift in Sources */,
 				6EE84E011CAF891E00A40C4D /* LowEnergyCommandParameter.swift in Sources */,
 				51F08807206EE47000B7609C /* LowEnergyEncryption.swift in Sources */,

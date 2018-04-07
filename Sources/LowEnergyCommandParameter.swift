@@ -1369,6 +1369,33 @@ public extension LowEnergyCommand {
             }
         }
     }
+    
+    /// LE Read PHY Command
+    ///
+    /// The command is used to read the current transmitter PHY and receiver PHY
+    /// on the connection identified by the Connection_Handle.
+    public struct ReadPHYParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.readPhy //0x0030
+        
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 //Connection_Handle
+        
+        public init(connectionHandle: UInt16) {
+            
+            self.connectionHandle = connectionHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1
+            ]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -1878,9 +1905,66 @@ public extension LowEnergyCommand {
             }
         }
     }
+    
+    /// LE Read PHY Command
+    ///
+    /// The command is used to read the current transmitter PHY and receiver PHY
+    /// on the connection identified by the Connection_Handle.
+    public struct ReadPHYReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readPhy //0x0030
+        
+        public static let length: Int = 4
+        
+        public let connectionHandle: UInt16
+        
+        public let txPhy: TxPhy
+        
+        public let rxPhy: RxPhy
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of:self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            
+            guard let txPhy = TxPhy(rawValue: byteValue[2])
+                else { return nil }
+            
+            guard let rxPhy = RxPhy(rawValue: byteValue[3])
+                else { return nil }
+            
+            self.txPhy = txPhy
+            self.rxPhy = rxPhy
+        }
+    }
 }
 
 // MARK: - Supporting Types
+
+public enum RxPhy: UInt8 { //RX_PHY
+    
+    /// The receiver PHY for the connection is LE 1M
+    case Le1m       = 0x01
+    
+    /// The receiver PHY for the connection is LE 2M
+    case Le2m       = 0x02
+    
+    /// The receiver PHY for the connection is LE Coded
+    case LeCoded    = 0x03
+}
+
+public enum TxPhy: UInt8 { //TX_PHY
+    
+    /// The receiver PHY for the connection is LE 1M
+    case Le1m       = 0x01
+    
+    /// The receiver PHY for the connection is LE 2M
+    case Le2m       = 0x02
+    
+    /// The receiver PHY for the connection is LE Coded
+    case LeCoded    = 0x03
+}
 
 public enum PeerIdentifyAddressType: UInt8 { //Peer_Identity_Address_Type
     case publicIdentifyAddress = 0x00
