@@ -103,15 +103,12 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This ommand allows the Host to read the Controller’s maximum supported payload octets
     /// and packet duration times for transmission and reception
-    func lowEnergy(timeout: HCICommandTimeout = .default) throws -> (LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxTxOctets,
-            LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxTxTime,
-            LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxRxOctets,
-            LowEnergyCommand.ReadMaximumDataLengthReturnParameter.SupportedMaxRxTime) {
+    func lowEnergy(timeout: HCICommandTimeout = .default) throws -> LowEnergyCommand.ReadMaximumDataLengthReturnParameter {
         
         let value = try deviceRequest(LowEnergyCommand.ReadMaximumDataLengthReturnParameter.self,
                                       timeout: timeout)
         
-        return (value.supportedMaxTxOctets, value.supportedMaxTxTime, value.supportedMaxRxOctets, value.supportedMaxRxTime)
+        return value
     }
 
 }

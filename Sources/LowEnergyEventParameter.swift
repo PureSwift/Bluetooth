@@ -384,7 +384,7 @@ public extension LowEnergyEvent {
         }
     }
     
-    public struct ReadRemoteUsedFeaturesCompleteParameter: HCIEventParameter {
+    public struct ReadRemoteUsedFeaturesCompleteEventParameter: HCIEventParameter {
     
         public static let event = LowEnergyEvent.readRemoteUsedFeaturesComplete // 0x04
         
@@ -406,7 +406,7 @@ public extension LowEnergyEvent {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == ReadRemoteUsedFeaturesCompleteParameter.length
+            guard byteValue.count == ReadRemoteUsedFeaturesCompleteEventParameter.length
                 else { return nil }
             
             let statusByte = byteValue[0]
@@ -437,7 +437,7 @@ public extension LowEnergyEvent {
     ///
     /// This event will occur on both devices to notify the Hosts when Encryption has changed for all connections between the two devices.
     /// Note: This event shall not be generated if encryption is paused or resumed; during a role switch, for example.
-    public struct EncryptionChangeParameter: HCIEventParameter {
+    public struct EncryptionChangeEventParameter: HCIEventParameter {
         public static let event = LowEnergyEvent.encryptionChange // 0x08
         
         public static let length: Int = 4
@@ -458,7 +458,7 @@ public extension LowEnergyEvent {
         public let encryptionEnabled: EncryptionEnabled
         
         public init?(byteValue: [UInt8]) {
-            guard byteValue.count == EncryptionChangeParameter.length
+            guard byteValue.count == EncryptionChangeEventParameter.length
                 else { return nil }
             
             let statusByte = byteValue[0]
@@ -506,7 +506,7 @@ public extension LowEnergyEvent {
     /// If the Encryption Key Refresh Complete event was generated due to an encryption pause and
     /// resume operation embedded within a role switch procedure,
     /// the Encryption Key Refresh Complete event shall be sent prior to the Role Change event.
-    public struct EncryptionKeyRefreshCompleteParameter: HCIEventParameter {
+    public struct EncryptionKeyRefreshCompleteEventParameter: HCIEventParameter {
         
         public static let event = LowEnergyEvent.encryptionKeyRefreshComplete // 0x30
         
@@ -517,7 +517,7 @@ public extension LowEnergyEvent {
         public let handle: UInt16 // Connection_Handle
         
         public init?(byteValue: [UInt8]) {
-            guard byteValue.count == EncryptionKeyRefreshCompleteParameter.length
+            guard byteValue.count == EncryptionKeyRefreshCompleteEventParameter.length
                 else { return nil }
             
             let statusByte = byteValue[0]
@@ -530,5 +530,54 @@ public extension LowEnergyEvent {
             self.status = status
             self.handle = handle
         }
+    }
+    
+    /// LE PHY Update Complete Event
+    ///
+    /// The LE PHY Update Complete Event is used to indicate that the Controller has changed
+    /// the transmitter PHY or receiver PHY in use.
+    ///
+    /// If the Controller changes the transmitter PHY, the receiver PHY, or both PHYs,
+    /// this event shall be issued.
+    ///
+    /// If an LE_Set_PHY command was sent and the Controller determines that neither PHY will
+    /// change as a result, it issues this event immediately.
+    public struct PhyUpdateCompleteEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.phyUpdateComplete
+        
+        public static let length: Int = 5
+        
+        public let status: HCIStatus
+        
+        public let handle: UInt16 // Connection_Handle
+        
+        public let txPhy: TxPhy
+        
+        public let rxPhy: RxPhy
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == EncryptionKeyRefreshCompleteEventParameter.length
+                else { return nil }
+            
+            let statusByte = byteValue[0]
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            
+            guard let status = HCIStatus(rawValue: statusByte)
+                else { return nil }
+            
+            guard let txPhy = TxPhy(rawValue: byteValue[3])
+                else { return nil }
+            
+            guard let rxPhy = RxPhy(rawValue: byteValue[4])
+                else { return nil }
+            
+            self.status = status
+            self.handle = handle
+            self.txPhy = txPhy
+            self.rxPhy = rxPhy
+        }
+        
     }
 }

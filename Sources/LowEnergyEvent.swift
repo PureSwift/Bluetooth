@@ -29,6 +29,9 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
     
     /// LE Encryption Key Refresh Complete
     case encryptionKeyRefreshComplete       = 0x30
+    
+    /// LE PHY Update Complete Event
+    case phyUpdateComplete                  = 0x3E
 }
 
 // MARK: - Name
