@@ -62,24 +62,24 @@ public extension iBeacon {
         
         // set UUID bytes
         
-        let littleUUIDBytes = BluetoothUUID(uuid: uuid).bigEndian.data
+        let uuidBytes = BluetoothUUID(uuid: uuid).bigEndian.data
         
-        dataParameter.data.9 = littleUUIDBytes[0]
-        dataParameter.data.10 = littleUUIDBytes[1]
-        dataParameter.data.11 = littleUUIDBytes[2]
-        dataParameter.data.12 = littleUUIDBytes[3]
-        dataParameter.data.13 = littleUUIDBytes[4]
-        dataParameter.data.14 = littleUUIDBytes[5]
-        dataParameter.data.15 = littleUUIDBytes[6]
-        dataParameter.data.16 = littleUUIDBytes[7]
-        dataParameter.data.17 = littleUUIDBytes[8]
-        dataParameter.data.18 = littleUUIDBytes[9]
-        dataParameter.data.19 = littleUUIDBytes[10]
-        dataParameter.data.20 = littleUUIDBytes[11]
-        dataParameter.data.21 = littleUUIDBytes[12]
-        dataParameter.data.22 = littleUUIDBytes[13]
-        dataParameter.data.23 = littleUUIDBytes[14]
-        dataParameter.data.24 = littleUUIDBytes[15]
+        dataParameter.data.9 = uuidBytes[0]
+        dataParameter.data.10 = uuidBytes[1]
+        dataParameter.data.11 = uuidBytes[2]
+        dataParameter.data.12 = uuidBytes[3]
+        dataParameter.data.13 = uuidBytes[4]
+        dataParameter.data.14 = uuidBytes[5]
+        dataParameter.data.15 = uuidBytes[6]
+        dataParameter.data.16 = uuidBytes[7]
+        dataParameter.data.17 = uuidBytes[8]
+        dataParameter.data.18 = uuidBytes[9]
+        dataParameter.data.19 = uuidBytes[10]
+        dataParameter.data.20 = uuidBytes[11]
+        dataParameter.data.21 = uuidBytes[12]
+        dataParameter.data.22 = uuidBytes[13]
+        dataParameter.data.23 = uuidBytes[14]
+        dataParameter.data.24 = uuidBytes[15]
         
         let majorBytes = major.littleEndian.bytes
         
