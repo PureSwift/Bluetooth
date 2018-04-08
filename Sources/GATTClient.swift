@@ -30,7 +30,7 @@ public final class GATTClient {
     }
     
     public init(socket: L2CAPSocketProtocol,
-                maximumTransmissionUnit: Int = ATT.MaximumTransmissionUnit.LowEnergy.default,
+                maximumTransmissionUnit: ATT.MaximumTransmissionUnit = .default,
                 log: ((String) -> ())? = nil) {
         
         self.connection = ATTConnection(socket: socket)
@@ -235,7 +235,7 @@ public final class GATTClient {
                                     completion: ((GATTClientResponse<()>) -> ())?) {
         
         // short value
-        if data.count <= connection.maximumTransmissionUnit - 3 {
+        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - 3 {
             
             if let completion = completion {
                 
@@ -306,7 +306,7 @@ public final class GATTClient {
     
     private func exchangeMTU() {
         
-        let clientMTU = UInt16(self.connection.maximumTransmissionUnit)
+        let clientMTU = self.connection.maximumTransmissionUnit
         
         let pdu = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU)
         
@@ -421,7 +421,7 @@ public final class GATTClient {
         // The Attribute Handle parameter shall be set to the Characteristic Value Handle.
         // The Attribute Value parameter shall be set to the new Characteristic Value.
         
-        let data = [UInt8](data.prefix(connection.maximumTransmissionUnit - 3))
+        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 3))
         
         let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
         
@@ -452,7 +452,7 @@ public final class GATTClient {
         // Section 10.2 then, a Write Without Response as defined in Section 4.9.1 shall be used instead of
         // a Signed Write Without Response.
         
-        let data = [UInt8](data.prefix(connection.maximumTransmissionUnit - 15))
+        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 15))
         
         // TODO: Sign Data
         
@@ -476,7 +476,7 @@ public final class GATTClient {
         // The Attribute Handle parameter shall be set to the Characteristic Value Handle.
         // The Attribute Value parameter shall be set to the new characteristic.
         
-        let data = [UInt8](data.prefix(connection.maximumTransmissionUnit - 3))
+        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
         
         let pdu = ATTWriteRequest(handle: characteristic.handle.value, value: data)
         
@@ -511,7 +511,7 @@ public final class GATTClient {
         
         let bytes = [UInt8](data)
         
-        let firstValuePart = [UInt8](bytes.prefix(connection.maximumTransmissionUnit - 5))
+        let firstValuePart = [UInt8](bytes.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
         
         let pdu = ATTPrepareWriteRequest(handle: characteristic.handle.value,
                                          offset: 0x00,
@@ -538,7 +538,7 @@ public final class GATTClient {
             
         case let .value(pdu):
             
-            let finalMTU = Int(pdu.serverMTU)
+            let finalMTU = pdu.serverMTU
             
             let currentMTU = self.connection.maximumTransmissionUnit
             
@@ -746,7 +746,7 @@ public final class GATTClient {
             operation.data = pdu.attributeValue
             
             // short value
-            if pdu.attributeValue.count < (self.connection.maximumTransmissionUnit - 1) {
+            if pdu.attributeValue.count < (Int(connection.maximumTransmissionUnit.rawValue) - 1) {
                 
                 operation.success()
                 
@@ -774,7 +774,7 @@ public final class GATTClient {
             operation.data += pdu.partAttributeValue
             
             // short value
-            if pdu.partAttributeValue.count < (self.connection.maximumTransmissionUnit - 1) {
+            if pdu.partAttributeValue.count < (Int(connection.maximumTransmissionUnit.rawValue) - 1) {
                 
                 operation.success()
                 
@@ -876,7 +876,7 @@ public final class GATTClient {
             if offset < operation.data.count {
                 
                 // write next part
-                let maxLength = connection.maximumTransmissionUnit - ATTPrepareWriteRequest.length // 5
+                let maxLength = Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length // 5
                 let endIndex = min(offset + maxLength, operation.data.count)
                 let attributeValuePart = [UInt8](operation.data[offset ..<  endIndex])
                 
