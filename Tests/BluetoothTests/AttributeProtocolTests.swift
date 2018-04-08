@@ -14,9 +14,11 @@ final class AttributeProtocolTests: XCTestCase {
     
     static let allTests = [
         ("testATTOpcode", testATTOpcode),
-        ("testATTProtocolDataUnit", testATTProtocolDataUnit),
-        ("testGATTClientData", testGATTClientData),
-        ("testMTUExchange", testMTUExchange),
+        ("testErrorResponse", testErrorResponse),
+        ("testMTU", testMTU),
+        ("testReadByGroupType", testReadByGroupType),
+        ("testFindByType", testFindByType),
+        ("testReadByType", testReadByType),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices)
     ]
     
@@ -31,7 +33,7 @@ final class AttributeProtocolTests: XCTestCase {
         XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.type == .response)
     }
     
-    func testATTProtocolDataUnit() {
+    func testErrorResponse() {
         
         do {
             
@@ -44,6 +46,8 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(errorResponse.attributeHandle == 0x0001)
             XCTAssert(errorResponse.errorCode == .attributeNotFound)
             XCTAssert(errorResponse.byteValue == data)
+            
+            XCTAssertEqual(errorResponse.byteValue, data)
         }
         
         do {
@@ -71,6 +75,9 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(errorResponse.errorCode == .attributeNotFound)
             XCTAssert(errorResponse.byteValue == data)
         }
+    }
+    
+    func testMTU() {
         
         do {
             
@@ -93,6 +100,9 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.serverMTU == 23)
             XCTAssert(pdu.byteValue == data)
         }
+    }
+    
+    func testReadByGroupType() {
         
         do {
             
@@ -173,6 +183,9 @@ final class AttributeProtocolTests: XCTestCase {
                 BluetoothUUID(data: Data(pdu.data[0].value))!).rawValue == uuidString)
             XCTAssert(pdu.byteValue == data)
         }
+    }
+    
+    func testFindByType() {
         
         do {
             
@@ -217,6 +230,9 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(foundHandle.groupEnd == 48)
             XCTAssert(pdu.byteValue == data)
         }
+    }
+    
+    func testReadByType() {
         
         do {
             
@@ -234,9 +250,6 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(foundCharacteristicData.handle == 41)
             XCTAssert(foundCharacteristicData.value.isEmpty == false)
         }
-    }
-    
-    func testGATTClientData() {
         
         do {
             
@@ -263,113 +276,6 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(characteristicDeclaration.uuid == characteristic.uuid)
             XCTAssert(characteristicDeclaration.properties.set == Set(characteristic.properties))
             XCTAssert(characteristicDeclaration.properties == characteristic.properties)
-        }
-    }
-        
-    func testMTUExchange() {
-        
-        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
-            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
-             [0x02, 0x00, 0x02]),
-            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
-             [0x03, 0x00, 0x02])
-        ]
-        
-        // decode and compare
-        for (testPDU, testData) in testPDUs {
-            
-            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
-                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
-            
-            dump(decodedPDU)
-            
-            XCTAssertEqual(decodedPDU.byteValue, testData)
-            
-            var decodedDump = ""
-            dump(decodedPDU, to: &decodedDump)
-            var testDump = ""
-            dump(testPDU, to: &testDump)
-            
-            XCTAssertEqual(decodedDump, testDump)
-        }
-        
-        // server
-        let serverSocket = TestL2CAPSocket()
-        serverSocket.forceTarget = false
-        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
-        server.log = { print("GATT Server: " + $0) }
-        server.connection.log = { print("Server ATT: " + $0) }
-        //server.database = database
-        
-        // client
-        let clientSocket = TestL2CAPSocket()
-        serverSocket.forceTarget = false
-        let client = GATTClient(socket: clientSocket)
-        client.log = { print("GATT Client: " + $0) }
-        client.connection.log = { print("Client ATT: " + $0) }
-        
-        // fake sockets
-        do {
-            
-            var didWrite = false
-            repeat {
-                
-                didWrite = false
-                
-                while try client.write() {
-                    
-                    didWrite = true
-                }
-                
-                while serverSocket.receivedData.isEmpty == false {
-                    
-                    try server.read()
-                }
-                
-                while try server.write() {
-                    
-                    didWrite = true
-                }
-                
-                while clientSocket.receivedData.isEmpty == false {
-                    
-                    try client.read()
-                }
-                
-            } while didWrite
-        }
-            
-        catch { XCTFail("Error: \(error)") }
-        
-        XCTAssertEqual(server.connection.maximumTransmissionUnit, 512)
-        XCTAssertNotEqual(server.connection.maximumTransmissionUnit, ATT.MaximumTransmissionUnit.LowEnergy.default)
-        XCTAssertEqual(client.connection.maximumTransmissionUnit, 512)
-        XCTAssertNotEqual(client.connection.maximumTransmissionUnit, ATT.MaximumTransmissionUnit.LowEnergy.default)
-    }
-    
-    func testDiscoverPrimaryServices() {
-        
-        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
-            (ATTReadByGroupTypeRequest(startHandle: 0x01, endHandle: .max, type: GATT.UUID.primaryService.uuid),
-             [0x40, 0x20, 0x0B, 0x00, 0x07, 0x00, 0x04, 0x00, 0x10, 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x28])
-        ]
-        
-        // decode and compare
-        for (testPDU, testData) in testPDUs {
-            
-            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
-                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
-            
-            dump(decodedPDU)
-            
-            XCTAssertEqual(decodedPDU.byteValue, testData)
-            
-            var decodedDump = ""
-            dump(decodedPDU, to: &decodedDump)
-            var testDump = ""
-            dump(testPDU, to: &testDump)
-            
-            XCTAssertEqual(decodedDump, testDump)
         }
     }
 }
