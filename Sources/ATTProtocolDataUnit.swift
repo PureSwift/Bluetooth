@@ -1266,6 +1266,8 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
         }
         
         self.data = attributeDataList
+        
+        assert(length == (data[0].byteValue.count))
     }
     
     public var byteValue: [UInt8] {
@@ -1298,7 +1300,9 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
         /// Attribute Value
         public var value: [UInt8]
         
-        public init(attributeHandle: UInt16 = 0, endGroupHandle: UInt16 = 0, value: [UInt8] = []) {
+        public init(attributeHandle: UInt16 = 0,
+                    endGroupHandle: UInt16 = 0,
+                    value: [UInt8] = []) {
             
             self.attributeHandle = attributeHandle
             self.endGroupHandle = endGroupHandle
@@ -1313,9 +1317,9 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             self.attributeHandle = UInt16(bytes: (byteValue[0], byteValue[1])).littleEndian
             self.endGroupHandle = UInt16(bytes: (byteValue[2], byteValue[3])).littleEndian
             
-            if byteValue.count > 4 {
+            if byteValue.count > type(of: self).length {
                 
-                self.value = Array(byteValue.suffix(from: 4))
+                self.value = Array(byteValue.suffix(from: type(of: self).length))
                 
             } else {
                 
