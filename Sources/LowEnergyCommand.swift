@@ -52,6 +52,8 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case readMaximumDataLength          = 0x002F
     case readPhy                        = 0x0030
     case setDefaultPhy                  = 0x0031
+    case setPhy                         = 0x0032
+    case enhancedReceiverTest           = 0x0033
 }
 
 // MARK: - Name
