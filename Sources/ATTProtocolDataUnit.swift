@@ -97,13 +97,17 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
 /// The *Client Rx MTU* parameter shall be set to the maximum size of the attribute protocol PDU that the client can receive.
 public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     
+    /// 0x02 = Exchange MTU Request
     public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitRequest
+    
     public static let length = 3
     
     /// Client Rx MTU
-    public var clientMTU: ATTMaximumTransmissionUnit
+    ///
+    /// Client receive MTU size
+    public var clientMTU: UInt16
     
-    public init(clientMTU: ATTMaximumTransmissionUnit) {
+    public init(clientMTU: UInt16) {
         
         self.clientMTU = clientMTU
     }
@@ -118,10 +122,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
-        
-        guard let clientMTU = ATTMaximumTransmissionUnit(rawValue: rawValue)
-            else { return nil }
+        let clientMTU = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
         
         self.clientMTU = clientMTU
     }
@@ -132,7 +133,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
         
         bytes[0] = type(of: self).attributeOpcode.rawValue
         
-        let mtuBytes = self.clientMTU.rawValue.littleEndian.bytes
+        let mtuBytes = self.clientMTU.littleEndian.bytes
         
         bytes[1] = mtuBytes.0
         bytes[2] = mtuBytes.1
@@ -146,13 +147,17 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
 /// The *Exchange MTU Response* is sent in reply to a received *Exchange MTU Request*.
 public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
     
+    /// 0x03 = Exchange MTU Response
     public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitResponse
+    
     public static let length = 3
     
     /// Server Rx MTU
-    public var serverMTU: ATTMaximumTransmissionUnit
+    ///
+    /// Attribute server receive MTU size
+    public var serverMTU: UInt16
     
-    public init(serverMTU: ATTMaximumTransmissionUnit) {
+    public init(serverMTU: UInt16) {
         
         self.serverMTU = serverMTU
     }
@@ -167,10 +172,7 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
-        
-        guard let serverMTU = ATTMaximumTransmissionUnit(rawValue: rawValue)
-            else { return nil }
+        let serverMTU = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
         
         self.serverMTU = serverMTU
     }
@@ -181,7 +183,7 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
         
         bytes[0] = type(of: self).attributeOpcode.rawValue
         
-        let mtuBytes = self.serverMTU.rawValue.littleEndian.bytes
+        let mtuBytes = self.serverMTU.littleEndian.bytes
         
         bytes[1] = mtuBytes.0
         bytes[2] = mtuBytes.1

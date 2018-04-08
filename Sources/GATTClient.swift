@@ -308,7 +308,7 @@ public final class GATTClient {
         
         let clientMTU = self.connection.maximumTransmissionUnit
         
-        let pdu = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU)
+        let pdu = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
         
         send(pdu) { [unowned self] in self.exchangeMTUResponse($0) }
     }
@@ -538,11 +538,11 @@ public final class GATTClient {
             
         case let .value(pdu):
             
-            let finalMTU = pdu.serverMTU
+            let clientMTU = self.connection.maximumTransmissionUnit
             
-            let currentMTU = self.connection.maximumTransmissionUnit
+            let finalMTU = ATTMaximumTransmissionUnit(server: pdu.serverMTU, client: clientMTU.rawValue)
             
-            log?("MTU Exchange (\(currentMTU) -> \(finalMTU))")
+            log?("MTU Exchange (\(clientMTU) -> \(finalMTU))")
             
             self.connection.maximumTransmissionUnit = finalMTU
         }

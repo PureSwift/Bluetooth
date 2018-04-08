@@ -202,6 +202,7 @@ public final class ATTConnection {
     /// Adds a PDU to the queue to send.
     ///
     /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
+    @discardableResult
     public func send <PDU: ATTProtocolDataUnit> (_ pdu: PDU, response: (callback: (AnyResponse) -> (), ATTProtocolDataUnit.Type)? = nil) -> UInt? {
         
         let attributeOpcode = PDU.attributeOpcode

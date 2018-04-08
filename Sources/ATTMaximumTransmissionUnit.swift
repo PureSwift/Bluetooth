@@ -19,7 +19,7 @@ public struct ATTMaximumTransmissionUnit: RawRepresentable {
         
         self.rawValue = rawValue
         
-        assert(validate())
+        assert(isValid)
     }
     
     fileprivate init(_ unsafe: UInt16) {
@@ -30,7 +30,7 @@ public struct ATTMaximumTransmissionUnit: RawRepresentable {
 
 private extension ATTMaximumTransmissionUnit {
     
-    func validate() -> Bool {
+    var isValid: Bool {
         
         return (ATTMaximumTransmissionUnit.min.rawValue ... ATTMaximumTransmissionUnit.max.rawValue).contains(rawValue)
     }
@@ -44,17 +44,14 @@ public extension ATTMaximumTransmissionUnit {
     
     static var max: ATTMaximumTransmissionUnit { return ATTMaximumTransmissionUnit(517) }
     
-    init(server: ATTMaximumTransmissionUnit,
-         client: ATTMaximumTransmissionUnit) {
+    init(server: UInt16,
+         client: UInt16) {
         
-        assert(server.validate())
-        assert(client.validate())
+        let mtu = Swift.min(Swift.max(Swift.min(client, server), ATTMaximumTransmissionUnit.default.rawValue), ATTMaximumTransmissionUnit.max.rawValue)
         
-        let mtu = Swift.max(Swift.min(client, server), .default)
+        self.init(mtu)
         
-        assert(mtu.validate())
-        
-        self = mtu
+        assert(isValid)
     }
 }
 
