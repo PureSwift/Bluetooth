@@ -38,7 +38,7 @@ public final class GATTServer {
     }
     
     public init(socket: L2CAPSocketProtocol,
-                maximumTransmissionUnit: Int = ATT.MaximumTransmissionUnit.LowEnergy.default,
+                maximumTransmissionUnit: ATT.MaximumTransmissionUnit = .default,
                 maximumPreparedWrites: Int = 50) {
         
         // set initial MTU and register handlers
@@ -243,7 +243,7 @@ public final class GATTServer {
         //
         // If the Characteristic Value is not longer than (ATT_MTU – 1) an Error Response with
         // the Error Code set to Attribute Not Long shall be received on the first Read Blob Request.
-        guard isBlob == false || attribute.value.count > (connection.maximumTransmissionUnit - 1)
+        guard isBlob == false || attribute.value.count > (Int(connection.maximumTransmissionUnit.rawValue) - 1)
             else { errorResponse(opcode, .attributeNotLong, handle); return nil }
         
         // check boundary
@@ -267,7 +267,7 @@ public final class GATTServer {
         }
         
         // adjust value for MTU
-        value = Array(value.prefix(connection.maximumTransmissionUnit - 1))
+        value = Array(value.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 1))
         
         // validate application errors with read callback
         if let error = willRead?(attribute.uuid, handle, Data(bytes: value), Int(offset)) {
@@ -283,15 +283,15 @@ public final class GATTServer {
     
     private func exchangeMTU(pdu: ATTMaximumTransmissionUnitRequest) {
         
-        let serverMTU = UInt16(connection.maximumTransmissionUnit)
+        let serverMTU = connection.maximumTransmissionUnit
         
-        let finalMTU = max(min(pdu.clientMTU, serverMTU), UInt16(ATT.MaximumTransmissionUnit.LowEnergy.default))
+        let finalMTU = ATTMaximumTransmissionUnit(server: serverMTU, client: pdu.clientMTU)
         
         // Respond with the server MTU
-        let _ = connection.send(ATTMaximumTransmissionUnitResponse(serverMTU: serverMTU))
+        let _ = connection.send(ATTMaximumTransmissionUnitResponse(serverMTU: finalMTU))
         
         // Set MTU to minimum
-        connection.maximumTransmissionUnit = Int(finalMTU)
+        connection.maximumTransmissionUnit = finalMTU
         
         log?("MTU Exchange (\(pdu.clientMTU) -> \(finalMTU))")
     }
@@ -346,9 +346,9 @@ public final class GATTServer {
         var response = ATTReadByGroupTypeResponse(data: limitedAttributes)!
         
         // limit for MTU if first handle is too large
-        if response.byteValue.count > connection.maximumTransmissionUnit {
+        if response.byteValue.count > Int(connection.maximumTransmissionUnit.rawValue) {
             
-            let maxLength = min(min(connection.maximumTransmissionUnit - 6, 251), limitedAttributes[0].value.count)
+            let maxLength = min(min(Int(connection.maximumTransmissionUnit.rawValue) - 6, 251), limitedAttributes[0].value.count)
             
             limitedAttributes[0].value = Array(limitedAttributes[0].value.prefix(maxLength))
             
@@ -364,13 +364,13 @@ public final class GATTServer {
                 guard let limitedResponse = ATTReadByGroupTypeResponse(data: limitedAttributes)
                     else { fatalErrorResponse("Could not create ATTReadByGroupTypeResponse. Attribute Data: \(attributeData)", opcode, pdu.startHandle) }
                 
-                guard limitedResponse.byteValue.count <= connection.maximumTransmissionUnit else { break }
+                guard limitedResponse.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
                 
                 response = limitedResponse
             }
         }
         
-        assert(response.byteValue.count <= connection.maximumTransmissionUnit,
+        assert(response.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue),
                "Response \(response.byteValue.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
         
         respond(response)
@@ -416,9 +416,9 @@ public final class GATTServer {
         var response = ATTReadByTypeResponse(data: limitedAttributes)!
         
         // limit for MTU if first handle is too large
-        if response.byteValue.count > connection.maximumTransmissionUnit {
+        if response.byteValue.count > Int(connection.maximumTransmissionUnit.rawValue) {
             
-            let maxLength = min(min(connection.maximumTransmissionUnit - 4, 253), limitedAttributes[0].value.count)
+            let maxLength = min(min(Int(connection.maximumTransmissionUnit.rawValue) - 4, 253), limitedAttributes[0].value.count)
             
             limitedAttributes[0].value = Array(limitedAttributes[0].value.prefix(maxLength))
             
@@ -434,13 +434,13 @@ public final class GATTServer {
                 guard let limitedResponse = ATTReadByTypeResponse(data: limitedAttributes)
                     else { fatalErrorResponse("Could not create ATTReadByTypeResponse. Attribute Data: \(attributeData)", opcode, pdu.startHandle) }
                 
-                guard limitedResponse.byteValue.count <= connection.maximumTransmissionUnit else { break }
+                guard limitedResponse.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
                 
                 response = limitedResponse
             }
         }
         
-        assert(response.byteValue.count <= connection.maximumTransmissionUnit,
+        assert(response.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue),
                "Response \(response.byteValue.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
         
         respond(response)
@@ -479,7 +479,7 @@ public final class GATTServer {
             // truncate if bigger than MTU
             let encodedLength = 2 + ((index + 1) * format.length)
             
-            guard encodedLength <= connection.maximumTransmissionUnit
+            guard encodedLength <= Int(connection.maximumTransmissionUnit.rawValue)
                 else { break }
             
             // encode attribute

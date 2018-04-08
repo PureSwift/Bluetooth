@@ -14,15 +14,7 @@ public final class ATTConnection {
     // MARK: - Properties
     
     /// Actual number of bytes for PDU ATT exchange.
-    public var maximumTransmissionUnit: Int = ATT.MaximumTransmissionUnit.LowEnergy.default {
-        
-        willSet {
-            
-            // enforce value range
-            assert(newValue >= ATT.MaximumTransmissionUnit.LowEnergy.default)
-            assert(newValue <= ATT.MaximumTransmissionUnit.LowEnergy.maximum)
-        }
-    }
+    public var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default
     
     public let socket: L2CAPSocketProtocol
     
@@ -74,7 +66,7 @@ public final class ATTConnection {
         
         log?("Attempt read")
         
-        let recievedData = try socket.recieve(maximumTransmissionUnit)
+        let recievedData = try socket.recieve(Int(maximumTransmissionUnit.rawValue))
         
         log?("Recieved data (\(recievedData.count) bytes)")
         
@@ -122,7 +114,7 @@ public final class ATTConnection {
         guard let sendOperation = pickNextSendOpcode()
             else { return false }
         
-        assert(sendOperation.data.count <= maximumTransmissionUnit, "Trying to send \(sendOperation.data.count) bytes when MTU is \(maximumTransmissionUnit)")
+        assert(sendOperation.data.count <= Int(maximumTransmissionUnit.rawValue), "Trying to send \(sendOperation.data.count) bytes when MTU is \(maximumTransmissionUnit)")
         
         log?("Sending data... (\(sendOperation.data.count) bytes)")
         
@@ -284,7 +276,7 @@ public final class ATTConnection {
     
     // MARK: - Private Methods
     
-    private func encode<T: ATTProtocolDataUnit>(PDU: T) -> [UInt8]? {
+    private func encode <T: ATTProtocolDataUnit> (PDU: T) -> [UInt8]? {
         
         let data = PDU.byteValue
         
@@ -292,7 +284,7 @@ public final class ATTConnection {
         let length = data.count
         
         /// MTU must be large enough to hold PDU. 
-        guard length <= maximumTransmissionUnit else { return nil }
+        guard length <= Int(maximumTransmissionUnit.rawValue) else { return nil }
         
         // TODO: Sign (encrypt) data
         

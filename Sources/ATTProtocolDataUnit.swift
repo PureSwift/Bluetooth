@@ -101,9 +101,9 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     public static let length = 3
     
     /// Client Rx MTU
-    public var clientMTU: UInt16
+    public var clientMTU: ATTMaximumTransmissionUnit
     
-    public init(clientMTU: UInt16 = 0) {
+    public init(clientMTU: ATTMaximumTransmissionUnit) {
         
         self.clientMTU = clientMTU
     }
@@ -118,7 +118,12 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.clientMTU = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        
+        guard let clientMTU = ATTMaximumTransmissionUnit(rawValue: rawValue)
+            else { return nil }
+        
+        self.clientMTU = clientMTU
     }
     
     public var byteValue: [UInt8] {
@@ -127,7 +132,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
         
         bytes[0] = type(of: self).attributeOpcode.rawValue
         
-        let mtuBytes = self.clientMTU.littleEndian.bytes
+        let mtuBytes = self.clientMTU.rawValue.littleEndian.bytes
         
         bytes[1] = mtuBytes.0
         bytes[2] = mtuBytes.1
@@ -145,9 +150,9 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
     public static let length = 3
     
     /// Server Rx MTU
-    public var serverMTU: UInt16
+    public var serverMTU: ATTMaximumTransmissionUnit
     
-    public init(serverMTU: UInt16 = 0) {
+    public init(serverMTU: ATTMaximumTransmissionUnit) {
         
         self.serverMTU = serverMTU
     }
@@ -162,7 +167,12 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.serverMTU = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        
+        guard let serverMTU = ATTMaximumTransmissionUnit(rawValue: rawValue)
+            else { return nil }
+        
+        self.serverMTU = serverMTU
     }
     
     public var byteValue: [UInt8] {
@@ -171,7 +181,7 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
         
         bytes[0] = type(of: self).attributeOpcode.rawValue
         
-        let mtuBytes = self.serverMTU.littleEndian.bytes
+        let mtuBytes = self.serverMTU.rawValue.littleEndian.bytes
         
         bytes[1] = mtuBytes.0
         bytes[2] = mtuBytes.1
