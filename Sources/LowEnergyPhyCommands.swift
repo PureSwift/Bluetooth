@@ -12,13 +12,13 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This ommand is used to read the current transmitter PHY and receiver PHY
     /// on the connection identified by the Connection_Handle.
-    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> (TxPhy, RxPhy) {
+    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> LowEnergyCommand.ReadPHYReturnParameter {
         
         let parameters = LowEnergyCommand.ReadPHYParameter(connectionHandle: connectionHandle)
         
         let value = try deviceRequest(parameters, LowEnergyCommand.ReadPHYReturnParameter.self, timeout: timeout)
         
-        return (value.txPhy, value.rxPhy)
+        return value
     }
     
     /// LE Set Default PHY Command
@@ -30,5 +30,29 @@ public extension BluetoothHostControllerInterface {
         let parameters = LowEnergyCommand.SetDefaultPhyParameter(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
         
         try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Set PHY Command
+    ///
+    /// command is used to set the PHY preferences for the connection identified by
+    /// the Connection_Handle. The Controller might not be able to make the change
+    /// (e.g. because the peer does not support the requested PHY) or may decide that
+    /// the current PHY is preferable.
+    func lowEnergySetPhyParameter(connectionHandle: UInt16, allPhys: AllPhys, txPhys:  TxPhys, rxPhys: RxPhys, phyOptions: PhyOptions, timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.PhyUpdateCompleteEventParameter {
+        
+        let parameters = LowEnergyCommand.SetPhyParameter(connectionHandle:connectionHandle, allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys, phyOptions: phyOptions)
+        
+        let event =  try deviceRequest(parameters,
+                                       LowEnergyEvent.PhyUpdateCompleteEventParameter.self,
+                                       timeout: timeout)
+        
+        switch event.status {
+            
+        case let .error(error):
+            throw error
+            
+        case .success:
+            return event
+        }
     }
 }
