@@ -14,8 +14,11 @@ final class AttributeProtocolTests: XCTestCase {
     
     static let allTests = [
         ("testATTOpcode", testATTOpcode),
-        ("testATTProtocolDataUnit", testATTProtocolDataUnit),
-        ("testGATTClientData", testGATTClientData),
+        ("testErrorResponse", testErrorResponse),
+        ("testMTU", testMTU),
+        ("testReadByGroupType", testReadByGroupType),
+        ("testFindByType", testFindByType),
+        ("testReadByType", testReadByType),
         ("testGATT", testGATT),
         ("testMTUExchange", testMTUExchange)
     ]
@@ -31,7 +34,7 @@ final class AttributeProtocolTests: XCTestCase {
         XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.type == .response)
     }
     
-    func testATTProtocolDataUnit() {
+    func testErrorResponse() {
         
         do {
             
@@ -44,6 +47,8 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(errorResponse.attributeHandle == 0x0001)
             XCTAssert(errorResponse.errorCode == .attributeNotFound)
             XCTAssert(errorResponse.byteValue == data)
+            
+            XCTAssertEqual(errorResponse.byteValue, data)
         }
         
         do {
@@ -71,6 +76,9 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(errorResponse.errorCode == .attributeNotFound)
             XCTAssert(errorResponse.byteValue == data)
         }
+    }
+    
+    func testMTU() {
         
         do {
             
@@ -93,6 +101,9 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.serverMTU == 23)
             XCTAssert(pdu.byteValue == data)
         }
+    }
+    
+    func testReadByGroupType() {
         
         do {
             
@@ -173,6 +184,9 @@ final class AttributeProtocolTests: XCTestCase {
                 BluetoothUUID(data: Data(pdu.data[0].value))!).rawValue == uuidString)
             XCTAssert(pdu.byteValue == data)
         }
+    }
+    
+    func testFindByType() {
         
         do {
             
@@ -217,6 +231,9 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(foundHandle.groupEnd == 48)
             XCTAssert(pdu.byteValue == data)
         }
+    }
+    
+    func testReadByType() {
         
         do {
             
@@ -234,9 +251,6 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(foundCharacteristicData.handle == 41)
             XCTAssert(foundCharacteristicData.value.isEmpty == false)
         }
-    }
-    
-    func testGATTClientData() {
         
         do {
             

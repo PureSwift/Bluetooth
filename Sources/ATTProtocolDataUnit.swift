@@ -43,7 +43,9 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     /// The reason why the request has generated an error response.
     public var errorCode: ATT.Error
     
-    public init(requestOpcode: ATT.Opcode, attributeHandle: UInt16, error: ATT.Error) {
+    public init(requestOpcode: ATT.Opcode,
+                attributeHandle: UInt16,
+                error: ATT.Error) {
         
         self.requestOpcode = requestOpcode
         self.attributeHandle = attributeHandle

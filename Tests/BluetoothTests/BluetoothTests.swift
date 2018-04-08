@@ -21,6 +21,8 @@ final class BluetoothTests: XCTestCase {
         ("testCompanyIdentifier", testCompanyIdentifier),
         ("testHCICommandTimeout", testHCICommandTimeout),
         ("testPOSIXError", testPOSIXError),
+        ("testHCIVersion", testHCIVersion),
+        ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
         ("testBitMaskOption", testBitMaskOption),
     ]
@@ -86,7 +88,21 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(LowEnergyState.scannableAdvertising.description, "Scannable Advertising State")
     }
     
+    func testLowEnergyAdvertisingFilterPolicy() {
+        
+        typealias FilterPolicy = LowEnergyCommand.SetAdvertisingParametersParameter.FilterPolicy
+        
+        XCTAssertEqual(FilterPolicy(), .any)
+        XCTAssertEqual(FilterPolicy(whiteListScan: false, whiteListConnect: true), .whiteListConnect)
+        XCTAssertEqual(FilterPolicy(whiteListScan: true, whiteListConnect: false), .whiteListScan)
+        XCTAssertEqual(FilterPolicy(whiteListScan: true, whiteListConnect: true), .whiteListScanConnect)
+        XCTAssertEqual(FilterPolicy(whiteListScan: false, whiteListConnect: false), .any)
+    }
+    
     func testLowEnergyFeature() {
+        
+        XCTAssertEqual(LowEnergyFeature.encryption.description, "LE Encryption")
+        XCTAssert(LowEnergyFeature.encryption.isValidControllerToController)
         
         var featureSet: LowEnergyFeatureSet = [.encryption, .connectionParametersRequestProcedure, .ping]
         XCTAssert(featureSet.count == 3)
