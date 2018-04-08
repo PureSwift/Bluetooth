@@ -1430,7 +1430,7 @@ public extension LowEnergyCommand {
     /// the current PHY is preferable.
     public struct SetPhyParameter: HCICommandParameter {
     
-        public static let command = LowEnergyCommand.readPhy //0x0031
+        public static let command = LowEnergyCommand.setPhy //0x0032
     
         public let connectionHandle: UInt16
         public let allPhys: AllPhys
@@ -1459,6 +1459,50 @@ public extension LowEnergyCommand {
                     phyOptionsBytes.0,
                     phyOptionsBytes.1
             ]
+        }
+    }
+    
+    /// LE Enhanced Receiver Test Command
+    ///
+    /// This command is used to start a test where the DUT receives test reference packets at a
+    /// fixed interval. The tester generates the test reference packets.
+    public struct EnhancedReceiverTestParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.enhancedReceiverTest //0x0033
+        
+        public let rxChannel: RxChannel
+        public let phy: Phy
+        public let modulationIndex: ModulationIndex
+        
+        public init(rxChannel: RxChannel, phy: Phy, modulationIndex: ModulationIndex) {
+            self.rxChannel = rxChannel
+            self.phy = phy
+            self.modulationIndex = modulationIndex
+        }
+        
+        public var byteValue: [UInt8] {
+            return [rxChannel.rawValue, phy.rawValue, modulationIndex.rawValue]
+        }
+        
+        public enum Phy: UInt8 {
+            
+            /// Receiver set to use the LE 1M PHY
+            case le1MPhy        =   0x01
+            
+            /// Receiver set to use the LE 2M PHY
+            case le2MPhy        =   0x02
+            
+            /// Receiver set to use the LE Coded PHY
+            case leCodedPhy     =   0x03
+        }
+        
+        public enum ModulationIndex: UInt8 {
+            
+            /// Assume transmitter will have a standard modulation index
+            case standard = 0x00
+            
+            /// Assume transmitter will have a stable modulation index
+            case stable   = 0x01
         }
     }
 }
@@ -2021,13 +2065,13 @@ public enum RxPhy: UInt8 { //RX_PHY
 
 public enum TxPhy: UInt8 { //TX_PHY
     
-    /// The receiver PHY for the connection is LE 1M
+    /// The transmitter PHY for the connection is LE 1M
     case Le1m       = 0x01
     
-    /// The receiver PHY for the connection is LE 2M
+    /// The transmitter PHY for the connection is LE 2M
     case Le2m       = 0x02
     
-    /// The receiver PHY for the connection is LE Coded
+    /// The transmitter PHY for the connection is LE Coded
     case LeCoded    = 0x03
 }
 
