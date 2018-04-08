@@ -1397,6 +1397,30 @@ public extension LowEnergyCommand {
             ]
         }
     }
+    
+    /// LE Set Default PHY Command
+    ///
+    /// command allows the Host to specify its preferred values for
+    /// the transmitter PHY and receiver PHY to be used for all subsequent
+    ///connections over the LE transport.
+    public struct SetDefaultPhyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.readPhy //0x0031
+        
+        public let allPhys: AllPhys
+        public let txPhys:  TxPhys
+        public let rxPhys: RxPhys
+        
+        public init(allPhys: AllPhys, txPhys:  TxPhys, rxPhys: RxPhys) {
+            self.allPhys = allPhys
+            self.txPhys = txPhys
+            self.rxPhys = rxPhys
+        }
+        
+        public var byteValue: [UInt8] {
+            return [allPhys.rawValue, txPhys.rawValue, rxPhys.rawValue]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -2042,6 +2066,49 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
         
         return lhs.rawValue == rhs.rawValue
     }
+}
+
+/// The ALL_PHYS parameter is a bit field that allows the Host to specify, for each direction,
+/// whether it has no preference among the PHYs that the Controller supports in a given direction
+//// or whether it has specified particular PHYs that it prefers in the TX_PHYS or RX_PHYS parameter.
+public enum AllPhys: UInt8 {
+    
+    /// he Host has no preference among the transmitter PHYs supported by the Controller
+    case HostHasNoPreferenceAmongTheTransmitterPhy  = 0
+    
+    /// The Host has no preference among the receiver PHYs supported by the Controller
+    case HostHasNoPreferenceAmongTheReceiverPhy     = 1
+}
+
+/// The TX_PHYS parameter is a bit field that indicates the transmitter PHYs that the Host prefers
+/// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
+//// the TX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
+public enum TxPhys: UInt8 {
+    
+    /// The Host prefers to use the LE 1M transmitter PHY (possibly among others)
+    case HostUseLe1MTransmitterPhy      = 0
+    
+    /// The Host prefers to use the LE 2M transmitter PHY (possibly among others)
+    case HostUseLe2MTransmitterPhy      = 1
+    
+    /// The Host prefers to use the LE Coded transmitter PHY (possibly among others)
+    case HostUseLeCodedTransmitterPhy   = 2
+}
+
+
+/// The RX_PHYS parameter is a bit field that indicates the receiver PHYs that the Host prefers
+/// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
+/// the RX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
+public enum RxPhys: UInt8 {
+    
+    /// The Host prefers to use the LE 1M receiver PHY (possibly among others)
+    case HostUseLe1MReceiverPhy      = 0
+    
+    /// The Host prefers to use the LE 2M receiver PHY (possibly among others)
+    case HostUseLe2MReceiverPhy      = 1
+    
+    /// The Host prefers to use the LE Coded receiver PHY (possibly among others)
+    case HostUseLeCodedReceiverPhy   = 2
 }
 
 /// Slave latency for the connection in number of connection events.

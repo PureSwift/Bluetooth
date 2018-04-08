@@ -51,6 +51,7 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case setResolvablePrivateAddressTimeout  = 0x002E
     case readMaximumDataLength          = 0x002F
     case readPhy                        = 0x0030
+    case setDefaultPhy                  = 0x0031
 }
 
 // MARK: - Name
