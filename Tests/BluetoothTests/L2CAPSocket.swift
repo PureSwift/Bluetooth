@@ -24,7 +24,7 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     let channelIdentifier: UInt16
     
     /// The socket's security level.
-    private(set) var securityLevel: SecurityLevel = .low
+    private(set) var securityLevel: SecurityLevel = .sdp
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws {
@@ -99,7 +99,7 @@ internal final class MockedL2CAPSocket: L2CAPSocketProtocol {
     let channelIdentifier: UInt16
     
     /// The socket's security level.
-    private(set) var securityLevel: SecurityLevel = .low
+    private(set) var securityLevel: SecurityLevel = .sdp
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws {
