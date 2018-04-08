@@ -1,0 +1,577 @@
+//
+//  GATTTests.swift
+//  BluetoothTests
+//
+//  Created by Alsey Coleman Miller on 4/6/18.
+//  Copyright © 2018 PureSwift. All rights reserved.
+//
+
+import XCTest
+import Foundation
+@testable import Bluetooth
+
+final class GATTTests: XCTestCase {
+    
+    static let allTests = [
+        ("testGATT", testGATT),
+        ("testMTUExchange", testMTUExchange),
+        ("testDiscoverPrimaryServices", testDiscoverPrimaryServices)
+    ]
+    
+    func testMTUExchange() {
+        
+        guard let mtu = ATTMaximumTransmissionUnit(rawValue: 512)
+            else { XCTFail(); return }
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            (ATTMaximumTransmissionUnitRequest(clientMTU: mtu.rawValue),
+             [0x02, 0x00, 0x02]),
+            (ATTMaximumTransmissionUnitResponse(serverMTU: mtu.rawValue),
+             [0x03, 0x00, 0x02])
+        ]
+        
+        test(testPDUs)
+        
+        let l2capSocket = MockedL2CAPSocket.from(mock: testPDUs.map { $0.1 })
+        
+        // server
+        let server = GATTServer(socket: l2capSocket.server, maximumTransmissionUnit: mtu, maximumPreparedWrites: .max)
+        server.log = { print("GATT Server: " + $0) }
+        server.connection.log = { print("Server ATT: " + $0) }
+        
+        // client
+        let client = GATTClient(socket: l2capSocket.client, maximumTransmissionUnit: mtu)
+        client.log = { print("GATT Client: " + $0) }
+        client.connection.log = { print("Client ATT: " + $0) }
+        
+        // fake sockets
+        do { try run(server: server, client: client, l2capSocket: l2capSocket) }
+        catch { XCTFail("Error: \(error)"); return }
+        
+        XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
+        XCTAssertEqual(server.connection.maximumTransmissionUnit, mtu)
+        XCTAssertNotEqual(server.connection.maximumTransmissionUnit, .default)
+        XCTAssertEqual(client.connection.maximumTransmissionUnit, mtu)
+        XCTAssertNotEqual(client.connection.maximumTransmissionUnit, .default)
+    }
+    
+    func testDiscoverPrimaryServices() {
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            
+            /**
+             Read By Group Type Request - Start Handle:0x0001 - End Handle:0xffff - UUID:2800 (GATT Primary Service Declaration)
+             Opcode: 0x10
+             Starting Handle: 0x0001
+             Ending Handle: 0xffff
+             Attribute Group Type: 2800 (GATT Primary Service Declaration)
+             
+             L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 01 00 FF FF 00 28 ]
+             */
+            (ATTReadByGroupTypeRequest(startHandle: 0x01, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+             [0x10, 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
+            
+            /**
+             Read By Group Type Response
+             Opcode: 0x11
+             List Length: 0006
+             Attribute Handle: 0x0001 End Group Handle: 0x0005 UUID: 1800 (Generic Access)
+             Attribute Handle: 0x0006 End Group Handle: 0x0009 UUID: 1801 (Generic Attribute)
+             
+             L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x000E (14) [ 11 06 01 00 05 00 00 18 06 00 09 00 01 18 ]
+             */
+            (ATTReadByGroupTypeResponse(data: [
+                ATTReadByGroupTypeResponse.AttributeData(
+                    attributeHandle: 0x0001,
+                    endGroupHandle: 0x0005,
+                    value: [UInt8](BluetoothUUID.bit16(0x1800).littleEndian.data)
+                ),
+                ATTReadByGroupTypeResponse.AttributeData(
+                    attributeHandle: 0x0006,
+                    endGroupHandle: 0x0009,
+                    value: [UInt8](BluetoothUUID.bit16(0x1801).littleEndian.data)
+                )
+                ])!,
+             
+             [0x11, 0x06, 0x01, 0x00, 0x05, 0x00, 0x00, 0x18, 0x06, 0x00, 0x09, 0x00, 0x01, 0x18]
+            ),
+            
+            /**
+             Read By Group Type Request - Start Handle:0x000a - End Handle:0xffff - UUID:2800 (GATT Primary Service Declaration)
+             Opcode: 0x10
+             Starting Handle: 0x000a
+             Ending Handle: 0xffff
+             Attribute Group Type: 2800 (GATT Primary Service Declaration)
+             
+             L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 0A 00 FF FF 00 28 ]
+             */
+            (ATTReadByGroupTypeRequest(startHandle: 0x000a, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            [0x10, 0x0A, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
+            
+            /**
+             Read By Group Type Response
+             Opcode: 0x11
+             List Length: 0014
+             Attribute Handle: 0x000A End Group Handle: 0x000E UUID: D0611E78-BBB4-4591-A5F8-487910AE4366
+             Attribute Handle: 0x000F End Group Handle: 0x0013 UUID: 9FA480E0-4967-4542-9390-D343DC5D04AE
+             
+             L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x002A (42) [ 11 14 0A 00 0E 00 66 43 AE 10 79 48 F8 A5 91 45 ... ]
+             */
+            (ATTReadByGroupTypeResponse(data: [
+                ATTReadByGroupTypeResponse.AttributeData(
+                    attributeHandle: 0x000A,
+                    endGroupHandle: 0x000E,
+                    value: [UInt8](BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!).littleEndian.data)
+                ),
+                ATTReadByGroupTypeResponse.AttributeData(
+                    attributeHandle: 0x000F,
+                    endGroupHandle: 0x0013,
+                    value: [UInt8](BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!).littleEndian.data)
+                )
+                ])!,
+             
+             [/* 0x41, 0x20, 0x1B, 0x00, 0x2A, 0x00, 0x04, 0x00, */ 0x11, 0x14, 0x0A, 0x00, 0x0E, 0x00, 0x66, 0x43, 0xAE, 0x10, 0x79, 0x48, 0xF8, 0xA5, 0x91, 0x45, 0xB4, 0xBB, 0x78, 0x1E, 0x61, 0xD0, 0x0F, 0x00, 0x13, 0x00, 0xAE, 0x04, 0x5D, 0xDC, 0x43, 0xD3, 0x90, 0x93, 0x42, 0x45, 0x67, 0x49, 0xE0, 0x80, 0xA4, 0x9F]
+            ),
+            
+            /**
+             Read By Group Type Request - Start Handle:0x0014 - End Handle:0xffff - UUID:2800 (GATT Primary Service Declaration)
+             Opcode: 0x10
+             Starting Handle: 0x0014
+             Ending Handle: 0xffff
+             Attribute Group Type: 2800 (GATT Primary Service Declaration)
+             
+             L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 14 00 FF FF 00 28 ]
+             */
+            (ATTReadByGroupTypeRequest(startHandle: 0x0014, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            [0x10, 0x14, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
+            
+            /**
+             Read By Group Type Response
+             Opcode: 0x11
+             List Length: 0006
+             Attribute Handle: 0x0014 End Group Handle: 0x0017 UUID: 180F (Battery Service)
+             Attribute Handle: 0x0018 End Group Handle: 0x001D UUID: 1805 (Current Time Service)
+             Attribute Handle: 0x001E End Group Handle: 0x0022 UUID: 180A (Device Information)
+             
+            L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0014 (20) [ 11 06 14 00 17 00 0F 18 18 00 1D 00 05 18 1E 00 ... ]
+             */
+            (ATTReadByGroupTypeResponse(data: [
+                ATTReadByGroupTypeResponse.AttributeData(
+                    attributeHandle: 0x0014,
+                    endGroupHandle: 0x0017,
+                    value: [UInt8](BluetoothUUID.bit16(0x180F).littleEndian.data)
+                ),
+                ATTReadByGroupTypeResponse.AttributeData(
+                    attributeHandle: 0x0018,
+                    endGroupHandle: 0x001D,
+                    value: [UInt8](BluetoothUUID.bit16(0x1805).littleEndian.data)
+                ),
+                ATTReadByGroupTypeResponse.AttributeData(
+                    attributeHandle: 0x001E,
+                    endGroupHandle: 0x0022,
+                    value: [UInt8](BluetoothUUID.bit16(0x180A).littleEndian.data)
+                )
+                ])!,
+             
+             [/* 0x41, 0x20, 0x18, 0x00, 0x14, 0x00, 0x04, 0x00, */ 0x11, 0x06, 0x14, 0x00, 0x17, 0x00, 0x0F, 0x18, 0x18, 0x00, 0x1D, 0x00, 0x05, 0x18, 0x1E, 0x00, 0x22, 0x00, 0x0A, 0x18]
+            ),
+            
+            /**
+             Read By Group Type Request - Start Handle:0x0023 - End Handle:0xffff - UUID:2800 (GATT Primary Service Declaration)
+             Opcode: 0x10
+             Starting Handle: 0x0023
+             Ending Handle: 0xffff
+             Attribute Group Type: 2800 (GATT Primary Service Declaration)
+             
+             L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 23 00 FF FF 00 28 ]
+             */
+            (ATTReadByGroupTypeRequest(startHandle: 0x0023, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+             [0x10, 0x23, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
+        ]
+        
+        test(testPDUs)
+    }
+    
+    func testGATT() {
+        
+        let database = generateDB()
+        
+        dumpGATT(database: database)
+        
+        // server
+        let serverSocket = TestL2CAPSocket()
+        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
+        server.log = { print("GATT Server: " + $0) }
+        server.connection.log = { print("Server ATT: " + $0) }
+        server.database = database
+        
+        // client
+        let clientSocket = TestL2CAPSocket()
+        let client = GATTClient(socket: clientSocket)
+        client.log = { print("GATT Client: " + $0) }
+        client.connection.log = { print("Client ATT: " + $0) }
+        
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
+        
+        var writtenValues = [UInt16: Data]()
+        
+        func clientWillWriteServer(uuid: BluetoothUUID, handle: UInt16, value: Data, newValue: Data) -> ATT.Error? {
+            
+            print("\(#function) \(uuid) (\(handle))")
+            
+            writtenValues[handle] = newValue
+            
+            print(value.map { $0.toHexadecimal() })
+            
+            return nil
+        }
+        
+        server.willWrite = clientWillWriteServer
+        
+        func discoverAllPrimaryServices() {
+            
+            client.discoverAllPrimaryServices {
+                
+                print("Discover All Primary Services")
+                dump($0)
+                
+                switch $0 {
+                case let .error(error):
+                    
+                    XCTFail("\(error)")
+                    
+                case let .value(services):
+                    
+                    XCTAssert(services.map({ $0.uuid }) == TestProfile.services.map { $0.uuid })
+                    
+                    for service in services {
+                        
+                        guard let testService = TestProfile.services.first(where: { $0.uuid == service.uuid })
+                            else { XCTFail("Invalid service \(service.uuid)"); return }
+                        
+                        discoverAllCharacteristics(of: service, test: testService)
+                        
+                        testService.characteristics.forEach {
+                            discoverCharacteristics(of: service, by: $0.uuid, test: testService)
+                        }
+                    }
+                }
+            }
+        }
+        
+        func discoverAllCharacteristics(of service: GATTClient.Service, test testService: TestProfile.Service) {
+            
+            client.discoverAllCharacteristics(of: service) {
+                
+                print("Discover All Characteristics of a Service")
+                dump($0)
+                
+                switch $0 {
+                case let .error(error):
+                    
+                    XCTFail("\(error)")
+                    
+                case let .value(characteristics):
+                    
+                    XCTAssert(characteristics.map({ $0.uuid }) == testService.characteristics.map { $0.uuid })
+                    
+                    for characteristic in characteristics {
+                        
+                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == characteristic.uuid })
+                            else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
+                        
+                        validateCharacteristic(characteristic, test: testCharacteristic)
+                    }
+                }
+            }
+        }
+        
+        func discoverCharacteristics(of service: GATTClient.Service,
+                                     by uuid: BluetoothUUID,
+                                     test testService: TestProfile.Service) {
+            
+            client.discoverCharacteristics(of: service, by: uuid) {
+                
+                print("Discover Characteristics by UUID")
+                dump($0)
+                
+                switch $0 {
+                case let .error(error):
+                    
+                    XCTFail("\(error)")
+                    
+                case .value: break
+                    
+                    /*
+                     case let .value(characteristics):
+                     
+                     // TODO: Investigate Discover Characteristics by UUID
+                     //XCTAssert(value.count == 1, "\(uuid) \(value.map { $0.uuid })")
+                     
+                     for characteristic in characteristics {
+                     
+                     guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == characteristic.uuid })
+                     else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
+                     
+                     validateCharacteristic(characteristic, test: testCharacteristic)
+                     }*/
+                }
+            }
+        }
+        
+        func validateCharacteristic(_ characteristic: GATTClient.Characteristic,
+                                    test testCharacteristic: TestProfile.Characteristic) {
+            
+            XCTAssert(characteristic.uuid == testCharacteristic.uuid)
+            XCTAssert(characteristic.properties == testCharacteristic.properties)
+            
+            if testCharacteristic.properties.contains(.read), testCharacteristic.permissions.contains(.read) {
+                
+                guard characteristic.properties.contains(.read)
+                    else { XCTFail("Cannot read charactertistic \(characteristic.uuid)"); return }
+                
+                client.readCharacteristic(characteristic) {
+                    
+                    print("Read Characteristic")
+                    dump($0)
+                    
+                    switch $0 {
+                    case let .error(error):
+                        
+                        XCTFail("\(error)")
+                        
+                    case let .value(value):
+                        
+                        XCTAssert(value == testCharacteristic.value)
+                    }
+                }
+            }
+            
+            if testCharacteristic.properties.contains(.write), testCharacteristic.permissions.contains(.write) {
+                
+                guard characteristic.properties.contains(.write)
+                    else { XCTFail("Cannot write to charactertistic \(characteristic.uuid)"); return }
+                
+                guard let (data, reliableWrites) = TestProfile.WriteValues[testCharacteristic.uuid]
+                    else { fatalError("missing test data") }
+                
+                client.writeCharacteristic(characteristic, data: data, reliableWrites: reliableWrites) {
+                    
+                    print("Write Characteristic")
+                    dump($0)
+                    
+                    switch $0 {
+                    case let .error(error):
+                        
+                        XCTFail("\(error)")
+                        
+                    case .value:
+                        
+                        guard let writtenValue = writtenValues[characteristic.handle.value]
+                            else { XCTFail("Did not write \(characteristic.uuid)"); return }
+                        
+                        XCTAssert(writtenValue == data, "\(characteristic.uuid) \(writtenValue) == \(data)")
+                    }
+                }
+            }
+        }
+        
+        // queue operations
+        discoverAllPrimaryServices()
+        
+        // run fake sockets
+        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
+        catch { XCTFail("Error: \(error)") }
+    }
+    
+}
+
+extension GATTTests {
+    
+    func generateDB() -> GATTDatabase {
+        
+        var database = GATTDatabase()
+        
+        for service in TestProfile.services {
+            
+            let _ = database.add(service: service)
+        }
+        
+        return database
+    }
+    
+    func dumpGATT(database: GATTDatabase) {
+        
+        print("GATT Database:")
+        
+        for attribute in database.attributes {
+            
+            let type: Any = GATT.UUID.init(uuid: attribute.uuid as BluetoothUUID) ?? attribute.uuid
+            
+            let value: Any = BluetoothUUID(data: attribute.value)?.littleEndian ?? String(data: attribute.value, encoding: .utf8) ?? attribute.value
+            
+            print("\(attribute.handle) - \(type)")
+            print("Permissions: \(attribute.permissions)")
+            print("Value: \(value)")
+        }
+    }
+    
+    func test(_ testPDUs: [(ATTProtocolDataUnit, [UInt8])]) {
+        
+        // decode and compare
+        for (testPDU, testData) in testPDUs {
+            
+            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
+                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            
+            dump(decodedPDU)
+            
+            XCTAssertEqual(decodedPDU.byteValue, testData)
+            
+            var decodedDump = ""
+            dump(decodedPDU, to: &decodedDump)
+            var testDump = ""
+            dump(testPDU, to: &testDump)
+            
+            XCTAssertEqual(decodedDump, testDump)
+        }
+    }
+    
+    func run(server: (gatt: GATTServer, socket: TestL2CAPSocket), client: (gatt: GATTClient, socket: TestL2CAPSocket)) throws {
+        
+        var didWrite = false
+        repeat {
+            
+            didWrite = false
+            
+            while try client.gatt.write() {
+                
+                didWrite = true
+            }
+            
+            while server.socket.receivedData.isEmpty == false {
+                
+                try server.gatt.read()
+            }
+            
+            while try server.gatt.write() {
+                
+                didWrite = true
+            }
+            
+            while client.socket.receivedData.isEmpty == false {
+                
+                try client.gatt.read()
+            }
+            
+        } while didWrite
+    }
+    
+    func run(server: GATTServer, client: GATTClient, l2capSocket: (server: MockedL2CAPSocket, client: MockedL2CAPSocket)) throws {
+        
+        var didWrite = false
+        repeat {
+            
+            didWrite = false
+            
+            while try client.write() {
+                
+                didWrite = true
+            }
+            
+            while l2capSocket.server.queue.isEmpty == false {
+                
+                try server.read()
+            }
+            
+            while try server.write() {
+                
+                didWrite = true
+            }
+            
+            while l2capSocket.client.queue.isEmpty == false {
+                
+                try client.read()
+            }
+            
+        } while didWrite
+        
+        XCTAssert(l2capSocket.client.queue.isEmpty)
+        XCTAssert(l2capSocket.server.queue.isEmpty)
+    }
+}
+
+public struct TestProfile {
+    
+    public typealias Service = GATT.Service
+    public typealias Characteristic = GATT.Characteristic
+    
+    public static let services: [Service] = [
+        TestService,
+        TestDefinedService
+    ]
+    
+    public static let TestService = Service(uuid: BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!,
+                                            primary: true,
+                                            characteristics: [
+                                                TestProfile.Read,
+                                                TestProfile.ReadBlob,
+                                                TestProfile.Write,
+                                                TestProfile.WriteBlob,
+                                                TestProfile.WriteWithoutResponse,
+                                                TestProfile.WriteBlobWithoutResponse
+        ])
+    
+    public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
+                                            value: "Test Read-Only".data(using: .utf8)!,
+                                            permissions: [.read],
+                                            properties: [.read])
+    
+    public static let ReadBlob = Characteristic(uuid: BluetoothUUID(rawValue: "0615FF6C-0E37-11E6-9E58-75D7DC50F6B1")!,
+                                                value: Data(bytes: [UInt8](repeating: UInt8.max, count: 512)),
+                                                permissions: [.read],
+                                                properties: [.read])
+    
+    public static let Write = Characteristic(uuid: BluetoothUUID(rawValue: "37BBD7D0-F96F-11E5-8EC1-23E070D5A8C7")!,
+                                             value: Data(),
+                                             permissions: [.write],
+                                             properties: [.write])
+    
+    public static let WriteValue = "Test Write".data(using: .utf8)!
+    
+    public static let WriteWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "AFE458FE-55BE-4D99-8C22-82FACE077D86")!,
+                                                            value: Data(),
+                                                            permissions: [.write],
+                                                            properties: [.write, .writeWithoutResponse])
+    
+    public static let WriteBlob = Characteristic(uuid: BluetoothUUID(rawValue: "2FDDB448-F96F-11E5-A891-23E070D5A8C7")!,
+                                                 value: Data(),
+                                                 permissions: [.write],
+                                                 properties: [.write])
+    
+    public static let WriteBlobValue = Data(bytes: [UInt8](repeating: 0xAA, count: 512))
+    
+    public static let WriteBlobWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "D4A6E516-C867-4582-BF66-0A02BD854613")!,
+                                                                value: Data(),
+                                                                permissions: [.write],
+                                                                properties: [.write, .writeWithoutResponse])
+    
+    public static let TestDefinedService = Service(uuid: BluetoothUUID.bit16(0xFEA9),
+                                                   primary: true,
+                                                   characteristics: [
+                                                    TestProfile.Read,
+                                                    TestProfile.ReadBlob,
+                                                    TestProfile.Write,
+                                                    TestProfile.WriteBlob,
+                                                    TestProfile.WriteWithoutResponse,
+                                                    TestProfile.WriteBlobWithoutResponse
+        ])
+    
+    public static let WriteValues: [BluetoothUUID: (data: Data, reliableWrites: Bool)] = [
+        Write.uuid: (WriteValue, true),
+        WriteBlob.uuid: (WriteBlobValue, true),
+        WriteWithoutResponse.uuid: (WriteValue, false),
+        WriteBlobWithoutResponse.uuid: (WriteBlobValue, false)
+    ]
+}
