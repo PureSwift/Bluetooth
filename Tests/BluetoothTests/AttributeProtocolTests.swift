@@ -18,8 +18,7 @@ final class AttributeProtocolTests: XCTestCase {
         ("testMTU", testMTU),
         ("testReadByGroupType", testReadByGroupType),
         ("testFindByType", testFindByType),
-        ("testReadByType", testReadByType),
-        ("testDiscoverPrimaryServices", testDiscoverPrimaryServices)
+        ("testReadByType", testReadByType)
     ]
     
     func testATTOpcode() {
