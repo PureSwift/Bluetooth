@@ -83,6 +83,9 @@ final class BluetoothTests: XCTestCase {
     
     func testLowEnergyFeature() {
         
+        XCTAssertEqual(LowEnergyFeature.encryption.description, "LE Encryption")
+        XCTAssert(LowEnergyFeature.encryption.isValidControllerToController)
+        
         var featureSet: LowEnergyFeatureSet = [.encryption, .connectionParametersRequestProcedure, .ping]
         XCTAssert(featureSet.count == 3)
         XCTAssert(featureSet.isEmpty == false)
