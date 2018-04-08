@@ -143,7 +143,8 @@ public extension LowEnergyCommand {
             
             public init() { self = .any }
             
-            public init(whiteListScan: Bool, whiteListConnect: Bool) {
+            public init(whiteListScan: Bool,
+                        whiteListConnect: Bool) {
                 
                 switch (whiteListScan, whiteListConnect) {
                     
