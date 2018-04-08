@@ -80,13 +80,38 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
+            XCTAssertEqual(ATTMaximumTransmissionUnit.default, .min)
+            XCTAssertEqual(ATTMaximumTransmissionUnit.default.hashValue, Int(ATTMaximumTransmissionUnit.default.rawValue))
+            XCTAssertNotEqual(ATTMaximumTransmissionUnit.min, .max)
+            XCTAssertLessThan(ATTMaximumTransmissionUnit.min, .max)
+            XCTAssertGreaterThan(ATTMaximumTransmissionUnit.max, .min)
+            
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 23))
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 517))
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue))
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue))
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.default.rawValue))
+            
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: 20))
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue - 1))
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue + 1))
+            
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 23, client: 512).rawValue, 23)
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 23).rawValue, 23)
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 256).rawValue, 256)
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 20, client: 23).rawValue, ATTMaximumTransmissionUnit.min.rawValue)
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: .max, client: .max).rawValue, ATTMaximumTransmissionUnit.max.rawValue)
+        }
+        
+        do {
+            
             let data: [UInt8] = [2, 23, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.clientMTU.rawValue == 23)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssertEqual(pdu.clientMTU, 23)
+            XCTAssertEqual(pdu.byteValue, data)
         }
         
         do {
@@ -96,8 +121,8 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.serverMTU.rawValue == 23)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssertEqual(pdu.serverMTU, 23)
+            XCTAssertEqual(pdu.byteValue, data)
         }
     }
     

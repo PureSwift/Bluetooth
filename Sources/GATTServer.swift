@@ -283,12 +283,12 @@ public final class GATTServer {
     
     private func exchangeMTU(pdu: ATTMaximumTransmissionUnitRequest) {
         
-        let serverMTU = connection.maximumTransmissionUnit
+        let serverMTU = connection.maximumTransmissionUnit.rawValue
         
         let finalMTU = ATTMaximumTransmissionUnit(server: serverMTU, client: pdu.clientMTU)
         
-        // Respond with the server MTU
-        let _ = connection.send(ATTMaximumTransmissionUnitResponse(serverMTU: finalMTU))
+        // Respond with the server MTU (not final MTU)
+        connection.send(ATTMaximumTransmissionUnitResponse(serverMTU: serverMTU))
         
         // Set MTU to minimum
         connection.maximumTransmissionUnit = finalMTU
