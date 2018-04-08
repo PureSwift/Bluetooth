@@ -69,10 +69,10 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.requestOpcode == .readByGroupTypeRequest)
-            XCTAssert(errorResponse.attributeHandle == 49)
-            XCTAssert(errorResponse.errorCode == .attributeNotFound)
-            XCTAssert(errorResponse.byteValue == data)
+            XCTAssertEqual(errorResponse.requestOpcode, .readByGroupTypeRequest)
+            XCTAssertEqual(errorResponse.attributeHandle, 49)
+            XCTAssertEqual(errorResponse.errorCode, .attributeNotFound)
+            XCTAssertEqual(errorResponse.byteValue, data)
         }
     }
     
@@ -80,27 +80,27 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            XCTAssertEqual(ATTMaximumTransmissionUnit.default, .min)
-            XCTAssertEqual(ATTMaximumTransmissionUnit.default.hashValue, Int(ATTMaximumTransmissionUnit.default.rawValue))
-            XCTAssertNotEqual(ATTMaximumTransmissionUnit.min, .max)
-            XCTAssertLessThan(ATTMaximumTransmissionUnit.min, .max)
-            XCTAssertGreaterThan(ATTMaximumTransmissionUnit.max, .min)
+            XCTAssertEqual(ATTMaximumTransmissionUnit.default, .min, "Default MTU is the minimum MTU")
+            XCTAssertEqual(ATTMaximumTransmissionUnit.default.hashValue, Int(ATTMaximumTransmissionUnit.default.rawValue), "MTU hash is raw value")
+            XCTAssertNotEqual(ATTMaximumTransmissionUnit.min, .max, "ATT MTU minimum value is less than maximum value")
+            XCTAssertLessThan(ATTMaximumTransmissionUnit.min, .max, "ATT MTU maximum value is greater than minimum value")
+            XCTAssertGreaterThan(ATTMaximumTransmissionUnit.max, .min, "ATT MTU maximum value is not equal to minimum value")
             
-            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 23))
-            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 517))
-            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue))
-            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue))
-            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.default.rawValue))
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 23), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 517), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.default.rawValue), "Valid MTU value")
             
-            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: 20))
-            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue - 1))
-            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue + 1))
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: 20), "Invalid MTU value")
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue - 1), "Invalid MTU value")
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue + 1), "Invalid MTU value")
             
-            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 23, client: 512).rawValue, 23)
-            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 23).rawValue, 23)
-            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 256).rawValue, 256)
-            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 20, client: 23).rawValue, ATTMaximumTransmissionUnit.min.rawValue)
-            XCTAssertEqual(ATTMaximumTransmissionUnit(server: .max, client: .max).rawValue, ATTMaximumTransmissionUnit.max.rawValue)
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 23, client: 512).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 23).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 256).rawValue, 256, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 20, client: 23), .default, "If either Client Rx MTU or Service Rx MTU are incorrectly less than the default ATT_MTU, then the ATT_MTU shall not be changed and the ATT_MTU shall be the default ATT_MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: .max, client: .max), .max, "Cannot be larger than max ATT_MTU")
         }
         
         do {
