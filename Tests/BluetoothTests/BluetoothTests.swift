@@ -21,6 +21,8 @@ final class BluetoothTests: XCTestCase {
         ("testCompanyIdentifier", testCompanyIdentifier),
         ("testHCICommandTimeout", testHCICommandTimeout),
         ("testPOSIXError", testPOSIXError),
+        ("testHCIVersion", testHCIVersion),
+        ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
         ("testBitMaskOption", testBitMaskOption),
     ]
@@ -66,6 +68,17 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(HCIVersion.v4_1.description, "4.1")
         XCTAssertEqual(HCIVersion.v4_2.description, "4.2")
         XCTAssertEqual(HCIVersion.v5_0.description, "5.0")
+    }
+    
+    func testLowEnergyAdvertisingFilterPolicy() {
+        
+        typealias FilterPolicy = LowEnergyCommand.SetAdvertisingParametersParameter.FilterPolicy
+        
+        XCTAssertEqual(FilterPolicy(), .any)
+        XCTAssertEqual(FilterPolicy(whiteListScan: false, whiteListConnect: true), .whiteListConnect)
+        XCTAssertEqual(FilterPolicy(whiteListScan: true, whiteListConnect: false), .whiteListScan)
+        XCTAssertEqual(FilterPolicy(whiteListScan: true, whiteListConnect: true), .whiteListScanConnect)
+        XCTAssertEqual(FilterPolicy(whiteListScan: false, whiteListConnect: false), .any)
     }
     
     func testLowEnergyFeature() {
