@@ -32,21 +32,25 @@ final class GATTTests: XCTestCase {
         
         test(testPDUs)
         
-        let l2capSocket = MockedL2CAPSocket.from(mock: testPDUs.map { $0.1 })
-        
         // server
-        let server = GATTServer(socket: l2capSocket.server, maximumTransmissionUnit: mtu, maximumPreparedWrites: .max)
+        let serverSocket = TestL2CAPSocket()
+        let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu, maximumPreparedWrites: .max)
         server.log = { print("GATT Server: " + $0) }
         server.connection.log = { print("Server ATT: " + $0) }
+        //server.database = database
         
         // client
-        let client = GATTClient(socket: l2capSocket.client, maximumTransmissionUnit: mtu)
+        let clientSocket = TestL2CAPSocket()
+        let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: mtu)
         client.log = { print("GATT Client: " + $0) }
         client.connection.log = { print("Client ATT: " + $0) }
         
-        // fake sockets
-        do { try run(server: server, client: client, l2capSocket: l2capSocket) }
-        catch { XCTFail("Error: \(error)"); return }
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
+        
+        // run fake sockets
+        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
+        catch { XCTFail("Error: \(error)") }
         
         XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
         XCTAssertEqual(server.connection.maximumTransmissionUnit, mtu)
@@ -57,7 +61,122 @@ final class GATTTests: XCTestCase {
     
     func testDiscoverPrimaryServices() {
         
+        struct ProximityProfile {
+            
+            static let services: [GATT.Service] = [
+                GenericAccessService,
+                GenericAttributeService,
+                BatteryService,
+                CurrentTimeService,
+                DeviceInformationService,
+                LinkLossService,
+                TXPowerService,
+                ImmediateAlertService,
+                Apple1Service,
+                Apple2Service,
+                Apple3Service,
+                Apple4Service
+            ]
+            
+            static let GenericAccessService = GATT.Service(uuid: .bit16(0x1800),
+                                                           primary: true,
+                                                           characteristics: [
+                ]
+            )
+            
+            static let GenericAttributeService = GATT.Service(uuid: .bit16(0x1801),
+                                                              primary: true,
+                                                              characteristics: [
+                ]
+            )
+            
+            static let BatteryService = GATT.Service(uuid: .bit16(0x180F),
+                                                     primary: true,
+                                                     characteristics: [
+                ]
+            )
+            
+            static let CurrentTimeService = GATT.Service(uuid: .bit16(0x1805),
+                                                         primary: true,
+                                                         characteristics: [
+                ]
+            )
+            
+            static let DeviceInformationService = GATT.Service(uuid: .bit16(0x180A),
+                                                               primary: true,
+                                                               characteristics: [
+                ]
+            )
+            
+            static let LinkLossService = GATT.Service(uuid: .bit16(0x1803),
+                                                      primary: true,
+                                                      characteristics: [
+                ]
+            )
+            
+            static let TXPowerService = GATT.Service(uuid: .bit16(0x1804),
+                                                      primary: true,
+                                                      characteristics: [
+                ]
+            )
+            
+            static let ImmediateAlertService = GATT.Service(uuid: .bit16(0x1802),
+                                                            primary: true,
+                                                            characteristics: [
+                ]
+            )
+            
+            static let Apple1Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!),
+                                                            primary: true,
+                                                            characteristics: [
+                ]
+            )
+            
+            static let Apple2Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!),
+                                                    primary: true,
+                                                    characteristics: [
+                ]
+            )
+            
+            static let Apple3Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
+                                                    primary: true,
+                                                    characteristics: [
+                ]
+            )
+            
+            static let Apple4Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!),
+                                                    primary: true,
+                                                    characteristics: [
+                ]
+            )
+        }
+        
+        guard let mtu = ATTMaximumTransmissionUnit(rawValue: 104)
+            else { XCTFail(); return }
+        
         let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            
+            /**
+             Apr 08 15:32:49.824  ATT Send         0x0041  SEND  Exchange MTU Request - MTU:104
+             Exchange MTU Request - MTU:104
+             Opcode: 0x02
+             Client Rx MTU: 0x0068
+             
+             L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0003 (03) [ 02 68 00 ]
+             */
+            (ATTMaximumTransmissionUnitRequest(clientMTU: mtu.rawValue),
+             [0x02, 0x68, 0x00]),
+            
+            /**
+             Apr 08 15:32:49.845  ATT Receive      0x0041  RECV  Exchange MTU Response - MTU:104
+             Exchange MTU Response - MTU:104
+             Opcode: 0x03
+             Client Rx MTU: 0x0068
+             
+             L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0003 (03) [ 03 68 00 ]
+             */
+            (ATTMaximumTransmissionUnitResponse(serverMTU: mtu.rawValue),
+             [0x03, 0x68, 0x00]),
             
             /**
              Read By Group Type Request - Start Handle:0x0001 - End Handle:0xffff - UUID:2800 (GATT Primary Service Declaration)
@@ -284,11 +403,57 @@ final class GATTTests: XCTestCase {
         ]
         
         test(testPDUs)
+        
+        // server
+        let serverSocket = TestL2CAPSocket()
+        let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu,  maximumPreparedWrites: .max)
+        server.log = { print("GATT Server: " + $0) }
+        server.connection.log = { print("Server ATT: " + $0) }
+        server.database = generateDB(ProximityProfile.services)
+        
+        // client
+        let clientSocket = TestL2CAPSocket()
+        let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: mtu)
+        client.log = { print("GATT Client: " + $0) }
+        client.connection.log = { print("Client ATT: " + $0) }
+        
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
+        
+        // run fake sockets
+        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
+        catch { XCTFail("Error: \(error)") }
+        
+        client.discoverAllPrimaryServices {
+            
+            switch $0 {
+                
+            case let .error(error):
+                XCTFail("\(error)")
+                
+            case let .value(services):
+                
+                XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
+            }
+        }
+        
+        // run fake sockets
+        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
+        catch { XCTFail("Error: \(error)") }
+        
+        // MTU
+        XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
+        XCTAssertEqual(server.connection.maximumTransmissionUnit, mtu)
+        XCTAssertEqual(client.connection.maximumTransmissionUnit, mtu)
+        
+        // validate GATT PDUs
+        let mockData = split(pdu: testPDUs.map { $0.1 })
+        
     }
     
     func testGATT() {
         
-        let database = generateDB()
+        let database = generateDB(TestProfile.services)
         
         dumpGATT(database: database)
         
@@ -483,14 +648,11 @@ final class GATTTests: XCTestCase {
 
 extension GATTTests {
     
-    func generateDB() -> GATTDatabase {
+    func generateDB(_ services: [GATT.Service]) -> GATTDatabase {
         
         var database = GATTDatabase()
         
-        for service in TestProfile.services {
-            
-            let _ = database.add(service: service)
-        }
+        services.forEach { database.add(service: $0) }
         
         return database
     }
@@ -562,37 +724,59 @@ extension GATTTests {
         } while didWrite
     }
     
-    func run(server: GATTServer, client: GATTClient, l2capSocket: (server: MockedL2CAPSocket, client: MockedL2CAPSocket)) throws {
+    func split(pdu data: [[UInt8]]) -> (server: [Data], client: [Data]) {
         
-        var didWrite = false
-        repeat {
-            
-            didWrite = false
-            
-            while try client.write() {
-                
-                didWrite = true
-            }
-            
-            while l2capSocket.server.queue.isEmpty == false {
-                
-                try server.read()
-            }
-            
-            while try server.write() {
-                
-                didWrite = true
-            }
-            
-            while l2capSocket.client.queue.isEmpty == false {
-                
-                try client.read()
-            }
-            
-        } while didWrite
+        var serverSocketData = [Data]()
+        var clientSocketData = [Data]()
         
-        XCTAssert(l2capSocket.client.queue.isEmpty)
-        XCTAssert(l2capSocket.server.queue.isEmpty)
+        for pduData in data {
+            
+            guard let opcodeByte = pduData.first
+                else { fatalError("Empty data \(pduData)") }
+            
+            guard let opcode = ATTOpcode(rawValue: opcodeByte)
+                else { fatalError("Invalid opcode \(opcodeByte)") }
+            
+            switch opcode.type.destination {
+                
+            case .client:
+                
+                clientSocketData.append(Data(pduData))
+                
+            case .server:
+                
+                serverSocketData.append(Data(pduData))
+            }
+        }
+        
+        return (serverSocketData, clientSocketData)
+    }
+}
+
+fileprivate extension ATTOpcodeType {
+    
+    enum Destination {
+        
+        case client
+        case server
+    }
+    
+    var destination: Destination {
+        
+        switch self {
+            
+        case .command,
+             .request:
+            
+            return .server
+            
+        case .response,
+             .confirmation,
+             .indication,
+             .notification:
+            
+            return .client
+        }
     }
 }
 
