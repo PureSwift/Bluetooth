@@ -45,6 +45,7 @@ public struct GATTDatabase {
     
     // MARK: - Methods
     
+    @discardableResult
     public mutating func add(service: Service) -> UInt16 {
         
         let newHandle = self.newHandle()

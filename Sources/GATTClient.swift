@@ -1015,8 +1015,7 @@ fileprivate final class DiscoveryOperation <T> {
     @inline(__always)
     func error(_ responseError: ATTErrorResponse) {
         
-        if responseError.errorCode == .attributeNotFound,
-            foundData.isEmpty == false {
+        if responseError.errorCode == .attributeNotFound {
             
             success()
             
