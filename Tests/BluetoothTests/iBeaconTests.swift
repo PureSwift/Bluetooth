@@ -13,7 +13,8 @@ import Foundation
 final class iBeaconTests: XCTestCase {
     
     static let allTests = [
-        ("testData", testData)
+        ("testData", testData),
+        ("testCommand", testCommand)
     ]
     
     func testData() {
@@ -91,5 +92,14 @@ final class iBeaconTests: XCTestCase {
         XCTAssertEqual(advertisingData.data.28, testData.28)
         XCTAssertEqual(advertisingData.data.29, testData.29)
         XCTAssertEqual(advertisingData.data.30, testData.30)
+    }
+    
+    func testCommand() {
+        
+        let beacon = iBeacon(uuid: UUID(), major: 0, minor: 0, rssi: -55, interval: 200)
+        
+        let hostController = TestHostController()
+        
+        XCTAssertNoThrow(try hostController.iBeacon(beacon))
     }
 }
