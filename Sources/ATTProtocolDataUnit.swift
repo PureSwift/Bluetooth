@@ -873,15 +873,15 @@ public struct ATTReadResponse: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        guard byteValue.count >= ATTReadRequest.length
+        guard byteValue.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == ATTReadResponse.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        if byteValue.count > ATTReadRequest.length {
+        if byteValue.count > type(of: self).length {
             
             self.attributeValue = Array(byteValue.suffix(from: 1))
             
