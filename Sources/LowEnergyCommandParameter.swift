@@ -974,9 +974,9 @@ public extension LowEnergyCommand {
         
         /// N = (F – 2402) / 2
         /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
-        public let rxChannel: RxChannel //RX_Channel
+        public let rxChannel: LowEnergyRxChannel //RX_Channel
         
-        public init(rxChannel: RxChannel) {
+        public init(rxChannel: LowEnergyRxChannel) {
             
             self.rxChannel = rxChannel
         }
@@ -1000,24 +1000,25 @@ public extension LowEnergyCommand {
         
         /// N = (F – 2402) / 2
         /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
-        public let rxChannel: RxChannel //RX_Channel
+        public let txChannel: LowEnergyTxChannel //RX_Channel
         
+        /// Length in bytes of payload data in each packet
         public let lengthOfTestData: UInt8
         
         public let packetPayload: LowEnergyPacketPayload
         
-        public init(rxChannel: RxChannel,
+        public init(txChannel: LowEnergyTxChannel,
                     lengthOfTestData: UInt8,
                     packetPayload: LowEnergyPacketPayload) {
             
-            self.rxChannel = rxChannel
+            self.txChannel = txChannel
             self.lengthOfTestData = lengthOfTestData
             self.packetPayload = packetPayload
         }
         
         public var byteValue: [UInt8] {
             
-            return [rxChannel.rawValue, packetPayload.rawValue]
+            return [txChannel.rawValue, packetPayload.rawValue]
         }
     }
     
@@ -1470,11 +1471,11 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.enhancedReceiverTest //0x0033
         
-        public let rxChannel: RxChannel
+        public let rxChannel: LowEnergyRxChannel
         public let phy: Phy
         public let modulationIndex: ModulationIndex
         
-        public init(rxChannel: RxChannel, phy: Phy, modulationIndex: ModulationIndex) {
+        public init(rxChannel: LowEnergyRxChannel, phy: Phy, modulationIndex: ModulationIndex) {
             self.rxChannel = rxChannel
             self.phy = phy
             self.modulationIndex = modulationIndex
@@ -1503,6 +1504,62 @@ public extension LowEnergyCommand {
             
             /// Assume transmitter will have a stable modulation index
             case stable   = 0x01
+        }
+    }
+  
+    /// LE Enhanced Transmitter Test Command
+    ///
+    /// This command is used to start a test where the DUT generates test reference packets
+    /// at a fixed interval. The Controller shall transmit at maximum power.
+    ///
+    /// An LE Controller supporting the LE_Enhanced Transmitter_Test command shall support
+    /// Packet_Payload values 0x00, 0x01 and 0x02. An LE Controller supporting the LE Coded PHY
+    /// shall also support Packet_Payload value 0x04. An LE Controller may support other values
+    /// of Packet_Payload.
+    public struct EnhancedTransmitterTest: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.enhancedTransmitterTest //0x0034
+        
+        /// N = (F – 2402) / 2
+        /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
+        public let txChannel: LowEnergyTxChannel //RX_Channel
+        
+        /// Length in bytes of payload data in each packet
+        public let lengthOfTestData: UInt8
+        
+        public let packetPayload: LowEnergyPacketPayload
+        
+        public let phy: Phy
+        
+        public init(txChannel: LowEnergyTxChannel,
+                    lengthOfTestData: UInt8,
+                    packetPayload: LowEnergyPacketPayload,
+                    phy: Phy) {
+            
+            self.txChannel = txChannel
+            self.lengthOfTestData = lengthOfTestData
+            self.packetPayload = packetPayload
+            self.phy = phy
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            return [txChannel.rawValue, lengthOfTestData, packetPayload.rawValue, phy.rawValue]
+        }
+        
+        public enum Phy: UInt8 {
+            
+            /// Transmitter set to use the LE 1M PHY
+            case le1MPhy                =   0x01
+            
+            /// Transmitter set to use the LE 2M PHY
+            case le2MPhy                =   0x02
+            
+            /// Transmitter set to use the LE Coded PHY with S=8 data coding
+            case leCodedPhywithS8       =   0x03
+            
+            /// Transmitter set to use the LE Coded PHY with S=2 data coding
+            case leCodedPhywithS2       =   0x04
         }
     }
 }
@@ -2361,22 +2418,22 @@ public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable
     }
 }
 
-public struct RxChannel: RawRepresentable, Equatable, Hashable, Comparable {
+public struct LowEnergyTxChannel: RawRepresentable, Equatable, Hashable, Comparable {
     
     /// 100 msec
-    public static let min = RxChannel(0x00)
+    public static let min = LowEnergyTxChannel(0x00)
     
     /// 32 seconds
-    public static let max = RxChannel(0x27)
+    public static let max = LowEnergyTxChannel(0x27)
     
     public var rawValue: UInt8
     
     public init?(rawValue: UInt8) {
-        guard rawValue >= RxChannel.min.rawValue,
-            rawValue <= RxChannel.max.rawValue
+        guard rawValue >= LowEnergyTxChannel.min.rawValue,
+            rawValue <= LowEnergyTxChannel.max.rawValue
             else { return nil }
         
-        assert((RxChannel.min.rawValue ... RxChannel.max.rawValue).contains(rawValue))
+        assert((LowEnergyTxChannel.min.rawValue ... LowEnergyTxChannel.max.rawValue).contains(rawValue))
         
         self.rawValue = rawValue
     }
@@ -2387,13 +2444,58 @@ public struct RxChannel: RawRepresentable, Equatable, Hashable, Comparable {
     }
     
     // Equatable
-    public static func == (lhs: RxChannel, rhs: RxChannel) -> Bool {
+    public static func == (lhs: LowEnergyTxChannel, rhs: LowEnergyTxChannel) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
     
     // Comparable
-    public static func < (lhs: RxChannel, rhs: RxChannel) -> Bool {
+    public static func < (lhs: LowEnergyTxChannel, rhs: LowEnergyTxChannel) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+    
+}
+
+public struct LowEnergyRxChannel: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    /// 100 msec
+    public static let min = LowEnergyRxChannel(0x00)
+    
+    /// 32 seconds
+    public static let max = LowEnergyRxChannel(0x27)
+    
+    public var rawValue: UInt8
+    
+    public init?(rawValue: UInt8) {
+        guard rawValue >= LowEnergyRxChannel.min.rawValue,
+            rawValue <= LowEnergyRxChannel.max.rawValue
+            else { return nil }
+        
+        assert((LowEnergyRxChannel.min.rawValue ... LowEnergyRxChannel.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyRxChannel, rhs: LowEnergyRxChannel) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyRxChannel, rhs: LowEnergyRxChannel) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
     }
