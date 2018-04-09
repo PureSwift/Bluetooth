@@ -24,7 +24,7 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     let channelIdentifier: UInt16
     
     /// The socket's security level.
-    private(set) var securityLevel: SecurityLevel = .low
+    private(set) var securityLevel: SecurityLevel = .sdp
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws {
@@ -35,10 +35,12 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     /// Target socket.
     weak var target: TestL2CAPSocket?
     
-    private(set) var receivedData = Data() {
+    fileprivate(set) var receivedData = Data() {
         
         didSet { print("L2CAP Socket buffer \([UInt8](receivedData))") }
     }
+    
+    private(set) var cache = [Data]()
     
     init(protocolServiceMultiplexer: UInt16 = UInt16(ATT.PSM.rawValue),
          channelIdentifier: UInt16 = ATT.CID) {
@@ -77,9 +79,9 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
                 receivedData = Data(receivedData.suffix(from: data.count))
             }
         }
-       
+        
+        cache.append(data)
+        
         return data
     }
-    
-    
 }
