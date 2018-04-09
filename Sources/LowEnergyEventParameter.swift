@@ -552,9 +552,9 @@ public extension LowEnergyEvent {
         
         public let handle: UInt16 // Connection_Handle
         
-        public let txPhy: TxPhy
+        public let txPhy: LowEnergyTxPhy
         
-        public let rxPhy: RxPhy
+        public let rxPhy: LowEnergyRxPhy
         
         public init?(byteValue: [UInt8]) {
             guard byteValue.count == EncryptionKeyRefreshCompleteEventParameter.length
@@ -567,10 +567,10 @@ public extension LowEnergyEvent {
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
             
-            guard let txPhy = TxPhy(rawValue: byteValue[3])
+            guard let txPhy = LowEnergyTxPhy(rawValue: byteValue[3])
                 else { return nil }
             
-            guard let rxPhy = RxPhy(rawValue: byteValue[4])
+            guard let rxPhy = LowEnergyRxPhy(rawValue: byteValue[4])
                 else { return nil }
             
             self.status = status

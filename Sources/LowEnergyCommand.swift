@@ -97,6 +97,19 @@ public extension LowEnergyCommand {
         "LE Read Supported States",
         "LE Receiver Test",
         "LE Transmitter Test",
-        "LE Test End"
+        "LE Test End",
+        "LE Add Device To Resolved List",
+        "LE Remove Device From Resolved List",
+        "LE Clear Resolved List",
+        "LE Read Resolved List Size",
+        "LE Read Peer Resolvable Address",
+        "LE Read Local Resolvable Address",
+        "LE Set Address Resolution Enable",
+        "LE Set Resolvable Private Address Timeout",
+        "LE Read Maximum Data Length",
+        "LE Read PHY",
+        "LE Set Default PHY",
+        "LE Set Phy",
+        "LE Enhanced Receiver Test"
     ]
 }

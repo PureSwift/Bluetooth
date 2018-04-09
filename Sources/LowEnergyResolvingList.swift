@@ -12,7 +12,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to add one device to the list of address translations
     /// used to resolve Resolvable Private Addresses in the Controller.
-    func lowEnergyAddDeviceToResolvingList(peerIdentifyAddressType: PeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyAddDeviceToResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128, timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.AddDeviceToResolvingListParameter(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress, peerIrk: peerIrk, localIrk: localIrk)
         
@@ -23,7 +23,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to remove one device from the list of address translations used to resolve
     /// Resolvable Private Addresses in the Controller.
-    func lowEnergyRemoveDeviceFromResolvingList(peerIdentifyAddressType: PeerIdentifyAddressType, peerIdentifyAddress: UInt64, packetpayload: PacketPayload, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyRemoveDeviceFromResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, packetpayload: LowEnergyPacketPayload, timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.RemoveDeviceFromResolvingListParameter(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
         
@@ -56,7 +56,7 @@ public extension BluetoothHostControllerInterface {
     /// The command is used to get the current peer Resolvable Private Address being
     /// used for the corresponding peer Public and Random (static) Identity Address.
     /// The peer’s resolvable address being used may change after the command is called.
-    func lowEnergyReadPeerResolvableAddress(peerIdentifyAddressType: PeerIdentifyAddressType, peerIdentifyAddress: UInt64, timeout: HCICommandTimeout = .default) throws -> UInt64 {
+    func lowEnergyReadPeerResolvableAddress(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, timeout: HCICommandTimeout = .default) throws -> UInt64 {
         
         let parameters = LowEnergyCommand.ReadPeerResolvableAddressParameter(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
 
@@ -70,7 +70,7 @@ public extension BluetoothHostControllerInterface {
     /// The command is used to get the current local Resolvable Private Address being
     /// used for the corresponding peer Identity Address. The local’s resolvable address
     /// being used may change after the command is called.
-    func lowEnergyReadLocalResolvableAddress(peerIdentifyAddressType: PeerIdentifyAddressType, peerIdentifyAddress: UInt64, timeout: HCICommandTimeout = .default) throws -> UInt64 {
+    func lowEnergyReadLocalResolvableAddress(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, timeout: HCICommandTimeout = .default) throws -> UInt64 {
         
         let parameters = LowEnergyCommand.ReadLocalResolvableAddressParameter(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
         
