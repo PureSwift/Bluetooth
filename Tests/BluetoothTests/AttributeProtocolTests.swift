@@ -20,7 +20,10 @@ final class AttributeProtocolTests: XCTestCase {
         ("testFindByType", testFindByType),
         ("testReadByType", testReadByType),
         ("testHandleValueIndication", testHandleValueIndication),
-        ("testHandleValueNotification", testHandleValueNotification)
+        ("testHandleValueNotification", testHandleValueNotification),
+        ("testRead", testRead),
+        ("testWrite", testWrite),
+        
     ]
     
     func testATTOpcode() {
@@ -400,6 +403,58 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.attributeValue, [0x64])
+        }
+    }
+    
+    func testWrite() {
+        
+        
+    }
+    
+    func testFindInformation() {
+        
+        do {
+            
+            /**
+             Find Information Request - Start Handle:0x0017 - End Handle:0x0017
+             Opcode: 0x04
+             Start Handle: 0x0017
+             End Handle: 0x0017
+             L2CAP Send Channel ID: 0x0004  Length: 0x0005 (05) [ 04 17 00 17 00 ]
+             */
+            
+            let data: [UInt8] = [0x04, 0x17, 0x00, 0x17, 0x00]
+            
+            guard let pdu = ATTFindInformationRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x04)
+            XCTAssertEqual(pdu.startHandle, 0x0017)
+            XCTAssertEqual(pdu.endHandle, 0x0017)
+        }
+        
+        do {
+            
+            /**
+             Find Information Response
+             Opcode: 0x05
+             Format: 1 (Handles and 16 byte UUIDs)
+             Handle: 0x0017 UUID: 2902 (Client Characteristic Configuration)
+             
+             L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0006 (06) [ 05 01 17 00 02 29 ]
+             */
+            
+            let data: [UInt8] = [0x05, 0x01, 0x17, 0x00, 0x02, 0x29]
+            
+            guard let pdu = ATTFindInformationResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            let foundData = ATTFindInformationResponse.Data.bit16([(0x0017, 0x2902)])
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data.byteValue, foundData.byteValue)
+            XCTAssertEqual("\(pdu.data)", "\(foundData.byteValue)")
         }
     }
 }
