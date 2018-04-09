@@ -52,10 +52,10 @@ final class iBeaconTests: XCTestCase {
             0xe0, //    Proximity UUID 14th byte    set user UUID
             0x89, //    Proximity UUID 15th byte    set user UUID
             0x3e, //    Proximity UUID 16th byte    set user UUID
-            0xAA, //    Major 1st byte    set major value
-            0x00, //    Major 2nd byte    set major value
-            0xBB, //    Minor 1st byte    set minor value
-            0x00, //    Minor 2nd byte    set minor value
+            0x00, //    Major 1st byte    set major value
+            0xAA, //    Major 2nd byte    set major value
+            0x00, //    Minor 1st byte    set minor value
+            0xBB, //    Minor 2nd byte    set minor value
             0xb3 , //   Signal power (calibrated RSSI@1m)    signal power value
             0x00)
         
