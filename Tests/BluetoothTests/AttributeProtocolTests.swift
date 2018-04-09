@@ -19,7 +19,8 @@ final class AttributeProtocolTests: XCTestCase {
         ("testReadByGroupType", testReadByGroupType),
         ("testFindByType", testFindByType),
         ("testReadByType", testReadByType),
-        ("testHandleValueIndication", testHandleValueIndication)
+        ("testHandleValueIndication", testHandleValueIndication),
+        ("testHandleValueNotification", testHandleValueNotification)
     ]
     
     func testATTOpcode() {
@@ -331,6 +332,31 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.handle, 0x0008)
             XCTAssertEqual(pdu.value, [0x0a, 0x00, 0xff, 0xff])
+        }
+    }
+    
+    func testHandleValueNotification() {
+        
+        do {
+            
+            /**
+             RECV  Handle Value Notification - Handle:0x0016 - Value:64
+             Handle Value Notification - Handle:0x0016 - Value:64
+             Opcode: 0x1b
+             Attribute Handle: 0x0016 (22)
+             
+             L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0004 (04) [ 1B 16 00 64 ]
+             */
+            
+            let data: [UInt8] = [0x1B, 0x16, 0x00, 0x64]
+            
+            guard let pdu = ATTHandleValueNotification(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            
+            XCTAssertEqual(pdu.handle, 0x0016)
+            XCTAssertEqual(pdu.value, [0x64])
         }
     }
 }
