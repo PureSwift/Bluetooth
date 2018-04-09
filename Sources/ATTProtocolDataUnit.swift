@@ -252,10 +252,10 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
 /// and contains information about this server.
 public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.findInformationRequest
+    public static let attributeOpcode = ATTOpcode.findInformationResponse
     
     /// Length ranges from 6, to the maximum MTU size.
-    public static let length = 8
+    public static let length = 6
     
     /// The information data whose format is determined by the Format field.
     public var data: Data
@@ -329,6 +329,22 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
             case .bit128: return .bit128
             }
         }
+        
+        /*
+        public static func == (lhs: Data, rhs: Data) -> Bool {
+            
+            switch (lhs, rhs) {
+                
+            case let (.bit16(lhsValue), .bit16(rhsValue)):
+                return lhsValue == rhsValue
+                
+            case let (.bit128(lhsValue), .bit128(rhsValue)):
+                return lhsValue == rhsValue
+                
+            default:
+                return false
+            }
+        }*/
         
         public init?(byteValue: [UInt8], format: Format) {
             
