@@ -40,6 +40,8 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
         didSet { print("L2CAP Socket buffer \([UInt8](receivedData))") }
     }
     
+    private(set) var cache = [Data]()
+    
     init(protocolServiceMultiplexer: UInt16 = UInt16(ATT.PSM.rawValue),
          channelIdentifier: UInt16 = ATT.CID) {
         
@@ -77,7 +79,9 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
                 receivedData = Data(receivedData.suffix(from: data.count))
             }
         }
-       
+        
+        cache.append(data)
+        
         return data
     }
 }

@@ -30,6 +30,7 @@ final class GATTTests: XCTestCase {
              [0x03, 0x00, 0x02])
         ]
         
+        // decode and validate bytes
         test(testPDUs)
         
         // server
@@ -37,7 +38,6 @@ final class GATTTests: XCTestCase {
         let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu, maximumPreparedWrites: .max)
         server.log = { print("GATT Server: " + $0) }
         server.connection.log = { print("Server ATT: " + $0) }
-        //server.database = database
         
         // client
         let clientSocket = TestL2CAPSocket()
@@ -57,6 +57,12 @@ final class GATTTests: XCTestCase {
         XCTAssertNotEqual(server.connection.maximumTransmissionUnit, .default)
         XCTAssertEqual(client.connection.maximumTransmissionUnit, mtu)
         XCTAssertNotEqual(client.connection.maximumTransmissionUnit, .default)
+        
+        // validate GATT PDUs
+        let mockData = split(pdu: testPDUs.map { $0.1 })
+        
+        XCTAssertEqual(serverSocket.cache, mockData.server)
+        XCTAssertEqual(clientSocket.cache, mockData.client)
     }
     
     func testDiscoverPrimaryServices() {
@@ -64,18 +70,23 @@ final class GATTTests: XCTestCase {
         struct ProximityProfile {
             
             static let services: [GATT.Service] = [
+                
                 GenericAccessService,
                 GenericAttributeService,
+                
+                Apple1Service,
+                Apple2Service,
+                
                 BatteryService,
                 CurrentTimeService,
                 DeviceInformationService,
+                
+                AppleNotificationService,
+                Apple4Service,
+                
                 LinkLossService,
                 TXPowerService,
-                ImmediateAlertService,
-                Apple1Service,
-                Apple2Service,
-                Apple3Service,
-                Apple4Service
+                ImmediateAlertService
             ]
             
             static let GenericAccessService = GATT.Service(uuid: .bit16(0x1800),
@@ -138,7 +149,7 @@ final class GATTTests: XCTestCase {
                 ]
             )
             
-            static let Apple3Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
+            static let AppleNotificationService = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
                                                     primary: true,
                                                     characteristics: [
                 ]
@@ -410,6 +421,7 @@ final class GATTTests: XCTestCase {
         server.log = { print("GATT Server: " + $0) }
         server.connection.log = { print("Server ATT: " + $0) }
         server.database = generateDB(ProximityProfile.services)
+        dumpGATT(database: server.database)
         
         // client
         let clientSocket = TestL2CAPSocket()
@@ -449,6 +461,8 @@ final class GATTTests: XCTestCase {
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $0.1 })
         
+        XCTAssertEqual(serverSocket.cache, mockData.server)
+        XCTAssertEqual(clientSocket.cache, mockData.client)
     }
     
     func testGATT() {
