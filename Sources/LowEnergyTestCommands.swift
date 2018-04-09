@@ -25,7 +25,7 @@ public extension BluetoothHostControllerInterface {
     /// at a fixed interval. The Controller shall transmit at maximum power.
     func lowEnergyTransmitterTest(rxChannel: RxChannel,
                                   lengthOfTestData: UInt8,
-                                  packetPayload: PacketPayload,
+                                  packetPayload: LowEnergyPacketPayload,
                                   timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.TransmitterTestParameter(rxChannel: rxChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload)

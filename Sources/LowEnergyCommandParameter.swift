@@ -1004,11 +1004,11 @@ public extension LowEnergyCommand {
         
         public let lengthOfTestData: UInt8
         
-        public let packetPayload: PacketPayload
+        public let packetPayload: LowEnergyPacketPayload
         
         public init(rxChannel: RxChannel,
                     lengthOfTestData: UInt8,
-                    packetPayload: PacketPayload) {
+                    packetPayload: LowEnergyPacketPayload) {
             
             self.rxChannel = rxChannel
             self.lengthOfTestData = lengthOfTestData
@@ -1045,7 +1045,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.addDeviceToResolvedList //0x0027
         
-        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
         
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
@@ -1053,7 +1053,7 @@ public extension LowEnergyCommand {
         
         public let localIrk: UInt128 //Local_IRK
         
-        public init(peerIdentifyAddressType: PeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128) {
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128) {
         
             self.peerIdentifyAddressType = peerIdentifyAddressType
             self.peerIdentifyAddress = peerIdentifyAddress
@@ -1137,11 +1137,11 @@ public extension LowEnergyCommand {
     
         public static let command = LowEnergyCommand.removeDeviceFromResolvedList //0x0028
         
-        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
         
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
-        public init(peerIdentifyAddressType: PeerIdentifyAddressType,
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
                     peerIdentifyAddress: UInt64) {
             
             self.peerIdentifyAddressType = peerIdentifyAddressType
@@ -1182,11 +1182,11 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readPeerResolvableAddress //0x002B
         
-        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
         
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
-        public init(peerIdentifyAddressType: PeerIdentifyAddressType,
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
                     peerIdentifyAddress: UInt64) {
             
             self.peerIdentifyAddressType = peerIdentifyAddressType
@@ -1227,11 +1227,11 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readLocalResolvableAddress //0x002C
         
-        public let peerIdentifyAddressType: PeerIdentifyAddressType //Peer_Identity_Address_Type
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
         
         public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
         
-        public init(peerIdentifyAddressType: PeerIdentifyAddressType,
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
                     peerIdentifyAddress: UInt64) {
             
             self.peerIdentifyAddressType = peerIdentifyAddressType
@@ -1407,11 +1407,11 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readPhy //0x0031
         
-        public let allPhys: AllPhys
-        public let txPhys:  TxPhys
-        public let rxPhys: RxPhys
+        public let allPhys: LowEnergyAllPhys
+        public let txPhys:  LowEnergyTxPhys
+        public let rxPhys: LowEnergyRxPhys
         
-        public init(allPhys: AllPhys, txPhys:  TxPhys, rxPhys: RxPhys) {
+        public init(allPhys: LowEnergyAllPhys, txPhys:  LowEnergyTxPhys, rxPhys: LowEnergyRxPhys) {
             self.allPhys = allPhys
             self.txPhys = txPhys
             self.rxPhys = rxPhys
@@ -1433,12 +1433,12 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setPhy //0x0032
     
         public let connectionHandle: UInt16
-        public let allPhys: AllPhys
-        public let txPhys:  TxPhys
-        public let rxPhys: RxPhys
-        public let phyOptions: PhyOptions
+        public let allPhys: LowEnergyAllPhys
+        public let txPhys:  LowEnergyTxPhys
+        public let rxPhys: LowEnergyRxPhys
+        public let phyOptions: LowEnergyPhyOptions
         
-        public init(connectionHandle: UInt16, allPhys: AllPhys, txPhys:  TxPhys, rxPhys: RxPhys, phyOptions: PhyOptions) {
+        public init(connectionHandle: UInt16, allPhys: LowEnergyAllPhys, txPhys:  LowEnergyTxPhys, rxPhys: LowEnergyRxPhys, phyOptions: LowEnergyPhyOptions) {
             self.connectionHandle = connectionHandle
             self.allPhys = allPhys
             self.txPhys = txPhys
@@ -2027,9 +2027,9 @@ public extension LowEnergyCommand {
         
         public let connectionHandle: UInt16
         
-        public let txPhy: TxPhy
+        public let txPhy: LowEnergyTxPhy
         
-        public let rxPhy: RxPhy
+        public let rxPhy: LowEnergyRxPhy
         
         public init?(byteValue: [UInt8]) {
             guard byteValue.count == type(of:self).length
@@ -2037,10 +2037,10 @@ public extension LowEnergyCommand {
             
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
             
-            guard let txPhy = TxPhy(rawValue: byteValue[2])
+            guard let txPhy = LowEnergyTxPhy(rawValue: byteValue[2])
                 else { return nil }
             
-            guard let rxPhy = RxPhy(rawValue: byteValue[3])
+            guard let rxPhy = LowEnergyRxPhy(rawValue: byteValue[3])
                 else { return nil }
             
             self.txPhy = txPhy
@@ -2051,36 +2051,36 @@ public extension LowEnergyCommand {
 
 // MARK: - Supporting Types
 
-public enum RxPhy: UInt8 { //RX_PHY
+public enum LowEnergyRxPhy: UInt8 { //RX_PHY
     
     /// The receiver PHY for the connection is LE 1M
-    case Le1m       = 0x01
+    case le1m       = 0x01
     
     /// The receiver PHY for the connection is LE 2M
-    case Le2m       = 0x02
+    case le2m       = 0x02
     
     /// The receiver PHY for the connection is LE Coded
-    case LeCoded    = 0x03
+    case leCoded    = 0x03
 }
 
-public enum TxPhy: UInt8 { //TX_PHY
+public enum LowEnergyTxPhy: UInt8 { //TX_PHY
     
     /// The transmitter PHY for the connection is LE 1M
-    case Le1m       = 0x01
+    case le1m       = 0x01
     
     /// The transmitter PHY for the connection is LE 2M
-    case Le2m       = 0x02
+    case le2m       = 0x02
     
     /// The transmitter PHY for the connection is LE Coded
-    case LeCoded    = 0x03
+    case leCoded    = 0x03
 }
 
-public enum PeerIdentifyAddressType: UInt8 { //Peer_Identity_Address_Type
+public enum LowEnergyPeerIdentifyAddressType: UInt8 { //Peer_Identity_Address_Type
     case publicIdentifyAddress = 0x00
     case randomIdentifyAddress = 0x01
 }
 
-public enum PacketPayload: UInt8 { // Packet_Payload
+public enum LowEnergyPacketPayload: UInt8 { // Packet_Payload
     
     case prb29Sequence       = 0x00
     case repeated11110000    = 0x01
@@ -2155,7 +2155,7 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
 /// The ALL_PHYS parameter is a bit field that allows the Host to specify, for each direction,
 /// whether it has no preference among the PHYs that the Controller supports in a given direction
 //// or whether it has specified particular PHYs that it prefers in the TX_PHYS or RX_PHYS parameter.
-public enum AllPhys: UInt8, BitMaskOption {
+public enum LowEnergyAllPhys: UInt8, BitMaskOption {
     
     /// The Host has no preference among the transmitter PHYs supported by the Controller
     case hostHasNoPreferenceAmongTheTransmitterPhy  = 0b01
@@ -2163,14 +2163,14 @@ public enum AllPhys: UInt8, BitMaskOption {
     /// The Host has no preference among the receiver PHYs supported by the Controller
     case hostHasNoPreferenceAmongTheReceiverPhy     = 0b10
     
-    public static let all: Set<AllPhys> = [.hostHasNoPreferenceAmongTheTransmitterPhy,
+    public static let all: Set<LowEnergyAllPhys> = [.hostHasNoPreferenceAmongTheTransmitterPhy,
                                                   .hostHasNoPreferenceAmongTheReceiverPhy]
 }
 
 /// The TX_PHYS parameter is a bit field that indicates the transmitter PHYs that the Host prefers
 /// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
 //// the TX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
-public enum TxPhys: UInt8, BitMaskOption {
+public enum LowEnergyTxPhys: UInt8, BitMaskOption {
     
     /// The Host prefers to use the LE 1M transmitter PHY (possibly among others)
     case hostUseLe1MTransmitterPhy      = 0b001
@@ -2181,7 +2181,7 @@ public enum TxPhys: UInt8, BitMaskOption {
     /// The Host prefers to use the LE Coded transmitter PHY (possibly among others)
     case hostUseLeCodedTransmitterPhy   = 0b100
     
-    public static let all: Set<TxPhys> = [.hostUseLe1MTransmitterPhy,
+    public static let all: Set<LowEnergyTxPhys> = [.hostUseLe1MTransmitterPhy,
                                            .hostUseLe2MTransmitterPhy,
                                            .hostUseLeCodedTransmitterPhy]
 }
@@ -2189,7 +2189,7 @@ public enum TxPhys: UInt8, BitMaskOption {
 /// The RX_PHYS parameter is a bit field that indicates the receiver PHYs that the Host prefers
 /// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
 /// the RX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
-public enum RxPhys: UInt8, BitMaskOption {
+public enum LowEnergyRxPhys: UInt8, BitMaskOption {
     
     /// The Host prefers to use the LE 1M receiver PHY (possibly among others)
     case hostUseLe1MReceiverPhy      = 0
@@ -2200,7 +2200,7 @@ public enum RxPhys: UInt8, BitMaskOption {
     /// The Host prefers to use the LE Coded receiver PHY (possibly among others)
     case hostUseLeCodedReceiverPhy   = 2
     
-    public static let all: Set<RxPhys> = [.hostUseLe1MReceiverPhy,
+    public static let all: Set<LowEnergyRxPhys> = [.hostUseLe1MReceiverPhy,
                                           .hostUseLe2MReceiverPhy,
                                           .hostUseLeCodedReceiverPhy]
 }
@@ -2208,7 +2208,7 @@ public enum RxPhys: UInt8, BitMaskOption {
 /// The PHY_options parameter is a bit field that allows the Host to specify options for PHYs.
 /// The default value for a new connection shall be all zero bits. The Controller may override
 /// any preferred coding for transmitting on the LE Coded PHY.
-public enum PhyOptions: UInt16, BitMaskOption {
+public enum LowEnergyPhyOptions: UInt16, BitMaskOption {
     
     /// The Host has no preferred coding when transmitting on the LE Coded PHY
     case host       = 0b01
@@ -2219,7 +2219,7 @@ public enum PhyOptions: UInt16, BitMaskOption {
     /// The Host prefers that S=8 coding be used when transmitting on the LE Coded PHY
     case s3         = 0b100
     
-    public static let all: Set<PhyOptions> = [.host,
+    public static let all: Set<LowEnergyPhyOptions> = [.host,
                                           .s2,
                                           .s3]
 }

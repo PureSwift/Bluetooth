@@ -25,7 +25,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command allows the Host to specify its preferred values for the transmitter PHY
     /// and receiver PHY to be used for all subsequent connections over the LE transport.
-    func lowEnergySetDefaultPhy(allPhys: AllPhys, txPhys:  TxPhys, rxPhys: RxPhys, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergySetDefaultPhy(allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys, timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.SetDefaultPhyParameter(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
         
@@ -38,7 +38,7 @@ public extension BluetoothHostControllerInterface {
     /// the Connection_Handle. The Controller might not be able to make the change
     /// (e.g. because the peer does not support the requested PHY) or may decide that
     /// the current PHY is preferable.
-    func lowEnergySetPhyParameter(connectionHandle: UInt16, allPhys: AllPhys, txPhys:  TxPhys, rxPhys: RxPhys, phyOptions: PhyOptions, timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.PhyUpdateCompleteEventParameter {
+    func lowEnergySetPhyParameter(connectionHandle: UInt16, allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys, phyOptions: LowEnergyPhyOptions, timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.PhyUpdateCompleteEventParameter {
         
         let parameters = LowEnergyCommand.SetPhyParameter(connectionHandle:connectionHandle, allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys, phyOptions: phyOptions)
         
