@@ -64,10 +64,17 @@ final class BluetoothTests: XCTestCase {
     
     func testHCIVersion() {
         
+        XCTAssertEqual(HCIVersion.v4_2.rawValue, 0x8, "HCI Version: 4.2 (0x8)")
+        
         XCTAssertEqual(HCIVersion.v4_0.description, "4.0")
         XCTAssertEqual(HCIVersion.v4_1.description, "4.1")
         XCTAssertEqual(HCIVersion.v4_2.description, "4.2")
         XCTAssertEqual(HCIVersion.v5_0.description, "5.0")
+        
+        XCTAssertEqual(HCIVersion.v4_0, .v4_0)
+        XCTAssertNotEqual(HCIVersion.v4_0, .v5_0)
+        XCTAssertLessThan(HCIVersion.v4_0, .v4_2)
+        XCTAssertGreaterThan(HCIVersion.v5_0, .v4_2)
     }
     
     func testLowEnergyState() {

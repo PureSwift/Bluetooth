@@ -97,13 +97,17 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
 /// The *Client Rx MTU* parameter shall be set to the maximum size of the attribute protocol PDU that the client can receive.
 public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     
+    /// 0x02 = Exchange MTU Request
     public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitRequest
+    
     public static let length = 3
     
     /// Client Rx MTU
+    ///
+    /// Client receive MTU size
     public var clientMTU: UInt16
     
-    public init(clientMTU: UInt16 = 0) {
+    public init(clientMTU: UInt16) {
         
         self.clientMTU = clientMTU
     }
@@ -118,7 +122,9 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.clientMTU = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        let clientMTU = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        
+        self.clientMTU = clientMTU
     }
     
     public var byteValue: [UInt8] {
@@ -141,13 +147,17 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
 /// The *Exchange MTU Response* is sent in reply to a received *Exchange MTU Request*.
 public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
     
+    /// 0x03 = Exchange MTU Response
     public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitResponse
+    
     public static let length = 3
     
     /// Server Rx MTU
+    ///
+    /// Attribute server receive MTU size
     public var serverMTU: UInt16
     
-    public init(serverMTU: UInt16 = 0) {
+    public init(serverMTU: UInt16) {
         
         self.serverMTU = serverMTU
     }
@@ -162,7 +172,9 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.serverMTU = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        let serverMTU = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        
+        self.serverMTU = serverMTU
     }
     
     public var byteValue: [UInt8] {
@@ -240,10 +252,10 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
 /// and contains information about this server.
 public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.findInformationRequest
+    public static let attributeOpcode = ATTOpcode.findInformationResponse
     
     /// Length ranges from 6, to the maximum MTU size.
-    public static let length = 8
+    public static let length = 6
     
     /// The information data whose format is determined by the Format field.
     public var data: Data
@@ -317,6 +329,22 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
             case .bit128: return .bit128
             }
         }
+        
+        /*
+        public static func == (lhs: Data, rhs: Data) -> Bool {
+            
+            switch (lhs, rhs) {
+                
+            case let (.bit16(lhsValue), .bit16(rhsValue)):
+                return lhsValue == rhsValue
+                
+            case let (.bit128(lhsValue), .bit128(rhsValue)):
+                return lhsValue == rhsValue
+                
+            default:
+                return false
+            }
+        }*/
         
         public init?(byteValue: [UInt8], format: Format) {
             
@@ -861,15 +889,15 @@ public struct ATTReadResponse: ATTProtocolDataUnit {
     
     public init?(byteValue: [UInt8]) {
         
-        guard byteValue.count >= ATTReadRequest.length
+        guard byteValue.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == ATTReadResponse.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        if byteValue.count > ATTReadRequest.length {
+        if byteValue.count > type(of: self).length {
             
             self.attributeValue = Array(byteValue.suffix(from: 1))
             
@@ -1254,6 +1282,8 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
         }
         
         self.data = attributeDataList
+        
+        assert(length == (data[0].byteValue.count))
     }
     
     public var byteValue: [UInt8] {
@@ -1286,7 +1316,9 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
         /// Attribute Value
         public var value: [UInt8]
         
-        public init(attributeHandle: UInt16 = 0, endGroupHandle: UInt16 = 0, value: [UInt8] = []) {
+        public init(attributeHandle: UInt16 = 0,
+                    endGroupHandle: UInt16 = 0,
+                    value: [UInt8] = []) {
             
             self.attributeHandle = attributeHandle
             self.endGroupHandle = endGroupHandle
@@ -1301,9 +1333,9 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             self.attributeHandle = UInt16(bytes: (byteValue[0], byteValue[1])).littleEndian
             self.endGroupHandle = UInt16(bytes: (byteValue[2], byteValue[3])).littleEndian
             
-            if byteValue.count > 4 {
+            if byteValue.count > type(of: self).length {
                 
-                self.value = Array(byteValue.suffix(from: 4))
+                self.value = Array(byteValue.suffix(from: type(of: self).length))
                 
             } else {
                 
