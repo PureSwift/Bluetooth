@@ -81,12 +81,12 @@ public extension iBeacon {
         dataParameter.data.23 = uuidBytes[14]
         dataParameter.data.24 = uuidBytes[15]
         
-        let majorBytes = major.littleEndian.bytes
+        let majorBytes = major.bigEndian.bytes
         
         dataParameter.data.25 = majorBytes.0
         dataParameter.data.26 = majorBytes.1
         
-        let minorBytes = minor.littleEndian.bytes
+        let minorBytes = minor.bigEndian.bytes
         
         dataParameter.data.27 = minorBytes.0
         dataParameter.data.28 = minorBytes.1
