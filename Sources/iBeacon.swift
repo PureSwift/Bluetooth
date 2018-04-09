@@ -62,7 +62,7 @@ public extension iBeacon {
         
         // set UUID bytes
         
-        let uuidBytes = BluetoothUUID(uuid: uuid).littleEndian.data
+        let uuidBytes = BluetoothUUID(uuid: uuid).bigEndian.data
         
         dataParameter.data.9 = uuidBytes[0]
         dataParameter.data.10 = uuidBytes[1]
