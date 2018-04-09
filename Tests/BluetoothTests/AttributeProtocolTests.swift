@@ -23,7 +23,7 @@ final class AttributeProtocolTests: XCTestCase {
         ("testHandleValueNotification", testHandleValueNotification),
         ("testRead", testRead),
         ("testWrite", testWrite),
-        
+        ("testFindInformation", testFindInformation)
     ]
     
     func testATTOpcode() {
@@ -454,7 +454,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.data.byteValue, foundData.byteValue)
-            XCTAssertEqual("\(pdu.data)", "\(foundData.byteValue)")
+            XCTAssertEqual("\(pdu.data)", "\(foundData)")
         }
     }
 }
