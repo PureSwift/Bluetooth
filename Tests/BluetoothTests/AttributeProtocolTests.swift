@@ -19,8 +19,11 @@ final class AttributeProtocolTests: XCTestCase {
         ("testReadByGroupType", testReadByGroupType),
         ("testFindByType", testFindByType),
         ("testReadByType", testReadByType),
-        ("testGATT", testGATT),
-        ("testMTUExchange", testMTUExchange)
+        ("testHandleValueIndication", testHandleValueIndication),
+        ("testHandleValueNotification", testHandleValueNotification),
+        ("testRead", testRead),
+        ("testWrite", testWrite),
+        ("testFindInformation", testFindInformation)
     ]
     
     func testATTOpcode() {
@@ -71,14 +74,43 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.requestOpcode == .readByGroupTypeRequest)
-            XCTAssert(errorResponse.attributeHandle == 49)
-            XCTAssert(errorResponse.errorCode == .attributeNotFound)
-            XCTAssert(errorResponse.byteValue == data)
+            XCTAssertEqual(errorResponse.requestOpcode, .readByGroupTypeRequest)
+            XCTAssertEqual(errorResponse.attributeHandle, 49)
+            XCTAssertEqual(errorResponse.errorCode, .attributeNotFound)
+            XCTAssertEqual(errorResponse.byteValue, data)
         }
     }
     
     func testMTU() {
+        
+        do {
+            
+            XCTAssertEqual(ATTMaximumTransmissionUnit.default, .min, "Default MTU is the minimum MTU")
+            XCTAssertEqual(ATTMaximumTransmissionUnit.default.hashValue, Int(ATTMaximumTransmissionUnit.default.rawValue), "MTU hash is raw value")
+            XCTAssertNotEqual(ATTMaximumTransmissionUnit.min, .max, "ATT MTU minimum value is less than maximum value")
+            XCTAssertLessThan(ATTMaximumTransmissionUnit.min, .max, "ATT MTU maximum value is greater than minimum value")
+            XCTAssertGreaterThan(ATTMaximumTransmissionUnit.max, .min, "ATT MTU maximum value is not equal to minimum value")
+            
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 23), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: 517), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue), "Valid MTU value")
+            XCTAssertNotNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.default.rawValue), "Valid MTU value")
+            
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: 20), "Invalid MTU value")
+            
+            #if os(Linux) && swift(>=3.0) && !swift(>=3.2)
+            #else
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue - 1), "Invalid MTU value")
+            XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue + 1), "Invalid MTU value")
+            #endif
+            
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 23, client: 512).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 23).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 256).rawValue, 256, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: 20, client: 23), .default, "If either Client Rx MTU or Service Rx MTU are incorrectly less than the default ATT_MTU, then the ATT_MTU shall not be changed and the ATT_MTU shall be the default ATT_MTU.")
+            XCTAssertEqual(ATTMaximumTransmissionUnit(server: .max, client: .max), .max, "Cannot be larger than max ATT_MTU")
+        }
         
         do {
             
@@ -87,8 +119,8 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.clientMTU == 23)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssertEqual(pdu.clientMTU, 23)
+            XCTAssertEqual(pdu.byteValue, data)
         }
         
         do {
@@ -98,8 +130,8 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.serverMTU == 23)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssertEqual(pdu.serverMTU, 23)
+            XCTAssertEqual(pdu.byteValue, data)
         }
     }
     
@@ -280,385 +312,187 @@ final class AttributeProtocolTests: XCTestCase {
         }
     }
     
-    func testGATT() {
+    func testHandleValueIndication() {
         
-        func generateDB() -> GATTDatabase {
-            
-            var database = GATTDatabase()
-            
-            for service in TestProfile.services {
-                
-                let _ = database.add(service: service)
-            }
-            
-            return database
-        }
-        
-        func dumpGATT(database: GATTDatabase) {
-            
-            print("GATT Database:")
-            
-            for attribute in database.attributes {
-                
-                let type: Any = GATT.UUID.init(uuid: attribute.uuid as BluetoothUUID) ?? attribute.uuid
-                
-                let value: Any = BluetoothUUID(data: attribute.value)?.littleEndian ?? String(data: attribute.value, encoding: .utf8) ?? attribute.value
-                
-                print("\(attribute.handle) - \(type)")
-                print("Permissions: \(attribute.permissions)")
-                print("Value: \(value)")
-            }
-        }
-        
-        let database = generateDB()
-        
-        dumpGATT(database: database)
-        
-        // server
-        let serverSocket = TestL2CAPSocket()
-        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
-        server.log = { print("GATT Server: " + $0) }
-        server.connection.log = { print("Server ATT: " + $0) }
-        server.database = database
-        
-        // client
-        let clientSocket = TestL2CAPSocket()
-        let client = GATTClient(socket: clientSocket)
-        client.log = { print("GATT Client: " + $0) }
-        client.connection.log = { print("Client ATT: " + $0) }
-        
-        clientSocket.target = serverSocket
-        serverSocket.target = clientSocket // weak references
-        
-        var writtenValues = [UInt16: Data]()
-        
-        func clientWillWriteServer(uuid: BluetoothUUID, handle: UInt16, value: Data, newValue: Data) -> ATT.Error? {
-            
-            print("\(#function) \(uuid) (\(handle))")
-            
-            writtenValues[handle] = newValue
-            
-            print(value.map { $0.toHexadecimal() })
-            
-            return nil
-        }
-        
-        server.willWrite = clientWillWriteServer
-        
-        func discoverAllPrimaryServices() {
-            
-            client.discoverAllPrimaryServices {
-                
-                print("Discover All Primary Services")
-                dump($0)
-                
-                switch $0 {
-                case let .error(error):
-                    
-                    XCTFail("\(error)")
-                    
-                case let .value(services):
-                    
-                    XCTAssert(services.map({ $0.uuid }) == TestProfile.services.map { $0.uuid })
-                    
-                    for service in services {
-                        
-                        guard let testService = TestProfile.services.first(where: { $0.uuid == service.uuid })
-                            else { XCTFail("Invalid service \(service.uuid)"); return }
-                        
-                        discoverAllCharacteristics(of: service, test: testService)
-                        
-                        testService.characteristics.forEach {
-                            discoverCharacteristics(of: service, by: $0.uuid, test: testService)
-                        }
-                    }
-                }
-            }
-        }
-        
-        func discoverAllCharacteristics(of service: GATTClient.Service, test testService: TestProfile.Service) {
-            
-            client.discoverAllCharacteristics(of: service) {
-                
-                print("Discover All Characteristics of a Service")
-                dump($0)
-                
-                switch $0 {
-                case let .error(error):
-                    
-                    XCTFail("\(error)")
-                    
-                case let .value(characteristics):
-                    
-                    XCTAssert(characteristics.map({ $0.uuid }) == testService.characteristics.map { $0.uuid })
-                    
-                    for characteristic in characteristics {
-                        
-                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == characteristic.uuid })
-                            else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
-                        
-                        validateCharacteristic(characteristic, test: testCharacteristic)
-                    }
-                }
-            }
-        }
-        
-        func discoverCharacteristics(of service: GATTClient.Service,
-                                     by uuid: BluetoothUUID,
-                                     test testService: TestProfile.Service) {
-            
-            client.discoverCharacteristics(of: service, by: uuid) {
-                
-                print("Discover Characteristics by UUID")
-                dump($0)
-                
-                switch $0 {
-                case let .error(error):
-                    
-                    XCTFail("\(error)")
-                    
-                case .value: break
-                    
-                    /*
-                case let .value(characteristics):
-                    
-                    // TODO: Investigate Discover Characteristics by UUID
-                    //XCTAssert(value.count == 1, "\(uuid) \(value.map { $0.uuid })")
-                    
-                    for characteristic in characteristics {
-                        
-                        guard let testCharacteristic = testService.characteristics.first(where: { $0.uuid == characteristic.uuid })
-                            else { XCTFail("Invalid characteristic \(characteristic.uuid)"); return }
-                        
-                        validateCharacteristic(characteristic, test: testCharacteristic)
-                    }*/
-                }
-            }
-        }
-        
-        func validateCharacteristic(_ characteristic: GATTClient.Characteristic,
-                                    test testCharacteristic: TestProfile.Characteristic) {
-            
-            XCTAssert(characteristic.uuid == testCharacteristic.uuid)
-            XCTAssert(characteristic.properties == testCharacteristic.properties)
-            
-            if testCharacteristic.properties.contains(.read), testCharacteristic.permissions.contains(.read) {
-                
-                guard characteristic.properties.contains(.read)
-                    else { XCTFail("Cannot read charactertistic \(characteristic.uuid)"); return }
-                
-                client.readCharacteristic(characteristic) {
-                    
-                    print("Read Characteristic")
-                    dump($0)
-                    
-                    switch $0 {
-                    case let .error(error):
-                        
-                        XCTFail("\(error)")
-                        
-                    case let .value(value):
-                        
-                        XCTAssert(value == testCharacteristic.value)
-                    }
-                }
-            }
-            
-            if testCharacteristic.properties.contains(.write), testCharacteristic.permissions.contains(.write) {
-                
-                guard characteristic.properties.contains(.write)
-                    else { XCTFail("Cannot write to charactertistic \(characteristic.uuid)"); return }
-                
-                guard let (data, reliableWrites) = TestProfile.WriteValues[testCharacteristic.uuid]
-                    else { fatalError("missing test data") }
-                
-                client.writeCharacteristic(characteristic, data: data, reliableWrites: reliableWrites) {
-                    
-                    print("Write Characteristic")
-                    dump($0)
-                    
-                    switch $0 {
-                    case let .error(error):
-                        
-                        XCTFail("\(error)")
-                        
-                    case .value:
-                        
-                        guard let writtenValue = writtenValues[characteristic.handle.value]
-                            else { XCTFail("Did not write \(characteristic.uuid)"); return }
-                        
-                        XCTAssert(writtenValue == data, "\(characteristic.uuid) \(writtenValue) == \(data)")
-                    }
-                }
-            }
-        }
-        
-        // queue operations
-        discoverAllPrimaryServices()
-        
-        // fake sockets
         do {
             
-            var didWrite = false
-            repeat {
-                
-                didWrite = false
-                
-                while try client.write() {
-                    
-                    didWrite = true
-                }
-                
-                while serverSocket.receivedData.isEmpty == false {
-                    
-                    try server.read()
-                }
-                
-                while try server.write() {
-                    
-                    didWrite = true
-                }
-                
-                while clientSocket.receivedData.isEmpty == false {
-                    
-                    try client.read()
-                }
-                
-            } while didWrite
-        }
-        
-        catch { XCTFail("Error: \(error)") }
-    }
-    
-    func testMTUExchange() {
-        
-        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
-            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
-             [0x02, 0x00, 0x02]),
-            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
-             [0x03, 0x00, 0x02])
-        ]
-        
-        // decode and compare
-        for (testPDU, testData) in testPDUs {
+            /**
+             Apr 08 15:32:49.710  ATT Receive      0x0041  RECV  Handle Value Indication
+             Handle Value Indication
+             Opcode: 0x1d
+             Attribute Handle: 0x0008 (8)
+             Value: 0a 00 ff ff
+             
+             L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0007 (07) [ 1D 08 00 0A 00 FF FF ]
+             */
             
-            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
-                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            let data: [UInt8] = [0x1D, 0x08, 0x00, 0x0A, 0x00, 0xFF, 0xFF]
             
-            dump(decodedPDU)
+            guard let pdu = ATTHandleValueIndication(byteValue: data)
+                else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(decodedPDU.byteValue, testData)
-            
-            var decodedDump = ""
-            dump(decodedPDU, to: &decodedDump)
-            var testDump = ""
-            dump(testPDU, to: &testDump)
-            
-            XCTAssertEqual(decodedDump, testDump)
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.handle, 0x0008)
+            XCTAssertEqual(pdu.value, [0x0a, 0x00, 0xff, 0xff])
         }
     }
     
-    func testServiceDiscovery() {
+    func testHandleValueNotification() {
         
-        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
-            (ATTMaximumTransmissionUnitRequest(clientMTU: 512),
-             [0x02, 0x00, 0x02]),
-            (ATTMaximumTransmissionUnitResponse(serverMTU: 512),
-             [0x03, 0x00, 0x02]),
-            (ATTReadByGroupTypeRequest(startHandle: 0x01, endHandle: .max, type: GATT.UUID.primaryService.uuid),
-             [0x10, 0x01, 0x00, 0xff, 0xff, 0x00, 0x28])
-        ]
-        
-        // decode and compare
-        for (testPDU, testData) in testPDUs {
+        do {
             
-            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
-                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            /**
+             RECV  Handle Value Notification - Handle:0x0016 - Value:64
+             Handle Value Notification - Handle:0x0016 - Value:64
+             Opcode: 0x1b
+             Attribute Handle: 0x0016 (22)
+             
+             L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0004 (04) [ 1B 16 00 64 ]
+             */
             
-            dump(decodedPDU)
+            let data: [UInt8] = [0x1B, 0x16, 0x00, 0x64]
             
-            XCTAssertEqual(decodedPDU.byteValue, testData)
+            guard let pdu = ATTHandleValueNotification(byteValue: data)
+                else { XCTFail("Could not parse"); return }
             
-            var decodedDump = ""
-            dump(decodedPDU, to: &decodedDump)
-            var testDump = ""
-            dump(testPDU, to: &testDump)
-            
-            XCTAssertEqual(decodedDump, testDump)
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.handle, 0x0016)
+            XCTAssertEqual(pdu.value, [0x64])
         }
     }
-}
-
-public struct TestProfile {
     
-    public typealias Service = GATT.Service
-    public typealias Characteristic = GATT.Characteristic
+    func testRead() {
+        
+        do {
+            
+            /**
+             ATT Send - Read Request - Handle:0x0016
+             Read Request - Handle:0x0016
+             Opcode: 0x0a
+             Attribute Handle: 0x0016 (22)
+             
+             L2CAP Send       0x0042  SEND  Channel ID: 0x0004  Length: 0x0003 (03) [ 0A 16 00 ]
+             */
+            let data: [UInt8] = [0x0A, 0x16, 0x00]
+            
+            guard let pdu = ATTReadRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x0a)
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.handle, 0x0016)
+        }
+        
+        do {
+            
+            /**
+             ATT Receive - Read Response - Value:64
+             Read Response - Value:64
+             Opcode: 0x0b
+             Value: 64
+             
+             L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0002 (02) [ 0B 64 ]
+             */
+            
+            let data: [UInt8] = [0x0B, 0x64]
+            
+            guard let pdu = ATTReadResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x0b)
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.attributeValue, [0x64])
+        }
+    }
     
-    public static let services: [Service] = [
-        TestService,
-        TestDefinedService
-    ]
+    func testWrite() {
+        
+        do {
+            
+            /**
+             Write Request - Handle:0x0017 - Value:0100
+             Opcode: 0x12
+             Attribute Handle: 0x0017 (23)
+             Value: 01 00
+             
+             L2CAP Send       0x0042  SEND  Channel ID: 0x0004  Length: 0x0005 (05) [ 12 17 00 01 00 ]
+             */
+            
+            let data: [UInt8] = [0x12, 0x17, 0x00, 0x01, 0x00]
+            
+            guard let pdu = ATTWriteRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x12)
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.handle, 0x0017)
+            XCTAssertEqual(pdu.value, [0x01, 0x00])
+        }
+        
+        do {
+            
+            /**
+             Write Response
+             Opcode: 0x13
+             
+             L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0001 (01) [ 13 ]
+             */
+            
+            let data: [UInt8] = [0x13]
+            
+            guard let pdu = ATTWriteResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x13)
+            XCTAssertEqual(pdu.byteValue, data)
+        }
+    }
     
-    public static let TestService = Service(uuid: BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!,
-                                            primary: true,
-                                            characteristics: [
-                                                TestProfile.Read,
-                                                TestProfile.ReadBlob,
-                                                TestProfile.Write,
-                                                TestProfile.WriteBlob,
-                                                TestProfile.WriteWithoutResponse,
-                                                TestProfile.WriteBlobWithoutResponse
-        ])
-    
-    public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
-                                            value: "Test Read-Only".data(using: .utf8)!,
-                                            permissions: [.read],
-                                            properties: [.read])
-    
-    public static let ReadBlob = Characteristic(uuid: BluetoothUUID(rawValue: "0615FF6C-0E37-11E6-9E58-75D7DC50F6B1")!,
-                                                value: Data(bytes: [UInt8](repeating: UInt8.max, count: 512)),
-                                                permissions: [.read],
-                                                properties: [.read])
-    
-    public static let Write = Characteristic(uuid: BluetoothUUID(rawValue: "37BBD7D0-F96F-11E5-8EC1-23E070D5A8C7")!,
-                                             value: Data(),
-                                             permissions: [.write],
-                                             properties: [.write])
-    
-    public static let WriteValue = "Test Write".data(using: .utf8)!
-    
-    public static let WriteWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "AFE458FE-55BE-4D99-8C22-82FACE077D86")!,
-                                             value: Data(),
-                                             permissions: [.write],
-                                             properties: [.write, .writeWithoutResponse])
-    
-    public static let WriteBlob = Characteristic(uuid: BluetoothUUID(rawValue: "2FDDB448-F96F-11E5-A891-23E070D5A8C7")!,
-                                                 value: Data(),
-                                                 permissions: [.write],
-                                                 properties: [.write])
-    
-    public static let WriteBlobValue = Data(bytes: [UInt8](repeating: 0xAA, count: 512))
-    
-    public static let WriteBlobWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "D4A6E516-C867-4582-BF66-0A02BD854613")!,
-                                                 value: Data(),
-                                                 permissions: [.write],
-                                                 properties: [.write, .writeWithoutResponse])
-    
-    public static let TestDefinedService = Service(uuid: BluetoothUUID.bit16(0xFEA9),
-                                                   primary: true,
-                                                   characteristics: [
-                                                    TestProfile.Read,
-                                                    TestProfile.ReadBlob,
-                                                    TestProfile.Write,
-                                                    TestProfile.WriteBlob,
-                                                    TestProfile.WriteWithoutResponse,
-                                                    TestProfile.WriteBlobWithoutResponse
-        ])
-    
-    public static let WriteValues: [BluetoothUUID: (data: Data, reliableWrites: Bool)] = [
-        Write.uuid: (WriteValue, true),
-        WriteBlob.uuid: (WriteBlobValue, true),
-        WriteWithoutResponse.uuid: (WriteValue, false),
-        WriteBlobWithoutResponse.uuid: (WriteBlobValue, false)
-    ]
+    func testFindInformation() {
+        
+        do {
+            
+            /**
+             Find Information Request - Start Handle:0x0017 - End Handle:0x0017
+             Opcode: 0x04
+             Start Handle: 0x0017
+             End Handle: 0x0017
+             L2CAP Send Channel ID: 0x0004  Length: 0x0005 (05) [ 04 17 00 17 00 ]
+             */
+            
+            let data: [UInt8] = [0x04, 0x17, 0x00, 0x17, 0x00]
+            
+            guard let pdu = ATTFindInformationRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x04)
+            XCTAssertEqual(pdu.startHandle, 0x0017)
+            XCTAssertEqual(pdu.endHandle, 0x0017)
+        }
+        
+        do {
+            
+            /**
+             Find Information Response
+             Opcode: 0x05
+             Format: 1 (Handles and 16 byte UUIDs)
+             Handle: 0x0017 UUID: 2902 (Client Characteristic Configuration)
+             
+             L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0006 (06) [ 05 01 17 00 02 29 ]
+             */
+            
+            let data: [UInt8] = [0x05, 0x01, 0x17, 0x00, 0x02, 0x29]
+            
+            guard let pdu = ATTFindInformationResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            let foundData = ATTFindInformationResponse.Data.bit16([(0x0017, 0x2902)])
+            
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data.byteValue, foundData.byteValue)
+            XCTAssertEqual("\(pdu.data)", "\(foundData)")
+        }
+    }
 }

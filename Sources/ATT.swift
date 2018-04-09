@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Protocol Definitions
 
 /// Bluetooth ATT protocol
-public struct ATT {
+public enum ATT {
     
     public static let PSM: ProtocolServiceMultiplexer   = .att
     
@@ -27,17 +27,6 @@ public struct ATT {
     
     public static let maximumValueLength                = 512
     
-    /// ATT MTU constants
-    public struct MaximumTransmissionUnit {
-        
-        public struct LowEnergy {
-            
-            public static let `default`                   = 23
-            
-            public static let `maximum`                   = 517
-        }
-    }
-    
     // Namespace Typealiases
         
     public typealias Error                              = ATTError
@@ -47,6 +36,8 @@ public struct ATT {
     public typealias OpcodeType                         = ATTOpcodeType
     
     public typealias AttributePermission                = ATTAttributePermission
+    
+    public typealias MaximumTransmissionUnit            = ATTMaximumTransmissionUnit
 }
 
 /// Error codes for Error response PDU.
