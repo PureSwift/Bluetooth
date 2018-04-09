@@ -359,4 +359,47 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.value, [0x64])
         }
     }
+    
+    func testRead() {
+        
+        do {
+            
+            /**
+             ATT Send - Read Request - Handle:0x0016
+             Read Request - Handle:0x0016
+             Opcode: 0x0a
+             Attribute Handle: 0x0016 (22)
+             
+             L2CAP Send       0x0042  SEND  Channel ID: 0x0004  Length: 0x0003 (03) [ 0A 16 00 ]
+             */
+            let data: [UInt8] = [0x0A, 0x16, 0x00]
+            
+            guard let pdu = ATTReadRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            
+            XCTAssertEqual(pdu.handle, 0x0016)
+        }
+        
+        do {
+            
+            /**
+             ATT Receive - Read Response - Value:64
+             Read Response - Value:64
+             Opcode: 0x0b
+             Value: 64
+             
+             L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0002 (02) [ 0B 64 ]
+             */
+            
+            let data: [UInt8] = [0x0B, 0x64]
+            
+            guard let pdu = ATTReadResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.attributeValue, [0x64])
+        }
+    }
 }
