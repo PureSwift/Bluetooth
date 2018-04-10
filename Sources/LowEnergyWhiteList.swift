@@ -38,7 +38,7 @@ public extension BluetoothHostControllerInterface {
     /// LE Remove Device From White List Command
     ///
     /// Used to remove a single device from the White List stored in the Controller.
-    func lowEnergyRemoveDeviceToWhiteList(whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyRemoveDeviceFromWhiteList(whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
         
         try deviceRequest(LowEnergyCommand.RemoveDeviceToWhiteListParameter(device: whiteListDevice), timeout: timeout)
     }
