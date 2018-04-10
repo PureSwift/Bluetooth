@@ -23,7 +23,7 @@ final class HCITests: XCTestCase {
         ("testAdvertisingReport", testAdvertisingReport),
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
-        ("testCommandStatusEvent", testCommandStatusEvent)
+        ("testLEConnectionCancel", testLEConnectionCancel),
     ]
     
     func testName() {
@@ -407,7 +407,37 @@ final class HCITests: XCTestCase {
         }
     }
     
-    
+    func testLEConnectionCancel() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [200E] LE Create Connection Cancel  0E 20 00
+         
+         [200E] Opcode: 0x200E (OGF: 0x08    OCF: 0x0E)
+         Parameter Length: 0 (0x00)
+         */
+        
+        hostController.queue.append(
+            .command(LowEnergyCommand.createConnectionCancel.opcode,
+                     [0x0E, 0x20, 0x00])
+        )
+        
+        /**
+         Command Complete [200E] - LE Create Connection Cancel - Command Disallowed (0xC)  0E 04 01 0E 20 0C
+         
+         Parameter Length: 4 (0x04)
+         Status: 0x0C - Command Disallowed
+         Num HCI Command Packets: 0x01
+         Opcode: 0x200E (OGF: 0x08    OCF: 0x0E) - [Low Energy] LE Create Connection Cancel
+         */
+        
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x0E, 0x20, 0x0C]))
+        
+        XCTAssertThrowsError(try hostController.lowEnergyCreateConnectionCancel(),
+                             "Error expected",
+                             { XCTAssertEqual($0 as? HCIError, .commandDisallowed) })
+    }
 }
 
 @inline(__always)
