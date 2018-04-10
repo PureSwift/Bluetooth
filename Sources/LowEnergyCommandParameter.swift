@@ -70,7 +70,7 @@ public extension LowEnergyCommand {
         public init(interval: (minimum: UInt16, maximum: UInt16) = (0x0800, 0x0800),
                     advertisingType: AdvertisingType = AdvertisingType(),
                     addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.public, .public),
-                    directAddress: Address = Address(bytes: (0,0,0,0,0,0)),
+                    directAddress: Address = .zero,
                     channelMap: ChannelMap = ChannelMap(),
                     filterPolicy: FilterPolicy = FilterPolicy()) {
             
@@ -1990,7 +1990,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             numberOfPackets = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
@@ -2008,7 +2008,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             let stateRawValue = UInt64(littleEndian: UInt64(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))

@@ -192,6 +192,7 @@ public enum ATTOpcode: UInt8 {
         }
     }
     
+    // swiftlint:disable comma
     private static let requestResponseMap: [(request: ATTOpcode,  response: ATTOpcode)] = [
         (maximumTransmissionUnitRequest,     maximumTransmissionUnitResponse),
         (findInformationRequest,             findInformationResponse),
@@ -205,6 +206,7 @@ public enum ATTOpcode: UInt8 {
         (preparedWriteRequest,               preparedWriteResponse),
         (executeWriteRequest,                executeWriteResponse)
     ]
+    // swiftlint:enable comma
     
     private static let responsesByRequest: [ATTOpcode: ATTOpcode] = {
         
