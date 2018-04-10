@@ -300,7 +300,9 @@ final class HCITests: XCTestCase {
     
     func testAdvertisingReport() {
         
-        func parseAdvertisingReport(_ readBytes: Int, _ data: [UInt8]) -> [Address] {
+        typealias Report = LowEnergyEvent.AdvertisingReportEventParameter.Report
+        
+        func parseAdvertisingReport(_ readBytes: Int, _ data: [UInt8]) -> [Report] {
             
             let eventData = Array(data[3 ..< readBytes])
             
@@ -312,7 +314,12 @@ final class HCITests: XCTestCase {
             guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(byteValue: meta.data)
                 else { XCTFail("Could not parse"); return [] }
             
-            return advertisingReport.reports.map { $0.address }
+            return advertisingReport.reports
+        }
+        
+        func parseAdvertisingReportAddress(_ readBytes: Int, _ data: [UInt8]) -> [Address] {
+            
+            return parseAdvertisingReport(readBytes, data).map { $0.address }
         }
         
         do {
@@ -320,7 +327,7 @@ final class HCITests: XCTestCase {
             let readBytes = 26
             let data: [UInt8] = [4, 62, 23, 2, 1, 0, 0, 66, 103, 166, 50, 188, 172, 11, 2, 1, 6, 7, 255, 76, 0, 16, 2, 11, 0, 186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            XCTAssert(parseAdvertisingReport(readBytes, data) == [Address(rawValue: "AC:BC:32:A6:67:42")!])
+            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [Address(rawValue: "AC:BC:32:A6:67:42")!])
         }
         
         do {
@@ -328,7 +335,45 @@ final class HCITests: XCTestCase {
             let readBytes = 38
             let data: [UInt8] = [4, 62, 35, 2, 1, 0, 1, 53, 238, 129, 237, 128, 89, 23, 2, 1, 6, 19, 255, 76, 0, 12, 14, 8, 69, 6, 92, 128, 96, 83, 24, 163, 199, 32, 154, 91, 3, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            XCTAssert(parseAdvertisingReport(readBytes, data) == [Address(rawValue: "59:80:ED:81:EE:35")!])
+            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [Address(rawValue: "59:80:ED:81:EE:35")!])
+        }
+        
+        do {
+            
+            /**
+             RECV  LE Meta Event - LE Advertising Report - 0 - 58:E2:8F:7C:0B:B3  -45 dBm - Proximity
+             
+             Parameter Length: 34 (0x22)
+             Num Reports: 0X01
+             Event Type: Connectable undirected advertising (ADV_IND)
+             Address Type: Public
+             Peer Address: 58:E2:8F:7C:0B:B3
+             Length Data: 0X16
+             Flags: 0X1A
+             16 bit UUIDs: 0X1803 0X1804 0X1802
+             Local Name: Proximity
+             Data: 02 01 1A 07 03 03 18 04 18 02 18 0A 09 50 72 6F 78 69 6D 69 74 79
+             RSSI: -45 dBm
+             */
+            
+            let data: [UInt8] = [0x3E, 0x22, 0x02, 0x01, 0x00, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x16, 0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79, 0xD3]
+            
+            let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
+            
+            XCTAssertEqual(advertisingReports.count, 0x01)
+            
+            guard let report = advertisingReports.first
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(report.address, Address(rawValue: "58:E2:8F:7C:0B:B3")!)
+            XCTAssertEqual(report.addressType, .public)
+            XCTAssertEqual(report.event, .undirected)
+            XCTAssertEqual(report.rssi.rawValue, -45)
+            XCTAssertEqual(report.data.count, 0x16)
+            
+            let advertisingData: [UInt8] = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
+            
+            XCTAssertEqual(report.data, advertisingData)
         }
     }
     
