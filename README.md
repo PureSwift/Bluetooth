@@ -49,11 +49,6 @@ github "PureSwift/Bluetooth"
 ## Documentation
 
 Documentation can be generated with [Jazzy](https://github.com/realm/jazzy).
-
-```
-jazzy --source-directory Bluetooth
-```
-
 Read the documentation [here](http://pureswift.github.io/Bluetooth/docs/).
 For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/tree/gh-pages) branch.
 
