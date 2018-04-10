@@ -58,7 +58,12 @@ public extension BluetoothHostControllerInterface {
                                                                 longTermKey: longTermKey)
         
         /// expect Command Status - LE Start Encryption
-        try deviceRequest(command, timeout: timeout)
+        let commandStatus = try deviceRequest(command, HCIGeneralEvent.CommandStatusParameter.self, timeout: timeout)
+        
+        if let error = commandStatus.status.error {
+            
+            throw error
+        }
         
         var encryptionChange: LowEnergyEncryptionChange?
         
