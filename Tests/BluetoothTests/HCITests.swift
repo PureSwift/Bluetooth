@@ -374,6 +374,38 @@ final class HCITests: XCTestCase {
             let advertisingData: [UInt8] = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
             
             XCTAssertEqual(report.data, advertisingData)
+            
+            
+        }
+        
+        do {
+            
+            /**
+             LE Meta Event - LE Advertising Report - 0 - 58:E2:8F:7C:0B:B3  -44 dBm  3E 0C 02 01 04 00 B3 0B 7C 8F E2 58 00 D4
+             Parameter Length: 12 (0x0C)
+             Num Reports: 0X01
+             Event Type: Scan Response (SCAN_RSP)
+             Address Type: Public
+             Peer Address: 58:E2:8F:7C:0B:B3
+             Length Data: 0000
+             Data:
+             RSSI: -44 dBm
+             */
+            
+            let data: [UInt8] = [0x3E, 0x0C, 0x02, 0x01, 0x04, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x00, 0xD4]
+            
+            let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
+            
+            XCTAssertEqual(advertisingReports.count, 0x01)
+            
+            guard let report = advertisingReports.first
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(report.address, Address(rawValue: "58:E2:8F:7C:0B:B3")!)
+            XCTAssertEqual(report.addressType, .public)
+            XCTAssertEqual(report.event, .scanResponse)
+            XCTAssertEqual(report.rssi.rawValue, -44)
+            XCTAssertEqual(report.data, [])
         }
     }
     
