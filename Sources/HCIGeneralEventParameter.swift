@@ -18,10 +18,8 @@ public extension HCIGeneralEvent {
         public static let length = 3
         
         /// The Number of HCI command packets which are allowed to be sent to the Controller from the Host.
-        public var numberOfCommandPackets: UInt8 = 0
-        public var opcode: UInt16 = 0
-        
-        public init() { }
+        public var numberOfCommandPackets: UInt8
+        public var opcode: UInt16
         
         public init?(byteValue: [UInt8]) {
             
@@ -38,18 +36,21 @@ public extension HCIGeneralEvent {
         public static let event = HCIGeneralEvent.commandStatus
         public static let length = 4
         
-        public var status: UInt8 = 0
-        public var ncmd: UInt8 = 0
-        public var opcode: UInt16 = 0
-        
-        public init() { }
+        public var status: HCIStatus
+        public var ncmd: UInt8
+        public var opcode: UInt16
         
         public init?(byteValue: [UInt8]) {
             
             guard byteValue.count == CommandStatusParameter.length
                 else { return nil }
             
-            self.status = byteValue[0]
+            let statusByte = byteValue[0]
+            
+            guard let status = HCIStatus(rawValue: statusByte)
+                else { return nil }
+            
+            self.status = status
             self.ncmd = byteValue[1]
             self.opcode = UInt16(bytes: (byteValue[2], byteValue[3])).littleEndian
         }
@@ -60,18 +61,21 @@ public extension HCIGeneralEvent {
         public static let event = HCIGeneralEvent.remoteNameRequestComplete
         public static let length = 255
         
-        public var status: UInt8 = 0
-        public var address: Address = Address()
-        public var name: String = ""
-        
-        public init() { }
+        public var status: HCIStatus
+        public var address: Address
+        public var name: String
         
         public init?(byteValue: [UInt8]) {
             
             guard byteValue.count == RemoteNameRequestCompleteParameter.length
                 else { return nil }
             
-            self.status = byteValue[0]
+            let statusByte = byteValue[0]
+            
+            guard let status = HCIStatus(rawValue: statusByte)
+                else { return nil }
+            
+            self.status = status
             self.address = Address(bytes: (byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6]))
             
             let nameBytes = Array(byteValue[7 ..< HCI.maximumNameLength])
