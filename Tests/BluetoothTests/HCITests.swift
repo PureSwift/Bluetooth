@@ -16,11 +16,13 @@ final class HCITests: XCTestCase {
     
     static let allTests = [
         ("testName", testName),
+        ("testWriteLocalName", testWriteLocalName),
+        ("testLEReadRemoteUsedFeatures", testLEReadRemoteUsedFeatures),
+        ("testReadLocalName", testReadLocalName),
+        ("testLowEnergyScan", testLowEnergyScan),
         ("testAdvertisingReport", testAdvertisingReport),
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
-        ("testWriteLocalName", testWriteLocalName),
-        ("testReadLocalName", testReadLocalName)
     ]
     
     func testName() {
@@ -240,6 +242,57 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(reports[1].addressType, .public)
         XCTAssertEqual(reports[1].rssi.rawValue, -54)
         XCTAssertEqual(reports[1].event, .undirected)
+    }
+    
+    func testLEReadRemoteUsedFeatures() {
+        
+        let connectionHandle: UInt16 = 0x0041
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [2016] LE Read Remote Used Features - Connection Handle: 0x0041  16 20 02 41 00
+         
+         [2016] Opcode: 0x2016 (OGF: 0x08    OCF: 0x16)
+         Parameter Length: 2 (0x02)
+         Connection Handle: 0041
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.readRemoteUsedFeatures.opcode,
+                     [0x16, 0x20, 0x02, 0x41, 0x00])
+        )
+        
+        /**
+         RECV  Command Status - LE Read Remote Used Features  0F 04 00 01 16 20
+         
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         
+         Opcode: 0x2016 (OGF: 0x08    OCF: 0x16) - [Low Energy] LE Read Remote Used Features
+         */
+        hostController.queue.append(.event([0x0F, 0x04, 0x00, 0x01, 0x16, 0x20]))
+        
+        /**
+         RECV  LE Meta Event - LE Read Remote Used Features Complete. DPLE Unsupported  3E 0C 04 00 41 00 1D 00 00 00 00 00 00 00
+         
+         Parameter Length: 12 (0x0C)
+         Status: 0x00 - Success
+         Connection Handle: 0x0041
+         
+         LE Features:               0X1D
+            LE Encryption
+            Extended Reject Indication
+            Slave-initiated Features Exchange
+            LE Ping
+         */
+        hostController.queue.append(.event([0x3E, 0x0C, 0x04, 0x00, 0x41, 0x00, 0x1D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        var features = LowEnergyFeatureSet()
+        XCTAssertNoThrow(features = try hostController.readRemoteUsedFeatures(connectionHandle: connectionHandle))
+        
+        XCTAssert(features.isEmpty == false, "Empty features")
+        XCTAssertEqual(features, [.encryption, .extendedRejectIndication, .slaveInitiatedFeaturesExchange, .ping])
     }
     
     func testAdvertisingReport() {
