@@ -24,6 +24,7 @@ final class HCITests: XCTestCase {
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
         ("testLEConnectionCancel", testLEConnectionCancel),
+        ("testLERemoveDeviceFromWhiteList", testLERemoveDeviceFromWhiteList)
     ]
     
     func testName() {
@@ -375,7 +376,7 @@ final class HCITests: XCTestCase {
             
             XCTAssertEqual(report.data, advertisingData)
             
-            
+            // TODO: Parse response data
         }
         
         do {
@@ -514,6 +515,35 @@ final class HCITests: XCTestCase {
         XCTAssertThrowsError(try hostController.lowEnergyCreateConnectionCancel(),
                              "Error expected",
                              { XCTAssertEqual($0 as? HCIError, .commandDisallowed) })
+    }
+    
+    func testLERemoveDeviceFromWhiteList() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [2012] LE Remove Device From White List - 0 - 58:E2:8F:7C:0B:B3  12 20 07 00 B3 0B 7C 8F E2 58
+         
+         [2012] Opcode: 0x2012 (OGF: 0x08    OCF: 0x12)
+         Parameter Length: 7 (0x07)
+         Address Type: Public
+         Address: 58:E2:8F:7C:0B:B3
+         */
+        hostController.queue.append(.command(LowEnergyCommand.removeDeviceFromWhiteList.opcode,
+                                             [0x12, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
+        )
+        
+        /**
+         RECV  Command Complete [2012] - LE Remove Device From White List  0E 04 01 12 20 00
+         
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2012 (OGF: 0x08    OCF: 0x12) - [Low Energy] LE Remove Device From White List
+         */
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x12, 0x20, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.lowEnergyRemoveDeviceFromWhiteList(whiteListDevice: .public(Address(rawValue: "58:E2:8F:7C:0B:B3")!)))
     }
 }
 
