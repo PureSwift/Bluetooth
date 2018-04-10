@@ -48,13 +48,8 @@ github "PureSwift/Bluetooth"
 
 ## Documentation
 
-Documentation can be generated with [Jazzy](https://github.com/realm/jazzy).
-
-```
-jazzy --source-directory Bluetooth
-```
-
 Read the documentation [here](http://pureswift.github.io/Bluetooth/docs/).
+Documentation can be generated with [Jazzy](https://github.com/realm/jazzy).
 For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/tree/gh-pages) branch.
 
 ## Code Coverage
@@ -65,6 +60,8 @@ For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/
 ## See Also
 
 - [BluetoothLinux](https://github.com/PureSwift/BluetoothLinux) - Pure Swift Linux Bluetooth Stack
+- [BluetoothDarwin](https://github.com/PureSwift/BluetoothDarwin) - Low Level Swift Bluetooth library for the Darwin kernel
+- [BluetoothAndroid](https://github.com/PureSwift/BluetoothAndroid) - Swift Bluetooth stack for Android
 - [GATT](https://github.com/PureSwift/GATT) - Bluetooth Generic Attribute Profile (GATT) for Swift
 - [SwiftFoundation](https://github.com/PureSwift/SwiftFoundation) - Cross-Platform, Protocol-Oriented Programming base library to complement the Swift Standard Library.
 - [Cacao](https://github.com/PureSwift/Cacao) - Pure Swift Cross-platform UIKit
