@@ -1865,6 +1865,7 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
 public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.handleValueConfirmation
+    
     public static let length = 1
     
     public init() { }
@@ -1884,8 +1885,6 @@ public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTHandleValueConfirmation.self
-        
-        return [type.attributeOpcode.rawValue]
+        return [ATTHandleValueConfirmation.attributeOpcode.rawValue]
     }
 }
