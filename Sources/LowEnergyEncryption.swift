@@ -10,6 +10,8 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
+    public typealias LowEnergyEncryptionChange = LowEnergyEvent.EncryptionChangeEventParameter.EncryptionEnabled
+    
     /// LE Encrypt Command
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
@@ -37,13 +39,67 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to authenticate the given encryption key associated with the remote device specified
     /// by the Connection_Handle, and once authenticated will encrypt the connection.
-    func lowEnergyStartEncryption(connectionHandle: UInt16, randomNumber: UInt64, encryptedDiversifier: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyStartEncryption(connectionHandle: UInt16,
+                                  randomNumber: UInt64,
+                                  encryptedDiversifier: UInt16,
+                                  longTermKey: UInt128,
+                                  shouldContinue: () -> (Bool) = { return true },
+                                  timeout: HCICommandTimeout = .default) throws -> LowEnergyEncryptionChange? {
+        
+        /**
+         When the Controller receives the LE_Start_Encryption command it shall send the Command Status event to the Host. If the connection is not encrypted when this command is issued, an Encryption Change event shall occur when encryption has been started for the connection. If the connection is encrypted when this command is issued, an Encryption Key Refresh Complete event shall occur when encryption has been resumed.
+         
+         - Note: A Command Complete event is not sent by the Controller to indicate that this command has been completed. Instead, the Encryption Change or Encryption Key Refresh Complete events indicate that this command has been completed.
+         */
         
         let command = LowEnergyCommand.StartEncryptionParameter(connectionHandle: connectionHandle,
                                                                 randomNumber: randomNumber,
                                                                 encryptedDiversifier: encryptedDiversifier,
                                                                 longTermKey: longTermKey)
         
+        /// expect Command Status - LE Start Encryption
         try deviceRequest(command, timeout: timeout)
+        
+        var encryptionChange: LowEnergyEncryptionChange?
+        
+        try pollEvent(HCIGeneralEvent.LowEnergyMetaParameter.self, shouldContinue: shouldContinue) { (metaEvent) in
+            
+            switch metaEvent.subevent {
+                
+            case .encryptionChange:
+                
+                // parse LE Encryption Change
+                guard let encryptionEvent = LowEnergyEvent.EncryptionChangeEventParameter(byteValue: metaEvent.data)
+                    else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
+                
+                if let error = encryptionEvent.status.error {
+                    
+                    throw error
+                }
+                
+                assert(encryptionEvent.handle == connectionHandle)
+                
+                encryptionChange = encryptionEvent.encryptionEnabled
+                
+            case .encryptionKeyRefreshComplete:
+                
+                // parse LE Key Refresh Complete
+                guard let encryptionEvent = LowEnergyEvent.EncryptionKeyRefreshCompleteEventParameter(byteValue: metaEvent.data)
+                    else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
+                
+                if let error = encryptionEvent.status.error {
+                    
+                    throw error
+                }
+                
+                assert(encryptionEvent.handle == connectionHandle)
+                
+            default:
+                
+                throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data))
+            }
+        }
+        
+        return encryptionChange
     }
 }
