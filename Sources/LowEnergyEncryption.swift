@@ -39,7 +39,10 @@ public extension BluetoothHostControllerInterface {
     /// by the Connection_Handle, and once authenticated will encrypt the connection.
     func lowEnergyStartEncryption(connectionHandle: UInt16, randomNumber: UInt64, encryptedDiversifier: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) throws {
         
-        let command = LowEnergyCommand.StartEncryptionParameter(connectionHandle: connectionHandle,randomNumber: randomNumber, encryptedDiversifier: encryptedDiversifier, longTermKey: longTermKey)
+        let command = LowEnergyCommand.StartEncryptionParameter(connectionHandle: connectionHandle,
+                                                                randomNumber: randomNumber,
+                                                                encryptedDiversifier: encryptedDiversifier,
+                                                                longTermKey: longTermKey)
         
         try deviceRequest(command, timeout: timeout)
     }

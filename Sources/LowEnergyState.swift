@@ -50,7 +50,7 @@ public extension LowEnergyState {
     public var name: String {
         
         guard let name = lowEnergyStateNames[self]
-            else { fatalError() }
+            else { fatalError("No name for \(self)") }
         
         return name
     }
@@ -139,7 +139,7 @@ internal let lowEnergyStates: [LowEnergyStateSet: (BitMaskOptionSet<LowEnergySta
     .state8: ([.nonConnectableAdvertising, .passiveScanning]),
     .state9: ([.scannableAdvertising, .passiveScanning]),
     .state10: ([.connectableAdvertising, .passiveScanning]),
-    .state11: ([.highDutyCycleDirectedAdvertising ,.passiveScanning]),
+    .state11: ([.highDutyCycleDirectedAdvertising, .passiveScanning]),
     .state12: ([.nonConnectableAdvertising, .activeScanning]),
     .state13: ([.scannableAdvertising, .activeScanning]),
     .state14: ([.connectableAdvertising, .activeScanning]),
@@ -173,6 +173,7 @@ internal let lowEnergyStates: [LowEnergyStateSet: (BitMaskOptionSet<LowEnergySta
     
 ]
 
+// swiftlint:disable colon
 internal let lowEnergyStateNames: [LowEnergyState: String] = [
     .scannableAdvertising            : "Scannable Advertising State",
     .connectableAdvertising          : "Connectable Advertising State",
@@ -185,3 +186,4 @@ internal let lowEnergyStateNames: [LowEnergyState: String] = [
     .connectionMaster                : "Connection State(Master Role)",
     .connectionSlave                 : "Connection State(Slave Role)"
 ]
+// swiftlint:enable colon

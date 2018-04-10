@@ -49,6 +49,7 @@ public extension POSIXError {
     
     // swiftlint:disable identifier_name
     // swiftlint:disable colon
+    
     /// Enumeration describing POSIX error codes.
     public enum POSIXErrorCode : Int32 {
         
