@@ -1615,6 +1615,214 @@ public extension LowEnergyCommand {
                     advertisingRandomAddressBytes.5]
         }
     }
+    
+    /// LE Set Extended Advertising Parameters Command
+    ///
+    /// The command is used by the Host to set the advertising parameters.
+    public struct SetExtendedAdvertisingParameters: HCICommandParameter { //HCI_LE_Set_ Extended_ Advertising_ Parameters
+        
+        public static let command = LowEnergyCommand.setAdvertisingSetRandomAddress //0x0036
+        
+        /// Used to identify an advertising set
+        public let advertisingHandle: UInt8 //Advertising_Handle
+        
+        /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
+        /// and its basic properties.
+        public let advertisingEventProperties: AdvertisingEventProperties //Advertising_Event_Properties
+        
+        /// The Primary_Advertising_Interval_Min parameter shall be less than or equal to the Primary_Advertising_Interval_Max parameter.
+        /// The Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max parameters should not be the same value
+        /// so that the Controller can choose the best advertising interval given other activities.
+        ///
+        /// For high duty cycle connectable directed advertising event type (ADV_DIRECT_IND),
+        /// the Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max parameters are not used and shall be ignored.
+        ///
+        /// If the primary advertising interval range provided by the Host (Primary_Advertising_Interval_Min,
+        /// Primary_Advertising_Interval_Max) is outside the advertising interval range supported by the Controller,
+        //// then the Controller shall return the error code Unsupported Feature or Parameter Value (0x11).
+        public let primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval)
+        
+        /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
+        /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
+        public let primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap
+        
+        /// The Own_Address_Type parameter specifies the type of address being used in the advertising packets.
+        /// For random addresses, the address is specified by the LE_Set_Advertising_Set_Random_Address command.
+        ///
+        /// If Own_Address_Type equals 0x02 or 0x03, the Peer_Address parameter contains the peer’s Identity Address
+        /// and the Peer_Address_Type parameter contains the peer’s Identity Type (i.e., 0x00 or 0x01). These parameters are
+        /// used to locate the corresponding local IRK in the resolving list; this IRK is used to generate their own address
+        /// used in the advertisement.
+        public let ownAddressType: OwnAddressType //Own_Address_Type
+        
+        public let peerAddressType: PeerAddressType //Peer_Address_Type
+        
+        public let peerAddress: Address // Peer_Address
+        
+        public let advertisingFilterPolicy: AdvertisingFilterPolicy //Advertising_Filter_Policy
+        
+        public init(advertisingHandle: UInt8, advertisingEventProperties: AdvertisingEventProperties, primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval), primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap, ownAddressType: OwnAddressType, peerAddressType: PeerAddressType, peerAddress: Address, advertisingFilterPolicy: AdvertisingFilterPolicy) {
+            self.advertisingHandle = advertisingHandle
+            self.advertisingEventProperties = advertisingEventProperties
+            self.primaryAdvertising = primaryAdvertising
+            self.primaryAdvertisingChannelMap = primaryAdvertisingChannelMap
+            self.ownAddressType = ownAddressType
+            self.peerAddressType = peerAddressType
+            self.peerAddress = peerAddress
+            self.advertisingFilterPolicy = advertisingFilterPolicy
+        }
+        
+        public var byteValue: [UInt8] {
+            return []
+        }
+        
+        public enum AdvertisingFilterPolicy: UInt8 {
+            
+            /// Process scan and connection requests from all devices (i.e., the White List is not in use)
+            case processScanFromAllDevices = 0x00
+            
+            /// Process connection requests from all devices and only scan requests from devices that are in the White List
+            case processConnectionRequest = 0x01
+            
+            /// Process scan requests from all devices and only connection requests from devices that are in the White List.
+            case procesScanRequest = 0x02
+            
+            /// Process scan and connection requests only from devices in the White List.
+            case processScanFromDevicesInWhiteList = 0x03
+        }
+        
+        public enum PeerAddressType: UInt8 {
+            
+            /// Public Device Address or Public Identity Address
+            case publicDeviceAddress = 0x00
+            
+            /// Random Device Address or Random (static) Identity Address
+            case randomDeviceAddress = 0x01
+        }
+        
+        public enum OwnAddressType: UInt8 {
+            
+            /// Public Device Address
+            case publicDeviceAddress = 0x00
+            
+            /// Random Device Address
+            case randomDeviceAddress = 0x01
+            
+            /// Controller generates the Resolvable Private Address based on the local IRK from the resolving list.
+            /// If the resolving list contains no matching entry, use the public address.
+            case usePublicAddressIfNoMatching = 0x02
+            
+            /// Controller generates the Resolvable Private Address based on the local IRK from the resolving list.
+            /// If the resolving list contains no matching entry, use the random address from LE_Set_Advertising_Set_Ran- dom_Address.
+            case useRandomAddressIfNoMatching = 0x03
+        }
+        
+        /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
+        /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
+        public enum PrimaryAdvertisingChannelMap : UInt8, BitMaskOption {
+            
+            /// Channel 37 shall be used
+            case channel37 = 0b1
+            
+            /// Channel 38 shall be used
+            case channel38 = 0b10
+            
+            /// Channel 39 shall be used
+            case channel39 = 0b100
+            
+            public static var all: Set<LowEnergyCommand.SetExtendedAdvertisingParameters.PrimaryAdvertisingChannelMap> = [
+                .channel37, .channel38, .channel39
+            ]
+        }
+        
+        /// Type for Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max
+        public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            /// 20 ms
+            public static let min = PrimaryAdvertisingInterval(0x000020)
+            
+            /// 10,485.759375 seconds
+            public static let max = PrimaryAdvertisingInterval(0xFFFFFF)
+            
+            public let rawValue: UInt32
+            
+            public init?(rawValue: UInt32) {
+                
+                guard rawValue >= PrimaryAdvertisingInterval.min.rawValue,
+                    rawValue <= PrimaryAdvertisingInterval.max.rawValue
+                    else { return nil }
+                
+                assert((PrimaryAdvertisingInterval.min.rawValue ... PrimaryAdvertisingInterval.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 0.625 msec
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 0.625
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt32) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: PrimaryAdvertisingInterval, rhs: PrimaryAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: PrimaryAdvertisingInterval, rhs: PrimaryAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+
+        /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
+        /// and its basic properties.
+        public enum AdvertisingEventProperties: UInt16, BitMaskOption {
+            
+            /// Connectable advertising
+            case connectableAdvertising                         = 0b1
+            
+            /// Scannable advertising
+            case scannableAdvertising                           = 0b10
+            
+            /// Directed advertising
+            case directedAdvertising                            = 0b100
+            
+            /// High Duty Cycle Directed Connectable advertising (≤ 3.75 ms Advertis- ing Interval)
+            case highDutyCycleDirectedConnectableAdvertising    = 0b1000
+            
+            /// Use legacy advertising PDUs
+            case useLegacyAdvertisingPDUs                       = 0b10000
+            
+            /// Omit advertiser's address from all PDUs ("anonymous advertising")
+            case omitAdvertisingAddress                         = 0b100000
+            
+            /// Include TxPower in the extended header of the advertising PDU
+            case includeTxPower                                 = 0b1000000
+            
+            public static var all: Set<LowEnergyCommand.SetExtendedAdvertisingParameters.AdvertisingEventProperties> = [
+                .connectableAdvertising,
+                .scannableAdvertising,
+                .directedAdvertising,
+                .highDutyCycleDirectedConnectableAdvertising,
+                .useLegacyAdvertisingPDUs,
+                .omitAdvertisingAddress,
+                .includeTxPower
+            ]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
