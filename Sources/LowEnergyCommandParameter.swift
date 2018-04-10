@@ -556,7 +556,7 @@ public extension LowEnergyCommand {
     /// * the scanning filter policy uses the White List and scanning is enabled.
     /// * the initiator filter policy uses the White List and a create connection command is outstanding.
     ///
-    /// Address is ignored when Address_Type is set to 0xFF.
+    /// Address is ignored when Address Type is set to 0xFF.
     public struct RemoveDeviceToWhiteListParameter: HCICommandParameter {
         
         public static let command = LowEnergyCommand.removeDeviceFromWhiteList //0x0012
@@ -686,7 +686,7 @@ public extension LowEnergyCommand {
         /// Channel n is bad = 0. Channel n is unknown = 1.
         /// The most significant bits are reserved and shall be set to 0for future use.
         /// At least one channel shall be marked as unknown.
-        public let channelMap : LowEnergyChannelMap  //Channel_Map
+        public let channelMap: LowEnergyChannelMap  //Channel_Map
         
         public init(channelMap : LowEnergyChannelMap) {
             self.channelMap = channelMap
@@ -762,8 +762,9 @@ public extension LowEnergyCommand {
     /// LE Encrypt Command
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
-    /// and returns the Encrypted_Data to the Host.
-    /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+    /// and returns the Encrypted Data to the Host.
+    ///
+    /// - Note: The AES-128 bit block cypher is defined in NIST Publication [FIPS-197](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
     public struct EncryptParameter: HCICommandParameter {
         
         public static let command = LowEnergyCommand.encrypt //0x0017
