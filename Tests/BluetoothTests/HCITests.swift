@@ -17,12 +17,13 @@ final class HCITests: XCTestCase {
     static let allTests = [
         ("testName", testName),
         ("testWriteLocalName", testWriteLocalName),
-        ("testLEReadRemoteUsedFeatures", testLEReadRemoteUsedFeatures),
         ("testReadLocalName", testReadLocalName),
         ("testLowEnergyScan", testLowEnergyScan),
+        ("testLEReadRemoteUsedFeatures", testLEReadRemoteUsedFeatures),
         ("testAdvertisingReport", testAdvertisingReport),
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
+        ("testCommandStatusEvent", testCommandStatusEvent)
     ]
     
     func testName() {
@@ -293,6 +294,8 @@ final class HCITests: XCTestCase {
         
         XCTAssert(features.isEmpty == false, "Empty features")
         XCTAssertEqual(features, [.encryption, .extendedRejectIndication, .slaveInitiatedFeaturesExchange, .ping])
+        XCTAssertNotEqual(features, [.encryption])
+        XCTAssertNotEqual(features, .all)
     }
     
     func testAdvertisingReport() {
