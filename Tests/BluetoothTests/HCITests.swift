@@ -24,7 +24,8 @@ final class HCITests: XCTestCase {
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
         ("testLEConnectionCancel", testLEConnectionCancel),
-        ("testLERemoveDeviceFromWhiteList", testLERemoveDeviceFromWhiteList)
+        ("testLERemoveDeviceFromWhiteList", testLERemoveDeviceFromWhiteList),
+        ("testEncryption", testEncryption)
     ]
     
     func testName() {
@@ -544,6 +545,67 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x12, 0x20, 0x00]))
         
         XCTAssertNoThrow(try hostController.lowEnergyRemoveDeviceFromWhiteList(whiteListDevice: .public(Address(rawValue: "58:E2:8F:7C:0B:B3")!)))
+    }
+    
+    func testEncryption() {
+        
+        do {
+            
+            let hostController = TestHostController()
+            
+            let connectionHandle: UInt16 = 0x0041
+            
+            let randomNumber: UInt64 = 0x0000000000000000
+            
+            let encryptedDiversifier: UInt16 = 0x0000
+            
+            let longTermKey = UInt128(bigEndian: UInt128(bytes: (0x23, 0x57, 0xEB, 0x0D, 0x0C, 0x24, 0xD8, 0x5A, 0x98, 0x57, 0x64, 0xEC, 0xCB, 0xEC, 0xEC, 0x05)))
+            
+            XCTAssertEqual(longTermKey.description, "2357EB0D0C24D85A985764ECCBECEC05")
+            
+            /**
+             SEND  [2019] LE Start Encryption - Connection Handle: 0x0041  19 20 1C 41 00 00 00 00 00 00 00 00 00 00 00 05 EC EC CB EC 64 57 98 5A D8 24 0C 0D EB 57 23
+             
+             [2019] Opcode: 0x2019 (OGF: 0x08    OCF: 0x19)
+             Parameter Length: 28 (0x1C)
+             Connection Handle: 0041
+             Random Number: 0000000000000000
+             Encrypted Diversifier: 0000
+             Long Term Key: 2357EB0D0C24D85A985764ECCBECEC05
+             */
+            hostController.queue.append(
+                .command(LowEnergyCommand.startEncryption.opcode,
+                         [0x19, 0x20, 0x1C, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23]))
+            
+            /**
+             RECV  Command Status - LE Start Encryption  0F 04 00 01 19 20
+             
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x2019 (OGF: 0x08    OCF: 0x19) - [Low Energy] LE Start Encryption
+             */
+            hostController.queue.append(.event([0x0F, 0x04, 0x00, 0x01, 0x19, 0x20]))
+            
+            /**
+             RECV  Encryption Change Complete - Encryption Enabled  08 04 00 41 00 01
+             
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Connection Handle: 0x0041
+             Encryption Enable: 0x01
+             */
+            hostController.queue.append(.event([0x08, 0x04, 0x00, 0x41, 0x00, 0x01]))
+            
+            var encryptionChange: TestHostController.LowEnergyEncryptionChange?
+            XCTAssertNoThrow(encryptionChange = try hostController.lowEnergyStartEncryption(connectionHandle: connectionHandle,
+                                                                                            randomNumber: randomNumber,
+                                                                                            encryptedDiversifier: encryptedDiversifier,
+                                                                                            longTermKey: longTermKey))
+            
+            XCTAssertEqual(encryptionChange, .e0)
+            XCTAssertEqual(encryptionChange?.rawValue, 0x01)
+        }
     }
 }
 
