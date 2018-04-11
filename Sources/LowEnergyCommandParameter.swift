@@ -1719,6 +1719,11 @@ public extension LowEnergyCommand {
         /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
         public enum PrimaryAdvertisingChannelMap: UInt8, BitMaskOption {
             
+            #if swift(>=3.1)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt8
+            #endif
+            
             /// Channel 37 shall be used
             case channel37 = 0b1
             
@@ -1728,8 +1733,10 @@ public extension LowEnergyCommand {
             /// Channel 39 shall be used
             case channel39 = 0b100
             
-            public static var all: Set<LowEnergyCommand.SetExtendedAdvertisingParameters.PrimaryAdvertisingChannelMap> = [
-                .channel37, .channel38, .channel39
+            public static var all: Set<PrimaryAdvertisingChannelMap> = [
+                .channel37,
+                .channel38,
+                .channel39
             ]
         }
         
@@ -1788,6 +1795,11 @@ public extension LowEnergyCommand {
         /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
         /// and its basic properties.
         public enum AdvertisingEventProperties: UInt16, BitMaskOption {
+            
+            #if swift(>=3.1)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt16
+            #endif
             
             /// Connectable advertising
             case connectableAdvertising                         = 0b1
@@ -2473,6 +2485,11 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
 //// or whether it has specified particular PHYs that it prefers in the TX_PHYS or RX_PHYS parameter.
 public enum LowEnergyAllPhys: UInt8, BitMaskOption {
     
+    #if swift(>=3.1)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
     /// The Host has no preference among the transmitter PHYs supported by the Controller
     case hostHasNoPreferenceAmongTheTransmitterPhy  = 0b01
     
@@ -2487,6 +2504,11 @@ public enum LowEnergyAllPhys: UInt8, BitMaskOption {
 /// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
 //// the TX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
 public enum LowEnergyTxPhys: UInt8, BitMaskOption {
+    
+    #if swift(>=3.1)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
     
     /// The Host prefers to use the LE 1M transmitter PHY (possibly among others)
     case hostUseLe1MTransmitterPhy      = 0b001
@@ -2507,6 +2529,11 @@ public enum LowEnergyTxPhys: UInt8, BitMaskOption {
 /// the RX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
 public enum LowEnergyRxPhys: UInt8, BitMaskOption {
     
+    #if swift(>=3.1)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
     /// The Host prefers to use the LE 1M receiver PHY (possibly among others)
     case hostUseLe1MReceiverPhy      = 0
     
@@ -2525,6 +2552,11 @@ public enum LowEnergyRxPhys: UInt8, BitMaskOption {
 /// The default value for a new connection shall be all zero bits. The Controller may override
 /// any preferred coding for transmitting on the LE Coded PHY.
 public enum LowEnergyPhyOptions: UInt16, BitMaskOption {
+    
+    #if swift(>=3.1)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt16
+    #endif
     
     /// The Host has no preferred coding when transmitting on the LE Coded PHY
     case host       = 0b01
