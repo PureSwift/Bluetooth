@@ -37,7 +37,7 @@ final class HCITests: XCTestCase {
         
         XCTAssert(LinkControlCommand.acceptConnection.name == "Accept Connection Request")
         XCTAssert(LinkPolicyCommand.holdMode.name == "Hold Mode")
-        XCTAssert(InformationalParametersCommand.readLocalVersionInformation.name == "Read Local Version Information")
+        XCTAssert(InformationalCommand.readLocalVersionInformation.name == "Read Local Version Information")
         XCTAssert(HostControllerBasebandCommand.readLocalName.name == "Read Local Name")
         XCTAssert(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
         XCTAssert(LowEnergyCommand.createConnection.name == "LE Create Connection")
@@ -46,6 +46,49 @@ final class HCITests: XCTestCase {
         XCTAssert(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
         
         XCTAssertTrue(HCIError.unknownCommand.description == "Unknown HCI Command")
+    }
+    
+    func testReadLocalVersionInformation() {
+        
+        typealias LocalVersionInformation = InformationalCommand.ReadLocalVersionInformationReturnParameter
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [1001] Read Local Version Information  01 10 00
+         [1001] Opcode: 0x1001 (OGF: 0x04    OCF: 0x01)
+         */
+        hostController.queue.append(
+            .command(InformationalCommand.readLocalVersionInformation.opcode,
+                     [0x01, 0x10, 0x00])
+        )
+        
+        /**
+         RECV  Command Complete [1001] - Read Local Version Information - HCI Version: 0x08 (Core Spec v 4.2)  0E 0C 01 01 10 00 08 C2 12 08 0F 00 9A 21
+         
+         Parameter Length: 12 (0x0C)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x1001 (OGF: 0x04    OCF: 0x01) - [Informational] Read Local Version Information
+         HCI Version: 0x08 (Core Spec v 4.2)
+         HCI Revision: 0x12C2
+         LMP Version: 0x08
+         Manufacturer Name: 0x000F (Broadcom)
+         LMP Subversion: 0x219A
+         */
+        hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x01, 0x10, 0x00, 0x08, 0xC2, 0x12, 0x08, 0x0F, 0x00, 0x9A, 0x21]))
+        
+        var localVersionInformation: LocalVersionInformation!
+        XCTAssertNoThrow(localVersionInformation = try hostController.readLocalVersionInformation())
+        XCTAssert(hostController.queue.isEmpty)
+        
+        XCTAssertEqual(localVersionInformation.hciVersion.rawValue, 0x08)
+        XCTAssertEqual(localVersionInformation.hciVersion, .v4_2)
+        XCTAssertEqual(localVersionInformation.hciRevision, 0x12C2)
+        XCTAssertEqual(localVersionInformation.lmpVersion, 0x08)
+        XCTAssertEqual(localVersionInformation.lmpSubversion, 0x219A)
+        XCTAssertEqual(localVersionInformation.manufacturer.rawValue, 0x000F)
+        XCTAssertEqual(localVersionInformation.manufacturer.description, "Broadcom Corporation")
     }
     
     func testReadLocalName() {
