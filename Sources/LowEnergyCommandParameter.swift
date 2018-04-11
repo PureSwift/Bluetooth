@@ -10,6 +10,40 @@ import Foundation
 
 public extension LowEnergyCommand {
     
+    /// LE Set Random Address Command
+    ///
+    /// Used by the Host to set the LE Random Device Address in the Controller.
+    ///
+    /// If this command is used to change the address, the new random address shall take effect for advertising no later than
+    /// the next successful LE Set Advertising Enable Command, for scanning no later than the next successful LE Set Scan Enable Command
+    /// or LE Set Extended Scan Enable Command, and for initiating no later than the next successful LE Create Connection Command
+    /// or LE Extended Create Connection Command.
+    ///
+    /// - Note: If Extended Advertising is in use, this command only affects the address used for scanning and initiating.
+    /// The addresses used for advertising are set by the LE Set Advertising Set Random Address command.
+    ///
+    /// If the Host issues this command when scanning or legacy advertising is enabled, the Controller shall return the error code Command Disallowed (`0x0C`).
+    public struct SetRandomAddressParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setRandomAddress
+        
+        public static let length = 6
+        
+        public var address: Address
+        
+        public init(address: Address) {
+            
+            self.address = address
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let bytes = address.littleEndian.bytes
+           
+            return [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5]
+        }
+    }
+    
     /// LE Set Advertising Data Command
     ///
     /// Used to set the data used in advertising packets that have a data field.
