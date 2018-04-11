@@ -9,18 +9,34 @@
 /// Bluetooth HCI Events (not categorized)
 public enum HCIGeneralEvent: UInt8, HCIEvent {
     
-    case inquiryComplete            = 0x01
-    case inquiryResult              = 0x02
-    case connectionComplete         = 0x03
+    /// Inquiry Complete
+    case inquiryComplete                    = 0x01
+    
+    /// Inquiry Result
+    case inquiryResult                      = 0x02
+    
+    /// Connection Complete
+    case connectionComplete                 = 0x03
     
     // TODO: Complete all HCI events
     
-    case remoteNameRequestComplete  = 0x07
-    case commandComplete            = 0x0E
-    case commandStatus              = 0x0F
+    /// Remote Name Request Complete
+    case remoteNameRequestComplete          = 0x07
+    
+    /// Encryption Change
+    case encryptionChange                   = 0x08
+    
+    /// Command Complete
+    case commandComplete                    = 0x0E
+    
+    /// Command Status
+    case commandStatus                      = 0x0F
+    
+    /// Encryption Key Refresh Complete
+    case encryptionKeyRefreshComplete       = 0x30
     
     /// Low Energy Meta Event.
-    case lowEnergyMeta              = 0x3E
+    case lowEnergyMeta                      = 0x3E
 }
 
 // MARK: - Name
