@@ -1697,7 +1697,9 @@ public extension LowEnergyCommand {
         
         public let primaryAdvertisingPhy: PrimaryAdvertisingPhy
         
-        public let secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip
+        /// The Secondary_Advertising_Max_Skip parameter is the maximum number of advertising events that
+        /// can be skipped before the AUX_ADV_IND can be sent.
+        public let secondaryAdvertisingMaxSkip: UInt8
         
         public let secondaryAdvertisingPhy: SecondaryAdvertisingPhy
         
@@ -1715,7 +1717,7 @@ public extension LowEnergyCommand {
                     advertisingFilterPolicy: AdvertisingFilterPolicy,
                     advertisingTxPower: LowEnergyTxPower,
                     primaryAdvertisingPhy: PrimaryAdvertisingPhy,
-                    secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip,
+                    secondaryAdvertisingMaxSkip: UInt8,
                     secondaryAdvertisingPhy: SecondaryAdvertisingPhy,
                     advertisingSid: UInt8,
                     scanRequestNotificationEnable: ScanRequestNotificationEnable) {
@@ -1766,7 +1768,7 @@ public extension LowEnergyCommand {
                     advertisingFilterPolicy.rawValue,
                     advertisingTxPowerByte,
                     primaryAdvertisingPhy.rawValue,
-                    secondaryAdvertisingMaxSkip.rawValue,
+                    secondaryAdvertisingMaxSkip,
                     secondaryAdvertisingPhy.rawValue,
                     advertisingSid,
                     scanRequestNotificationEnable.rawValue
@@ -1809,18 +1811,6 @@ public extension LowEnergyCommand {
             
             /// Secondary advertisement PHY is LE Coded
             case leCoded    = 0x03
-        }
-        
-        /// The Secondary_Advertising_Max_Skip parameter is the maximum number of advertising events that
-        /// can be skipped before the AUX_ADV_IND can be sent.
-        public enum SecondaryAdvertisingMaxSkip: UInt8 {
-            
-            /// AUX_ADV_IND shall be sent prior to the next advertising event
-            case sendAuxAdvInd      = 0x00
-            
-            /// Maximum advertising events the Controller can skip before sending the AUX_ADV_IND packets
-            /// on the secondary advertising channel
-            case skipAuxAdvInt      = 0x01
         }
         
         /// The Primary_Advertising_PHY parameter indicates the PHY on which the advertising packets
