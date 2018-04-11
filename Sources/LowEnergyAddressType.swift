@@ -27,6 +27,8 @@ public enum LowEnergyAddressType: UInt8 {
     ///
     /// This value shall only be used by a Host if either the Host or the Controller does 
     /// not support the LE Set Privacy Mode command.
+    ///
+    /// - Note: Requires Bluetooth 5.0
     case randomIdentity     = 0x03
     
     public init() { self = .public }
