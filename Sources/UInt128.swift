@@ -181,3 +181,15 @@ public extension Foundation.UUID {
                           bytes.15))
     }
 }
+
+// MARK: - ExpressibleByIntegerLiteral
+
+extension UInt128: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt64) {
+        
+        let bytes = value.bigEndian.bytes
+        
+        self = UInt128(bigEndian: UInt128(bytes: (0, 0, 0, 0, 0, 0, 0, 0, bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7)))
+    }
+}
