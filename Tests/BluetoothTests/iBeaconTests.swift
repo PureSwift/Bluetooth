@@ -22,7 +22,7 @@ final class iBeaconTests: XCTestCase {
         let value = iBeacon(uuid: UUID(uuidString: "f7826da6-4fa2-4e98-8024-bc5b71e0893e")!,
                             major: 0xAA,
                             minor: 0xBB,
-                            rssi: Int8(bitPattern: 0xb3))
+                            rssi: RSSI(rawValue: Int8(bitPattern: 0xb3))!)
         
         let advertisingData = value.advertisingData
         
@@ -98,7 +98,7 @@ final class iBeaconTests: XCTestCase {
         
         let uuid = UUID(rawValue: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!
         
-        let beacon = iBeacon(uuid: uuid, major: 1, minor: 1, rssi: -29, interval: 100)
+        let beacon = iBeacon(uuid: uuid, major: 1, minor: 1, rssi: RSSI(rawValue: -29)!, interval: 100)
         
         let hostController = TestHostController()
         
