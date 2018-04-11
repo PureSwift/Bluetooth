@@ -24,6 +24,7 @@ final class HCITests: XCTestCase {
         ("testCommandStatusEvent", testCommandStatusEvent),
         ("testLEConnection", testLEConnection),
         ("testLEConnectionCancel", testLEConnectionCancel),
+        ("testLEAddDeviceToWhiteList", testLEAddDeviceToWhiteList),
         ("testLERemoveDeviceFromWhiteList", testLERemoveDeviceFromWhiteList),
         ("testLEStartEncryption", testLEStartEncryption),
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
@@ -527,6 +528,24 @@ final class HCITests: XCTestCase {
         XCTAssert(hostController.queue.isEmpty)
     }
     
+    func testLEAddDeviceToWhiteList() {
+        
+        let hostController = TestHostController()
+        
+        // SEND  [2011] LE Add Device To White List - 0 - 58:E2:8F:7C:0B:B3  11 20 07 00 B3 0B 7C 8F E2 58
+        hostController.queue.append(
+            .command(LowEnergyCommand.addDeviceToWhiteList.opcode,
+                     [0x11, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
+        )
+        
+        // RECV  Command Complete [2011] - LE Add Device To White List  0E 04 01 11 20 00
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x11, 0x20, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.lowEnergyAddDeviceToWhiteList(.public(Address(rawValue: "58:E2:8F:7C:0B:B3")!)))
+        
+        XCTAssert(hostController.queue.isEmpty)
+    }
+    
     func testLERemoveDeviceFromWhiteList() {
         
         let hostController = TestHostController()
@@ -539,8 +558,9 @@ final class HCITests: XCTestCase {
          Address Type: Public
          Address: 58:E2:8F:7C:0B:B3
          */
-        hostController.queue.append(.command(LowEnergyCommand.removeDeviceFromWhiteList.opcode,
-                                             [0x12, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
+        hostController.queue.append(
+            .command(LowEnergyCommand.removeDeviceFromWhiteList.opcode,
+                     [0x12, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
         )
         
         /**
@@ -553,7 +573,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x12, 0x20, 0x00]))
         
-        XCTAssertNoThrow(try hostController.lowEnergyRemoveDeviceFromWhiteList(whiteListDevice: .public(Address(rawValue: "58:E2:8F:7C:0B:B3")!)))
+        XCTAssertNoThrow(try hostController.lowEnergyRemoveDeviceFromWhiteList(.public(Address(rawValue: "58:E2:8F:7C:0B:B3")!)))
         
         XCTAssert(hostController.queue.isEmpty)
     }
