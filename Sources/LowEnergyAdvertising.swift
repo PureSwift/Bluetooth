@@ -10,6 +10,17 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
+    typealias AdvertisingEventProperties = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingEventProperties
+    typealias PrimaryAdvertisingInterval = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingInterval
+    typealias PrimaryAdvertisingChannelMap = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingChannelMap
+    typealias OwnAddressType = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.OwnAddressType
+    typealias PeerAddressType = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PeerAddressType
+    typealias AdvertisingFilterPolicy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingFilterPolicy
+    typealias PrimaryAdvertisingPhy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingPhy
+    typealias SecondaryAdvertisingMaxSkip = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.SecondaryAdvertisingMaxSkip
+    typealias SecondaryAdvertisingPhy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.SecondaryAdvertisingPhy
+    typealias ScanRequestNotificationEnable = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.ScanRequestNotificationEnable
+    
     func enableLowEnergyAdvertising(_ enabled: Bool = true, timeout: HCICommandTimeout = .default) throws {
         
         let parameter = LowEnergyCommand.SetAdvertiseEnableParameter(enabled: enabled)
@@ -44,4 +55,14 @@ public extension BluetoothHostControllerInterface {
         
         try deviceRequest(parameters, timeout: timeout)
     }
+    
+    func setLowEnergySetExtendedAdvertisingParameters(advertisingHandle: UInt8, advertisingEventProperties: AdvertisingEventProperties, primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval), primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap, ownAddressType: OwnAddressType, peerAddressType: PeerAddressType, peerAddress: Address, advertisingFilterPolicy: AdvertisingFilterPolicy, advertisingTxPower: LowEnergyTxPower, primaryAdvertisingPhy: PrimaryAdvertisingPhy, secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip, secondaryAdvertisingPhy: SecondaryAdvertisingPhy, advertisingSid: UInt8, scanRequestNotificationEnable: ScanRequestNotificationEnable, timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
+        
+        let parameters = LowEnergyCommand.SetExtendedAdvertisingParametersParameter(advertisingHandle: advertisingHandle, advertisingEventProperties: advertisingEventProperties, primaryAdvertising: primaryAdvertising, primaryAdvertisingChannelMap: primaryAdvertisingChannelMap, ownAddressType: ownAddressType, peerAddressType: peerAddressType, peerAddress: peerAddress, advertisingFilterPolicy: advertisingFilterPolicy, advertisingTxPower: advertisingTxPower, primaryAdvertisingPhy: primaryAdvertisingPhy, secondaryAdvertisingMaxSkip: secondaryAdvertisingMaxSkip, secondaryAdvertisingPhy: secondaryAdvertisingPhy, advertisingSid: advertisingSid, scanRequestNotificationEnable: scanRequestNotificationEnable)
+        
+        let value = try deviceRequest(parameters, LowEnergyCommand.SetExtendedAdvertisingParametersReturnParameter.self, timeout: timeout)
+        
+        return value.selectedTxPower
+    }
+    
 }
