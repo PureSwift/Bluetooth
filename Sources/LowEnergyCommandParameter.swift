@@ -688,7 +688,7 @@ public extension LowEnergyCommand {
         /// At least one channel shall be marked as unknown.
         public let channelMap: LowEnergyChannelMap  //Channel_Map
         
-        public init(channelMap : LowEnergyChannelMap) {
+        public init(channelMap: LowEnergyChannelMap) {
             self.channelMap = channelMap
         }
         
@@ -1077,13 +1077,12 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             let peerIrkBytes = peerIrk.littleEndian.bytes
             let localIrkBytes = localIrk.littleEndian.bytes
             
             return [
-                    peerIdentifyAddressTypeBytes,
+                    peerIdentifyAddressType.rawValue,
                     peerIdentifyAddressBytes.0,
                     peerIdentifyAddressBytes.1,
                     peerIdentifyAddressBytes.2,
@@ -1164,11 +1163,10 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
             return [
-                peerIdentifyAddressTypeBytes,
+                peerIdentifyAddressType.rawValue,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
                 peerIdentifyAddressBytes.2,
@@ -1209,11 +1207,10 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let peerIdentifyAddressTypeBytes = peerIdentifyAddressType.rawValue.littleEndian
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
             return [
-                peerIdentifyAddressTypeBytes,
+                peerIdentifyAddressType.rawValue,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
                 peerIdentifyAddressBytes.2,
@@ -1422,10 +1419,10 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.readPhy //0x0031
         
         public let allPhys: LowEnergyAllPhys
-        public let txPhys:  LowEnergyTxPhys
+        public let txPhys: LowEnergyTxPhys
         public let rxPhys: LowEnergyRxPhys
         
-        public init(allPhys: LowEnergyAllPhys, txPhys:  LowEnergyTxPhys, rxPhys: LowEnergyRxPhys) {
+        public init(allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys) {
             self.allPhys = allPhys
             self.txPhys = txPhys
             self.rxPhys = rxPhys
@@ -1448,11 +1445,11 @@ public extension LowEnergyCommand {
     
         public let connectionHandle: UInt16
         public let allPhys: LowEnergyAllPhys
-        public let txPhys:  LowEnergyTxPhys
+        public let txPhys: LowEnergyTxPhys
         public let rxPhys: LowEnergyRxPhys
         public let phyOptions: LowEnergyPhyOptions
         
-        public init(connectionHandle: UInt16, allPhys: LowEnergyAllPhys, txPhys:  LowEnergyTxPhys, rxPhys: LowEnergyRxPhys, phyOptions: LowEnergyPhyOptions) {
+        public init(connectionHandle: UInt16, allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys, phyOptions: LowEnergyPhyOptions) {
             self.connectionHandle = connectionHandle
             self.allPhys = allPhys
             self.txPhys = txPhys
@@ -1720,7 +1717,7 @@ public extension LowEnergyCommand {
         
         /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
         /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
-        public enum PrimaryAdvertisingChannelMap : UInt8, BitMaskOption {
+        public enum PrimaryAdvertisingChannelMap: UInt8, BitMaskOption {
             
             /// Channel 37 shall be used
             case channel37 = 0b1
@@ -1872,7 +1869,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
@@ -1898,7 +1895,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             guard let encryptedData = UInt128(data: Data(byteValue))
@@ -1922,7 +1919,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             self.randomNumber = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
@@ -1945,7 +1942,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
@@ -1968,7 +1965,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
@@ -2037,7 +2034,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             self.resolvingListSize = byteValue[0]
@@ -2066,7 +2063,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             self.peerResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
@@ -2094,7 +2091,7 @@ public extension LowEnergyCommand {
         public let localResolvableAddress: UInt64 //Local_Resolvable_Address
         
         public init?(byteValue: [UInt8]) {
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
@@ -2128,7 +2125,7 @@ public extension LowEnergyCommand {
         public let supportedMaxRxTime: SupportedMaxRxTime
         
         public init?(byteValue: [UInt8]) {
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             guard let supportedMaxTxOctets = SupportedMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1]))))
@@ -2351,7 +2348,7 @@ public extension LowEnergyCommand {
         public let rxPhy: LowEnergyRxPhy
         
         public init?(byteValue: [UInt8]) {
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))

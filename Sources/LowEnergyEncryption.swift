@@ -64,7 +64,7 @@ public extension BluetoothHostControllerInterface {
         }
         
         //var encryptionChange: LowEnergyEncryptionChange?
-        var eventFound = false
+        //var eventFound = false
         /*
         try pollEvent(HCIGeneralEvent.LowEnergyMetaParameter.self, shouldContinue: { shouldContinue() && eventFound == false }, event: { (metaEvent) in
             
