@@ -16,6 +16,8 @@ final class HCITests: XCTestCase {
     
     static let allTests = [
         ("testName", testName),
+        ("testReadLocalVersionInformation", testReadLocalVersionInformation),
+        ("testReadDeviceAddress", testReadDeviceAddress),
         ("testWriteLocalName", testWriteLocalName),
         ("testReadLocalName", testReadLocalName),
         ("testLowEnergyScan", testLowEnergyScan),
@@ -89,6 +91,28 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(localVersionInformation.lmpSubversion, 0x219A)
         XCTAssertEqual(localVersionInformation.manufacturer.rawValue, 0x000F)
         XCTAssertEqual(localVersionInformation.manufacturer.description, "Broadcom Corporation")
+    }
+    
+    func testReadDeviceAddress() {
+        
+        let hostController = TestHostController()
+        
+        // SEND  [1009] Read Device Address  09 10 00
+        hostController.queue.append(
+            .command(InformationalCommand.readDeviceAddress.opcode,
+                     [0x09, 0x10, 0x00])
+        )
+        
+        // RECV  Command Complete [1009] - Read Device Address - AC:BC:32:A6:67:42  0E 0A 01 09 10 00 42 67 A6 32 BC AC
+        hostController.queue.append(
+            .event([0x0E, 0x0A, 0x01, 0x09, 0x10, 0x00, 0x42, 0x67, 0xA6, 0x32, 0xBC, 0xAC])
+        )
+        
+        var address: Address = .zero
+        XCTAssertNoThrow(address = try hostController.readDeviceAddress())
+        XCTAssert(hostController.queue.isEmpty)
+        XCTAssertNotEqual(address, .zero)
+        XCTAssertEqual(address.rawValue, "AC:BC:32:A6:67:42")
     }
     
     func testReadLocalName() {
