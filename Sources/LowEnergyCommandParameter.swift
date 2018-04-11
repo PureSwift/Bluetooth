@@ -1651,7 +1651,7 @@ public extension LowEnergyCommand {
     /// LE Set Extended Advertising Parameters Command
     ///
     /// The command is used by the Host to set the advertising parameters.
-    public struct SetExtendedAdvertisingParameters: HCICommandParameter { //HCI_LE_Set_ Extended_ Advertising_ Parameters
+    public struct SetExtendedAdvertisingParametersParameter: HCICommandParameter { //HCI_LE_Set_ Extended_ Advertising_ Parameters
         
         public static let command = LowEnergyCommand.setAdvertisingSetRandomAddress //0x0036
         
@@ -1693,7 +1693,20 @@ public extension LowEnergyCommand {
         
         public let advertisingFilterPolicy: AdvertisingFilterPolicy //Advertising_Filter_Policy
         
-        public init(advertisingHandle: UInt8, advertisingEventProperties: AdvertisingEventProperties, primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval), primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap, ownAddressType: OwnAddressType, peerAddressType: PeerAddressType, peerAddress: Address, advertisingFilterPolicy: AdvertisingFilterPolicy) {
+        public let advertisingTxPower: LowEnergyTxPower //Advertising_Tx_Power
+        
+        public let primaryAdvertisingPhy: PrimaryAdvertisingPhy
+        
+        public let secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip
+        
+        public let secondaryAdvertisingPhy: SecondaryAdvertisingPhy
+        
+        public let advertisingSid: UInt8
+        
+        public let scanRequestNotificationEnable: ScanRequestNotificationEnable
+        
+        public init(advertisingHandle: UInt8, advertisingEventProperties: AdvertisingEventProperties, primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval), primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap, ownAddressType: OwnAddressType, peerAddressType: PeerAddressType, peerAddress: Address, advertisingFilterPolicy: AdvertisingFilterPolicy,
+                    advertisingTxPower: LowEnergyTxPower, primaryAdvertisingPhy: PrimaryAdvertisingPhy, secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip, secondaryAdvertisingPhy: SecondaryAdvertisingPhy, advertisingSid: UInt8, scanRequestNotificationEnable: ScanRequestNotificationEnable) {
             self.advertisingHandle = advertisingHandle
             self.advertisingEventProperties = advertisingEventProperties
             self.primaryAdvertising = primaryAdvertising
@@ -1702,10 +1715,78 @@ public extension LowEnergyCommand {
             self.peerAddressType = peerAddressType
             self.peerAddress = peerAddress
             self.advertisingFilterPolicy = advertisingFilterPolicy
+            self.advertisingTxPower = advertisingTxPower
+            self.primaryAdvertisingPhy = primaryAdvertisingPhy
+            self.secondaryAdvertisingMaxSkip = secondaryAdvertisingMaxSkip
+            self.secondaryAdvertisingPhy = secondaryAdvertisingPhy
+            self.advertisingSid = advertisingSid
+            self.scanRequestNotificationEnable = scanRequestNotificationEnable
         }
         
         public var byteValue: [UInt8] {
             return []
+        }
+        
+        /// The Scan_Request_Notification_Enable parameter indicates whether the Controller shall send
+        /// notifications upon the receipt of a scan request PDU that is in response to an advertisement from
+        /// the specified advertising set that contains its device address and is from a scanner that is allowed
+        /// by the advertising filter policy.
+        ///
+        /// If the Host issues this command when advertising is enabled for the specified advertising set,
+        /// the Controller shall return the error code Command Disallowed (0x0C).
+        ///
+        /// If periodic advertising is enabled for the advertising set and the Secondary_Advertising_PHY parameter
+        /// does not specify the PHY currently being used for the periodic advertising, the Controller shall
+        /// return the error code Command Disallowed (0x0C).
+        ///
+        /// If the Advertising_Handle does not identify an existing advertising set and the Controller is unable
+        /// to support a new advertising set at present, the Controller shall return the error code Memory
+        /// Capacity Exceeded (0x07).
+        public enum ScanRequestNotificationEnable: UInt8 {
+            
+            /// Scan request notifications disabled
+            case disabled       = 0x00
+            
+            /// Scan request notifications enabled
+            case enabled        = 0x01
+        }
+        
+        /// The Secondary_Advertising_PHY parameter indicates the PHY on which
+        /// the advertising packets are be transmitted on the secondary advertising channel.
+        public enum SecondaryAdvertisingPhy: UInt8 {
+            
+            /// Secondary advertisement PHY is LE 1M
+            case le1M       = 0x01
+            
+            /// Secondary advertisement PHY is LE 2M
+            case le2M       = 0x02
+            
+            /// Secondary advertisement PHY is LE Coded
+            case leCoded    = 0x03
+        }
+        
+        /// The Secondary_Advertising_Max_Skip parameter is the maximum number of advertising events that
+        /// can be skipped before the AUX_ADV_IND can be sent.
+        public enum SecondaryAdvertisingMaxSkip: UInt8 {
+            
+            /// AUX_ADV_IND shall be sent prior to the next advertising event
+            case sendAuxAdvInd      = 0x00
+            
+            /// Maximum advertising events the Controller can skip before sending the AUX_ADV_IND packets
+            /// on the secondary advertising channel
+            case skipAuxAdvInt      = 0x01
+        }
+        
+        /// The Primary_Advertising_PHY parameter indicates the PHY on which the advertising packets
+        /// are transmitted on the primary advertising channel. If legacy advertising PDUs are being used,
+        /// the Primary_Advertising_PHY shall indicate the LE 1M PHY.
+        public enum PrimaryAdvertisingPhy: UInt8 {
+            
+            /// Primary advertisement PHY is LE 1M
+            case le1M       = 0x01
+            
+            /// Primary advertisement PHY is LE Coded
+            case leCoded    = 0x03
         }
         
         public enum AdvertisingFilterPolicy: UInt8 {
@@ -1856,7 +1937,7 @@ public extension LowEnergyCommand {
             /// Include TxPower in the extended header of the advertising PDU
             case includeTxPower                                 = 0b1000000
             
-            public static var all: Set<LowEnergyCommand.SetExtendedAdvertisingParameters.AdvertisingEventProperties> = [
+            public static var all: Set<LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingEventProperties> = [
                 .connectableAdvertising,
                 .scannableAdvertising,
                 .directedAdvertising,
@@ -2409,9 +2490,76 @@ public extension LowEnergyCommand {
             self.rxPhy = rxPhy
         }
     }
+    
+    /// LE Set Extended Advertising Parameters Command
+    ///
+    /// The command is used by the Host to set the advertising parameters.
+    public struct SetExtendedAdvertisingParametersReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.setExtendedAdvertisingParameters //0x0036
+        
+        public static let length: Int = 1
+        
+        public let selectedTxPower: LowEnergyTxPower
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            guard let selectedTxPower = LowEnergyTxPower(rawValue: Int8(bitPattern: byteValue[0]))
+                else { return nil }
+            
+            self.selectedTxPower = selectedTxPower
+        }
+    }
 }
 
 // MARK: - Supporting Types
+
+/// Units: dBm
+/// 127 Host has no preference
+public struct LowEnergyTxPower: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    public static let min = LowEnergyTxPower(-127)
+    
+    public static let max = LowEnergyTxPower(126)
+    
+    public let rawValue: Int8
+    
+    public init?(rawValue: Int8) {
+        
+        guard rawValue >= LowEnergyTxPower.min.rawValue,
+            rawValue <= LowEnergyTxPower.max.rawValue
+            else { return nil }
+        
+        assert((LowEnergyTxPower.min.rawValue ... LowEnergyTxPower.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: Int8) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyTxPower, rhs: LowEnergyTxPower) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyTxPower, rhs: LowEnergyTxPower) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
 
 public enum LowEnergyRxPhy: UInt8 { //RX_PHY
     
