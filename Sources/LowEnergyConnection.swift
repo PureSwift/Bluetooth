@@ -17,11 +17,11 @@ public extension BluetoothHostControllerInterface {
                                                                     peerAddress: peerAddress,
                                                                     ownAddressType: ownAddressType)
         
-        return try lowEnergyCreateConnection(parameters: parameters, timeout: timeout)
+        return try lowEnergyCreateConnection(parameters: parameters, timeout: timeout).handle
     }
     
     func lowEnergyCreateConnection(parameters: LowEnergyCommand.CreateConnectionParameter,
-                                   timeout: HCICommandTimeout = .default) throws -> UInt16 {
+                                   timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.ConnectionCompleteParameter {
         
         // connect with specified parameters
         let event = try deviceRequest(parameters,
@@ -34,7 +34,8 @@ public extension BluetoothHostControllerInterface {
             throw error
             
         case .success:
-            return event.handle
+            
+            return event
         }
     }
     

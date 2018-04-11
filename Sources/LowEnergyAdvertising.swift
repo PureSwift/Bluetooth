@@ -10,6 +10,17 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
+    typealias AdvertisingEventProperties = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingEventProperties
+    typealias PrimaryAdvertisingInterval = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingInterval
+    typealias PrimaryAdvertisingChannelMap = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingChannelMap
+    typealias OwnAddressType = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.OwnAddressType
+    typealias PeerAddressType = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PeerAddressType
+    typealias AdvertisingFilterPolicy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingFilterPolicy
+    typealias PrimaryAdvertisingPhy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingPhy
+    typealias SecondaryAdvertisingMaxSkip = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.SecondaryAdvertisingMaxSkip
+    typealias SecondaryAdvertisingPhy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.SecondaryAdvertisingPhy
+    typealias ScanRequestNotificationEnable = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.ScanRequestNotificationEnable
+    
     func enableLowEnergyAdvertising(_ enabled: Bool = true, timeout: HCICommandTimeout = .default) throws {
         
         let parameter = LowEnergyCommand.SetAdvertiseEnableParameter(enabled: enabled)
@@ -33,5 +44,25 @@ public extension BluetoothHostControllerInterface {
         let parameter = LowEnergyCommand.SetAdvertisingDataParameter(data: bytes, length: UInt8(data.count))
         
         try deviceRequest(parameter, timeout: timeout)
+    }
+    
+    /// LE Set Advertising Set Random Address Command
+    ///
+    /// The command is used by the Host to set the random device address specified by the Random_Address parameter.
+    func lowEnergySetAdvertisingSetRandomAddress(advertisingHandle: UInt8,
+                                                 advertisingRandomAddress: Address,
+                                                 timeout: HCICommandTimeout = .default) throws {
+        
+        let parameters = LowEnergyCommand.SetAdvertisingSetRandomAddress(advertisingHandle: advertisingHandle, advertisingRandomAddress: advertisingRandomAddress)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    func setLowEnergySetExtendedAdvertisingParameters(_ parameters: LowEnergyCommand.SetExtendedAdvertisingParametersParameter,
+                                                      timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
+        
+        let returnParameter = try deviceRequest(parameters, LowEnergyCommand.SetExtendedAdvertisingParametersReturnParameter.self, timeout: timeout)
+        
+        return returnParameter.selectedTxPower
     }
 }

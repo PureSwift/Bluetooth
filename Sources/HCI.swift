@@ -55,7 +55,7 @@ public enum HCIOpcodeGroupField: UInt16 {
     case hostControllerBaseband = 0x03
     
     /// Informational Parameters
-    case informationalParameters = 0x04
+    case informational = 0x04
     
     /// Status Parameters
     case statusParameters = 0x05

@@ -133,6 +133,7 @@ public extension LowEnergyFeature {
 /// FeatureSet field’s bit mapping to Controller features
 internal let featureSet: [LowEnergyFeature: (isValid: Bool, name: String)] = [
     
+    // swiftlint:disable colon
     .encryption:                                (true, "LE Encryption"),
     .connectionParametersRequestProcedure:      (true, "Connection Parameters Request Procedure"),
     .extendedRejectIndication:                  (true, "Extended Reject Indication"),
@@ -151,6 +152,7 @@ internal let featureSet: [LowEnergyFeature: (isValid: Bool, name: String)] = [
     .powerClass1:                               (true, "LE Power Class 1"),
     .minimumNumberofUsedChannelsProcedure:      (false, "Minimum Number of Used Channels Procedure")
 ]
+// swiftlint:enable colon
 
 // MARK: - Supporting Types
 
