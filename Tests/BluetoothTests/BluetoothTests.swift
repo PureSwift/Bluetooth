@@ -22,6 +22,7 @@ final class BluetoothTests: XCTestCase {
         ("testHCICommandTimeout", testHCICommandTimeout),
         ("testPOSIXError", testPOSIXError),
         ("testHCIVersion", testHCIVersion),
+        ("testLowEnergyAddressType", testLowEnergyAddressType),
         ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
         ("testBitMaskOption", testBitMaskOption),
@@ -75,6 +76,22 @@ final class BluetoothTests: XCTestCase {
         XCTAssertNotEqual(HCIVersion.v4_0, .v5_0)
         XCTAssertLessThan(HCIVersion.v4_0, .v4_2)
         XCTAssertGreaterThan(HCIVersion.v5_0, .v4_2)
+    }
+    
+    func testLowEnergyAddressType() {
+        
+        XCTAssertEqual(LowEnergyAddressType(), .public)
+        
+        XCTAssert(LowEnergyAddressType.public.isCompatible(with: .v4_0))
+        XCTAssert(LowEnergyAddressType.public.isCompatible(with: .v4_2))
+        XCTAssert(LowEnergyAddressType.public.isCompatible(with: .v5_0))
+        XCTAssert(LowEnergyAddressType.random.isCompatible(with: .v4_0))
+        XCTAssert(LowEnergyAddressType.random.isCompatible(with: .v4_2))
+        XCTAssert(LowEnergyAddressType.random.isCompatible(with: .v5_0))
+        XCTAssert(LowEnergyAddressType.publicIdentity.isCompatible(with: .v5_0))
+        XCTAssert(LowEnergyAddressType.randomIdentity.isCompatible(with: .v5_0))
+        XCTAssert(LowEnergyAddressType.publicIdentity.isCompatible(with: .v4_2) == false)
+        XCTAssert(LowEnergyAddressType.randomIdentity.isCompatible(with: .v4_2) == false)
     }
     
     func testLowEnergyState() {
