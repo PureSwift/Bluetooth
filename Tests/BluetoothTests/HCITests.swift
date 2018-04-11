@@ -25,7 +25,9 @@ final class HCITests: XCTestCase {
         ("testLEConnection", testLEConnection),
         ("testLEConnectionCancel", testLEConnectionCancel),
         ("testLERemoveDeviceFromWhiteList", testLERemoveDeviceFromWhiteList),
-        ("testLEStartEncryption", testLEStartEncryption)
+        ("testLEStartEncryption", testLEStartEncryption),
+        ("testEncryptionChangeEvent", testEncryptionChangeEvent),
+        ("testLowEnergyEncrypt", testLowEnergyEncrypt)
     ]
     
     func testName() {
@@ -604,15 +606,82 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x08, 0x04, 0x00, 0x41, 0x00, 0x01]))
         
         // FIXME: Implement LE Encryption
-        var encryptionChange: Void //TestHostController.LowEnergyEncryptionChange?
-        XCTAssertNoThrow(encryptionChange = try hostController.lowEnergyStartEncryption(connectionHandle: connectionHandle,
-                                                                                        randomNumber: randomNumber,
-                                                                                        encryptedDiversifier: encryptedDiversifier,
-                                                                                        longTermKey: longTermKey))
+        //var encryptionChange: TestHostController.LowEnergyEncryptionChange?
+        XCTAssertNoThrow(/* encryptionChange = */ try hostController.lowEnergyStartEncryption(connectionHandle: connectionHandle,
+                                                                                              randomNumber: randomNumber,
+                                                                                              encryptedDiversifier: encryptedDiversifier,
+                                                                                              longTermKey: longTermKey))
         
         //XCTAssert(hostController.queue.isEmpty)
         //XCTAssertEqual(encryptionChange, .e0)
         //XCTAssertEqual(encryptionChange?.rawValue, 0x01)
+    }
+    
+    func testEncryptionChangeEvent() {
+        
+        typealias Event = HCIGeneralEvent.EncryptionChangeEventParameter
+        
+        let data: [UInt8] = [/* 0x08, 0x04, */ 0x00, 0x41, 0x00, 0x01]
+        
+        guard let event = HCIGeneralEvent.EncryptionChangeEventParameter(byteValue: data)
+            else { XCTFail("Could not parse HCI Event"); return }
+        
+        XCTAssertEqual(event.status.rawValue, 0x00)
+        XCTAssertEqual(event.handle, 0x0041)
+        XCTAssertEqual(event.encryptionEnabled, .e0)
+        XCTAssertEqual(event.encryptionEnabled.rawValue, 0x01)
+    }
+    
+    func testLowEnergyEncrypt() {
+        
+        let hostController = TestHostController()
+        
+        let key = UInt128(bigEndian: UInt128(bytes: (0x4C, 0x68, 0x38, 0x41, 0x39, 0xF5, 0x74, 0xD8, 0x36, 0xBC, 0xF3, 0x4E, 0x9D, 0xFB, 0x01, 0xBF)))
+        
+        XCTAssertEqual(key.description, "4C68384139F574D836BCF34E9DFB01BF")
+        
+        let plainTextData = UInt128(bigEndian: UInt128(bytes: (0x02, 0x13, 0x24, 0x35, 0x46, 0x57, 0x68, 0x79, 0xac, 0xbd, 0xce, 0xdf, 0xe0, 0xf1, 0x02, 0x13)))
+        
+        XCTAssertEqual(plainTextData.description, "0213243546576879ACBDCEDFE0F10213")
+        
+        /**
+         HCI_LE_Encrypt (length 0x20) – command
+         Pars (LSO to MSO) bf 01 fb 9d 4e f3 bc 36 d8 74 f5 39 41 38 68 4c 13 02 f1 e0 df
+         ce bd ac 79 68 57 46 35 24 13 02
+         Key (16-octet value MSO to LSO): 0x4C68384139F574D836BCF34E9DFB01BF
+         Plaintext_Data (16-octet value MSO to LSO): 0x0213243546576879acbdcedfe0f10213
+         */
+        
+        let commandHeader = HCICommandHeader(command: LowEnergyCommand.encrypt,
+                                             parameterLength: 0x20)
+        
+        XCTAssertEqual(commandHeader.byteValue, [23, 32, 32])
+        
+        hostController.queue.append(
+            .command(commandHeader.opcode,
+                     commandHeader.byteValue + [0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]
+            )
+        )
+        
+        /**
+         HCI_Command_Complete (length 0x14) – event
+         Pars (LSO to MSO) 02 17 20 00 66 c6 c2 27 8e 3b 8e 05 3e 7e a3 26 52 1b ad 99
+         Num_HCI_Commands_Packets: 0x02
+         Command_Opcode (2-octet value MSO to LSO): 0x2017
+         Status: 0x00
+         Encrypted_Data (16-octet value MSO to LSO): 0x99ad1b5226a37e3e058e3b8e27c2c666
+         */
+        
+        let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x14)
+        
+        hostController.queue.append(.event(eventHeader.byteValue + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
+        
+        var encryptedData: UInt128 = .zero
+        
+        XCTAssertNoThrow(encryptedData = try hostController.lowEnergyEncrypt(key: key, data: plainTextData))
+        
+        XCTAssertNotEqual(encryptedData, .zero)
+        XCTAssertEqual(encryptedData.description, "99AD1B5226A37E3E058E3B8E27C2C666")
     }
 }
 

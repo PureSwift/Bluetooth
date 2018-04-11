@@ -41,7 +41,6 @@ public extension BluetoothHostControllerInterface {
                                   randomNumber: UInt64,
                                   encryptedDiversifier: UInt16,
                                   longTermKey: UInt128,
-                                  shouldContinue: () -> (Bool) = { return true },
                                   timeout: HCICommandTimeout = .default) throws {
         
         /**
@@ -63,9 +62,10 @@ public extension BluetoothHostControllerInterface {
             throw error
         }
         
-        //var encryptionChange: LowEnergyEncryptionChange?
-        //var eventFound = false
         /*
+        var encryptionChange: LowEnergyEncryptionChange?
+        var eventFound = false
+        
         try pollEvent(HCIGeneralEvent.LowEnergyMetaParameter.self, shouldContinue: { shouldContinue() && eventFound == false }, event: { (metaEvent) in
             
             eventFound = true

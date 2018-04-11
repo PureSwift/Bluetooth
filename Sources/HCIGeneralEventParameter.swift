@@ -116,6 +116,7 @@ public extension HCIGeneralEvent {
         public let encryptionEnabled: EncryptionEnabled
         
         public init?(byteValue: [UInt8]) {
+            
             guard byteValue.count == EncryptionChangeEventParameter.length
                 else { return nil }
             
