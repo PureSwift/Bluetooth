@@ -57,6 +57,7 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case enhancedTransmitterTest           = 0x0034
     case setAdvertisingSetRandomAddress    = 0x0035
     case setExtendedAdvertisingParameters  = 0x0036
+    case setExtendedAdvertisingData        = 0x0037
 }
 
 // MARK: - Name
@@ -116,6 +117,7 @@ public extension LowEnergyCommand {
         "LE Enhanced Receiver Test",
         "LE Enhanced Transmitter Test",
         "LE Set Advertising Set Random Address",
-        "LE Set Extended Advertising Parameters"
+        "LE Set Extended Advertising Parameters",
+        "LE Set Extended Advertising Data"
     ]
 }
