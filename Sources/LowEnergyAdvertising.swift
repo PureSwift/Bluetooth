@@ -10,32 +10,36 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    typealias AdvertisingEventProperties = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingEventProperties
-    typealias PrimaryAdvertisingInterval = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingInterval
-    typealias PrimaryAdvertisingChannelMap = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingChannelMap
-    typealias OwnAddressType = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.OwnAddressType
-    typealias PeerAddressType = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PeerAddressType
-    typealias AdvertisingFilterPolicy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingFilterPolicy
-    typealias PrimaryAdvertisingPhy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.PrimaryAdvertisingPhy
-    typealias SecondaryAdvertisingMaxSkip = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.SecondaryAdvertisingMaxSkip
-    typealias SecondaryAdvertisingPhy = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.SecondaryAdvertisingPhy
-    typealias ScanRequestNotificationEnable = LowEnergyCommand.SetExtendedAdvertisingParametersParameter.ScanRequestNotificationEnable
-    
-    func enableLowEnergyAdvertising(_ enabled: Bool = true, timeout: HCICommandTimeout = .default) throws {
+    /// LE Set Advertising Enable
+    ///
+    /// The LE Set Advertising Enable command is used to request the Controller to start or stop advertising.
+    /// The Controller manages the timing of advertisements as per the advertising parameters given in the
+    /// LE Set Advertising Parameters command.
+    func enableLowEnergyAdvertising(_ enabled: Bool = true,
+                                    timeout: HCICommandTimeout = .default) throws {
         
         let parameter = LowEnergyCommand.SetAdvertiseEnableParameter(enabled: enabled)
         
         try deviceRequest(parameter, timeout: timeout)
     }
     
-    func setLowEnergyAdvertisingData(_ data: LowEnergyResponseData, length: UInt8, timeout: HCICommandTimeout = .default) throws {
+    /// LE Set Advertising Data Command
+    ///
+    /// Used to set the data used in advertising packets that have a data field.
+    func setLowEnergyAdvertisingData(_ data: LowEnergyResponseData,
+                                     length: UInt8,
+                                     timeout: HCICommandTimeout = .default) throws {
         
         let parameter = LowEnergyCommand.SetAdvertisingDataParameter(data: data, length: length)
         
         try deviceRequest(parameter, timeout: timeout)
     }
     
-    func setLowEnergyAdvertisingData(data: Data, timeout: HCICommandTimeout = .default) throws {
+    /// LE Set Advertising Data Command
+    ///
+    /// Used to set the data used in advertising packets that have a data field.
+    func setLowEnergyAdvertisingData(_ data: Data,
+                                     timeout: HCICommandTimeout = .default) throws {
         
         precondition(data.count <= 31, "LE Advertising Data can only be 31 octets")
         
@@ -44,6 +48,15 @@ public extension BluetoothHostControllerInterface {
         let parameter = LowEnergyCommand.SetAdvertisingDataParameter(data: bytes, length: UInt8(data.count))
         
         try deviceRequest(parameter, timeout: timeout)
+    }
+    
+    /// LE Set Advertising Parameters Command
+    ///
+    /// Used by the Host to set the advertising parameters.
+    func setLowEnergyAdvertisingParameters(_ parameters: LowEnergyCommand.SetAdvertisingParametersParameter,
+                                           timeout: HCICommandTimeout = .default) throws {
+        
+        try deviceRequest(parameters, timeout: timeout)
     }
     
     /// LE Set Advertising Set Random Address Command
@@ -58,6 +71,9 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(parameters, timeout: timeout)
     }
     
+    /// LE Set Extended Advertising Parameters Command
+    ///
+    /// The command is used by the Host to set the advertising parameters.
     func setLowEnergySetExtendedAdvertisingParameters(_ parameters: LowEnergyCommand.SetExtendedAdvertisingParametersParameter,
                                                       timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
         
