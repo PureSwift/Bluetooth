@@ -43,6 +43,7 @@ final class UInt128Tests: XCTestCase {
     func testExpressibleByIntegerLiteral() {
         
         let values: [(UInt128, String)] = [
+            (UInt128.zero, "00000000000000000000000000000000"),
             (0x00000000000000000000000000000000, "00000000000000000000000000000000"),
             (0x00000000000000000000000000000001, "00000000000000000000000000000001"),
             (0x00000000000000000000000000000020, "00000000000000000000000000000020"),
@@ -50,5 +51,7 @@ final class UInt128Tests: XCTestCase {
         ]
         
         values.forEach { XCTAssertEqual($0.0.description, $0.1) }
+        
+        XCTAssertEqual(UInt128.zero, 0)
     }
 }
