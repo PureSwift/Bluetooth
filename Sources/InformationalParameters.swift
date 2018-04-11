@@ -15,4 +15,10 @@ public extension BluetoothHostControllerInterface {
         
         return try deviceRequest(InformationalCommand.ReadLocalVersionInformationReturnParameter.self, timeout: timeout)
     }
+    
+    /// Read Device Address
+    func readDeviceAddress(timeout: HCICommandTimeout = .default) throws -> Address {
+        
+        return try deviceRequest(InformationalCommand.ReadDeviceAddressReturnParameter.self, timeout: timeout).address
+    }
 }
