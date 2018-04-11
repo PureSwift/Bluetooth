@@ -27,7 +27,8 @@ final class HCITests: XCTestCase {
         ("testLERemoveDeviceFromWhiteList", testLERemoveDeviceFromWhiteList),
         ("testLEStartEncryption", testLEStartEncryption),
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
-        ("testLowEnergyEncrypt", testLowEnergyEncrypt)
+        ("testLowEnergyEncrypt", testLowEnergyEncrypt),
+        ("testSetLERandomAddress", testSetLERandomAddress)
     ]
     
     func testName() {
@@ -676,12 +677,44 @@ final class HCITests: XCTestCase {
         
         hostController.queue.append(.event(eventHeader.byteValue + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
         
-        var encryptedData: UInt128 = .zero
-        
+        var encryptedData: UInt128 = 0
         XCTAssertNoThrow(encryptedData = try hostController.lowEnergyEncrypt(key: key, data: plainTextData))
         
-        XCTAssertNotEqual(encryptedData, .zero)
+        XCTAssert(hostController.queue.isEmpty)
+        XCTAssertNotEqual(encryptedData, 0)
         XCTAssertEqual(encryptedData.description, "99AD1B5226A37E3E058E3B8E27C2C666")
+    }
+    
+    func testSetLERandomAddress() {
+        
+        let hostController = TestHostController()
+        
+        let randomAddress = Address(rawValue: "68:60:B2:29:26:8D")!
+        
+        /**
+         SEND  [2005] LE Set Random Address - 68:60:B2:29:26:8D  05 20 06 8D 26 29 B2 60 68
+         
+         [2005] Opcode: 0x2005 (OGF: 0x08    OCF: 0x05)
+         Parameter Length: 6 (0x06)
+         Random Address: 68:60:B2:29:26:8D
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.setRandomAddress.opcode,
+                     [0x05, 0x20, 0x06, 0x8D, 0x26, 0x29, 0xB2, 0x60, 0x68])
+        )
+        
+        /**
+         RECV  Command Complete [2005] - LE Set Random Address  0E 04 01 05 20 00
+         
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2005 (OGF: 0x08    OCF: 0x05) - [Low Energy] LE Set Random Address
+         */
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x05, 0x20, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.lowEnergySetRandomAddress(randomAddress))
+        XCTAssert(hostController.queue.isEmpty)
     }
 }
 

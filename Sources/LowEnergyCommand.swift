@@ -48,7 +48,7 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case readPeerResolvableAddress      = 0x002B
     case readLocalResolvableAddress     = 0x002C
     case setAddressResolutionEnable     = 0x002D
-    case setResolvablePrivateAddressTimeout  = 0x002E
+    case setResolvablePrivateAddressTimeout = 0x002E
     case readMaximumDataLength          = 0x002F
     case readPhy                        = 0x0030
     case setDefaultPhy                  = 0x0031
