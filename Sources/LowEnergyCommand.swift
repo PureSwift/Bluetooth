@@ -45,7 +45,19 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case removeDeviceFromResolvedList   = 0x0028
     case clearResolvedList              = 0x0029
     case readResolvedListSize           = 0x002A
+    case readPeerResolvableAddress      = 0x002B
+    case readLocalResolvableAddress     = 0x002C
     case setAddressResolutionEnable     = 0x002D
+    case setResolvablePrivateAddressTimeout = 0x002E
+    case readMaximumDataLength          = 0x002F
+    case readPhy                        = 0x0030
+    case setDefaultPhy                  = 0x0031
+    case setPhy                         = 0x0032
+    case enhancedReceiverTest           = 0x0033
+    case enhancedTransmitterTest           = 0x0034
+    case setAdvertisingSetRandomAddress    = 0x0035
+    case setExtendedAdvertisingParameters  = 0x0036
+    case setExtendedAdvertisingData        = 0x0037
 }
 
 // MARK: - Name
@@ -89,6 +101,23 @@ public extension LowEnergyCommand {
         "LE Read Supported States",
         "LE Receiver Test",
         "LE Transmitter Test",
-        "LE Test End"
+        "LE Test End",
+        "LE Add Device To Resolved List",
+        "LE Remove Device From Resolved List",
+        "LE Clear Resolved List",
+        "LE Read Resolved List Size",
+        "LE Read Peer Resolvable Address",
+        "LE Read Local Resolvable Address",
+        "LE Set Address Resolution Enable",
+        "LE Set Resolvable Private Address Timeout",
+        "LE Read Maximum Data Length",
+        "LE Read PHY",
+        "LE Set Default PHY",
+        "LE Set Phy",
+        "LE Enhanced Receiver Test",
+        "LE Enhanced Transmitter Test",
+        "LE Set Advertising Set Random Address",
+        "LE Set Extended Advertising Parameters",
+        "LE Set Extended Advertising Data"
     ]
 }

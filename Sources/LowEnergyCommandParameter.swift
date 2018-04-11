@@ -10,6 +10,40 @@ import Foundation
 
 public extension LowEnergyCommand {
     
+    /// LE Set Random Address Command
+    ///
+    /// Used by the Host to set the LE Random Device Address in the Controller.
+    ///
+    /// If this command is used to change the address, the new random address shall take effect for advertising no later than
+    /// the next successful LE Set Advertising Enable Command, for scanning no later than the next successful LE Set Scan Enable Command
+    /// or LE Set Extended Scan Enable Command, and for initiating no later than the next successful LE Create Connection Command
+    /// or LE Extended Create Connection Command.
+    ///
+    /// - Note: If Extended Advertising is in use, this command only affects the address used for scanning and initiating.
+    /// The addresses used for advertising are set by the LE Set Advertising Set Random Address command.
+    ///
+    /// If the Host issues this command when scanning or legacy advertising is enabled, the Controller shall return the error code Command Disallowed (`0x0C`).
+    public struct SetRandomAddressParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setRandomAddress
+        
+        public static let length = 6
+        
+        public var address: Address
+        
+        public init(address: Address) {
+            
+            self.address = address
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let bytes = address.littleEndian.bytes
+           
+            return [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5]
+        }
+    }
+    
     /// LE Set Advertising Data Command
     ///
     /// Used to set the data used in advertising packets that have a data field.
@@ -70,7 +104,7 @@ public extension LowEnergyCommand {
         public init(interval: (minimum: UInt16, maximum: UInt16) = (0x0800, 0x0800),
                     advertisingType: AdvertisingType = AdvertisingType(),
                     addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.public, .public),
-                    directAddress: Address = Address(bytes: (0,0,0,0,0,0)),
+                    directAddress: Address = .zero,
                     channelMap: ChannelMap = ChannelMap(),
                     filterPolicy: FilterPolicy = FilterPolicy()) {
             
@@ -522,7 +556,7 @@ public extension LowEnergyCommand {
     /// Address is ignored when Address Type is set to 0xFF.
     public struct AddDeviceToWhiteListParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.addDeviceToWhiteList
+        public static let command = LowEnergyCommand.addDeviceToWhiteList //0x0011
         
         /// The white list device. 
         public var device: LowEnergyWhiteListDevice
@@ -556,10 +590,10 @@ public extension LowEnergyCommand {
     /// * the scanning filter policy uses the White List and scanning is enabled.
     /// * the initiator filter policy uses the White List and a create connection command is outstanding.
     ///
-    /// Address is ignored when Address_Type is set to 0xFF.
+    /// Address is ignored when Address Type is set to 0xFF.
     public struct RemoveDeviceToWhiteListParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.removeDeviceFromWhiteList
+        public static let command = LowEnergyCommand.removeDeviceFromWhiteList //0x0012
         
         /// The white list device.
         public var device: LowEnergyWhiteListDevice
@@ -604,7 +638,7 @@ public extension LowEnergyCommand {
         
         public typealias SupervisionTimeout = LowEnergySupervisionTimeout
         
-        public static let command = LowEnergyCommand.connectionUpdate
+        public static let command = LowEnergyCommand.connectionUpdate //0x0013
         
         public let connectionHandle: UInt16 //Connection_Handle
         
@@ -679,16 +713,16 @@ public extension LowEnergyCommand {
     /// until the Controller is reset using the Reset command
     public struct SetHostChannelClassificationParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.setHostChannelClassification
+        public static let command = LowEnergyCommand.setHostChannelClassification //0x0014
         
         /// This parameter contains 37 1-bit fields.
         /// The nth such field (in the range 0 to 36) contains the value for the link layer channel index n.
         /// Channel n is bad = 0. Channel n is unknown = 1.
         /// The most significant bits are reserved and shall be set to 0for future use.
         /// At least one channel shall be marked as unknown.
-        public let channelMap : LowEnergyChannelMap  //Channel_Map
+        public let channelMap: LowEnergyChannelMap  //Channel_Map
         
-        public init(channelMap : LowEnergyChannelMap) {
+        public init(channelMap: LowEnergyChannelMap) {
             self.channelMap = channelMap
         }
         
@@ -710,7 +744,7 @@ public extension LowEnergyCommand {
     /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
     public struct ReadChannelMapParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.readChannelMap
+        public static let command = LowEnergyCommand.readChannelMap //0x0015
         
         public let connectionHandle: UInt16 //Connection_Handle
         
@@ -740,7 +774,7 @@ public extension LowEnergyCommand {
     //// the Controller may use a cached copy of the features.
     public struct ReadRemoteUsedFeaturesParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.readRemoteUsedFeatures
+        public static let command = LowEnergyCommand.readRemoteUsedFeatures //0x0016
         
         public let connectionHandle: UInt16 //Connection_Handle
         
@@ -762,11 +796,12 @@ public extension LowEnergyCommand {
     /// LE Encrypt Command
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
-    /// and returns the Encrypted_Data to the Host.
-    /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+    /// and returns the Encrypted Data to the Host.
+    ///
+    /// - Note: The AES-128 bit block cypher is defined in NIST Publication [FIPS-197](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
     public struct EncryptParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.encrypt
+        public static let command = LowEnergyCommand.encrypt //0x0017
         
         /// 128 bit key for the encryption of the data given in the command.
         /// The most significant octet of the key corresponds to key[0] using the notation specified in FIPS 197.
@@ -823,6 +858,1201 @@ public extension LowEnergyCommand {
             ]
         }
     }
+    
+    /// LE Start Encryption Command
+    ///
+    /// command is used to authenticate the given encryption key associated with the remote device specified
+    /// by the Connection_Handle, and once authenticated will encrypt the connection.
+    ///
+    /// If the connection is already encrypted then the Controller shall pause connection encryption
+    /// before attempting to authenticate the given encryption key, and then re-encrypt the connection.
+    /// While encryption is paused no user data shall be transmitted.
+    ///
+    /// On an authentication failure, the connection shall be automatically disconnected
+    /// by the Link Layer. If this command succeeds, then the connection shall be encrypted.
+    ///
+    /// This command shall only be used when the local device’s role is Master.
+    public struct StartEncryptionParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.startEncryption //0x0019
+        
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 //Connection_Handle
+        
+        /// 64 bit random number.
+        public let randomNumber: UInt64 //Random_Number
+        
+        /// 16 bit encrypted diversifier.
+        public let encryptedDiversifier: UInt16 //Encrypted_Diversifier
+        
+        /// 128 bit long term key.
+        public let longTermKey: UInt128 //Long_Term_Key
+        
+        public init(connectionHandle: UInt16, randomNumber: UInt64, encryptedDiversifier: UInt16, longTermKey: UInt128) {
+            
+            self.connectionHandle = connectionHandle
+            self.randomNumber = randomNumber
+            self.encryptedDiversifier = encryptedDiversifier
+            self.longTermKey = longTermKey
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            let randomNumberBytes = randomNumber.littleEndian.bytes
+            let encryptedDiversifierBytes = encryptedDiversifier.littleEndian.bytes
+            let longTermKeyBytes = longTermKey.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1,
+                randomNumberBytes.0,
+                randomNumberBytes.1,
+                randomNumberBytes.2,
+                randomNumberBytes.3,
+                randomNumberBytes.4,
+                randomNumberBytes.5,
+                randomNumberBytes.6,
+                randomNumberBytes.7,
+                encryptedDiversifierBytes.0,
+                encryptedDiversifierBytes.1,
+                longTermKeyBytes.0,
+                longTermKeyBytes.1,
+                longTermKeyBytes.2,
+                longTermKeyBytes.3,
+                longTermKeyBytes.4,
+                longTermKeyBytes.5,
+                longTermKeyBytes.6,
+                longTermKeyBytes.7,
+                longTermKeyBytes.8,
+                longTermKeyBytes.9,
+                longTermKeyBytes.10,
+                longTermKeyBytes.11,
+                longTermKeyBytes.12,
+                longTermKeyBytes.13,
+                longTermKeyBytes.14,
+                longTermKeyBytes.15
+            ]
+        }
+    }
+    
+    /// LE Long Term Key Request Reply Command
+    ///
+    /// The command is used to reply to an LE Long Term Key Request event from the Controller,
+    /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
+    public struct LongTermKeyRequestReplyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.ltkReply //0x001A
+        
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 //Connection_Handle
+
+        /// 128 bit long term key for the given connection.
+        public let longTermKey: UInt128 //Long_Term_Key
+        
+        public init(connectionHandle: UInt16, longTermKey: UInt128) {
+            
+            self.connectionHandle = connectionHandle
+            self.longTermKey = longTermKey
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            let longTermKeyBytes = longTermKey.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1,
+                longTermKeyBytes.0,
+                longTermKeyBytes.1,
+                longTermKeyBytes.2,
+                longTermKeyBytes.3,
+                longTermKeyBytes.4,
+                longTermKeyBytes.5,
+                longTermKeyBytes.6,
+                longTermKeyBytes.7,
+                longTermKeyBytes.8,
+                longTermKeyBytes.9,
+                longTermKeyBytes.10,
+                longTermKeyBytes.11,
+                longTermKeyBytes.12,
+                longTermKeyBytes.13,
+                longTermKeyBytes.14,
+                longTermKeyBytes.15
+            ]
+        }
+    }
+    
+    /// LE Long Term Key Request Negative Reply Command
+    ///
+    /// The command is used to reply to an LE Long Term Key Request event
+    /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
+    public struct LongTermKeyRequestNegativeReplyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
+        
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 //Connection_Handle
+        
+        public init(connectionHandle: UInt16) {
+            
+            self.connectionHandle = connectionHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+        
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1
+            ]
+        }
+    }
+    
+    /// LE Receiver Test Command
+    ///
+    /// This command is used to start a test where the DUT receives test reference
+    /// packets at a fixed interval. The tester generates the test reference packets.
+    public struct ReceiverTestParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.receiverTest //0x001D
+        
+        /// N = (F – 2402) / 2
+        /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
+        public let rxChannel: LowEnergyRxChannel //RX_Channel
+        
+        public init(rxChannel: LowEnergyRxChannel) {
+            
+            self.rxChannel = rxChannel
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            return [rxChannel.rawValue]
+        }
+    }
+    
+    /// LE Transmitter Test Command
+    ///
+    /// This command is used to start a test where the DUT generates test reference packets
+    /// at a fixed interval. The Controller shall transmit at maximum power.
+    ///
+    /// An LE Controller supporting the LE_Transmitter_Test command shall support Packet_Payload values 0x00,
+    /// 0x01 and 0x02. An LE Controller may support other values of Packet_Payload.
+    public struct TransmitterTestParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.transmitterTest //0x001E
+        
+        /// N = (F – 2402) / 2
+        /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
+        public let txChannel: LowEnergyTxChannel //RX_Channel
+        
+        /// Length in bytes of payload data in each packet
+        public let lengthOfTestData: UInt8
+        
+        public let packetPayload: LowEnergyPacketPayload
+        
+        public init(txChannel: LowEnergyTxChannel,
+                    lengthOfTestData: UInt8,
+                    packetPayload: LowEnergyPacketPayload) {
+            
+            self.txChannel = txChannel
+            self.lengthOfTestData = lengthOfTestData
+            self.packetPayload = packetPayload
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            return [txChannel.rawValue, packetPayload.rawValue]
+        }
+    }
+    
+    /// LE Add Device To Resolving List Command
+    ///
+    /// The LE_Add_Device_To_Resolving_List command is used to
+    /// add one device to the list of address translations used to
+    /// resolve Resolvable Private Addresses in the Controller.
+    ///
+    /// This command cannot be used when address translation is enabled
+    /// in the Controller and:
+    /// * Advertising is enabled
+    /// * Scanning is enabled
+    /// * Create connection command is outstanding
+    ///
+    /// This command can be used at any time when address translation
+    /// is disabled in the Controller.
+    ///
+    /// The added device shall be set to Network Privacy mode.
+    ///
+    /// When a Controller cannot add a device to the list because
+    /// there is no space available, it shall return the error code
+    /// Memory Capacity Exceeded (0x07).
+    public struct AddDeviceToResolvingListParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.addDeviceToResolvedList //0x0027
+        
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
+        
+        public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
+        
+        public let peerIrk: UInt128 //Peer_IRK
+        
+        public let localIrk: UInt128 //Local_IRK
+        
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128) {
+        
+            self.peerIdentifyAddressType = peerIdentifyAddressType
+            self.peerIdentifyAddress = peerIdentifyAddress
+            self.peerIrk = peerIrk
+            self.localIrk = localIrk
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
+            let peerIrkBytes = peerIrk.littleEndian.bytes
+            let localIrkBytes = localIrk.littleEndian.bytes
+            
+            return [
+                    peerIdentifyAddressType.rawValue,
+                    peerIdentifyAddressBytes.0,
+                    peerIdentifyAddressBytes.1,
+                    peerIdentifyAddressBytes.2,
+                    peerIdentifyAddressBytes.3,
+                    peerIdentifyAddressBytes.4,
+                    peerIdentifyAddressBytes.5,
+                    peerIdentifyAddressBytes.6,
+                    peerIdentifyAddressBytes.7,
+                    peerIrkBytes.0,
+                    peerIrkBytes.1,
+                    peerIrkBytes.2,
+                    peerIrkBytes.3,
+                    peerIrkBytes.4,
+                    peerIrkBytes.5,
+                    peerIrkBytes.6,
+                    peerIrkBytes.7,
+                    peerIrkBytes.8,
+                    peerIrkBytes.9,
+                    peerIrkBytes.10,
+                    peerIrkBytes.11,
+                    peerIrkBytes.12,
+                    peerIrkBytes.13,
+                    peerIrkBytes.14,
+                    peerIrkBytes.15,
+                    localIrkBytes.0,
+                    localIrkBytes.1,
+                    localIrkBytes.2,
+                    localIrkBytes.3,
+                    localIrkBytes.4,
+                    localIrkBytes.5,
+                    localIrkBytes.6,
+                    localIrkBytes.7,
+                    localIrkBytes.8,
+                    localIrkBytes.9,
+                    localIrkBytes.10,
+                    localIrkBytes.11,
+                    localIrkBytes.12,
+                    localIrkBytes.13,
+                    localIrkBytes.14,
+                    localIrkBytes.15
+                ]
+        }
+    }
+    
+    /// LE Remove Device From Resolving List Command
+    ///
+    /// he LE_Remove_Device_From_Resolving_List command is used
+    /// to remove one device from the list of address translations used to
+    /// resolve Resolvable Private Addresses in the Controller.
+    ///
+    /// This command cannot be used when address translation is
+    /// enabled in the Controller and:
+    ///
+    /// * Advertising is enabled
+    /// * Scanning is enabled
+    /// * Create connection command is outstanding
+    ///
+    /// This command can be used at any time when address translation
+    /// is disabled in the Controller.
+    ///
+    /// When a Controller cannot remove a device from the resolving
+    /// list because it is not found, it shall return the error code
+    /// Unknown Connection Identifier (0x02).
+    public struct RemoveDeviceFromResolvingListParameter: HCICommandParameter {
+    
+        public static let command = LowEnergyCommand.removeDeviceFromResolvedList //0x0028
+        
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
+        
+        public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
+        
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
+                    peerIdentifyAddress: UInt64) {
+            
+            self.peerIdentifyAddressType = peerIdentifyAddressType
+            self.peerIdentifyAddress = peerIdentifyAddress
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
+            
+            return [
+                peerIdentifyAddressType.rawValue,
+                peerIdentifyAddressBytes.0,
+                peerIdentifyAddressBytes.1,
+                peerIdentifyAddressBytes.2,
+                peerIdentifyAddressBytes.3,
+                peerIdentifyAddressBytes.4,
+                peerIdentifyAddressBytes.5,
+                peerIdentifyAddressBytes.6,
+                peerIdentifyAddressBytes.7
+            ]
+        }
+    }
+    
+    /// LE Read Peer Resolvable Address Command
+    ///
+    /// The command is used to get the current peer Resolvable Private Address
+    /// being used for the corresponding peer Public and Random (static) Identity Address.
+    /// The peer’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code Unknown
+    /// Connection Identifier (0x02).
+    public struct ReadPeerResolvableAddressParameter: HCICommandParameter { //HCI_LE_Read_ Peer_Resolvable_Address
+        
+        public static let command = LowEnergyCommand.readPeerResolvableAddress //0x002B
+        
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
+        
+        public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
+        
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
+                    peerIdentifyAddress: UInt64) {
+            
+            self.peerIdentifyAddressType = peerIdentifyAddressType
+            self.peerIdentifyAddress = peerIdentifyAddress
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
+            
+            return [
+                peerIdentifyAddressType.rawValue,
+                peerIdentifyAddressBytes.0,
+                peerIdentifyAddressBytes.1,
+                peerIdentifyAddressBytes.2,
+                peerIdentifyAddressBytes.3,
+                peerIdentifyAddressBytes.4,
+                peerIdentifyAddressBytes.5,
+                peerIdentifyAddressBytes.6,
+                peerIdentifyAddressBytes.7
+            ]
+        }
+    }
+    
+    /// LE Read Local Resolvable Address Command
+    ///
+    /// The command is used to get the current local Resolvable Private Address
+    //// being used for the corresponding peer Identity Address.
+    /// The local’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code
+    /// Unknown Connection Identifier (0x02).
+    public struct ReadLocalResolvableAddressParameter: HCICommandParameter { //HCI_LE_Read_Local_ Resolvable_Address
+        
+        public static let command = LowEnergyCommand.readLocalResolvableAddress //0x002C
+        
+        public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
+        
+        public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
+        
+        public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
+                    peerIdentifyAddress: UInt64) {
+            
+            self.peerIdentifyAddressType = peerIdentifyAddressType
+            self.peerIdentifyAddress = peerIdentifyAddress
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
+            
+            return [
+                peerIdentifyAddressType.rawValue,
+                peerIdentifyAddressBytes.0,
+                peerIdentifyAddressBytes.1,
+                peerIdentifyAddressBytes.2,
+                peerIdentifyAddressBytes.3,
+                peerIdentifyAddressBytes.4,
+                peerIdentifyAddressBytes.5,
+                peerIdentifyAddressBytes.6,
+                peerIdentifyAddressBytes.7
+            ]
+        }
+    }
+    
+    /// LE Set Address Resolution Enable Command
+    ///
+    /// The ommand is used to enable resolution of Resolvable Private Addresses
+    /// in the Controller. This causes the Controller to use the resolving list
+    /// whenever the Controller receives a local or peer Resolvable Private Address.
+    ///
+    /// This command can be used at any time except when
+    ///
+    /// * Advertising is enabled
+    /// * Scanning is enabled
+    /// * Create connection command is outstanding
+    ///
+    /// Note: enabling address resolution when it is already enabled,
+    /// or disabling it when it is already disabled, has no effect.
+    public struct SetAddressResolutionEnableParameter: HCICommandParameter { //HCI_LE_Set_Address_Resolution_ Enable
+        
+        public static let command = LowEnergyCommand.setAddressResolutionEnable //0x002D
+        
+        public let addressResolutionEnable: AddressResolutionEnable
+        
+        public init(addressResolutionEnable: AddressResolutionEnable) {
+            self.addressResolutionEnable = addressResolutionEnable
+        }
+        
+        public var byteValue: [UInt8] {
+            return [addressResolutionEnable.rawValue]
+        }
+        
+        public enum AddressResolutionEnable: UInt8 {
+            
+            /// Address Resolution in Controller disabled (default)
+            case disabled = 0x00
+            
+            /// Address Resolution in Controller enabled
+            case enabled  = 0x01
+        }
+    }
+    
+    /// LE Set Resolvable Private Address Timeout Command
+    ///
+    /// The command set the length of time the Controller uses a
+    /// Resolvable Private Address before a new resolvable private address is
+    /// generated and starts being used.
+    ///
+    /// This timeout applies to all addresses generated by the Controller.
+    public struct SetResolvablePrivateAddressTimeoutParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setResolvablePrivateAddressTimeout //0x002E
+        
+        /// Default: N= 0x0384 (900 s or 15 minutes)
+        public static let defaultRpaTimeout = RPATimeout(0x0384)
+        
+        /// RPA_Timeout measured in s
+        /// Range for N: 0x0001 – 0xA1B8 (1 s – approximately 11.5 hours)
+        /// Default: N= 0x0384 (900 s or 15 minutes)
+        public let rpaTimeout: RPATimeout //RPA_Timeout
+        
+        public init(rpaTimeout: RPATimeout = defaultRpaTimeout) {
+            self.rpaTimeout = rpaTimeout
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let rpaTimeoutBytes = rpaTimeout.rawValue.littleEndian.bytes
+            
+            return [rpaTimeoutBytes.0,
+                    rpaTimeoutBytes.1]
+        }
+        
+        /// RPA_Timeout measured in s
+        /// Range for N: 0x0001 – 0xA1B8 (1 s – approximately 11.5 hours)
+        public struct RPATimeout: RawRepresentable, Equatable, Comparable, Hashable {
+            
+            /// 2.5 msec
+            public static let min = RPATimeout(0x0001)
+            
+            /// 10.24 seconds
+            public static let max = RPATimeout(0xA1B8)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= RPATimeout.min.rawValue,
+                    rawValue <= RPATimeout.max.rawValue
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            fileprivate init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: RPATimeout, rhs: RPATimeout) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: RPATimeout, rhs: RPATimeout) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+    }
+    
+    /// LE Read PHY Command
+    ///
+    /// The command is used to read the current transmitter PHY and receiver PHY
+    /// on the connection identified by the Connection_Handle.
+    public struct ReadPHYParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.readPhy //0x0030
+        
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 //Connection_Handle
+        
+        public init(connectionHandle: UInt16) {
+            
+            self.connectionHandle = connectionHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1
+            ]
+        }
+    }
+    
+    /// LE Set Default PHY Command
+    ///
+    /// command allows the Host to specify its preferred values for
+    /// the transmitter PHY and receiver PHY to be used for all subsequent
+    ///connections over the LE transport.
+    public struct SetDefaultPhyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.readPhy //0x0031
+        
+        public let allPhys: LowEnergyAllPhys
+        public let txPhys: LowEnergyTxPhys
+        public let rxPhys: LowEnergyRxPhys
+        
+        public init(allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys) {
+            self.allPhys = allPhys
+            self.txPhys = txPhys
+            self.rxPhys = rxPhys
+        }
+        
+        public var byteValue: [UInt8] {
+            return [allPhys.rawValue, txPhys.rawValue, rxPhys.rawValue]
+        }
+    }
+    
+    /// LE Set PHY Command
+    ///
+    /// The command is used to set the PHY preferences for the connection identified by
+    /// the Connection_Handle. The Controller might not be able to make the change
+    /// (e.g. because the peer does not support the requested PHY) or may decide that
+    /// the current PHY is preferable.
+    public struct SetPhyParameter: HCICommandParameter {
+    
+        public static let command = LowEnergyCommand.setPhy //0x0032
+    
+        public let connectionHandle: UInt16
+        public let allPhys: LowEnergyAllPhys
+        public let txPhys: LowEnergyTxPhys
+        public let rxPhys: LowEnergyRxPhys
+        public let phyOptions: LowEnergyPhyOptions
+        
+        public init(connectionHandle: UInt16, allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys, phyOptions: LowEnergyPhyOptions) {
+            self.connectionHandle = connectionHandle
+            self.allPhys = allPhys
+            self.txPhys = txPhys
+            self.rxPhys = rxPhys
+            self.phyOptions = phyOptions
+        }
+    
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            let phyOptionsBytes = phyOptions.rawValue.littleEndian.bytes
+            
+            return [connectionHandleBytes.0,
+                    connectionHandleBytes.1,
+                    allPhys.rawValue,
+                    txPhys.rawValue,
+                    rxPhys.rawValue,
+                    phyOptionsBytes.0,
+                    phyOptionsBytes.1
+            ]
+        }
+    }
+    
+    /// LE Enhanced Receiver Test Command
+    ///
+    /// This command is used to start a test where the DUT receives test reference packets at a
+    /// fixed interval. The tester generates the test reference packets.
+    public struct EnhancedReceiverTestParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.enhancedReceiverTest //0x0033
+        
+        public let rxChannel: LowEnergyRxChannel
+        public let phy: Phy
+        public let modulationIndex: ModulationIndex
+        
+        public init(rxChannel: LowEnergyRxChannel, phy: Phy, modulationIndex: ModulationIndex) {
+            self.rxChannel = rxChannel
+            self.phy = phy
+            self.modulationIndex = modulationIndex
+        }
+        
+        public var byteValue: [UInt8] {
+            return [rxChannel.rawValue, phy.rawValue, modulationIndex.rawValue]
+        }
+        
+        public enum Phy: UInt8 {
+            
+            /// Receiver set to use the LE 1M PHY
+            case le1MPhy        =   0x01
+            
+            /// Receiver set to use the LE 2M PHY
+            case le2MPhy        =   0x02
+            
+            /// Receiver set to use the LE Coded PHY
+            case leCodedPhy     =   0x03
+        }
+        
+        public enum ModulationIndex: UInt8 {
+            
+            /// Assume transmitter will have a standard modulation index
+            case standard = 0x00
+            
+            /// Assume transmitter will have a stable modulation index
+            case stable   = 0x01
+        }
+    }
+  
+    /// LE Enhanced Transmitter Test Command
+    ///
+    /// This command is used to start a test where the DUT generates test reference packets
+    /// at a fixed interval. The Controller shall transmit at maximum power.
+    ///
+    /// An LE Controller supporting the LE_Enhanced Transmitter_Test command shall support
+    /// Packet_Payload values 0x00, 0x01 and 0x02. An LE Controller supporting the LE Coded PHY
+    /// shall also support Packet_Payload value 0x04. An LE Controller may support other values
+    /// of Packet_Payload.
+    public struct EnhancedTransmitterTest: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.enhancedTransmitterTest //0x0034
+        
+        /// N = (F – 2402) / 2
+        /// Range: 0x00 – 0x27. Frequency Range : 2402 MHz to 2480 MHz
+        public let txChannel: LowEnergyTxChannel //RX_Channel
+        
+        /// Length in bytes of payload data in each packet
+        public let lengthOfTestData: UInt8
+        
+        public let packetPayload: LowEnergyPacketPayload
+        
+        public let phy: Phy
+        
+        public init(txChannel: LowEnergyTxChannel,
+                    lengthOfTestData: UInt8,
+                    packetPayload: LowEnergyPacketPayload,
+                    phy: Phy) {
+            
+            self.txChannel = txChannel
+            self.lengthOfTestData = lengthOfTestData
+            self.packetPayload = packetPayload
+            self.phy = phy
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            return [txChannel.rawValue, lengthOfTestData, packetPayload.rawValue, phy.rawValue]
+        }
+        
+        public enum Phy: UInt8 {
+            
+            /// Transmitter set to use the LE 1M PHY
+            case le1MPhy                =   0x01
+            
+            /// Transmitter set to use the LE 2M PHY
+            case le2MPhy                =   0x02
+            
+            /// Transmitter set to use the LE Coded PHY with S=8 data coding
+            case leCodedPhywithS8       =   0x03
+            
+            /// Transmitter set to use the LE Coded PHY with S=2 data coding
+            case leCodedPhywithS2       =   0x04
+        }
+    }
+    
+    /// LE Set Advertising Set Random Address Command
+    ///
+    /// The command is used by the Host to set the random device address specified by the Random_Address parameter.
+    /// This address is used in the Controller for the advertiser's address contained in the advertising PDUs
+    /// for the advertising set specified by the Advertising_Handle parameter.
+    ///
+    /// If the Host issues this command while an advertising set using connectable advertising is enabled,
+    /// the Controller shall return the error code Command Disallowed (0x0C). The Host may issue this command at any other time.
+    ///
+    /// If this command is used to change the address, the new random address shall take effect for advertising no later than
+    /// the next successful LE Extended Set Advertising Enable Command and for periodic advertising no later than
+    /// the next successful LE Periodic Advertising Enable Command.
+    public struct SetAdvertisingSetRandomAddress: HCICommandParameter { //HCI_LE_Set_Advertising_Set_Ran- dom_Address
+        
+        public static let command = LowEnergyCommand.setAdvertisingSetRandomAddress //0x0035
+        
+        /// Used to identify an advertising set
+        public let advertisingHandle: UInt8
+        
+        /// Random Device Address
+        public let advertisingRandomAddress: Address
+        
+        public init(advertisingHandle: UInt8, advertisingRandomAddress: Address) {
+            self.advertisingHandle = advertisingHandle
+            self.advertisingRandomAddress = advertisingRandomAddress
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let advertisingRandomAddressBytes = advertisingRandomAddress.littleEndian.bytes
+            
+            return [advertisingHandle,
+                    advertisingRandomAddressBytes.0,
+                    advertisingRandomAddressBytes.1,
+                    advertisingRandomAddressBytes.2,
+                    advertisingRandomAddressBytes.3,
+                    advertisingRandomAddressBytes.4,
+                    advertisingRandomAddressBytes.5]
+        }
+    }
+    
+    /// LE Set Extended Advertising Parameters Command
+    ///
+    /// The command is used by the Host to set the advertising parameters.
+    public struct SetExtendedAdvertisingParametersParameter: HCICommandParameter { //HCI_LE_Set_ Extended_ Advertising_ Parameters
+        
+        public static let command = LowEnergyCommand.setAdvertisingSetRandomAddress //0x0036
+        
+        /// Used to identify an advertising set
+        public let advertisingHandle: UInt8 //Advertising_Handle
+        
+        /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
+        /// and its basic properties.
+        public let advertisingEventProperties: AdvertisingEventProperties //Advertising_Event_Properties
+        
+        /// The Primary_Advertising_Interval_Min parameter shall be less than or equal to the Primary_Advertising_Interval_Max parameter.
+        /// The Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max parameters should not be the same value
+        /// so that the Controller can choose the best advertising interval given other activities.
+        ///
+        /// For high duty cycle connectable directed advertising event type (ADV_DIRECT_IND),
+        /// the Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max parameters are not used and shall be ignored.
+        ///
+        /// If the primary advertising interval range provided by the Host (Primary_Advertising_Interval_Min,
+        /// Primary_Advertising_Interval_Max) is outside the advertising interval range supported by the Controller,
+        //// then the Controller shall return the error code Unsupported Feature or Parameter Value (0x11).
+        public let primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval)
+        
+        /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
+        /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
+        public let primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap
+        
+        /// The Own_Address_Type parameter specifies the type of address being used in the advertising packets.
+        /// For random addresses, the address is specified by the LE_Set_Advertising_Set_Random_Address command.
+        ///
+        /// If Own_Address_Type equals 0x02 or 0x03, the Peer_Address parameter contains the peer’s Identity Address
+        /// and the Peer_Address_Type parameter contains the peer’s Identity Type (i.e., 0x00 or 0x01). These parameters are
+        /// used to locate the corresponding local IRK in the resolving list; this IRK is used to generate their own address
+        /// used in the advertisement.
+        public let ownAddressType: OwnAddressType //Own_Address_Type
+        
+        public let peerAddressType: PeerAddressType //Peer_Address_Type
+        
+        public let peerAddress: Address // Peer_Address
+        
+        public let advertisingFilterPolicy: AdvertisingFilterPolicy //Advertising_Filter_Policy
+        
+        public let advertisingTxPower: LowEnergyTxPower //Advertising_Tx_Power
+        
+        public let primaryAdvertisingPhy: PrimaryAdvertisingPhy
+        
+        public let secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip
+        
+        public let secondaryAdvertisingPhy: SecondaryAdvertisingPhy
+        
+        public let advertisingSid: UInt8
+        
+        public let scanRequestNotificationEnable: ScanRequestNotificationEnable
+        
+        public init(advertisingHandle: UInt8,
+                    advertisingEventProperties: AdvertisingEventProperties,
+                    primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval),
+                    primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap,
+                    ownAddressType: OwnAddressType,
+                    peerAddressType: PeerAddressType,
+                    peerAddress: Address,
+                    advertisingFilterPolicy: AdvertisingFilterPolicy,
+                    advertisingTxPower: LowEnergyTxPower,
+                    primaryAdvertisingPhy: PrimaryAdvertisingPhy,
+                    secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip,
+                    secondaryAdvertisingPhy: SecondaryAdvertisingPhy,
+                    advertisingSid: UInt8,
+                    scanRequestNotificationEnable: ScanRequestNotificationEnable) {
+            
+            self.advertisingHandle = advertisingHandle
+            self.advertisingEventProperties = advertisingEventProperties
+            self.primaryAdvertising = primaryAdvertising
+            self.primaryAdvertisingChannelMap = primaryAdvertisingChannelMap
+            self.ownAddressType = ownAddressType
+            self.peerAddressType = peerAddressType
+            self.peerAddress = peerAddress
+            self.advertisingFilterPolicy = advertisingFilterPolicy
+            self.advertisingTxPower = advertisingTxPower
+            self.primaryAdvertisingPhy = primaryAdvertisingPhy
+            self.secondaryAdvertisingMaxSkip = secondaryAdvertisingMaxSkip
+            self.secondaryAdvertisingPhy = secondaryAdvertisingPhy
+            self.advertisingSid = advertisingSid
+            self.scanRequestNotificationEnable = scanRequestNotificationEnable
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let advertisingEventPropertiesBytes = advertisingEventProperties.rawValue.littleEndian.bytes
+            let primaryAdvertisingMinimumBytes = primaryAdvertising.minimum.rawValue.littleEndian.bytes
+            let primaryAdvertisingMaximunBytes = primaryAdvertising.maximum.rawValue.littleEndian.bytes
+            let addressBytes = peerAddress.littleEndian.bytes
+            
+            let advertisingTxPowerByte = UInt8.init(bitPattern: advertisingTxPower.rawValue)
+            
+            return [advertisingHandle,
+                    advertisingEventPropertiesBytes.0,
+                    advertisingEventPropertiesBytes.1,
+                    primaryAdvertisingMinimumBytes.0,
+                    primaryAdvertisingMinimumBytes.1,
+                    primaryAdvertisingMinimumBytes.2,
+                    primaryAdvertisingMaximunBytes.0,
+                    primaryAdvertisingMaximunBytes.1,
+                    primaryAdvertisingMaximunBytes.2,
+                    primaryAdvertisingChannelMap.rawValue,
+                    ownAddressType.rawValue,
+                    peerAddressType.rawValue,
+                    addressBytes.0,
+                    addressBytes.1,
+                    addressBytes.2,
+                    addressBytes.3,
+                    addressBytes.4,
+                    addressBytes.5,
+                    advertisingFilterPolicy.rawValue,
+                    advertisingTxPowerByte,
+                    primaryAdvertisingPhy.rawValue,
+                    secondaryAdvertisingMaxSkip.rawValue,
+                    secondaryAdvertisingPhy.rawValue,
+                    advertisingSid,
+                    scanRequestNotificationEnable.rawValue
+            ]
+        }
+        
+        /// The Scan_Request_Notification_Enable parameter indicates whether the Controller shall send
+        /// notifications upon the receipt of a scan request PDU that is in response to an advertisement from
+        /// the specified advertising set that contains its device address and is from a scanner that is allowed
+        /// by the advertising filter policy.
+        ///
+        /// If the Host issues this command when advertising is enabled for the specified advertising set,
+        /// the Controller shall return the error code Command Disallowed (0x0C).
+        ///
+        /// If periodic advertising is enabled for the advertising set and the Secondary_Advertising_PHY parameter
+        /// does not specify the PHY currently being used for the periodic advertising, the Controller shall
+        /// return the error code Command Disallowed (0x0C).
+        ///
+        /// If the Advertising_Handle does not identify an existing advertising set and the Controller is unable
+        /// to support a new advertising set at present, the Controller shall return the error code Memory
+        /// Capacity Exceeded (0x07).
+        public enum ScanRequestNotificationEnable: UInt8 {
+            
+            /// Scan request notifications disabled
+            case disabled       = 0x00
+            
+            /// Scan request notifications enabled
+            case enabled        = 0x01
+        }
+        
+        /// The Secondary_Advertising_PHY parameter indicates the PHY on which
+        /// the advertising packets are be transmitted on the secondary advertising channel.
+        public enum SecondaryAdvertisingPhy: UInt8 {
+            
+            /// Secondary advertisement PHY is LE 1M
+            case le1M       = 0x01
+            
+            /// Secondary advertisement PHY is LE 2M
+            case le2M       = 0x02
+            
+            /// Secondary advertisement PHY is LE Coded
+            case leCoded    = 0x03
+        }
+        
+        /// The Secondary_Advertising_Max_Skip parameter is the maximum number of advertising events that
+        /// can be skipped before the AUX_ADV_IND can be sent.
+        public enum SecondaryAdvertisingMaxSkip: UInt8 {
+            
+            /// AUX_ADV_IND shall be sent prior to the next advertising event
+            case sendAuxAdvInd      = 0x00
+            
+            /// Maximum advertising events the Controller can skip before sending the AUX_ADV_IND packets
+            /// on the secondary advertising channel
+            case skipAuxAdvInt      = 0x01
+        }
+        
+        /// The Primary_Advertising_PHY parameter indicates the PHY on which the advertising packets
+        /// are transmitted on the primary advertising channel. If legacy advertising PDUs are being used,
+        /// the Primary_Advertising_PHY shall indicate the LE 1M PHY.
+        public enum PrimaryAdvertisingPhy: UInt8 {
+            
+            /// Primary advertisement PHY is LE 1M
+            case le1M       = 0x01
+            
+            /// Primary advertisement PHY is LE Coded
+            case leCoded    = 0x03
+        }
+        
+        public enum AdvertisingFilterPolicy: UInt8 {
+            
+            /// Process scan and connection requests from all devices (i.e., the White List is not in use)
+            case processScanFromAllDevices = 0x00
+            
+            /// Process connection requests from all devices and only scan requests from devices that are in the White List
+            case processConnectionRequest = 0x01
+            
+            /// Process scan requests from all devices and only connection requests from devices that are in the White List.
+            case procesScanRequest = 0x02
+            
+            /// Process scan and connection requests only from devices in the White List.
+            case processScanFromDevicesInWhiteList = 0x03
+        }
+        
+        public enum PeerAddressType: UInt8 {
+            
+            /// Public Device Address or Public Identity Address
+            case publicDeviceAddress = 0x00
+            
+            /// Random Device Address or Random (static) Identity Address
+            case randomDeviceAddress = 0x01
+        }
+        
+        public enum OwnAddressType: UInt8 {
+            
+            /// Public Device Address
+            case publicDeviceAddress = 0x00
+            
+            /// Random Device Address
+            case randomDeviceAddress = 0x01
+            
+            /// Controller generates the Resolvable Private Address based on the local IRK from the resolving list.
+            /// If the resolving list contains no matching entry, use the public address.
+            case usePublicAddressIfNoMatching = 0x02
+            
+            /// Controller generates the Resolvable Private Address based on the local IRK from the resolving list.
+            /// If the resolving list contains no matching entry, use the random address from LE_Set_Advertising_Set_Ran- dom_Address.
+            case useRandomAddressIfNoMatching = 0x03
+        }
+        
+        /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
+        /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
+        public enum PrimaryAdvertisingChannelMap: UInt8, BitMaskOption {
+            
+            #if swift(>=3.2)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt8
+            #endif
+            
+            /// Channel 37 shall be used
+            case channel37 = 0b1
+            
+            /// Channel 38 shall be used
+            case channel38 = 0b10
+            
+            /// Channel 39 shall be used
+            case channel39 = 0b100
+            
+            public static var all: Set<PrimaryAdvertisingChannelMap> = [
+                .channel37,
+                .channel38,
+                .channel39
+            ]
+        }
+        
+        /// Type for Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max
+        public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            /// 20 ms
+            public static let min = PrimaryAdvertisingInterval(0x000020)
+            
+            /// 10,485.759375 seconds
+            public static let max = PrimaryAdvertisingInterval(0xFFFFFF)
+            
+            public let rawValue: UInt32
+            
+            public init?(rawValue: UInt32) {
+                
+                guard rawValue >= PrimaryAdvertisingInterval.min.rawValue,
+                    rawValue <= PrimaryAdvertisingInterval.max.rawValue
+                    else { return nil }
+                
+                assert((PrimaryAdvertisingInterval.min.rawValue ... PrimaryAdvertisingInterval.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 0.625 msec
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 0.625
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt32) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: PrimaryAdvertisingInterval, rhs: PrimaryAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: PrimaryAdvertisingInterval, rhs: PrimaryAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+
+        /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
+        /// and its basic properties.
+        public enum AdvertisingEventProperties: UInt16, BitMaskOption {
+            
+            #if swift(>=3.2)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt16
+            #endif
+            
+            /// Connectable advertising
+            case connectableAdvertising                         = 0b1
+            
+            /// Scannable advertising
+            case scannableAdvertising                           = 0b10
+            
+            /// Directed advertising
+            case directedAdvertising                            = 0b100
+            
+            /// High Duty Cycle Directed Connectable advertising (≤ 3.75 ms Advertis- ing Interval)
+            case highDutyCycleDirectedConnectableAdvertising    = 0b1000
+            
+            /// Use legacy advertising PDUs
+            case useLegacyAdvertisingPDUs                       = 0b10000
+            
+            /// Omit advertiser's address from all PDUs ("anonymous advertising")
+            case omitAdvertisingAddress                         = 0b100000
+            
+            /// Include TxPower in the extended header of the advertising PDU
+            case includeTxPower                                 = 0b1000000
+            
+            public static var all: Set<LowEnergyCommand.SetExtendedAdvertisingParametersParameter.AdvertisingEventProperties> = [
+                .connectableAdvertising,
+                .scannableAdvertising,
+                .directedAdvertising,
+                .highDutyCycleDirectedConnectableAdvertising,
+                .useLegacyAdvertisingPDUs,
+                .omitAdvertisingAddress,
+                .includeTxPower
+            ]
+        }
+    }
+    
+    /// LE Set Extended Advertising Data Command
+    ///
+    /// The command is used to set the data used in advertising PDUs that have a data field.
+    public struct SetExtendedAdvertisingDataParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setExtendedAdvertisingData //0x0037
+        
+        public var advertisingHandle: UInt8
+        public var operation: Operation
+        public var fragmentPreference: FragmentPreference
+        public var advertisingDataLength: UInt8
+        
+        public init(advertisingHandle: UInt8,
+                    operation: Operation,
+                    fragmentPreference: FragmentPreference,
+                    advertisingDataLength: UInt8) {
+            
+            self.advertisingHandle = advertisingHandle
+            self.operation = operation
+            self.fragmentPreference = fragmentPreference
+            self.advertisingDataLength = advertisingDataLength
+        }
+        
+        public var byteValue: [UInt8] {
+            return [advertisingHandle,
+                    operation.rawValue,
+                    fragmentPreference.rawValue,
+                    advertisingDataLength
+                    ]
+        }
+        
+        public enum Operation: UInt8 { //Operation
+            
+            /// Intermediate fragment of fragmented extended advertising data
+            case intermediateFragment   = 0x00
+            
+            /// First fragment of fragmented extended advertising data
+            case firstFragment          = 0x01
+            
+            /// Last fragment of fragmented extended advertising data
+            case lastFragment           = 0x02
+            
+            /// Complete extended advertising data
+            case completeExtended       = 0x03
+            
+            /// Unchanged data (just update the Advertising DID)
+            case unchangedData          = 0x04
+        }
+        
+        public enum FragmentPreference: UInt8 { //Fragment_Preference
+            
+            /// The Controller may fragment all Host advertising data
+            case fragmentAllHostAdvertisingData = 0x00
+            
+            /// The Controller should not fragment or should minimize fragmentation of Host advertising data
+            case shouldNotFragmentHostAdvertisingData = 0x01
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -834,7 +2064,7 @@ public extension LowEnergyCommand {
     /// The command is used to read the total number of white list entries that can be stored in the Controller.
     public struct ReadWhiteListSizeReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.readWhiteListSize
+        public static let command = LowEnergyCommand.readWhiteListSize //0x000F
         public static let length = 1
         
         /// The white list size.
@@ -856,7 +2086,7 @@ public extension LowEnergyCommand {
     /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
     public struct ReadChannelMapReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.readChannelMap
+        public static let command = LowEnergyCommand.readChannelMap //0x0015
         
         public static let length: Int = 7
         
@@ -871,7 +2101,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
@@ -887,7 +2117,7 @@ public extension LowEnergyCommand {
     /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
     public struct EncryptReturnParameter: HCICommandReturnParameter {
 
-        public static let command = LowEnergyCommand.encrypt
+        public static let command = LowEnergyCommand.encrypt //0x0017
         
         public static let length: Int = 16
         
@@ -897,7 +2127,7 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             guard let encryptedData = UInt128(data: Data(byteValue))
@@ -912,7 +2142,7 @@ public extension LowEnergyCommand {
     /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
     public struct RandomReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.random
+        public static let command = LowEnergyCommand.random //0x0018
         
         public static let length: Int = 8
         
@@ -921,15 +2151,561 @@ public extension LowEnergyCommand {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of:self).length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             self.randomNumber = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
         }
     }
+    
+    /// LE Long Term Key Request Reply Command
+    ///
+    /// The command is used to reply to an LE Long Term Key Request event from the Controller,
+    /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
+    public struct LongTermKeyRequestReplyReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.ltkReply //0x001A
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// LE Long Term Key Request Negative Reply Command
+    ///
+    /// The command is used to reply to an LE Long Term Key Request event
+    /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
+    public struct LongTermKeyRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// LE Test End Command
+    ///
+    /// This command is used to stop any test which is in progress. The Number_Of_Packets
+    /// for a transmitter test shall be reported as 0x0000. The Number_Of_Packets is an unsigned number
+    /// and contains the number of received packets.
+    public struct TestEndReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.testEnd //0x001F
+        
+        public static let length: Int = 2
+        
+        public let numberOfPackets: UInt16
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            numberOfPackets = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// LE Read Supported States
+    public struct ReadSupportedStatesReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readSupportedStates //0x001C
+        
+        public static let length: Int = 8
+        
+        public let state: LowEnergyStateSet
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let stateRawValue = UInt64(littleEndian: UInt64(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
+            
+            guard let state = LowEnergyStateSet(rawValue: stateRawValue)
+                else { return nil }
+            
+            self.state = state
+        }
+    }
+    
+    /// LE Read Resolving List Size Command
+    ///
+    /// The command is used to read the total number of address translation entries
+    /// in the resolving list that can be stored in the Controller.
+    /// Note: The number of entries that can be stored is not fixed and
+    /// the Controller can change it at any time (e.g. because the memory
+    /// used to store the list can also be used for other purposes).
+    public struct ReadResolvingListSizeReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readResolvedListSize //0x002A
+        
+        public static let length: Int = 1
+        
+        public let resolvingListSize: UInt8 //Resolving_List_Size
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            self.resolvingListSize = byteValue[0]
+        }
+    }
+    
+    /// LE Read Peer Resolvable Address Command
+    ///
+    /// The command is used to get the current peer Resolvable Private Address
+    /// being used for the corresponding peer Public and Random (static) Identity Address.
+    /// The peer’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code Unknown
+    /// Connection Identifier (0x02).
+    public struct ReadPeerResolvableAddressReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readPeerResolvableAddress //0x002B
+        
+        public static let length: Int = 6
+        
+        /// Resolvable Private Address being used by the peer device
+        public let peerResolvableAddress: UInt64 //Peer_Resolvable_Address
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            self.peerResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+        }
+    }
+    
+    /// LE Read Local Resolvable Address Command
+    ///
+    /// The command is used to get the current local Resolvable Private Address
+    //// being used for the corresponding peer Identity Address.
+    /// The local’s resolvable address being used may change after the command is called.
+    ///
+    /// This command can be used at any time.
+    ///
+    /// When a Controller cannot find a Resolvable Private Address associated
+    /// with the Peer Identity Address, it shall return the error code
+    /// Unknown Connection Identifier (0x02).
+    public struct ReadLocalResolvableAddressReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readLocalResolvableAddress //0x002C
+        
+        public static let length: Int = 6
+        
+        /// Resolvable Private Address being used by the local device
+        public let localResolvableAddress: UInt64 //Local_Resolvable_Address
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+        }
+    }
+    
+    /// LE Read Maximum Data Length Command
+    ///
+    /// The command allows the Host to read the Controller’s maximum supported payload octets
+    /// and packet duration times for transmission and reception.
+    public struct ReadMaximumDataLengthReturnParameter: HCICommandReturnParameter { //HCI_LE_Read_Maximum_Data_ Length 1323
+        
+        public static let command = LowEnergyCommand.readMaximumDataLength //0x002F
+        
+        public static let length: Int = 8
+        
+        /// Maximum number of payload octets that the local Controller supports for transmission
+        /// of a single Link Layer packet on a data connection.
+        public let supportedMaxTxOctets: SupportedMaxTxOctets
+        
+        /// Maximum time, in microseconds, that the local Controller supports for transmission of
+        /// a single Link Layer packet on a data connection.
+        public let supportedMaxTxTime: SupportedMaxTxTime
+        
+        /// Maximum number of payload octets that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        public let supportedMaxRxOctets: SupportedMaxRxOctets
+        
+        /// Maximum time, in microseconds, that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        public let supportedMaxRxTime: SupportedMaxRxTime
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            guard let supportedMaxTxOctets = SupportedMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1]))))
+                else { return nil }
+            
+            guard let supportedMaxTxTime = SupportedMaxTxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3]))))
+                else { return nil }
+            
+            guard let supportedMaxRxOctets = SupportedMaxRxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5]))))
+                else { return nil }
+            
+            guard let supportedMaxRxTime = SupportedMaxRxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7]))))
+                else { return nil }
+            
+            self.supportedMaxTxOctets = supportedMaxTxOctets
+            self.supportedMaxTxTime = supportedMaxTxTime
+            self.supportedMaxRxOctets = supportedMaxRxOctets
+            self.supportedMaxRxTime = supportedMaxRxTime
+        }
+        
+        /// Maximum time, in microseconds, that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        /// Range 0x0148-0x4290
+        public struct SupportedMaxRxTime: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxRxTime(0x0148)
+            
+            public static let max = SupportedMaxRxTime(0x4290)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxRxTime.min.rawValue,
+                    rawValue <= SupportedMaxRxTime.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxRxTime.min.rawValue ... SupportedMaxRxTime.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxRxTime, rhs: SupportedMaxRxTime) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxRxTime, rhs: SupportedMaxRxTime) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Maximum number of payload octets that the local Controller supports for reception of
+        /// a single Link Layer packet on a data connection.
+        /// Range 0x001B-0x00FB
+        public struct SupportedMaxRxOctets: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxRxOctets(0x001B)
+            
+            public static let max = SupportedMaxRxOctets(0x00FB)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxRxOctets.min.rawValue,
+                    rawValue <= SupportedMaxRxOctets.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxRxOctets.min.rawValue ... SupportedMaxRxOctets.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Maximum time, in microseconds, that the local Controller supports for transmission of
+        /// a single Link Layer packet on a data connection.
+        /// Range 0x0148-0x4290
+        public struct SupportedMaxTxTime: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxTxTime(0x0148)
+            
+            public static let max = SupportedMaxTxTime(0x4290)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxTxTime.min.rawValue,
+                    rawValue <= SupportedMaxTxTime.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxTxTime.min.rawValue ... SupportedMaxTxTime.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxTxTime, rhs: SupportedMaxTxTime) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxTxTime, rhs: SupportedMaxTxTime) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Maximum number of payload octets that the local Controller supports for transmission
+        /// of a single Link Layer packet on a data connection.
+        /// Range 0x001B-0x00FB
+        public struct SupportedMaxTxOctets: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = SupportedMaxTxOctets(0x001B)
+            
+            public static let max = SupportedMaxTxOctets(0x00FB)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SupportedMaxTxOctets.min.rawValue,
+                    rawValue <= SupportedMaxTxOctets.max.rawValue
+                    else { return nil }
+                
+                assert((SupportedMaxTxOctets.min.rawValue ... SupportedMaxTxOctets.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SupportedMaxTxOctets, rhs: SupportedMaxTxOctets) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SupportedMaxTxOctets, rhs: SupportedMaxTxOctets) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+    }
+    
+    /// LE Read PHY Command
+    ///
+    /// The command is used to read the current transmitter PHY and receiver PHY
+    /// on the connection identified by the Connection_Handle.
+    public struct ReadPHYReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readPhy //0x0030
+        
+        public static let length: Int = 4
+        
+        public let connectionHandle: UInt16
+        
+        public let txPhy: LowEnergyTxPhy
+        
+        public let rxPhy: LowEnergyRxPhy
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            
+            guard let txPhy = LowEnergyTxPhy(rawValue: byteValue[2])
+                else { return nil }
+            
+            guard let rxPhy = LowEnergyRxPhy(rawValue: byteValue[3])
+                else { return nil }
+            
+            self.txPhy = txPhy
+            self.rxPhy = rxPhy
+        }
+    }
+    
+    /// LE Set Extended Advertising Parameters Command
+    ///
+    /// The command is used by the Host to set the advertising parameters.
+    public struct SetExtendedAdvertisingParametersReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.setExtendedAdvertisingParameters //0x0036
+        
+        public static let length: Int = 1
+        
+        public let selectedTxPower: LowEnergyTxPower
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            guard let selectedTxPower = LowEnergyTxPower(rawValue: Int8(bitPattern: byteValue[0]))
+                else { return nil }
+            
+            self.selectedTxPower = selectedTxPower
+        }
+    }
 }
 
 // MARK: - Supporting Types
+
+/// Units: dBm
+/// 127 Host has no preference
+public struct LowEnergyTxPower: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    public static let min = LowEnergyTxPower(-127)
+    
+    public static let max = LowEnergyTxPower(126)
+    
+    public let rawValue: Int8
+    
+    public init?(rawValue: Int8) {
+        
+        guard rawValue >= LowEnergyTxPower.min.rawValue,
+            rawValue <= LowEnergyTxPower.max.rawValue
+            else { return nil }
+        
+        assert((LowEnergyTxPower.min.rawValue ... LowEnergyTxPower.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: Int8) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyTxPower, rhs: LowEnergyTxPower) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyTxPower, rhs: LowEnergyTxPower) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
+public enum LowEnergyRxPhy: UInt8 { //RX_PHY
+    
+    /// The receiver PHY for the connection is LE 1M
+    case le1m       = 0x01
+    
+    /// The receiver PHY for the connection is LE 2M
+    case le2m       = 0x02
+    
+    /// The receiver PHY for the connection is LE Coded
+    case leCoded    = 0x03
+}
+
+public enum LowEnergyTxPhy: UInt8 { //TX_PHY
+    
+    /// The transmitter PHY for the connection is LE 1M
+    case le1m       = 0x01
+    
+    /// The transmitter PHY for the connection is LE 2M
+    case le2m       = 0x02
+    
+    /// The transmitter PHY for the connection is LE Coded
+    case leCoded    = 0x03
+}
+
+public enum LowEnergyPeerIdentifyAddressType: UInt8 { //Peer_Identity_Address_Type
+    case publicIdentifyAddress = 0x00
+    case randomIdentifyAddress = 0x01
+}
+
+public enum LowEnergyPacketPayload: UInt8 { // Packet_Payload
+    
+    case prb29Sequence       = 0x00
+    case repeated11110000    = 0x01
+    case repeated10101010    = 0x02
+    case prbs15Sequence      = 0x03
+    case repeated11111111    = 0x04
+    case repeated00000000    = 0x05
+    case repeated00001111    = 0x06
+    case repeated01010101    = 0x07
+}
 
 /// Value for connection event interval
 ///
@@ -947,18 +2723,18 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
     public static let max: UInt16 = 0x0C80
     
     /// Maximum interval range.
-    public static let full = LowEnergyConnectionInterval(.min ... .max)
+    public static let full = LowEnergyConnectionInterval(LowEnergyConnectionInterval.min ... LowEnergyConnectionInterval.max)
     
     public let rawValue: RawValue
     
     public init?(rawValue: RawValue) {
         
-        assert(LowEnergyConnectionInterval.full.rawValue.lowerBound == LowEnergyConnectionInterval.min)
-        assert(LowEnergyConnectionInterval.full.rawValue.upperBound == LowEnergyConnectionInterval.max)
-        
         guard rawValue.lowerBound >= LowEnergyConnectionInterval.min,
             rawValue.upperBound <= LowEnergyConnectionInterval.max
             else { return nil }
+        
+        assert(LowEnergyConnectionInterval.full.rawValue.lowerBound == LowEnergyConnectionInterval.min)
+        assert(LowEnergyConnectionInterval.full.rawValue.upperBound == LowEnergyConnectionInterval.max)
         
         assert(rawValue.clamped(to: LowEnergyConnectionInterval.full.rawValue) == rawValue)
         assert(rawValue.overlaps(LowEnergyConnectionInterval.full.rawValue))
@@ -989,6 +2765,98 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
         
         return lhs.rawValue == rhs.rawValue
     }
+}
+
+/// The ALL_PHYS parameter is a bit field that allows the Host to specify, for each direction,
+/// whether it has no preference among the PHYs that the Controller supports in a given direction
+//// or whether it has specified particular PHYs that it prefers in the TX_PHYS or RX_PHYS parameter.
+public enum LowEnergyAllPhys: UInt8, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
+    /// The Host has no preference among the transmitter PHYs supported by the Controller
+    case hostHasNoPreferenceAmongTheTransmitterPhy  = 0b01
+    
+    /// The Host has no preference among the receiver PHYs supported by the Controller
+    case hostHasNoPreferenceAmongTheReceiverPhy     = 0b10
+    
+    public static let all: Set<LowEnergyAllPhys> = [.hostHasNoPreferenceAmongTheTransmitterPhy,
+                                                  .hostHasNoPreferenceAmongTheReceiverPhy]
+}
+
+/// The TX_PHYS parameter is a bit field that indicates the transmitter PHYs that the Host prefers
+/// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
+//// the TX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
+public enum LowEnergyTxPhys: UInt8, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
+    /// The Host prefers to use the LE 1M transmitter PHY (possibly among others)
+    case hostUseLe1MTransmitterPhy      = 0b001
+    
+    /// The Host prefers to use the LE 2M transmitter PHY (possibly among others)
+    case hostUseLe2MTransmitterPhy      = 0b010
+    
+    /// The Host prefers to use the LE Coded transmitter PHY (possibly among others)
+    case hostUseLeCodedTransmitterPhy   = 0b100
+    
+    public static let all: Set<LowEnergyTxPhys> = [.hostUseLe1MTransmitterPhy,
+                                           .hostUseLe2MTransmitterPhy,
+                                           .hostUseLeCodedTransmitterPhy]
+}
+
+/// The RX_PHYS parameter is a bit field that indicates the receiver PHYs that the Host prefers
+/// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
+/// the RX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
+public enum LowEnergyRxPhys: UInt8, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
+    /// The Host prefers to use the LE 1M receiver PHY (possibly among others)
+    case hostUseLe1MReceiverPhy      = 0
+    
+    /// The Host prefers to use the LE 2M receiver PHY (possibly among others)
+    case hostUseLe2MReceiverPhy      = 1
+    
+    /// The Host prefers to use the LE Coded receiver PHY (possibly among others)
+    case hostUseLeCodedReceiverPhy   = 2
+    
+    public static let all: Set<LowEnergyRxPhys> = [.hostUseLe1MReceiverPhy,
+                                          .hostUseLe2MReceiverPhy,
+                                          .hostUseLeCodedReceiverPhy]
+}
+
+/// The PHY_options parameter is a bit field that allows the Host to specify options for PHYs.
+/// The default value for a new connection shall be all zero bits. The Controller may override
+/// any preferred coding for transmitting on the LE Coded PHY.
+public enum LowEnergyPhyOptions: UInt16, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt16
+    #endif
+    
+    /// The Host has no preferred coding when transmitting on the LE Coded PHY
+    case host       = 0b01
+    
+    /// The Host prefers that S=2 coding be used when transmitting on the LE Coded PHY
+    case s2         = 0b10
+    
+    /// The Host prefers that S=8 coding be used when transmitting on the LE Coded PHY
+    case s3         = 0b100
+    
+    public static let all: Set<LowEnergyPhyOptions> = [.host,
+                                          .s2,
+                                          .s3]
 }
 
 /// Slave latency for the connection in number of connection events.
@@ -1126,6 +2994,96 @@ public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable
         
         return Int(rawValue)
     }
+}
+
+public struct LowEnergyTxChannel: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    /// 100 msec
+    public static let min = LowEnergyTxChannel(0x00)
+    
+    /// 32 seconds
+    public static let max = LowEnergyTxChannel(0x27)
+    
+    public var rawValue: UInt8
+    
+    public init?(rawValue: UInt8) {
+        guard rawValue >= LowEnergyTxChannel.min.rawValue,
+            rawValue <= LowEnergyTxChannel.max.rawValue
+            else { return nil }
+        
+        assert((LowEnergyTxChannel.min.rawValue ... LowEnergyTxChannel.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyTxChannel, rhs: LowEnergyTxChannel) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyTxChannel, rhs: LowEnergyTxChannel) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+    
+}
+
+public struct LowEnergyRxChannel: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    /// 100 msec
+    public static let min = LowEnergyRxChannel(0x00)
+    
+    /// 32 seconds
+    public static let max = LowEnergyRxChannel(0x27)
+    
+    public var rawValue: UInt8
+    
+    public init?(rawValue: UInt8) {
+        guard rawValue >= LowEnergyRxChannel.min.rawValue,
+            rawValue <= LowEnergyRxChannel.max.rawValue
+            else { return nil }
+        
+        assert((LowEnergyRxChannel.min.rawValue ... LowEnergyRxChannel.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyRxChannel, rhs: LowEnergyRxChannel) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyRxChannel, rhs: LowEnergyRxChannel) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+    
 }
 
 /// Supervision Timeout

@@ -48,6 +48,8 @@ public extension POSIXError {
     }
     
     // swiftlint:disable identifier_name
+    // swiftlint:disable colon
+    
     /// Enumeration describing POSIX error codes.
     public enum POSIXErrorCode : Int32 {
         
@@ -259,4 +261,5 @@ public extension POSIXError {
         case ENOTRECOVERABLE = 131 /* State not recoverable */
     }
     // swiftlint:enable identifier_name
+    // swiftlint:enable colon
 #endif

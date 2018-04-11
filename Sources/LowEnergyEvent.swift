@@ -23,6 +23,9 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
     
     /// LE Long Term Key Request
     case longTermKeyRequest                 = 0x05
+    
+    /// LE PHY Update Complete Event
+    case phyUpdateComplete                  = 0x3E
 }
 
 // MARK: - Name
@@ -31,15 +34,13 @@ public extension LowEnergyEvent {
     
     public var name: String {
         
-        return type(of: self).names[Int(rawValue)]
+        switch self {
+        case .connectionComplete: return "LE Connection Complete"
+        case .advertisingReport: return "LE Advertising Report"
+        case .connectionUpdateComplete: return "LE Connection Update Complete"
+        case .readRemoteUsedFeaturesComplete: return "LE Read Remote Used Features Complete"
+        case .longTermKeyRequest: return "LE Long Term Key Request"
+        case .phyUpdateComplete: return "LE PHY Update Complete Event"
+        }
     }
-    
-    private static let names = [
-        "Unknown",
-        "LE Connection Complete",
-        "LE Advertising Report",
-        "LE Connection Update Complete",
-        "LE Read Remote Used Features Complete",
-        "LE Long Term Key Request"
-    ]
 }

@@ -77,6 +77,24 @@ final class BluetoothTests: XCTestCase {
         XCTAssertGreaterThan(HCIVersion.v5_0, .v4_2)
     }
     
+    func testLowEnergyState() {
+        
+        var states = BitMaskOptionSet<LowEnergyState>.all
+        XCTAssert(states.isEmpty == false)
+        XCTAssertEqual(states.count, LowEnergyState.all.count)
+        XCTAssert(states.containsAll)
+        states.forEach { XCTAssert(LowEnergyState.all.contains($0)) }
+        
+        states.removeAll()
+        XCTAssert(states.count == 0)
+        XCTAssert(states.isEmpty)
+        
+        XCTAssertEqual(LowEnergyStateSet.state0.states, [.nonConnectableAdvertising])
+        XCTAssertEqual(LowEnergyStateSet.state1.states, [.scannableAdvertising])
+        
+        XCTAssertEqual(LowEnergyState.scannableAdvertising.description, "Scannable Advertising State")
+    }
+    
     func testLowEnergyAdvertisingFilterPolicy() {
         
         typealias FilterPolicy = LowEnergyCommand.SetAdvertisingParametersParameter.FilterPolicy

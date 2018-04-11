@@ -81,6 +81,12 @@ public struct HCIEventHeader: HCIPacketHeader {
     
     public var parameterLength: UInt8
     
+    public init(event: HCIGeneralEvent, parameterLength: UInt8) {
+        
+        self.event = event
+        self.parameterLength = parameterLength
+    }
+    
     public init?(bytes: [UInt8]) {
         
         guard bytes.count == type(of: self).length
