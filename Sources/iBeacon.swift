@@ -23,7 +23,7 @@ public struct iBeacon {
     public var minor: UInt16
     
     /// The received signal strength indicator (RSSI) value (measured in decibels) for the device.
-    public var rssi: Int8
+    public var rssi: RSSI
     
     /// The advertising interval.
     public var interval: UInt16
@@ -31,7 +31,7 @@ public struct iBeacon {
     public init(uuid: Foundation.UUID,
                 major: UInt16 = 0,
                 minor: UInt16 = 0,
-                rssi: Int8,
+                rssi: RSSI,
                 interval: UInt16 = 200) {
         
         self.uuid = uuid
@@ -91,7 +91,7 @@ public extension iBeacon {
         dataParameter.data.27 = minorBytes.0
         dataParameter.data.28 = minorBytes.1
         
-        dataParameter.data.29 = UInt8(bitPattern: rssi)
+        dataParameter.data.29 = UInt8(bitPattern: rssi.rawValue)
         
         return dataParameter
     }
