@@ -10,8 +10,6 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    public typealias LowEnergyEncryptionChange = LowEnergyEvent.EncryptionChangeEventParameter.EncryptionEnabled
-    
     /// LE Encrypt Command
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
@@ -44,7 +42,7 @@ public extension BluetoothHostControllerInterface {
                                   encryptedDiversifier: UInt16,
                                   longTermKey: UInt128,
                                   shouldContinue: () -> (Bool) = { return true },
-                                  timeout: HCICommandTimeout = .default) throws -> LowEnergyEncryptionChange? {
+                                  timeout: HCICommandTimeout = .default) throws {
         
         /**
          When the Controller receives the LE_Start_Encryption command it shall send the Command Status event to the Host. If the connection is not encrypted when this command is issued, an Encryption Change event shall occur when encryption has been started for the connection. If the connection is encrypted when this command is issued, an Encryption Key Refresh Complete event shall occur when encryption has been resumed.
@@ -65,9 +63,12 @@ public extension BluetoothHostControllerInterface {
             throw error
         }
         
-        var encryptionChange: LowEnergyEncryptionChange?
-        
-        try pollEvent(HCIGeneralEvent.LowEnergyMetaParameter.self, shouldContinue: shouldContinue) { (metaEvent) in
+        //var encryptionChange: LowEnergyEncryptionChange?
+        var eventFound = false
+        /*
+        try pollEvent(HCIGeneralEvent.LowEnergyMetaParameter.self, shouldContinue: { shouldContinue() && eventFound == false }, event: { (metaEvent) in
+            
+            eventFound = true
             
             switch metaEvent.subevent {
                 
@@ -103,8 +104,9 @@ public extension BluetoothHostControllerInterface {
                 
                 throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data))
             }
-        }
-        
+        })
+ 
         return encryptionChange
+        */
     }
 }
