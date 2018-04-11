@@ -1724,7 +1724,40 @@ public extension LowEnergyCommand {
         }
         
         public var byteValue: [UInt8] {
-            return []
+            
+            let advertisingEventPropertiesBytes = advertisingEventProperties.rawValue.littleEndian.bytes
+            let primaryAdvertisingMinimumBytes = primaryAdvertising.minimum.rawValue.littleEndian.bytes
+            let primaryAdvertisingMaximunBytes = primaryAdvertising.maximum.rawValue.littleEndian.bytes
+            let addressBytes = peerAddress.littleEndian.bytes
+            
+            let advertisingTxPowerByte = UInt8.init(bitPattern: advertisingTxPower.rawValue)
+            
+            return [advertisingHandle,
+                    advertisingEventPropertiesBytes.0,
+                    advertisingEventPropertiesBytes.1,
+                    primaryAdvertisingMinimumBytes.0,
+                    primaryAdvertisingMinimumBytes.1,
+                    primaryAdvertisingMinimumBytes.2,
+                    primaryAdvertisingMaximunBytes.0,
+                    primaryAdvertisingMaximunBytes.1,
+                    primaryAdvertisingMaximunBytes.2,
+                    primaryAdvertisingChannelMap.rawValue,
+                    ownAddressType.rawValue,
+                    peerAddressType.rawValue,
+                    addressBytes.0,
+                    addressBytes.1,
+                    addressBytes.2,
+                    addressBytes.3,
+                    addressBytes.4,
+                    addressBytes.5,
+                    advertisingFilterPolicy.rawValue,
+                    advertisingTxPowerByte,
+                    primaryAdvertisingPhy.rawValue,
+                    secondaryAdvertisingMaxSkip.rawValue,
+                    secondaryAdvertisingPhy.rawValue,
+                    advertisingSid,
+                    scanRequestNotificationEnable.rawValue
+            ]
         }
         
         /// The Scan_Request_Notification_Enable parameter indicates whether the Controller shall send
@@ -1947,6 +1980,63 @@ public extension LowEnergyCommand {
                 .includeTxPower
             ]
         }
+    }
+    
+    /// LE Set Extended Advertising Data Command
+    ///
+    /// The command is used to set the data used in advertising PDUs that have a data field.
+    public struct SetExtendedAdvertisingDataParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setExtendedAdvertisingData //0x0037
+        
+        public let advertisingHandle: UInt8
+        public let operation: Operation
+        public let fragmentPreference: FragmentPreference
+        public let advertisingDataLength: UInt8
+        
+        public init(advertisingHandle: UInt8, operation: Operation, fragmentPreference: FragmentPreference, advertisingDataLength: UInt8){
+            self.advertisingHandle = advertisingHandle
+            self.operation = operation
+            self.fragmentPreference = fragmentPreference
+            self.advertisingDataLength = advertisingDataLength
+        }
+        
+        public var byteValue: [UInt8] {
+            return [advertisingHandle,
+                    operation.rawValue,
+                    fragmentPreference.rawValue,
+                    advertisingDataLength
+                    ]
+        }
+        
+        public enum Operation: UInt8 { //Operation
+            
+            /// Intermediate fragment of fragmented extended advertising data
+            case intermediateFragment   = 0x00
+            
+            /// First fragment of fragmented extended advertising data
+            case firstFragment          = 0x01
+            
+            /// Last fragment of fragmented extended advertising data
+            case lastFragment           = 0x02
+            
+            /// Complete extended advertising data
+            case completeExtended       = 0x03
+            
+            /// Unchanged data (just update the Advertising DID)
+            case unchangedData          = 0x04
+        }
+        
+        public enum FragmentPreference: UInt8 { //Fragment_Preference
+            
+            /// The Controller may fragment all Host advertising data
+            case fragmentAllHostAdvertisingData = 0x00
+            
+            /// The Controller should not fragment or should minimize fragmentation of Host advertising data
+            case shouldNotFragmentHostAdvertisingData = 0x01
+        }
+        
+        
     }
 }
 
