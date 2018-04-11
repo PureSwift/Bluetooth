@@ -22,7 +22,8 @@ final class HCITests: XCTestCase {
         ("testLEReadRemoteUsedFeatures", testLEReadRemoteUsedFeatures),
         ("testAdvertisingReport", testAdvertisingReport),
         ("testCommandStatusEvent", testCommandStatusEvent),
-        ("testLEConnection", testLEConnection),
+        ("testLEConnectionEvent", testLEConnectionEvent),
+        ("testLEConnectionCreate", testLEConnectionCreate),
         ("testLEConnectionCancel", testLEConnectionCancel),
         ("testLEAddDeviceToWhiteList", testLEAddDeviceToWhiteList),
         ("testLERemoveDeviceFromWhiteList", testLERemoveDeviceFromWhiteList),
@@ -463,7 +464,7 @@ final class HCITests: XCTestCase {
         }
     }
     
-    func testLEConnection() {
+    func testLEConnectionEvent() {
         
         do {
             
@@ -492,6 +493,91 @@ final class HCITests: XCTestCase {
             XCTAssert(event.status == .success)
             XCTAssert(event.handle == 71)
         }
+    }
+    
+    func testLEConnectionCreate() {
+        
+        typealias CommandParameter = LowEnergyCommand.CreateConnectionParameter
+        
+        typealias SupervisionTimeout = LowEnergyCommand.CreateConnectionParameter.SupervisionTimeout
+        
+        let hostController = TestHostController()
+        
+        let parameters = CommandParameter(scanInterval: LowEnergyScanTimeInterval(rawValue: 0x0060)!,
+                                          scanWindow: LowEnergyScanTimeInterval(rawValue: 0x0030)!,
+                                          initiatorFilterPolicy: .whiteList,
+                                          peerAddressType: .public,
+                                          peerAddress: .zero,
+                                          ownAddressType: .public,
+                                          connectionInterval: LowEnergyConnectionInterval(rawValue: 0x0006 ... 0x000C)!,
+                                          connectionLatency: .zero,
+                                          supervisionTimeout: LowEnergyCommand.CreateConnectionParameter.SupervisionTimeout(rawValue: 0x00C8)!,
+                                          connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
+        
+        XCTAssertEqual(parameters.byteValue.count, 0x19)
+        XCTAssertEqual(parameters.scanInterval.miliseconds, 60)
+        XCTAssertEqual(parameters.scanWindow.miliseconds, 30)
+        XCTAssertEqual(parameters.connectionInterval.miliseconds, 7.5 ... 15)
+        XCTAssertEqual(parameters.connectionLatency.rawValue, 0)
+        XCTAssertEqual(parameters.supervisionTimeout.miliseconds, 2000)
+        XCTAssertEqual(parameters.connectionLength.miliseconds, 2.5 ... 3.75)
+        
+        /**
+         SEND  [200D] LE Create Connection - 00:00:00:00:00:00, Scan Window/Interval: 30ms/60ms, Min/Max Conn Interval: 7.5ms/15ms
+         
+         [200D] Opcode: 0x200D (OGF: 0x08    OCF: 0x0D)
+         Parameter Length: 25 (0x19)
+         LE Scan Interval: 0X0060 (60 ms)
+         LE Scan Window: 0X0030 (30 ms)
+         Initiator Filter Policy: 01 - White list is used to connect
+         Peer Address Type: Public
+         Peer Address: 00:00:00:00:00:00
+         Own Address Type: Public
+         Conn Interval Min: 0X0006 (7.5 ms)
+         Conn Interval Max: 0X000C (15 ms)
+         Conn Latency: 0
+         Supervision Timeout: 0x00C8 (2000 ms)
+         Minimum CE Length: 0x0004 (2.5 ms)
+         Maximum CE Length: 0x0006 (3.75 ms)
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.createConnection.opcode,
+            [0x0D, 0x20, 0x19, 0x60, 0x00, 0x30, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x0C, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x04, 0x00, 0x06, 0x00])
+        )
+        
+        // RECV  Command Status - LE Create Connection  0F 04 00 01 0D 20
+        hostController.queue.append(.event([0x0F, 0x04, 0x00, 0x01, 0x0D, 0x20]))
+        
+        /**
+         RECV  LE Meta Event - LE Connection Complete - Master - Public - 58:E2:8F:7C:0B:B3 - Conn Interval: 11.25 ms  3E 13 01 00 41 00 00 00 B3 0B 7C 8F E2 58 09 00 00 00 C8 00 05
+         
+         Parameter Length: 19 (0x13)
+         Status: 0x00 - Success
+         Connection Handle: 0x0041
+         Role: 0x0000 (Master)
+         Peer Address Type: Public
+         Peer Address: 58:E2:8F:7C:0B:B3
+         Connection Interval: 0X0009 (11.25 ms)
+         Connection Latency: 000000 (0 ms)
+         Supervision Timeout: 0X00C8 (2000 ms)
+         Master Clock Accuracy: 0X05
+         */
+        hostController.queue.append(.event([0x3E, 0x13, 0x01, 0x00, 0x41, 0x00, 0x00, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x09, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x05]))
+        
+        var connection: LowEnergyEvent.ConnectionCompleteParameter!
+        XCTAssertNoThrow(connection = try hostController.lowEnergyCreateConnection(parameters: parameters))
+        XCTAssert(hostController.queue.isEmpty)
+        XCTAssertEqual(connection.status.rawValue, 0x00)
+        XCTAssertEqual(connection.handle, 0x0041)
+        XCTAssertEqual(connection.role, .master)
+        XCTAssertEqual(connection.peerAddressType, .public)
+        XCTAssertEqual(connection.peerAddress.rawValue, "58:E2:8F:7C:0B:B3")
+        XCTAssertEqual(connection.interval.rawValue, 0x0009)
+        XCTAssertEqual(connection.interval.miliseconds, 11.25)
+        XCTAssertEqual(connection.latency.rawValue, 0)
+        XCTAssertEqual(connection.supervisionTimeout.rawValue, 0x00C8)
+        XCTAssertEqual(connection.supervisionTimeout.miliseconds, 2000)
+        XCTAssertEqual(connection.masterClockAccuracy.rawValue, 0x05)
     }
     
     func testLEConnectionCancel() {

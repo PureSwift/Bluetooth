@@ -2470,18 +2470,18 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
     public static let max: UInt16 = 0x0C80
     
     /// Maximum interval range.
-    public static let full = LowEnergyConnectionInterval(.min ... .max)
+    public static let full = LowEnergyConnectionInterval(LowEnergyConnectionInterval.min ... LowEnergyConnectionInterval.max)
     
     public let rawValue: RawValue
     
     public init?(rawValue: RawValue) {
         
-        assert(LowEnergyConnectionInterval.full.rawValue.lowerBound == LowEnergyConnectionInterval.min)
-        assert(LowEnergyConnectionInterval.full.rawValue.upperBound == LowEnergyConnectionInterval.max)
-        
         guard rawValue.lowerBound >= LowEnergyConnectionInterval.min,
             rawValue.upperBound <= LowEnergyConnectionInterval.max
             else { return nil }
+        
+        assert(LowEnergyConnectionInterval.full.rawValue.lowerBound == LowEnergyConnectionInterval.min)
+        assert(LowEnergyConnectionInterval.full.rawValue.upperBound == LowEnergyConnectionInterval.max)
         
         assert(rawValue.clamped(to: LowEnergyConnectionInterval.full.rawValue) == rawValue)
         assert(rawValue.overlaps(LowEnergyConnectionInterval.full.rawValue))
