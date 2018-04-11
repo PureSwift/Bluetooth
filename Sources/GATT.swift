@@ -75,6 +75,11 @@ public struct GATT {
     /// GATT Characteristic Properties Bitfield valuess
     public enum CharacteristicProperty: UInt8, BitMaskOption {
         
+        #if swift(>=3.1)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt8
+        #endif
+        
         case broadcast              = 0x01
         case read                   = 0x02
         case writeWithoutResponse   = 0x04
@@ -88,15 +93,13 @@ public struct GATT {
         case extendedProperties     = 0x80
         
         public static let all: Set<GATT.CharacteristicProperty> = [.broadcast,
-                                                              .read,
-                                                              .writeWithoutResponse,
-                                                              .write,
-                                                              .notify,
-                                                              .indicate,
-                                                              .signedWrite,
-                                                              .extendedProperties]
-        
-        public typealias RawValue = UInt8
+                                                                   .read,
+                                                                   .writeWithoutResponse,
+                                                                   .write,
+                                                                   .notify,
+                                                                   .indicate,
+                                                                   .signedWrite,
+                                                                   .extendedProperties]
     }
     
     /// GATT Characteristic Extended Properties Bitfield values.

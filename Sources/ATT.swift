@@ -251,6 +251,11 @@ public enum ATTOpcodeType {
 /// permissions is a byte that encodes a combination of these.
 public enum ATTAttributePermission: UInt8, BitMaskOption {
     
+    #if swift(>=3.1)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
     // Access
     case read                                       = 0x01
     case write                                      = 0x02
@@ -279,6 +284,4 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
                                                           .writeAuthentication,
                                                           .authorized,
                                                           .noAuthorization]
-    
-    public typealias RawValue = UInt8
 }
