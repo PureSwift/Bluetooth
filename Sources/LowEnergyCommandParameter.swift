@@ -1705,8 +1705,21 @@ public extension LowEnergyCommand {
         
         public let scanRequestNotificationEnable: ScanRequestNotificationEnable
         
-        public init(advertisingHandle: UInt8, advertisingEventProperties: AdvertisingEventProperties, primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval), primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap, ownAddressType: OwnAddressType, peerAddressType: PeerAddressType, peerAddress: Address, advertisingFilterPolicy: AdvertisingFilterPolicy,
-                    advertisingTxPower: LowEnergyTxPower, primaryAdvertisingPhy: PrimaryAdvertisingPhy, secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip, secondaryAdvertisingPhy: SecondaryAdvertisingPhy, advertisingSid: UInt8, scanRequestNotificationEnable: ScanRequestNotificationEnable) {
+        public init(advertisingHandle: UInt8,
+                    advertisingEventProperties: AdvertisingEventProperties,
+                    primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval),
+                    primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap,
+                    ownAddressType: OwnAddressType,
+                    peerAddressType: PeerAddressType,
+                    peerAddress: Address,
+                    advertisingFilterPolicy: AdvertisingFilterPolicy,
+                    advertisingTxPower: LowEnergyTxPower,
+                    primaryAdvertisingPhy: PrimaryAdvertisingPhy,
+                    secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip,
+                    secondaryAdvertisingPhy: SecondaryAdvertisingPhy,
+                    advertisingSid: UInt8,
+                    scanRequestNotificationEnable: ScanRequestNotificationEnable) {
+            
             self.advertisingHandle = advertisingHandle
             self.advertisingEventProperties = advertisingEventProperties
             self.primaryAdvertising = primaryAdvertising
@@ -1989,12 +2002,16 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setExtendedAdvertisingData //0x0037
         
-        public let advertisingHandle: UInt8
-        public let operation: Operation
-        public let fragmentPreference: FragmentPreference
-        public let advertisingDataLength: UInt8
+        public var advertisingHandle: UInt8
+        public var operation: Operation
+        public var fragmentPreference: FragmentPreference
+        public var advertisingDataLength: UInt8
         
-        public init(advertisingHandle: UInt8, operation: Operation, fragmentPreference: FragmentPreference, advertisingDataLength: UInt8){
+        public init(advertisingHandle: UInt8,
+                    operation: Operation,
+                    fragmentPreference: FragmentPreference,
+                    advertisingDataLength: UInt8) {
+            
             self.advertisingHandle = advertisingHandle
             self.operation = operation
             self.fragmentPreference = fragmentPreference
@@ -2035,8 +2052,6 @@ public extension LowEnergyCommand {
             /// The Controller should not fragment or should minimize fragmentation of Host advertising data
             case shouldNotFragmentHostAdvertisingData = 0x01
         }
-        
-        
     }
 }
 

@@ -49,21 +49,20 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Advertising Set Random Address Command
     ///
     /// The command is used by the Host to set the random device address specified by the Random_Address parameter.
-    func lowEnergySetAdvertisingSetRandomAddress(advertisingHandle: UInt8, advertisingRandomAddress: Address, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergySetAdvertisingSetRandomAddress(advertisingHandle: UInt8,
+                                                 advertisingRandomAddress: Address,
+                                                 timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.SetAdvertisingSetRandomAddress(advertisingHandle: advertisingHandle, advertisingRandomAddress: advertisingRandomAddress)
         
         try deviceRequest(parameters, timeout: timeout)
     }
     
-    /*
-    func setLowEnergySetExtendedAdvertisingParameters(advertisingHandle: UInt8, advertisingEventProperties: AdvertisingEventProperties, primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval), primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap, ownAddressType: OwnAddressType, peerAddressType: PeerAddressType, peerAddress: Address, advertisingFilterPolicy: AdvertisingFilterPolicy, advertisingTxPower: LowEnergyTxPower, primaryAdvertisingPhy: PrimaryAdvertisingPhy, secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip, secondaryAdvertisingPhy: SecondaryAdvertisingPhy, advertisingSid: UInt8, scanRequestNotificationEnable: ScanRequestNotificationEnable, timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
+    func setLowEnergySetExtendedAdvertisingParameters(_ parameters: LowEnergyCommand.SetExtendedAdvertisingParametersParameter,
+                                                      timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
         
-        let parameters = LowEnergyCommand.SetExtendedAdvertisingParametersParameter(advertisingHandle: advertisingHandle, advertisingEventProperties: advertisingEventProperties, primaryAdvertising: primaryAdvertising, primaryAdvertisingChannelMap: primaryAdvertisingChannelMap, ownAddressType: ownAddressType, peerAddressType: peerAddressType, peerAddress: peerAddress, advertisingFilterPolicy: advertisingFilterPolicy, advertisingTxPower: advertisingTxPower, primaryAdvertisingPhy: primaryAdvertisingPhy, secondaryAdvertisingMaxSkip: secondaryAdvertisingMaxSkip, secondaryAdvertisingPhy: secondaryAdvertisingPhy, advertisingSid: advertisingSid, scanRequestNotificationEnable: scanRequestNotificationEnable)
+        let returnParameter = try deviceRequest(parameters, LowEnergyCommand.SetExtendedAdvertisingParametersReturnParameter.self, timeout: timeout)
         
-        let value = try deviceRequest(parameters, LowEnergyCommand.SetExtendedAdvertisingParametersReturnParameter.self, timeout: timeout)
-        
-        return value.selectedTxPower
-    }*/
-    
+        return returnParameter.selectedTxPower
+    }
 }
