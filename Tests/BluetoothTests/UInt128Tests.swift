@@ -15,7 +15,8 @@ final class UInt128Tests: XCTestCase {
     static let allTests = [
         ("testBitWidth", testBitWidth),
         ("testUUID", testUUID),
-        ("testHashable", testHashable)
+        ("testHashable", testHashable),
+        ("testExpressibleByIntegerLiteral", testExpressibleByIntegerLiteral)
     ]
     
     func testBitWidth() {
@@ -37,5 +38,17 @@ final class UInt128Tests: XCTestCase {
         
         XCTAssertEqual(UInt128.zero.hashValue, 0)
         XCTAssertNotEqual(UInt128.max.hashValue, 0)
+    }
+    
+    func testExpressibleByIntegerLiteral() {
+        
+        let values: [(UInt128, String)] = [
+            (0x00000000000000000000000000000000, "00000000000000000000000000000000"),
+            (0x00000000000000000000000000000001, "00000000000000000000000000000001"),
+            (0x00000000000000000000000000000020, "00000000000000000000000000000020"),
+            (0x0000000000000000DCBABEBAAFDE0001, "0000000000000000DCBABEBAAFDE0001")
+        ]
+        
+        values.forEach { XCTAssertEqual($0.0.description, $0.1) }
     }
 }
