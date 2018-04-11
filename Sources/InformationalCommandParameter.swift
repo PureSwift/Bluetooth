@@ -61,4 +61,30 @@ public extension InformationalCommand {
             self.lmpSubversion = UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7])))
         }
     }
+    
+    /// Read Device Address
+    ///
+    /// On a BR/EDR Controller, this command reads the Bluetooth Controller address (BD_ADDR).
+    ///
+    /// On an LE Controller, this command shall read the Public Device Address.
+    /// If this Controller does not have a Public Device Address, the value 0x000000000000 shall be returned.
+    ///
+    /// - Note: On a BR/EDR/LE Controller, the public address shall be the same as the `BD_ADDR`.
+    public struct ReadDeviceAddressReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = InformationalCommand.readDeviceAddress
+        
+        public static let length = 6
+        
+        /// The Bluetooth address of the device.
+        public let address: Address
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            self.address = Address(littleEndian: Address(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5])))
+        }
+    }
 }
