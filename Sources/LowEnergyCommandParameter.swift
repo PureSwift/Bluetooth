@@ -1753,7 +1753,7 @@ public extension LowEnergyCommand {
         /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
         public enum PrimaryAdvertisingChannelMap: UInt8, BitMaskOption {
             
-            #if swift(>=3.1)
+            #if swift(>=3.2)
             #elseif swift(>=3.0)
             public typealias RawValue = UInt8
             #endif
@@ -1830,7 +1830,7 @@ public extension LowEnergyCommand {
         /// and its basic properties.
         public enum AdvertisingEventProperties: UInt16, BitMaskOption {
             
-            #if swift(>=3.1)
+            #if swift(>=3.2)
             #elseif swift(>=3.0)
             public typealias RawValue = UInt16
             #endif
@@ -2519,7 +2519,7 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
 //// or whether it has specified particular PHYs that it prefers in the TX_PHYS or RX_PHYS parameter.
 public enum LowEnergyAllPhys: UInt8, BitMaskOption {
     
-    #if swift(>=3.1)
+    #if swift(>=3.2)
     #elseif swift(>=3.0)
     public typealias RawValue = UInt8
     #endif
@@ -2539,7 +2539,7 @@ public enum LowEnergyAllPhys: UInt8, BitMaskOption {
 //// the TX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
 public enum LowEnergyTxPhys: UInt8, BitMaskOption {
     
-    #if swift(>=3.1)
+    #if swift(>=3.2)
     #elseif swift(>=3.0)
     public typealias RawValue = UInt8
     #endif
@@ -2563,7 +2563,7 @@ public enum LowEnergyTxPhys: UInt8, BitMaskOption {
 /// the RX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
 public enum LowEnergyRxPhys: UInt8, BitMaskOption {
     
-    #if swift(>=3.1)
+    #if swift(>=3.2)
     #elseif swift(>=3.0)
     public typealias RawValue = UInt8
     #endif
@@ -2587,7 +2587,7 @@ public enum LowEnergyRxPhys: UInt8, BitMaskOption {
 /// any preferred coding for transmitting on the LE Coded PHY.
 public enum LowEnergyPhyOptions: UInt16, BitMaskOption {
     
-    #if swift(>=3.1)
+    #if swift(>=3.2)
     #elseif swift(>=3.0)
     public typealias RawValue = UInt16
     #endif

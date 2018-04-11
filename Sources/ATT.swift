@@ -251,7 +251,7 @@ public enum ATTOpcodeType {
 /// permissions is a byte that encodes a combination of these.
 public enum ATTAttributePermission: UInt8, BitMaskOption {
     
-    #if swift(>=3.1)
+    #if swift(>=3.2)
     #elseif swift(>=3.0)
     public typealias RawValue = UInt8
     #endif
