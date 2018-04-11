@@ -75,7 +75,7 @@ public struct GATT {
     /// GATT Characteristic Properties Bitfield valuess
     public enum CharacteristicProperty: UInt8, BitMaskOption {
         
-        #if swift(>=3.1)
+        #if swift(>=3.2)
         #elseif swift(>=3.0)
         public typealias RawValue = UInt8
         #endif
