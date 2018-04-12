@@ -55,6 +55,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(error.description.isEmpty == false)
             XCTAssertEqual(error.description, error.name)
             
+            #if os(macOS)
             let nsError = error as NSError
             XCTAssertEqual(nsError.code, Int(error.rawValue))
             XCTAssertEqual(nsError.domain, "org.pureswift.Bluetooth.ATTError")
@@ -63,6 +64,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(nsError.userInfo[NSLocalizedFailureReasonErrorKey] as? String, error.errorDescription)
             
             print(nsError)
+            #endif
         }
     }
     
