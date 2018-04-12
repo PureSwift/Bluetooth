@@ -27,6 +27,85 @@ final class BluetoothUUIDTests: XCTestCase {
     
     lazy var randomUUIDs = (1 ... 100000).map { _ in UUID() }
     
+    #if os(macOS) && swift(>=3.2)
+    func testGenerateDefinedUUIDExtension() {
+        
+        let uuids = definedUUIDs.sorted(by: { $0.0.key < $0.1.key })
+        
+        var generatedCode = ""
+        
+        func 🖨(_ text: String) {
+            
+            generatedCode += text + "\n"
+        }
+        
+        // https://gist.github.com/AmitaiB/bbfcba3a21411ee6d3f972320bcd1ecd
+        func camelCase(_ string: String) -> String {
+            return string.components(separatedBy: CharacterSet.alphanumerics.inverted)
+                .filter { !$0.isEmpty }
+                .map { $0.capitalized }
+                .joined()
+        }
+        
+        func llamaCase(_ string: String) -> String {
+            var result = camelCase(string)
+            if let firstLetterCharacter = result.first {
+                result = String(result.dropFirst())
+                let firstLetter = String(firstLetterCharacter)
+                result = firstLetter.lowercased() + result
+            }
+            return result
+        }
+        
+        🖨("public extension BluetoothUUID {")
+        🖨("")
+        
+        var nameCache = Set<String>()
+        
+        for (uuidValue, name) in uuids {
+            
+            let uuid = BluetoothUUID.bit16(uuidValue)
+            
+            let sanitizedName = name
+                .replacingOccurrences(of: "The ", with: "")
+                .replacingOccurrences(of: "A/V", with: "av")
+                .replacingOccurrences(of: " Inc", with: "")
+                .replacingOccurrences(of: " LLC", with: "")
+                .replacingOccurrences(of: "Co.,", with: "")
+                .replacingOccurrences(of: "Ltd", with: "")
+                .replacingOccurrences(of: " Sp. z o.o.", with: "")
+                .replacingOccurrences(of: "3D ", with: "uuid3D")
+                .replacingOccurrences(of: "360", with: "uuid360")
+            
+            let llamaCaseName = llamaCase(sanitizedName)
+            
+            var memberName = llamaCaseName
+            
+            // prevent duplicate entries
+            var duplicateNumber = 1
+            while nameCache.contains(memberName) {
+                
+                duplicateNumber += 1
+                memberName = llamaCaseName + "\(duplicateNumber)"
+            }
+            
+            🖨("    /// " + name)
+            🖨("    static var " + memberName + ": BluetoothUUID { return .bit16(0x" + uuid.rawValue + ") }")
+            🖨("")
+            
+            nameCache.insert(memberName)
+        }
+        
+        🖨("}")
+        🖨("")
+        
+        let filename = NSTemporaryDirectory() + "DefinedUUID\(Int(Date().timeIntervalSince1970)).swift"
+        XCTAssertNoThrow(try generatedCode.write(toFile: filename, atomically: true, encoding: .utf8))
+        
+        print("Generated Swift code \(filename)")
+    }
+    #endif
+    
     func testMalformed() {
         
         let malformed = [
