@@ -171,7 +171,7 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2902: "Client Characteristic Configuration",
     0x2903: "Server Characteristic Configuration",
     0x2904: "Characteristic Format",
-    0x2905: "Characteristic Aggregate Formate",
+    0x2905: "Characteristic Aggregate Format",
     0x2906: "Valid Range",
     0x2907: "External Report Reference",
     0x2908: "Report Reference",
@@ -939,8 +939,8 @@ public extension BluetoothUUID {
     /// Characteristic Format
     static var characteristicFormat: BluetoothUUID { return .bit16(0x2904) }
     
-    /// Characteristic Aggregate Formate
-    static var characteristicAggregateFormate: BluetoothUUID { return .bit16(0x2905) }
+    /// Characteristic Aggregate Format
+    static var characteristicAggregateFormat: BluetoothUUID { return .bit16(0x2905) }
     
     /// Valid Range
     static var validRange: BluetoothUUID { return .bit16(0x2906) }
