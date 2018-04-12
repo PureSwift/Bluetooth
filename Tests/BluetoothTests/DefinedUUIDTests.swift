@@ -497,7 +497,7 @@ final class DefinedUUIDTests: XCTestCase {
 
             return allTests
         }()
-    
+
     /// Test SDP
     func testSdp() {
 
@@ -505,6 +505,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.sdp, .bit16(0x0001))
          XCTAssertEqual(BluetoothUUID.sdp, .bit16(1))
          XCTAssertEqual(BluetoothUUID.sdp.name, "SDP")
+         XCTAssertNotEqual(BluetoothUUID.sdp, .bit32(1))
+         XCTAssertNotEqual(BluetoothUUID.sdp, .bit32(0x0001))
 
     }
 
@@ -515,6 +517,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.rfcomm, .bit16(0x0003))
          XCTAssertEqual(BluetoothUUID.rfcomm, .bit16(3))
          XCTAssertEqual(BluetoothUUID.rfcomm.name, "RFCOMM")
+         XCTAssertNotEqual(BluetoothUUID.rfcomm, .bit32(3))
+         XCTAssertNotEqual(BluetoothUUID.rfcomm, .bit32(0x0003))
 
     }
 
@@ -525,6 +529,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tcsBin, .bit16(0x0005))
          XCTAssertEqual(BluetoothUUID.tcsBin, .bit16(5))
          XCTAssertEqual(BluetoothUUID.tcsBin.name, "TCS-BIN")
+         XCTAssertNotEqual(BluetoothUUID.tcsBin, .bit32(5))
+         XCTAssertNotEqual(BluetoothUUID.tcsBin, .bit32(0x0005))
 
     }
 
@@ -535,6 +541,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.att, .bit16(0x0007))
          XCTAssertEqual(BluetoothUUID.att, .bit16(7))
          XCTAssertEqual(BluetoothUUID.att.name, "ATT")
+         XCTAssertNotEqual(BluetoothUUID.att, .bit32(7))
+         XCTAssertNotEqual(BluetoothUUID.att, .bit32(0x0007))
 
     }
 
@@ -545,6 +553,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.obex, .bit16(0x0008))
          XCTAssertEqual(BluetoothUUID.obex, .bit16(8))
          XCTAssertEqual(BluetoothUUID.obex.name, "OBEX")
+         XCTAssertNotEqual(BluetoothUUID.obex, .bit32(8))
+         XCTAssertNotEqual(BluetoothUUID.obex, .bit32(0x0008))
 
     }
 
@@ -555,6 +565,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bnep, .bit16(0x000F))
          XCTAssertEqual(BluetoothUUID.bnep, .bit16(15))
          XCTAssertEqual(BluetoothUUID.bnep.name, "BNEP")
+         XCTAssertNotEqual(BluetoothUUID.bnep, .bit32(15))
+         XCTAssertNotEqual(BluetoothUUID.bnep, .bit32(0x000F))
 
     }
 
@@ -565,6 +577,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.upnp, .bit16(0x0010))
          XCTAssertEqual(BluetoothUUID.upnp, .bit16(16))
          XCTAssertEqual(BluetoothUUID.upnp.name, "UPNP")
+         XCTAssertNotEqual(BluetoothUUID.upnp, .bit32(16))
+         XCTAssertNotEqual(BluetoothUUID.upnp, .bit32(0x0010))
 
     }
 
@@ -575,6 +589,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hidp, .bit16(0x0011))
          XCTAssertEqual(BluetoothUUID.hidp, .bit16(17))
          XCTAssertEqual(BluetoothUUID.hidp.name, "HIDP")
+         XCTAssertNotEqual(BluetoothUUID.hidp, .bit32(17))
+         XCTAssertNotEqual(BluetoothUUID.hidp, .bit32(0x0011))
 
     }
 
@@ -585,6 +601,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hardcopyControlChannel, .bit16(0x0012))
          XCTAssertEqual(BluetoothUUID.hardcopyControlChannel, .bit16(18))
          XCTAssertEqual(BluetoothUUID.hardcopyControlChannel.name, "Hardcopy Control Channel")
+         XCTAssertNotEqual(BluetoothUUID.hardcopyControlChannel, .bit32(18))
+         XCTAssertNotEqual(BluetoothUUID.hardcopyControlChannel, .bit32(0x0012))
 
     }
 
@@ -595,6 +613,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hardcopyDataChannel, .bit16(0x0014))
          XCTAssertEqual(BluetoothUUID.hardcopyDataChannel, .bit16(20))
          XCTAssertEqual(BluetoothUUID.hardcopyDataChannel.name, "Hardcopy Data Channel")
+         XCTAssertNotEqual(BluetoothUUID.hardcopyDataChannel, .bit32(20))
+         XCTAssertNotEqual(BluetoothUUID.hardcopyDataChannel, .bit32(0x0014))
 
     }
 
@@ -605,6 +625,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hardcopyNotification, .bit16(0x0016))
          XCTAssertEqual(BluetoothUUID.hardcopyNotification, .bit16(22))
          XCTAssertEqual(BluetoothUUID.hardcopyNotification.name, "Hardcopy Notification")
+         XCTAssertNotEqual(BluetoothUUID.hardcopyNotification, .bit32(22))
+         XCTAssertNotEqual(BluetoothUUID.hardcopyNotification, .bit32(0x0016))
 
     }
 
@@ -615,6 +637,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.avctp, .bit16(0x0017))
          XCTAssertEqual(BluetoothUUID.avctp, .bit16(23))
          XCTAssertEqual(BluetoothUUID.avctp.name, "AVCTP")
+         XCTAssertNotEqual(BluetoothUUID.avctp, .bit32(23))
+         XCTAssertNotEqual(BluetoothUUID.avctp, .bit32(0x0017))
 
     }
 
@@ -625,6 +649,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.avdtp, .bit16(0x0019))
          XCTAssertEqual(BluetoothUUID.avdtp, .bit16(25))
          XCTAssertEqual(BluetoothUUID.avdtp.name, "AVDTP")
+         XCTAssertNotEqual(BluetoothUUID.avdtp, .bit32(25))
+         XCTAssertNotEqual(BluetoothUUID.avdtp, .bit32(0x0019))
 
     }
 
@@ -635,6 +661,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cmtp, .bit16(0x001B))
          XCTAssertEqual(BluetoothUUID.cmtp, .bit16(27))
          XCTAssertEqual(BluetoothUUID.cmtp.name, "CMTP")
+         XCTAssertNotEqual(BluetoothUUID.cmtp, .bit32(27))
+         XCTAssertNotEqual(BluetoothUUID.cmtp, .bit32(0x001B))
 
     }
 
@@ -645,6 +673,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.mcapControlChannel, .bit16(0x001E))
          XCTAssertEqual(BluetoothUUID.mcapControlChannel, .bit16(30))
          XCTAssertEqual(BluetoothUUID.mcapControlChannel.name, "MCAP Control Channel")
+         XCTAssertNotEqual(BluetoothUUID.mcapControlChannel, .bit32(30))
+         XCTAssertNotEqual(BluetoothUUID.mcapControlChannel, .bit32(0x001E))
 
     }
 
@@ -655,6 +685,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.mcapDataChannel, .bit16(0x001F))
          XCTAssertEqual(BluetoothUUID.mcapDataChannel, .bit16(31))
          XCTAssertEqual(BluetoothUUID.mcapDataChannel.name, "MCAP Data Channel")
+         XCTAssertNotEqual(BluetoothUUID.mcapDataChannel, .bit32(31))
+         XCTAssertNotEqual(BluetoothUUID.mcapDataChannel, .bit32(0x001F))
 
     }
 
@@ -665,6 +697,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.l2Cap, .bit16(0x0100))
          XCTAssertEqual(BluetoothUUID.l2Cap, .bit16(256))
          XCTAssertEqual(BluetoothUUID.l2Cap.name, "L2CAP")
+         XCTAssertNotEqual(BluetoothUUID.l2Cap, .bit32(256))
+         XCTAssertNotEqual(BluetoothUUID.l2Cap, .bit32(0x0100))
 
     }
 
@@ -675,6 +709,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass, .bit16(0x1000))
          XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass, .bit16(4096))
          XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass.name, "Service Discovery Server Service Class")
+         XCTAssertNotEqual(BluetoothUUID.serviceDiscoveryServerServiceClass, .bit32(4096))
+         XCTAssertNotEqual(BluetoothUUID.serviceDiscoveryServerServiceClass, .bit32(0x1000))
 
     }
 
@@ -685,6 +721,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass, .bit16(0x1001))
          XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass, .bit16(4097))
          XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass.name, "Browse Group Descriptor Service Class")
+         XCTAssertNotEqual(BluetoothUUID.browseGroupDescriptorServiceClass, .bit32(4097))
+         XCTAssertNotEqual(BluetoothUUID.browseGroupDescriptorServiceClass, .bit32(0x1001))
 
     }
 
@@ -695,6 +733,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.publicBrowseRoot, .bit16(0x1002))
          XCTAssertEqual(BluetoothUUID.publicBrowseRoot, .bit16(4098))
          XCTAssertEqual(BluetoothUUID.publicBrowseRoot.name, "Public Browse Root")
+         XCTAssertNotEqual(BluetoothUUID.publicBrowseRoot, .bit32(4098))
+         XCTAssertNotEqual(BluetoothUUID.publicBrowseRoot, .bit32(0x1002))
 
     }
 
@@ -705,6 +745,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.serialPort, .bit16(0x1101))
          XCTAssertEqual(BluetoothUUID.serialPort, .bit16(4353))
          XCTAssertEqual(BluetoothUUID.serialPort.name, "Serial Port")
+         XCTAssertNotEqual(BluetoothUUID.serialPort, .bit32(4353))
+         XCTAssertNotEqual(BluetoothUUID.serialPort, .bit32(0x1101))
 
     }
 
@@ -715,6 +757,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp, .bit16(0x1102))
          XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp, .bit16(4354))
          XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp.name, "LAN Access Using PPP")
+         XCTAssertNotEqual(BluetoothUUID.lanAccessUsingPpp, .bit32(4354))
+         XCTAssertNotEqual(BluetoothUUID.lanAccessUsingPpp, .bit32(0x1102))
 
     }
 
@@ -725,6 +769,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dialupNetworking, .bit16(0x1103))
          XCTAssertEqual(BluetoothUUID.dialupNetworking, .bit16(4355))
          XCTAssertEqual(BluetoothUUID.dialupNetworking.name, "Dialup Networking")
+         XCTAssertNotEqual(BluetoothUUID.dialupNetworking, .bit32(4355))
+         XCTAssertNotEqual(BluetoothUUID.dialupNetworking, .bit32(0x1103))
 
     }
 
@@ -735,6 +781,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.irmcSync, .bit16(0x1104))
          XCTAssertEqual(BluetoothUUID.irmcSync, .bit16(4356))
          XCTAssertEqual(BluetoothUUID.irmcSync.name, "IrMC Sync")
+         XCTAssertNotEqual(BluetoothUUID.irmcSync, .bit32(4356))
+         XCTAssertNotEqual(BluetoothUUID.irmcSync, .bit32(0x1104))
 
     }
 
@@ -745,6 +793,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.obexObjectPush, .bit16(0x1105))
          XCTAssertEqual(BluetoothUUID.obexObjectPush, .bit16(4357))
          XCTAssertEqual(BluetoothUUID.obexObjectPush.name, "OBEX Object Push")
+         XCTAssertNotEqual(BluetoothUUID.obexObjectPush, .bit32(4357))
+         XCTAssertNotEqual(BluetoothUUID.obexObjectPush, .bit32(0x1105))
 
     }
 
@@ -755,6 +805,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.obexFileTransfer, .bit16(0x1106))
          XCTAssertEqual(BluetoothUUID.obexFileTransfer, .bit16(4358))
          XCTAssertEqual(BluetoothUUID.obexFileTransfer.name, "OBEX File Transfer")
+         XCTAssertNotEqual(BluetoothUUID.obexFileTransfer, .bit32(4358))
+         XCTAssertNotEqual(BluetoothUUID.obexFileTransfer, .bit32(0x1106))
 
     }
 
@@ -765,6 +817,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.irmcSyncCommand, .bit16(0x1107))
          XCTAssertEqual(BluetoothUUID.irmcSyncCommand, .bit16(4359))
          XCTAssertEqual(BluetoothUUID.irmcSyncCommand.name, "IrMC Sync Command")
+         XCTAssertNotEqual(BluetoothUUID.irmcSyncCommand, .bit32(4359))
+         XCTAssertNotEqual(BluetoothUUID.irmcSyncCommand, .bit32(0x1107))
 
     }
 
@@ -775,6 +829,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.headset, .bit16(0x1108))
          XCTAssertEqual(BluetoothUUID.headset, .bit16(4360))
          XCTAssertEqual(BluetoothUUID.headset.name, "Headset")
+         XCTAssertNotEqual(BluetoothUUID.headset, .bit32(4360))
+         XCTAssertNotEqual(BluetoothUUID.headset, .bit32(0x1108))
 
     }
 
@@ -785,6 +841,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cordlessTelephony, .bit16(0x1109))
          XCTAssertEqual(BluetoothUUID.cordlessTelephony, .bit16(4361))
          XCTAssertEqual(BluetoothUUID.cordlessTelephony.name, "Cordless Telephony")
+         XCTAssertNotEqual(BluetoothUUID.cordlessTelephony, .bit32(4361))
+         XCTAssertNotEqual(BluetoothUUID.cordlessTelephony, .bit32(0x1109))
 
     }
 
@@ -795,6 +853,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.audioSource, .bit16(0x110A))
          XCTAssertEqual(BluetoothUUID.audioSource, .bit16(4362))
          XCTAssertEqual(BluetoothUUID.audioSource.name, "Audio Source")
+         XCTAssertNotEqual(BluetoothUUID.audioSource, .bit32(4362))
+         XCTAssertNotEqual(BluetoothUUID.audioSource, .bit32(0x110A))
 
     }
 
@@ -805,6 +865,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.audioSink, .bit16(0x110B))
          XCTAssertEqual(BluetoothUUID.audioSink, .bit16(4363))
          XCTAssertEqual(BluetoothUUID.audioSink.name, "Audio Sink")
+         XCTAssertNotEqual(BluetoothUUID.audioSink, .bit32(4363))
+         XCTAssertNotEqual(BluetoothUUID.audioSink, .bit32(0x110B))
 
     }
 
@@ -815,6 +877,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.avRemoteControlTarget, .bit16(0x110C))
          XCTAssertEqual(BluetoothUUID.avRemoteControlTarget, .bit16(4364))
          XCTAssertEqual(BluetoothUUID.avRemoteControlTarget.name, "A/V Remote Control Target")
+         XCTAssertNotEqual(BluetoothUUID.avRemoteControlTarget, .bit32(4364))
+         XCTAssertNotEqual(BluetoothUUID.avRemoteControlTarget, .bit32(0x110C))
 
     }
 
@@ -825,6 +889,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.advancedAudioDistribution, .bit16(0x110D))
          XCTAssertEqual(BluetoothUUID.advancedAudioDistribution, .bit16(4365))
          XCTAssertEqual(BluetoothUUID.advancedAudioDistribution.name, "Advanced Audio Distribution")
+         XCTAssertNotEqual(BluetoothUUID.advancedAudioDistribution, .bit32(4365))
+         XCTAssertNotEqual(BluetoothUUID.advancedAudioDistribution, .bit32(0x110D))
 
     }
 
@@ -835,6 +901,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.avRemoteControl, .bit16(0x110E))
          XCTAssertEqual(BluetoothUUID.avRemoteControl, .bit16(4366))
          XCTAssertEqual(BluetoothUUID.avRemoteControl.name, "A/V Remote Control")
+         XCTAssertNotEqual(BluetoothUUID.avRemoteControl, .bit32(4366))
+         XCTAssertNotEqual(BluetoothUUID.avRemoteControl, .bit32(0x110E))
 
     }
 
@@ -845,6 +913,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.avRemoteControlController, .bit16(0x110F))
          XCTAssertEqual(BluetoothUUID.avRemoteControlController, .bit16(4367))
          XCTAssertEqual(BluetoothUUID.avRemoteControlController.name, "A/V Remote Control Controller")
+         XCTAssertNotEqual(BluetoothUUID.avRemoteControlController, .bit32(4367))
+         XCTAssertNotEqual(BluetoothUUID.avRemoteControlController, .bit32(0x110F))
 
     }
 
@@ -855,6 +925,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.intercom, .bit16(0x1110))
          XCTAssertEqual(BluetoothUUID.intercom, .bit16(4368))
          XCTAssertEqual(BluetoothUUID.intercom.name, "Intercom")
+         XCTAssertNotEqual(BluetoothUUID.intercom, .bit32(4368))
+         XCTAssertNotEqual(BluetoothUUID.intercom, .bit32(0x1110))
 
     }
 
@@ -865,6 +937,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.fax, .bit16(0x1111))
          XCTAssertEqual(BluetoothUUID.fax, .bit16(4369))
          XCTAssertEqual(BluetoothUUID.fax.name, "Fax")
+         XCTAssertNotEqual(BluetoothUUID.fax, .bit32(4369))
+         XCTAssertNotEqual(BluetoothUUID.fax, .bit32(0x1111))
 
     }
 
@@ -875,6 +949,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.headsetAg, .bit16(0x1112))
          XCTAssertEqual(BluetoothUUID.headsetAg, .bit16(4370))
          XCTAssertEqual(BluetoothUUID.headsetAg.name, "Headset AG")
+         XCTAssertNotEqual(BluetoothUUID.headsetAg, .bit32(4370))
+         XCTAssertNotEqual(BluetoothUUID.headsetAg, .bit32(0x1112))
 
     }
 
@@ -885,6 +961,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.wap, .bit16(0x1113))
          XCTAssertEqual(BluetoothUUID.wap, .bit16(4371))
          XCTAssertEqual(BluetoothUUID.wap.name, "WAP")
+         XCTAssertNotEqual(BluetoothUUID.wap, .bit32(4371))
+         XCTAssertNotEqual(BluetoothUUID.wap, .bit32(0x1113))
 
     }
 
@@ -895,6 +973,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.wapClient, .bit16(0x1114))
          XCTAssertEqual(BluetoothUUID.wapClient, .bit16(4372))
          XCTAssertEqual(BluetoothUUID.wapClient.name, "WAP Client")
+         XCTAssertNotEqual(BluetoothUUID.wapClient, .bit32(4372))
+         XCTAssertNotEqual(BluetoothUUID.wapClient, .bit32(0x1114))
 
     }
 
@@ -905,6 +985,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.panu, .bit16(0x1115))
          XCTAssertEqual(BluetoothUUID.panu, .bit16(4373))
          XCTAssertEqual(BluetoothUUID.panu.name, "PANU")
+         XCTAssertNotEqual(BluetoothUUID.panu, .bit32(4373))
+         XCTAssertNotEqual(BluetoothUUID.panu, .bit32(0x1115))
 
     }
 
@@ -915,6 +997,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nap, .bit16(0x1116))
          XCTAssertEqual(BluetoothUUID.nap, .bit16(4374))
          XCTAssertEqual(BluetoothUUID.nap.name, "NAP")
+         XCTAssertNotEqual(BluetoothUUID.nap, .bit32(4374))
+         XCTAssertNotEqual(BluetoothUUID.nap, .bit32(0x1116))
 
     }
 
@@ -925,6 +1009,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gn, .bit16(0x1117))
          XCTAssertEqual(BluetoothUUID.gn, .bit16(4375))
          XCTAssertEqual(BluetoothUUID.gn.name, "GN")
+         XCTAssertNotEqual(BluetoothUUID.gn, .bit32(4375))
+         XCTAssertNotEqual(BluetoothUUID.gn, .bit32(0x1117))
 
     }
 
@@ -935,6 +1021,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.directPrinting, .bit16(0x1118))
          XCTAssertEqual(BluetoothUUID.directPrinting, .bit16(4376))
          XCTAssertEqual(BluetoothUUID.directPrinting.name, "Direct Printing")
+         XCTAssertNotEqual(BluetoothUUID.directPrinting, .bit32(4376))
+         XCTAssertNotEqual(BluetoothUUID.directPrinting, .bit32(0x1118))
 
     }
 
@@ -945,6 +1033,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.referencePrinting, .bit16(0x1119))
          XCTAssertEqual(BluetoothUUID.referencePrinting, .bit16(4377))
          XCTAssertEqual(BluetoothUUID.referencePrinting.name, "Reference Printing")
+         XCTAssertNotEqual(BluetoothUUID.referencePrinting, .bit32(4377))
+         XCTAssertNotEqual(BluetoothUUID.referencePrinting, .bit32(0x1119))
 
     }
 
@@ -955,6 +1045,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.basicImagingProfile, .bit16(0x111A))
          XCTAssertEqual(BluetoothUUID.basicImagingProfile, .bit16(4378))
          XCTAssertEqual(BluetoothUUID.basicImagingProfile.name, "Basic Imaging Profile")
+         XCTAssertNotEqual(BluetoothUUID.basicImagingProfile, .bit32(4378))
+         XCTAssertNotEqual(BluetoothUUID.basicImagingProfile, .bit32(0x111A))
 
     }
 
@@ -965,6 +1057,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.imagingResponder, .bit16(0x111B))
          XCTAssertEqual(BluetoothUUID.imagingResponder, .bit16(4379))
          XCTAssertEqual(BluetoothUUID.imagingResponder.name, "Imaging Responder")
+         XCTAssertNotEqual(BluetoothUUID.imagingResponder, .bit32(4379))
+         XCTAssertNotEqual(BluetoothUUID.imagingResponder, .bit32(0x111B))
 
     }
 
@@ -975,6 +1069,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive, .bit16(0x111C))
          XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive, .bit16(4380))
          XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive.name, "Imaging Automatic Archive")
+         XCTAssertNotEqual(BluetoothUUID.imagingAutomaticArchive, .bit32(4380))
+         XCTAssertNotEqual(BluetoothUUID.imagingAutomaticArchive, .bit32(0x111C))
 
     }
 
@@ -985,6 +1081,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.imagingReferencedObjects, .bit16(0x111D))
          XCTAssertEqual(BluetoothUUID.imagingReferencedObjects, .bit16(4381))
          XCTAssertEqual(BluetoothUUID.imagingReferencedObjects.name, "Imaging Referenced Objects")
+         XCTAssertNotEqual(BluetoothUUID.imagingReferencedObjects, .bit32(4381))
+         XCTAssertNotEqual(BluetoothUUID.imagingReferencedObjects, .bit32(0x111D))
 
     }
 
@@ -995,6 +1093,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.handsfree, .bit16(0x111E))
          XCTAssertEqual(BluetoothUUID.handsfree, .bit16(4382))
          XCTAssertEqual(BluetoothUUID.handsfree.name, "Handsfree")
+         XCTAssertNotEqual(BluetoothUUID.handsfree, .bit32(4382))
+         XCTAssertNotEqual(BluetoothUUID.handsfree, .bit32(0x111E))
 
     }
 
@@ -1005,6 +1105,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway, .bit16(0x111F))
          XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway, .bit16(4383))
          XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway.name, "Handsfree Audio Gateway")
+         XCTAssertNotEqual(BluetoothUUID.handsfreeAudioGateway, .bit32(4383))
+         XCTAssertNotEqual(BluetoothUUID.handsfreeAudioGateway, .bit32(0x111F))
 
     }
 
@@ -1015,6 +1117,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService, .bit16(0x1120))
          XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService, .bit16(4384))
          XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService.name, "Direct Printing Refrence Objects Service")
+         XCTAssertNotEqual(BluetoothUUID.directPrintingRefrenceObjectsService, .bit32(4384))
+         XCTAssertNotEqual(BluetoothUUID.directPrintingRefrenceObjectsService, .bit32(0x1120))
 
     }
 
@@ -1025,6 +1129,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.reflectedUi, .bit16(0x1121))
          XCTAssertEqual(BluetoothUUID.reflectedUi, .bit16(4385))
          XCTAssertEqual(BluetoothUUID.reflectedUi.name, "Reflected UI")
+         XCTAssertNotEqual(BluetoothUUID.reflectedUi, .bit32(4385))
+         XCTAssertNotEqual(BluetoothUUID.reflectedUi, .bit32(0x1121))
 
     }
 
@@ -1035,6 +1141,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.basicPrinting, .bit16(0x1122))
          XCTAssertEqual(BluetoothUUID.basicPrinting, .bit16(4386))
          XCTAssertEqual(BluetoothUUID.basicPrinting.name, "Basic Printing")
+         XCTAssertNotEqual(BluetoothUUID.basicPrinting, .bit32(4386))
+         XCTAssertNotEqual(BluetoothUUID.basicPrinting, .bit32(0x1122))
 
     }
 
@@ -1045,6 +1153,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.printingStatus, .bit16(0x1123))
          XCTAssertEqual(BluetoothUUID.printingStatus, .bit16(4387))
          XCTAssertEqual(BluetoothUUID.printingStatus.name, "Printing Status")
+         XCTAssertNotEqual(BluetoothUUID.printingStatus, .bit32(4387))
+         XCTAssertNotEqual(BluetoothUUID.printingStatus, .bit32(0x1123))
 
     }
 
@@ -1055,6 +1165,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService, .bit16(0x1124))
          XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService, .bit16(4388))
          XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService.name, "Human Interface Device Service")
+         XCTAssertNotEqual(BluetoothUUID.humanInterfaceDeviceService, .bit32(4388))
+         XCTAssertNotEqual(BluetoothUUID.humanInterfaceDeviceService, .bit32(0x1124))
 
     }
 
@@ -1065,6 +1177,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement, .bit16(0x1125))
          XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement, .bit16(4389))
          XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement.name, "Hardcopy Cable Replacement")
+         XCTAssertNotEqual(BluetoothUUID.hardcopyCableReplacement, .bit32(4389))
+         XCTAssertNotEqual(BluetoothUUID.hardcopyCableReplacement, .bit32(0x1125))
 
     }
 
@@ -1075,6 +1189,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hcrPrint, .bit16(0x1126))
          XCTAssertEqual(BluetoothUUID.hcrPrint, .bit16(4390))
          XCTAssertEqual(BluetoothUUID.hcrPrint.name, "HCR Print")
+         XCTAssertNotEqual(BluetoothUUID.hcrPrint, .bit32(4390))
+         XCTAssertNotEqual(BluetoothUUID.hcrPrint, .bit32(0x1126))
 
     }
 
@@ -1085,6 +1201,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hcrScan, .bit16(0x1127))
          XCTAssertEqual(BluetoothUUID.hcrScan, .bit16(4391))
          XCTAssertEqual(BluetoothUUID.hcrScan.name, "HCR Scan")
+         XCTAssertNotEqual(BluetoothUUID.hcrScan, .bit32(4391))
+         XCTAssertNotEqual(BluetoothUUID.hcrScan, .bit32(0x1127))
 
     }
 
@@ -1095,6 +1213,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.commonIsdnAccess, .bit16(0x1128))
          XCTAssertEqual(BluetoothUUID.commonIsdnAccess, .bit16(4392))
          XCTAssertEqual(BluetoothUUID.commonIsdnAccess.name, "Common ISDN Access")
+         XCTAssertNotEqual(BluetoothUUID.commonIsdnAccess, .bit32(4392))
+         XCTAssertNotEqual(BluetoothUUID.commonIsdnAccess, .bit32(0x1128))
 
     }
 
@@ -1105,6 +1225,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.simAccess, .bit16(0x112D))
          XCTAssertEqual(BluetoothUUID.simAccess, .bit16(4397))
          XCTAssertEqual(BluetoothUUID.simAccess.name, "SIM Access")
+         XCTAssertNotEqual(BluetoothUUID.simAccess, .bit32(4397))
+         XCTAssertNotEqual(BluetoothUUID.simAccess, .bit32(0x112D))
 
     }
 
@@ -1115,6 +1237,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.phonebookAccessClient, .bit16(0x112E))
          XCTAssertEqual(BluetoothUUID.phonebookAccessClient, .bit16(4398))
          XCTAssertEqual(BluetoothUUID.phonebookAccessClient.name, "Phonebook Access Client")
+         XCTAssertNotEqual(BluetoothUUID.phonebookAccessClient, .bit32(4398))
+         XCTAssertNotEqual(BluetoothUUID.phonebookAccessClient, .bit32(0x112E))
 
     }
 
@@ -1125,6 +1249,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.phonebookAccessServer, .bit16(0x112F))
          XCTAssertEqual(BluetoothUUID.phonebookAccessServer, .bit16(4399))
          XCTAssertEqual(BluetoothUUID.phonebookAccessServer.name, "Phonebook Access Server")
+         XCTAssertNotEqual(BluetoothUUID.phonebookAccessServer, .bit32(4399))
+         XCTAssertNotEqual(BluetoothUUID.phonebookAccessServer, .bit32(0x112F))
 
     }
 
@@ -1135,6 +1261,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.phonebookAccess, .bit16(0x1130))
          XCTAssertEqual(BluetoothUUID.phonebookAccess, .bit16(4400))
          XCTAssertEqual(BluetoothUUID.phonebookAccess.name, "Phonebook Access")
+         XCTAssertNotEqual(BluetoothUUID.phonebookAccess, .bit32(4400))
+         XCTAssertNotEqual(BluetoothUUID.phonebookAccess, .bit32(0x1130))
 
     }
 
@@ -1145,6 +1273,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.headsetHs, .bit16(0x1131))
          XCTAssertEqual(BluetoothUUID.headsetHs, .bit16(4401))
          XCTAssertEqual(BluetoothUUID.headsetHs.name, "Headset HS")
+         XCTAssertNotEqual(BluetoothUUID.headsetHs, .bit32(4401))
+         XCTAssertNotEqual(BluetoothUUID.headsetHs, .bit32(0x1131))
 
     }
 
@@ -1155,6 +1285,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.messageAccessServer, .bit16(0x1132))
          XCTAssertEqual(BluetoothUUID.messageAccessServer, .bit16(4402))
          XCTAssertEqual(BluetoothUUID.messageAccessServer.name, "Message Access Server")
+         XCTAssertNotEqual(BluetoothUUID.messageAccessServer, .bit32(4402))
+         XCTAssertNotEqual(BluetoothUUID.messageAccessServer, .bit32(0x1132))
 
     }
 
@@ -1165,6 +1297,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.messageNotificationServer, .bit16(0x1133))
          XCTAssertEqual(BluetoothUUID.messageNotificationServer, .bit16(4403))
          XCTAssertEqual(BluetoothUUID.messageNotificationServer.name, "Message Notification Server")
+         XCTAssertNotEqual(BluetoothUUID.messageNotificationServer, .bit32(4403))
+         XCTAssertNotEqual(BluetoothUUID.messageNotificationServer, .bit32(0x1133))
 
     }
 
@@ -1175,6 +1309,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.messageAccessProfile, .bit16(0x1134))
          XCTAssertEqual(BluetoothUUID.messageAccessProfile, .bit16(4404))
          XCTAssertEqual(BluetoothUUID.messageAccessProfile.name, "Message Access Profile")
+         XCTAssertNotEqual(BluetoothUUID.messageAccessProfile, .bit32(4404))
+         XCTAssertNotEqual(BluetoothUUID.messageAccessProfile, .bit32(0x1134))
 
     }
 
@@ -1185,6 +1321,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gnss, .bit16(0x1135))
          XCTAssertEqual(BluetoothUUID.gnss, .bit16(4405))
          XCTAssertEqual(BluetoothUUID.gnss.name, "GNSS")
+         XCTAssertNotEqual(BluetoothUUID.gnss, .bit32(4405))
+         XCTAssertNotEqual(BluetoothUUID.gnss, .bit32(0x1135))
 
     }
 
@@ -1195,6 +1333,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gnssServer, .bit16(0x1136))
          XCTAssertEqual(BluetoothUUID.gnssServer, .bit16(4406))
          XCTAssertEqual(BluetoothUUID.gnssServer.name, "GNSS Server")
+         XCTAssertNotEqual(BluetoothUUID.gnssServer, .bit32(4406))
+         XCTAssertNotEqual(BluetoothUUID.gnssServer, .bit32(0x1136))
 
     }
 
@@ -1205,6 +1345,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.uuid3Ddisplay, .bit16(0x1137))
          XCTAssertEqual(BluetoothUUID.uuid3Ddisplay, .bit16(4407))
          XCTAssertEqual(BluetoothUUID.uuid3Ddisplay.name, "3D Display")
+         XCTAssertNotEqual(BluetoothUUID.uuid3Ddisplay, .bit32(4407))
+         XCTAssertNotEqual(BluetoothUUID.uuid3Ddisplay, .bit32(0x1137))
 
     }
 
@@ -1215,6 +1357,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.uuid3Dglasses, .bit16(0x1138))
          XCTAssertEqual(BluetoothUUID.uuid3Dglasses, .bit16(4408))
          XCTAssertEqual(BluetoothUUID.uuid3Dglasses.name, "3D Glasses")
+         XCTAssertNotEqual(BluetoothUUID.uuid3Dglasses, .bit32(4408))
+         XCTAssertNotEqual(BluetoothUUID.uuid3Dglasses, .bit32(0x1138))
 
     }
 
@@ -1225,6 +1369,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization, .bit16(0x1139))
          XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization, .bit16(4409))
          XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization.name, "3D Synchronization")
+         XCTAssertNotEqual(BluetoothUUID.uuid3Dsynchronization, .bit32(4409))
+         XCTAssertNotEqual(BluetoothUUID.uuid3Dsynchronization, .bit32(0x1139))
 
     }
 
@@ -1235,6 +1381,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.mpsProfile, .bit16(0x113A))
          XCTAssertEqual(BluetoothUUID.mpsProfile, .bit16(4410))
          XCTAssertEqual(BluetoothUUID.mpsProfile.name, "MPS Profile")
+         XCTAssertNotEqual(BluetoothUUID.mpsProfile, .bit32(4410))
+         XCTAssertNotEqual(BluetoothUUID.mpsProfile, .bit32(0x113A))
 
     }
 
@@ -1245,6 +1393,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.mpsService, .bit16(0x113B))
          XCTAssertEqual(BluetoothUUID.mpsService, .bit16(4411))
          XCTAssertEqual(BluetoothUUID.mpsService.name, "MPS Service")
+         XCTAssertNotEqual(BluetoothUUID.mpsService, .bit32(4411))
+         XCTAssertNotEqual(BluetoothUUID.mpsService, .bit32(0x113B))
 
     }
 
@@ -1255,6 +1405,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.pnpInformation, .bit16(0x1200))
          XCTAssertEqual(BluetoothUUID.pnpInformation, .bit16(4608))
          XCTAssertEqual(BluetoothUUID.pnpInformation.name, "PnP Information")
+         XCTAssertNotEqual(BluetoothUUID.pnpInformation, .bit32(4608))
+         XCTAssertNotEqual(BluetoothUUID.pnpInformation, .bit32(0x1200))
 
     }
 
@@ -1265,6 +1417,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.genericNetworking, .bit16(0x1201))
          XCTAssertEqual(BluetoothUUID.genericNetworking, .bit16(4609))
          XCTAssertEqual(BluetoothUUID.genericNetworking.name, "Generic Networking")
+         XCTAssertNotEqual(BluetoothUUID.genericNetworking, .bit32(4609))
+         XCTAssertNotEqual(BluetoothUUID.genericNetworking, .bit32(0x1201))
 
     }
 
@@ -1275,6 +1429,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.genericFileTransfer, .bit16(0x1202))
          XCTAssertEqual(BluetoothUUID.genericFileTransfer, .bit16(4610))
          XCTAssertEqual(BluetoothUUID.genericFileTransfer.name, "Generic File Transfer")
+         XCTAssertNotEqual(BluetoothUUID.genericFileTransfer, .bit32(4610))
+         XCTAssertNotEqual(BluetoothUUID.genericFileTransfer, .bit32(0x1202))
 
     }
 
@@ -1285,6 +1441,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.genericAudio, .bit16(0x1203))
          XCTAssertEqual(BluetoothUUID.genericAudio, .bit16(4611))
          XCTAssertEqual(BluetoothUUID.genericAudio.name, "Generic Audio")
+         XCTAssertNotEqual(BluetoothUUID.genericAudio, .bit32(4611))
+         XCTAssertNotEqual(BluetoothUUID.genericAudio, .bit32(0x1203))
 
     }
 
@@ -1295,6 +1453,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.genericTelephony, .bit16(0x1204))
          XCTAssertEqual(BluetoothUUID.genericTelephony, .bit16(4612))
          XCTAssertEqual(BluetoothUUID.genericTelephony.name, "Generic Telephony")
+         XCTAssertNotEqual(BluetoothUUID.genericTelephony, .bit32(4612))
+         XCTAssertNotEqual(BluetoothUUID.genericTelephony, .bit32(0x1204))
 
     }
 
@@ -1305,6 +1465,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.upnpService, .bit16(0x1205))
          XCTAssertEqual(BluetoothUUID.upnpService, .bit16(4613))
          XCTAssertEqual(BluetoothUUID.upnpService.name, "UPNP Service")
+         XCTAssertNotEqual(BluetoothUUID.upnpService, .bit32(4613))
+         XCTAssertNotEqual(BluetoothUUID.upnpService, .bit32(0x1205))
 
     }
 
@@ -1315,6 +1477,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.upnpIpService, .bit16(0x1206))
          XCTAssertEqual(BluetoothUUID.upnpIpService, .bit16(4614))
          XCTAssertEqual(BluetoothUUID.upnpIpService.name, "UPNP IP Service")
+         XCTAssertNotEqual(BluetoothUUID.upnpIpService, .bit32(4614))
+         XCTAssertNotEqual(BluetoothUUID.upnpIpService, .bit32(0x1206))
 
     }
 
@@ -1325,6 +1489,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.upnpIpPan, .bit16(0x1300))
          XCTAssertEqual(BluetoothUUID.upnpIpPan, .bit16(4864))
          XCTAssertEqual(BluetoothUUID.upnpIpPan.name, "UPNP IP PAN")
+         XCTAssertNotEqual(BluetoothUUID.upnpIpPan, .bit32(4864))
+         XCTAssertNotEqual(BluetoothUUID.upnpIpPan, .bit32(0x1300))
 
     }
 
@@ -1335,6 +1501,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.upnpIpLap, .bit16(0x1301))
          XCTAssertEqual(BluetoothUUID.upnpIpLap, .bit16(4865))
          XCTAssertEqual(BluetoothUUID.upnpIpLap.name, "UPNP IP LAP")
+         XCTAssertNotEqual(BluetoothUUID.upnpIpLap, .bit32(4865))
+         XCTAssertNotEqual(BluetoothUUID.upnpIpLap, .bit32(0x1301))
 
     }
 
@@ -1345,6 +1513,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.upnpIpL2Cap, .bit16(0x1302))
          XCTAssertEqual(BluetoothUUID.upnpIpL2Cap, .bit16(4866))
          XCTAssertEqual(BluetoothUUID.upnpIpL2Cap.name, "UPNP IP L2CAP")
+         XCTAssertNotEqual(BluetoothUUID.upnpIpL2Cap, .bit32(4866))
+         XCTAssertNotEqual(BluetoothUUID.upnpIpL2Cap, .bit32(0x1302))
 
     }
 
@@ -1355,6 +1525,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.videoSource, .bit16(0x1303))
          XCTAssertEqual(BluetoothUUID.videoSource, .bit16(4867))
          XCTAssertEqual(BluetoothUUID.videoSource.name, "Video Source")
+         XCTAssertNotEqual(BluetoothUUID.videoSource, .bit32(4867))
+         XCTAssertNotEqual(BluetoothUUID.videoSource, .bit32(0x1303))
 
     }
 
@@ -1365,6 +1537,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.videoSink, .bit16(0x1304))
          XCTAssertEqual(BluetoothUUID.videoSink, .bit16(4868))
          XCTAssertEqual(BluetoothUUID.videoSink.name, "Video Sink")
+         XCTAssertNotEqual(BluetoothUUID.videoSink, .bit32(4868))
+         XCTAssertNotEqual(BluetoothUUID.videoSink, .bit32(0x1304))
 
     }
 
@@ -1375,6 +1549,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.videoDistribution, .bit16(0x1305))
          XCTAssertEqual(BluetoothUUID.videoDistribution, .bit16(4869))
          XCTAssertEqual(BluetoothUUID.videoDistribution.name, "Video Distribution")
+         XCTAssertNotEqual(BluetoothUUID.videoDistribution, .bit32(4869))
+         XCTAssertNotEqual(BluetoothUUID.videoDistribution, .bit32(0x1305))
 
     }
 
@@ -1385,6 +1561,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hdp, .bit16(0x1400))
          XCTAssertEqual(BluetoothUUID.hdp, .bit16(5120))
          XCTAssertEqual(BluetoothUUID.hdp.name, "HDP")
+         XCTAssertNotEqual(BluetoothUUID.hdp, .bit32(5120))
+         XCTAssertNotEqual(BluetoothUUID.hdp, .bit32(0x1400))
 
     }
 
@@ -1395,6 +1573,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hdpSource, .bit16(0x1401))
          XCTAssertEqual(BluetoothUUID.hdpSource, .bit16(5121))
          XCTAssertEqual(BluetoothUUID.hdpSource.name, "HDP Source")
+         XCTAssertNotEqual(BluetoothUUID.hdpSource, .bit32(5121))
+         XCTAssertNotEqual(BluetoothUUID.hdpSource, .bit32(0x1401))
 
     }
 
@@ -1405,6 +1585,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hdpSink, .bit16(0x1402))
          XCTAssertEqual(BluetoothUUID.hdpSink, .bit16(5122))
          XCTAssertEqual(BluetoothUUID.hdpSink.name, "HDP Sink")
+         XCTAssertNotEqual(BluetoothUUID.hdpSink, .bit32(5122))
+         XCTAssertNotEqual(BluetoothUUID.hdpSink, .bit32(0x1402))
 
     }
 
@@ -1415,6 +1597,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.genericAccessProfile, .bit16(0x1800))
          XCTAssertEqual(BluetoothUUID.genericAccessProfile, .bit16(6144))
          XCTAssertEqual(BluetoothUUID.genericAccessProfile.name, "Generic Access Profile")
+         XCTAssertNotEqual(BluetoothUUID.genericAccessProfile, .bit32(6144))
+         XCTAssertNotEqual(BluetoothUUID.genericAccessProfile, .bit32(0x1800))
 
     }
 
@@ -1425,6 +1609,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.genericAttributeProfile, .bit16(0x1801))
          XCTAssertEqual(BluetoothUUID.genericAttributeProfile, .bit16(6145))
          XCTAssertEqual(BluetoothUUID.genericAttributeProfile.name, "Generic Attribute Profile")
+         XCTAssertNotEqual(BluetoothUUID.genericAttributeProfile, .bit32(6145))
+         XCTAssertNotEqual(BluetoothUUID.genericAttributeProfile, .bit32(0x1801))
 
     }
 
@@ -1435,6 +1621,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.immediateAlert, .bit16(0x1802))
          XCTAssertEqual(BluetoothUUID.immediateAlert, .bit16(6146))
          XCTAssertEqual(BluetoothUUID.immediateAlert.name, "Immediate Alert")
+         XCTAssertNotEqual(BluetoothUUID.immediateAlert, .bit32(6146))
+         XCTAssertNotEqual(BluetoothUUID.immediateAlert, .bit32(0x1802))
 
     }
 
@@ -1445,6 +1633,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.linkLoss, .bit16(0x1803))
          XCTAssertEqual(BluetoothUUID.linkLoss, .bit16(6147))
          XCTAssertEqual(BluetoothUUID.linkLoss.name, "Link Loss")
+         XCTAssertNotEqual(BluetoothUUID.linkLoss, .bit32(6147))
+         XCTAssertNotEqual(BluetoothUUID.linkLoss, .bit32(0x1803))
 
     }
 
@@ -1455,6 +1645,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.txPower, .bit16(0x1804))
          XCTAssertEqual(BluetoothUUID.txPower, .bit16(6148))
          XCTAssertEqual(BluetoothUUID.txPower.name, "Tx Power")
+         XCTAssertNotEqual(BluetoothUUID.txPower, .bit32(6148))
+         XCTAssertNotEqual(BluetoothUUID.txPower, .bit32(0x1804))
 
     }
 
@@ -1465,6 +1657,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.currentTimeService, .bit16(0x1805))
          XCTAssertEqual(BluetoothUUID.currentTimeService, .bit16(6149))
          XCTAssertEqual(BluetoothUUID.currentTimeService.name, "Current Time Service")
+         XCTAssertNotEqual(BluetoothUUID.currentTimeService, .bit32(6149))
+         XCTAssertNotEqual(BluetoothUUID.currentTimeService, .bit32(0x1805))
 
     }
 
@@ -1475,6 +1669,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService, .bit16(0x1806))
          XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService, .bit16(6150))
          XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService.name, "Reference Time Update Service")
+         XCTAssertNotEqual(BluetoothUUID.referenceTimeUpdateService, .bit32(6150))
+         XCTAssertNotEqual(BluetoothUUID.referenceTimeUpdateService, .bit32(0x1806))
 
     }
 
@@ -1485,6 +1681,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nextDstChangeService, .bit16(0x1807))
          XCTAssertEqual(BluetoothUUID.nextDstChangeService, .bit16(6151))
          XCTAssertEqual(BluetoothUUID.nextDstChangeService.name, "Next DST Change Service")
+         XCTAssertNotEqual(BluetoothUUID.nextDstChangeService, .bit32(6151))
+         XCTAssertNotEqual(BluetoothUUID.nextDstChangeService, .bit32(0x1807))
 
     }
 
@@ -1495,6 +1693,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.glucose, .bit16(0x1808))
          XCTAssertEqual(BluetoothUUID.glucose, .bit16(6152))
          XCTAssertEqual(BluetoothUUID.glucose.name, "Glucose")
+         XCTAssertNotEqual(BluetoothUUID.glucose, .bit32(6152))
+         XCTAssertNotEqual(BluetoothUUID.glucose, .bit32(0x1808))
 
     }
 
@@ -1505,6 +1705,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.healthThermometer, .bit16(0x1809))
          XCTAssertEqual(BluetoothUUID.healthThermometer, .bit16(6153))
          XCTAssertEqual(BluetoothUUID.healthThermometer.name, "Health Thermometer")
+         XCTAssertNotEqual(BluetoothUUID.healthThermometer, .bit32(6153))
+         XCTAssertNotEqual(BluetoothUUID.healthThermometer, .bit32(0x1809))
 
     }
 
@@ -1515,6 +1717,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.deviceInformation, .bit16(0x180A))
          XCTAssertEqual(BluetoothUUID.deviceInformation, .bit16(6154))
          XCTAssertEqual(BluetoothUUID.deviceInformation.name, "Device Information")
+         XCTAssertNotEqual(BluetoothUUID.deviceInformation, .bit32(6154))
+         XCTAssertNotEqual(BluetoothUUID.deviceInformation, .bit32(0x180A))
 
     }
 
@@ -1525,6 +1729,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.heartRate, .bit16(0x180D))
          XCTAssertEqual(BluetoothUUID.heartRate, .bit16(6157))
          XCTAssertEqual(BluetoothUUID.heartRate.name, "Heart Rate")
+         XCTAssertNotEqual(BluetoothUUID.heartRate, .bit32(6157))
+         XCTAssertNotEqual(BluetoothUUID.heartRate, .bit32(0x180D))
 
     }
 
@@ -1535,6 +1741,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.phoneAlertStatusService, .bit16(0x180E))
          XCTAssertEqual(BluetoothUUID.phoneAlertStatusService, .bit16(6158))
          XCTAssertEqual(BluetoothUUID.phoneAlertStatusService.name, "Phone Alert Status Service")
+         XCTAssertNotEqual(BluetoothUUID.phoneAlertStatusService, .bit32(6158))
+         XCTAssertNotEqual(BluetoothUUID.phoneAlertStatusService, .bit32(0x180E))
 
     }
 
@@ -1545,6 +1753,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.batteryService, .bit16(0x180F))
          XCTAssertEqual(BluetoothUUID.batteryService, .bit16(6159))
          XCTAssertEqual(BluetoothUUID.batteryService.name, "Battery Service")
+         XCTAssertNotEqual(BluetoothUUID.batteryService, .bit32(6159))
+         XCTAssertNotEqual(BluetoothUUID.batteryService, .bit32(0x180F))
 
     }
 
@@ -1555,6 +1765,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bloodPressure, .bit16(0x1810))
          XCTAssertEqual(BluetoothUUID.bloodPressure, .bit16(6160))
          XCTAssertEqual(BluetoothUUID.bloodPressure.name, "Blood Pressure")
+         XCTAssertNotEqual(BluetoothUUID.bloodPressure, .bit32(6160))
+         XCTAssertNotEqual(BluetoothUUID.bloodPressure, .bit32(0x1810))
 
     }
 
@@ -1565,6 +1777,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.alertNotificationService, .bit16(0x1811))
          XCTAssertEqual(BluetoothUUID.alertNotificationService, .bit16(6161))
          XCTAssertEqual(BluetoothUUID.alertNotificationService.name, "Alert Notification Service")
+         XCTAssertNotEqual(BluetoothUUID.alertNotificationService, .bit32(6161))
+         XCTAssertNotEqual(BluetoothUUID.alertNotificationService, .bit32(0x1811))
 
     }
 
@@ -1575,6 +1789,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.humanInterfaceDevice, .bit16(0x1812))
          XCTAssertEqual(BluetoothUUID.humanInterfaceDevice, .bit16(6162))
          XCTAssertEqual(BluetoothUUID.humanInterfaceDevice.name, "Human Interface Device")
+         XCTAssertNotEqual(BluetoothUUID.humanInterfaceDevice, .bit32(6162))
+         XCTAssertNotEqual(BluetoothUUID.humanInterfaceDevice, .bit32(0x1812))
 
     }
 
@@ -1585,6 +1801,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.scanParameters, .bit16(0x1813))
          XCTAssertEqual(BluetoothUUID.scanParameters, .bit16(6163))
          XCTAssertEqual(BluetoothUUID.scanParameters.name, "Scan Parameters")
+         XCTAssertNotEqual(BluetoothUUID.scanParameters, .bit32(6163))
+         XCTAssertNotEqual(BluetoothUUID.scanParameters, .bit32(0x1813))
 
     }
 
@@ -1595,6 +1813,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence, .bit16(0x1814))
          XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence, .bit16(6164))
          XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence.name, "Running Speed and Cadence")
+         XCTAssertNotEqual(BluetoothUUID.runningSpeedAndCadence, .bit32(6164))
+         XCTAssertNotEqual(BluetoothUUID.runningSpeedAndCadence, .bit32(0x1814))
 
     }
 
@@ -1605,6 +1825,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.automationIo, .bit16(0x1815))
          XCTAssertEqual(BluetoothUUID.automationIo, .bit16(6165))
          XCTAssertEqual(BluetoothUUID.automationIo.name, "Automation IO")
+         XCTAssertNotEqual(BluetoothUUID.automationIo, .bit32(6165))
+         XCTAssertNotEqual(BluetoothUUID.automationIo, .bit32(0x1815))
 
     }
 
@@ -1615,6 +1837,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence, .bit16(0x1816))
          XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence, .bit16(6166))
          XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence.name, "Cycling Speed and Cadence")
+         XCTAssertNotEqual(BluetoothUUID.cyclingSpeedAndCadence, .bit32(6166))
+         XCTAssertNotEqual(BluetoothUUID.cyclingSpeedAndCadence, .bit32(0x1816))
 
     }
 
@@ -1625,6 +1849,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cyclingPower, .bit16(0x1818))
          XCTAssertEqual(BluetoothUUID.cyclingPower, .bit16(6168))
          XCTAssertEqual(BluetoothUUID.cyclingPower.name, "Cycling Power")
+         XCTAssertNotEqual(BluetoothUUID.cyclingPower, .bit32(6168))
+         XCTAssertNotEqual(BluetoothUUID.cyclingPower, .bit32(0x1818))
 
     }
 
@@ -1635,6 +1861,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.locationAndNavigation, .bit16(0x1819))
          XCTAssertEqual(BluetoothUUID.locationAndNavigation, .bit16(6169))
          XCTAssertEqual(BluetoothUUID.locationAndNavigation.name, "Location and Navigation")
+         XCTAssertNotEqual(BluetoothUUID.locationAndNavigation, .bit32(6169))
+         XCTAssertNotEqual(BluetoothUUID.locationAndNavigation, .bit32(0x1819))
 
     }
 
@@ -1645,6 +1873,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.environmentalSensing, .bit16(0x181A))
          XCTAssertEqual(BluetoothUUID.environmentalSensing, .bit16(6170))
          XCTAssertEqual(BluetoothUUID.environmentalSensing.name, "Environmental Sensing")
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensing, .bit32(6170))
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensing, .bit32(0x181A))
 
     }
 
@@ -1655,6 +1885,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bodyComposition, .bit16(0x181B))
          XCTAssertEqual(BluetoothUUID.bodyComposition, .bit16(6171))
          XCTAssertEqual(BluetoothUUID.bodyComposition.name, "Body Composition")
+         XCTAssertNotEqual(BluetoothUUID.bodyComposition, .bit32(6171))
+         XCTAssertNotEqual(BluetoothUUID.bodyComposition, .bit32(0x181B))
 
     }
 
@@ -1665,6 +1897,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.userData, .bit16(0x181C))
          XCTAssertEqual(BluetoothUUID.userData, .bit16(6172))
          XCTAssertEqual(BluetoothUUID.userData.name, "User Data")
+         XCTAssertNotEqual(BluetoothUUID.userData, .bit32(6172))
+         XCTAssertNotEqual(BluetoothUUID.userData, .bit32(0x181C))
 
     }
 
@@ -1675,6 +1909,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.weightScale, .bit16(0x181D))
          XCTAssertEqual(BluetoothUUID.weightScale, .bit16(6173))
          XCTAssertEqual(BluetoothUUID.weightScale.name, "Weight Scale")
+         XCTAssertNotEqual(BluetoothUUID.weightScale, .bit32(6173))
+         XCTAssertNotEqual(BluetoothUUID.weightScale, .bit32(0x181D))
 
     }
 
@@ -1685,6 +1921,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bondManagement, .bit16(0x181E))
          XCTAssertEqual(BluetoothUUID.bondManagement, .bit16(6174))
          XCTAssertEqual(BluetoothUUID.bondManagement.name, "Bond Management")
+         XCTAssertNotEqual(BluetoothUUID.bondManagement, .bit32(6174))
+         XCTAssertNotEqual(BluetoothUUID.bondManagement, .bit32(0x181E))
 
     }
 
@@ -1695,6 +1933,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring, .bit16(0x181F))
          XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring, .bit16(6175))
          XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring.name, "Continuous Glucose Monitoring")
+         XCTAssertNotEqual(BluetoothUUID.continuousGlucoseMonitoring, .bit32(6175))
+         XCTAssertNotEqual(BluetoothUUID.continuousGlucoseMonitoring, .bit32(0x181F))
 
     }
 
@@ -1705,6 +1945,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.internetProtocolSupport, .bit16(0x1820))
          XCTAssertEqual(BluetoothUUID.internetProtocolSupport, .bit16(6176))
          XCTAssertEqual(BluetoothUUID.internetProtocolSupport.name, "Internet Protocol Support")
+         XCTAssertNotEqual(BluetoothUUID.internetProtocolSupport, .bit32(6176))
+         XCTAssertNotEqual(BluetoothUUID.internetProtocolSupport, .bit32(0x1820))
 
     }
 
@@ -1715,6 +1957,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.indoorPositioning, .bit16(0x1821))
          XCTAssertEqual(BluetoothUUID.indoorPositioning, .bit16(6177))
          XCTAssertEqual(BluetoothUUID.indoorPositioning.name, "Indoor Positioning")
+         XCTAssertNotEqual(BluetoothUUID.indoorPositioning, .bit32(6177))
+         XCTAssertNotEqual(BluetoothUUID.indoorPositioning, .bit32(0x1821))
 
     }
 
@@ -1725,6 +1969,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.pulseOximeter, .bit16(0x1822))
          XCTAssertEqual(BluetoothUUID.pulseOximeter, .bit16(6178))
          XCTAssertEqual(BluetoothUUID.pulseOximeter.name, "Pulse Oximeter")
+         XCTAssertNotEqual(BluetoothUUID.pulseOximeter, .bit32(6178))
+         XCTAssertNotEqual(BluetoothUUID.pulseOximeter, .bit32(0x1822))
 
     }
 
@@ -1735,6 +1981,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.httpProxy, .bit16(0x1823))
          XCTAssertEqual(BluetoothUUID.httpProxy, .bit16(6179))
          XCTAssertEqual(BluetoothUUID.httpProxy.name, "HTTP Proxy")
+         XCTAssertNotEqual(BluetoothUUID.httpProxy, .bit32(6179))
+         XCTAssertNotEqual(BluetoothUUID.httpProxy, .bit32(0x1823))
 
     }
 
@@ -1745,6 +1993,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.transportDiscovery, .bit16(0x1824))
          XCTAssertEqual(BluetoothUUID.transportDiscovery, .bit16(6180))
          XCTAssertEqual(BluetoothUUID.transportDiscovery.name, "Transport Discovery")
+         XCTAssertNotEqual(BluetoothUUID.transportDiscovery, .bit32(6180))
+         XCTAssertNotEqual(BluetoothUUID.transportDiscovery, .bit32(0x1824))
 
     }
 
@@ -1755,6 +2005,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectTransfer, .bit16(0x1825))
          XCTAssertEqual(BluetoothUUID.objectTransfer, .bit16(6181))
          XCTAssertEqual(BluetoothUUID.objectTransfer.name, "Object Transfer")
+         XCTAssertNotEqual(BluetoothUUID.objectTransfer, .bit32(6181))
+         XCTAssertNotEqual(BluetoothUUID.objectTransfer, .bit32(0x1825))
 
     }
 
@@ -1765,6 +2017,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.primaryService, .bit16(0x2800))
          XCTAssertEqual(BluetoothUUID.primaryService, .bit16(10240))
          XCTAssertEqual(BluetoothUUID.primaryService.name, "Primary Service")
+         XCTAssertNotEqual(BluetoothUUID.primaryService, .bit32(10240))
+         XCTAssertNotEqual(BluetoothUUID.primaryService, .bit32(0x2800))
 
     }
 
@@ -1775,6 +2029,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.secondaryService, .bit16(0x2801))
          XCTAssertEqual(BluetoothUUID.secondaryService, .bit16(10241))
          XCTAssertEqual(BluetoothUUID.secondaryService.name, "Secondary Service")
+         XCTAssertNotEqual(BluetoothUUID.secondaryService, .bit32(10241))
+         XCTAssertNotEqual(BluetoothUUID.secondaryService, .bit32(0x2801))
 
     }
 
@@ -1785,6 +2041,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.include, .bit16(0x2802))
          XCTAssertEqual(BluetoothUUID.include, .bit16(10242))
          XCTAssertEqual(BluetoothUUID.include.name, "Include")
+         XCTAssertNotEqual(BluetoothUUID.include, .bit32(10242))
+         XCTAssertNotEqual(BluetoothUUID.include, .bit32(0x2802))
 
     }
 
@@ -1795,6 +2053,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.characteristic, .bit16(0x2803))
          XCTAssertEqual(BluetoothUUID.characteristic, .bit16(10243))
          XCTAssertEqual(BluetoothUUID.characteristic.name, "Characteristic")
+         XCTAssertNotEqual(BluetoothUUID.characteristic, .bit32(10243))
+         XCTAssertNotEqual(BluetoothUUID.characteristic, .bit32(0x2803))
 
     }
 
@@ -1805,6 +2065,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties, .bit16(0x2900))
          XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties, .bit16(10496))
          XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties.name, "Characteristic Extended Properties")
+         XCTAssertNotEqual(BluetoothUUID.characteristicExtendedProperties, .bit32(10496))
+         XCTAssertNotEqual(BluetoothUUID.characteristicExtendedProperties, .bit32(0x2900))
 
     }
 
@@ -1815,6 +2077,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.characteristicUserDescription, .bit16(0x2901))
          XCTAssertEqual(BluetoothUUID.characteristicUserDescription, .bit16(10497))
          XCTAssertEqual(BluetoothUUID.characteristicUserDescription.name, "Characteristic User Description")
+         XCTAssertNotEqual(BluetoothUUID.characteristicUserDescription, .bit32(10497))
+         XCTAssertNotEqual(BluetoothUUID.characteristicUserDescription, .bit32(0x2901))
 
     }
 
@@ -1825,6 +2089,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration, .bit16(0x2902))
          XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration, .bit16(10498))
          XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration.name, "Client Characteristic Configuration")
+         XCTAssertNotEqual(BluetoothUUID.clientCharacteristicConfiguration, .bit32(10498))
+         XCTAssertNotEqual(BluetoothUUID.clientCharacteristicConfiguration, .bit32(0x2902))
 
     }
 
@@ -1835,6 +2101,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration, .bit16(0x2903))
          XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration, .bit16(10499))
          XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration.name, "Server Characteristic Configuration")
+         XCTAssertNotEqual(BluetoothUUID.serverCharacteristicConfiguration, .bit32(10499))
+         XCTAssertNotEqual(BluetoothUUID.serverCharacteristicConfiguration, .bit32(0x2903))
 
     }
 
@@ -1845,6 +2113,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.characteristicFormat, .bit16(0x2904))
          XCTAssertEqual(BluetoothUUID.characteristicFormat, .bit16(10500))
          XCTAssertEqual(BluetoothUUID.characteristicFormat.name, "Characteristic Format")
+         XCTAssertNotEqual(BluetoothUUID.characteristicFormat, .bit32(10500))
+         XCTAssertNotEqual(BluetoothUUID.characteristicFormat, .bit32(0x2904))
 
     }
 
@@ -1855,6 +2125,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat, .bit16(0x2905))
          XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat, .bit16(10501))
          XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat.name, "Characteristic Aggregate Format")
+         XCTAssertNotEqual(BluetoothUUID.characteristicAggregateFormat, .bit32(10501))
+         XCTAssertNotEqual(BluetoothUUID.characteristicAggregateFormat, .bit32(0x2905))
 
     }
 
@@ -1865,6 +2137,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.validRange, .bit16(0x2906))
          XCTAssertEqual(BluetoothUUID.validRange, .bit16(10502))
          XCTAssertEqual(BluetoothUUID.validRange.name, "Valid Range")
+         XCTAssertNotEqual(BluetoothUUID.validRange, .bit32(10502))
+         XCTAssertNotEqual(BluetoothUUID.validRange, .bit32(0x2906))
 
     }
 
@@ -1875,6 +2149,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.externalReportReference, .bit16(0x2907))
          XCTAssertEqual(BluetoothUUID.externalReportReference, .bit16(10503))
          XCTAssertEqual(BluetoothUUID.externalReportReference.name, "External Report Reference")
+         XCTAssertNotEqual(BluetoothUUID.externalReportReference, .bit32(10503))
+         XCTAssertNotEqual(BluetoothUUID.externalReportReference, .bit32(0x2907))
 
     }
 
@@ -1885,6 +2161,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.reportReference, .bit16(0x2908))
          XCTAssertEqual(BluetoothUUID.reportReference, .bit16(10504))
          XCTAssertEqual(BluetoothUUID.reportReference.name, "Report Reference")
+         XCTAssertNotEqual(BluetoothUUID.reportReference, .bit32(10504))
+         XCTAssertNotEqual(BluetoothUUID.reportReference, .bit32(0x2908))
 
     }
 
@@ -1895,6 +2173,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.numberOfDigitals, .bit16(0x2909))
          XCTAssertEqual(BluetoothUUID.numberOfDigitals, .bit16(10505))
          XCTAssertEqual(BluetoothUUID.numberOfDigitals.name, "Number of Digitals")
+         XCTAssertNotEqual(BluetoothUUID.numberOfDigitals, .bit32(10505))
+         XCTAssertNotEqual(BluetoothUUID.numberOfDigitals, .bit32(0x2909))
 
     }
 
@@ -1905,6 +2185,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.valueTriggerSetting, .bit16(0x290A))
          XCTAssertEqual(BluetoothUUID.valueTriggerSetting, .bit16(10506))
          XCTAssertEqual(BluetoothUUID.valueTriggerSetting.name, "Value Trigger Setting")
+         XCTAssertNotEqual(BluetoothUUID.valueTriggerSetting, .bit32(10506))
+         XCTAssertNotEqual(BluetoothUUID.valueTriggerSetting, .bit32(0x290A))
 
     }
 
@@ -1915,6 +2197,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration, .bit16(0x290B))
          XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration, .bit16(10507))
          XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration.name, "Environmental Sensing Configuration")
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensingConfiguration, .bit32(10507))
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensingConfiguration, .bit32(0x290B))
 
     }
 
@@ -1925,6 +2209,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement, .bit16(0x290C))
          XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement, .bit16(10508))
          XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement.name, "Environmental Sensing Measurement")
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensingMeasurement, .bit32(10508))
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensingMeasurement, .bit32(0x290C))
 
     }
 
@@ -1935,6 +2221,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting, .bit16(0x290D))
          XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting, .bit16(10509))
          XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting.name, "Environmental Sensing Trigger Setting")
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensingTriggerSetting, .bit32(10509))
+         XCTAssertNotEqual(BluetoothUUID.environmentalSensingTriggerSetting, .bit32(0x290D))
 
     }
 
@@ -1945,6 +2233,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.timeTriggerSetting, .bit16(0x290E))
          XCTAssertEqual(BluetoothUUID.timeTriggerSetting, .bit16(10510))
          XCTAssertEqual(BluetoothUUID.timeTriggerSetting.name, "Time Trigger Setting")
+         XCTAssertNotEqual(BluetoothUUID.timeTriggerSetting, .bit32(10510))
+         XCTAssertNotEqual(BluetoothUUID.timeTriggerSetting, .bit32(0x290E))
 
     }
 
@@ -1955,6 +2245,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.deviceName, .bit16(0x2A00))
          XCTAssertEqual(BluetoothUUID.deviceName, .bit16(10752))
          XCTAssertEqual(BluetoothUUID.deviceName.name, "Device Name")
+         XCTAssertNotEqual(BluetoothUUID.deviceName, .bit32(10752))
+         XCTAssertNotEqual(BluetoothUUID.deviceName, .bit32(0x2A00))
 
     }
 
@@ -1965,6 +2257,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.appearance, .bit16(0x2A01))
          XCTAssertEqual(BluetoothUUID.appearance, .bit16(10753))
          XCTAssertEqual(BluetoothUUID.appearance.name, "Appearance")
+         XCTAssertNotEqual(BluetoothUUID.appearance, .bit32(10753))
+         XCTAssertNotEqual(BluetoothUUID.appearance, .bit32(0x2A01))
 
     }
 
@@ -1975,6 +2269,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag, .bit16(0x2A02))
          XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag, .bit16(10754))
          XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag.name, "Peripheral Privacy Flag")
+         XCTAssertNotEqual(BluetoothUUID.peripheralPrivacyFlag, .bit32(10754))
+         XCTAssertNotEqual(BluetoothUUID.peripheralPrivacyFlag, .bit32(0x2A02))
 
     }
 
@@ -1985,6 +2281,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.reconnectionAddress, .bit16(0x2A03))
          XCTAssertEqual(BluetoothUUID.reconnectionAddress, .bit16(10755))
          XCTAssertEqual(BluetoothUUID.reconnectionAddress.name, "Reconnection Address")
+         XCTAssertNotEqual(BluetoothUUID.reconnectionAddress, .bit32(10755))
+         XCTAssertNotEqual(BluetoothUUID.reconnectionAddress, .bit32(0x2A03))
 
     }
 
@@ -1995,6 +2293,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters, .bit16(0x2A04))
          XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters, .bit16(10756))
          XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters.name, "Peripheral Preferred Connection Parameters")
+         XCTAssertNotEqual(BluetoothUUID.peripheralPreferredConnectionParameters, .bit32(10756))
+         XCTAssertNotEqual(BluetoothUUID.peripheralPreferredConnectionParameters, .bit32(0x2A04))
 
     }
 
@@ -2005,6 +2305,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.serviceChanged, .bit16(0x2A05))
          XCTAssertEqual(BluetoothUUID.serviceChanged, .bit16(10757))
          XCTAssertEqual(BluetoothUUID.serviceChanged.name, "Service Changed")
+         XCTAssertNotEqual(BluetoothUUID.serviceChanged, .bit32(10757))
+         XCTAssertNotEqual(BluetoothUUID.serviceChanged, .bit32(0x2A05))
 
     }
 
@@ -2015,6 +2317,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.alertLevel, .bit16(0x2A06))
          XCTAssertEqual(BluetoothUUID.alertLevel, .bit16(10758))
          XCTAssertEqual(BluetoothUUID.alertLevel.name, "Alert Level")
+         XCTAssertNotEqual(BluetoothUUID.alertLevel, .bit32(10758))
+         XCTAssertNotEqual(BluetoothUUID.alertLevel, .bit32(0x2A06))
 
     }
 
@@ -2025,6 +2329,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.txPowerLevel, .bit16(0x2A07))
          XCTAssertEqual(BluetoothUUID.txPowerLevel, .bit16(10759))
          XCTAssertEqual(BluetoothUUID.txPowerLevel.name, "Tx Power Level")
+         XCTAssertNotEqual(BluetoothUUID.txPowerLevel, .bit32(10759))
+         XCTAssertNotEqual(BluetoothUUID.txPowerLevel, .bit32(0x2A07))
 
     }
 
@@ -2035,6 +2341,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dateTime, .bit16(0x2A08))
          XCTAssertEqual(BluetoothUUID.dateTime, .bit16(10760))
          XCTAssertEqual(BluetoothUUID.dateTime.name, "Date Time")
+         XCTAssertNotEqual(BluetoothUUID.dateTime, .bit32(10760))
+         XCTAssertNotEqual(BluetoothUUID.dateTime, .bit32(0x2A08))
 
     }
 
@@ -2045,6 +2353,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dayOfWeek, .bit16(0x2A09))
          XCTAssertEqual(BluetoothUUID.dayOfWeek, .bit16(10761))
          XCTAssertEqual(BluetoothUUID.dayOfWeek.name, "Day of Week")
+         XCTAssertNotEqual(BluetoothUUID.dayOfWeek, .bit32(10761))
+         XCTAssertNotEqual(BluetoothUUID.dayOfWeek, .bit32(0x2A09))
 
     }
 
@@ -2055,6 +2365,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dayDateTime, .bit16(0x2A0A))
          XCTAssertEqual(BluetoothUUID.dayDateTime, .bit16(10762))
          XCTAssertEqual(BluetoothUUID.dayDateTime.name, "Day Date Time")
+         XCTAssertNotEqual(BluetoothUUID.dayDateTime, .bit32(10762))
+         XCTAssertNotEqual(BluetoothUUID.dayDateTime, .bit32(0x2A0A))
 
     }
 
@@ -2065,6 +2377,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.exactTime256, .bit16(0x2A0C))
          XCTAssertEqual(BluetoothUUID.exactTime256, .bit16(10764))
          XCTAssertEqual(BluetoothUUID.exactTime256.name, "Exact Time 256")
+         XCTAssertNotEqual(BluetoothUUID.exactTime256, .bit32(10764))
+         XCTAssertNotEqual(BluetoothUUID.exactTime256, .bit32(0x2A0C))
 
     }
 
@@ -2075,6 +2389,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dstOffset, .bit16(0x2A0D))
          XCTAssertEqual(BluetoothUUID.dstOffset, .bit16(10765))
          XCTAssertEqual(BluetoothUUID.dstOffset.name, "DST Offset")
+         XCTAssertNotEqual(BluetoothUUID.dstOffset, .bit32(10765))
+         XCTAssertNotEqual(BluetoothUUID.dstOffset, .bit32(0x2A0D))
 
     }
 
@@ -2085,6 +2401,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.timeZone, .bit16(0x2A0E))
          XCTAssertEqual(BluetoothUUID.timeZone, .bit16(10766))
          XCTAssertEqual(BluetoothUUID.timeZone.name, "Time Zone")
+         XCTAssertNotEqual(BluetoothUUID.timeZone, .bit32(10766))
+         XCTAssertNotEqual(BluetoothUUID.timeZone, .bit32(0x2A0E))
 
     }
 
@@ -2095,6 +2413,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.localTimeInformation, .bit16(0x2A0F))
          XCTAssertEqual(BluetoothUUID.localTimeInformation, .bit16(10767))
          XCTAssertEqual(BluetoothUUID.localTimeInformation.name, "Local Time Information")
+         XCTAssertNotEqual(BluetoothUUID.localTimeInformation, .bit32(10767))
+         XCTAssertNotEqual(BluetoothUUID.localTimeInformation, .bit32(0x2A0F))
 
     }
 
@@ -2105,6 +2425,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.timeWithDst, .bit16(0x2A11))
          XCTAssertEqual(BluetoothUUID.timeWithDst, .bit16(10769))
          XCTAssertEqual(BluetoothUUID.timeWithDst.name, "Time with DST")
+         XCTAssertNotEqual(BluetoothUUID.timeWithDst, .bit32(10769))
+         XCTAssertNotEqual(BluetoothUUID.timeWithDst, .bit32(0x2A11))
 
     }
 
@@ -2115,6 +2437,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.timeAccuracy, .bit16(0x2A12))
          XCTAssertEqual(BluetoothUUID.timeAccuracy, .bit16(10770))
          XCTAssertEqual(BluetoothUUID.timeAccuracy.name, "Time Accuracy")
+         XCTAssertNotEqual(BluetoothUUID.timeAccuracy, .bit32(10770))
+         XCTAssertNotEqual(BluetoothUUID.timeAccuracy, .bit32(0x2A12))
 
     }
 
@@ -2125,6 +2449,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.timeSource, .bit16(0x2A13))
          XCTAssertEqual(BluetoothUUID.timeSource, .bit16(10771))
          XCTAssertEqual(BluetoothUUID.timeSource.name, "Time Source")
+         XCTAssertNotEqual(BluetoothUUID.timeSource, .bit32(10771))
+         XCTAssertNotEqual(BluetoothUUID.timeSource, .bit32(0x2A13))
 
     }
 
@@ -2135,6 +2461,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.referenceTimeInformation, .bit16(0x2A14))
          XCTAssertEqual(BluetoothUUID.referenceTimeInformation, .bit16(10772))
          XCTAssertEqual(BluetoothUUID.referenceTimeInformation.name, "Reference Time Information")
+         XCTAssertNotEqual(BluetoothUUID.referenceTimeInformation, .bit32(10772))
+         XCTAssertNotEqual(BluetoothUUID.referenceTimeInformation, .bit32(0x2A14))
 
     }
 
@@ -2145,6 +2473,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint, .bit16(0x2A16))
          XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint, .bit16(10774))
          XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint.name, "Time Update Control Point")
+         XCTAssertNotEqual(BluetoothUUID.timeUpdateControlPoint, .bit32(10774))
+         XCTAssertNotEqual(BluetoothUUID.timeUpdateControlPoint, .bit32(0x2A16))
 
     }
 
@@ -2155,6 +2485,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.timeUpdateState, .bit16(0x2A17))
          XCTAssertEqual(BluetoothUUID.timeUpdateState, .bit16(10775))
          XCTAssertEqual(BluetoothUUID.timeUpdateState.name, "Time Update State")
+         XCTAssertNotEqual(BluetoothUUID.timeUpdateState, .bit32(10775))
+         XCTAssertNotEqual(BluetoothUUID.timeUpdateState, .bit32(0x2A17))
 
     }
 
@@ -2165,6 +2497,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.glucoseMeasurement, .bit16(0x2A18))
          XCTAssertEqual(BluetoothUUID.glucoseMeasurement, .bit16(10776))
          XCTAssertEqual(BluetoothUUID.glucoseMeasurement.name, "Glucose Measurement")
+         XCTAssertNotEqual(BluetoothUUID.glucoseMeasurement, .bit32(10776))
+         XCTAssertNotEqual(BluetoothUUID.glucoseMeasurement, .bit32(0x2A18))
 
     }
 
@@ -2175,6 +2509,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.batteryLevel, .bit16(0x2A19))
          XCTAssertEqual(BluetoothUUID.batteryLevel, .bit16(10777))
          XCTAssertEqual(BluetoothUUID.batteryLevel.name, "Battery Level")
+         XCTAssertNotEqual(BluetoothUUID.batteryLevel, .bit32(10777))
+         XCTAssertNotEqual(BluetoothUUID.batteryLevel, .bit32(0x2A19))
 
     }
 
@@ -2185,6 +2521,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.temperatureMeasurement, .bit16(0x2A1C))
          XCTAssertEqual(BluetoothUUID.temperatureMeasurement, .bit16(10780))
          XCTAssertEqual(BluetoothUUID.temperatureMeasurement.name, "Temperature Measurement")
+         XCTAssertNotEqual(BluetoothUUID.temperatureMeasurement, .bit32(10780))
+         XCTAssertNotEqual(BluetoothUUID.temperatureMeasurement, .bit32(0x2A1C))
 
     }
 
@@ -2195,6 +2533,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.temperatureType, .bit16(0x2A1D))
          XCTAssertEqual(BluetoothUUID.temperatureType, .bit16(10781))
          XCTAssertEqual(BluetoothUUID.temperatureType.name, "Temperature Type")
+         XCTAssertNotEqual(BluetoothUUID.temperatureType, .bit32(10781))
+         XCTAssertNotEqual(BluetoothUUID.temperatureType, .bit32(0x2A1D))
 
     }
 
@@ -2205,6 +2545,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.intermediateTemperature, .bit16(0x2A1E))
          XCTAssertEqual(BluetoothUUID.intermediateTemperature, .bit16(10782))
          XCTAssertEqual(BluetoothUUID.intermediateTemperature.name, "Intermediate Temperature")
+         XCTAssertNotEqual(BluetoothUUID.intermediateTemperature, .bit32(10782))
+         XCTAssertNotEqual(BluetoothUUID.intermediateTemperature, .bit32(0x2A1E))
 
     }
 
@@ -2215,6 +2557,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.measurementInterval, .bit16(0x2A21))
          XCTAssertEqual(BluetoothUUID.measurementInterval, .bit16(10785))
          XCTAssertEqual(BluetoothUUID.measurementInterval.name, "Measurement Interval")
+         XCTAssertNotEqual(BluetoothUUID.measurementInterval, .bit32(10785))
+         XCTAssertNotEqual(BluetoothUUID.measurementInterval, .bit32(0x2A21))
 
     }
 
@@ -2225,6 +2569,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport, .bit16(0x2A22))
          XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport, .bit16(10786))
          XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport.name, "Boot Keyboard Input Report")
+         XCTAssertNotEqual(BluetoothUUID.bootKeyboardInputReport, .bit32(10786))
+         XCTAssertNotEqual(BluetoothUUID.bootKeyboardInputReport, .bit32(0x2A22))
 
     }
 
@@ -2235,6 +2581,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.systemId, .bit16(0x2A23))
          XCTAssertEqual(BluetoothUUID.systemId, .bit16(10787))
          XCTAssertEqual(BluetoothUUID.systemId.name, "System ID")
+         XCTAssertNotEqual(BluetoothUUID.systemId, .bit32(10787))
+         XCTAssertNotEqual(BluetoothUUID.systemId, .bit32(0x2A23))
 
     }
 
@@ -2245,6 +2593,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.modelNumberString, .bit16(0x2A24))
          XCTAssertEqual(BluetoothUUID.modelNumberString, .bit16(10788))
          XCTAssertEqual(BluetoothUUID.modelNumberString.name, "Model Number String")
+         XCTAssertNotEqual(BluetoothUUID.modelNumberString, .bit32(10788))
+         XCTAssertNotEqual(BluetoothUUID.modelNumberString, .bit32(0x2A24))
 
     }
 
@@ -2255,6 +2605,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.serialNumberString, .bit16(0x2A25))
          XCTAssertEqual(BluetoothUUID.serialNumberString, .bit16(10789))
          XCTAssertEqual(BluetoothUUID.serialNumberString.name, "Serial Number String")
+         XCTAssertNotEqual(BluetoothUUID.serialNumberString, .bit32(10789))
+         XCTAssertNotEqual(BluetoothUUID.serialNumberString, .bit32(0x2A25))
 
     }
 
@@ -2265,6 +2617,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.firmwareRevisionString, .bit16(0x2A26))
          XCTAssertEqual(BluetoothUUID.firmwareRevisionString, .bit16(10790))
          XCTAssertEqual(BluetoothUUID.firmwareRevisionString.name, "Firmware Revision String")
+         XCTAssertNotEqual(BluetoothUUID.firmwareRevisionString, .bit32(10790))
+         XCTAssertNotEqual(BluetoothUUID.firmwareRevisionString, .bit32(0x2A26))
 
     }
 
@@ -2275,6 +2629,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hardwareRevisionString, .bit16(0x2A27))
          XCTAssertEqual(BluetoothUUID.hardwareRevisionString, .bit16(10791))
          XCTAssertEqual(BluetoothUUID.hardwareRevisionString.name, "Hardware Revision String")
+         XCTAssertNotEqual(BluetoothUUID.hardwareRevisionString, .bit32(10791))
+         XCTAssertNotEqual(BluetoothUUID.hardwareRevisionString, .bit32(0x2A27))
 
     }
 
@@ -2285,6 +2641,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.softwareRevisionString, .bit16(0x2A28))
          XCTAssertEqual(BluetoothUUID.softwareRevisionString, .bit16(10792))
          XCTAssertEqual(BluetoothUUID.softwareRevisionString.name, "Software Revision String")
+         XCTAssertNotEqual(BluetoothUUID.softwareRevisionString, .bit32(10792))
+         XCTAssertNotEqual(BluetoothUUID.softwareRevisionString, .bit32(0x2A28))
 
     }
 
@@ -2295,6 +2653,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.manufacturerNameString, .bit16(0x2A29))
          XCTAssertEqual(BluetoothUUID.manufacturerNameString, .bit16(10793))
          XCTAssertEqual(BluetoothUUID.manufacturerNameString.name, "Manufacturer Name String")
+         XCTAssertNotEqual(BluetoothUUID.manufacturerNameString, .bit32(10793))
+         XCTAssertNotEqual(BluetoothUUID.manufacturerNameString, .bit32(0x2A29))
 
     }
 
@@ -2305,6 +2665,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList, .bit16(0x2A2A))
          XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList, .bit16(10794))
          XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList.name, "IEEE 11073-20601 Regulatory Cert. Data List")
+         XCTAssertNotEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList, .bit32(10794))
+         XCTAssertNotEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList, .bit32(0x2A2A))
 
     }
 
@@ -2315,6 +2677,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.currentTime, .bit16(0x2A2B))
          XCTAssertEqual(BluetoothUUID.currentTime, .bit16(10795))
          XCTAssertEqual(BluetoothUUID.currentTime.name, "Current Time")
+         XCTAssertNotEqual(BluetoothUUID.currentTime, .bit32(10795))
+         XCTAssertNotEqual(BluetoothUUID.currentTime, .bit32(0x2A2B))
 
     }
 
@@ -2325,6 +2689,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.magneticDeclination, .bit16(0x2A2C))
          XCTAssertEqual(BluetoothUUID.magneticDeclination, .bit16(10796))
          XCTAssertEqual(BluetoothUUID.magneticDeclination.name, "Magnetic Declination")
+         XCTAssertNotEqual(BluetoothUUID.magneticDeclination, .bit32(10796))
+         XCTAssertNotEqual(BluetoothUUID.magneticDeclination, .bit32(0x2A2C))
 
     }
 
@@ -2335,6 +2701,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.scanRefresh, .bit16(0x2A31))
          XCTAssertEqual(BluetoothUUID.scanRefresh, .bit16(10801))
          XCTAssertEqual(BluetoothUUID.scanRefresh.name, "Scan Refresh")
+         XCTAssertNotEqual(BluetoothUUID.scanRefresh, .bit32(10801))
+         XCTAssertNotEqual(BluetoothUUID.scanRefresh, .bit32(0x2A31))
 
     }
 
@@ -2345,6 +2713,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport, .bit16(0x2A32))
          XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport, .bit16(10802))
          XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport.name, "Boot Keyboard Output Report")
+         XCTAssertNotEqual(BluetoothUUID.bootKeyboardOutputReport, .bit32(10802))
+         XCTAssertNotEqual(BluetoothUUID.bootKeyboardOutputReport, .bit32(0x2A32))
 
     }
 
@@ -2355,6 +2725,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bootMouseInputReport, .bit16(0x2A33))
          XCTAssertEqual(BluetoothUUID.bootMouseInputReport, .bit16(10803))
          XCTAssertEqual(BluetoothUUID.bootMouseInputReport.name, "Boot Mouse Input Report")
+         XCTAssertNotEqual(BluetoothUUID.bootMouseInputReport, .bit32(10803))
+         XCTAssertNotEqual(BluetoothUUID.bootMouseInputReport, .bit32(0x2A33))
 
     }
 
@@ -2365,6 +2737,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext, .bit16(0x2A34))
          XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext, .bit16(10804))
          XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext.name, "Glucose Measurement Context")
+         XCTAssertNotEqual(BluetoothUUID.glucoseMeasurementContext, .bit32(10804))
+         XCTAssertNotEqual(BluetoothUUID.glucoseMeasurementContext, .bit32(0x2A34))
 
     }
 
@@ -2375,6 +2749,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement, .bit16(0x2A35))
          XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement, .bit16(10805))
          XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement.name, "Blood Pressure Measurement")
+         XCTAssertNotEqual(BluetoothUUID.bloodPressureMeasurement, .bit32(10805))
+         XCTAssertNotEqual(BluetoothUUID.bloodPressureMeasurement, .bit32(0x2A35))
 
     }
 
@@ -2385,6 +2761,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.intermediateCuffPressure, .bit16(0x2A36))
          XCTAssertEqual(BluetoothUUID.intermediateCuffPressure, .bit16(10806))
          XCTAssertEqual(BluetoothUUID.intermediateCuffPressure.name, "Intermediate Cuff Pressure")
+         XCTAssertNotEqual(BluetoothUUID.intermediateCuffPressure, .bit32(10806))
+         XCTAssertNotEqual(BluetoothUUID.intermediateCuffPressure, .bit32(0x2A36))
 
     }
 
@@ -2395,6 +2773,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.heartRateMeasurement, .bit16(0x2A37))
          XCTAssertEqual(BluetoothUUID.heartRateMeasurement, .bit16(10807))
          XCTAssertEqual(BluetoothUUID.heartRateMeasurement.name, "Heart Rate Measurement")
+         XCTAssertNotEqual(BluetoothUUID.heartRateMeasurement, .bit32(10807))
+         XCTAssertNotEqual(BluetoothUUID.heartRateMeasurement, .bit32(0x2A37))
 
     }
 
@@ -2405,6 +2785,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bodySensorLocation, .bit16(0x2A38))
          XCTAssertEqual(BluetoothUUID.bodySensorLocation, .bit16(10808))
          XCTAssertEqual(BluetoothUUID.bodySensorLocation.name, "Body Sensor Location")
+         XCTAssertNotEqual(BluetoothUUID.bodySensorLocation, .bit32(10808))
+         XCTAssertNotEqual(BluetoothUUID.bodySensorLocation, .bit32(0x2A38))
 
     }
 
@@ -2415,6 +2797,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.heartRateControlPoint, .bit16(0x2A39))
          XCTAssertEqual(BluetoothUUID.heartRateControlPoint, .bit16(10809))
          XCTAssertEqual(BluetoothUUID.heartRateControlPoint.name, "Heart Rate Control Point")
+         XCTAssertNotEqual(BluetoothUUID.heartRateControlPoint, .bit32(10809))
+         XCTAssertNotEqual(BluetoothUUID.heartRateControlPoint, .bit32(0x2A39))
 
     }
 
@@ -2425,6 +2809,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.alertStatus, .bit16(0x2A3F))
          XCTAssertEqual(BluetoothUUID.alertStatus, .bit16(10815))
          XCTAssertEqual(BluetoothUUID.alertStatus.name, "Alert Status")
+         XCTAssertNotEqual(BluetoothUUID.alertStatus, .bit32(10815))
+         XCTAssertNotEqual(BluetoothUUID.alertStatus, .bit32(0x2A3F))
 
     }
 
@@ -2435,6 +2821,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.ringerControlPoint, .bit16(0x2A40))
          XCTAssertEqual(BluetoothUUID.ringerControlPoint, .bit16(10816))
          XCTAssertEqual(BluetoothUUID.ringerControlPoint.name, "Ringer Control Point")
+         XCTAssertNotEqual(BluetoothUUID.ringerControlPoint, .bit32(10816))
+         XCTAssertNotEqual(BluetoothUUID.ringerControlPoint, .bit32(0x2A40))
 
     }
 
@@ -2445,6 +2833,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.ringerSetting, .bit16(0x2A41))
          XCTAssertEqual(BluetoothUUID.ringerSetting, .bit16(10817))
          XCTAssertEqual(BluetoothUUID.ringerSetting.name, "Ringer Setting")
+         XCTAssertNotEqual(BluetoothUUID.ringerSetting, .bit32(10817))
+         XCTAssertNotEqual(BluetoothUUID.ringerSetting, .bit32(0x2A41))
 
     }
 
@@ -2455,6 +2845,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask, .bit16(0x2A42))
          XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask, .bit16(10818))
          XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask.name, "Alert Category ID Bit Mask")
+         XCTAssertNotEqual(BluetoothUUID.alertCategoryIdBitMask, .bit32(10818))
+         XCTAssertNotEqual(BluetoothUUID.alertCategoryIdBitMask, .bit32(0x2A42))
 
     }
 
@@ -2465,6 +2857,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.alertCategoryId, .bit16(0x2A43))
          XCTAssertEqual(BluetoothUUID.alertCategoryId, .bit16(10819))
          XCTAssertEqual(BluetoothUUID.alertCategoryId.name, "Alert Category ID")
+         XCTAssertNotEqual(BluetoothUUID.alertCategoryId, .bit32(10819))
+         XCTAssertNotEqual(BluetoothUUID.alertCategoryId, .bit32(0x2A43))
 
     }
 
@@ -2475,6 +2869,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint, .bit16(0x2A44))
          XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint, .bit16(10820))
          XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint.name, "Alert Notification Control Point")
+         XCTAssertNotEqual(BluetoothUUID.alertNotificationControlPoint, .bit32(10820))
+         XCTAssertNotEqual(BluetoothUUID.alertNotificationControlPoint, .bit32(0x2A44))
 
     }
 
@@ -2485,6 +2881,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.unreadAlertStatus, .bit16(0x2A45))
          XCTAssertEqual(BluetoothUUID.unreadAlertStatus, .bit16(10821))
          XCTAssertEqual(BluetoothUUID.unreadAlertStatus.name, "Unread Alert Status")
+         XCTAssertNotEqual(BluetoothUUID.unreadAlertStatus, .bit32(10821))
+         XCTAssertNotEqual(BluetoothUUID.unreadAlertStatus, .bit32(0x2A45))
 
     }
 
@@ -2495,6 +2893,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.newAlert, .bit16(0x2A46))
          XCTAssertEqual(BluetoothUUID.newAlert, .bit16(10822))
          XCTAssertEqual(BluetoothUUID.newAlert.name, "New Alert")
+         XCTAssertNotEqual(BluetoothUUID.newAlert, .bit32(10822))
+         XCTAssertNotEqual(BluetoothUUID.newAlert, .bit32(0x2A46))
 
     }
 
@@ -2505,6 +2905,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory, .bit16(0x2A47))
          XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory, .bit16(10823))
          XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory.name, "Supported New Alert Category")
+         XCTAssertNotEqual(BluetoothUUID.supportedNewAlertCategory, .bit32(10823))
+         XCTAssertNotEqual(BluetoothUUID.supportedNewAlertCategory, .bit32(0x2A47))
 
     }
 
@@ -2515,6 +2917,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory, .bit16(0x2A48))
          XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory, .bit16(10824))
          XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory.name, "Supported Unread Alert Category")
+         XCTAssertNotEqual(BluetoothUUID.supportedUnreadAlertCategory, .bit32(10824))
+         XCTAssertNotEqual(BluetoothUUID.supportedUnreadAlertCategory, .bit32(0x2A48))
 
     }
 
@@ -2525,6 +2929,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bloodPressureFeature, .bit16(0x2A49))
          XCTAssertEqual(BluetoothUUID.bloodPressureFeature, .bit16(10825))
          XCTAssertEqual(BluetoothUUID.bloodPressureFeature.name, "Blood Pressure Feature")
+         XCTAssertNotEqual(BluetoothUUID.bloodPressureFeature, .bit32(10825))
+         XCTAssertNotEqual(BluetoothUUID.bloodPressureFeature, .bit32(0x2A49))
 
     }
 
@@ -2535,6 +2941,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hidInformation, .bit16(0x2A4A))
          XCTAssertEqual(BluetoothUUID.hidInformation, .bit16(10826))
          XCTAssertEqual(BluetoothUUID.hidInformation.name, "HID Information")
+         XCTAssertNotEqual(BluetoothUUID.hidInformation, .bit32(10826))
+         XCTAssertNotEqual(BluetoothUUID.hidInformation, .bit32(0x2A4A))
 
     }
 
@@ -2545,6 +2953,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.reportMap, .bit16(0x2A4B))
          XCTAssertEqual(BluetoothUUID.reportMap, .bit16(10827))
          XCTAssertEqual(BluetoothUUID.reportMap.name, "Report Map")
+         XCTAssertNotEqual(BluetoothUUID.reportMap, .bit32(10827))
+         XCTAssertNotEqual(BluetoothUUID.reportMap, .bit32(0x2A4B))
 
     }
 
@@ -2555,6 +2965,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hidControlPoint, .bit16(0x2A4C))
          XCTAssertEqual(BluetoothUUID.hidControlPoint, .bit16(10828))
          XCTAssertEqual(BluetoothUUID.hidControlPoint.name, "HID Control Point")
+         XCTAssertNotEqual(BluetoothUUID.hidControlPoint, .bit32(10828))
+         XCTAssertNotEqual(BluetoothUUID.hidControlPoint, .bit32(0x2A4C))
 
     }
 
@@ -2565,6 +2977,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.report, .bit16(0x2A4D))
          XCTAssertEqual(BluetoothUUID.report, .bit16(10829))
          XCTAssertEqual(BluetoothUUID.report.name, "Report")
+         XCTAssertNotEqual(BluetoothUUID.report, .bit32(10829))
+         XCTAssertNotEqual(BluetoothUUID.report, .bit32(0x2A4D))
 
     }
 
@@ -2575,6 +2989,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.protocolMode, .bit16(0x2A4E))
          XCTAssertEqual(BluetoothUUID.protocolMode, .bit16(10830))
          XCTAssertEqual(BluetoothUUID.protocolMode.name, "Protocol Mode")
+         XCTAssertNotEqual(BluetoothUUID.protocolMode, .bit32(10830))
+         XCTAssertNotEqual(BluetoothUUID.protocolMode, .bit32(0x2A4E))
 
     }
 
@@ -2585,6 +3001,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.scanIntervalWindow, .bit16(0x2A4F))
          XCTAssertEqual(BluetoothUUID.scanIntervalWindow, .bit16(10831))
          XCTAssertEqual(BluetoothUUID.scanIntervalWindow.name, "Scan Interval Window")
+         XCTAssertNotEqual(BluetoothUUID.scanIntervalWindow, .bit32(10831))
+         XCTAssertNotEqual(BluetoothUUID.scanIntervalWindow, .bit32(0x2A4F))
 
     }
 
@@ -2595,6 +3013,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.pnpId, .bit16(0x2A50))
          XCTAssertEqual(BluetoothUUID.pnpId, .bit16(10832))
          XCTAssertEqual(BluetoothUUID.pnpId.name, "PnP ID")
+         XCTAssertNotEqual(BluetoothUUID.pnpId, .bit32(10832))
+         XCTAssertNotEqual(BluetoothUUID.pnpId, .bit32(0x2A50))
 
     }
 
@@ -2605,6 +3025,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.glucoseFeature, .bit16(0x2A51))
          XCTAssertEqual(BluetoothUUID.glucoseFeature, .bit16(10833))
          XCTAssertEqual(BluetoothUUID.glucoseFeature.name, "Glucose Feature")
+         XCTAssertNotEqual(BluetoothUUID.glucoseFeature, .bit32(10833))
+         XCTAssertNotEqual(BluetoothUUID.glucoseFeature, .bit32(0x2A51))
 
     }
 
@@ -2615,6 +3037,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.recordAccessControlPoint, .bit16(0x2A52))
          XCTAssertEqual(BluetoothUUID.recordAccessControlPoint, .bit16(10834))
          XCTAssertEqual(BluetoothUUID.recordAccessControlPoint.name, "Record Access Control Point")
+         XCTAssertNotEqual(BluetoothUUID.recordAccessControlPoint, .bit32(10834))
+         XCTAssertNotEqual(BluetoothUUID.recordAccessControlPoint, .bit32(0x2A52))
 
     }
 
@@ -2625,6 +3049,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.rscMeasurement, .bit16(0x2A53))
          XCTAssertEqual(BluetoothUUID.rscMeasurement, .bit16(10835))
          XCTAssertEqual(BluetoothUUID.rscMeasurement.name, "RSC Measurement")
+         XCTAssertNotEqual(BluetoothUUID.rscMeasurement, .bit32(10835))
+         XCTAssertNotEqual(BluetoothUUID.rscMeasurement, .bit32(0x2A53))
 
     }
 
@@ -2635,6 +3061,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.rscFeature, .bit16(0x2A54))
          XCTAssertEqual(BluetoothUUID.rscFeature, .bit16(10836))
          XCTAssertEqual(BluetoothUUID.rscFeature.name, "RSC Feature")
+         XCTAssertNotEqual(BluetoothUUID.rscFeature, .bit32(10836))
+         XCTAssertNotEqual(BluetoothUUID.rscFeature, .bit32(0x2A54))
 
     }
 
@@ -2645,6 +3073,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.scControlPoint, .bit16(0x2A55))
          XCTAssertEqual(BluetoothUUID.scControlPoint, .bit16(10837))
          XCTAssertEqual(BluetoothUUID.scControlPoint.name, "SC Control Point")
+         XCTAssertNotEqual(BluetoothUUID.scControlPoint, .bit32(10837))
+         XCTAssertNotEqual(BluetoothUUID.scControlPoint, .bit32(0x2A55))
 
     }
 
@@ -2655,6 +3085,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.digital, .bit16(0x2A56))
          XCTAssertEqual(BluetoothUUID.digital, .bit16(10838))
          XCTAssertEqual(BluetoothUUID.digital.name, "Digital")
+         XCTAssertNotEqual(BluetoothUUID.digital, .bit32(10838))
+         XCTAssertNotEqual(BluetoothUUID.digital, .bit32(0x2A56))
 
     }
 
@@ -2665,6 +3097,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.analog, .bit16(0x2A58))
          XCTAssertEqual(BluetoothUUID.analog, .bit16(10840))
          XCTAssertEqual(BluetoothUUID.analog.name, "Analog")
+         XCTAssertNotEqual(BluetoothUUID.analog, .bit32(10840))
+         XCTAssertNotEqual(BluetoothUUID.analog, .bit32(0x2A58))
 
     }
 
@@ -2675,6 +3109,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.aggregate, .bit16(0x2A5A))
          XCTAssertEqual(BluetoothUUID.aggregate, .bit16(10842))
          XCTAssertEqual(BluetoothUUID.aggregate.name, "Aggregate")
+         XCTAssertNotEqual(BluetoothUUID.aggregate, .bit32(10842))
+         XCTAssertNotEqual(BluetoothUUID.aggregate, .bit32(0x2A5A))
 
     }
 
@@ -2685,6 +3121,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cscMeasurement, .bit16(0x2A5B))
          XCTAssertEqual(BluetoothUUID.cscMeasurement, .bit16(10843))
          XCTAssertEqual(BluetoothUUID.cscMeasurement.name, "CSC Measurement")
+         XCTAssertNotEqual(BluetoothUUID.cscMeasurement, .bit32(10843))
+         XCTAssertNotEqual(BluetoothUUID.cscMeasurement, .bit32(0x2A5B))
 
     }
 
@@ -2695,6 +3133,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cscFeature, .bit16(0x2A5C))
          XCTAssertEqual(BluetoothUUID.cscFeature, .bit16(10844))
          XCTAssertEqual(BluetoothUUID.cscFeature.name, "CSC Feature")
+         XCTAssertNotEqual(BluetoothUUID.cscFeature, .bit32(10844))
+         XCTAssertNotEqual(BluetoothUUID.cscFeature, .bit32(0x2A5C))
 
     }
 
@@ -2705,6 +3145,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.sensorLocation, .bit16(0x2A5D))
          XCTAssertEqual(BluetoothUUID.sensorLocation, .bit16(10845))
          XCTAssertEqual(BluetoothUUID.sensorLocation.name, "Sensor Location")
+         XCTAssertNotEqual(BluetoothUUID.sensorLocation, .bit32(10845))
+         XCTAssertNotEqual(BluetoothUUID.sensorLocation, .bit32(0x2A5D))
 
     }
 
@@ -2715,6 +3157,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement, .bit16(0x2A63))
          XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement, .bit16(10851))
          XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement.name, "Cycling Power Measurement")
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerMeasurement, .bit32(10851))
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerMeasurement, .bit32(0x2A63))
 
     }
 
@@ -2725,6 +3169,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cyclingPowerVector, .bit16(0x2A64))
          XCTAssertEqual(BluetoothUUID.cyclingPowerVector, .bit16(10852))
          XCTAssertEqual(BluetoothUUID.cyclingPowerVector.name, "Cycling Power Vector")
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerVector, .bit32(10852))
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerVector, .bit32(0x2A64))
 
     }
 
@@ -2735,6 +3181,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cyclingPowerFeature, .bit16(0x2A65))
          XCTAssertEqual(BluetoothUUID.cyclingPowerFeature, .bit16(10853))
          XCTAssertEqual(BluetoothUUID.cyclingPowerFeature.name, "Cycling Power Feature")
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerFeature, .bit32(10853))
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerFeature, .bit32(0x2A65))
 
     }
 
@@ -2745,6 +3193,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint, .bit16(0x2A66))
          XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint, .bit16(10854))
          XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint.name, "Cycling Power Control Point")
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerControlPoint, .bit32(10854))
+         XCTAssertNotEqual(BluetoothUUID.cyclingPowerControlPoint, .bit32(0x2A66))
 
     }
 
@@ -2755,6 +3205,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.locationAndSpeed, .bit16(0x2A67))
          XCTAssertEqual(BluetoothUUID.locationAndSpeed, .bit16(10855))
          XCTAssertEqual(BluetoothUUID.locationAndSpeed.name, "Location and Speed")
+         XCTAssertNotEqual(BluetoothUUID.locationAndSpeed, .bit32(10855))
+         XCTAssertNotEqual(BluetoothUUID.locationAndSpeed, .bit32(0x2A67))
 
     }
 
@@ -2765,6 +3217,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.navigation, .bit16(0x2A68))
          XCTAssertEqual(BluetoothUUID.navigation, .bit16(10856))
          XCTAssertEqual(BluetoothUUID.navigation.name, "Navigation")
+         XCTAssertNotEqual(BluetoothUUID.navigation, .bit32(10856))
+         XCTAssertNotEqual(BluetoothUUID.navigation, .bit32(0x2A68))
 
     }
 
@@ -2775,6 +3229,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.positionQuality, .bit16(0x2A69))
          XCTAssertEqual(BluetoothUUID.positionQuality, .bit16(10857))
          XCTAssertEqual(BluetoothUUID.positionQuality.name, "Position Quality")
+         XCTAssertNotEqual(BluetoothUUID.positionQuality, .bit32(10857))
+         XCTAssertNotEqual(BluetoothUUID.positionQuality, .bit32(0x2A69))
 
     }
 
@@ -2785,6 +3241,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.lnFeature, .bit16(0x2A6A))
          XCTAssertEqual(BluetoothUUID.lnFeature, .bit16(10858))
          XCTAssertEqual(BluetoothUUID.lnFeature.name, "LN Feature")
+         XCTAssertNotEqual(BluetoothUUID.lnFeature, .bit32(10858))
+         XCTAssertNotEqual(BluetoothUUID.lnFeature, .bit32(0x2A6A))
 
     }
 
@@ -2795,6 +3253,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.lnControlPoint, .bit16(0x2A6B))
          XCTAssertEqual(BluetoothUUID.lnControlPoint, .bit16(10859))
          XCTAssertEqual(BluetoothUUID.lnControlPoint.name, "LN Control Point")
+         XCTAssertNotEqual(BluetoothUUID.lnControlPoint, .bit32(10859))
+         XCTAssertNotEqual(BluetoothUUID.lnControlPoint, .bit32(0x2A6B))
 
     }
 
@@ -2805,6 +3265,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.elevation, .bit16(0x2A6C))
          XCTAssertEqual(BluetoothUUID.elevation, .bit16(10860))
          XCTAssertEqual(BluetoothUUID.elevation.name, "Elevation")
+         XCTAssertNotEqual(BluetoothUUID.elevation, .bit32(10860))
+         XCTAssertNotEqual(BluetoothUUID.elevation, .bit32(0x2A6C))
 
     }
 
@@ -2815,6 +3277,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.pressure, .bit16(0x2A6D))
          XCTAssertEqual(BluetoothUUID.pressure, .bit16(10861))
          XCTAssertEqual(BluetoothUUID.pressure.name, "Pressure")
+         XCTAssertNotEqual(BluetoothUUID.pressure, .bit32(10861))
+         XCTAssertNotEqual(BluetoothUUID.pressure, .bit32(0x2A6D))
 
     }
 
@@ -2825,6 +3289,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.temperature, .bit16(0x2A6E))
          XCTAssertEqual(BluetoothUUID.temperature, .bit16(10862))
          XCTAssertEqual(BluetoothUUID.temperature.name, "Temperature")
+         XCTAssertNotEqual(BluetoothUUID.temperature, .bit32(10862))
+         XCTAssertNotEqual(BluetoothUUID.temperature, .bit32(0x2A6E))
 
     }
 
@@ -2835,6 +3301,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.humidity, .bit16(0x2A6F))
          XCTAssertEqual(BluetoothUUID.humidity, .bit16(10863))
          XCTAssertEqual(BluetoothUUID.humidity.name, "Humidity")
+         XCTAssertNotEqual(BluetoothUUID.humidity, .bit32(10863))
+         XCTAssertNotEqual(BluetoothUUID.humidity, .bit32(0x2A6F))
 
     }
 
@@ -2845,6 +3313,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.trueWindSpeed, .bit16(0x2A70))
          XCTAssertEqual(BluetoothUUID.trueWindSpeed, .bit16(10864))
          XCTAssertEqual(BluetoothUUID.trueWindSpeed.name, "True Wind Speed")
+         XCTAssertNotEqual(BluetoothUUID.trueWindSpeed, .bit32(10864))
+         XCTAssertNotEqual(BluetoothUUID.trueWindSpeed, .bit32(0x2A70))
 
     }
 
@@ -2855,6 +3325,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.trueWindDirection, .bit16(0x2A71))
          XCTAssertEqual(BluetoothUUID.trueWindDirection, .bit16(10865))
          XCTAssertEqual(BluetoothUUID.trueWindDirection.name, "True Wind Direction")
+         XCTAssertNotEqual(BluetoothUUID.trueWindDirection, .bit32(10865))
+         XCTAssertNotEqual(BluetoothUUID.trueWindDirection, .bit32(0x2A71))
 
     }
 
@@ -2865,6 +3337,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apparentWindSpeed, .bit16(0x2A72))
          XCTAssertEqual(BluetoothUUID.apparentWindSpeed, .bit16(10866))
          XCTAssertEqual(BluetoothUUID.apparentWindSpeed.name, "Apparent Wind Speed")
+         XCTAssertNotEqual(BluetoothUUID.apparentWindSpeed, .bit32(10866))
+         XCTAssertNotEqual(BluetoothUUID.apparentWindSpeed, .bit32(0x2A72))
 
     }
 
@@ -2875,6 +3349,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apparentWindDirection, .bit16(0x2A73))
          XCTAssertEqual(BluetoothUUID.apparentWindDirection, .bit16(10867))
          XCTAssertEqual(BluetoothUUID.apparentWindDirection.name, "Apparent Wind Direction")
+         XCTAssertNotEqual(BluetoothUUID.apparentWindDirection, .bit32(10867))
+         XCTAssertNotEqual(BluetoothUUID.apparentWindDirection, .bit32(0x2A73))
 
     }
 
@@ -2885,6 +3361,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gustFactor, .bit16(0x2A74))
          XCTAssertEqual(BluetoothUUID.gustFactor, .bit16(10868))
          XCTAssertEqual(BluetoothUUID.gustFactor.name, "Gust Factor")
+         XCTAssertNotEqual(BluetoothUUID.gustFactor, .bit32(10868))
+         XCTAssertNotEqual(BluetoothUUID.gustFactor, .bit32(0x2A74))
 
     }
 
@@ -2895,6 +3373,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.pollenConcentration, .bit16(0x2A75))
          XCTAssertEqual(BluetoothUUID.pollenConcentration, .bit16(10869))
          XCTAssertEqual(BluetoothUUID.pollenConcentration.name, "Pollen Concentration")
+         XCTAssertNotEqual(BluetoothUUID.pollenConcentration, .bit32(10869))
+         XCTAssertNotEqual(BluetoothUUID.pollenConcentration, .bit32(0x2A75))
 
     }
 
@@ -2905,6 +3385,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.uvIndex, .bit16(0x2A76))
          XCTAssertEqual(BluetoothUUID.uvIndex, .bit16(10870))
          XCTAssertEqual(BluetoothUUID.uvIndex.name, "UV Index")
+         XCTAssertNotEqual(BluetoothUUID.uvIndex, .bit32(10870))
+         XCTAssertNotEqual(BluetoothUUID.uvIndex, .bit32(0x2A76))
 
     }
 
@@ -2915,6 +3397,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.irradiance, .bit16(0x2A77))
          XCTAssertEqual(BluetoothUUID.irradiance, .bit16(10871))
          XCTAssertEqual(BluetoothUUID.irradiance.name, "Irradiance")
+         XCTAssertNotEqual(BluetoothUUID.irradiance, .bit32(10871))
+         XCTAssertNotEqual(BluetoothUUID.irradiance, .bit32(0x2A77))
 
     }
 
@@ -2925,6 +3409,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.rainfall, .bit16(0x2A78))
          XCTAssertEqual(BluetoothUUID.rainfall, .bit16(10872))
          XCTAssertEqual(BluetoothUUID.rainfall.name, "Rainfall")
+         XCTAssertNotEqual(BluetoothUUID.rainfall, .bit32(10872))
+         XCTAssertNotEqual(BluetoothUUID.rainfall, .bit32(0x2A78))
 
     }
 
@@ -2935,6 +3421,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.windChill, .bit16(0x2A79))
          XCTAssertEqual(BluetoothUUID.windChill, .bit16(10873))
          XCTAssertEqual(BluetoothUUID.windChill.name, "Wind Chill")
+         XCTAssertNotEqual(BluetoothUUID.windChill, .bit32(10873))
+         XCTAssertNotEqual(BluetoothUUID.windChill, .bit32(0x2A79))
 
     }
 
@@ -2945,6 +3433,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.heatIndex, .bit16(0x2A7A))
          XCTAssertEqual(BluetoothUUID.heatIndex, .bit16(10874))
          XCTAssertEqual(BluetoothUUID.heatIndex.name, "Heat Index")
+         XCTAssertNotEqual(BluetoothUUID.heatIndex, .bit32(10874))
+         XCTAssertNotEqual(BluetoothUUID.heatIndex, .bit32(0x2A7A))
 
     }
 
@@ -2955,6 +3445,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dewPoint, .bit16(0x2A7B))
          XCTAssertEqual(BluetoothUUID.dewPoint, .bit16(10875))
          XCTAssertEqual(BluetoothUUID.dewPoint.name, "Dew Point")
+         XCTAssertNotEqual(BluetoothUUID.dewPoint, .bit32(10875))
+         XCTAssertNotEqual(BluetoothUUID.dewPoint, .bit32(0x2A7B))
 
     }
 
@@ -2965,6 +3457,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.trend, .bit16(0x2A7C))
          XCTAssertEqual(BluetoothUUID.trend, .bit16(10876))
          XCTAssertEqual(BluetoothUUID.trend.name, "Trend")
+         XCTAssertNotEqual(BluetoothUUID.trend, .bit32(10876))
+         XCTAssertNotEqual(BluetoothUUID.trend, .bit32(0x2A7C))
 
     }
 
@@ -2975,6 +3469,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.descriptorValueChanged, .bit16(0x2A7D))
          XCTAssertEqual(BluetoothUUID.descriptorValueChanged, .bit16(10877))
          XCTAssertEqual(BluetoothUUID.descriptorValueChanged.name, "Descriptor Value Changed")
+         XCTAssertNotEqual(BluetoothUUID.descriptorValueChanged, .bit32(10877))
+         XCTAssertNotEqual(BluetoothUUID.descriptorValueChanged, .bit32(0x2A7D))
 
     }
 
@@ -2985,6 +3481,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit, .bit16(0x2A7E))
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit, .bit16(10878))
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit.name, "Aerobic Heart Rate Lower Limit")
+         XCTAssertNotEqual(BluetoothUUID.aerobicHeartRateLowerLimit, .bit32(10878))
+         XCTAssertNotEqual(BluetoothUUID.aerobicHeartRateLowerLimit, .bit32(0x2A7E))
 
     }
 
@@ -2995,6 +3493,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.aerobicThreshold, .bit16(0x2A7F))
          XCTAssertEqual(BluetoothUUID.aerobicThreshold, .bit16(10879))
          XCTAssertEqual(BluetoothUUID.aerobicThreshold.name, "Aerobic Threshold")
+         XCTAssertNotEqual(BluetoothUUID.aerobicThreshold, .bit32(10879))
+         XCTAssertNotEqual(BluetoothUUID.aerobicThreshold, .bit32(0x2A7F))
 
     }
 
@@ -3005,6 +3505,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.age, .bit16(0x2A80))
          XCTAssertEqual(BluetoothUUID.age, .bit16(10880))
          XCTAssertEqual(BluetoothUUID.age.name, "Age")
+         XCTAssertNotEqual(BluetoothUUID.age, .bit32(10880))
+         XCTAssertNotEqual(BluetoothUUID.age, .bit32(0x2A80))
 
     }
 
@@ -3015,6 +3517,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit, .bit16(0x2A81))
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit, .bit16(10881))
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit.name, "Anaerobic Heart Rate Lower Limit")
+         XCTAssertNotEqual(BluetoothUUID.anaerobicHeartRateLowerLimit, .bit32(10881))
+         XCTAssertNotEqual(BluetoothUUID.anaerobicHeartRateLowerLimit, .bit32(0x2A81))
 
     }
 
@@ -3025,6 +3529,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit, .bit16(0x2A82))
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit, .bit16(10882))
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit.name, "Anaerobic Heart Rate Upper Limit")
+         XCTAssertNotEqual(BluetoothUUID.anaerobicHeartRateUpperLimit, .bit32(10882))
+         XCTAssertNotEqual(BluetoothUUID.anaerobicHeartRateUpperLimit, .bit32(0x2A82))
 
     }
 
@@ -3035,6 +3541,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.anaerobicThreshold, .bit16(0x2A83))
          XCTAssertEqual(BluetoothUUID.anaerobicThreshold, .bit16(10883))
          XCTAssertEqual(BluetoothUUID.anaerobicThreshold.name, "Anaerobic Threshold")
+         XCTAssertNotEqual(BluetoothUUID.anaerobicThreshold, .bit32(10883))
+         XCTAssertNotEqual(BluetoothUUID.anaerobicThreshold, .bit32(0x2A83))
 
     }
 
@@ -3045,6 +3553,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit, .bit16(0x2A84))
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit, .bit16(10884))
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit.name, "Aerobic Heart Rate Upper Limit")
+         XCTAssertNotEqual(BluetoothUUID.aerobicHeartRateUpperLimit, .bit32(10884))
+         XCTAssertNotEqual(BluetoothUUID.aerobicHeartRateUpperLimit, .bit32(0x2A84))
 
     }
 
@@ -3055,6 +3565,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dateOfBirth, .bit16(0x2A85))
          XCTAssertEqual(BluetoothUUID.dateOfBirth, .bit16(10885))
          XCTAssertEqual(BluetoothUUID.dateOfBirth.name, "Date of Birth")
+         XCTAssertNotEqual(BluetoothUUID.dateOfBirth, .bit32(10885))
+         XCTAssertNotEqual(BluetoothUUID.dateOfBirth, .bit32(0x2A85))
 
     }
 
@@ -3065,6 +3577,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment, .bit16(0x2A86))
          XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment, .bit16(10886))
          XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment.name, "Date of Threshold Assessment")
+         XCTAssertNotEqual(BluetoothUUID.dateOfThresholdAssessment, .bit32(10886))
+         XCTAssertNotEqual(BluetoothUUID.dateOfThresholdAssessment, .bit32(0x2A86))
 
     }
 
@@ -3075,6 +3589,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.emailAddress, .bit16(0x2A87))
          XCTAssertEqual(BluetoothUUID.emailAddress, .bit16(10887))
          XCTAssertEqual(BluetoothUUID.emailAddress.name, "Email Address")
+         XCTAssertNotEqual(BluetoothUUID.emailAddress, .bit32(10887))
+         XCTAssertNotEqual(BluetoothUUID.emailAddress, .bit32(0x2A87))
 
     }
 
@@ -3085,6 +3601,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit, .bit16(0x2A88))
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit, .bit16(10888))
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit.name, "Fat Burn Heart Rate Lower Limit")
+         XCTAssertNotEqual(BluetoothUUID.fatBurnHeartRateLowerLimit, .bit32(10888))
+         XCTAssertNotEqual(BluetoothUUID.fatBurnHeartRateLowerLimit, .bit32(0x2A88))
 
     }
 
@@ -3095,6 +3613,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit, .bit16(0x2A89))
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit, .bit16(10889))
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit.name, "Fat Burn Heart Rate Upper Limit")
+         XCTAssertNotEqual(BluetoothUUID.fatBurnHeartRateUpperLimit, .bit32(10889))
+         XCTAssertNotEqual(BluetoothUUID.fatBurnHeartRateUpperLimit, .bit32(0x2A89))
 
     }
 
@@ -3105,6 +3625,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.firstName, .bit16(0x2A8A))
          XCTAssertEqual(BluetoothUUID.firstName, .bit16(10890))
          XCTAssertEqual(BluetoothUUID.firstName.name, "First Name")
+         XCTAssertNotEqual(BluetoothUUID.firstName, .bit32(10890))
+         XCTAssertNotEqual(BluetoothUUID.firstName, .bit32(0x2A8A))
 
     }
 
@@ -3115,6 +3637,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits, .bit16(0x2A8B))
          XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits, .bit16(10891))
          XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits.name, "Five Zone Heart Rate Limits")
+         XCTAssertNotEqual(BluetoothUUID.fiveZoneHeartRateLimits, .bit32(10891))
+         XCTAssertNotEqual(BluetoothUUID.fiveZoneHeartRateLimits, .bit32(0x2A8B))
 
     }
 
@@ -3125,6 +3649,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gender, .bit16(0x2A8C))
          XCTAssertEqual(BluetoothUUID.gender, .bit16(10892))
          XCTAssertEqual(BluetoothUUID.gender.name, "Gender")
+         XCTAssertNotEqual(BluetoothUUID.gender, .bit32(10892))
+         XCTAssertNotEqual(BluetoothUUID.gender, .bit32(0x2A8C))
 
     }
 
@@ -3135,6 +3661,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.heartRateMax, .bit16(0x2A8D))
          XCTAssertEqual(BluetoothUUID.heartRateMax, .bit16(10893))
          XCTAssertEqual(BluetoothUUID.heartRateMax.name, "Heart Rate Max")
+         XCTAssertNotEqual(BluetoothUUID.heartRateMax, .bit32(10893))
+         XCTAssertNotEqual(BluetoothUUID.heartRateMax, .bit32(0x2A8D))
 
     }
 
@@ -3145,6 +3673,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.height, .bit16(0x2A8E))
          XCTAssertEqual(BluetoothUUID.height, .bit16(10894))
          XCTAssertEqual(BluetoothUUID.height.name, "Height")
+         XCTAssertNotEqual(BluetoothUUID.height, .bit32(10894))
+         XCTAssertNotEqual(BluetoothUUID.height, .bit32(0x2A8E))
 
     }
 
@@ -3155,6 +3685,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hipCircumference, .bit16(0x2A8F))
          XCTAssertEqual(BluetoothUUID.hipCircumference, .bit16(10895))
          XCTAssertEqual(BluetoothUUID.hipCircumference.name, "Hip Circumference")
+         XCTAssertNotEqual(BluetoothUUID.hipCircumference, .bit32(10895))
+         XCTAssertNotEqual(BluetoothUUID.hipCircumference, .bit32(0x2A8F))
 
     }
 
@@ -3165,6 +3697,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.lastName, .bit16(0x2A90))
          XCTAssertEqual(BluetoothUUID.lastName, .bit16(10896))
          XCTAssertEqual(BluetoothUUID.lastName.name, "Last Name")
+         XCTAssertNotEqual(BluetoothUUID.lastName, .bit32(10896))
+         XCTAssertNotEqual(BluetoothUUID.lastName, .bit32(0x2A90))
 
     }
 
@@ -3175,6 +3709,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate, .bit16(0x2A91))
          XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate, .bit16(10897))
          XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate.name, "Maximum Recommended Heart Rate")
+         XCTAssertNotEqual(BluetoothUUID.maximumRecommendedHeartRate, .bit32(10897))
+         XCTAssertNotEqual(BluetoothUUID.maximumRecommendedHeartRate, .bit32(0x2A91))
 
     }
 
@@ -3185,6 +3721,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.restingHeartRate, .bit16(0x2A92))
          XCTAssertEqual(BluetoothUUID.restingHeartRate, .bit16(10898))
          XCTAssertEqual(BluetoothUUID.restingHeartRate.name, "Resting Heart Rate")
+         XCTAssertNotEqual(BluetoothUUID.restingHeartRate, .bit32(10898))
+         XCTAssertNotEqual(BluetoothUUID.restingHeartRate, .bit32(0x2A92))
 
     }
 
@@ -3195,6 +3733,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds, .bit16(0x2A93))
          XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds, .bit16(10899))
          XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds.name, "Sport Type for Aerobic/Anaerobic Thresholds")
+         XCTAssertNotEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds, .bit32(10899))
+         XCTAssertNotEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds, .bit32(0x2A93))
 
     }
 
@@ -3205,6 +3745,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits, .bit16(0x2A94))
          XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits, .bit16(10900))
          XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits.name, "Three Zone Heart Rate Limits")
+         XCTAssertNotEqual(BluetoothUUID.threeZoneHeartRateLimits, .bit32(10900))
+         XCTAssertNotEqual(BluetoothUUID.threeZoneHeartRateLimits, .bit32(0x2A94))
 
     }
 
@@ -3215,6 +3757,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit, .bit16(0x2A95))
          XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit, .bit16(10901))
          XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit.name, "Two Zone Heart Rate Limit")
+         XCTAssertNotEqual(BluetoothUUID.twoZoneHeartRateLimit, .bit32(10901))
+         XCTAssertNotEqual(BluetoothUUID.twoZoneHeartRateLimit, .bit32(0x2A95))
 
     }
 
@@ -3225,6 +3769,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.vo2Max, .bit16(0x2A96))
          XCTAssertEqual(BluetoothUUID.vo2Max, .bit16(10902))
          XCTAssertEqual(BluetoothUUID.vo2Max.name, "VO2 Max")
+         XCTAssertNotEqual(BluetoothUUID.vo2Max, .bit32(10902))
+         XCTAssertNotEqual(BluetoothUUID.vo2Max, .bit32(0x2A96))
 
     }
 
@@ -3235,6 +3781,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.waistCircumference, .bit16(0x2A97))
          XCTAssertEqual(BluetoothUUID.waistCircumference, .bit16(10903))
          XCTAssertEqual(BluetoothUUID.waistCircumference.name, "Waist Circumference")
+         XCTAssertNotEqual(BluetoothUUID.waistCircumference, .bit32(10903))
+         XCTAssertNotEqual(BluetoothUUID.waistCircumference, .bit32(0x2A97))
 
     }
 
@@ -3245,6 +3793,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.weight, .bit16(0x2A98))
          XCTAssertEqual(BluetoothUUID.weight, .bit16(10904))
          XCTAssertEqual(BluetoothUUID.weight.name, "Weight")
+         XCTAssertNotEqual(BluetoothUUID.weight, .bit32(10904))
+         XCTAssertNotEqual(BluetoothUUID.weight, .bit32(0x2A98))
 
     }
 
@@ -3255,6 +3805,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.databaseChangerement, .bit16(0x2A99))
          XCTAssertEqual(BluetoothUUID.databaseChangerement, .bit16(10905))
          XCTAssertEqual(BluetoothUUID.databaseChangerement.name, "Database Change Increment")
+         XCTAssertNotEqual(BluetoothUUID.databaseChangerement, .bit32(10905))
+         XCTAssertNotEqual(BluetoothUUID.databaseChangerement, .bit32(0x2A99))
 
     }
 
@@ -3265,6 +3817,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.userIndex, .bit16(0x2A9A))
          XCTAssertEqual(BluetoothUUID.userIndex, .bit16(10906))
          XCTAssertEqual(BluetoothUUID.userIndex.name, "User Index")
+         XCTAssertNotEqual(BluetoothUUID.userIndex, .bit32(10906))
+         XCTAssertNotEqual(BluetoothUUID.userIndex, .bit32(0x2A9A))
 
     }
 
@@ -3275,6 +3829,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bodyCompositionFeature, .bit16(0x2A9B))
          XCTAssertEqual(BluetoothUUID.bodyCompositionFeature, .bit16(10907))
          XCTAssertEqual(BluetoothUUID.bodyCompositionFeature.name, "Body Composition Feature")
+         XCTAssertNotEqual(BluetoothUUID.bodyCompositionFeature, .bit32(10907))
+         XCTAssertNotEqual(BluetoothUUID.bodyCompositionFeature, .bit32(0x2A9B))
 
     }
 
@@ -3285,6 +3841,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement, .bit16(0x2A9C))
          XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement, .bit16(10908))
          XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement.name, "Body Composition Measurement")
+         XCTAssertNotEqual(BluetoothUUID.bodyCompositionMeasurement, .bit32(10908))
+         XCTAssertNotEqual(BluetoothUUID.bodyCompositionMeasurement, .bit32(0x2A9C))
 
     }
 
@@ -3295,6 +3853,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.weightMeasurement, .bit16(0x2A9D))
          XCTAssertEqual(BluetoothUUID.weightMeasurement, .bit16(10909))
          XCTAssertEqual(BluetoothUUID.weightMeasurement.name, "Weight Measurement")
+         XCTAssertNotEqual(BluetoothUUID.weightMeasurement, .bit32(10909))
+         XCTAssertNotEqual(BluetoothUUID.weightMeasurement, .bit32(0x2A9D))
 
     }
 
@@ -3305,6 +3865,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.weightScaleFeature, .bit16(0x2A9E))
          XCTAssertEqual(BluetoothUUID.weightScaleFeature, .bit16(10910))
          XCTAssertEqual(BluetoothUUID.weightScaleFeature.name, "Weight Scale Feature")
+         XCTAssertNotEqual(BluetoothUUID.weightScaleFeature, .bit32(10910))
+         XCTAssertNotEqual(BluetoothUUID.weightScaleFeature, .bit32(0x2A9E))
 
     }
 
@@ -3315,6 +3877,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.userControlPoint, .bit16(0x2A9F))
          XCTAssertEqual(BluetoothUUID.userControlPoint, .bit16(10911))
          XCTAssertEqual(BluetoothUUID.userControlPoint.name, "User Control Point")
+         XCTAssertNotEqual(BluetoothUUID.userControlPoint, .bit32(10911))
+         XCTAssertNotEqual(BluetoothUUID.userControlPoint, .bit32(0x2A9F))
 
     }
 
@@ -3325,6 +3889,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D, .bit16(0x2AA0))
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D, .bit16(10912))
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D.name, "Magnetic Flux Density - 2D")
+         XCTAssertNotEqual(BluetoothUUID.magneticFluxDensity2D, .bit32(10912))
+         XCTAssertNotEqual(BluetoothUUID.magneticFluxDensity2D, .bit32(0x2AA0))
 
     }
 
@@ -3335,6 +3901,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D, .bit16(0x2AA1))
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D, .bit16(10913))
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D.name, "Magnetic Flux Density - 3D")
+         XCTAssertNotEqual(BluetoothUUID.magneticFluxDensity3D, .bit32(10913))
+         XCTAssertNotEqual(BluetoothUUID.magneticFluxDensity3D, .bit32(0x2AA1))
 
     }
 
@@ -3345,6 +3913,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.language, .bit16(0x2AA2))
          XCTAssertEqual(BluetoothUUID.language, .bit16(10914))
          XCTAssertEqual(BluetoothUUID.language.name, "Language")
+         XCTAssertNotEqual(BluetoothUUID.language, .bit32(10914))
+         XCTAssertNotEqual(BluetoothUUID.language, .bit32(0x2AA2))
 
     }
 
@@ -3355,6 +3925,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.barometricPressureTrend, .bit16(0x2AA3))
          XCTAssertEqual(BluetoothUUID.barometricPressureTrend, .bit16(10915))
          XCTAssertEqual(BluetoothUUID.barometricPressureTrend.name, "Barometric Pressure Trend")
+         XCTAssertNotEqual(BluetoothUUID.barometricPressureTrend, .bit32(10915))
+         XCTAssertNotEqual(BluetoothUUID.barometricPressureTrend, .bit32(0x2AA3))
 
     }
 
@@ -3365,6 +3937,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bondManagementControlPoint, .bit16(0x2AA4))
          XCTAssertEqual(BluetoothUUID.bondManagementControlPoint, .bit16(10916))
          XCTAssertEqual(BluetoothUUID.bondManagementControlPoint.name, "Bond Management Control Point")
+         XCTAssertNotEqual(BluetoothUUID.bondManagementControlPoint, .bit32(10916))
+         XCTAssertNotEqual(BluetoothUUID.bondManagementControlPoint, .bit32(0x2AA4))
 
     }
 
@@ -3375,6 +3949,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bondManagementFeature, .bit16(0x2AA5))
          XCTAssertEqual(BluetoothUUID.bondManagementFeature, .bit16(10917))
          XCTAssertEqual(BluetoothUUID.bondManagementFeature.name, "Bond Management Feature")
+         XCTAssertNotEqual(BluetoothUUID.bondManagementFeature, .bit32(10917))
+         XCTAssertNotEqual(BluetoothUUID.bondManagementFeature, .bit32(0x2AA5))
 
     }
 
@@ -3385,6 +3961,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.centralAddressResolution, .bit16(0x2AA6))
          XCTAssertEqual(BluetoothUUID.centralAddressResolution, .bit16(10918))
          XCTAssertEqual(BluetoothUUID.centralAddressResolution.name, "Central Address Resolution")
+         XCTAssertNotEqual(BluetoothUUID.centralAddressResolution, .bit32(10918))
+         XCTAssertNotEqual(BluetoothUUID.centralAddressResolution, .bit32(0x2AA6))
 
     }
 
@@ -3395,6 +3973,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cgmMeasurement, .bit16(0x2AA7))
          XCTAssertEqual(BluetoothUUID.cgmMeasurement, .bit16(10919))
          XCTAssertEqual(BluetoothUUID.cgmMeasurement.name, "CGM Measurement")
+         XCTAssertNotEqual(BluetoothUUID.cgmMeasurement, .bit32(10919))
+         XCTAssertNotEqual(BluetoothUUID.cgmMeasurement, .bit32(0x2AA7))
 
     }
 
@@ -3405,6 +3985,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cgmFeature, .bit16(0x2AA8))
          XCTAssertEqual(BluetoothUUID.cgmFeature, .bit16(10920))
          XCTAssertEqual(BluetoothUUID.cgmFeature.name, "CGM Feature")
+         XCTAssertNotEqual(BluetoothUUID.cgmFeature, .bit32(10920))
+         XCTAssertNotEqual(BluetoothUUID.cgmFeature, .bit32(0x2AA8))
 
     }
 
@@ -3415,6 +3997,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cgmStatus, .bit16(0x2AA9))
          XCTAssertEqual(BluetoothUUID.cgmStatus, .bit16(10921))
          XCTAssertEqual(BluetoothUUID.cgmStatus.name, "CGM Status")
+         XCTAssertNotEqual(BluetoothUUID.cgmStatus, .bit32(10921))
+         XCTAssertNotEqual(BluetoothUUID.cgmStatus, .bit32(0x2AA9))
 
     }
 
@@ -3425,6 +4009,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cgmSessionStartTime, .bit16(0x2AAA))
          XCTAssertEqual(BluetoothUUID.cgmSessionStartTime, .bit16(10922))
          XCTAssertEqual(BluetoothUUID.cgmSessionStartTime.name, "CGM Session Start Time")
+         XCTAssertNotEqual(BluetoothUUID.cgmSessionStartTime, .bit32(10922))
+         XCTAssertNotEqual(BluetoothUUID.cgmSessionStartTime, .bit32(0x2AAA))
 
     }
 
@@ -3435,6 +4021,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cgmSessionRunTime, .bit16(0x2AAB))
          XCTAssertEqual(BluetoothUUID.cgmSessionRunTime, .bit16(10923))
          XCTAssertEqual(BluetoothUUID.cgmSessionRunTime.name, "CGM Session Run Time")
+         XCTAssertNotEqual(BluetoothUUID.cgmSessionRunTime, .bit32(10923))
+         XCTAssertNotEqual(BluetoothUUID.cgmSessionRunTime, .bit32(0x2AAB))
 
     }
 
@@ -3445,6 +4033,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint, .bit16(0x2AAC))
          XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint, .bit16(10924))
          XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint.name, "CGM Specific Ops Control Point")
+         XCTAssertNotEqual(BluetoothUUID.cgmSpecificOpsControlPoint, .bit32(10924))
+         XCTAssertNotEqual(BluetoothUUID.cgmSpecificOpsControlPoint, .bit32(0x2AAC))
 
     }
 
@@ -3455,6 +4045,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration, .bit16(0x2AAD))
          XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration, .bit16(10925))
          XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration.name, "Indoor Positioning Configuration")
+         XCTAssertNotEqual(BluetoothUUID.indoorPositioningConfiguration, .bit32(10925))
+         XCTAssertNotEqual(BluetoothUUID.indoorPositioningConfiguration, .bit32(0x2AAD))
 
     }
 
@@ -3465,6 +4057,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.latitude, .bit16(0x2AAE))
          XCTAssertEqual(BluetoothUUID.latitude, .bit16(10926))
          XCTAssertEqual(BluetoothUUID.latitude.name, "Latitude")
+         XCTAssertNotEqual(BluetoothUUID.latitude, .bit32(10926))
+         XCTAssertNotEqual(BluetoothUUID.latitude, .bit32(0x2AAE))
 
     }
 
@@ -3475,6 +4069,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.longitude, .bit16(0x2AAF))
          XCTAssertEqual(BluetoothUUID.longitude, .bit16(10927))
          XCTAssertEqual(BluetoothUUID.longitude.name, "Longitude")
+         XCTAssertNotEqual(BluetoothUUID.longitude, .bit32(10927))
+         XCTAssertNotEqual(BluetoothUUID.longitude, .bit32(0x2AAF))
 
     }
 
@@ -3485,6 +4081,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.localNorthCoordinate, .bit16(0x2AB0))
          XCTAssertEqual(BluetoothUUID.localNorthCoordinate, .bit16(10928))
          XCTAssertEqual(BluetoothUUID.localNorthCoordinate.name, "Local North Coordinate")
+         XCTAssertNotEqual(BluetoothUUID.localNorthCoordinate, .bit32(10928))
+         XCTAssertNotEqual(BluetoothUUID.localNorthCoordinate, .bit32(0x2AB0))
 
     }
 
@@ -3495,6 +4093,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.localEastCoordinate, .bit16(0x2AB1))
          XCTAssertEqual(BluetoothUUID.localEastCoordinate, .bit16(10929))
          XCTAssertEqual(BluetoothUUID.localEastCoordinate.name, "Local East Coordinate")
+         XCTAssertNotEqual(BluetoothUUID.localEastCoordinate, .bit32(10929))
+         XCTAssertNotEqual(BluetoothUUID.localEastCoordinate, .bit32(0x2AB1))
 
     }
 
@@ -3505,6 +4105,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.floorNumber, .bit16(0x2AB2))
          XCTAssertEqual(BluetoothUUID.floorNumber, .bit16(10930))
          XCTAssertEqual(BluetoothUUID.floorNumber.name, "Floor Number")
+         XCTAssertNotEqual(BluetoothUUID.floorNumber, .bit32(10930))
+         XCTAssertNotEqual(BluetoothUUID.floorNumber, .bit32(0x2AB2))
 
     }
 
@@ -3515,6 +4117,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.altitude, .bit16(0x2AB3))
          XCTAssertEqual(BluetoothUUID.altitude, .bit16(10931))
          XCTAssertEqual(BluetoothUUID.altitude.name, "Altitude")
+         XCTAssertNotEqual(BluetoothUUID.altitude, .bit32(10931))
+         XCTAssertNotEqual(BluetoothUUID.altitude, .bit32(0x2AB3))
 
     }
 
@@ -3525,6 +4129,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.uncertainty, .bit16(0x2AB4))
          XCTAssertEqual(BluetoothUUID.uncertainty, .bit16(10932))
          XCTAssertEqual(BluetoothUUID.uncertainty.name, "Uncertainty")
+         XCTAssertNotEqual(BluetoothUUID.uncertainty, .bit32(10932))
+         XCTAssertNotEqual(BluetoothUUID.uncertainty, .bit32(0x2AB4))
 
     }
 
@@ -3535,6 +4141,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.locationName, .bit16(0x2AB5))
          XCTAssertEqual(BluetoothUUID.locationName, .bit16(10933))
          XCTAssertEqual(BluetoothUUID.locationName.name, "Location Name")
+         XCTAssertNotEqual(BluetoothUUID.locationName, .bit32(10933))
+         XCTAssertNotEqual(BluetoothUUID.locationName, .bit32(0x2AB5))
 
     }
 
@@ -3545,6 +4153,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.uri, .bit16(0x2AB6))
          XCTAssertEqual(BluetoothUUID.uri, .bit16(10934))
          XCTAssertEqual(BluetoothUUID.uri.name, "URI")
+         XCTAssertNotEqual(BluetoothUUID.uri, .bit32(10934))
+         XCTAssertNotEqual(BluetoothUUID.uri, .bit32(0x2AB6))
 
     }
 
@@ -3555,6 +4165,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.httpHeaders, .bit16(0x2AB7))
          XCTAssertEqual(BluetoothUUID.httpHeaders, .bit16(10935))
          XCTAssertEqual(BluetoothUUID.httpHeaders.name, "HTTP Headers")
+         XCTAssertNotEqual(BluetoothUUID.httpHeaders, .bit32(10935))
+         XCTAssertNotEqual(BluetoothUUID.httpHeaders, .bit32(0x2AB7))
 
     }
 
@@ -3565,6 +4177,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.httpStatusCode, .bit16(0x2AB8))
          XCTAssertEqual(BluetoothUUID.httpStatusCode, .bit16(10936))
          XCTAssertEqual(BluetoothUUID.httpStatusCode.name, "HTTP Status Code")
+         XCTAssertNotEqual(BluetoothUUID.httpStatusCode, .bit32(10936))
+         XCTAssertNotEqual(BluetoothUUID.httpStatusCode, .bit32(0x2AB8))
 
     }
 
@@ -3575,6 +4189,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.httpEntityBody, .bit16(0x2AB9))
          XCTAssertEqual(BluetoothUUID.httpEntityBody, .bit16(10937))
          XCTAssertEqual(BluetoothUUID.httpEntityBody.name, "HTTP Entity Body")
+         XCTAssertNotEqual(BluetoothUUID.httpEntityBody, .bit32(10937))
+         XCTAssertNotEqual(BluetoothUUID.httpEntityBody, .bit32(0x2AB9))
 
     }
 
@@ -3585,6 +4201,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.httpControlPoint, .bit16(0x2ABA))
          XCTAssertEqual(BluetoothUUID.httpControlPoint, .bit16(10938))
          XCTAssertEqual(BluetoothUUID.httpControlPoint.name, "HTTP Control Point")
+         XCTAssertNotEqual(BluetoothUUID.httpControlPoint, .bit32(10938))
+         XCTAssertNotEqual(BluetoothUUID.httpControlPoint, .bit32(0x2ABA))
 
     }
 
@@ -3595,6 +4213,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.httpsSecurity, .bit16(0x2ABB))
          XCTAssertEqual(BluetoothUUID.httpsSecurity, .bit16(10939))
          XCTAssertEqual(BluetoothUUID.httpsSecurity.name, "HTTPS Security")
+         XCTAssertNotEqual(BluetoothUUID.httpsSecurity, .bit32(10939))
+         XCTAssertNotEqual(BluetoothUUID.httpsSecurity, .bit32(0x2ABB))
 
     }
 
@@ -3605,6 +4225,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tdsControlPoint, .bit16(0x2ABC))
          XCTAssertEqual(BluetoothUUID.tdsControlPoint, .bit16(10940))
          XCTAssertEqual(BluetoothUUID.tdsControlPoint.name, "TDS Control Point")
+         XCTAssertNotEqual(BluetoothUUID.tdsControlPoint, .bit32(10940))
+         XCTAssertNotEqual(BluetoothUUID.tdsControlPoint, .bit32(0x2ABC))
 
     }
 
@@ -3615,6 +4237,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.otsFeature, .bit16(0x2ABD))
          XCTAssertEqual(BluetoothUUID.otsFeature, .bit16(10941))
          XCTAssertEqual(BluetoothUUID.otsFeature.name, "OTS Feature")
+         XCTAssertNotEqual(BluetoothUUID.otsFeature, .bit32(10941))
+         XCTAssertNotEqual(BluetoothUUID.otsFeature, .bit32(0x2ABD))
 
     }
 
@@ -3625,6 +4249,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectName, .bit16(0x2ABE))
          XCTAssertEqual(BluetoothUUID.objectName, .bit16(10942))
          XCTAssertEqual(BluetoothUUID.objectName.name, "Object Name")
+         XCTAssertNotEqual(BluetoothUUID.objectName, .bit32(10942))
+         XCTAssertNotEqual(BluetoothUUID.objectName, .bit32(0x2ABE))
 
     }
 
@@ -3635,6 +4261,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectType, .bit16(0x2ABF))
          XCTAssertEqual(BluetoothUUID.objectType, .bit16(10943))
          XCTAssertEqual(BluetoothUUID.objectType.name, "Object Type")
+         XCTAssertNotEqual(BluetoothUUID.objectType, .bit32(10943))
+         XCTAssertNotEqual(BluetoothUUID.objectType, .bit32(0x2ABF))
 
     }
 
@@ -3645,6 +4273,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectSize, .bit16(0x2AC0))
          XCTAssertEqual(BluetoothUUID.objectSize, .bit16(10944))
          XCTAssertEqual(BluetoothUUID.objectSize.name, "Object Size")
+         XCTAssertNotEqual(BluetoothUUID.objectSize, .bit32(10944))
+         XCTAssertNotEqual(BluetoothUUID.objectSize, .bit32(0x2AC0))
 
     }
 
@@ -3655,6 +4285,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectFirstCreated, .bit16(0x2AC1))
          XCTAssertEqual(BluetoothUUID.objectFirstCreated, .bit16(10945))
          XCTAssertEqual(BluetoothUUID.objectFirstCreated.name, "Object First-Created")
+         XCTAssertNotEqual(BluetoothUUID.objectFirstCreated, .bit32(10945))
+         XCTAssertNotEqual(BluetoothUUID.objectFirstCreated, .bit32(0x2AC1))
 
     }
 
@@ -3665,6 +4297,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectLastModified, .bit16(0x2AC2))
          XCTAssertEqual(BluetoothUUID.objectLastModified, .bit16(10946))
          XCTAssertEqual(BluetoothUUID.objectLastModified.name, "Object Last-Modified")
+         XCTAssertNotEqual(BluetoothUUID.objectLastModified, .bit32(10946))
+         XCTAssertNotEqual(BluetoothUUID.objectLastModified, .bit32(0x2AC2))
 
     }
 
@@ -3675,6 +4309,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectId, .bit16(0x2AC3))
          XCTAssertEqual(BluetoothUUID.objectId, .bit16(10947))
          XCTAssertEqual(BluetoothUUID.objectId.name, "Object ID")
+         XCTAssertNotEqual(BluetoothUUID.objectId, .bit32(10947))
+         XCTAssertNotEqual(BluetoothUUID.objectId, .bit32(0x2AC3))
 
     }
 
@@ -3685,6 +4321,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectProperties, .bit16(0x2AC4))
          XCTAssertEqual(BluetoothUUID.objectProperties, .bit16(10948))
          XCTAssertEqual(BluetoothUUID.objectProperties.name, "Object Properties")
+         XCTAssertNotEqual(BluetoothUUID.objectProperties, .bit32(10948))
+         XCTAssertNotEqual(BluetoothUUID.objectProperties, .bit32(0x2AC4))
 
     }
 
@@ -3695,6 +4333,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectActionControlPoint, .bit16(0x2AC5))
          XCTAssertEqual(BluetoothUUID.objectActionControlPoint, .bit16(10949))
          XCTAssertEqual(BluetoothUUID.objectActionControlPoint.name, "Object Action Control Point")
+         XCTAssertNotEqual(BluetoothUUID.objectActionControlPoint, .bit32(10949))
+         XCTAssertNotEqual(BluetoothUUID.objectActionControlPoint, .bit32(0x2AC5))
 
     }
 
@@ -3705,6 +4345,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectListControlPoint, .bit16(0x2AC6))
          XCTAssertEqual(BluetoothUUID.objectListControlPoint, .bit16(10950))
          XCTAssertEqual(BluetoothUUID.objectListControlPoint.name, "Object List Control Point")
+         XCTAssertNotEqual(BluetoothUUID.objectListControlPoint, .bit32(10950))
+         XCTAssertNotEqual(BluetoothUUID.objectListControlPoint, .bit32(0x2AC6))
 
     }
 
@@ -3715,6 +4357,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectListFilter, .bit16(0x2AC7))
          XCTAssertEqual(BluetoothUUID.objectListFilter, .bit16(10951))
          XCTAssertEqual(BluetoothUUID.objectListFilter.name, "Object List Filter")
+         XCTAssertNotEqual(BluetoothUUID.objectListFilter, .bit32(10951))
+         XCTAssertNotEqual(BluetoothUUID.objectListFilter, .bit32(0x2AC7))
 
     }
 
@@ -3725,6 +4369,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.objectChanged, .bit16(0x2AC8))
          XCTAssertEqual(BluetoothUUID.objectChanged, .bit16(10952))
          XCTAssertEqual(BluetoothUUID.objectChanged.name, "Object Changed")
+         XCTAssertNotEqual(BluetoothUUID.objectChanged, .bit32(10952))
+         XCTAssertNotEqual(BluetoothUUID.objectChanged, .bit32(0x2AC8))
 
     }
 
@@ -3735,6 +4381,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.intelCorporation, .bit16(0xFE66))
          XCTAssertEqual(BluetoothUUID.intelCorporation, .bit16(65126))
          XCTAssertEqual(BluetoothUUID.intelCorporation.name, "Intel Corporation")
+         XCTAssertNotEqual(BluetoothUUID.intelCorporation, .bit32(65126))
+         XCTAssertNotEqual(BluetoothUUID.intelCorporation, .bit32(0xFE66))
 
     }
 
@@ -3745,6 +4393,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.labSensorSolutions, .bit16(0xFE67))
          XCTAssertEqual(BluetoothUUID.labSensorSolutions, .bit16(65127))
          XCTAssertEqual(BluetoothUUID.labSensorSolutions.name, "Lab Sensor Solutions")
+         XCTAssertNotEqual(BluetoothUUID.labSensorSolutions, .bit32(65127))
+         XCTAssertNotEqual(BluetoothUUID.labSensorSolutions, .bit32(0xFE67))
 
     }
 
@@ -3755,6 +4405,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.qualcommLife, .bit16(0xFE68))
          XCTAssertEqual(BluetoothUUID.qualcommLife, .bit16(65128))
          XCTAssertEqual(BluetoothUUID.qualcommLife.name, "Qualcomm Life Inc")
+         XCTAssertNotEqual(BluetoothUUID.qualcommLife, .bit32(65128))
+         XCTAssertNotEqual(BluetoothUUID.qualcommLife, .bit32(0xFE68))
 
     }
 
@@ -3765,6 +4417,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.qualcommLife2, .bit16(0xFE69))
          XCTAssertEqual(BluetoothUUID.qualcommLife2, .bit16(65129))
          XCTAssertEqual(BluetoothUUID.qualcommLife2.name, "Qualcomm Life Inc")
+         XCTAssertNotEqual(BluetoothUUID.qualcommLife2, .bit32(65129))
+         XCTAssertNotEqual(BluetoothUUID.qualcommLife2, .bit32(0xFE69))
 
     }
 
@@ -3775,6 +4429,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.kontaktMicroLocation, .bit16(0xFE6A))
          XCTAssertEqual(BluetoothUUID.kontaktMicroLocation, .bit16(65130))
          XCTAssertEqual(BluetoothUUID.kontaktMicroLocation.name, "Kontakt Micro-Location Sp. z o.o.")
+         XCTAssertNotEqual(BluetoothUUID.kontaktMicroLocation, .bit32(65130))
+         XCTAssertNotEqual(BluetoothUUID.kontaktMicroLocation, .bit32(0xFE6A))
 
     }
 
@@ -3785,6 +4441,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.taserInternational, .bit16(0xFE6B))
          XCTAssertEqual(BluetoothUUID.taserInternational, .bit16(65131))
          XCTAssertEqual(BluetoothUUID.taserInternational.name, "TASER International, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.taserInternational, .bit32(65131))
+         XCTAssertNotEqual(BluetoothUUID.taserInternational, .bit32(0xFE6B))
 
     }
 
@@ -3795,6 +4453,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.taserInternational2, .bit16(0xFE6C))
          XCTAssertEqual(BluetoothUUID.taserInternational2, .bit16(65132))
          XCTAssertEqual(BluetoothUUID.taserInternational2.name, "TASER International, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.taserInternational2, .bit32(65132))
+         XCTAssertNotEqual(BluetoothUUID.taserInternational2, .bit32(0xFE6C))
 
     }
 
@@ -3805,6 +4465,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.universityOfTokyo, .bit16(0xFE6D))
          XCTAssertEqual(BluetoothUUID.universityOfTokyo, .bit16(65133))
          XCTAssertEqual(BluetoothUUID.universityOfTokyo.name, "The University of Tokyo")
+         XCTAssertNotEqual(BluetoothUUID.universityOfTokyo, .bit32(65133))
+         XCTAssertNotEqual(BluetoothUUID.universityOfTokyo, .bit32(0xFE6D))
 
     }
 
@@ -3815,6 +4477,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.universityOfTokyo2, .bit16(0xFE6E))
          XCTAssertEqual(BluetoothUUID.universityOfTokyo2, .bit16(65134))
          XCTAssertEqual(BluetoothUUID.universityOfTokyo2.name, "The University of Tokyo")
+         XCTAssertNotEqual(BluetoothUUID.universityOfTokyo2, .bit32(65134))
+         XCTAssertNotEqual(BluetoothUUID.universityOfTokyo2, .bit32(0xFE6E))
 
     }
 
@@ -3825,6 +4489,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.lineCorporation, .bit16(0xFE6F))
          XCTAssertEqual(BluetoothUUID.lineCorporation, .bit16(65135))
          XCTAssertEqual(BluetoothUUID.lineCorporation.name, "LINE Corporation")
+         XCTAssertNotEqual(BluetoothUUID.lineCorporation, .bit32(65135))
+         XCTAssertNotEqual(BluetoothUUID.lineCorporation, .bit32(0xFE6F))
 
     }
 
@@ -3835,6 +4501,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading, .bit16(0xFE70))
          XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading, .bit16(65136))
          XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading.name, "Beijing Jingdong Century Trading Co., Ltd.")
+         XCTAssertNotEqual(BluetoothUUID.beijingJingdongCenturyTrading, .bit32(65136))
+         XCTAssertNotEqual(BluetoothUUID.beijingJingdongCenturyTrading, .bit32(0xFE70))
 
     }
 
@@ -3845,6 +4513,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.plumeDesign, .bit16(0xFE71))
          XCTAssertEqual(BluetoothUUID.plumeDesign, .bit16(65137))
          XCTAssertEqual(BluetoothUUID.plumeDesign.name, "Plume Design Inc")
+         XCTAssertNotEqual(BluetoothUUID.plumeDesign, .bit32(65137))
+         XCTAssertNotEqual(BluetoothUUID.plumeDesign, .bit32(0xFE71))
 
     }
 
@@ -3855,6 +4525,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.stJudeMedical, .bit16(0xFE72))
          XCTAssertEqual(BluetoothUUID.stJudeMedical, .bit16(65138))
          XCTAssertEqual(BluetoothUUID.stJudeMedical.name, "St. Jude Medical, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.stJudeMedical, .bit32(65138))
+         XCTAssertNotEqual(BluetoothUUID.stJudeMedical, .bit32(0xFE72))
 
     }
 
@@ -3865,6 +4537,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.stJudeMedical2, .bit16(0xFE73))
          XCTAssertEqual(BluetoothUUID.stJudeMedical2, .bit16(65139))
          XCTAssertEqual(BluetoothUUID.stJudeMedical2.name, "St. Jude Medical, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.stJudeMedical2, .bit32(65139))
+         XCTAssertNotEqual(BluetoothUUID.stJudeMedical2, .bit32(0xFE73))
 
     }
 
@@ -3875,6 +4549,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.unwire, .bit16(0xFE74))
          XCTAssertEqual(BluetoothUUID.unwire, .bit16(65140))
          XCTAssertEqual(BluetoothUUID.unwire.name, "unwire")
+         XCTAssertNotEqual(BluetoothUUID.unwire, .bit32(65140))
+         XCTAssertNotEqual(BluetoothUUID.unwire, .bit32(0xFE74))
 
     }
 
@@ -3885,6 +4561,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tangome, .bit16(0xFE75))
          XCTAssertEqual(BluetoothUUID.tangome, .bit16(65141))
          XCTAssertEqual(BluetoothUUID.tangome.name, "TangoMe")
+         XCTAssertNotEqual(BluetoothUUID.tangome, .bit32(65141))
+         XCTAssertNotEqual(BluetoothUUID.tangome, .bit32(0xFE75))
 
     }
 
@@ -3895,6 +4573,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tangome2, .bit16(0xFE76))
          XCTAssertEqual(BluetoothUUID.tangome2, .bit16(65142))
          XCTAssertEqual(BluetoothUUID.tangome2.name, "TangoMe")
+         XCTAssertNotEqual(BluetoothUUID.tangome2, .bit32(65142))
+         XCTAssertNotEqual(BluetoothUUID.tangome2, .bit32(0xFE76))
 
     }
 
@@ -3905,6 +4585,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany, .bit16(0xFE77))
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany, .bit16(65143))
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany.name, "Hewlett-Packard Company")
+         XCTAssertNotEqual(BluetoothUUID.hewlettPackardCompany, .bit32(65143))
+         XCTAssertNotEqual(BluetoothUUID.hewlettPackardCompany, .bit32(0xFE77))
 
     }
 
@@ -3915,6 +4597,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2, .bit16(0xFE78))
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2, .bit16(65144))
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2.name, "Hewlett-Packard Company")
+         XCTAssertNotEqual(BluetoothUUID.hewlettPackardCompany2, .bit32(65144))
+         XCTAssertNotEqual(BluetoothUUID.hewlettPackardCompany2, .bit32(0xFE78))
 
     }
 
@@ -3925,6 +4609,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.zebraTechnologies, .bit16(0xFE79))
          XCTAssertEqual(BluetoothUUID.zebraTechnologies, .bit16(65145))
          XCTAssertEqual(BluetoothUUID.zebraTechnologies.name, "Zebra Technologies")
+         XCTAssertNotEqual(BluetoothUUID.zebraTechnologies, .bit32(65145))
+         XCTAssertNotEqual(BluetoothUUID.zebraTechnologies, .bit32(0xFE79))
 
     }
 
@@ -3935,6 +4621,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bragiGmbh, .bit16(0xFE7A))
          XCTAssertEqual(BluetoothUUID.bragiGmbh, .bit16(65146))
          XCTAssertEqual(BluetoothUUID.bragiGmbh.name, "Bragi GmbH")
+         XCTAssertNotEqual(BluetoothUUID.bragiGmbh, .bit32(65146))
+         XCTAssertNotEqual(BluetoothUUID.bragiGmbh, .bit32(0xFE7A))
 
     }
 
@@ -3945,6 +4633,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.orionLabs, .bit16(0xFE7B))
          XCTAssertEqual(BluetoothUUID.orionLabs, .bit16(65147))
          XCTAssertEqual(BluetoothUUID.orionLabs.name, "Orion Labs, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.orionLabs, .bit32(65147))
+         XCTAssertNotEqual(BluetoothUUID.orionLabs, .bit32(0xFE7B))
 
     }
 
@@ -3955,6 +4645,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh, .bit16(0xFE7C))
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh, .bit16(65148))
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh.name, "Stollmann E+V GmbH")
+         XCTAssertNotEqual(BluetoothUUID.stollmannEVGmbh, .bit32(65148))
+         XCTAssertNotEqual(BluetoothUUID.stollmannEVGmbh, .bit32(0xFE7C))
 
     }
 
@@ -3965,6 +4657,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.atericaHealth, .bit16(0xFE7D))
          XCTAssertEqual(BluetoothUUID.atericaHealth, .bit16(65149))
          XCTAssertEqual(BluetoothUUID.atericaHealth.name, "Aterica Health Inc.")
+         XCTAssertNotEqual(BluetoothUUID.atericaHealth, .bit32(65149))
+         XCTAssertNotEqual(BluetoothUUID.atericaHealth, .bit32(0xFE7D))
 
     }
 
@@ -3975,6 +4669,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.awearSolutions, .bit16(0xFE7E))
          XCTAssertEqual(BluetoothUUID.awearSolutions, .bit16(65150))
          XCTAssertEqual(BluetoothUUID.awearSolutions.name, "Awear Solutions Ltd")
+         XCTAssertNotEqual(BluetoothUUID.awearSolutions, .bit32(65150))
+         XCTAssertNotEqual(BluetoothUUID.awearSolutions, .bit32(0xFE7E))
 
     }
 
@@ -3985,6 +4681,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dopplerLab, .bit16(0xFE7F))
          XCTAssertEqual(BluetoothUUID.dopplerLab, .bit16(65151))
          XCTAssertEqual(BluetoothUUID.dopplerLab.name, "Doppler Lab")
+         XCTAssertNotEqual(BluetoothUUID.dopplerLab, .bit32(65151))
+         XCTAssertNotEqual(BluetoothUUID.dopplerLab, .bit32(0xFE7F))
 
     }
 
@@ -3995,6 +4693,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dopplerLab2, .bit16(0xFE80))
          XCTAssertEqual(BluetoothUUID.dopplerLab2, .bit16(65152))
          XCTAssertEqual(BluetoothUUID.dopplerLab2.name, "Doppler Lab")
+         XCTAssertNotEqual(BluetoothUUID.dopplerLab2, .bit32(65152))
+         XCTAssertNotEqual(BluetoothUUID.dopplerLab2, .bit32(0xFE80))
 
     }
 
@@ -4005,6 +4705,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.medtronic, .bit16(0xFE81))
          XCTAssertEqual(BluetoothUUID.medtronic, .bit16(65153))
          XCTAssertEqual(BluetoothUUID.medtronic.name, "Medtronic Inc.")
+         XCTAssertNotEqual(BluetoothUUID.medtronic, .bit32(65153))
+         XCTAssertNotEqual(BluetoothUUID.medtronic, .bit32(0xFE81))
 
     }
 
@@ -4015,6 +4717,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.medtronic2, .bit16(0xFE82))
          XCTAssertEqual(BluetoothUUID.medtronic2, .bit16(65154))
          XCTAssertEqual(BluetoothUUID.medtronic2.name, "Medtronic Inc.")
+         XCTAssertNotEqual(BluetoothUUID.medtronic2, .bit32(65154))
+         XCTAssertNotEqual(BluetoothUUID.medtronic2, .bit32(0xFE82))
 
     }
 
@@ -4025,6 +4729,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.blueBite, .bit16(0xFE83))
          XCTAssertEqual(BluetoothUUID.blueBite, .bit16(65155))
          XCTAssertEqual(BluetoothUUID.blueBite.name, "Blue Bite")
+         XCTAssertNotEqual(BluetoothUUID.blueBite, .bit32(65155))
+         XCTAssertNotEqual(BluetoothUUID.blueBite, .bit32(0xFE83))
 
     }
 
@@ -4035,6 +4741,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp, .bit16(0xFE84))
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp, .bit16(65156))
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp.name, "RF Digital Corp")
+         XCTAssertNotEqual(BluetoothUUID.rfDigitalCorp, .bit32(65156))
+         XCTAssertNotEqual(BluetoothUUID.rfDigitalCorp, .bit32(0xFE84))
 
     }
 
@@ -4045,6 +4753,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp2, .bit16(0xFE85))
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp2, .bit16(65157))
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp2.name, "RF Digital Corp")
+         XCTAssertNotEqual(BluetoothUUID.rfDigitalCorp2, .bit32(65157))
+         XCTAssertNotEqual(BluetoothUUID.rfDigitalCorp2, .bit32(0xFE85))
 
     }
 
@@ -4055,6 +4765,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司, .bit16(0xFE86))
          XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司, .bit16(65158))
          XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司.name, "HUAWEI Technologies Co., Ltd. ( 华为技术有限公司 )")
+         XCTAssertNotEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司, .bit32(65158))
+         XCTAssertNotEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司, .bit32(0xFE86))
 
     }
 
@@ -4065,6 +4777,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司, .bit16(0xFE87))
          XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司, .bit16(65159))
          XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司.name, "Qingdao Yeelink Information Technology Co., Ltd. ( 青岛亿联客信息技术有限公司 )")
+         XCTAssertNotEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司, .bit32(65159))
+         XCTAssertNotEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司, .bit32(0xFE87))
 
     }
 
@@ -4075,6 +4789,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.saltoSystemsSL, .bit16(0xFE88))
          XCTAssertEqual(BluetoothUUID.saltoSystemsSL, .bit16(65160))
          XCTAssertEqual(BluetoothUUID.saltoSystemsSL.name, "SALTO SYSTEMS S.L.")
+         XCTAssertNotEqual(BluetoothUUID.saltoSystemsSL, .bit32(65160))
+         XCTAssertNotEqual(BluetoothUUID.saltoSystemsSL, .bit32(0xFE88))
 
     }
 
@@ -4085,6 +4801,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.bOPlayAS, .bit16(0xFE89))
          XCTAssertEqual(BluetoothUUID.bOPlayAS, .bit16(65161))
          XCTAssertEqual(BluetoothUUID.bOPlayAS.name, "B&O Play A/S")
+         XCTAssertNotEqual(BluetoothUUID.bOPlayAS, .bit32(65161))
+         XCTAssertNotEqual(BluetoothUUID.bOPlayAS, .bit32(0xFE89))
 
     }
 
@@ -4095,6 +4813,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple, .bit16(0xFE8A))
          XCTAssertEqual(BluetoothUUID.apple, .bit16(65162))
          XCTAssertEqual(BluetoothUUID.apple.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple, .bit32(65162))
+         XCTAssertNotEqual(BluetoothUUID.apple, .bit32(0xFE8A))
 
     }
 
@@ -4105,6 +4825,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple2, .bit16(0xFE8B))
          XCTAssertEqual(BluetoothUUID.apple2, .bit16(65163))
          XCTAssertEqual(BluetoothUUID.apple2.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple2, .bit32(65163))
+         XCTAssertNotEqual(BluetoothUUID.apple2, .bit32(0xFE8B))
 
     }
 
@@ -4115,6 +4837,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tronForum, .bit16(0xFE8C))
          XCTAssertEqual(BluetoothUUID.tronForum, .bit16(65164))
          XCTAssertEqual(BluetoothUUID.tronForum.name, "TRON Forum")
+         XCTAssertNotEqual(BluetoothUUID.tronForum, .bit32(65164))
+         XCTAssertNotEqual(BluetoothUUID.tronForum, .bit32(0xFE8C))
 
     }
 
@@ -4125,6 +4849,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.interaxon, .bit16(0xFE8D))
          XCTAssertEqual(BluetoothUUID.interaxon, .bit16(65165))
          XCTAssertEqual(BluetoothUUID.interaxon.name, "Interaxon Inc.")
+         XCTAssertNotEqual(BluetoothUUID.interaxon, .bit32(65165))
+         XCTAssertNotEqual(BluetoothUUID.interaxon, .bit32(0xFE8D))
 
     }
 
@@ -4135,6 +4861,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.arm, .bit16(0xFE8E))
          XCTAssertEqual(BluetoothUUID.arm, .bit16(65166))
          XCTAssertEqual(BluetoothUUID.arm.name, "ARM Ltd")
+         XCTAssertNotEqual(BluetoothUUID.arm, .bit32(65166))
+         XCTAssertNotEqual(BluetoothUUID.arm, .bit32(0xFE8E))
 
     }
 
@@ -4145,6 +4873,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.csr, .bit16(0xFE8F))
          XCTAssertEqual(BluetoothUUID.csr, .bit16(65167))
          XCTAssertEqual(BluetoothUUID.csr.name, "CSR")
+         XCTAssertNotEqual(BluetoothUUID.csr, .bit32(65167))
+         XCTAssertNotEqual(BluetoothUUID.csr, .bit32(0xFE8F))
 
     }
 
@@ -4155,6 +4885,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.juma, .bit16(0xFE90))
          XCTAssertEqual(BluetoothUUID.juma, .bit16(65168))
          XCTAssertEqual(BluetoothUUID.juma.name, "JUMA")
+         XCTAssertNotEqual(BluetoothUUID.juma, .bit32(65168))
+         XCTAssertNotEqual(BluetoothUUID.juma, .bit32(0xFE90))
 
     }
 
@@ -4165,6 +4897,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology, .bit16(0xFE91))
          XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology, .bit16(65169))
          XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology.name, "Shanghai Imilab Technology Co.,Ltd")
+         XCTAssertNotEqual(BluetoothUUID.shanghaiImilabTechnology, .bit32(65169))
+         XCTAssertNotEqual(BluetoothUUID.shanghaiImilabTechnology, .bit32(0xFE91))
 
     }
 
@@ -4175,6 +4909,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.jardenSafetySecurity, .bit16(0xFE92))
          XCTAssertEqual(BluetoothUUID.jardenSafetySecurity, .bit16(65170))
          XCTAssertEqual(BluetoothUUID.jardenSafetySecurity.name, "Jarden Safety & Security")
+         XCTAssertNotEqual(BluetoothUUID.jardenSafetySecurity, .bit32(65170))
+         XCTAssertNotEqual(BluetoothUUID.jardenSafetySecurity, .bit32(0xFE92))
 
     }
 
@@ -4185,6 +4921,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.ottoq, .bit16(0xFE93))
          XCTAssertEqual(BluetoothUUID.ottoq, .bit16(65171))
          XCTAssertEqual(BluetoothUUID.ottoq.name, "OttoQ Inc.")
+         XCTAssertNotEqual(BluetoothUUID.ottoq, .bit32(65171))
+         XCTAssertNotEqual(BluetoothUUID.ottoq, .bit32(0xFE93))
 
     }
 
@@ -4195,6 +4933,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.ottoq2, .bit16(0xFE94))
          XCTAssertEqual(BluetoothUUID.ottoq2, .bit16(65172))
          XCTAssertEqual(BluetoothUUID.ottoq2.name, "OttoQ Inc.")
+         XCTAssertNotEqual(BluetoothUUID.ottoq2, .bit32(65172))
+         XCTAssertNotEqual(BluetoothUUID.ottoq2, .bit32(0xFE94))
 
     }
 
@@ -4205,6 +4945,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.xiaomi, .bit16(0xFE95))
          XCTAssertEqual(BluetoothUUID.xiaomi, .bit16(65173))
          XCTAssertEqual(BluetoothUUID.xiaomi.name, "Xiaomi Inc.")
+         XCTAssertNotEqual(BluetoothUUID.xiaomi, .bit32(65173))
+         XCTAssertNotEqual(BluetoothUUID.xiaomi, .bit32(0xFE95))
 
     }
 
@@ -4215,6 +4957,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.teslaMotor, .bit16(0xFE96))
          XCTAssertEqual(BluetoothUUID.teslaMotor, .bit16(65174))
          XCTAssertEqual(BluetoothUUID.teslaMotor.name, "Tesla Motor Inc.")
+         XCTAssertNotEqual(BluetoothUUID.teslaMotor, .bit32(65174))
+         XCTAssertNotEqual(BluetoothUUID.teslaMotor, .bit32(0xFE96))
 
     }
 
@@ -4225,6 +4969,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.teslaMotor2, .bit16(0xFE97))
          XCTAssertEqual(BluetoothUUID.teslaMotor2, .bit16(65175))
          XCTAssertEqual(BluetoothUUID.teslaMotor2.name, "Tesla Motor Inc.")
+         XCTAssertNotEqual(BluetoothUUID.teslaMotor2, .bit32(65175))
+         XCTAssertNotEqual(BluetoothUUID.teslaMotor2, .bit32(0xFE97))
 
     }
 
@@ -4235,6 +4981,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.currant, .bit16(0xFE98))
          XCTAssertEqual(BluetoothUUID.currant, .bit16(65176))
          XCTAssertEqual(BluetoothUUID.currant.name, "Currant, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.currant, .bit32(65176))
+         XCTAssertNotEqual(BluetoothUUID.currant, .bit32(0xFE98))
 
     }
 
@@ -4245,6 +4993,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.currant2, .bit16(0xFE99))
          XCTAssertEqual(BluetoothUUID.currant2, .bit16(65177))
          XCTAssertEqual(BluetoothUUID.currant2.name, "Currant, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.currant2, .bit32(65177))
+         XCTAssertNotEqual(BluetoothUUID.currant2, .bit32(0xFE99))
 
     }
 
@@ -4255,6 +5005,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.estimote, .bit16(0xFE9A))
          XCTAssertEqual(BluetoothUUID.estimote, .bit16(65178))
          XCTAssertEqual(BluetoothUUID.estimote.name, "Estimote")
+         XCTAssertNotEqual(BluetoothUUID.estimote, .bit32(65178))
+         XCTAssertNotEqual(BluetoothUUID.estimote, .bit32(0xFE9A))
 
     }
 
@@ -4265,6 +5017,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.samsaraNetworks, .bit16(0xFE9B))
          XCTAssertEqual(BluetoothUUID.samsaraNetworks, .bit16(65179))
          XCTAssertEqual(BluetoothUUID.samsaraNetworks.name, "Samsara Networks, Inc")
+         XCTAssertNotEqual(BluetoothUUID.samsaraNetworks, .bit32(65179))
+         XCTAssertNotEqual(BluetoothUUID.samsaraNetworks, .bit32(0xFE9B))
 
     }
 
@@ -4275,6 +5029,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gsiLaboratories, .bit16(0xFE9C))
          XCTAssertEqual(BluetoothUUID.gsiLaboratories, .bit16(65180))
          XCTAssertEqual(BluetoothUUID.gsiLaboratories.name, "GSI Laboratories, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.gsiLaboratories, .bit32(65180))
+         XCTAssertNotEqual(BluetoothUUID.gsiLaboratories, .bit32(0xFE9C))
 
     }
 
@@ -4285,6 +5041,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.mobiquityNetworks, .bit16(0xFE9D))
          XCTAssertEqual(BluetoothUUID.mobiquityNetworks, .bit16(65181))
          XCTAssertEqual(BluetoothUUID.mobiquityNetworks.name, "Mobiquity Networks Inc")
+         XCTAssertNotEqual(BluetoothUUID.mobiquityNetworks, .bit32(65181))
+         XCTAssertNotEqual(BluetoothUUID.mobiquityNetworks, .bit32(0xFE9D))
 
     }
 
@@ -4295,6 +5053,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV, .bit16(0xFE9E))
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV, .bit16(65182))
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV.name, "Dialog Semiconductor B.V.")
+         XCTAssertNotEqual(BluetoothUUID.dialogSemiconductorBV, .bit32(65182))
+         XCTAssertNotEqual(BluetoothUUID.dialogSemiconductorBV, .bit32(0xFE9E))
 
     }
 
@@ -4305,6 +5065,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.google, .bit16(0xFE9F))
          XCTAssertEqual(BluetoothUUID.google, .bit16(65183))
          XCTAssertEqual(BluetoothUUID.google.name, "Google")
+         XCTAssertNotEqual(BluetoothUUID.google, .bit32(65183))
+         XCTAssertNotEqual(BluetoothUUID.google, .bit32(0xFE9F))
 
     }
 
@@ -4315,6 +5077,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.google2, .bit16(0xFEA0))
          XCTAssertEqual(BluetoothUUID.google2, .bit16(65184))
          XCTAssertEqual(BluetoothUUID.google2.name, "Google")
+         XCTAssertNotEqual(BluetoothUUID.google2, .bit32(65184))
+         XCTAssertNotEqual(BluetoothUUID.google2, .bit32(0xFEA0))
 
     }
 
@@ -4325,6 +5089,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems, .bit16(0xFEA1))
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems, .bit16(65185))
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems.name, "Intrepid Control Systems, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.intrepidControlSystems, .bit32(65185))
+         XCTAssertNotEqual(BluetoothUUID.intrepidControlSystems, .bit32(0xFEA1))
 
     }
 
@@ -4335,6 +5101,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems2, .bit16(0xFEA2))
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems2, .bit16(65186))
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems2.name, "Intrepid Control Systems, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.intrepidControlSystems2, .bit32(65186))
+         XCTAssertNotEqual(BluetoothUUID.intrepidControlSystems2, .bit32(0xFEA2))
 
     }
 
@@ -4345,6 +5113,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.ittIndustries, .bit16(0xFEA3))
          XCTAssertEqual(BluetoothUUID.ittIndustries, .bit16(65187))
          XCTAssertEqual(BluetoothUUID.ittIndustries.name, "ITT Industries")
+         XCTAssertNotEqual(BluetoothUUID.ittIndustries, .bit32(65187))
+         XCTAssertNotEqual(BluetoothUUID.ittIndustries, .bit32(0xFEA3))
 
     }
 
@@ -4355,6 +5125,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.paxtonAccess, .bit16(0xFEA4))
          XCTAssertEqual(BluetoothUUID.paxtonAccess, .bit16(65188))
          XCTAssertEqual(BluetoothUUID.paxtonAccess.name, "Paxton Access Ltd")
+         XCTAssertNotEqual(BluetoothUUID.paxtonAccess, .bit32(65188))
+         XCTAssertNotEqual(BluetoothUUID.paxtonAccess, .bit32(0xFEA4))
 
     }
 
@@ -4365,6 +5137,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gopro, .bit16(0xFEA5))
          XCTAssertEqual(BluetoothUUID.gopro, .bit16(65189))
          XCTAssertEqual(BluetoothUUID.gopro.name, "GoPro, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.gopro, .bit32(65189))
+         XCTAssertNotEqual(BluetoothUUID.gopro, .bit32(0xFEA5))
 
     }
 
@@ -4375,6 +5149,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gopro2, .bit16(0xFEA6))
          XCTAssertEqual(BluetoothUUID.gopro2, .bit16(65190))
          XCTAssertEqual(BluetoothUUID.gopro2.name, "GoPro, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.gopro2, .bit32(65190))
+         XCTAssertNotEqual(BluetoothUUID.gopro2, .bit32(0xFEA6))
 
     }
 
@@ -4385,6 +5161,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.utcFireAndSecurity, .bit16(0xFEA7))
          XCTAssertEqual(BluetoothUUID.utcFireAndSecurity, .bit16(65191))
          XCTAssertEqual(BluetoothUUID.utcFireAndSecurity.name, "UTC Fire and Security")
+         XCTAssertNotEqual(BluetoothUUID.utcFireAndSecurity, .bit32(65191))
+         XCTAssertNotEqual(BluetoothUUID.utcFireAndSecurity, .bit32(0xFEA7))
 
     }
 
@@ -4395,6 +5173,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.savantSystems, .bit16(0xFEA8))
          XCTAssertEqual(BluetoothUUID.savantSystems, .bit16(65192))
          XCTAssertEqual(BluetoothUUID.savantSystems.name, "Savant Systems LLC")
+         XCTAssertNotEqual(BluetoothUUID.savantSystems, .bit32(65192))
+         XCTAssertNotEqual(BluetoothUUID.savantSystems, .bit32(0xFEA8))
 
     }
 
@@ -4405,6 +5185,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.savantSystems2, .bit16(0xFEA9))
          XCTAssertEqual(BluetoothUUID.savantSystems2, .bit16(65193))
          XCTAssertEqual(BluetoothUUID.savantSystems2.name, "Savant Systems LLC")
+         XCTAssertNotEqual(BluetoothUUID.savantSystems2, .bit32(65193))
+         XCTAssertNotEqual(BluetoothUUID.savantSystems2, .bit32(0xFEA9))
 
     }
 
@@ -4415,6 +5197,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.google3, .bit16(0xFEAA))
          XCTAssertEqual(BluetoothUUID.google3, .bit16(65194))
          XCTAssertEqual(BluetoothUUID.google3.name, "Google")
+         XCTAssertNotEqual(BluetoothUUID.google3, .bit32(65194))
+         XCTAssertNotEqual(BluetoothUUID.google3, .bit32(0xFEAA))
 
     }
 
@@ -4425,6 +5209,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nokiaCorporation, .bit16(0xFEAB))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation, .bit16(65195))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation.name, "Nokia Corporation")
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation, .bit32(65195))
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation, .bit32(0xFEAB))
 
     }
 
@@ -4435,6 +5221,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nokiaCorporation2, .bit16(0xFEAC))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation2, .bit16(65196))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation2.name, "Nokia Corporation")
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation2, .bit32(65196))
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation2, .bit32(0xFEAC))
 
     }
 
@@ -4445,6 +5233,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nokiaCorporation3, .bit16(0xFEAD))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation3, .bit16(65197))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation3.name, "Nokia Corporation")
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation3, .bit32(65197))
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation3, .bit32(0xFEAD))
 
     }
 
@@ -4455,6 +5245,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nokiaCorporation4, .bit16(0xFEAE))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation4, .bit16(65198))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation4.name, "Nokia Corporation")
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation4, .bit32(65198))
+         XCTAssertNotEqual(BluetoothUUID.nokiaCorporation4, .bit32(0xFEAE))
 
     }
 
@@ -4465,6 +5257,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nestLabs, .bit16(0xFEAF))
          XCTAssertEqual(BluetoothUUID.nestLabs, .bit16(65199))
          XCTAssertEqual(BluetoothUUID.nestLabs.name, "Nest Labs Inc.")
+         XCTAssertNotEqual(BluetoothUUID.nestLabs, .bit32(65199))
+         XCTAssertNotEqual(BluetoothUUID.nestLabs, .bit32(0xFEAF))
 
     }
 
@@ -4475,6 +5269,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nestLabs2, .bit16(0xFEB0))
          XCTAssertEqual(BluetoothUUID.nestLabs2, .bit16(65200))
          XCTAssertEqual(BluetoothUUID.nestLabs2.name, "Nest Labs Inc.")
+         XCTAssertNotEqual(BluetoothUUID.nestLabs2, .bit32(65200))
+         XCTAssertNotEqual(BluetoothUUID.nestLabs2, .bit32(0xFEB0))
 
     }
 
@@ -4485,6 +5281,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited, .bit16(0xFEB1))
          XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited, .bit16(65201))
          XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited.name, "Electronics Tomorrow Limited")
+         XCTAssertNotEqual(BluetoothUUID.electronicsTomorrowLimited, .bit32(65201))
+         XCTAssertNotEqual(BluetoothUUID.electronicsTomorrowLimited, .bit32(0xFEB1))
 
     }
 
@@ -4495,6 +5293,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.microsoftCorporation, .bit16(0xFEB2))
          XCTAssertEqual(BluetoothUUID.microsoftCorporation, .bit16(65202))
          XCTAssertEqual(BluetoothUUID.microsoftCorporation.name, "Microsoft Corporation")
+         XCTAssertNotEqual(BluetoothUUID.microsoftCorporation, .bit32(65202))
+         XCTAssertNotEqual(BluetoothUUID.microsoftCorporation, .bit32(0xFEB2))
 
     }
 
@@ -4505,6 +5305,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.taobao, .bit16(0xFEB3))
          XCTAssertEqual(BluetoothUUID.taobao, .bit16(65203))
          XCTAssertEqual(BluetoothUUID.taobao.name, "Taobao")
+         XCTAssertNotEqual(BluetoothUUID.taobao, .bit32(65203))
+         XCTAssertNotEqual(BluetoothUUID.taobao, .bit32(0xFEB3))
 
     }
 
@@ -4515,6 +5317,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.wisilica, .bit16(0xFEB4))
          XCTAssertEqual(BluetoothUUID.wisilica, .bit16(65204))
          XCTAssertEqual(BluetoothUUID.wisilica.name, "WiSilica Inc.")
+         XCTAssertNotEqual(BluetoothUUID.wisilica, .bit32(65204))
+         XCTAssertNotEqual(BluetoothUUID.wisilica, .bit32(0xFEB4))
 
     }
 
@@ -4525,6 +5329,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.wisilica2, .bit16(0xFEB5))
          XCTAssertEqual(BluetoothUUID.wisilica2, .bit16(65205))
          XCTAssertEqual(BluetoothUUID.wisilica2.name, "WiSilica Inc.")
+         XCTAssertNotEqual(BluetoothUUID.wisilica2, .bit32(65205))
+         XCTAssertNotEqual(BluetoothUUID.wisilica2, .bit32(0xFEB5))
 
     }
 
@@ -4535,6 +5341,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.vencerCo, .bit16(0xFEB6))
          XCTAssertEqual(BluetoothUUID.vencerCo, .bit16(65206))
          XCTAssertEqual(BluetoothUUID.vencerCo.name, "Vencer Co, Ltd")
+         XCTAssertNotEqual(BluetoothUUID.vencerCo, .bit32(65206))
+         XCTAssertNotEqual(BluetoothUUID.vencerCo, .bit32(0xFEB6))
 
     }
 
@@ -4545,6 +5353,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.facebook, .bit16(0xFEB7))
          XCTAssertEqual(BluetoothUUID.facebook, .bit16(65207))
          XCTAssertEqual(BluetoothUUID.facebook.name, "Facebook, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.facebook, .bit32(65207))
+         XCTAssertNotEqual(BluetoothUUID.facebook, .bit32(0xFEB7))
 
     }
 
@@ -4555,6 +5365,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.facebook2, .bit16(0xFEB8))
          XCTAssertEqual(BluetoothUUID.facebook2, .bit16(65208))
          XCTAssertEqual(BluetoothUUID.facebook2.name, "Facebook, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.facebook2, .bit32(65208))
+         XCTAssertNotEqual(BluetoothUUID.facebook2, .bit32(0xFEB8))
 
     }
 
@@ -4565,6 +5377,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.lgElectronics, .bit16(0xFEB9))
          XCTAssertEqual(BluetoothUUID.lgElectronics, .bit16(65209))
          XCTAssertEqual(BluetoothUUID.lgElectronics.name, "LG Electronics")
+         XCTAssertNotEqual(BluetoothUUID.lgElectronics, .bit32(65209))
+         XCTAssertNotEqual(BluetoothUUID.lgElectronics, .bit32(0xFEB9))
 
     }
 
@@ -4575,6 +5389,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited, .bit16(0xFEBA))
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited, .bit16(65210))
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited.name, "Tencent Holdings Limited")
+         XCTAssertNotEqual(BluetoothUUID.tencentHoldingsLimited, .bit32(65210))
+         XCTAssertNotEqual(BluetoothUUID.tencentHoldingsLimited, .bit32(0xFEBA))
 
     }
 
@@ -4585,6 +5401,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.adafruitIndustries, .bit16(0xFEBB))
          XCTAssertEqual(BluetoothUUID.adafruitIndustries, .bit16(65211))
          XCTAssertEqual(BluetoothUUID.adafruitIndustries.name, "adafruit industries")
+         XCTAssertNotEqual(BluetoothUUID.adafruitIndustries, .bit32(65211))
+         XCTAssertNotEqual(BluetoothUUID.adafruitIndustries, .bit32(0xFEBB))
 
     }
 
@@ -4595,6 +5413,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dexcom, .bit16(0xFEBC))
          XCTAssertEqual(BluetoothUUID.dexcom, .bit16(65212))
          XCTAssertEqual(BluetoothUUID.dexcom.name, "Dexcom, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.dexcom, .bit32(65212))
+         XCTAssertNotEqual(BluetoothUUID.dexcom, .bit32(0xFEBC))
 
     }
 
@@ -4605,6 +5425,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.cloverNetwork, .bit16(0xFEBD))
          XCTAssertEqual(BluetoothUUID.cloverNetwork, .bit16(65213))
          XCTAssertEqual(BluetoothUUID.cloverNetwork.name, "Clover Network, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.cloverNetwork, .bit32(65213))
+         XCTAssertNotEqual(BluetoothUUID.cloverNetwork, .bit32(0xFEBD))
 
     }
 
@@ -4615,6 +5437,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.boseCorporation, .bit16(0xFEBE))
          XCTAssertEqual(BluetoothUUID.boseCorporation, .bit16(65214))
          XCTAssertEqual(BluetoothUUID.boseCorporation.name, "Bose Corporation")
+         XCTAssertNotEqual(BluetoothUUID.boseCorporation, .bit32(65214))
+         XCTAssertNotEqual(BluetoothUUID.boseCorporation, .bit32(0xFEBE))
 
     }
 
@@ -4625,6 +5449,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nod, .bit16(0xFEBF))
          XCTAssertEqual(BluetoothUUID.nod, .bit16(65215))
          XCTAssertEqual(BluetoothUUID.nod.name, "Nod, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.nod, .bit32(65215))
+         XCTAssertNotEqual(BluetoothUUID.nod, .bit32(0xFEBF))
 
     }
 
@@ -4635,6 +5461,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.kddiCorporation, .bit16(0xFEC0))
          XCTAssertEqual(BluetoothUUID.kddiCorporation, .bit16(65216))
          XCTAssertEqual(BluetoothUUID.kddiCorporation.name, "KDDI Corporation")
+         XCTAssertNotEqual(BluetoothUUID.kddiCorporation, .bit32(65216))
+         XCTAssertNotEqual(BluetoothUUID.kddiCorporation, .bit32(0xFEC0))
 
     }
 
@@ -4645,6 +5473,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.kddiCorporation2, .bit16(0xFEC1))
          XCTAssertEqual(BluetoothUUID.kddiCorporation2, .bit16(65217))
          XCTAssertEqual(BluetoothUUID.kddiCorporation2.name, "KDDI Corporation")
+         XCTAssertNotEqual(BluetoothUUID.kddiCorporation2, .bit32(65217))
+         XCTAssertNotEqual(BluetoothUUID.kddiCorporation2, .bit32(0xFEC1))
 
     }
 
@@ -4655,6 +5485,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.blueSparkTechnologies, .bit16(0xFEC2))
          XCTAssertEqual(BluetoothUUID.blueSparkTechnologies, .bit16(65218))
          XCTAssertEqual(BluetoothUUID.blueSparkTechnologies.name, "Blue Spark Technologies, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.blueSparkTechnologies, .bit32(65218))
+         XCTAssertNotEqual(BluetoothUUID.blueSparkTechnologies, .bit32(0xFEC2))
 
     }
 
@@ -4665,6 +5497,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.uuid360Fly, .bit16(0xFEC3))
          XCTAssertEqual(BluetoothUUID.uuid360Fly, .bit16(65219))
          XCTAssertEqual(BluetoothUUID.uuid360Fly.name, "360fly, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.uuid360Fly, .bit32(65219))
+         XCTAssertNotEqual(BluetoothUUID.uuid360Fly, .bit32(0xFEC3))
 
     }
 
@@ -4675,6 +5509,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.plusLocationSystems, .bit16(0xFEC4))
          XCTAssertEqual(BluetoothUUID.plusLocationSystems, .bit16(65220))
          XCTAssertEqual(BluetoothUUID.plusLocationSystems.name, "PLUS Location Systems")
+         XCTAssertNotEqual(BluetoothUUID.plusLocationSystems, .bit32(65220))
+         XCTAssertNotEqual(BluetoothUUID.plusLocationSystems, .bit32(0xFEC4))
 
     }
 
@@ -4685,6 +5521,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp, .bit16(0xFEC5))
          XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp, .bit16(65221))
          XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp.name, "Realtek Semiconductor Corp.")
+         XCTAssertNotEqual(BluetoothUUID.realtekSemiconductorCorp, .bit32(65221))
+         XCTAssertNotEqual(BluetoothUUID.realtekSemiconductorCorp, .bit32(0xFEC5))
 
     }
 
@@ -4695,6 +5533,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.kocomojo, .bit16(0xFEC6))
          XCTAssertEqual(BluetoothUUID.kocomojo, .bit16(65222))
          XCTAssertEqual(BluetoothUUID.kocomojo.name, "Kocomojo, LLC")
+         XCTAssertNotEqual(BluetoothUUID.kocomojo, .bit32(65222))
+         XCTAssertNotEqual(BluetoothUUID.kocomojo, .bit32(0xFEC6))
 
     }
 
@@ -4705,6 +5545,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple3, .bit16(0xFEC7))
          XCTAssertEqual(BluetoothUUID.apple3, .bit16(65223))
          XCTAssertEqual(BluetoothUUID.apple3.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple3, .bit32(65223))
+         XCTAssertNotEqual(BluetoothUUID.apple3, .bit32(0xFEC7))
 
     }
 
@@ -4715,6 +5557,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple4, .bit16(0xFEC8))
          XCTAssertEqual(BluetoothUUID.apple4, .bit16(65224))
          XCTAssertEqual(BluetoothUUID.apple4.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple4, .bit32(65224))
+         XCTAssertNotEqual(BluetoothUUID.apple4, .bit32(0xFEC8))
 
     }
 
@@ -4725,6 +5569,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple5, .bit16(0xFEC9))
          XCTAssertEqual(BluetoothUUID.apple5, .bit16(65225))
          XCTAssertEqual(BluetoothUUID.apple5.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple5, .bit32(65225))
+         XCTAssertNotEqual(BluetoothUUID.apple5, .bit32(0xFEC9))
 
     }
 
@@ -4735,6 +5581,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple6, .bit16(0xFECA))
          XCTAssertEqual(BluetoothUUID.apple6, .bit16(65226))
          XCTAssertEqual(BluetoothUUID.apple6.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple6, .bit32(65226))
+         XCTAssertNotEqual(BluetoothUUID.apple6, .bit32(0xFECA))
 
     }
 
@@ -4745,6 +5593,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple7, .bit16(0xFECB))
          XCTAssertEqual(BluetoothUUID.apple7, .bit16(65227))
          XCTAssertEqual(BluetoothUUID.apple7.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple7, .bit32(65227))
+         XCTAssertNotEqual(BluetoothUUID.apple7, .bit32(0xFECB))
 
     }
 
@@ -4755,6 +5605,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple8, .bit16(0xFECC))
          XCTAssertEqual(BluetoothUUID.apple8, .bit16(65228))
          XCTAssertEqual(BluetoothUUID.apple8.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple8, .bit32(65228))
+         XCTAssertNotEqual(BluetoothUUID.apple8, .bit32(0xFECC))
 
     }
 
@@ -4765,6 +5617,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple9, .bit16(0xFECD))
          XCTAssertEqual(BluetoothUUID.apple9, .bit16(65229))
          XCTAssertEqual(BluetoothUUID.apple9.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple9, .bit32(65229))
+         XCTAssertNotEqual(BluetoothUUID.apple9, .bit32(0xFECD))
 
     }
 
@@ -4775,6 +5629,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple10, .bit16(0xFECE))
          XCTAssertEqual(BluetoothUUID.apple10, .bit16(65230))
          XCTAssertEqual(BluetoothUUID.apple10.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple10, .bit32(65230))
+         XCTAssertNotEqual(BluetoothUUID.apple10, .bit32(0xFECE))
 
     }
 
@@ -4785,6 +5641,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple11, .bit16(0xFECF))
          XCTAssertEqual(BluetoothUUID.apple11, .bit16(65231))
          XCTAssertEqual(BluetoothUUID.apple11.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple11, .bit32(65231))
+         XCTAssertNotEqual(BluetoothUUID.apple11, .bit32(0xFECF))
 
     }
 
@@ -4795,6 +5653,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple12, .bit16(0xFED0))
          XCTAssertEqual(BluetoothUUID.apple12, .bit16(65232))
          XCTAssertEqual(BluetoothUUID.apple12.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple12, .bit32(65232))
+         XCTAssertNotEqual(BluetoothUUID.apple12, .bit32(0xFED0))
 
     }
 
@@ -4805,6 +5665,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple13, .bit16(0xFED1))
          XCTAssertEqual(BluetoothUUID.apple13, .bit16(65233))
          XCTAssertEqual(BluetoothUUID.apple13.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple13, .bit32(65233))
+         XCTAssertNotEqual(BluetoothUUID.apple13, .bit32(0xFED1))
 
     }
 
@@ -4815,6 +5677,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple14, .bit16(0xFED2))
          XCTAssertEqual(BluetoothUUID.apple14, .bit16(65234))
          XCTAssertEqual(BluetoothUUID.apple14.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple14, .bit32(65234))
+         XCTAssertNotEqual(BluetoothUUID.apple14, .bit32(0xFED2))
 
     }
 
@@ -4825,6 +5689,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple15, .bit16(0xFED3))
          XCTAssertEqual(BluetoothUUID.apple15, .bit16(65235))
          XCTAssertEqual(BluetoothUUID.apple15.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple15, .bit32(65235))
+         XCTAssertNotEqual(BluetoothUUID.apple15, .bit32(0xFED3))
 
     }
 
@@ -4835,6 +5701,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.apple16, .bit16(0xFED4))
          XCTAssertEqual(BluetoothUUID.apple16, .bit16(65236))
          XCTAssertEqual(BluetoothUUID.apple16.name, "Apple, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.apple16, .bit32(65236))
+         XCTAssertNotEqual(BluetoothUUID.apple16, .bit32(0xFED4))
 
     }
 
@@ -4845,6 +5713,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.plantronics, .bit16(0xFED5))
          XCTAssertEqual(BluetoothUUID.plantronics, .bit16(65237))
          XCTAssertEqual(BluetoothUUID.plantronics.name, "Plantronics Inc.")
+         XCTAssertNotEqual(BluetoothUUID.plantronics, .bit32(65237))
+         XCTAssertNotEqual(BluetoothUUID.plantronics, .bit32(0xFED5))
 
     }
 
@@ -4855,6 +5725,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.broadcomCorporation, .bit16(0xFED6))
          XCTAssertEqual(BluetoothUUID.broadcomCorporation, .bit16(65238))
          XCTAssertEqual(BluetoothUUID.broadcomCorporation.name, "Broadcom Corporation")
+         XCTAssertNotEqual(BluetoothUUID.broadcomCorporation, .bit32(65238))
+         XCTAssertNotEqual(BluetoothUUID.broadcomCorporation, .bit32(0xFED6))
 
     }
 
@@ -4865,6 +5737,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.broadcomCorporation2, .bit16(0xFED7))
          XCTAssertEqual(BluetoothUUID.broadcomCorporation2, .bit16(65239))
          XCTAssertEqual(BluetoothUUID.broadcomCorporation2.name, "Broadcom Corporation")
+         XCTAssertNotEqual(BluetoothUUID.broadcomCorporation2, .bit32(65239))
+         XCTAssertNotEqual(BluetoothUUID.broadcomCorporation2, .bit32(0xFED7))
 
     }
 
@@ -4875,6 +5749,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.google4, .bit16(0xFED8))
          XCTAssertEqual(BluetoothUUID.google4, .bit16(65240))
          XCTAssertEqual(BluetoothUUID.google4.name, "Google")
+         XCTAssertNotEqual(BluetoothUUID.google4, .bit32(65240))
+         XCTAssertNotEqual(BluetoothUUID.google4, .bit32(0xFED8))
 
     }
 
@@ -4885,6 +5761,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation, .bit16(0xFED9))
          XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation, .bit16(65241))
          XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation.name, "Pebble Technology Corporation")
+         XCTAssertNotEqual(BluetoothUUID.pebbleTechnologyCorporation, .bit32(65241))
+         XCTAssertNotEqual(BluetoothUUID.pebbleTechnologyCorporation, .bit32(0xFED9))
 
     }
 
@@ -4895,6 +5773,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation, .bit16(0xFEDA))
          XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation, .bit16(65242))
          XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation.name, "ISSC Technologies Corporation")
+         XCTAssertNotEqual(BluetoothUUID.isscTechnologiesCorporation, .bit32(65242))
+         XCTAssertNotEqual(BluetoothUUID.isscTechnologiesCorporation, .bit32(0xFEDA))
 
     }
 
@@ -4905,6 +5785,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.perka, .bit16(0xFEDB))
          XCTAssertEqual(BluetoothUUID.perka, .bit16(65243))
          XCTAssertEqual(BluetoothUUID.perka.name, "Perka, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.perka, .bit32(65243))
+         XCTAssertNotEqual(BluetoothUUID.perka, .bit32(0xFEDB))
 
     }
 
@@ -4915,6 +5797,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.jawbone, .bit16(0xFEDC))
          XCTAssertEqual(BluetoothUUID.jawbone, .bit16(65244))
          XCTAssertEqual(BluetoothUUID.jawbone.name, "Jawbone")
+         XCTAssertNotEqual(BluetoothUUID.jawbone, .bit32(65244))
+         XCTAssertNotEqual(BluetoothUUID.jawbone, .bit32(0xFEDC))
 
     }
 
@@ -4925,6 +5809,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.jawbone2, .bit16(0xFEDD))
          XCTAssertEqual(BluetoothUUID.jawbone2, .bit16(65245))
          XCTAssertEqual(BluetoothUUID.jawbone2.name, "Jawbone")
+         XCTAssertNotEqual(BluetoothUUID.jawbone2, .bit32(65245))
+         XCTAssertNotEqual(BluetoothUUID.jawbone2, .bit32(0xFEDD))
 
     }
 
@@ -4935,6 +5821,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.coin, .bit16(0xFEDE))
          XCTAssertEqual(BluetoothUUID.coin, .bit16(65246))
          XCTAssertEqual(BluetoothUUID.coin.name, "Coin, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.coin, .bit32(65246))
+         XCTAssertNotEqual(BluetoothUUID.coin, .bit32(0xFEDE))
 
     }
 
@@ -4945,6 +5833,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.designShift, .bit16(0xFEDF))
          XCTAssertEqual(BluetoothUUID.designShift, .bit16(65247))
          XCTAssertEqual(BluetoothUUID.designShift.name, "Design SHIFT")
+         XCTAssertNotEqual(BluetoothUUID.designShift, .bit32(65247))
+         XCTAssertNotEqual(BluetoothUUID.designShift, .bit32(0xFEDF))
 
     }
 
@@ -4955,6 +5845,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo, .bit16(0xFEE0))
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo, .bit16(65248))
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo.name, "Anhui Huami Information Technology Co.")
+         XCTAssertNotEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo, .bit32(65248))
+         XCTAssertNotEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo, .bit32(0xFEE0))
 
     }
 
@@ -4965,6 +5857,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2, .bit16(0xFEE1))
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2, .bit16(65249))
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2.name, "Anhui Huami Information Technology Co.")
+         XCTAssertNotEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2, .bit32(65249))
+         XCTAssertNotEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2, .bit32(0xFEE1))
 
     }
 
@@ -4975,6 +5869,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.anki, .bit16(0xFEE2))
          XCTAssertEqual(BluetoothUUID.anki, .bit16(65250))
          XCTAssertEqual(BluetoothUUID.anki.name, "Anki, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.anki, .bit32(65250))
+         XCTAssertNotEqual(BluetoothUUID.anki, .bit32(0xFEE2))
 
     }
 
@@ -4985,6 +5881,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.anki2, .bit16(0xFEE3))
          XCTAssertEqual(BluetoothUUID.anki2, .bit16(65251))
          XCTAssertEqual(BluetoothUUID.anki2.name, "Anki, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.anki2, .bit32(65251))
+         XCTAssertNotEqual(BluetoothUUID.anki2, .bit32(0xFEE3))
 
     }
 
@@ -4995,6 +5893,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa, .bit16(0xFEE4))
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa, .bit16(65252))
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa.name, "Nordic Semiconductor ASA")
+         XCTAssertNotEqual(BluetoothUUID.nordicSemiconductorAsa, .bit32(65252))
+         XCTAssertNotEqual(BluetoothUUID.nordicSemiconductorAsa, .bit32(0xFEE4))
 
     }
 
@@ -5005,6 +5905,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit16(0xFEE5))
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit16(65253))
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2.name, "Nordic Semiconductor ASA")
+         XCTAssertNotEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit32(65253))
+         XCTAssertNotEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit32(0xFEE5))
 
     }
 
@@ -5015,6 +5917,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.seedLabs, .bit16(0xFEE6))
          XCTAssertEqual(BluetoothUUID.seedLabs, .bit16(65254))
          XCTAssertEqual(BluetoothUUID.seedLabs.name, "Seed Labs, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.seedLabs, .bit32(65254))
+         XCTAssertNotEqual(BluetoothUUID.seedLabs, .bit32(0xFEE6))
 
     }
 
@@ -5025,6 +5929,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2, .bit16(0xFEE7))
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2, .bit16(65255))
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2.name, "Tencent Holdings Limited")
+         XCTAssertNotEqual(BluetoothUUID.tencentHoldingsLimited2, .bit32(65255))
+         XCTAssertNotEqual(BluetoothUUID.tencentHoldingsLimited2, .bit32(0xFEE7))
 
     }
 
@@ -5035,6 +5941,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.quinticCorp, .bit16(0xFEE8))
          XCTAssertEqual(BluetoothUUID.quinticCorp, .bit16(65256))
          XCTAssertEqual(BluetoothUUID.quinticCorp.name, "Quintic Corp.")
+         XCTAssertNotEqual(BluetoothUUID.quinticCorp, .bit32(65256))
+         XCTAssertNotEqual(BluetoothUUID.quinticCorp, .bit32(0xFEE8))
 
     }
 
@@ -5045,6 +5953,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.quinticCorp2, .bit16(0xFEE9))
          XCTAssertEqual(BluetoothUUID.quinticCorp2, .bit16(65257))
          XCTAssertEqual(BluetoothUUID.quinticCorp2.name, "Quintic Corp.")
+         XCTAssertNotEqual(BluetoothUUID.quinticCorp2, .bit32(65257))
+         XCTAssertNotEqual(BluetoothUUID.quinticCorp2, .bit32(0xFEE9))
 
     }
 
@@ -5055,6 +5965,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.swirlNetworks, .bit16(0xFEEA))
          XCTAssertEqual(BluetoothUUID.swirlNetworks, .bit16(65258))
          XCTAssertEqual(BluetoothUUID.swirlNetworks.name, "Swirl Networks, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.swirlNetworks, .bit32(65258))
+         XCTAssertNotEqual(BluetoothUUID.swirlNetworks, .bit32(0xFEEA))
 
     }
 
@@ -5065,6 +5977,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.swirlNetworks2, .bit16(0xFEEB))
          XCTAssertEqual(BluetoothUUID.swirlNetworks2, .bit16(65259))
          XCTAssertEqual(BluetoothUUID.swirlNetworks2.name, "Swirl Networks, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.swirlNetworks2, .bit32(65259))
+         XCTAssertNotEqual(BluetoothUUID.swirlNetworks2, .bit32(0xFEEB))
 
     }
 
@@ -5075,6 +5989,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tile, .bit16(0xFEEC))
          XCTAssertEqual(BluetoothUUID.tile, .bit16(65260))
          XCTAssertEqual(BluetoothUUID.tile.name, "Tile, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.tile, .bit32(65260))
+         XCTAssertNotEqual(BluetoothUUID.tile, .bit32(0xFEEC))
 
     }
 
@@ -5085,6 +6001,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.tile2, .bit16(0xFEED))
          XCTAssertEqual(BluetoothUUID.tile2, .bit16(65261))
          XCTAssertEqual(BluetoothUUID.tile2.name, "Tile, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.tile2, .bit32(65261))
+         XCTAssertNotEqual(BluetoothUUID.tile2, .bit32(0xFEED))
 
     }
 
@@ -5095,6 +6013,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.polarElectroOy, .bit16(0xFEEE))
          XCTAssertEqual(BluetoothUUID.polarElectroOy, .bit16(65262))
          XCTAssertEqual(BluetoothUUID.polarElectroOy.name, "Polar Electro Oy")
+         XCTAssertNotEqual(BluetoothUUID.polarElectroOy, .bit32(65262))
+         XCTAssertNotEqual(BluetoothUUID.polarElectroOy, .bit32(0xFEEE))
 
     }
 
@@ -5105,6 +6025,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.polarElectroOy2, .bit16(0xFEEF))
          XCTAssertEqual(BluetoothUUID.polarElectroOy2, .bit16(65263))
          XCTAssertEqual(BluetoothUUID.polarElectroOy2.name, "Polar Electro Oy")
+         XCTAssertNotEqual(BluetoothUUID.polarElectroOy2, .bit32(65263))
+         XCTAssertNotEqual(BluetoothUUID.polarElectroOy2, .bit32(0xFEEF))
 
     }
 
@@ -5115,6 +6037,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.intel, .bit16(0xFEF0))
          XCTAssertEqual(BluetoothUUID.intel, .bit16(65264))
          XCTAssertEqual(BluetoothUUID.intel.name, "Intel")
+         XCTAssertNotEqual(BluetoothUUID.intel, .bit32(65264))
+         XCTAssertNotEqual(BluetoothUUID.intel, .bit32(0xFEF0))
 
     }
 
@@ -5125,6 +6049,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.csr2, .bit16(0xFEF1))
          XCTAssertEqual(BluetoothUUID.csr2, .bit16(65265))
          XCTAssertEqual(BluetoothUUID.csr2.name, "CSR")
+         XCTAssertNotEqual(BluetoothUUID.csr2, .bit32(65265))
+         XCTAssertNotEqual(BluetoothUUID.csr2, .bit32(0xFEF1))
 
     }
 
@@ -5135,6 +6061,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.csr3, .bit16(0xFEF2))
          XCTAssertEqual(BluetoothUUID.csr3, .bit16(65266))
          XCTAssertEqual(BluetoothUUID.csr3.name, "CSR")
+         XCTAssertNotEqual(BluetoothUUID.csr3, .bit32(65266))
+         XCTAssertNotEqual(BluetoothUUID.csr3, .bit32(0xFEF2))
 
     }
 
@@ -5145,6 +6073,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.google5, .bit16(0xFEF3))
          XCTAssertEqual(BluetoothUUID.google5, .bit16(65267))
          XCTAssertEqual(BluetoothUUID.google5.name, "Google")
+         XCTAssertNotEqual(BluetoothUUID.google5, .bit32(65267))
+         XCTAssertNotEqual(BluetoothUUID.google5, .bit32(0xFEF3))
 
     }
 
@@ -5155,6 +6085,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.google6, .bit16(0xFEF4))
          XCTAssertEqual(BluetoothUUID.google6, .bit16(65268))
          XCTAssertEqual(BluetoothUUID.google6.name, "Google")
+         XCTAssertNotEqual(BluetoothUUID.google6, .bit32(65268))
+         XCTAssertNotEqual(BluetoothUUID.google6, .bit32(0xFEF4))
 
     }
 
@@ -5165,6 +6097,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh, .bit16(0xFEF5))
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh, .bit16(65269))
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh.name, "Dialog Semiconductor GmbH")
+         XCTAssertNotEqual(BluetoothUUID.dialogSemiconductorGmbh, .bit32(65269))
+         XCTAssertNotEqual(BluetoothUUID.dialogSemiconductorGmbh, .bit32(0xFEF5))
 
     }
 
@@ -5175,6 +6109,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.wicentric, .bit16(0xFEF6))
          XCTAssertEqual(BluetoothUUID.wicentric, .bit16(65270))
          XCTAssertEqual(BluetoothUUID.wicentric.name, "Wicentric, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.wicentric, .bit32(65270))
+         XCTAssertNotEqual(BluetoothUUID.wicentric, .bit32(0xFEF6))
 
     }
 
@@ -5185,6 +6121,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.aplixCorporation, .bit16(0xFEF7))
          XCTAssertEqual(BluetoothUUID.aplixCorporation, .bit16(65271))
          XCTAssertEqual(BluetoothUUID.aplixCorporation.name, "Aplix Corporation")
+         XCTAssertNotEqual(BluetoothUUID.aplixCorporation, .bit32(65271))
+         XCTAssertNotEqual(BluetoothUUID.aplixCorporation, .bit32(0xFEF7))
 
     }
 
@@ -5195,6 +6133,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.aplixCorporation2, .bit16(0xFEF8))
          XCTAssertEqual(BluetoothUUID.aplixCorporation2, .bit16(65272))
          XCTAssertEqual(BluetoothUUID.aplixCorporation2.name, "Aplix Corporation")
+         XCTAssertNotEqual(BluetoothUUID.aplixCorporation2, .bit32(65272))
+         XCTAssertNotEqual(BluetoothUUID.aplixCorporation2, .bit32(0xFEF8))
 
     }
 
@@ -5205,6 +6145,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.paypal, .bit16(0xFEF9))
          XCTAssertEqual(BluetoothUUID.paypal, .bit16(65273))
          XCTAssertEqual(BluetoothUUID.paypal.name, "PayPal, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.paypal, .bit32(65273))
+         XCTAssertNotEqual(BluetoothUUID.paypal, .bit32(0xFEF9))
 
     }
 
@@ -5215,6 +6157,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.paypal2, .bit16(0xFEFA))
          XCTAssertEqual(BluetoothUUID.paypal2, .bit16(65274))
          XCTAssertEqual(BluetoothUUID.paypal2.name, "PayPal, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.paypal2, .bit32(65274))
+         XCTAssertNotEqual(BluetoothUUID.paypal2, .bit32(0xFEFA))
 
     }
 
@@ -5225,6 +6169,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2, .bit16(0xFEFB))
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2, .bit16(65275))
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.name, "Stollmann E+V GmbH")
+         XCTAssertNotEqual(BluetoothUUID.stollmannEVGmbh2, .bit32(65275))
+         XCTAssertNotEqual(BluetoothUUID.stollmannEVGmbh2, .bit32(0xFEFB))
 
     }
 
@@ -5235,6 +6181,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gimbal, .bit16(0xFEFC))
          XCTAssertEqual(BluetoothUUID.gimbal, .bit16(65276))
          XCTAssertEqual(BluetoothUUID.gimbal.name, "Gimbal, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.gimbal, .bit32(65276))
+         XCTAssertNotEqual(BluetoothUUID.gimbal, .bit32(0xFEFC))
 
     }
 
@@ -5245,6 +6193,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gimbal2, .bit16(0xFEFD))
          XCTAssertEqual(BluetoothUUID.gimbal2, .bit16(65277))
          XCTAssertEqual(BluetoothUUID.gimbal2.name, "Gimbal, Inc.")
+         XCTAssertNotEqual(BluetoothUUID.gimbal2, .bit32(65277))
+         XCTAssertNotEqual(BluetoothUUID.gimbal2, .bit32(0xFEFD))
 
     }
 
@@ -5255,6 +6205,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gnResoundAS, .bit16(0xFEFE))
          XCTAssertEqual(BluetoothUUID.gnResoundAS, .bit16(65278))
          XCTAssertEqual(BluetoothUUID.gnResoundAS.name, "GN ReSound A/S")
+         XCTAssertNotEqual(BluetoothUUID.gnResoundAS, .bit32(65278))
+         XCTAssertNotEqual(BluetoothUUID.gnResoundAS, .bit32(0xFEFE))
 
     }
 
@@ -5265,6 +6217,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.gnNetcom, .bit16(0xFEFF))
          XCTAssertEqual(BluetoothUUID.gnNetcom, .bit16(65279))
          XCTAssertEqual(BluetoothUUID.gnNetcom.name, "GN Netcom")
+         XCTAssertNotEqual(BluetoothUUID.gnNetcom, .bit32(65279))
+         XCTAssertNotEqual(BluetoothUUID.gnNetcom, .bit32(0xFEFF))
 
     }
 
@@ -5275,6 +6229,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido, .bit16(0xFFFD))
          XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido, .bit16(65533))
          XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido.name, "Fast IDentity Online Alliance (FIDO)")
+         XCTAssertNotEqual(BluetoothUUID.fastIdentityOnlineAllianceFido, .bit32(65533))
+         XCTAssertNotEqual(BluetoothUUID.fastIdentityOnlineAllianceFido, .bit32(0xFFFD))
 
     }
 
@@ -5285,6 +6241,8 @@ final class DefinedUUIDTests: XCTestCase {
          XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp, .bit16(0xFFFE))
          XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp, .bit16(65534))
          XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp.name, "Alliance for Wireless Power (A4WP)")
+         XCTAssertNotEqual(BluetoothUUID.allianceForWirelessPowerA4Wp, .bit32(65534))
+         XCTAssertNotEqual(BluetoothUUID.allianceForWirelessPowerA4Wp, .bit32(0xFFFE))
 
     }
 

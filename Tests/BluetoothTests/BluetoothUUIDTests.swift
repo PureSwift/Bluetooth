@@ -212,6 +212,8 @@ final class BluetoothUUIDTests: XCTestCase {
             🖨("         XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(0x\(uuid.rawValue)))")
             🖨("         XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(\(uuidValue)))")
             🖨("         XCTAssertEqual(BluetoothUUID.\(memberName).name, \"\(name)\")")
+            🖨("         XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(\(uuidValue)))")
+            🖨("         XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(0x\(uuid.rawValue)))")
             🖨("")
             🖨("    }")
             🖨("")
