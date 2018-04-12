@@ -1672,7 +1672,7 @@ public extension LowEnergyCommand {
         /// If the primary advertising interval range provided by the Host (Primary_Advertising_Interval_Min,
         /// Primary_Advertising_Interval_Max) is outside the advertising interval range supported by the Controller,
         //// then the Controller shall return the error code Unsupported Feature or Parameter Value (0x11).
-        public let primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval)
+        public let primaryAdvertising: PrimaryAdvertisingInterval
         
         /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
         /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
@@ -1709,7 +1709,7 @@ public extension LowEnergyCommand {
         
         public init(advertisingHandle: UInt8,
                     advertisingEventProperties: AdvertisingEventProperties,
-                    primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval),
+                    primaryAdvertising: PrimaryAdvertisingInterval,
                     primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap,
                     ownAddressType: OwnAddressType,
                     peerAddressType: PeerAddressType,
@@ -1741,8 +1741,10 @@ public extension LowEnergyCommand {
         public var byteValue: [UInt8] {
             
             let advertisingEventPropertiesBytes = advertisingEventProperties.rawValue.littleEndian.bytes
-            let primaryAdvertisingMinimumBytes = primaryAdvertising.minimum.rawValue.littleEndian.bytes
-            let primaryAdvertisingMaximunBytes = primaryAdvertising.maximum.rawValue.littleEndian.bytes
+            
+            let primaryAdvertisingMinimumBytes = primaryAdvertising.rawValue.lowerBound.littleEndian.bytes
+            let primaryAdvertisingMaximunBytes = primaryAdvertising.rawValue.upperBound.littleEndian.bytes
+            
             let addressBytes = peerAddress.littleEndian.bytes
             
             let advertisingTxPowerByte = UInt8.init(bitPattern: advertisingTxPower.rawValue)
@@ -1891,37 +1893,30 @@ public extension LowEnergyCommand {
             ]
         }
         
-        /// Type for Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max
-        public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
+        public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable {
             
-            /// 20 ms
-            public static let min = PrimaryAdvertisingInterval(0x000020)
+            public typealias RawValue = CountableClosedRange<UInt32>
             
-            /// 10,485.759375 seconds
-            public static let max = PrimaryAdvertisingInterval(0xFFFFFF)
+            /// Maximum interval range.
+            public static let full = PrimaryAdvertisingInterval(rawValue: .min ... .max)
             
-            public let rawValue: UInt32
+            public let rawValue: RawValue
             
-            public init?(rawValue: UInt32) {
-                
-                guard rawValue >= PrimaryAdvertisingInterval.min.rawValue,
-                    rawValue <= PrimaryAdvertisingInterval.max.rawValue
-                    else { return nil }
-                
-                assert((PrimaryAdvertisingInterval.min.rawValue ... PrimaryAdvertisingInterval.max.rawValue).contains(rawValue))
+            public init(rawValue: RawValue) {
                 
                 self.rawValue = rawValue
             }
             
-            /// Time = N * 0.625 msec
-            public var miliseconds: Double {
+            /// Time = N * 0.625 msec.
+            public var miliseconds: ClosedRange<Double> {
                 
-                return Double(rawValue) * 0.625
-            }
-            
-            // Private, unsafe
-            private init(_ rawValue: UInt32) {
-                self.rawValue = rawValue
+                let miliseconds = Double(0.625)
+                
+                let min = Double(rawValue.lowerBound) * miliseconds
+                
+                let max = Double(rawValue.upperBound) * miliseconds
+                
+                return min ... max
             }
             
             // Equatable
@@ -1929,19 +1924,8 @@ public extension LowEnergyCommand {
                 
                 return lhs.rawValue == rhs.rawValue
             }
-            
-            // Comparable
-            public static func < (lhs: PrimaryAdvertisingInterval, rhs: PrimaryAdvertisingInterval) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
         }
+        
 
         /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
         /// and its basic properties.
