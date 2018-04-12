@@ -37,6 +37,7 @@ final class HCITests: XCTestCase {
     
     func testName() {
         
+        /// HCI command
         XCTAssert(LinkControlCommand.acceptConnection.name == "Accept Connection Request")
         XCTAssert(LinkPolicyCommand.holdMode.name == "Hold Mode")
         XCTAssert(InformationalCommand.readLocalVersionInformation.name == "Read Local Version Information")
@@ -44,10 +45,54 @@ final class HCITests: XCTestCase {
         XCTAssert(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
         XCTAssert(LowEnergyCommand.createConnection.name == "LE Create Connection")
         
+        func testCommand <T: HCICommand> (_ command: T.Type) {
+            
+            for rawValue in UInt16.min ... .max {
+                
+                guard let command = T.init(rawValue: rawValue)
+                    else { continue }
+                
+                XCTAssert(command.opcode != .min)
+                XCTAssert(command.opcode != rawValue)
+                XCTAssert(command.name.isEmpty == false)
+            }
+        }
+        
+        testCommand(LinkControlCommand.self)
+        testCommand(LinkPolicyCommand.self)
+        testCommand(InformationalCommand.self)
+        testCommand(HostControllerBasebandCommand.self)
+        testCommand(StatusParametersCommand.self)
+        testCommand(LowEnergyCommand.self)
+        
+        // HCI event
         XCTAssert(HCIGeneralEvent.commandComplete.name == "Command Complete")
         XCTAssert(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
         
+        func testEvent <T: HCIEvent> (_ command: T.Type) {
+            
+            for rawValue in UInt8.min ... .max {
+                
+                guard let event = T.init(rawValue: rawValue)
+                    else { continue }
+                
+                XCTAssert(event.name.isEmpty == false)
+            }
+        }
+        
+        testEvent(HCIGeneralEvent.self)
+        testEvent(LowEnergyEvent.self)
+        
+        // HCI error
         XCTAssertTrue(HCIError.unknownCommand.description == "Unknown HCI Command")
+        
+        for rawValue in UInt8.min ... .max {
+            
+            guard let error = HCIError.init(rawValue: rawValue)
+                else { continue }
+            
+            XCTAssert(error.name.isEmpty == false)
+        }
     }
     
     func testReadLocalVersionInformation() {
