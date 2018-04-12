@@ -614,10 +614,10 @@
 			isa = PBXGroup;
 			children = (
 				6EE84E051CAF8AD500A40C4D /* HCI.swift */,
+				6E32290F1FCDC47F0035605D /* HCIError.swift */,
 				6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */,
 				6EE84DF31CAF891E00A40C4D /* HCICommand.swift */,
 				6ECBCF17206FBD0F00312117 /* HCICommandTimeout.swift */,
-				6E32290F1FCDC47F0035605D /* HCIError.swift */,
 				6E0245D720683DBD007FB15E /* HCIPacketHeader.swift */,
 				6E2809881FCF499100B2D68E /* HCIVersion.swift */,
 				6EE84E031CAF894200A40C4D /* Event */,

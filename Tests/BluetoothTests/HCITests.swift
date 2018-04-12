@@ -145,13 +145,22 @@ final class HCITests: XCTestCase {
         // HCI error
         XCTAssertTrue(HCIError.unknownCommand.description == "Unknown HCI Command")
         
-        for rawValue in UInt8.min ... .max {
-            
-            guard let error = HCIError.init(rawValue: rawValue)
-                else { continue }
+        let errors = (UInt8.min ... .max).flatMap({ HCIError(rawValue: $0) })
+        
+        for error in errors {
             
             XCTAssert(error.name.isEmpty == false)
             XCTAssert(error.description == error.name)
+            
+            #if os(macOS)
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.code, Int(error.rawValue))
+            XCTAssertEqual(nsError.domain, "org.pureswift.Bluetooth.HCIError")
+            XCTAssertEqual(nsError.userInfo[NSLocalizedDescriptionKey] as? String, error.description)
+            XCTAssertEqual(nsError.userInfo[NSLocalizedDescriptionKey] as? String, error.name)
+            
+            print(nsError)
+            #endif
         }
     }
     
