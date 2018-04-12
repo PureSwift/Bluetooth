@@ -11,494 +11,499 @@ import Foundation
 
 final class DefinedUUIDTests: XCTestCase {
 
-    static let allTests = [
-        ("testSdp", testSdp),
-        ("testRfcomm", testRfcomm),
-        ("testTcsBin", testTcsBin),
-        ("testAtt", testAtt),
-        ("testObex", testObex),
-        ("testBnep", testBnep),
-        ("testUpnp", testUpnp),
-        ("testHidp", testHidp),
-        ("testHardcopyControlChannel", testHardcopyControlChannel),
-        ("testHardcopyDataChannel", testHardcopyDataChannel),
-        ("testHardcopyNotification", testHardcopyNotification),
-        ("testAvctp", testAvctp),
-        ("testAvdtp", testAvdtp),
-        ("testCmtp", testCmtp),
-        ("testMcapControlChannel", testMcapControlChannel),
-        ("testMcapDataChannel", testMcapDataChannel),
-        ("testL2Cap", testL2Cap),
-        ("testServiceDiscoveryServerServiceClass", testServiceDiscoveryServerServiceClass),
-        ("testBrowseGroupDescriptorServiceClass", testBrowseGroupDescriptorServiceClass),
-        ("testPublicBrowseRoot", testPublicBrowseRoot),
-        ("testSerialPort", testSerialPort),
-        ("testLanAccessUsingPpp", testLanAccessUsingPpp),
-        ("testDialupNetworking", testDialupNetworking),
-        ("testIrmcSync", testIrmcSync),
-        ("testObexObjectPush", testObexObjectPush),
-        ("testObexFileTransfer", testObexFileTransfer),
-        ("testIrmcSyncCommand", testIrmcSyncCommand),
-        ("testHeadset", testHeadset),
-        ("testCordlessTelephony", testCordlessTelephony),
-        ("testAudioSource", testAudioSource),
-        ("testAudioSink", testAudioSink),
-        ("testAvRemoteControlTarget", testAvRemoteControlTarget),
-        ("testAdvancedAudioDistribution", testAdvancedAudioDistribution),
-        ("testAvRemoteControl", testAvRemoteControl),
-        ("testAvRemoteControlController", testAvRemoteControlController),
-        ("testIntercom", testIntercom),
-        ("testFax", testFax),
-        ("testHeadsetAg", testHeadsetAg),
-        ("testWap", testWap),
-        ("testWapClient", testWapClient),
-        ("testPanu", testPanu),
-        ("testNap", testNap),
-        ("testGn", testGn),
-        ("testDirectPrinting", testDirectPrinting),
-        ("testReferencePrinting", testReferencePrinting),
-        ("testBasicImagingProfile", testBasicImagingProfile),
-        ("testImagingResponder", testImagingResponder),
-        ("testImagingAutomaticArchive", testImagingAutomaticArchive),
-        ("testImagingReferencedObjects", testImagingReferencedObjects),
-        ("testHandsfree", testHandsfree),
-        ("testHandsfreeAudioGateway", testHandsfreeAudioGateway),
-        ("testDirectPrintingRefrenceObjectsService", testDirectPrintingRefrenceObjectsService),
-        ("testReflectedUi", testReflectedUi),
-        ("testBasicPrinting", testBasicPrinting),
-        ("testPrintingStatus", testPrintingStatus),
-        ("testHumanInterfaceDeviceService", testHumanInterfaceDeviceService),
-        ("testHardcopyCableReplacement", testHardcopyCableReplacement),
-        ("testHcrPrint", testHcrPrint),
-        ("testHcrScan", testHcrScan),
-        ("testCommonIsdnAccess", testCommonIsdnAccess),
-        ("testSimAccess", testSimAccess),
-        ("testPhonebookAccessClient", testPhonebookAccessClient),
-        ("testPhonebookAccessServer", testPhonebookAccessServer),
-        ("testPhonebookAccess", testPhonebookAccess),
-        ("testHeadsetHs", testHeadsetHs),
-        ("testMessageAccessServer", testMessageAccessServer),
-        ("testMessageNotificationServer", testMessageNotificationServer),
-        ("testMessageAccessProfile", testMessageAccessProfile),
-        ("testGnss", testGnss),
-        ("testGnssServer", testGnssServer),
-        ("testUuid3Ddisplay", testUuid3Ddisplay),
-        ("testUuid3Dglasses", testUuid3Dglasses),
-        ("testUuid3Dsynchronization", testUuid3Dsynchronization),
-        ("testMpsProfile", testMpsProfile),
-        ("testMpsService", testMpsService),
-        ("testPnpInformation", testPnpInformation),
-        ("testGenericNetworking", testGenericNetworking),
-        ("testGenericFileTransfer", testGenericFileTransfer),
-        ("testGenericAudio", testGenericAudio),
-        ("testGenericTelephony", testGenericTelephony),
-        ("testUpnpService", testUpnpService),
-        ("testUpnpIpService", testUpnpIpService),
-        ("testUpnpIpPan", testUpnpIpPan),
-        ("testUpnpIpLap", testUpnpIpLap),
-        ("testUpnpIpL2Cap", testUpnpIpL2Cap),
-        ("testVideoSource", testVideoSource),
-        ("testVideoSink", testVideoSink),
-        ("testVideoDistribution", testVideoDistribution),
-        ("testHdp", testHdp),
-        ("testHdpSource", testHdpSource),
-        ("testHdpSink", testHdpSink),
-        ("testGenericAccessProfile", testGenericAccessProfile),
-        ("testGenericAttributeProfile", testGenericAttributeProfile),
-        ("testImmediateAlert", testImmediateAlert),
-        ("testLinkLoss", testLinkLoss),
-        ("testTxPower", testTxPower),
-        ("testCurrentTimeService", testCurrentTimeService),
-        ("testReferenceTimeUpdateService", testReferenceTimeUpdateService),
-        ("testNextDstChangeService", testNextDstChangeService),
-        ("testGlucose", testGlucose),
-        ("testHealthThermometer", testHealthThermometer),
-        ("testDeviceInformation", testDeviceInformation),
-        ("testHeartRate", testHeartRate),
-        ("testPhoneAlertStatusService", testPhoneAlertStatusService),
-        ("testBatteryService", testBatteryService),
-        ("testBloodPressure", testBloodPressure),
-        ("testAlertNotificationService", testAlertNotificationService),
-        ("testHumanInterfaceDevice", testHumanInterfaceDevice),
-        ("testScanParameters", testScanParameters),
-        ("testRunningSpeedAndCadence", testRunningSpeedAndCadence),
-        ("testAutomationIo", testAutomationIo),
-        ("testCyclingSpeedAndCadence", testCyclingSpeedAndCadence),
-        ("testCyclingPower", testCyclingPower),
-        ("testLocationAndNavigation", testLocationAndNavigation),
-        ("testEnvironmentalSensing", testEnvironmentalSensing),
-        ("testBodyComposition", testBodyComposition),
-        ("testUserData", testUserData),
-        ("testWeightScale", testWeightScale),
-        ("testBondManagement", testBondManagement),
-        ("testContinuousGlucoseMonitoring", testContinuousGlucoseMonitoring),
-        ("testInternetProtocolSupport", testInternetProtocolSupport),
-        ("testIndoorPositioning", testIndoorPositioning),
-        ("testPulseOximeter", testPulseOximeter),
-        ("testHttpProxy", testHttpProxy),
-        ("testTransportDiscovery", testTransportDiscovery),
-        ("testObjectTransfer", testObjectTransfer),
-        ("testPrimaryService", testPrimaryService),
-        ("testSecondaryService", testSecondaryService),
-        ("testInclude", testInclude),
-        ("testCharacteristic", testCharacteristic),
-        ("testCharacteristicExtendedProperties", testCharacteristicExtendedProperties),
-        ("testCharacteristicUserDescription", testCharacteristicUserDescription),
-        ("testClientCharacteristicConfiguration", testClientCharacteristicConfiguration),
-        ("testServerCharacteristicConfiguration", testServerCharacteristicConfiguration),
-        ("testCharacteristicFormat", testCharacteristicFormat),
-        ("testCharacteristicAggregateFormat", testCharacteristicAggregateFormat),
-        ("testValidRange", testValidRange),
-        ("testExternalReportReference", testExternalReportReference),
-        ("testReportReference", testReportReference),
-        ("testNumberOfDigitals", testNumberOfDigitals),
-        ("testValueTriggerSetting", testValueTriggerSetting),
-        ("testEnvironmentalSensingConfiguration", testEnvironmentalSensingConfiguration),
-        ("testEnvironmentalSensingMeasurement", testEnvironmentalSensingMeasurement),
-        ("testEnvironmentalSensingTriggerSetting", testEnvironmentalSensingTriggerSetting),
-        ("testTimeTriggerSetting", testTimeTriggerSetting),
-        ("testDeviceName", testDeviceName),
-        ("testAppearance", testAppearance),
-        ("testPeripheralPrivacyFlag", testPeripheralPrivacyFlag),
-        ("testReconnectionAddress", testReconnectionAddress),
-        ("testPeripheralPreferredConnectionParameters", testPeripheralPreferredConnectionParameters),
-        ("testServiceChanged", testServiceChanged),
-        ("testAlertLevel", testAlertLevel),
-        ("testTxPowerLevel", testTxPowerLevel),
-        ("testDateTime", testDateTime),
-        ("testDayOfWeek", testDayOfWeek),
-        ("testDayDateTime", testDayDateTime),
-        ("testExactTime256", testExactTime256),
-        ("testDstOffset", testDstOffset),
-        ("testTimeZone", testTimeZone),
-        ("testLocalTimeInformation", testLocalTimeInformation),
-        ("testTimeWithDst", testTimeWithDst),
-        ("testTimeAccuracy", testTimeAccuracy),
-        ("testTimeSource", testTimeSource),
-        ("testReferenceTimeInformation", testReferenceTimeInformation),
-        ("testTimeUpdateControlPoint", testTimeUpdateControlPoint),
-        ("testTimeUpdateState", testTimeUpdateState),
-        ("testGlucoseMeasurement", testGlucoseMeasurement),
-        ("testBatteryLevel", testBatteryLevel),
-        ("testTemperatureMeasurement", testTemperatureMeasurement),
-        ("testTemperatureType", testTemperatureType),
-        ("testIntermediateTemperature", testIntermediateTemperature),
-        ("testMeasurementInterval", testMeasurementInterval),
-        ("testBootKeyboardInputReport", testBootKeyboardInputReport),
-        ("testSystemId", testSystemId),
-        ("testModelNumberString", testModelNumberString),
-        ("testSerialNumberString", testSerialNumberString),
-        ("testFirmwareRevisionString", testFirmwareRevisionString),
-        ("testHardwareRevisionString", testHardwareRevisionString),
-        ("testSoftwareRevisionString", testSoftwareRevisionString),
-        ("testManufacturerNameString", testManufacturerNameString),
-        ("testIeee1107320601RegulatoryCertDataList", testIeee1107320601RegulatoryCertDataList),
-        ("testCurrentTime", testCurrentTime),
-        ("testMagneticDeclination", testMagneticDeclination),
-        ("testScanRefresh", testScanRefresh),
-        ("testBootKeyboardOutputReport", testBootKeyboardOutputReport),
-        ("testBootMouseInputReport", testBootMouseInputReport),
-        ("testGlucoseMeasurementContext", testGlucoseMeasurementContext),
-        ("testBloodPressureMeasurement", testBloodPressureMeasurement),
-        ("testIntermediateCuffPressure", testIntermediateCuffPressure),
-        ("testHeartRateMeasurement", testHeartRateMeasurement),
-        ("testBodySensorLocation", testBodySensorLocation),
-        ("testHeartRateControlPoint", testHeartRateControlPoint),
-        ("testAlertStatus", testAlertStatus),
-        ("testRingerControlPoint", testRingerControlPoint),
-        ("testRingerSetting", testRingerSetting),
-        ("testAlertCategoryIdBitMask", testAlertCategoryIdBitMask),
-        ("testAlertCategoryId", testAlertCategoryId),
-        ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
-        ("testUnreadAlertStatus", testUnreadAlertStatus),
-        ("testNewAlert", testNewAlert),
-        ("testSupportedNewAlertCategory", testSupportedNewAlertCategory),
-        ("testSupportedUnreadAlertCategory", testSupportedUnreadAlertCategory),
-        ("testBloodPressureFeature", testBloodPressureFeature),
-        ("testHidInformation", testHidInformation),
-        ("testReportMap", testReportMap),
-        ("testHidControlPoint", testHidControlPoint),
-        ("testReport", testReport),
-        ("testProtocolMode", testProtocolMode),
-        ("testScanIntervalWindow", testScanIntervalWindow),
-        ("testPnpId", testPnpId),
-        ("testGlucoseFeature", testGlucoseFeature),
-        ("testRecordAccessControlPoint", testRecordAccessControlPoint),
-        ("testRscMeasurement", testRscMeasurement),
-        ("testRscFeature", testRscFeature),
-        ("testScControlPoint", testScControlPoint),
-        ("testDigital", testDigital),
-        ("testAnalog", testAnalog),
-        ("testAggregate", testAggregate),
-        ("testCscMeasurement", testCscMeasurement),
-        ("testCscFeature", testCscFeature),
-        ("testSensorLocation", testSensorLocation),
-        ("testCyclingPowerMeasurement", testCyclingPowerMeasurement),
-        ("testCyclingPowerVector", testCyclingPowerVector),
-        ("testCyclingPowerFeature", testCyclingPowerFeature),
-        ("testCyclingPowerControlPoint", testCyclingPowerControlPoint),
-        ("testLocationAndSpeed", testLocationAndSpeed),
-        ("testNavigation", testNavigation),
-        ("testPositionQuality", testPositionQuality),
-        ("testLnFeature", testLnFeature),
-        ("testLnControlPoint", testLnControlPoint),
-        ("testElevation", testElevation),
-        ("testPressure", testPressure),
-        ("testTemperature", testTemperature),
-        ("testHumidity", testHumidity),
-        ("testTrueWindSpeed", testTrueWindSpeed),
-        ("testTrueWindDirection", testTrueWindDirection),
-        ("testApparentWindSpeed", testApparentWindSpeed),
-        ("testApparentWindDirection", testApparentWindDirection),
-        ("testGustFactor", testGustFactor),
-        ("testPollenConcentration", testPollenConcentration),
-        ("testUvIndex", testUvIndex),
-        ("testIrradiance", testIrradiance),
-        ("testRainfall", testRainfall),
-        ("testWindChill", testWindChill),
-        ("testHeatIndex", testHeatIndex),
-        ("testDewPoint", testDewPoint),
-        ("testTrend", testTrend),
-        ("testDescriptorValueChanged", testDescriptorValueChanged),
-        ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit),
-        ("testAerobicThreshold", testAerobicThreshold),
-        ("testAge", testAge),
-        ("testAnaerobicHeartRateLowerLimit", testAnaerobicHeartRateLowerLimit),
-        ("testAnaerobicHeartRateUpperLimit", testAnaerobicHeartRateUpperLimit),
-        ("testAnaerobicThreshold", testAnaerobicThreshold),
-        ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit),
-        ("testDateOfBirth", testDateOfBirth),
-        ("testDateOfThresholdAssessment", testDateOfThresholdAssessment),
-        ("testEmailAddress", testEmailAddress),
-        ("testFatBurnHeartRateLowerLimit", testFatBurnHeartRateLowerLimit),
-        ("testFatBurnHeartRateUpperLimit", testFatBurnHeartRateUpperLimit),
-        ("testFirstName", testFirstName),
-        ("testFiveZoneHeartRateLimits", testFiveZoneHeartRateLimits),
-        ("testGender", testGender),
-        ("testHeartRateMax", testHeartRateMax),
-        ("testHeight", testHeight),
-        ("testHipCircumference", testHipCircumference),
-        ("testLastName", testLastName),
-        ("testMaximumRecommendedHeartRate", testMaximumRecommendedHeartRate),
-        ("testRestingHeartRate", testRestingHeartRate),
-        ("testSportTypeForAerobicAnaerobicThresholds", testSportTypeForAerobicAnaerobicThresholds),
-        ("testThreeZoneHeartRateLimits", testThreeZoneHeartRateLimits),
-        ("testTwoZoneHeartRateLimit", testTwoZoneHeartRateLimit),
-        ("testVo2Max", testVo2Max),
-        ("testWaistCircumference", testWaistCircumference),
-        ("testWeight", testWeight),
-        ("testDatabaseChangerement", testDatabaseChangerement),
-        ("testUserIndex", testUserIndex),
-        ("testBodyCompositionFeature", testBodyCompositionFeature),
-        ("testBodyCompositionMeasurement", testBodyCompositionMeasurement),
-        ("testWeightMeasurement", testWeightMeasurement),
-        ("testWeightScaleFeature", testWeightScaleFeature),
-        ("testUserControlPoint", testUserControlPoint),
-        ("testMagneticFluxDensity2D", testMagneticFluxDensity2D),
-        ("testMagneticFluxDensity3D", testMagneticFluxDensity3D),
-        ("testLanguage", testLanguage),
-        ("testBarometricPressureTrend", testBarometricPressureTrend),
-        ("testBondManagementControlPoint", testBondManagementControlPoint),
-        ("testBondManagementFeature", testBondManagementFeature),
-        ("testCentralAddressResolution", testCentralAddressResolution),
-        ("testCgmMeasurement", testCgmMeasurement),
-        ("testCgmFeature", testCgmFeature),
-        ("testCgmStatus", testCgmStatus),
-        ("testCgmSessionStartTime", testCgmSessionStartTime),
-        ("testCgmSessionRunTime", testCgmSessionRunTime),
-        ("testCgmSpecificOpsControlPoint", testCgmSpecificOpsControlPoint),
-        ("testIndoorPositioningConfiguration", testIndoorPositioningConfiguration),
-        ("testLatitude", testLatitude),
-        ("testLongitude", testLongitude),
-        ("testLocalNorthCoordinate", testLocalNorthCoordinate),
-        ("testLocalEastCoordinate", testLocalEastCoordinate),
-        ("testFloorNumber", testFloorNumber),
-        ("testAltitude", testAltitude),
-        ("testUncertainty", testUncertainty),
-        ("testLocationName", testLocationName),
-        ("testUri", testUri),
-        ("testHttpHeaders", testHttpHeaders),
-        ("testHttpStatusCode", testHttpStatusCode),
-        ("testHttpEntityBody", testHttpEntityBody),
-        ("testHttpControlPoint", testHttpControlPoint),
-        ("testHttpsSecurity", testHttpsSecurity),
-        ("testTdsControlPoint", testTdsControlPoint),
-        ("testOtsFeature", testOtsFeature),
-        ("testObjectName", testObjectName),
-        ("testObjectType", testObjectType),
-        ("testObjectSize", testObjectSize),
-        ("testObjectFirstCreated", testObjectFirstCreated),
-        ("testObjectLastModified", testObjectLastModified),
-        ("testObjectId", testObjectId),
-        ("testObjectProperties", testObjectProperties),
-        ("testObjectActionControlPoint", testObjectActionControlPoint),
-        ("testObjectListControlPoint", testObjectListControlPoint),
-        ("testObjectListFilter", testObjectListFilter),
-        ("testObjectChanged", testObjectChanged),
-        ("testIntelCorporation", testIntelCorporation),
-        ("testLabSensorSolutions", testLabSensorSolutions),
-        ("testQualcommLife", testQualcommLife),
-        ("testQualcommLife2", testQualcommLife2),
-        ("testKontaktMicroLocation", testKontaktMicroLocation),
-        ("testTaserInternational", testTaserInternational),
-        ("testTaserInternational2", testTaserInternational2),
-        ("testUniversityOfTokyo", testUniversityOfTokyo),
-        ("testUniversityOfTokyo2", testUniversityOfTokyo2),
-        ("testLineCorporation", testLineCorporation),
-        ("testBeijingJingdongCenturyTrading", testBeijingJingdongCenturyTrading),
-        ("testPlumeDesign", testPlumeDesign),
-        ("testStJudeMedical", testStJudeMedical),
-        ("testStJudeMedical2", testStJudeMedical2),
-        ("testUnwire", testUnwire),
-        ("testTangome", testTangome),
-        ("testTangome2", testTangome2),
-        ("testHewlettPackardCompany", testHewlettPackardCompany),
-        ("testHewlettPackardCompany2", testHewlettPackardCompany2),
-        ("testZebraTechnologies", testZebraTechnologies),
-        ("testBragiGmbh", testBragiGmbh),
-        ("testOrionLabs", testOrionLabs),
-        ("testStollmannEVGmbh", testStollmannEVGmbh),
-        ("testAtericaHealth", testAtericaHealth),
-        ("testAwearSolutions", testAwearSolutions),
-        ("testDopplerLab", testDopplerLab),
-        ("testDopplerLab2", testDopplerLab2),
-        ("testMedtronic", testMedtronic),
-        ("testMedtronic2", testMedtronic2),
-        ("testBlueBite", testBlueBite),
-        ("testRfDigitalCorp", testRfDigitalCorp),
-        ("testRfDigitalCorp2", testRfDigitalCorp2),
-        ("testHuaweiTechnologies华为技术有限公司", testHuaweiTechnologies华为技术有限公司),
-        ("testQingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司", testQingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司),
-        ("testSaltoSystemsSL", testSaltoSystemsSL),
-        ("testBOPlayAS", testBOPlayAS),
-        ("testApple", testApple),
-        ("testApple2", testApple2),
-        ("testTronForum", testTronForum),
-        ("testInteraxon", testInteraxon),
-        ("testArm", testArm),
-        ("testCsr", testCsr),
-        ("testJuma", testJuma),
-        ("testShanghaiImilabTechnology", testShanghaiImilabTechnology),
-        ("testJardenSafetySecurity", testJardenSafetySecurity),
-        ("testOttoq", testOttoq),
-        ("testOttoq2", testOttoq2),
-        ("testXiaomi", testXiaomi),
-        ("testTeslaMotor", testTeslaMotor),
-        ("testTeslaMotor2", testTeslaMotor2),
-        ("testCurrant", testCurrant),
-        ("testCurrant2", testCurrant2),
-        ("testEstimote", testEstimote),
-        ("testSamsaraNetworks", testSamsaraNetworks),
-        ("testGsiLaboratories", testGsiLaboratories),
-        ("testMobiquityNetworks", testMobiquityNetworks),
-        ("testDialogSemiconductorBV", testDialogSemiconductorBV),
-        ("testGoogle", testGoogle),
-        ("testGoogle2", testGoogle2),
-        ("testIntrepidControlSystems", testIntrepidControlSystems),
-        ("testIntrepidControlSystems2", testIntrepidControlSystems2),
-        ("testIttIndustries", testIttIndustries),
-        ("testPaxtonAccess", testPaxtonAccess),
-        ("testGopro", testGopro),
-        ("testGopro2", testGopro2),
-        ("testUtcFireAndSecurity", testUtcFireAndSecurity),
-        ("testSavantSystems", testSavantSystems),
-        ("testSavantSystems2", testSavantSystems2),
-        ("testGoogle3", testGoogle3),
-        ("testNokiaCorporation", testNokiaCorporation),
-        ("testNokiaCorporation2", testNokiaCorporation2),
-        ("testNokiaCorporation3", testNokiaCorporation3),
-        ("testNokiaCorporation4", testNokiaCorporation4),
-        ("testNestLabs", testNestLabs),
-        ("testNestLabs2", testNestLabs2),
-        ("testElectronicsTomorrowLimited", testElectronicsTomorrowLimited),
-        ("testMicrosoftCorporation", testMicrosoftCorporation),
-        ("testTaobao", testTaobao),
-        ("testWisilica", testWisilica),
-        ("testWisilica2", testWisilica2),
-        ("testVencerCo", testVencerCo),
-        ("testFacebook", testFacebook),
-        ("testFacebook2", testFacebook2),
-        ("testLgElectronics", testLgElectronics),
-        ("testTencentHoldingsLimited", testTencentHoldingsLimited),
-        ("testAdafruitIndustries", testAdafruitIndustries),
-        ("testDexcom", testDexcom),
-        ("testCloverNetwork", testCloverNetwork),
-        ("testBoseCorporation", testBoseCorporation),
-        ("testNod", testNod),
-        ("testKddiCorporation", testKddiCorporation),
-        ("testKddiCorporation2", testKddiCorporation2),
-        ("testBlueSparkTechnologies", testBlueSparkTechnologies),
-        ("testUuid360Fly", testUuid360Fly),
-        ("testPlusLocationSystems", testPlusLocationSystems),
-        ("testRealtekSemiconductorCorp", testRealtekSemiconductorCorp),
-        ("testKocomojo", testKocomojo),
-        ("testApple3", testApple3),
-        ("testApple4", testApple4),
-        ("testApple5", testApple5),
-        ("testApple6", testApple6),
-        ("testApple7", testApple7),
-        ("testApple8", testApple8),
-        ("testApple9", testApple9),
-        ("testApple10", testApple10),
-        ("testApple11", testApple11),
-        ("testApple12", testApple12),
-        ("testApple13", testApple13),
-        ("testApple14", testApple14),
-        ("testApple15", testApple15),
-        ("testApple16", testApple16),
-        ("testPlantronics", testPlantronics),
-        ("testBroadcomCorporation", testBroadcomCorporation),
-        ("testBroadcomCorporation2", testBroadcomCorporation2),
-        ("testGoogle4", testGoogle4),
-        ("testPebbleTechnologyCorporation", testPebbleTechnologyCorporation),
-        ("testIsscTechnologiesCorporation", testIsscTechnologiesCorporation),
-        ("testPerka", testPerka),
-        ("testJawbone", testJawbone),
-        ("testJawbone2", testJawbone2),
-        ("testCoin", testCoin),
-        ("testDesignShift", testDesignShift),
-        ("testAnhuiHuamiInformationTechnologyCo", testAnhuiHuamiInformationTechnologyCo),
-        ("testAnhuiHuamiInformationTechnologyCo2", testAnhuiHuamiInformationTechnologyCo2),
-        ("testAnki", testAnki),
-        ("testAnki2", testAnki2),
-        ("testNordicSemiconductorAsa", testNordicSemiconductorAsa),
-        ("testNordicSemiconductorAsa2", testNordicSemiconductorAsa2),
-        ("testSeedLabs", testSeedLabs),
-        ("testTencentHoldingsLimited2", testTencentHoldingsLimited2),
-        ("testQuinticCorp", testQuinticCorp),
-        ("testQuinticCorp2", testQuinticCorp2),
-        ("testSwirlNetworks", testSwirlNetworks),
-        ("testSwirlNetworks2", testSwirlNetworks2),
-        ("testTile", testTile),
-        ("testTile2", testTile2),
-        ("testPolarElectroOy", testPolarElectroOy),
-        ("testPolarElectroOy2", testPolarElectroOy2),
-        ("testIntel", testIntel),
-        ("testCsr2", testCsr2),
-        ("testCsr3", testCsr3),
-        ("testGoogle5", testGoogle5),
-        ("testGoogle6", testGoogle6),
-        ("testDialogSemiconductorGmbh", testDialogSemiconductorGmbh),
-        ("testWicentric", testWicentric),
-        ("testAplixCorporation", testAplixCorporation),
-        ("testAplixCorporation2", testAplixCorporation2),
-        ("testPaypal", testPaypal),
-        ("testPaypal2", testPaypal2),
-        ("testStollmannEVGmbh2", testStollmannEVGmbh2),
-        ("testGimbal", testGimbal),
-        ("testGimbal2", testGimbal2),
-        ("testGnResoundAS", testGnResoundAS),
-        ("testGnNetcom", testGnNetcom),
-        ("testFastIdentityOnlineAllianceFido", testFastIdentityOnlineAllianceFido),
-        ("testAllianceForWirelessPowerA4Wp", testAllianceForWirelessPowerA4Wp),
-        ]
+        static let allTests: [(String, (DefinedUUIDTests) -> () -> ())] = {
 
+            var allTests = [(String, (DefinedUUIDTests) -> () -> ())]()
+
+            allTests.append(("testSdp", testSdp))
+            allTests.append(("testRfcomm", testRfcomm))
+            allTests.append(("testTcsBin", testTcsBin))
+            allTests.append(("testAtt", testAtt))
+            allTests.append(("testObex", testObex))
+            allTests.append(("testBnep", testBnep))
+            allTests.append(("testUpnp", testUpnp))
+            allTests.append(("testHidp", testHidp))
+            allTests.append(("testHardcopyControlChannel", testHardcopyControlChannel))
+            allTests.append(("testHardcopyDataChannel", testHardcopyDataChannel))
+            allTests.append(("testHardcopyNotification", testHardcopyNotification))
+            allTests.append(("testAvctp", testAvctp))
+            allTests.append(("testAvdtp", testAvdtp))
+            allTests.append(("testCmtp", testCmtp))
+            allTests.append(("testMcapControlChannel", testMcapControlChannel))
+            allTests.append(("testMcapDataChannel", testMcapDataChannel))
+            allTests.append(("testL2Cap", testL2Cap))
+            allTests.append(("testServiceDiscoveryServerServiceClass", testServiceDiscoveryServerServiceClass))
+            allTests.append(("testBrowseGroupDescriptorServiceClass", testBrowseGroupDescriptorServiceClass))
+            allTests.append(("testPublicBrowseRoot", testPublicBrowseRoot))
+            allTests.append(("testSerialPort", testSerialPort))
+            allTests.append(("testLanAccessUsingPpp", testLanAccessUsingPpp))
+            allTests.append(("testDialupNetworking", testDialupNetworking))
+            allTests.append(("testIrmcSync", testIrmcSync))
+            allTests.append(("testObexObjectPush", testObexObjectPush))
+            allTests.append(("testObexFileTransfer", testObexFileTransfer))
+            allTests.append(("testIrmcSyncCommand", testIrmcSyncCommand))
+            allTests.append(("testHeadset", testHeadset))
+            allTests.append(("testCordlessTelephony", testCordlessTelephony))
+            allTests.append(("testAudioSource", testAudioSource))
+            allTests.append(("testAudioSink", testAudioSink))
+            allTests.append(("testAvRemoteControlTarget", testAvRemoteControlTarget))
+            allTests.append(("testAdvancedAudioDistribution", testAdvancedAudioDistribution))
+            allTests.append(("testAvRemoteControl", testAvRemoteControl))
+            allTests.append(("testAvRemoteControlController", testAvRemoteControlController))
+            allTests.append(("testIntercom", testIntercom))
+            allTests.append(("testFax", testFax))
+            allTests.append(("testHeadsetAg", testHeadsetAg))
+            allTests.append(("testWap", testWap))
+            allTests.append(("testWapClient", testWapClient))
+            allTests.append(("testPanu", testPanu))
+            allTests.append(("testNap", testNap))
+            allTests.append(("testGn", testGn))
+            allTests.append(("testDirectPrinting", testDirectPrinting))
+            allTests.append(("testReferencePrinting", testReferencePrinting))
+            allTests.append(("testBasicImagingProfile", testBasicImagingProfile))
+            allTests.append(("testImagingResponder", testImagingResponder))
+            allTests.append(("testImagingAutomaticArchive", testImagingAutomaticArchive))
+            allTests.append(("testImagingReferencedObjects", testImagingReferencedObjects))
+            allTests.append(("testHandsfree", testHandsfree))
+            allTests.append(("testHandsfreeAudioGateway", testHandsfreeAudioGateway))
+            allTests.append(("testDirectPrintingRefrenceObjectsService", testDirectPrintingRefrenceObjectsService))
+            allTests.append(("testReflectedUi", testReflectedUi))
+            allTests.append(("testBasicPrinting", testBasicPrinting))
+            allTests.append(("testPrintingStatus", testPrintingStatus))
+            allTests.append(("testHumanInterfaceDeviceService", testHumanInterfaceDeviceService))
+            allTests.append(("testHardcopyCableReplacement", testHardcopyCableReplacement))
+            allTests.append(("testHcrPrint", testHcrPrint))
+            allTests.append(("testHcrScan", testHcrScan))
+            allTests.append(("testCommonIsdnAccess", testCommonIsdnAccess))
+            allTests.append(("testSimAccess", testSimAccess))
+            allTests.append(("testPhonebookAccessClient", testPhonebookAccessClient))
+            allTests.append(("testPhonebookAccessServer", testPhonebookAccessServer))
+            allTests.append(("testPhonebookAccess", testPhonebookAccess))
+            allTests.append(("testHeadsetHs", testHeadsetHs))
+            allTests.append(("testMessageAccessServer", testMessageAccessServer))
+            allTests.append(("testMessageNotificationServer", testMessageNotificationServer))
+            allTests.append(("testMessageAccessProfile", testMessageAccessProfile))
+            allTests.append(("testGnss", testGnss))
+            allTests.append(("testGnssServer", testGnssServer))
+            allTests.append(("testUuid3Ddisplay", testUuid3Ddisplay))
+            allTests.append(("testUuid3Dglasses", testUuid3Dglasses))
+            allTests.append(("testUuid3Dsynchronization", testUuid3Dsynchronization))
+            allTests.append(("testMpsProfile", testMpsProfile))
+            allTests.append(("testMpsService", testMpsService))
+            allTests.append(("testPnpInformation", testPnpInformation))
+            allTests.append(("testGenericNetworking", testGenericNetworking))
+            allTests.append(("testGenericFileTransfer", testGenericFileTransfer))
+            allTests.append(("testGenericAudio", testGenericAudio))
+            allTests.append(("testGenericTelephony", testGenericTelephony))
+            allTests.append(("testUpnpService", testUpnpService))
+            allTests.append(("testUpnpIpService", testUpnpIpService))
+            allTests.append(("testUpnpIpPan", testUpnpIpPan))
+            allTests.append(("testUpnpIpLap", testUpnpIpLap))
+            allTests.append(("testUpnpIpL2Cap", testUpnpIpL2Cap))
+            allTests.append(("testVideoSource", testVideoSource))
+            allTests.append(("testVideoSink", testVideoSink))
+            allTests.append(("testVideoDistribution", testVideoDistribution))
+            allTests.append(("testHdp", testHdp))
+            allTests.append(("testHdpSource", testHdpSource))
+            allTests.append(("testHdpSink", testHdpSink))
+            allTests.append(("testGenericAccessProfile", testGenericAccessProfile))
+            allTests.append(("testGenericAttributeProfile", testGenericAttributeProfile))
+            allTests.append(("testImmediateAlert", testImmediateAlert))
+            allTests.append(("testLinkLoss", testLinkLoss))
+            allTests.append(("testTxPower", testTxPower))
+            allTests.append(("testCurrentTimeService", testCurrentTimeService))
+            allTests.append(("testReferenceTimeUpdateService", testReferenceTimeUpdateService))
+            allTests.append(("testNextDstChangeService", testNextDstChangeService))
+            allTests.append(("testGlucose", testGlucose))
+            allTests.append(("testHealthThermometer", testHealthThermometer))
+            allTests.append(("testDeviceInformation", testDeviceInformation))
+            allTests.append(("testHeartRate", testHeartRate))
+            allTests.append(("testPhoneAlertStatusService", testPhoneAlertStatusService))
+            allTests.append(("testBatteryService", testBatteryService))
+            allTests.append(("testBloodPressure", testBloodPressure))
+            allTests.append(("testAlertNotificationService", testAlertNotificationService))
+            allTests.append(("testHumanInterfaceDevice", testHumanInterfaceDevice))
+            allTests.append(("testScanParameters", testScanParameters))
+            allTests.append(("testRunningSpeedAndCadence", testRunningSpeedAndCadence))
+            allTests.append(("testAutomationIo", testAutomationIo))
+            allTests.append(("testCyclingSpeedAndCadence", testCyclingSpeedAndCadence))
+            allTests.append(("testCyclingPower", testCyclingPower))
+            allTests.append(("testLocationAndNavigation", testLocationAndNavigation))
+            allTests.append(("testEnvironmentalSensing", testEnvironmentalSensing))
+            allTests.append(("testBodyComposition", testBodyComposition))
+            allTests.append(("testUserData", testUserData))
+            allTests.append(("testWeightScale", testWeightScale))
+            allTests.append(("testBondManagement", testBondManagement))
+            allTests.append(("testContinuousGlucoseMonitoring", testContinuousGlucoseMonitoring))
+            allTests.append(("testInternetProtocolSupport", testInternetProtocolSupport))
+            allTests.append(("testIndoorPositioning", testIndoorPositioning))
+            allTests.append(("testPulseOximeter", testPulseOximeter))
+            allTests.append(("testHttpProxy", testHttpProxy))
+            allTests.append(("testTransportDiscovery", testTransportDiscovery))
+            allTests.append(("testObjectTransfer", testObjectTransfer))
+            allTests.append(("testPrimaryService", testPrimaryService))
+            allTests.append(("testSecondaryService", testSecondaryService))
+            allTests.append(("testInclude", testInclude))
+            allTests.append(("testCharacteristic", testCharacteristic))
+            allTests.append(("testCharacteristicExtendedProperties", testCharacteristicExtendedProperties))
+            allTests.append(("testCharacteristicUserDescription", testCharacteristicUserDescription))
+            allTests.append(("testClientCharacteristicConfiguration", testClientCharacteristicConfiguration))
+            allTests.append(("testServerCharacteristicConfiguration", testServerCharacteristicConfiguration))
+            allTests.append(("testCharacteristicFormat", testCharacteristicFormat))
+            allTests.append(("testCharacteristicAggregateFormat", testCharacteristicAggregateFormat))
+            allTests.append(("testValidRange", testValidRange))
+            allTests.append(("testExternalReportReference", testExternalReportReference))
+            allTests.append(("testReportReference", testReportReference))
+            allTests.append(("testNumberOfDigitals", testNumberOfDigitals))
+            allTests.append(("testValueTriggerSetting", testValueTriggerSetting))
+            allTests.append(("testEnvironmentalSensingConfiguration", testEnvironmentalSensingConfiguration))
+            allTests.append(("testEnvironmentalSensingMeasurement", testEnvironmentalSensingMeasurement))
+            allTests.append(("testEnvironmentalSensingTriggerSetting", testEnvironmentalSensingTriggerSetting))
+            allTests.append(("testTimeTriggerSetting", testTimeTriggerSetting))
+            allTests.append(("testDeviceName", testDeviceName))
+            allTests.append(("testAppearance", testAppearance))
+            allTests.append(("testPeripheralPrivacyFlag", testPeripheralPrivacyFlag))
+            allTests.append(("testReconnectionAddress", testReconnectionAddress))
+            allTests.append(("testPeripheralPreferredConnectionParameters", testPeripheralPreferredConnectionParameters))
+            allTests.append(("testServiceChanged", testServiceChanged))
+            allTests.append(("testAlertLevel", testAlertLevel))
+            allTests.append(("testTxPowerLevel", testTxPowerLevel))
+            allTests.append(("testDateTime", testDateTime))
+            allTests.append(("testDayOfWeek", testDayOfWeek))
+            allTests.append(("testDayDateTime", testDayDateTime))
+            allTests.append(("testExactTime256", testExactTime256))
+            allTests.append(("testDstOffset", testDstOffset))
+            allTests.append(("testTimeZone", testTimeZone))
+            allTests.append(("testLocalTimeInformation", testLocalTimeInformation))
+            allTests.append(("testTimeWithDst", testTimeWithDst))
+            allTests.append(("testTimeAccuracy", testTimeAccuracy))
+            allTests.append(("testTimeSource", testTimeSource))
+            allTests.append(("testReferenceTimeInformation", testReferenceTimeInformation))
+            allTests.append(("testTimeUpdateControlPoint", testTimeUpdateControlPoint))
+            allTests.append(("testTimeUpdateState", testTimeUpdateState))
+            allTests.append(("testGlucoseMeasurement", testGlucoseMeasurement))
+            allTests.append(("testBatteryLevel", testBatteryLevel))
+            allTests.append(("testTemperatureMeasurement", testTemperatureMeasurement))
+            allTests.append(("testTemperatureType", testTemperatureType))
+            allTests.append(("testIntermediateTemperature", testIntermediateTemperature))
+            allTests.append(("testMeasurementInterval", testMeasurementInterval))
+            allTests.append(("testBootKeyboardInputReport", testBootKeyboardInputReport))
+            allTests.append(("testSystemId", testSystemId))
+            allTests.append(("testModelNumberString", testModelNumberString))
+            allTests.append(("testSerialNumberString", testSerialNumberString))
+            allTests.append(("testFirmwareRevisionString", testFirmwareRevisionString))
+            allTests.append(("testHardwareRevisionString", testHardwareRevisionString))
+            allTests.append(("testSoftwareRevisionString", testSoftwareRevisionString))
+            allTests.append(("testManufacturerNameString", testManufacturerNameString))
+            allTests.append(("testIeee1107320601RegulatoryCertDataList", testIeee1107320601RegulatoryCertDataList))
+            allTests.append(("testCurrentTime", testCurrentTime))
+            allTests.append(("testMagneticDeclination", testMagneticDeclination))
+            allTests.append(("testScanRefresh", testScanRefresh))
+            allTests.append(("testBootKeyboardOutputReport", testBootKeyboardOutputReport))
+            allTests.append(("testBootMouseInputReport", testBootMouseInputReport))
+            allTests.append(("testGlucoseMeasurementContext", testGlucoseMeasurementContext))
+            allTests.append(("testBloodPressureMeasurement", testBloodPressureMeasurement))
+            allTests.append(("testIntermediateCuffPressure", testIntermediateCuffPressure))
+            allTests.append(("testHeartRateMeasurement", testHeartRateMeasurement))
+            allTests.append(("testBodySensorLocation", testBodySensorLocation))
+            allTests.append(("testHeartRateControlPoint", testHeartRateControlPoint))
+            allTests.append(("testAlertStatus", testAlertStatus))
+            allTests.append(("testRingerControlPoint", testRingerControlPoint))
+            allTests.append(("testRingerSetting", testRingerSetting))
+            allTests.append(("testAlertCategoryIdBitMask", testAlertCategoryIdBitMask))
+            allTests.append(("testAlertCategoryId", testAlertCategoryId))
+            allTests.append(("testAlertNotificationControlPoint", testAlertNotificationControlPoint))
+            allTests.append(("testUnreadAlertStatus", testUnreadAlertStatus))
+            allTests.append(("testNewAlert", testNewAlert))
+            allTests.append(("testSupportedNewAlertCategory", testSupportedNewAlertCategory))
+            allTests.append(("testSupportedUnreadAlertCategory", testSupportedUnreadAlertCategory))
+            allTests.append(("testBloodPressureFeature", testBloodPressureFeature))
+            allTests.append(("testHidInformation", testHidInformation))
+            allTests.append(("testReportMap", testReportMap))
+            allTests.append(("testHidControlPoint", testHidControlPoint))
+            allTests.append(("testReport", testReport))
+            allTests.append(("testProtocolMode", testProtocolMode))
+            allTests.append(("testScanIntervalWindow", testScanIntervalWindow))
+            allTests.append(("testPnpId", testPnpId))
+            allTests.append(("testGlucoseFeature", testGlucoseFeature))
+            allTests.append(("testRecordAccessControlPoint", testRecordAccessControlPoint))
+            allTests.append(("testRscMeasurement", testRscMeasurement))
+            allTests.append(("testRscFeature", testRscFeature))
+            allTests.append(("testScControlPoint", testScControlPoint))
+            allTests.append(("testDigital", testDigital))
+            allTests.append(("testAnalog", testAnalog))
+            allTests.append(("testAggregate", testAggregate))
+            allTests.append(("testCscMeasurement", testCscMeasurement))
+            allTests.append(("testCscFeature", testCscFeature))
+            allTests.append(("testSensorLocation", testSensorLocation))
+            allTests.append(("testCyclingPowerMeasurement", testCyclingPowerMeasurement))
+            allTests.append(("testCyclingPowerVector", testCyclingPowerVector))
+            allTests.append(("testCyclingPowerFeature", testCyclingPowerFeature))
+            allTests.append(("testCyclingPowerControlPoint", testCyclingPowerControlPoint))
+            allTests.append(("testLocationAndSpeed", testLocationAndSpeed))
+            allTests.append(("testNavigation", testNavigation))
+            allTests.append(("testPositionQuality", testPositionQuality))
+            allTests.append(("testLnFeature", testLnFeature))
+            allTests.append(("testLnControlPoint", testLnControlPoint))
+            allTests.append(("testElevation", testElevation))
+            allTests.append(("testPressure", testPressure))
+            allTests.append(("testTemperature", testTemperature))
+            allTests.append(("testHumidity", testHumidity))
+            allTests.append(("testTrueWindSpeed", testTrueWindSpeed))
+            allTests.append(("testTrueWindDirection", testTrueWindDirection))
+            allTests.append(("testApparentWindSpeed", testApparentWindSpeed))
+            allTests.append(("testApparentWindDirection", testApparentWindDirection))
+            allTests.append(("testGustFactor", testGustFactor))
+            allTests.append(("testPollenConcentration", testPollenConcentration))
+            allTests.append(("testUvIndex", testUvIndex))
+            allTests.append(("testIrradiance", testIrradiance))
+            allTests.append(("testRainfall", testRainfall))
+            allTests.append(("testWindChill", testWindChill))
+            allTests.append(("testHeatIndex", testHeatIndex))
+            allTests.append(("testDewPoint", testDewPoint))
+            allTests.append(("testTrend", testTrend))
+            allTests.append(("testDescriptorValueChanged", testDescriptorValueChanged))
+            allTests.append(("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit))
+            allTests.append(("testAerobicThreshold", testAerobicThreshold))
+            allTests.append(("testAge", testAge))
+            allTests.append(("testAnaerobicHeartRateLowerLimit", testAnaerobicHeartRateLowerLimit))
+            allTests.append(("testAnaerobicHeartRateUpperLimit", testAnaerobicHeartRateUpperLimit))
+            allTests.append(("testAnaerobicThreshold", testAnaerobicThreshold))
+            allTests.append(("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit))
+            allTests.append(("testDateOfBirth", testDateOfBirth))
+            allTests.append(("testDateOfThresholdAssessment", testDateOfThresholdAssessment))
+            allTests.append(("testEmailAddress", testEmailAddress))
+            allTests.append(("testFatBurnHeartRateLowerLimit", testFatBurnHeartRateLowerLimit))
+            allTests.append(("testFatBurnHeartRateUpperLimit", testFatBurnHeartRateUpperLimit))
+            allTests.append(("testFirstName", testFirstName))
+            allTests.append(("testFiveZoneHeartRateLimits", testFiveZoneHeartRateLimits))
+            allTests.append(("testGender", testGender))
+            allTests.append(("testHeartRateMax", testHeartRateMax))
+            allTests.append(("testHeight", testHeight))
+            allTests.append(("testHipCircumference", testHipCircumference))
+            allTests.append(("testLastName", testLastName))
+            allTests.append(("testMaximumRecommendedHeartRate", testMaximumRecommendedHeartRate))
+            allTests.append(("testRestingHeartRate", testRestingHeartRate))
+            allTests.append(("testSportTypeForAerobicAnaerobicThresholds", testSportTypeForAerobicAnaerobicThresholds))
+            allTests.append(("testThreeZoneHeartRateLimits", testThreeZoneHeartRateLimits))
+            allTests.append(("testTwoZoneHeartRateLimit", testTwoZoneHeartRateLimit))
+            allTests.append(("testVo2Max", testVo2Max))
+            allTests.append(("testWaistCircumference", testWaistCircumference))
+            allTests.append(("testWeight", testWeight))
+            allTests.append(("testDatabaseChangerement", testDatabaseChangerement))
+            allTests.append(("testUserIndex", testUserIndex))
+            allTests.append(("testBodyCompositionFeature", testBodyCompositionFeature))
+            allTests.append(("testBodyCompositionMeasurement", testBodyCompositionMeasurement))
+            allTests.append(("testWeightMeasurement", testWeightMeasurement))
+            allTests.append(("testWeightScaleFeature", testWeightScaleFeature))
+            allTests.append(("testUserControlPoint", testUserControlPoint))
+            allTests.append(("testMagneticFluxDensity2D", testMagneticFluxDensity2D))
+            allTests.append(("testMagneticFluxDensity3D", testMagneticFluxDensity3D))
+            allTests.append(("testLanguage", testLanguage))
+            allTests.append(("testBarometricPressureTrend", testBarometricPressureTrend))
+            allTests.append(("testBondManagementControlPoint", testBondManagementControlPoint))
+            allTests.append(("testBondManagementFeature", testBondManagementFeature))
+            allTests.append(("testCentralAddressResolution", testCentralAddressResolution))
+            allTests.append(("testCgmMeasurement", testCgmMeasurement))
+            allTests.append(("testCgmFeature", testCgmFeature))
+            allTests.append(("testCgmStatus", testCgmStatus))
+            allTests.append(("testCgmSessionStartTime", testCgmSessionStartTime))
+            allTests.append(("testCgmSessionRunTime", testCgmSessionRunTime))
+            allTests.append(("testCgmSpecificOpsControlPoint", testCgmSpecificOpsControlPoint))
+            allTests.append(("testIndoorPositioningConfiguration", testIndoorPositioningConfiguration))
+            allTests.append(("testLatitude", testLatitude))
+            allTests.append(("testLongitude", testLongitude))
+            allTests.append(("testLocalNorthCoordinate", testLocalNorthCoordinate))
+            allTests.append(("testLocalEastCoordinate", testLocalEastCoordinate))
+            allTests.append(("testFloorNumber", testFloorNumber))
+            allTests.append(("testAltitude", testAltitude))
+            allTests.append(("testUncertainty", testUncertainty))
+            allTests.append(("testLocationName", testLocationName))
+            allTests.append(("testUri", testUri))
+            allTests.append(("testHttpHeaders", testHttpHeaders))
+            allTests.append(("testHttpStatusCode", testHttpStatusCode))
+            allTests.append(("testHttpEntityBody", testHttpEntityBody))
+            allTests.append(("testHttpControlPoint", testHttpControlPoint))
+            allTests.append(("testHttpsSecurity", testHttpsSecurity))
+            allTests.append(("testTdsControlPoint", testTdsControlPoint))
+            allTests.append(("testOtsFeature", testOtsFeature))
+            allTests.append(("testObjectName", testObjectName))
+            allTests.append(("testObjectType", testObjectType))
+            allTests.append(("testObjectSize", testObjectSize))
+            allTests.append(("testObjectFirstCreated", testObjectFirstCreated))
+            allTests.append(("testObjectLastModified", testObjectLastModified))
+            allTests.append(("testObjectId", testObjectId))
+            allTests.append(("testObjectProperties", testObjectProperties))
+            allTests.append(("testObjectActionControlPoint", testObjectActionControlPoint))
+            allTests.append(("testObjectListControlPoint", testObjectListControlPoint))
+            allTests.append(("testObjectListFilter", testObjectListFilter))
+            allTests.append(("testObjectChanged", testObjectChanged))
+            allTests.append(("testIntelCorporation", testIntelCorporation))
+            allTests.append(("testLabSensorSolutions", testLabSensorSolutions))
+            allTests.append(("testQualcommLife", testQualcommLife))
+            allTests.append(("testQualcommLife2", testQualcommLife2))
+            allTests.append(("testKontaktMicroLocation", testKontaktMicroLocation))
+            allTests.append(("testTaserInternational", testTaserInternational))
+            allTests.append(("testTaserInternational2", testTaserInternational2))
+            allTests.append(("testUniversityOfTokyo", testUniversityOfTokyo))
+            allTests.append(("testUniversityOfTokyo2", testUniversityOfTokyo2))
+            allTests.append(("testLineCorporation", testLineCorporation))
+            allTests.append(("testBeijingJingdongCenturyTrading", testBeijingJingdongCenturyTrading))
+            allTests.append(("testPlumeDesign", testPlumeDesign))
+            allTests.append(("testStJudeMedical", testStJudeMedical))
+            allTests.append(("testStJudeMedical2", testStJudeMedical2))
+            allTests.append(("testUnwire", testUnwire))
+            allTests.append(("testTangome", testTangome))
+            allTests.append(("testTangome2", testTangome2))
+            allTests.append(("testHewlettPackardCompany", testHewlettPackardCompany))
+            allTests.append(("testHewlettPackardCompany2", testHewlettPackardCompany2))
+            allTests.append(("testZebraTechnologies", testZebraTechnologies))
+            allTests.append(("testBragiGmbh", testBragiGmbh))
+            allTests.append(("testOrionLabs", testOrionLabs))
+            allTests.append(("testStollmannEVGmbh", testStollmannEVGmbh))
+            allTests.append(("testAtericaHealth", testAtericaHealth))
+            allTests.append(("testAwearSolutions", testAwearSolutions))
+            allTests.append(("testDopplerLab", testDopplerLab))
+            allTests.append(("testDopplerLab2", testDopplerLab2))
+            allTests.append(("testMedtronic", testMedtronic))
+            allTests.append(("testMedtronic2", testMedtronic2))
+            allTests.append(("testBlueBite", testBlueBite))
+            allTests.append(("testRfDigitalCorp", testRfDigitalCorp))
+            allTests.append(("testRfDigitalCorp2", testRfDigitalCorp2))
+            allTests.append(("testHuaweiTechnologies华为技术有限公司", testHuaweiTechnologies华为技术有限公司))
+            allTests.append(("testQingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司", testQingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司))
+            allTests.append(("testSaltoSystemsSL", testSaltoSystemsSL))
+            allTests.append(("testBOPlayAS", testBOPlayAS))
+            allTests.append(("testApple", testApple))
+            allTests.append(("testApple2", testApple2))
+            allTests.append(("testTronForum", testTronForum))
+            allTests.append(("testInteraxon", testInteraxon))
+            allTests.append(("testArm", testArm))
+            allTests.append(("testCsr", testCsr))
+            allTests.append(("testJuma", testJuma))
+            allTests.append(("testShanghaiImilabTechnology", testShanghaiImilabTechnology))
+            allTests.append(("testJardenSafetySecurity", testJardenSafetySecurity))
+            allTests.append(("testOttoq", testOttoq))
+            allTests.append(("testOttoq2", testOttoq2))
+            allTests.append(("testXiaomi", testXiaomi))
+            allTests.append(("testTeslaMotor", testTeslaMotor))
+            allTests.append(("testTeslaMotor2", testTeslaMotor2))
+            allTests.append(("testCurrant", testCurrant))
+            allTests.append(("testCurrant2", testCurrant2))
+            allTests.append(("testEstimote", testEstimote))
+            allTests.append(("testSamsaraNetworks", testSamsaraNetworks))
+            allTests.append(("testGsiLaboratories", testGsiLaboratories))
+            allTests.append(("testMobiquityNetworks", testMobiquityNetworks))
+            allTests.append(("testDialogSemiconductorBV", testDialogSemiconductorBV))
+            allTests.append(("testGoogle", testGoogle))
+            allTests.append(("testGoogle2", testGoogle2))
+            allTests.append(("testIntrepidControlSystems", testIntrepidControlSystems))
+            allTests.append(("testIntrepidControlSystems2", testIntrepidControlSystems2))
+            allTests.append(("testIttIndustries", testIttIndustries))
+            allTests.append(("testPaxtonAccess", testPaxtonAccess))
+            allTests.append(("testGopro", testGopro))
+            allTests.append(("testGopro2", testGopro2))
+            allTests.append(("testUtcFireAndSecurity", testUtcFireAndSecurity))
+            allTests.append(("testSavantSystems", testSavantSystems))
+            allTests.append(("testSavantSystems2", testSavantSystems2))
+            allTests.append(("testGoogle3", testGoogle3))
+            allTests.append(("testNokiaCorporation", testNokiaCorporation))
+            allTests.append(("testNokiaCorporation2", testNokiaCorporation2))
+            allTests.append(("testNokiaCorporation3", testNokiaCorporation3))
+            allTests.append(("testNokiaCorporation4", testNokiaCorporation4))
+            allTests.append(("testNestLabs", testNestLabs))
+            allTests.append(("testNestLabs2", testNestLabs2))
+            allTests.append(("testElectronicsTomorrowLimited", testElectronicsTomorrowLimited))
+            allTests.append(("testMicrosoftCorporation", testMicrosoftCorporation))
+            allTests.append(("testTaobao", testTaobao))
+            allTests.append(("testWisilica", testWisilica))
+            allTests.append(("testWisilica2", testWisilica2))
+            allTests.append(("testVencerCo", testVencerCo))
+            allTests.append(("testFacebook", testFacebook))
+            allTests.append(("testFacebook2", testFacebook2))
+            allTests.append(("testLgElectronics", testLgElectronics))
+            allTests.append(("testTencentHoldingsLimited", testTencentHoldingsLimited))
+            allTests.append(("testAdafruitIndustries", testAdafruitIndustries))
+            allTests.append(("testDexcom", testDexcom))
+            allTests.append(("testCloverNetwork", testCloverNetwork))
+            allTests.append(("testBoseCorporation", testBoseCorporation))
+            allTests.append(("testNod", testNod))
+            allTests.append(("testKddiCorporation", testKddiCorporation))
+            allTests.append(("testKddiCorporation2", testKddiCorporation2))
+            allTests.append(("testBlueSparkTechnologies", testBlueSparkTechnologies))
+            allTests.append(("testUuid360Fly", testUuid360Fly))
+            allTests.append(("testPlusLocationSystems", testPlusLocationSystems))
+            allTests.append(("testRealtekSemiconductorCorp", testRealtekSemiconductorCorp))
+            allTests.append(("testKocomojo", testKocomojo))
+            allTests.append(("testApple3", testApple3))
+            allTests.append(("testApple4", testApple4))
+            allTests.append(("testApple5", testApple5))
+            allTests.append(("testApple6", testApple6))
+            allTests.append(("testApple7", testApple7))
+            allTests.append(("testApple8", testApple8))
+            allTests.append(("testApple9", testApple9))
+            allTests.append(("testApple10", testApple10))
+            allTests.append(("testApple11", testApple11))
+            allTests.append(("testApple12", testApple12))
+            allTests.append(("testApple13", testApple13))
+            allTests.append(("testApple14", testApple14))
+            allTests.append(("testApple15", testApple15))
+            allTests.append(("testApple16", testApple16))
+            allTests.append(("testPlantronics", testPlantronics))
+            allTests.append(("testBroadcomCorporation", testBroadcomCorporation))
+            allTests.append(("testBroadcomCorporation2", testBroadcomCorporation2))
+            allTests.append(("testGoogle4", testGoogle4))
+            allTests.append(("testPebbleTechnologyCorporation", testPebbleTechnologyCorporation))
+            allTests.append(("testIsscTechnologiesCorporation", testIsscTechnologiesCorporation))
+            allTests.append(("testPerka", testPerka))
+            allTests.append(("testJawbone", testJawbone))
+            allTests.append(("testJawbone2", testJawbone2))
+            allTests.append(("testCoin", testCoin))
+            allTests.append(("testDesignShift", testDesignShift))
+            allTests.append(("testAnhuiHuamiInformationTechnologyCo", testAnhuiHuamiInformationTechnologyCo))
+            allTests.append(("testAnhuiHuamiInformationTechnologyCo2", testAnhuiHuamiInformationTechnologyCo2))
+            allTests.append(("testAnki", testAnki))
+            allTests.append(("testAnki2", testAnki2))
+            allTests.append(("testNordicSemiconductorAsa", testNordicSemiconductorAsa))
+            allTests.append(("testNordicSemiconductorAsa2", testNordicSemiconductorAsa2))
+            allTests.append(("testSeedLabs", testSeedLabs))
+            allTests.append(("testTencentHoldingsLimited2", testTencentHoldingsLimited2))
+            allTests.append(("testQuinticCorp", testQuinticCorp))
+            allTests.append(("testQuinticCorp2", testQuinticCorp2))
+            allTests.append(("testSwirlNetworks", testSwirlNetworks))
+            allTests.append(("testSwirlNetworks2", testSwirlNetworks2))
+            allTests.append(("testTile", testTile))
+            allTests.append(("testTile2", testTile2))
+            allTests.append(("testPolarElectroOy", testPolarElectroOy))
+            allTests.append(("testPolarElectroOy2", testPolarElectroOy2))
+            allTests.append(("testIntel", testIntel))
+            allTests.append(("testCsr2", testCsr2))
+            allTests.append(("testCsr3", testCsr3))
+            allTests.append(("testGoogle5", testGoogle5))
+            allTests.append(("testGoogle6", testGoogle6))
+            allTests.append(("testDialogSemiconductorGmbh", testDialogSemiconductorGmbh))
+            allTests.append(("testWicentric", testWicentric))
+            allTests.append(("testAplixCorporation", testAplixCorporation))
+            allTests.append(("testAplixCorporation2", testAplixCorporation2))
+            allTests.append(("testPaypal", testPaypal))
+            allTests.append(("testPaypal2", testPaypal2))
+            allTests.append(("testStollmannEVGmbh2", testStollmannEVGmbh2))
+            allTests.append(("testGimbal", testGimbal))
+            allTests.append(("testGimbal2", testGimbal2))
+            allTests.append(("testGnResoundAS", testGnResoundAS))
+            allTests.append(("testGnNetcom", testGnNetcom))
+            allTests.append(("testFastIdentityOnlineAllianceFido", testFastIdentityOnlineAllianceFido))
+            allTests.append(("testAllianceForWirelessPowerA4Wp", testAllianceForWirelessPowerA4Wp))
+
+            return allTests
+        }()
+    
     /// Test SDP
     func testSdp() {
 
-         XCTAssertEqual(BluetoothUUID.sdp.rawValue, 0x0001)
-         XCTAssertEqual(BluetoothUUID.sdp.rawValue, 1)
+         XCTAssertEqual(BluetoothUUID.sdp.rawValue, "0001")
          XCTAssertEqual(BluetoothUUID.sdp, .bit16(0x0001))
+         XCTAssertEqual(BluetoothUUID.sdp, .bit16(1))
          XCTAssertEqual(BluetoothUUID.sdp.name, "SDP")
 
     }
@@ -506,9 +511,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test RFCOMM
     func testRfcomm() {
 
-         XCTAssertEqual(BluetoothUUID.rfcomm.rawValue, 0x0003)
-         XCTAssertEqual(BluetoothUUID.rfcomm.rawValue, 3)
+         XCTAssertEqual(BluetoothUUID.rfcomm.rawValue, "0003")
          XCTAssertEqual(BluetoothUUID.rfcomm, .bit16(0x0003))
+         XCTAssertEqual(BluetoothUUID.rfcomm, .bit16(3))
          XCTAssertEqual(BluetoothUUID.rfcomm.name, "RFCOMM")
 
     }
@@ -516,9 +521,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test TCS-BIN
     func testTcsBin() {
 
-         XCTAssertEqual(BluetoothUUID.tcsBin.rawValue, 0x0005)
-         XCTAssertEqual(BluetoothUUID.tcsBin.rawValue, 5)
+         XCTAssertEqual(BluetoothUUID.tcsBin.rawValue, "0005")
          XCTAssertEqual(BluetoothUUID.tcsBin, .bit16(0x0005))
+         XCTAssertEqual(BluetoothUUID.tcsBin, .bit16(5))
          XCTAssertEqual(BluetoothUUID.tcsBin.name, "TCS-BIN")
 
     }
@@ -526,9 +531,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test ATT
     func testAtt() {
 
-         XCTAssertEqual(BluetoothUUID.att.rawValue, 0x0007)
-         XCTAssertEqual(BluetoothUUID.att.rawValue, 7)
+         XCTAssertEqual(BluetoothUUID.att.rawValue, "0007")
          XCTAssertEqual(BluetoothUUID.att, .bit16(0x0007))
+         XCTAssertEqual(BluetoothUUID.att, .bit16(7))
          XCTAssertEqual(BluetoothUUID.att.name, "ATT")
 
     }
@@ -536,9 +541,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test OBEX
     func testObex() {
 
-         XCTAssertEqual(BluetoothUUID.obex.rawValue, 0x0008)
-         XCTAssertEqual(BluetoothUUID.obex.rawValue, 8)
+         XCTAssertEqual(BluetoothUUID.obex.rawValue, "0008")
          XCTAssertEqual(BluetoothUUID.obex, .bit16(0x0008))
+         XCTAssertEqual(BluetoothUUID.obex, .bit16(8))
          XCTAssertEqual(BluetoothUUID.obex.name, "OBEX")
 
     }
@@ -546,9 +551,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test BNEP
     func testBnep() {
 
-         XCTAssertEqual(BluetoothUUID.bnep.rawValue, 0x000F)
-         XCTAssertEqual(BluetoothUUID.bnep.rawValue, 15)
+         XCTAssertEqual(BluetoothUUID.bnep.rawValue, "000F")
          XCTAssertEqual(BluetoothUUID.bnep, .bit16(0x000F))
+         XCTAssertEqual(BluetoothUUID.bnep, .bit16(15))
          XCTAssertEqual(BluetoothUUID.bnep.name, "BNEP")
 
     }
@@ -556,9 +561,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UPNP
     func testUpnp() {
 
-         XCTAssertEqual(BluetoothUUID.upnp.rawValue, 0x0010)
-         XCTAssertEqual(BluetoothUUID.upnp.rawValue, 16)
+         XCTAssertEqual(BluetoothUUID.upnp.rawValue, "0010")
          XCTAssertEqual(BluetoothUUID.upnp, .bit16(0x0010))
+         XCTAssertEqual(BluetoothUUID.upnp, .bit16(16))
          XCTAssertEqual(BluetoothUUID.upnp.name, "UPNP")
 
     }
@@ -566,9 +571,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HIDP
     func testHidp() {
 
-         XCTAssertEqual(BluetoothUUID.hidp.rawValue, 0x0011)
-         XCTAssertEqual(BluetoothUUID.hidp.rawValue, 17)
+         XCTAssertEqual(BluetoothUUID.hidp.rawValue, "0011")
          XCTAssertEqual(BluetoothUUID.hidp, .bit16(0x0011))
+         XCTAssertEqual(BluetoothUUID.hidp, .bit16(17))
          XCTAssertEqual(BluetoothUUID.hidp.name, "HIDP")
 
     }
@@ -576,9 +581,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hardcopy Control Channel
     func testHardcopyControlChannel() {
 
-         XCTAssertEqual(BluetoothUUID.hardcopyControlChannel.rawValue, 0x0012)
-         XCTAssertEqual(BluetoothUUID.hardcopyControlChannel.rawValue, 18)
+         XCTAssertEqual(BluetoothUUID.hardcopyControlChannel.rawValue, "0012")
          XCTAssertEqual(BluetoothUUID.hardcopyControlChannel, .bit16(0x0012))
+         XCTAssertEqual(BluetoothUUID.hardcopyControlChannel, .bit16(18))
          XCTAssertEqual(BluetoothUUID.hardcopyControlChannel.name, "Hardcopy Control Channel")
 
     }
@@ -586,9 +591,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hardcopy Data Channel
     func testHardcopyDataChannel() {
 
-         XCTAssertEqual(BluetoothUUID.hardcopyDataChannel.rawValue, 0x0014)
-         XCTAssertEqual(BluetoothUUID.hardcopyDataChannel.rawValue, 20)
+         XCTAssertEqual(BluetoothUUID.hardcopyDataChannel.rawValue, "0014")
          XCTAssertEqual(BluetoothUUID.hardcopyDataChannel, .bit16(0x0014))
+         XCTAssertEqual(BluetoothUUID.hardcopyDataChannel, .bit16(20))
          XCTAssertEqual(BluetoothUUID.hardcopyDataChannel.name, "Hardcopy Data Channel")
 
     }
@@ -596,9 +601,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hardcopy Notification
     func testHardcopyNotification() {
 
-         XCTAssertEqual(BluetoothUUID.hardcopyNotification.rawValue, 0x0016)
-         XCTAssertEqual(BluetoothUUID.hardcopyNotification.rawValue, 22)
+         XCTAssertEqual(BluetoothUUID.hardcopyNotification.rawValue, "0016")
          XCTAssertEqual(BluetoothUUID.hardcopyNotification, .bit16(0x0016))
+         XCTAssertEqual(BluetoothUUID.hardcopyNotification, .bit16(22))
          XCTAssertEqual(BluetoothUUID.hardcopyNotification.name, "Hardcopy Notification")
 
     }
@@ -606,9 +611,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test AVCTP
     func testAvctp() {
 
-         XCTAssertEqual(BluetoothUUID.avctp.rawValue, 0x0017)
-         XCTAssertEqual(BluetoothUUID.avctp.rawValue, 23)
+         XCTAssertEqual(BluetoothUUID.avctp.rawValue, "0017")
          XCTAssertEqual(BluetoothUUID.avctp, .bit16(0x0017))
+         XCTAssertEqual(BluetoothUUID.avctp, .bit16(23))
          XCTAssertEqual(BluetoothUUID.avctp.name, "AVCTP")
 
     }
@@ -616,9 +621,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test AVDTP
     func testAvdtp() {
 
-         XCTAssertEqual(BluetoothUUID.avdtp.rawValue, 0x0019)
-         XCTAssertEqual(BluetoothUUID.avdtp.rawValue, 25)
+         XCTAssertEqual(BluetoothUUID.avdtp.rawValue, "0019")
          XCTAssertEqual(BluetoothUUID.avdtp, .bit16(0x0019))
+         XCTAssertEqual(BluetoothUUID.avdtp, .bit16(25))
          XCTAssertEqual(BluetoothUUID.avdtp.name, "AVDTP")
 
     }
@@ -626,9 +631,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CMTP
     func testCmtp() {
 
-         XCTAssertEqual(BluetoothUUID.cmtp.rawValue, 0x001B)
-         XCTAssertEqual(BluetoothUUID.cmtp.rawValue, 27)
+         XCTAssertEqual(BluetoothUUID.cmtp.rawValue, "001B")
          XCTAssertEqual(BluetoothUUID.cmtp, .bit16(0x001B))
+         XCTAssertEqual(BluetoothUUID.cmtp, .bit16(27))
          XCTAssertEqual(BluetoothUUID.cmtp.name, "CMTP")
 
     }
@@ -636,9 +641,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test MCAP Control Channel
     func testMcapControlChannel() {
 
-         XCTAssertEqual(BluetoothUUID.mcapControlChannel.rawValue, 0x001E)
-         XCTAssertEqual(BluetoothUUID.mcapControlChannel.rawValue, 30)
+         XCTAssertEqual(BluetoothUUID.mcapControlChannel.rawValue, "001E")
          XCTAssertEqual(BluetoothUUID.mcapControlChannel, .bit16(0x001E))
+         XCTAssertEqual(BluetoothUUID.mcapControlChannel, .bit16(30))
          XCTAssertEqual(BluetoothUUID.mcapControlChannel.name, "MCAP Control Channel")
 
     }
@@ -646,9 +651,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test MCAP Data Channel
     func testMcapDataChannel() {
 
-         XCTAssertEqual(BluetoothUUID.mcapDataChannel.rawValue, 0x001F)
-         XCTAssertEqual(BluetoothUUID.mcapDataChannel.rawValue, 31)
+         XCTAssertEqual(BluetoothUUID.mcapDataChannel.rawValue, "001F")
          XCTAssertEqual(BluetoothUUID.mcapDataChannel, .bit16(0x001F))
+         XCTAssertEqual(BluetoothUUID.mcapDataChannel, .bit16(31))
          XCTAssertEqual(BluetoothUUID.mcapDataChannel.name, "MCAP Data Channel")
 
     }
@@ -656,9 +661,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test L2CAP
     func testL2Cap() {
 
-         XCTAssertEqual(BluetoothUUID.l2Cap.rawValue, 0x0100)
-         XCTAssertEqual(BluetoothUUID.l2Cap.rawValue, 256)
+         XCTAssertEqual(BluetoothUUID.l2Cap.rawValue, "0100")
          XCTAssertEqual(BluetoothUUID.l2Cap, .bit16(0x0100))
+         XCTAssertEqual(BluetoothUUID.l2Cap, .bit16(256))
          XCTAssertEqual(BluetoothUUID.l2Cap.name, "L2CAP")
 
     }
@@ -666,9 +671,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Service Discovery Server Service Class
     func testServiceDiscoveryServerServiceClass() {
 
-         XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass.rawValue, 0x1000)
-         XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass.rawValue, 4096)
+         XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass.rawValue, "1000")
          XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass, .bit16(0x1000))
+         XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass, .bit16(4096))
          XCTAssertEqual(BluetoothUUID.serviceDiscoveryServerServiceClass.name, "Service Discovery Server Service Class")
 
     }
@@ -676,9 +681,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Browse Group Descriptor Service Class
     func testBrowseGroupDescriptorServiceClass() {
 
-         XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass.rawValue, 0x1001)
-         XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass.rawValue, 4097)
+         XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass.rawValue, "1001")
          XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass, .bit16(0x1001))
+         XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass, .bit16(4097))
          XCTAssertEqual(BluetoothUUID.browseGroupDescriptorServiceClass.name, "Browse Group Descriptor Service Class")
 
     }
@@ -686,9 +691,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Public Browse Root
     func testPublicBrowseRoot() {
 
-         XCTAssertEqual(BluetoothUUID.publicBrowseRoot.rawValue, 0x1002)
-         XCTAssertEqual(BluetoothUUID.publicBrowseRoot.rawValue, 4098)
+         XCTAssertEqual(BluetoothUUID.publicBrowseRoot.rawValue, "1002")
          XCTAssertEqual(BluetoothUUID.publicBrowseRoot, .bit16(0x1002))
+         XCTAssertEqual(BluetoothUUID.publicBrowseRoot, .bit16(4098))
          XCTAssertEqual(BluetoothUUID.publicBrowseRoot.name, "Public Browse Root")
 
     }
@@ -696,9 +701,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Serial Port
     func testSerialPort() {
 
-         XCTAssertEqual(BluetoothUUID.serialPort.rawValue, 0x1101)
-         XCTAssertEqual(BluetoothUUID.serialPort.rawValue, 4353)
+         XCTAssertEqual(BluetoothUUID.serialPort.rawValue, "1101")
          XCTAssertEqual(BluetoothUUID.serialPort, .bit16(0x1101))
+         XCTAssertEqual(BluetoothUUID.serialPort, .bit16(4353))
          XCTAssertEqual(BluetoothUUID.serialPort.name, "Serial Port")
 
     }
@@ -706,9 +711,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test LAN Access Using PPP
     func testLanAccessUsingPpp() {
 
-         XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp.rawValue, 0x1102)
-         XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp.rawValue, 4354)
+         XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp.rawValue, "1102")
          XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp, .bit16(0x1102))
+         XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp, .bit16(4354))
          XCTAssertEqual(BluetoothUUID.lanAccessUsingPpp.name, "LAN Access Using PPP")
 
     }
@@ -716,9 +721,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Dialup Networking
     func testDialupNetworking() {
 
-         XCTAssertEqual(BluetoothUUID.dialupNetworking.rawValue, 0x1103)
-         XCTAssertEqual(BluetoothUUID.dialupNetworking.rawValue, 4355)
+         XCTAssertEqual(BluetoothUUID.dialupNetworking.rawValue, "1103")
          XCTAssertEqual(BluetoothUUID.dialupNetworking, .bit16(0x1103))
+         XCTAssertEqual(BluetoothUUID.dialupNetworking, .bit16(4355))
          XCTAssertEqual(BluetoothUUID.dialupNetworking.name, "Dialup Networking")
 
     }
@@ -726,9 +731,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test IrMC Sync
     func testIrmcSync() {
 
-         XCTAssertEqual(BluetoothUUID.irmcSync.rawValue, 0x1104)
-         XCTAssertEqual(BluetoothUUID.irmcSync.rawValue, 4356)
+         XCTAssertEqual(BluetoothUUID.irmcSync.rawValue, "1104")
          XCTAssertEqual(BluetoothUUID.irmcSync, .bit16(0x1104))
+         XCTAssertEqual(BluetoothUUID.irmcSync, .bit16(4356))
          XCTAssertEqual(BluetoothUUID.irmcSync.name, "IrMC Sync")
 
     }
@@ -736,9 +741,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test OBEX Object Push
     func testObexObjectPush() {
 
-         XCTAssertEqual(BluetoothUUID.obexObjectPush.rawValue, 0x1105)
-         XCTAssertEqual(BluetoothUUID.obexObjectPush.rawValue, 4357)
+         XCTAssertEqual(BluetoothUUID.obexObjectPush.rawValue, "1105")
          XCTAssertEqual(BluetoothUUID.obexObjectPush, .bit16(0x1105))
+         XCTAssertEqual(BluetoothUUID.obexObjectPush, .bit16(4357))
          XCTAssertEqual(BluetoothUUID.obexObjectPush.name, "OBEX Object Push")
 
     }
@@ -746,9 +751,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test OBEX File Transfer
     func testObexFileTransfer() {
 
-         XCTAssertEqual(BluetoothUUID.obexFileTransfer.rawValue, 0x1106)
-         XCTAssertEqual(BluetoothUUID.obexFileTransfer.rawValue, 4358)
+         XCTAssertEqual(BluetoothUUID.obexFileTransfer.rawValue, "1106")
          XCTAssertEqual(BluetoothUUID.obexFileTransfer, .bit16(0x1106))
+         XCTAssertEqual(BluetoothUUID.obexFileTransfer, .bit16(4358))
          XCTAssertEqual(BluetoothUUID.obexFileTransfer.name, "OBEX File Transfer")
 
     }
@@ -756,9 +761,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test IrMC Sync Command
     func testIrmcSyncCommand() {
 
-         XCTAssertEqual(BluetoothUUID.irmcSyncCommand.rawValue, 0x1107)
-         XCTAssertEqual(BluetoothUUID.irmcSyncCommand.rawValue, 4359)
+         XCTAssertEqual(BluetoothUUID.irmcSyncCommand.rawValue, "1107")
          XCTAssertEqual(BluetoothUUID.irmcSyncCommand, .bit16(0x1107))
+         XCTAssertEqual(BluetoothUUID.irmcSyncCommand, .bit16(4359))
          XCTAssertEqual(BluetoothUUID.irmcSyncCommand.name, "IrMC Sync Command")
 
     }
@@ -766,9 +771,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Headset
     func testHeadset() {
 
-         XCTAssertEqual(BluetoothUUID.headset.rawValue, 0x1108)
-         XCTAssertEqual(BluetoothUUID.headset.rawValue, 4360)
+         XCTAssertEqual(BluetoothUUID.headset.rawValue, "1108")
          XCTAssertEqual(BluetoothUUID.headset, .bit16(0x1108))
+         XCTAssertEqual(BluetoothUUID.headset, .bit16(4360))
          XCTAssertEqual(BluetoothUUID.headset.name, "Headset")
 
     }
@@ -776,9 +781,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Cordless Telephony
     func testCordlessTelephony() {
 
-         XCTAssertEqual(BluetoothUUID.cordlessTelephony.rawValue, 0x1109)
-         XCTAssertEqual(BluetoothUUID.cordlessTelephony.rawValue, 4361)
+         XCTAssertEqual(BluetoothUUID.cordlessTelephony.rawValue, "1109")
          XCTAssertEqual(BluetoothUUID.cordlessTelephony, .bit16(0x1109))
+         XCTAssertEqual(BluetoothUUID.cordlessTelephony, .bit16(4361))
          XCTAssertEqual(BluetoothUUID.cordlessTelephony.name, "Cordless Telephony")
 
     }
@@ -786,9 +791,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Audio Source
     func testAudioSource() {
 
-         XCTAssertEqual(BluetoothUUID.audioSource.rawValue, 0x110A)
-         XCTAssertEqual(BluetoothUUID.audioSource.rawValue, 4362)
+         XCTAssertEqual(BluetoothUUID.audioSource.rawValue, "110A")
          XCTAssertEqual(BluetoothUUID.audioSource, .bit16(0x110A))
+         XCTAssertEqual(BluetoothUUID.audioSource, .bit16(4362))
          XCTAssertEqual(BluetoothUUID.audioSource.name, "Audio Source")
 
     }
@@ -796,9 +801,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Audio Sink
     func testAudioSink() {
 
-         XCTAssertEqual(BluetoothUUID.audioSink.rawValue, 0x110B)
-         XCTAssertEqual(BluetoothUUID.audioSink.rawValue, 4363)
+         XCTAssertEqual(BluetoothUUID.audioSink.rawValue, "110B")
          XCTAssertEqual(BluetoothUUID.audioSink, .bit16(0x110B))
+         XCTAssertEqual(BluetoothUUID.audioSink, .bit16(4363))
          XCTAssertEqual(BluetoothUUID.audioSink.name, "Audio Sink")
 
     }
@@ -806,9 +811,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test A/V Remote Control Target
     func testAvRemoteControlTarget() {
 
-         XCTAssertEqual(BluetoothUUID.avRemoteControlTarget.rawValue, 0x110C)
-         XCTAssertEqual(BluetoothUUID.avRemoteControlTarget.rawValue, 4364)
+         XCTAssertEqual(BluetoothUUID.avRemoteControlTarget.rawValue, "110C")
          XCTAssertEqual(BluetoothUUID.avRemoteControlTarget, .bit16(0x110C))
+         XCTAssertEqual(BluetoothUUID.avRemoteControlTarget, .bit16(4364))
          XCTAssertEqual(BluetoothUUID.avRemoteControlTarget.name, "A/V Remote Control Target")
 
     }
@@ -816,9 +821,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Advanced Audio Distribution
     func testAdvancedAudioDistribution() {
 
-         XCTAssertEqual(BluetoothUUID.advancedAudioDistribution.rawValue, 0x110D)
-         XCTAssertEqual(BluetoothUUID.advancedAudioDistribution.rawValue, 4365)
+         XCTAssertEqual(BluetoothUUID.advancedAudioDistribution.rawValue, "110D")
          XCTAssertEqual(BluetoothUUID.advancedAudioDistribution, .bit16(0x110D))
+         XCTAssertEqual(BluetoothUUID.advancedAudioDistribution, .bit16(4365))
          XCTAssertEqual(BluetoothUUID.advancedAudioDistribution.name, "Advanced Audio Distribution")
 
     }
@@ -826,9 +831,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test A/V Remote Control
     func testAvRemoteControl() {
 
-         XCTAssertEqual(BluetoothUUID.avRemoteControl.rawValue, 0x110E)
-         XCTAssertEqual(BluetoothUUID.avRemoteControl.rawValue, 4366)
+         XCTAssertEqual(BluetoothUUID.avRemoteControl.rawValue, "110E")
          XCTAssertEqual(BluetoothUUID.avRemoteControl, .bit16(0x110E))
+         XCTAssertEqual(BluetoothUUID.avRemoteControl, .bit16(4366))
          XCTAssertEqual(BluetoothUUID.avRemoteControl.name, "A/V Remote Control")
 
     }
@@ -836,9 +841,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test A/V Remote Control Controller
     func testAvRemoteControlController() {
 
-         XCTAssertEqual(BluetoothUUID.avRemoteControlController.rawValue, 0x110F)
-         XCTAssertEqual(BluetoothUUID.avRemoteControlController.rawValue, 4367)
+         XCTAssertEqual(BluetoothUUID.avRemoteControlController.rawValue, "110F")
          XCTAssertEqual(BluetoothUUID.avRemoteControlController, .bit16(0x110F))
+         XCTAssertEqual(BluetoothUUID.avRemoteControlController, .bit16(4367))
          XCTAssertEqual(BluetoothUUID.avRemoteControlController.name, "A/V Remote Control Controller")
 
     }
@@ -846,9 +851,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Intercom
     func testIntercom() {
 
-         XCTAssertEqual(BluetoothUUID.intercom.rawValue, 0x1110)
-         XCTAssertEqual(BluetoothUUID.intercom.rawValue, 4368)
+         XCTAssertEqual(BluetoothUUID.intercom.rawValue, "1110")
          XCTAssertEqual(BluetoothUUID.intercom, .bit16(0x1110))
+         XCTAssertEqual(BluetoothUUID.intercom, .bit16(4368))
          XCTAssertEqual(BluetoothUUID.intercom.name, "Intercom")
 
     }
@@ -856,9 +861,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Fax
     func testFax() {
 
-         XCTAssertEqual(BluetoothUUID.fax.rawValue, 0x1111)
-         XCTAssertEqual(BluetoothUUID.fax.rawValue, 4369)
+         XCTAssertEqual(BluetoothUUID.fax.rawValue, "1111")
          XCTAssertEqual(BluetoothUUID.fax, .bit16(0x1111))
+         XCTAssertEqual(BluetoothUUID.fax, .bit16(4369))
          XCTAssertEqual(BluetoothUUID.fax.name, "Fax")
 
     }
@@ -866,9 +871,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Headset AG
     func testHeadsetAg() {
 
-         XCTAssertEqual(BluetoothUUID.headsetAg.rawValue, 0x1112)
-         XCTAssertEqual(BluetoothUUID.headsetAg.rawValue, 4370)
+         XCTAssertEqual(BluetoothUUID.headsetAg.rawValue, "1112")
          XCTAssertEqual(BluetoothUUID.headsetAg, .bit16(0x1112))
+         XCTAssertEqual(BluetoothUUID.headsetAg, .bit16(4370))
          XCTAssertEqual(BluetoothUUID.headsetAg.name, "Headset AG")
 
     }
@@ -876,9 +881,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test WAP
     func testWap() {
 
-         XCTAssertEqual(BluetoothUUID.wap.rawValue, 0x1113)
-         XCTAssertEqual(BluetoothUUID.wap.rawValue, 4371)
+         XCTAssertEqual(BluetoothUUID.wap.rawValue, "1113")
          XCTAssertEqual(BluetoothUUID.wap, .bit16(0x1113))
+         XCTAssertEqual(BluetoothUUID.wap, .bit16(4371))
          XCTAssertEqual(BluetoothUUID.wap.name, "WAP")
 
     }
@@ -886,9 +891,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test WAP Client
     func testWapClient() {
 
-         XCTAssertEqual(BluetoothUUID.wapClient.rawValue, 0x1114)
-         XCTAssertEqual(BluetoothUUID.wapClient.rawValue, 4372)
+         XCTAssertEqual(BluetoothUUID.wapClient.rawValue, "1114")
          XCTAssertEqual(BluetoothUUID.wapClient, .bit16(0x1114))
+         XCTAssertEqual(BluetoothUUID.wapClient, .bit16(4372))
          XCTAssertEqual(BluetoothUUID.wapClient.name, "WAP Client")
 
     }
@@ -896,9 +901,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test PANU
     func testPanu() {
 
-         XCTAssertEqual(BluetoothUUID.panu.rawValue, 0x1115)
-         XCTAssertEqual(BluetoothUUID.panu.rawValue, 4373)
+         XCTAssertEqual(BluetoothUUID.panu.rawValue, "1115")
          XCTAssertEqual(BluetoothUUID.panu, .bit16(0x1115))
+         XCTAssertEqual(BluetoothUUID.panu, .bit16(4373))
          XCTAssertEqual(BluetoothUUID.panu.name, "PANU")
 
     }
@@ -906,9 +911,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test NAP
     func testNap() {
 
-         XCTAssertEqual(BluetoothUUID.nap.rawValue, 0x1116)
-         XCTAssertEqual(BluetoothUUID.nap.rawValue, 4374)
+         XCTAssertEqual(BluetoothUUID.nap.rawValue, "1116")
          XCTAssertEqual(BluetoothUUID.nap, .bit16(0x1116))
+         XCTAssertEqual(BluetoothUUID.nap, .bit16(4374))
          XCTAssertEqual(BluetoothUUID.nap.name, "NAP")
 
     }
@@ -916,9 +921,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GN
     func testGn() {
 
-         XCTAssertEqual(BluetoothUUID.gn.rawValue, 0x1117)
-         XCTAssertEqual(BluetoothUUID.gn.rawValue, 4375)
+         XCTAssertEqual(BluetoothUUID.gn.rawValue, "1117")
          XCTAssertEqual(BluetoothUUID.gn, .bit16(0x1117))
+         XCTAssertEqual(BluetoothUUID.gn, .bit16(4375))
          XCTAssertEqual(BluetoothUUID.gn.name, "GN")
 
     }
@@ -926,9 +931,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Direct Printing
     func testDirectPrinting() {
 
-         XCTAssertEqual(BluetoothUUID.directPrinting.rawValue, 0x1118)
-         XCTAssertEqual(BluetoothUUID.directPrinting.rawValue, 4376)
+         XCTAssertEqual(BluetoothUUID.directPrinting.rawValue, "1118")
          XCTAssertEqual(BluetoothUUID.directPrinting, .bit16(0x1118))
+         XCTAssertEqual(BluetoothUUID.directPrinting, .bit16(4376))
          XCTAssertEqual(BluetoothUUID.directPrinting.name, "Direct Printing")
 
     }
@@ -936,9 +941,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Reference Printing
     func testReferencePrinting() {
 
-         XCTAssertEqual(BluetoothUUID.referencePrinting.rawValue, 0x1119)
-         XCTAssertEqual(BluetoothUUID.referencePrinting.rawValue, 4377)
+         XCTAssertEqual(BluetoothUUID.referencePrinting.rawValue, "1119")
          XCTAssertEqual(BluetoothUUID.referencePrinting, .bit16(0x1119))
+         XCTAssertEqual(BluetoothUUID.referencePrinting, .bit16(4377))
          XCTAssertEqual(BluetoothUUID.referencePrinting.name, "Reference Printing")
 
     }
@@ -946,9 +951,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Basic Imaging Profile
     func testBasicImagingProfile() {
 
-         XCTAssertEqual(BluetoothUUID.basicImagingProfile.rawValue, 0x111A)
-         XCTAssertEqual(BluetoothUUID.basicImagingProfile.rawValue, 4378)
+         XCTAssertEqual(BluetoothUUID.basicImagingProfile.rawValue, "111A")
          XCTAssertEqual(BluetoothUUID.basicImagingProfile, .bit16(0x111A))
+         XCTAssertEqual(BluetoothUUID.basicImagingProfile, .bit16(4378))
          XCTAssertEqual(BluetoothUUID.basicImagingProfile.name, "Basic Imaging Profile")
 
     }
@@ -956,9 +961,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Imaging Responder
     func testImagingResponder() {
 
-         XCTAssertEqual(BluetoothUUID.imagingResponder.rawValue, 0x111B)
-         XCTAssertEqual(BluetoothUUID.imagingResponder.rawValue, 4379)
+         XCTAssertEqual(BluetoothUUID.imagingResponder.rawValue, "111B")
          XCTAssertEqual(BluetoothUUID.imagingResponder, .bit16(0x111B))
+         XCTAssertEqual(BluetoothUUID.imagingResponder, .bit16(4379))
          XCTAssertEqual(BluetoothUUID.imagingResponder.name, "Imaging Responder")
 
     }
@@ -966,9 +971,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Imaging Automatic Archive
     func testImagingAutomaticArchive() {
 
-         XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive.rawValue, 0x111C)
-         XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive.rawValue, 4380)
+         XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive.rawValue, "111C")
          XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive, .bit16(0x111C))
+         XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive, .bit16(4380))
          XCTAssertEqual(BluetoothUUID.imagingAutomaticArchive.name, "Imaging Automatic Archive")
 
     }
@@ -976,9 +981,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Imaging Referenced Objects
     func testImagingReferencedObjects() {
 
-         XCTAssertEqual(BluetoothUUID.imagingReferencedObjects.rawValue, 0x111D)
-         XCTAssertEqual(BluetoothUUID.imagingReferencedObjects.rawValue, 4381)
+         XCTAssertEqual(BluetoothUUID.imagingReferencedObjects.rawValue, "111D")
          XCTAssertEqual(BluetoothUUID.imagingReferencedObjects, .bit16(0x111D))
+         XCTAssertEqual(BluetoothUUID.imagingReferencedObjects, .bit16(4381))
          XCTAssertEqual(BluetoothUUID.imagingReferencedObjects.name, "Imaging Referenced Objects")
 
     }
@@ -986,9 +991,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Handsfree
     func testHandsfree() {
 
-         XCTAssertEqual(BluetoothUUID.handsfree.rawValue, 0x111E)
-         XCTAssertEqual(BluetoothUUID.handsfree.rawValue, 4382)
+         XCTAssertEqual(BluetoothUUID.handsfree.rawValue, "111E")
          XCTAssertEqual(BluetoothUUID.handsfree, .bit16(0x111E))
+         XCTAssertEqual(BluetoothUUID.handsfree, .bit16(4382))
          XCTAssertEqual(BluetoothUUID.handsfree.name, "Handsfree")
 
     }
@@ -996,9 +1001,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Handsfree Audio Gateway
     func testHandsfreeAudioGateway() {
 
-         XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway.rawValue, 0x111F)
-         XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway.rawValue, 4383)
+         XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway.rawValue, "111F")
          XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway, .bit16(0x111F))
+         XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway, .bit16(4383))
          XCTAssertEqual(BluetoothUUID.handsfreeAudioGateway.name, "Handsfree Audio Gateway")
 
     }
@@ -1006,9 +1011,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Direct Printing Refrence Objects Service
     func testDirectPrintingRefrenceObjectsService() {
 
-         XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService.rawValue, 0x1120)
-         XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService.rawValue, 4384)
+         XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService.rawValue, "1120")
          XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService, .bit16(0x1120))
+         XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService, .bit16(4384))
          XCTAssertEqual(BluetoothUUID.directPrintingRefrenceObjectsService.name, "Direct Printing Refrence Objects Service")
 
     }
@@ -1016,9 +1021,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Reflected UI
     func testReflectedUi() {
 
-         XCTAssertEqual(BluetoothUUID.reflectedUi.rawValue, 0x1121)
-         XCTAssertEqual(BluetoothUUID.reflectedUi.rawValue, 4385)
+         XCTAssertEqual(BluetoothUUID.reflectedUi.rawValue, "1121")
          XCTAssertEqual(BluetoothUUID.reflectedUi, .bit16(0x1121))
+         XCTAssertEqual(BluetoothUUID.reflectedUi, .bit16(4385))
          XCTAssertEqual(BluetoothUUID.reflectedUi.name, "Reflected UI")
 
     }
@@ -1026,9 +1031,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Basic Printing
     func testBasicPrinting() {
 
-         XCTAssertEqual(BluetoothUUID.basicPrinting.rawValue, 0x1122)
-         XCTAssertEqual(BluetoothUUID.basicPrinting.rawValue, 4386)
+         XCTAssertEqual(BluetoothUUID.basicPrinting.rawValue, "1122")
          XCTAssertEqual(BluetoothUUID.basicPrinting, .bit16(0x1122))
+         XCTAssertEqual(BluetoothUUID.basicPrinting, .bit16(4386))
          XCTAssertEqual(BluetoothUUID.basicPrinting.name, "Basic Printing")
 
     }
@@ -1036,9 +1041,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Printing Status
     func testPrintingStatus() {
 
-         XCTAssertEqual(BluetoothUUID.printingStatus.rawValue, 0x1123)
-         XCTAssertEqual(BluetoothUUID.printingStatus.rawValue, 4387)
+         XCTAssertEqual(BluetoothUUID.printingStatus.rawValue, "1123")
          XCTAssertEqual(BluetoothUUID.printingStatus, .bit16(0x1123))
+         XCTAssertEqual(BluetoothUUID.printingStatus, .bit16(4387))
          XCTAssertEqual(BluetoothUUID.printingStatus.name, "Printing Status")
 
     }
@@ -1046,9 +1051,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Human Interface Device Service
     func testHumanInterfaceDeviceService() {
 
-         XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService.rawValue, 0x1124)
-         XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService.rawValue, 4388)
+         XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService.rawValue, "1124")
          XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService, .bit16(0x1124))
+         XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService, .bit16(4388))
          XCTAssertEqual(BluetoothUUID.humanInterfaceDeviceService.name, "Human Interface Device Service")
 
     }
@@ -1056,9 +1061,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hardcopy Cable Replacement
     func testHardcopyCableReplacement() {
 
-         XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement.rawValue, 0x1125)
-         XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement.rawValue, 4389)
+         XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement.rawValue, "1125")
          XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement, .bit16(0x1125))
+         XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement, .bit16(4389))
          XCTAssertEqual(BluetoothUUID.hardcopyCableReplacement.name, "Hardcopy Cable Replacement")
 
     }
@@ -1066,9 +1071,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HCR Print
     func testHcrPrint() {
 
-         XCTAssertEqual(BluetoothUUID.hcrPrint.rawValue, 0x1126)
-         XCTAssertEqual(BluetoothUUID.hcrPrint.rawValue, 4390)
+         XCTAssertEqual(BluetoothUUID.hcrPrint.rawValue, "1126")
          XCTAssertEqual(BluetoothUUID.hcrPrint, .bit16(0x1126))
+         XCTAssertEqual(BluetoothUUID.hcrPrint, .bit16(4390))
          XCTAssertEqual(BluetoothUUID.hcrPrint.name, "HCR Print")
 
     }
@@ -1076,9 +1081,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HCR Scan
     func testHcrScan() {
 
-         XCTAssertEqual(BluetoothUUID.hcrScan.rawValue, 0x1127)
-         XCTAssertEqual(BluetoothUUID.hcrScan.rawValue, 4391)
+         XCTAssertEqual(BluetoothUUID.hcrScan.rawValue, "1127")
          XCTAssertEqual(BluetoothUUID.hcrScan, .bit16(0x1127))
+         XCTAssertEqual(BluetoothUUID.hcrScan, .bit16(4391))
          XCTAssertEqual(BluetoothUUID.hcrScan.name, "HCR Scan")
 
     }
@@ -1086,9 +1091,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Common ISDN Access
     func testCommonIsdnAccess() {
 
-         XCTAssertEqual(BluetoothUUID.commonIsdnAccess.rawValue, 0x1128)
-         XCTAssertEqual(BluetoothUUID.commonIsdnAccess.rawValue, 4392)
+         XCTAssertEqual(BluetoothUUID.commonIsdnAccess.rawValue, "1128")
          XCTAssertEqual(BluetoothUUID.commonIsdnAccess, .bit16(0x1128))
+         XCTAssertEqual(BluetoothUUID.commonIsdnAccess, .bit16(4392))
          XCTAssertEqual(BluetoothUUID.commonIsdnAccess.name, "Common ISDN Access")
 
     }
@@ -1096,9 +1101,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test SIM Access
     func testSimAccess() {
 
-         XCTAssertEqual(BluetoothUUID.simAccess.rawValue, 0x112D)
-         XCTAssertEqual(BluetoothUUID.simAccess.rawValue, 4397)
+         XCTAssertEqual(BluetoothUUID.simAccess.rawValue, "112D")
          XCTAssertEqual(BluetoothUUID.simAccess, .bit16(0x112D))
+         XCTAssertEqual(BluetoothUUID.simAccess, .bit16(4397))
          XCTAssertEqual(BluetoothUUID.simAccess.name, "SIM Access")
 
     }
@@ -1106,9 +1111,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Phonebook Access Client
     func testPhonebookAccessClient() {
 
-         XCTAssertEqual(BluetoothUUID.phonebookAccessClient.rawValue, 0x112E)
-         XCTAssertEqual(BluetoothUUID.phonebookAccessClient.rawValue, 4398)
+         XCTAssertEqual(BluetoothUUID.phonebookAccessClient.rawValue, "112E")
          XCTAssertEqual(BluetoothUUID.phonebookAccessClient, .bit16(0x112E))
+         XCTAssertEqual(BluetoothUUID.phonebookAccessClient, .bit16(4398))
          XCTAssertEqual(BluetoothUUID.phonebookAccessClient.name, "Phonebook Access Client")
 
     }
@@ -1116,9 +1121,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Phonebook Access Server
     func testPhonebookAccessServer() {
 
-         XCTAssertEqual(BluetoothUUID.phonebookAccessServer.rawValue, 0x112F)
-         XCTAssertEqual(BluetoothUUID.phonebookAccessServer.rawValue, 4399)
+         XCTAssertEqual(BluetoothUUID.phonebookAccessServer.rawValue, "112F")
          XCTAssertEqual(BluetoothUUID.phonebookAccessServer, .bit16(0x112F))
+         XCTAssertEqual(BluetoothUUID.phonebookAccessServer, .bit16(4399))
          XCTAssertEqual(BluetoothUUID.phonebookAccessServer.name, "Phonebook Access Server")
 
     }
@@ -1126,9 +1131,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Phonebook Access
     func testPhonebookAccess() {
 
-         XCTAssertEqual(BluetoothUUID.phonebookAccess.rawValue, 0x1130)
-         XCTAssertEqual(BluetoothUUID.phonebookAccess.rawValue, 4400)
+         XCTAssertEqual(BluetoothUUID.phonebookAccess.rawValue, "1130")
          XCTAssertEqual(BluetoothUUID.phonebookAccess, .bit16(0x1130))
+         XCTAssertEqual(BluetoothUUID.phonebookAccess, .bit16(4400))
          XCTAssertEqual(BluetoothUUID.phonebookAccess.name, "Phonebook Access")
 
     }
@@ -1136,9 +1141,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Headset HS
     func testHeadsetHs() {
 
-         XCTAssertEqual(BluetoothUUID.headsetHs.rawValue, 0x1131)
-         XCTAssertEqual(BluetoothUUID.headsetHs.rawValue, 4401)
+         XCTAssertEqual(BluetoothUUID.headsetHs.rawValue, "1131")
          XCTAssertEqual(BluetoothUUID.headsetHs, .bit16(0x1131))
+         XCTAssertEqual(BluetoothUUID.headsetHs, .bit16(4401))
          XCTAssertEqual(BluetoothUUID.headsetHs.name, "Headset HS")
 
     }
@@ -1146,9 +1151,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Message Access Server
     func testMessageAccessServer() {
 
-         XCTAssertEqual(BluetoothUUID.messageAccessServer.rawValue, 0x1132)
-         XCTAssertEqual(BluetoothUUID.messageAccessServer.rawValue, 4402)
+         XCTAssertEqual(BluetoothUUID.messageAccessServer.rawValue, "1132")
          XCTAssertEqual(BluetoothUUID.messageAccessServer, .bit16(0x1132))
+         XCTAssertEqual(BluetoothUUID.messageAccessServer, .bit16(4402))
          XCTAssertEqual(BluetoothUUID.messageAccessServer.name, "Message Access Server")
 
     }
@@ -1156,9 +1161,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Message Notification Server
     func testMessageNotificationServer() {
 
-         XCTAssertEqual(BluetoothUUID.messageNotificationServer.rawValue, 0x1133)
-         XCTAssertEqual(BluetoothUUID.messageNotificationServer.rawValue, 4403)
+         XCTAssertEqual(BluetoothUUID.messageNotificationServer.rawValue, "1133")
          XCTAssertEqual(BluetoothUUID.messageNotificationServer, .bit16(0x1133))
+         XCTAssertEqual(BluetoothUUID.messageNotificationServer, .bit16(4403))
          XCTAssertEqual(BluetoothUUID.messageNotificationServer.name, "Message Notification Server")
 
     }
@@ -1166,9 +1171,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Message Access Profile
     func testMessageAccessProfile() {
 
-         XCTAssertEqual(BluetoothUUID.messageAccessProfile.rawValue, 0x1134)
-         XCTAssertEqual(BluetoothUUID.messageAccessProfile.rawValue, 4404)
+         XCTAssertEqual(BluetoothUUID.messageAccessProfile.rawValue, "1134")
          XCTAssertEqual(BluetoothUUID.messageAccessProfile, .bit16(0x1134))
+         XCTAssertEqual(BluetoothUUID.messageAccessProfile, .bit16(4404))
          XCTAssertEqual(BluetoothUUID.messageAccessProfile.name, "Message Access Profile")
 
     }
@@ -1176,9 +1181,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GNSS
     func testGnss() {
 
-         XCTAssertEqual(BluetoothUUID.gnss.rawValue, 0x1135)
-         XCTAssertEqual(BluetoothUUID.gnss.rawValue, 4405)
+         XCTAssertEqual(BluetoothUUID.gnss.rawValue, "1135")
          XCTAssertEqual(BluetoothUUID.gnss, .bit16(0x1135))
+         XCTAssertEqual(BluetoothUUID.gnss, .bit16(4405))
          XCTAssertEqual(BluetoothUUID.gnss.name, "GNSS")
 
     }
@@ -1186,9 +1191,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GNSS Server
     func testGnssServer() {
 
-         XCTAssertEqual(BluetoothUUID.gnssServer.rawValue, 0x1136)
-         XCTAssertEqual(BluetoothUUID.gnssServer.rawValue, 4406)
+         XCTAssertEqual(BluetoothUUID.gnssServer.rawValue, "1136")
          XCTAssertEqual(BluetoothUUID.gnssServer, .bit16(0x1136))
+         XCTAssertEqual(BluetoothUUID.gnssServer, .bit16(4406))
          XCTAssertEqual(BluetoothUUID.gnssServer.name, "GNSS Server")
 
     }
@@ -1196,9 +1201,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test 3D Display
     func testUuid3Ddisplay() {
 
-         XCTAssertEqual(BluetoothUUID.uuid3Ddisplay.rawValue, 0x1137)
-         XCTAssertEqual(BluetoothUUID.uuid3Ddisplay.rawValue, 4407)
+         XCTAssertEqual(BluetoothUUID.uuid3Ddisplay.rawValue, "1137")
          XCTAssertEqual(BluetoothUUID.uuid3Ddisplay, .bit16(0x1137))
+         XCTAssertEqual(BluetoothUUID.uuid3Ddisplay, .bit16(4407))
          XCTAssertEqual(BluetoothUUID.uuid3Ddisplay.name, "3D Display")
 
     }
@@ -1206,9 +1211,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test 3D Glasses
     func testUuid3Dglasses() {
 
-         XCTAssertEqual(BluetoothUUID.uuid3Dglasses.rawValue, 0x1138)
-         XCTAssertEqual(BluetoothUUID.uuid3Dglasses.rawValue, 4408)
+         XCTAssertEqual(BluetoothUUID.uuid3Dglasses.rawValue, "1138")
          XCTAssertEqual(BluetoothUUID.uuid3Dglasses, .bit16(0x1138))
+         XCTAssertEqual(BluetoothUUID.uuid3Dglasses, .bit16(4408))
          XCTAssertEqual(BluetoothUUID.uuid3Dglasses.name, "3D Glasses")
 
     }
@@ -1216,9 +1221,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test 3D Synchronization
     func testUuid3Dsynchronization() {
 
-         XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization.rawValue, 0x1139)
-         XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization.rawValue, 4409)
+         XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization.rawValue, "1139")
          XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization, .bit16(0x1139))
+         XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization, .bit16(4409))
          XCTAssertEqual(BluetoothUUID.uuid3Dsynchronization.name, "3D Synchronization")
 
     }
@@ -1226,9 +1231,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test MPS Profile
     func testMpsProfile() {
 
-         XCTAssertEqual(BluetoothUUID.mpsProfile.rawValue, 0x113A)
-         XCTAssertEqual(BluetoothUUID.mpsProfile.rawValue, 4410)
+         XCTAssertEqual(BluetoothUUID.mpsProfile.rawValue, "113A")
          XCTAssertEqual(BluetoothUUID.mpsProfile, .bit16(0x113A))
+         XCTAssertEqual(BluetoothUUID.mpsProfile, .bit16(4410))
          XCTAssertEqual(BluetoothUUID.mpsProfile.name, "MPS Profile")
 
     }
@@ -1236,9 +1241,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test MPS Service
     func testMpsService() {
 
-         XCTAssertEqual(BluetoothUUID.mpsService.rawValue, 0x113B)
-         XCTAssertEqual(BluetoothUUID.mpsService.rawValue, 4411)
+         XCTAssertEqual(BluetoothUUID.mpsService.rawValue, "113B")
          XCTAssertEqual(BluetoothUUID.mpsService, .bit16(0x113B))
+         XCTAssertEqual(BluetoothUUID.mpsService, .bit16(4411))
          XCTAssertEqual(BluetoothUUID.mpsService.name, "MPS Service")
 
     }
@@ -1246,9 +1251,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test PnP Information
     func testPnpInformation() {
 
-         XCTAssertEqual(BluetoothUUID.pnpInformation.rawValue, 0x1200)
-         XCTAssertEqual(BluetoothUUID.pnpInformation.rawValue, 4608)
+         XCTAssertEqual(BluetoothUUID.pnpInformation.rawValue, "1200")
          XCTAssertEqual(BluetoothUUID.pnpInformation, .bit16(0x1200))
+         XCTAssertEqual(BluetoothUUID.pnpInformation, .bit16(4608))
          XCTAssertEqual(BluetoothUUID.pnpInformation.name, "PnP Information")
 
     }
@@ -1256,9 +1261,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Generic Networking
     func testGenericNetworking() {
 
-         XCTAssertEqual(BluetoothUUID.genericNetworking.rawValue, 0x1201)
-         XCTAssertEqual(BluetoothUUID.genericNetworking.rawValue, 4609)
+         XCTAssertEqual(BluetoothUUID.genericNetworking.rawValue, "1201")
          XCTAssertEqual(BluetoothUUID.genericNetworking, .bit16(0x1201))
+         XCTAssertEqual(BluetoothUUID.genericNetworking, .bit16(4609))
          XCTAssertEqual(BluetoothUUID.genericNetworking.name, "Generic Networking")
 
     }
@@ -1266,9 +1271,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Generic File Transfer
     func testGenericFileTransfer() {
 
-         XCTAssertEqual(BluetoothUUID.genericFileTransfer.rawValue, 0x1202)
-         XCTAssertEqual(BluetoothUUID.genericFileTransfer.rawValue, 4610)
+         XCTAssertEqual(BluetoothUUID.genericFileTransfer.rawValue, "1202")
          XCTAssertEqual(BluetoothUUID.genericFileTransfer, .bit16(0x1202))
+         XCTAssertEqual(BluetoothUUID.genericFileTransfer, .bit16(4610))
          XCTAssertEqual(BluetoothUUID.genericFileTransfer.name, "Generic File Transfer")
 
     }
@@ -1276,9 +1281,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Generic Audio
     func testGenericAudio() {
 
-         XCTAssertEqual(BluetoothUUID.genericAudio.rawValue, 0x1203)
-         XCTAssertEqual(BluetoothUUID.genericAudio.rawValue, 4611)
+         XCTAssertEqual(BluetoothUUID.genericAudio.rawValue, "1203")
          XCTAssertEqual(BluetoothUUID.genericAudio, .bit16(0x1203))
+         XCTAssertEqual(BluetoothUUID.genericAudio, .bit16(4611))
          XCTAssertEqual(BluetoothUUID.genericAudio.name, "Generic Audio")
 
     }
@@ -1286,9 +1291,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Generic Telephony
     func testGenericTelephony() {
 
-         XCTAssertEqual(BluetoothUUID.genericTelephony.rawValue, 0x1204)
-         XCTAssertEqual(BluetoothUUID.genericTelephony.rawValue, 4612)
+         XCTAssertEqual(BluetoothUUID.genericTelephony.rawValue, "1204")
          XCTAssertEqual(BluetoothUUID.genericTelephony, .bit16(0x1204))
+         XCTAssertEqual(BluetoothUUID.genericTelephony, .bit16(4612))
          XCTAssertEqual(BluetoothUUID.genericTelephony.name, "Generic Telephony")
 
     }
@@ -1296,9 +1301,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UPNP Service
     func testUpnpService() {
 
-         XCTAssertEqual(BluetoothUUID.upnpService.rawValue, 0x1205)
-         XCTAssertEqual(BluetoothUUID.upnpService.rawValue, 4613)
+         XCTAssertEqual(BluetoothUUID.upnpService.rawValue, "1205")
          XCTAssertEqual(BluetoothUUID.upnpService, .bit16(0x1205))
+         XCTAssertEqual(BluetoothUUID.upnpService, .bit16(4613))
          XCTAssertEqual(BluetoothUUID.upnpService.name, "UPNP Service")
 
     }
@@ -1306,9 +1311,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UPNP IP Service
     func testUpnpIpService() {
 
-         XCTAssertEqual(BluetoothUUID.upnpIpService.rawValue, 0x1206)
-         XCTAssertEqual(BluetoothUUID.upnpIpService.rawValue, 4614)
+         XCTAssertEqual(BluetoothUUID.upnpIpService.rawValue, "1206")
          XCTAssertEqual(BluetoothUUID.upnpIpService, .bit16(0x1206))
+         XCTAssertEqual(BluetoothUUID.upnpIpService, .bit16(4614))
          XCTAssertEqual(BluetoothUUID.upnpIpService.name, "UPNP IP Service")
 
     }
@@ -1316,9 +1321,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UPNP IP PAN
     func testUpnpIpPan() {
 
-         XCTAssertEqual(BluetoothUUID.upnpIpPan.rawValue, 0x1300)
-         XCTAssertEqual(BluetoothUUID.upnpIpPan.rawValue, 4864)
+         XCTAssertEqual(BluetoothUUID.upnpIpPan.rawValue, "1300")
          XCTAssertEqual(BluetoothUUID.upnpIpPan, .bit16(0x1300))
+         XCTAssertEqual(BluetoothUUID.upnpIpPan, .bit16(4864))
          XCTAssertEqual(BluetoothUUID.upnpIpPan.name, "UPNP IP PAN")
 
     }
@@ -1326,9 +1331,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UPNP IP LAP
     func testUpnpIpLap() {
 
-         XCTAssertEqual(BluetoothUUID.upnpIpLap.rawValue, 0x1301)
-         XCTAssertEqual(BluetoothUUID.upnpIpLap.rawValue, 4865)
+         XCTAssertEqual(BluetoothUUID.upnpIpLap.rawValue, "1301")
          XCTAssertEqual(BluetoothUUID.upnpIpLap, .bit16(0x1301))
+         XCTAssertEqual(BluetoothUUID.upnpIpLap, .bit16(4865))
          XCTAssertEqual(BluetoothUUID.upnpIpLap.name, "UPNP IP LAP")
 
     }
@@ -1336,9 +1341,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UPNP IP L2CAP
     func testUpnpIpL2Cap() {
 
-         XCTAssertEqual(BluetoothUUID.upnpIpL2Cap.rawValue, 0x1302)
-         XCTAssertEqual(BluetoothUUID.upnpIpL2Cap.rawValue, 4866)
+         XCTAssertEqual(BluetoothUUID.upnpIpL2Cap.rawValue, "1302")
          XCTAssertEqual(BluetoothUUID.upnpIpL2Cap, .bit16(0x1302))
+         XCTAssertEqual(BluetoothUUID.upnpIpL2Cap, .bit16(4866))
          XCTAssertEqual(BluetoothUUID.upnpIpL2Cap.name, "UPNP IP L2CAP")
 
     }
@@ -1346,9 +1351,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Video Source
     func testVideoSource() {
 
-         XCTAssertEqual(BluetoothUUID.videoSource.rawValue, 0x1303)
-         XCTAssertEqual(BluetoothUUID.videoSource.rawValue, 4867)
+         XCTAssertEqual(BluetoothUUID.videoSource.rawValue, "1303")
          XCTAssertEqual(BluetoothUUID.videoSource, .bit16(0x1303))
+         XCTAssertEqual(BluetoothUUID.videoSource, .bit16(4867))
          XCTAssertEqual(BluetoothUUID.videoSource.name, "Video Source")
 
     }
@@ -1356,9 +1361,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Video Sink
     func testVideoSink() {
 
-         XCTAssertEqual(BluetoothUUID.videoSink.rawValue, 0x1304)
-         XCTAssertEqual(BluetoothUUID.videoSink.rawValue, 4868)
+         XCTAssertEqual(BluetoothUUID.videoSink.rawValue, "1304")
          XCTAssertEqual(BluetoothUUID.videoSink, .bit16(0x1304))
+         XCTAssertEqual(BluetoothUUID.videoSink, .bit16(4868))
          XCTAssertEqual(BluetoothUUID.videoSink.name, "Video Sink")
 
     }
@@ -1366,9 +1371,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Video Distribution
     func testVideoDistribution() {
 
-         XCTAssertEqual(BluetoothUUID.videoDistribution.rawValue, 0x1305)
-         XCTAssertEqual(BluetoothUUID.videoDistribution.rawValue, 4869)
+         XCTAssertEqual(BluetoothUUID.videoDistribution.rawValue, "1305")
          XCTAssertEqual(BluetoothUUID.videoDistribution, .bit16(0x1305))
+         XCTAssertEqual(BluetoothUUID.videoDistribution, .bit16(4869))
          XCTAssertEqual(BluetoothUUID.videoDistribution.name, "Video Distribution")
 
     }
@@ -1376,9 +1381,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HDP
     func testHdp() {
 
-         XCTAssertEqual(BluetoothUUID.hdp.rawValue, 0x1400)
-         XCTAssertEqual(BluetoothUUID.hdp.rawValue, 5120)
+         XCTAssertEqual(BluetoothUUID.hdp.rawValue, "1400")
          XCTAssertEqual(BluetoothUUID.hdp, .bit16(0x1400))
+         XCTAssertEqual(BluetoothUUID.hdp, .bit16(5120))
          XCTAssertEqual(BluetoothUUID.hdp.name, "HDP")
 
     }
@@ -1386,9 +1391,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HDP Source
     func testHdpSource() {
 
-         XCTAssertEqual(BluetoothUUID.hdpSource.rawValue, 0x1401)
-         XCTAssertEqual(BluetoothUUID.hdpSource.rawValue, 5121)
+         XCTAssertEqual(BluetoothUUID.hdpSource.rawValue, "1401")
          XCTAssertEqual(BluetoothUUID.hdpSource, .bit16(0x1401))
+         XCTAssertEqual(BluetoothUUID.hdpSource, .bit16(5121))
          XCTAssertEqual(BluetoothUUID.hdpSource.name, "HDP Source")
 
     }
@@ -1396,9 +1401,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HDP Sink
     func testHdpSink() {
 
-         XCTAssertEqual(BluetoothUUID.hdpSink.rawValue, 0x1402)
-         XCTAssertEqual(BluetoothUUID.hdpSink.rawValue, 5122)
+         XCTAssertEqual(BluetoothUUID.hdpSink.rawValue, "1402")
          XCTAssertEqual(BluetoothUUID.hdpSink, .bit16(0x1402))
+         XCTAssertEqual(BluetoothUUID.hdpSink, .bit16(5122))
          XCTAssertEqual(BluetoothUUID.hdpSink.name, "HDP Sink")
 
     }
@@ -1406,9 +1411,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Generic Access Profile
     func testGenericAccessProfile() {
 
-         XCTAssertEqual(BluetoothUUID.genericAccessProfile.rawValue, 0x1800)
-         XCTAssertEqual(BluetoothUUID.genericAccessProfile.rawValue, 6144)
+         XCTAssertEqual(BluetoothUUID.genericAccessProfile.rawValue, "1800")
          XCTAssertEqual(BluetoothUUID.genericAccessProfile, .bit16(0x1800))
+         XCTAssertEqual(BluetoothUUID.genericAccessProfile, .bit16(6144))
          XCTAssertEqual(BluetoothUUID.genericAccessProfile.name, "Generic Access Profile")
 
     }
@@ -1416,9 +1421,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Generic Attribute Profile
     func testGenericAttributeProfile() {
 
-         XCTAssertEqual(BluetoothUUID.genericAttributeProfile.rawValue, 0x1801)
-         XCTAssertEqual(BluetoothUUID.genericAttributeProfile.rawValue, 6145)
+         XCTAssertEqual(BluetoothUUID.genericAttributeProfile.rawValue, "1801")
          XCTAssertEqual(BluetoothUUID.genericAttributeProfile, .bit16(0x1801))
+         XCTAssertEqual(BluetoothUUID.genericAttributeProfile, .bit16(6145))
          XCTAssertEqual(BluetoothUUID.genericAttributeProfile.name, "Generic Attribute Profile")
 
     }
@@ -1426,9 +1431,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Immediate Alert
     func testImmediateAlert() {
 
-         XCTAssertEqual(BluetoothUUID.immediateAlert.rawValue, 0x1802)
-         XCTAssertEqual(BluetoothUUID.immediateAlert.rawValue, 6146)
+         XCTAssertEqual(BluetoothUUID.immediateAlert.rawValue, "1802")
          XCTAssertEqual(BluetoothUUID.immediateAlert, .bit16(0x1802))
+         XCTAssertEqual(BluetoothUUID.immediateAlert, .bit16(6146))
          XCTAssertEqual(BluetoothUUID.immediateAlert.name, "Immediate Alert")
 
     }
@@ -1436,9 +1441,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Link Loss
     func testLinkLoss() {
 
-         XCTAssertEqual(BluetoothUUID.linkLoss.rawValue, 0x1803)
-         XCTAssertEqual(BluetoothUUID.linkLoss.rawValue, 6147)
+         XCTAssertEqual(BluetoothUUID.linkLoss.rawValue, "1803")
          XCTAssertEqual(BluetoothUUID.linkLoss, .bit16(0x1803))
+         XCTAssertEqual(BluetoothUUID.linkLoss, .bit16(6147))
          XCTAssertEqual(BluetoothUUID.linkLoss.name, "Link Loss")
 
     }
@@ -1446,9 +1451,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tx Power
     func testTxPower() {
 
-         XCTAssertEqual(BluetoothUUID.txPower.rawValue, 0x1804)
-         XCTAssertEqual(BluetoothUUID.txPower.rawValue, 6148)
+         XCTAssertEqual(BluetoothUUID.txPower.rawValue, "1804")
          XCTAssertEqual(BluetoothUUID.txPower, .bit16(0x1804))
+         XCTAssertEqual(BluetoothUUID.txPower, .bit16(6148))
          XCTAssertEqual(BluetoothUUID.txPower.name, "Tx Power")
 
     }
@@ -1456,9 +1461,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Current Time Service
     func testCurrentTimeService() {
 
-         XCTAssertEqual(BluetoothUUID.currentTimeService.rawValue, 0x1805)
-         XCTAssertEqual(BluetoothUUID.currentTimeService.rawValue, 6149)
+         XCTAssertEqual(BluetoothUUID.currentTimeService.rawValue, "1805")
          XCTAssertEqual(BluetoothUUID.currentTimeService, .bit16(0x1805))
+         XCTAssertEqual(BluetoothUUID.currentTimeService, .bit16(6149))
          XCTAssertEqual(BluetoothUUID.currentTimeService.name, "Current Time Service")
 
     }
@@ -1466,9 +1471,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Reference Time Update Service
     func testReferenceTimeUpdateService() {
 
-         XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService.rawValue, 0x1806)
-         XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService.rawValue, 6150)
+         XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService.rawValue, "1806")
          XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService, .bit16(0x1806))
+         XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService, .bit16(6150))
          XCTAssertEqual(BluetoothUUID.referenceTimeUpdateService.name, "Reference Time Update Service")
 
     }
@@ -1476,9 +1481,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Next DST Change Service
     func testNextDstChangeService() {
 
-         XCTAssertEqual(BluetoothUUID.nextDstChangeService.rawValue, 0x1807)
-         XCTAssertEqual(BluetoothUUID.nextDstChangeService.rawValue, 6151)
+         XCTAssertEqual(BluetoothUUID.nextDstChangeService.rawValue, "1807")
          XCTAssertEqual(BluetoothUUID.nextDstChangeService, .bit16(0x1807))
+         XCTAssertEqual(BluetoothUUID.nextDstChangeService, .bit16(6151))
          XCTAssertEqual(BluetoothUUID.nextDstChangeService.name, "Next DST Change Service")
 
     }
@@ -1486,9 +1491,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Glucose
     func testGlucose() {
 
-         XCTAssertEqual(BluetoothUUID.glucose.rawValue, 0x1808)
-         XCTAssertEqual(BluetoothUUID.glucose.rawValue, 6152)
+         XCTAssertEqual(BluetoothUUID.glucose.rawValue, "1808")
          XCTAssertEqual(BluetoothUUID.glucose, .bit16(0x1808))
+         XCTAssertEqual(BluetoothUUID.glucose, .bit16(6152))
          XCTAssertEqual(BluetoothUUID.glucose.name, "Glucose")
 
     }
@@ -1496,9 +1501,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Health Thermometer
     func testHealthThermometer() {
 
-         XCTAssertEqual(BluetoothUUID.healthThermometer.rawValue, 0x1809)
-         XCTAssertEqual(BluetoothUUID.healthThermometer.rawValue, 6153)
+         XCTAssertEqual(BluetoothUUID.healthThermometer.rawValue, "1809")
          XCTAssertEqual(BluetoothUUID.healthThermometer, .bit16(0x1809))
+         XCTAssertEqual(BluetoothUUID.healthThermometer, .bit16(6153))
          XCTAssertEqual(BluetoothUUID.healthThermometer.name, "Health Thermometer")
 
     }
@@ -1506,9 +1511,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Device Information
     func testDeviceInformation() {
 
-         XCTAssertEqual(BluetoothUUID.deviceInformation.rawValue, 0x180A)
-         XCTAssertEqual(BluetoothUUID.deviceInformation.rawValue, 6154)
+         XCTAssertEqual(BluetoothUUID.deviceInformation.rawValue, "180A")
          XCTAssertEqual(BluetoothUUID.deviceInformation, .bit16(0x180A))
+         XCTAssertEqual(BluetoothUUID.deviceInformation, .bit16(6154))
          XCTAssertEqual(BluetoothUUID.deviceInformation.name, "Device Information")
 
     }
@@ -1516,9 +1521,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Heart Rate
     func testHeartRate() {
 
-         XCTAssertEqual(BluetoothUUID.heartRate.rawValue, 0x180D)
-         XCTAssertEqual(BluetoothUUID.heartRate.rawValue, 6157)
+         XCTAssertEqual(BluetoothUUID.heartRate.rawValue, "180D")
          XCTAssertEqual(BluetoothUUID.heartRate, .bit16(0x180D))
+         XCTAssertEqual(BluetoothUUID.heartRate, .bit16(6157))
          XCTAssertEqual(BluetoothUUID.heartRate.name, "Heart Rate")
 
     }
@@ -1526,9 +1531,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Phone Alert Status Service
     func testPhoneAlertStatusService() {
 
-         XCTAssertEqual(BluetoothUUID.phoneAlertStatusService.rawValue, 0x180E)
-         XCTAssertEqual(BluetoothUUID.phoneAlertStatusService.rawValue, 6158)
+         XCTAssertEqual(BluetoothUUID.phoneAlertStatusService.rawValue, "180E")
          XCTAssertEqual(BluetoothUUID.phoneAlertStatusService, .bit16(0x180E))
+         XCTAssertEqual(BluetoothUUID.phoneAlertStatusService, .bit16(6158))
          XCTAssertEqual(BluetoothUUID.phoneAlertStatusService.name, "Phone Alert Status Service")
 
     }
@@ -1536,9 +1541,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Battery Service
     func testBatteryService() {
 
-         XCTAssertEqual(BluetoothUUID.batteryService.rawValue, 0x180F)
-         XCTAssertEqual(BluetoothUUID.batteryService.rawValue, 6159)
+         XCTAssertEqual(BluetoothUUID.batteryService.rawValue, "180F")
          XCTAssertEqual(BluetoothUUID.batteryService, .bit16(0x180F))
+         XCTAssertEqual(BluetoothUUID.batteryService, .bit16(6159))
          XCTAssertEqual(BluetoothUUID.batteryService.name, "Battery Service")
 
     }
@@ -1546,9 +1551,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Blood Pressure
     func testBloodPressure() {
 
-         XCTAssertEqual(BluetoothUUID.bloodPressure.rawValue, 0x1810)
-         XCTAssertEqual(BluetoothUUID.bloodPressure.rawValue, 6160)
+         XCTAssertEqual(BluetoothUUID.bloodPressure.rawValue, "1810")
          XCTAssertEqual(BluetoothUUID.bloodPressure, .bit16(0x1810))
+         XCTAssertEqual(BluetoothUUID.bloodPressure, .bit16(6160))
          XCTAssertEqual(BluetoothUUID.bloodPressure.name, "Blood Pressure")
 
     }
@@ -1556,9 +1561,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Alert Notification Service
     func testAlertNotificationService() {
 
-         XCTAssertEqual(BluetoothUUID.alertNotificationService.rawValue, 0x1811)
-         XCTAssertEqual(BluetoothUUID.alertNotificationService.rawValue, 6161)
+         XCTAssertEqual(BluetoothUUID.alertNotificationService.rawValue, "1811")
          XCTAssertEqual(BluetoothUUID.alertNotificationService, .bit16(0x1811))
+         XCTAssertEqual(BluetoothUUID.alertNotificationService, .bit16(6161))
          XCTAssertEqual(BluetoothUUID.alertNotificationService.name, "Alert Notification Service")
 
     }
@@ -1566,9 +1571,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Human Interface Device
     func testHumanInterfaceDevice() {
 
-         XCTAssertEqual(BluetoothUUID.humanInterfaceDevice.rawValue, 0x1812)
-         XCTAssertEqual(BluetoothUUID.humanInterfaceDevice.rawValue, 6162)
+         XCTAssertEqual(BluetoothUUID.humanInterfaceDevice.rawValue, "1812")
          XCTAssertEqual(BluetoothUUID.humanInterfaceDevice, .bit16(0x1812))
+         XCTAssertEqual(BluetoothUUID.humanInterfaceDevice, .bit16(6162))
          XCTAssertEqual(BluetoothUUID.humanInterfaceDevice.name, "Human Interface Device")
 
     }
@@ -1576,9 +1581,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Scan Parameters
     func testScanParameters() {
 
-         XCTAssertEqual(BluetoothUUID.scanParameters.rawValue, 0x1813)
-         XCTAssertEqual(BluetoothUUID.scanParameters.rawValue, 6163)
+         XCTAssertEqual(BluetoothUUID.scanParameters.rawValue, "1813")
          XCTAssertEqual(BluetoothUUID.scanParameters, .bit16(0x1813))
+         XCTAssertEqual(BluetoothUUID.scanParameters, .bit16(6163))
          XCTAssertEqual(BluetoothUUID.scanParameters.name, "Scan Parameters")
 
     }
@@ -1586,9 +1591,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Running Speed and Cadence
     func testRunningSpeedAndCadence() {
 
-         XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence.rawValue, 0x1814)
-         XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence.rawValue, 6164)
+         XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence.rawValue, "1814")
          XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence, .bit16(0x1814))
+         XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence, .bit16(6164))
          XCTAssertEqual(BluetoothUUID.runningSpeedAndCadence.name, "Running Speed and Cadence")
 
     }
@@ -1596,9 +1601,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Automation IO
     func testAutomationIo() {
 
-         XCTAssertEqual(BluetoothUUID.automationIo.rawValue, 0x1815)
-         XCTAssertEqual(BluetoothUUID.automationIo.rawValue, 6165)
+         XCTAssertEqual(BluetoothUUID.automationIo.rawValue, "1815")
          XCTAssertEqual(BluetoothUUID.automationIo, .bit16(0x1815))
+         XCTAssertEqual(BluetoothUUID.automationIo, .bit16(6165))
          XCTAssertEqual(BluetoothUUID.automationIo.name, "Automation IO")
 
     }
@@ -1606,9 +1611,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Cycling Speed and Cadence
     func testCyclingSpeedAndCadence() {
 
-         XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence.rawValue, 0x1816)
-         XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence.rawValue, 6166)
+         XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence.rawValue, "1816")
          XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence, .bit16(0x1816))
+         XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence, .bit16(6166))
          XCTAssertEqual(BluetoothUUID.cyclingSpeedAndCadence.name, "Cycling Speed and Cadence")
 
     }
@@ -1616,9 +1621,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Cycling Power
     func testCyclingPower() {
 
-         XCTAssertEqual(BluetoothUUID.cyclingPower.rawValue, 0x1818)
-         XCTAssertEqual(BluetoothUUID.cyclingPower.rawValue, 6168)
+         XCTAssertEqual(BluetoothUUID.cyclingPower.rawValue, "1818")
          XCTAssertEqual(BluetoothUUID.cyclingPower, .bit16(0x1818))
+         XCTAssertEqual(BluetoothUUID.cyclingPower, .bit16(6168))
          XCTAssertEqual(BluetoothUUID.cyclingPower.name, "Cycling Power")
 
     }
@@ -1626,9 +1631,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Location and Navigation
     func testLocationAndNavigation() {
 
-         XCTAssertEqual(BluetoothUUID.locationAndNavigation.rawValue, 0x1819)
-         XCTAssertEqual(BluetoothUUID.locationAndNavigation.rawValue, 6169)
+         XCTAssertEqual(BluetoothUUID.locationAndNavigation.rawValue, "1819")
          XCTAssertEqual(BluetoothUUID.locationAndNavigation, .bit16(0x1819))
+         XCTAssertEqual(BluetoothUUID.locationAndNavigation, .bit16(6169))
          XCTAssertEqual(BluetoothUUID.locationAndNavigation.name, "Location and Navigation")
 
     }
@@ -1636,9 +1641,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Environmental Sensing
     func testEnvironmentalSensing() {
 
-         XCTAssertEqual(BluetoothUUID.environmentalSensing.rawValue, 0x181A)
-         XCTAssertEqual(BluetoothUUID.environmentalSensing.rawValue, 6170)
+         XCTAssertEqual(BluetoothUUID.environmentalSensing.rawValue, "181A")
          XCTAssertEqual(BluetoothUUID.environmentalSensing, .bit16(0x181A))
+         XCTAssertEqual(BluetoothUUID.environmentalSensing, .bit16(6170))
          XCTAssertEqual(BluetoothUUID.environmentalSensing.name, "Environmental Sensing")
 
     }
@@ -1646,9 +1651,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Body Composition
     func testBodyComposition() {
 
-         XCTAssertEqual(BluetoothUUID.bodyComposition.rawValue, 0x181B)
-         XCTAssertEqual(BluetoothUUID.bodyComposition.rawValue, 6171)
+         XCTAssertEqual(BluetoothUUID.bodyComposition.rawValue, "181B")
          XCTAssertEqual(BluetoothUUID.bodyComposition, .bit16(0x181B))
+         XCTAssertEqual(BluetoothUUID.bodyComposition, .bit16(6171))
          XCTAssertEqual(BluetoothUUID.bodyComposition.name, "Body Composition")
 
     }
@@ -1656,9 +1661,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test User Data
     func testUserData() {
 
-         XCTAssertEqual(BluetoothUUID.userData.rawValue, 0x181C)
-         XCTAssertEqual(BluetoothUUID.userData.rawValue, 6172)
+         XCTAssertEqual(BluetoothUUID.userData.rawValue, "181C")
          XCTAssertEqual(BluetoothUUID.userData, .bit16(0x181C))
+         XCTAssertEqual(BluetoothUUID.userData, .bit16(6172))
          XCTAssertEqual(BluetoothUUID.userData.name, "User Data")
 
     }
@@ -1666,9 +1671,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Weight Scale
     func testWeightScale() {
 
-         XCTAssertEqual(BluetoothUUID.weightScale.rawValue, 0x181D)
-         XCTAssertEqual(BluetoothUUID.weightScale.rawValue, 6173)
+         XCTAssertEqual(BluetoothUUID.weightScale.rawValue, "181D")
          XCTAssertEqual(BluetoothUUID.weightScale, .bit16(0x181D))
+         XCTAssertEqual(BluetoothUUID.weightScale, .bit16(6173))
          XCTAssertEqual(BluetoothUUID.weightScale.name, "Weight Scale")
 
     }
@@ -1676,9 +1681,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Bond Management
     func testBondManagement() {
 
-         XCTAssertEqual(BluetoothUUID.bondManagement.rawValue, 0x181E)
-         XCTAssertEqual(BluetoothUUID.bondManagement.rawValue, 6174)
+         XCTAssertEqual(BluetoothUUID.bondManagement.rawValue, "181E")
          XCTAssertEqual(BluetoothUUID.bondManagement, .bit16(0x181E))
+         XCTAssertEqual(BluetoothUUID.bondManagement, .bit16(6174))
          XCTAssertEqual(BluetoothUUID.bondManagement.name, "Bond Management")
 
     }
@@ -1686,9 +1691,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Continuous Glucose Monitoring
     func testContinuousGlucoseMonitoring() {
 
-         XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring.rawValue, 0x181F)
-         XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring.rawValue, 6175)
+         XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring.rawValue, "181F")
          XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring, .bit16(0x181F))
+         XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring, .bit16(6175))
          XCTAssertEqual(BluetoothUUID.continuousGlucoseMonitoring.name, "Continuous Glucose Monitoring")
 
     }
@@ -1696,9 +1701,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Internet Protocol Support
     func testInternetProtocolSupport() {
 
-         XCTAssertEqual(BluetoothUUID.internetProtocolSupport.rawValue, 0x1820)
-         XCTAssertEqual(BluetoothUUID.internetProtocolSupport.rawValue, 6176)
+         XCTAssertEqual(BluetoothUUID.internetProtocolSupport.rawValue, "1820")
          XCTAssertEqual(BluetoothUUID.internetProtocolSupport, .bit16(0x1820))
+         XCTAssertEqual(BluetoothUUID.internetProtocolSupport, .bit16(6176))
          XCTAssertEqual(BluetoothUUID.internetProtocolSupport.name, "Internet Protocol Support")
 
     }
@@ -1706,9 +1711,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Indoor Positioning
     func testIndoorPositioning() {
 
-         XCTAssertEqual(BluetoothUUID.indoorPositioning.rawValue, 0x1821)
-         XCTAssertEqual(BluetoothUUID.indoorPositioning.rawValue, 6177)
+         XCTAssertEqual(BluetoothUUID.indoorPositioning.rawValue, "1821")
          XCTAssertEqual(BluetoothUUID.indoorPositioning, .bit16(0x1821))
+         XCTAssertEqual(BluetoothUUID.indoorPositioning, .bit16(6177))
          XCTAssertEqual(BluetoothUUID.indoorPositioning.name, "Indoor Positioning")
 
     }
@@ -1716,9 +1721,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Pulse Oximeter
     func testPulseOximeter() {
 
-         XCTAssertEqual(BluetoothUUID.pulseOximeter.rawValue, 0x1822)
-         XCTAssertEqual(BluetoothUUID.pulseOximeter.rawValue, 6178)
+         XCTAssertEqual(BluetoothUUID.pulseOximeter.rawValue, "1822")
          XCTAssertEqual(BluetoothUUID.pulseOximeter, .bit16(0x1822))
+         XCTAssertEqual(BluetoothUUID.pulseOximeter, .bit16(6178))
          XCTAssertEqual(BluetoothUUID.pulseOximeter.name, "Pulse Oximeter")
 
     }
@@ -1726,9 +1731,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HTTP Proxy
     func testHttpProxy() {
 
-         XCTAssertEqual(BluetoothUUID.httpProxy.rawValue, 0x1823)
-         XCTAssertEqual(BluetoothUUID.httpProxy.rawValue, 6179)
+         XCTAssertEqual(BluetoothUUID.httpProxy.rawValue, "1823")
          XCTAssertEqual(BluetoothUUID.httpProxy, .bit16(0x1823))
+         XCTAssertEqual(BluetoothUUID.httpProxy, .bit16(6179))
          XCTAssertEqual(BluetoothUUID.httpProxy.name, "HTTP Proxy")
 
     }
@@ -1736,9 +1741,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Transport Discovery
     func testTransportDiscovery() {
 
-         XCTAssertEqual(BluetoothUUID.transportDiscovery.rawValue, 0x1824)
-         XCTAssertEqual(BluetoothUUID.transportDiscovery.rawValue, 6180)
+         XCTAssertEqual(BluetoothUUID.transportDiscovery.rawValue, "1824")
          XCTAssertEqual(BluetoothUUID.transportDiscovery, .bit16(0x1824))
+         XCTAssertEqual(BluetoothUUID.transportDiscovery, .bit16(6180))
          XCTAssertEqual(BluetoothUUID.transportDiscovery.name, "Transport Discovery")
 
     }
@@ -1746,9 +1751,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Transfer
     func testObjectTransfer() {
 
-         XCTAssertEqual(BluetoothUUID.objectTransfer.rawValue, 0x1825)
-         XCTAssertEqual(BluetoothUUID.objectTransfer.rawValue, 6181)
+         XCTAssertEqual(BluetoothUUID.objectTransfer.rawValue, "1825")
          XCTAssertEqual(BluetoothUUID.objectTransfer, .bit16(0x1825))
+         XCTAssertEqual(BluetoothUUID.objectTransfer, .bit16(6181))
          XCTAssertEqual(BluetoothUUID.objectTransfer.name, "Object Transfer")
 
     }
@@ -1756,9 +1761,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Primary Service
     func testPrimaryService() {
 
-         XCTAssertEqual(BluetoothUUID.primaryService.rawValue, 0x2800)
-         XCTAssertEqual(BluetoothUUID.primaryService.rawValue, 10240)
+         XCTAssertEqual(BluetoothUUID.primaryService.rawValue, "2800")
          XCTAssertEqual(BluetoothUUID.primaryService, .bit16(0x2800))
+         XCTAssertEqual(BluetoothUUID.primaryService, .bit16(10240))
          XCTAssertEqual(BluetoothUUID.primaryService.name, "Primary Service")
 
     }
@@ -1766,9 +1771,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Secondary Service
     func testSecondaryService() {
 
-         XCTAssertEqual(BluetoothUUID.secondaryService.rawValue, 0x2801)
-         XCTAssertEqual(BluetoothUUID.secondaryService.rawValue, 10241)
+         XCTAssertEqual(BluetoothUUID.secondaryService.rawValue, "2801")
          XCTAssertEqual(BluetoothUUID.secondaryService, .bit16(0x2801))
+         XCTAssertEqual(BluetoothUUID.secondaryService, .bit16(10241))
          XCTAssertEqual(BluetoothUUID.secondaryService.name, "Secondary Service")
 
     }
@@ -1776,9 +1781,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Include
     func testInclude() {
 
-         XCTAssertEqual(BluetoothUUID.include.rawValue, 0x2802)
-         XCTAssertEqual(BluetoothUUID.include.rawValue, 10242)
+         XCTAssertEqual(BluetoothUUID.include.rawValue, "2802")
          XCTAssertEqual(BluetoothUUID.include, .bit16(0x2802))
+         XCTAssertEqual(BluetoothUUID.include, .bit16(10242))
          XCTAssertEqual(BluetoothUUID.include.name, "Include")
 
     }
@@ -1786,9 +1791,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Characteristic
     func testCharacteristic() {
 
-         XCTAssertEqual(BluetoothUUID.characteristic.rawValue, 0x2803)
-         XCTAssertEqual(BluetoothUUID.characteristic.rawValue, 10243)
+         XCTAssertEqual(BluetoothUUID.characteristic.rawValue, "2803")
          XCTAssertEqual(BluetoothUUID.characteristic, .bit16(0x2803))
+         XCTAssertEqual(BluetoothUUID.characteristic, .bit16(10243))
          XCTAssertEqual(BluetoothUUID.characteristic.name, "Characteristic")
 
     }
@@ -1796,9 +1801,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Characteristic Extended Properties
     func testCharacteristicExtendedProperties() {
 
-         XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties.rawValue, 0x2900)
-         XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties.rawValue, 10496)
+         XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties.rawValue, "2900")
          XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties, .bit16(0x2900))
+         XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties, .bit16(10496))
          XCTAssertEqual(BluetoothUUID.characteristicExtendedProperties.name, "Characteristic Extended Properties")
 
     }
@@ -1806,9 +1811,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Characteristic User Description
     func testCharacteristicUserDescription() {
 
-         XCTAssertEqual(BluetoothUUID.characteristicUserDescription.rawValue, 0x2901)
-         XCTAssertEqual(BluetoothUUID.characteristicUserDescription.rawValue, 10497)
+         XCTAssertEqual(BluetoothUUID.characteristicUserDescription.rawValue, "2901")
          XCTAssertEqual(BluetoothUUID.characteristicUserDescription, .bit16(0x2901))
+         XCTAssertEqual(BluetoothUUID.characteristicUserDescription, .bit16(10497))
          XCTAssertEqual(BluetoothUUID.characteristicUserDescription.name, "Characteristic User Description")
 
     }
@@ -1816,9 +1821,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Client Characteristic Configuration
     func testClientCharacteristicConfiguration() {
 
-         XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration.rawValue, 0x2902)
-         XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration.rawValue, 10498)
+         XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration.rawValue, "2902")
          XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration, .bit16(0x2902))
+         XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration, .bit16(10498))
          XCTAssertEqual(BluetoothUUID.clientCharacteristicConfiguration.name, "Client Characteristic Configuration")
 
     }
@@ -1826,9 +1831,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Server Characteristic Configuration
     func testServerCharacteristicConfiguration() {
 
-         XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration.rawValue, 0x2903)
-         XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration.rawValue, 10499)
+         XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration.rawValue, "2903")
          XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration, .bit16(0x2903))
+         XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration, .bit16(10499))
          XCTAssertEqual(BluetoothUUID.serverCharacteristicConfiguration.name, "Server Characteristic Configuration")
 
     }
@@ -1836,9 +1841,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Characteristic Format
     func testCharacteristicFormat() {
 
-         XCTAssertEqual(BluetoothUUID.characteristicFormat.rawValue, 0x2904)
-         XCTAssertEqual(BluetoothUUID.characteristicFormat.rawValue, 10500)
+         XCTAssertEqual(BluetoothUUID.characteristicFormat.rawValue, "2904")
          XCTAssertEqual(BluetoothUUID.characteristicFormat, .bit16(0x2904))
+         XCTAssertEqual(BluetoothUUID.characteristicFormat, .bit16(10500))
          XCTAssertEqual(BluetoothUUID.characteristicFormat.name, "Characteristic Format")
 
     }
@@ -1846,9 +1851,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Characteristic Aggregate Format
     func testCharacteristicAggregateFormat() {
 
-         XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat.rawValue, 0x2905)
-         XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat.rawValue, 10501)
+         XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat.rawValue, "2905")
          XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat, .bit16(0x2905))
+         XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat, .bit16(10501))
          XCTAssertEqual(BluetoothUUID.characteristicAggregateFormat.name, "Characteristic Aggregate Format")
 
     }
@@ -1856,9 +1861,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Valid Range
     func testValidRange() {
 
-         XCTAssertEqual(BluetoothUUID.validRange.rawValue, 0x2906)
-         XCTAssertEqual(BluetoothUUID.validRange.rawValue, 10502)
+         XCTAssertEqual(BluetoothUUID.validRange.rawValue, "2906")
          XCTAssertEqual(BluetoothUUID.validRange, .bit16(0x2906))
+         XCTAssertEqual(BluetoothUUID.validRange, .bit16(10502))
          XCTAssertEqual(BluetoothUUID.validRange.name, "Valid Range")
 
     }
@@ -1866,9 +1871,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test External Report Reference
     func testExternalReportReference() {
 
-         XCTAssertEqual(BluetoothUUID.externalReportReference.rawValue, 0x2907)
-         XCTAssertEqual(BluetoothUUID.externalReportReference.rawValue, 10503)
+         XCTAssertEqual(BluetoothUUID.externalReportReference.rawValue, "2907")
          XCTAssertEqual(BluetoothUUID.externalReportReference, .bit16(0x2907))
+         XCTAssertEqual(BluetoothUUID.externalReportReference, .bit16(10503))
          XCTAssertEqual(BluetoothUUID.externalReportReference.name, "External Report Reference")
 
     }
@@ -1876,9 +1881,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Report Reference
     func testReportReference() {
 
-         XCTAssertEqual(BluetoothUUID.reportReference.rawValue, 0x2908)
-         XCTAssertEqual(BluetoothUUID.reportReference.rawValue, 10504)
+         XCTAssertEqual(BluetoothUUID.reportReference.rawValue, "2908")
          XCTAssertEqual(BluetoothUUID.reportReference, .bit16(0x2908))
+         XCTAssertEqual(BluetoothUUID.reportReference, .bit16(10504))
          XCTAssertEqual(BluetoothUUID.reportReference.name, "Report Reference")
 
     }
@@ -1886,9 +1891,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Number of Digitals
     func testNumberOfDigitals() {
 
-         XCTAssertEqual(BluetoothUUID.numberOfDigitals.rawValue, 0x2909)
-         XCTAssertEqual(BluetoothUUID.numberOfDigitals.rawValue, 10505)
+         XCTAssertEqual(BluetoothUUID.numberOfDigitals.rawValue, "2909")
          XCTAssertEqual(BluetoothUUID.numberOfDigitals, .bit16(0x2909))
+         XCTAssertEqual(BluetoothUUID.numberOfDigitals, .bit16(10505))
          XCTAssertEqual(BluetoothUUID.numberOfDigitals.name, "Number of Digitals")
 
     }
@@ -1896,9 +1901,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Value Trigger Setting
     func testValueTriggerSetting() {
 
-         XCTAssertEqual(BluetoothUUID.valueTriggerSetting.rawValue, 0x290A)
-         XCTAssertEqual(BluetoothUUID.valueTriggerSetting.rawValue, 10506)
+         XCTAssertEqual(BluetoothUUID.valueTriggerSetting.rawValue, "290A")
          XCTAssertEqual(BluetoothUUID.valueTriggerSetting, .bit16(0x290A))
+         XCTAssertEqual(BluetoothUUID.valueTriggerSetting, .bit16(10506))
          XCTAssertEqual(BluetoothUUID.valueTriggerSetting.name, "Value Trigger Setting")
 
     }
@@ -1906,9 +1911,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Environmental Sensing Configuration
     func testEnvironmentalSensingConfiguration() {
 
-         XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration.rawValue, 0x290B)
-         XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration.rawValue, 10507)
+         XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration.rawValue, "290B")
          XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration, .bit16(0x290B))
+         XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration, .bit16(10507))
          XCTAssertEqual(BluetoothUUID.environmentalSensingConfiguration.name, "Environmental Sensing Configuration")
 
     }
@@ -1916,9 +1921,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Environmental Sensing Measurement
     func testEnvironmentalSensingMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement.rawValue, 0x290C)
-         XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement.rawValue, 10508)
+         XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement.rawValue, "290C")
          XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement, .bit16(0x290C))
+         XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement, .bit16(10508))
          XCTAssertEqual(BluetoothUUID.environmentalSensingMeasurement.name, "Environmental Sensing Measurement")
 
     }
@@ -1926,9 +1931,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Environmental Sensing Trigger Setting
     func testEnvironmentalSensingTriggerSetting() {
 
-         XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting.rawValue, 0x290D)
-         XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting.rawValue, 10509)
+         XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting.rawValue, "290D")
          XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting, .bit16(0x290D))
+         XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting, .bit16(10509))
          XCTAssertEqual(BluetoothUUID.environmentalSensingTriggerSetting.name, "Environmental Sensing Trigger Setting")
 
     }
@@ -1936,9 +1941,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Time Trigger Setting
     func testTimeTriggerSetting() {
 
-         XCTAssertEqual(BluetoothUUID.timeTriggerSetting.rawValue, 0x290E)
-         XCTAssertEqual(BluetoothUUID.timeTriggerSetting.rawValue, 10510)
+         XCTAssertEqual(BluetoothUUID.timeTriggerSetting.rawValue, "290E")
          XCTAssertEqual(BluetoothUUID.timeTriggerSetting, .bit16(0x290E))
+         XCTAssertEqual(BluetoothUUID.timeTriggerSetting, .bit16(10510))
          XCTAssertEqual(BluetoothUUID.timeTriggerSetting.name, "Time Trigger Setting")
 
     }
@@ -1946,9 +1951,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Device Name
     func testDeviceName() {
 
-         XCTAssertEqual(BluetoothUUID.deviceName.rawValue, 0x2A00)
-         XCTAssertEqual(BluetoothUUID.deviceName.rawValue, 10752)
+         XCTAssertEqual(BluetoothUUID.deviceName.rawValue, "2A00")
          XCTAssertEqual(BluetoothUUID.deviceName, .bit16(0x2A00))
+         XCTAssertEqual(BluetoothUUID.deviceName, .bit16(10752))
          XCTAssertEqual(BluetoothUUID.deviceName.name, "Device Name")
 
     }
@@ -1956,9 +1961,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Appearance
     func testAppearance() {
 
-         XCTAssertEqual(BluetoothUUID.appearance.rawValue, 0x2A01)
-         XCTAssertEqual(BluetoothUUID.appearance.rawValue, 10753)
+         XCTAssertEqual(BluetoothUUID.appearance.rawValue, "2A01")
          XCTAssertEqual(BluetoothUUID.appearance, .bit16(0x2A01))
+         XCTAssertEqual(BluetoothUUID.appearance, .bit16(10753))
          XCTAssertEqual(BluetoothUUID.appearance.name, "Appearance")
 
     }
@@ -1966,9 +1971,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Peripheral Privacy Flag
     func testPeripheralPrivacyFlag() {
 
-         XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag.rawValue, 0x2A02)
-         XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag.rawValue, 10754)
+         XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag.rawValue, "2A02")
          XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag, .bit16(0x2A02))
+         XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag, .bit16(10754))
          XCTAssertEqual(BluetoothUUID.peripheralPrivacyFlag.name, "Peripheral Privacy Flag")
 
     }
@@ -1976,9 +1981,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Reconnection Address
     func testReconnectionAddress() {
 
-         XCTAssertEqual(BluetoothUUID.reconnectionAddress.rawValue, 0x2A03)
-         XCTAssertEqual(BluetoothUUID.reconnectionAddress.rawValue, 10755)
+         XCTAssertEqual(BluetoothUUID.reconnectionAddress.rawValue, "2A03")
          XCTAssertEqual(BluetoothUUID.reconnectionAddress, .bit16(0x2A03))
+         XCTAssertEqual(BluetoothUUID.reconnectionAddress, .bit16(10755))
          XCTAssertEqual(BluetoothUUID.reconnectionAddress.name, "Reconnection Address")
 
     }
@@ -1986,9 +1991,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Peripheral Preferred Connection Parameters
     func testPeripheralPreferredConnectionParameters() {
 
-         XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters.rawValue, 0x2A04)
-         XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters.rawValue, 10756)
+         XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters.rawValue, "2A04")
          XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters, .bit16(0x2A04))
+         XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters, .bit16(10756))
          XCTAssertEqual(BluetoothUUID.peripheralPreferredConnectionParameters.name, "Peripheral Preferred Connection Parameters")
 
     }
@@ -1996,9 +2001,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Service Changed
     func testServiceChanged() {
 
-         XCTAssertEqual(BluetoothUUID.serviceChanged.rawValue, 0x2A05)
-         XCTAssertEqual(BluetoothUUID.serviceChanged.rawValue, 10757)
+         XCTAssertEqual(BluetoothUUID.serviceChanged.rawValue, "2A05")
          XCTAssertEqual(BluetoothUUID.serviceChanged, .bit16(0x2A05))
+         XCTAssertEqual(BluetoothUUID.serviceChanged, .bit16(10757))
          XCTAssertEqual(BluetoothUUID.serviceChanged.name, "Service Changed")
 
     }
@@ -2006,9 +2011,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Alert Level
     func testAlertLevel() {
 
-         XCTAssertEqual(BluetoothUUID.alertLevel.rawValue, 0x2A06)
-         XCTAssertEqual(BluetoothUUID.alertLevel.rawValue, 10758)
+         XCTAssertEqual(BluetoothUUID.alertLevel.rawValue, "2A06")
          XCTAssertEqual(BluetoothUUID.alertLevel, .bit16(0x2A06))
+         XCTAssertEqual(BluetoothUUID.alertLevel, .bit16(10758))
          XCTAssertEqual(BluetoothUUID.alertLevel.name, "Alert Level")
 
     }
@@ -2016,9 +2021,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tx Power Level
     func testTxPowerLevel() {
 
-         XCTAssertEqual(BluetoothUUID.txPowerLevel.rawValue, 0x2A07)
-         XCTAssertEqual(BluetoothUUID.txPowerLevel.rawValue, 10759)
+         XCTAssertEqual(BluetoothUUID.txPowerLevel.rawValue, "2A07")
          XCTAssertEqual(BluetoothUUID.txPowerLevel, .bit16(0x2A07))
+         XCTAssertEqual(BluetoothUUID.txPowerLevel, .bit16(10759))
          XCTAssertEqual(BluetoothUUID.txPowerLevel.name, "Tx Power Level")
 
     }
@@ -2026,9 +2031,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Date Time
     func testDateTime() {
 
-         XCTAssertEqual(BluetoothUUID.dateTime.rawValue, 0x2A08)
-         XCTAssertEqual(BluetoothUUID.dateTime.rawValue, 10760)
+         XCTAssertEqual(BluetoothUUID.dateTime.rawValue, "2A08")
          XCTAssertEqual(BluetoothUUID.dateTime, .bit16(0x2A08))
+         XCTAssertEqual(BluetoothUUID.dateTime, .bit16(10760))
          XCTAssertEqual(BluetoothUUID.dateTime.name, "Date Time")
 
     }
@@ -2036,9 +2041,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Day of Week
     func testDayOfWeek() {
 
-         XCTAssertEqual(BluetoothUUID.dayOfWeek.rawValue, 0x2A09)
-         XCTAssertEqual(BluetoothUUID.dayOfWeek.rawValue, 10761)
+         XCTAssertEqual(BluetoothUUID.dayOfWeek.rawValue, "2A09")
          XCTAssertEqual(BluetoothUUID.dayOfWeek, .bit16(0x2A09))
+         XCTAssertEqual(BluetoothUUID.dayOfWeek, .bit16(10761))
          XCTAssertEqual(BluetoothUUID.dayOfWeek.name, "Day of Week")
 
     }
@@ -2046,9 +2051,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Day Date Time
     func testDayDateTime() {
 
-         XCTAssertEqual(BluetoothUUID.dayDateTime.rawValue, 0x2A0A)
-         XCTAssertEqual(BluetoothUUID.dayDateTime.rawValue, 10762)
+         XCTAssertEqual(BluetoothUUID.dayDateTime.rawValue, "2A0A")
          XCTAssertEqual(BluetoothUUID.dayDateTime, .bit16(0x2A0A))
+         XCTAssertEqual(BluetoothUUID.dayDateTime, .bit16(10762))
          XCTAssertEqual(BluetoothUUID.dayDateTime.name, "Day Date Time")
 
     }
@@ -2056,9 +2061,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Exact Time 256
     func testExactTime256() {
 
-         XCTAssertEqual(BluetoothUUID.exactTime256.rawValue, 0x2A0C)
-         XCTAssertEqual(BluetoothUUID.exactTime256.rawValue, 10764)
+         XCTAssertEqual(BluetoothUUID.exactTime256.rawValue, "2A0C")
          XCTAssertEqual(BluetoothUUID.exactTime256, .bit16(0x2A0C))
+         XCTAssertEqual(BluetoothUUID.exactTime256, .bit16(10764))
          XCTAssertEqual(BluetoothUUID.exactTime256.name, "Exact Time 256")
 
     }
@@ -2066,9 +2071,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test DST Offset
     func testDstOffset() {
 
-         XCTAssertEqual(BluetoothUUID.dstOffset.rawValue, 0x2A0D)
-         XCTAssertEqual(BluetoothUUID.dstOffset.rawValue, 10765)
+         XCTAssertEqual(BluetoothUUID.dstOffset.rawValue, "2A0D")
          XCTAssertEqual(BluetoothUUID.dstOffset, .bit16(0x2A0D))
+         XCTAssertEqual(BluetoothUUID.dstOffset, .bit16(10765))
          XCTAssertEqual(BluetoothUUID.dstOffset.name, "DST Offset")
 
     }
@@ -2076,9 +2081,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Time Zone
     func testTimeZone() {
 
-         XCTAssertEqual(BluetoothUUID.timeZone.rawValue, 0x2A0E)
-         XCTAssertEqual(BluetoothUUID.timeZone.rawValue, 10766)
+         XCTAssertEqual(BluetoothUUID.timeZone.rawValue, "2A0E")
          XCTAssertEqual(BluetoothUUID.timeZone, .bit16(0x2A0E))
+         XCTAssertEqual(BluetoothUUID.timeZone, .bit16(10766))
          XCTAssertEqual(BluetoothUUID.timeZone.name, "Time Zone")
 
     }
@@ -2086,9 +2091,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Local Time Information
     func testLocalTimeInformation() {
 
-         XCTAssertEqual(BluetoothUUID.localTimeInformation.rawValue, 0x2A0F)
-         XCTAssertEqual(BluetoothUUID.localTimeInformation.rawValue, 10767)
+         XCTAssertEqual(BluetoothUUID.localTimeInformation.rawValue, "2A0F")
          XCTAssertEqual(BluetoothUUID.localTimeInformation, .bit16(0x2A0F))
+         XCTAssertEqual(BluetoothUUID.localTimeInformation, .bit16(10767))
          XCTAssertEqual(BluetoothUUID.localTimeInformation.name, "Local Time Information")
 
     }
@@ -2096,9 +2101,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Time with DST
     func testTimeWithDst() {
 
-         XCTAssertEqual(BluetoothUUID.timeWithDst.rawValue, 0x2A11)
-         XCTAssertEqual(BluetoothUUID.timeWithDst.rawValue, 10769)
+         XCTAssertEqual(BluetoothUUID.timeWithDst.rawValue, "2A11")
          XCTAssertEqual(BluetoothUUID.timeWithDst, .bit16(0x2A11))
+         XCTAssertEqual(BluetoothUUID.timeWithDst, .bit16(10769))
          XCTAssertEqual(BluetoothUUID.timeWithDst.name, "Time with DST")
 
     }
@@ -2106,9 +2111,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Time Accuracy
     func testTimeAccuracy() {
 
-         XCTAssertEqual(BluetoothUUID.timeAccuracy.rawValue, 0x2A12)
-         XCTAssertEqual(BluetoothUUID.timeAccuracy.rawValue, 10770)
+         XCTAssertEqual(BluetoothUUID.timeAccuracy.rawValue, "2A12")
          XCTAssertEqual(BluetoothUUID.timeAccuracy, .bit16(0x2A12))
+         XCTAssertEqual(BluetoothUUID.timeAccuracy, .bit16(10770))
          XCTAssertEqual(BluetoothUUID.timeAccuracy.name, "Time Accuracy")
 
     }
@@ -2116,9 +2121,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Time Source
     func testTimeSource() {
 
-         XCTAssertEqual(BluetoothUUID.timeSource.rawValue, 0x2A13)
-         XCTAssertEqual(BluetoothUUID.timeSource.rawValue, 10771)
+         XCTAssertEqual(BluetoothUUID.timeSource.rawValue, "2A13")
          XCTAssertEqual(BluetoothUUID.timeSource, .bit16(0x2A13))
+         XCTAssertEqual(BluetoothUUID.timeSource, .bit16(10771))
          XCTAssertEqual(BluetoothUUID.timeSource.name, "Time Source")
 
     }
@@ -2126,9 +2131,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Reference Time Information
     func testReferenceTimeInformation() {
 
-         XCTAssertEqual(BluetoothUUID.referenceTimeInformation.rawValue, 0x2A14)
-         XCTAssertEqual(BluetoothUUID.referenceTimeInformation.rawValue, 10772)
+         XCTAssertEqual(BluetoothUUID.referenceTimeInformation.rawValue, "2A14")
          XCTAssertEqual(BluetoothUUID.referenceTimeInformation, .bit16(0x2A14))
+         XCTAssertEqual(BluetoothUUID.referenceTimeInformation, .bit16(10772))
          XCTAssertEqual(BluetoothUUID.referenceTimeInformation.name, "Reference Time Information")
 
     }
@@ -2136,9 +2141,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Time Update Control Point
     func testTimeUpdateControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint.rawValue, 0x2A16)
-         XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint.rawValue, 10774)
+         XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint.rawValue, "2A16")
          XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint, .bit16(0x2A16))
+         XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint, .bit16(10774))
          XCTAssertEqual(BluetoothUUID.timeUpdateControlPoint.name, "Time Update Control Point")
 
     }
@@ -2146,9 +2151,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Time Update State
     func testTimeUpdateState() {
 
-         XCTAssertEqual(BluetoothUUID.timeUpdateState.rawValue, 0x2A17)
-         XCTAssertEqual(BluetoothUUID.timeUpdateState.rawValue, 10775)
+         XCTAssertEqual(BluetoothUUID.timeUpdateState.rawValue, "2A17")
          XCTAssertEqual(BluetoothUUID.timeUpdateState, .bit16(0x2A17))
+         XCTAssertEqual(BluetoothUUID.timeUpdateState, .bit16(10775))
          XCTAssertEqual(BluetoothUUID.timeUpdateState.name, "Time Update State")
 
     }
@@ -2156,9 +2161,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Glucose Measurement
     func testGlucoseMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.glucoseMeasurement.rawValue, 0x2A18)
-         XCTAssertEqual(BluetoothUUID.glucoseMeasurement.rawValue, 10776)
+         XCTAssertEqual(BluetoothUUID.glucoseMeasurement.rawValue, "2A18")
          XCTAssertEqual(BluetoothUUID.glucoseMeasurement, .bit16(0x2A18))
+         XCTAssertEqual(BluetoothUUID.glucoseMeasurement, .bit16(10776))
          XCTAssertEqual(BluetoothUUID.glucoseMeasurement.name, "Glucose Measurement")
 
     }
@@ -2166,9 +2171,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Battery Level
     func testBatteryLevel() {
 
-         XCTAssertEqual(BluetoothUUID.batteryLevel.rawValue, 0x2A19)
-         XCTAssertEqual(BluetoothUUID.batteryLevel.rawValue, 10777)
+         XCTAssertEqual(BluetoothUUID.batteryLevel.rawValue, "2A19")
          XCTAssertEqual(BluetoothUUID.batteryLevel, .bit16(0x2A19))
+         XCTAssertEqual(BluetoothUUID.batteryLevel, .bit16(10777))
          XCTAssertEqual(BluetoothUUID.batteryLevel.name, "Battery Level")
 
     }
@@ -2176,9 +2181,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Temperature Measurement
     func testTemperatureMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.temperatureMeasurement.rawValue, 0x2A1C)
-         XCTAssertEqual(BluetoothUUID.temperatureMeasurement.rawValue, 10780)
+         XCTAssertEqual(BluetoothUUID.temperatureMeasurement.rawValue, "2A1C")
          XCTAssertEqual(BluetoothUUID.temperatureMeasurement, .bit16(0x2A1C))
+         XCTAssertEqual(BluetoothUUID.temperatureMeasurement, .bit16(10780))
          XCTAssertEqual(BluetoothUUID.temperatureMeasurement.name, "Temperature Measurement")
 
     }
@@ -2186,9 +2191,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Temperature Type
     func testTemperatureType() {
 
-         XCTAssertEqual(BluetoothUUID.temperatureType.rawValue, 0x2A1D)
-         XCTAssertEqual(BluetoothUUID.temperatureType.rawValue, 10781)
+         XCTAssertEqual(BluetoothUUID.temperatureType.rawValue, "2A1D")
          XCTAssertEqual(BluetoothUUID.temperatureType, .bit16(0x2A1D))
+         XCTAssertEqual(BluetoothUUID.temperatureType, .bit16(10781))
          XCTAssertEqual(BluetoothUUID.temperatureType.name, "Temperature Type")
 
     }
@@ -2196,9 +2201,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Intermediate Temperature
     func testIntermediateTemperature() {
 
-         XCTAssertEqual(BluetoothUUID.intermediateTemperature.rawValue, 0x2A1E)
-         XCTAssertEqual(BluetoothUUID.intermediateTemperature.rawValue, 10782)
+         XCTAssertEqual(BluetoothUUID.intermediateTemperature.rawValue, "2A1E")
          XCTAssertEqual(BluetoothUUID.intermediateTemperature, .bit16(0x2A1E))
+         XCTAssertEqual(BluetoothUUID.intermediateTemperature, .bit16(10782))
          XCTAssertEqual(BluetoothUUID.intermediateTemperature.name, "Intermediate Temperature")
 
     }
@@ -2206,9 +2211,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Measurement Interval
     func testMeasurementInterval() {
 
-         XCTAssertEqual(BluetoothUUID.measurementInterval.rawValue, 0x2A21)
-         XCTAssertEqual(BluetoothUUID.measurementInterval.rawValue, 10785)
+         XCTAssertEqual(BluetoothUUID.measurementInterval.rawValue, "2A21")
          XCTAssertEqual(BluetoothUUID.measurementInterval, .bit16(0x2A21))
+         XCTAssertEqual(BluetoothUUID.measurementInterval, .bit16(10785))
          XCTAssertEqual(BluetoothUUID.measurementInterval.name, "Measurement Interval")
 
     }
@@ -2216,9 +2221,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Boot Keyboard Input Report
     func testBootKeyboardInputReport() {
 
-         XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport.rawValue, 0x2A22)
-         XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport.rawValue, 10786)
+         XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport.rawValue, "2A22")
          XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport, .bit16(0x2A22))
+         XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport, .bit16(10786))
          XCTAssertEqual(BluetoothUUID.bootKeyboardInputReport.name, "Boot Keyboard Input Report")
 
     }
@@ -2226,9 +2231,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test System ID
     func testSystemId() {
 
-         XCTAssertEqual(BluetoothUUID.systemId.rawValue, 0x2A23)
-         XCTAssertEqual(BluetoothUUID.systemId.rawValue, 10787)
+         XCTAssertEqual(BluetoothUUID.systemId.rawValue, "2A23")
          XCTAssertEqual(BluetoothUUID.systemId, .bit16(0x2A23))
+         XCTAssertEqual(BluetoothUUID.systemId, .bit16(10787))
          XCTAssertEqual(BluetoothUUID.systemId.name, "System ID")
 
     }
@@ -2236,9 +2241,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Model Number String
     func testModelNumberString() {
 
-         XCTAssertEqual(BluetoothUUID.modelNumberString.rawValue, 0x2A24)
-         XCTAssertEqual(BluetoothUUID.modelNumberString.rawValue, 10788)
+         XCTAssertEqual(BluetoothUUID.modelNumberString.rawValue, "2A24")
          XCTAssertEqual(BluetoothUUID.modelNumberString, .bit16(0x2A24))
+         XCTAssertEqual(BluetoothUUID.modelNumberString, .bit16(10788))
          XCTAssertEqual(BluetoothUUID.modelNumberString.name, "Model Number String")
 
     }
@@ -2246,9 +2251,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Serial Number String
     func testSerialNumberString() {
 
-         XCTAssertEqual(BluetoothUUID.serialNumberString.rawValue, 0x2A25)
-         XCTAssertEqual(BluetoothUUID.serialNumberString.rawValue, 10789)
+         XCTAssertEqual(BluetoothUUID.serialNumberString.rawValue, "2A25")
          XCTAssertEqual(BluetoothUUID.serialNumberString, .bit16(0x2A25))
+         XCTAssertEqual(BluetoothUUID.serialNumberString, .bit16(10789))
          XCTAssertEqual(BluetoothUUID.serialNumberString.name, "Serial Number String")
 
     }
@@ -2256,9 +2261,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Firmware Revision String
     func testFirmwareRevisionString() {
 
-         XCTAssertEqual(BluetoothUUID.firmwareRevisionString.rawValue, 0x2A26)
-         XCTAssertEqual(BluetoothUUID.firmwareRevisionString.rawValue, 10790)
+         XCTAssertEqual(BluetoothUUID.firmwareRevisionString.rawValue, "2A26")
          XCTAssertEqual(BluetoothUUID.firmwareRevisionString, .bit16(0x2A26))
+         XCTAssertEqual(BluetoothUUID.firmwareRevisionString, .bit16(10790))
          XCTAssertEqual(BluetoothUUID.firmwareRevisionString.name, "Firmware Revision String")
 
     }
@@ -2266,9 +2271,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hardware Revision String
     func testHardwareRevisionString() {
 
-         XCTAssertEqual(BluetoothUUID.hardwareRevisionString.rawValue, 0x2A27)
-         XCTAssertEqual(BluetoothUUID.hardwareRevisionString.rawValue, 10791)
+         XCTAssertEqual(BluetoothUUID.hardwareRevisionString.rawValue, "2A27")
          XCTAssertEqual(BluetoothUUID.hardwareRevisionString, .bit16(0x2A27))
+         XCTAssertEqual(BluetoothUUID.hardwareRevisionString, .bit16(10791))
          XCTAssertEqual(BluetoothUUID.hardwareRevisionString.name, "Hardware Revision String")
 
     }
@@ -2276,9 +2281,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Software Revision String
     func testSoftwareRevisionString() {
 
-         XCTAssertEqual(BluetoothUUID.softwareRevisionString.rawValue, 0x2A28)
-         XCTAssertEqual(BluetoothUUID.softwareRevisionString.rawValue, 10792)
+         XCTAssertEqual(BluetoothUUID.softwareRevisionString.rawValue, "2A28")
          XCTAssertEqual(BluetoothUUID.softwareRevisionString, .bit16(0x2A28))
+         XCTAssertEqual(BluetoothUUID.softwareRevisionString, .bit16(10792))
          XCTAssertEqual(BluetoothUUID.softwareRevisionString.name, "Software Revision String")
 
     }
@@ -2286,9 +2291,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Manufacturer Name String
     func testManufacturerNameString() {
 
-         XCTAssertEqual(BluetoothUUID.manufacturerNameString.rawValue, 0x2A29)
-         XCTAssertEqual(BluetoothUUID.manufacturerNameString.rawValue, 10793)
+         XCTAssertEqual(BluetoothUUID.manufacturerNameString.rawValue, "2A29")
          XCTAssertEqual(BluetoothUUID.manufacturerNameString, .bit16(0x2A29))
+         XCTAssertEqual(BluetoothUUID.manufacturerNameString, .bit16(10793))
          XCTAssertEqual(BluetoothUUID.manufacturerNameString.name, "Manufacturer Name String")
 
     }
@@ -2296,9 +2301,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test IEEE 11073-20601 Regulatory Cert. Data List
     func testIeee1107320601RegulatoryCertDataList() {
 
-         XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList.rawValue, 0x2A2A)
-         XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList.rawValue, 10794)
+         XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList.rawValue, "2A2A")
          XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList, .bit16(0x2A2A))
+         XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList, .bit16(10794))
          XCTAssertEqual(BluetoothUUID.ieee1107320601RegulatoryCertDataList.name, "IEEE 11073-20601 Regulatory Cert. Data List")
 
     }
@@ -2306,9 +2311,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Current Time
     func testCurrentTime() {
 
-         XCTAssertEqual(BluetoothUUID.currentTime.rawValue, 0x2A2B)
-         XCTAssertEqual(BluetoothUUID.currentTime.rawValue, 10795)
+         XCTAssertEqual(BluetoothUUID.currentTime.rawValue, "2A2B")
          XCTAssertEqual(BluetoothUUID.currentTime, .bit16(0x2A2B))
+         XCTAssertEqual(BluetoothUUID.currentTime, .bit16(10795))
          XCTAssertEqual(BluetoothUUID.currentTime.name, "Current Time")
 
     }
@@ -2316,9 +2321,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Magnetic Declination
     func testMagneticDeclination() {
 
-         XCTAssertEqual(BluetoothUUID.magneticDeclination.rawValue, 0x2A2C)
-         XCTAssertEqual(BluetoothUUID.magneticDeclination.rawValue, 10796)
+         XCTAssertEqual(BluetoothUUID.magneticDeclination.rawValue, "2A2C")
          XCTAssertEqual(BluetoothUUID.magneticDeclination, .bit16(0x2A2C))
+         XCTAssertEqual(BluetoothUUID.magneticDeclination, .bit16(10796))
          XCTAssertEqual(BluetoothUUID.magneticDeclination.name, "Magnetic Declination")
 
     }
@@ -2326,9 +2331,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Scan Refresh
     func testScanRefresh() {
 
-         XCTAssertEqual(BluetoothUUID.scanRefresh.rawValue, 0x2A31)
-         XCTAssertEqual(BluetoothUUID.scanRefresh.rawValue, 10801)
+         XCTAssertEqual(BluetoothUUID.scanRefresh.rawValue, "2A31")
          XCTAssertEqual(BluetoothUUID.scanRefresh, .bit16(0x2A31))
+         XCTAssertEqual(BluetoothUUID.scanRefresh, .bit16(10801))
          XCTAssertEqual(BluetoothUUID.scanRefresh.name, "Scan Refresh")
 
     }
@@ -2336,9 +2341,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Boot Keyboard Output Report
     func testBootKeyboardOutputReport() {
 
-         XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport.rawValue, 0x2A32)
-         XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport.rawValue, 10802)
+         XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport.rawValue, "2A32")
          XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport, .bit16(0x2A32))
+         XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport, .bit16(10802))
          XCTAssertEqual(BluetoothUUID.bootKeyboardOutputReport.name, "Boot Keyboard Output Report")
 
     }
@@ -2346,9 +2351,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Boot Mouse Input Report
     func testBootMouseInputReport() {
 
-         XCTAssertEqual(BluetoothUUID.bootMouseInputReport.rawValue, 0x2A33)
-         XCTAssertEqual(BluetoothUUID.bootMouseInputReport.rawValue, 10803)
+         XCTAssertEqual(BluetoothUUID.bootMouseInputReport.rawValue, "2A33")
          XCTAssertEqual(BluetoothUUID.bootMouseInputReport, .bit16(0x2A33))
+         XCTAssertEqual(BluetoothUUID.bootMouseInputReport, .bit16(10803))
          XCTAssertEqual(BluetoothUUID.bootMouseInputReport.name, "Boot Mouse Input Report")
 
     }
@@ -2356,9 +2361,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Glucose Measurement Context
     func testGlucoseMeasurementContext() {
 
-         XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext.rawValue, 0x2A34)
-         XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext.rawValue, 10804)
+         XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext.rawValue, "2A34")
          XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext, .bit16(0x2A34))
+         XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext, .bit16(10804))
          XCTAssertEqual(BluetoothUUID.glucoseMeasurementContext.name, "Glucose Measurement Context")
 
     }
@@ -2366,9 +2371,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Blood Pressure Measurement
     func testBloodPressureMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement.rawValue, 0x2A35)
-         XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement.rawValue, 10805)
+         XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement.rawValue, "2A35")
          XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement, .bit16(0x2A35))
+         XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement, .bit16(10805))
          XCTAssertEqual(BluetoothUUID.bloodPressureMeasurement.name, "Blood Pressure Measurement")
 
     }
@@ -2376,9 +2381,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Intermediate Cuff Pressure
     func testIntermediateCuffPressure() {
 
-         XCTAssertEqual(BluetoothUUID.intermediateCuffPressure.rawValue, 0x2A36)
-         XCTAssertEqual(BluetoothUUID.intermediateCuffPressure.rawValue, 10806)
+         XCTAssertEqual(BluetoothUUID.intermediateCuffPressure.rawValue, "2A36")
          XCTAssertEqual(BluetoothUUID.intermediateCuffPressure, .bit16(0x2A36))
+         XCTAssertEqual(BluetoothUUID.intermediateCuffPressure, .bit16(10806))
          XCTAssertEqual(BluetoothUUID.intermediateCuffPressure.name, "Intermediate Cuff Pressure")
 
     }
@@ -2386,9 +2391,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Heart Rate Measurement
     func testHeartRateMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.heartRateMeasurement.rawValue, 0x2A37)
-         XCTAssertEqual(BluetoothUUID.heartRateMeasurement.rawValue, 10807)
+         XCTAssertEqual(BluetoothUUID.heartRateMeasurement.rawValue, "2A37")
          XCTAssertEqual(BluetoothUUID.heartRateMeasurement, .bit16(0x2A37))
+         XCTAssertEqual(BluetoothUUID.heartRateMeasurement, .bit16(10807))
          XCTAssertEqual(BluetoothUUID.heartRateMeasurement.name, "Heart Rate Measurement")
 
     }
@@ -2396,9 +2401,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Body Sensor Location
     func testBodySensorLocation() {
 
-         XCTAssertEqual(BluetoothUUID.bodySensorLocation.rawValue, 0x2A38)
-         XCTAssertEqual(BluetoothUUID.bodySensorLocation.rawValue, 10808)
+         XCTAssertEqual(BluetoothUUID.bodySensorLocation.rawValue, "2A38")
          XCTAssertEqual(BluetoothUUID.bodySensorLocation, .bit16(0x2A38))
+         XCTAssertEqual(BluetoothUUID.bodySensorLocation, .bit16(10808))
          XCTAssertEqual(BluetoothUUID.bodySensorLocation.name, "Body Sensor Location")
 
     }
@@ -2406,9 +2411,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Heart Rate Control Point
     func testHeartRateControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.heartRateControlPoint.rawValue, 0x2A39)
-         XCTAssertEqual(BluetoothUUID.heartRateControlPoint.rawValue, 10809)
+         XCTAssertEqual(BluetoothUUID.heartRateControlPoint.rawValue, "2A39")
          XCTAssertEqual(BluetoothUUID.heartRateControlPoint, .bit16(0x2A39))
+         XCTAssertEqual(BluetoothUUID.heartRateControlPoint, .bit16(10809))
          XCTAssertEqual(BluetoothUUID.heartRateControlPoint.name, "Heart Rate Control Point")
 
     }
@@ -2416,9 +2421,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Alert Status
     func testAlertStatus() {
 
-         XCTAssertEqual(BluetoothUUID.alertStatus.rawValue, 0x2A3F)
-         XCTAssertEqual(BluetoothUUID.alertStatus.rawValue, 10815)
+         XCTAssertEqual(BluetoothUUID.alertStatus.rawValue, "2A3F")
          XCTAssertEqual(BluetoothUUID.alertStatus, .bit16(0x2A3F))
+         XCTAssertEqual(BluetoothUUID.alertStatus, .bit16(10815))
          XCTAssertEqual(BluetoothUUID.alertStatus.name, "Alert Status")
 
     }
@@ -2426,9 +2431,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Ringer Control Point
     func testRingerControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.ringerControlPoint.rawValue, 0x2A40)
-         XCTAssertEqual(BluetoothUUID.ringerControlPoint.rawValue, 10816)
+         XCTAssertEqual(BluetoothUUID.ringerControlPoint.rawValue, "2A40")
          XCTAssertEqual(BluetoothUUID.ringerControlPoint, .bit16(0x2A40))
+         XCTAssertEqual(BluetoothUUID.ringerControlPoint, .bit16(10816))
          XCTAssertEqual(BluetoothUUID.ringerControlPoint.name, "Ringer Control Point")
 
     }
@@ -2436,9 +2441,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Ringer Setting
     func testRingerSetting() {
 
-         XCTAssertEqual(BluetoothUUID.ringerSetting.rawValue, 0x2A41)
-         XCTAssertEqual(BluetoothUUID.ringerSetting.rawValue, 10817)
+         XCTAssertEqual(BluetoothUUID.ringerSetting.rawValue, "2A41")
          XCTAssertEqual(BluetoothUUID.ringerSetting, .bit16(0x2A41))
+         XCTAssertEqual(BluetoothUUID.ringerSetting, .bit16(10817))
          XCTAssertEqual(BluetoothUUID.ringerSetting.name, "Ringer Setting")
 
     }
@@ -2446,9 +2451,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Alert Category ID Bit Mask
     func testAlertCategoryIdBitMask() {
 
-         XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask.rawValue, 0x2A42)
-         XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask.rawValue, 10818)
+         XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask.rawValue, "2A42")
          XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask, .bit16(0x2A42))
+         XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask, .bit16(10818))
          XCTAssertEqual(BluetoothUUID.alertCategoryIdBitMask.name, "Alert Category ID Bit Mask")
 
     }
@@ -2456,9 +2461,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Alert Category ID
     func testAlertCategoryId() {
 
-         XCTAssertEqual(BluetoothUUID.alertCategoryId.rawValue, 0x2A43)
-         XCTAssertEqual(BluetoothUUID.alertCategoryId.rawValue, 10819)
+         XCTAssertEqual(BluetoothUUID.alertCategoryId.rawValue, "2A43")
          XCTAssertEqual(BluetoothUUID.alertCategoryId, .bit16(0x2A43))
+         XCTAssertEqual(BluetoothUUID.alertCategoryId, .bit16(10819))
          XCTAssertEqual(BluetoothUUID.alertCategoryId.name, "Alert Category ID")
 
     }
@@ -2466,9 +2471,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Alert Notification Control Point
     func testAlertNotificationControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint.rawValue, 0x2A44)
-         XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint.rawValue, 10820)
+         XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint.rawValue, "2A44")
          XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint, .bit16(0x2A44))
+         XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint, .bit16(10820))
          XCTAssertEqual(BluetoothUUID.alertNotificationControlPoint.name, "Alert Notification Control Point")
 
     }
@@ -2476,9 +2481,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Unread Alert Status
     func testUnreadAlertStatus() {
 
-         XCTAssertEqual(BluetoothUUID.unreadAlertStatus.rawValue, 0x2A45)
-         XCTAssertEqual(BluetoothUUID.unreadAlertStatus.rawValue, 10821)
+         XCTAssertEqual(BluetoothUUID.unreadAlertStatus.rawValue, "2A45")
          XCTAssertEqual(BluetoothUUID.unreadAlertStatus, .bit16(0x2A45))
+         XCTAssertEqual(BluetoothUUID.unreadAlertStatus, .bit16(10821))
          XCTAssertEqual(BluetoothUUID.unreadAlertStatus.name, "Unread Alert Status")
 
     }
@@ -2486,9 +2491,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test New Alert
     func testNewAlert() {
 
-         XCTAssertEqual(BluetoothUUID.newAlert.rawValue, 0x2A46)
-         XCTAssertEqual(BluetoothUUID.newAlert.rawValue, 10822)
+         XCTAssertEqual(BluetoothUUID.newAlert.rawValue, "2A46")
          XCTAssertEqual(BluetoothUUID.newAlert, .bit16(0x2A46))
+         XCTAssertEqual(BluetoothUUID.newAlert, .bit16(10822))
          XCTAssertEqual(BluetoothUUID.newAlert.name, "New Alert")
 
     }
@@ -2496,9 +2501,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Supported New Alert Category
     func testSupportedNewAlertCategory() {
 
-         XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory.rawValue, 0x2A47)
-         XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory.rawValue, 10823)
+         XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory.rawValue, "2A47")
          XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory, .bit16(0x2A47))
+         XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory, .bit16(10823))
          XCTAssertEqual(BluetoothUUID.supportedNewAlertCategory.name, "Supported New Alert Category")
 
     }
@@ -2506,9 +2511,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Supported Unread Alert Category
     func testSupportedUnreadAlertCategory() {
 
-         XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory.rawValue, 0x2A48)
-         XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory.rawValue, 10824)
+         XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory.rawValue, "2A48")
          XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory, .bit16(0x2A48))
+         XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory, .bit16(10824))
          XCTAssertEqual(BluetoothUUID.supportedUnreadAlertCategory.name, "Supported Unread Alert Category")
 
     }
@@ -2516,9 +2521,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Blood Pressure Feature
     func testBloodPressureFeature() {
 
-         XCTAssertEqual(BluetoothUUID.bloodPressureFeature.rawValue, 0x2A49)
-         XCTAssertEqual(BluetoothUUID.bloodPressureFeature.rawValue, 10825)
+         XCTAssertEqual(BluetoothUUID.bloodPressureFeature.rawValue, "2A49")
          XCTAssertEqual(BluetoothUUID.bloodPressureFeature, .bit16(0x2A49))
+         XCTAssertEqual(BluetoothUUID.bloodPressureFeature, .bit16(10825))
          XCTAssertEqual(BluetoothUUID.bloodPressureFeature.name, "Blood Pressure Feature")
 
     }
@@ -2526,9 +2531,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HID Information
     func testHidInformation() {
 
-         XCTAssertEqual(BluetoothUUID.hidInformation.rawValue, 0x2A4A)
-         XCTAssertEqual(BluetoothUUID.hidInformation.rawValue, 10826)
+         XCTAssertEqual(BluetoothUUID.hidInformation.rawValue, "2A4A")
          XCTAssertEqual(BluetoothUUID.hidInformation, .bit16(0x2A4A))
+         XCTAssertEqual(BluetoothUUID.hidInformation, .bit16(10826))
          XCTAssertEqual(BluetoothUUID.hidInformation.name, "HID Information")
 
     }
@@ -2536,9 +2541,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Report Map
     func testReportMap() {
 
-         XCTAssertEqual(BluetoothUUID.reportMap.rawValue, 0x2A4B)
-         XCTAssertEqual(BluetoothUUID.reportMap.rawValue, 10827)
+         XCTAssertEqual(BluetoothUUID.reportMap.rawValue, "2A4B")
          XCTAssertEqual(BluetoothUUID.reportMap, .bit16(0x2A4B))
+         XCTAssertEqual(BluetoothUUID.reportMap, .bit16(10827))
          XCTAssertEqual(BluetoothUUID.reportMap.name, "Report Map")
 
     }
@@ -2546,9 +2551,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HID Control Point
     func testHidControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.hidControlPoint.rawValue, 0x2A4C)
-         XCTAssertEqual(BluetoothUUID.hidControlPoint.rawValue, 10828)
+         XCTAssertEqual(BluetoothUUID.hidControlPoint.rawValue, "2A4C")
          XCTAssertEqual(BluetoothUUID.hidControlPoint, .bit16(0x2A4C))
+         XCTAssertEqual(BluetoothUUID.hidControlPoint, .bit16(10828))
          XCTAssertEqual(BluetoothUUID.hidControlPoint.name, "HID Control Point")
 
     }
@@ -2556,9 +2561,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Report
     func testReport() {
 
-         XCTAssertEqual(BluetoothUUID.report.rawValue, 0x2A4D)
-         XCTAssertEqual(BluetoothUUID.report.rawValue, 10829)
+         XCTAssertEqual(BluetoothUUID.report.rawValue, "2A4D")
          XCTAssertEqual(BluetoothUUID.report, .bit16(0x2A4D))
+         XCTAssertEqual(BluetoothUUID.report, .bit16(10829))
          XCTAssertEqual(BluetoothUUID.report.name, "Report")
 
     }
@@ -2566,9 +2571,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Protocol Mode
     func testProtocolMode() {
 
-         XCTAssertEqual(BluetoothUUID.protocolMode.rawValue, 0x2A4E)
-         XCTAssertEqual(BluetoothUUID.protocolMode.rawValue, 10830)
+         XCTAssertEqual(BluetoothUUID.protocolMode.rawValue, "2A4E")
          XCTAssertEqual(BluetoothUUID.protocolMode, .bit16(0x2A4E))
+         XCTAssertEqual(BluetoothUUID.protocolMode, .bit16(10830))
          XCTAssertEqual(BluetoothUUID.protocolMode.name, "Protocol Mode")
 
     }
@@ -2576,9 +2581,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Scan Interval Window
     func testScanIntervalWindow() {
 
-         XCTAssertEqual(BluetoothUUID.scanIntervalWindow.rawValue, 0x2A4F)
-         XCTAssertEqual(BluetoothUUID.scanIntervalWindow.rawValue, 10831)
+         XCTAssertEqual(BluetoothUUID.scanIntervalWindow.rawValue, "2A4F")
          XCTAssertEqual(BluetoothUUID.scanIntervalWindow, .bit16(0x2A4F))
+         XCTAssertEqual(BluetoothUUID.scanIntervalWindow, .bit16(10831))
          XCTAssertEqual(BluetoothUUID.scanIntervalWindow.name, "Scan Interval Window")
 
     }
@@ -2586,9 +2591,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test PnP ID
     func testPnpId() {
 
-         XCTAssertEqual(BluetoothUUID.pnpId.rawValue, 0x2A50)
-         XCTAssertEqual(BluetoothUUID.pnpId.rawValue, 10832)
+         XCTAssertEqual(BluetoothUUID.pnpId.rawValue, "2A50")
          XCTAssertEqual(BluetoothUUID.pnpId, .bit16(0x2A50))
+         XCTAssertEqual(BluetoothUUID.pnpId, .bit16(10832))
          XCTAssertEqual(BluetoothUUID.pnpId.name, "PnP ID")
 
     }
@@ -2596,9 +2601,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Glucose Feature
     func testGlucoseFeature() {
 
-         XCTAssertEqual(BluetoothUUID.glucoseFeature.rawValue, 0x2A51)
-         XCTAssertEqual(BluetoothUUID.glucoseFeature.rawValue, 10833)
+         XCTAssertEqual(BluetoothUUID.glucoseFeature.rawValue, "2A51")
          XCTAssertEqual(BluetoothUUID.glucoseFeature, .bit16(0x2A51))
+         XCTAssertEqual(BluetoothUUID.glucoseFeature, .bit16(10833))
          XCTAssertEqual(BluetoothUUID.glucoseFeature.name, "Glucose Feature")
 
     }
@@ -2606,9 +2611,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Record Access Control Point
     func testRecordAccessControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.recordAccessControlPoint.rawValue, 0x2A52)
-         XCTAssertEqual(BluetoothUUID.recordAccessControlPoint.rawValue, 10834)
+         XCTAssertEqual(BluetoothUUID.recordAccessControlPoint.rawValue, "2A52")
          XCTAssertEqual(BluetoothUUID.recordAccessControlPoint, .bit16(0x2A52))
+         XCTAssertEqual(BluetoothUUID.recordAccessControlPoint, .bit16(10834))
          XCTAssertEqual(BluetoothUUID.recordAccessControlPoint.name, "Record Access Control Point")
 
     }
@@ -2616,9 +2621,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test RSC Measurement
     func testRscMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.rscMeasurement.rawValue, 0x2A53)
-         XCTAssertEqual(BluetoothUUID.rscMeasurement.rawValue, 10835)
+         XCTAssertEqual(BluetoothUUID.rscMeasurement.rawValue, "2A53")
          XCTAssertEqual(BluetoothUUID.rscMeasurement, .bit16(0x2A53))
+         XCTAssertEqual(BluetoothUUID.rscMeasurement, .bit16(10835))
          XCTAssertEqual(BluetoothUUID.rscMeasurement.name, "RSC Measurement")
 
     }
@@ -2626,9 +2631,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test RSC Feature
     func testRscFeature() {
 
-         XCTAssertEqual(BluetoothUUID.rscFeature.rawValue, 0x2A54)
-         XCTAssertEqual(BluetoothUUID.rscFeature.rawValue, 10836)
+         XCTAssertEqual(BluetoothUUID.rscFeature.rawValue, "2A54")
          XCTAssertEqual(BluetoothUUID.rscFeature, .bit16(0x2A54))
+         XCTAssertEqual(BluetoothUUID.rscFeature, .bit16(10836))
          XCTAssertEqual(BluetoothUUID.rscFeature.name, "RSC Feature")
 
     }
@@ -2636,9 +2641,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test SC Control Point
     func testScControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.scControlPoint.rawValue, 0x2A55)
-         XCTAssertEqual(BluetoothUUID.scControlPoint.rawValue, 10837)
+         XCTAssertEqual(BluetoothUUID.scControlPoint.rawValue, "2A55")
          XCTAssertEqual(BluetoothUUID.scControlPoint, .bit16(0x2A55))
+         XCTAssertEqual(BluetoothUUID.scControlPoint, .bit16(10837))
          XCTAssertEqual(BluetoothUUID.scControlPoint.name, "SC Control Point")
 
     }
@@ -2646,9 +2651,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Digital
     func testDigital() {
 
-         XCTAssertEqual(BluetoothUUID.digital.rawValue, 0x2A56)
-         XCTAssertEqual(BluetoothUUID.digital.rawValue, 10838)
+         XCTAssertEqual(BluetoothUUID.digital.rawValue, "2A56")
          XCTAssertEqual(BluetoothUUID.digital, .bit16(0x2A56))
+         XCTAssertEqual(BluetoothUUID.digital, .bit16(10838))
          XCTAssertEqual(BluetoothUUID.digital.name, "Digital")
 
     }
@@ -2656,9 +2661,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Analog
     func testAnalog() {
 
-         XCTAssertEqual(BluetoothUUID.analog.rawValue, 0x2A58)
-         XCTAssertEqual(BluetoothUUID.analog.rawValue, 10840)
+         XCTAssertEqual(BluetoothUUID.analog.rawValue, "2A58")
          XCTAssertEqual(BluetoothUUID.analog, .bit16(0x2A58))
+         XCTAssertEqual(BluetoothUUID.analog, .bit16(10840))
          XCTAssertEqual(BluetoothUUID.analog.name, "Analog")
 
     }
@@ -2666,9 +2671,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Aggregate
     func testAggregate() {
 
-         XCTAssertEqual(BluetoothUUID.aggregate.rawValue, 0x2A5A)
-         XCTAssertEqual(BluetoothUUID.aggregate.rawValue, 10842)
+         XCTAssertEqual(BluetoothUUID.aggregate.rawValue, "2A5A")
          XCTAssertEqual(BluetoothUUID.aggregate, .bit16(0x2A5A))
+         XCTAssertEqual(BluetoothUUID.aggregate, .bit16(10842))
          XCTAssertEqual(BluetoothUUID.aggregate.name, "Aggregate")
 
     }
@@ -2676,9 +2681,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CSC Measurement
     func testCscMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.cscMeasurement.rawValue, 0x2A5B)
-         XCTAssertEqual(BluetoothUUID.cscMeasurement.rawValue, 10843)
+         XCTAssertEqual(BluetoothUUID.cscMeasurement.rawValue, "2A5B")
          XCTAssertEqual(BluetoothUUID.cscMeasurement, .bit16(0x2A5B))
+         XCTAssertEqual(BluetoothUUID.cscMeasurement, .bit16(10843))
          XCTAssertEqual(BluetoothUUID.cscMeasurement.name, "CSC Measurement")
 
     }
@@ -2686,9 +2691,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CSC Feature
     func testCscFeature() {
 
-         XCTAssertEqual(BluetoothUUID.cscFeature.rawValue, 0x2A5C)
-         XCTAssertEqual(BluetoothUUID.cscFeature.rawValue, 10844)
+         XCTAssertEqual(BluetoothUUID.cscFeature.rawValue, "2A5C")
          XCTAssertEqual(BluetoothUUID.cscFeature, .bit16(0x2A5C))
+         XCTAssertEqual(BluetoothUUID.cscFeature, .bit16(10844))
          XCTAssertEqual(BluetoothUUID.cscFeature.name, "CSC Feature")
 
     }
@@ -2696,9 +2701,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Sensor Location
     func testSensorLocation() {
 
-         XCTAssertEqual(BluetoothUUID.sensorLocation.rawValue, 0x2A5D)
-         XCTAssertEqual(BluetoothUUID.sensorLocation.rawValue, 10845)
+         XCTAssertEqual(BluetoothUUID.sensorLocation.rawValue, "2A5D")
          XCTAssertEqual(BluetoothUUID.sensorLocation, .bit16(0x2A5D))
+         XCTAssertEqual(BluetoothUUID.sensorLocation, .bit16(10845))
          XCTAssertEqual(BluetoothUUID.sensorLocation.name, "Sensor Location")
 
     }
@@ -2706,9 +2711,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Cycling Power Measurement
     func testCyclingPowerMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement.rawValue, 0x2A63)
-         XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement.rawValue, 10851)
+         XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement.rawValue, "2A63")
          XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement, .bit16(0x2A63))
+         XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement, .bit16(10851))
          XCTAssertEqual(BluetoothUUID.cyclingPowerMeasurement.name, "Cycling Power Measurement")
 
     }
@@ -2716,9 +2721,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Cycling Power Vector
     func testCyclingPowerVector() {
 
-         XCTAssertEqual(BluetoothUUID.cyclingPowerVector.rawValue, 0x2A64)
-         XCTAssertEqual(BluetoothUUID.cyclingPowerVector.rawValue, 10852)
+         XCTAssertEqual(BluetoothUUID.cyclingPowerVector.rawValue, "2A64")
          XCTAssertEqual(BluetoothUUID.cyclingPowerVector, .bit16(0x2A64))
+         XCTAssertEqual(BluetoothUUID.cyclingPowerVector, .bit16(10852))
          XCTAssertEqual(BluetoothUUID.cyclingPowerVector.name, "Cycling Power Vector")
 
     }
@@ -2726,9 +2731,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Cycling Power Feature
     func testCyclingPowerFeature() {
 
-         XCTAssertEqual(BluetoothUUID.cyclingPowerFeature.rawValue, 0x2A65)
-         XCTAssertEqual(BluetoothUUID.cyclingPowerFeature.rawValue, 10853)
+         XCTAssertEqual(BluetoothUUID.cyclingPowerFeature.rawValue, "2A65")
          XCTAssertEqual(BluetoothUUID.cyclingPowerFeature, .bit16(0x2A65))
+         XCTAssertEqual(BluetoothUUID.cyclingPowerFeature, .bit16(10853))
          XCTAssertEqual(BluetoothUUID.cyclingPowerFeature.name, "Cycling Power Feature")
 
     }
@@ -2736,9 +2741,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Cycling Power Control Point
     func testCyclingPowerControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint.rawValue, 0x2A66)
-         XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint.rawValue, 10854)
+         XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint.rawValue, "2A66")
          XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint, .bit16(0x2A66))
+         XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint, .bit16(10854))
          XCTAssertEqual(BluetoothUUID.cyclingPowerControlPoint.name, "Cycling Power Control Point")
 
     }
@@ -2746,9 +2751,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Location and Speed
     func testLocationAndSpeed() {
 
-         XCTAssertEqual(BluetoothUUID.locationAndSpeed.rawValue, 0x2A67)
-         XCTAssertEqual(BluetoothUUID.locationAndSpeed.rawValue, 10855)
+         XCTAssertEqual(BluetoothUUID.locationAndSpeed.rawValue, "2A67")
          XCTAssertEqual(BluetoothUUID.locationAndSpeed, .bit16(0x2A67))
+         XCTAssertEqual(BluetoothUUID.locationAndSpeed, .bit16(10855))
          XCTAssertEqual(BluetoothUUID.locationAndSpeed.name, "Location and Speed")
 
     }
@@ -2756,9 +2761,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Navigation
     func testNavigation() {
 
-         XCTAssertEqual(BluetoothUUID.navigation.rawValue, 0x2A68)
-         XCTAssertEqual(BluetoothUUID.navigation.rawValue, 10856)
+         XCTAssertEqual(BluetoothUUID.navigation.rawValue, "2A68")
          XCTAssertEqual(BluetoothUUID.navigation, .bit16(0x2A68))
+         XCTAssertEqual(BluetoothUUID.navigation, .bit16(10856))
          XCTAssertEqual(BluetoothUUID.navigation.name, "Navigation")
 
     }
@@ -2766,9 +2771,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Position Quality
     func testPositionQuality() {
 
-         XCTAssertEqual(BluetoothUUID.positionQuality.rawValue, 0x2A69)
-         XCTAssertEqual(BluetoothUUID.positionQuality.rawValue, 10857)
+         XCTAssertEqual(BluetoothUUID.positionQuality.rawValue, "2A69")
          XCTAssertEqual(BluetoothUUID.positionQuality, .bit16(0x2A69))
+         XCTAssertEqual(BluetoothUUID.positionQuality, .bit16(10857))
          XCTAssertEqual(BluetoothUUID.positionQuality.name, "Position Quality")
 
     }
@@ -2776,9 +2781,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test LN Feature
     func testLnFeature() {
 
-         XCTAssertEqual(BluetoothUUID.lnFeature.rawValue, 0x2A6A)
-         XCTAssertEqual(BluetoothUUID.lnFeature.rawValue, 10858)
+         XCTAssertEqual(BluetoothUUID.lnFeature.rawValue, "2A6A")
          XCTAssertEqual(BluetoothUUID.lnFeature, .bit16(0x2A6A))
+         XCTAssertEqual(BluetoothUUID.lnFeature, .bit16(10858))
          XCTAssertEqual(BluetoothUUID.lnFeature.name, "LN Feature")
 
     }
@@ -2786,9 +2791,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test LN Control Point
     func testLnControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.lnControlPoint.rawValue, 0x2A6B)
-         XCTAssertEqual(BluetoothUUID.lnControlPoint.rawValue, 10859)
+         XCTAssertEqual(BluetoothUUID.lnControlPoint.rawValue, "2A6B")
          XCTAssertEqual(BluetoothUUID.lnControlPoint, .bit16(0x2A6B))
+         XCTAssertEqual(BluetoothUUID.lnControlPoint, .bit16(10859))
          XCTAssertEqual(BluetoothUUID.lnControlPoint.name, "LN Control Point")
 
     }
@@ -2796,9 +2801,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Elevation
     func testElevation() {
 
-         XCTAssertEqual(BluetoothUUID.elevation.rawValue, 0x2A6C)
-         XCTAssertEqual(BluetoothUUID.elevation.rawValue, 10860)
+         XCTAssertEqual(BluetoothUUID.elevation.rawValue, "2A6C")
          XCTAssertEqual(BluetoothUUID.elevation, .bit16(0x2A6C))
+         XCTAssertEqual(BluetoothUUID.elevation, .bit16(10860))
          XCTAssertEqual(BluetoothUUID.elevation.name, "Elevation")
 
     }
@@ -2806,9 +2811,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Pressure
     func testPressure() {
 
-         XCTAssertEqual(BluetoothUUID.pressure.rawValue, 0x2A6D)
-         XCTAssertEqual(BluetoothUUID.pressure.rawValue, 10861)
+         XCTAssertEqual(BluetoothUUID.pressure.rawValue, "2A6D")
          XCTAssertEqual(BluetoothUUID.pressure, .bit16(0x2A6D))
+         XCTAssertEqual(BluetoothUUID.pressure, .bit16(10861))
          XCTAssertEqual(BluetoothUUID.pressure.name, "Pressure")
 
     }
@@ -2816,9 +2821,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Temperature
     func testTemperature() {
 
-         XCTAssertEqual(BluetoothUUID.temperature.rawValue, 0x2A6E)
-         XCTAssertEqual(BluetoothUUID.temperature.rawValue, 10862)
+         XCTAssertEqual(BluetoothUUID.temperature.rawValue, "2A6E")
          XCTAssertEqual(BluetoothUUID.temperature, .bit16(0x2A6E))
+         XCTAssertEqual(BluetoothUUID.temperature, .bit16(10862))
          XCTAssertEqual(BluetoothUUID.temperature.name, "Temperature")
 
     }
@@ -2826,9 +2831,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Humidity
     func testHumidity() {
 
-         XCTAssertEqual(BluetoothUUID.humidity.rawValue, 0x2A6F)
-         XCTAssertEqual(BluetoothUUID.humidity.rawValue, 10863)
+         XCTAssertEqual(BluetoothUUID.humidity.rawValue, "2A6F")
          XCTAssertEqual(BluetoothUUID.humidity, .bit16(0x2A6F))
+         XCTAssertEqual(BluetoothUUID.humidity, .bit16(10863))
          XCTAssertEqual(BluetoothUUID.humidity.name, "Humidity")
 
     }
@@ -2836,9 +2841,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test True Wind Speed
     func testTrueWindSpeed() {
 
-         XCTAssertEqual(BluetoothUUID.trueWindSpeed.rawValue, 0x2A70)
-         XCTAssertEqual(BluetoothUUID.trueWindSpeed.rawValue, 10864)
+         XCTAssertEqual(BluetoothUUID.trueWindSpeed.rawValue, "2A70")
          XCTAssertEqual(BluetoothUUID.trueWindSpeed, .bit16(0x2A70))
+         XCTAssertEqual(BluetoothUUID.trueWindSpeed, .bit16(10864))
          XCTAssertEqual(BluetoothUUID.trueWindSpeed.name, "True Wind Speed")
 
     }
@@ -2846,9 +2851,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test True Wind Direction
     func testTrueWindDirection() {
 
-         XCTAssertEqual(BluetoothUUID.trueWindDirection.rawValue, 0x2A71)
-         XCTAssertEqual(BluetoothUUID.trueWindDirection.rawValue, 10865)
+         XCTAssertEqual(BluetoothUUID.trueWindDirection.rawValue, "2A71")
          XCTAssertEqual(BluetoothUUID.trueWindDirection, .bit16(0x2A71))
+         XCTAssertEqual(BluetoothUUID.trueWindDirection, .bit16(10865))
          XCTAssertEqual(BluetoothUUID.trueWindDirection.name, "True Wind Direction")
 
     }
@@ -2856,9 +2861,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apparent Wind Speed
     func testApparentWindSpeed() {
 
-         XCTAssertEqual(BluetoothUUID.apparentWindSpeed.rawValue, 0x2A72)
-         XCTAssertEqual(BluetoothUUID.apparentWindSpeed.rawValue, 10866)
+         XCTAssertEqual(BluetoothUUID.apparentWindSpeed.rawValue, "2A72")
          XCTAssertEqual(BluetoothUUID.apparentWindSpeed, .bit16(0x2A72))
+         XCTAssertEqual(BluetoothUUID.apparentWindSpeed, .bit16(10866))
          XCTAssertEqual(BluetoothUUID.apparentWindSpeed.name, "Apparent Wind Speed")
 
     }
@@ -2866,9 +2871,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apparent Wind Direction
     func testApparentWindDirection() {
 
-         XCTAssertEqual(BluetoothUUID.apparentWindDirection.rawValue, 0x2A73)
-         XCTAssertEqual(BluetoothUUID.apparentWindDirection.rawValue, 10867)
+         XCTAssertEqual(BluetoothUUID.apparentWindDirection.rawValue, "2A73")
          XCTAssertEqual(BluetoothUUID.apparentWindDirection, .bit16(0x2A73))
+         XCTAssertEqual(BluetoothUUID.apparentWindDirection, .bit16(10867))
          XCTAssertEqual(BluetoothUUID.apparentWindDirection.name, "Apparent Wind Direction")
 
     }
@@ -2876,9 +2881,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Gust Factor
     func testGustFactor() {
 
-         XCTAssertEqual(BluetoothUUID.gustFactor.rawValue, 0x2A74)
-         XCTAssertEqual(BluetoothUUID.gustFactor.rawValue, 10868)
+         XCTAssertEqual(BluetoothUUID.gustFactor.rawValue, "2A74")
          XCTAssertEqual(BluetoothUUID.gustFactor, .bit16(0x2A74))
+         XCTAssertEqual(BluetoothUUID.gustFactor, .bit16(10868))
          XCTAssertEqual(BluetoothUUID.gustFactor.name, "Gust Factor")
 
     }
@@ -2886,9 +2891,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Pollen Concentration
     func testPollenConcentration() {
 
-         XCTAssertEqual(BluetoothUUID.pollenConcentration.rawValue, 0x2A75)
-         XCTAssertEqual(BluetoothUUID.pollenConcentration.rawValue, 10869)
+         XCTAssertEqual(BluetoothUUID.pollenConcentration.rawValue, "2A75")
          XCTAssertEqual(BluetoothUUID.pollenConcentration, .bit16(0x2A75))
+         XCTAssertEqual(BluetoothUUID.pollenConcentration, .bit16(10869))
          XCTAssertEqual(BluetoothUUID.pollenConcentration.name, "Pollen Concentration")
 
     }
@@ -2896,9 +2901,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UV Index
     func testUvIndex() {
 
-         XCTAssertEqual(BluetoothUUID.uvIndex.rawValue, 0x2A76)
-         XCTAssertEqual(BluetoothUUID.uvIndex.rawValue, 10870)
+         XCTAssertEqual(BluetoothUUID.uvIndex.rawValue, "2A76")
          XCTAssertEqual(BluetoothUUID.uvIndex, .bit16(0x2A76))
+         XCTAssertEqual(BluetoothUUID.uvIndex, .bit16(10870))
          XCTAssertEqual(BluetoothUUID.uvIndex.name, "UV Index")
 
     }
@@ -2906,9 +2911,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Irradiance
     func testIrradiance() {
 
-         XCTAssertEqual(BluetoothUUID.irradiance.rawValue, 0x2A77)
-         XCTAssertEqual(BluetoothUUID.irradiance.rawValue, 10871)
+         XCTAssertEqual(BluetoothUUID.irradiance.rawValue, "2A77")
          XCTAssertEqual(BluetoothUUID.irradiance, .bit16(0x2A77))
+         XCTAssertEqual(BluetoothUUID.irradiance, .bit16(10871))
          XCTAssertEqual(BluetoothUUID.irradiance.name, "Irradiance")
 
     }
@@ -2916,9 +2921,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Rainfall
     func testRainfall() {
 
-         XCTAssertEqual(BluetoothUUID.rainfall.rawValue, 0x2A78)
-         XCTAssertEqual(BluetoothUUID.rainfall.rawValue, 10872)
+         XCTAssertEqual(BluetoothUUID.rainfall.rawValue, "2A78")
          XCTAssertEqual(BluetoothUUID.rainfall, .bit16(0x2A78))
+         XCTAssertEqual(BluetoothUUID.rainfall, .bit16(10872))
          XCTAssertEqual(BluetoothUUID.rainfall.name, "Rainfall")
 
     }
@@ -2926,9 +2931,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Wind Chill
     func testWindChill() {
 
-         XCTAssertEqual(BluetoothUUID.windChill.rawValue, 0x2A79)
-         XCTAssertEqual(BluetoothUUID.windChill.rawValue, 10873)
+         XCTAssertEqual(BluetoothUUID.windChill.rawValue, "2A79")
          XCTAssertEqual(BluetoothUUID.windChill, .bit16(0x2A79))
+         XCTAssertEqual(BluetoothUUID.windChill, .bit16(10873))
          XCTAssertEqual(BluetoothUUID.windChill.name, "Wind Chill")
 
     }
@@ -2936,9 +2941,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Heat Index
     func testHeatIndex() {
 
-         XCTAssertEqual(BluetoothUUID.heatIndex.rawValue, 0x2A7A)
-         XCTAssertEqual(BluetoothUUID.heatIndex.rawValue, 10874)
+         XCTAssertEqual(BluetoothUUID.heatIndex.rawValue, "2A7A")
          XCTAssertEqual(BluetoothUUID.heatIndex, .bit16(0x2A7A))
+         XCTAssertEqual(BluetoothUUID.heatIndex, .bit16(10874))
          XCTAssertEqual(BluetoothUUID.heatIndex.name, "Heat Index")
 
     }
@@ -2946,9 +2951,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Dew Point
     func testDewPoint() {
 
-         XCTAssertEqual(BluetoothUUID.dewPoint.rawValue, 0x2A7B)
-         XCTAssertEqual(BluetoothUUID.dewPoint.rawValue, 10875)
+         XCTAssertEqual(BluetoothUUID.dewPoint.rawValue, "2A7B")
          XCTAssertEqual(BluetoothUUID.dewPoint, .bit16(0x2A7B))
+         XCTAssertEqual(BluetoothUUID.dewPoint, .bit16(10875))
          XCTAssertEqual(BluetoothUUID.dewPoint.name, "Dew Point")
 
     }
@@ -2956,9 +2961,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Trend
     func testTrend() {
 
-         XCTAssertEqual(BluetoothUUID.trend.rawValue, 0x2A7C)
-         XCTAssertEqual(BluetoothUUID.trend.rawValue, 10876)
+         XCTAssertEqual(BluetoothUUID.trend.rawValue, "2A7C")
          XCTAssertEqual(BluetoothUUID.trend, .bit16(0x2A7C))
+         XCTAssertEqual(BluetoothUUID.trend, .bit16(10876))
          XCTAssertEqual(BluetoothUUID.trend.name, "Trend")
 
     }
@@ -2966,9 +2971,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Descriptor Value Changed
     func testDescriptorValueChanged() {
 
-         XCTAssertEqual(BluetoothUUID.descriptorValueChanged.rawValue, 0x2A7D)
-         XCTAssertEqual(BluetoothUUID.descriptorValueChanged.rawValue, 10877)
+         XCTAssertEqual(BluetoothUUID.descriptorValueChanged.rawValue, "2A7D")
          XCTAssertEqual(BluetoothUUID.descriptorValueChanged, .bit16(0x2A7D))
+         XCTAssertEqual(BluetoothUUID.descriptorValueChanged, .bit16(10877))
          XCTAssertEqual(BluetoothUUID.descriptorValueChanged.name, "Descriptor Value Changed")
 
     }
@@ -2976,9 +2981,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Aerobic Heart Rate Lower Limit
     func testAerobicHeartRateLowerLimit() {
 
-         XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit.rawValue, 0x2A7E)
-         XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit.rawValue, 10878)
+         XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit.rawValue, "2A7E")
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit, .bit16(0x2A7E))
+         XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit, .bit16(10878))
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateLowerLimit.name, "Aerobic Heart Rate Lower Limit")
 
     }
@@ -2986,9 +2991,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Aerobic Threshold
     func testAerobicThreshold() {
 
-         XCTAssertEqual(BluetoothUUID.aerobicThreshold.rawValue, 0x2A7F)
-         XCTAssertEqual(BluetoothUUID.aerobicThreshold.rawValue, 10879)
+         XCTAssertEqual(BluetoothUUID.aerobicThreshold.rawValue, "2A7F")
          XCTAssertEqual(BluetoothUUID.aerobicThreshold, .bit16(0x2A7F))
+         XCTAssertEqual(BluetoothUUID.aerobicThreshold, .bit16(10879))
          XCTAssertEqual(BluetoothUUID.aerobicThreshold.name, "Aerobic Threshold")
 
     }
@@ -2996,9 +3001,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Age
     func testAge() {
 
-         XCTAssertEqual(BluetoothUUID.age.rawValue, 0x2A80)
-         XCTAssertEqual(BluetoothUUID.age.rawValue, 10880)
+         XCTAssertEqual(BluetoothUUID.age.rawValue, "2A80")
          XCTAssertEqual(BluetoothUUID.age, .bit16(0x2A80))
+         XCTAssertEqual(BluetoothUUID.age, .bit16(10880))
          XCTAssertEqual(BluetoothUUID.age.name, "Age")
 
     }
@@ -3006,9 +3011,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Anaerobic Heart Rate Lower Limit
     func testAnaerobicHeartRateLowerLimit() {
 
-         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit.rawValue, 0x2A81)
-         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit.rawValue, 10881)
+         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit.rawValue, "2A81")
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit, .bit16(0x2A81))
+         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit, .bit16(10881))
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateLowerLimit.name, "Anaerobic Heart Rate Lower Limit")
 
     }
@@ -3016,9 +3021,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Anaerobic Heart Rate Upper Limit
     func testAnaerobicHeartRateUpperLimit() {
 
-         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit.rawValue, 0x2A82)
-         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit.rawValue, 10882)
+         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit.rawValue, "2A82")
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit, .bit16(0x2A82))
+         XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit, .bit16(10882))
          XCTAssertEqual(BluetoothUUID.anaerobicHeartRateUpperLimit.name, "Anaerobic Heart Rate Upper Limit")
 
     }
@@ -3026,9 +3031,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Anaerobic Threshold
     func testAnaerobicThreshold() {
 
-         XCTAssertEqual(BluetoothUUID.anaerobicThreshold.rawValue, 0x2A83)
-         XCTAssertEqual(BluetoothUUID.anaerobicThreshold.rawValue, 10883)
+         XCTAssertEqual(BluetoothUUID.anaerobicThreshold.rawValue, "2A83")
          XCTAssertEqual(BluetoothUUID.anaerobicThreshold, .bit16(0x2A83))
+         XCTAssertEqual(BluetoothUUID.anaerobicThreshold, .bit16(10883))
          XCTAssertEqual(BluetoothUUID.anaerobicThreshold.name, "Anaerobic Threshold")
 
     }
@@ -3036,9 +3041,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Aerobic Heart Rate Upper Limit
     func testAerobicHeartRateUpperLimit() {
 
-         XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit.rawValue, 0x2A84)
-         XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit.rawValue, 10884)
+         XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit.rawValue, "2A84")
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit, .bit16(0x2A84))
+         XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit, .bit16(10884))
          XCTAssertEqual(BluetoothUUID.aerobicHeartRateUpperLimit.name, "Aerobic Heart Rate Upper Limit")
 
     }
@@ -3046,9 +3051,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Date of Birth
     func testDateOfBirth() {
 
-         XCTAssertEqual(BluetoothUUID.dateOfBirth.rawValue, 0x2A85)
-         XCTAssertEqual(BluetoothUUID.dateOfBirth.rawValue, 10885)
+         XCTAssertEqual(BluetoothUUID.dateOfBirth.rawValue, "2A85")
          XCTAssertEqual(BluetoothUUID.dateOfBirth, .bit16(0x2A85))
+         XCTAssertEqual(BluetoothUUID.dateOfBirth, .bit16(10885))
          XCTAssertEqual(BluetoothUUID.dateOfBirth.name, "Date of Birth")
 
     }
@@ -3056,9 +3061,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Date of Threshold Assessment
     func testDateOfThresholdAssessment() {
 
-         XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment.rawValue, 0x2A86)
-         XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment.rawValue, 10886)
+         XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment.rawValue, "2A86")
          XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment, .bit16(0x2A86))
+         XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment, .bit16(10886))
          XCTAssertEqual(BluetoothUUID.dateOfThresholdAssessment.name, "Date of Threshold Assessment")
 
     }
@@ -3066,9 +3071,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Email Address
     func testEmailAddress() {
 
-         XCTAssertEqual(BluetoothUUID.emailAddress.rawValue, 0x2A87)
-         XCTAssertEqual(BluetoothUUID.emailAddress.rawValue, 10887)
+         XCTAssertEqual(BluetoothUUID.emailAddress.rawValue, "2A87")
          XCTAssertEqual(BluetoothUUID.emailAddress, .bit16(0x2A87))
+         XCTAssertEqual(BluetoothUUID.emailAddress, .bit16(10887))
          XCTAssertEqual(BluetoothUUID.emailAddress.name, "Email Address")
 
     }
@@ -3076,9 +3081,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Fat Burn Heart Rate Lower Limit
     func testFatBurnHeartRateLowerLimit() {
 
-         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit.rawValue, 0x2A88)
-         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit.rawValue, 10888)
+         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit.rawValue, "2A88")
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit, .bit16(0x2A88))
+         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit, .bit16(10888))
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateLowerLimit.name, "Fat Burn Heart Rate Lower Limit")
 
     }
@@ -3086,9 +3091,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Fat Burn Heart Rate Upper Limit
     func testFatBurnHeartRateUpperLimit() {
 
-         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit.rawValue, 0x2A89)
-         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit.rawValue, 10889)
+         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit.rawValue, "2A89")
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit, .bit16(0x2A89))
+         XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit, .bit16(10889))
          XCTAssertEqual(BluetoothUUID.fatBurnHeartRateUpperLimit.name, "Fat Burn Heart Rate Upper Limit")
 
     }
@@ -3096,9 +3101,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test First Name
     func testFirstName() {
 
-         XCTAssertEqual(BluetoothUUID.firstName.rawValue, 0x2A8A)
-         XCTAssertEqual(BluetoothUUID.firstName.rawValue, 10890)
+         XCTAssertEqual(BluetoothUUID.firstName.rawValue, "2A8A")
          XCTAssertEqual(BluetoothUUID.firstName, .bit16(0x2A8A))
+         XCTAssertEqual(BluetoothUUID.firstName, .bit16(10890))
          XCTAssertEqual(BluetoothUUID.firstName.name, "First Name")
 
     }
@@ -3106,9 +3111,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Five Zone Heart Rate Limits
     func testFiveZoneHeartRateLimits() {
 
-         XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits.rawValue, 0x2A8B)
-         XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits.rawValue, 10891)
+         XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits.rawValue, "2A8B")
          XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits, .bit16(0x2A8B))
+         XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits, .bit16(10891))
          XCTAssertEqual(BluetoothUUID.fiveZoneHeartRateLimits.name, "Five Zone Heart Rate Limits")
 
     }
@@ -3116,9 +3121,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Gender
     func testGender() {
 
-         XCTAssertEqual(BluetoothUUID.gender.rawValue, 0x2A8C)
-         XCTAssertEqual(BluetoothUUID.gender.rawValue, 10892)
+         XCTAssertEqual(BluetoothUUID.gender.rawValue, "2A8C")
          XCTAssertEqual(BluetoothUUID.gender, .bit16(0x2A8C))
+         XCTAssertEqual(BluetoothUUID.gender, .bit16(10892))
          XCTAssertEqual(BluetoothUUID.gender.name, "Gender")
 
     }
@@ -3126,9 +3131,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Heart Rate Max
     func testHeartRateMax() {
 
-         XCTAssertEqual(BluetoothUUID.heartRateMax.rawValue, 0x2A8D)
-         XCTAssertEqual(BluetoothUUID.heartRateMax.rawValue, 10893)
+         XCTAssertEqual(BluetoothUUID.heartRateMax.rawValue, "2A8D")
          XCTAssertEqual(BluetoothUUID.heartRateMax, .bit16(0x2A8D))
+         XCTAssertEqual(BluetoothUUID.heartRateMax, .bit16(10893))
          XCTAssertEqual(BluetoothUUID.heartRateMax.name, "Heart Rate Max")
 
     }
@@ -3136,9 +3141,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Height
     func testHeight() {
 
-         XCTAssertEqual(BluetoothUUID.height.rawValue, 0x2A8E)
-         XCTAssertEqual(BluetoothUUID.height.rawValue, 10894)
+         XCTAssertEqual(BluetoothUUID.height.rawValue, "2A8E")
          XCTAssertEqual(BluetoothUUID.height, .bit16(0x2A8E))
+         XCTAssertEqual(BluetoothUUID.height, .bit16(10894))
          XCTAssertEqual(BluetoothUUID.height.name, "Height")
 
     }
@@ -3146,9 +3151,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hip Circumference
     func testHipCircumference() {
 
-         XCTAssertEqual(BluetoothUUID.hipCircumference.rawValue, 0x2A8F)
-         XCTAssertEqual(BluetoothUUID.hipCircumference.rawValue, 10895)
+         XCTAssertEqual(BluetoothUUID.hipCircumference.rawValue, "2A8F")
          XCTAssertEqual(BluetoothUUID.hipCircumference, .bit16(0x2A8F))
+         XCTAssertEqual(BluetoothUUID.hipCircumference, .bit16(10895))
          XCTAssertEqual(BluetoothUUID.hipCircumference.name, "Hip Circumference")
 
     }
@@ -3156,9 +3161,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Last Name
     func testLastName() {
 
-         XCTAssertEqual(BluetoothUUID.lastName.rawValue, 0x2A90)
-         XCTAssertEqual(BluetoothUUID.lastName.rawValue, 10896)
+         XCTAssertEqual(BluetoothUUID.lastName.rawValue, "2A90")
          XCTAssertEqual(BluetoothUUID.lastName, .bit16(0x2A90))
+         XCTAssertEqual(BluetoothUUID.lastName, .bit16(10896))
          XCTAssertEqual(BluetoothUUID.lastName.name, "Last Name")
 
     }
@@ -3166,9 +3171,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Maximum Recommended Heart Rate
     func testMaximumRecommendedHeartRate() {
 
-         XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate.rawValue, 0x2A91)
-         XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate.rawValue, 10897)
+         XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate.rawValue, "2A91")
          XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate, .bit16(0x2A91))
+         XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate, .bit16(10897))
          XCTAssertEqual(BluetoothUUID.maximumRecommendedHeartRate.name, "Maximum Recommended Heart Rate")
 
     }
@@ -3176,9 +3181,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Resting Heart Rate
     func testRestingHeartRate() {
 
-         XCTAssertEqual(BluetoothUUID.restingHeartRate.rawValue, 0x2A92)
-         XCTAssertEqual(BluetoothUUID.restingHeartRate.rawValue, 10898)
+         XCTAssertEqual(BluetoothUUID.restingHeartRate.rawValue, "2A92")
          XCTAssertEqual(BluetoothUUID.restingHeartRate, .bit16(0x2A92))
+         XCTAssertEqual(BluetoothUUID.restingHeartRate, .bit16(10898))
          XCTAssertEqual(BluetoothUUID.restingHeartRate.name, "Resting Heart Rate")
 
     }
@@ -3186,9 +3191,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Sport Type for Aerobic/Anaerobic Thresholds
     func testSportTypeForAerobicAnaerobicThresholds() {
 
-         XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds.rawValue, 0x2A93)
-         XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds.rawValue, 10899)
+         XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds.rawValue, "2A93")
          XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds, .bit16(0x2A93))
+         XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds, .bit16(10899))
          XCTAssertEqual(BluetoothUUID.sportTypeForAerobicAnaerobicThresholds.name, "Sport Type for Aerobic/Anaerobic Thresholds")
 
     }
@@ -3196,9 +3201,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Three Zone Heart Rate Limits
     func testThreeZoneHeartRateLimits() {
 
-         XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits.rawValue, 0x2A94)
-         XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits.rawValue, 10900)
+         XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits.rawValue, "2A94")
          XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits, .bit16(0x2A94))
+         XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits, .bit16(10900))
          XCTAssertEqual(BluetoothUUID.threeZoneHeartRateLimits.name, "Three Zone Heart Rate Limits")
 
     }
@@ -3206,9 +3211,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Two Zone Heart Rate Limit
     func testTwoZoneHeartRateLimit() {
 
-         XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit.rawValue, 0x2A95)
-         XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit.rawValue, 10901)
+         XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit.rawValue, "2A95")
          XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit, .bit16(0x2A95))
+         XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit, .bit16(10901))
          XCTAssertEqual(BluetoothUUID.twoZoneHeartRateLimit.name, "Two Zone Heart Rate Limit")
 
     }
@@ -3216,9 +3221,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test VO2 Max
     func testVo2Max() {
 
-         XCTAssertEqual(BluetoothUUID.vo2Max.rawValue, 0x2A96)
-         XCTAssertEqual(BluetoothUUID.vo2Max.rawValue, 10902)
+         XCTAssertEqual(BluetoothUUID.vo2Max.rawValue, "2A96")
          XCTAssertEqual(BluetoothUUID.vo2Max, .bit16(0x2A96))
+         XCTAssertEqual(BluetoothUUID.vo2Max, .bit16(10902))
          XCTAssertEqual(BluetoothUUID.vo2Max.name, "VO2 Max")
 
     }
@@ -3226,9 +3231,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Waist Circumference
     func testWaistCircumference() {
 
-         XCTAssertEqual(BluetoothUUID.waistCircumference.rawValue, 0x2A97)
-         XCTAssertEqual(BluetoothUUID.waistCircumference.rawValue, 10903)
+         XCTAssertEqual(BluetoothUUID.waistCircumference.rawValue, "2A97")
          XCTAssertEqual(BluetoothUUID.waistCircumference, .bit16(0x2A97))
+         XCTAssertEqual(BluetoothUUID.waistCircumference, .bit16(10903))
          XCTAssertEqual(BluetoothUUID.waistCircumference.name, "Waist Circumference")
 
     }
@@ -3236,9 +3241,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Weight
     func testWeight() {
 
-         XCTAssertEqual(BluetoothUUID.weight.rawValue, 0x2A98)
-         XCTAssertEqual(BluetoothUUID.weight.rawValue, 10904)
+         XCTAssertEqual(BluetoothUUID.weight.rawValue, "2A98")
          XCTAssertEqual(BluetoothUUID.weight, .bit16(0x2A98))
+         XCTAssertEqual(BluetoothUUID.weight, .bit16(10904))
          XCTAssertEqual(BluetoothUUID.weight.name, "Weight")
 
     }
@@ -3246,9 +3251,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Database Change Increment
     func testDatabaseChangerement() {
 
-         XCTAssertEqual(BluetoothUUID.databaseChangerement.rawValue, 0x2A99)
-         XCTAssertEqual(BluetoothUUID.databaseChangerement.rawValue, 10905)
+         XCTAssertEqual(BluetoothUUID.databaseChangerement.rawValue, "2A99")
          XCTAssertEqual(BluetoothUUID.databaseChangerement, .bit16(0x2A99))
+         XCTAssertEqual(BluetoothUUID.databaseChangerement, .bit16(10905))
          XCTAssertEqual(BluetoothUUID.databaseChangerement.name, "Database Change Increment")
 
     }
@@ -3256,9 +3261,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test User Index
     func testUserIndex() {
 
-         XCTAssertEqual(BluetoothUUID.userIndex.rawValue, 0x2A9A)
-         XCTAssertEqual(BluetoothUUID.userIndex.rawValue, 10906)
+         XCTAssertEqual(BluetoothUUID.userIndex.rawValue, "2A9A")
          XCTAssertEqual(BluetoothUUID.userIndex, .bit16(0x2A9A))
+         XCTAssertEqual(BluetoothUUID.userIndex, .bit16(10906))
          XCTAssertEqual(BluetoothUUID.userIndex.name, "User Index")
 
     }
@@ -3266,9 +3271,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Body Composition Feature
     func testBodyCompositionFeature() {
 
-         XCTAssertEqual(BluetoothUUID.bodyCompositionFeature.rawValue, 0x2A9B)
-         XCTAssertEqual(BluetoothUUID.bodyCompositionFeature.rawValue, 10907)
+         XCTAssertEqual(BluetoothUUID.bodyCompositionFeature.rawValue, "2A9B")
          XCTAssertEqual(BluetoothUUID.bodyCompositionFeature, .bit16(0x2A9B))
+         XCTAssertEqual(BluetoothUUID.bodyCompositionFeature, .bit16(10907))
          XCTAssertEqual(BluetoothUUID.bodyCompositionFeature.name, "Body Composition Feature")
 
     }
@@ -3276,9 +3281,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Body Composition Measurement
     func testBodyCompositionMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement.rawValue, 0x2A9C)
-         XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement.rawValue, 10908)
+         XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement.rawValue, "2A9C")
          XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement, .bit16(0x2A9C))
+         XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement, .bit16(10908))
          XCTAssertEqual(BluetoothUUID.bodyCompositionMeasurement.name, "Body Composition Measurement")
 
     }
@@ -3286,9 +3291,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Weight Measurement
     func testWeightMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.weightMeasurement.rawValue, 0x2A9D)
-         XCTAssertEqual(BluetoothUUID.weightMeasurement.rawValue, 10909)
+         XCTAssertEqual(BluetoothUUID.weightMeasurement.rawValue, "2A9D")
          XCTAssertEqual(BluetoothUUID.weightMeasurement, .bit16(0x2A9D))
+         XCTAssertEqual(BluetoothUUID.weightMeasurement, .bit16(10909))
          XCTAssertEqual(BluetoothUUID.weightMeasurement.name, "Weight Measurement")
 
     }
@@ -3296,9 +3301,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Weight Scale Feature
     func testWeightScaleFeature() {
 
-         XCTAssertEqual(BluetoothUUID.weightScaleFeature.rawValue, 0x2A9E)
-         XCTAssertEqual(BluetoothUUID.weightScaleFeature.rawValue, 10910)
+         XCTAssertEqual(BluetoothUUID.weightScaleFeature.rawValue, "2A9E")
          XCTAssertEqual(BluetoothUUID.weightScaleFeature, .bit16(0x2A9E))
+         XCTAssertEqual(BluetoothUUID.weightScaleFeature, .bit16(10910))
          XCTAssertEqual(BluetoothUUID.weightScaleFeature.name, "Weight Scale Feature")
 
     }
@@ -3306,9 +3311,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test User Control Point
     func testUserControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.userControlPoint.rawValue, 0x2A9F)
-         XCTAssertEqual(BluetoothUUID.userControlPoint.rawValue, 10911)
+         XCTAssertEqual(BluetoothUUID.userControlPoint.rawValue, "2A9F")
          XCTAssertEqual(BluetoothUUID.userControlPoint, .bit16(0x2A9F))
+         XCTAssertEqual(BluetoothUUID.userControlPoint, .bit16(10911))
          XCTAssertEqual(BluetoothUUID.userControlPoint.name, "User Control Point")
 
     }
@@ -3316,9 +3321,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Magnetic Flux Density - 2D
     func testMagneticFluxDensity2D() {
 
-         XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D.rawValue, 0x2AA0)
-         XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D.rawValue, 10912)
+         XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D.rawValue, "2AA0")
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D, .bit16(0x2AA0))
+         XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D, .bit16(10912))
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity2D.name, "Magnetic Flux Density - 2D")
 
     }
@@ -3326,9 +3331,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Magnetic Flux Density - 3D
     func testMagneticFluxDensity3D() {
 
-         XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D.rawValue, 0x2AA1)
-         XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D.rawValue, 10913)
+         XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D.rawValue, "2AA1")
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D, .bit16(0x2AA1))
+         XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D, .bit16(10913))
          XCTAssertEqual(BluetoothUUID.magneticFluxDensity3D.name, "Magnetic Flux Density - 3D")
 
     }
@@ -3336,9 +3341,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Language
     func testLanguage() {
 
-         XCTAssertEqual(BluetoothUUID.language.rawValue, 0x2AA2)
-         XCTAssertEqual(BluetoothUUID.language.rawValue, 10914)
+         XCTAssertEqual(BluetoothUUID.language.rawValue, "2AA2")
          XCTAssertEqual(BluetoothUUID.language, .bit16(0x2AA2))
+         XCTAssertEqual(BluetoothUUID.language, .bit16(10914))
          XCTAssertEqual(BluetoothUUID.language.name, "Language")
 
     }
@@ -3346,9 +3351,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Barometric Pressure Trend
     func testBarometricPressureTrend() {
 
-         XCTAssertEqual(BluetoothUUID.barometricPressureTrend.rawValue, 0x2AA3)
-         XCTAssertEqual(BluetoothUUID.barometricPressureTrend.rawValue, 10915)
+         XCTAssertEqual(BluetoothUUID.barometricPressureTrend.rawValue, "2AA3")
          XCTAssertEqual(BluetoothUUID.barometricPressureTrend, .bit16(0x2AA3))
+         XCTAssertEqual(BluetoothUUID.barometricPressureTrend, .bit16(10915))
          XCTAssertEqual(BluetoothUUID.barometricPressureTrend.name, "Barometric Pressure Trend")
 
     }
@@ -3356,9 +3361,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Bond Management Control Point
     func testBondManagementControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.bondManagementControlPoint.rawValue, 0x2AA4)
-         XCTAssertEqual(BluetoothUUID.bondManagementControlPoint.rawValue, 10916)
+         XCTAssertEqual(BluetoothUUID.bondManagementControlPoint.rawValue, "2AA4")
          XCTAssertEqual(BluetoothUUID.bondManagementControlPoint, .bit16(0x2AA4))
+         XCTAssertEqual(BluetoothUUID.bondManagementControlPoint, .bit16(10916))
          XCTAssertEqual(BluetoothUUID.bondManagementControlPoint.name, "Bond Management Control Point")
 
     }
@@ -3366,9 +3371,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Bond Management Feature
     func testBondManagementFeature() {
 
-         XCTAssertEqual(BluetoothUUID.bondManagementFeature.rawValue, 0x2AA5)
-         XCTAssertEqual(BluetoothUUID.bondManagementFeature.rawValue, 10917)
+         XCTAssertEqual(BluetoothUUID.bondManagementFeature.rawValue, "2AA5")
          XCTAssertEqual(BluetoothUUID.bondManagementFeature, .bit16(0x2AA5))
+         XCTAssertEqual(BluetoothUUID.bondManagementFeature, .bit16(10917))
          XCTAssertEqual(BluetoothUUID.bondManagementFeature.name, "Bond Management Feature")
 
     }
@@ -3376,9 +3381,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Central Address Resolution
     func testCentralAddressResolution() {
 
-         XCTAssertEqual(BluetoothUUID.centralAddressResolution.rawValue, 0x2AA6)
-         XCTAssertEqual(BluetoothUUID.centralAddressResolution.rawValue, 10918)
+         XCTAssertEqual(BluetoothUUID.centralAddressResolution.rawValue, "2AA6")
          XCTAssertEqual(BluetoothUUID.centralAddressResolution, .bit16(0x2AA6))
+         XCTAssertEqual(BluetoothUUID.centralAddressResolution, .bit16(10918))
          XCTAssertEqual(BluetoothUUID.centralAddressResolution.name, "Central Address Resolution")
 
     }
@@ -3386,9 +3391,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CGM Measurement
     func testCgmMeasurement() {
 
-         XCTAssertEqual(BluetoothUUID.cgmMeasurement.rawValue, 0x2AA7)
-         XCTAssertEqual(BluetoothUUID.cgmMeasurement.rawValue, 10919)
+         XCTAssertEqual(BluetoothUUID.cgmMeasurement.rawValue, "2AA7")
          XCTAssertEqual(BluetoothUUID.cgmMeasurement, .bit16(0x2AA7))
+         XCTAssertEqual(BluetoothUUID.cgmMeasurement, .bit16(10919))
          XCTAssertEqual(BluetoothUUID.cgmMeasurement.name, "CGM Measurement")
 
     }
@@ -3396,9 +3401,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CGM Feature
     func testCgmFeature() {
 
-         XCTAssertEqual(BluetoothUUID.cgmFeature.rawValue, 0x2AA8)
-         XCTAssertEqual(BluetoothUUID.cgmFeature.rawValue, 10920)
+         XCTAssertEqual(BluetoothUUID.cgmFeature.rawValue, "2AA8")
          XCTAssertEqual(BluetoothUUID.cgmFeature, .bit16(0x2AA8))
+         XCTAssertEqual(BluetoothUUID.cgmFeature, .bit16(10920))
          XCTAssertEqual(BluetoothUUID.cgmFeature.name, "CGM Feature")
 
     }
@@ -3406,9 +3411,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CGM Status
     func testCgmStatus() {
 
-         XCTAssertEqual(BluetoothUUID.cgmStatus.rawValue, 0x2AA9)
-         XCTAssertEqual(BluetoothUUID.cgmStatus.rawValue, 10921)
+         XCTAssertEqual(BluetoothUUID.cgmStatus.rawValue, "2AA9")
          XCTAssertEqual(BluetoothUUID.cgmStatus, .bit16(0x2AA9))
+         XCTAssertEqual(BluetoothUUID.cgmStatus, .bit16(10921))
          XCTAssertEqual(BluetoothUUID.cgmStatus.name, "CGM Status")
 
     }
@@ -3416,9 +3421,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CGM Session Start Time
     func testCgmSessionStartTime() {
 
-         XCTAssertEqual(BluetoothUUID.cgmSessionStartTime.rawValue, 0x2AAA)
-         XCTAssertEqual(BluetoothUUID.cgmSessionStartTime.rawValue, 10922)
+         XCTAssertEqual(BluetoothUUID.cgmSessionStartTime.rawValue, "2AAA")
          XCTAssertEqual(BluetoothUUID.cgmSessionStartTime, .bit16(0x2AAA))
+         XCTAssertEqual(BluetoothUUID.cgmSessionStartTime, .bit16(10922))
          XCTAssertEqual(BluetoothUUID.cgmSessionStartTime.name, "CGM Session Start Time")
 
     }
@@ -3426,9 +3431,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CGM Session Run Time
     func testCgmSessionRunTime() {
 
-         XCTAssertEqual(BluetoothUUID.cgmSessionRunTime.rawValue, 0x2AAB)
-         XCTAssertEqual(BluetoothUUID.cgmSessionRunTime.rawValue, 10923)
+         XCTAssertEqual(BluetoothUUID.cgmSessionRunTime.rawValue, "2AAB")
          XCTAssertEqual(BluetoothUUID.cgmSessionRunTime, .bit16(0x2AAB))
+         XCTAssertEqual(BluetoothUUID.cgmSessionRunTime, .bit16(10923))
          XCTAssertEqual(BluetoothUUID.cgmSessionRunTime.name, "CGM Session Run Time")
 
     }
@@ -3436,9 +3441,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CGM Specific Ops Control Point
     func testCgmSpecificOpsControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint.rawValue, 0x2AAC)
-         XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint.rawValue, 10924)
+         XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint.rawValue, "2AAC")
          XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint, .bit16(0x2AAC))
+         XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint, .bit16(10924))
          XCTAssertEqual(BluetoothUUID.cgmSpecificOpsControlPoint.name, "CGM Specific Ops Control Point")
 
     }
@@ -3446,9 +3451,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Indoor Positioning Configuration
     func testIndoorPositioningConfiguration() {
 
-         XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration.rawValue, 0x2AAD)
-         XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration.rawValue, 10925)
+         XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration.rawValue, "2AAD")
          XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration, .bit16(0x2AAD))
+         XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration, .bit16(10925))
          XCTAssertEqual(BluetoothUUID.indoorPositioningConfiguration.name, "Indoor Positioning Configuration")
 
     }
@@ -3456,9 +3461,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Latitude
     func testLatitude() {
 
-         XCTAssertEqual(BluetoothUUID.latitude.rawValue, 0x2AAE)
-         XCTAssertEqual(BluetoothUUID.latitude.rawValue, 10926)
+         XCTAssertEqual(BluetoothUUID.latitude.rawValue, "2AAE")
          XCTAssertEqual(BluetoothUUID.latitude, .bit16(0x2AAE))
+         XCTAssertEqual(BluetoothUUID.latitude, .bit16(10926))
          XCTAssertEqual(BluetoothUUID.latitude.name, "Latitude")
 
     }
@@ -3466,9 +3471,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Longitude
     func testLongitude() {
 
-         XCTAssertEqual(BluetoothUUID.longitude.rawValue, 0x2AAF)
-         XCTAssertEqual(BluetoothUUID.longitude.rawValue, 10927)
+         XCTAssertEqual(BluetoothUUID.longitude.rawValue, "2AAF")
          XCTAssertEqual(BluetoothUUID.longitude, .bit16(0x2AAF))
+         XCTAssertEqual(BluetoothUUID.longitude, .bit16(10927))
          XCTAssertEqual(BluetoothUUID.longitude.name, "Longitude")
 
     }
@@ -3476,9 +3481,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Local North Coordinate
     func testLocalNorthCoordinate() {
 
-         XCTAssertEqual(BluetoothUUID.localNorthCoordinate.rawValue, 0x2AB0)
-         XCTAssertEqual(BluetoothUUID.localNorthCoordinate.rawValue, 10928)
+         XCTAssertEqual(BluetoothUUID.localNorthCoordinate.rawValue, "2AB0")
          XCTAssertEqual(BluetoothUUID.localNorthCoordinate, .bit16(0x2AB0))
+         XCTAssertEqual(BluetoothUUID.localNorthCoordinate, .bit16(10928))
          XCTAssertEqual(BluetoothUUID.localNorthCoordinate.name, "Local North Coordinate")
 
     }
@@ -3486,9 +3491,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Local East Coordinate
     func testLocalEastCoordinate() {
 
-         XCTAssertEqual(BluetoothUUID.localEastCoordinate.rawValue, 0x2AB1)
-         XCTAssertEqual(BluetoothUUID.localEastCoordinate.rawValue, 10929)
+         XCTAssertEqual(BluetoothUUID.localEastCoordinate.rawValue, "2AB1")
          XCTAssertEqual(BluetoothUUID.localEastCoordinate, .bit16(0x2AB1))
+         XCTAssertEqual(BluetoothUUID.localEastCoordinate, .bit16(10929))
          XCTAssertEqual(BluetoothUUID.localEastCoordinate.name, "Local East Coordinate")
 
     }
@@ -3496,9 +3501,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Floor Number
     func testFloorNumber() {
 
-         XCTAssertEqual(BluetoothUUID.floorNumber.rawValue, 0x2AB2)
-         XCTAssertEqual(BluetoothUUID.floorNumber.rawValue, 10930)
+         XCTAssertEqual(BluetoothUUID.floorNumber.rawValue, "2AB2")
          XCTAssertEqual(BluetoothUUID.floorNumber, .bit16(0x2AB2))
+         XCTAssertEqual(BluetoothUUID.floorNumber, .bit16(10930))
          XCTAssertEqual(BluetoothUUID.floorNumber.name, "Floor Number")
 
     }
@@ -3506,9 +3511,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Altitude
     func testAltitude() {
 
-         XCTAssertEqual(BluetoothUUID.altitude.rawValue, 0x2AB3)
-         XCTAssertEqual(BluetoothUUID.altitude.rawValue, 10931)
+         XCTAssertEqual(BluetoothUUID.altitude.rawValue, "2AB3")
          XCTAssertEqual(BluetoothUUID.altitude, .bit16(0x2AB3))
+         XCTAssertEqual(BluetoothUUID.altitude, .bit16(10931))
          XCTAssertEqual(BluetoothUUID.altitude.name, "Altitude")
 
     }
@@ -3516,9 +3521,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Uncertainty
     func testUncertainty() {
 
-         XCTAssertEqual(BluetoothUUID.uncertainty.rawValue, 0x2AB4)
-         XCTAssertEqual(BluetoothUUID.uncertainty.rawValue, 10932)
+         XCTAssertEqual(BluetoothUUID.uncertainty.rawValue, "2AB4")
          XCTAssertEqual(BluetoothUUID.uncertainty, .bit16(0x2AB4))
+         XCTAssertEqual(BluetoothUUID.uncertainty, .bit16(10932))
          XCTAssertEqual(BluetoothUUID.uncertainty.name, "Uncertainty")
 
     }
@@ -3526,9 +3531,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Location Name
     func testLocationName() {
 
-         XCTAssertEqual(BluetoothUUID.locationName.rawValue, 0x2AB5)
-         XCTAssertEqual(BluetoothUUID.locationName.rawValue, 10933)
+         XCTAssertEqual(BluetoothUUID.locationName.rawValue, "2AB5")
          XCTAssertEqual(BluetoothUUID.locationName, .bit16(0x2AB5))
+         XCTAssertEqual(BluetoothUUID.locationName, .bit16(10933))
          XCTAssertEqual(BluetoothUUID.locationName.name, "Location Name")
 
     }
@@ -3536,9 +3541,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test URI
     func testUri() {
 
-         XCTAssertEqual(BluetoothUUID.uri.rawValue, 0x2AB6)
-         XCTAssertEqual(BluetoothUUID.uri.rawValue, 10934)
+         XCTAssertEqual(BluetoothUUID.uri.rawValue, "2AB6")
          XCTAssertEqual(BluetoothUUID.uri, .bit16(0x2AB6))
+         XCTAssertEqual(BluetoothUUID.uri, .bit16(10934))
          XCTAssertEqual(BluetoothUUID.uri.name, "URI")
 
     }
@@ -3546,9 +3551,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HTTP Headers
     func testHttpHeaders() {
 
-         XCTAssertEqual(BluetoothUUID.httpHeaders.rawValue, 0x2AB7)
-         XCTAssertEqual(BluetoothUUID.httpHeaders.rawValue, 10935)
+         XCTAssertEqual(BluetoothUUID.httpHeaders.rawValue, "2AB7")
          XCTAssertEqual(BluetoothUUID.httpHeaders, .bit16(0x2AB7))
+         XCTAssertEqual(BluetoothUUID.httpHeaders, .bit16(10935))
          XCTAssertEqual(BluetoothUUID.httpHeaders.name, "HTTP Headers")
 
     }
@@ -3556,9 +3561,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HTTP Status Code
     func testHttpStatusCode() {
 
-         XCTAssertEqual(BluetoothUUID.httpStatusCode.rawValue, 0x2AB8)
-         XCTAssertEqual(BluetoothUUID.httpStatusCode.rawValue, 10936)
+         XCTAssertEqual(BluetoothUUID.httpStatusCode.rawValue, "2AB8")
          XCTAssertEqual(BluetoothUUID.httpStatusCode, .bit16(0x2AB8))
+         XCTAssertEqual(BluetoothUUID.httpStatusCode, .bit16(10936))
          XCTAssertEqual(BluetoothUUID.httpStatusCode.name, "HTTP Status Code")
 
     }
@@ -3566,9 +3571,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HTTP Entity Body
     func testHttpEntityBody() {
 
-         XCTAssertEqual(BluetoothUUID.httpEntityBody.rawValue, 0x2AB9)
-         XCTAssertEqual(BluetoothUUID.httpEntityBody.rawValue, 10937)
+         XCTAssertEqual(BluetoothUUID.httpEntityBody.rawValue, "2AB9")
          XCTAssertEqual(BluetoothUUID.httpEntityBody, .bit16(0x2AB9))
+         XCTAssertEqual(BluetoothUUID.httpEntityBody, .bit16(10937))
          XCTAssertEqual(BluetoothUUID.httpEntityBody.name, "HTTP Entity Body")
 
     }
@@ -3576,9 +3581,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HTTP Control Point
     func testHttpControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.httpControlPoint.rawValue, 0x2ABA)
-         XCTAssertEqual(BluetoothUUID.httpControlPoint.rawValue, 10938)
+         XCTAssertEqual(BluetoothUUID.httpControlPoint.rawValue, "2ABA")
          XCTAssertEqual(BluetoothUUID.httpControlPoint, .bit16(0x2ABA))
+         XCTAssertEqual(BluetoothUUID.httpControlPoint, .bit16(10938))
          XCTAssertEqual(BluetoothUUID.httpControlPoint.name, "HTTP Control Point")
 
     }
@@ -3586,9 +3591,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HTTPS Security
     func testHttpsSecurity() {
 
-         XCTAssertEqual(BluetoothUUID.httpsSecurity.rawValue, 0x2ABB)
-         XCTAssertEqual(BluetoothUUID.httpsSecurity.rawValue, 10939)
+         XCTAssertEqual(BluetoothUUID.httpsSecurity.rawValue, "2ABB")
          XCTAssertEqual(BluetoothUUID.httpsSecurity, .bit16(0x2ABB))
+         XCTAssertEqual(BluetoothUUID.httpsSecurity, .bit16(10939))
          XCTAssertEqual(BluetoothUUID.httpsSecurity.name, "HTTPS Security")
 
     }
@@ -3596,9 +3601,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test TDS Control Point
     func testTdsControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.tdsControlPoint.rawValue, 0x2ABC)
-         XCTAssertEqual(BluetoothUUID.tdsControlPoint.rawValue, 10940)
+         XCTAssertEqual(BluetoothUUID.tdsControlPoint.rawValue, "2ABC")
          XCTAssertEqual(BluetoothUUID.tdsControlPoint, .bit16(0x2ABC))
+         XCTAssertEqual(BluetoothUUID.tdsControlPoint, .bit16(10940))
          XCTAssertEqual(BluetoothUUID.tdsControlPoint.name, "TDS Control Point")
 
     }
@@ -3606,9 +3611,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test OTS Feature
     func testOtsFeature() {
 
-         XCTAssertEqual(BluetoothUUID.otsFeature.rawValue, 0x2ABD)
-         XCTAssertEqual(BluetoothUUID.otsFeature.rawValue, 10941)
+         XCTAssertEqual(BluetoothUUID.otsFeature.rawValue, "2ABD")
          XCTAssertEqual(BluetoothUUID.otsFeature, .bit16(0x2ABD))
+         XCTAssertEqual(BluetoothUUID.otsFeature, .bit16(10941))
          XCTAssertEqual(BluetoothUUID.otsFeature.name, "OTS Feature")
 
     }
@@ -3616,9 +3621,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Name
     func testObjectName() {
 
-         XCTAssertEqual(BluetoothUUID.objectName.rawValue, 0x2ABE)
-         XCTAssertEqual(BluetoothUUID.objectName.rawValue, 10942)
+         XCTAssertEqual(BluetoothUUID.objectName.rawValue, "2ABE")
          XCTAssertEqual(BluetoothUUID.objectName, .bit16(0x2ABE))
+         XCTAssertEqual(BluetoothUUID.objectName, .bit16(10942))
          XCTAssertEqual(BluetoothUUID.objectName.name, "Object Name")
 
     }
@@ -3626,9 +3631,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Type
     func testObjectType() {
 
-         XCTAssertEqual(BluetoothUUID.objectType.rawValue, 0x2ABF)
-         XCTAssertEqual(BluetoothUUID.objectType.rawValue, 10943)
+         XCTAssertEqual(BluetoothUUID.objectType.rawValue, "2ABF")
          XCTAssertEqual(BluetoothUUID.objectType, .bit16(0x2ABF))
+         XCTAssertEqual(BluetoothUUID.objectType, .bit16(10943))
          XCTAssertEqual(BluetoothUUID.objectType.name, "Object Type")
 
     }
@@ -3636,9 +3641,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Size
     func testObjectSize() {
 
-         XCTAssertEqual(BluetoothUUID.objectSize.rawValue, 0x2AC0)
-         XCTAssertEqual(BluetoothUUID.objectSize.rawValue, 10944)
+         XCTAssertEqual(BluetoothUUID.objectSize.rawValue, "2AC0")
          XCTAssertEqual(BluetoothUUID.objectSize, .bit16(0x2AC0))
+         XCTAssertEqual(BluetoothUUID.objectSize, .bit16(10944))
          XCTAssertEqual(BluetoothUUID.objectSize.name, "Object Size")
 
     }
@@ -3646,9 +3651,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object First-Created
     func testObjectFirstCreated() {
 
-         XCTAssertEqual(BluetoothUUID.objectFirstCreated.rawValue, 0x2AC1)
-         XCTAssertEqual(BluetoothUUID.objectFirstCreated.rawValue, 10945)
+         XCTAssertEqual(BluetoothUUID.objectFirstCreated.rawValue, "2AC1")
          XCTAssertEqual(BluetoothUUID.objectFirstCreated, .bit16(0x2AC1))
+         XCTAssertEqual(BluetoothUUID.objectFirstCreated, .bit16(10945))
          XCTAssertEqual(BluetoothUUID.objectFirstCreated.name, "Object First-Created")
 
     }
@@ -3656,9 +3661,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Last-Modified
     func testObjectLastModified() {
 
-         XCTAssertEqual(BluetoothUUID.objectLastModified.rawValue, 0x2AC2)
-         XCTAssertEqual(BluetoothUUID.objectLastModified.rawValue, 10946)
+         XCTAssertEqual(BluetoothUUID.objectLastModified.rawValue, "2AC2")
          XCTAssertEqual(BluetoothUUID.objectLastModified, .bit16(0x2AC2))
+         XCTAssertEqual(BluetoothUUID.objectLastModified, .bit16(10946))
          XCTAssertEqual(BluetoothUUID.objectLastModified.name, "Object Last-Modified")
 
     }
@@ -3666,9 +3671,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object ID
     func testObjectId() {
 
-         XCTAssertEqual(BluetoothUUID.objectId.rawValue, 0x2AC3)
-         XCTAssertEqual(BluetoothUUID.objectId.rawValue, 10947)
+         XCTAssertEqual(BluetoothUUID.objectId.rawValue, "2AC3")
          XCTAssertEqual(BluetoothUUID.objectId, .bit16(0x2AC3))
+         XCTAssertEqual(BluetoothUUID.objectId, .bit16(10947))
          XCTAssertEqual(BluetoothUUID.objectId.name, "Object ID")
 
     }
@@ -3676,9 +3681,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Properties
     func testObjectProperties() {
 
-         XCTAssertEqual(BluetoothUUID.objectProperties.rawValue, 0x2AC4)
-         XCTAssertEqual(BluetoothUUID.objectProperties.rawValue, 10948)
+         XCTAssertEqual(BluetoothUUID.objectProperties.rawValue, "2AC4")
          XCTAssertEqual(BluetoothUUID.objectProperties, .bit16(0x2AC4))
+         XCTAssertEqual(BluetoothUUID.objectProperties, .bit16(10948))
          XCTAssertEqual(BluetoothUUID.objectProperties.name, "Object Properties")
 
     }
@@ -3686,9 +3691,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Action Control Point
     func testObjectActionControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.objectActionControlPoint.rawValue, 0x2AC5)
-         XCTAssertEqual(BluetoothUUID.objectActionControlPoint.rawValue, 10949)
+         XCTAssertEqual(BluetoothUUID.objectActionControlPoint.rawValue, "2AC5")
          XCTAssertEqual(BluetoothUUID.objectActionControlPoint, .bit16(0x2AC5))
+         XCTAssertEqual(BluetoothUUID.objectActionControlPoint, .bit16(10949))
          XCTAssertEqual(BluetoothUUID.objectActionControlPoint.name, "Object Action Control Point")
 
     }
@@ -3696,9 +3701,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object List Control Point
     func testObjectListControlPoint() {
 
-         XCTAssertEqual(BluetoothUUID.objectListControlPoint.rawValue, 0x2AC6)
-         XCTAssertEqual(BluetoothUUID.objectListControlPoint.rawValue, 10950)
+         XCTAssertEqual(BluetoothUUID.objectListControlPoint.rawValue, "2AC6")
          XCTAssertEqual(BluetoothUUID.objectListControlPoint, .bit16(0x2AC6))
+         XCTAssertEqual(BluetoothUUID.objectListControlPoint, .bit16(10950))
          XCTAssertEqual(BluetoothUUID.objectListControlPoint.name, "Object List Control Point")
 
     }
@@ -3706,9 +3711,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object List Filter
     func testObjectListFilter() {
 
-         XCTAssertEqual(BluetoothUUID.objectListFilter.rawValue, 0x2AC7)
-         XCTAssertEqual(BluetoothUUID.objectListFilter.rawValue, 10951)
+         XCTAssertEqual(BluetoothUUID.objectListFilter.rawValue, "2AC7")
          XCTAssertEqual(BluetoothUUID.objectListFilter, .bit16(0x2AC7))
+         XCTAssertEqual(BluetoothUUID.objectListFilter, .bit16(10951))
          XCTAssertEqual(BluetoothUUID.objectListFilter.name, "Object List Filter")
 
     }
@@ -3716,9 +3721,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Object Changed
     func testObjectChanged() {
 
-         XCTAssertEqual(BluetoothUUID.objectChanged.rawValue, 0x2AC8)
-         XCTAssertEqual(BluetoothUUID.objectChanged.rawValue, 10952)
+         XCTAssertEqual(BluetoothUUID.objectChanged.rawValue, "2AC8")
          XCTAssertEqual(BluetoothUUID.objectChanged, .bit16(0x2AC8))
+         XCTAssertEqual(BluetoothUUID.objectChanged, .bit16(10952))
          XCTAssertEqual(BluetoothUUID.objectChanged.name, "Object Changed")
 
     }
@@ -3726,9 +3731,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Intel Corporation
     func testIntelCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.intelCorporation.rawValue, 0xFE66)
-         XCTAssertEqual(BluetoothUUID.intelCorporation.rawValue, 65126)
+         XCTAssertEqual(BluetoothUUID.intelCorporation.rawValue, "FE66")
          XCTAssertEqual(BluetoothUUID.intelCorporation, .bit16(0xFE66))
+         XCTAssertEqual(BluetoothUUID.intelCorporation, .bit16(65126))
          XCTAssertEqual(BluetoothUUID.intelCorporation.name, "Intel Corporation")
 
     }
@@ -3736,9 +3741,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Lab Sensor Solutions
     func testLabSensorSolutions() {
 
-         XCTAssertEqual(BluetoothUUID.labSensorSolutions.rawValue, 0xFE67)
-         XCTAssertEqual(BluetoothUUID.labSensorSolutions.rawValue, 65127)
+         XCTAssertEqual(BluetoothUUID.labSensorSolutions.rawValue, "FE67")
          XCTAssertEqual(BluetoothUUID.labSensorSolutions, .bit16(0xFE67))
+         XCTAssertEqual(BluetoothUUID.labSensorSolutions, .bit16(65127))
          XCTAssertEqual(BluetoothUUID.labSensorSolutions.name, "Lab Sensor Solutions")
 
     }
@@ -3746,9 +3751,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Qualcomm Life Inc
     func testQualcommLife() {
 
-         XCTAssertEqual(BluetoothUUID.qualcommLife.rawValue, 0xFE68)
-         XCTAssertEqual(BluetoothUUID.qualcommLife.rawValue, 65128)
+         XCTAssertEqual(BluetoothUUID.qualcommLife.rawValue, "FE68")
          XCTAssertEqual(BluetoothUUID.qualcommLife, .bit16(0xFE68))
+         XCTAssertEqual(BluetoothUUID.qualcommLife, .bit16(65128))
          XCTAssertEqual(BluetoothUUID.qualcommLife.name, "Qualcomm Life Inc")
 
     }
@@ -3756,9 +3761,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Qualcomm Life Inc
     func testQualcommLife2() {
 
-         XCTAssertEqual(BluetoothUUID.qualcommLife2.rawValue, 0xFE69)
-         XCTAssertEqual(BluetoothUUID.qualcommLife2.rawValue, 65129)
+         XCTAssertEqual(BluetoothUUID.qualcommLife2.rawValue, "FE69")
          XCTAssertEqual(BluetoothUUID.qualcommLife2, .bit16(0xFE69))
+         XCTAssertEqual(BluetoothUUID.qualcommLife2, .bit16(65129))
          XCTAssertEqual(BluetoothUUID.qualcommLife2.name, "Qualcomm Life Inc")
 
     }
@@ -3766,9 +3771,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Kontakt Micro-Location Sp. z o.o.
     func testKontaktMicroLocation() {
 
-         XCTAssertEqual(BluetoothUUID.kontaktMicroLocation.rawValue, 0xFE6A)
-         XCTAssertEqual(BluetoothUUID.kontaktMicroLocation.rawValue, 65130)
+         XCTAssertEqual(BluetoothUUID.kontaktMicroLocation.rawValue, "FE6A")
          XCTAssertEqual(BluetoothUUID.kontaktMicroLocation, .bit16(0xFE6A))
+         XCTAssertEqual(BluetoothUUID.kontaktMicroLocation, .bit16(65130))
          XCTAssertEqual(BluetoothUUID.kontaktMicroLocation.name, "Kontakt Micro-Location Sp. z o.o.")
 
     }
@@ -3776,9 +3781,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test TASER International, Inc.
     func testTaserInternational() {
 
-         XCTAssertEqual(BluetoothUUID.taserInternational.rawValue, 0xFE6B)
-         XCTAssertEqual(BluetoothUUID.taserInternational.rawValue, 65131)
+         XCTAssertEqual(BluetoothUUID.taserInternational.rawValue, "FE6B")
          XCTAssertEqual(BluetoothUUID.taserInternational, .bit16(0xFE6B))
+         XCTAssertEqual(BluetoothUUID.taserInternational, .bit16(65131))
          XCTAssertEqual(BluetoothUUID.taserInternational.name, "TASER International, Inc.")
 
     }
@@ -3786,9 +3791,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test TASER International, Inc.
     func testTaserInternational2() {
 
-         XCTAssertEqual(BluetoothUUID.taserInternational2.rawValue, 0xFE6C)
-         XCTAssertEqual(BluetoothUUID.taserInternational2.rawValue, 65132)
+         XCTAssertEqual(BluetoothUUID.taserInternational2.rawValue, "FE6C")
          XCTAssertEqual(BluetoothUUID.taserInternational2, .bit16(0xFE6C))
+         XCTAssertEqual(BluetoothUUID.taserInternational2, .bit16(65132))
          XCTAssertEqual(BluetoothUUID.taserInternational2.name, "TASER International, Inc.")
 
     }
@@ -3796,9 +3801,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test The University of Tokyo
     func testUniversityOfTokyo() {
 
-         XCTAssertEqual(BluetoothUUID.universityOfTokyo.rawValue, 0xFE6D)
-         XCTAssertEqual(BluetoothUUID.universityOfTokyo.rawValue, 65133)
+         XCTAssertEqual(BluetoothUUID.universityOfTokyo.rawValue, "FE6D")
          XCTAssertEqual(BluetoothUUID.universityOfTokyo, .bit16(0xFE6D))
+         XCTAssertEqual(BluetoothUUID.universityOfTokyo, .bit16(65133))
          XCTAssertEqual(BluetoothUUID.universityOfTokyo.name, "The University of Tokyo")
 
     }
@@ -3806,9 +3811,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test The University of Tokyo
     func testUniversityOfTokyo2() {
 
-         XCTAssertEqual(BluetoothUUID.universityOfTokyo2.rawValue, 0xFE6E)
-         XCTAssertEqual(BluetoothUUID.universityOfTokyo2.rawValue, 65134)
+         XCTAssertEqual(BluetoothUUID.universityOfTokyo2.rawValue, "FE6E")
          XCTAssertEqual(BluetoothUUID.universityOfTokyo2, .bit16(0xFE6E))
+         XCTAssertEqual(BluetoothUUID.universityOfTokyo2, .bit16(65134))
          XCTAssertEqual(BluetoothUUID.universityOfTokyo2.name, "The University of Tokyo")
 
     }
@@ -3816,9 +3821,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test LINE Corporation
     func testLineCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.lineCorporation.rawValue, 0xFE6F)
-         XCTAssertEqual(BluetoothUUID.lineCorporation.rawValue, 65135)
+         XCTAssertEqual(BluetoothUUID.lineCorporation.rawValue, "FE6F")
          XCTAssertEqual(BluetoothUUID.lineCorporation, .bit16(0xFE6F))
+         XCTAssertEqual(BluetoothUUID.lineCorporation, .bit16(65135))
          XCTAssertEqual(BluetoothUUID.lineCorporation.name, "LINE Corporation")
 
     }
@@ -3826,9 +3831,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Beijing Jingdong Century Trading Co., Ltd.
     func testBeijingJingdongCenturyTrading() {
 
-         XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading.rawValue, 0xFE70)
-         XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading.rawValue, 65136)
+         XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading.rawValue, "FE70")
          XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading, .bit16(0xFE70))
+         XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading, .bit16(65136))
          XCTAssertEqual(BluetoothUUID.beijingJingdongCenturyTrading.name, "Beijing Jingdong Century Trading Co., Ltd.")
 
     }
@@ -3836,9 +3841,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Plume Design Inc
     func testPlumeDesign() {
 
-         XCTAssertEqual(BluetoothUUID.plumeDesign.rawValue, 0xFE71)
-         XCTAssertEqual(BluetoothUUID.plumeDesign.rawValue, 65137)
+         XCTAssertEqual(BluetoothUUID.plumeDesign.rawValue, "FE71")
          XCTAssertEqual(BluetoothUUID.plumeDesign, .bit16(0xFE71))
+         XCTAssertEqual(BluetoothUUID.plumeDesign, .bit16(65137))
          XCTAssertEqual(BluetoothUUID.plumeDesign.name, "Plume Design Inc")
 
     }
@@ -3846,9 +3851,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test St. Jude Medical, Inc.
     func testStJudeMedical() {
 
-         XCTAssertEqual(BluetoothUUID.stJudeMedical.rawValue, 0xFE72)
-         XCTAssertEqual(BluetoothUUID.stJudeMedical.rawValue, 65138)
+         XCTAssertEqual(BluetoothUUID.stJudeMedical.rawValue, "FE72")
          XCTAssertEqual(BluetoothUUID.stJudeMedical, .bit16(0xFE72))
+         XCTAssertEqual(BluetoothUUID.stJudeMedical, .bit16(65138))
          XCTAssertEqual(BluetoothUUID.stJudeMedical.name, "St. Jude Medical, Inc.")
 
     }
@@ -3856,9 +3861,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test St. Jude Medical, Inc.
     func testStJudeMedical2() {
 
-         XCTAssertEqual(BluetoothUUID.stJudeMedical2.rawValue, 0xFE73)
-         XCTAssertEqual(BluetoothUUID.stJudeMedical2.rawValue, 65139)
+         XCTAssertEqual(BluetoothUUID.stJudeMedical2.rawValue, "FE73")
          XCTAssertEqual(BluetoothUUID.stJudeMedical2, .bit16(0xFE73))
+         XCTAssertEqual(BluetoothUUID.stJudeMedical2, .bit16(65139))
          XCTAssertEqual(BluetoothUUID.stJudeMedical2.name, "St. Jude Medical, Inc.")
 
     }
@@ -3866,9 +3871,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test unwire
     func testUnwire() {
 
-         XCTAssertEqual(BluetoothUUID.unwire.rawValue, 0xFE74)
-         XCTAssertEqual(BluetoothUUID.unwire.rawValue, 65140)
+         XCTAssertEqual(BluetoothUUID.unwire.rawValue, "FE74")
          XCTAssertEqual(BluetoothUUID.unwire, .bit16(0xFE74))
+         XCTAssertEqual(BluetoothUUID.unwire, .bit16(65140))
          XCTAssertEqual(BluetoothUUID.unwire.name, "unwire")
 
     }
@@ -3876,9 +3881,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test TangoMe
     func testTangome() {
 
-         XCTAssertEqual(BluetoothUUID.tangome.rawValue, 0xFE75)
-         XCTAssertEqual(BluetoothUUID.tangome.rawValue, 65141)
+         XCTAssertEqual(BluetoothUUID.tangome.rawValue, "FE75")
          XCTAssertEqual(BluetoothUUID.tangome, .bit16(0xFE75))
+         XCTAssertEqual(BluetoothUUID.tangome, .bit16(65141))
          XCTAssertEqual(BluetoothUUID.tangome.name, "TangoMe")
 
     }
@@ -3886,9 +3891,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test TangoMe
     func testTangome2() {
 
-         XCTAssertEqual(BluetoothUUID.tangome2.rawValue, 0xFE76)
-         XCTAssertEqual(BluetoothUUID.tangome2.rawValue, 65142)
+         XCTAssertEqual(BluetoothUUID.tangome2.rawValue, "FE76")
          XCTAssertEqual(BluetoothUUID.tangome2, .bit16(0xFE76))
+         XCTAssertEqual(BluetoothUUID.tangome2, .bit16(65142))
          XCTAssertEqual(BluetoothUUID.tangome2.name, "TangoMe")
 
     }
@@ -3896,9 +3901,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hewlett-Packard Company
     func testHewlettPackardCompany() {
 
-         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany.rawValue, 0xFE77)
-         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany.rawValue, 65143)
+         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany.rawValue, "FE77")
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany, .bit16(0xFE77))
+         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany, .bit16(65143))
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany.name, "Hewlett-Packard Company")
 
     }
@@ -3906,9 +3911,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Hewlett-Packard Company
     func testHewlettPackardCompany2() {
 
-         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2.rawValue, 0xFE78)
-         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2.rawValue, 65144)
+         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2.rawValue, "FE78")
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2, .bit16(0xFE78))
+         XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2, .bit16(65144))
          XCTAssertEqual(BluetoothUUID.hewlettPackardCompany2.name, "Hewlett-Packard Company")
 
     }
@@ -3916,9 +3921,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Zebra Technologies
     func testZebraTechnologies() {
 
-         XCTAssertEqual(BluetoothUUID.zebraTechnologies.rawValue, 0xFE79)
-         XCTAssertEqual(BluetoothUUID.zebraTechnologies.rawValue, 65145)
+         XCTAssertEqual(BluetoothUUID.zebraTechnologies.rawValue, "FE79")
          XCTAssertEqual(BluetoothUUID.zebraTechnologies, .bit16(0xFE79))
+         XCTAssertEqual(BluetoothUUID.zebraTechnologies, .bit16(65145))
          XCTAssertEqual(BluetoothUUID.zebraTechnologies.name, "Zebra Technologies")
 
     }
@@ -3926,9 +3931,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Bragi GmbH
     func testBragiGmbh() {
 
-         XCTAssertEqual(BluetoothUUID.bragiGmbh.rawValue, 0xFE7A)
-         XCTAssertEqual(BluetoothUUID.bragiGmbh.rawValue, 65146)
+         XCTAssertEqual(BluetoothUUID.bragiGmbh.rawValue, "FE7A")
          XCTAssertEqual(BluetoothUUID.bragiGmbh, .bit16(0xFE7A))
+         XCTAssertEqual(BluetoothUUID.bragiGmbh, .bit16(65146))
          XCTAssertEqual(BluetoothUUID.bragiGmbh.name, "Bragi GmbH")
 
     }
@@ -3936,9 +3941,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Orion Labs, Inc.
     func testOrionLabs() {
 
-         XCTAssertEqual(BluetoothUUID.orionLabs.rawValue, 0xFE7B)
-         XCTAssertEqual(BluetoothUUID.orionLabs.rawValue, 65147)
+         XCTAssertEqual(BluetoothUUID.orionLabs.rawValue, "FE7B")
          XCTAssertEqual(BluetoothUUID.orionLabs, .bit16(0xFE7B))
+         XCTAssertEqual(BluetoothUUID.orionLabs, .bit16(65147))
          XCTAssertEqual(BluetoothUUID.orionLabs.name, "Orion Labs, Inc.")
 
     }
@@ -3946,9 +3951,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Stollmann E+V GmbH
     func testStollmannEVGmbh() {
 
-         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh.rawValue, 0xFE7C)
-         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh.rawValue, 65148)
+         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh.rawValue, "FE7C")
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh, .bit16(0xFE7C))
+         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh, .bit16(65148))
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh.name, "Stollmann E+V GmbH")
 
     }
@@ -3956,9 +3961,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Aterica Health Inc.
     func testAtericaHealth() {
 
-         XCTAssertEqual(BluetoothUUID.atericaHealth.rawValue, 0xFE7D)
-         XCTAssertEqual(BluetoothUUID.atericaHealth.rawValue, 65149)
+         XCTAssertEqual(BluetoothUUID.atericaHealth.rawValue, "FE7D")
          XCTAssertEqual(BluetoothUUID.atericaHealth, .bit16(0xFE7D))
+         XCTAssertEqual(BluetoothUUID.atericaHealth, .bit16(65149))
          XCTAssertEqual(BluetoothUUID.atericaHealth.name, "Aterica Health Inc.")
 
     }
@@ -3966,9 +3971,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Awear Solutions Ltd
     func testAwearSolutions() {
 
-         XCTAssertEqual(BluetoothUUID.awearSolutions.rawValue, 0xFE7E)
-         XCTAssertEqual(BluetoothUUID.awearSolutions.rawValue, 65150)
+         XCTAssertEqual(BluetoothUUID.awearSolutions.rawValue, "FE7E")
          XCTAssertEqual(BluetoothUUID.awearSolutions, .bit16(0xFE7E))
+         XCTAssertEqual(BluetoothUUID.awearSolutions, .bit16(65150))
          XCTAssertEqual(BluetoothUUID.awearSolutions.name, "Awear Solutions Ltd")
 
     }
@@ -3976,9 +3981,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Doppler Lab
     func testDopplerLab() {
 
-         XCTAssertEqual(BluetoothUUID.dopplerLab.rawValue, 0xFE7F)
-         XCTAssertEqual(BluetoothUUID.dopplerLab.rawValue, 65151)
+         XCTAssertEqual(BluetoothUUID.dopplerLab.rawValue, "FE7F")
          XCTAssertEqual(BluetoothUUID.dopplerLab, .bit16(0xFE7F))
+         XCTAssertEqual(BluetoothUUID.dopplerLab, .bit16(65151))
          XCTAssertEqual(BluetoothUUID.dopplerLab.name, "Doppler Lab")
 
     }
@@ -3986,9 +3991,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Doppler Lab
     func testDopplerLab2() {
 
-         XCTAssertEqual(BluetoothUUID.dopplerLab2.rawValue, 0xFE80)
-         XCTAssertEqual(BluetoothUUID.dopplerLab2.rawValue, 65152)
+         XCTAssertEqual(BluetoothUUID.dopplerLab2.rawValue, "FE80")
          XCTAssertEqual(BluetoothUUID.dopplerLab2, .bit16(0xFE80))
+         XCTAssertEqual(BluetoothUUID.dopplerLab2, .bit16(65152))
          XCTAssertEqual(BluetoothUUID.dopplerLab2.name, "Doppler Lab")
 
     }
@@ -3996,9 +4001,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Medtronic Inc.
     func testMedtronic() {
 
-         XCTAssertEqual(BluetoothUUID.medtronic.rawValue, 0xFE81)
-         XCTAssertEqual(BluetoothUUID.medtronic.rawValue, 65153)
+         XCTAssertEqual(BluetoothUUID.medtronic.rawValue, "FE81")
          XCTAssertEqual(BluetoothUUID.medtronic, .bit16(0xFE81))
+         XCTAssertEqual(BluetoothUUID.medtronic, .bit16(65153))
          XCTAssertEqual(BluetoothUUID.medtronic.name, "Medtronic Inc.")
 
     }
@@ -4006,9 +4011,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Medtronic Inc.
     func testMedtronic2() {
 
-         XCTAssertEqual(BluetoothUUID.medtronic2.rawValue, 0xFE82)
-         XCTAssertEqual(BluetoothUUID.medtronic2.rawValue, 65154)
+         XCTAssertEqual(BluetoothUUID.medtronic2.rawValue, "FE82")
          XCTAssertEqual(BluetoothUUID.medtronic2, .bit16(0xFE82))
+         XCTAssertEqual(BluetoothUUID.medtronic2, .bit16(65154))
          XCTAssertEqual(BluetoothUUID.medtronic2.name, "Medtronic Inc.")
 
     }
@@ -4016,9 +4021,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Blue Bite
     func testBlueBite() {
 
-         XCTAssertEqual(BluetoothUUID.blueBite.rawValue, 0xFE83)
-         XCTAssertEqual(BluetoothUUID.blueBite.rawValue, 65155)
+         XCTAssertEqual(BluetoothUUID.blueBite.rawValue, "FE83")
          XCTAssertEqual(BluetoothUUID.blueBite, .bit16(0xFE83))
+         XCTAssertEqual(BluetoothUUID.blueBite, .bit16(65155))
          XCTAssertEqual(BluetoothUUID.blueBite.name, "Blue Bite")
 
     }
@@ -4026,9 +4031,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test RF Digital Corp
     func testRfDigitalCorp() {
 
-         XCTAssertEqual(BluetoothUUID.rfDigitalCorp.rawValue, 0xFE84)
-         XCTAssertEqual(BluetoothUUID.rfDigitalCorp.rawValue, 65156)
+         XCTAssertEqual(BluetoothUUID.rfDigitalCorp.rawValue, "FE84")
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp, .bit16(0xFE84))
+         XCTAssertEqual(BluetoothUUID.rfDigitalCorp, .bit16(65156))
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp.name, "RF Digital Corp")
 
     }
@@ -4036,9 +4041,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test RF Digital Corp
     func testRfDigitalCorp2() {
 
-         XCTAssertEqual(BluetoothUUID.rfDigitalCorp2.rawValue, 0xFE85)
-         XCTAssertEqual(BluetoothUUID.rfDigitalCorp2.rawValue, 65157)
+         XCTAssertEqual(BluetoothUUID.rfDigitalCorp2.rawValue, "FE85")
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp2, .bit16(0xFE85))
+         XCTAssertEqual(BluetoothUUID.rfDigitalCorp2, .bit16(65157))
          XCTAssertEqual(BluetoothUUID.rfDigitalCorp2.name, "RF Digital Corp")
 
     }
@@ -4046,9 +4051,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test HUAWEI Technologies Co., Ltd. ( 华为技术有限公司 )
     func testHuaweiTechnologies华为技术有限公司() {
 
-         XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司.rawValue, 0xFE86)
-         XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司.rawValue, 65158)
+         XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司.rawValue, "FE86")
          XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司, .bit16(0xFE86))
+         XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司, .bit16(65158))
          XCTAssertEqual(BluetoothUUID.huaweiTechnologies华为技术有限公司.name, "HUAWEI Technologies Co., Ltd. ( 华为技术有限公司 )")
 
     }
@@ -4056,9 +4061,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Qingdao Yeelink Information Technology Co., Ltd. ( 青岛亿联客信息技术有限公司 )
     func testQingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司() {
 
-         XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司.rawValue, 0xFE87)
-         XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司.rawValue, 65159)
+         XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司.rawValue, "FE87")
          XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司, .bit16(0xFE87))
+         XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司, .bit16(65159))
          XCTAssertEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司.name, "Qingdao Yeelink Information Technology Co., Ltd. ( 青岛亿联客信息技术有限公司 )")
 
     }
@@ -4066,9 +4071,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test SALTO SYSTEMS S.L.
     func testSaltoSystemsSL() {
 
-         XCTAssertEqual(BluetoothUUID.saltoSystemsSL.rawValue, 0xFE88)
-         XCTAssertEqual(BluetoothUUID.saltoSystemsSL.rawValue, 65160)
+         XCTAssertEqual(BluetoothUUID.saltoSystemsSL.rawValue, "FE88")
          XCTAssertEqual(BluetoothUUID.saltoSystemsSL, .bit16(0xFE88))
+         XCTAssertEqual(BluetoothUUID.saltoSystemsSL, .bit16(65160))
          XCTAssertEqual(BluetoothUUID.saltoSystemsSL.name, "SALTO SYSTEMS S.L.")
 
     }
@@ -4076,9 +4081,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test B&O Play A/S
     func testBOPlayAS() {
 
-         XCTAssertEqual(BluetoothUUID.bOPlayAS.rawValue, 0xFE89)
-         XCTAssertEqual(BluetoothUUID.bOPlayAS.rawValue, 65161)
+         XCTAssertEqual(BluetoothUUID.bOPlayAS.rawValue, "FE89")
          XCTAssertEqual(BluetoothUUID.bOPlayAS, .bit16(0xFE89))
+         XCTAssertEqual(BluetoothUUID.bOPlayAS, .bit16(65161))
          XCTAssertEqual(BluetoothUUID.bOPlayAS.name, "B&O Play A/S")
 
     }
@@ -4086,9 +4091,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple() {
 
-         XCTAssertEqual(BluetoothUUID.apple.rawValue, 0xFE8A)
-         XCTAssertEqual(BluetoothUUID.apple.rawValue, 65162)
+         XCTAssertEqual(BluetoothUUID.apple.rawValue, "FE8A")
          XCTAssertEqual(BluetoothUUID.apple, .bit16(0xFE8A))
+         XCTAssertEqual(BluetoothUUID.apple, .bit16(65162))
          XCTAssertEqual(BluetoothUUID.apple.name, "Apple, Inc.")
 
     }
@@ -4096,9 +4101,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple2() {
 
-         XCTAssertEqual(BluetoothUUID.apple2.rawValue, 0xFE8B)
-         XCTAssertEqual(BluetoothUUID.apple2.rawValue, 65163)
+         XCTAssertEqual(BluetoothUUID.apple2.rawValue, "FE8B")
          XCTAssertEqual(BluetoothUUID.apple2, .bit16(0xFE8B))
+         XCTAssertEqual(BluetoothUUID.apple2, .bit16(65163))
          XCTAssertEqual(BluetoothUUID.apple2.name, "Apple, Inc.")
 
     }
@@ -4106,9 +4111,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test TRON Forum
     func testTronForum() {
 
-         XCTAssertEqual(BluetoothUUID.tronForum.rawValue, 0xFE8C)
-         XCTAssertEqual(BluetoothUUID.tronForum.rawValue, 65164)
+         XCTAssertEqual(BluetoothUUID.tronForum.rawValue, "FE8C")
          XCTAssertEqual(BluetoothUUID.tronForum, .bit16(0xFE8C))
+         XCTAssertEqual(BluetoothUUID.tronForum, .bit16(65164))
          XCTAssertEqual(BluetoothUUID.tronForum.name, "TRON Forum")
 
     }
@@ -4116,9 +4121,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Interaxon Inc.
     func testInteraxon() {
 
-         XCTAssertEqual(BluetoothUUID.interaxon.rawValue, 0xFE8D)
-         XCTAssertEqual(BluetoothUUID.interaxon.rawValue, 65165)
+         XCTAssertEqual(BluetoothUUID.interaxon.rawValue, "FE8D")
          XCTAssertEqual(BluetoothUUID.interaxon, .bit16(0xFE8D))
+         XCTAssertEqual(BluetoothUUID.interaxon, .bit16(65165))
          XCTAssertEqual(BluetoothUUID.interaxon.name, "Interaxon Inc.")
 
     }
@@ -4126,9 +4131,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test ARM Ltd
     func testArm() {
 
-         XCTAssertEqual(BluetoothUUID.arm.rawValue, 0xFE8E)
-         XCTAssertEqual(BluetoothUUID.arm.rawValue, 65166)
+         XCTAssertEqual(BluetoothUUID.arm.rawValue, "FE8E")
          XCTAssertEqual(BluetoothUUID.arm, .bit16(0xFE8E))
+         XCTAssertEqual(BluetoothUUID.arm, .bit16(65166))
          XCTAssertEqual(BluetoothUUID.arm.name, "ARM Ltd")
 
     }
@@ -4136,9 +4141,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CSR
     func testCsr() {
 
-         XCTAssertEqual(BluetoothUUID.csr.rawValue, 0xFE8F)
-         XCTAssertEqual(BluetoothUUID.csr.rawValue, 65167)
+         XCTAssertEqual(BluetoothUUID.csr.rawValue, "FE8F")
          XCTAssertEqual(BluetoothUUID.csr, .bit16(0xFE8F))
+         XCTAssertEqual(BluetoothUUID.csr, .bit16(65167))
          XCTAssertEqual(BluetoothUUID.csr.name, "CSR")
 
     }
@@ -4146,9 +4151,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test JUMA
     func testJuma() {
 
-         XCTAssertEqual(BluetoothUUID.juma.rawValue, 0xFE90)
-         XCTAssertEqual(BluetoothUUID.juma.rawValue, 65168)
+         XCTAssertEqual(BluetoothUUID.juma.rawValue, "FE90")
          XCTAssertEqual(BluetoothUUID.juma, .bit16(0xFE90))
+         XCTAssertEqual(BluetoothUUID.juma, .bit16(65168))
          XCTAssertEqual(BluetoothUUID.juma.name, "JUMA")
 
     }
@@ -4156,9 +4161,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Shanghai Imilab Technology Co.,Ltd
     func testShanghaiImilabTechnology() {
 
-         XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology.rawValue, 0xFE91)
-         XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology.rawValue, 65169)
+         XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology.rawValue, "FE91")
          XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology, .bit16(0xFE91))
+         XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology, .bit16(65169))
          XCTAssertEqual(BluetoothUUID.shanghaiImilabTechnology.name, "Shanghai Imilab Technology Co.,Ltd")
 
     }
@@ -4166,9 +4171,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Jarden Safety & Security
     func testJardenSafetySecurity() {
 
-         XCTAssertEqual(BluetoothUUID.jardenSafetySecurity.rawValue, 0xFE92)
-         XCTAssertEqual(BluetoothUUID.jardenSafetySecurity.rawValue, 65170)
+         XCTAssertEqual(BluetoothUUID.jardenSafetySecurity.rawValue, "FE92")
          XCTAssertEqual(BluetoothUUID.jardenSafetySecurity, .bit16(0xFE92))
+         XCTAssertEqual(BluetoothUUID.jardenSafetySecurity, .bit16(65170))
          XCTAssertEqual(BluetoothUUID.jardenSafetySecurity.name, "Jarden Safety & Security")
 
     }
@@ -4176,9 +4181,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test OttoQ Inc.
     func testOttoq() {
 
-         XCTAssertEqual(BluetoothUUID.ottoq.rawValue, 0xFE93)
-         XCTAssertEqual(BluetoothUUID.ottoq.rawValue, 65171)
+         XCTAssertEqual(BluetoothUUID.ottoq.rawValue, "FE93")
          XCTAssertEqual(BluetoothUUID.ottoq, .bit16(0xFE93))
+         XCTAssertEqual(BluetoothUUID.ottoq, .bit16(65171))
          XCTAssertEqual(BluetoothUUID.ottoq.name, "OttoQ Inc.")
 
     }
@@ -4186,9 +4191,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test OttoQ Inc.
     func testOttoq2() {
 
-         XCTAssertEqual(BluetoothUUID.ottoq2.rawValue, 0xFE94)
-         XCTAssertEqual(BluetoothUUID.ottoq2.rawValue, 65172)
+         XCTAssertEqual(BluetoothUUID.ottoq2.rawValue, "FE94")
          XCTAssertEqual(BluetoothUUID.ottoq2, .bit16(0xFE94))
+         XCTAssertEqual(BluetoothUUID.ottoq2, .bit16(65172))
          XCTAssertEqual(BluetoothUUID.ottoq2.name, "OttoQ Inc.")
 
     }
@@ -4196,9 +4201,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Xiaomi Inc.
     func testXiaomi() {
 
-         XCTAssertEqual(BluetoothUUID.xiaomi.rawValue, 0xFE95)
-         XCTAssertEqual(BluetoothUUID.xiaomi.rawValue, 65173)
+         XCTAssertEqual(BluetoothUUID.xiaomi.rawValue, "FE95")
          XCTAssertEqual(BluetoothUUID.xiaomi, .bit16(0xFE95))
+         XCTAssertEqual(BluetoothUUID.xiaomi, .bit16(65173))
          XCTAssertEqual(BluetoothUUID.xiaomi.name, "Xiaomi Inc.")
 
     }
@@ -4206,9 +4211,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tesla Motor Inc.
     func testTeslaMotor() {
 
-         XCTAssertEqual(BluetoothUUID.teslaMotor.rawValue, 0xFE96)
-         XCTAssertEqual(BluetoothUUID.teslaMotor.rawValue, 65174)
+         XCTAssertEqual(BluetoothUUID.teslaMotor.rawValue, "FE96")
          XCTAssertEqual(BluetoothUUID.teslaMotor, .bit16(0xFE96))
+         XCTAssertEqual(BluetoothUUID.teslaMotor, .bit16(65174))
          XCTAssertEqual(BluetoothUUID.teslaMotor.name, "Tesla Motor Inc.")
 
     }
@@ -4216,9 +4221,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tesla Motor Inc.
     func testTeslaMotor2() {
 
-         XCTAssertEqual(BluetoothUUID.teslaMotor2.rawValue, 0xFE97)
-         XCTAssertEqual(BluetoothUUID.teslaMotor2.rawValue, 65175)
+         XCTAssertEqual(BluetoothUUID.teslaMotor2.rawValue, "FE97")
          XCTAssertEqual(BluetoothUUID.teslaMotor2, .bit16(0xFE97))
+         XCTAssertEqual(BluetoothUUID.teslaMotor2, .bit16(65175))
          XCTAssertEqual(BluetoothUUID.teslaMotor2.name, "Tesla Motor Inc.")
 
     }
@@ -4226,9 +4231,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Currant, Inc.
     func testCurrant() {
 
-         XCTAssertEqual(BluetoothUUID.currant.rawValue, 0xFE98)
-         XCTAssertEqual(BluetoothUUID.currant.rawValue, 65176)
+         XCTAssertEqual(BluetoothUUID.currant.rawValue, "FE98")
          XCTAssertEqual(BluetoothUUID.currant, .bit16(0xFE98))
+         XCTAssertEqual(BluetoothUUID.currant, .bit16(65176))
          XCTAssertEqual(BluetoothUUID.currant.name, "Currant, Inc.")
 
     }
@@ -4236,9 +4241,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Currant, Inc.
     func testCurrant2() {
 
-         XCTAssertEqual(BluetoothUUID.currant2.rawValue, 0xFE99)
-         XCTAssertEqual(BluetoothUUID.currant2.rawValue, 65177)
+         XCTAssertEqual(BluetoothUUID.currant2.rawValue, "FE99")
          XCTAssertEqual(BluetoothUUID.currant2, .bit16(0xFE99))
+         XCTAssertEqual(BluetoothUUID.currant2, .bit16(65177))
          XCTAssertEqual(BluetoothUUID.currant2.name, "Currant, Inc.")
 
     }
@@ -4246,9 +4251,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Estimote
     func testEstimote() {
 
-         XCTAssertEqual(BluetoothUUID.estimote.rawValue, 0xFE9A)
-         XCTAssertEqual(BluetoothUUID.estimote.rawValue, 65178)
+         XCTAssertEqual(BluetoothUUID.estimote.rawValue, "FE9A")
          XCTAssertEqual(BluetoothUUID.estimote, .bit16(0xFE9A))
+         XCTAssertEqual(BluetoothUUID.estimote, .bit16(65178))
          XCTAssertEqual(BluetoothUUID.estimote.name, "Estimote")
 
     }
@@ -4256,9 +4261,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Samsara Networks, Inc
     func testSamsaraNetworks() {
 
-         XCTAssertEqual(BluetoothUUID.samsaraNetworks.rawValue, 0xFE9B)
-         XCTAssertEqual(BluetoothUUID.samsaraNetworks.rawValue, 65179)
+         XCTAssertEqual(BluetoothUUID.samsaraNetworks.rawValue, "FE9B")
          XCTAssertEqual(BluetoothUUID.samsaraNetworks, .bit16(0xFE9B))
+         XCTAssertEqual(BluetoothUUID.samsaraNetworks, .bit16(65179))
          XCTAssertEqual(BluetoothUUID.samsaraNetworks.name, "Samsara Networks, Inc")
 
     }
@@ -4266,9 +4271,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GSI Laboratories, Inc.
     func testGsiLaboratories() {
 
-         XCTAssertEqual(BluetoothUUID.gsiLaboratories.rawValue, 0xFE9C)
-         XCTAssertEqual(BluetoothUUID.gsiLaboratories.rawValue, 65180)
+         XCTAssertEqual(BluetoothUUID.gsiLaboratories.rawValue, "FE9C")
          XCTAssertEqual(BluetoothUUID.gsiLaboratories, .bit16(0xFE9C))
+         XCTAssertEqual(BluetoothUUID.gsiLaboratories, .bit16(65180))
          XCTAssertEqual(BluetoothUUID.gsiLaboratories.name, "GSI Laboratories, Inc.")
 
     }
@@ -4276,9 +4281,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Mobiquity Networks Inc
     func testMobiquityNetworks() {
 
-         XCTAssertEqual(BluetoothUUID.mobiquityNetworks.rawValue, 0xFE9D)
-         XCTAssertEqual(BluetoothUUID.mobiquityNetworks.rawValue, 65181)
+         XCTAssertEqual(BluetoothUUID.mobiquityNetworks.rawValue, "FE9D")
          XCTAssertEqual(BluetoothUUID.mobiquityNetworks, .bit16(0xFE9D))
+         XCTAssertEqual(BluetoothUUID.mobiquityNetworks, .bit16(65181))
          XCTAssertEqual(BluetoothUUID.mobiquityNetworks.name, "Mobiquity Networks Inc")
 
     }
@@ -4286,9 +4291,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Dialog Semiconductor B.V.
     func testDialogSemiconductorBV() {
 
-         XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV.rawValue, 0xFE9E)
-         XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV.rawValue, 65182)
+         XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV.rawValue, "FE9E")
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV, .bit16(0xFE9E))
+         XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV, .bit16(65182))
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorBV.name, "Dialog Semiconductor B.V.")
 
     }
@@ -4296,9 +4301,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Google
     func testGoogle() {
 
-         XCTAssertEqual(BluetoothUUID.google.rawValue, 0xFE9F)
-         XCTAssertEqual(BluetoothUUID.google.rawValue, 65183)
+         XCTAssertEqual(BluetoothUUID.google.rawValue, "FE9F")
          XCTAssertEqual(BluetoothUUID.google, .bit16(0xFE9F))
+         XCTAssertEqual(BluetoothUUID.google, .bit16(65183))
          XCTAssertEqual(BluetoothUUID.google.name, "Google")
 
     }
@@ -4306,9 +4311,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Google
     func testGoogle2() {
 
-         XCTAssertEqual(BluetoothUUID.google2.rawValue, 0xFEA0)
-         XCTAssertEqual(BluetoothUUID.google2.rawValue, 65184)
+         XCTAssertEqual(BluetoothUUID.google2.rawValue, "FEA0")
          XCTAssertEqual(BluetoothUUID.google2, .bit16(0xFEA0))
+         XCTAssertEqual(BluetoothUUID.google2, .bit16(65184))
          XCTAssertEqual(BluetoothUUID.google2.name, "Google")
 
     }
@@ -4316,9 +4321,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Intrepid Control Systems, Inc.
     func testIntrepidControlSystems() {
 
-         XCTAssertEqual(BluetoothUUID.intrepidControlSystems.rawValue, 0xFEA1)
-         XCTAssertEqual(BluetoothUUID.intrepidControlSystems.rawValue, 65185)
+         XCTAssertEqual(BluetoothUUID.intrepidControlSystems.rawValue, "FEA1")
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems, .bit16(0xFEA1))
+         XCTAssertEqual(BluetoothUUID.intrepidControlSystems, .bit16(65185))
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems.name, "Intrepid Control Systems, Inc.")
 
     }
@@ -4326,9 +4331,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Intrepid Control Systems, Inc.
     func testIntrepidControlSystems2() {
 
-         XCTAssertEqual(BluetoothUUID.intrepidControlSystems2.rawValue, 0xFEA2)
-         XCTAssertEqual(BluetoothUUID.intrepidControlSystems2.rawValue, 65186)
+         XCTAssertEqual(BluetoothUUID.intrepidControlSystems2.rawValue, "FEA2")
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems2, .bit16(0xFEA2))
+         XCTAssertEqual(BluetoothUUID.intrepidControlSystems2, .bit16(65186))
          XCTAssertEqual(BluetoothUUID.intrepidControlSystems2.name, "Intrepid Control Systems, Inc.")
 
     }
@@ -4336,9 +4341,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test ITT Industries
     func testIttIndustries() {
 
-         XCTAssertEqual(BluetoothUUID.ittIndustries.rawValue, 0xFEA3)
-         XCTAssertEqual(BluetoothUUID.ittIndustries.rawValue, 65187)
+         XCTAssertEqual(BluetoothUUID.ittIndustries.rawValue, "FEA3")
          XCTAssertEqual(BluetoothUUID.ittIndustries, .bit16(0xFEA3))
+         XCTAssertEqual(BluetoothUUID.ittIndustries, .bit16(65187))
          XCTAssertEqual(BluetoothUUID.ittIndustries.name, "ITT Industries")
 
     }
@@ -4346,9 +4351,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Paxton Access Ltd
     func testPaxtonAccess() {
 
-         XCTAssertEqual(BluetoothUUID.paxtonAccess.rawValue, 0xFEA4)
-         XCTAssertEqual(BluetoothUUID.paxtonAccess.rawValue, 65188)
+         XCTAssertEqual(BluetoothUUID.paxtonAccess.rawValue, "FEA4")
          XCTAssertEqual(BluetoothUUID.paxtonAccess, .bit16(0xFEA4))
+         XCTAssertEqual(BluetoothUUID.paxtonAccess, .bit16(65188))
          XCTAssertEqual(BluetoothUUID.paxtonAccess.name, "Paxton Access Ltd")
 
     }
@@ -4356,9 +4361,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GoPro, Inc.
     func testGopro() {
 
-         XCTAssertEqual(BluetoothUUID.gopro.rawValue, 0xFEA5)
-         XCTAssertEqual(BluetoothUUID.gopro.rawValue, 65189)
+         XCTAssertEqual(BluetoothUUID.gopro.rawValue, "FEA5")
          XCTAssertEqual(BluetoothUUID.gopro, .bit16(0xFEA5))
+         XCTAssertEqual(BluetoothUUID.gopro, .bit16(65189))
          XCTAssertEqual(BluetoothUUID.gopro.name, "GoPro, Inc.")
 
     }
@@ -4366,9 +4371,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GoPro, Inc.
     func testGopro2() {
 
-         XCTAssertEqual(BluetoothUUID.gopro2.rawValue, 0xFEA6)
-         XCTAssertEqual(BluetoothUUID.gopro2.rawValue, 65190)
+         XCTAssertEqual(BluetoothUUID.gopro2.rawValue, "FEA6")
          XCTAssertEqual(BluetoothUUID.gopro2, .bit16(0xFEA6))
+         XCTAssertEqual(BluetoothUUID.gopro2, .bit16(65190))
          XCTAssertEqual(BluetoothUUID.gopro2.name, "GoPro, Inc.")
 
     }
@@ -4376,9 +4381,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test UTC Fire and Security
     func testUtcFireAndSecurity() {
 
-         XCTAssertEqual(BluetoothUUID.utcFireAndSecurity.rawValue, 0xFEA7)
-         XCTAssertEqual(BluetoothUUID.utcFireAndSecurity.rawValue, 65191)
+         XCTAssertEqual(BluetoothUUID.utcFireAndSecurity.rawValue, "FEA7")
          XCTAssertEqual(BluetoothUUID.utcFireAndSecurity, .bit16(0xFEA7))
+         XCTAssertEqual(BluetoothUUID.utcFireAndSecurity, .bit16(65191))
          XCTAssertEqual(BluetoothUUID.utcFireAndSecurity.name, "UTC Fire and Security")
 
     }
@@ -4386,9 +4391,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Savant Systems LLC
     func testSavantSystems() {
 
-         XCTAssertEqual(BluetoothUUID.savantSystems.rawValue, 0xFEA8)
-         XCTAssertEqual(BluetoothUUID.savantSystems.rawValue, 65192)
+         XCTAssertEqual(BluetoothUUID.savantSystems.rawValue, "FEA8")
          XCTAssertEqual(BluetoothUUID.savantSystems, .bit16(0xFEA8))
+         XCTAssertEqual(BluetoothUUID.savantSystems, .bit16(65192))
          XCTAssertEqual(BluetoothUUID.savantSystems.name, "Savant Systems LLC")
 
     }
@@ -4396,9 +4401,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Savant Systems LLC
     func testSavantSystems2() {
 
-         XCTAssertEqual(BluetoothUUID.savantSystems2.rawValue, 0xFEA9)
-         XCTAssertEqual(BluetoothUUID.savantSystems2.rawValue, 65193)
+         XCTAssertEqual(BluetoothUUID.savantSystems2.rawValue, "FEA9")
          XCTAssertEqual(BluetoothUUID.savantSystems2, .bit16(0xFEA9))
+         XCTAssertEqual(BluetoothUUID.savantSystems2, .bit16(65193))
          XCTAssertEqual(BluetoothUUID.savantSystems2.name, "Savant Systems LLC")
 
     }
@@ -4406,9 +4411,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Google
     func testGoogle3() {
 
-         XCTAssertEqual(BluetoothUUID.google3.rawValue, 0xFEAA)
-         XCTAssertEqual(BluetoothUUID.google3.rawValue, 65194)
+         XCTAssertEqual(BluetoothUUID.google3.rawValue, "FEAA")
          XCTAssertEqual(BluetoothUUID.google3, .bit16(0xFEAA))
+         XCTAssertEqual(BluetoothUUID.google3, .bit16(65194))
          XCTAssertEqual(BluetoothUUID.google3.name, "Google")
 
     }
@@ -4416,9 +4421,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nokia Corporation
     func testNokiaCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation.rawValue, 0xFEAB)
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation.rawValue, 65195)
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation.rawValue, "FEAB")
          XCTAssertEqual(BluetoothUUID.nokiaCorporation, .bit16(0xFEAB))
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation, .bit16(65195))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation.name, "Nokia Corporation")
 
     }
@@ -4426,9 +4431,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nokia Corporation
     func testNokiaCorporation2() {
 
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation2.rawValue, 0xFEAC)
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation2.rawValue, 65196)
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation2.rawValue, "FEAC")
          XCTAssertEqual(BluetoothUUID.nokiaCorporation2, .bit16(0xFEAC))
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation2, .bit16(65196))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation2.name, "Nokia Corporation")
 
     }
@@ -4436,9 +4441,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nokia Corporation
     func testNokiaCorporation3() {
 
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation3.rawValue, 0xFEAD)
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation3.rawValue, 65197)
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation3.rawValue, "FEAD")
          XCTAssertEqual(BluetoothUUID.nokiaCorporation3, .bit16(0xFEAD))
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation3, .bit16(65197))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation3.name, "Nokia Corporation")
 
     }
@@ -4446,9 +4451,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nokia Corporation
     func testNokiaCorporation4() {
 
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation4.rawValue, 0xFEAE)
-         XCTAssertEqual(BluetoothUUID.nokiaCorporation4.rawValue, 65198)
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation4.rawValue, "FEAE")
          XCTAssertEqual(BluetoothUUID.nokiaCorporation4, .bit16(0xFEAE))
+         XCTAssertEqual(BluetoothUUID.nokiaCorporation4, .bit16(65198))
          XCTAssertEqual(BluetoothUUID.nokiaCorporation4.name, "Nokia Corporation")
 
     }
@@ -4456,9 +4461,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nest Labs Inc.
     func testNestLabs() {
 
-         XCTAssertEqual(BluetoothUUID.nestLabs.rawValue, 0xFEAF)
-         XCTAssertEqual(BluetoothUUID.nestLabs.rawValue, 65199)
+         XCTAssertEqual(BluetoothUUID.nestLabs.rawValue, "FEAF")
          XCTAssertEqual(BluetoothUUID.nestLabs, .bit16(0xFEAF))
+         XCTAssertEqual(BluetoothUUID.nestLabs, .bit16(65199))
          XCTAssertEqual(BluetoothUUID.nestLabs.name, "Nest Labs Inc.")
 
     }
@@ -4466,9 +4471,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nest Labs Inc.
     func testNestLabs2() {
 
-         XCTAssertEqual(BluetoothUUID.nestLabs2.rawValue, 0xFEB0)
-         XCTAssertEqual(BluetoothUUID.nestLabs2.rawValue, 65200)
+         XCTAssertEqual(BluetoothUUID.nestLabs2.rawValue, "FEB0")
          XCTAssertEqual(BluetoothUUID.nestLabs2, .bit16(0xFEB0))
+         XCTAssertEqual(BluetoothUUID.nestLabs2, .bit16(65200))
          XCTAssertEqual(BluetoothUUID.nestLabs2.name, "Nest Labs Inc.")
 
     }
@@ -4476,9 +4481,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Electronics Tomorrow Limited
     func testElectronicsTomorrowLimited() {
 
-         XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited.rawValue, 0xFEB1)
-         XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited.rawValue, 65201)
+         XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited.rawValue, "FEB1")
          XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited, .bit16(0xFEB1))
+         XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited, .bit16(65201))
          XCTAssertEqual(BluetoothUUID.electronicsTomorrowLimited.name, "Electronics Tomorrow Limited")
 
     }
@@ -4486,9 +4491,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Microsoft Corporation
     func testMicrosoftCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.microsoftCorporation.rawValue, 0xFEB2)
-         XCTAssertEqual(BluetoothUUID.microsoftCorporation.rawValue, 65202)
+         XCTAssertEqual(BluetoothUUID.microsoftCorporation.rawValue, "FEB2")
          XCTAssertEqual(BluetoothUUID.microsoftCorporation, .bit16(0xFEB2))
+         XCTAssertEqual(BluetoothUUID.microsoftCorporation, .bit16(65202))
          XCTAssertEqual(BluetoothUUID.microsoftCorporation.name, "Microsoft Corporation")
 
     }
@@ -4496,9 +4501,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Taobao
     func testTaobao() {
 
-         XCTAssertEqual(BluetoothUUID.taobao.rawValue, 0xFEB3)
-         XCTAssertEqual(BluetoothUUID.taobao.rawValue, 65203)
+         XCTAssertEqual(BluetoothUUID.taobao.rawValue, "FEB3")
          XCTAssertEqual(BluetoothUUID.taobao, .bit16(0xFEB3))
+         XCTAssertEqual(BluetoothUUID.taobao, .bit16(65203))
          XCTAssertEqual(BluetoothUUID.taobao.name, "Taobao")
 
     }
@@ -4506,9 +4511,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test WiSilica Inc.
     func testWisilica() {
 
-         XCTAssertEqual(BluetoothUUID.wisilica.rawValue, 0xFEB4)
-         XCTAssertEqual(BluetoothUUID.wisilica.rawValue, 65204)
+         XCTAssertEqual(BluetoothUUID.wisilica.rawValue, "FEB4")
          XCTAssertEqual(BluetoothUUID.wisilica, .bit16(0xFEB4))
+         XCTAssertEqual(BluetoothUUID.wisilica, .bit16(65204))
          XCTAssertEqual(BluetoothUUID.wisilica.name, "WiSilica Inc.")
 
     }
@@ -4516,9 +4521,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test WiSilica Inc.
     func testWisilica2() {
 
-         XCTAssertEqual(BluetoothUUID.wisilica2.rawValue, 0xFEB5)
-         XCTAssertEqual(BluetoothUUID.wisilica2.rawValue, 65205)
+         XCTAssertEqual(BluetoothUUID.wisilica2.rawValue, "FEB5")
          XCTAssertEqual(BluetoothUUID.wisilica2, .bit16(0xFEB5))
+         XCTAssertEqual(BluetoothUUID.wisilica2, .bit16(65205))
          XCTAssertEqual(BluetoothUUID.wisilica2.name, "WiSilica Inc.")
 
     }
@@ -4526,9 +4531,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Vencer Co, Ltd
     func testVencerCo() {
 
-         XCTAssertEqual(BluetoothUUID.vencerCo.rawValue, 0xFEB6)
-         XCTAssertEqual(BluetoothUUID.vencerCo.rawValue, 65206)
+         XCTAssertEqual(BluetoothUUID.vencerCo.rawValue, "FEB6")
          XCTAssertEqual(BluetoothUUID.vencerCo, .bit16(0xFEB6))
+         XCTAssertEqual(BluetoothUUID.vencerCo, .bit16(65206))
          XCTAssertEqual(BluetoothUUID.vencerCo.name, "Vencer Co, Ltd")
 
     }
@@ -4536,9 +4541,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Facebook, Inc.
     func testFacebook() {
 
-         XCTAssertEqual(BluetoothUUID.facebook.rawValue, 0xFEB7)
-         XCTAssertEqual(BluetoothUUID.facebook.rawValue, 65207)
+         XCTAssertEqual(BluetoothUUID.facebook.rawValue, "FEB7")
          XCTAssertEqual(BluetoothUUID.facebook, .bit16(0xFEB7))
+         XCTAssertEqual(BluetoothUUID.facebook, .bit16(65207))
          XCTAssertEqual(BluetoothUUID.facebook.name, "Facebook, Inc.")
 
     }
@@ -4546,9 +4551,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Facebook, Inc.
     func testFacebook2() {
 
-         XCTAssertEqual(BluetoothUUID.facebook2.rawValue, 0xFEB8)
-         XCTAssertEqual(BluetoothUUID.facebook2.rawValue, 65208)
+         XCTAssertEqual(BluetoothUUID.facebook2.rawValue, "FEB8")
          XCTAssertEqual(BluetoothUUID.facebook2, .bit16(0xFEB8))
+         XCTAssertEqual(BluetoothUUID.facebook2, .bit16(65208))
          XCTAssertEqual(BluetoothUUID.facebook2.name, "Facebook, Inc.")
 
     }
@@ -4556,9 +4561,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test LG Electronics
     func testLgElectronics() {
 
-         XCTAssertEqual(BluetoothUUID.lgElectronics.rawValue, 0xFEB9)
-         XCTAssertEqual(BluetoothUUID.lgElectronics.rawValue, 65209)
+         XCTAssertEqual(BluetoothUUID.lgElectronics.rawValue, "FEB9")
          XCTAssertEqual(BluetoothUUID.lgElectronics, .bit16(0xFEB9))
+         XCTAssertEqual(BluetoothUUID.lgElectronics, .bit16(65209))
          XCTAssertEqual(BluetoothUUID.lgElectronics.name, "LG Electronics")
 
     }
@@ -4566,9 +4571,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tencent Holdings Limited
     func testTencentHoldingsLimited() {
 
-         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited.rawValue, 0xFEBA)
-         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited.rawValue, 65210)
+         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited.rawValue, "FEBA")
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited, .bit16(0xFEBA))
+         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited, .bit16(65210))
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited.name, "Tencent Holdings Limited")
 
     }
@@ -4576,9 +4581,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test adafruit industries
     func testAdafruitIndustries() {
 
-         XCTAssertEqual(BluetoothUUID.adafruitIndustries.rawValue, 0xFEBB)
-         XCTAssertEqual(BluetoothUUID.adafruitIndustries.rawValue, 65211)
+         XCTAssertEqual(BluetoothUUID.adafruitIndustries.rawValue, "FEBB")
          XCTAssertEqual(BluetoothUUID.adafruitIndustries, .bit16(0xFEBB))
+         XCTAssertEqual(BluetoothUUID.adafruitIndustries, .bit16(65211))
          XCTAssertEqual(BluetoothUUID.adafruitIndustries.name, "adafruit industries")
 
     }
@@ -4586,9 +4591,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Dexcom, Inc.
     func testDexcom() {
 
-         XCTAssertEqual(BluetoothUUID.dexcom.rawValue, 0xFEBC)
-         XCTAssertEqual(BluetoothUUID.dexcom.rawValue, 65212)
+         XCTAssertEqual(BluetoothUUID.dexcom.rawValue, "FEBC")
          XCTAssertEqual(BluetoothUUID.dexcom, .bit16(0xFEBC))
+         XCTAssertEqual(BluetoothUUID.dexcom, .bit16(65212))
          XCTAssertEqual(BluetoothUUID.dexcom.name, "Dexcom, Inc.")
 
     }
@@ -4596,9 +4601,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Clover Network, Inc.
     func testCloverNetwork() {
 
-         XCTAssertEqual(BluetoothUUID.cloverNetwork.rawValue, 0xFEBD)
-         XCTAssertEqual(BluetoothUUID.cloverNetwork.rawValue, 65213)
+         XCTAssertEqual(BluetoothUUID.cloverNetwork.rawValue, "FEBD")
          XCTAssertEqual(BluetoothUUID.cloverNetwork, .bit16(0xFEBD))
+         XCTAssertEqual(BluetoothUUID.cloverNetwork, .bit16(65213))
          XCTAssertEqual(BluetoothUUID.cloverNetwork.name, "Clover Network, Inc.")
 
     }
@@ -4606,9 +4611,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Bose Corporation
     func testBoseCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.boseCorporation.rawValue, 0xFEBE)
-         XCTAssertEqual(BluetoothUUID.boseCorporation.rawValue, 65214)
+         XCTAssertEqual(BluetoothUUID.boseCorporation.rawValue, "FEBE")
          XCTAssertEqual(BluetoothUUID.boseCorporation, .bit16(0xFEBE))
+         XCTAssertEqual(BluetoothUUID.boseCorporation, .bit16(65214))
          XCTAssertEqual(BluetoothUUID.boseCorporation.name, "Bose Corporation")
 
     }
@@ -4616,9 +4621,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nod, Inc.
     func testNod() {
 
-         XCTAssertEqual(BluetoothUUID.nod.rawValue, 0xFEBF)
-         XCTAssertEqual(BluetoothUUID.nod.rawValue, 65215)
+         XCTAssertEqual(BluetoothUUID.nod.rawValue, "FEBF")
          XCTAssertEqual(BluetoothUUID.nod, .bit16(0xFEBF))
+         XCTAssertEqual(BluetoothUUID.nod, .bit16(65215))
          XCTAssertEqual(BluetoothUUID.nod.name, "Nod, Inc.")
 
     }
@@ -4626,9 +4631,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test KDDI Corporation
     func testKddiCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.kddiCorporation.rawValue, 0xFEC0)
-         XCTAssertEqual(BluetoothUUID.kddiCorporation.rawValue, 65216)
+         XCTAssertEqual(BluetoothUUID.kddiCorporation.rawValue, "FEC0")
          XCTAssertEqual(BluetoothUUID.kddiCorporation, .bit16(0xFEC0))
+         XCTAssertEqual(BluetoothUUID.kddiCorporation, .bit16(65216))
          XCTAssertEqual(BluetoothUUID.kddiCorporation.name, "KDDI Corporation")
 
     }
@@ -4636,9 +4641,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test KDDI Corporation
     func testKddiCorporation2() {
 
-         XCTAssertEqual(BluetoothUUID.kddiCorporation2.rawValue, 0xFEC1)
-         XCTAssertEqual(BluetoothUUID.kddiCorporation2.rawValue, 65217)
+         XCTAssertEqual(BluetoothUUID.kddiCorporation2.rawValue, "FEC1")
          XCTAssertEqual(BluetoothUUID.kddiCorporation2, .bit16(0xFEC1))
+         XCTAssertEqual(BluetoothUUID.kddiCorporation2, .bit16(65217))
          XCTAssertEqual(BluetoothUUID.kddiCorporation2.name, "KDDI Corporation")
 
     }
@@ -4646,9 +4651,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Blue Spark Technologies, Inc.
     func testBlueSparkTechnologies() {
 
-         XCTAssertEqual(BluetoothUUID.blueSparkTechnologies.rawValue, 0xFEC2)
-         XCTAssertEqual(BluetoothUUID.blueSparkTechnologies.rawValue, 65218)
+         XCTAssertEqual(BluetoothUUID.blueSparkTechnologies.rawValue, "FEC2")
          XCTAssertEqual(BluetoothUUID.blueSparkTechnologies, .bit16(0xFEC2))
+         XCTAssertEqual(BluetoothUUID.blueSparkTechnologies, .bit16(65218))
          XCTAssertEqual(BluetoothUUID.blueSparkTechnologies.name, "Blue Spark Technologies, Inc.")
 
     }
@@ -4656,9 +4661,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test 360fly, Inc.
     func testUuid360Fly() {
 
-         XCTAssertEqual(BluetoothUUID.uuid360Fly.rawValue, 0xFEC3)
-         XCTAssertEqual(BluetoothUUID.uuid360Fly.rawValue, 65219)
+         XCTAssertEqual(BluetoothUUID.uuid360Fly.rawValue, "FEC3")
          XCTAssertEqual(BluetoothUUID.uuid360Fly, .bit16(0xFEC3))
+         XCTAssertEqual(BluetoothUUID.uuid360Fly, .bit16(65219))
          XCTAssertEqual(BluetoothUUID.uuid360Fly.name, "360fly, Inc.")
 
     }
@@ -4666,9 +4671,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test PLUS Location Systems
     func testPlusLocationSystems() {
 
-         XCTAssertEqual(BluetoothUUID.plusLocationSystems.rawValue, 0xFEC4)
-         XCTAssertEqual(BluetoothUUID.plusLocationSystems.rawValue, 65220)
+         XCTAssertEqual(BluetoothUUID.plusLocationSystems.rawValue, "FEC4")
          XCTAssertEqual(BluetoothUUID.plusLocationSystems, .bit16(0xFEC4))
+         XCTAssertEqual(BluetoothUUID.plusLocationSystems, .bit16(65220))
          XCTAssertEqual(BluetoothUUID.plusLocationSystems.name, "PLUS Location Systems")
 
     }
@@ -4676,9 +4681,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Realtek Semiconductor Corp.
     func testRealtekSemiconductorCorp() {
 
-         XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp.rawValue, 0xFEC5)
-         XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp.rawValue, 65221)
+         XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp.rawValue, "FEC5")
          XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp, .bit16(0xFEC5))
+         XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp, .bit16(65221))
          XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp.name, "Realtek Semiconductor Corp.")
 
     }
@@ -4686,9 +4691,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Kocomojo, LLC
     func testKocomojo() {
 
-         XCTAssertEqual(BluetoothUUID.kocomojo.rawValue, 0xFEC6)
-         XCTAssertEqual(BluetoothUUID.kocomojo.rawValue, 65222)
+         XCTAssertEqual(BluetoothUUID.kocomojo.rawValue, "FEC6")
          XCTAssertEqual(BluetoothUUID.kocomojo, .bit16(0xFEC6))
+         XCTAssertEqual(BluetoothUUID.kocomojo, .bit16(65222))
          XCTAssertEqual(BluetoothUUID.kocomojo.name, "Kocomojo, LLC")
 
     }
@@ -4696,9 +4701,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple3() {
 
-         XCTAssertEqual(BluetoothUUID.apple3.rawValue, 0xFEC7)
-         XCTAssertEqual(BluetoothUUID.apple3.rawValue, 65223)
+         XCTAssertEqual(BluetoothUUID.apple3.rawValue, "FEC7")
          XCTAssertEqual(BluetoothUUID.apple3, .bit16(0xFEC7))
+         XCTAssertEqual(BluetoothUUID.apple3, .bit16(65223))
          XCTAssertEqual(BluetoothUUID.apple3.name, "Apple, Inc.")
 
     }
@@ -4706,9 +4711,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple4() {
 
-         XCTAssertEqual(BluetoothUUID.apple4.rawValue, 0xFEC8)
-         XCTAssertEqual(BluetoothUUID.apple4.rawValue, 65224)
+         XCTAssertEqual(BluetoothUUID.apple4.rawValue, "FEC8")
          XCTAssertEqual(BluetoothUUID.apple4, .bit16(0xFEC8))
+         XCTAssertEqual(BluetoothUUID.apple4, .bit16(65224))
          XCTAssertEqual(BluetoothUUID.apple4.name, "Apple, Inc.")
 
     }
@@ -4716,9 +4721,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple5() {
 
-         XCTAssertEqual(BluetoothUUID.apple5.rawValue, 0xFEC9)
-         XCTAssertEqual(BluetoothUUID.apple5.rawValue, 65225)
+         XCTAssertEqual(BluetoothUUID.apple5.rawValue, "FEC9")
          XCTAssertEqual(BluetoothUUID.apple5, .bit16(0xFEC9))
+         XCTAssertEqual(BluetoothUUID.apple5, .bit16(65225))
          XCTAssertEqual(BluetoothUUID.apple5.name, "Apple, Inc.")
 
     }
@@ -4726,9 +4731,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple6() {
 
-         XCTAssertEqual(BluetoothUUID.apple6.rawValue, 0xFECA)
-         XCTAssertEqual(BluetoothUUID.apple6.rawValue, 65226)
+         XCTAssertEqual(BluetoothUUID.apple6.rawValue, "FECA")
          XCTAssertEqual(BluetoothUUID.apple6, .bit16(0xFECA))
+         XCTAssertEqual(BluetoothUUID.apple6, .bit16(65226))
          XCTAssertEqual(BluetoothUUID.apple6.name, "Apple, Inc.")
 
     }
@@ -4736,9 +4741,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple7() {
 
-         XCTAssertEqual(BluetoothUUID.apple7.rawValue, 0xFECB)
-         XCTAssertEqual(BluetoothUUID.apple7.rawValue, 65227)
+         XCTAssertEqual(BluetoothUUID.apple7.rawValue, "FECB")
          XCTAssertEqual(BluetoothUUID.apple7, .bit16(0xFECB))
+         XCTAssertEqual(BluetoothUUID.apple7, .bit16(65227))
          XCTAssertEqual(BluetoothUUID.apple7.name, "Apple, Inc.")
 
     }
@@ -4746,9 +4751,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple8() {
 
-         XCTAssertEqual(BluetoothUUID.apple8.rawValue, 0xFECC)
-         XCTAssertEqual(BluetoothUUID.apple8.rawValue, 65228)
+         XCTAssertEqual(BluetoothUUID.apple8.rawValue, "FECC")
          XCTAssertEqual(BluetoothUUID.apple8, .bit16(0xFECC))
+         XCTAssertEqual(BluetoothUUID.apple8, .bit16(65228))
          XCTAssertEqual(BluetoothUUID.apple8.name, "Apple, Inc.")
 
     }
@@ -4756,9 +4761,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple9() {
 
-         XCTAssertEqual(BluetoothUUID.apple9.rawValue, 0xFECD)
-         XCTAssertEqual(BluetoothUUID.apple9.rawValue, 65229)
+         XCTAssertEqual(BluetoothUUID.apple9.rawValue, "FECD")
          XCTAssertEqual(BluetoothUUID.apple9, .bit16(0xFECD))
+         XCTAssertEqual(BluetoothUUID.apple9, .bit16(65229))
          XCTAssertEqual(BluetoothUUID.apple9.name, "Apple, Inc.")
 
     }
@@ -4766,9 +4771,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple10() {
 
-         XCTAssertEqual(BluetoothUUID.apple10.rawValue, 0xFECE)
-         XCTAssertEqual(BluetoothUUID.apple10.rawValue, 65230)
+         XCTAssertEqual(BluetoothUUID.apple10.rawValue, "FECE")
          XCTAssertEqual(BluetoothUUID.apple10, .bit16(0xFECE))
+         XCTAssertEqual(BluetoothUUID.apple10, .bit16(65230))
          XCTAssertEqual(BluetoothUUID.apple10.name, "Apple, Inc.")
 
     }
@@ -4776,9 +4781,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple11() {
 
-         XCTAssertEqual(BluetoothUUID.apple11.rawValue, 0xFECF)
-         XCTAssertEqual(BluetoothUUID.apple11.rawValue, 65231)
+         XCTAssertEqual(BluetoothUUID.apple11.rawValue, "FECF")
          XCTAssertEqual(BluetoothUUID.apple11, .bit16(0xFECF))
+         XCTAssertEqual(BluetoothUUID.apple11, .bit16(65231))
          XCTAssertEqual(BluetoothUUID.apple11.name, "Apple, Inc.")
 
     }
@@ -4786,9 +4791,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple12() {
 
-         XCTAssertEqual(BluetoothUUID.apple12.rawValue, 0xFED0)
-         XCTAssertEqual(BluetoothUUID.apple12.rawValue, 65232)
+         XCTAssertEqual(BluetoothUUID.apple12.rawValue, "FED0")
          XCTAssertEqual(BluetoothUUID.apple12, .bit16(0xFED0))
+         XCTAssertEqual(BluetoothUUID.apple12, .bit16(65232))
          XCTAssertEqual(BluetoothUUID.apple12.name, "Apple, Inc.")
 
     }
@@ -4796,9 +4801,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple13() {
 
-         XCTAssertEqual(BluetoothUUID.apple13.rawValue, 0xFED1)
-         XCTAssertEqual(BluetoothUUID.apple13.rawValue, 65233)
+         XCTAssertEqual(BluetoothUUID.apple13.rawValue, "FED1")
          XCTAssertEqual(BluetoothUUID.apple13, .bit16(0xFED1))
+         XCTAssertEqual(BluetoothUUID.apple13, .bit16(65233))
          XCTAssertEqual(BluetoothUUID.apple13.name, "Apple, Inc.")
 
     }
@@ -4806,9 +4811,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple14() {
 
-         XCTAssertEqual(BluetoothUUID.apple14.rawValue, 0xFED2)
-         XCTAssertEqual(BluetoothUUID.apple14.rawValue, 65234)
+         XCTAssertEqual(BluetoothUUID.apple14.rawValue, "FED2")
          XCTAssertEqual(BluetoothUUID.apple14, .bit16(0xFED2))
+         XCTAssertEqual(BluetoothUUID.apple14, .bit16(65234))
          XCTAssertEqual(BluetoothUUID.apple14.name, "Apple, Inc.")
 
     }
@@ -4816,9 +4821,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple15() {
 
-         XCTAssertEqual(BluetoothUUID.apple15.rawValue, 0xFED3)
-         XCTAssertEqual(BluetoothUUID.apple15.rawValue, 65235)
+         XCTAssertEqual(BluetoothUUID.apple15.rawValue, "FED3")
          XCTAssertEqual(BluetoothUUID.apple15, .bit16(0xFED3))
+         XCTAssertEqual(BluetoothUUID.apple15, .bit16(65235))
          XCTAssertEqual(BluetoothUUID.apple15.name, "Apple, Inc.")
 
     }
@@ -4826,9 +4831,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Apple, Inc.
     func testApple16() {
 
-         XCTAssertEqual(BluetoothUUID.apple16.rawValue, 0xFED4)
-         XCTAssertEqual(BluetoothUUID.apple16.rawValue, 65236)
+         XCTAssertEqual(BluetoothUUID.apple16.rawValue, "FED4")
          XCTAssertEqual(BluetoothUUID.apple16, .bit16(0xFED4))
+         XCTAssertEqual(BluetoothUUID.apple16, .bit16(65236))
          XCTAssertEqual(BluetoothUUID.apple16.name, "Apple, Inc.")
 
     }
@@ -4836,9 +4841,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Plantronics Inc.
     func testPlantronics() {
 
-         XCTAssertEqual(BluetoothUUID.plantronics.rawValue, 0xFED5)
-         XCTAssertEqual(BluetoothUUID.plantronics.rawValue, 65237)
+         XCTAssertEqual(BluetoothUUID.plantronics.rawValue, "FED5")
          XCTAssertEqual(BluetoothUUID.plantronics, .bit16(0xFED5))
+         XCTAssertEqual(BluetoothUUID.plantronics, .bit16(65237))
          XCTAssertEqual(BluetoothUUID.plantronics.name, "Plantronics Inc.")
 
     }
@@ -4846,9 +4851,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Broadcom Corporation
     func testBroadcomCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.broadcomCorporation.rawValue, 0xFED6)
-         XCTAssertEqual(BluetoothUUID.broadcomCorporation.rawValue, 65238)
+         XCTAssertEqual(BluetoothUUID.broadcomCorporation.rawValue, "FED6")
          XCTAssertEqual(BluetoothUUID.broadcomCorporation, .bit16(0xFED6))
+         XCTAssertEqual(BluetoothUUID.broadcomCorporation, .bit16(65238))
          XCTAssertEqual(BluetoothUUID.broadcomCorporation.name, "Broadcom Corporation")
 
     }
@@ -4856,9 +4861,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Broadcom Corporation
     func testBroadcomCorporation2() {
 
-         XCTAssertEqual(BluetoothUUID.broadcomCorporation2.rawValue, 0xFED7)
-         XCTAssertEqual(BluetoothUUID.broadcomCorporation2.rawValue, 65239)
+         XCTAssertEqual(BluetoothUUID.broadcomCorporation2.rawValue, "FED7")
          XCTAssertEqual(BluetoothUUID.broadcomCorporation2, .bit16(0xFED7))
+         XCTAssertEqual(BluetoothUUID.broadcomCorporation2, .bit16(65239))
          XCTAssertEqual(BluetoothUUID.broadcomCorporation2.name, "Broadcom Corporation")
 
     }
@@ -4866,9 +4871,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Google
     func testGoogle4() {
 
-         XCTAssertEqual(BluetoothUUID.google4.rawValue, 0xFED8)
-         XCTAssertEqual(BluetoothUUID.google4.rawValue, 65240)
+         XCTAssertEqual(BluetoothUUID.google4.rawValue, "FED8")
          XCTAssertEqual(BluetoothUUID.google4, .bit16(0xFED8))
+         XCTAssertEqual(BluetoothUUID.google4, .bit16(65240))
          XCTAssertEqual(BluetoothUUID.google4.name, "Google")
 
     }
@@ -4876,9 +4881,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Pebble Technology Corporation
     func testPebbleTechnologyCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation.rawValue, 0xFED9)
-         XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation.rawValue, 65241)
+         XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation.rawValue, "FED9")
          XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation, .bit16(0xFED9))
+         XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation, .bit16(65241))
          XCTAssertEqual(BluetoothUUID.pebbleTechnologyCorporation.name, "Pebble Technology Corporation")
 
     }
@@ -4886,9 +4891,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test ISSC Technologies Corporation
     func testIsscTechnologiesCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation.rawValue, 0xFEDA)
-         XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation.rawValue, 65242)
+         XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation.rawValue, "FEDA")
          XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation, .bit16(0xFEDA))
+         XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation, .bit16(65242))
          XCTAssertEqual(BluetoothUUID.isscTechnologiesCorporation.name, "ISSC Technologies Corporation")
 
     }
@@ -4896,9 +4901,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Perka, Inc.
     func testPerka() {
 
-         XCTAssertEqual(BluetoothUUID.perka.rawValue, 0xFEDB)
-         XCTAssertEqual(BluetoothUUID.perka.rawValue, 65243)
+         XCTAssertEqual(BluetoothUUID.perka.rawValue, "FEDB")
          XCTAssertEqual(BluetoothUUID.perka, .bit16(0xFEDB))
+         XCTAssertEqual(BluetoothUUID.perka, .bit16(65243))
          XCTAssertEqual(BluetoothUUID.perka.name, "Perka, Inc.")
 
     }
@@ -4906,9 +4911,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Jawbone
     func testJawbone() {
 
-         XCTAssertEqual(BluetoothUUID.jawbone.rawValue, 0xFEDC)
-         XCTAssertEqual(BluetoothUUID.jawbone.rawValue, 65244)
+         XCTAssertEqual(BluetoothUUID.jawbone.rawValue, "FEDC")
          XCTAssertEqual(BluetoothUUID.jawbone, .bit16(0xFEDC))
+         XCTAssertEqual(BluetoothUUID.jawbone, .bit16(65244))
          XCTAssertEqual(BluetoothUUID.jawbone.name, "Jawbone")
 
     }
@@ -4916,9 +4921,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Jawbone
     func testJawbone2() {
 
-         XCTAssertEqual(BluetoothUUID.jawbone2.rawValue, 0xFEDD)
-         XCTAssertEqual(BluetoothUUID.jawbone2.rawValue, 65245)
+         XCTAssertEqual(BluetoothUUID.jawbone2.rawValue, "FEDD")
          XCTAssertEqual(BluetoothUUID.jawbone2, .bit16(0xFEDD))
+         XCTAssertEqual(BluetoothUUID.jawbone2, .bit16(65245))
          XCTAssertEqual(BluetoothUUID.jawbone2.name, "Jawbone")
 
     }
@@ -4926,9 +4931,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Coin, Inc.
     func testCoin() {
 
-         XCTAssertEqual(BluetoothUUID.coin.rawValue, 0xFEDE)
-         XCTAssertEqual(BluetoothUUID.coin.rawValue, 65246)
+         XCTAssertEqual(BluetoothUUID.coin.rawValue, "FEDE")
          XCTAssertEqual(BluetoothUUID.coin, .bit16(0xFEDE))
+         XCTAssertEqual(BluetoothUUID.coin, .bit16(65246))
          XCTAssertEqual(BluetoothUUID.coin.name, "Coin, Inc.")
 
     }
@@ -4936,9 +4941,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Design SHIFT
     func testDesignShift() {
 
-         XCTAssertEqual(BluetoothUUID.designShift.rawValue, 0xFEDF)
-         XCTAssertEqual(BluetoothUUID.designShift.rawValue, 65247)
+         XCTAssertEqual(BluetoothUUID.designShift.rawValue, "FEDF")
          XCTAssertEqual(BluetoothUUID.designShift, .bit16(0xFEDF))
+         XCTAssertEqual(BluetoothUUID.designShift, .bit16(65247))
          XCTAssertEqual(BluetoothUUID.designShift.name, "Design SHIFT")
 
     }
@@ -4946,9 +4951,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Anhui Huami Information Technology Co.
     func testAnhuiHuamiInformationTechnologyCo() {
 
-         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo.rawValue, 0xFEE0)
-         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo.rawValue, 65248)
+         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo.rawValue, "FEE0")
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo, .bit16(0xFEE0))
+         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo, .bit16(65248))
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo.name, "Anhui Huami Information Technology Co.")
 
     }
@@ -4956,9 +4961,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Anhui Huami Information Technology Co.
     func testAnhuiHuamiInformationTechnologyCo2() {
 
-         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2.rawValue, 0xFEE1)
-         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2.rawValue, 65249)
+         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2.rawValue, "FEE1")
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2, .bit16(0xFEE1))
+         XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2, .bit16(65249))
          XCTAssertEqual(BluetoothUUID.anhuiHuamiInformationTechnologyCo2.name, "Anhui Huami Information Technology Co.")
 
     }
@@ -4966,9 +4971,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Anki, Inc.
     func testAnki() {
 
-         XCTAssertEqual(BluetoothUUID.anki.rawValue, 0xFEE2)
-         XCTAssertEqual(BluetoothUUID.anki.rawValue, 65250)
+         XCTAssertEqual(BluetoothUUID.anki.rawValue, "FEE2")
          XCTAssertEqual(BluetoothUUID.anki, .bit16(0xFEE2))
+         XCTAssertEqual(BluetoothUUID.anki, .bit16(65250))
          XCTAssertEqual(BluetoothUUID.anki.name, "Anki, Inc.")
 
     }
@@ -4976,9 +4981,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Anki, Inc.
     func testAnki2() {
 
-         XCTAssertEqual(BluetoothUUID.anki2.rawValue, 0xFEE3)
-         XCTAssertEqual(BluetoothUUID.anki2.rawValue, 65251)
+         XCTAssertEqual(BluetoothUUID.anki2.rawValue, "FEE3")
          XCTAssertEqual(BluetoothUUID.anki2, .bit16(0xFEE3))
+         XCTAssertEqual(BluetoothUUID.anki2, .bit16(65251))
          XCTAssertEqual(BluetoothUUID.anki2.name, "Anki, Inc.")
 
     }
@@ -4986,9 +4991,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nordic Semiconductor ASA
     func testNordicSemiconductorAsa() {
 
-         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa.rawValue, 0xFEE4)
-         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa.rawValue, 65252)
+         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa.rawValue, "FEE4")
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa, .bit16(0xFEE4))
+         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa, .bit16(65252))
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa.name, "Nordic Semiconductor ASA")
 
     }
@@ -4996,9 +5001,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Nordic Semiconductor ASA
     func testNordicSemiconductorAsa2() {
 
-         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2.rawValue, 0xFEE5)
-         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2.rawValue, 65253)
+         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2.rawValue, "FEE5")
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit16(0xFEE5))
+         XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit16(65253))
          XCTAssertEqual(BluetoothUUID.nordicSemiconductorAsa2.name, "Nordic Semiconductor ASA")
 
     }
@@ -5006,9 +5011,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Seed Labs, Inc.
     func testSeedLabs() {
 
-         XCTAssertEqual(BluetoothUUID.seedLabs.rawValue, 0xFEE6)
-         XCTAssertEqual(BluetoothUUID.seedLabs.rawValue, 65254)
+         XCTAssertEqual(BluetoothUUID.seedLabs.rawValue, "FEE6")
          XCTAssertEqual(BluetoothUUID.seedLabs, .bit16(0xFEE6))
+         XCTAssertEqual(BluetoothUUID.seedLabs, .bit16(65254))
          XCTAssertEqual(BluetoothUUID.seedLabs.name, "Seed Labs, Inc.")
 
     }
@@ -5016,9 +5021,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tencent Holdings Limited
     func testTencentHoldingsLimited2() {
 
-         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2.rawValue, 0xFEE7)
-         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2.rawValue, 65255)
+         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2.rawValue, "FEE7")
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2, .bit16(0xFEE7))
+         XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2, .bit16(65255))
          XCTAssertEqual(BluetoothUUID.tencentHoldingsLimited2.name, "Tencent Holdings Limited")
 
     }
@@ -5026,9 +5031,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Quintic Corp.
     func testQuinticCorp() {
 
-         XCTAssertEqual(BluetoothUUID.quinticCorp.rawValue, 0xFEE8)
-         XCTAssertEqual(BluetoothUUID.quinticCorp.rawValue, 65256)
+         XCTAssertEqual(BluetoothUUID.quinticCorp.rawValue, "FEE8")
          XCTAssertEqual(BluetoothUUID.quinticCorp, .bit16(0xFEE8))
+         XCTAssertEqual(BluetoothUUID.quinticCorp, .bit16(65256))
          XCTAssertEqual(BluetoothUUID.quinticCorp.name, "Quintic Corp.")
 
     }
@@ -5036,9 +5041,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Quintic Corp.
     func testQuinticCorp2() {
 
-         XCTAssertEqual(BluetoothUUID.quinticCorp2.rawValue, 0xFEE9)
-         XCTAssertEqual(BluetoothUUID.quinticCorp2.rawValue, 65257)
+         XCTAssertEqual(BluetoothUUID.quinticCorp2.rawValue, "FEE9")
          XCTAssertEqual(BluetoothUUID.quinticCorp2, .bit16(0xFEE9))
+         XCTAssertEqual(BluetoothUUID.quinticCorp2, .bit16(65257))
          XCTAssertEqual(BluetoothUUID.quinticCorp2.name, "Quintic Corp.")
 
     }
@@ -5046,9 +5051,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Swirl Networks, Inc.
     func testSwirlNetworks() {
 
-         XCTAssertEqual(BluetoothUUID.swirlNetworks.rawValue, 0xFEEA)
-         XCTAssertEqual(BluetoothUUID.swirlNetworks.rawValue, 65258)
+         XCTAssertEqual(BluetoothUUID.swirlNetworks.rawValue, "FEEA")
          XCTAssertEqual(BluetoothUUID.swirlNetworks, .bit16(0xFEEA))
+         XCTAssertEqual(BluetoothUUID.swirlNetworks, .bit16(65258))
          XCTAssertEqual(BluetoothUUID.swirlNetworks.name, "Swirl Networks, Inc.")
 
     }
@@ -5056,9 +5061,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Swirl Networks, Inc.
     func testSwirlNetworks2() {
 
-         XCTAssertEqual(BluetoothUUID.swirlNetworks2.rawValue, 0xFEEB)
-         XCTAssertEqual(BluetoothUUID.swirlNetworks2.rawValue, 65259)
+         XCTAssertEqual(BluetoothUUID.swirlNetworks2.rawValue, "FEEB")
          XCTAssertEqual(BluetoothUUID.swirlNetworks2, .bit16(0xFEEB))
+         XCTAssertEqual(BluetoothUUID.swirlNetworks2, .bit16(65259))
          XCTAssertEqual(BluetoothUUID.swirlNetworks2.name, "Swirl Networks, Inc.")
 
     }
@@ -5066,9 +5071,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tile, Inc.
     func testTile() {
 
-         XCTAssertEqual(BluetoothUUID.tile.rawValue, 0xFEEC)
-         XCTAssertEqual(BluetoothUUID.tile.rawValue, 65260)
+         XCTAssertEqual(BluetoothUUID.tile.rawValue, "FEEC")
          XCTAssertEqual(BluetoothUUID.tile, .bit16(0xFEEC))
+         XCTAssertEqual(BluetoothUUID.tile, .bit16(65260))
          XCTAssertEqual(BluetoothUUID.tile.name, "Tile, Inc.")
 
     }
@@ -5076,9 +5081,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Tile, Inc.
     func testTile2() {
 
-         XCTAssertEqual(BluetoothUUID.tile2.rawValue, 0xFEED)
-         XCTAssertEqual(BluetoothUUID.tile2.rawValue, 65261)
+         XCTAssertEqual(BluetoothUUID.tile2.rawValue, "FEED")
          XCTAssertEqual(BluetoothUUID.tile2, .bit16(0xFEED))
+         XCTAssertEqual(BluetoothUUID.tile2, .bit16(65261))
          XCTAssertEqual(BluetoothUUID.tile2.name, "Tile, Inc.")
 
     }
@@ -5086,9 +5091,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Polar Electro Oy
     func testPolarElectroOy() {
 
-         XCTAssertEqual(BluetoothUUID.polarElectroOy.rawValue, 0xFEEE)
-         XCTAssertEqual(BluetoothUUID.polarElectroOy.rawValue, 65262)
+         XCTAssertEqual(BluetoothUUID.polarElectroOy.rawValue, "FEEE")
          XCTAssertEqual(BluetoothUUID.polarElectroOy, .bit16(0xFEEE))
+         XCTAssertEqual(BluetoothUUID.polarElectroOy, .bit16(65262))
          XCTAssertEqual(BluetoothUUID.polarElectroOy.name, "Polar Electro Oy")
 
     }
@@ -5096,9 +5101,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Polar Electro Oy
     func testPolarElectroOy2() {
 
-         XCTAssertEqual(BluetoothUUID.polarElectroOy2.rawValue, 0xFEEF)
-         XCTAssertEqual(BluetoothUUID.polarElectroOy2.rawValue, 65263)
+         XCTAssertEqual(BluetoothUUID.polarElectroOy2.rawValue, "FEEF")
          XCTAssertEqual(BluetoothUUID.polarElectroOy2, .bit16(0xFEEF))
+         XCTAssertEqual(BluetoothUUID.polarElectroOy2, .bit16(65263))
          XCTAssertEqual(BluetoothUUID.polarElectroOy2.name, "Polar Electro Oy")
 
     }
@@ -5106,9 +5111,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Intel
     func testIntel() {
 
-         XCTAssertEqual(BluetoothUUID.intel.rawValue, 0xFEF0)
-         XCTAssertEqual(BluetoothUUID.intel.rawValue, 65264)
+         XCTAssertEqual(BluetoothUUID.intel.rawValue, "FEF0")
          XCTAssertEqual(BluetoothUUID.intel, .bit16(0xFEF0))
+         XCTAssertEqual(BluetoothUUID.intel, .bit16(65264))
          XCTAssertEqual(BluetoothUUID.intel.name, "Intel")
 
     }
@@ -5116,9 +5121,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CSR
     func testCsr2() {
 
-         XCTAssertEqual(BluetoothUUID.csr2.rawValue, 0xFEF1)
-         XCTAssertEqual(BluetoothUUID.csr2.rawValue, 65265)
+         XCTAssertEqual(BluetoothUUID.csr2.rawValue, "FEF1")
          XCTAssertEqual(BluetoothUUID.csr2, .bit16(0xFEF1))
+         XCTAssertEqual(BluetoothUUID.csr2, .bit16(65265))
          XCTAssertEqual(BluetoothUUID.csr2.name, "CSR")
 
     }
@@ -5126,9 +5131,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test CSR
     func testCsr3() {
 
-         XCTAssertEqual(BluetoothUUID.csr3.rawValue, 0xFEF2)
-         XCTAssertEqual(BluetoothUUID.csr3.rawValue, 65266)
+         XCTAssertEqual(BluetoothUUID.csr3.rawValue, "FEF2")
          XCTAssertEqual(BluetoothUUID.csr3, .bit16(0xFEF2))
+         XCTAssertEqual(BluetoothUUID.csr3, .bit16(65266))
          XCTAssertEqual(BluetoothUUID.csr3.name, "CSR")
 
     }
@@ -5136,9 +5141,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Google
     func testGoogle5() {
 
-         XCTAssertEqual(BluetoothUUID.google5.rawValue, 0xFEF3)
-         XCTAssertEqual(BluetoothUUID.google5.rawValue, 65267)
+         XCTAssertEqual(BluetoothUUID.google5.rawValue, "FEF3")
          XCTAssertEqual(BluetoothUUID.google5, .bit16(0xFEF3))
+         XCTAssertEqual(BluetoothUUID.google5, .bit16(65267))
          XCTAssertEqual(BluetoothUUID.google5.name, "Google")
 
     }
@@ -5146,9 +5151,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Google
     func testGoogle6() {
 
-         XCTAssertEqual(BluetoothUUID.google6.rawValue, 0xFEF4)
-         XCTAssertEqual(BluetoothUUID.google6.rawValue, 65268)
+         XCTAssertEqual(BluetoothUUID.google6.rawValue, "FEF4")
          XCTAssertEqual(BluetoothUUID.google6, .bit16(0xFEF4))
+         XCTAssertEqual(BluetoothUUID.google6, .bit16(65268))
          XCTAssertEqual(BluetoothUUID.google6.name, "Google")
 
     }
@@ -5156,9 +5161,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Dialog Semiconductor GmbH
     func testDialogSemiconductorGmbh() {
 
-         XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh.rawValue, 0xFEF5)
-         XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh.rawValue, 65269)
+         XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh.rawValue, "FEF5")
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh, .bit16(0xFEF5))
+         XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh, .bit16(65269))
          XCTAssertEqual(BluetoothUUID.dialogSemiconductorGmbh.name, "Dialog Semiconductor GmbH")
 
     }
@@ -5166,9 +5171,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Wicentric, Inc.
     func testWicentric() {
 
-         XCTAssertEqual(BluetoothUUID.wicentric.rawValue, 0xFEF6)
-         XCTAssertEqual(BluetoothUUID.wicentric.rawValue, 65270)
+         XCTAssertEqual(BluetoothUUID.wicentric.rawValue, "FEF6")
          XCTAssertEqual(BluetoothUUID.wicentric, .bit16(0xFEF6))
+         XCTAssertEqual(BluetoothUUID.wicentric, .bit16(65270))
          XCTAssertEqual(BluetoothUUID.wicentric.name, "Wicentric, Inc.")
 
     }
@@ -5176,9 +5181,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Aplix Corporation
     func testAplixCorporation() {
 
-         XCTAssertEqual(BluetoothUUID.aplixCorporation.rawValue, 0xFEF7)
-         XCTAssertEqual(BluetoothUUID.aplixCorporation.rawValue, 65271)
+         XCTAssertEqual(BluetoothUUID.aplixCorporation.rawValue, "FEF7")
          XCTAssertEqual(BluetoothUUID.aplixCorporation, .bit16(0xFEF7))
+         XCTAssertEqual(BluetoothUUID.aplixCorporation, .bit16(65271))
          XCTAssertEqual(BluetoothUUID.aplixCorporation.name, "Aplix Corporation")
 
     }
@@ -5186,9 +5191,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Aplix Corporation
     func testAplixCorporation2() {
 
-         XCTAssertEqual(BluetoothUUID.aplixCorporation2.rawValue, 0xFEF8)
-         XCTAssertEqual(BluetoothUUID.aplixCorporation2.rawValue, 65272)
+         XCTAssertEqual(BluetoothUUID.aplixCorporation2.rawValue, "FEF8")
          XCTAssertEqual(BluetoothUUID.aplixCorporation2, .bit16(0xFEF8))
+         XCTAssertEqual(BluetoothUUID.aplixCorporation2, .bit16(65272))
          XCTAssertEqual(BluetoothUUID.aplixCorporation2.name, "Aplix Corporation")
 
     }
@@ -5196,9 +5201,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test PayPal, Inc.
     func testPaypal() {
 
-         XCTAssertEqual(BluetoothUUID.paypal.rawValue, 0xFEF9)
-         XCTAssertEqual(BluetoothUUID.paypal.rawValue, 65273)
+         XCTAssertEqual(BluetoothUUID.paypal.rawValue, "FEF9")
          XCTAssertEqual(BluetoothUUID.paypal, .bit16(0xFEF9))
+         XCTAssertEqual(BluetoothUUID.paypal, .bit16(65273))
          XCTAssertEqual(BluetoothUUID.paypal.name, "PayPal, Inc.")
 
     }
@@ -5206,9 +5211,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test PayPal, Inc.
     func testPaypal2() {
 
-         XCTAssertEqual(BluetoothUUID.paypal2.rawValue, 0xFEFA)
-         XCTAssertEqual(BluetoothUUID.paypal2.rawValue, 65274)
+         XCTAssertEqual(BluetoothUUID.paypal2.rawValue, "FEFA")
          XCTAssertEqual(BluetoothUUID.paypal2, .bit16(0xFEFA))
+         XCTAssertEqual(BluetoothUUID.paypal2, .bit16(65274))
          XCTAssertEqual(BluetoothUUID.paypal2.name, "PayPal, Inc.")
 
     }
@@ -5216,9 +5221,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Stollmann E+V GmbH
     func testStollmannEVGmbh2() {
 
-         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.rawValue, 0xFEFB)
-         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.rawValue, 65275)
+         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.rawValue, "FEFB")
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2, .bit16(0xFEFB))
+         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2, .bit16(65275))
          XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.name, "Stollmann E+V GmbH")
 
     }
@@ -5226,9 +5231,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Gimbal, Inc.
     func testGimbal() {
 
-         XCTAssertEqual(BluetoothUUID.gimbal.rawValue, 0xFEFC)
-         XCTAssertEqual(BluetoothUUID.gimbal.rawValue, 65276)
+         XCTAssertEqual(BluetoothUUID.gimbal.rawValue, "FEFC")
          XCTAssertEqual(BluetoothUUID.gimbal, .bit16(0xFEFC))
+         XCTAssertEqual(BluetoothUUID.gimbal, .bit16(65276))
          XCTAssertEqual(BluetoothUUID.gimbal.name, "Gimbal, Inc.")
 
     }
@@ -5236,9 +5241,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Gimbal, Inc.
     func testGimbal2() {
 
-         XCTAssertEqual(BluetoothUUID.gimbal2.rawValue, 0xFEFD)
-         XCTAssertEqual(BluetoothUUID.gimbal2.rawValue, 65277)
+         XCTAssertEqual(BluetoothUUID.gimbal2.rawValue, "FEFD")
          XCTAssertEqual(BluetoothUUID.gimbal2, .bit16(0xFEFD))
+         XCTAssertEqual(BluetoothUUID.gimbal2, .bit16(65277))
          XCTAssertEqual(BluetoothUUID.gimbal2.name, "Gimbal, Inc.")
 
     }
@@ -5246,9 +5251,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GN ReSound A/S
     func testGnResoundAS() {
 
-         XCTAssertEqual(BluetoothUUID.gnResoundAS.rawValue, 0xFEFE)
-         XCTAssertEqual(BluetoothUUID.gnResoundAS.rawValue, 65278)
+         XCTAssertEqual(BluetoothUUID.gnResoundAS.rawValue, "FEFE")
          XCTAssertEqual(BluetoothUUID.gnResoundAS, .bit16(0xFEFE))
+         XCTAssertEqual(BluetoothUUID.gnResoundAS, .bit16(65278))
          XCTAssertEqual(BluetoothUUID.gnResoundAS.name, "GN ReSound A/S")
 
     }
@@ -5256,9 +5261,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test GN Netcom
     func testGnNetcom() {
 
-         XCTAssertEqual(BluetoothUUID.gnNetcom.rawValue, 0xFEFF)
-         XCTAssertEqual(BluetoothUUID.gnNetcom.rawValue, 65279)
+         XCTAssertEqual(BluetoothUUID.gnNetcom.rawValue, "FEFF")
          XCTAssertEqual(BluetoothUUID.gnNetcom, .bit16(0xFEFF))
+         XCTAssertEqual(BluetoothUUID.gnNetcom, .bit16(65279))
          XCTAssertEqual(BluetoothUUID.gnNetcom.name, "GN Netcom")
 
     }
@@ -5266,9 +5271,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Fast IDentity Online Alliance (FIDO)
     func testFastIdentityOnlineAllianceFido() {
 
-         XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido.rawValue, 0xFFFD)
-         XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido.rawValue, 65533)
+         XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido.rawValue, "FFFD")
          XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido, .bit16(0xFFFD))
+         XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido, .bit16(65533))
          XCTAssertEqual(BluetoothUUID.fastIdentityOnlineAllianceFido.name, "Fast IDentity Online Alliance (FIDO)")
 
     }
@@ -5276,9 +5281,9 @@ final class DefinedUUIDTests: XCTestCase {
     /// Test Alliance for Wireless Power (A4WP)
     func testAllianceForWirelessPowerA4Wp() {
 
-         XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp.rawValue, 0xFFFE)
-         XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp.rawValue, 65534)
+         XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp.rawValue, "FFFE")
          XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp, .bit16(0xFFFE))
+         XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp, .bit16(65534))
          XCTAssertEqual(BluetoothUUID.allianceForWirelessPowerA4Wp.name, "Alliance for Wireless Power (A4WP)")
 
     }
