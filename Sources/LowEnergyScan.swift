@@ -11,8 +11,7 @@ import Foundation
 public extension BluetoothHostControllerInterface {
     
     public typealias LowEnergyScannedDevice = LowEnergyEvent.AdvertisingReportEventParameter.Report
-    public typealias ScanResponseOperation = LowEnergyCommand.SetExtendedScanResponseDataParameter.Operation
-    
+
     /// Scan LE devices.
     func lowEnergyScan(filterDuplicates: Bool = true,
                        parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
@@ -127,11 +126,9 @@ public extension BluetoothHostControllerInterface {
     /// issued at any time after the advertising set identified by the Advertising_Handle parameter has been
     /// created using the LE Set Extended Advertising Parameters Command (see Section 7.8.53) regardless of
     /// whether advertising in that set is enabled or disabled.
-    func setSetExtendedScanResponseData(advertisingHandle: UInt8, operation: ScanResponseOperation, fragmentPreference: LowEnergyFragmentPreference, scanResponseDataLength: UInt8, scanResponseData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
+    func setSetExtendedScanResponseData(advertisingHandle: UInt8, operation: LowEnergyCommand.SetExtendedScanResponseDataParameter.Operation, fragmentPreference: LowEnergyFragmentPreference, scanResponseData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
         
-        guard let parameters = LowEnergyCommand.SetExtendedScanResponseDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, scanResponseDataLength: scanResponseDataLength, scanResponseData: scanResponseData) else {
-            fatalError("SetExtendedScanResponseDataParameter could not be created")
-        }
+        let parameters = LowEnergyCommand.SetExtendedScanResponseDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, scanResponseData: scanResponseData)
         
         try deviceRequest(parameters, timeout: timeout)
     }
