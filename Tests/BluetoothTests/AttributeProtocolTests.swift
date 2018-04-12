@@ -14,6 +14,7 @@ final class AttributeProtocolTests: XCTestCase {
     
     static let allTests = [
         ("testATTOpcode", testATTOpcode),
+        ("testATTError", testATTError),
         ("testErrorResponse", testErrorResponse),
         ("testMTU", testMTU),
         ("testReadByGroupType", testReadByGroupType),
@@ -36,6 +37,33 @@ final class AttributeProtocolTests: XCTestCase {
         XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.response == nil)
         XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.request == .maximumTransmissionUnitRequest)
         XCTAssert(ATTOpcode.maximumTransmissionUnitResponse.type == .response)
+    }
+    
+    func testATTError() {
+        
+        XCTAssertEqual(ATTError.invalidHandle.name, "Invalid Handle")
+        XCTAssertEqual(ATTError.invalidHandle.errorDescription, "The attribute handle given was not valid on this server.")
+        XCTAssertEqual(ATTError.invalidHandle.description, ATTError.invalidHandle.name)
+        
+        let errors = (1 ... .max).flatMap { ATTError(rawValue: $0) }
+        XCTAssert(errors.count == 0x11)
+        
+        for error in errors {
+            
+            XCTAssert(error.name.isEmpty == false)
+            XCTAssert(error.errorDescription.isEmpty == false)
+            XCTAssert(error.description.isEmpty == false)
+            XCTAssertEqual(error.description, error.name)
+            
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.code, Int(error.rawValue))
+            XCTAssertEqual(nsError.domain, "org.pureswift.Bluetooth.ATTError")
+            XCTAssertEqual(nsError.userInfo[NSLocalizedDescriptionKey] as? String, error.description)
+            XCTAssertEqual(nsError.userInfo[NSLocalizedDescriptionKey] as? String, error.name)
+            XCTAssertEqual(nsError.userInfo[NSLocalizedFailureReasonErrorKey] as? String, error.errorDescription)
+            
+            print(nsError)
+        }
     }
     
     func testErrorResponse() {

@@ -55,6 +55,7 @@ final class HCITests: XCTestCase {
                 XCTAssert(command.opcode != .min)
                 XCTAssert(command.opcode != rawValue)
                 XCTAssert(command.name.isEmpty == false)
+                XCTAssert(command.description == command.name)
             }
         }
         
@@ -134,6 +135,7 @@ final class HCITests: XCTestCase {
                     else { continue }
                 
                 XCTAssert(event.name.isEmpty == false)
+                XCTAssert(event.description == event.name)
             }
         }
         
@@ -149,6 +151,7 @@ final class HCITests: XCTestCase {
                 else { continue }
             
             XCTAssert(error.name.isEmpty == false)
+            XCTAssert(error.description == error.name)
         }
     }
     

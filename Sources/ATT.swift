@@ -40,62 +40,6 @@ public enum ATT {
     public typealias MaximumTransmissionUnit            = ATTMaximumTransmissionUnit
 }
 
-/// Error codes for Error response PDU.
-public enum ATTError: UInt8, Error {
-    
-    /// The attribute handle given was not valid on this server.
-    case invalidHandle                              = 0x01
-    
-    /// The attribute cannot be read.
-    case readNotPermitted                           = 0x02
-    
-    /// The attribute cannot be written.
-    case writeNotPermitted                          = 0x03
-    
-    /// The attribute PDU was invalid.
-    case invalidPDU                                 = 0x04
-    
-    /// The attribute requires authentication before it can be read or written.
-    case authentication                             = 0x05
-    
-    /// Attribute server does not support the request received from the client.
-    case requestNotSupported                        = 0x06
-    
-    /// Offset specified was past the end of the attribute.
-    case invalidOffset                              = 0x07
-    
-    /// The attribute requires authorization before it can be read or written.
-    case insufficientAuthorization                  = 0x08
-    
-    /// Too many prepare writes have been queued.
-    case prepareQueueFull                           = 0x09
-    
-    /// No attribute found within the given attribute handle range.
-    case attributeNotFound                          = 0x0A
-    
-    /// The attribute cannot be read or written using the *Read Blob Request*. 
-    case attributeNotLong                           = 0x0B
-    
-    /// The *Encryption Key Size* used for encrypting this link is insufficient.
-    case insufficientEncryptionKeySize              = 0x0C
-    
-    /// The attribute value length is invalid for the operation.
-    case invalidAttributeValueLength                = 0x0D
-    
-    /// The attribute request that was requested has encountered an error that was unlikely, 
-    /// and therefore could not be completed as requested.
-    case unlikelyError                              = 0x0E
-    
-    /// The attribute requires encryption before it can be read or written.
-    case insufficientEncryption                     = 0x0F
-    
-    /// The attribute type is not a supported grouping attribute as defined by a higher layer specification.
-    case unsupportedGroupType                       = 0x10
-    
-    /// Insufficient Resources to complete the request.
-    case insufficientResources                      = 0x11
-}
-
 /// ATT protocol opcodes.
 public enum ATTOpcode: UInt8 {
     
