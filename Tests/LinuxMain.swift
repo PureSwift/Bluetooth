@@ -13,6 +13,7 @@ XCTMain([
     testCase(AddressTests.allTests),
     testCase(BluetoothUUIDTests.allTests),
     testCase(UUIDTests.allTests),
+    testCase(DefinedUUIDTests.allTests),
     testCase(UInt128Tests.allTests),
     testCase(iBeaconTests.allTests),
     testCase(HCITests.allTests),
