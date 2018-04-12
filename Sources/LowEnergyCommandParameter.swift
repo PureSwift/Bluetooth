@@ -1926,7 +1926,6 @@ public extension LowEnergyCommand {
             }
         }
         
-
         /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
         /// and its basic properties.
         public enum AdvertisingEventProperties: UInt16, BitMaskOption {
@@ -1976,28 +1975,31 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setExtendedAdvertisingData //0x0037
         
-        public var advertisingHandle: UInt8
-        public var operation: Operation
-        public var fragmentPreference: FragmentPreference
-        public var advertisingDataLength: UInt8
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        public var operation: Operation //Operation
+        public var fragmentPreference: FragmentPreference //Fragment_Preference
+        public var advertisingDataLength: UInt8 //Advertising_Data_Length
+        public let advertisingData: [UInt8] //Advertising_Data
         
-        public init(advertisingHandle: UInt8,
-                    operation: Operation,
-                    fragmentPreference: FragmentPreference,
-                    advertisingDataLength: UInt8) {
+        public init?(advertisingHandle: UInt8, operation: Operation, fragmentPreference: FragmentPreference, advertisingDataLength: UInt8, advertisingData: [UInt8]) {
+            
+            guard advertisingData.count == advertisingDataLength else {
+                return nil
+            }
             
             self.advertisingHandle = advertisingHandle
             self.operation = operation
             self.fragmentPreference = fragmentPreference
             self.advertisingDataLength = advertisingDataLength
+            self.advertisingData = advertisingData
         }
         
         public var byteValue: [UInt8] {
-            return [advertisingHandle,
-                    operation.rawValue,
-                    fragmentPreference.rawValue,
-                    advertisingDataLength
-                    ]
+            
+            let byteValue =  [advertisingHandle, operation.rawValue,
+                    fragmentPreference.rawValue, advertisingDataLength ]
+            
+            return byteValue + advertisingData
         }
         
         public enum Operation: UInt8 { //Operation
