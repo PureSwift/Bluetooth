@@ -81,4 +81,16 @@ public extension BluetoothHostControllerInterface {
         
         return returnParameter.selectedTxPower
     }
+    
+    typealias Operation = LowEnergyCommand.SetExtendedAdvertisingDataParameter.Operation
+    typealias FragmentPreference = LowEnergyCommand.SetExtendedAdvertisingDataParameter.FragmentPreference
+    
+    func setSetExtendedAdvertisingData(advertisingHandle: UInt8, operation: Operation, fragmentPreference: FragmentPreference, advertisingDataLength: UInt8, advertisingData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
+        
+        guard let parameters = LowEnergyCommand.SetExtendedAdvertisingDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingDataLength: advertisingDataLength, advertisingData: advertisingData) else {
+            fatalError("SetExtendedAdvertisingDataParameter could not be created")
+        }
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
 }
