@@ -9,7 +9,8 @@
 import Foundation
 
 /// Bluetooth GATT protocol
-    
+public enum GATT {
+
     /// GATT UUIDs
     public enum UUID: UInt16 {
         
@@ -48,8 +49,7 @@ import Foundation
             return .bit16(rawValue)
         }
     }
-public enum GATT {
-    
+
     /// GATT Characteristic Descriptors
     public enum CharacteristicDescriptor {
         
