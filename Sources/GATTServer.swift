@@ -159,7 +159,7 @@ public final class GATTServer {
             || attribute.permissions.contains(.writeAuthentication)
             && security < .high {
             
-            return .authentication
+            return .insufficientAuthentication
         }
         
         if attribute.permissions.contains(.readEncrypt)
