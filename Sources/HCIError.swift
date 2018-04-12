@@ -531,3 +531,29 @@ extension HCIError: CustomStringConvertible {
         "MAC Connection Failed"
     ]
 }
+
+// MARK: - CustomNSError
+
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+
+import Foundation
+
+extension HCIError: CustomNSError {
+    
+    public static var errorDomain: String {
+        return "org.pureswift.Bluetooth.HCIError"
+    }
+    
+    public var errorCode: Int {
+        return Int(rawValue)
+    }
+    
+    public var errorUserInfo: [String: Any] {
+        
+        return [
+            NSLocalizedDescriptionKey: name
+        ]
+    }
+}
+
+#endif

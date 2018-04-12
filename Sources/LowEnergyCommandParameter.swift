@@ -942,7 +942,7 @@ public extension LowEnergyCommand {
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
     public struct LongTermKeyRequestReplyParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.ltkReply //0x001A
+        public static let command = LowEnergyCommand.longTermKeyReply //0x001A
         
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
         public let connectionHandle: UInt16 //Connection_Handle
@@ -990,7 +990,7 @@ public extension LowEnergyCommand {
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
     public struct LongTermKeyRequestNegativeReplyParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
+        public static let command = LowEnergyCommand.longTermKeyNegativeReply //0x001B
         
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
         public let connectionHandle: UInt16 //Connection_Handle
@@ -1672,7 +1672,7 @@ public extension LowEnergyCommand {
         /// If the primary advertising interval range provided by the Host (Primary_Advertising_Interval_Min,
         /// Primary_Advertising_Interval_Max) is outside the advertising interval range supported by the Controller,
         //// then the Controller shall return the error code Unsupported Feature or Parameter Value (0x11).
-        public let primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval)
+        public let primaryAdvertising: PrimaryAdvertisingInterval
         
         /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
         /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
@@ -1697,7 +1697,9 @@ public extension LowEnergyCommand {
         
         public let primaryAdvertisingPhy: PrimaryAdvertisingPhy
         
-        public let secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip
+        /// The Secondary_Advertising_Max_Skip parameter is the maximum number of advertising events that
+        /// can be skipped before the AUX_ADV_IND can be sent.
+        public let secondaryAdvertisingMaxSkip: UInt8
         
         public let secondaryAdvertisingPhy: SecondaryAdvertisingPhy
         
@@ -1707,7 +1709,7 @@ public extension LowEnergyCommand {
         
         public init(advertisingHandle: UInt8,
                     advertisingEventProperties: AdvertisingEventProperties,
-                    primaryAdvertising: (minimum: PrimaryAdvertisingInterval, maximum: PrimaryAdvertisingInterval),
+                    primaryAdvertising: PrimaryAdvertisingInterval,
                     primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap,
                     ownAddressType: OwnAddressType,
                     peerAddressType: PeerAddressType,
@@ -1715,7 +1717,7 @@ public extension LowEnergyCommand {
                     advertisingFilterPolicy: AdvertisingFilterPolicy,
                     advertisingTxPower: LowEnergyTxPower,
                     primaryAdvertisingPhy: PrimaryAdvertisingPhy,
-                    secondaryAdvertisingMaxSkip: SecondaryAdvertisingMaxSkip,
+                    secondaryAdvertisingMaxSkip: UInt8,
                     secondaryAdvertisingPhy: SecondaryAdvertisingPhy,
                     advertisingSid: UInt8,
                     scanRequestNotificationEnable: ScanRequestNotificationEnable) {
@@ -1739,8 +1741,10 @@ public extension LowEnergyCommand {
         public var byteValue: [UInt8] {
             
             let advertisingEventPropertiesBytes = advertisingEventProperties.rawValue.littleEndian.bytes
-            let primaryAdvertisingMinimumBytes = primaryAdvertising.minimum.rawValue.littleEndian.bytes
-            let primaryAdvertisingMaximunBytes = primaryAdvertising.maximum.rawValue.littleEndian.bytes
+            
+            let primaryAdvertisingMinimumBytes = primaryAdvertising.rawValue.lowerBound.littleEndian.bytes
+            let primaryAdvertisingMaximunBytes = primaryAdvertising.rawValue.upperBound.littleEndian.bytes
+            
             let addressBytes = peerAddress.littleEndian.bytes
             
             let advertisingTxPowerByte = UInt8.init(bitPattern: advertisingTxPower.rawValue)
@@ -1766,7 +1770,7 @@ public extension LowEnergyCommand {
                     advertisingFilterPolicy.rawValue,
                     advertisingTxPowerByte,
                     primaryAdvertisingPhy.rawValue,
-                    secondaryAdvertisingMaxSkip.rawValue,
+                    secondaryAdvertisingMaxSkip,
                     secondaryAdvertisingPhy.rawValue,
                     advertisingSid,
                     scanRequestNotificationEnable.rawValue
@@ -1809,18 +1813,6 @@ public extension LowEnergyCommand {
             
             /// Secondary advertisement PHY is LE Coded
             case leCoded    = 0x03
-        }
-        
-        /// The Secondary_Advertising_Max_Skip parameter is the maximum number of advertising events that
-        /// can be skipped before the AUX_ADV_IND can be sent.
-        public enum SecondaryAdvertisingMaxSkip: UInt8 {
-            
-            /// AUX_ADV_IND shall be sent prior to the next advertising event
-            case sendAuxAdvInd      = 0x00
-            
-            /// Maximum advertising events the Controller can skip before sending the AUX_ADV_IND packets
-            /// on the secondary advertising channel
-            case skipAuxAdvInt      = 0x01
         }
         
         /// The Primary_Advertising_PHY parameter indicates the PHY on which the advertising packets
@@ -1901,37 +1893,30 @@ public extension LowEnergyCommand {
             ]
         }
         
-        /// Type for Primary_Advertising_Interval_Min and Primary_Advertising_Interval_Max
-        public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
+        public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable {
             
-            /// 20 ms
-            public static let min = PrimaryAdvertisingInterval(0x000020)
+            public typealias RawValue = CountableClosedRange<UInt32>
             
-            /// 10,485.759375 seconds
-            public static let max = PrimaryAdvertisingInterval(0xFFFFFF)
+            /// Maximum interval range.
+            public static let full = PrimaryAdvertisingInterval(rawValue: .min ... .max)
             
-            public let rawValue: UInt32
+            public let rawValue: RawValue
             
-            public init?(rawValue: UInt32) {
-                
-                guard rawValue >= PrimaryAdvertisingInterval.min.rawValue,
-                    rawValue <= PrimaryAdvertisingInterval.max.rawValue
-                    else { return nil }
-                
-                assert((PrimaryAdvertisingInterval.min.rawValue ... PrimaryAdvertisingInterval.max.rawValue).contains(rawValue))
+            public init(rawValue: RawValue) {
                 
                 self.rawValue = rawValue
             }
             
-            /// Time = N * 0.625 msec
-            public var miliseconds: Double {
+            /// Time = N * 0.625 msec.
+            public var miliseconds: ClosedRange<Double> {
                 
-                return Double(rawValue) * 0.625
-            }
-            
-            // Private, unsafe
-            private init(_ rawValue: UInt32) {
-                self.rawValue = rawValue
+                let miliseconds = Double(0.625)
+                
+                let min = Double(rawValue.lowerBound) * miliseconds
+                
+                let max = Double(rawValue.upperBound) * miliseconds
+                
+                return min ... max
             }
             
             // Equatable
@@ -1939,20 +1924,8 @@ public extension LowEnergyCommand {
                 
                 return lhs.rawValue == rhs.rawValue
             }
-            
-            // Comparable
-            public static func < (lhs: PrimaryAdvertisingInterval, rhs: PrimaryAdvertisingInterval) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
         }
-
+        
         /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
         /// and its basic properties.
         public enum AdvertisingEventProperties: UInt16, BitMaskOption {
@@ -2002,28 +1975,30 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setExtendedAdvertisingData //0x0037
         
-        public var advertisingHandle: UInt8
-        public var operation: Operation
-        public var fragmentPreference: FragmentPreference
-        public var advertisingDataLength: UInt8
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        public var operation: Operation //Operation
+        public var fragmentPreference: LowEnergyFragmentPreference //Fragment_Preference
+        public var advertisingData: [UInt8] //Advertising_Data
         
         public init(advertisingHandle: UInt8,
                     operation: Operation,
-                    fragmentPreference: FragmentPreference,
-                    advertisingDataLength: UInt8) {
+                    fragmentPreference: LowEnergyFragmentPreference,
+                    advertisingData: [UInt8]) {
             
             self.advertisingHandle = advertisingHandle
             self.operation = operation
             self.fragmentPreference = fragmentPreference
-            self.advertisingDataLength = advertisingDataLength
+            self.advertisingData = advertisingData
         }
         
         public var byteValue: [UInt8] {
+            
+            let advertisingDataLength = UInt8(advertisingData.count)
+            
             return [advertisingHandle,
                     operation.rawValue,
                     fragmentPreference.rawValue,
-                    advertisingDataLength
-                    ]
+                    advertisingDataLength] + advertisingData
         }
         
         public enum Operation: UInt8 { //Operation
@@ -2043,14 +2018,52 @@ public extension LowEnergyCommand {
             /// Unchanged data (just update the Advertising DID)
             case unchangedData          = 0x04
         }
+    }
+    
+    /// LE Set Extended Scan Response Data Command
+    ///
+    /// The command is used to provide scan response data used in scanning response PDUs. This command may be
+    /// issued at any time after the advertising set identified by the Advertising_Handle parameter has been
+    /// created using the LE Set Extended Advertising Parameters Command (see Section 7.8.53) regardless of
+    /// whether advertising in that set is enabled or disabled.
+    public struct SetExtendedScanResponseDataParameter: HCICommandParameter {
         
-        public enum FragmentPreference: UInt8 { //Fragment_Preference
+        public static let command = LowEnergyCommand.setExtendedScanResponseData //0x0038
+        
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        public var operation: Operation //Operation
+        public var fragmentPreference: LowEnergyFragmentPreference //Fragment_Preference
+        public let scanResponseData: [UInt8] //Advertising_Data
+        
+        public init(advertisingHandle: UInt8, operation: Operation, fragmentPreference: LowEnergyFragmentPreference, scanResponseData: [UInt8]) {
             
-            /// The Controller may fragment all Host advertising data
-            case fragmentAllHostAdvertisingData = 0x00
+            self.advertisingHandle = advertisingHandle
+            self.operation = operation
+            self.fragmentPreference = fragmentPreference
+            self.scanResponseData = scanResponseData
+        }
+        
+        public var byteValue: [UInt8] {
             
-            /// The Controller should not fragment or should minimize fragmentation of Host advertising data
-            case shouldNotFragmentHostAdvertisingData = 0x01
+            let scanResponseDataLength = UInt8(scanResponseData.count)
+            
+            return [advertisingHandle, operation.rawValue,
+                    fragmentPreference.rawValue, scanResponseDataLength ] + scanResponseData
+        }
+        
+        public enum Operation: UInt8 { //Operation
+            
+            /// Intermediate fragment of fragmented scan response da
+            case intermediateFragment   = 0x00
+            
+            /// First fragment of fragmented scan response data
+            case firstFragment          = 0x01
+            
+            /// Last fragment of fragmented scan response data
+            case lastFragment           = 0x02
+            
+            /// Complete scan response data
+            case complete       = 0x03
         }
     }
 }
@@ -2164,7 +2177,7 @@ public extension LowEnergyCommand {
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
     public struct LongTermKeyRequestReplyReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.ltkReply //0x001A
+        public static let command = LowEnergyCommand.longTermKeyReply //0x001A
         
         public static let length: Int = 2
         
@@ -2187,7 +2200,7 @@ public extension LowEnergyCommand {
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
     public struct LongTermKeyRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
+        public static let command = LowEnergyCommand.longTermKeyNegativeReply //0x001B
         
         public static let length: Int = 2
         
@@ -2620,6 +2633,15 @@ public extension LowEnergyCommand {
 }
 
 // MARK: - Supporting Types
+
+public enum LowEnergyFragmentPreference: UInt8 { //Fragment_Preference
+    
+    /// The Controller may fragment all Host advertising data
+    case fragmentAllHostAdvertisingData = 0x00
+    
+    /// The Controller should not fragment or should minimize fragmentation of Host advertising data
+    case shouldNotFragmentHostAdvertisingData = 0x01
+}
 
 /// Units: dBm
 /// 127 Host has no preference
