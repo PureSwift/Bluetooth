@@ -40,7 +40,7 @@ public extension LowEnergyEvent {
         case .connectionUpdateComplete: return "LE Connection Update Complete"
         case .readRemoteUsedFeaturesComplete: return "LE Read Remote Used Features Complete"
         case .longTermKeyRequest: return "LE Long Term Key Request"
-        case .phyUpdateComplete: return "LE PHY Update Complete Event"
+        case .phyUpdateComplete: return "LE PHY Update Complete"
         }
     }
 }
