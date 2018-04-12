@@ -473,7 +473,7 @@ public final class ATTConnection {
             
             security = .medium
             
-        } else if error == .authentication {
+        } else if error == .insufficientAuthentication {
             
             if (security < .medium) {
                 security = .medium

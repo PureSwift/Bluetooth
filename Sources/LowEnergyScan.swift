@@ -11,7 +11,7 @@ import Foundation
 public extension BluetoothHostControllerInterface {
     
     public typealias LowEnergyScannedDevice = LowEnergyEvent.AdvertisingReportEventParameter.Report
-    
+
     /// Scan LE devices.
     func lowEnergyScan(filterDuplicates: Bool = true,
                        parameters: LowEnergyCommand.SetScanParametersParameter = .init(),
@@ -118,5 +118,18 @@ public extension BluetoothHostControllerInterface {
         let bytes: LowEnergyResponseData = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23], data[24], data[25], data[26], data[27], data[28], data[29], data[30])
         
         try setLowEnergyScanResponse(bytes, length: UInt8(data.count), timeout: timeout)
+    }
+    
+    /// LE Set Extended Scan Response Data Command
+    ///
+    /// The command is used to provide scan response data used in scanning response PDUs. This command may be
+    /// issued at any time after the advertising set identified by the Advertising_Handle parameter has been
+    /// created using the LE Set Extended Advertising Parameters Command (see Section 7.8.53) regardless of
+    /// whether advertising in that set is enabled or disabled.
+    func setSetExtendedScanResponseData(advertisingHandle: UInt8, operation: LowEnergyCommand.SetExtendedScanResponseDataParameter.Operation, fragmentPreference: LowEnergyFragmentPreference, scanResponseData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
+        
+        let parameters = LowEnergyCommand.SetExtendedScanResponseDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, scanResponseData: scanResponseData)
+        
+        try deviceRequest(parameters, timeout: timeout)
     }
 }
