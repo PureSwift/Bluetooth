@@ -20,7 +20,7 @@ public enum ATT {
     public static let minimumPDULength                  = 1  /* At least 1 byte for the opcode. */
     
     /// ATT Timeout, in miliseconds
-    public static let timeout: Int                      = 30000 /* 30000 ms */
+    public static let timeout: Int                      = 30_000 /* 30 seconds / 30,000 ms */
     
     /// Length of signature in write signed packet.
     public static let signatureLength                   = 12

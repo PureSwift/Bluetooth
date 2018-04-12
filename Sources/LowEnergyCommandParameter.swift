@@ -1978,28 +1978,27 @@ public extension LowEnergyCommand {
         public var advertisingHandle: UInt8 //Advertising_Handle
         public var operation: Operation //Operation
         public var fragmentPreference: LowEnergyFragmentPreference //Fragment_Preference
-        public var advertisingDataLength: UInt8 //Advertising_Data_Length
-        public let advertisingData: [UInt8] //Advertising_Data
+        public var advertisingData: [UInt8] //Advertising_Data
         
-        public init?(advertisingHandle: UInt8, operation: Operation, fragmentPreference: LowEnergyFragmentPreference, advertisingDataLength: UInt8, advertisingData: [UInt8]) {
-            
-            guard advertisingData.count == advertisingDataLength else {
-                return nil
-            }
+        public init(advertisingHandle: UInt8,
+                    operation: Operation,
+                    fragmentPreference: LowEnergyFragmentPreference,
+                    advertisingData: [UInt8]) {
             
             self.advertisingHandle = advertisingHandle
             self.operation = operation
             self.fragmentPreference = fragmentPreference
-            self.advertisingDataLength = advertisingDataLength
             self.advertisingData = advertisingData
         }
         
         public var byteValue: [UInt8] {
             
-            let byteValue =  [advertisingHandle, operation.rawValue,
-                    fragmentPreference.rawValue, advertisingDataLength ]
+            let advertisingDataLength = UInt8(advertisingData.count)
             
-            return byteValue + advertisingData
+            return [advertisingHandle,
+                    operation.rawValue,
+                    fragmentPreference.rawValue,
+                    advertisingDataLength] + advertisingData
         }
         
         public enum Operation: UInt8 { //Operation
