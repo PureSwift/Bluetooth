@@ -10,6 +10,8 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
+    public typealias Operation = LowEnergyCommand.SetExtendedAdvertisingDataParameter.Operation
+    
     /// LE Set Advertising Enable
     ///
     /// The LE Set Advertising Enable command is used to request the Controller to start or stop advertising.
@@ -82,10 +84,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.selectedTxPower
     }
     
-    typealias Operation = LowEnergyCommand.SetExtendedAdvertisingDataParameter.Operation
-    typealias FragmentPreference = LowEnergyCommand.SetExtendedAdvertisingDataParameter.FragmentPreference
-    
-    func setSetExtendedAdvertisingData(advertisingHandle: UInt8, operation: Operation, fragmentPreference: FragmentPreference, advertisingDataLength: UInt8, advertisingData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
+    func setSetExtendedAdvertisingData(advertisingHandle: UInt8, operation: Operation, fragmentPreference: LowEnergyFragmentPreference, advertisingDataLength: UInt8, advertisingData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
         
         guard let parameters = LowEnergyCommand.SetExtendedAdvertisingDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingDataLength: advertisingDataLength, advertisingData: advertisingData) else {
             fatalError("SetExtendedAdvertisingDataParameter could not be created")

@@ -1977,11 +1977,11 @@ public extension LowEnergyCommand {
         
         public var advertisingHandle: UInt8 //Advertising_Handle
         public var operation: Operation //Operation
-        public var fragmentPreference: FragmentPreference //Fragment_Preference
+        public var fragmentPreference: LowEnergyFragmentPreference //Fragment_Preference
         public var advertisingDataLength: UInt8 //Advertising_Data_Length
         public let advertisingData: [UInt8] //Advertising_Data
         
-        public init?(advertisingHandle: UInt8, operation: Operation, fragmentPreference: FragmentPreference, advertisingDataLength: UInt8, advertisingData: [UInt8]) {
+        public init?(advertisingHandle: UInt8, operation: Operation, fragmentPreference: LowEnergyFragmentPreference, advertisingDataLength: UInt8, advertisingData: [UInt8]) {
             
             guard advertisingData.count == advertisingDataLength else {
                 return nil
@@ -2019,14 +2019,58 @@ public extension LowEnergyCommand {
             /// Unchanged data (just update the Advertising DID)
             case unchangedData          = 0x04
         }
+    }
+    
+    /// LE Set Extended Scan Response Data Command
+    ///
+    /// The command is used to provide scan response data used in scanning response PDUs. This command may be
+    /// issued at any time after the advertising set identified by the Advertising_Handle parameter has been
+    /// created using the LE Set Extended Advertising Parameters Command (see Section 7.8.53) regardless of
+    /// whether advertising in that set is enabled or disabled.
+    public struct SetExtendedScanResponseDataParameter: HCICommandParameter {
         
-        public enum FragmentPreference: UInt8 { //Fragment_Preference
+        public static let command = LowEnergyCommand.setExtendedScanResponseData //0x0038
+        
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        public var operation: Operation //Operation
+        public var fragmentPreference: LowEnergyFragmentPreference //Fragment_Preference
+        public var scanResponseDataLength: UInt8 //Advertising_Data_Length
+        public let scanResponseData: [UInt8] //Advertising_Data
+        
+        public init?(advertisingHandle: UInt8, operation: Operation, fragmentPreference: LowEnergyFragmentPreference, scanResponseDataLength: UInt8, scanResponseData: [UInt8]) {
             
-            /// The Controller may fragment all Host advertising data
-            case fragmentAllHostAdvertisingData = 0x00
+            guard scanResponseData.count == scanResponseDataLength else {
+                return nil
+            }
             
-            /// The Controller should not fragment or should minimize fragmentation of Host advertising data
-            case shouldNotFragmentHostAdvertisingData = 0x01
+            self.advertisingHandle = advertisingHandle
+            self.operation = operation
+            self.fragmentPreference = fragmentPreference
+            self.scanResponseDataLength = scanResponseDataLength
+            self.scanResponseData = scanResponseData
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let byteValue =  [advertisingHandle, operation.rawValue,
+                              fragmentPreference.rawValue, scanResponseDataLength ]
+            
+            return byteValue + scanResponseData
+        }
+        
+        public enum Operation: UInt8 { //Operation
+            
+            /// Intermediate fragment of fragmented scan response da
+            case intermediateFragment   = 0x00
+            
+            /// First fragment of fragmented scan response data
+            case firstFragment          = 0x01
+            
+            /// Last fragment of fragmented scan response data
+            case lastFragment           = 0x02
+            
+            /// Complete scan response data
+            case complete       = 0x03
         }
     }
 }
@@ -2596,6 +2640,15 @@ public extension LowEnergyCommand {
 }
 
 // MARK: - Supporting Types
+
+public enum LowEnergyFragmentPreference: UInt8 { //Fragment_Preference
+    
+    /// The Controller may fragment all Host advertising data
+    case fragmentAllHostAdvertisingData = 0x00
+    
+    /// The Controller should not fragment or should minimize fragmentation of Host advertising data
+    case shouldNotFragmentHostAdvertisingData = 0x01
+}
 
 /// Units: dBm
 /// 127 Host has no preference
