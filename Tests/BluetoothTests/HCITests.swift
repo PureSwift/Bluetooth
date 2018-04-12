@@ -65,6 +65,63 @@ final class HCITests: XCTestCase {
         testCommand(StatusParametersCommand.self)
         testCommand(LowEnergyCommand.self)
         
+        func testCommandNames <T: HCICommand> (_ command: T.Type, names: [String], skip: String = "Unknown") {
+            
+            for (index, name) in names.enumerated().filter({ $0.1 != skip }) {
+                
+                XCTAssertEqual(T.init(rawValue: UInt16(index))?.name, name, "\(UInt8(index).toHexadecimal())")
+            }
+        }
+        
+        testCommandNames(LowEnergyCommand.self, names: [
+            "Unknown",
+            "LE Set Event Mask",
+            "LE Read Buffer Size",
+            "LE Read Local Supported Features",
+            "Unknown",
+            "LE Set Random Address",
+            "LE Set Advertising Parameters",
+            "LE Read Advertising Channel Tx Power",
+            "LE Set Advertising Data",
+            "LE Set Scan Response Data",
+            "LE Set Advertise Enable",
+            "LE Set Scan Parameters",
+            "LE Set Scan Enable",
+            "LE Create Connection",
+            "LE Create Connection Cancel",
+            "LE Read White List Size",
+            "LE Clear White List",
+            "LE Add Device To White List",
+            "LE Remove Device From White List",
+            "LE Connection Update",
+            "LE Set Host Channel Classification",
+            "LE Read Channel Map",
+            "LE Read Remote Used Features",
+            "LE Encrypt",
+            "LE Rand",
+            "LE Start Encryption",
+            "LE Long Term Key Request Reply",
+            "LE Long Term Key Request Negative Reply",
+            "LE Read Supported States",
+            "LE Receiver Test",
+            "LE Transmitter Test",
+            "LE Test End",
+            ])
+        
+        testCommandNames(InformationalCommand.self, names: [
+            "Unknown",
+            "Read Local Version Information",
+            "Read Local Supported Commands",
+            "Read Local Supported Features",
+            "Read Local Extended Features",
+            "Read Buffer Size",
+            "Unknown",
+            "Unknown", // "Read Country Code",
+            "Unknown",
+            "Read Device Address", //"Read BD ADDR",
+            "Read Data Block Size"
+            ])
+        
         // HCI event
         XCTAssert(HCIGeneralEvent.commandComplete.name == "Command Complete")
         XCTAssert(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
