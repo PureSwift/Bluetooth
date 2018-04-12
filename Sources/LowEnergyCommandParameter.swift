@@ -942,7 +942,7 @@ public extension LowEnergyCommand {
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
     public struct LongTermKeyRequestReplyParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.ltkReply //0x001A
+        public static let command = LowEnergyCommand.longTermKeyReply //0x001A
         
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
         public let connectionHandle: UInt16 //Connection_Handle
@@ -990,7 +990,7 @@ public extension LowEnergyCommand {
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
     public struct LongTermKeyRequestNegativeReplyParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
+        public static let command = LowEnergyCommand.longTermKeyNegativeReply //0x001B
         
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
         public let connectionHandle: UInt16 //Connection_Handle
@@ -2177,7 +2177,7 @@ public extension LowEnergyCommand {
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
     public struct LongTermKeyRequestReplyReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.ltkReply //0x001A
+        public static let command = LowEnergyCommand.longTermKeyReply //0x001A
         
         public static let length: Int = 2
         
@@ -2200,7 +2200,7 @@ public extension LowEnergyCommand {
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
     public struct LongTermKeyRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
         
-        public static let command = LowEnergyCommand.ltkNegativeReply //0x001B
+        public static let command = LowEnergyCommand.longTermKeyNegativeReply //0x001B
         
         public static let length: Int = 2
         
