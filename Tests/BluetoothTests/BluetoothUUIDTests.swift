@@ -155,7 +155,24 @@ final class BluetoothUUIDTests: XCTestCase {
         // generate allTests
         var testMemberNameCache = [UInt16: String]()
         
-        🖨("    static let allTests = [")
+        /**
+        
+        static let allTests: [(String, (DefinedUUIDTests) -> () -> ())] = {
+            
+            var allTests = [(String, (DefinedUUIDTests) -> () -> ())]()
+            
+            allTests.append(("testSdp", testSdp))
+            
+            return allTests
+            
+        }()
+         
+         */
+        
+        🖨("        static let allTests: [(String, (DefinedUUIDTests) -> () -> ())] = {")
+        🖨("")
+        🖨("            var allTests = [(String, (DefinedUUIDTests) -> () -> ())]()")
+        🖨("")
         
         for (uuidValue, _) in uuids {
             
@@ -167,10 +184,12 @@ final class BluetoothUUIDTests: XCTestCase {
             let testMemberName = "test" + uppercaseFirstLetter(memberName)
             testMemberNameCache[uuidValue] = testMemberName
             
-            🖨("        (\"\(testMemberName)\", \(testMemberName)),")
+            🖨("            allTests.append((\"\(testMemberName)\", \(testMemberName)))")
         }
         
-        🖨("        ]")
+        🖨("")
+        🖨("            return allTests")
+        🖨("        }()")
         🖨("")
         
         // generate test methods
@@ -189,9 +208,9 @@ final class BluetoothUUIDTests: XCTestCase {
             🖨("    /// Test \(name)")
             🖨("    func \(testMemberName)() {")
             🖨("")
-            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName).rawValue, 0x\(uuid.rawValue))")
-            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName).rawValue, \(uuidValue))")
+            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName).rawValue, \"\(uuid.rawValue)\")")
             🖨("         XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(0x\(uuid.rawValue)))")
+            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(\(uuidValue)))")
             🖨("         XCTAssertEqual(BluetoothUUID.\(memberName).name, \"\(name)\")")
             🖨("")
             🖨("    }")
