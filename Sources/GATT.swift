@@ -9,7 +9,6 @@
 import Foundation
 
 /// Bluetooth GATT protocol
-public struct GATT {
     
     /// GATT UUIDs
     public enum UUID: UInt16 {
@@ -49,27 +48,28 @@ public struct GATT {
             return .bit16(rawValue)
         }
     }
+public enum GATT {
     
     /// GATT Characteristic Descriptors
-    public enum CharacteristicDescriptor: UInt16 {
+    public enum CharacteristicDescriptor {
         
         /// Characteristic Extended Properties
-        case extendedProperties     = 0x2900
+        public static var extendedProperties: BluetoothUUID { return .characteristicExtendedProperties }
         
         /// Characteristic User Description Descriptor
-        case userDescription        = 0x2901
+        public static var userDescription: BluetoothUUID { return .characteristicUserDescription }
         
         /// Client Characteristic Configuration Descriptor
-        case clientConfiguration    = 0x2902
+        public static var clientConfiguration: BluetoothUUID { return .clientCharacteristicConfiguration }
         
         /// Server Characteristic Configuration Descriptor
-        case serverConfiguration    = 0x2903
+        public static var serverConfiguration: BluetoothUUID { return .serverCharacteristicConfiguration }
         
         /// Characteristic Format Descriptor
-        case format                 = 0x2904
+        public static var format: BluetoothUUID { return .characteristicFormat }
         
         /// Characteristic Aggregate Format Descriptor
-        case aggregateFormat        = 0x2905
+        public static var aggregateFormat: BluetoothUUID { return .characteristicAggregateFormat }
     }
     
     /// GATT Characteristic Properties Bitfield valuess
