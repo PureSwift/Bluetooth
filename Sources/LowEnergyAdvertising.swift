@@ -170,4 +170,19 @@ public extension BluetoothHostControllerInterface {
         
         try deviceRequest(parameters, timeout: timeout)
     }
+    
+    /// LE Set Periodic Advertising Enable Command
+    ///
+    /// The  command is used to request the Controller to enable or disable the periodic advertising
+    /// for the advertising set specified by the Advertising_Handle parameter (ordinary advertising is not affected).
+    func setSetPeriodicAdvertisingEnable(enable: LowEnergyCommand.SetPeriodicAdvertisingEnableParameter.Enable,
+                                         advertisingHandle: UInt8,
+                                         timeout: HCICommandTimeout = .default)  throws {
+        
+        let parameters = LowEnergyCommand.SetPeriodicAdvertisingEnableParameter(enable: enable,
+                                                                                advertisingHandle: advertisingHandle)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
 }

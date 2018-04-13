@@ -171,7 +171,10 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case setPeriodicAdvertisingParameters = 0x003E
     
     /// LE Set Periodic Advertising Data Command
-    case setPeriodicAdvertisingDataCommand = 0x003F
+    case setPeriodicAdvertisingData = 0x003F
+    
+    /// LE Set Periodic Advertising Enable Command
+    case setPeriodicAdvertisingEnable = 0x0040
 }
 
 // MARK: - Name
@@ -235,7 +238,8 @@ public extension LowEnergyCommand {
         case .removeAdvertisingSet: return "LE Remove Advertising Set Command"
         case .clearAdvertisingSets: return "LE Clear Advertising Sets Command"
         case .setPeriodicAdvertisingParameters: return "LE Set Periodic Advertising Parameters Command"
-        case .setPeriodicAdvertisingDataCommand: return "LE Set Periodic Advertising Data Command"
+        case .setPeriodicAdvertisingData: return "LE Set Periodic Advertising Data Command"
+        case .setPeriodicAdvertisingEnable: return "LE Set Periodic Advertising Enable Command"
         }
     }
 }

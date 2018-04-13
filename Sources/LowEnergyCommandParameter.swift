@@ -2206,7 +2206,7 @@ public extension LowEnergyCommand {
     /// The command is used to set the data used in periodic advertising PDUs.
     public struct SetPeriodicAdvertisingDataParameter: HCICommandParameter {
         
-        public static let command = LowEnergyCommand.setPeriodicAdvertisingDataCommand //0x003F
+        public static let command = LowEnergyCommand.setPeriodicAdvertisingData //0x003F
         
         public var advertisingHandle: UInt8 //Advertising_Handle
         public var operation: Operation //Operation
@@ -2243,6 +2243,35 @@ public extension LowEnergyCommand {
             
             /// Complete periodic advertising data
             case complete       = 0x03
+        }
+    }
+    
+    /// LE Set Periodic Advertising Enable Command
+    ///
+    /// The  command is used to request the Controller to enable or disable the periodic advertising
+    /// for the advertising set specified by the Advertising_Handle parameter (ordinary advertising is not affected).
+    public struct SetPeriodicAdvertisingEnableParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setPeriodicAdvertisingEnable //0x0040
+        
+        public var enable: Enable
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        
+        public init(enable: Enable, advertisingHandle: UInt8) {
+            self.enable = enable
+            self.advertisingHandle = advertisingHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            return [
+                enable.rawValue,
+                advertisingHandle
+            ]
+        }
+        
+        public enum Enable: UInt8 {
+            case disabled = 0x00
+            case enabled  = 0x01
         }
     }
 }
