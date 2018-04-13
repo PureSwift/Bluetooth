@@ -82,6 +82,9 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.selectedTxPower
     }
     
+    /// LE Set Extended Advertising Data Command
+    ///
+    /// The command is used to set the data used in advertising PDUs that have a data field.
     func setSetExtendedAdvertisingData(advertisingHandle: UInt8,
                                        operation: LowEnergyCommand.SetExtendedAdvertisingDataParameter.Operation,
                                        fragmentPreference: LowEnergyFragmentPreference,
@@ -89,6 +92,81 @@ public extension BluetoothHostControllerInterface {
                                        timeout: HCICommandTimeout = .default)  throws {
         
         let parameters = LowEnergyCommand.SetExtendedAdvertisingDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingData: advertisingData)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Read Maximum Advertising Data Length Command
+    ///
+    /// The ommand is used to read the maximum length of data supported by the Controller for use
+    /// as advertisement data or scan response data in an advertising event or as periodic advertisement data.
+    func setLowEnergyReadMaximumAdvertisingDataLength(timeout: HCICommandTimeout = .default) throws -> UInt16 {
+        
+        let value = try deviceRequest(LowEnergyCommand.ReadMaximumAadvertisingDataLengthReturnParameter.self,
+                                      timeout: timeout)
+        
+        return value.maximumAdvertisingDataLength
+    }
+    
+    /// LE Read Number of Supported Advertising Sets Command
+    ///
+    /// The command is used to read the maximum number of advertising sets supported by
+    /// the advertising Controller at the same time. Note: The number of advertising sets that
+    /// can be supported is not fixed and the Controller can change it at any time because the memory
+    /// used to store advertising sets can also be used for other purposes.
+    func setLowEnergyReadNumberOfSupportedAdvertisingSets(timeout: HCICommandTimeout = .default) throws -> UInt8 {
+        
+        let value = try deviceRequest(LowEnergyCommand.ReadNumberOfSupportedAdvertisingSetsReturnParameter.self,
+                                      timeout: timeout)
+        
+        return value.numSupportedAdvertisingSets
+    }
+    
+    /// LE Remove Advertising Set Command
+    ///
+    /// The command is used to remove an advertising set from the Controller.
+    func setLowEnergyRemoveAdvertisingSet(advertisingHandle: UInt8, timeout: HCICommandTimeout = .default) throws {
+        
+        let parameters = LowEnergyCommand.RemoveAdvertisingSetParameter(advertisingHandle: advertisingHandle)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Clear Advertising Sets Command
+    ///
+    /// The command is used to remove all existing advertising sets from the Controller.
+    ///
+    /// If advertising is enabled on any advertising set,
+    /// then the Controller shall return the error code Command Disallowed (0x0C).
+    ///
+    /// Note: All advertising sets are cleared on HCI reset.
+    func lowEnergyClearAdvertisingSets(timeout: HCICommandTimeout = .default) throws {
+        
+        try deviceRequest(LowEnergyCommand.clearAdvertisingSets, timeout: timeout)
+    }
+    
+    /// LE Set Periodic Advertising Parameters Command
+    ///
+    /// The  command is used by the Host to set the parameters for periodic advertising.
+    func setSetPeriodicAdvertisingParameters(advertisingHandle: UInt8,
+                                             periodicAdvertisingInterval: LowEnergyCommand.SetPeriodicAdvertisingParametersParameter.PeriodicAdvertisingInterval,
+                                             advertisingEventProperties: LowEnergyCommand.SetPeriodicAdvertisingParametersParameter.AdvertisingEventProperties,
+                                             timeout: HCICommandTimeout = .default)  throws {
+        
+        let parameters = LowEnergyCommand.SetPeriodicAdvertisingParametersParameter(advertisingHandle: advertisingHandle, periodicAdvertisingInterval: periodicAdvertisingInterval, advertisingEventProperties: advertisingEventProperties)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Set Periodic Advertising Data Command
+    ///
+    /// The command is used to set the data used in periodic advertising PDUs.
+    func setSetPeriodicAdvertisingData(advertisingHandle: UInt8,
+                                       operation: LowEnergyCommand.SetPeriodicAdvertisingDataParameter.Operation,
+                                       advertisingData: [UInt8],
+                                       timeout: HCICommandTimeout = .default)  throws {
+        
+        let parameters = LowEnergyCommand.SetPeriodicAdvertisingDataParameter(advertisingHandle: advertisingHandle, operation: operation, advertisingData: advertisingData)
         
         try deviceRequest(parameters, timeout: timeout)
     }

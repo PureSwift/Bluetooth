@@ -2066,6 +2066,185 @@ public extension LowEnergyCommand {
             case complete       = 0x03
         }
     }
+    
+    /// LE Remove Advertising Set Command
+    ///
+    /// The command is used to remove an advertising set from the Controller.
+    ///
+    /// If the advertising set corresponding to the Advertising_Handle parameter does not exist,
+    /// then the Controller shall return the error code Unknown Advertising Identifier (0x42).
+    /// If advertising on the advertising set is enabled, then the Controller shall return the error code
+    /// Command Disallowed (0x0C).
+    public struct RemoveAdvertisingSetParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.removeAdvertisingSet //0x003C
+        
+        /// Used to identify an advertising set
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        
+        public init(advertisingHandle: UInt8) {
+            self.advertisingHandle = advertisingHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            return [advertisingHandle]
+        }
+    }
+    
+    /// LE Set Periodic Advertising Parameters Command
+    ///
+    /// The  command is used by the Host to set the parameters for periodic advertising.
+    ///
+    /// The Advertising_Handle parameter identifies the advertising set whose periodic advertising
+    /// parameters are being configured. If the corresponding advertising set does not already exist,
+    /// then the Controller shall return the error code Unknown Advertising Identifier (0x42).
+    ///
+    /// The Periodic_Advertising_Interval_Min parameter shall be less than or equal to the
+    /// Periodic_Advertising_Interval_Max parameter. The Periodic_Advertising_Interval_Min and
+    /// Periodic_Advertising_Interval_Max parameters should not be the same value to enable the Controller to
+    /// determine the best advertising interval given other activities.
+    ///
+    /// The Periodic_Advertising_Properties parameter indicates which fields should be included in
+    /// the advertising packet.
+    ///
+    /// If the advertising set identified by the Advertising_Handle specified anonymous advertising,
+    /// the Controller shall return the error code Invalid HCI Parameters (0x12).
+    ///
+    /// If the Host issues this command when periodic advertising is enabled for the specified
+    /// advertising set, the Controller shall return the error code Command Disallowed (0x0C).
+    ///
+    /// If the Advertising_Handle does not identify an advertising set that is already configured for periodic
+    /// advertising and the Controller is unable to support more periodic advertising at present, the Controller
+    /// shall return the error code Memory Capacity Exceeded (0x07).
+    public struct SetPeriodicAdvertisingParametersParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setPeriodicAdvertisingParameters //0x003E
+        
+        /// Used to identify an advertising set
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        public var periodicAdvertisingInterval: PeriodicAdvertisingInterval
+        public var advertisingEventProperties: AdvertisingEventProperties
+        
+        public init(advertisingHandle: UInt8,
+                    periodicAdvertisingInterval: PeriodicAdvertisingInterval,
+                    advertisingEventProperties: AdvertisingEventProperties) {
+            
+            self.advertisingHandle = advertisingHandle
+            self.periodicAdvertisingInterval = periodicAdvertisingInterval
+            self.advertisingEventProperties = advertisingEventProperties
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let periodicAdvertisingIntervalMinBytes = periodicAdvertisingInterval.rawValue.lowerBound.littleEndian.bytes
+            let periodicAdvertisingIntervalMaxBytes = periodicAdvertisingInterval.rawValue.upperBound.littleEndian.bytes
+            let advertisingEventPropertiesytes = advertisingEventProperties.rawValue.littleEndian.bytes
+            return [
+                advertisingHandle,
+                periodicAdvertisingIntervalMinBytes.0,
+                periodicAdvertisingIntervalMinBytes.1,
+                periodicAdvertisingIntervalMaxBytes.0,
+                periodicAdvertisingIntervalMaxBytes.1,
+                advertisingEventPropertiesytes.0,
+                advertisingEventPropertiesytes.1
+            ]
+        }
+        
+        public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable {
+            
+            public typealias RawValue = CountableClosedRange<UInt16>
+            
+            /// Maximum interval range.
+            public static let full = PeriodicAdvertisingInterval(rawValue: .min ... .max)
+            
+            public let rawValue: RawValue
+            
+            public init(rawValue: RawValue) {
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 0.125 msec.
+            public var miliseconds: ClosedRange<Double> {
+                
+                let miliseconds = Double(0.125)
+                
+                let min = Double(rawValue.lowerBound) * miliseconds
+                
+                let max = Double(rawValue.upperBound) * miliseconds
+                
+                return min ... max
+            }
+            
+            // Equatable
+            public static func == (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+        }
+        
+        /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
+        /// and its basic properties.
+        public enum AdvertisingEventProperties: UInt16, BitMaskOption {
+            
+            #if swift(>=3.2)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt16
+            #endif
+
+            /// Include TxPower in the extended header of the advertising PDU
+            case includeTxPower = 0b100000
+            
+            public static var all: Set<LowEnergyCommand.SetPeriodicAdvertisingParametersParameter.AdvertisingEventProperties> = [
+                    .includeTxPower
+                ]
+        }
+    }
+    
+    /// LE Set Periodic Advertising Data Command
+    ///
+    /// The command is used to set the data used in periodic advertising PDUs.
+    public struct SetPeriodicAdvertisingDataParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setPeriodicAdvertisingDataCommand //0x003F
+        
+        public var advertisingHandle: UInt8 //Advertising_Handle
+        public var operation: Operation //Operation
+        public var advertisingData: [UInt8] //Advertising_Data
+        
+        public init(advertisingHandle: UInt8,
+                    operation: Operation,
+                    advertisingData: [UInt8]) {
+            
+            self.advertisingHandle = advertisingHandle
+            self.operation = operation
+            self.advertisingData = advertisingData
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let advertisingDataLength = UInt8(advertisingData.count)
+            
+            return [advertisingHandle,
+                    operation.rawValue,
+                    advertisingDataLength] + advertisingData
+        }
+        
+        public enum Operation: UInt8 { //Operation
+            
+            /// Intermediate fragment of fragmented periodic advertising data
+            case intermediateFragment   = 0x00
+            
+            /// First fragment of fragmented periodic advertising data
+            case firstFragment          = 0x01
+            
+            /// Last fragment of fragmented periodic advertising data
+            case lastFragment           = 0x02
+            
+            /// Complete periodic advertising data
+            case complete       = 0x03
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -2628,6 +2807,50 @@ public extension LowEnergyCommand {
                 else { return nil }
             
             self.selectedTxPower = selectedTxPower
+        }
+    }
+    
+    /// LE Read Maximum Advertising Data Length Command
+    ///
+    /// The command is used to read the maximum length of data supported by the Controller for use
+    /// as advertisement data or scan response data in an advertising event or as periodic advertisement data.
+    public struct ReadMaximumAadvertisingDataLengthReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readMaximumAdvertisingDataLength //0x003A
+        
+        public static let length: Int = 2
+        
+        /// Maximum supported advertising data length
+        public let maximumAdvertisingDataLength: UInt16
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            maximumAdvertisingDataLength = UInt16.init(bytes: (byteValue[0], byteValue[1]))
+        }
+    }
+    
+    /// LE Read Number of Supported Advertising Sets Command
+    ///
+    /// The command is used to read the maximum number of advertising sets supported by
+    /// the advertising Controller at the same time. Note: The number of advertising sets that
+    /// can be supported is not fixed and the Controller can change it at any time because the memory
+    /// used to store advertising sets can also be used for other purposes.
+    public struct ReadNumberOfSupportedAdvertisingSetsReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readNumberOfSupportedAdvertisingSets //0x003B
+        
+        public static let length: Int = 1
+        
+        /// Number of advertising sets supported at the same time
+        public let numSupportedAdvertisingSets: UInt8 //Num_Supported_Advertising_Sets
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            numSupportedAdvertisingSets = byteValue[0]
         }
     }
 }
