@@ -1456,7 +1456,10 @@ public extension LowEnergyCommand {
         public let txPhys: LowEnergyTxPhys
         public let rxPhys: LowEnergyRxPhys
         
-        public init(allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys) {
+        public init(allPhys: LowEnergyAllPhys,
+                    txPhys: LowEnergyTxPhys,
+                    rxPhys: LowEnergyRxPhys) {
+            
             self.allPhys = allPhys
             self.txPhys = txPhys
             self.rxPhys = rxPhys
@@ -1483,7 +1486,12 @@ public extension LowEnergyCommand {
         public let rxPhys: LowEnergyRxPhys
         public let phyOptions: LowEnergyPhyOptions
         
-        public init(connectionHandle: UInt16, allPhys: LowEnergyAllPhys, txPhys: LowEnergyTxPhys, rxPhys: LowEnergyRxPhys, phyOptions: LowEnergyPhyOptions) {
+        public init(connectionHandle: UInt16,
+                    allPhys: LowEnergyAllPhys,
+                    txPhys: LowEnergyTxPhys,
+                    rxPhys: LowEnergyRxPhys,
+                    phyOptions: LowEnergyPhyOptions) {
+            
             self.connectionHandle = connectionHandle
             self.allPhys = allPhys
             self.txPhys = txPhys
@@ -2270,8 +2278,318 @@ public extension LowEnergyCommand {
         }
         
         public enum Enable: UInt8 {
+            
+            /// Periodic advertising is disabled (default)
             case disabled = 0x00
+            
+            /// Periodic advertising is enabled
             case enabled  = 0x01
+        }
+    }
+    
+    /// LE Set Extended Scan Enable Command
+    ///
+    /// The command is used to enable or disable scanning.
+    public struct SetExtendedScanEnableParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setExtendedScanEnable //0x0042
+        
+        public let enable: Enable
+        public let filterDuplicates: FilterDuplicates
+        public let duration: Duration
+        public let period: Period
+        
+        public init(enable: Enable,
+                    filterDuplicates: FilterDuplicates,
+                    duration: Duration,
+                    period: Period) {
+            
+            self.enable = enable
+            self.filterDuplicates = filterDuplicates
+            self.duration = duration
+            self.period  = period
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let durationBytes = duration.rawValue.littleEndian.bytes
+            let periodBytes = period.rawValue.littleEndian.bytes
+            
+            return [
+                enable.rawValue,
+                filterDuplicates.rawValue,
+                durationBytes.0,
+                durationBytes.1,
+                periodBytes.0,
+                periodBytes.1
+            ]
+        }
+        
+        /// The Enable parameter determines whether scanning is enabled or disabled.
+        /// If it is disabled, the remaining parameters are ignored.
+        public enum Enable: UInt8 {
+            
+            /// Scanning disabled
+            case disabled = 0x00
+            
+            /// Scanning enabled
+            case enabled  = 0x01
+        }
+        
+        public enum FilterDuplicates: UInt8 { //Filter_Duplicates
+            
+            /// Duplicate filtering disabled
+            case disabled = 0x00
+            
+            /// Duplicate filtering enabled
+            case enabled = 0x01
+            
+            /// Duplicate filtering enabled, reset for each scan period
+            case reset = 0x02
+        }
+        
+        /// Scan duration
+        /// Range: 0x0001 – 0xFFFF
+        /// Time = N * 10 ms
+        /// Time Range: 10 ms to 655.35 s
+        public struct Duration: RawRepresentable, Equatable, Comparable, Hashable {
+            
+            /// 10 ms
+            public static let min = Duration(0x0001)
+            
+            /// 655.35 s
+            public static let max = Duration(0xFFFF)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= Duration.min.rawValue,
+                    rawValue <= Duration.max.rawValue
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            fileprivate init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 10 ms
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 10
+            }
+            
+            // Equatable
+            public static func == (lhs: Duration, rhs: Duration) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: Duration, rhs: Duration) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Time interval from when the Controller started its last Scan_Duration until
+        /// it begins the subsequent Scan_Duration.
+        /// Range: 0x0001 – 0xFFFF
+        /// Time = N * 1.28 sec
+        /// Time Range: 1.28 s to 83,884.8 s
+        public struct Period: RawRepresentable, Equatable, Comparable, Hashable {
+            
+            /// 1.28 s
+            public static let min = Duration(0x0001)
+            
+            /// 83,884.8 s
+            public static let max = Duration(0xFFFF)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= Period.min.rawValue,
+                    rawValue <= Period.max.rawValue
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            fileprivate init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 1.28 ms
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 1.28
+            }
+            
+            // Equatable
+            public static func == (lhs: Period, rhs: Period) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: Period, rhs: Period) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+    }
+    
+    /// LE Periodic Advertising Create Sync Command
+    ///
+    /// The command is used to synchronize with periodic advertising from an advertiser
+    /// and begin receiving periodic advertising packets.
+    public struct PeriodicAdvertisingCreateSyncParameter: HCICommandParameter {
+    
+        public static let command = LowEnergyCommand.periodicAdvertisingCreateSync //0x0044
+    
+        public let filterPolicy: FilterPolicy
+        
+        public let advertisingSid: UInt8
+        
+        public let advertisingAddressType: AdvertisingAddressType
+        
+        public let address: Address
+        
+        /// The number of periodic advertising packets that can be skipped after
+        /// a successful receive
+        /// Range: 0x0000 to 0x01F3
+        public let skip: UInt16
+        
+        public let syncTimeout: SyncTimeout
+        
+        /// This value must be used by the Host
+        public let unused: UInt8
+        
+        public init(filterPolicy: FilterPolicy,
+                    advertisingSid: UInt8,
+                    advertisingAddressType: AdvertisingAddressType,
+                    address: Address,
+                    skip: UInt16,
+                    syncTimeout: SyncTimeout,
+                    unused: UInt8) {
+            self.filterPolicy = filterPolicy
+            self.advertisingSid = advertisingSid
+            self.advertisingAddressType = advertisingAddressType
+            self.address = address
+            self.skip = skip
+            self.syncTimeout = syncTimeout
+            self.unused = unused
+        }
+    
+        public var byteValue: [UInt8] {
+            
+            let addressBytes = address.littleEndian.bytes
+            let skipBytes = skip.littleEndian.bytes
+            let syncTimeoutBytes = syncTimeout.rawValue.littleEndian.bytes
+            
+            return[
+                filterPolicy.rawValue,
+                advertisingSid,
+                advertisingAddressType.rawValue,
+                addressBytes.0,
+                addressBytes.1,
+                addressBytes.2,
+                addressBytes.3,
+                addressBytes.4,
+                addressBytes.5,
+                skipBytes.0,
+                skipBytes.1,
+                syncTimeoutBytes.0,
+                syncTimeoutBytes.1,
+                unused
+            ]
+        }
+        
+        public struct SyncTimeout: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            /// 100 msec
+            public static let min = SyncTimeout(0x000A)
+            
+            /// 163.84 seconds
+            public static let max = SyncTimeout(0x4000)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= SyncTimeout.min.rawValue,
+                    rawValue <= SyncTimeout.max.rawValue
+                    else { return nil }
+                
+                assert((SyncTimeout.min.rawValue ... SyncTimeout.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 10 msec
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 10
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: SyncTimeout, rhs: SyncTimeout) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: SyncTimeout, rhs: SyncTimeout) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        public enum AdvertisingAddressType: UInt8 { //Advertising_Address_Type
+            
+            /// Public Device Address
+            case publicDeviceAddress = 0x00
+            
+            /// Random Device Address
+            case randomDeviceAddress = 0x01
+        }
+        
+        public enum FilterPolicy: UInt8 { //Filter_Policy
+            
+            /// Use the Advertising_SID, Advertising_Address_Type,
+            /// and Advertising_Address parameters to determine which advertiser to listen to.
+            case useAdvertisingSIDAndAddressTypeAndAddress = 0x00
+            
+            /// Use the Periodic Advertiser List to determine which advertiser to listen to.
+            case usePeriodicAdvertiserList = 0x01
         }
     }
 }

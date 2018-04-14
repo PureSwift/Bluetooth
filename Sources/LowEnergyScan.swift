@@ -132,4 +132,21 @@ public extension BluetoothHostControllerInterface {
         
         try deviceRequest(parameters, timeout: timeout)
     }
+    
+    /// LE Set Extended Scan Enable Command
+    ///
+    /// The command is used to enable or disable scanning.
+    func setSetExtendedScanEnable(enable: LowEnergyCommand.SetExtendedScanEnableParameter.Enable,
+                                  filterDuplicates: LowEnergyCommand.SetExtendedScanEnableParameter.FilterDuplicates,
+                                  duration: LowEnergyCommand.SetExtendedScanEnableParameter.Duration,
+                                  period: LowEnergyCommand.SetExtendedScanEnableParameter.Period,
+                                  timeout: HCICommandTimeout = .default)  throws {
+        
+        let parameters = LowEnergyCommand.SetExtendedScanEnableParameter(enable: enable,
+                                                                         filterDuplicates: filterDuplicates,
+                                                                         duration: duration,
+                                                                         period: period)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
 }
