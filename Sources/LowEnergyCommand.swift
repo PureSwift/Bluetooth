@@ -173,8 +173,23 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     /// LE Set Periodic Advertising Data Command
     case setPeriodicAdvertisingData = 0x003F
     
+    /// LE Set Extended Advertising Enable Command
+    case setExtendedAdvertisingEnable = 0x0039
+    
     /// LE Set Periodic Advertising Enable Command
     case setPeriodicAdvertisingEnable = 0x0040
+    
+    /// LE Set Extended Scan Parameters Command
+    case setExtendedScanParameters = 0x0041
+    
+    /// LE Set Extended Scan Enable Command
+    case setExtendedScanEnable = 0x0042
+    
+    /// LE Extended Create Connection Command
+    case extendedCreateConnection = 0x0043
+    
+    /// LE Periodic Advertising Create Sync Command
+    case periodicAdvertisingCreateSync = 0x0044
 }
 
 // MARK: - Name
@@ -237,9 +252,14 @@ public extension LowEnergyCommand {
         case .readNumberOfSupportedAdvertisingSets: return "LE Read Number of Supported Advertising Sets Command"
         case .removeAdvertisingSet: return "LE Remove Advertising Set Command"
         case .clearAdvertisingSets: return "LE Clear Advertising Sets Command"
+        case .setExtendedAdvertisingEnable: return "LE Set Extended Advertising Enable Command"
         case .setPeriodicAdvertisingParameters: return "LE Set Periodic Advertising Parameters Command"
         case .setPeriodicAdvertisingData: return "LE Set Periodic Advertising Data Command"
         case .setPeriodicAdvertisingEnable: return "LE Set Periodic Advertising Enable Command"
+        case .setExtendedScanParameters: return "LE Set Extended Scan Parameters Command"
+        case .setExtendedScanEnable: return "LE Set Extended Scan Enable Command"
+        case .extendedCreateConnection: return "LE Extended Create Connection Command"
+        case .periodicAdvertisingCreateSync: return "LE Periodic Advertising Create Sync Command"
         }
     }
 }
