@@ -2728,7 +2728,21 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
+            let length: Int
+            
+            switch scanningPHY {
+                
+            case .le1M:
+                
+                length = 3
+                
+            case .coded:
+                
+                length = 3 + 10
+            }
+            
             var byteValue = [UInt8]()
+            byteValue.reserveCapacity(length) // improve buffer performance
             
             // Own_Address_Type
             byteValue.append(ownAddressType.rawValue)
@@ -2760,6 +2774,8 @@ public extension LowEnergyCommand {
                               scanWindowBytes.1.bytes.0,
                               scanWindowBytes.1.bytes.1]
             }
+            
+            assert(byteValue.count == length, "Invalid number of bytes")
             
             return byteValue
         }
