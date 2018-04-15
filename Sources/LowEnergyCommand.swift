@@ -156,40 +156,70 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case setExtendedScanResponseData       = 0x0038
     
     /// LE Read Maximum Advertising Data Length Command
-    case readMaximumAdvertisingDataLength  = 0x003A
+    case readMaximumAdvertisingDataLength       = 0x003A
     
     /// LE Read Number of Supported Advertising Sets Command
-    case readNumberOfSupportedAdvertisingSets  = 0x003B
+    case readNumberOfSupportedAdvertisingSets   = 0x003B
     
     /// LE Remove Advertising Set Command
-    case removeAdvertisingSet  = 0x003C
+    case removeAdvertisingSet                   = 0x003C
     
     /// LE Clear Advertising Sets Command
-    case clearAdvertisingSets  = 0x003D
+    case clearAdvertisingSets                   = 0x003D
     
     /// LE Set Periodic Advertising Parameters Command
-    case setPeriodicAdvertisingParameters = 0x003E
+    case setPeriodicAdvertisingParameters       = 0x003E
     
     /// LE Set Periodic Advertising Data Command
-    case setPeriodicAdvertisingData = 0x003F
+    case setPeriodicAdvertisingData             = 0x003F
     
     /// LE Set Extended Advertising Enable Command
-    case setExtendedAdvertisingEnable = 0x0039
+    case setExtendedAdvertisingEnable           = 0x0039
     
     /// LE Set Periodic Advertising Enable Command
-    case setPeriodicAdvertisingEnable = 0x0040
+    case setPeriodicAdvertisingEnable           = 0x0040
     
     /// LE Set Extended Scan Parameters Command
-    case setExtendedScanParameters = 0x0041
+    case setExtendedScanParameters              = 0x0041
     
     /// LE Set Extended Scan Enable Command
-    case setExtendedScanEnable = 0x0042
+    case setExtendedScanEnable                  = 0x0042
     
     /// LE Extended Create Connection Command
-    case extendedCreateConnection = 0x0043
+    case extendedCreateConnection               = 0x0043
     
     /// LE Periodic Advertising Create Sync Command
-    case periodicAdvertisingCreateSync = 0x0044
+    case periodicAdvertisingCreateSync          = 0x0044
+    
+    /// LE Periodic Advertising Create Sync Cancel Command
+    case periodicAdvertisingCreateSyncCancel    = 0x0045
+    
+    /// LE Periodic Advertising Terminate Sync Command
+    case periodicAdvertisingTerminateSync       = 0x0046
+    
+    /// LE Add Device To Periodic Advertiser List Command
+    case addDeviceToPeriodicAdvertiserList      = 0x0047
+    
+    /// LE Remove Device From Periodic Advertiser List Command
+    case removeDeviceFromPeriodicAdvertiserList = 0x0048
+    
+    /// LE Clear Periodic Advertiser List Command
+    case clearPeriodicAdvertiserList            = 0x0049
+    
+    /// LE Read Periodic Advertiser List Size Command
+    case readPeriodicAdvertiserListSize         = 0x004A
+    
+    /// LE Read Transmit Power Command
+    case readTransmitPower                      = 0x004B
+    
+    /// LE Read RF Path Compensation Command
+    case readRFPathCompensation                 = 0x004C
+    
+    /// LE Write RF Path Compensation Command
+    case writeRFPathCompensation                = 0x004D
+    
+    /// LE Set Privacy Mode Command
+    case setPrivacyMode                         = 0x004E
 }
 
 // MARK: - Name
@@ -260,6 +290,16 @@ public extension LowEnergyCommand {
         case .setExtendedScanEnable: return "LE Set Extended Scan Enable Command"
         case .extendedCreateConnection: return "LE Extended Create Connection Command"
         case .periodicAdvertisingCreateSync: return "LE Periodic Advertising Create Sync Command"
+        case .periodicAdvertisingCreateSyncCancel: return "LE Periodic Advertising Create Sync Cancel Command"
+        case .periodicAdvertisingTerminateSync: return "LE Periodic Advertising Terminate Sync Command"
+        case .addDeviceToPeriodicAdvertiserList: return "LE Add Device To Periodic Advertiser List Command"
+        case .removeDeviceFromPeriodicAdvertiserList: return "LE Remove Device From Periodic Advertiser List Command"
+        case .clearPeriodicAdvertiserList: return "LE Clear Periodic Advertiser List Command"
+        case .readPeriodicAdvertiserListSize: return "LE Read Periodic Advertiser List Size Command"
+        case .readTransmitPower: return "LE Read Transmit Power Command"
+        case .readRFPathCompensation: return "LE Read RF Path Compensation Command"
+        case .writeRFPathCompensation: return "LE Write RF Path Compensation Command"
+        case .setPrivacyMode: return "LE Set Privacy Mode Command"
         }
     }
 }
