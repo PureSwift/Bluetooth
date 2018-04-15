@@ -25,6 +25,7 @@ final class BluetoothTests: XCTestCase {
         ("testLowEnergyAddressType", testLowEnergyAddressType),
         ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
+        ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
         ("testBitMaskOption", testBitMaskOption),
     ]
     
@@ -187,6 +188,12 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(featureSet.rawValue, 0)
         XCTAssertEqual(featureSet.count, 0)
         XCTAssertEqual(featureSet.hashValue, 0)
+    }
+    
+    func testAdvertisingChannelHeader() {
+        
+        XCTAssertEqual(AdvertisingChannelHeader().rawValue, 0)
+        XCTAssertEqual(AdvertisingChannelHeader(), .undirectedAdvertising)
     }
     
     func testBitMaskOption() {
