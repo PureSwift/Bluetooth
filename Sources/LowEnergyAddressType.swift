@@ -31,8 +31,11 @@ public enum LowEnergyAddressType: UInt8 {
     /// - Note: Requires Bluetooth 5.0
     case randomIdentity     = 0x03
     
+    /// Default Low Energy Address type (`.public`).
     public init() { self = .public }
 }
+
+// MARK: - HCIVersioned
 
 extension LowEnergyAddressType: HCIVersioned {
     
