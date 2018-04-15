@@ -2684,6 +2684,7 @@ public extension LowEnergyCommand {
         public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
                     address: Address,
                     advertisingSid: UInt8) {
+            
             self.advertiserAddressType = advertiserAddressType
             self.address = address
             self.advertisingSid = advertisingSid
@@ -2703,6 +2704,138 @@ public extension LowEnergyCommand {
                 addressBytes.5,
                 advertisingSid
             ]
+        }
+    }
+    
+    /// LE Set Extended Scan Parameters Command
+    ///
+    /// Used to set the extended scan parameters to be used on the advertising channels.
+    public struct SetExtendedScanParametersParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setExtendedScanParameters // 0x0041
+        
+        public var scanningPHY: ScanningPHY
+        
+        public var byteValue: [UInt8] {
+            
+            var byteValue = [UInt8]()
+            
+            // Scanning_PHYs
+            byteValue.append(scanningPHY.type.rawValue)
+            
+            switch scanningPHY {
+                
+            case .le1M:
+                break
+                
+            case let .coded(scanType, scanInterval, scanWindow):
+                
+                let scanIntervalBytes = (scanInterval.0.rawValue.littleEndian, scanInterval.1.rawValue.littleEndian)
+                let scanWindowBytes = (scanWindow.0.rawValue.littleEndian, scanWindow.1.rawValue.littleEndian)
+                
+                byteValue += [scanType.0.rawValue,
+                              scanType.1.rawValue,
+                              scanIntervalBytes.0.bytes.0,
+                              scanIntervalBytes.0.bytes.1,
+                              scanIntervalBytes.1.bytes.0,
+                              scanIntervalBytes.1.bytes.1,
+                              scanWindowBytes.0.bytes.0,
+                              scanWindowBytes.0.bytes.1,
+                              scanWindowBytes.1.bytes.0,
+                              scanWindowBytes.1.bytes.1]
+            }
+            
+            return byteValue
+        }
+        
+        /// Scanning PHY
+        public enum ScanningPHYType: UInt8 {
+            
+            /// Scan advertisements on the LE 1M PHY
+            case le1M = 0b00
+            
+            /// Scan advertisements on the LE Coded PHY
+            case coded = 0b10
+        }
+        
+        /// Scanning PHY
+        public enum ScanningPHY {
+            
+            /// Scan advertisements on the LE 1M PHY
+            case le1M
+            
+            /// Scan advertisements on the LE Coded PHY
+            case coded(scanType: (ScanType, ScanType),
+                scanInterval: (ScanInterval, ScanInterval),
+                scanWindow: (ScanInterval, ScanInterval))
+            
+            public var type: ScanningPHYType {
+                
+                switch self {
+                case .le1M: return .le1M
+                case .coded: return .coded
+                }
+            }
+        }
+        
+        public enum ScanType: UInt8 {
+            
+            /// Passive Scanning. No scan request PDUs shall be sent.
+            case passive = 0x00
+            
+            /// Active Scanning. Scan request PDUs may be sent.
+            case active = 0x01
+        }
+        
+        /// Time interval from when the Controller started its last scan until it begins
+        /// the subsequent scan on the primary advertising channel.
+        public struct ScanInterval: RawRepresentable, Equatable, Comparable, Hashable {
+            
+            /// 2.5 msec
+            public static let min = ScanInterval(0x0004)
+            
+            /// 40.959375 seconds
+            public static let max = ScanInterval(0xFFFF)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= ScanInterval.min.rawValue,
+                    rawValue <= ScanInterval.max.rawValue
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 0.625 msec
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 0.625
+            }
+            
+            // Private, unsafe
+            fileprivate init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: ScanInterval, rhs: ScanInterval) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: ScanInterval, rhs: ScanInterval) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
         }
     }
 }
