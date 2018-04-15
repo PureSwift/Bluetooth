@@ -2592,6 +2592,119 @@ public extension LowEnergyCommand {
             case usePeriodicAdvertiserList = 0x01
         }
     }
+    
+    /// LE Periodic Advertising Terminate Sync Command
+    ///
+    /// The command is used to stop reception of the periodic advertising identified by the Sync_Handle parameter.
+    ///
+    /// If the Host issues this command when another LE_Periodic_Advertising_Create_Sync command is pending (see below),
+    /// the Controller shall return the error code Command Disallowed (0x0C).
+    ///
+    /// If the periodic advertising corresponding to the Sync_Handle parameter does not exist,
+    /// then the Controller shall return the error code Unknown Advertising Identifier (0x42).
+    public struct PeriodicAdvertisingTerminateSyncParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.periodicAdvertisingTerminateSync //0x0046
+        
+        public let syncHandle: UInt16
+        
+        public init(syncHandle: UInt16) {
+            self.syncHandle = syncHandle
+        }
+        
+        public var byteValue: [UInt8] {
+            let syncHandleBytes = syncHandle.littleEndian.bytes
+            
+            return [syncHandleBytes.0, syncHandleBytes.1]
+        }
+    }
+    
+    /// LE Add Device To Periodic Advertiser List Command
+    ///
+    /// The command is used to add a single device to the Periodic Advertiser list stored in the Controller.
+    /// Any additions to the Periodic Advertiser list take effect immediately. If the device is already on the list,
+    /// the Controller shall return the error code Invalid HCI Command Parameters (0x12).
+    ///
+    /// If the Host issues this command when an LE_Periodic_Advertising_Create_Sync command is pending,
+    /// the Controller shall return the error code Command Disallowed (0x0C).
+    ///
+    /// When a Controller cannot add a device to the Periodic Advertiser list because the list is full,
+    /// the Controller shall return the error code Memory Capacity Exceeded (0x07).
+    public struct AddDeviceToPeriodicAdvertiserListParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.addDeviceToPeriodicAdvertiserList //0x0047
+        
+        public let advertiserAddressType: LowEnergyAdvertiserAddressType
+        public let address: Address
+        public let advertisingSid: UInt8
+        
+        public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
+                    address: Address,
+                    advertisingSid: UInt8) {
+            self.advertiserAddressType = advertiserAddressType
+            self.address = address
+            self.advertisingSid = advertisingSid
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let addressBytes = address.littleEndian.bytes
+            
+            return [
+                advertiserAddressType.rawValue,
+                addressBytes.0,
+                addressBytes.1,
+                addressBytes.2,
+                addressBytes.3,
+                addressBytes.4,
+                addressBytes.5,
+                advertisingSid
+            ]
+        }
+    }
+    
+    /// LE Remove Device From Periodic Advertiser List Command
+    ///
+    /// The LE_Remove_Device_From_Periodic_Advertiser_List command is used to remove one device from the list of Periodic
+    /// Advertisers stored in the Controller. Removals from the Periodic Advertisers List take effect immediately.
+    ///
+    /// If the Host issues this command when an LE_Periodic_Advertising_Create_Sync command is pending, the Controller
+    /// shall return the error code Command Disallowed (0x0C).
+    ///
+    /// When a Controller cannot remove a device from the Periodic Advertiser list because it is not found,
+    /// the Controller shall return the error code Unknown Advertising Identifier (0x42).
+    public struct RemoveDeviceToPeriodicAdvertiserListParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.removeDeviceFromPeriodicAdvertiserList //0x0048
+        
+        public let advertiserAddressType: LowEnergyAdvertiserAddressType
+        public let address: Address
+        public let advertisingSid: UInt8
+        
+        public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
+                    address: Address,
+                    advertisingSid: UInt8) {
+            self.advertiserAddressType = advertiserAddressType
+            self.address = address
+            self.advertisingSid = advertisingSid
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let addressBytes = address.littleEndian.bytes
+            
+            return [
+                advertiserAddressType.rawValue,
+                addressBytes.0,
+                addressBytes.1,
+                addressBytes.2,
+                addressBytes.3,
+                addressBytes.4,
+                addressBytes.5,
+                advertisingSid
+            ]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -3203,6 +3316,14 @@ public extension LowEnergyCommand {
 }
 
 // MARK: - Supporting Types
+
+public enum LowEnergyAdvertiserAddressType: UInt8 { //Advertiser_Address_Type:
+    /// Public Device Address or Public Identity Address
+    case publicDeviceAddress = 0x00
+    
+    /// Random Device Address or Random (static) Identity Address
+    case randomDeviceAddress = 0x01
+}
 
 public enum LowEnergyFragmentPreference: UInt8 { //Fragment_Preference
     
