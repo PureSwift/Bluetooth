@@ -2714,11 +2714,27 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setExtendedScanParameters // 0x0041
         
+        public var ownAddressType: LowEnergyAddressType
+        public var scanningFilterPolicy: ScanningFilterPolicy
         public var scanningPHY: ScanningPHY
+        
+        public init(ownAddressType: LowEnergyAddressType,
+                    scanningFilterPolicy: ScanningFilterPolicy,
+                    scanningPHY: ScanningPHY) {
+            self.ownAddressType = ownAddressType
+            self.scanningFilterPolicy = scanningFilterPolicy
+            self.scanningPHY = scanningPHY
+        }
         
         public var byteValue: [UInt8] {
             
             var byteValue = [UInt8]()
+            
+            // Own_Address_Type
+            byteValue.append(ownAddressType.rawValue)
+            
+            // Scanning_Filter_Policy
+            byteValue.append(scanningFilterPolicy.rawValue)
             
             // Scanning_PHYs
             byteValue.append(scanningPHY.type.rawValue)
@@ -2746,6 +2762,26 @@ public extension LowEnergyCommand {
             }
             
             return byteValue
+        }
+        
+        public enum ScanningFilterPolicy: UInt8 {
+            
+            /// Accept all advertising packets except directed advertising packets not addressed to this device
+            case all = 0x00
+            
+            /// Accept only advertising packets from devices where the advertiser’s address is in the White List.
+            /// Directed advertising packets which are not addressed to this device shall be ignored.
+            case fromWhiteList = 0x01
+            
+            /// Accept all advertising packets except directed advertising packets where the initiator’s identity address does not address this device.
+            /// Note: directed advertising packets where the initiator’s address is a resolvable private address that cannot be resolved are also accepted.
+            case allExceptDirectedAdvertisingPackets = 0x02
+            
+            /// Accept all advertising packets except:
+            /// * advertising packets where the advertiser’s identity address is not in the White List; and
+            /// * directed advertising packets where the initiator’s identity address does not address this device
+            /// Note: directed advertising packets where the initiator’s address is a resolvable private address that cannot be resolved are also accepted.
+            case allExceptPacketFromWhiteListAndDirectedAdvertising = 0x03
         }
         
         /// Scanning PHY
