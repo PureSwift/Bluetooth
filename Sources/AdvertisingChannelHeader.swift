@@ -36,5 +36,6 @@ public enum AdvertisingChannelHeader: UInt8 {
     
     // 0111-1111 reserved
     
+    /// Default value.
     public init() { self = .undirectedAdvertising }
 }
