@@ -126,7 +126,7 @@ public extension BluetoothHostControllerInterface {
     /// issued at any time after the advertising set identified by the Advertising_Handle parameter has been
     /// created using the LE Set Extended Advertising Parameters Command (see Section 7.8.53) regardless of
     /// whether advertising in that set is enabled or disabled.
-    func setSetExtendedScanResponseData(advertisingHandle: UInt8, operation: LowEnergyCommand.SetExtendedScanResponseDataParameter.Operation, fragmentPreference: LowEnergyFragmentPreference, scanResponseData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
+    func setLowEnergyExtendedScanResponseData(advertisingHandle: UInt8, operation: LowEnergyCommand.SetExtendedScanResponseDataParameter.Operation, fragmentPreference: LowEnergyFragmentPreference, scanResponseData: [UInt8], timeout: HCICommandTimeout = .default)  throws {
         
         let parameters = LowEnergyCommand.SetExtendedScanResponseDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, scanResponseData: scanResponseData)
         
@@ -136,16 +136,31 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Extended Scan Enable Command
     ///
     /// The command is used to enable or disable scanning.
-    func setSetExtendedScanEnable(enable: LowEnergyCommand.SetExtendedScanEnableParameter.Enable,
-                                  filterDuplicates: LowEnergyCommand.SetExtendedScanEnableParameter.FilterDuplicates,
-                                  duration: LowEnergyCommand.SetExtendedScanEnableParameter.Duration,
-                                  period: LowEnergyCommand.SetExtendedScanEnableParameter.Period,
-                                  timeout: HCICommandTimeout = .default)  throws {
+    func setLowEnergyExtendedScanEnable(enable: LowEnergyCommand.SetExtendedScanEnableParameter.Enable,
+                                        filterDuplicates: LowEnergyCommand.SetExtendedScanEnableParameter.FilterDuplicates,
+                                        duration: LowEnergyCommand.SetExtendedScanEnableParameter.Duration,
+                                        period: LowEnergyCommand.SetExtendedScanEnableParameter.Period,
+                                        timeout: HCICommandTimeout = .default)  throws {
         
         let parameters = LowEnergyCommand.SetExtendedScanEnableParameter(enable: enable,
                                                                          filterDuplicates: filterDuplicates,
                                                                          duration: duration,
                                                                          period: period)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Set Extended Scan Parameters Command
+    ///
+    /// Used to set the extended scan parameters to be used on the advertising channels.
+    func setLowEnergyExtendedScanParameters(ownAddressType: LowEnergyAddressType,
+                                            scanningFilterPolicy: LowEnergyCommand.SetExtendedScanParametersParameter.ScanningFilterPolicy,
+                                            scanningPHY: LowEnergyCommand.SetExtendedScanParametersParameter.ScanningPHY,
+                                            timeout: HCICommandTimeout = .default)  throws {
+        
+        let parameters = LowEnergyCommand.SetExtendedScanParametersParameter(ownAddressType: ownAddressType,
+                                                                         scanningFilterPolicy: scanningFilterPolicy,
+                                                                         scanningPHY: scanningPHY)
         
         try deviceRequest(parameters, timeout: timeout)
     }
