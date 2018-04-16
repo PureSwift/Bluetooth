@@ -2890,6 +2890,46 @@ public extension LowEnergyCommand {
             }
         }
     }
+    
+    /// LE Write RF Path Compensation Command
+    ///
+    /// The command is used to indicate the RF path gain or loss between the RF transceiver and
+    /// the antenna contributed by intermediate components. A positive value means a net RF path gain
+    /// and a negative value means a net RF path loss. The RF Tx Path Compensation Value parameter
+    /// shall be used by the Controller to calculate radiative Tx Power Level used in the TxPower field
+    /// in the Extended Header using the following equation:
+    ///
+    /// Radiative Tx Power Level = Tx Power Level at RF transceiver output + RF Tx Path Compensation Value
+    ///
+    /// For example, if the Tx Power Level is +4 (dBm) at RF transceiver output and the RF
+    /// Path Compensation Value is -1.5 (dB), the radiative Tx Power Level is +4+(-1.5) = 2.5 (dBm).
+    ///
+    /// The RF Rx Path Compensation Value parameter shall be used by the Controller to calculate
+    /// the RSSI value reported to the Host.
+    public struct WriteRfPathCompensationParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.writeRFPathCompensation // 0x004D
+        
+        public var rfTxPathCompensationValue: RfTxPathCompensationValue
+        public var rfRxPathCompensationValue: RfRxPathCompensationValue
+
+        public init(rfTxPathCompensationValue: RfTxPathCompensationValue,
+                    rfRxPathCompensationValue: RfRxPathCompensationValue) {
+            self.rfTxPathCompensationValue = rfTxPathCompensationValue
+            self.rfRxPathCompensationValue = rfRxPathCompensationValue
+        }
+        
+        public var byteValue: [UInt8] {
+            let rfTxPathCompensationValueBytes = UInt16.init(bitPattern: rfTxPathCompensationValue.rawValue).littleEndian.bytes
+            
+            let rfRxPathCompensationValueBytes = UInt16.init(bitPattern: rfRxPathCompensationValue.rawValue).littleEndian.bytes
+            
+            return [rfTxPathCompensationValueBytes.0,
+                    rfTxPathCompensationValueBytes.1,
+                    rfRxPathCompensationValueBytes.0,
+                    rfRxPathCompensationValueBytes.1]
+        }
+    }
 }
 
 // MARK: - Command Return Parameters
@@ -3459,7 +3499,7 @@ public extension LowEnergyCommand {
     ///
     /// The command is used to read the maximum length of data supported by the Controller for use
     /// as advertisement data or scan response data in an advertising event or as periodic advertisement data.
-    public struct ReadMaximumAadvertisingDataLengthReturnParameter: HCICommandReturnParameter {
+    public struct ReadMaximumAdvertisingDataLengthReturnParameter: HCICommandReturnParameter {
         
         public static let command = LowEnergyCommand.readMaximumAdvertisingDataLength //0x003A
         
@@ -3498,9 +3538,223 @@ public extension LowEnergyCommand {
             numSupportedAdvertisingSets = byteValue[0]
         }
     }
+    
+    /// LE Read Periodic Advertiser List Size Command
+    ///
+    /// The command is used to read the total number of Periodic Advertiser list entries that can be stored in the Controller.
+    public struct ReadPeriodicAdvertisingListSizeReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readPeriodicAdvertiserListSize //0x004A
+        
+        public static let length: Int = 1
+        
+        /// Total number of Periodic Advertiser list entries that can be stored in the Controller
+        public let periodicAdvertiserListSize: UInt8
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            periodicAdvertiserListSize = byteValue[0]
+        }
+    }
+    
+    /// LE Read Transmit Power Command
+    ///
+    /// The command is used to read the minimum and maximum transmit powers supported by the Controller.
+    public struct ReadTransmitPowerReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readTransmitPower //0x004B
+        
+        public static let length: Int = 2
+        
+        public let minTxPower: TxPower
+        
+        public let maxTxPower: TxPower
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            guard let minTxPower = TxPower(rawValue: Int8(bitPattern: byteValue[0]))
+                else { return nil }
+            
+            guard let maxTxPower = TxPower(rawValue: Int8(bitPattern: byteValue[1]))
+                else { return nil }
+            
+            self.minTxPower = minTxPower
+            self.maxTxPower = maxTxPower
+        }
+        
+        public struct TxPower: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static let min = TxPower(-127)
+            
+            public static let max = TxPower(126)
+            
+            public let rawValue: Int8
+            
+            public init?(rawValue: Int8) {
+                
+                guard rawValue >= TxPower.min.rawValue,
+                    rawValue <= TxPower.max.rawValue
+                    else { return nil }
+                
+                assert((TxPower.min.rawValue ... TxPower.max.rawValue).contains(rawValue))
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: Int8) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: TxPower, rhs: TxPower) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: TxPower, rhs: TxPower) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+    }
+    
+    /// LE Read RF Path Compensation Command
+    ///
+    /// The command is used to read the RF Path Compensation Values parameter used in the Tx Power Level and RSSI calculation.
+    public struct ReadRfPathCompensationReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readRFPathCompensation //0x004C
+        
+        public static let length: Int = 4
+        
+        public let rfTxPathCompensationValue: RfTxPathCompensationValue
+        public let rfRxPathCompensationValue: RfRxPathCompensationValue
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            guard let rfTxPathCompensationValue = RfTxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (byteValue[0], byteValue[1]))))
+                else { return nil }
+                
+            guard let rfRxPathCompensationValue = RfRxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (byteValue[2], byteValue[3]))))
+                else { return nil }
+            
+            self.rfTxPathCompensationValue = rfTxPathCompensationValue
+            self.rfRxPathCompensationValue = rfRxPathCompensationValue
+        }
+    }
 }
 
 // MARK: - Supporting Types
+
+// RF_Rx_Path_Compensation_Value
+/// Size: 2 Octets (signed integer)
+/// Range: -128.0 dB (0xFB00) ≤ N ≤ 128.0 dB (0x0500)
+/// Units: 0.1 dB
+public struct RfRxPathCompensationValue: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    public static let min = RfRxPathCompensationValue(-128)
+    
+    public static let max = RfRxPathCompensationValue(128)
+    
+    public let rawValue: Int16
+    
+    public init?(rawValue: Int16) {
+        
+        guard rawValue >= RfRxPathCompensationValue.min.rawValue,
+            rawValue <= RfRxPathCompensationValue.max.rawValue
+            else { return nil }
+        
+        assert((RfRxPathCompensationValue.min.rawValue ... RfRxPathCompensationValue.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: Int16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: RfRxPathCompensationValue, rhs: RfRxPathCompensationValue) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: RfRxPathCompensationValue, rhs: RfRxPathCompensationValue) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
+/// RF_Tx_Path_Compensation_Value
+/// Size: 2 Octets (signed integer)
+/// Range: -128.0 dB (0xFB00) ≤ N ≤ 128.0 dB (0x0500)
+/// Units: 0.1 dB
+public struct RfTxPathCompensationValue: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    public static let min = RfTxPathCompensationValue(-128)
+    
+    public static let max = RfTxPathCompensationValue(128)
+    
+    public let rawValue: Int16
+    
+    public init?(rawValue: Int16) {
+        
+        guard rawValue >= RfTxPathCompensationValue.min.rawValue,
+            rawValue <= RfTxPathCompensationValue.max.rawValue
+            else { return nil }
+        
+        assert((RfTxPathCompensationValue.min.rawValue ... RfTxPathCompensationValue.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: Int16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: RfTxPathCompensationValue, rhs: RfTxPathCompensationValue) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: RfTxPathCompensationValue, rhs: RfTxPathCompensationValue) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
 
 public enum LowEnergyAdvertiserAddressType: UInt8 { //Advertiser_Address_Type:
     /// Public Device Address or Public Identity Address
