@@ -33,12 +33,14 @@ public struct GATTDatabase {
     /// Attribute representation of the database.
     public var attributes: [Attribute] {
         
-        var attributes = [Attribute]()
+        let attributeCount = attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
         
-        for group in attributeGroups {
-            
-            attributes += group.attributes
-        }
+        var attributes = [Attribute]()
+        attributes.reserveCapacity(attributeCount)
+        
+        attributeGroups.forEach { attributes += $0.attributes }
+        
+        assert(attributes.count == attributeCount)
         
         return attributes
     }
