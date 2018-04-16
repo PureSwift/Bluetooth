@@ -62,9 +62,9 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Advertising Set Random Address Command
     ///
     /// The command is used by the Host to set the random device address specified by the Random_Address parameter.
-    func lowEnergySetAdvertisingSetRandomAddress(advertisingHandle: UInt8,
-                                                 advertisingRandomAddress: Address,
-                                                 timeout: HCICommandTimeout = .default) throws {
+    func setAdvertisingSetRandomAddress(advertisingHandle: UInt8,
+                                        advertisingRandomAddress: Address,
+                                        timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.SetAdvertisingSetRandomAddress(advertisingHandle: advertisingHandle, advertisingRandomAddress: advertisingRandomAddress)
         
@@ -74,8 +74,8 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Extended Advertising Parameters Command
     ///
     /// The command is used by the Host to set the advertising parameters.
-    func setLowEnergySetExtendedAdvertisingParameters(_ parameters: LowEnergyCommand.SetExtendedAdvertisingParametersParameter,
-                                                      timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
+    func setExtendedAdvertisingParameters(_ parameters: LowEnergyCommand.SetExtendedAdvertisingParametersParameter,
+                                          timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
         
         let returnParameter = try deviceRequest(parameters, LowEnergyCommand.SetExtendedAdvertisingParametersReturnParameter.self, timeout: timeout)
         
@@ -85,11 +85,11 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Extended Advertising Data Command
     ///
     /// The command is used to set the data used in advertising PDUs that have a data field.
-    func setSetExtendedAdvertisingData(advertisingHandle: UInt8,
-                                       operation: LowEnergyCommand.SetExtendedAdvertisingDataParameter.Operation,
-                                       fragmentPreference: LowEnergyFragmentPreference,
-                                       advertisingData: [UInt8],
-                                       timeout: HCICommandTimeout = .default)  throws {
+    func setExtendedAdvertisingData(advertisingHandle: UInt8,
+                                    operation: LowEnergyCommand.SetExtendedAdvertisingDataParameter.Operation,
+                                    fragmentPreference: LowEnergyFragmentPreference,
+                                    advertisingData: [UInt8],
+                                    timeout: HCICommandTimeout = .default)  throws {
         
         let parameters = LowEnergyCommand.SetExtendedAdvertisingDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingData: advertisingData)
         
@@ -100,9 +100,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The ommand is used to read the maximum length of data supported by the Controller for use
     /// as advertisement data or scan response data in an advertising event or as periodic advertisement data.
-    func setLowEnergyReadMaximumAdvertisingDataLength(timeout: HCICommandTimeout = .default) throws -> UInt16 {
+    func setReadMaximumAdvertisingDataLength(timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let value = try deviceRequest(LowEnergyCommand.ReadMaximumAadvertisingDataLengthReturnParameter.self,
+        let value = try deviceRequest(LowEnergyCommand.ReadMaximumAdvertisingDataLengthReturnParameter.self,
                                       timeout: timeout)
         
         return value.maximumAdvertisingDataLength
@@ -114,7 +114,7 @@ public extension BluetoothHostControllerInterface {
     /// the advertising Controller at the same time. Note: The number of advertising sets that
     /// can be supported is not fixed and the Controller can change it at any time because the memory
     /// used to store advertising sets can also be used for other purposes.
-    func setLowEnergyReadNumberOfSupportedAdvertisingSets(timeout: HCICommandTimeout = .default) throws -> UInt8 {
+    func readNumberOfSupportedAdvertisingSets(timeout: HCICommandTimeout = .default) throws -> UInt8 {
         
         let value = try deviceRequest(LowEnergyCommand.ReadNumberOfSupportedAdvertisingSetsReturnParameter.self,
                                       timeout: timeout)
@@ -220,10 +220,10 @@ public extension BluetoothHostControllerInterface {
     /// LE Add Device To Periodic Advertiser List Command
     ///
     /// The command is used to add a single device to the Periodic Advertiser list stored in the Controller.
-    func setPeriodicAdvertisingTerminateSync(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                             address: Address,
-                                             advertisingSid: UInt8,
-                                             timeout: HCICommandTimeout = .default)  throws {
+    func addDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
+                                           address: Address,
+                                           advertisingSid: UInt8,
+                                           timeout: HCICommandTimeout = .default)  throws {
         
         let parameters = LowEnergyCommand.AddDeviceToPeriodicAdvertiserListParameter(advertiserAddressType: advertiserAddressType,
                                                                             address: address,
@@ -236,10 +236,10 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The LE_Remove_Device_From_Periodic_Advertiser_List command is used to remove one device from the list of Periodic
     /// Advertisers stored in the Controller. Removals from the Periodic Advertisers List take effect immediately.
-    func setRemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                                 address: Address,
-                                                 advertisingSid: UInt8,
-                                                 timeout: HCICommandTimeout = .default)  throws {
+    func lowEnergyRemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
+                                                       address: Address,
+                                                       advertisingSid: UInt8,
+                                                       timeout: HCICommandTimeout = .default)  throws {
         
         let parameters = LowEnergyCommand.RemoveDeviceToPeriodicAdvertiserListParameter(advertiserAddressType: advertiserAddressType,
                                                                                      address: address,
@@ -258,5 +258,16 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyClearPeriodicAdvertiserList(timeout: HCICommandTimeout = .default) throws {
         
         try deviceRequest(LowEnergyCommand.clearPeriodicAdvertiserList, timeout: timeout) //0x0049
+    }
+    
+    /// LE Read Periodic Advertiser List Size Command
+    ///
+    /// The command is used to read the total number of Periodic Advertiser list entries that can be stored in the Controller.
+    func lowEnergyReadPeriodicAdvertisingListSize(timeout: HCICommandTimeout = .default) throws -> UInt8 {
+        
+        let value = try deviceRequest(LowEnergyCommand.ReadPeriodicAdvertisingListSizeReturnParameter.self,
+                                      timeout: timeout)
+        
+        return value.periodicAdvertiserListSize
     }
 }

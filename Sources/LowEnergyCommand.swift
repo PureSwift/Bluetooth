@@ -186,7 +186,7 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     case setExtendedScanEnable                  = 0x0042
     
     /// LE Extended Create Connection Command
-    case extendedCreateConnection               = 0x0043
+    case extendedCreateConnection               = 0x0043 //TODO
     
     /// LE Periodic Advertising Create Sync Command
     case periodicAdvertisingCreateSync          = 0x0044
