@@ -70,40 +70,40 @@ public final class GATTServer {
     private func registerATTHandlers() {
         
         // Exchange MTU
-        let _ = connection.register(exchangeMTU)
+        connection.register(exchangeMTU)
         
         // Read By Group Type
-        let _ = connection.register(readByGroupType)
+        connection.register(readByGroupType)
         
         // Read By Type
-        let _ = connection.register(readByType)
+        connection.register(readByType)
         
         // Find Information
-        let _ = connection.register(findInformation)
+        connection.register(findInformation)
         
         // Find By Type Value
-        let _ = connection.register(findByTypeValue)
+        connection.register(findByTypeValue)
         
         // Write Request
-        let _ = connection.register(writeRequest)
+        connection.register(writeRequest)
         
         // Write Command
-        let _ = connection.register(writeCommand)
+        connection.register(writeCommand)
         
         // Read Request
-        let _ = connection.register(readRequest)
+        connection.register(readRequest)
         
         // Read Blob Request
-        let _ = connection.register(readBlobRequest)
+        connection.register(readBlobRequest)
         
         // Read Multiple Request
-        let _ = connection.register(readMultipleRequest)
+        connection.register(readMultipleRequest)
         
         // Prepare Write Request
-        let _ = connection.register(prepareWriteRequest)
+        connection.register(prepareWriteRequest)
         
         // Execute Write Request
-        let _ = connection.register(executeWriteRequest)
+        connection.register(executeWriteRequest)
     }
     
     @inline(__always)
@@ -122,7 +122,7 @@ public final class GATTServer {
         
         do { let _ = try connection.write() }
         
-        catch { print("Could not send UnlikelyError to client. (\(error))") }
+        catch { log?("Could not send UnlikelyError to client. (\(error))") }
         
         fatalError(message, line: line)
     }
