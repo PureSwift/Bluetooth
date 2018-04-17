@@ -262,12 +262,23 @@ public final class GATTServer {
         if let attribute = group.attributes.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
             
             guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: attribute.value)
-                else { fatalError("Invalid descriptor value") }
+                else { fatalError("Invalid descriptor value \([UInt8](attribute.value))") }
             
             // notify
             if descriptor.configuration.contains(.notify) {
                 
-                let value = [UInt8](attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue)))
+                let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueIndication.length
+                
+                let value: [UInt8]
+                
+                if attribute.value.count > dataSize {
+                    
+                    value = [UInt8]([UInt8](attribute.value).prefix(dataSize))
+                    
+                } else {
+                    
+                    value = [UInt8](attribute.value)
+                }
                 
                 let notification = ATTHandleValueNotification(handle: attributeHandle, value: value)
                 
@@ -277,7 +288,18 @@ public final class GATTServer {
             // indicate
             if descriptor.configuration.contains(.indicate) {
                 
-                let value = [UInt8](attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue)))
+                let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueIndication.length
+                
+                let value: [UInt8]
+                
+                if attribute.value.count > dataSize {
+                    
+                    value = [UInt8]([UInt8](attribute.value).prefix(dataSize))
+                    
+                } else {
+                    
+                    value = [UInt8](attribute.value)
+                }
                 
                 let indication = ATTHandleValueIndication(handle: attributeHandle, value: value)
                 
