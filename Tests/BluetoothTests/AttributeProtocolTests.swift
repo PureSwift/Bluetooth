@@ -365,6 +365,27 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.handle, 0x0008)
             XCTAssertEqual(pdu.value, [0x0a, 0x00, 0xff, 0xff])
+            XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: [0x0a, 0x00, 0xff, 0xff]).byteValue, data)
+        }
+        
+        do {
+            
+            /**
+             Handle Value Indication
+             Opcode: 0x1d
+             Attribute Handle: 0x0008 (8)
+             */
+            
+            let data: [UInt8] = [0x1D, 0x08, 0x00]
+            
+            guard let pdu = ATTHandleValueIndication(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1D)
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.handle, 0x0008)
+            XCTAssertEqual(pdu.value, [])
+            XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: []).byteValue, data)
         }
     }
     
@@ -410,6 +431,8 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.handle, 0x0016)
             XCTAssertEqual(pdu.value, [0x64])
+            
+            XCTAssertEqual(ATTHandleValueNotification(handle: 0x0016, value: [0x64]).byteValue, data)
         }
     }
     
