@@ -695,6 +695,8 @@ final class GATTTests: XCTestCase {
                             else { XCTFail("Did not write \(characteristic.uuid)"); return }
                         
                         XCTAssert(writtenValue == data, "\(characteristic.uuid) \(writtenValue) == \(data)")
+                        
+                        XCTAssertEqual(writtenValue, writtenValuesConfirmed[characteristic.handle.value])
                     }
                 }
             }
@@ -899,7 +901,7 @@ public struct TestProfile {
                                                                 permissions: [.write],
                                                                 properties: [.write, .writeWithoutResponse])
     
-    public static let TestDefinedService = Service(uuid: BluetoothUUID.bit16(0xFEA9),
+    public static let TestDefinedService = Service(uuid: .savantSystems2,
                                                    primary: true,
                                                    characteristics: [
                                                     TestProfile.Read,
