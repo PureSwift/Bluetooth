@@ -26,7 +26,8 @@ final class AttributeProtocolTests: XCTestCase {
         ("testRead", testRead),
         ("testWrite", testWrite),
         ("testFindInformation", testFindInformation),
-        ("testConfigureClientDescriptor", testConfigureClientDescriptor)
+        ("testConfigureClientDescriptor", testConfigureClientDescriptor),
+        ("testDiscovery", testDiscovery)
     ]
     
     func testATTOpcode() {
@@ -629,6 +630,47 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.byteValue, data)
+        }
+    }
+    
+    func testDiscovery() {
+        
+        /**
+         Read: [2, 185, 0]
+         Send: [3, 200, 0]
+         Read: [16, 1, 0, 255, 255, 0, 40]
+         Send: [17, 20, 1, 0, 6, 0, 231, 207, 159, 173, 34, 222, 166, 180, 145, 78, 37, 213, 23, 49, 212, 52, 7, 0, 12, 0, 251, 52, 155, 95, 128, 0, 0, 128, 0, 16, 0, 0, 169, 254, 0, 0, 13, 0, 18, 0, 178, 26, 190, 138, 180, 130, 146, 145, 222, 73, 117, 102, 201, 67, 100, 139]
+         Read: [16, 19, 0, 255, 255, 0, 40]
+         Send: [1, 16, 19, 0, 10]
+         Read: [8, 1, 0, 6, 0, 3, 40]
+         Send: [9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148]
+         Read: [8, 7, 0, 12, 0, 3, 40]
+         Send: [9, 21, 8, 0, 18, 9, 0, 1, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204, 11, 0, 8, 12, 0, 2, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204]
+         Read: [4, 4, 0, 4, 0]
+         Send: [5, 1, 4, 0, 2, 41]
+         Read: [18, 4, 0, 1, 0]
+         */
+        
+        do {
+            
+            let data: [UInt8] = [2, 185, 0]
+            
+            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.clientMTU, 185)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [3, 200, 0]
+            
+            guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.serverMTU, 200)
         }
     }
 }
