@@ -25,7 +25,8 @@ final class AttributeProtocolTests: XCTestCase {
         ("testHandleValueNotification", testHandleValueNotification),
         ("testRead", testRead),
         ("testWrite", testWrite),
-        ("testFindInformation", testFindInformation)
+        ("testFindInformation", testFindInformation),
+        ("testConfigureClientDescriptor", testConfigureClientDescriptor)
     ]
     
     func testATTOpcode() {
@@ -568,6 +569,66 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.data.byteValue, foundData.byteValue)
             XCTAssertEqual("\(pdu.data)", "\(foundData)")
+        }
+    }
+    
+    func testConfigureClientDescriptor() {
+        
+        /**
+         Read: [2, 185, 0]
+         Send: [3, 200, 0]
+         Read: [18, 4, 0, 1, 0]
+         Send: [19]
+         */
+        
+        do {
+            
+            let data: [UInt8] = [2, 185, 0]
+            
+            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.clientMTU, 185)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [3, 200, 0]
+            
+            guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.serverMTU, 200)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [18, 4, 0, 1, 0]
+            
+            guard let pdu = ATTWriteRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.handle, 0x04)
+            XCTAssertEqual(pdu.value, [1, 0])
+            
+            guard let clientConfiguration = GATTClientCharacteristicConfiguration(byteValue: Data(pdu.value))
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(clientConfiguration.byteValue, Data(pdu.value))
+            XCTAssertEqual(clientConfiguration.configuration, [.notify])
+        }
+        
+        do {
+            
+            let data: [UInt8] = [19]
+            
+            guard let pdu = ATTWriteResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
         }
     }
 }
