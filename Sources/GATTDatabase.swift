@@ -22,7 +22,12 @@ public struct GATTDatabase {
     
     public init() { }
     
-    // MARK: - Dynamic Properties
+    public init(services: [GATT.Service]) {
+        
+        services.forEach { add(service: $0) }
+    }
+    
+    // MARK: - Computed Properties
     
     /// Whether the database contains any attributes. 
     public var isEmpty: Bool {
@@ -33,12 +38,14 @@ public struct GATTDatabase {
     /// Attribute representation of the database.
     public var attributes: [Attribute] {
         
-        var attributes = [Attribute]()
+        let attributeCount = attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
         
-        for group in attributeGroups {
-            
-            attributes += group.attributes
-        }
+        var attributes = [Attribute]()
+        attributes.reserveCapacity(attributeCount)
+        
+        attributeGroups.forEach { attributes += $0.attributes }
+        
+        assert(attributes.count == attributeCount)
         
         return attributes
     }
@@ -46,7 +53,7 @@ public struct GATTDatabase {
     // MARK: - Methods
     
     @discardableResult
-    public mutating func add(service: Service) -> UInt16 {
+    public mutating func add(service: GATT.Service) -> UInt16 {
         
         let newHandle = self.newHandle()
         
@@ -71,7 +78,7 @@ public struct GATTDatabase {
     }
     
     /// Clear the database.
-    public mutating func clear() {
+    public mutating func removeAll() {
         
         self.attributeGroups = []
     }
@@ -189,7 +196,7 @@ public extension GATTDatabase {
         
         public let uuid: BluetoothUUID
         
-        public let permissions: BitMaskOptionSet<Permission>
+        public let permissions: BitMaskOptionSet<GATT.Permission>
         
         public var value: Data
         
@@ -197,7 +204,7 @@ public extension GATTDatabase {
         fileprivate init(handle: UInt16,
                          uuid: BluetoothUUID,
                          value: Data = Data(),
-                         permissions: BitMaskOptionSet<Permission> = []) {
+                         permissions: BitMaskOptionSet<GATT.Permission> = []) {
             
             self.handle = handle
             self.uuid = uuid
@@ -224,7 +231,7 @@ public extension GATTDatabase {
         }
         
         /// Initialize attributes from a `Characteristic`.
-        fileprivate static func from(characteristic: Characteristic, handle: UInt16) -> [Attribute] {
+        fileprivate static func from(characteristic: GATT.Characteristic, handle: UInt16) -> [Attribute] {
             
             var currentHandle = handle
             
@@ -267,7 +274,7 @@ public extension GATTDatabase {
         }
         
         /// Initialize attribute with a `Characteristic Descriptor`.
-        private init(descriptor: Descriptor, handle: UInt16) {
+        private init(descriptor: GATT.Descriptor, handle: UInt16) {
             
             self.handle = handle
             self.uuid = descriptor.uuid
@@ -286,13 +293,7 @@ internal extension GATTDatabase {
     ///- Note: For use with `GATTDatabase` only.
     internal struct AttributeGroup {
         
-        var attributes: [Attribute] {
-            
-            willSet {
-                
-                assert(attributes.count == newValue.count, "Cannot modify Service structure")
-            }
-        }
+        var attributes: [Attribute]
         
         var startHandle: UInt16 {
             
@@ -316,12 +317,4 @@ internal extension GATTDatabase {
 public extension GATT {
     
     public typealias Database = GATTDatabase
-}
-
-public extension GATTDatabase {
-    
-    public typealias Service = GATT.Service
-    public typealias Characteristic = GATT.Characteristic
-    public typealias Descriptor = GATT.Descriptor
-    public typealias Permission = GATT.Permission
 }

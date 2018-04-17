@@ -154,6 +154,7 @@ public final class ATTConnection {
     }
     
     /// Registers a callback for an opcode and returns the ID associated with that callback.
+    @discardableResult
     public func register <T: ATTProtocolDataUnit> (_ callback: @escaping (T) -> ()) -> UInt {
         
         let identifier = nextRegisterID
@@ -173,6 +174,7 @@ public final class ATTConnection {
     /// Unregisters the callback associated with the specified identifier.
     ///
     /// - Returns: Whether the callback was unregistered.
+    @discardableResult
     public func unregister(_ identifier: UInt) -> Bool {
         
         guard let index = notifyList.index(where: { $0.identifier == identifier })

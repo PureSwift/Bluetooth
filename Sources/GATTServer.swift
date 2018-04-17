@@ -20,6 +20,8 @@ public final class GATTServer {
     
     public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATT.Error?)?
     
+    public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
+    
     public let maximumPreparedWrites: Int
     
     // Don't modify
@@ -62,46 +64,54 @@ public final class GATTServer {
         return try connection.write()
     }
     
+    /// Update the value of a characteristic attribute.
+    public func writeValue(_ value: Data, forCharacteristic handle: UInt16) {
+        
+        database.write(value, forAttribute: handle)
+        
+        didWriteCharacteristic(handle)
+    }
+    
     // MARK: - Private Methods
     
     @inline(__always)
     private func registerATTHandlers() {
         
         // Exchange MTU
-        let _ = connection.register(exchangeMTU)
+        connection.register(exchangeMTU)
         
         // Read By Group Type
-        let _ = connection.register(readByGroupType)
+        connection.register(readByGroupType)
         
         // Read By Type
-        let _ = connection.register(readByType)
+        connection.register(readByType)
         
         // Find Information
-        let _ = connection.register(findInformation)
+        connection.register(findInformation)
         
         // Find By Type Value
-        let _ = connection.register(findByTypeValue)
+        connection.register(findByTypeValue)
         
         // Write Request
-        let _ = connection.register(writeRequest)
+        connection.register(writeRequest)
         
         // Write Command
-        let _ = connection.register(writeCommand)
+        connection.register(writeCommand)
         
         // Read Request
-        let _ = connection.register(readRequest)
+        connection.register(readRequest)
         
         // Read Blob Request
-        let _ = connection.register(readBlobRequest)
+        connection.register(readBlobRequest)
         
         // Read Multiple Request
-        let _ = connection.register(readMultipleRequest)
+        connection.register(readMultipleRequest)
         
         // Prepare Write Request
-        let _ = connection.register(prepareWriteRequest)
+        connection.register(prepareWriteRequest)
         
         // Execute Write Request
-        let _ = connection.register(executeWriteRequest)
+        connection.register(executeWriteRequest)
     }
     
     @inline(__always)
@@ -120,18 +130,41 @@ public final class GATTServer {
         
         do { let _ = try connection.write() }
         
-        catch { print("Could not send UnlikelyError to client. (\(error))") }
+        catch { log?("Could not send .unlikelyError to client. (\(error))") }
         
         fatalError(message, line: line)
     }
     
+    /// Respond to a client-initiated PDU message.
     @inline(__always)
-    private func respond<T: ATTProtocolDataUnit>(_ response: T) {
+    private func respond <T: ATTProtocolDataUnit> (_ response: T) {
         
         log?("Response: \(response)")
         
         guard let _ = connection.send(response)
             else { fatalError("Could not add PDU to queue: \(response)") }
+    }
+    
+    /// Send a server-initiated PDU message.
+    @inline(__always)
+    private func send (_ indication: ATTHandleValueIndication, response: @escaping (ATTResponse<ATTHandleValueConfirmation>) -> ()) {
+        
+        log?("Indication: \(indication)")
+        
+        let callback: (AnyATTResponse) -> () = { response(ATTResponse<ATTHandleValueConfirmation>($0)) }
+        
+        guard let _ = connection.send(indication, response: (callback, ATTHandleValueIndication.self))
+            else { fatalError("Could not add PDU to queue: \(indication)") }
+    }
+    
+    /// Send a server-initiated PDU message.
+    @inline(__always)
+    private func send (_ notification: ATTHandleValueNotification) {
+        
+        log?("Notification: \(notification)")
+        
+        guard let _ = connection.send(notification)
+            else { fatalError("Could not add PDU to queue: \(notification)") }
     }
     
     private func checkPermissions(_ permissions: BitMaskOptionSet<ATT.AttributePermission>,
@@ -214,6 +247,46 @@ public final class GATTServer {
         database.write(newData, forAttribute: handle)
         
         doResponse(respond(ATTWriteResponse()))
+        
+        didWriteCharacteristic(handle)
+    }
+    
+    private func didWriteCharacteristic(_ attributeHandle: UInt16) {
+        
+        let (group, attribute) = database.attributeGroup(for: attributeHandle)
+        
+        // inform delegate
+        didWrite?(attribute.uuid, attribute.handle, attribute.value)
+        
+        // Client configuration
+        if let attribute = group.attributes.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
+            
+            guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: attribute.value)
+                else { fatalError("Invalid descriptor value") }
+            
+            // notify
+            if descriptor.configuration.contains(.notify) {
+                
+                let value = [UInt8](attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue)))
+                
+                let notification = ATTHandleValueNotification(handle: attributeHandle, value: value)
+                
+                send(notification)
+            }
+            
+            // indicate
+            if descriptor.configuration.contains(.indicate) {
+                
+                let value = [UInt8](attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue)))
+                
+                let indication = ATTHandleValueIndication(handle: attributeHandle, value: value)
+                
+                send(indication) { [unowned self] (confirmation) in
+                    
+                    self.log?("Confirmation: \(confirmation)")
+                }
+            }
+        }
     }
     
     private func handleReadRequest(opcode: ATT.Opcode,
@@ -661,11 +734,18 @@ public final class GATTServer {
         
         log?("Execute Write Request (\(pdu.flag))")
         
+        let preparedWrites = self.preparedWrites
+        self.preparedWrites = []
+        
+        var newValues = [UInt16: Data]()
+        
         switch pdu.flag {
             
-        case .write:
+        case .cancel:
             
-            var newValues = [UInt16: Data]()
+            break // queue always cleared
+            
+        case .write:
             
             // validate
             for write in preparedWrites {
@@ -675,7 +755,6 @@ public final class GATTServer {
                 let newValue = previousValue + write.value
                 
                 // validate offset?
-                
                 newValues[write.handle] = newValue
             }
             
@@ -697,13 +776,14 @@ public final class GATTServer {
                 
                 database.write(newValue, forAttribute: handle)
             }
-            
-        case .cancel: break // queue always cleared
         }
         
-        preparedWrites = []
-        
         respond(ATTExecuteWriteResponse())
+        
+        for handle in newValues.keys {
+            
+            didWriteCharacteristic(handle)
+        }
     }
 }
 
@@ -724,6 +804,21 @@ private extension GATTServer {
 // MARK: - GATTDatabase Extensions
 
 internal extension GATTDatabase {
+    
+    /// Find the enclosing Service attribute group for the specified handle
+    func attributeGroup(for handle: UInt16) -> (group: AttributeGroup, attribute: Attribute) {
+        
+        for group in attributeGroups {
+            
+            for attribute in group.attributes {
+                
+                guard attribute.handle != handle
+                    else { return (group, attribute) }
+            }
+        }
+        
+        fatalError("Invalid handle \(handle)")
+    }
     
     /// Used for Service discovery. Should return tuples with the Service start handle, end handle and UUID.
     func readByGroupType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] {
