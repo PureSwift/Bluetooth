@@ -1774,21 +1774,27 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit {
     /// The handle of the attribute.
     public var value: [UInt8]
     
+    public init(handle: UInt16, value: [UInt8]) {
+        
+        self.handle = handle
+        self.value = value
+    }
+    
     public init?(byteValue: [UInt8]) {
         
-        let type = ATTHandleValueNotification.self
+        let minimumLength = type(of: self).length
         
-        guard byteValue.count >= type.length
+        guard byteValue.count >= minimumLength
             else { return nil }
         
         let attributeOpcodeByte = byteValue[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
         
-        if byteValue.count > type.length {
+        if byteValue.count > minimumLength {
             
             self.value = Array(byteValue.suffix(from: 3))
             
@@ -1800,11 +1806,9 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit {
     
     public var byteValue: [UInt8] {
         
-        let type = ATTHandleValueNotification.self
-        
         let handleBytes = handle.littleEndian.bytes
         
-        return [type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
+        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
     }
 }
 
@@ -1823,6 +1827,12 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
     
     /// The handle of the attribute.
     public var value: [UInt8]
+    
+    public init(handle: UInt16, value: [UInt8]) {
+        
+        self.handle = handle
+        self.value = value
+    }
     
     public init?(byteValue: [UInt8]) {
         
