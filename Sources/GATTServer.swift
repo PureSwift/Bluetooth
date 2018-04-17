@@ -127,6 +127,7 @@ public final class GATTServer {
         fatalError(message, line: line)
     }
     
+    /// Respond to a client-initiated PDU message.
     @inline(__always)
     private func respond <T: ATTProtocolDataUnit> (_ response: T) {
         
@@ -134,6 +135,28 @@ public final class GATTServer {
         
         guard let _ = connection.send(response)
             else { fatalError("Could not add PDU to queue: \(response)") }
+    }
+    
+    /// Send a server-initiated PDU message.
+    @inline(__always)
+    private func send (_ indication: ATTHandleValueIndication, response: @escaping (ATTResponse<ATTHandleValueConfirmation>) -> ()) {
+        
+        log?("Indication: \(indication)")
+        
+        let callback: (AnyATTResponse) -> () = { response(ATTResponse<ATTHandleValueConfirmation>($0)) }
+        
+        guard let _ = connection.send(indication, response: (callback, ATTHandleValueIndication.self))
+            else { fatalError("Could not add PDU to queue: \(indication)") }
+    }
+    
+    /// Send a server-initiated PDU message.
+    @inline(__always)
+    private func send (_ notification: ATTHandleValueNotification) {
+        
+        log?("Notification: \(notification)")
+        
+        guard let _ = connection.send(notification)
+            else { fatalError("Could not add PDU to queue: \(notification)") }
     }
     
     private func checkPermissions(_ permissions: BitMaskOptionSet<ATT.AttributePermission>,
@@ -236,17 +259,24 @@ public final class GATTServer {
             // notify
             if descriptor.configuration.contains(.notify) {
                 
-                let value = attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue))
+                let value = [UInt8](attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue)))
                 
                 let notification = ATTHandleValueNotification(handle: attributeHandle, value: value)
                 
-                connection.send(notification)
+                send(notification)
             }
             
             // indicate
             if descriptor.configuration.contains(.indicate) {
                 
+                let value = [UInt8](attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue)))
                 
+                let indication = ATTHandleValueIndication(handle: attributeHandle, value: value)
+                
+                send(indication) { [unowned self] (confirmation) in
+                    
+                    self.log?("Confirmation: \(confirmation)")
+                }
             }
         }
     }
