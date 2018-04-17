@@ -537,6 +537,21 @@ final class GATTTests: XCTestCase {
         
         server.willWrite = clientWillWriteServer
         
+        var writtenValuesConfirmed = [UInt16: Data]()
+        
+        defer { XCTAssertEqual(writtenValues, writtenValuesConfirmed) }
+        
+        func clientDidWriteServer(uuid: BluetoothUUID, handle: UInt16, value: Data) {
+            
+            print("\(#function) \(uuid) (\(handle))")
+            
+            XCTAssertEqual(writtenValues[handle], value, "Value not written")
+            
+            writtenValuesConfirmed[handle] = value
+        }
+        
+        server.didWrite = clientDidWriteServer
+        
         func discoverAllPrimaryServices() {
             
             client.discoverAllPrimaryServices {
