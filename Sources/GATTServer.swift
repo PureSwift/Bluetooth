@@ -20,6 +20,8 @@ public final class GATTServer {
     
     public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATT.Error?)?
     
+    public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
+    
     public let maximumPreparedWrites: Int
     
     // Don't modify
@@ -214,6 +216,8 @@ public final class GATTServer {
         database.write(newData, forAttribute: handle)
         
         doResponse(respond(ATTWriteResponse()))
+        
+        didWrite?(attribute.uuid, handle, newData)
     }
     
     private func handleReadRequest(opcode: ATT.Opcode,
@@ -661,11 +665,18 @@ public final class GATTServer {
         
         log?("Execute Write Request (\(pdu.flag))")
         
+        let preparedWrites = self.preparedWrites
+        self.preparedWrites = []
+        
+        var newValues = [UInt16: Data]()
+        
         switch pdu.flag {
             
-        case .write:
+        case .cancel:
             
-            var newValues = [UInt16: Data]()
+            break // queue always cleared
+            
+        case .write:
             
             // validate
             for write in preparedWrites {
@@ -675,7 +686,6 @@ public final class GATTServer {
                 let newValue = previousValue + write.value
                 
                 // validate offset?
-                
                 newValues[write.handle] = newValue
             }
             
@@ -697,13 +707,21 @@ public final class GATTServer {
                 
                 database.write(newValue, forAttribute: handle)
             }
-            
-        case .cancel: break // queue always cleared
         }
         
-        preparedWrites = []
-        
         respond(ATTExecuteWriteResponse())
+        
+        if let didWrite = self.didWrite {
+            
+            for (handle, data) in newValues {
+                
+                let attribute = database[handle]
+                
+                assert(attribute.value == data, "Attribute not written")
+                
+                didWrite(attribute.uuid, attribute.handle, attribute.value)
+            }
+        }
     }
 }
 
