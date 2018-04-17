@@ -43,10 +43,6 @@ public enum ATT {
 /// ATT protocol opcodes.
 public enum ATTOpcode: UInt8 {
     
-    // Masks
-    public static let commandMask                   = 0x40
-    public static let signedMask                    = 0x80
-    
     /// Error response
     case errorResponse                              = 0x01
     
