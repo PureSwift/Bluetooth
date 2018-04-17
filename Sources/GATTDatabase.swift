@@ -78,14 +78,6 @@ public struct GATTDatabase {
     }
     
     /// Clear the database.
-    @available(*, unavailable, renamed: "removeAll")
-    public mutating func clear() {
-        
-        print("Using deprecated method \(#function)")
-        self.removeAll()
-    }
-    
-    /// Clear the database.
     public mutating func removeAll() {
         
         self.attributeGroups = []

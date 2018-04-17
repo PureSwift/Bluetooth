@@ -32,8 +32,6 @@ final class GATTDatabaseTests: XCTestCase {
     }
 }
 
-
-
 extension GATTDatabase {
     
     func dump() {
