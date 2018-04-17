@@ -22,7 +22,7 @@ public struct GATTDatabase {
     
     public init() { }
     
-    // MARK: - Dynamic Properties
+    // MARK: - Computed Properties
     
     /// Whether the database contains any attributes. 
     public var isEmpty: Bool {
