@@ -222,13 +222,33 @@ public final class GATTServer {
     
     private func didWriteCharacteristic(_ attributeHandle: UInt16) {
         
-        let attribute = database[attributeHandle]
+        let (group, attribute) = database.attributeGroup(for: attributeHandle)
         
         // inform delegate
         didWrite?(attribute.uuid, attribute.handle, attribute.value)
         
-        // notify
-        
+        // Client configuration
+        if let attribute = group.attributes.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
+            
+            guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: attribute.value)
+                else { fatalError("Invalid descriptor value") }
+            
+            // notify
+            if descriptor.configuration.contains(.notify) {
+                
+                let value = attribute.value.prefix(upTo: Int(connection.maximumTransmissionUnit.rawValue))
+                
+                let notification = ATTHandleValueNotification(handle: attributeHandle, value: value)
+                
+                connection.send(notification)
+            }
+            
+            // indicate
+            if descriptor.configuration.contains(.indicate) {
+                
+                
+            }
+        }
     }
     
     private func handleReadRequest(opcode: ATT.Opcode,
@@ -746,6 +766,21 @@ private extension GATTServer {
 // MARK: - GATTDatabase Extensions
 
 internal extension GATTDatabase {
+    
+    /// Find the enclosing Service attribute group for the specified handle
+    func attributeGroup(for handle: UInt16) -> (group: AttributeGroup, attribute: Attribute) {
+        
+        for group in attributeGroups {
+            
+            for attribute in group.attributes {
+                
+                guard attribute.handle != handle
+                    else { return (group, attribute) }
+            }
+        }
+        
+        fatalError("Invalid handle \(handle)")
+    }
     
     /// Used for Service discovery. Should return tuples with the Service start handle, end handle and UUID.
     func readByGroupType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] {

@@ -8,6 +8,14 @@
 
 import Foundation
 
+/// GATT Characteristic Descriptor
+public protocol GATTDescriptor {
+    
+    init?(byteValue: Data)
+    
+    var byteValue: Data { get }
+}
+
 /// GATT Client Characteristic Configuration Descriptor
 ///
 /// The Client Characteristic Configuration descriptor defines how the characteristic may be configured by a specific client.
@@ -31,7 +39,7 @@ public struct GATTClientCharacteristicConfiguration {
         self.configuration = configuration
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(byteValue: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
@@ -39,15 +47,15 @@ public struct GATTClientCharacteristicConfiguration {
         self.configuration = BitMaskOptionSet<Configuration>(rawValue: byteValue[0])
     }
     
-    public var byteValue: [UInt8] {
+    public var byteValue: Data {
         
-        return [configuration.rawValue]
+        return Data([configuration.rawValue])
     }
     
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: Data(byteValue),
+                               value: byteValue,
                                permissions: [.read, .write])
     }
 }
