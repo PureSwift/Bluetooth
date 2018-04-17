@@ -122,13 +122,13 @@ public final class GATTServer {
         
         do { let _ = try connection.write() }
         
-        catch { log?("Could not send UnlikelyError to client. (\(error))") }
+        catch { log?("Could not send .unlikelyError to client. (\(error))") }
         
         fatalError(message, line: line)
     }
     
     @inline(__always)
-    private func respond<T: ATTProtocolDataUnit>(_ response: T) {
+    private func respond <T: ATTProtocolDataUnit> (_ response: T) {
         
         log?("Response: \(response)")
         
@@ -217,7 +217,18 @@ public final class GATTServer {
         
         doResponse(respond(ATTWriteResponse()))
         
-        didWrite?(attribute.uuid, handle, newData)
+        didWriteCharacteristic(handle)
+    }
+    
+    private func didWriteCharacteristic(_ attributeHandle: UInt16) {
+        
+        let attribute = database[attributeHandle]
+        
+        // inform delegate
+        didWrite?(attribute.uuid, attribute.handle, attribute.value)
+        
+        // notify
+        
     }
     
     private func handleReadRequest(opcode: ATT.Opcode,
@@ -711,16 +722,9 @@ public final class GATTServer {
         
         respond(ATTExecuteWriteResponse())
         
-        if let didWrite = self.didWrite {
+        for handle in newValues.keys {
             
-            for (handle, data) in newValues {
-                
-                let attribute = database[handle]
-                
-                assert(attribute.value == data, "Attribute not written")
-                
-                didWrite(attribute.uuid, attribute.handle, attribute.value)
-            }
+            didWriteCharacteristic(handle)
         }
     }
 }
