@@ -49,6 +49,7 @@
 		6E35CB27207FFB030039619C /* DefinedUUIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */; };
 		6E35CB28207FFB030039619C /* DefinedUUIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */; };
 		6E443A072085CF12005F4D5F /* GATTDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A062085CF12005F4D5F /* GATTDatabaseTests.swift */; };
+		6E443A0A2085D108005F4D5F /* TestProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A082085D0EA005F4D5F /* TestProfile.swift */; };
 		6E49B23E20532D45002EA5DC /* HCIEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DEE1CAF891E00A40C4D /* HCIEvent.swift */; };
 		6E49B23F20532D45002EA5DC /* HCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84E051CAF8AD500A40C4D /* HCI.swift */; };
 		6E49B24020532D45002EA5DC /* LinkControlCommandParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DF51CAF891E00A40C4D /* LinkControlCommandParameter.swift */; };
@@ -348,6 +349,7 @@
 		6E32291B1FCE4C4F0035605D /* LowEnergyAddressType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyAddressType.swift; sourceTree = "<group>"; };
 		6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinedUUIDExtension.swift; sourceTree = "<group>"; };
 		6E443A062085CF12005F4D5F /* GATTDatabaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTDatabaseTests.swift; sourceTree = "<group>"; };
+		6E443A082085D0EA005F4D5F /* TestProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestProfile.swift; sourceTree = "<group>"; };
 		6E49B26520532D45002EA5DC /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E5808BD207D5B2E008F98BB /* LowEnergyFeaturesCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyFeaturesCommands.swift; sourceTree = "<group>"; };
 		6E60A2BE2068928400E42351 /* BluetoothHostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothHostController.swift; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 				6E14247F206CFFC500BF72BC /* HostController.swift */,
 				6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */,
 				6E65DF942075D568005BD2A0 /* XCTest.swift */,
+				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
@@ -1155,6 +1158,7 @@
 				6E65DF912075CD9F005BD2A0 /* UUIDTests.swift in Sources */,
 				6E740C6720659CE8006589F6 /* HCITests.swift in Sources */,
 				6E65DF932075D29C005BD2A0 /* iBeaconTests.swift in Sources */,
+				6E443A0A2085D108005F4D5F /* TestProfile.swift in Sources */,
 				6E65DF952075D568005BD2A0 /* XCTest.swift in Sources */,
 				6E04273D20800B0700AD3C75 /* DefinedUUIDTests.swift in Sources */,
 				6E04273A208008A200AD3C75 /* BluetoothUUIDTests.swift in Sources */,

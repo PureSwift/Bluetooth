@@ -22,6 +22,11 @@ public struct GATTDatabase {
     
     public init() { }
     
+    public init(services: [GATT.Service]) {
+        
+        services.forEach { add(service: $0) }
+    }
+    
     // MARK: - Computed Properties
     
     /// Whether the database contains any attributes. 
