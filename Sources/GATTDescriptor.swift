@@ -30,7 +30,7 @@ public struct GATTClientCharacteristicConfiguration {
     
     public static let uuid: BluetoothUUID = .clientCharacteristicConfiguration
     
-    public static let length = 1
+    public static let length = 2
     
     public var configuration: BitMaskOptionSet<Configuration>
     
@@ -44,12 +44,16 @@ public struct GATTClientCharacteristicConfiguration {
         guard byteValue.count == type(of: self).length
             else { return nil }
         
-        self.configuration = BitMaskOptionSet<Configuration>(rawValue: byteValue[0])
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        
+        self.configuration = BitMaskOptionSet<Configuration>(rawValue: rawValue)
     }
     
     public var byteValue: Data {
         
-        return Data([configuration.rawValue])
+        let bytes = configuration.rawValue.littleEndian.bytes
+        
+        return Data([bytes.0, bytes.1])
     }
     
     public var descriptor: GATT.Descriptor {
@@ -63,18 +67,18 @@ public struct GATTClientCharacteristicConfiguration {
 public extension GATTClientCharacteristicConfiguration {
     
     /// GATT Client Characteristic Configuration Options
-    public enum Configuration: UInt8, BitMaskOption {
+    public enum Configuration: UInt16, BitMaskOption {
         
         #if swift(>=3.2)
         #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
+        public typealias RawValue = UInt16
         #endif
         
         /// Notifications enabled
-        case notify = 0b01
+        case notify = 0x01
         
         /// Indications enabled
-        case indicate = 0b10
+        case indicate = 0x02
         
         public static let all: Set<Configuration> = [.notify, .indicate]
     }
