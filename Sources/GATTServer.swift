@@ -64,6 +64,14 @@ public final class GATTServer {
         return try connection.write()
     }
     
+    /// Update the value of a characteristic attribute.
+    public func writeValue(_ value: Data, forCharacteristic handle: UInt16) {
+        
+        database.write(value, forAttribute: handle)
+        
+        didWriteCharacteristic(handle)
+    }
+    
     // MARK: - Private Methods
     
     @inline(__always)
