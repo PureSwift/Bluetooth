@@ -116,3 +116,28 @@ public enum GATT {
         case writableAuxiliaries    = 0x02
     }
 }
+
+public extension GATT.CharacteristicProperty {
+    
+    var name: String {
+        
+        switch self {
+        case .broadcast: return "Broadcast"
+        case .read: return "Read"
+        case .write: return "Write"
+        case .writeWithoutResponse: return "Write without Response"
+        case .notify: return "Notify"
+        case .indicate: return "Indicate"
+        case .signedWrite: return "Signed Write"
+        case .extendedProperties: return "Extended Properties"
+        }
+    }
+}
+
+extension GATT.CharacteristicProperty: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return name
+    }
+}
