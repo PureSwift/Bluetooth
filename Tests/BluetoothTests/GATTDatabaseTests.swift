@@ -38,7 +38,7 @@ extension GATTDatabase {
         
         print("GATT Database:")
         
-        for attribute in self.attributes {
+        for attribute in self {
             
             let type: Any = GATT.UUID.init(uuid: attribute.uuid as BluetoothUUID) ?? attribute.uuid
             

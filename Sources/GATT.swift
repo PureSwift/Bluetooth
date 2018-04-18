@@ -49,6 +49,12 @@ public enum GATT {
             return .bit16(rawValue)
         }
     }
+    
+}
+
+// MARK: - Characteristic Descriptor
+
+public extension GATT {
 
     /// GATT Characteristic Descriptors
     public enum CharacteristicDescriptor {
@@ -72,6 +78,12 @@ public enum GATT {
         public static var aggregateFormat: BluetoothUUID { return .characteristicAggregateFormat }
     }
     
+}
+
+// MARK: - Characteristic Property
+
+public extension GATT {
+
     /// GATT Characteristic Properties Bitfield valuess
     public enum CharacteristicProperty: UInt8, BitMaskOption {
         
@@ -101,7 +113,39 @@ public enum GATT {
                                                                    .signedWrite,
                                                                    .extendedProperties]
     }
+}
+
+public extension GATT.CharacteristicProperty {
     
+    var name: String {
+        
+        switch self {
+        case .broadcast: return "Broadcast"
+        case .read: return "Read"
+        case .write: return "Write"
+        case .writeWithoutResponse: return "Write without Response"
+        case .notify: return "Notify"
+        case .indicate: return "Indicate"
+        case .signedWrite: return "Signed Write"
+        case .extendedProperties: return "Extended Properties"
+        }
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension GATT.CharacteristicProperty: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return name
+    }
+}
+
+// MARK: - Characteristic Extended Property
+
+public extension GATT {
+
     /// GATT Characteristic Extended Properties Bitfield values.
     /// 
     /// The Characteristic Extended Properties bit field describes additional 

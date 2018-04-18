@@ -13,6 +13,7 @@ public struct GATTDatabase {
     
     // MARK: - Internal Properties
     
+    @_versioned
     internal private(set) var attributeGroups = [AttributeGroup]()
     
     /// Do not access directly, use `newHandle()`
@@ -36,9 +37,9 @@ public struct GATTDatabase {
     }
     
     /// Attribute representation of the database.
-    public var attributes: [Attribute] {
+    internal var attributes: [Attribute] {
         
-        let attributeCount = attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
+        let attributeCount = self.count
         
         var attributes = [Attribute]()
         attributes.reserveCapacity(attributeCount)
@@ -48,6 +49,12 @@ public struct GATTDatabase {
         assert(attributes.count == attributeCount)
         
         return attributes
+    }
+    
+    /// Number of attributes in the database.
+    public var count: Int {
+        
+        return attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
     }
     
     // MARK: - Methods
@@ -95,11 +102,11 @@ public struct GATTDatabase {
     /// Write the value to attribute specified by the handle.
     public mutating func write(_ value: Data, forAttribute handle: UInt16) {
         
-        self[handle].value = value
+        self[handle: handle].value = value
     }
     
     /// The handle of the service at the specified index.
-    public func serviceHandles(ofService index: Int) -> (start: UInt16, end: UInt16) {
+    public func serviceHandles(at index: Int) -> (start: UInt16, end: UInt16) {
         
         let service = attributeGroups[index]
         
@@ -108,8 +115,14 @@ public struct GATTDatabase {
     
     // MARK: - Subscripting
     
+    /// The attribute at the specified index.
+    public subscript(index: Int) -> Attribute {
+        
+        get { return attributes[index] }
+    }
+    
     /// The attribute with the specified handle.
-    public private(set) subscript(handle: UInt16) -> Attribute {
+    public private(set) subscript(handle handle: UInt16) -> Attribute {
         
         get {
             
@@ -155,39 +168,47 @@ public struct GATTDatabase {
     }
 }
 
+extension GATTDatabase: Collection {
+    
+    public func index(after index: Int) -> Int {
+        
+        return index + 1
+    }
+    
+    public var startIndex: Int {
+        
+        return 0
+    }
+    
+    public var endIndex: Int {
+        
+        return count
+    }
+}
+
+#if swift(>=3.3)
+#elseif swift(>=3.0)
+extension GATTDatabase {
+
+    typealias Slice = Swift.RandomAccessSlice
+}
+#endif
+
+extension GATTDatabase: RandomAccessCollection {
+    
+    public subscript(bounds: Range<Int>) -> Slice<GATTDatabase> {
+        
+        return Slice<GATTDatabase>(base: self, bounds: bounds)
+    }
+    
+    public func makeIterator() -> IndexingIterator<GATTDatabase> {
+        return IndexingIterator(_elements: self)
+    }
+}
+
 // MARK: - Supporting Types
 
 public extension GATTDatabase {
-    
-    /// GATT Include Declaration
-    public struct Include {
-        
-        /// Included service handle
-        public var serviceHandle: UInt16
-        
-        /// End group handle
-        public var endGroupHandle: UInt16
-        
-        /// Included Service UUID
-        public var serviceUUID: BluetoothUUID
-        
-        public init(serviceHandle: UInt16, endGroupHandle: UInt16, serviceUUID: BluetoothUUID) {
-            
-            self.serviceHandle = serviceHandle
-            self.endGroupHandle = endGroupHandle
-            self.serviceUUID = serviceUUID
-        }
-        
-        /// ATT Attribute Value
-        fileprivate var littleEndian: [UInt8] {
-            
-            let handleBytes = serviceHandle.littleEndian.bytes
-            
-            let endGroupBytes = endGroupHandle.littleEndian.bytes
-            
-            return [handleBytes.0, handleBytes.1, endGroupBytes.0, endGroupBytes.1] + [UInt8](serviceUUID.littleEndian.data)
-        }
-    }
     
     /// ATT Attribute
     public struct Attribute {
@@ -222,7 +243,7 @@ public extension GATTDatabase {
         }
         
         /// Initialize attribute with an `Include Declaration`.
-        fileprivate init(include: Include, handle: UInt16) {
+        fileprivate init(include: GATT.Include, handle: UInt16) {
             
             self.handle = handle
             self.uuid = GATT.UUID.include.uuid
