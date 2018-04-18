@@ -21,12 +21,12 @@ public extension GATT {
         
         public var characteristics: [Characteristic]
         
-        public var includedServices: [IncludedService]
+        public var includedServices: [Include]
         
         public init(uuid: BluetoothUUID = BluetoothUUID(),
                     primary: Bool = true,
                     characteristics: [Characteristic] = [],
-                    includedServices: [IncludedService] = []) {
+                    includedServices: [Include] = []) {
             
             self.uuid = uuid
             self.characteristics = characteristics
@@ -35,10 +35,34 @@ public extension GATT {
         }
     }
     
-    /// GATT Included Service Declaration
-    public struct IncludedService {
+    /// GATT Include Declaration
+    public struct Include {
         
-        // TODO: Implement Included Service
+        /// Included service handle
+        public var serviceHandle: UInt16
+        
+        /// End group handle
+        public var endGroupHandle: UInt16
+        
+        /// Included Service UUID
+        public var serviceUUID: BluetoothUUID
+        
+        public init(serviceHandle: UInt16, endGroupHandle: UInt16, serviceUUID: BluetoothUUID) {
+            
+            self.serviceHandle = serviceHandle
+            self.endGroupHandle = endGroupHandle
+            self.serviceUUID = serviceUUID
+        }
+        
+        /// ATT Attribute Value
+        internal var littleEndian: [UInt8] {
+            
+            let handleBytes = serviceHandle.littleEndian.bytes
+            
+            let endGroupBytes = endGroupHandle.littleEndian.bytes
+            
+            return [handleBytes.0, handleBytes.1, endGroupBytes.0, endGroupBytes.1] + [UInt8](serviceUUID.littleEndian.data)
+        }
     }
     
     /// GATT Characteristic

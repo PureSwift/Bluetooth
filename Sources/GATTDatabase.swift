@@ -13,6 +13,7 @@ public struct GATTDatabase {
     
     // MARK: - Internal Properties
     
+    @_versioned
     internal private(set) var attributeGroups = [AttributeGroup]()
     
     /// Do not access directly, use `newHandle()`
@@ -105,7 +106,7 @@ public struct GATTDatabase {
     }
     
     /// The handle of the service at the specified index.
-    public func serviceHandles(ofService index: Int) -> (start: UInt16, end: UInt16) {
+    public func serviceHandles(at index: Int) -> (start: UInt16, end: UInt16) {
         
         let service = attributeGroups[index]
         
@@ -191,36 +192,6 @@ extension GATTDatabase: RandomAccessCollection { }
 
 public extension GATTDatabase {
     
-    /// GATT Include Declaration
-    public struct Include {
-        
-        /// Included service handle
-        public var serviceHandle: UInt16
-        
-        /// End group handle
-        public var endGroupHandle: UInt16
-        
-        /// Included Service UUID
-        public var serviceUUID: BluetoothUUID
-        
-        public init(serviceHandle: UInt16, endGroupHandle: UInt16, serviceUUID: BluetoothUUID) {
-            
-            self.serviceHandle = serviceHandle
-            self.endGroupHandle = endGroupHandle
-            self.serviceUUID = serviceUUID
-        }
-        
-        /// ATT Attribute Value
-        fileprivate var littleEndian: [UInt8] {
-            
-            let handleBytes = serviceHandle.littleEndian.bytes
-            
-            let endGroupBytes = endGroupHandle.littleEndian.bytes
-            
-            return [handleBytes.0, handleBytes.1, endGroupBytes.0, endGroupBytes.1] + [UInt8](serviceUUID.littleEndian.data)
-        }
-    }
-    
     /// ATT Attribute
     public struct Attribute {
         
@@ -254,7 +225,7 @@ public extension GATTDatabase {
         }
         
         /// Initialize attribute with an `Include Declaration`.
-        fileprivate init(include: Include, handle: UInt16) {
+        fileprivate init(include: GATT.Include, handle: UInt16) {
             
             self.handle = handle
             self.uuid = GATT.UUID.include.uuid
