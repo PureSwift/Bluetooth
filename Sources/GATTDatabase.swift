@@ -36,9 +36,9 @@ public struct GATTDatabase {
     }
     
     /// Attribute representation of the database.
-    public var attributes: [Attribute] {
+    internal var attributes: [Attribute] {
         
-        let attributeCount = attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
+        let attributeCount = self.count
         
         var attributes = [Attribute]()
         attributes.reserveCapacity(attributeCount)
@@ -48,6 +48,12 @@ public struct GATTDatabase {
         assert(attributes.count == attributeCount)
         
         return attributes
+    }
+    
+    /// Number of attributes in the database.
+    public var count: Int {
+        
+        return attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
     }
     
     // MARK: - Methods
@@ -95,7 +101,7 @@ public struct GATTDatabase {
     /// Write the value to attribute specified by the handle.
     public mutating func write(_ value: Data, forAttribute handle: UInt16) {
         
-        self[handle].value = value
+        self[handle: handle].value = value
     }
     
     /// The handle of the service at the specified index.
@@ -108,8 +114,14 @@ public struct GATTDatabase {
     
     // MARK: - Subscripting
     
+    /// The attribute at the specified index.
+    public subscript(index: Int) -> Attribute {
+        
+        get { return attributes[index] }
+    }
+    
     /// The attribute with the specified handle.
-    public private(set) subscript(handle: UInt16) -> Attribute {
+    public private(set) subscript(handle handle: UInt16) -> Attribute {
         
         get {
             
@@ -154,6 +166,26 @@ public struct GATTDatabase {
         return lastHandle
     }
 }
+
+extension GATTDatabase: Collection {
+    
+    public func index(after index: Int) -> Int {
+        
+        return index + 1
+    }
+    
+    public var startIndex: Int {
+        
+        return 0
+    }
+    
+    public var endIndex: Int {
+        
+        return count
+    }
+}
+
+extension GATTDatabase: RandomAccessCollection { }
 
 // MARK: - Supporting Types
 
