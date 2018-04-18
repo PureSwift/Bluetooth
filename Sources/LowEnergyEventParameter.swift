@@ -50,7 +50,7 @@ public extension LowEnergyEvent {
         public let handle: UInt16 // Connection_Handle
         
         /// Connection role (master or slave).
-        public let role: Role // Role
+        public let role: LowEnergyRole // Role
         
         /// Peer Bluetooth address type.
         public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
@@ -115,7 +115,7 @@ public extension LowEnergyEvent {
             
             // Parse enums and values ranges
             guard let status = Status(rawValue: statusByte),
-                let role = Role(rawValue: roleByte),
+                let role = LowEnergyRole(rawValue: roleByte),
                 let peerAddressType = LowEnergyAddressType(rawValue: peerAddressTypeByte),
                 let supervisionTimeout = SupervisionTimeout(rawValue: supervisionTimeoutRaw),
                 let masterClockAccuracy = MasterClockAccuracy(rawValue: masterClockAccuracyByte)
@@ -130,16 +130,6 @@ public extension LowEnergyEvent {
             self.latency = ConnectionInterval(rawValue: latencyRawValue)
             self.supervisionTimeout = supervisionTimeout
             self.masterClockAccuracy = masterClockAccuracy
-        }
-        
-        /// Connection role
-        public enum Role: UInt8 {
-            
-            /// Connection is master.
-            case master
-            
-            /// Connection is slave
-            case slave
         }
         
         /// Connection interval / latency used on this connection.
@@ -440,6 +430,184 @@ public extension LowEnergyEvent {
             self.txPhy = txPhy
             self.rxPhy = rxPhy
         }
-        
     }
+    
+    public struct EnhancedConnectionCompleteEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x3E
+        
+        public static let length: Int = 30
+        
+        public let status: HCIStatus
+        
+        public let connectionHandle: UInt16
+        
+        public let role: LowEnergyRole
+        
+        /// Peer Bluetooth address type.
+        public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
+        
+        /// Public Device Address, or Random Device Address, Public Identity Address or
+        /// Random (static) Identity Address of the device to be con- nected.
+        public let peerAddress: Address
+        
+        /// Resolvable Private Address being used by the local device for this connection.
+        /// This is only valid when the Own_Address_Type (from the HCI_LE_Create_Connection,
+        /// HCI_LE_Set_Advertising_Parameters, HCI_LE_Set_Extended_Advertising_Parameters, or
+        /// HCI_LE_Extended_Create_Connection commands) is set to 0x02 or 0x03, and the Controller
+        /// generated a resolvable private address for the local device using a non-zero local IRK.
+        /// For other Own_Address_Type values, the Controller shall return all zeros.
+        public let localResolvablePrivateAddress: Address
+        
+        /// Resolvable Private Address being used by the peer device for this con- nection.
+        /// This is only valid for Peer_Address_Type 0x02 and 0x03. For other Peer_Address_Type
+        /// values, the Controller shall return all zeros.
+        public let peerResolvablePrivateAddress: Address
+        
+        /// Connection interval used on this connection.
+        ///
+        /// Range: 0x0006 to 0x0C80
+        /// Time = N * 1.25 msec
+        /// Time Range: 7.5 msec to 4000 msec.
+        public let interval: ConnectionInterval
+
+        /// Slave latency for the connection in number of connection events.
+        /// Range: 0x0000 to 0x01F3
+        public let latency: LowEnergyConnectionLatency
+        
+        /// Connection supervision timeout. Range: 0x000A to 0x0C80
+        /// Time = N * 10 ms
+        /// Time Range: 100 ms to 32 s
+        public let supervisionTimeout: LowEnergySupervisionTimeout
+        
+        public let masterClockAccuracy: MasterClockAccuracy
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            guard let status = HCIStatus(rawValue: byteValue[0])
+                else { return nil }
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            
+            guard let role = LowEnergyRole(rawValue: byteValue[3])
+                else { return nil }
+            
+            guard let peerAddressType = LowEnergyAddressType(rawValue: byteValue[4])
+                else { return nil }
+            
+            let peerAddress = Address(littleEndian: Address(bytes: (byteValue[5],
+                                                    byteValue[6], byteValue[7],
+                                                    byteValue[8], byteValue[9],
+                                                    byteValue[10])))
+            
+            let localResolvableprivateAddress = Address(littleEndian: Address(bytes: (byteValue[11],
+                                byteValue[12], byteValue[13],
+                                byteValue[14], byteValue[15],
+                                byteValue[16])))
+            
+            let peerResolvablePrivateAddress = Address(littleEndian: Address(bytes: (byteValue[17],
+                                byteValue[18], byteValue[19],
+                                byteValue[20], byteValue[21],
+                                byteValue[22])))
+            
+            let connInternal = ConnectionInterval(rawValue: UInt16(bytes: (byteValue[23], byteValue[24])))
+            
+            guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(bytes: (byteValue[25], byteValue[26])))
+                else { return nil }
+            
+            guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(bytes: (byteValue[27], byteValue[28])))
+                else { return nil }
+
+            guard let masterClockAccuracy = MasterClockAccuracy(rawValue: byteValue[29])
+                else { return nil }
+            
+            self.status = status
+            self.connectionHandle = handle
+            self.role = role
+            self.peerAddressType = peerAddressType
+            self.peerAddress = peerAddress
+            self.localResolvablePrivateAddress = localResolvableprivateAddress
+            self.peerResolvablePrivateAddress = peerResolvablePrivateAddress
+            self.interval = connInternal
+            self.latency = latency
+            self.supervisionTimeout = supervisionTimeout
+            self.masterClockAccuracy = masterClockAccuracy
+        }
+    }
+    
+    public enum MasterClockAccuracy: UInt8 { // Master_Clock_Accuracy
+        
+        case ppm500     = 0x00
+        case ppm250     = 0x01
+        case ppm150     = 0x02
+        case ppm100     = 0x03
+        case ppm75      = 0x04
+        case ppm50      = 0x05
+        case ppm30      = 0x06
+        case ppm20      = 0x07
+    }
+    
+    /// Connection interval / latency used on this connection.
+    ///
+    /// Range: 0x0006 to 0x0C80
+    /// Time = N * 1.25 msec
+    /// Time Range: 7.5 msec to 4000 msec.
+    public struct ConnectionInterval: RawRepresentable, Equatable, Hashable, Comparable {
+        
+        /// 7.5 msec
+        public static let min = ConnectionInterval(0x0006)
+        
+        /// 4000 msec
+        public static let max = ConnectionInterval(0x0C80)
+        
+        public let rawValue: UInt16
+        
+        public init(rawValue: UInt16) {
+            
+            self.rawValue = rawValue
+        }
+        
+        /// Time = N * 1.25 msec
+        public var miliseconds: Double {
+            
+            return Double(rawValue) * 1.25
+        }
+        
+        // Private, unsafe
+        private init(_ rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
+        
+        // Equatable
+        public static func == (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
+            
+            return lhs.rawValue == rhs.rawValue
+        }
+        
+        // Comparable
+        public static func < (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
+            
+            return lhs.rawValue < rhs.rawValue
+        }
+        
+        // Hashable
+        public var hashValue: Int {
+            
+            return Int(rawValue)
+        }
+    }
+}
+
+// MARK: - Supporting Types
+
+/// Connection role
+public enum LowEnergyRole: UInt8 {
+    
+    /// Connection is master.
+    case master
+    
+    /// Connection is slave
+    case slave
 }

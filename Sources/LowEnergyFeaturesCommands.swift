@@ -53,12 +53,58 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to indicate the RF path gain or loss between the RF transceiver and
     /// the antenna contributed by intermediate components.
-    func loweEnergyWriteRfPathCompensation(rfTxPathCompensationValue: RfTxPathCompensationValue,
-                                           rfRxPathCompensationValue: RfRxPathCompensationValue,
-                                           timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyWriteRfPathCompensation(rfTxPathCompensationValue: RfTxPathCompensationValue,
+                                          rfRxPathCompensationValue: RfRxPathCompensationValue,
+                                          timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.WriteRfPathCompensationParameter(rfTxPathCompensationValue: rfTxPathCompensationValue, rfRxPathCompensationValue: rfRxPathCompensationValue)
         
         try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Set Privacy Mode Command
+    ///
+    /// The command is used to allow the Host to specify the privacy mode to be used for a given entry on the resolving list.
+    func lowEnergySetPrivacyMode(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
+                                 peerIdentityAddress: Address,
+                                 privacyMode: LowEnergyCommand.SetPrivacyModeParameter.PrivacyMode = LowEnergyCommand.SetPrivacyModeParameter.PrivacyMode.networkPrivacy,
+                                 timeout: HCICommandTimeout = .default) throws {
+        
+        let parameters = LowEnergyCommand.SetPrivacyModeParameter(peerIdentityAddressType: peerIdentityAddressType,
+                                                                  peerIdentityAddress: peerIdentityAddress,
+                                                                  privacyMode: privacyMode)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+    
+    /// LE Extended Create Connection Command
+    ///
+    /// The command is used to create a Link Layer connection to a connectable advertiser.
+    func lowEnergyExtendedCreateConnection(initialingFilterPolicy: LowEnergyCommand.ExtendedCreateConnectionParameter.InitialingFilterPolicy,
+                                           ownAddressType: LowEnergyCommand.ExtendedCreateConnectionParameter.OwnAddressType,
+                                           peerAddressType: LowEnergyPeerIdentifyAddressType,
+                                           peerAddress: Address,
+                                           initialingPHY: LowEnergyCommand.ExtendedCreateConnectionParameter.InitialingPHY,
+                                           timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.EnhancedConnectionCompleteEventParameter {
+        
+        let parameters = LowEnergyCommand.ExtendedCreateConnectionParameter(initialingFilterPolicy: initialingFilterPolicy,
+                                                                  ownAddressType: ownAddressType,
+                                                                  peerAddressType: peerAddressType,
+                                                                  peerAddress: peerAddress,
+                                                                  initialingPHY: initialingPHY)
+
+        let event =  try deviceRequest(parameters,
+                                       LowEnergyEvent.EnhancedConnectionCompleteEventParameter.self,
+                                       timeout: timeout)
+        
+        switch event.status {
+            
+        case let .error(error):
+            throw error
+            
+        case .success:
+            
+            return event
+        }
     }
 }

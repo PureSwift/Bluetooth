@@ -26,6 +26,9 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
     
     /// LE PHY Update Complete Event
     case phyUpdateComplete                  = 0x3E
+    
+    /// LE Enhanced Connection Complete Event
+    case enhancedConnectionComplete         = 0x3D
 }
 
 // MARK: - Name
@@ -41,6 +44,7 @@ public extension LowEnergyEvent {
         case .readRemoteUsedFeaturesComplete: return "LE Read Remote Used Features Complete"
         case .longTermKeyRequest: return "LE Long Term Key Request"
         case .phyUpdateComplete: return "LE PHY Update Complete"
+        case .enhancedConnectionComplete: return "LE Enhanced Connection Complete"
         }
     }
 }
