@@ -49,6 +49,12 @@ public enum GATT {
             return .bit16(rawValue)
         }
     }
+    
+}
+
+// MARK: - Characteristic Descriptor
+
+public extension GATT {
 
     /// GATT Characteristic Descriptors
     public enum CharacteristicDescriptor {
@@ -72,6 +78,12 @@ public enum GATT {
         public static var aggregateFormat: BluetoothUUID { return .characteristicAggregateFormat }
     }
     
+}
+
+// MARK: - Characteristic Property
+
+public extension GATT {
+
     /// GATT Characteristic Properties Bitfield valuess
     public enum CharacteristicProperty: UInt8, BitMaskOption {
         
@@ -101,20 +113,6 @@ public enum GATT {
                                                                    .signedWrite,
                                                                    .extendedProperties]
     }
-    
-    /// GATT Characteristic Extended Properties Bitfield values.
-    /// 
-    /// The Characteristic Extended Properties bit field describes additional 
-    /// properties on how the Characteristic Value can be used, or how the characteristic 
-    /// descriptors can be accessed.
-    public enum CharacteristicExtendedProperty: UInt8 {
-        
-        /// If set, permits reliable writes of the Characteristic Value.
-        case reliableWrite          = 0x01
-        
-        ///
-        case writableAuxiliaries    = 0x02
-    }
 }
 
 public extension GATT.CharacteristicProperty {
@@ -134,10 +132,31 @@ public extension GATT.CharacteristicProperty {
     }
 }
 
+// MARK: CustomStringConvertible
+
 extension GATT.CharacteristicProperty: CustomStringConvertible {
     
     public var description: String {
         
         return name
+    }
+}
+
+// MARK: - Characteristic Extended Property
+
+public extension GATT {
+
+    /// GATT Characteristic Extended Properties Bitfield values.
+    /// 
+    /// The Characteristic Extended Properties bit field describes additional 
+    /// properties on how the Characteristic Value can be used, or how the characteristic 
+    /// descriptors can be accessed.
+    public enum CharacteristicExtendedProperty: UInt8 {
+        
+        /// If set, permits reliable writes of the Characteristic Value.
+        case reliableWrite          = 0x01
+        
+        ///
+        case writableAuxiliaries    = 0x02
     }
 }
