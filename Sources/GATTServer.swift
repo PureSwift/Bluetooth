@@ -226,7 +226,7 @@ public final class GATTServer {
             else { doResponse(errorResponse(opcode, .invalidHandle, handle)); return }
         
         // get attribute
-        let attribute = database[handle]
+        let attribute = database[handle: handle]
         
         // validate permissions
         if let error = checkPermissions([.write, .writeAuthentication, .writeEncrypt], attribute) {
@@ -267,7 +267,10 @@ public final class GATTServer {
             // notify
             if descriptor.configuration.contains(.notify) {
                 
-                let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueIndication.length
+                // If the attribue value is longer than (ATT_MTU-3) octets,
+                // then only the first (ATT_MTU-3) octets of this attribute value
+                // can be sent in a notification.
+                let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueNotification.length
                 
                 let value: [UInt8]
                 
@@ -288,6 +291,9 @@ public final class GATTServer {
             // indicate
             if descriptor.configuration.contains(.indicate) {
                 
+                /// If the attribue value is longer than (ATT_MTU-3) octets,
+                /// then only the first (ATT_MTU-3) octets of this attribute value
+                /// can be sent in a indication.
                 let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueIndication.length
                 
                 let value: [UInt8]
@@ -325,7 +331,7 @@ public final class GATTServer {
             else { errorResponse(opcode, .invalidHandle, handle); return nil }
         
         // get attribute
-        let attribute = database[handle]
+        let attribute = database[handle: handle]
         
         // validate permissions
         if let error = checkPermissions([.read, .readAuthentication, .readEncrypt], attribute) {
@@ -687,7 +693,7 @@ public final class GATTServer {
                 else { errorResponse(opcode, .invalidHandle, handle); return }
             
             // get attribute
-            let attribute = database[handle]
+            let attribute = database[handle: handle]
             
             // validate application errors with read callback
             if let error = willRead?(attribute.uuid, handle, attribute.value, 0) {
@@ -727,7 +733,7 @@ public final class GATTServer {
             else { errorResponse(opcode, .invalidHandle, pdu.handle); return }
         
         // get attribute
-        let attribute = database[pdu.handle]
+        let attribute = database[handle: pdu.handle]
         
         // validate permissions
         if let error = checkPermissions([.write, .writeAuthentication, .writeEncrypt], attribute) {
@@ -783,7 +789,7 @@ public final class GATTServer {
             // validate new values
             for (handle, newValue) in newValues {
                 
-                let attribute = database[handle]
+                let attribute = database[handle: handle]
                 
                 // validate application errors with write callback
                 if let error = willWrite?(attribute.uuid, handle, attribute.value, newValue) {
