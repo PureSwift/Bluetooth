@@ -186,7 +186,25 @@ extension GATTDatabase: Collection {
     }
 }
 
-extension GATTDatabase: RandomAccessCollection { }
+#if swift(>=3.3)
+#elseif swift(>=3.0)
+extension GATTDatabase {
+
+    typealias Slice = Swift.RandomAccessSlice
+}
+#endif
+
+extension GATTDatabase: RandomAccessCollection {
+    
+    public subscript(bounds: Range<Int>) -> Slice<GATTDatabase> {
+        
+        return Slice<GATTDatabase>(base: self, bounds: bounds)
+    }
+    
+    public func makeIterator() -> IndexingIterator<GATTDatabase> {
+        return IndexingIterator(_elements: self)
+    }
+}
 
 // MARK: - Supporting Types
 
