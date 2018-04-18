@@ -2287,6 +2287,139 @@ public extension LowEnergyCommand {
         }
     }
     
+    /// LE Set Extended Scan Parameters Command
+    ///
+    /// Used to set the extended scan parameters to be used on the advertising channels.
+    public struct SetExtendedScanParametersParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setExtendedScanParameters // 0x0041
+        
+        public var ownAddressType: LowEnergyAddressType
+        public var scanningFilterPolicy: ScanningFilterPolicy
+        public var scanningPHY: ScanningPHY
+        
+        public init(ownAddressType: LowEnergyAddressType,
+                    scanningFilterPolicy: ScanningFilterPolicy,
+                    scanningPHY: ScanningPHY) {
+            self.ownAddressType = ownAddressType
+            self.scanningFilterPolicy = scanningFilterPolicy
+            self.scanningPHY = scanningPHY
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let length: Int
+            
+            switch scanningPHY {
+                
+            case .le1M:
+                
+                length = 3
+                
+            case .coded:
+                
+                length = 3 + 10
+            }
+            
+            var byteValue = [UInt8]()
+            byteValue.reserveCapacity(length) // improve buffer performance
+            
+            // Own_Address_Type
+            byteValue.append(ownAddressType.rawValue)
+            
+            // Scanning_Filter_Policy
+            byteValue.append(scanningFilterPolicy.rawValue)
+            
+            // Scanning_PHYs
+            byteValue.append(scanningPHY.type.rawValue)
+            
+            switch scanningPHY {
+                
+            case .le1M:
+                break
+                
+            case let .coded(scanType, scanInterval, scanWindow):
+                
+                let scanIntervalBytes = (scanInterval.0.rawValue.littleEndian, scanInterval.1.rawValue.littleEndian)
+                let scanWindowBytes = (scanWindow.0.rawValue.littleEndian, scanWindow.1.rawValue.littleEndian)
+                
+                byteValue += [scanType.0.rawValue,
+                              scanType.1.rawValue,
+                              scanIntervalBytes.0.bytes.0,
+                              scanIntervalBytes.0.bytes.1,
+                              scanIntervalBytes.1.bytes.0,
+                              scanIntervalBytes.1.bytes.1,
+                              scanWindowBytes.0.bytes.0,
+                              scanWindowBytes.0.bytes.1,
+                              scanWindowBytes.1.bytes.0,
+                              scanWindowBytes.1.bytes.1]
+            }
+            
+            assert(byteValue.count == length, "Invalid number of bytes")
+            
+            return byteValue
+        }
+        
+        public enum ScanningFilterPolicy: UInt8 {
+            
+            /// Accept all advertising packets except directed advertising packets not addressed to this device
+            case all = 0x00
+            
+            /// Accept only advertising packets from devices where the advertiser’s address is in the White List.
+            /// Directed advertising packets which are not addressed to this device shall be ignored.
+            case fromWhiteList = 0x01
+            
+            /// Accept all advertising packets except directed advertising packets where the initiator’s identity address does not address this device.
+            /// Note: directed advertising packets where the initiator’s address is a resolvable private address that cannot be resolved are also accepted.
+            case allExceptDirectedAdvertisingPackets = 0x02
+            
+            /// Accept all advertising packets except:
+            /// * advertising packets where the advertiser’s identity address is not in the White List; and
+            /// * directed advertising packets where the initiator’s identity address does not address this device
+            /// Note: directed advertising packets where the initiator’s address is a resolvable private address that cannot be resolved are also accepted.
+            case allExceptPacketFromWhiteListAndDirectedAdvertising = 0x03
+        }
+        
+        /// Scanning PHY
+        public enum ScanningPHYType: UInt8 {
+            
+            /// Scan advertisements on the LE 1M PHY
+            case le1M = 0b00
+            
+            /// Scan advertisements on the LE Coded PHY
+            case coded = 0b10
+        }
+        
+        /// Scanning PHY
+        public enum ScanningPHY {
+            
+            /// Scan advertisements on the LE 1M PHY
+            case le1M
+            
+            /// Scan advertisements on the LE Coded PHY
+            case coded(scanType: (ScanType, ScanType),
+                scanInterval: (LowEnergyScanInterval, LowEnergyScanInterval),
+                scanWindow: (LowEnergyScanInterval, LowEnergyScanInterval))
+            
+            public var type: ScanningPHYType {
+                
+                switch self {
+                case .le1M: return .le1M
+                case .coded: return .coded
+                }
+            }
+        }
+        
+        public enum ScanType: UInt8 {
+            
+            /// Passive Scanning. No scan request PDUs shall be sent.
+            case passive = 0x00
+            
+            /// Active Scanning. Scan request PDUs may be sent.
+            case active = 0x01
+        }
+    }
+    
     /// LE Set Extended Scan Enable Command
     ///
     /// The command is used to enable or disable scanning.
@@ -2452,6 +2585,156 @@ public extension LowEnergyCommand {
             public var hashValue: Int {
                 
                 return Int(rawValue)
+            }
+        }
+    }
+    
+    /// LE Extended Create Connection Command
+    ///
+    /// The command is used to create a Link Layer connection to a connectable advertiser.
+    public struct ExtendedCreateConnectionParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.extendedCreateConnection // 0x0043
+        
+        public let initialingFilterPolicy: InitialingFilterPolicy
+        public let ownAddressType: OwnAddressType
+        public let peerAddressType: LowEnergyPeerIdentifyAddressType
+        public let peerAddress: Address
+        public let initialingPHY: InitialingPHY
+        
+        public init(initialingFilterPolicy: InitialingFilterPolicy,
+                    ownAddressType: OwnAddressType,
+                    peerAddressType: LowEnergyPeerIdentifyAddressType,
+                    peerAddress: Address,
+                    initialingPHY: InitialingPHY) {
+            self.initialingFilterPolicy = initialingFilterPolicy
+            self.ownAddressType = ownAddressType
+            self.peerAddressType = peerAddressType
+            self.peerAddress = peerAddress
+            self.initialingPHY = initialingPHY
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let addressBytes = peerAddress.littleEndian.bytes
+            
+            return [initialingFilterPolicy.rawValue,
+                    ownAddressType.rawValue,
+                    peerAddressType.rawValue,
+                    addressBytes.0,
+                    addressBytes.1,
+                    addressBytes.2,
+                    addressBytes.3,
+                    addressBytes.4,
+                    addressBytes.5
+                    ]
+        }
+        
+        public enum InitialingFilterPolicy: UInt8 { // Initiating_Filter_Policy
+            
+            /// White List is not used to determine which advertiser to connect to. Peer_Address_Type and Peer_Address shall be used.
+            case whiteListIsNotUsed = 0x00
+            
+            /// White List is used to determine which advertiser to connect to. Peer_Address_Type and Peer_Address shall be ignored.
+            case whiteListIsUsed    = 0x001
+        }
+        
+        public enum OwnAddressType: UInt8 { // Own_Address_Type
+            
+            /// Public Device Address
+            case publicDeviceAddress    = 0x00
+            
+            /// Random Device Address
+            case randomDeviceAddress    = 0x01
+            
+            /// Controller generates the Resolvable Private Address based on the local IRK from 
+            // the resolving list. If the resolving list contains no matching entry, then use the public address.
+            case resolvablePrivateAddressOrPublicAddress = 0x02
+            
+            /// Controller generates the Resolvable Private Address based on the local IRK from the resolving list.
+            /// If the resolving list contains no matching entry, then use the random address from
+            /// the most recent successful LE_Set_Random_Address Command.
+            case resolvablePrivateAddressOrRandomAddress = 0x03
+        }
+        
+        public enum InitialingPHYType: UInt8 { // Initiating_PHYs
+            
+            /// Scan connectable advertisements on the LE 1M PHY. Connection parameters for the LE 1M PHY are provided.
+            case le1m  = 0b00
+            
+            /// Connection parameters for the LE 2M PHY are provided.
+            case le2m  = 0b01
+            
+            /// Scan connectable advertisements on the LE Coded PHY. Connection parameters for the LE Coded PHY are provided.
+            case coded = 0b10
+        }
+        
+        public enum InitialingPHY {
+            
+            case le1m
+            
+            case le2m(scanInterval: LowEnergyScanInterval,
+                      scanWindow: LowEnergyScanInterval,
+                      connIntervalMin: LowEnergyConnectionInterval,
+                      connLatency: LowEnergyConnectionLatency,
+                      supervisionTimeout: LowEnergySupervisionTimeout,
+                      ceLength: CELength)
+            
+            case coded(scanInterval: (LowEnergyScanInterval, LowEnergyScanInterval),
+                scanWindow: (LowEnergyScanInterval, LowEnergyScanInterval),
+                connIntervalMin: (LowEnergyConnectionInterval, LowEnergyConnectionInterval),
+                connLatency: (LowEnergyConnectionLatency, LowEnergyConnectionLatency),
+                supervisionTimeout: (LowEnergySupervisionTimeout, LowEnergySupervisionTimeout),
+                ceLength: (CELength, CELength))
+            
+            public var type: InitialingPHYType {
+                
+                switch self {
+                case .le1m: return .le1m
+                case .le2m: return .le2m
+                case .coded: return .coded
+                }
+            }
+        }
+        
+        /// Informative parameter recommending the minimum length of connection event needed for this LE connection.
+        ///
+        /// Range: 0x0000 – 0xFFFF
+        public struct CELength: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            public static var zero: CELength { return CELength() }
+            
+            public let rawValue: UInt16
+            
+            public init() {
+                
+                self.rawValue = 0
+            }
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue <= 0xFFFF
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: CELength, rhs: CELength) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+            
+            // Comparable
+            public static func < (lhs: CELength, rhs: CELength) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
             }
         }
     }
@@ -2707,190 +2990,6 @@ public extension LowEnergyCommand {
         }
     }
     
-    /// LE Set Extended Scan Parameters Command
-    ///
-    /// Used to set the extended scan parameters to be used on the advertising channels.
-    public struct SetExtendedScanParametersParameter: HCICommandParameter {
-        
-        public static let command = LowEnergyCommand.setExtendedScanParameters // 0x0041
-        
-        public var ownAddressType: LowEnergyAddressType
-        public var scanningFilterPolicy: ScanningFilterPolicy
-        public var scanningPHY: ScanningPHY
-        
-        public init(ownAddressType: LowEnergyAddressType,
-                    scanningFilterPolicy: ScanningFilterPolicy,
-                    scanningPHY: ScanningPHY) {
-            self.ownAddressType = ownAddressType
-            self.scanningFilterPolicy = scanningFilterPolicy
-            self.scanningPHY = scanningPHY
-        }
-        
-        public var byteValue: [UInt8] {
-            
-            let length: Int
-            
-            switch scanningPHY {
-                
-            case .le1M:
-                
-                length = 3
-                
-            case .coded:
-                
-                length = 3 + 10
-            }
-            
-            var byteValue = [UInt8]()
-            byteValue.reserveCapacity(length) // improve buffer performance
-            
-            // Own_Address_Type
-            byteValue.append(ownAddressType.rawValue)
-            
-            // Scanning_Filter_Policy
-            byteValue.append(scanningFilterPolicy.rawValue)
-            
-            // Scanning_PHYs
-            byteValue.append(scanningPHY.type.rawValue)
-            
-            switch scanningPHY {
-                
-            case .le1M:
-                break
-                
-            case let .coded(scanType, scanInterval, scanWindow):
-                
-                let scanIntervalBytes = (scanInterval.0.rawValue.littleEndian, scanInterval.1.rawValue.littleEndian)
-                let scanWindowBytes = (scanWindow.0.rawValue.littleEndian, scanWindow.1.rawValue.littleEndian)
-                
-                byteValue += [scanType.0.rawValue,
-                              scanType.1.rawValue,
-                              scanIntervalBytes.0.bytes.0,
-                              scanIntervalBytes.0.bytes.1,
-                              scanIntervalBytes.1.bytes.0,
-                              scanIntervalBytes.1.bytes.1,
-                              scanWindowBytes.0.bytes.0,
-                              scanWindowBytes.0.bytes.1,
-                              scanWindowBytes.1.bytes.0,
-                              scanWindowBytes.1.bytes.1]
-            }
-            
-            assert(byteValue.count == length, "Invalid number of bytes")
-            
-            return byteValue
-        }
-        
-        public enum ScanningFilterPolicy: UInt8 {
-            
-            /// Accept all advertising packets except directed advertising packets not addressed to this device
-            case all = 0x00
-            
-            /// Accept only advertising packets from devices where the advertiser’s address is in the White List.
-            /// Directed advertising packets which are not addressed to this device shall be ignored.
-            case fromWhiteList = 0x01
-            
-            /// Accept all advertising packets except directed advertising packets where the initiator’s identity address does not address this device.
-            /// Note: directed advertising packets where the initiator’s address is a resolvable private address that cannot be resolved are also accepted.
-            case allExceptDirectedAdvertisingPackets = 0x02
-            
-            /// Accept all advertising packets except:
-            /// * advertising packets where the advertiser’s identity address is not in the White List; and
-            /// * directed advertising packets where the initiator’s identity address does not address this device
-            /// Note: directed advertising packets where the initiator’s address is a resolvable private address that cannot be resolved are also accepted.
-            case allExceptPacketFromWhiteListAndDirectedAdvertising = 0x03
-        }
-        
-        /// Scanning PHY
-        public enum ScanningPHYType: UInt8 {
-            
-            /// Scan advertisements on the LE 1M PHY
-            case le1M = 0b00
-            
-            /// Scan advertisements on the LE Coded PHY
-            case coded = 0b10
-        }
-        
-        /// Scanning PHY
-        public enum ScanningPHY {
-            
-            /// Scan advertisements on the LE 1M PHY
-            case le1M
-            
-            /// Scan advertisements on the LE Coded PHY
-            case coded(scanType: (ScanType, ScanType),
-                scanInterval: (ScanInterval, ScanInterval),
-                scanWindow: (ScanInterval, ScanInterval))
-            
-            public var type: ScanningPHYType {
-                
-                switch self {
-                case .le1M: return .le1M
-                case .coded: return .coded
-                }
-            }
-        }
-        
-        public enum ScanType: UInt8 {
-            
-            /// Passive Scanning. No scan request PDUs shall be sent.
-            case passive = 0x00
-            
-            /// Active Scanning. Scan request PDUs may be sent.
-            case active = 0x01
-        }
-        
-        /// Time interval from when the Controller started its last scan until it begins
-        /// the subsequent scan on the primary advertising channel.
-        public struct ScanInterval: RawRepresentable, Equatable, Comparable, Hashable {
-            
-            /// 2.5 msec
-            public static let min = ScanInterval(0x0004)
-            
-            /// 40.959375 seconds
-            public static let max = ScanInterval(0xFFFF)
-            
-            public let rawValue: UInt16
-            
-            public init?(rawValue: UInt16) {
-                
-                guard rawValue >= ScanInterval.min.rawValue,
-                    rawValue <= ScanInterval.max.rawValue
-                    else { return nil }
-                
-                self.rawValue = rawValue
-            }
-            
-            /// Time = N * 0.625 msec
-            public var miliseconds: Double {
-                
-                return Double(rawValue) * 0.625
-            }
-            
-            // Private, unsafe
-            fileprivate init(_ rawValue: UInt16) {
-                self.rawValue = rawValue
-            }
-            
-            // Equatable
-            public static func == (lhs: ScanInterval, rhs: ScanInterval) -> Bool {
-                
-                return lhs.rawValue == rhs.rawValue
-            }
-            
-            // Comparable
-            public static func < (lhs: ScanInterval, rhs: ScanInterval) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
-        }
-    }
-    
     /// LE Write RF Path Compensation Command
     ///
     /// The command is used to indicate the RF path gain or loss between the RF transceiver and
@@ -2928,6 +3027,52 @@ public extension LowEnergyCommand {
                     rfTxPathCompensationValueBytes.1,
                     rfRxPathCompensationValueBytes.0,
                     rfRxPathCompensationValueBytes.1]
+        }
+    }
+    
+    /// LE Set Privacy Mode Command
+    ///
+    /// The command is used to allow the Host to specify the privacy mode to be used for a given entry on the resolving list.
+    public struct SetPrivacyModeParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setPrivacyMode // 0x004E
+        
+        public let peerIdentityAddressType: LowEnergyPeerIdentifyAddressType
+        public let peerIdentityAddress: Address
+        public let privacyMode: PrivacyMode
+        
+        public init(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
+                    peerIdentityAddress: Address,
+                    privacyMode: PrivacyMode = PrivacyMode.networkPrivacy) {
+            
+            self.peerIdentityAddressType = peerIdentityAddressType
+            self.peerIdentityAddress = peerIdentityAddress
+            self.privacyMode = privacyMode
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let addressBytes = peerIdentityAddress.littleEndian.bytes
+            
+            return [
+                peerIdentityAddressType.rawValue,
+                addressBytes.0,
+                addressBytes.1,
+                addressBytes.2,
+                addressBytes.3,
+                addressBytes.4,
+                addressBytes.5,
+                privacyMode.rawValue
+            ]
+        }
+        
+        public enum PrivacyMode: UInt8 {
+            
+            /// Use Network Privacy Mode for this peer device (default)
+            case networkPrivacy     = 0x00
+            
+            /// Use Device Privacy Mode for this peer device
+            case devicePrivacy      = 0x01
         }
     }
 }
@@ -3857,6 +4002,57 @@ public enum LowEnergyPacketPayload: UInt8 { // Packet_Payload
     case repeated00000000    = 0x05
     case repeated00001111    = 0x06
     case repeated01010101    = 0x07
+}
+
+/// Time interval from when the Controller started its last scan until it begins
+/// the subsequent scan on the primary advertising channel.
+public struct LowEnergyScanInterval: RawRepresentable, Equatable, Comparable, Hashable {
+    
+    /// 2.5 msec
+    public static let min = LowEnergyScanInterval(0x0004)
+    
+    /// 40.959375 seconds
+    public static let max = LowEnergyScanInterval(0xFFFF)
+    
+    public let rawValue: UInt16
+    
+    public init?(rawValue: UInt16) {
+        
+        guard rawValue >= LowEnergyScanInterval.min.rawValue,
+            rawValue <= LowEnergyScanInterval.max.rawValue
+            else { return nil }
+        
+        self.rawValue = rawValue
+    }
+    
+    /// Time = N * 0.625 msec
+    public var miliseconds: Double {
+        
+        return Double(rawValue) * 0.625
+    }
+    
+    // Private, unsafe
+    fileprivate init(_ rawValue: UInt16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyScanInterval, rhs: LowEnergyScanInterval) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyScanInterval, rhs: LowEnergyScanInterval) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
 }
 
 /// Value for connection event interval
