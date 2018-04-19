@@ -415,9 +415,9 @@ internal extension GATTDatabase {
             let isPrimary: Bool
             
             switch attribute.uuid {
-            case .primaryService:
+            case BluetoothUUID.primaryService:
                 isPrimary = true
-            case .secondaryService:
+            case BluetoothUUID.secondaryService:
                 isPrimary = false
             default:
                 return nil // invalid uuid
