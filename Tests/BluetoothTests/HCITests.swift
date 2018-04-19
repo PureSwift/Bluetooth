@@ -481,7 +481,7 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x3E, 0x0C, 0x04, 0x00, 0x41, 0x00, 0x1D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
         
         var features = LowEnergyFeatureSet()
-        XCTAssertNoThrow(features = try hostController.readRemoteUsedFeatures(connectionHandle: connectionHandle))
+        XCTAssertNoThrow(features = try hostController.lowEnergyReadRemoteUsedFeatures(connectionHandle: connectionHandle))
         
         XCTAssert(hostController.queue.isEmpty)
         XCTAssert(features.isEmpty == false, "Empty features")
