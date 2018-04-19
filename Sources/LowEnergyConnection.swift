@@ -56,7 +56,7 @@ public extension BluetoothHostControllerInterface {
     /// The LE_Connection_Update command is used to change the Link Layer connection parameters of a connection.
     /// This command may be issued on both the master and slave.
     func updateLowEnergyConnection(handle: UInt16,
-                                   connectionInterval: LowEnergyConnectionInterval = .full,
+                                   connectionInterval: LowEnergyConnectionIntervalRange = .full,
                                    connectionLatency: LowEnergyConnectionLatency = .zero,
                                    supervisionTimeout: LowEnergySupervisionTimeout = .max,
                                    connectionLength: LowEnergyConnectionLength = .full,
