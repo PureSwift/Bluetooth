@@ -28,7 +28,8 @@ public struct TestProfile {
                                                 TestProfile.Write,
                                                 TestProfile.WriteBlob,
                                                 TestProfile.WriteWithoutResponse,
-                                                TestProfile.WriteBlobWithoutResponse
+                                                TestProfile.WriteBlobWithoutResponse,
+                                                //TestProfile.Notify
         ])
     
     public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
@@ -64,6 +65,12 @@ public struct TestProfile {
                                                                 value: Data(),
                                                                 permissions: [.write],
                                                                 properties: [.write, .writeWithoutResponse])
+    
+    public static let Notify = Characteristic(uuid: BluetoothUUID(rawValue: "7F799666-678C-41E7-9380-EEB713E532F6")!,
+                                              value: Data(),
+                                              permissions: [.read],
+                                              properties: [.notify],
+                                              descriptors: [GATTClientCharacteristicConfiguration().descriptor])
     
     public static let TestDefinedService = Service(uuid: .savantSystems2,
                                                    primary: true,
