@@ -566,7 +566,7 @@ public extension LowEnergyCommand {
         /// Value for the connection event interval.
         ///
         /// Defines the minimum and maximum allowed connection interval.
-        public let connectionInterval: LowEnergyConnectionInterval  // Conn_Interval_Min, Conn_Interval_Max
+        public let connectionInterval: LowEnergyConnectionIntervalRange  // Conn_Interval_Min, Conn_Interval_Max
         
         /// Slave latency for the connection in number of connection events.
         ///
@@ -593,7 +593,7 @@ public extension LowEnergyCommand {
                     peerAddressType: LowEnergyAddressType = .public,
                     peerAddress: Address,
                     ownAddressType: LowEnergyAddressType = .public,
-                    connectionInterval: LowEnergyConnectionInterval = .full,
+                    connectionInterval: LowEnergyConnectionIntervalRange = .full,
                     connectionLatency: LowEnergyConnectionLatency = .zero,
                     supervisionTimeout: SupervisionTimeout = .max,
                     connectionLength: LowEnergyConnectionLength = .full) {
@@ -772,7 +772,7 @@ public extension LowEnergyCommand {
         /// Value for the connection event interval.
         ///
         /// Defines the minimum and maximum allowed connection interval.
-        public let connectionInterval: LowEnergyConnectionInterval  // Conn_Interval_Min, Conn_Interval_Max
+        public let connectionInterval: LowEnergyConnectionIntervalRange  // Conn_Interval_Min, Conn_Interval_Max
         
         /// Slave latency for the connection in number of connection events.
         ///
@@ -794,7 +794,7 @@ public extension LowEnergyCommand {
         public let connectionLength: LowEnergyConnectionLength
         
         public init(connectionHandle: UInt16,
-                    connectionInterval: LowEnergyConnectionInterval = .full,
+                    connectionInterval: LowEnergyConnectionIntervalRange = .full,
                     connectionLatency: LowEnergyConnectionLatency = .zero,
                     supervisionTimeout: SupervisionTimeout = .max,
                     connectionLength: LowEnergyConnectionLength = .full) {
@@ -2802,14 +2802,14 @@ public extension LowEnergyCommand {
             
             case le2m(scanInterval: LowEnergyScanInterval,
                       scanWindow: LowEnergyScanInterval,
-                      connIntervalMin: LowEnergyConnectionInterval,
+                      connIntervalMin: LowEnergyConnectionIntervalRange,
                       connLatency: LowEnergyConnectionLatency,
                       supervisionTimeout: LowEnergySupervisionTimeout,
                       ceLength: CELength)
             
             case coded(scanInterval: (LowEnergyScanInterval, LowEnergyScanInterval),
                 scanWindow: (LowEnergyScanInterval, LowEnergyScanInterval),
-                connIntervalMin: (LowEnergyConnectionInterval, LowEnergyConnectionInterval),
+                connIntervalMin: (LowEnergyConnectionIntervalRange, LowEnergyConnectionIntervalRange),
                 connLatency: (LowEnergyConnectionLatency, LowEnergyConnectionLatency),
                 supervisionTimeout: (LowEnergySupervisionTimeout, LowEnergySupervisionTimeout),
                 ceLength: (CELength, CELength))
@@ -4309,7 +4309,7 @@ public struct LowEnergyScanInterval: RawRepresentable, Equatable, Comparable, Ha
 /// Range: 0x0006 to 0x0C80
 /// Time = N * 1.25 msec
 /// Time Range: 7.5 msec to 4 seconds.
-public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
+public struct LowEnergyConnectionIntervalRange: RawRepresentable, Equatable {
     
     public typealias RawValue = CountableClosedRange<UInt16>
     
@@ -4320,21 +4320,21 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
     public static let max: UInt16 = 0x0C80
     
     /// Maximum interval range.
-    public static let full = LowEnergyConnectionInterval(LowEnergyConnectionInterval.min ... LowEnergyConnectionInterval.max)
+    public static let full = LowEnergyConnectionIntervalRange(LowEnergyConnectionIntervalRange.min ... LowEnergyConnectionIntervalRange.max)
     
     public let rawValue: RawValue
     
     public init?(rawValue: RawValue) {
         
-        guard rawValue.lowerBound >= LowEnergyConnectionInterval.min,
-            rawValue.upperBound <= LowEnergyConnectionInterval.max
+        guard rawValue.lowerBound >= LowEnergyConnectionIntervalRange.min,
+            rawValue.upperBound <= LowEnergyConnectionIntervalRange.max
             else { return nil }
         
-        assert(LowEnergyConnectionInterval.full.rawValue.lowerBound == LowEnergyConnectionInterval.min)
-        assert(LowEnergyConnectionInterval.full.rawValue.upperBound == LowEnergyConnectionInterval.max)
+        assert(LowEnergyConnectionIntervalRange.full.rawValue.lowerBound == LowEnergyConnectionIntervalRange.min)
+        assert(LowEnergyConnectionIntervalRange.full.rawValue.upperBound == LowEnergyConnectionIntervalRange.max)
         
-        assert(rawValue.clamped(to: LowEnergyConnectionInterval.full.rawValue) == rawValue)
-        assert(rawValue.overlaps(LowEnergyConnectionInterval.full.rawValue))
+        assert(rawValue.clamped(to: LowEnergyConnectionIntervalRange.full.rawValue) == rawValue)
+        assert(rawValue.overlaps(LowEnergyConnectionIntervalRange.full.rawValue))
         
         self.rawValue = rawValue
     }
@@ -4358,7 +4358,7 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable {
     }
     
     // Equatable
-    public static func == (lhs: LowEnergyConnectionInterval, rhs: LowEnergyConnectionInterval) -> Bool {
+    public static func == (lhs: LowEnergyConnectionIntervalRange, rhs: LowEnergyConnectionIntervalRange) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }

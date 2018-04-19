@@ -63,7 +63,7 @@ public extension LowEnergyEvent {
         /// Range: 0x0006 to 0x0C80
         /// Time = N * 1.25 msec
         /// Time Range: 7.5 msec to 4000 msec.
-        public let interval: ConnectionInterval
+        public let interval: LowEnergyConnectionInterval
         
         /// Connection latency for this connection.
         ///
@@ -126,60 +126,10 @@ public extension LowEnergyEvent {
             self.role = role
             self.peerAddressType = peerAddressType
             self.peerAddress = peerAddress
-            self.interval = ConnectionInterval(rawValue: intervalRawValue)
+            self.interval = LowEnergyConnectionInterval(rawValue: intervalRawValue)
             self.latency = ConnectionInterval(rawValue: latencyRawValue)
             self.supervisionTimeout = supervisionTimeout
             self.masterClockAccuracy = masterClockAccuracy
-        }
-        
-        /// Connection interval / latency used on this connection.
-        ///
-        /// Range: 0x0006 to 0x0C80
-        /// Time = N * 1.25 msec
-        /// Time Range: 7.5 msec to 4000 msec.
-        public struct ConnectionInterval: RawRepresentable, Equatable, Hashable, Comparable {
-            
-            /// 7.5 msec
-            public static let min = ConnectionInterval(0x0006)
-            
-            /// 4000 msec
-            public static let max = ConnectionInterval(0x0C80)
-            
-            public let rawValue: UInt16
-            
-            public init(rawValue: UInt16) {
-                
-                self.rawValue = rawValue
-            }
-            
-            /// Time = N * 1.25 msec
-            public var miliseconds: Double {
-                
-                return Double(rawValue) * 1.25
-            }
-            
-            // Private, unsafe
-            private init(_ rawValue: UInt16) {
-                self.rawValue = rawValue
-            }
-            
-            // Equatable
-            public static func == (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
-                
-                return lhs.rawValue == rhs.rawValue
-            }
-            
-            // Comparable
-            public static func < (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
         }
         
         /// Master Clock Accuracy
@@ -219,7 +169,7 @@ public extension LowEnergyEvent {
     /// information from multiple devices in one LE Advertising Report event.
     public struct AdvertisingReportEventParameter: HCIEventParameter {
         
-        public static let event = LowEnergyEvent.advertisingReport
+        public static let event = LowEnergyEvent.advertisingReport // 0x02
         public static let length = 1 + Report.length // must have at least one report
         
         public let reports: [Report]
@@ -336,6 +286,65 @@ public extension LowEnergyEvent {
         }
     }
     
+    /// LE Connection Update Complete Event
+    ///
+    /// The event is used to indicate that the Controller process to update the connection has completed.
+    public struct ConnectionUpdateCompleteEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.connectionUpdateComplete // 0x03
+        
+        public static let length: Int = 9
+        
+        /// `0x00` if Connection successfully completed.
+        /// `HCIError` value otherwise.
+        public let status: HCIStatus
+        
+        /// Connection Handle
+        ///
+        /// Range: 0x0000-0x0EFF (all other values reserved for future use)
+        public let handle: UInt16 // Connection_Handle
+        
+        public let connInterval: LowEnergyConnectionInterval
+        
+        public let connLatency: LowEnergyConnectionLatency
+        
+        public let supervisionTimeout: LowEnergySupervisionTimeout
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let statusByte = byteValue[0]
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            
+            let intervalRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[3], byteValue[4])))
+            
+            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[5], byteValue[6])))
+            
+            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (byteValue[7], byteValue[8])))
+            
+            // Parse enums and values ranges
+            guard let status = HCIStatus(rawValue: statusByte),
+                let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: supervisionTimeoutRaw),
+                let connLatency = LowEnergyConnectionLatency(rawValue: latencyRawValue)
+                else { return nil }
+            
+            let connInterval = LowEnergyConnectionInterval(rawValue: intervalRawValue)
+            
+            self.status = status
+            self.handle = handle
+            self.connInterval = connInterval
+            self.connLatency = connLatency
+            self.supervisionTimeout = supervisionTimeout
+        }
+    }
+    
+    /// LE Read Remote Features Complete Event
+    ///
+    /// The event is used to indicate the completion of the process of the Controller
+    /// obtaining the features used on the connection and the features supported by the remote Blu
     public struct ReadRemoteUsedFeaturesCompleteEventParameter: HCIEventParameter {
     
         public static let event = LowEnergyEvent.readRemoteUsedFeaturesComplete // 0x04
@@ -358,7 +367,7 @@ public extension LowEnergyEvent {
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == ReadRemoteUsedFeaturesCompleteEventParameter.length
+            guard byteValue.count == type(of: self).length
                 else { return nil }
             
             let statusByte = byteValue[0]
@@ -383,6 +392,88 @@ public extension LowEnergyEvent {
         }
     }
     
+    /// LE Long Term Key Request Event
+    ///
+    /// The LE Long Term Key Request event indicates that the master device is attempting
+    /// to encrypt or re-encrypt the link and is requesting the Long Term Key from the Host.
+    public struct LongTermKeyRequestEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.longTermKeyRequest // 0x05
+        
+        public static let length: Int = 12
+        
+        public let handle: UInt16 // Connection_Handle
+        
+        /// Random Number
+        public let randomNumber: UInt64 //Random_Number
+        
+        public let encryptedDiversifier: UInt16
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            
+            let randomNumber = UInt64(littleEndian: UInt64(bytes: ((byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9]))))
+            
+            let encryptedDiversifier = UInt16(bytes: (byteValue[10], byteValue[11]))
+            
+            self.handle = handle
+            self.randomNumber = randomNumber
+            self.encryptedDiversifier = encryptedDiversifier
+        }
+    }
+    
+    /// LE Remote Connection Parameter Request Event
+    ///
+    /// This event indicates to the master’s Host or the slave’s Host that the remote device is requesting
+    /// a change in the connection parameters. The Host replies either with the HCI LE Remote Connection
+    /// Parameter Request Reply command or the HCI LE Remote Connection Parameter Request Negative
+    /// Reply command.
+    public struct RemoteConnectionParameterRequestEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.remoteConnectionParameterRequest // 0x06
+        
+        public static let length: Int = 10
+        
+        public let handle: UInt16 // Connection_Handle
+        
+        public let interval: LowEnergyConnectionIntervalRange
+        
+        public let connLatency: LowEnergyConnectionLatency
+        
+        public let supervisionTimeout: LowEnergySupervisionTimeout
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            
+            let intervalMinRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            
+            let intervalMaxRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5])))
+            
+            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7])))
+            
+            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (byteValue[8], byteValue[9])))
+            
+            // Parse enums and values ranges
+            guard let interval = LowEnergyConnectionIntervalRange(rawValue: intervalMinRawValue ... intervalMaxRawValue),
+                let connLatency = LowEnergyConnectionLatency(rawValue: latencyRawValue),
+                let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: supervisionTimeoutRaw)
+                else { return nil }
+            
+            self.handle = handle
+            self.interval = interval
+            self.connLatency = connLatency
+            self.supervisionTimeout = supervisionTimeout
+        }
+    }
+    
     /// LE PHY Update Complete Event
     ///
     /// The LE PHY Update Complete Event is used to indicate that the Controller has changed
@@ -395,7 +486,7 @@ public extension LowEnergyEvent {
     /// change as a result, it issues this event immediately.
     public struct PhyUpdateCompleteEventParameter: HCIEventParameter {
         
-        public static let event = LowEnergyEvent.phyUpdateComplete
+        public static let event = LowEnergyEvent.phyUpdateComplete // 0x0C
         
         public static let length: Int = 5
         
@@ -432,6 +523,9 @@ public extension LowEnergyEvent {
         }
     }
     
+    /// LE Enhanced Connection Complete Event
+    ///
+    /// The event indicates to both of the Hosts forming the connection that a new connection has been created.
     public struct EnhancedConnectionCompleteEventParameter: HCIEventParameter {
         
         public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x3E
@@ -610,4 +704,54 @@ public enum LowEnergyRole: UInt8 {
     
     /// Connection is slave
     case slave
+}
+
+/// Connection interval / latency used on this connection.
+///
+/// Range: 0x0006 to 0x0C80
+/// Time = N * 1.25 msec
+/// Time Range: 7.5 msec to 4000 msec.
+public struct LowEnergyConnectionInterval: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    /// 7.5 msec
+    public static let min = LowEnergyConnectionInterval(0x0006)
+    
+    /// 4000 msec
+    public static let max = LowEnergyConnectionInterval(0x0C80)
+    
+    public let rawValue: UInt16
+    
+    public init(rawValue: UInt16) {
+        
+        self.rawValue = rawValue
+    }
+    
+    /// Time = N * 1.25 msec
+    public var miliseconds: Double {
+        
+        return Double(rawValue) * 1.25
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyConnectionInterval, rhs: LowEnergyConnectionInterval) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyConnectionInterval, rhs: LowEnergyConnectionInterval) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
 }
