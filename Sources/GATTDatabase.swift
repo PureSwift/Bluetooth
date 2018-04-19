@@ -218,9 +218,9 @@ extension GATTDatabase: Collection {
 
 #if swift(>=3.3)
 #elseif swift(>=3.0)
-extension GATTDatabase {
+public extension GATTDatabase {
 
-    typealias Slice = Swift.RandomAccessSlice
+    public typealias Slice = Swift.RandomAccessSlice
 }
 #endif
 
