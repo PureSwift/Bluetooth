@@ -864,13 +864,13 @@ internal extension GATTDatabase {
         
         for group in attributeGroups {
             
-            guard group.service.uuid == type else { continue }
+            guard group.serviceAttribute.uuid == type else { continue }
             
             let groupRange = Range(group.startHandle ... group.endHandle)
             
             guard groupRange.isSubset(handleRange) else { continue }
             
-            let serviceUUID = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(group.service.value))!)
+            let serviceUUID = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(group.serviceAttribute.value))!)
             
             data.append((group.startHandle, group.endHandle, serviceUUID))
         }
