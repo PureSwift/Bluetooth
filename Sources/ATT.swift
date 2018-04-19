@@ -186,6 +186,8 @@ public enum ATTOpcodeType {
     case confirmation
 }
 
+// MARK: - Attribute Permission
+
 /// ATT attribute permission bitfield values. Permissions are grouped as
 /// "Access", "Encryption", "Authentication", and "Authorization". A bitmask of
 /// permissions is a byte that encodes a combination of these.
@@ -224,4 +226,31 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
                                                           .writeAuthentication,
                                                           .authorized,
                                                           .noAuthorization]
+}
+
+public extension ATTAttributePermission {
+    
+    var name: String {
+        
+        switch self {
+        case .read: return "Read"
+        case .write: return "Write"
+        case .readEncrypt: return "Read Encrypt"
+        case .writeEncrypt: return "Write Encrypt"
+        case .readAuthentication: return "Read Authentication"
+        case .writeAuthentication: return "Write Authentication"
+        case .authorized: return "Authorized"
+        case .noAuthorization: return "No Authorization"
+        }
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension ATTAttributePermission: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return name
+    }
 }
