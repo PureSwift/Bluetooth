@@ -224,6 +224,7 @@ public extension GATTDatabase {
 }
 #endif
 
+#if swift(>=3.1)
 extension GATTDatabase: RandomAccessCollection {
     
     public subscript(bounds: Range<Int>) -> Slice<GATTDatabase> {
@@ -235,6 +236,7 @@ extension GATTDatabase: RandomAccessCollection {
         return IndexingIterator(_elements: self)
     }
 }
+#endif
 
 // MARK: - Supporting Types
 
