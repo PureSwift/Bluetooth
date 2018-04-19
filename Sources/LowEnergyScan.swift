@@ -164,4 +164,14 @@ public extension BluetoothHostControllerInterface {
         
         try deviceRequest(parameters, timeout: timeout)
     }
+    
+    /// LE Read Buffer Size Command
+    ///
+    /// The command is used to read the maximum size of the data portion of HCI LE ACL Data Packets sent from the Host to the Controller.
+    func readBufferSize(timeout: HCICommandTimeout = .default) throws -> LowEnergyCommand.ReadBufferSizeReturnParameter {
+        
+        let bufferSizeReturnParameter = try deviceRequest(LowEnergyCommand.ReadBufferSizeReturnParameter.self, timeout: timeout)
+        
+        return bufferSizeReturnParameter
+    }
 }
