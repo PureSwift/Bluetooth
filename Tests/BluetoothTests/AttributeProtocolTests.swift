@@ -132,8 +132,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: 20), "Invalid MTU value")
             
-            #if os(Linux) && swift(>=3.0) && !swift(>=3.2)
-            #else
+            #if swift(>=3.1)
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue - 1), "Invalid MTU value")
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue + 1), "Invalid MTU value")
             #endif
