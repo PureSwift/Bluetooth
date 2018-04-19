@@ -320,9 +320,12 @@ internal extension GATTDatabase {
             var service = GATT.Service(uuid: serviceAttribute.uuid,
                                        primary: serviceAttribute.isPrimary)
             
+            guard attributes.count > 1
+                else { return service }
+            
             var characteristicValueHandles = Set<UInt16>()
             
-            for attribute in attributes {
+            for attribute in attributes.suffix(from: 1) {
                 
                 if attribute.uuid == .include {
                     
@@ -384,8 +387,6 @@ internal extension GATTDatabase {
         
         static let uuids: [BluetoothUUID] = [.primaryService, .secondaryService]
         
-        static let length = UUID.length
-        
         /// Attribute Handle
         var handle: UInt16
         
@@ -403,9 +404,6 @@ internal extension GATTDatabase {
         }
         
         init?(attribute: Attribute) {
-            
-            guard attribute.value.count == type(of: self).length
-                else { return nil }
             
             assert(attribute.permissions == [.read], "Invalid attribute permissions")
             
@@ -445,8 +443,6 @@ internal extension GATTDatabase {
         
         static let uuid: BluetoothUUID = .include
         
-        static let length = 20
-        
         /// Attribute Handle
         var handle: UInt16
         
@@ -478,14 +474,14 @@ internal extension GATTDatabase {
         init?(attribute: Attribute) {
             
             guard attribute.uuid == type(of: self).uuid,
-                attribute.value.count == type(of: self).length
+                let length = Length(rawValue: attribute.value.count)
                 else { return nil }
             
             assert(attribute.permissions == [.read], "Invalid attribute permissions")
             
             let serviceHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[0], attribute.value[1])))
             let endGroupHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[2], attribute.value[3])))
-            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(attribute.value[4 ..< 20]))!)
+            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(attribute.value[4 ..< length.rawValue]))!)
             
             self.serviceHandle = serviceHandle
             self.endGroupHandle = endGroupHandle
@@ -509,13 +505,17 @@ internal extension GATTDatabase {
                              value: value,
                              permissions: [.read])
         }
+        
+        enum Length: Int {
+            
+            case bit16 = 6
+            case bit128 = 20
+        }
     }
     
     internal struct CharacteristicDeclarationAttribute {
         
         static let uuid: BluetoothUUID = .characteristic
-        
-        static let length = 19
         
         /// Characteristic UUID
         var uuid: BluetoothUUID
@@ -543,14 +543,14 @@ internal extension GATTDatabase {
         init?(attribute: Attribute) {
             
             guard attribute.uuid == type(of: self).uuid,
-                attribute.value.count == type(of: self).length
+                let length = Length(rawValue: attribute.value.count)
                 else { return nil }
             
             assert(attribute.permissions == [.read], "Invalid attribute permissions")
             
             let properties = BitMaskOptionSet<GATT.Characteristic.Property>(rawValue: attribute.value[0])
             let valueHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[1], attribute.value[2])))
-            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(attribute.value[3 ..< 19]))!)
+            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(attribute.value[3 ..< length.rawValue]))!)
             
             self.uuid = uuid
             self.properties = properties
@@ -568,6 +568,12 @@ internal extension GATTDatabase {
                              uuid: type(of: self).uuid,
                              value: value,
                              permissions: [.read])
+        }
+        
+        private enum Length: Int {
+            
+            case bit16 = 5
+            case bit128 = 19
         }
     }
     
