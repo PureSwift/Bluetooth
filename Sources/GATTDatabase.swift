@@ -314,7 +314,69 @@ internal extension GATTDatabase {
         
         var service: GATT.Service? {
             
-            fatalError()
+            guard let serviceAttribute = ServiceAttribute(attribute: self.serviceAttribute)
+                else { return nil }
+            
+            var service = GATT.Service(uuid: serviceAttribute.uuid,
+                                       primary: serviceAttribute.isPrimary)
+            
+            var characteristicValueHandles = Set<UInt16>()
+            
+            for attribute in attributes {
+                
+                if attribute.uuid == .include {
+                    
+                    guard let includeAttribute = IncludedServiceAttribute(attribute: attribute)
+                        else { return nil }
+                    
+                    let include = GATT.Include(serviceHandle: includeAttribute.serviceHandle,
+                                               endGroupHandle: includeAttribute.endGroupHandle,
+                                               serviceUUID: includeAttribute.uuid)
+                    
+                    service.includedServices.append(include)
+                    
+                } else if attribute.uuid == .characteristic {
+                    
+                    guard let characteristicAttribute = CharacteristicDeclarationAttribute(attribute: attribute)
+                        else { return nil }
+                    
+                    let valueHandle = characteristicAttribute.valueHandle
+                    
+                    characteristicValueHandles.insert(valueHandle)
+                    
+                    guard let valueAttribute = attributes.first(where: { $0.handle == valueHandle })
+                        else { return nil }
+                    
+                    let characteristicValueAttribute = CharacteristicValueAttribute(attribute: valueAttribute)
+                    
+                    let characteristic = GATT.Characteristic(uuid: characteristicAttribute.uuid,
+                                                             value: characteristicValueAttribute.value,
+                                                             permissions: characteristicValueAttribute.permissions, properties: characteristicAttribute.properties, descriptors: [])
+                    
+                    service.characteristics.append(characteristic)
+                    
+                } else if characteristicValueHandles.contains(attribute.handle) {
+                    
+                    continue
+                    
+                } else {
+                    
+                    guard let descriptorAttribute = CharacteristicDescriptorAttribute(attribute: attribute)
+                        else { return nil }
+                    
+                    let descriptor = GATT.Descriptor(uuid: descriptorAttribute.uuid,
+                                                     value: descriptorAttribute.value,
+                                                     permissions: descriptorAttribute.permissions)
+                    
+                    guard service.characteristics.isEmpty == false
+                        else { return nil }
+                    
+                    let lastIndex = service.characteristics.count - 1
+                    service.characteristics[lastIndex].descriptors.append(descriptor)
+                }
+            }
+            
+            return service
         }
     }
     
