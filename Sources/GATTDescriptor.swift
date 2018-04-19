@@ -8,17 +8,56 @@
 
 import Foundation
 
+// MARK: - Characteristic Descriptor
+
+public extension GATT {
+    
+    /// GATT Characteristic Descriptors
+    public enum CharacteristicDescriptor {
+        
+        /// GATT Characteristic Descriptors
+        public enum UUID {
+            
+            /// Characteristic Extended Properties
+            public static var extendedProperties: BluetoothUUID { return .characteristicExtendedProperties }
+            
+            /// Characteristic User Description Descriptor
+            public static var userDescription: BluetoothUUID { return .characteristicUserDescription }
+            
+            /// Client Characteristic Configuration Descriptor
+            public static var clientConfiguration: BluetoothUUID { return .clientCharacteristicConfiguration }
+            
+            /// Server Characteristic Configuration Descriptor
+            public static var serverConfiguration: BluetoothUUID { return .serverCharacteristicConfiguration }
+            
+            /// Characteristic Format Descriptor
+            public static var format: BluetoothUUID { return .characteristicFormat }
+            
+            /// Characteristic Aggregate Format Descriptor
+            public static var aggregateFormat: BluetoothUUID { return .characteristicAggregateFormat }
+        }
+    }
+}
+
 /// GATT Characteristic Descriptor
 public protocol GATTDescriptor {
+    
+    static var uuid: BluetoothUUID { get }
     
     init?(byteValue: Data)
     
     var byteValue: Data { get }
 }
 
+public extension GATT.CharacteristicDescriptor {
+    
+    public typealias ClientConfiguration = GATTClientCharacteristicConfiguration
+}
+
 /// GATT Client Characteristic Configuration Descriptor
 ///
-/// The Client Characteristic Configuration descriptor defines how the characteristic may be configured by a specific client.
+/// The Client Characteristic Configuration descriptor defines how the characteristic may be
+/// configured by a specific client.
 ///
 /// This descriptor shall be persistent across connections for bonded devices. 
 /// The Client Characteristic Configuration descriptor is unique for each client. 
@@ -26,7 +65,7 @@ public protocol GATTDescriptor {
 /// Authentication and authorization may be required by the server to write this descriptor. 
 /// The default value for the Client Characteristic Configuration descriptor is `0x00`.
 /// Upon connection of non-binded clients, this descriptor is set to the default value.
-public struct GATTClientCharacteristicConfiguration {
+public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .clientCharacteristicConfiguration
     

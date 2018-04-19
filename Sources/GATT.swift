@@ -52,34 +52,6 @@ public enum GATT {
     
 }
 
-// MARK: - Characteristic Descriptor
-
-public extension GATT {
-
-    /// GATT Characteristic Descriptors
-    public enum CharacteristicDescriptor {
-        
-        /// Characteristic Extended Properties
-        public static var extendedProperties: BluetoothUUID { return .characteristicExtendedProperties }
-        
-        /// Characteristic User Description Descriptor
-        public static var userDescription: BluetoothUUID { return .characteristicUserDescription }
-        
-        /// Client Characteristic Configuration Descriptor
-        public static var clientConfiguration: BluetoothUUID { return .clientCharacteristicConfiguration }
-        
-        /// Server Characteristic Configuration Descriptor
-        public static var serverConfiguration: BluetoothUUID { return .serverCharacteristicConfiguration }
-        
-        /// Characteristic Format Descriptor
-        public static var format: BluetoothUUID { return .characteristicFormat }
-        
-        /// Characteristic Aggregate Format Descriptor
-        public static var aggregateFormat: BluetoothUUID { return .characteristicAggregateFormat }
-    }
-    
-}
-
 // MARK: - Characteristic Property
 
 public extension GATT {
