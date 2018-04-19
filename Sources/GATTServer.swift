@@ -270,10 +270,10 @@ public final class GATTServer {
         didWrite?(attribute.uuid, attribute.handle, attribute.value)
         
         // Client configuration
-        if let attribute = group.attributes.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
+        if let descriptorAttribute = group.attributes.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
             
-            guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: attribute.value)
-                else { fatalError("Invalid descriptor value \([UInt8](attribute.value))") }
+            guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: descriptorAttribute.value)
+                else { fatalError("Invalid descriptor value \([UInt8](descriptorAttribute.value))") }
             
             // notify
             if descriptor.configuration.contains(.notify) {

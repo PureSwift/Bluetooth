@@ -11,8 +11,8 @@ import XCTest
 
 // MARK: - XCTest Linux Support
 
-#if swift(>=3.2)
-#elseif os(Linux) && swift(>=3.0)
+#if swift(>=3.1)
+#elseif swift(>=3.0)
 public func XCTAssertNoThrow<T>(_ expression: @autoclosure () throws -> T,
                                 _ message: @autoclosure () -> String = "",
                                 file: StaticString = #file,
