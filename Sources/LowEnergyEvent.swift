@@ -25,10 +25,10 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
     case longTermKeyRequest                 = 0x05
     
     /// LE PHY Update Complete Event
-    case phyUpdateComplete                  = 0x3E
+    case phyUpdateComplete                  = 0x0C
     
     /// LE Enhanced Connection Complete Event
-    case enhancedConnectionComplete         = 0x3D
+    case enhancedConnectionComplete         = 0x0A
 }
 
 // MARK: - Name
