@@ -57,6 +57,35 @@ public struct GATTDatabase {
         return attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
     }
     
+    /// Returns the last attribute in the database.
+    public var first: Attribute? {
+        
+        return attributeGroups.first?.attributes.first
+    }
+    
+    /// Returns the last attribute in the database.
+    public var last: Attribute? {
+        
+        return attributeGroups.last?.attributes.last
+    }
+    
+    /// Whether the database contains an attribute with the specified handle.
+    public func contains(handle: UInt16) -> Bool {
+        
+        for group in attributeGroups {
+            
+            for attribute in group.attributes {
+                
+                guard attribute.handle == handle
+                    else { continue }
+                
+                return true
+            }
+        }
+        
+        return false
+    }
+    
     // MARK: - Methods
     
     @discardableResult
@@ -74,6 +103,7 @@ public struct GATTDatabase {
             
             attributes += Attribute.from(characteristic: characteristic, handle: newHandle)
             
+            // FIXME: Unnecessary, should already be set
             lastHandle = attributes.last!.handle
         }
         

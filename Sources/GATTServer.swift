@@ -69,7 +69,18 @@ public final class GATTServer {
         
         database.write(value, forAttribute: handle)
         
-        didWriteCharacteristic(handle)
+        didWriteAttribute(handle)
+    }
+    
+    /// Update the value of a characteristic attribute.
+    public func writeValue(_ value: Data, forCharacteristic uuid: BluetoothUUID) {
+        
+        guard let declarationAttribute = database.first(where: { $0.uuid == uuid })
+            else { fatalError("Invalid uuid \(uuid)") }
+        
+        let valueHandle = declarationAttribute.handle + 1
+        
+        writeValue(value, forCharacteristic: valueHandle)
     }
     
     // MARK: - Private Methods
@@ -222,8 +233,8 @@ public final class GATTServer {
             else { doResponse(errorResponse(opcode, .invalidHandle, handle)); return }
         
         // validate handle
-        guard (1 ... UInt16(database.attributes.count)).contains(handle)
-            else { doResponse(errorResponse(opcode, .invalidHandle, handle)); return }
+        guard database.contains(handle: handle)
+            else { errorResponse(opcode, .invalidHandle, handle); return }
         
         // get attribute
         let attribute = database[handle: handle]
@@ -248,10 +259,10 @@ public final class GATTServer {
         
         doResponse(respond(ATTWriteResponse()))
         
-        didWriteCharacteristic(handle)
+        didWriteAttribute(handle)
     }
     
-    private func didWriteCharacteristic(_ attributeHandle: UInt16) {
+    private func didWriteAttribute(_ attributeHandle: UInt16) {
         
         let (group, attribute) = database.attributeGroup(for: attributeHandle)
         
@@ -327,7 +338,7 @@ public final class GATTServer {
             else { errorResponse(opcode, .invalidHandle, handle); return nil }
         
         // validate handle
-        guard (1 ... UInt16(database.attributes.count)).contains(handle)
+        guard database.contains(handle: handle)
             else { errorResponse(opcode, .invalidHandle, handle); return nil }
         
         // get attribute
@@ -689,7 +700,7 @@ public final class GATTServer {
         for handle in pdu.handles {
             
             // validate handle
-            guard (1 ... UInt16(database.attributes.count)).contains(handle)
+            guard database.contains(handle: handle)
                 else { errorResponse(opcode, .invalidHandle, handle); return }
             
             // get attribute
@@ -721,16 +732,12 @@ public final class GATTServer {
             else { errorResponse(opcode, .invalidHandle, pdu.handle); return }
         
         // validate handle
-        guard (1 ... UInt16(database.attributes.count)).contains(pdu.handle)
+        guard database.contains(handle: pdu.handle)
             else { errorResponse(opcode, .invalidHandle, pdu.handle); return }
         
         // validate that the prepared writes queue is not full
         guard preparedWrites.count <= maximumPreparedWrites
             else { errorResponse(opcode, .prepareQueueFull); return }
-        
-        // validate handle
-        guard (1 ... UInt16(database.attributes.count)).contains(pdu.handle)
-            else { errorResponse(opcode, .invalidHandle, pdu.handle); return }
         
         // get attribute
         let attribute = database[handle: pdu.handle]
@@ -810,7 +817,7 @@ public final class GATTServer {
         
         for handle in newValues.keys {
             
-            didWriteCharacteristic(handle)
+            didWriteAttribute(handle)
         }
     }
 }
