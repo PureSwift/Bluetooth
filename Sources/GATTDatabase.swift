@@ -218,12 +218,13 @@ extension GATTDatabase: Collection {
 
 #if swift(>=3.3)
 #elseif swift(>=3.0)
-extension GATTDatabase {
+public extension GATTDatabase {
 
-    typealias Slice = Swift.RandomAccessSlice
+    public typealias Slice = Swift.RandomAccessSlice
 }
 #endif
 
+#if swift(>=3.1)
 extension GATTDatabase: RandomAccessCollection {
     
     public subscript(bounds: Range<Int>) -> Slice<GATTDatabase> {
@@ -235,6 +236,7 @@ extension GATTDatabase: RandomAccessCollection {
         return IndexingIterator(_elements: self)
     }
 }
+#endif
 
 // MARK: - Supporting Types
 

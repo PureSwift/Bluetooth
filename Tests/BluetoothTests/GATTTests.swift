@@ -692,7 +692,7 @@ final class GATTTests: XCTestCase {
                         guard let writtenValue = writtenValues[characteristic.handle.value]
                             else { XCTFail("Did not write \(characteristic.uuid)"); return }
                         
-                        XCTAssert(writtenValue == data, "\(characteristic.uuid) \(writtenValue) == \(data)")
+                        XCTAssertEqual(writtenValue, data, "\(characteristic.uuid) \(Array(writtenValue)) == \(data)")
                         
                         XCTAssertEqual(writtenValue, writtenValuesConfirmed[characteristic.handle.value])
                     }
@@ -704,8 +704,7 @@ final class GATTTests: XCTestCase {
         discoverAllPrimaryServices()
         
         // run fake sockets
-        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
-        catch { XCTFail("Error: \(error)") }
+        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
     }
     
 }
