@@ -266,14 +266,18 @@ public final class GATTServer {
         
         let (group, attribute) = database.attributeGroup(for: attributeHandle)
         
+        guard let service = group.service,
+            let characteristic = service.characteristics.first(where: { $0.uuid == attribute.uuid })
+            else { return }
+        
         // inform delegate
         didWrite?(attribute.uuid, attribute.handle, attribute.value)
         
         // Client configuration
-        if let descriptorAttribute = group.attributes.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
+        if let clientConfigurationDescriptor = characteristic.descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
             
-            guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: descriptorAttribute.value)
-                else { fatalError("Invalid descriptor value \([UInt8](descriptorAttribute.value))") }
+            guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: clientConfigurationDescriptor.value)
+                else { fatalError("Invalid descriptor value \([UInt8](clientConfigurationDescriptor.value))") }
             
             // notify
             if descriptor.configuration.contains(.notify) {
