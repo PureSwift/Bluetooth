@@ -690,7 +690,7 @@ final class HCITests: XCTestCase {
                                           peerAddressType: .public,
                                           peerAddress: .zero,
                                           ownAddressType: .public,
-                                          connectionInterval: LowEnergyConnectionInterval(rawValue: 0x0006 ... 0x000C)!,
+                                          connectionInterval: LowEnergyConnectionIntervalRange(rawValue: 0x0006 ... 0x000C)!,
                                           connectionLatency: .zero,
                                           supervisionTimeout: LowEnergyCommand.CreateConnectionParameter.SupervisionTimeout(rawValue: 0x00C8)!,
                                           connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
