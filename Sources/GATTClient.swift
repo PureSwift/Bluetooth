@@ -8,6 +8,11 @@
 
 import Foundation
 
+public extension GATT {
+    
+    public typealias Client = GATTClient
+}
+
 /// GATT Client
 public final class GATTClient {
     
@@ -18,6 +23,9 @@ public final class GATTClient {
     // Don't modify
     @_versioned
     internal let connection: ATTConnection
+    
+    @_versioned
+    internal private(set) var cache = Cache()
     
     /// Currently writing a long value.
     private var inLongWrite: Bool = false
@@ -69,7 +77,19 @@ public final class GATTClient {
         /// The Attribute Protocol Read By Group Type Request shall be used with 
         /// the Attribute Type parameter set to the UUID for «Primary Service». 
         /// The Starting Handle shall be set to 0x0001 and the Ending Handle shall be set to 0xFFFF.
-        discoverServices(start: 0x0001, end: 0xFFFF, primary: true, completion: completion)
+        discoverServices(start: 0x0001, end: 0xFFFF, primary: true) { [unowned self] (response) in
+            
+            // update cache
+            switch response {
+            case .error:
+                break
+            case let .value(value):
+                self.cache.update(value)
+            }
+            
+            // call completion
+            completion(response)
+        }
     }
     
     /// Discover Primary Service by Service UUID
@@ -88,7 +108,19 @@ public final class GATTClient {
         // parameter set to the UUID for «Primary Service» and the Attribute Value set to the 16-bit
         // Bluetooth UUID or 128-bit UUID for the specific primary service. 
         // The Starting Handle shall be set to 0x0001 and the Ending Handle shall be set to 0xFFFF.
-        discoverServices(uuid: uuid, start: 0x0001, end: 0xFFFF, primary: true, completion: completion)
+        discoverServices(uuid: uuid, start: 0x0001, end: 0xFFFF, primary: true) { [unowned self] (response) in
+            
+            // update cache
+            switch response {
+            case .error:
+                break
+            case let .value(value):
+                self.cache.update(value, isCompleteSet: false)
+            }
+            
+            // call completion
+            completion(response)
+        }
     }
     
     /// Discover All Characteristics of a Service
@@ -139,10 +171,9 @@ public final class GATTClient {
      This sub-procedure is used by a client to find all the characteristic descriptor’s Attribute Handles and Attribute Types within a characteristic definition when only the characteristic handle range is known. The characteristic specified is identified by the characteristic handle range.
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
-     
-     
      */
-    public func discoverAllCharacteristicDescriptors(_ characteristic: Characteristic) {
+    public func discoverAllCharacteristicDescriptors(of characteristic: Characteristic,
+                                                     completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
         
         /**
          The Attribute Protocol Find Information Request shall be used with the Starting Handle set
@@ -150,6 +181,14 @@ public final class GATTClient {
          ending handle of the specified characteristic.
          */
         
+        let start = characteristic.handle.value + 1
+        
+        guard let end = cache.endHandle(for: characteristic)
+            else { fatalError("Could not retrieve handles") }
+        
+        let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
+        
+        discoverDescriptors(operation: operation)
     }
     
     /// Read Characteristic Value
@@ -355,9 +394,11 @@ public final class GATTClient {
         send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
     }
     
-    private func discoverDescriptors(start: UInt16, end: UInt16, operation: DescriptorDiscoveryOperation) {
+    private func discoverDescriptors(operation: DescriptorDiscoveryOperation) {
         
-        let pdu = ATTFindInformationRequest(startHandle: start, endHandle: end)
+        assert(operation.start <= operation.end, "Invalid range")
+        
+        let pdu = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
         
         send(pdu) { [unowned self] in self.findInformation($0, operation: operation) }
     }
@@ -1059,15 +1100,141 @@ public extension GATTClient {
         
         public let handle: (declaration: UInt16, value: UInt16)
     }
+    
+    /// A discovered descriptor
+    public struct Descriptor {
+        
+        public let uuid: BluetoothUUID
+        
+        public let handle: UInt16
+    }
 }
 
 // MARK: - Private Supporting Types
+
+internal extension GATTClient {
+    
+    internal struct Cache {
+        
+        private(set) var services = [BluetoothUUID: CachedService]()
+        
+        mutating func update(_ newValue: [Service], isCompleteSet: Bool = true) {
+            
+            if isCompleteSet {
+                
+                // remove services that no longer exist on the server
+                self.services.keys
+                    .filter { uuid in newValue.contains(where: { $0.uuid == uuid }) }
+                    .forEach { self.services[$0] = nil }
+            }
+            
+            // update cache
+            newValue.forEach {
+                let newValue: CachedService
+                if var oldValue = self.services[$0.uuid] {
+                    oldValue.service = $0
+                    newValue = oldValue
+                } else {
+                    newValue = CachedService(service: $0, characteristics: [:])
+                }
+                self.services[$0.uuid] = newValue
+            }
+        }
+        
+        func endHandle(for characteristic: GATTClient.Characteristic) -> UInt16? {
+            
+            for service in services.values {
+                
+                let characteristics = Array(service.characteristics.values)
+                
+                for (index, characteristicCache) in characteristics.enumerated() {
+                    
+                    guard characteristicCache.characteristic.handle == characteristic.handle,
+                        characteristicCache.characteristic.uuid == characteristic.uuid
+                        else { continue }
+                    
+                    let nextIndex = index + 1
+                    
+                    let end: UInt16
+                    
+                    // get start handle of next characteristic
+                    if nextIndex < characteristics.count {
+                        
+                        let nextCharacteristic = characteristics[index]
+                        
+                        end = nextCharacteristic.characteristic.handle.declaration
+                        
+                    } else {
+                        
+                        // use service end handle
+                        end = service.service.end
+                    }
+                    
+                    return end
+                }
+            }
+            
+            return nil
+        }
+    }
+}
+
+internal extension GATTClient.Cache {
+    
+    internal struct CachedService {
+        
+        fileprivate(set) var service: GATTClient.Service
+        
+        private(set) var characteristics = [BluetoothUUID: CachedCharacteristic]()
+        
+        mutating func update(_ newValue: [GATTClient.Characteristic]) {
+            
+            // remove services that no longer exist on the server
+            self.characteristics.keys
+                .filter { uuid in newValue.contains(where: { $0.uuid == uuid }) }
+                .forEach { self.characteristics[$0] = nil }
+            
+            // update cache
+            newValue.forEach {
+                let newValue: CachedCharacteristic
+                if var oldValue = self.characteristics[$0.uuid] {
+                    oldValue.characteristic = $0
+                    newValue = oldValue
+                } else {
+                    newValue = CachedCharacteristic(characteristic: $0, descriptors: [:])
+                }
+                self.characteristics[$0.uuid] = newValue
+            }
+        }
+    }
+    
+    internal struct CachedCharacteristic {
+        
+        fileprivate(set) var characteristic: GATTClient.Characteristic
+        
+        private(set) var descriptors: [BluetoothUUID: GATTClient.Descriptor]
+        
+        mutating func update(_ newValue: [GATTClient.Descriptor]) {
+            
+            // remove services that no longer exist on the server
+            self.descriptors.keys
+                .filter { uuid in newValue.contains(where: { $0.uuid == uuid }) }
+                .forEach { self.descriptors[$0] = nil }
+            
+            // update cache
+            newValue.forEach { self.descriptors[$0.uuid] = $0 }
+        }
+    }
+}
 
 fileprivate final class DiscoveryOperation <T> {
     
     let uuid: BluetoothUUID?
     
-    var start: UInt16
+    var start: UInt16 {
+        
+        didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
+    }
     
     let end: UInt16
     
@@ -1114,9 +1281,10 @@ private extension GATTClient {
     
     final class DescriptorDiscoveryOperation {
         
-        typealias Descriptor = GATT.Descriptor
-        
-        var start: UInt16
+        var start: UInt16 {
+            
+            didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
+        }
         
         let end: UInt16
         
