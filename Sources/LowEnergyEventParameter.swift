@@ -70,7 +70,7 @@ public extension LowEnergyEvent {
         /// Range: 0x0006 to 0x0C80
         /// Time = N * 1.25 msec
         /// Time Range: 7.5 msec to 4000 msec.
-        public let latency: ConnectionInterval
+        public let latency: LowEnergyConnectionInterval
         
         /// Connection supervision timeout.
         ///
@@ -127,7 +127,7 @@ public extension LowEnergyEvent {
             self.peerAddressType = peerAddressType
             self.peerAddress = peerAddress
             self.interval = LowEnergyConnectionInterval(rawValue: intervalRawValue)
-            self.latency = ConnectionInterval(rawValue: latencyRawValue)
+            self.latency = LowEnergyConnectionInterval(rawValue: latencyRawValue)
             self.supervisionTimeout = supervisionTimeout
             self.masterClockAccuracy = masterClockAccuracy
         }
@@ -474,6 +474,122 @@ public extension LowEnergyEvent {
         }
     }
     
+    /// LE Data Length Change Event
+    ///
+    /// event notifies the Host of a change to either the maximum Payload length or the maximum transmission time of packets
+    /// in either direction. The values reported are the maximum that will actually be used on the connection following the change,
+    /// except that on the LE Coded PHY a packet taking up to 2704 μs to transmit may be sent even though the corresponding
+    /// parameter has a lower value.
+    public struct  DataLengthChangeEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.dataLengthChange // 0x07
+        
+        public static let length: Int = 10
+        
+        public let handle: UInt16 // Connection_Handle
+        
+        /// The maximum number of payload octets in a Link Layer packet that the local Controller will send on this connection
+        /// (connEffectiveMaxTxOctets defined in [Vol 6] Part B, Section 4.5.10).
+        /// onnInitialMaxTxOctets - the value of connMaxTxOctets that the Controller will use for a new connection.
+        /// Range 0x001B-0x00FB (all other values reserved for future use)
+        public let maxTxOctets: UInt16
+        
+        /// The maximum time that the local Controller will take to send a Link Layer packet on this connection
+        /// (connEffectiveMaxTxTime defined in [Vol 6] Part B, Section 4.5.10).
+        /// connEffectiveMaxTxTime - equal to connEffectiveMaxTxTimeUncoded while the connection is on an LE Uncoded PHY
+        /// and equal to connEffectiveMaxTxTimeCoded while the connection is on the LE Coded PHY.
+        public let maxTxTime: UInt16
+        
+        /// The maximum number of payload octets in a Link Layer packet that the local Controller expects to receive on
+        /// this connection (connEffectiveMaxRxOctets defined in [Vol 6] Part B, Section 4.5.10).
+        /// connEffectiveMaxRxOctets - the lesser of connMaxRxOctets and connRemoteMaxTxOctets.
+        public let maxRxOctets: UInt16
+        
+        /// The maximum time that the local Controller expects to take to receive a Link Layer packet on this
+        /// connection (connEffectiveMaxRxTime defined in [Vol 6] Part B, Section 4.5.10).
+        /// connEffectiveMaxRxTime - equal to connEffectiveMaxRxTimeUncoded while the connection is on an LE Uncoded PHY
+        /// and equal to connEffectiveMaxRxTimeCoded while the connection is on the LE Coded PHY.
+        public let maxRxTime: UInt16
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let maxTxOctets = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            let maxTxTime = UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5])))
+            let maxRxOctets = UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7])))
+            let maxRxTime = UInt16(littleEndian: UInt16(bytes: (byteValue[8], byteValue[9])))
+            
+            self.handle = handle
+            self.maxTxOctets = maxTxOctets
+            self.maxTxTime = maxTxTime
+            self.maxRxOctets = maxRxOctets
+            self.maxRxTime = maxRxTime
+        }
+    }
+    
+    /// LE Read Local P-256 Public Key Complete Event
+    ///
+    /// This event is generated when local P-256 key generation is complete.
+    public struct ReadLocalP256PublicKeyCompleteEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.readLocalP256PublicKeyComplete // 0x08
+        
+        public static let length: Int = 65
+        
+         public let status: HCIStatus
+        
+        public let localP256PublicKey: UInt512
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let statusByte = byteValue[0]
+            
+            guard let status = HCIStatus(rawValue: statusByte)
+                else { return nil }
+            
+            let localP256PublicKey = UInt512(littleEndian: UInt512(bytes: ((byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20], byteValue[21], byteValue[22], byteValue[23], byteValue[24], byteValue[25], byteValue[26], byteValue[27], byteValue[28], byteValue[29], byteValue[30], byteValue[31], byteValue[32], byteValue[33], byteValue[34], byteValue[35], byteValue[36], byteValue[37], byteValue[38], byteValue[39], byteValue[40], byteValue[41], byteValue[42], byteValue[43], byteValue[44], byteValue[45], byteValue[46], byteValue[47], byteValue[48], byteValue[49], byteValue[50], byteValue[51], byteValue[52], byteValue[53], byteValue[54], byteValue[55], byteValue[56], byteValue[57], byteValue[58], byteValue[59], byteValue[60], byteValue[61], byteValue[62], byteValue[63], byteValue[64]))))
+            
+            self.status = status
+            self.localP256PublicKey = localP256PublicKey
+        }
+    }
+    
+    /// LE Generate DHKey Complete Event
+    ///
+    /// This event indicates that LE Diffie Hellman key generation has been completed by the Controller.
+    public struct GenerateDHKeyCompleteEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.generateDHKeyComplete // 0x09
+        
+        public static let length: Int = 33
+        
+        public let status: HCIStatus
+        
+        public let dhKey: UInt256
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let statusByte = byteValue[0]
+            
+            guard let status = HCIStatus(rawValue: statusByte)
+                else { return nil }
+            
+            let dhKey = UInt256(littleEndian: UInt256(bytes: ((byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20], byteValue[21], byteValue[22], byteValue[23], byteValue[24], byteValue[25], byteValue[26], byteValue[27], byteValue[28], byteValue[29], byteValue[30], byteValue[31], byteValue[32]))))
+            
+            self.status = status
+            self.dhKey = dhKey
+        }
+    }
+    
     /// LE PHY Update Complete Event
     ///
     /// The LE PHY Update Complete Event is used to indicate that the Controller has changed
@@ -528,7 +644,7 @@ public extension LowEnergyEvent {
     /// The event indicates to both of the Hosts forming the connection that a new connection has been created.
     public struct EnhancedConnectionCompleteEventParameter: HCIEventParameter {
         
-        public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x3E
+        public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x0A
         
         public static let length: Int = 30
         
@@ -563,7 +679,7 @@ public extension LowEnergyEvent {
         /// Range: 0x0006 to 0x0C80
         /// Time = N * 1.25 msec
         /// Time Range: 7.5 msec to 4000 msec.
-        public let interval: ConnectionInterval
+        public let interval: LowEnergyConnectionInterval
 
         /// Slave latency for the connection in number of connection events.
         /// Range: 0x0000 to 0x01F3
@@ -606,7 +722,7 @@ public extension LowEnergyEvent {
                                 byteValue[20], byteValue[21],
                                 byteValue[22])))
             
-            let connInternal = ConnectionInterval(rawValue: UInt16(bytes: (byteValue[23], byteValue[24])))
+            let connInternal = LowEnergyConnectionInterval(rawValue: UInt16(bytes: (byteValue[23], byteValue[24])))
             
             guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(bytes: (byteValue[25], byteValue[26])))
                 else { return nil }
@@ -641,56 +757,6 @@ public extension LowEnergyEvent {
         case ppm50      = 0x05
         case ppm30      = 0x06
         case ppm20      = 0x07
-    }
-    
-    /// Connection interval / latency used on this connection.
-    ///
-    /// Range: 0x0006 to 0x0C80
-    /// Time = N * 1.25 msec
-    /// Time Range: 7.5 msec to 4000 msec.
-    public struct ConnectionInterval: RawRepresentable, Equatable, Hashable, Comparable {
-        
-        /// 7.5 msec
-        public static let min = ConnectionInterval(0x0006)
-        
-        /// 4000 msec
-        public static let max = ConnectionInterval(0x0C80)
-        
-        public let rawValue: UInt16
-        
-        public init(rawValue: UInt16) {
-            
-            self.rawValue = rawValue
-        }
-        
-        /// Time = N * 1.25 msec
-        public var miliseconds: Double {
-            
-            return Double(rawValue) * 1.25
-        }
-        
-        // Private, unsafe
-        private init(_ rawValue: UInt16) {
-            self.rawValue = rawValue
-        }
-        
-        // Equatable
-        public static func == (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
-        }
-        
-        // Comparable
-        public static func < (lhs: ConnectionInterval, rhs: ConnectionInterval) -> Bool {
-            
-            return lhs.rawValue < rhs.rawValue
-        }
-        
-        // Hashable
-        public var hashValue: Int {
-            
-            return Int(rawValue)
-        }
     }
 }
 
