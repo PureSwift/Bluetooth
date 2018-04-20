@@ -736,6 +736,10 @@ public final class GATTClient {
     
     private func readByType(_ response: ATTResponse<ATTReadByTypeResponse>, operation: DiscoveryOperation<Characteristic>) {
         
+        typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
+        
+        typealias Attribute = GATTDatabase.Attribute
+        
         // Read By Type Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the
         // characteristics in the service definition. The Attribute Handle is the handle for the characteristic declaration. 
         // The Attribute Value is the Characteristic Properties, Characteristic Value Handle and Characteristic UUID. 
@@ -758,7 +762,12 @@ public final class GATTClient {
                 
                 let handle = characteristicData.handle
                 
-                guard let declaration = CharacteristicDeclaration(littleEndian: characteristicData.value)
+                let attribute = Attribute(handle: handle,
+                                          uuid: .characteristic,
+                                          value: Data(characteristicData.value),
+                                          permissions: [.read])
+                
+                guard let declaration = DeclarationAttribute(attribute: attribute)
                     else { operation.completion(.error(Error.invalidResponse(pdu))); return }
                 
                 let characteristic = Characteristic(uuid: declaration.uuid,
@@ -1300,70 +1309,6 @@ private extension GATTClient {
         func error(_ responseError: ATTErrorResponse) {
             
             completion(.error(GATTClientError.errorResponse(responseError)))
-        }
-    }
-}
-
-internal extension GATTClient {
-    
-    /// A characteristic declaration is an Attribute with the Attribute Type set to
-    /// the UUID for «Characteristic» and Attribute Value set to the Characteristic Properties,
-    /// Characteristic Value Attribute Handle and Characteristic UUID. 
-    /// The Attribute Permissions shall be readable and not require authentication or authorization.
-    struct CharacteristicDeclaration {
-        
-        typealias Property = GATT.CharacteristicProperty
-        
-        /// Characteristic Properties
-        ///
-        /// Bit field of characteristic properties.
-        var properties: BitMaskOptionSet<Property>
-        
-        /// Characteristic Value Handle
-        /// 
-        /// Handle of the Attribute containing the value of this characteristic.
-        var valueHandle: UInt16
-        
-        /// Characteristic UUID
-        /// 
-        /// 16-bit Bluetooth UUID or 128-bit UUID for Characteristic Value.
-        var uuid: BluetoothUUID
-        
-        init?(littleEndian bytes: [UInt8]) {
-            
-            guard let length = Length(rawValue: bytes.count)
-                else { return nil }
-            
-            let properties = BitMaskOptionSet<Property>(rawValue: bytes[0])
-            
-            let valueHandle = UInt16(littleEndian: UInt16(bytes: (bytes[1], bytes[2])))
-            
-            let uuid: BluetoothUUID
-            
-            switch length {
-                
-            case .uuid16Bit:
-                
-                let value = UInt16(bytes: (bytes[3], bytes[4]))
-                
-                uuid = .bit16(UInt16(littleEndian: value))
-                
-            case .uuid128Bit:
-                
-                let value = UInt128(data: Data(bytes.suffix(from: 3)))!
-                
-                uuid = .bit128(UInt128(littleEndian: value))
-            }
-            
-            self.properties = properties
-            self.valueHandle = valueHandle
-            self.uuid = uuid
-        }
-        
-        private enum Length: Int {
-            
-            case uuid16Bit      = 5 // (1 + 2 + 2)
-            case uuid128Bit     = 19 // (1 + 2 + 16)
         }
     }
 }

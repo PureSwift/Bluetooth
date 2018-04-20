@@ -299,6 +299,10 @@ final class AttributeProtocolTests: XCTestCase {
     
     func testReadByType() {
         
+        typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
+        
+        typealias Attribute = GATTDatabase.Attribute
+        
         do {
             
             let data: [UInt8] = [9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
@@ -325,22 +329,27 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(pdu.byteValue == data)
             
-            guard let foundCharacteristicData = pdu.data.first,
+            guard let characteristicData = pdu.data.first,
                 pdu.data.count == 1
                 else { XCTFail("Invalid response"); return }
             
-            XCTAssert(foundCharacteristicData.handle == 41)
-            XCTAssert(foundCharacteristicData.value.isEmpty == false)
+            XCTAssert(characteristicData.handle == 41)
+            XCTAssert(characteristicData.value.isEmpty == false)
             
-            guard let characteristicDeclaration = GATTClient.CharacteristicDeclaration(littleEndian: foundCharacteristicData.value)
+            let attribute = Attribute(handle: characteristicData.handle,
+                                      uuid: .characteristic,
+                                      value: Data(characteristicData.value),
+                                      permissions: [.read])
+            
+            guard let declaration = DeclarationAttribute(attribute: attribute)
                 else { XCTFail("Could not parse"); return }
             
             let characteristic = TestProfile.Read
             
-            XCTAssert(characteristicDeclaration.valueHandle == 42)
-            XCTAssert(characteristicDeclaration.uuid == characteristic.uuid)
-            XCTAssert(characteristicDeclaration.properties.set == Set(characteristic.properties))
-            XCTAssert(characteristicDeclaration.properties == characteristic.properties)
+            XCTAssert(declaration.valueHandle == 42)
+            XCTAssert(declaration.uuid == characteristic.uuid)
+            XCTAssert(declaration.properties.set == Set(characteristic.properties))
+            XCTAssert(declaration.properties == characteristic.properties)
         }
     }
     
