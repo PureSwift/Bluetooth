@@ -582,6 +582,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
+            // Find Information Request - Start Handle:0x0004 - End Handle:0x0004
             let data: [UInt8] = [4, 4, 0, 4, 0]
             
             guard let pdu = ATTFindInformationRequest(byteValue: data)
@@ -594,6 +595,10 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
+            // Find Information Response
+            // Opcode: 0x05
+            // Format: 1 (Handles and 16 byte UUIDs)
+            // Handle: 0x0004 UUID: 2902 (Client Characteristic Configuration)
             let data: [UInt8] = [5, 1, 4, 0, 2, 41]
             
             guard let pdu = ATTFindInformationResponse(byteValue: data)
@@ -605,7 +610,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Invalid data"); return }
             
             XCTAssertEqual(attributeData.count, 1)
-            XCTAssertEqual(attributeData[0].0, 0x04)
+            XCTAssertEqual(attributeData[0].0, 0x0004)
             XCTAssertEqual(BluetoothUUID.bit16(attributeData[0].1), .clientCharacteristicConfiguration)
         }
     }
