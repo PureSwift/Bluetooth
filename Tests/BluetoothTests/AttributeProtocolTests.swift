@@ -672,6 +672,7 @@ final class AttributeProtocolTests: XCTestCase {
     
     func testDiscovery() {
         
+        // MTU Exchange
         do {
             
             let data: [UInt8] = [2, 185, 0]
@@ -694,6 +695,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.serverMTU, 200)
         }
         
+        // Service Discovery
         do {
             
             let data: [UInt8] = [16, 1, 0, 255, 255, 0, 40]
@@ -713,9 +715,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             guard let pdu = ATTReadByGroupTypeResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
-            
-            print(pdu)
-            
+                        
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.data.count, 3)
             
@@ -761,6 +761,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.requestOpcode, .readByGroupTypeRequest)
         }
         
+        /// Characteristic Discovery
         do {
             
             let data: [UInt8] = [8, 1, 0, 6, 0, 3, 40]
@@ -793,12 +794,13 @@ final class AttributeProtocolTests: XCTestCase {
                                                        value: Data(pdu.data[0].value),
                                                        permissions: [.read])
                 
-                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                guard let declaration = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
                     else { XCTFail(); return }
                 
-                XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
-                XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "2BE58BC4-7DF2-4CB1-9350-CDA44533EA99")
-                XCTAssertEqual(characteristicDeclarationAttribute.properties, [.notify])
+                XCTAssertEqual(declaration.attribute.value, attribute.value)
+                XCTAssertEqual(declaration.uuid.rawValue, "2BE58BC4-7DF2-4CB1-9350-CDA44533EA99")
+                XCTAssertEqual(declaration.valueHandle, 3)
+                XCTAssertEqual(declaration.properties, [.notify])
             }
             
             do {
@@ -814,9 +816,11 @@ final class AttributeProtocolTests: XCTestCase {
                 XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
                 XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "94CAE5B0-3BDB-4B9B-9B34-8717C6CCFDAE")
                 XCTAssertEqual(characteristicDeclarationAttribute.properties, [.write])
+                XCTAssertEqual(characteristicDeclarationAttribute.valueHandle, 6)
             }
         }
         
+        /// Characteristic Discovery
         do {
             
             let data: [UInt8] = [8, 7, 0, 12, 0, 3, 40]
@@ -873,6 +877,7 @@ final class AttributeProtocolTests: XCTestCase {
             }
         }
         
+        /// Characteristic Discovery
         do {
             
             let data: [UInt8] = [8, 13, 0, 18, 0, 3, 40]
