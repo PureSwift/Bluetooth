@@ -142,22 +142,12 @@ public final class GATTClient {
      
      
      */
-    public func discoverAllCharacteristicDescriptors() {
+    public func discoverAllCharacteristicDescriptors(_ characteristic: Characteristic) {
         
         /**
          The Attribute Protocol Find Information Request shall be used with the Starting Handle set
          to the handle of the specified characteristic value + 1 and the Ending Handle set to the
          ending handle of the specified characteristic.
-         
-         Two possible responses can be sent from the server for the Find Information Request: Find Information Response and Error Response.
-         
-         Error Response is returned if an error occurred on the server.
-         
-         Find Information Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the characteristic descriptors in the characteristic definition. The Attribute Handle is the handle for the characteristic descriptor declaration. The Attribute Value is the Characteristic Descriptor UUID. The Find Information Request shall be called again with the Starting Handle set to one greater than the last Attribute Handle in the Find Information Response.
-         
-         The sub-procedure is complete when the Error Response is received and the Error Code is set to Attribute Not Found or the Find Information Response has an Attribute Handle that is equal to the Ending Handle of the request.
-         It is permitted to end the sub-procedure early if a desired Characteristic Descriptor is found prior to discovering all the characteristic descriptors of the specified characteristic.
-         
          */
         
     }
@@ -363,6 +353,13 @@ public final class GATTClient {
                                        attributeType: attributeType.uuid)
         
         send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+    }
+    
+    private func discoverDescriptors(start: UInt16, end: UInt16, operation: DescriptorDiscoveryOperation) {
+        
+        let pdu = ATTFindInformationRequest(startHandle: start, endHandle: end)
+        
+        send(pdu) { [unowned self] in self.findInformation($0, operation: operation) }
     }
     
     /// Read Characteristic Value
@@ -660,7 +657,84 @@ public final class GATTClient {
         }
     }
     
-    private func readByType( _ response: ATTResponse<ATTReadByTypeResponse>, operation: DiscoveryOperation<Characteristic>) {
+    private func findInformation(_ response: ATTResponse<ATTFindInformationResponse>,
+                                 operation: DescriptorDiscoveryOperation) {
+        
+        /**
+         Two possible responses can be sent from the server for the Find Information Request: Find Information Response and Error Response.
+         
+         Error Response is returned if an error occurred on the server.
+         
+         Find Information Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the characteristic descriptors in the characteristic definition. The Attribute Handle is the handle for the characteristic descriptor declaration. The Attribute Value is the Characteristic Descriptor UUID.
+         
+         The Find Information Request shall be called again with the Starting Handle set to one greater than the last Attribute Handle in the Find Information Response.
+         
+         The sub-procedure is complete when the Error Response is received and the Error Code is set to Attribute Not Found or the Find Information Response has an Attribute Handle that is equal to the Ending Handle of the request.
+         
+         It is permitted to end the sub-procedure early if a desired Characteristic Descriptor is found prior to discovering all the characteristic descriptors of the specified characteristic.
+         */
+        /*
+        switch response {
+            
+        case let .error(errorResponse):
+            
+            operation.error(errorResponse)
+            
+        case let .value(pdu):
+            
+            // pre-allocate array
+            operation.foundData.reserveCapacity(operation.foundData.count + pdu.data.count)
+            
+            // parse pdu data
+            for characteristicData in pdu.data {
+                
+                let handle = characteristicData.handle
+                
+                guard let declaration = CharacteristicDeclaration(littleEndian: characteristicData.value)
+                    else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                
+                let characteristic = Characteristic(uuid: declaration.uuid,
+                                                    properties: declaration.properties,
+                                                    handle: (handle, declaration.valueHandle))
+                
+                operation.foundData.append(characteristic)
+                
+                // if we specified a UUID to be searched,
+                // then call completion if it matches
+                if let operationUUID = operation.uuid {
+                    
+                    guard characteristic.uuid != operationUUID
+                        else { operation.success(); return }
+                }
+            }
+            
+            // get more if possible
+            let lastEnd = pdu.data.last?.handle ?? 0x00
+            
+            // prevent infinite loop
+            guard lastEnd >= operation.start
+                else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+            
+            operation.start = lastEnd + 1
+            
+            // need to continue discovery
+            if lastEnd != 0, operation.start < operation.end {
+                
+                let pdu = ATTReadByTypeRequest(startHandle: operation.start,
+                                               endHandle: operation.end,
+                                               attributeType: operation.type.uuid)
+                
+                send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+                
+            } else {
+                
+                // end of service
+                operation.success()
+            }
+        }*/
+    }
+    
+    private func readByType(_ response: ATTResponse<ATTReadByTypeResponse>, operation: DiscoveryOperation<Characteristic>) {
         
         // Read By Type Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the
         // characteristics in the service definition. The Attribute Handle is the handle for the characteristic declaration. 
@@ -965,6 +1039,7 @@ public extension GATTClient {
         public let end: UInt16
     }
     
+    /// A discovered characteristic.
     public struct Characteristic {
         
         public typealias Property = GATT.CharacteristicProperty
@@ -1027,6 +1102,55 @@ fileprivate final class DiscoveryOperation <T> {
 }
 
 private extension GATTClient {
+    
+    final class DescriptorDiscoveryOperation {
+        
+        typealias Descriptor = GATT.Descriptor
+        
+        var start: UInt16
+        
+        let end: UInt16
+        
+        var foundDescriptors = [Descriptor]()
+        
+        let completion: (GATTClientResponse<[Descriptor]>) -> ()
+        
+        init(characteristic: Characteristic,
+             completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
+            
+            self.start = characteristic.handle.declaration
+            self.end = characteristic.handle.value
+            self.completion = completion
+        }
+        
+        init(start: UInt16,
+             end: UInt16,
+             completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
+            
+            self.start = start
+            self.end = end
+            self.completion = completion
+        }
+        
+        @inline(__always)
+        func success() {
+            
+            completion(.value(foundDescriptors))
+        }
+        
+        @inline(__always)
+        func error(_ responseError: ATTErrorResponse) {
+            
+            if responseError.errorCode == .attributeNotFound {
+                
+                success()
+                
+            } else {
+                
+                completion(.error(GATTClientError.errorResponse(responseError)))
+            }
+        }
+    }
     
     final class ReadOperation {
         
