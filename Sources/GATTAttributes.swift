@@ -47,21 +47,13 @@ public extension GATT {
         /// Included Service UUID
         public var serviceUUID: BluetoothUUID
         
-        public init(serviceHandle: UInt16, endGroupHandle: UInt16, serviceUUID: BluetoothUUID) {
+        public init(serviceHandle: UInt16,
+                    endGroupHandle: UInt16,
+                    serviceUUID: BluetoothUUID) {
             
             self.serviceHandle = serviceHandle
             self.endGroupHandle = endGroupHandle
             self.serviceUUID = serviceUUID
-        }
-        
-        /// ATT Attribute Value
-        internal var littleEndian: [UInt8] {
-            
-            let handleBytes = serviceHandle.littleEndian.bytes
-            
-            let endGroupBytes = endGroupHandle.littleEndian.bytes
-            
-            return [handleBytes.0, handleBytes.1, endGroupBytes.0, endGroupBytes.1] + [UInt8](serviceUUID.littleEndian.data)
         }
     }
     

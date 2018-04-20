@@ -40,11 +40,11 @@ extension GATTDatabase {
         
         for attribute in self {
             
-            let type: Any = GATT.UUID.init(uuid: attribute.uuid as BluetoothUUID) ?? attribute.uuid
+            let value: Any = BluetoothUUID(data: attribute.value)?.littleEndian
+                ?? String(data: attribute.value, encoding: .utf8)
+                ?? attribute.value
             
-            let value: Any = BluetoothUUID(data: attribute.value)?.littleEndian ?? String(data: attribute.value, encoding: .utf8) ?? attribute.value
-            
-            print("\(attribute.handle) - \(type)")
+            print("\(attribute.handle) - \(attribute.uuid)")
             print("Permissions: \(attribute.permissions)")
             print("Value: \(value)")
         }
