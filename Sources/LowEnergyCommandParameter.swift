@@ -4484,7 +4484,7 @@ public struct LowEnergyConnectionLatency: RawRepresentable, Equatable, Hashable,
         return lhs.rawValue == rhs.rawValue
     }
     
-    // Hashable
+    // HashableUInt12
     public var hashValue: Int {
         
         return Int(rawValue)
