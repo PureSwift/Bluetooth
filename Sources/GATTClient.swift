@@ -750,7 +750,7 @@ public final class GATTClient {
          
          It is permitted to end the sub-procedure early if a desired Characteristic Descriptor is found prior to discovering all the characteristic descriptors of the specified characteristic.
          */
-        /*
+        
         switch response {
             
         case let .error(errorResponse):
@@ -760,55 +760,41 @@ public final class GATTClient {
         case let .value(pdu):
             
             // pre-allocate array
-            operation.foundData.reserveCapacity(operation.foundData.count + pdu.data.count)
+            operation.foundDescriptors.reserveCapacity(operation.foundDescriptors.count + pdu.data.count)
             
-            // parse pdu data
-            for characteristicData in pdu.data {
+            let foundData: [Descriptor]
+            
+            switch pdu.data {
                 
-                let handle = characteristicData.handle
+            case let .bit16(values):
                 
-                guard let declaration = CharacteristicDeclaration(littleEndian: characteristicData.value)
-                    else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                foundData = values.map { Descriptor(uuid: .bit16($0.1), handle: $0.0) }
                 
-                let characteristic = Characteristic(uuid: declaration.uuid,
-                                                    properties: declaration.properties,
-                                                    handle: (handle, declaration.valueHandle))
+            case let .bit128(values):
                 
-                operation.foundData.append(characteristic)
-                
-                // if we specified a UUID to be searched,
-                // then call completion if it matches
-                if let operationUUID = operation.uuid {
-                    
-                    guard characteristic.uuid != operationUUID
-                        else { operation.success(); return }
-                }
+                foundData = values.map { Descriptor(uuid: .bit128($0.1), handle: $0.0) }
             }
             
             // get more if possible
-            let lastEnd = pdu.data.last?.handle ?? 0x00
+            let lastHandle = foundData.last?.handle ?? 0x00
             
             // prevent infinite loop
-            guard lastEnd >= operation.start
+            guard lastHandle >= operation.start
                 else { operation.completion(.error(Error.invalidResponse(pdu))); return }
             
-            operation.start = lastEnd + 1
+            operation.start = lastHandle + 1
             
             // need to continue discovery
-            if lastEnd != 0, operation.start < operation.end {
+            if lastHandle != 0, operation.start < operation.end {
                 
-                let pdu = ATTReadByTypeRequest(startHandle: operation.start,
-                                               endHandle: operation.end,
-                                               attributeType: operation.type.uuid)
-                
-                send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+                discoverDescriptors(operation: operation)
                 
             } else {
                 
                 // end of service
                 operation.success()
             }
-        }*/
+        }
     }
     
     private func readByType(_ response: ATTResponse<ATTReadByTypeResponse>, operation: DiscoveryOperation<Characteristic>) {
