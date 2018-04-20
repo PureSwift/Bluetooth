@@ -8,6 +8,11 @@
 
 import Foundation
 
+public extension GATT {
+    
+    public typealias Server = GATTServer
+}
+
 public final class GATTServer {
     
     // MARK: - Properties
@@ -564,7 +569,7 @@ public final class GATTServer {
     
     private func findInformation(pdu: ATTFindInformationRequest) {
         
-        typealias Data = ATTFindInformationResponse.Data
+        typealias AttributeData = ATTFindInformationResponse.AttributeData
         
         typealias Format = ATTFindInformationResponse.Format
         
@@ -613,7 +618,7 @@ public final class GATTServer {
             }
         }
         
-        let data: Data
+        let data: AttributeData
         
         switch format {
         case .bit16: data = .bit16(bit16Pairs)

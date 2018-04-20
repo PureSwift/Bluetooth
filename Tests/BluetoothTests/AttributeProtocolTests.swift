@@ -299,6 +299,10 @@ final class AttributeProtocolTests: XCTestCase {
     
     func testReadByType() {
         
+        typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
+        
+        typealias Attribute = GATTDatabase.Attribute
+        
         do {
             
             let data: [UInt8] = [9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
@@ -325,22 +329,27 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(pdu.byteValue == data)
             
-            guard let foundCharacteristicData = pdu.data.first,
+            guard let characteristicData = pdu.data.first,
                 pdu.data.count == 1
                 else { XCTFail("Invalid response"); return }
             
-            XCTAssert(foundCharacteristicData.handle == 41)
-            XCTAssert(foundCharacteristicData.value.isEmpty == false)
+            XCTAssert(characteristicData.handle == 41)
+            XCTAssert(characteristicData.value.isEmpty == false)
             
-            guard let characteristicDeclaration = GATTClient.CharacteristicDeclaration(littleEndian: foundCharacteristicData.value)
+            let attribute = Attribute(handle: characteristicData.handle,
+                                      uuid: .characteristic,
+                                      value: Data(characteristicData.value),
+                                      permissions: [.read])
+            
+            guard let declaration = DeclarationAttribute(attribute: attribute)
                 else { XCTFail("Could not parse"); return }
             
             let characteristic = TestProfile.Read
             
-            XCTAssert(characteristicDeclaration.valueHandle == 42)
-            XCTAssert(characteristicDeclaration.uuid == characteristic.uuid)
-            XCTAssert(characteristicDeclaration.properties.set == Set(characteristic.properties))
-            XCTAssert(characteristicDeclaration.properties == characteristic.properties)
+            XCTAssert(declaration.valueHandle == 42)
+            XCTAssert(declaration.uuid == characteristic.uuid)
+            XCTAssert(declaration.properties.set == Set(characteristic.properties))
+            XCTAssert(declaration.properties == characteristic.properties)
         }
     }
     
@@ -563,12 +572,46 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTFindInformationResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            let foundData = ATTFindInformationResponse.Data.bit16([(0x0017, 0x2902)])
+            let foundData = ATTFindInformationResponse.AttributeData.bit16([(0x0017, 0x2902)])
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.data.byteValue, foundData.byteValue)
             XCTAssertEqual("\(pdu.data)", "\(foundData)")
+        }
+        
+        do {
+            
+            // Find Information Request - Start Handle:0x0004 - End Handle:0x0004
+            let data: [UInt8] = [4, 4, 0, 4, 0]
+            
+            guard let pdu = ATTFindInformationRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.startHandle, 0x04)
+            XCTAssertEqual(pdu.endHandle, 0x04)
+        }
+        
+        do {
+            
+            // Find Information Response
+            // Opcode: 0x05
+            // Format: 1 (Handles and 16 byte UUIDs)
+            // Handle: 0x0004 UUID: 2902 (Client Characteristic Configuration)
+            let data: [UInt8] = [5, 1, 4, 0, 2, 41]
+            
+            guard let pdu = ATTFindInformationResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            
+            guard case let .bit16(attributeData) = pdu.data
+                else { XCTFail("Invalid data"); return }
+            
+            XCTAssertEqual(attributeData.count, 1)
+            XCTAssertEqual(attributeData[0].0, 0x0004)
+            XCTAssertEqual(BluetoothUUID.bit16(attributeData[0].1), .clientCharacteristicConfiguration)
         }
     }
     
@@ -634,22 +677,7 @@ final class AttributeProtocolTests: XCTestCase {
     
     func testDiscovery() {
         
-        /**
-         Read: [2, 185, 0]
-         Send: [3, 200, 0]
-         Read: [16, 1, 0, 255, 255, 0, 40]
-         Send: [17, 20, 1, 0, 6, 0, 231, 207, 159, 173, 34, 222, 166, 180, 145, 78, 37, 213, 23, 49, 212, 52, 7, 0, 12, 0, 251, 52, 155, 95, 128, 0, 0, 128, 0, 16, 0, 0, 169, 254, 0, 0, 13, 0, 18, 0, 178, 26, 190, 138, 180, 130, 146, 145, 222, 73, 117, 102, 201, 67, 100, 139]
-         Read: [16, 19, 0, 255, 255, 0, 40]
-         Send: [1, 16, 19, 0, 10]
-         Read: [8, 1, 0, 6, 0, 3, 40]
-         Send: [9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148]
-         Read: [8, 7, 0, 12, 0, 3, 40]
-         Send: [9, 21, 8, 0, 18, 9, 0, 1, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204, 11, 0, 8, 12, 0, 2, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204]
-         Read: [4, 4, 0, 4, 0]
-         Send: [5, 1, 4, 0, 2, 41]
-         Read: [18, 4, 0, 1, 0]
-         */
-        
+        // MTU Exchange
         do {
             
             let data: [UInt8] = [2, 185, 0]
@@ -670,6 +698,245 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.byteValue, data)
             XCTAssertEqual(pdu.serverMTU, 200)
+        }
+        
+        // Service Discovery
+        do {
+            
+            let data: [UInt8] = [16, 1, 0, 255, 255, 0, 40]
+            
+            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.type, BluetoothUUID.primaryService)
+            XCTAssertEqual(pdu.startHandle, 0x0001)
+            XCTAssertEqual(pdu.endHandle, .max)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [17, 20, 1, 0, 6, 0, 231, 207, 159, 173, 34, 222, 166, 180, 145, 78, 37, 213, 23, 49, 212, 52, 7, 0, 12, 0, 251, 52, 155, 95, 128, 0, 0, 128, 0, 16, 0, 0, 169, 254, 0, 0, 13, 0, 18, 0, 178, 26, 190, 138, 180, 130, 146, 145, 222, 73, 117, 102, 201, 67, 100, 139]
+            
+            guard let pdu = ATTReadByGroupTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+                        
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data.count, 3)
+            
+            XCTAssertEqual(pdu.data[0].attributeHandle, 1)
+            XCTAssertEqual(pdu.data[0].endGroupHandle, 6)
+            XCTAssertEqual(BluetoothUUID(littleEndian: BluetoothUUID(data: Data(pdu.data[0].value))!).rawValue,
+                           "34D43117-D525-4E91-B4A6-DE22AD9FCFE7")
+            
+            XCTAssertEqual(pdu.data[1].attributeHandle, 7)
+            XCTAssertEqual(pdu.data[1].endGroupHandle, 12)
+            XCTAssertEqual(BluetoothUUID(littleEndian: BluetoothUUID(data: Data(pdu.data[1].value))!).rawValue,
+                           "0000FEA9-0000-1000-8000-00805F9B34FB")
+            
+            XCTAssertEqual(pdu.data[2].attributeHandle, 13)
+            XCTAssertEqual(pdu.data[2].endGroupHandle, 18)
+            XCTAssertEqual(BluetoothUUID(littleEndian: BluetoothUUID(data: Data(pdu.data[2].value))!).rawValue,
+                           "8B6443C9-6675-49DE-9192-82B48ABE1AB2")
+        }
+        
+        do {
+            
+            let data: [UInt8] = [16, 19, 0, 255, 255, 0, 40]
+            
+            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.type, BluetoothUUID.primaryService)
+            XCTAssertEqual(pdu.startHandle, 19)
+            XCTAssertEqual(pdu.endHandle, .max)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [1, 16, 19, 0, 10]
+            
+            guard let pdu = ATTErrorResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.errorCode, .attributeNotFound)
+            XCTAssertEqual(pdu.attributeHandle, 19)
+            XCTAssertEqual(pdu.requestOpcode, .readByGroupTypeRequest)
+        }
+        
+        /// Characteristic Discovery
+        do {
+            
+            let data: [UInt8] = [8, 1, 0, 6, 0, 3, 40]
+            
+            guard let pdu = ATTReadByTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.startHandle, 1)
+            XCTAssertEqual(pdu.endHandle, 6)
+            XCTAssertEqual(pdu.attributeType, .characteristic)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148]
+            
+            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data.count, 2)
+            XCTAssertEqual(pdu.data[0].handle, 2)
+            XCTAssertEqual(pdu.data[1].handle, 5)
+            
+            do {
+                
+                let attribute = GATTDatabase.Attribute(handle: pdu.data[0].handle,
+                                                       uuid: .characteristic,
+                                                       value: Data(pdu.data[0].value),
+                                                       permissions: [.read])
+                
+                guard let declaration = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                    else { XCTFail(); return }
+                
+                XCTAssertEqual(declaration.attribute.value, attribute.value)
+                XCTAssertEqual(declaration.uuid.rawValue, "2BE58BC4-7DF2-4CB1-9350-CDA44533EA99")
+                XCTAssertEqual(declaration.valueHandle, 3)
+                XCTAssertEqual(declaration.properties, [.notify])
+            }
+            
+            do {
+                
+                let attribute = GATTDatabase.Attribute(handle: pdu.data[1].handle,
+                                                       uuid: .characteristic,
+                                                       value: Data(pdu.data[1].value),
+                                                       permissions: [.read])
+                
+                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                    else { XCTFail(); return }
+                
+                XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
+                XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "94CAE5B0-3BDB-4B9B-9B34-8717C6CCFDAE")
+                XCTAssertEqual(characteristicDeclarationAttribute.properties, [.write])
+                XCTAssertEqual(characteristicDeclarationAttribute.valueHandle, 6)
+            }
+        }
+        
+        /// Characteristic Discovery
+        do {
+            
+            let data: [UInt8] = [8, 7, 0, 12, 0, 3, 40]
+            
+            guard let pdu = ATTReadByTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.startHandle, 7)
+            XCTAssertEqual(pdu.endHandle, 12)
+            XCTAssertEqual(pdu.attributeType, .characteristic)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [9, 21, 8, 0, 18, 9, 0, 1, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204, 11, 0, 8, 12, 0, 2, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204]
+            
+            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data.count, 2)
+            XCTAssertEqual(pdu.data[0].handle, 8)
+            XCTAssertEqual(pdu.data[1].handle, 11)
+            
+            do {
+                
+                let attribute = GATTDatabase.Attribute(handle: pdu.data[0].handle,
+                                                       uuid: .characteristic,
+                                                       value: Data(pdu.data[0].value),
+                                                       permissions: [.read])
+                
+                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                    else { XCTFail(); return }
+                
+                XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
+                XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "CC831880-03E3-4DFE-8ED8-DC2757000001")
+                XCTAssertEqual(characteristicDeclarationAttribute.properties, [.read, .notify])
+            }
+            
+            do {
+                
+                let attribute = GATTDatabase.Attribute(handle: pdu.data[1].handle,
+                                                       uuid: .characteristic,
+                                                       value: Data(pdu.data[1].value),
+                                                       permissions: [.read])
+                
+                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                    else { XCTFail(); return }
+                
+                XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
+                XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "CC831880-03E3-4DFE-8ED8-DC2757000002")
+                XCTAssertEqual(characteristicDeclarationAttribute.properties, [.write])
+            }
+        }
+        
+        /// Characteristic Discovery
+        do {
+            
+            let data: [UInt8] = [8, 13, 0, 18, 0, 3, 40]
+            
+            guard let pdu = ATTReadByTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.startHandle, 13)
+            XCTAssertEqual(pdu.endHandle, 18)
+            XCTAssertEqual(pdu.attributeType, .characteristic)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [9, 21, 14, 0, 16, 15, 0, 148, 89, 241, 12, 105, 23, 110, 137, 175, 75, 151, 213, 45, 106, 139, 210, 17, 0, 8, 18, 0, 231, 116, 224, 184, 128, 249, 130, 161, 110, 70, 164, 15, 236, 148, 235, 104]
+            
+            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data.count, 2)
+            XCTAssertEqual(pdu.data[0].handle, 14)
+            XCTAssertEqual(pdu.data[1].handle, 17)
+            
+            do {
+                
+                let attribute = GATTDatabase.Attribute(handle: pdu.data[0].handle,
+                                                       uuid: .characteristic,
+                                                       value: Data(pdu.data[0].value),
+                                                       permissions: [.read])
+                
+                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                    else { XCTFail(); return }
+                
+                XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
+                XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "D28B6A2D-D597-4BAF-896E-17690CF15994")
+                XCTAssertEqual(characteristicDeclarationAttribute.properties, [.notify])
+            }
+            
+            do {
+                
+                let attribute = GATTDatabase.Attribute(handle: pdu.data[1].handle,
+                                                       uuid: .characteristic,
+                                                       value: Data(pdu.data[1].value),
+                                                       permissions: [.read])
+                
+                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                    else { XCTFail(); return }
+                
+                XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
+                XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "68EB94EC-0FA4-466E-A182-F980B8E074E7")
+                XCTAssertEqual(characteristicDeclarationAttribute.properties, [.write])
+            }
         }
     }
 }
