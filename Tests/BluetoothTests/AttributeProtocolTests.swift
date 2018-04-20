@@ -722,5 +722,45 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.attributeHandle, 19)
             XCTAssertEqual(pdu.requestOpcode, .readByGroupTypeRequest)
         }
+        
+        do {
+            
+            let data: [UInt8] = [8, 1, 0, 6, 0, 3, 40]
+            
+            guard let pdu = ATTReadByTypeRequest(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.startHandle, 1)
+            XCTAssertEqual(pdu.endHandle, 6)
+            XCTAssertEqual(pdu.attributeType, .characteristic)
+        }
+        
+        do {
+            
+            let data: [UInt8] = [9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148]
+            
+            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data.count, 2)
+            XCTAssertEqual(pdu.data[0].handle, 2)
+            
+            do {
+                
+                let attribute = GATTDatabase.Attribute(handle: 0x02,
+                                                       uuid: .characteristic,
+                                                       value: Data(pdu.data[0].value),
+                                                       permissions: [.read])
+                
+                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                    else { XCTFail(); return }
+                
+                XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
+                XCTAssertEqual(characteristicDeclarationAttribute.uuid.rawValue, "2BE58BC4-7DF2-4CB1-9350-CDA44533EA99")
+                XCTAssertEqual(characteristicDeclarationAttribute.properties, [.notify])
+            }
+        }
     }
 }
