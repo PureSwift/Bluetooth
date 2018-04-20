@@ -258,9 +258,9 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     public static let length = 6
     
     /// The information data whose format is determined by the Format field.
-    public var data: Data
+    public var data: AttributeData
     
-    public init(data: Data) {
+    public init(data: AttributeData) {
         
         self.data = data
     }
@@ -275,7 +275,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
             let format = Format(rawValue: formatByte),
-            let data = Data(byteValue: remainderData, format: format)
+            let data = AttributeData(byteValue: remainderData, format: format)
             else { return nil }
         
         self.data = data
@@ -313,7 +313,8 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         }
     }
     
-    public enum Data {
+    /// Found Attribute Data.
+    public enum AttributeData {
         
         /// Handle and 16-bit Bluetooth UUID
         case bit16([(UInt16, UInt16)])
@@ -327,6 +328,15 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
             switch self {
             case .bit16: return .bit16
             case .bit128: return .bit128
+            }
+        }
+        
+        /// Number of items.
+        public var count: Int {
+            
+            switch self {
+            case let .bit16(value): return value.count
+            case let .bit128(value): return value.count
             }
         }
         

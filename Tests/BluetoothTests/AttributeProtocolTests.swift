@@ -572,7 +572,7 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTFindInformationResponse(byteValue: data)
                 else { XCTFail("Could not parse"); return }
             
-            let foundData = ATTFindInformationResponse.Data.bit16([(0x0017, 0x2902)])
+            let foundData = ATTFindInformationResponse.AttributeData.bit16([(0x0017, 0x2902)])
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
             XCTAssertEqual(pdu.byteValue, data)
