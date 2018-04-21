@@ -332,7 +332,9 @@ public final class GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
-    public func registerNotifications() {
+    public func registerNotifications(for characteristics: Characteristic,
+                                      completion: (GATTClientResponse<()>) -> ()) throws {
+        
         
     }
     
@@ -1090,6 +1092,60 @@ public enum GATTClientError: Error {
     /// Already writing long value.
     case inLongWrite
 }
+
+// MARK: CustomNSError
+
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+
+import Foundation
+
+extension GATTClientError: CustomNSError {
+    
+    public enum UserInfoKey: String {
+        
+        case response = "org.pureswift.Bluetooth.GATTClientError.response"
+    }
+    
+    public static var errorDomain: String {
+        return "org.pureswift.Bluetooth.GATTClientError"
+    }
+    
+    public var errorUserInfo: [String: Any] {
+        
+        var userInfo = [String: Any]()
+        
+        switch self {
+            
+        case let .errorResponse(response):
+            
+            userInfo[NSLocalizedDescriptionKey] = NSLocalizedString(
+                "GATT Server responded with an error response (\(response.errorCode)).",
+                comment: "org.pureswift.Bluetooth.GATTClientError.errorResponse"
+            )
+            userInfo[NSUnderlyingErrorKey] = response as NSError
+            userInfo[UserInfoKey.response.rawValue] = response
+            
+        case let .invalidResponse(response):
+            
+            userInfo[NSLocalizedDescriptionKey] = NSLocalizedString(
+                "GATT Server responded with an invalid response (\(type(of: response).attributeOpcode).",
+                comment: "org.pureswift.Bluetooth.GATTClientError.invalidResponse"
+            )
+            userInfo[UserInfoKey.response.rawValue] = response
+            
+        case .inLongWrite:
+            
+            userInfo[NSLocalizedDescriptionKey] = NSLocalizedString(
+                "GATT Client already in long write.",
+                comment: "org.pureswift.Bluetooth.GATTClientError.inLongWrite"
+            )
+        }
+        
+        return userInfo
+    }
+}
+
+#endif
 
 public enum GATTClientResponse <Value> {
     
