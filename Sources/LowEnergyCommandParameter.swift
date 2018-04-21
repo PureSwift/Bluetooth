@@ -3224,7 +3224,7 @@ public extension LowEnergyCommand {
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
-            let dataPacketLength = UInt16(bytes: (byteValue[0], byteValue[1]))
+            let dataPacketLength = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
             
             self.dataPacketLength = dataPacketLength
             self.dataPacket = byteValue[2]
@@ -3906,7 +3906,7 @@ public extension LowEnergyCommand {
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
-            maximumAdvertisingDataLength = UInt16.init(bytes: (byteValue[0], byteValue[1]))
+            maximumAdvertisingDataLength = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
         }
     }
     
