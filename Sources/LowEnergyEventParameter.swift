@@ -933,12 +933,11 @@ public extension LowEnergyEvent {
         
         public let dataStatus: DataStatus
         
-        /// (0 - 248) - Length of the Data field
-        public let dataLength: UInt8
+        public let data: Data
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of: self).length
+            guard byteValue.count >= type(of: self).length
                 else { return nil }
             
             let syncHandle = UInt16(bytes: (byteValue[0], byteValue[1]))
@@ -954,14 +953,26 @@ public extension LowEnergyEvent {
             guard let dataStatus = DataStatus(rawValue: byteValue[5])
                 else { return nil }
             
-            let dataLength = byteValue[6]
+            let dataLength = Int(byteValue[6])
+            
+            if dataLength > 0 {
+                
+                let bytes = byteValue[7 ... (7 + dataLength)]
+                
+                self.data = Data(bytes)
+                
+            } else {
+                
+                self.data = Data()
+            }
             
             self.syncHandle = syncHandle
             self.txPower = txPower
             self.rssi = rssi
             self.unused = unused
             self.dataStatus = dataStatus
-            self.dataLength = dataLength
+            
+            assert(self.data.count == dataLength)
         }
         
         public enum DataStatus: UInt8 {
