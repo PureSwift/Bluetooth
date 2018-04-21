@@ -641,7 +641,7 @@ public extension LowEnergyEvent {
         /// Time Range: 100 ms to 32 s
         public let supervisionTimeout: LowEnergySupervisionTimeout
         
-        public let masterClockAccuracy: MasterClockAccuracy
+        public let masterClockAccuracy: LowEnergyClockAccuracy
         
         public init?(byteValue: [UInt8]) {
             guard byteValue.count == type(of: self).length
@@ -681,7 +681,7 @@ public extension LowEnergyEvent {
             guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(bytes: (byteValue[27], byteValue[28])))
                 else { return nil }
             
-            guard let masterClockAccuracy = MasterClockAccuracy(rawValue: byteValue[29])
+            guard let masterClockAccuracy = LowEnergyClockAccuracy(rawValue: byteValue[29])
                 else { return nil }
             
             self.status = status
@@ -695,18 +695,6 @@ public extension LowEnergyEvent {
             self.latency = latency
             self.supervisionTimeout = supervisionTimeout
             self.masterClockAccuracy = masterClockAccuracy
-        }
-        
-        public enum MasterClockAccuracy: UInt8 { // Master_Clock_Accuracy
-            
-            case ppm500     = 0x00
-            case ppm250     = 0x01
-            case ppm150     = 0x02
-            case ppm100     = 0x03
-            case ppm75      = 0x04
-            case ppm50      = 0x05
-            case ppm30      = 0x06
-            case ppm20      = 0x07
         }
     }
     
@@ -725,7 +713,6 @@ public extension LowEnergyEvent {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
-            
             
         }
     }
@@ -813,13 +800,117 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.periodicAdvertisingSyncEstablished // 0x0E
         
-        public static var length: Int = 0
+        public static var length: Int = 15
+        
+        public let status: HCIStatus
+        
+        /// Sync_Handle to be used to identify the periodic advertiser
+        /// Range: 0x0000-0x0EFF
+        public let syncHandle: UInt16 // Sync_Handle
+        
+        /// Value of the Advertising SID subfield in the ADI field of the PDU
+        public let advertisingSID: UInt8
+        
+        public let advertiserAddressType: LowEnergyAddressType
+        
+        public let advertiserAddress: Address
+        
+        public let advertiserPHY: AdvertiserPhy
+        
+        public let periodicAdvertisingInterval: PeriodicAdvertisingInterval
+        
+        public let advertiserClockAccuracy: LowEnergyClockAccuracy
         
         public init?(byteValue: [UInt8]) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
+            guard let status = HCIStatus(rawValue: byteValue[0])
+                else { return nil }
+            
+            let syncHandle = UInt16(bytes: (byteValue[1], byteValue[2]))
+            
+            let advertisingSID = byteValue[3]
+            
+            guard let advertiserAddressType = LowEnergyAddressType(rawValue: byteValue[4])
+                else { return nil }
+            
+            let advertiserAddress = Address(bytes: (byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10]))
+            
+            guard let advertiserPHY = AdvertiserPhy(rawValue: byteValue[11])
+                else { return nil }
+            
+            let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(bytes: (byteValue[12], byteValue[13])))
+            
+            guard let advertiserClockAccuracy = LowEnergyClockAccuracy(rawValue: byteValue[14])
+                else { return nil }
+            
+            self.status = status
+            self.syncHandle = syncHandle
+            self.advertisingSID = advertisingSID
+            self.advertiserAddressType = advertiserAddressType
+            self.advertiserAddress = advertiserAddress
+            self.advertiserPHY = advertiserPHY
+            self.periodicAdvertisingInterval = periodicAdvertisingInterval
+            self.advertiserClockAccuracy = advertiserClockAccuracy
+        }
+        
+        public enum AdvertiserPhy: UInt8 { // Advertiser_PHY
+            
+            /// Advertiser PHY is LE 1M
+            case le1m       = 0x01
+            
+            /// Advertiser PHY is LE 2M
+            case le2m       = 0x02
+            
+            /// Advertiser PHY is LE Coded
+            case coded      = 0x03
+        }
+        
+        public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            /// 7.5 msec
+            public static let min = PeriodicAdvertisingInterval(0x0006)
+            
+            /// 4000 msec
+            public static let max = PeriodicAdvertisingInterval(0xFFFF)
+            
+            public let rawValue: UInt16
+            
+            public init(rawValue: UInt16) {
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 1.25 msec
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 1.25
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
         }
     }
     
@@ -830,13 +921,59 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.periodicAdvertisingReport // 0x0F
         
-        public static var length: Int = 0
+        public static var length: Int = 7
+        
+        public let syncHandle: UInt16 // Sync_Handle
+        
+        public let txPower: LowEnergyTxPower
+        
+        public let rssi: RSSI
+        
+        public let unused: UInt8 // This value must be used by the Controller.
+        
+        public let dataStatus: DataStatus
+        
+        /// (0 - 248) - Length of the Data field
+        public let dataLength: UInt8
         
         public init?(byteValue: [UInt8]) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
+            let syncHandle = UInt16(bytes: (byteValue[0], byteValue[1]))
+            
+            guard let txPower = LowEnergyTxPower(rawValue: Int8(bitPattern: byteValue[2]))
+                else { return nil }
+
+            guard let rssi = RSSI(rawValue: Int8(bitPattern: byteValue[3]))
+                else { return nil }
+            
+            let unused = byteValue[4]
+            
+            guard let dataStatus = DataStatus(rawValue: byteValue[5])
+                else { return nil }
+            
+            let dataLength = byteValue[6]
+            
+            self.syncHandle = syncHandle
+            self.txPower = txPower
+            self.rssi = rssi
+            self.unused = unused
+            self.dataStatus = dataStatus
+            self.dataLength = dataLength
+        }
+        
+        public enum DataStatus: UInt8 {
+            
+            /// Data complete
+            case complete       = 0x00
+            
+            /// Data incomplete, more data to come
+            case incomplete     = 0x01
+            
+            /// Data incomplete, data truncated, no more to come
+            case truncated      = 0x02
         }
     }
     
@@ -1033,4 +1170,16 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable, Hashable
         
         return Int(rawValue)
     }
+}
+
+public enum LowEnergyClockAccuracy: UInt8 {
+    
+    case ppm500     = 0x00
+    case ppm250     = 0x01
+    case ppm150     = 0x02
+    case ppm100     = 0x03
+    case ppm75      = 0x04
+    case ppm50      = 0x05
+    case ppm30      = 0x06
+    case ppm20      = 0x07
 }
