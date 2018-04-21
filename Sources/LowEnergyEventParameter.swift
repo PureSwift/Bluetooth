@@ -979,10 +979,10 @@ public extension LowEnergyEvent {
 public enum LowEnergyRole: UInt8 {
     
     /// Connection is master.
-    case master
+    case master = 0x00
     
     /// Connection is slave
-    case slave
+    case slave = 0x01
 }
 
 /// Connection interval / latency used on this connection.
