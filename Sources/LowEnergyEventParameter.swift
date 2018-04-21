@@ -777,7 +777,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.extendedAdvertisingReport // 0x0D
         
-        public static var length: Int = 0
+        public static let length = 0
         
         public init?(byteValue: [UInt8]) {
             
@@ -800,7 +800,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.periodicAdvertisingSyncEstablished // 0x0E
         
-        public static var length: Int = 15
+        public static let length = 15
         
         public let status: HCIStatus
         
@@ -921,7 +921,8 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.periodicAdvertisingReport // 0x0F
         
-        public static var length: Int = 7
+        /// Minimum length
+        public static let length = 7
         
         public let syncHandle: UInt16 // Sync_Handle
         
@@ -929,6 +930,7 @@ public extension LowEnergyEvent {
         
         public let rssi: RSSI
         
+        /// This parameter is intended to be used in a future feature.
         public let unused: UInt8 // This value must be used by the Controller.
         
         public let dataStatus: DataStatus
@@ -972,7 +974,8 @@ public extension LowEnergyEvent {
             self.unused = unused
             self.dataStatus = dataStatus
             
-            assert(self.data.count == dataLength)
+            assert(data.count == dataLength, "Invalid data length")
+            assert(unused == 0xFF, "Invalid value for unused byte")
         }
         
         public enum DataStatus: UInt8 {
@@ -996,7 +999,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.periodicAdvertisingSyncLost // 0x10
         
-        public static var length: Int = 2
+        public static let length = 2
         
         public let syncHandle: UInt16 // Sync_Handle
         
