@@ -590,6 +590,146 @@ public extension LowEnergyEvent {
         }
     }
     
+    /// LE Enhanced Connection Complete Event
+    ///
+    /// The event indicates to both of the Hosts forming the connection that a new connection has been created.
+    public struct EnhancedConnectionCompleteEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x0A
+        
+        public static let length: Int = 30
+        
+        public let status: HCIStatus
+        
+        public let connectionHandle: UInt16
+        
+        public let role: LowEnergyRole
+        
+        /// Peer Bluetooth address type.
+        public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
+        
+        /// Public Device Address, or Random Device Address, Public Identity Address or
+        /// Random (static) Identity Address of the device to be con- nected.
+        public let peerAddress: Address
+        
+        /// Resolvable Private Address being used by the local device for this connection.
+        /// This is only valid when the Own_Address_Type (from the HCI_LE_Create_Connection,
+        /// HCI_LE_Set_Advertising_Parameters, HCI_LE_Set_Extended_Advertising_Parameters, or
+        /// HCI_LE_Extended_Create_Connection commands) is set to 0x02 or 0x03, and the Controller
+        /// generated a resolvable private address for the local device using a non-zero local IRK.
+        /// For other Own_Address_Type values, the Controller shall return all zeros.
+        public let localResolvablePrivateAddress: Address
+        
+        /// Resolvable Private Address being used by the peer device for this con- nection.
+        /// This is only valid for Peer_Address_Type 0x02 and 0x03. For other Peer_Address_Type
+        /// values, the Controller shall return all zeros.
+        public let peerResolvablePrivateAddress: Address
+        
+        /// Connection interval used on this connection.
+        ///
+        /// Range: 0x0006 to 0x0C80
+        /// Time = N * 1.25 msec
+        /// Time Range: 7.5 msec to 4000 msec.
+        public let interval: LowEnergyConnectionInterval
+        
+        /// Slave latency for the connection in number of connection events.
+        /// Range: 0x0000 to 0x01F3
+        public let latency: LowEnergyConnectionLatency
+        
+        /// Connection supervision timeout. Range: 0x000A to 0x0C80
+        /// Time = N * 10 ms
+        /// Time Range: 100 ms to 32 s
+        public let supervisionTimeout: LowEnergySupervisionTimeout
+        
+        public let masterClockAccuracy: MasterClockAccuracy
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            guard let status = HCIStatus(rawValue: byteValue[0])
+                else { return nil }
+            
+            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            
+            guard let role = LowEnergyRole(rawValue: byteValue[3])
+                else { return nil }
+            
+            guard let peerAddressType = LowEnergyAddressType(rawValue: byteValue[4])
+                else { return nil }
+            
+            let peerAddress = Address(littleEndian: Address(bytes: (byteValue[5],
+                                                                    byteValue[6], byteValue[7],
+                                                                    byteValue[8], byteValue[9],
+                                                                    byteValue[10])))
+            
+            let localResolvableprivateAddress = Address(littleEndian: Address(bytes: (byteValue[11],
+                                                                                      byteValue[12], byteValue[13],
+                                                                                      byteValue[14], byteValue[15],
+                                                                                      byteValue[16])))
+            
+            let peerResolvablePrivateAddress = Address(littleEndian: Address(bytes: (byteValue[17],
+                                                                                     byteValue[18], byteValue[19],
+                                                                                     byteValue[20], byteValue[21],
+                                                                                     byteValue[22])))
+            
+            let connInternal = LowEnergyConnectionInterval(rawValue: UInt16(bytes: (byteValue[23], byteValue[24])))
+            
+            guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(bytes: (byteValue[25], byteValue[26])))
+                else { return nil }
+            
+            guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(bytes: (byteValue[27], byteValue[28])))
+                else { return nil }
+            
+            guard let masterClockAccuracy = MasterClockAccuracy(rawValue: byteValue[29])
+                else { return nil }
+            
+            self.status = status
+            self.connectionHandle = handle
+            self.role = role
+            self.peerAddressType = peerAddressType
+            self.peerAddress = peerAddress
+            self.localResolvablePrivateAddress = localResolvableprivateAddress
+            self.peerResolvablePrivateAddress = peerResolvablePrivateAddress
+            self.interval = connInternal
+            self.latency = latency
+            self.supervisionTimeout = supervisionTimeout
+            self.masterClockAccuracy = masterClockAccuracy
+        }
+        
+        public enum MasterClockAccuracy: UInt8 { // Master_Clock_Accuracy
+            
+            case ppm500     = 0x00
+            case ppm250     = 0x01
+            case ppm150     = 0x02
+            case ppm100     = 0x03
+            case ppm75      = 0x04
+            case ppm50      = 0x05
+            case ppm30      = 0x06
+            case ppm20      = 0x07
+        }
+    }
+    
+    /// LE Directed Advertising Report Event
+    ///
+    /// The event indicates that directed advertisements have been received where the advertiser
+    /// is using a resolvable private address for the TargetA field of the advertising PDU which
+    /// the Controller is unable to resolve and the Scanning_Filter_Policy is equal to 0x02 or 0x03.
+    public struct DirectedAdvertisingReportEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.directedAdvertisingReport // 0x0B
+        
+        public static let length: Int = 17
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            
+        }
+    }
+    
     /// LE PHY Update Complete Event
     ///
     /// The LE PHY Update Complete Event is used to indicate that the Controller has changed
@@ -639,124 +779,197 @@ public extension LowEnergyEvent {
         }
     }
     
-    /// LE Enhanced Connection Complete Event
+    /// LE Extended Advertising Report Event
     ///
-    /// The event indicates to both of the Hosts forming the connection that a new connection has been created.
-    public struct EnhancedConnectionCompleteEventParameter: HCIEventParameter {
+    /// The event indicates that one or more Bluetooth devices have responded to an active scan
+    /// or have broadcast advertisements that were received during a passive scan.
+    /// The Controller may coalesce multiple advertising reports from the same or different advertisers
+    /// into a single LE Extended Advertising Report event, provided all the parameters from all the advertising reports
+    /// fit in a single HCI event.
+    public struct ExtendedAdvertisingReportEventParameter: HCIEventParameter {
         
-        public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x0A
+        public static let event = LowEnergyEvent.extendedAdvertisingReport // 0x0D
         
-        public static let length: Int = 30
+        public static var length: Int = 0
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+        }
+    }
+    
+    /// LE Periodic Advertising Sync Established Event
+    ///
+    /// The event indicates that the Controller has received the first periodic advertising packet from an advertiser
+    /// after the LE_Periodic_Advertising_Create_Sync Command has been sent to the Controller.
+    ///
+    /// The Sync_Handle shall be assigned by the Controller.
+    ///
+    /// This event indicates to the Host which issued an LE_Periodic_Advertising_Create_Sync command and received a
+    /// Command Status event if the periodic advertising reception failed or was successful.
+    public struct PeriodicAdvertisingSyncEstablishedEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.periodicAdvertisingSyncEstablished // 0x0E
+        
+        public static var length: Int = 0
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+        }
+    }
+    
+    /// LE Periodic Advertising Report Event
+    ///
+    /// The event indicates that the Controller has received a Periodic Advertising packet.
+    public struct PeriodicAdvertisingReportEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.periodicAdvertisingReport // 0x0F
+        
+        public static var length: Int = 0
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+        }
+    }
+    
+    /// LE Periodic Advertising Sync Lost Event
+    ///
+    /// The event indicates that the Controller has not received a Periodic Advertising packet identified
+    /// by Sync_Handle within the timeout period.
+    public struct PeriodicAdvertisingSyncLostEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.periodicAdvertisingSyncLost // 0x10
+        
+        public static var length: Int = 2
+        
+        public let syncHandle: UInt16 // Sync_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let syncHandle = UInt16.init(bytes: (byteValue[0], byteValue[1]))
+            
+            self.syncHandle = syncHandle
+        }
+    }
+    
+    /// LE Advertising Set Terminated Event
+    ///
+    /// The event indicates that the Controller has terminated advertising in the advertising sets specified by the Advertising_Handle parameter.
+    public struct AdvertisingSetTerminatedEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.advertisingSetTerminated // 0x12
+        
+        public static let length: Int = 5
         
         public let status: HCIStatus
         
-        public let connectionHandle: UInt16
+        public let advertisingHandle: UInt8
         
-        public let role: LowEnergyRole
+        public let connectionHandle: UInt16 // Connection_Handle
         
-        /// Peer Bluetooth address type.
-        public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
-        
-        /// Public Device Address, or Random Device Address, Public Identity Address or
-        /// Random (static) Identity Address of the device to be con- nected.
-        public let peerAddress: Address
-        
-        /// Resolvable Private Address being used by the local device for this connection.
-        /// This is only valid when the Own_Address_Type (from the HCI_LE_Create_Connection,
-        /// HCI_LE_Set_Advertising_Parameters, HCI_LE_Set_Extended_Advertising_Parameters, or
-        /// HCI_LE_Extended_Create_Connection commands) is set to 0x02 or 0x03, and the Controller
-        /// generated a resolvable private address for the local device using a non-zero local IRK.
-        /// For other Own_Address_Type values, the Controller shall return all zeros.
-        public let localResolvablePrivateAddress: Address
-        
-        /// Resolvable Private Address being used by the peer device for this con- nection.
-        /// This is only valid for Peer_Address_Type 0x02 and 0x03. For other Peer_Address_Type
-        /// values, the Controller shall return all zeros.
-        public let peerResolvablePrivateAddress: Address
-        
-        /// Connection interval used on this connection.
-        ///
-        /// Range: 0x0006 to 0x0C80
-        /// Time = N * 1.25 msec
-        /// Time Range: 7.5 msec to 4000 msec.
-        public let interval: LowEnergyConnectionInterval
-
-        /// Slave latency for the connection in number of connection events.
-        /// Range: 0x0000 to 0x01F3
-        public let latency: LowEnergyConnectionLatency
-        
-        /// Connection supervision timeout. Range: 0x000A to 0x0C80
-        /// Time = N * 10 ms
-        /// Time Range: 100 ms to 32 s
-        public let supervisionTimeout: LowEnergySupervisionTimeout
-        
-        public let masterClockAccuracy: MasterClockAccuracy
+        public let numCompletedExtendedAdvertisingEvents: UInt8
         
         public init?(byteValue: [UInt8]) {
+            
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
             guard let status = HCIStatus(rawValue: byteValue[0])
                 else { return nil }
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let advertisingHandle =  byteValue[1]
             
-            guard let role = LowEnergyRole(rawValue: byteValue[3])
-                else { return nil }
+            let connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
             
-            guard let peerAddressType = LowEnergyAddressType(rawValue: byteValue[4])
-                else { return nil }
-            
-            let peerAddress = Address(littleEndian: Address(bytes: (byteValue[5],
-                                                    byteValue[6], byteValue[7],
-                                                    byteValue[8], byteValue[9],
-                                                    byteValue[10])))
-            
-            let localResolvableprivateAddress = Address(littleEndian: Address(bytes: (byteValue[11],
-                                byteValue[12], byteValue[13],
-                                byteValue[14], byteValue[15],
-                                byteValue[16])))
-            
-            let peerResolvablePrivateAddress = Address(littleEndian: Address(bytes: (byteValue[17],
-                                byteValue[18], byteValue[19],
-                                byteValue[20], byteValue[21],
-                                byteValue[22])))
-            
-            let connInternal = LowEnergyConnectionInterval(rawValue: UInt16(bytes: (byteValue[23], byteValue[24])))
-            
-            guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(bytes: (byteValue[25], byteValue[26])))
-                else { return nil }
-            
-            guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(bytes: (byteValue[27], byteValue[28])))
-                else { return nil }
-
-            guard let masterClockAccuracy = MasterClockAccuracy(rawValue: byteValue[29])
-                else { return nil }
+            let numCompletedExtendedAdvertisingEvents = byteValue[4]
             
             self.status = status
-            self.connectionHandle = handle
-            self.role = role
-            self.peerAddressType = peerAddressType
-            self.peerAddress = peerAddress
-            self.localResolvablePrivateAddress = localResolvableprivateAddress
-            self.peerResolvablePrivateAddress = peerResolvablePrivateAddress
-            self.interval = connInternal
-            self.latency = latency
-            self.supervisionTimeout = supervisionTimeout
-            self.masterClockAccuracy = masterClockAccuracy
+            self.advertisingHandle = advertisingHandle
+            self.connectionHandle = connectionHandle
+            self.numCompletedExtendedAdvertisingEvents = numCompletedExtendedAdvertisingEvents
         }
     }
     
-    public enum MasterClockAccuracy: UInt8 { // Master_Clock_Accuracy
+    /// LE Scan Request Received Event
+    ///
+    /// The vent indicates that a SCAN_REQ PDU or an AUX_SCAN_REQ PDU has been received by the advertiser.
+    /// The request contains a device address from a scanner that is allowed by the advertising filter policy.
+    /// The advertising set is identified by Advertising_Handle.
+    public struct ScanRequestReceivedEventParameter: HCIEventParameter {
         
-        case ppm500     = 0x00
-        case ppm250     = 0x01
-        case ppm150     = 0x02
-        case ppm100     = 0x03
-        case ppm75      = 0x04
-        case ppm50      = 0x05
-        case ppm30      = 0x06
-        case ppm20      = 0x07
+        public static let event = LowEnergyEvent.scanRequestReceived // 0x13
+        
+        public static let length: Int = 8
+        
+        public let advertisingHandle: UInt8
+        
+        public let scannerAddressType: LowEnergyAddressType
+        
+        public let scannerAddress: Address
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let advertisingHandle =  byteValue[0]
+            
+            guard let scannerAddressType = LowEnergyAddressType(rawValue: byteValue[1])
+                else { return nil }
+            
+            let scannerAddress = Address(bytes: (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))
+            
+            self.advertisingHandle = advertisingHandle
+            self.scannerAddressType = scannerAddressType
+            self.scannerAddress = scannerAddress
+        }
+    }
+    
+    /// LE Channel Selection Algorithm Event
+    ///
+    /// The LE Channel Selection Algorithm Event indicates which channel selection algorithm is used on a data channel connection.
+    public struct ChannelSelectionAlgorithmEventParameter: HCIEventParameter {
+        
+        public static let event = LowEnergyEvent.channelSelectionAlgorithm // 0x14
+        
+        public static let length: Int = 3
+    
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public let channelSelectionAlgorithm: ChannelSelectionAlgorithm
+        
+        public init?(byteValue: [UInt8]) {
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            
+            guard let channelSelectionAlgorithm = ChannelSelectionAlgorithm.init(rawValue: byteValue[2])
+                else { return nil }
+            
+            self.connectionHandle = connectionHandle
+            self.channelSelectionAlgorithm = channelSelectionAlgorithm
+        }
+        
+        public enum ChannelSelectionAlgorithm: UInt8 { // Channel_Selection_Algorithm
+            
+            /// LE Channel Selection Algorithm #1 is used
+            case algorithm1         = 0x00
+            
+            /// LE Channel Selection Algorithm #2 is used
+            case algorithm2         = 0x01
+        }
     }
 }
 
