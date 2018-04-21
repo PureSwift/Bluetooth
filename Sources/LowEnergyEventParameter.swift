@@ -420,7 +420,7 @@ public extension LowEnergyEvent {
             
             let randomNumber = UInt64(littleEndian: UInt64(bytes: ((byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9]))))
             
-            let encryptedDiversifier = UInt16(bytes: (byteValue[10], byteValue[11]))
+            let encryptedDiversifier = UInt16(littleEndian: UInt16(bytes: (byteValue[10], byteValue[11])))
             
             self.handle = handle
             self.randomNumber = randomNumber
@@ -675,12 +675,12 @@ public extension LowEnergyEvent {
                                                                                      byteValue[20], byteValue[21],
                                                                                      byteValue[22])))
             
-            let connInternal = LowEnergyConnectionInterval(rawValue: UInt16(bytes: (byteValue[23], byteValue[24])))
+            let connInternal = LowEnergyConnectionInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[23], byteValue[24]))))
             
-            guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(bytes: (byteValue[25], byteValue[26])))
+            guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[25], byteValue[26]))))
                 else { return nil }
             
-            guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(bytes: (byteValue[27], byteValue[28])))
+            guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[27], byteValue[28]))))
                 else { return nil }
             
             guard let masterClockAccuracy = LowEnergyClockAccuracy(rawValue: byteValue[29])
@@ -831,19 +831,19 @@ public extension LowEnergyEvent {
             guard let status = HCIStatus(rawValue: byteValue[0])
                 else { return nil }
             
-            let syncHandle = UInt16(bytes: (byteValue[1], byteValue[2]))
+            let syncHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
             
             let advertisingSID = byteValue[3]
             
             guard let advertiserAddressType = LowEnergyAddressType(rawValue: byteValue[4])
                 else { return nil }
             
-            let advertiserAddress = Address(bytes: (byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10]))
+            let advertiserAddress = Address(littleEndian: Address(bytes: (byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10])))
             
             guard let advertiserPHY = AdvertiserPhy(rawValue: byteValue[11])
                 else { return nil }
             
-            let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(bytes: (byteValue[12], byteValue[13])))
+            let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[12], byteValue[13]))))
             
             guard let advertiserClockAccuracy = LowEnergyClockAccuracy(rawValue: byteValue[14])
                 else { return nil }
@@ -944,7 +944,7 @@ public extension LowEnergyEvent {
             guard byteValue.count >= type(of: self).length
                 else { return nil }
             
-            let syncHandle = UInt16(bytes: (byteValue[0], byteValue[1]))
+            let syncHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
             
             guard let txPower = LowEnergyTxPower(rawValue: Int8(bitPattern: byteValue[2]))
                 else { return nil }
@@ -1081,7 +1081,7 @@ public extension LowEnergyEvent {
             guard let scannerAddressType = LowEnergyAddressType(rawValue: byteValue[1])
                 else { return nil }
             
-            let scannerAddress = Address(bytes: (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))
+            let scannerAddress = Address(littleEndian: Address(bytes: (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
             
             self.advertisingHandle = advertisingHandle
             self.scannerAddressType = scannerAddressType
