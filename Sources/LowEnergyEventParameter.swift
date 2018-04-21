@@ -1008,7 +1008,7 @@ public extension LowEnergyEvent {
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
-            let syncHandle = UInt16.init(bytes: (byteValue[0], byteValue[1]))
+            let syncHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
             
             self.syncHandle = syncHandle
         }
