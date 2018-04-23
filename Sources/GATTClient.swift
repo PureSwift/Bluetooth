@@ -332,9 +332,39 @@ public final class GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
-    public func registerNotifications(for characteristics: Characteristic,
-                                      completion: (GATTClientResponse<()>) -> ()) throws {
+    public func registerNotifications(for characteristic: Characteristic,
+                                      notification: Notification?,
+                                      completion: @escaping (GATTClientResponse<()>) -> ()) {
         
+        let cachedDescriptors = cache.descriptors(for: characteristic)
+        
+        // make sure we fetched descriptors first
+        if cachedDescriptors.contains(where: { $0.uuid == .clientCharacteristicConfiguration }) {
+            
+            register(notification: notification,
+                     for: characteristic,
+                     descriptors: cachedDescriptors,
+                     completion: completion)
+            
+        } else {
+            
+            discoverAllCharacteristicDescriptors(of: characteristic) { [unowned self] (response) in
+                
+                switch response {
+                    
+                case let .error(error):
+                    
+                    completion(.error(error))
+                    
+                case let .value(descriptors):
+                    
+                    self.register(notification: notification,
+                                  for: characteristic,
+                                  descriptors: descriptors,
+                                  completion: completion)
+                }
+            }
+        }
     }
     
     // MARK: - Private Methods
@@ -438,6 +468,28 @@ public final class GATTClient {
         let pdu = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
         
         send(pdu) { [unowned self] in self.findInformation($0, operation: operation) }
+    }
+    
+    private func register(notification: Notification?,
+                          for characteristic: Characteristic,
+                          descriptors: [GATTClient.Descriptor],
+                          completion: @escaping (GATTClientResponse<()>) -> ()) {
+        
+        guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
+            else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
+        
+        let enableNotifications = notification != nil
+        
+        cache.cache(for: characteristic, update: {
+            if enableNotifications {
+                $0.clientConfiguration.configuration.insert(.notify)
+            } else {
+                $0.clientConfiguration.configuration.remove(.notify)
+            }
+            return
+        })
+        
+        print(descriptor)
     }
     
     /// Read Characteristic Value
@@ -1078,6 +1130,8 @@ public extension GATTClient {
     public typealias Error = GATTClientError
     
     public typealias Response<Value> = GATTClientResponse<Value>
+    
+    public typealias Notification = (Data) -> ()
 }
 
 public enum GATTClientError: Error {
@@ -1090,6 +1144,9 @@ public enum GATTClientError: Error {
     
     /// Already writing long value.
     case inLongWrite
+    
+    /// Characteristic missing client configuration descriptor.
+    case clientCharacteristicConfigurationNotAllowed(GATTClient.Characteristic)
 }
 
 // MARK: CustomNSError
@@ -1103,6 +1160,7 @@ extension GATTClientError: CustomNSError {
     public enum UserInfoKey: String {
         
         case response = "org.pureswift.Bluetooth.GATTClientError.response"
+        case characteristic = "org.pureswift.Bluetooth.GATTClientError.characteristic"
     }
     
     public static var errorDomain: String {
@@ -1138,6 +1196,14 @@ extension GATTClientError: CustomNSError {
                 "GATT Client already in long write.",
                 comment: "org.pureswift.Bluetooth.GATTClientError.inLongWrite"
             )
+            
+        case let .clientCharacteristicConfigurationNotAllowed(characteristic):
+            
+            userInfo[NSLocalizedDescriptionKey] = NSLocalizedString(
+                "Characteristic \(characteristic.uuid) doesn't allow for client characteristic configuration.",
+                comment: "org.pureswift.Bluetooth.GATTClientError.clientCharacteristicConfigurationNotAllowed"
+            )
+            userInfo[UserInfoKey.characteristic.rawValue] = characteristic
         }
         
         return userInfo
@@ -1218,6 +1284,23 @@ internal extension GATTClient {
             }
         }
         
+        func cache <T> (for characteristic: Characteristic, update: (inout CachedCharacteristic) -> (T)) -> T {
+            
+            for service in self.services.values {
+                
+                for var characteristicCache in service.characteristics.values {
+                    
+                    guard characteristicCache.characteristic.handle == characteristic.handle,
+                        characteristicCache.characteristic.uuid == characteristic.uuid
+                        else { continue }
+                    
+                    return update(&characteristicCache)
+                }
+            }
+            
+            fatalError("Characteristic \(characteristic.uuid) not found")
+        }
+        
         func endHandle(for characteristic: GATTClient.Characteristic) -> UInt16? {
             
             for service in services.values {
@@ -1252,6 +1335,23 @@ internal extension GATTClient {
             }
             
             return nil
+        }
+        
+        func descriptors(for characteristic: Characteristic) -> [Descriptor] {
+            
+            for service in self.services.values {
+                
+                for characteristicCache in service.characteristics.values {
+                    
+                    guard characteristicCache.characteristic.handle == characteristic.handle,
+                        characteristicCache.characteristic.uuid == characteristic.uuid
+                        else { continue }
+                    
+                    return Array(characteristicCache.descriptors.values)
+                }
+            }
+            
+            return []
         }
         
         @discardableResult
@@ -1300,7 +1400,7 @@ internal extension GATTClient.Cache {
                     oldValue.characteristic = $0
                     newValue = oldValue
                 } else {
-                    newValue = CachedCharacteristic(characteristic: $0, descriptors: [:])
+                    newValue = CachedCharacteristic($0)
                 }
                 self.characteristics[$0.uuid] = newValue
             }
@@ -1309,9 +1409,18 @@ internal extension GATTClient.Cache {
     
     internal struct CachedCharacteristic {
         
+        typealias Descriptor = GATTClient.Descriptor
+        
         fileprivate(set) var characteristic: GATTClient.Characteristic
         
-        fileprivate(set) var descriptors: [BluetoothUUID: GATTClient.Descriptor]
+        fileprivate(set) var descriptors = [BluetoothUUID: Descriptor]()
+        
+        fileprivate(set) var clientConfiguration = GATTClientCharacteristicConfiguration()
+        
+        fileprivate init(_ characteristic: GATTClient.Characteristic) {
+            
+            self.characteristic = characteristic
+        }
         
         mutating func update(_ newValue: [GATTClient.Descriptor]) {
             
