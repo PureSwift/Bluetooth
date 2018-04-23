@@ -787,6 +787,50 @@ public extension LowEnergyEvent {
                 else { return nil }
             
         }
+        
+        /// Event Type
+        public enum EventType: UInt16, BitMaskOption {
+            
+            /// Connectable advertising
+            case connectableAdvertising         = 0b0000000000000001
+            
+            /// Scannable advertising
+            case scannableAdvertising           = 0b0000000000000010
+            
+            /// Directed advertising
+            case directedAdvertising            = 0b0000000000000100
+            
+            /// Scan response
+            case scanResponse                   = 0b0000000000001000
+            
+            /// Legacy advertising PDUs used
+            case legacyAdvertisingPDU           = 0b0000000000010000
+            
+            /// Data status: Complete
+            case dataStatusComplete             = 0b0000000000000000
+            
+            /// Data status: Incomplete, more data to come
+            case dataStatusIncompleteMoreData   = 0b0000000000100000
+            
+            /// Data status: Incomplete, data truncated, no more to come
+            case dataStatusIncompleteTruncated  = 0b0000000001000000
+            
+            /// Data status: Reserved for future use
+            case dataStatusReserved             = 0b0000000001100000
+            
+            /// All enum cases
+            public static let all: Set<EventType> = [
+                .connectableAdvertising,
+                .scannableAdvertising,
+                .directedAdvertising,
+                .scanResponse,
+                .legacyAdvertisingPDU,
+                .dataStatusComplete,
+                .dataStatusIncompleteMoreData,
+                .dataStatusIncompleteTruncated,
+                .dataStatusReserved
+            ]
+        }
     }
     
     /// LE Periodic Advertising Sync Established Event
