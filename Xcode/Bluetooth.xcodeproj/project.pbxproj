@@ -293,6 +293,9 @@
 		6EE910271FDE5841007AD3EA /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE910241FDE5841007AD3EA /* UInt128.swift */; };
 		6EE910281FDE585B007AD3EA /* HCIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2809881FCF499100B2D68E /* HCIVersion.swift */; };
 		6EE910291FDE585C007AD3EA /* HCIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2809881FCF499100B2D68E /* HCIVersion.swift */; };
+		6EEADB24208E5DC000CFD908 /* UInt512.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B4B208A567A00576F34 /* UInt512.swift */; };
+		6EEADB25208E5DC100CFD908 /* UInt512.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B4B208A567A00576F34 /* UInt512.swift */; };
+		6EEADB26208E5DC100CFD908 /* UInt512.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B4B208A567A00576F34 /* UInt512.swift */; };
 		6EED642A207413F30077CECE /* LowEnergyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED6429207413F30077CECE /* LowEnergyState.swift */; };
 		6EED642B207413F30077CECE /* LowEnergyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED6429207413F30077CECE /* LowEnergyState.swift */; };
 		6EED642C207413F30077CECE /* LowEnergyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED6429207413F30077CECE /* LowEnergyState.swift */; };
@@ -987,6 +990,7 @@
 				6E49B25120532D45002EA5DC /* HCIVersion.swift in Sources */,
 				6E60A2F420695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4820657F25006589F6 /* InformationalCommand.swift in Sources */,
+				6EEADB26208E5DC100CFD908 /* UInt512.swift in Sources */,
 				6E0245DB20683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6E60A31C20696D3E00E42351 /* HostControllerLocalName.swift in Sources */,
 				6E60A2F920695B6500E42351 /* LowEnergyConnection.swift in Sources */,
@@ -1064,6 +1068,7 @@
 				6EE910291FDE585C007AD3EA /* HCIVersion.swift in Sources */,
 				6E60A2F320695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4720657F25006589F6 /* InformationalCommand.swift in Sources */,
+				6EEADB25208E5DC100CFD908 /* UInt512.swift in Sources */,
 				6E0245DA20683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6E60A31B20696D3E00E42351 /* HostControllerLocalName.swift in Sources */,
 				6E60A2F820695B6500E42351 /* LowEnergyConnection.swift in Sources */,
@@ -1249,6 +1254,7 @@
 				6EE910281FDE585B007AD3EA /* HCIVersion.swift in Sources */,
 				6E60A2F220695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4620657F25006589F6 /* InformationalCommand.swift in Sources */,
+				6EEADB24208E5DC000CFD908 /* UInt512.swift in Sources */,
 				6E0245D920683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6E60A31A20696D3E00E42351 /* HostControllerLocalName.swift in Sources */,
 				6E60A2F720695B6500E42351 /* LowEnergyConnection.swift in Sources */,
