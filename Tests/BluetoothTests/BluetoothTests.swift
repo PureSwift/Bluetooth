@@ -26,7 +26,7 @@ final class BluetoothTests: XCTestCase {
         ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
         ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
-        ("testBitMaskOption", testBitMaskOption),
+        ("testBitMaskOption", testBitMaskOption)
     ]
     
     func testSecurityLevel() {

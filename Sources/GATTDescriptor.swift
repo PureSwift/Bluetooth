@@ -114,10 +114,10 @@ public extension GATTClientCharacteristicConfiguration {
         #endif
         
         /// Notifications enabled
-        case notify = 0x01
+        case notify = 0b01
         
         /// Indications enabled
-        case indicate = 0x02
+        case indicate = 0b10
         
         public static let all: Set<Configuration> = [.notify, .indicate]
     }

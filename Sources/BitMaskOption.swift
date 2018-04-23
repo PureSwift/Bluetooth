@@ -127,6 +127,16 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
         rawValue = rawValue | element.rawValue
     }
     
+    @discardableResult
+    public mutating func remove(_ element: Element) -> Bool {
+        
+        guard contains(element) else { return false }
+        
+        rawValue = rawValue & ~element.rawValue
+        
+        return true
+    }
+    
     @inline(__always)
     public mutating func removeAll() {
     
