@@ -335,7 +335,6 @@ public final class GATTClient {
     public func registerNotifications(for characteristics: Characteristic,
                                       completion: (GATTClientResponse<()>) -> ()) throws {
         
-        
     }
     
     // MARK: - Private Methods

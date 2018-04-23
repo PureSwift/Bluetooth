@@ -709,13 +709,124 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.directedAdvertisingReport // 0x0B
         
-        public static let length: Int = 17
+        public static let length = 1 + Report.length // must have at least one report
+        
+        public let reports: [Report]
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of: self).length
+            guard byteValue.count >= type(of: self).length
                 else { return nil }
             
+            // Number of responses in event.
+            let reportCount = Int(byteValue[0]) // Num_Reports
+            
+            // 0x01 - 0x19
+            guard reportCount > 0,
+                reportCount <= 25
+                else { return nil }
+            
+            var reports = [Report]()
+            reports.reserveCapacity(reportCount)
+            
+            var offset = 1
+            for _ in 0 ..< reportCount {
+                
+                let reportBytes = [UInt8](byteValue.suffix(from: offset))
+                
+                guard let report = Report(byteValue: reportBytes)
+                    else { return nil }
+                
+                offset += Report.length
+                reports.append(report)
+            }
+            
+            self.reports = reports
+        }
+        
+        public struct Report {
+            
+            public static let length = 1 + 1 + 6 + 1 + 6 + 1
+            
+            public let event: UInt8
+            
+            public let addressType: AddressType // Address_Type
+            
+            /// Public Device Address, Random Device Address, Public Identity Address or
+            /// Random (static) Identity Address of the advertising device.
+            public let address: Address // Address
+            
+            public let directAddressType: UInt8
+            
+            /// Random Device Address
+            public let directAddress: Address // Direct_Address
+            
+            /// RSSI
+            ///
+            /// Size: 1 Octet (signed integer)
+            /// Range: -127 ≤ N ≤ +20
+            /// Units: dBm
+            public let rssi: RSSI // RSSI
+            
+            public init?(byteValue: [UInt8]) {
+                
+                guard byteValue.count >= Report.length
+                    else { return nil }
+                
+                // parse enums
+                let event = byteValue[0]
+                
+                guard let addressType = AddressType(rawValue: byteValue[1])
+                    else { return nil }
+                
+                let address = Address(littleEndian:
+                    Address(bytes: (byteValue[2],
+                                    byteValue[3],
+                                    byteValue[4],
+                                    byteValue[5],
+                                    byteValue[6],
+                                    byteValue[7])))
+                
+                let directAddressType = byteValue[8]
+                
+                let directAddress = Address(littleEndian:
+                    Address(bytes: (byteValue[9],
+                                    byteValue[10],
+                                    byteValue[11],
+                                    byteValue[12],
+                                    byteValue[13],
+                                    byteValue[14])))
+    
+                let rssiByte = Int8(bitPattern: byteValue[15])
+                
+                guard let rssi = RSSI(rawValue: rssiByte)
+                    else { return nil }
+                
+                self.event = event
+                self.addressType = addressType
+                self.address = address
+                self.directAddressType = directAddressType
+                self.directAddress = directAddress
+                self.rssi = rssi
+            }
+        }
+        
+        public enum AddressType: UInt8 {
+            
+            /// Public Device Address (default)
+            case publicDeviceAddress        = 0x00
+            
+            /// Random Device Address
+            case randomDeviceAddress        = 0x01
+            
+            /// Public Identity Address (Corresponds to Resolved Private Address )
+            case publicIdentityAddress      = 0x02
+            
+            /// Random (static) Identity Address (Corresponds to Resolved Private Address)
+            case randomIdentyAddress        = 0x03
+            
+            /// No address provided (anonymous advertisement)
+            case noAddressProvided          = 0xFF
         }
     }
     
@@ -779,13 +890,219 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.extendedAdvertisingReport // 0x0D
         
-        public static let length = 0
+        public static let length = 1 + Report.length // must have at least one report
+        
+        public let reports: [Report]
         
         public init?(byteValue: [UInt8]) {
             
-            guard byteValue.count == type(of: self).length
+            guard byteValue.count >= type(of: self).length
                 else { return nil }
             
+            // Number of responses in event.
+            let reportCount = Int(byteValue[0]) // Num_Reports
+            
+            // 0x01 - 0x0A
+            guard reportCount > 0,
+                reportCount <= 10
+                else { return nil }
+            
+            var reports = [Report]()
+            reports.reserveCapacity(reportCount)
+            
+            var offset = 1
+            for _ in 0 ..< reportCount {
+                
+                let reportBytes = [UInt8](byteValue.suffix(from: offset))
+                
+                guard let report = Report(byteValue: reportBytes)
+                    else { return nil }
+                
+                offset += Report.length + report.data.count
+                reports.append(report)
+            }
+            
+            self.reports = reports
+        }
+        
+        public struct Report {
+            
+            public static let length = 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1
+        
+            public let eventType: EventType
+            
+            public let addressType: AddressType
+            
+            public let address: Address
+            
+            public let primaryPHY: PrimaryPHY
+            
+            public let secondaryPHY: SecondaryPHY
+            
+            public let advertisingSID: UInt8
+            
+            public let txPower: LowEnergyTxPower
+            
+            public let rssi: RSSI
+            
+            public let periodicAdvertisingInterval: PeriodicAdvertisingInterval
+            
+            public let directAddressType: AddressType
+            
+            public let directAddress: Address
+            
+            public let data: [UInt8] //Data
+            
+            public init?(byteValue: [UInt8]) {
+                
+                guard byteValue.count >= Report.length
+                    else { return nil }
+                
+                guard let eventType = EventType(rawValue: UInt16(bytes: (byteValue[0], byteValue[1]))),
+                    let addressType = AddressType(rawValue: byteValue[2])
+                    else { return nil }
+                
+                let address = Address(littleEndian: Address(bytes: (byteValue[3], byteValue[4],
+                                    byteValue[5], byteValue[6],
+                                    byteValue[7], byteValue[8])))
+                
+                guard let primaryPHY = PrimaryPHY(rawValue: byteValue[9]),
+                    let secondaryPHY = SecondaryPHY(rawValue: byteValue[10])
+                    else { return nil }
+                
+                let advertisingSID = byteValue[11]
+                
+                let txPowerByte = Int8(bitPattern: byteValue[12])
+                
+                guard let txPower = LowEnergyTxPower(rawValue: txPowerByte)
+                    else { return nil }
+                
+                let rssiByte = Int8(bitPattern: byteValue[13])
+                
+                guard let rssi = RSSI(rawValue: rssiByte)
+                    else { return nil }
+                
+                let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(bytes: (byteValue[14], byteValue[15])))
+                
+                guard let directAddressType = AddressType(rawValue: byteValue[16])
+                    else { return nil }
+                
+                let directAddress = Address(littleEndian: Address(bytes: (byteValue[17], byteValue[18],
+                                    byteValue[19], byteValue[20],
+                                    byteValue[21], byteValue[22])))
+                
+                let dataLength = Int(byteValue[23])
+                
+                let data = [UInt8](byteValue[24 ..< (24 + dataLength)])
+                assert(data.count == dataLength)
+                
+                self.eventType = eventType
+                self.addressType = addressType
+                self.address = address
+                self.primaryPHY = primaryPHY
+                self.secondaryPHY = secondaryPHY
+                self.advertisingSID = advertisingSID
+                self.txPower = txPower
+                self.rssi = rssi
+                self.periodicAdvertisingInterval = periodicAdvertisingInterval
+                self.directAddressType = directAddressType
+                self.directAddress = directAddress
+                self.data = data
+            }
+        }
+        
+        /// nterval of the periodic advertising
+        /// Range: 0x0006 to 0xFFFF
+        /// Time = N * 1.25 ms
+        /// Time Range: 7.5 ms to 81,918.75 s
+        public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
+            
+            /// 7.5 msec
+            public static let min = PeriodicAdvertisingInterval(0x0006)
+            
+            /// 81,918.75 sec
+            public static let max = PeriodicAdvertisingInterval(0xFFFF)
+            
+            public let rawValue: UInt16
+            
+            public init(rawValue: UInt16) {
+                
+                self.rawValue = rawValue
+            }
+            
+            /// Time = N * 1.25 msec
+            public var miliseconds: Double {
+                
+                return Double(rawValue) * 1.25
+            }
+            
+            // Private, unsafe
+            private init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Secondary_PHY
+        public enum SecondaryPHY: UInt8 {
+            
+            /// No packets on the secondary advertising channel
+            case noPackets  = 0x00
+            
+            /// Advertiser PHY is LE 1M
+            case le1M       = 0x01
+            
+            /// Advertiser PHY is LE 2M
+            case let2M      = 0x02
+            
+            /// Advertiser PHY is LE Coded
+            case coded      = 0x03
+        }
+        
+        /// Primary_PHY
+        public enum PrimaryPHY: UInt8 {
+            
+            /// Advertiser PHY is LE 1M
+            case le1M       = 0x01
+            
+            /// Advertiser PHY is LE Coded
+            case coded      = 0x03
+        }
+        
+        /// Address_Type
+        public enum AddressType: UInt8 {
+            
+            /// Public Device Address (default)
+            case publicDeviceAddress        = 0x00
+            
+            /// Random Device Address
+            case randomDeviceAddress        = 0x01
+            
+            /// Public Identity Address (Corresponds to Resolved Private Address )
+            case publicIdentityAddress      = 0x02
+            
+            /// Random (static) Identity Address (Corresponds to Resolved Private Address)
+            case randomIdentyAddress        = 0x03
+            
+            /// No address provided (anonymous advertisement)
+            case noAddressProvided          = 0xFF
         }
         
         /// Event Type
