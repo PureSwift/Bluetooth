@@ -237,7 +237,7 @@ public final class GATTClient {
                                    completion: @escaping (GATTClientResponse<Data>) -> ()) {
         
         // read value and try to read blob if too big
-        readCharacteristicValue(characteristic.handle.value, completion: completion)
+        readAttributeValue(characteristic.handle.value, completion: completion)
     }
     
     /// Read Using Characteristic UUID
@@ -262,7 +262,7 @@ public final class GATTClient {
         
         let operation = ReadUsingUUIDOperation(uuid: uuid, completion: completion)
         
-        send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
     }
     
     /// Read Multiple Characteristic Values
@@ -286,7 +286,7 @@ public final class GATTClient {
         
         let operation = ReadMultipleOperation(characteristics: characteristics, completion: completion)
         
-        send(pdu) { [unowned self] in self.readMultiple($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readMultipleResponse($0, operation: operation) }
     }
     
     /**
@@ -300,9 +300,42 @@ public final class GATTClient {
                                     completion: ((GATTClientResponse<()>) -> ())?) {
         
         // short value
-        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - 3 {
+        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
             
             if let completion = completion {
+                
+                writeCharacteristicValue(characteristic,
+                                         data: data,
+                                         completion: completion)
+                
+            } else {
+                
+                writeCharacteristicCommand(characteristic,
+                                           data: data)
+            }
+            
+        } else {
+            
+            let completion = completion ?? { _ in }
+            
+            writeLongCharacteristicValue(characteristic,
+                                         data: data,
+                                         reliableWrites: reliableWrites,
+                                         completion: completion)
+        }
+    }
+    
+    public func writeDescriptor(descriptor: Descriptor,
+                                data: Data,
+                                reliableWrites: Bool,
+                                completion: ((GATTClientResponse<()>) -> ())?) {
+        
+        // short value
+        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
+            
+            if let completion = completion {
+                
+                writere
                 
                 writeCharacteristicValue(characteristic,
                                          data: data,
@@ -498,7 +531,7 @@ public final class GATTClient {
     /// the Characteristic Value Handle.
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadCharacteristicValue.png)
-    private func readCharacteristicValue(_ handle: UInt16, completion: @escaping (GATTClientResponse<Data>) -> ()) {
+    private func readAttributeValue(_ handle: UInt16, completion: @escaping (GATTClientResponse<Data>) -> ()) {
         
         // The Attribute Protocol Read Request is used with the
         // Attribute Handle parameter set to the Characteristic Value Handle.
@@ -509,7 +542,7 @@ public final class GATTClient {
         
         let operation = ReadOperation(handle: handle, completion: completion)
         
-        send(pdu) { [unowned self] in self.readCharacteristicValueResponse($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readResponse($0, operation: operation) }
     }
     
     /// Read Long Characteristic Value
@@ -520,7 +553,7 @@ public final class GATTClient {
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadLongCharacteristicValues.png)
     @inline(__always)
-    private func readLongCharacteristicValue(_ operation: ReadOperation) {
+    private func readLongAttributeValue(_ operation: ReadOperation) {
         
         // The Attribute Protocol Read Blob Request is used to perform this sub-procedure.
         // The Attribute Handle shall be set to the Characteristic Value Handle of the Characteristic Value to be read.
@@ -609,7 +642,7 @@ public final class GATTClient {
         
         // A Write Response shall be sent by the server if the write of the Characteristic Value succeeded.
         
-        send(pdu) { [unowned self] in self.write($0, completion: completion) }
+        send(pdu) { [unowned self] in self.writeResponse($0, completion: completion) }
     }
     
     /**
@@ -675,7 +708,7 @@ public final class GATTClient {
         }
     }
     
-    private func readByGroupType(_ response: ATTResponse<ATTReadByGroupTypeResponse>, operation: DiscoveryOperation<Service>) {
+    private func readByGroupTypeResponse(_ response: ATTResponse<ATTReadByGroupTypeResponse>, operation: DiscoveryOperation<Service>) {
         
         // Read By Group Type Response returns a list of Attribute Handle, End Group Handle, and Attribute Value tuples
         // corresponding to the services supported by the server. Each Attribute Value contained in the response is the 
@@ -732,7 +765,7 @@ public final class GATTClient {
         }
     }
     
-    private func findByType(_ response: ATTResponse<ATTFindByTypeResponse>, operation: DiscoveryOperation<Service>) {
+    private func findByTypeResponse(_ response: ATTResponse<ATTFindByTypeResponse>, operation: DiscoveryOperation<Service>) {
         
         // Find By Type Value Response returns a list of Attribute Handle ranges. 
         // The Attribute Handle range is the starting handle and the ending handle of the service definition.
@@ -787,7 +820,7 @@ public final class GATTClient {
         }
     }
     
-    private func findInformation(_ response: ATTResponse<ATTFindInformationResponse>,
+    private func findInformationResponse(_ response: ATTResponse<ATTFindInformationResponse>,
                                  operation: DescriptorDiscoveryOperation) {
         
         /**
@@ -850,7 +883,7 @@ public final class GATTClient {
         }
     }
     
-    private func readByType(_ response: ATTResponse<ATTReadByTypeResponse>, operation: DiscoveryOperation<Characteristic>) {
+    private func readByTypeResponse(_ response: ATTResponse<ATTReadByTypeResponse>, operation: DiscoveryOperation<Characteristic>) {
         
         typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
         
@@ -917,7 +950,7 @@ public final class GATTClient {
                                                endHandle: operation.end,
                                                attributeType: operation.type.uuid)
                 
-                send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+                send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
                 
             } else {
                 
@@ -927,8 +960,8 @@ public final class GATTClient {
         }
     }
     
-    /// Read Characteristic Value Response
-    private func readCharacteristicValueResponse(_ response: ATTResponse<ATTReadResponse>, operation: ReadOperation) {
+    /// Read Characteristic (or Descriptor) Value Response
+    private func readResponse(_ response: ATTResponse<ATTReadResponse>, operation: ReadOperation) {
         
         // The Read Response only contains a Characteristic Value that is less than or equal to (ATT_MTU – 1) octets in length.
         // If the Characteristic Value is greater than (ATT_MTU – 1) octets in length, the Read Long Characteristic Value procedure
@@ -952,13 +985,13 @@ public final class GATTClient {
             } else {
                 
                 // read blob
-                readLongCharacteristicValue(operation)
+                readLongAttributeValue(operation)
             }
         }
     }
     
     /// Read Blob Response
-    private func readBlob(_ response: ATTResponse<ATTReadBlobResponse>, operation: ReadOperation) {
+    private func readBlobResponse(_ response: ATTResponse<ATTReadBlobResponse>, operation: ReadOperation) {
         
         // For each Read Blob Request a Read Blob Response is received with a portion of the Characteristic Value contained in the Part Attribute Value parameter.
         
@@ -980,12 +1013,12 @@ public final class GATTClient {
             } else {
                 
                 // read blob
-                readLongCharacteristicValue(operation)
+                readLongAttributeValue(operation)
             }
         }
     }
     
-    private func readMultiple(_ response: ATTResponse<ATTReadMultipleResponse>, operation: ReadMultipleOperation) {
+    private func readMultipleResponse(_ response: ATTResponse<ATTReadMultipleResponse>, operation: ReadMultipleOperation) {
         
         switch response {
             
@@ -999,7 +1032,7 @@ public final class GATTClient {
         }
     }
     
-    private func readByType(_ response: ATTResponse<ATTReadByTypeResponse>, operation: ReadUsingUUIDOperation) {
+    private func readByTypeResponse(_ response: ATTResponse<ATTReadByTypeResponse>, operation: ReadUsingUUIDOperation) {
         
         // Read By Type Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the characteristics
         // contained in the handle range provided.
@@ -1023,7 +1056,7 @@ public final class GATTClient {
      
      An Error Response shall be sent by the server in response to the Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Characteristic Value that is written is the wrong size, or has an invalid value as defined by the profile, then the value shall not be written and an Error Response shall be sent with the Error Code set to Application Error by the server.
      */
-    private func write(_ response: ATTResponse<ATTWriteResponse>, completion: (GATTClientResponse<()>) -> ()) {
+    private func writeResponse(_ response: ATTResponse<ATTWriteResponse>, completion: (GATTClientResponse<()>) -> ()) {
         
         switch response {
             
@@ -1042,7 +1075,7 @@ public final class GATTClient {
      
      An Error Response shall be sent by the server in response to the Prepare Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Attribute Value that is written is the wrong size, or has an invalid value as defined by the profile, then the write shall not succeed and an Error Response shall be sent with the Error Code set to Application Error by the server.
      */
-    private func prepareWrite(_ response: ATTResponse<ATTPrepareWriteResponse>, operation: WriteOperation) {
+    private func prepareWriteResponse(_ response: ATTResponse<ATTPrepareWriteResponse>, operation: WriteOperation) {
         
         @inline(__always)
         func complete(_ completion: (WriteOperation) -> ()) {
@@ -1101,7 +1134,7 @@ public final class GATTClient {
         }
     }
     
-    private func executeWrite(_ response: ATTResponse<ATTExecuteWriteResponse>, operation: WriteOperation) {
+    private func executeWriteResponse(_ response: ATTResponse<ATTExecuteWriteResponse>, operation: WriteOperation) {
         
         @inline(__always)
         func complete(_ completion: (WriteOperation) -> ()) {
