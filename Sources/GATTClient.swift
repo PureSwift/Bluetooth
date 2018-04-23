@@ -1409,9 +1409,11 @@ internal extension GATTClient.Cache {
     
     internal struct CachedCharacteristic {
         
+        typealias Descriptor = GATTClient.Descriptor
+        
         fileprivate(set) var characteristic: GATTClient.Characteristic
         
-        fileprivate(set) var descriptors = [BluetoothUUID: GATTClient.Descriptor]()
+        fileprivate(set) var descriptors = [BluetoothUUID: Descriptor]()
         
         fileprivate(set) var clientConfiguration = GATTClientCharacteristicConfiguration()
         
