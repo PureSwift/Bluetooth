@@ -662,6 +662,8 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(clientConfiguration.byteValue, Data(pdu.value))
             XCTAssertEqual(clientConfiguration.configuration, [.notify])
+            XCTAssertNotEqual(clientConfiguration.configuration, [.notify, .indicate])
+            XCTAssertNotEqual(clientConfiguration.configuration, [])
         }
         
         do {
