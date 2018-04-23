@@ -243,8 +243,8 @@ public extension LowEnergyEvent {
             let reportCount = Int(byteValue[0]) // Num_Reports
             
             // 0x01 - 0x19
-            guard reportCount > 0,
-                reportCount <= 19
+            guard reportCount > 0x01,
+                reportCount <= 0x19
                 else { return nil }
             
             var reports = [Report]()
