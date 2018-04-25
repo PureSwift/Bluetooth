@@ -25,6 +25,7 @@ final class BluetoothTests: XCTestCase {
         ("testLowEnergyAddressType", testLowEnergyAddressType),
         ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
+        ("testLowEnergyEventMask", testLowEnergyEventMask),
         ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
         ("testBitMaskOption", testBitMaskOption)
     ]
@@ -188,6 +189,24 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(featureSet.rawValue, 0)
         XCTAssertEqual(featureSet.count, 0)
         XCTAssertEqual(featureSet.hashValue, 0)
+    }
+    
+    func testLowEnergyEventMask() {
+        
+        typealias EventMask = LowEnergyCommand.SetEventMaskParameter.EventMask
+        
+        XCTAssert(EventMask().isEmpty)
+        XCTAssert(EventMask(rawValue: 0x00).isEmpty)
+        XCTAssertEqual(0x0000_0000_0000_001F, 0b11111)
+        
+        XCTAssertEqual(EventMask(rawValue: 0x0000_0000_0000_001F),
+                       [.connectionComplete,
+                        .advertisingReport,
+                        .connectionUpdateComplete,
+                        .readRemoteFeaturesComplete,
+                        .longTermKeyRequest,
+                        .remoteConnectionParameterRequest],
+                       "The default is for bits 0 to 4 inclusive (the value 0x0000 0000 0000 001F) to be set.")
     }
     
     func testAdvertisingChannelHeader() {
