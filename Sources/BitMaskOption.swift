@@ -237,6 +237,16 @@ extension BitMaskOptionSet: ExpressibleByArrayLiteral {
     }
 }
 
+// MARK: - ExpressibleByIntegerLiteral
+
+extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt64) {
+        
+        self.init(rawValue: numericCast(value))
+    }
+}
+
 // MARK: - Collection
 
 extension BitMaskOptionSet: Sequence {
