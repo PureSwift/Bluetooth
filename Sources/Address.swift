@@ -55,9 +55,11 @@ public extension Address {
 
 public extension Address {
     
+    public static var length: Int { return 6 }
+    
     public init?(data: Data) {
         
-        guard data.count == 6
+        guard data.count == Address.length
             else { return nil }
         
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
