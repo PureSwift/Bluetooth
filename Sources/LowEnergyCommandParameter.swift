@@ -53,10 +53,10 @@ public extension LowEnergyCommand {
         }
         
         /// The value with all bits set to 0 indicates that no events are specified.
-        /// The default is for bits 0 to 4 inclusive (the value 0x0000 0000 0000 001F) to be set.
+        /// The default is for bits 0 to 4 inclusive (the value `0x0000 0000 0000 001F`) to be set.
         ///
         /// All bits not listed in this table are reserved for future use.
-        public enum Event: UInt64, BitMaskOption {
+        public enum Event: UInt64, BitMaskOption, CustomStringConvertible {
             
             #if swift(>=3.2)
             #elseif swift(>=3.0)
@@ -145,6 +145,38 @@ public extension LowEnergyCommand {
                 .scanRequestReceived,
                 .channelSelectionAlgorithm
             ]
+            
+            public var event: LowEnergyEvent {
+                
+                switch self {
+                    
+                case .connectionComplete: return .connectionComplete
+                case .advertisingReport: return .advertisingReport
+                case .connectionUpdateComplete: return .connectionUpdateComplete
+                case .readRemoteFeaturesComplete: return .readRemoteUsedFeaturesComplete
+                case .longTermKeyRequest: return .longTermKeyRequest
+                case .remoteConnectionParameterRequest: return .remoteConnectionParameterRequest
+                case .dataLengthChange: return .dataLengthChange
+                case .readLocalP256PublicKeyComplete: return .readLocalP256PublicKeyComplete
+                case .generateDHKeyComplete: return .generateDHKeyComplete
+                case .enhancedConnectionComplete: return .enhancedConnectionComplete
+                case .directedAdvertisingReport: return .directedAdvertisingReport
+                case .phyUpdateComplete: return .phyUpdateComplete
+                case .extendedAdvertisingReport: return .extendedAdvertisingReport
+                case .periodicAdvertisingSyncEstablished: return .periodicAdvertisingSyncEstablished
+                case .periodicAdvertisingReport: return .periodicAdvertisingReport
+                case .periodicAdvertisingSyncLost: return .periodicAdvertisingSyncLost
+                case .extendedScanTimeout: return .scanTimeout
+                case .extendedAdvertisingSetTerminated: return .advertisingSetTerminated
+                case .scanRequestReceived: return .scanRequestReceived
+                case .channelSelectionAlgorithm: return .channelSelectionAlgorithm
+                }
+            }
+            
+            public var description: String {
+                
+                return event.description
+            }
         }
     }
     
