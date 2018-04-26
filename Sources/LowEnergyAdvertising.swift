@@ -59,22 +59,6 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(parameter, timeout: timeout)
     }
     
-    /// LE Set Advertising Data Command
-    ///
-    /// Used to set the data used in advertising packets that have a data field.
-    func setLowEnergyAdvertisingData(_ data: Data,
-                                     timeout: HCICommandTimeout = .default) throws {
-        
-        precondition(data.count <= 31, "LE Advertising Data can only be 31 octets")
-        
-        guard let bytes = LowEnergyAdvertisingData(data: data)
-            else { fatalError("Invalid data size \(data.count)") }
-        
-        let parameter = LowEnergyCommand.SetAdvertisingDataParameter(data: bytes, length: UInt8(data.count))
-        
-        try deviceRequest(parameter, timeout: timeout)
-    }
-    
     /// LE Set Advertising Parameters Command
     ///
     /// Used by the Host to set the advertising parameters.
