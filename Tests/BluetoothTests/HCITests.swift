@@ -599,6 +599,40 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.rssi.rawValue, -44)
             XCTAssertEqual(report.data, [])
         }
+        
+        do {
+            
+            /**
+             LE Meta Event - LE Advertising Report - 0 - 00:1A:AE:06:EF:9E  -70 dBm - BlueZ 5.43  3E 18 02 01 04 00 9E EF 06 AE 1A 00 0C 0B 09 42 6C 75 65 5A 20 35 2E 34 33 BA
+             
+             Parameter Length: 24 (0x18)
+             Num Reports: 0X01
+             Event Type: Scan Response (SCAN_RSP)
+             Address Type: Public
+             Peer Address: 00:1A:AE:06:EF:9E
+             Length Data: 0X0C
+             Local Name: BlueZ 5.43
+             Data: 0B 09 42 6C 75 65 5A 20 35 2E 34 33
+             RSSI: -70 dBm
+             */
+            
+            let data: [UInt8] = [0x3E, 0x18, 0x02, 0x01, 0x04, 0x00, 0x9E, 0xEF, 0x06, 0xAE, 0x1A, 0x00, 0x0C, 0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33, 0xBA]
+            
+            let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
+            
+            XCTAssertEqual(advertisingReports.count, 0x01)
+            
+            guard let report = advertisingReports.first
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(report.address, Address(rawValue: "00:1A:AE:06:EF:9E")!)
+            XCTAssertEqual(report.addressType, .public)
+            XCTAssertEqual(report.event, .scanResponse)
+            XCTAssertEqual(report.rssi.rawValue, -70)
+            XCTAssertEqual(report.data.count, 0x0C)
+            XCTAssertEqual(report.data, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
+            
+        }
     }
     
     func testCommandStatusEvent() {

@@ -350,9 +350,9 @@ public extension LowEnergyCommand {
         public var length: UInt8
         
         /// 31 octets of advertising data. 
-        public var data: LowEnergyResponseData
+        public var data: LowEnergyAdvertisingData
         
-        public init(data: LowEnergyResponseData, length: UInt8) {
+        public init(data: LowEnergyAdvertisingData, length: UInt8) {
             
             precondition(length <= 31, "LE Advertising Data can only be 31 octets")
             
@@ -362,12 +362,13 @@ public extension LowEnergyCommand {
         
         public init() {
             
-            self.init(data: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), length: 0)
+            self.length = 0
+            self.data = .zero
         }
         
         public var byteValue: [UInt8] {
-            
-            return [length, data.0, data.1, data.2, data.3, data.4, data.5, data.6, data.7, data.8, data.9, data.10, data.11, data.12, data.13, data.14, data.15, data.16, data.17, data.18, data.19, data.20, data.21, data.22, data.23, data.24, data.25, data.26, data.27, data.28, data.29, data.30]
+                        
+            return [length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
         }
     }
     
@@ -383,9 +384,9 @@ public extension LowEnergyCommand {
         public var length: UInt8 // Scan_Response_Data_Length
         
         /// 31 octets of scan response data.
-        public var data: LowEnergyResponseData // Scan_Response_Data
+        public var data: LowEnergyAdvertisingData // Scan_Response_Data
         
-        public init(data: LowEnergyResponseData, length: UInt8) {
+        public init(data: LowEnergyAdvertisingData, length: UInt8) {
             
             precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
             
@@ -396,12 +397,12 @@ public extension LowEnergyCommand {
         public init() {
             
             self.length = 0
-            self.data = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            self.data = .zero
         }
         
         public var byteValue: [UInt8] {
             
-            return [length, data.0, data.1, data.2, data.3, data.4, data.5, data.6, data.7, data.8, data.9, data.10, data.11, data.12, data.13, data.14, data.15, data.16, data.17, data.18, data.19, data.20, data.21, data.22, data.23, data.24, data.25, data.26, data.27, data.28, data.29, data.30]
+            return [length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
         }
     }
     
@@ -4543,9 +4544,6 @@ public struct LowEnergyConnectionLatency: RawRepresentable, Equatable, Hashable,
 }
 
 public typealias LowEnergyChannelMap = (UInt8, UInt8, UInt8, UInt8, UInt8)
-
-/// 31 Byte LE Advertising or Scan Response Data
-public typealias LowEnergyResponseData = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
 
 /// LE White List Address Type
 public enum LowEnergyWhiteListAddressType: UInt8 {
