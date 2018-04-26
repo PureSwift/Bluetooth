@@ -32,8 +32,47 @@ final class HCITests: XCTestCase {
         ("testLEStartEncryption", testLEStartEncryption),
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
         ("testLowEnergyEncrypt", testLowEnergyEncrypt),
-        ("testSetLERandomAddress", testSetLERandomAddress)
+        ("testSetLERandomAddress", testSetLERandomAddress),
+        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures)
     ]
+    
+    func testReadLocalSupportedFeatures() {
+        typealias ReadLocalSupportedFeatures = LowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [1001] Read Local Supported Features  03 20 00
+         [2003] Opcode: 0x2003 (OGF: 0x08    OCF: 0x03)
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.readLocalSupportedFeatures.opcode,
+                     [0x03, 0x20, 0x00])
+        )
+        
+        hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x03, 0x20, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        /**
+         Command Complete [2003] - LE Read Local Supported Features     0e 0c 01 03 20 00 3f 00 00 00 00 00 00 00
+         Parameter Length: 12 (0x0C)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2003 (OGF: 0x08    OCF: 0x03) - [Low Energy] LE Read Local Supported Features
+         LE Features: 0X000000000000003F
+         LE Encryption
+         Connection Parameters Request Procedure
+         Extended Reject Indication
+         Slave-initiated Features Exchange
+         LE Ping
+         LE Data Packet Length Extension
+         */
+        
+        var lowEnergyFeatureSet: LowEnergyFeatureSet!
+        XCTAssertNoThrow(lowEnergyFeatureSet = try hostController.readLocalSupportedFeatures())
+        XCTAssert(hostController.queue.isEmpty)
+        
+        XCTAssertEqual(lowEnergyFeatureSet.rawValue, 0x000000000000003F)
+    }
     
     func testName() {
         
