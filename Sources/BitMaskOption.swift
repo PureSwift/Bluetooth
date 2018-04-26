@@ -239,7 +239,7 @@ extension BitMaskOptionSet: ExpressibleByArrayLiteral {
 
 // MARK: - ExpressibleByIntegerLiteral
 
-/// Swift 3 works better than Swift 4 compiler
+// Swift 3 works better than Swift 4 compiler
 
 #if swift(>=3.2)
 
