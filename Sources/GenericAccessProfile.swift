@@ -76,23 +76,38 @@ public protocol GAPData {
     
     static var dataType: GAPDataType { get }
     
-    init?(byteValue: [UInt8])
+    init?(data: Data)
     
-    var byteValue: [UInt8] { get }
+    var data: Data { get }
 }
 
-public struct GAPFlags: GAPData {
+/// GAP Flag
+public struct GAPFlags: GAPData, RawRepresentable {
+    
+    public static let dataType: GAPDataType = .flags
     
     public static let length = 1
     
-    public init?(byteValue: [UInt8]) {
+    public init(rawValue: BitMaskOptionSet<GAPFlag>) {
         
-        fatalError()
+        self.rawValue = rawValue
     }
     
-    public var byteValue: [UInt8] {
+    public var rawValue: BitMaskOptionSet<GAPFlag>
+    
+    public init?(data: Data) {
         
-        return []
+        guard data.count >= type(of: self).length
+            else { return nil }
+        
+        self.rawValue = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
+    }
+    
+    public var data: Data {
+        
+        let byte = rawValue.rawValue
+        
+        return Data([byte])
     }
 }
 
@@ -169,17 +184,17 @@ public struct GAPShortLocalName: GAPData, RawRepresentable {
         self.rawValue = rawValue
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard let rawValue = String(bytes: byteValue, encoding: .utf8)
+        guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
         self.init(rawValue: rawValue)
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
-        return [UInt8](rawValue.utf8)
+        return Data(rawValue.utf8)
     }
 }
 
@@ -199,7 +214,7 @@ public struct GAPCompleteLocalName: GAPData, RawRepresentable {
         self.rawValue = rawValue
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard let rawValue = String(bytes: byteValue, encoding: .utf8)
             else { return nil }
@@ -207,8 +222,117 @@ public struct GAPCompleteLocalName: GAPData, RawRepresentable {
         self.init(rawValue: rawValue)
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
-        return [UInt8](rawValue.utf8)
+        return Data(rawValue.utf8)
+    }
+}
+
+// MARK: - Coding
+
+public struct GAPDataElement {
+    
+    public var type: GAPDataType
+    
+    public var value: Data
+    
+    public init(type: GAPDataType, value: Data) {
+        
+        self.type = type
+        self.value = value
+    }
+    
+    public init(_ data: GAPData) {
+        
+        self.type = type(of: data).dataType
+        self.value = data.data
+        
+        assert(value.count <= Int(UInt8.max))
+    }
+}
+
+public struct GAPDataEncoder {
+    
+    private static func encode(_ element: GAPDataElement) -> Data {
+        
+        return Data([UInt8(element.value.count), element.type.rawValue]) + element.value
+    }
+    
+    public static func encode(_ elements: [GAPDataElement]) -> Data {
+        
+        var data = Data()
+        data.reserveCapacity(elements.count * 3)
+        
+        elements.forEach { data += Data([$0.type.rawValue]) + $0.value }
+        
+        return data
+    }
+    
+    public static func encode(_ encodables: [GAPData]) -> Data {
+        
+        let elements = encodables.map { GAPDataElement($0) }
+        
+        return encode(elements)
+    }
+}
+
+public struct GAPDataDecoder {
+    
+    public enum Error: Swift.Error {
+        
+        case insufficientBytes(expected: Int, actual: Int)
+    }
+    
+    public static func decode(_ data: Data) throws -> [GAPDataElement] {
+        
+        guard data.isEmpty == false
+            else { return [] }
+        
+        var elements = [GAPDataElement]()
+        
+        var index = 0
+        
+        func incrementIndex() throws {
+            
+            index += 1
+            
+            guard index < data.count
+                else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
+        }
+        
+        while index <= data.count {
+            
+            let length = Int(data[index]) // 0
+            try incrementIndex()
+            
+            let type = GAPDataType(rawValue: data[index])! // 1
+            try incrementIndex()
+            
+            let dataRange = index ..< index + length
+            
+            guard dataRange.upperBound <= data.count
+                else { throw Error.insufficientBytes(expected: dataRange.upperBound, actual: data.count) }
+            
+            let value = data[dataRange]
+            
+            elements.append(GAPDataElement(type: type, value: value))
+        }
+        
+        return elements
+    }
+    
+    public static func decode(_ data: Data,
+                              types: [GAPData.Type],
+                              ignoreUnknownType: Bool = true) throws -> [GAPData] {
+        
+        let elements = try decode(data)
+        
+        for element in elements {
+            
+            for type in types {
+                
+                
+            }
+        }
     }
 }
