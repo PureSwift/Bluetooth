@@ -33,8 +33,42 @@ final class HCITests: XCTestCase {
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
         ("testLowEnergyEncrypt", testLowEnergyEncrypt),
         ("testSetLERandomAddress", testSetLERandomAddress),
-        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures)
+        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testReadBufferSize", testReadBufferSize)
     ]
+    
+    func testReadBufferSize(){
+        typealias ReadBufferSize = LowEnergyCommand.ReadBufferSizeReturnParameter
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [1001] Read Buffer Size 02 20 00
+         [2002] Opcode: 0x2002 (OGF: 0x08    OCF: 0x02)
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.readBufferSize.opcode,
+                     [0x02, 0x20, 0x00])
+        )
+        
+        hostController.queue.append(.event([0x0E, 0x07, 0x01, 0x02, 0x20, 0x00, 0xFB, 0x00, 0x0F]))
+        
+        /**
+         Command Complete [2002] - LE Read Buffer Size - Num LE Data Packets: 0x000F    0e 07 01 02 20 00 fb 00 0f
+         Parameter Length: 7 (0x07)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2002 (OGF: 0x08    OCF: 0x02) - [Low Energy] LE Read Buffer Size
+         HC LE Data Packet Length: 0x00FB
+         HC Total Num LE Data Packets: 0x000F
+         */
+        var readBufferSizeReturn: ReadBufferSize!
+        XCTAssertNoThrow(readBufferSizeReturn = try hostController.readBufferSize())
+        XCTAssert(hostController.queue.isEmpty)
+        
+        XCTAssertEqual(readBufferSizeReturn.dataPacketLength, 0x00FB)
+        XCTAssertEqual(readBufferSizeReturn.dataPacket, 0x000F)
+    }
     
     func testReadLocalSupportedFeatures() {
         typealias ReadLocalSupportedFeatures = LowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
