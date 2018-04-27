@@ -29,7 +29,7 @@ final class GAPTests: XCTestCase {
         XCTAssertNil(Bit16UUIDList(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
                      "Can only initialize from multiples of 2 bytes")
         
-        XCTAssertEqual(Bit16UUIDList(data: Data())?.uuids, [], "Should initialize from empty data")
+        XCTAssertEqual(Bit16UUIDList(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
         
         do {
             

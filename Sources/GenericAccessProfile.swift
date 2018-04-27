@@ -93,7 +93,7 @@ extension GAPDataType: Hashable {
 
 extension GAPDataType: ExpressibleByIntegerLiteral {
     
-    public init(integerLiteral value: RawValue) {
+    public init(integerLiteral value: UInt8) {
         
         self.rawValue = value
     }
@@ -383,9 +383,7 @@ internal struct Bit16UUIDList {
     }
     
     public init?(data: Data) {
-        
-        let data = Array(data)
-        
+                
         var uuids = [UInt16]()
         uuids.reserveCapacity(data.count / 2)
         
@@ -465,6 +463,16 @@ extension GAPShortLocalName: ExpressibleByStringLiteral {
         
         self.init(name: value)
     }
+    
+    public init(extendedGraphemeClusterLiteral value: String) {
+        
+        self.init(name: value)
+    }
+    
+    public init(unicodeScalarLiteral value: String) {
+        
+        self.init(name: value)
+    }
 }
 
 /**
@@ -519,6 +527,16 @@ extension GAPCompleteLocalName: ExpressibleByStringLiteral {
         
         self.init(name: value)
     }
+    
+    public init(extendedGraphemeClusterLiteral value: String) {
+        
+        self.init(name: value)
+    }
+    
+    public init(unicodeScalarLiteral value: String) {
+        
+        self.init(name: value)
+    }
 }
 
 // MARK: - Coding
@@ -556,7 +574,7 @@ public struct GAPDataEncoder {
         var data = Data()
         data.reserveCapacity(elements.count * 3)
         
-        elements.forEach { data += encode($0) }
+        elements.forEach { data.append(encode($0)) }
         
         return data
     }
@@ -604,7 +622,7 @@ public struct GAPDataDecoder {
             guard index <= data.count
                 else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
             
-            let value = data[dataRange]
+            let value = Data(data[dataRange])
             
             elements.append(GAPDataElement(type: type, value: value))
         }
