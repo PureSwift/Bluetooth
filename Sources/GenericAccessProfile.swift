@@ -198,6 +198,22 @@ public struct GAPShortLocalName: GAPData, RawRepresentable {
     }
 }
 
+extension GAPShortLocalName: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue
+    }
+}
+
+extension GAPShortLocalName: ExpressibleByStringLiteral {
+    
+    public init(stringLiteral value: String) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 /**
  GAP Complete Local Name
  
@@ -225,6 +241,22 @@ public struct GAPCompleteLocalName: GAPData, RawRepresentable {
     public var data: Data {
         
         return Data(rawValue.utf8)
+    }
+}
+
+extension GAPCompleteLocalName: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue
+    }
+}
+
+extension GAPCompleteLocalName: ExpressibleByStringLiteral {
+    
+    public init(stringLiteral value: String) {
+        
+        self.init(rawValue: value)
     }
 }
 
