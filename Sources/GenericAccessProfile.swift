@@ -294,26 +294,20 @@ public struct GAPDataDecoder {
         
         var index = 0
         
-        func incrementIndex() throws {
+        while index < data.count {
             
+            // get length
+            let length = Int(data[index]) // 0
             index += 1
-            
             guard index < data.count
                 else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
-        }
-        
-        while index <= data.count {
             
-            let length = Int(data[index]) // 0
-            try incrementIndex()
-            
+            // get data
             let type = GAPDataType(rawValue: data[index])! // 1
-            try incrementIndex()
-            
-            let dataRange = index ..< index + length
-            
-            guard dataRange.upperBound <= data.count
-                else { throw Error.insufficientBytes(expected: dataRange.upperBound, actual: data.count) }
+            let dataRange = index + 1 ..< index + length // 2 ..< 2 + length
+            index = dataRange.upperBound
+            guard index <= data.count
+                else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
             
             let value = data[dataRange]
             

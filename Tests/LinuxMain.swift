@@ -19,5 +19,6 @@ XCTMain([
     testCase(HCITests.allTests),
     testCase(AttributeProtocolTests.allTests),
     testCase(GATTTests.allTests),
-    testCase(GATTDatabaseTests.allTests)
+    testCase(GATTDatabaseTests.allTests),
+    testCase(GAPTests.allTests)
     ])
