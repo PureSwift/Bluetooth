@@ -22,7 +22,7 @@ public extension BluetoothHostControllerInterface {
         // macro for enabling / disabling scan
         func enableScan(_ isEnabled: Bool = true) throws {
             
-            let scanEnableCommand = LowEnergyCommand.SetScanEnableParameter(enabled: isEnabled,
+            let scanEnableCommand = LowEnergyCommand.SetScanEnableParameter(isEnabled: isEnabled,
                                                                             filterDuplicates: filterDuplicates)
             
             do { try deviceRequest(scanEnableCommand, timeout: timeout) }
@@ -89,15 +89,12 @@ public extension BluetoothHostControllerInterface {
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
     func setLowEnergyScanResponse(_ data: LowEnergyAdvertisingData,
-                                  length: UInt8,
                                   timeout: HCICommandTimeout = .default) throws {
         
-        precondition(length <= 31, "LE Scan Response Data can only less than or equal to 31 octets")
-        
         // set scan response parameters
-        let setScanResponseDataCommand = LowEnergyCommand.SetScanResponseDataParameter(data: data, length: length)
+        let command = LowEnergyCommand.SetScanResponseDataParameter(data: data)
         
-        try deviceRequest(setScanResponseDataCommand, timeout: timeout)
+        try deviceRequest(command, timeout: timeout)
     }
     
     /// LE Set Extended Scan Response Data Command

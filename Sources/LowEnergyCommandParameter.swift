@@ -346,29 +346,17 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setAdvertisingData // 0x0008
         public static let length = 32
         
-        /// The number of significant bytes.
-        public var length: UInt8
-        
         /// 31 octets of advertising data. 
         public var data: LowEnergyAdvertisingData
         
-        public init(data: LowEnergyAdvertisingData, length: UInt8) {
+        public init(data: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
             
-            precondition(length <= 31, "LE Advertising Data can only be 31 octets")
-            
-            self.length = length
             self.data = data
         }
         
-        public init() {
-            
-            self.length = 0
-            self.data = .zero
-        }
-        
         public var byteValue: [UInt8] {
-                        
-            return [length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
+            
+            return [data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
         }
     }
     
@@ -380,29 +368,17 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setScanResponseData // 0x0009
         public static let length = 32
         
-        /// The number of significant bytes.
-        public var length: UInt8 // Scan_Response_Data_Length
-        
         /// 31 octets of scan response data.
         public var data: LowEnergyAdvertisingData // Scan_Response_Data
         
-        public init(data: LowEnergyAdvertisingData, length: UInt8) {
+        public init(data: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
             
-            precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
-            
-            self.length = length
             self.data = data
-        }
-        
-        public init() {
-            
-            self.length = 0
-            self.data = .zero
         }
         
         public var byteValue: [UInt8] {
             
-            return [length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
+            return [data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
         }
     }
     
@@ -424,18 +400,16 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setAdvertiseEnable // 0x000A
         public static let length = 1
         
-        public var enabled: Bool
+        public var isEnabled: Bool
         
-        public init(enabled: Bool = false) {
+        public init(isEnabled: Bool = false) {
             
-            self.enabled = enabled
+            self.isEnabled = isEnabled
         }
         
         public var byteValue: [UInt8] {
             
-            let enabledByte: UInt8 = enabled ? 0x01 : 0x00
-            
-            return [enabledByte]
+            return [isEnabled.byteValue]
         }
     }
     
@@ -530,7 +504,7 @@ public extension LowEnergyCommand {
         public static let length = 2
         
         /// Whether scanning is enabled or disabled.
-        public var enabled: Bool // LE_Scan_Enable
+        public var isEnabled: Bool // LE_Scan_Enable
         
         /// Controls whether the Link Layer shall filter duplicate advertising reports to the Host,
         /// or if it shall generate advertising reports for each packet received.
@@ -543,20 +517,18 @@ public extension LowEnergyCommand {
         ///
         /// - Parameter enabled: Whether scanning is enabled or disabled.
         ///
-        /// - Parameter filterDuplicates: Controls whether the Link Layer shall filter duplicate advertising reports to the Host,
-        /// or if it shall generate advertising reports for each packet received.
-        public init(enabled: Bool = false, filterDuplicates: Bool = false) {
+        /// - Parameter filterDuplicates: Controls whether the Link Layer shall filter duplicate advertising
+        /// reports to the Host, or if it shall generate advertising reports for each packet received.
+        public init(isEnabled: Bool = false,
+                    filterDuplicates: Bool = false) {
             
-            self.enabled = enabled
+            self.isEnabled = isEnabled
             self.filterDuplicates = filterDuplicates
         }
         
         public var byteValue: [UInt8] {
             
-            let enabledByte: UInt8 = enabled ? 0x01 : 0x00
-            let filterDuplicatesByte: UInt8 = filterDuplicates ? 0x01 : 0x00
-            
-            return [enabledByte, filterDuplicatesByte]
+            return [isEnabled.byteValue, filterDuplicates.byteValue]
         }
     }
     
