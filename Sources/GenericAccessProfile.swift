@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /**
  Generic Access Profile
  
@@ -26,7 +28,14 @@ public enum GAP {
 ///
 /// - SeeAlso:
 /// [Generic Access Profile](https://www.bluetooth.com/specifications/assigned-numbers/generic-access-profile)
-public enum GAPDataType: UInt8 {
+public struct GAPDataType: RawRepresentable {
+    
+    public var rawValue: UInt8
+    
+    public init(rawValue: UInt8) {
+        
+        self.rawValue = rawValue
+    }
     
     /// Flags
     ///
@@ -37,37 +46,84 @@ public enum GAPDataType: UInt8 {
     /// Bluetooth Core Specification Vol. 3, Part C, sections 11.1.3 and 18.1 (v4.0)
     ///
     /// Core Specification Supplement, Part A, section 1.3
-    case flags = 0x01
+    public static let flags: GAPDataType = 0x01
     
     /// Incomplete List of 16-bit Service Class UUIDs
-    case incompleteListOf16BitServiceClassUUIDs = 0x02
+    public static let incompleteListOf16BitServiceClassUUIDs: GAPDataType = 0x02
     
     /// Complete List of 16-bit Service Class UUIDs
-    case completeListOf16CitServiceClassUUIDs = 0x03
+    public static let completeListOf16CitServiceClassUUIDs: GAPDataType = 0x03
     
     /// Incomplete List of 32-bit Service Class UUIDs
-    case incompleteListOf32BitServiceClassUUIDs = 0x04
+    public static let incompleteListOf32BitServiceClassUUIDs: GAPDataType = 0x04
     
     /// Complete List of 32-bit Service Class UUIDs
-    case completeListOf32CitServiceClassUUIDs = 0x05
+    public static let completeListOf32CitServiceClassUUIDs: GAPDataType = 0x05
     
     /// Incomplete List of 128-bit Service Class UUIDs
-    case incompleteListOf128BitServiceClassUUIDs = 0x06
+    public static let incompleteListOf128BitServiceClassUUIDs: GAPDataType = 0x06
     
     /// Complete List of 128-bit Service Class UUIDs
-    case completeListOf128BitServiceClassUUIDs = 0x07
+    public static let completeListOf128BitServiceClassUUIDs: GAPDataType = 0x07
     
     /// Shortened Local Name
-    case shortLocalName = 0x08
+    public static let shortLocalName: GAPDataType = 0x08
     
     /// Complete Local Name
-    case completeLocalName = 0x09
+    public static let completeLocalName: GAPDataType = 0x09
     
     // FIXME: Add all GAP data types
-    
-    /// All data types.
-    public static let all: Set<GAPDataType> = Set(((0x01 ... 0x3D) + [0xFF]).flatMap(GAPDataType.init))
 }
+
+extension GAPDataType: Equatable {
+    
+    public static func == (lhs: GAPDataType, rhs: GAPDataType) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GAPDataType: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
+extension GAPDataType: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: RawValue) {
+        
+        self.rawValue = value
+    }
+}
+
+extension GAPDataType: CustomStringConvertible {
+    
+    public var name: String? {
+        
+        return gapDataTypeNames[self]
+    }
+    
+    public var description: String {
+        
+        return name ?? "Data Type (\(rawValue))"
+    }
+}
+
+/// Standard GAP Data Type names
+internal let gapDataTypeNames: [GAPDataType: String] = [
+    .flags: "Flags",
+    .incompleteListOf16BitServiceClassUUIDs: "Incomplete List of 16-bit Service Class UUIDs",
+    .completeListOf16CitServiceClassUUIDs: "Complete List of 16-bit Service Class UUIDs",
+    .incompleteListOf32BitServiceClassUUIDs: "Incomplete List of 32-bit Service Class UUIDs",
+    .completeListOf32CitServiceClassUUIDs: "Complete List of 32-bit Service Class UUIDs",
+    .incompleteListOf128BitServiceClassUUIDs: "Incomplete List of 128-bit Service Class UUIDs",
+    .completeListOf128BitServiceClassUUIDs: "Complete List of 128-bit Service Class UUIDs",
+    .shortLocalName: "Shortened Local Name",
+    .completeLocalName: "Complete Local Name"
+]
 
 // MARK: - Generic Access Profile Data
 
@@ -198,6 +254,14 @@ public struct GAPShortLocalName: GAPData, RawRepresentable {
     }
 }
 
+extension GAPShortLocalName: Equatable {
+    
+    public static func == (lhs: GAPShortLocalName, rhs: GAPShortLocalName) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
 extension GAPShortLocalName: CustomStringConvertible {
     
     public var description: String {
@@ -241,6 +305,14 @@ public struct GAPCompleteLocalName: GAPData, RawRepresentable {
     public var data: Data {
         
         return Data(rawValue.utf8)
+    }
+}
+
+extension GAPCompleteLocalName: Equatable {
+    
+    public static func == (lhs: GAPCompleteLocalName, rhs: GAPCompleteLocalName) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -335,7 +407,7 @@ public struct GAPDataDecoder {
                 else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
             
             // get type
-            let type = GAPDataType(rawValue: data[index])! // 1
+            let type = GAPDataType(rawValue: data[index]) // 1
             
             // get value
             let dataRange = index + 1 ..< index + length // 2 ..< 2 + length
