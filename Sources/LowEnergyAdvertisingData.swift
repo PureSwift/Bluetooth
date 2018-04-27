@@ -43,6 +43,8 @@ public struct LowEnergyAdvertisingData {
         self.bytes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     }
     
+    //swiftlint:disable function_body_length
+    /// Get the byte at the specified index.
     public subscript (index: Int) -> UInt8 {
         
         get {
@@ -121,6 +123,7 @@ public struct LowEnergyAdvertisingData {
             }
         }
     }
+    //swiftlint:enable function_body_length
 }
 
 // MARK: - Equatable
@@ -174,6 +177,19 @@ extension LowEnergyAdvertisingData: Hashable {
     }
 }
 
+// MARK: - ExpressibleByArrayLiteral
+
+extension LowEnergyAdvertisingData: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt8...) {
+        
+        guard let value = LowEnergyAdvertisingData(data: Data(elements))
+            else { fatalError("Invalid length \(elements.count)") }
+        
+        self = value
+    }
+}
+
 // MARK: - Data Convertible
 
 public extension LowEnergyAdvertisingData {
@@ -185,14 +201,6 @@ public extension LowEnergyAdvertisingData {
         guard length >= 1,
             length <= 31
             else { return nil }
-        
-        self.init()
-        self.length = UInt8(length)
-        
-        for (index, byte) in data.enumerated() {
-            
-            self[index] = byte
-        }
         
         self.init(length: UInt8(length),
                   bytes: (length > 0 ? data[0] : 0,
@@ -231,15 +239,7 @@ public extension LowEnergyAdvertisingData {
     
     public var data: Data {
         
-        var data = Data([length])
-        data.reserveCapacity(1 + Int(length))
-        
-        for index in 0 ..< Int(length) {
-            
-            
-        }
-        
-        return Data([length] + self)
+        return Data(self)
     }
 }
 
@@ -292,4 +292,3 @@ extension LowEnergyAdvertisingData: RandomAccessCollection {
     }
 }
 #endif
-
