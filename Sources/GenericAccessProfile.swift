@@ -287,7 +287,7 @@ public struct GAPDataEncoder {
     
     private static func encode(_ element: GAPDataElement) -> Data {
         
-        return Data([UInt8(element.value.count), element.type.rawValue]) + element.value
+        return Data([UInt8(element.value.count + 1), element.type.rawValue]) + element.value
     }
     
     public static func encode(_ elements: [GAPDataElement]) -> Data {
@@ -334,8 +334,10 @@ public struct GAPDataDecoder {
             guard index < data.count
                 else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
             
-            // get data
+            // get type
             let type = GAPDataType(rawValue: data[index])! // 1
+            
+            // get value
             let dataRange = index + 1 ..< index + length // 2 ..< 2 + length
             index = dataRange.upperBound
             guard index <= data.count

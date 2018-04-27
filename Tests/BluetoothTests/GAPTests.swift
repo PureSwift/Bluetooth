@@ -40,6 +40,7 @@ final class GAPTests: XCTestCase {
                 else { XCTFail(); return }
             
             XCTAssertEqual(nameData.rawValue, name)
+            XCTAssertEqual(GAPDataEncoder.encode([GAPCompleteLocalName(rawValue: name)]), data)
         }
     }
 }
