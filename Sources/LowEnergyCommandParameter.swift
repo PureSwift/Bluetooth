@@ -356,9 +356,7 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let advertisingData = self.data
-            
-            return [UInt8](advertisingData.data)
+            return [data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
         }
     }
     
@@ -380,9 +378,7 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let advertisingData = self.data
-            
-            return [UInt8](advertisingData.data)
+            return [data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
         }
     }
     
@@ -521,8 +517,8 @@ public extension LowEnergyCommand {
         ///
         /// - Parameter enabled: Whether scanning is enabled or disabled.
         ///
-        /// - Parameter filterDuplicates: Controls whether the Link Layer shall filter duplicate advertising reports to the Host,
-        /// or if it shall generate advertising reports for each packet received.
+        /// - Parameter filterDuplicates: Controls whether the Link Layer shall filter duplicate advertising
+        /// reports to the Host, or if it shall generate advertising reports for each packet received.
         public init(isEnabled: Bool = false,
                     filterDuplicates: Bool = false) {
             
