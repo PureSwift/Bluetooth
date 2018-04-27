@@ -39,10 +39,10 @@ public extension BluetoothHostControllerInterface {
     /// The LE Set Advertising Enable command is used to request the Controller to start or stop advertising.
     /// The Controller manages the timing of advertisements as per the advertising parameters given in the
     /// LE Set Advertising Parameters command.
-    func enableLowEnergyAdvertising(_ enabled: Bool = true,
+    func enableLowEnergyAdvertising(_ isEnabled: Bool = true,
                                     timeout: HCICommandTimeout = .default) throws {
         
-        let parameter = LowEnergyCommand.SetAdvertiseEnableParameter(enabled: enabled)
+        let parameter = LowEnergyCommand.SetAdvertiseEnableParameter(isEnabled: isEnabled)
         
         try deviceRequest(parameter, timeout: timeout)
     }

@@ -22,7 +22,7 @@ public extension BluetoothHostControllerInterface {
         // macro for enabling / disabling scan
         func enableScan(_ isEnabled: Bool = true) throws {
             
-            let scanEnableCommand = LowEnergyCommand.SetScanEnableParameter(enabled: isEnabled,
+            let scanEnableCommand = LowEnergyCommand.SetScanEnableParameter(isEnabled: isEnabled,
                                                                             filterDuplicates: filterDuplicates)
             
             do { try deviceRequest(scanEnableCommand, timeout: timeout) }

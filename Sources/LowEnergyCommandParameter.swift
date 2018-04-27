@@ -404,18 +404,16 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setAdvertiseEnable // 0x000A
         public static let length = 1
         
-        public var enabled: Bool
+        public var isEnabled: Bool
         
-        public init(enabled: Bool = false) {
+        public init(isEnabled: Bool = false) {
             
-            self.enabled = enabled
+            self.isEnabled = isEnabled
         }
         
         public var byteValue: [UInt8] {
             
-            let enabledByte: UInt8 = enabled ? 0x01 : 0x00
-            
-            return [enabledByte]
+            return [isEnabled.byteValue]
         }
     }
     
@@ -510,7 +508,7 @@ public extension LowEnergyCommand {
         public static let length = 2
         
         /// Whether scanning is enabled or disabled.
-        public var enabled: Bool // LE_Scan_Enable
+        public var isEnabled: Bool // LE_Scan_Enable
         
         /// Controls whether the Link Layer shall filter duplicate advertising reports to the Host,
         /// or if it shall generate advertising reports for each packet received.
@@ -525,18 +523,16 @@ public extension LowEnergyCommand {
         ///
         /// - Parameter filterDuplicates: Controls whether the Link Layer shall filter duplicate advertising reports to the Host,
         /// or if it shall generate advertising reports for each packet received.
-        public init(enabled: Bool = false, filterDuplicates: Bool = false) {
+        public init(isEnabled: Bool = false,
+                    filterDuplicates: Bool = false) {
             
-            self.enabled = enabled
+            self.isEnabled = isEnabled
             self.filterDuplicates = filterDuplicates
         }
         
         public var byteValue: [UInt8] {
             
-            let enabledByte: UInt8 = enabled ? 0x01 : 0x00
-            let filterDuplicatesByte: UInt8 = filterDuplicates ? 0x01 : 0x00
-            
-            return [enabledByte, filterDuplicatesByte]
+            return [isEnabled.byteValue, filterDuplicates.byteValue]
         }
     }
     
