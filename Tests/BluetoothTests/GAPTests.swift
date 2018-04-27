@@ -13,8 +13,17 @@ import Foundation
 final class GAPTests: XCTestCase {
     
     static let allTests = [
+        ("testDataType", testDataType),
         ("testCoding", testCoding)
     ]
+    
+    func testDataType() {
+        
+        XCTAssertEqual(GAPDataType.flags.description, "Flags")
+        XCTAssertEqual(GAPDataType(rawValue: 0).description, "Data Type (0)")
+        
+        
+    }
     
     func testCoding() {
         
@@ -26,7 +35,7 @@ final class GAPTests: XCTestCase {
              Data: 0B 09 42 6C 75 65 5A 20 35 2E 34 33
              */
             let data = Data([0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
-            let name = "BlueZ 5.43"
+            let name: GAPCompleteLocalName = "BlueZ 5.43"
             XCTAssertEqual(data.count, 0x0C)
             XCTAssertEqual(data.count, 12)
             
@@ -39,8 +48,8 @@ final class GAPTests: XCTestCase {
             guard let nameData = decoded.first as? GAPCompleteLocalName
                 else { XCTFail(); return }
             
-            XCTAssertEqual(nameData.rawValue, name)
-            XCTAssertEqual(GAPDataEncoder.encode([GAPCompleteLocalName(rawValue: name)]), data)
+            XCTAssertEqual(nameData, name)
+            XCTAssertEqual(GAPDataEncoder.encode([name]), data)
         }
     }
 }
