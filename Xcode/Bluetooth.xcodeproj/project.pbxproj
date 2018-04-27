@@ -569,11 +569,11 @@
 				6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */,
 				6EBD96BD207ABED60037D253 /* GATTTests.swift */,
 				6E443A062085CF12005F4D5F /* GATTDatabaseTests.swift */,
+				6E7F4A4020928E2B00E877F1 /* GAPTests.swift */,
 				6E14247F206CFFC500BF72BC /* HostController.swift */,
 				6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */,
 				6E65DF942075D568005BD2A0 /* XCTest.swift */,
 				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
-				6E7F4A4020928E2B00E877F1 /* GAPTests.swift */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";

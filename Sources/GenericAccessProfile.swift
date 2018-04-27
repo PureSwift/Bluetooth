@@ -142,8 +142,6 @@ public struct GAPFlags: GAPData {
     
     public static let dataType: GAPDataType = .flags
     
-    public static let length = 1
-    
     public var flags: BitMaskOptionSet<GAPFlag>
     
     public init(flags: BitMaskOptionSet<GAPFlag> = 0) {
@@ -153,10 +151,36 @@ public struct GAPFlags: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
-            else { return nil }
+        let bytes = Array(data)
         
-        self.flags = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
+        typealias RawValue = GAPFlag.RawValue
+        
+        let rawValue: RawValue
+        
+        switch bytes.count {
+        
+        case 1:
+            
+            rawValue = bytes[0]
+            
+        case 2:
+            
+            rawValue = RawValue(UInt16(littleEndian: UInt16(bytes: (bytes[0], bytes[1]))))
+            
+        case 4:
+            
+            rawValue = RawValue(UInt32(littleEndian: UInt32(bytes: (bytes[0], bytes[1], bytes[2], bytes[3]))))
+            
+        case 8:
+            
+            rawValue = RawValue(UInt64(littleEndian: UInt64(bytes: (bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7]))))
+            
+        default:
+            
+            return nil
+        }
+        
+        self.flags = BitMaskOptionSet<GAPFlag>(rawValue: rawValue)
     }
     
     public var data: Data {
@@ -244,6 +268,144 @@ public enum GAPFlag: UInt8, BitMaskOption {
     ]
 }
 
+/// GAP Incomplete List of 16-bit Service Class UUIDs
+public struct GAPIncompleteListOf16BitServiceClassUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .incompleteListOf16BitServiceClassUUIDs
+    
+    public var uuids: [UInt16]
+    
+    public init(uuids: [UInt16] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit16UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit16UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPIncompleteListOf16BitServiceClassUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt16...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPIncompleteListOf16BitServiceClassUUIDs: Equatable {
+    
+    public static func == (lhs: GAPIncompleteListOf16BitServiceClassUUIDs, rhs: GAPIncompleteListOf16BitServiceClassUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPIncompleteListOf16BitServiceClassUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+/// GAP Complete List of 16-bit Service Class UUIDs
+public struct GAPCompleteListOf16BitServiceClassUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .completeListOf16CitServiceClassUUIDs
+    
+    public var uuids: [UInt16]
+    
+    public init(uuids: [UInt16] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit16UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit16UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPCompleteListOf16BitServiceClassUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt16...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPCompleteListOf16BitServiceClassUUIDs: Equatable {
+    
+    public static func == (lhs: GAPCompleteListOf16BitServiceClassUUIDs, rhs: GAPCompleteListOf16BitServiceClassUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPCompleteListOf16BitServiceClassUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+internal struct Bit16UUIDList {
+    
+    public var uuids: [UInt16]
+    
+    public init(uuids: [UInt16]) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        let data = Array(data)
+        
+        var uuids = [UInt16]()
+        uuids.reserveCapacity(data.count / 2)
+        
+        var index = 0
+        while index < data.count {
+            
+            guard index + 1 < data.count
+                else { return nil }
+            
+            let value = UInt16(littleEndian: UInt16(bytes: (data[index], data[index + 1])))
+            
+            index += 2
+            
+            uuids.append(value)
+        }
+        
+        self.uuids = uuids
+    }
+    
+    public var data: Data {
+        
+        return uuids.reduce(Data(), { $0.0 + [$0.1.littleEndian.bytes.0, $0.1.littleEndian.bytes.1] })
+    }
+}
+
 /**
  GAP Shortened Local Name
  
@@ -251,15 +413,15 @@ public enum GAPFlag: UInt8, BitMaskOption {
  
  A shortened name shall only contain contiguous characters from the beginning of the full name. For example, if the device name is ‘BT_Device_Name’ then the shortened name could be ‘BT_Device’ or ‘BT_Dev’.
  */
-public struct GAPShortLocalName: GAPData, RawRepresentable {
+public struct GAPShortLocalName: GAPData {
     
     public static let dataType: GAPDataType = .shortLocalName
     
-    public let rawValue: String
+    public let name: String
     
-    public init(rawValue: String) {
+    public init(name: String) {
         
-        self.rawValue = rawValue
+        self.name = name
     }
     
     public init?(data: Data) {
@@ -267,12 +429,12 @@ public struct GAPShortLocalName: GAPData, RawRepresentable {
         guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
-        self.init(rawValue: rawValue)
+        self.init(name: rawValue)
     }
     
     public var data: Data {
         
-        return Data(rawValue.utf8)
+        return Data(name.utf8)
     }
 }
 
@@ -280,7 +442,7 @@ extension GAPShortLocalName: Equatable {
     
     public static func == (lhs: GAPShortLocalName, rhs: GAPShortLocalName) -> Bool {
         
-        return lhs.rawValue == rhs.rawValue
+        return lhs.name == rhs.name
     }
 }
 
@@ -288,7 +450,7 @@ extension GAPShortLocalName: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue
+        return name
     }
 }
 
@@ -296,7 +458,7 @@ extension GAPShortLocalName: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         
-        self.init(rawValue: value)
+        self.init(name: value)
     }
 }
 
@@ -305,28 +467,28 @@ extension GAPShortLocalName: ExpressibleByStringLiteral {
  
  The Local Name data type shall be the same as, or a shortened version of, the local name assigned to the device. The Local Name data type value indicates if the name is complete or shortened. If the name is shortened, the complete name can be read using the remote name request procedure over BR/EDR or by reading the device name characteristic after the connection has been established using GATT.
  */
-public struct GAPCompleteLocalName: GAPData, RawRepresentable {
+public struct GAPCompleteLocalName: GAPData {
     
     public static let dataType: GAPDataType = .completeLocalName
     
-    public let rawValue: String
+    public let name: String
     
-    public init(rawValue: String) {
+    public init(name: String) {
         
-        self.rawValue = rawValue
+        self.name = name
     }
     
     public init?(data: Data) {
         
-        guard let rawValue = String(bytes: data, encoding: .utf8)
+        guard let name = String(bytes: data, encoding: .utf8)
             else { return nil }
         
-        self.init(rawValue: rawValue)
+        self.init(name: name)
     }
     
     public var data: Data {
         
-        return Data(rawValue.utf8)
+        return Data(name.utf8)
     }
 }
 
@@ -334,7 +496,7 @@ extension GAPCompleteLocalName: Equatable {
     
     public static func == (lhs: GAPCompleteLocalName, rhs: GAPCompleteLocalName) -> Bool {
         
-        return lhs.rawValue == rhs.rawValue
+        return lhs.name == rhs.name
     }
 }
 
@@ -342,7 +504,7 @@ extension GAPCompleteLocalName: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue
+        return name
     }
 }
 
@@ -350,7 +512,7 @@ extension GAPCompleteLocalName: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         
-        self.init(rawValue: value)
+        self.init(name: value)
     }
 }
 

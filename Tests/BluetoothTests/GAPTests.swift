@@ -13,6 +13,7 @@ import Foundation
 final class GAPTests: XCTestCase {
     
     static let allTests = [
+        ("testBit16UUIDList", testBit16UUIDList),
         ("testDataType", testDataType),
         ("testCoding", testCoding)
     ]
@@ -21,8 +22,28 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(GAPDataType.flags.description, "Flags")
         XCTAssertEqual(GAPDataType(rawValue: 0).description, "Data Type (0)")
+    }
+    
+    func testBit16UUIDList() {
         
+        XCTAssertNil(Bit16UUIDList(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
+                     "Can only initialize from multiples of 2 bytes")
         
+        XCTAssertEqual(Bit16UUIDList(data: Data())?.uuids, [], "Should initialize from empty data")
+        
+        do {
+            
+            // 16 bit UUIDs: 0X1803 0X1804 0X1802
+            let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18])
+            
+            guard let list = Bit16UUIDList(data: data)
+                else { XCTFail("Could not parse from data"); return }
+            
+            XCTAssertEqual(list.data, data)
+            XCTAssertEqual(list.uuids, [0x1803, 0x1804, 0x1802])
+            XCTAssertEqual(list.uuids.map { BluetoothUUID.bit16($0) }, [.linkLoss, .txPower, .immediateAlert])
+
+        }
     }
     
     func testCoding() {
@@ -65,25 +86,23 @@ final class GAPTests: XCTestCase {
             let data = Data([0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79])
             XCTAssertEqual(data.count, 0x16)
             
-            let types: [GAPData.Type] = [
-                GAPFlags.self,
-                GAPCompleteLocalName.self
-            ]
-            
             let flags: GAPFlags = 0x1A
-            XCTAssert(flags.flags.isEmpty == false)
+            let uuidList: GAPCompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
+            let localName: GAPCompleteLocalName = "Proximity"
             
-            let expectedData: [GAPData] = [
-                flags
-            ]
+            let expectedData: [GAPData] = [flags, uuidList, localName]
+            let types = expectedData.map { type(of: $0) }
             
-            var decoded = [GAPData]()
-            XCTAssertNoThrow(decoded = try GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false))
+            guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+                else { XCTFail("Could not decode"); return }
+            
             XCTAssert(decoded.isEmpty == false)
             XCTAssertEqual(decoded.count, 3)
+            XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
             
             XCTAssertEqual(decoded[0] as! GAPFlags, flags)
-            XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+            XCTAssertEqual(decoded[1] as! GAPCompleteListOf16BitServiceClassUUIDs, uuidList)
+            XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
         }
     }
 }
