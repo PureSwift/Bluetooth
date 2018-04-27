@@ -216,7 +216,7 @@ public struct GAPCompleteLocalName: GAPData, RawRepresentable {
     
     public init?(data: Data) {
         
-        guard let rawValue = String(bytes: byteValue, encoding: .utf8)
+        guard let rawValue = String(bytes: data, encoding: .utf8)
             else { return nil }
         
         self.init(rawValue: rawValue)
@@ -263,7 +263,7 @@ public struct GAPDataEncoder {
         var data = Data()
         data.reserveCapacity(elements.count * 3)
         
-        elements.forEach { data += Data([$0.type.rawValue]) + $0.value }
+        elements.forEach { data += encode($0) }
         
         return data
     }
@@ -281,6 +281,8 @@ public struct GAPDataDecoder {
     public enum Error: Swift.Error {
         
         case insufficientBytes(expected: Int, actual: Int)
+        case cannotDecode(GAPData.Type, GAPDataElement)
+        case unknownType(GAPDataType)
     }
     
     public static func decode(_ data: Data) throws -> [GAPDataElement] {
@@ -327,12 +329,28 @@ public struct GAPDataDecoder {
         
         let elements = try decode(data)
         
+        var decodables = [GAPData]()
+        decodables.reserveCapacity(elements.count)
+        
         for element in elements {
             
-            for type in types {
+            if let type = types.first(where: { $0.dataType == element.type }) {
                 
+                guard let decodable = type.init(data: element.value)
+                    else { throw Error.cannotDecode(type, element) }
                 
+                decodables.append(decodable)
+                
+            } else if ignoreUnknownType {
+                
+                continue
+                
+            } else {
+                
+                throw Error.unknownType(element.type)
             }
         }
+        
+        return decodables
     }
 }
