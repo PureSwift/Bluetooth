@@ -186,6 +186,14 @@ public extension LowEnergyAdvertisingData {
             length <= 31
             else { return nil }
         
+        self.init()
+        self.length = UInt8(length)
+        
+        for (index, byte) in data.enumerated() {
+            
+            self[index] = byte
+        }
+        
         self.init(length: UInt8(length),
                   bytes: (length > 0 ? data[0] : 0,
                           length > 1 ? data[1] : 0,
@@ -231,13 +239,18 @@ public extension LowEnergyAdvertisingData {
             
         }
         
-        return Data([length, bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15, bytes.16, bytes.17, bytes.18, bytes.19, bytes.20, bytes.21, bytes.22, bytes.23, bytes.24, bytes.25, bytes.26, bytes.27, bytes.28, bytes.29, bytes.30])
+        return Data([length] + self)
     }
 }
 
 // MARK: - Collection
 
 extension LowEnergyAdvertisingData: Collection {
+    
+    public var count: Int {
+        
+        return Int(length)
+    }
     
     public func index(after index: Int) -> Int {
         
