@@ -44,11 +44,11 @@ public struct iBeacon {
 
 public extension iBeacon {
     
-    var advertisingData: LowEnergyCommand.SetAdvertisingDataParameter {
+    var advertisingDataCommand: LowEnergyCommand.SetAdvertisingDataParameter {
         
         var dataParameter = LowEnergyCommand.SetAdvertisingDataParameter()
         
-        dataParameter.length = 30
+        dataParameter.data.length = 30
         
         dataParameter.data.bytes.0 = 0x02  // length of flags
         dataParameter.data.bytes.1 = 0x01  // flags type
@@ -105,21 +105,15 @@ public extension BluetoothHostControllerInterface {
         
         // set advertising parameters
         let advertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter(interval: (iBeacon.interval, iBeacon.interval))
-        
-        //print("Setting Advertising Parameters")
-        
+                
         try deviceRequest(advertisingParameters, timeout: timeout)
-        
-        //print("Enabling Advertising")
         
         // start advertising
         do { try enableLowEnergyAdvertising(timeout: timeout) }
         catch HCIError.commandDisallowed { /* ignore, means already turned on */ }
         
-        //print("Setting iBeacon Data")
-        
         // set iBeacon data
-        let advertisingDataCommand = iBeacon.advertisingData
+        let advertisingDataCommand = iBeacon.advertisingDataCommand
         
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }
