@@ -138,32 +138,54 @@ public protocol GAPData {
 }
 
 /// GAP Flag
-public struct GAPFlags: GAPData, RawRepresentable {
+public struct GAPFlags: GAPData {
     
     public static let dataType: GAPDataType = .flags
     
     public static let length = 1
     
-    public init(rawValue: BitMaskOptionSet<GAPFlag>) {
-        
-        self.rawValue = rawValue
-    }
+    public var flags: BitMaskOptionSet<GAPFlag>
     
-    public var rawValue: BitMaskOptionSet<GAPFlag>
+    public init(flags: BitMaskOptionSet<GAPFlag> = 0) {
+        
+        self.flags = flags
+    }
     
     public init?(data: Data) {
         
         guard data.count >= type(of: self).length
             else { return nil }
         
-        self.rawValue = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
+        self.flags = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
     }
     
     public var data: Data {
         
-        let byte = rawValue.rawValue
+        return Data([flags.rawValue])
+    }
+}
+
+extension GAPFlags: Equatable {
+    
+    public static func == (lhs: GAPFlags, rhs: GAPFlags) -> Bool {
         
-        return Data([byte])
+        return lhs.flags == rhs.flags
+    }
+}
+
+extension GAPFlags: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(flags.rawValue)
+    }
+}
+
+extension GAPFlags: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral rawValue: GAPFlag.RawValue) {
+        
+        self.init(flags: BitMaskOptionSet<GAPFlag>(rawValue: rawValue))
     }
 }
 
