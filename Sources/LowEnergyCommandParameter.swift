@@ -346,29 +346,19 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setAdvertisingData // 0x0008
         public static let length = 32
         
-        /// The number of significant bytes.
-        public var length: UInt8
-        
         /// 31 octets of advertising data. 
         public var data: LowEnergyAdvertisingData
         
-        public init(data: LowEnergyAdvertisingData, length: UInt8) {
+        public init(data: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
             
-            precondition(length <= 31, "LE Advertising Data can only be 31 octets")
-            
-            self.length = length
             self.data = data
         }
         
-        public init() {
-            
-            self.length = 0
-            self.data = .zero
-        }
-        
         public var byteValue: [UInt8] {
-                        
-            return [length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
+            
+            let advertisingData = self.data
+            
+            return [UInt8](advertisingData.data)
         }
     }
     
@@ -380,29 +370,19 @@ public extension LowEnergyCommand {
         public static let command = LowEnergyCommand.setScanResponseData // 0x0009
         public static let length = 32
         
-        /// The number of significant bytes.
-        public var length: UInt8 // Scan_Response_Data_Length
-        
         /// 31 octets of scan response data.
         public var data: LowEnergyAdvertisingData // Scan_Response_Data
         
-        public init(data: LowEnergyAdvertisingData, length: UInt8) {
+        public init(data: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
             
-            precondition(length <= 31, "LE Scan Response Data can only be 31 octets")
-            
-            self.length = length
             self.data = data
-        }
-        
-        public init() {
-            
-            self.length = 0
-            self.data = .zero
         }
         
         public var byteValue: [UInt8] {
             
-            return [length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
+            let advertisingData = self.data
+            
+            return [UInt8](advertisingData.data)
         }
     }
     
