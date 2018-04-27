@@ -43,7 +43,6 @@ public struct LowEnergyAdvertisingData {
         self.bytes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     }
     
-    //swiftlint:disable function_body_length
     /// Get the byte at the specified index.
     public subscript (index: Int) -> UInt8 {
         
@@ -123,7 +122,6 @@ public struct LowEnergyAdvertisingData {
             }
         }
     }
-    //swiftlint:enable function_body_length
 }
 
 // MARK: - Equatable
