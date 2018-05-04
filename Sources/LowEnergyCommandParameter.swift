@@ -763,7 +763,7 @@ public extension LowEnergyCommand {
     /// * the initiator filter policy uses the White List and a create connection command is outstanding.
     ///
     /// Address is ignored when Address Type is set to 0xFF.
-    public struct RemoveDeviceToWhiteListParameter: HCICommandParameter { // HCI_LE_Remove_Device_From_White_List
+    public struct RemoveDeviceFromWhiteListParameter: HCICommandParameter { // HCI_LE_Remove_Device_From_White_List
         
         public static let command = LowEnergyCommand.removeDeviceFromWhiteList //0x0012
         
