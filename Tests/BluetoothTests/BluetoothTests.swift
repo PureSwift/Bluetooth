@@ -22,6 +22,7 @@ final class BluetoothTests: XCTestCase {
         ("testHCICommandTimeout", testHCICommandTimeout),
         ("testPOSIXError", testPOSIXError),
         ("testHCIVersion", testHCIVersion),
+        ("testLowEnergyAdvertisingData", testLowEnergyAdvertisingData),
         ("testLowEnergyAddressType", testLowEnergyAddressType),
         ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
@@ -78,6 +79,16 @@ final class BluetoothTests: XCTestCase {
         XCTAssertNotEqual(HCIVersion.v4_0, .v5_0)
         XCTAssertLessThan(HCIVersion.v4_0, .v4_2)
         XCTAssertGreaterThan(HCIVersion.v5_0, .v4_2)
+    }
+    
+    func testLowEnergyAdvertisingData() {
+        
+        do {
+            
+            let advertisingData: LowEnergyAdvertisingData = [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33]
+            XCTAssertEqual(advertisingData.data.count, advertisingData.count)
+            XCTAssertEqual(advertisingData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
+        }
     }
     
     func testLowEnergyAddressType() {

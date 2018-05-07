@@ -8,7 +8,13 @@
 
 import Foundation
 
-/// Bluetooth GATT protocol
+/**
+ The Generic Attributes (GATT) define a hierarchical data structure that is exposed to connected Bluetooth Low Energy (LE) devices.
+ 
+ GATT profiles enable extensive innovation while still maintaining full interoperability with other Bluetooth® devices. The profile describes a use case, roles and general behaviors based on the GATT functionality. Services are collections of characteristics and relationships to other services that encapsulate the behavior of part of a device. This also includes hierarchy of services, characteristics and attributes used in the attribute server.
+ 
+ GATT is built on top of the Attribute Protocol (ATT) (see Bluetooth Core System Architecture for block diagram and explanations), which uses GATT data to define the way that two Bluetooth Low Energy devices send and receive standard messages. Note that GATT is not used in Bluetooth BR/EDR implementations, which use only adopted profiles.
+ */
 public enum GATT {
 
     /// GATT UUIDs
