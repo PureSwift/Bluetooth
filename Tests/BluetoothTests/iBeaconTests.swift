@@ -24,9 +24,9 @@ final class iBeaconTests: XCTestCase {
                             minor: 0xBB,
                             rssi: RSSI(rawValue: Int8(bitPattern: 0xb3))!)
         
-        let advertisingData = value.advertisingData
+        let advertisingDataCommand = value.advertisingDataCommand
         
-        let testData: LowEnergyResponseData = (
+        let testData = LowEnergyAdvertisingData(length: 30, bytes: (
             0x02, //    Data length – 2 bytes    constant preamble
             0x01, //    Data type – flags    constant preamble
             0x1a, //    LE and BR/EDR flag    constant preamble
@@ -57,41 +57,9 @@ final class iBeaconTests: XCTestCase {
             0x00, //    Minor 1st byte    set minor value
             0xBB, //    Minor 2nd byte    set minor value
             0xb3 , //   Signal power (calibrated RSSI@1m)    signal power value
-            0x00)
+            0x00))
         
-        XCTAssertEqual(advertisingData.length, 30)
-        
-        XCTAssertEqual(advertisingData.data.0, testData.0)
-        XCTAssertEqual(advertisingData.data.1, testData.1)
-        XCTAssertEqual(advertisingData.data.2, testData.2)
-        XCTAssertEqual(advertisingData.data.3, testData.3)
-        XCTAssertEqual(advertisingData.data.4, testData.4)
-        XCTAssertEqual(advertisingData.data.5, testData.5)
-        XCTAssertEqual(advertisingData.data.6, testData.6)
-        XCTAssertEqual(advertisingData.data.7, testData.7)
-        XCTAssertEqual(advertisingData.data.8, testData.8)
-        XCTAssertEqual(advertisingData.data.9, testData.9)
-        XCTAssertEqual(advertisingData.data.10, testData.10)
-        XCTAssertEqual(advertisingData.data.11, testData.11)
-        XCTAssertEqual(advertisingData.data.12, testData.12)
-        XCTAssertEqual(advertisingData.data.13, testData.13)
-        XCTAssertEqual(advertisingData.data.14, testData.14)
-        XCTAssertEqual(advertisingData.data.15, testData.15)
-        XCTAssertEqual(advertisingData.data.16, testData.16)
-        XCTAssertEqual(advertisingData.data.17, testData.17)
-        XCTAssertEqual(advertisingData.data.18, testData.18)
-        XCTAssertEqual(advertisingData.data.19, testData.19)
-        XCTAssertEqual(advertisingData.data.20, testData.20)
-        XCTAssertEqual(advertisingData.data.21, testData.21)
-        XCTAssertEqual(advertisingData.data.22, testData.22)
-        XCTAssertEqual(advertisingData.data.23, testData.23)
-        XCTAssertEqual(advertisingData.data.24, testData.24)
-        XCTAssertEqual(advertisingData.data.25, testData.25)
-        XCTAssertEqual(advertisingData.data.26, testData.26)
-        XCTAssertEqual(advertisingData.data.27, testData.27)
-        XCTAssertEqual(advertisingData.data.28, testData.28)
-        XCTAssertEqual(advertisingData.data.29, testData.29)
-        XCTAssertEqual(advertisingData.data.30, testData.30)
+        XCTAssertEqual(advertisingDataCommand.data, testData)
     }
     
     func testCommand() {

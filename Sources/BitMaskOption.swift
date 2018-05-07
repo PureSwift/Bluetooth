@@ -239,6 +239,10 @@ extension BitMaskOptionSet: ExpressibleByArrayLiteral {
 
 // MARK: - ExpressibleByIntegerLiteral
 
+// Swift 3 works better than Swift 4 compiler
+
+#if swift(>=3.2)
+
 extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt64) {
@@ -246,6 +250,18 @@ extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
         self.init(rawValue: numericCast(value))
     }
 }
+
+#elseif swift(>=3.0)
+
+extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: RawValue) {
+        
+        self.init(rawValue: value)
+    }
+}
+
+#endif
 
 // MARK: - Collection
 
