@@ -3516,6 +3516,8 @@ public extension LowEnergyCommand {
     }
     
     /// LE Read Supported States
+    ///
+    /// The LE_Read_Supported_States command reads the states and state combinations that the link layer supports.
     public struct ReadSupportedStatesReturnParameter: HCICommandReturnParameter {
         
         public static let command = LowEnergyCommand.readSupportedStates //0x001C
