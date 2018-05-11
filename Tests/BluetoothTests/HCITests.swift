@@ -32,8 +32,108 @@ final class HCITests: XCTestCase {
         ("testLEStartEncryption", testLEStartEncryption),
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
         ("testLowEnergyEncrypt", testLowEnergyEncrypt),
-        ("testSetLERandomAddress", testSetLERandomAddress)
+        ("testSetLERandomAddress", testSetLERandomAddress),
+        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testReadBufferSize", testReadBufferSize),
+        ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter)
     ]
+    
+    func testSetAdvertiseEnableParameter(){
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND [2006] Opcode: 0x2006 (OGF: 0x08    OCF: 0x06) 06 20 0f 14 00 1e 00 01 01 00 77 d8 47 a3 39 54 01 00
+         Parameter Length: 15 (0x0F)
+         Advertising Interval Min: 0x0014 (12.5ms)
+         Advertising Interval Max: 0x001E (18.75ms)
+         Advertising Type: 0x01 - Connectable directed advertising (ADV_DIRECT_IND)
+         Own Address Type: Random
+         Direct Address Type: Public
+         Direct Address: (null)
+         Advertising Channel Map: 0x01
+         Advertising Filter Policy: 0x00 - Allow Scan Request from Any, Allow Connect Request from Any
+
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.setAdvertisingParameters.opcode,
+                     [0x06, 0x20, 0x0f, 0x14, 0x00, 0x1E, 0x00, 0x01, 0x01, 0x00, 0x77, 0xD8, 0x47, 0xA3, 0x39, 0x54, 0x01, 0x00])
+        )
+        
+        ///    0e 04 01 06 20 12
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x06, 0x20, 0x12]))
+    }
+    
+    func testReadBufferSize(){
+        typealias ReadBufferSize = LowEnergyCommand.ReadBufferSizeReturnParameter
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [1001] Read Buffer Size 02 20 00
+         [2002] Opcode: 0x2002 (OGF: 0x08    OCF: 0x02)
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.readBufferSize.opcode,
+                     [0x02, 0x20, 0x00])
+        )
+        
+        hostController.queue.append(.event([0x0E, 0x07, 0x01, 0x02, 0x20, 0x00, 0xFB, 0x00, 0x0F]))
+        
+        /**
+         Command Complete [2002] - LE Read Buffer Size - Num LE Data Packets: 0x000F    0e 07 01 02 20 00 fb 00 0f
+         Parameter Length: 7 (0x07)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2002 (OGF: 0x08    OCF: 0x02) - [Low Energy] LE Read Buffer Size
+         HC LE Data Packet Length: 0x00FB
+         HC Total Num LE Data Packets: 0x000F
+         */
+        var readBufferSizeReturn: ReadBufferSize!
+        XCTAssertNoThrow(readBufferSizeReturn = try hostController.readBufferSize())
+        XCTAssert(hostController.queue.isEmpty)
+        
+        XCTAssertEqual(readBufferSizeReturn.dataPacketLength, 0x00FB)
+        XCTAssertEqual(readBufferSizeReturn.dataPacket, 0x000F)
+    }
+    
+    func testReadLocalSupportedFeatures() {
+        typealias ReadLocalSupportedFeatures = LowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [1001] Read Local Supported Features  03 20 00
+         [2003] Opcode: 0x2003 (OGF: 0x08    OCF: 0x03)
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.readLocalSupportedFeatures.opcode,
+                     [0x03, 0x20, 0x00])
+        )
+        
+        hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x03, 0x20, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        /**
+         Command Complete [2003] - LE Read Local Supported Features     0e 0c 01 03 20 00 3f 00 00 00 00 00 00 00
+         Parameter Length: 12 (0x0C)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2003 (OGF: 0x08    OCF: 0x03) - [Low Energy] LE Read Local Supported Features
+         LE Features: 0X000000000000003F
+         LE Encryption
+         Connection Parameters Request Procedure
+         Extended Reject Indication
+         Slave-initiated Features Exchange
+         LE Ping
+         LE Data Packet Length Extension
+         */
+        
+        var lowEnergyFeatureSet: LowEnergyFeatureSet!
+        XCTAssertNoThrow(lowEnergyFeatureSet = try hostController.readLocalSupportedFeatures())
+        XCTAssert(hostController.queue.isEmpty)
+        
+        XCTAssertEqual(lowEnergyFeatureSet.rawValue, 0x000000000000003F)
+    }
     
     func testName() {
         

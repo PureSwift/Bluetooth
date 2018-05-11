@@ -18,6 +18,16 @@ public extension BluetoothHostControllerInterface {
         return returValue.features
     }
     
+    /// LE Read Supported States
+    ///
+    /// The LE_Read_Supported_States command reads the states and state combinations that the link layer supports.
+    func readSupportedStates(timeout: HCICommandTimeout = .default) throws -> LowEnergyStateSet {
+        
+        let returValue = try deviceRequest(LowEnergyCommand.ReadSupportedStatesReturnParameter.self, timeout: timeout)
+        
+        return returValue.state
+    }
+    
     /// LE Read Remote Features Command
     ///
     /// The command requests, from the remote device identified by the connection handle,
