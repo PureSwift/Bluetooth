@@ -3554,6 +3554,31 @@ public extension LowEnergyCommand {
         }
     }
     
+    
+    /// LE Remote Connection Parameter Request Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has accepted the remote device’s request to change connection parameters.
+    public struct RemoteConnectionParameterRequestReplyReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.remoteConnectionParameterRequestReply //0x0020
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
     /// LE Test End Command
     ///
     /// This command is used to stop any test which is in progress. The Number_Of_Packets
