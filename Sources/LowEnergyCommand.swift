@@ -83,6 +83,24 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     /// LE Start Encryption
     case startEncryption                = 0x0019
     
+    /// LE Remote Connection Parameter Request Reply
+    case remoteConnectionParameterRequestReply = 0x0020
+    
+    /// LE Remote Connection Parameter Request Negative Reply Command
+    case remoteConnectionParameterRequestNegativeReply = 0x0021
+    
+    /// LE Set Data Length Command
+    case setDataLengthCommand   = 0x0022
+    
+    /// LE Read Suggested Default Data Length Command
+    case readSuggestedDefaultDataLengthCommand = 0x0023
+    
+    /// LE Write Suggested Default Data Length Command
+    case writeSuggestedDefaultDataLengthCommand = 0x0024
+    
+    /// LE Read Local P-256 Public Key Command
+    case readLocalP256PublicKeyCommand  = 0x0025
+    
     /// LE Long Term Key Request Reply
     case longTermKeyReply               = 0x001A
     
@@ -300,6 +318,11 @@ public extension LowEnergyCommand {
         case .readRFPathCompensation: return "LE Read RF Path Compensation Command"
         case .writeRFPathCompensation: return "LE Write RF Path Compensation Command"
         case .setPrivacyMode: return "LE Set Privacy Mode Command"
+        case .remoteConnectionParameterRequestReply: return "LE Remote Connection Parameter Request Reply"
+        case .remoteConnectionParameterRequestNegativeReply: return "LE Remote Connection Parameter Request Negative Reply Command"
+        case .setDataLengthCommand: return "LE Set Data Length Command"
+        case .readSuggestedDefaultDataLengthCommand: return "LE Read Suggested Default Data Length Command"
+        case .readLocalP256PublicKeyCommand: return "LE Read Local P-256 Public Key Command"
         }
     }
 }
