@@ -29,7 +29,6 @@ public extension BluetoothHostControllerInterface {
         let returnParameters = try deviceRequest(parameters, LowEnergyCommand.RemoteConnectionParameterRequestReplyReturnParameter.self, timeout: timeout)
         
         return returnParameters.connectionHandle
-        
     }
     
     func lowEnergyCreateConnection(address peerAddress: Address,

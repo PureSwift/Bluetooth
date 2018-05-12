@@ -1275,6 +1275,39 @@ public extension LowEnergyCommand {
         }
     }
     
+    /// LE Remote Connection Parameter Request Negative Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has rejected the remote device’s request to change connection parameters.
+    /// The reason for the rejection is given in the Reason parameter.
+    public struct RemoteConnectionParameterRequestNegativeReplyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
+        
+        public var connectionHandle: UInt16
+        
+        public var reason: UInt8
+        
+        public init(connectionHandle: UInt16,
+                    reason: UInt8) {
+            
+            self.connectionHandle = connectionHandle
+            self.reason = reason
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1,
+                reason
+            ]
+        }
+    }
+    
     /// LE Add Device To Resolving List Command
     ///
     /// The LE_Add_Device_To_Resolving_List command is used to
@@ -3577,7 +3610,7 @@ public extension LowEnergyCommand {
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
         }
     }
-    
+
     /// LE Test End Command
     ///
     /// This command is used to stop any test which is in progress. The Number_Of_Packets
