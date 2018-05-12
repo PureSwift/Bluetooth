@@ -323,6 +323,7 @@ public extension LowEnergyCommand {
         case .setDataLengthCommand: return "LE Set Data Length Command"
         case .readSuggestedDefaultDataLengthCommand: return "LE Read Suggested Default Data Length Command"
         case .readLocalP256PublicKeyCommand: return "LE Read Local P-256 Public Key Command"
+        case .writeSuggestedDefaultDataLengthCommand: return "LE Write Suggested Default Data Length Command"
         }
     }
 }
