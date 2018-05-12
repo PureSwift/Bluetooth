@@ -3610,6 +3610,31 @@ public extension LowEnergyCommand {
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
         }
     }
+    
+    /// LE Remote Connection Parameter Request Negative Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has rejected the remote device’s request to change connection parameters.
+    /// The reason for the rejection is given in the Reason parameter.
+    public struct RemoteConnectionParameterRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
 
     /// LE Test End Command
     ///
