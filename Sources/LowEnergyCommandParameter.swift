@@ -1237,7 +1237,7 @@ public extension LowEnergyCommand {
                     interval: LowEnergyConnectionIntervalRange,
                     latency: LowEnergyConnectionLatency,
                     timeOut: LowEnergySupervisionTimeout,
-                    length: LowEnergyConnectionLength){
+                    length: LowEnergyConnectionLength) {
             
             self.connectionHandle = connectionHandle
             self.interval = interval
@@ -3553,7 +3553,6 @@ public extension LowEnergyCommand {
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
         }
     }
-    
     
     /// LE Remote Connection Parameter Request Reply Command
     ///
