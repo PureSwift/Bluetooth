@@ -31,6 +31,24 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.connectionHandle
     }
     
+    /// LE Remote Connection Parameter Request Negative Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has rejected the remote device’s request to change connection parameters.
+    /// The reason for the rejection is given in the Reason parameter.
+    func lowEnergyRemoteConnectionParameterRequestNegativeReply(connectionHandle: UInt16,
+                                                                reason: UInt8,
+                                                        timeout: HCICommandTimeout = .default) throws -> UInt16 {
+        
+        let parameters = LowEnergyCommand.RemoteConnectionParameterRequestNegativeReplyParameter(connectionHandle: connectionHandle,
+                                                                                                 reason: reason)
+        
+        let returnParameters = try deviceRequest(parameters, LowEnergyCommand.RemoteConnectionParameterRequestNegativeReplyReturnParameter.self, timeout: timeout)
+        
+        return returnParameters.connectionHandle
+    }
+    
     func lowEnergyCreateConnection(address peerAddress: Address,
                                    type peerAddressType: LowEnergyAddressType = .public,
                                    ownAddressType: LowEnergyAddressType = .public,
