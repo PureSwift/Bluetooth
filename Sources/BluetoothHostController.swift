@@ -30,6 +30,9 @@ public protocol BluetoothHostControllerInterface {
     func deviceRequest<C: HCICommand>(_ command: C, timeout: HCICommandTimeout) throws
     
     /// Send a command to the controller and wait for response.
+    func deviceRequest<C: HCICommand, EP: HCIEventParameter>(_ command: C, _ eventParameterType: EP.Type, timeout: HCICommandTimeout) throws -> EP
+    
+    /// Send a command to the controller and wait for response.
     func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: HCICommandTimeout) throws
     
     /// Sends a command to the device and waits for a response.
