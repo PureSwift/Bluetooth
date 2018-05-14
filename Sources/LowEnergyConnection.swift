@@ -111,4 +111,22 @@ public extension BluetoothHostControllerInterface {
         
         try deviceRequest(parameters, timeout: timeout)
     }
+    
+    /// LE Set Data Length Command
+    ///
+    /// This command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+    /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+    func lowEnergySetDataLength(connectionHandle: UInt16,
+                                txOctets: LowEnergyCommand.SetDataLengthParameter.TxOctets,
+                                txTime: LowEnergyCommand.SetDataLengthParameter.TxTime,
+                                timeout: HCICommandTimeout = .default) throws -> UInt16 {
+        
+        let parameters = LowEnergyCommand.SetDataLengthParameter(connectionHandle: connectionHandle,
+                                                                       txOctets: txOctets,
+                                                                       txTime: txTime)
+        
+        let returnParameters = try deviceRequest(parameters, LowEnergyCommand.SetDataLengthReturnParameter.self, timeout: timeout)
+        
+        return returnParameters.connectionHandle
+    }
 }
