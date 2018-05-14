@@ -1348,6 +1348,37 @@ public extension LowEnergyCommand {
         }
     }
     
+    /// LE Write Suggested Default Data Length Command
+    ///
+    /// The command allows the Host to specify its suggested values for the Controller's maximum transmission number
+    /// of payload octets and maximum packet transmission time to be used for new connections.
+    public struct WriteSuggestedDefaultDataLengthParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.writeSuggestedDefaultDataLengthCommand //0x0024
+        
+        public let suggestedMaxTxOctets: LowEnergyMaxTxOctets
+        
+        public let suggestedMaxTxTime: LowEnergyMaxTxTime
+     
+        public init(suggestedMaxTxOctets: LowEnergyMaxTxOctets,
+                    suggestedMaxTxTime: LowEnergyMaxTxTime) {
+            self.suggestedMaxTxOctets = suggestedMaxTxOctets
+            self.suggestedMaxTxTime = suggestedMaxTxTime
+        }
+        
+        public var byteValue: [UInt8] {
+            let suggestedMaxTxOctetsBytes = suggestedMaxTxOctets.rawValue.littleEndian.bytes
+            let suggestedMaxTxTimeBytes = suggestedMaxTxTime.rawValue.littleEndian.bytes
+            
+            return [
+                suggestedMaxTxOctetsBytes.0,
+                suggestedMaxTxOctetsBytes.1,
+                suggestedMaxTxTimeBytes.0,
+                suggestedMaxTxTimeBytes.1
+            ]
+        }
+    }
+    
     /// LE Add Device To Resolving List Command
     ///
     /// The LE_Add_Device_To_Resolving_List command is used to
