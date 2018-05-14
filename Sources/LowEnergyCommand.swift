@@ -101,6 +101,9 @@ public enum LowEnergyCommand: UInt16, HCICommand {
     /// LE Read Local P-256 Public Key Command
     case readLocalP256PublicKeyCommand  = 0x0025
     
+    /// LE Generate DHKey Command
+    case generateDHKeyCommand           = 0x0026
+    
     /// LE Long Term Key Request Reply
     case longTermKeyReply               = 0x001A
     
@@ -324,6 +327,7 @@ public extension LowEnergyCommand {
         case .readSuggestedDefaultDataLengthCommand: return "LE Read Suggested Default Data Length Command"
         case .readLocalP256PublicKeyCommand: return "LE Read Local P-256 Public Key Command"
         case .writeSuggestedDefaultDataLengthCommand: return "LE Write Suggested Default Data Length Command"
+        case .generateDHKeyCommand : return "LE Generate DHKey Command"
         }
     }
 }
