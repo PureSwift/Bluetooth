@@ -1214,6 +1214,261 @@ public extension LowEnergyCommand {
         }
     }
     
+    /// LE Remote Connection Parameter Request Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has accepted the remote device’s request to change connection parameters.
+    public struct RemoteConnectionParameterRequestReplyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.remoteConnectionParameterRequestReply //0x0020
+    
+        public var connectionHandle: UInt16
+        
+        public var interval: LowEnergyConnectionIntervalRange
+        
+        public var latency: LowEnergyConnectionLatency
+        
+        public var timeOut: LowEnergySupervisionTimeout
+        
+        public var length: LowEnergyConnectionLength
+        
+        public init(connectionHandle: UInt16,
+                    interval: LowEnergyConnectionIntervalRange,
+                    latency: LowEnergyConnectionLatency,
+                    timeOut: LowEnergySupervisionTimeout,
+                    length: LowEnergyConnectionLength) {
+            
+            self.connectionHandle = connectionHandle
+            self.interval = interval
+            self.latency = latency
+            self.timeOut = timeOut
+            self.length = length
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            let connectionIntervalMinBytes = interval.rawValue.lowerBound.littleEndian.bytes
+            let connectionIntervalMaxBytes = interval.rawValue.upperBound.littleEndian.bytes
+            let connectionLatencyBytes = latency.rawValue.littleEndian.bytes
+            let supervisionTimeoutBytes = timeOut.rawValue.littleEndian.bytes
+            let connectionLengthMinBytes = length.rawValue.lowerBound.littleEndian.bytes
+            let connectionLengthMaxBytes = length.rawValue.upperBound.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1,
+                connectionIntervalMinBytes.0,
+                connectionIntervalMinBytes.1,
+                connectionIntervalMaxBytes.0,
+                connectionIntervalMaxBytes.1,
+                connectionLatencyBytes.0,
+                connectionLatencyBytes.1,
+                supervisionTimeoutBytes.0,
+                supervisionTimeoutBytes.1,
+                connectionLengthMinBytes.0,
+                connectionLengthMinBytes.1,
+                connectionLengthMaxBytes.0,
+                connectionLengthMaxBytes.1
+            ]
+        }
+    }
+    
+    /// LE Remote Connection Parameter Request Negative Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has rejected the remote device’s request to change connection parameters.
+    /// The reason for the rejection is given in the Reason parameter.
+    public struct RemoteConnectionParameterRequestNegativeReplyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
+        
+        public var connectionHandle: UInt16
+        
+        public var reason: UInt8
+        
+        public init(connectionHandle: UInt16,
+                    reason: UInt8) {
+            
+            self.connectionHandle = connectionHandle
+            self.reason = reason
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1,
+                reason
+            ]
+        }
+    }
+    
+    /// LE Set Data Length Command
+    ///
+    /// This command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+    /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+    public struct SetDataLengthParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setDataLengthCommand //0x0022
+        
+        public var connectionHandle: UInt16
+        
+        public var txOctets: LowEnergyMaxTxOctets
+        
+        public var txTime: LowEnergyMaxTxTime
+        
+        public init(connectionHandle: UInt16,
+                    txOctets: LowEnergyMaxTxOctets,
+                    txTime: LowEnergyMaxTxTime) {
+            
+            self.connectionHandle = connectionHandle
+            self.txOctets = txOctets
+            self.txTime = txTime
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            let txOctetsBytes = txOctets.rawValue.littleEndian.bytes
+            let txTimeBytes = txTime.rawValue.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1,
+                txOctetsBytes.0,
+                txOctetsBytes.1,
+                txTimeBytes.0,
+                txTimeBytes.1
+            ]
+        }
+    }
+    
+    /// LE Write Suggested Default Data Length Command
+    ///
+    /// The command allows the Host to specify its suggested values for the Controller's maximum transmission number
+    /// of payload octets and maximum packet transmission time to be used for new connections.
+    public struct WriteSuggestedDefaultDataLengthParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.writeSuggestedDefaultDataLengthCommand //0x0024
+        
+        public var suggestedMaxTxOctets: LowEnergyMaxTxOctets
+        
+        public var suggestedMaxTxTime: LowEnergyMaxTxTime
+     
+        public init(suggestedMaxTxOctets: LowEnergyMaxTxOctets,
+                    suggestedMaxTxTime: LowEnergyMaxTxTime) {
+            self.suggestedMaxTxOctets = suggestedMaxTxOctets
+            self.suggestedMaxTxTime = suggestedMaxTxTime
+        }
+        
+        public var byteValue: [UInt8] {
+            let suggestedMaxTxOctetsBytes = suggestedMaxTxOctets.rawValue.littleEndian.bytes
+            let suggestedMaxTxTimeBytes = suggestedMaxTxTime.rawValue.littleEndian.bytes
+            
+            return [
+                suggestedMaxTxOctetsBytes.0,
+                suggestedMaxTxOctetsBytes.1,
+                suggestedMaxTxTimeBytes.0,
+                suggestedMaxTxTimeBytes.1
+            ]
+        }
+    }
+    
+    /// LE Generate DHKey Command
+    ///
+    /// This command is used to initiate generation of a Diffie- Hellman key in the Controller for use over the LE transport.
+    /// This command takes the remote P-256 public key as input.
+    /// The Diffie-Hellman key generation uses the private key generated by LE_Read_Local_P256_Public_Key command.
+    public struct GenerateDHKeyParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.generateDHKeyCommand
+        
+        public var remoteP256PublicKey: UInt512
+        
+        public init(remoteP256PublicKey: UInt512) {
+        
+            self.remoteP256PublicKey = remoteP256PublicKey
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let remoteP256PublicKeyBytes = remoteP256PublicKey.littleEndian.bytes
+            
+            return [
+                remoteP256PublicKeyBytes.0,
+                remoteP256PublicKeyBytes.1,
+                remoteP256PublicKeyBytes.2,
+                remoteP256PublicKeyBytes.3,
+                remoteP256PublicKeyBytes.4,
+                remoteP256PublicKeyBytes.5,
+                remoteP256PublicKeyBytes.6,
+                remoteP256PublicKeyBytes.7,
+                remoteP256PublicKeyBytes.8,
+                remoteP256PublicKeyBytes.9,
+                remoteP256PublicKeyBytes.10,
+                remoteP256PublicKeyBytes.11,
+                remoteP256PublicKeyBytes.12,
+                remoteP256PublicKeyBytes.13,
+                remoteP256PublicKeyBytes.14,
+                remoteP256PublicKeyBytes.15,
+                remoteP256PublicKeyBytes.16,
+                remoteP256PublicKeyBytes.17,
+                remoteP256PublicKeyBytes.18,
+                remoteP256PublicKeyBytes.19,
+                remoteP256PublicKeyBytes.20,
+                remoteP256PublicKeyBytes.21,
+                remoteP256PublicKeyBytes.22,
+                remoteP256PublicKeyBytes.23,
+                remoteP256PublicKeyBytes.24,
+                remoteP256PublicKeyBytes.25,
+                remoteP256PublicKeyBytes.26,
+                remoteP256PublicKeyBytes.27,
+                remoteP256PublicKeyBytes.28,
+                remoteP256PublicKeyBytes.29,
+                remoteP256PublicKeyBytes.30,
+                remoteP256PublicKeyBytes.31,
+                remoteP256PublicKeyBytes.32,
+                remoteP256PublicKeyBytes.33,
+                remoteP256PublicKeyBytes.34,
+                remoteP256PublicKeyBytes.35,
+                remoteP256PublicKeyBytes.36,
+                remoteP256PublicKeyBytes.37,
+                remoteP256PublicKeyBytes.38,
+                remoteP256PublicKeyBytes.39,
+                remoteP256PublicKeyBytes.40,
+                remoteP256PublicKeyBytes.41,
+                remoteP256PublicKeyBytes.42,
+                remoteP256PublicKeyBytes.42,
+                remoteP256PublicKeyBytes.43,
+                remoteP256PublicKeyBytes.44,
+                remoteP256PublicKeyBytes.45,
+                remoteP256PublicKeyBytes.46,
+                remoteP256PublicKeyBytes.47,
+                remoteP256PublicKeyBytes.48,
+                remoteP256PublicKeyBytes.49,
+                remoteP256PublicKeyBytes.50,
+                remoteP256PublicKeyBytes.51,
+                remoteP256PublicKeyBytes.52,
+                remoteP256PublicKeyBytes.53,
+                remoteP256PublicKeyBytes.53,
+                remoteP256PublicKeyBytes.55,
+                remoteP256PublicKeyBytes.56,
+                remoteP256PublicKeyBytes.57,
+                remoteP256PublicKeyBytes.58,
+                remoteP256PublicKeyBytes.59,
+                remoteP256PublicKeyBytes.60,
+                remoteP256PublicKeyBytes.61,
+                remoteP256PublicKeyBytes.62,
+                remoteP256PublicKeyBytes.63
+            ]
+        }
+    }
+    
     /// LE Add Device To Resolving List Command
     ///
     /// The LE_Add_Device_To_Resolving_List command is used to
@@ -3493,6 +3748,109 @@ public extension LowEnergyCommand {
         }
     }
     
+    /// LE Remote Connection Parameter Request Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has accepted the remote device’s request to change connection parameters.
+    public struct RemoteConnectionParameterRequestReplyReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.remoteConnectionParameterRequestReply //0x0020
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// LE Remote Connection Parameter Request Negative Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has rejected the remote device’s request to change connection parameters.
+    /// The reason for the rejection is given in the Reason parameter.
+    public struct RemoteConnectionParameterRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// The LE_Set_Data_Length command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+    /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+    public struct SetDataLengthReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.setDataLengthCommand //0x0022
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// LE Read Suggested Default Data Length Command
+    ///
+    /// This command allows the Host to read the Host's suggested values (SuggestedMaxTxOctets and SuggestedMaxTxTime)
+    /// for the Controller's maximum transmitted number of payload octets and maximum packet transmission time to be used for new connections.
+    public struct ReadSuggestedDefaultDataLengthReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readSuggestedDefaultDataLengthCommand //0x0023
+        
+        public static let length: Int = 4
+        
+        public let suggestedMaxTxOctets: LowEnergyMaxTxOctets
+        
+        public let suggestedMaxTxTime: LowEnergyMaxTxTime
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let suggestedMaxTxOctetsUInt16 = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let suggestedMaxTxTimeUInt16 = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            
+            guard let suggestedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: suggestedMaxTxOctetsUInt16)
+                else { return nil }
+            
+            guard let suggestedMaxTxTime = LowEnergyMaxTxTime(rawValue: suggestedMaxTxTimeUInt16)
+                else { return nil }
+            
+            self.suggestedMaxTxOctets = suggestedMaxTxOctets
+            self.suggestedMaxTxTime = suggestedMaxTxTime
+        }
+    }
+
     /// LE Test End Command
     ///
     /// This command is used to stop any test which is in progress. The Number_Of_Packets
@@ -3633,11 +3991,11 @@ public extension LowEnergyCommand {
         
         /// Maximum number of payload octets that the local Controller supports for transmission
         /// of a single Link Layer packet on a data connection.
-        public let supportedMaxTxOctets: SupportedMaxTxOctets
+        public let supportedMaxTxOctets: LowEnergyMaxTxOctets
         
         /// Maximum time, in microseconds, that the local Controller supports for transmission of
         /// a single Link Layer packet on a data connection.
-        public let supportedMaxTxTime: SupportedMaxTxTime
+        public let supportedMaxTxTime: LowEnergyMaxTxTime
         
         /// Maximum number of payload octets that the local Controller supports for reception of
         /// a single Link Layer packet on a data connection.
@@ -3651,10 +4009,10 @@ public extension LowEnergyCommand {
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
-            guard let supportedMaxTxOctets = SupportedMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1]))))
+            guard let supportedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1]))))
                 else { return nil }
             
-            guard let supportedMaxTxTime = SupportedMaxTxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3]))))
+            guard let supportedMaxTxTime = LowEnergyMaxTxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3]))))
                 else { return nil }
             
             guard let supportedMaxRxOctets = SupportedMaxRxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5]))))
@@ -3750,98 +4108,6 @@ public extension LowEnergyCommand {
             
             // Comparable
             public static func < (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
-        }
-        
-        /// Maximum time, in microseconds, that the local Controller supports for transmission of
-        /// a single Link Layer packet on a data connection.
-        /// Range 0x0148-0x4290
-        public struct SupportedMaxTxTime: RawRepresentable, Equatable, Hashable, Comparable {
-            
-            public static let min = SupportedMaxTxTime(0x0148)
-            
-            public static let max = SupportedMaxTxTime(0x4290)
-            
-            public let rawValue: UInt16
-            
-            public init?(rawValue: UInt16) {
-                
-                guard rawValue >= SupportedMaxTxTime.min.rawValue,
-                    rawValue <= SupportedMaxTxTime.max.rawValue
-                    else { return nil }
-                
-                assert((SupportedMaxTxTime.min.rawValue ... SupportedMaxTxTime.max.rawValue).contains(rawValue))
-                
-                self.rawValue = rawValue
-            }
-            
-            // Private, unsafe
-            private init(_ rawValue: UInt16) {
-                self.rawValue = rawValue
-            }
-            
-            // Equatable
-            public static func == (lhs: SupportedMaxTxTime, rhs: SupportedMaxTxTime) -> Bool {
-                
-                return lhs.rawValue == rhs.rawValue
-            }
-            
-            // Comparable
-            public static func < (lhs: SupportedMaxTxTime, rhs: SupportedMaxTxTime) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
-        }
-        
-        /// Maximum number of payload octets that the local Controller supports for transmission
-        /// of a single Link Layer packet on a data connection.
-        /// Range 0x001B-0x00FB
-        public struct SupportedMaxTxOctets: RawRepresentable, Equatable, Hashable, Comparable {
-            
-            public static let min = SupportedMaxTxOctets(0x001B)
-            
-            public static let max = SupportedMaxTxOctets(0x00FB)
-            
-            public let rawValue: UInt16
-            
-            public init?(rawValue: UInt16) {
-                
-                guard rawValue >= SupportedMaxTxOctets.min.rawValue,
-                    rawValue <= SupportedMaxTxOctets.max.rawValue
-                    else { return nil }
-                
-                assert((SupportedMaxTxOctets.min.rawValue ... SupportedMaxTxOctets.max.rawValue).contains(rawValue))
-                
-                self.rawValue = rawValue
-            }
-            
-            // Private, unsafe
-            private init(_ rawValue: UInt16) {
-                self.rawValue = rawValue
-            }
-            
-            // Equatable
-            public static func == (lhs: SupportedMaxTxOctets, rhs: SupportedMaxTxOctets) -> Bool {
-                
-                return lhs.rawValue == rhs.rawValue
-            }
-            
-            // Comparable
-            public static func < (lhs: SupportedMaxTxOctets, rhs: SupportedMaxTxOctets) -> Bool {
                 
                 return lhs.rawValue < rhs.rawValue
             }
@@ -4793,5 +5059,95 @@ public struct LowEnergyConnectionLength: RawRepresentable, Equatable {
     public static func == (lhs: LowEnergyConnectionLength, rhs: LowEnergyConnectionLength) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
+    }
+}
+
+/// Number of payload octets that the local Control- ler should include in a single Link Layer packet on this connection.
+/// Range 0x0148-0x4290
+public struct LowEnergyMaxTxTime: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    public static let min = LowEnergyMaxTxTime(0x0148)
+    
+    public static let max = LowEnergyMaxTxTime(0x4290)
+    
+    public let rawValue: UInt16
+    
+    public init?(rawValue: UInt16 = 0x001B) {
+        
+        guard rawValue >= LowEnergyMaxTxTime.min.rawValue,
+            rawValue <= LowEnergyMaxTxTime.max.rawValue
+            else { return nil }
+        
+        assert((LowEnergyMaxTxTime.min.rawValue ... LowEnergyMaxTxTime.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyMaxTxTime, rhs: LowEnergyMaxTxTime) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyMaxTxTime, rhs: LowEnergyMaxTxTime) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
+// Number of microseconds that the local Controller should use to transmit a single Link Layer packet on this connection.
+/// Range 0x001B-0x00FB
+public struct LowEnergyMaxTxOctets: RawRepresentable, Equatable, Hashable, Comparable {
+    
+    public static let min = LowEnergyMaxTxOctets(0x001B)
+    
+    public static let max = LowEnergyMaxTxOctets(0x00FB)
+    
+    public let rawValue: UInt16
+    
+    public init?(rawValue: UInt16 = 0x0148) {
+        
+        guard rawValue >= LowEnergyMaxTxOctets.min.rawValue,
+            rawValue <= LowEnergyMaxTxOctets.max.rawValue
+            else { return nil }
+        
+        assert((LowEnergyMaxTxOctets.min.rawValue ... LowEnergyMaxTxOctets.max.rawValue).contains(rawValue))
+        
+        self.rawValue = rawValue
+    }
+    
+    // Private, unsafe
+    private init(_ rawValue: UInt16) {
+        self.rawValue = rawValue
+    }
+    
+    // Equatable
+    public static func == (lhs: LowEnergyMaxTxOctets, rhs: LowEnergyMaxTxOctets) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    // Comparable
+    public static func < (lhs: LowEnergyMaxTxOctets, rhs: LowEnergyMaxTxOctets) -> Bool {
+        
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    // Hashable
+    public var hashValue: Int {
+        
+        return Int(rawValue)
     }
 }
