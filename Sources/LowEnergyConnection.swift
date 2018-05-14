@@ -140,4 +140,18 @@ public extension BluetoothHostControllerInterface {
         
         return try deviceRequest(LowEnergyCommand.ReadSuggestedDefaultDataLengthReturnParameter.self, timeout: timeout)
     }
+    
+    /// LE Write Suggested Default Data Length Command
+    ///
+    /// The command allows the Host to specify its suggested values for the Controller's maximum transmission number
+    /// of payload octets and maximum packet transmission time to be used for new connections.
+    func lowEnergyWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: LowEnergyMaxTxOctets,
+                                                  suggestedMaxTxTime: LowEnergyMaxTxTime,
+                                                  timeout: HCICommandTimeout = .default) throws {
+        
+        let parameters = LowEnergyCommand.WriteSuggestedDefaultDataLengthParameter(suggestedMaxTxOctets: suggestedMaxTxOctets,
+                                                                                   suggestedMaxTxTime: suggestedMaxTxTime)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
 }
