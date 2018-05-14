@@ -3696,6 +3696,39 @@ public extension LowEnergyCommand {
             connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
         }
     }
+    
+    /// LE Read Suggested Default Data Length Command
+    ///
+    /// This command allows the Host to read the Host's suggested values (SuggestedMaxTxOctets and SuggestedMaxTxTime)
+    /// for the Controller's maximum transmitted number of payload octets and maximum packet transmission time to be used for new connections.
+    public struct ReadSuggestedDefaultDataLengthReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.readSuggestedDefaultDataLengthCommand //0x0023
+        
+        public static let length: Int = 4
+        
+        public let suggestedMaxTxOctets: LowEnergyMaxTxOctets
+        
+        public let suggestedMaxTxTime: LowEnergyMaxTxTime
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            let suggestedMaxTxOctetsUInt16 = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let suggestedMaxTxTimeUInt16 = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            
+            guard let suggestedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: suggestedMaxTxOctetsUInt16)
+                else { return nil }
+            
+            guard let suggestedMaxTxTime = LowEnergyMaxTxTime(rawValue: suggestedMaxTxTimeUInt16)
+                else { return nil }
+            
+            self.suggestedMaxTxOctets = suggestedMaxTxOctets
+            self.suggestedMaxTxTime = suggestedMaxTxTime
+        }
+    }
 
     /// LE Test End Command
     ///
