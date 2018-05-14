@@ -1308,6 +1308,132 @@ public extension LowEnergyCommand {
         }
     }
     
+    /// LE Set Data Length Command
+    ///
+    /// command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+    /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+    public struct SetDataLengthParameter: HCICommandParameter {
+        
+        public static let command = LowEnergyCommand.setDataLengthCommand //0x0022
+        
+        public var connectionHandle: UInt16
+        
+        public var txOctets: TxOctets
+        
+        public var txTime: TxTime
+        
+        public init(connectionHandle: UInt16,
+                    txOctets: TxOctets,
+                    txTime: TxTime) {
+            
+            self.connectionHandle = connectionHandle
+            self.txOctets = txOctets
+            self.txTime = txTime
+        }
+        
+        public var byteValue: [UInt8] {
+            
+            let connectionHandleBytes = connectionHandle.littleEndian.bytes
+            let txOctetsBytes = txOctets.rawValue.littleEndian.bytes
+            let txTimeBytes = txTime.rawValue.littleEndian.bytes
+            
+            return [
+                connectionHandleBytes.0,
+                connectionHandleBytes.1,
+                txOctetsBytes.0,
+                txOctetsBytes.1,
+                txTimeBytes.0,
+                txTimeBytes.1
+            ]
+        }
+        
+        /// Preferred maximum number of payload octets that the local Control- ler should include in a single Link Layer packet on this connection.
+        public struct TxOctets: RawRepresentable, Equatable, Comparable, Hashable {
+            
+            public static let min = TxOctets(0x001B)
+            
+            public static let max = TxOctets(0x00FB)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= TxOctets.min.rawValue,
+                    rawValue <= TxOctets.max.rawValue
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            fileprivate init(_ rawValue: UInt16) {
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: TxOctets, rhs: TxOctets) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: TxOctets, rhs: TxOctets) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+        /// Preferred maximum number of microseconds that the local Controller should use to transmit a single Link Layer packet on this connection.
+        public struct TxTime: RawRepresentable, Equatable, Comparable, Hashable {
+            
+            public static let min = TxTime(0x0148)
+            
+            public static let max = TxTime(0x4290)
+            
+            public let rawValue: UInt16
+            
+            public init?(rawValue: UInt16) {
+                
+                guard rawValue >= TxTime.min.rawValue,
+                    rawValue <= TxTime.max.rawValue
+                    else { return nil }
+                
+                self.rawValue = rawValue
+            }
+            
+            // Private, unsafe
+            fileprivate init(_ rawValue: UInt16) {
+                
+                self.rawValue = rawValue
+            }
+            
+            // Equatable
+            public static func == (lhs: TxTime, rhs: TxTime) -> Bool {
+                
+                return lhs.rawValue == rhs.rawValue
+            }
+            
+            // Comparable
+            public static func < (lhs: TxTime, rhs: TxTime) -> Bool {
+                
+                return lhs.rawValue < rhs.rawValue
+            }
+            
+            // Hashable
+            public var hashValue: Int {
+                
+                return Int(rawValue)
+            }
+        }
+        
+    }
+    
     /// LE Add Device To Resolving List Command
     ///
     /// The LE_Add_Device_To_Resolving_List command is used to
@@ -3620,6 +3746,27 @@ public extension LowEnergyCommand {
     public struct RemoteConnectionParameterRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
         
         public static let command = LowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
+        
+        public static let length: Int = 2
+        
+        /// Connection_Handle
+        /// Range 0x0000-0x0EFF (all other values reserved for future use)
+        public let connectionHandle: UInt16 // Connection_Handle
+        
+        public init?(byteValue: [UInt8]) {
+            
+            guard byteValue.count == type(of: self).length
+                else { return nil }
+            
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        }
+    }
+    
+    /// The LE_Set_Data_Length command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+    /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+    public struct SetDataLengthReturnParameter: HCICommandReturnParameter {
+        
+        public static let command = LowEnergyCommand.setDataLengthCommand //0x0022
         
         public static let length: Int = 2
         
