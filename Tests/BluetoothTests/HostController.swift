@@ -48,6 +48,20 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             else { throw HCIError(rawValue: statusByte)! }
     }
     
+    func deviceRequest<C: HCICommand, EP: HCIEventParameter>(_ command: C,
+                                                             _ eventParameterType: EP.Type,
+                                                             timeout: HCICommandTimeout) throws -> EP {
+        
+        let data = try hciRequest(command,
+                                  event: EP.event.rawValue,
+                                  eventParameterLength: EP.length)
+        
+        guard let eventParameter = EP(byteValue: data)
+            else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: data)) }
+        
+        return eventParameter
+    }
+    
     /// Send a command to the controller and wait for response.
     func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: HCICommandTimeout) throws {
         
