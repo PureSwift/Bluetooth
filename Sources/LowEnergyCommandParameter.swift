@@ -1310,7 +1310,7 @@ public extension LowEnergyCommand {
     
     /// LE Set Data Length Command
     ///
-    /// command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+    /// This command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
     /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
     public struct SetDataLengthParameter: HCICommandParameter {
         
