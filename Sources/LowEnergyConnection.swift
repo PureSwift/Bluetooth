@@ -130,8 +130,6 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.connectionHandle
     }
     
-    //ReadSuggestedDefaultDataLengthReturnParameter
-    
     /// LE Read Suggested Default Data Length Command
     ///
     /// This command allows the Host to read the Host's suggested values (SuggestedMaxTxOctets and SuggestedMaxTxTime)
