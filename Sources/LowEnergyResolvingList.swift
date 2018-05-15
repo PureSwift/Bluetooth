@@ -23,7 +23,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to remove one device from the list of address translations used to resolve
     /// Resolvable Private Addresses in the Controller.
-    func lowEnergyRemoveDeviceFromResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, packetpayload: LowEnergyPacketPayload, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyRemoveDeviceFromResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
+                                                peerIdentifyAddress: UInt64,
+                                                timeout: HCICommandTimeout = .default) throws {
         
         let parameters = LowEnergyCommand.RemoveDeviceFromResolvingListParameter(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
         
