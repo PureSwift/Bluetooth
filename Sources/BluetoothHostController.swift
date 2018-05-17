@@ -13,10 +13,14 @@ public protocol BluetoothHostControllerInterface {
     
     /// All controllers on the host.
     static var controllers: [Self] { get }
-    
+
+#if swift(>=3.2)
     /// The default controller on the host.
+    static var defaultController: Self? { get }
+#else
     static var `default`: Self? { get }
-    
+#endif
+
     /// The Bluetooth Address of the controller.
     var address: Address { get }
     
