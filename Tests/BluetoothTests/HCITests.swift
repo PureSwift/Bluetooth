@@ -32,8 +32,108 @@ final class HCITests: XCTestCase {
         ("testLEStartEncryption", testLEStartEncryption),
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
         ("testLowEnergyEncrypt", testLowEnergyEncrypt),
-        ("testSetLERandomAddress", testSetLERandomAddress)
+        ("testSetLERandomAddress", testSetLERandomAddress),
+        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testReadBufferSize", testReadBufferSize),
+        ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter)
     ]
+    
+    func testSetAdvertiseEnableParameter(){
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND [2006] Opcode: 0x2006 (OGF: 0x08    OCF: 0x06) 06 20 0f 14 00 1e 00 01 01 00 77 d8 47 a3 39 54 01 00
+         Parameter Length: 15 (0x0F)
+         Advertising Interval Min: 0x0014 (12.5ms)
+         Advertising Interval Max: 0x001E (18.75ms)
+         Advertising Type: 0x01 - Connectable directed advertising (ADV_DIRECT_IND)
+         Own Address Type: Random
+         Direct Address Type: Public
+         Direct Address: (null)
+         Advertising Channel Map: 0x01
+         Advertising Filter Policy: 0x00 - Allow Scan Request from Any, Allow Connect Request from Any
+
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.setAdvertisingParameters.opcode,
+                     [0x06, 0x20, 0x0f, 0x14, 0x00, 0x1E, 0x00, 0x01, 0x01, 0x00, 0x77, 0xD8, 0x47, 0xA3, 0x39, 0x54, 0x01, 0x00])
+        )
+        
+        ///    0e 04 01 06 20 12
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x06, 0x20, 0x12]))
+    }
+    
+    func testReadBufferSize(){
+        typealias ReadBufferSize = LowEnergyCommand.ReadBufferSizeReturnParameter
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [1001] Read Buffer Size 02 20 00
+         [2002] Opcode: 0x2002 (OGF: 0x08    OCF: 0x02)
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.readBufferSize.opcode,
+                     [0x02, 0x20, 0x00])
+        )
+        
+        hostController.queue.append(.event([0x0E, 0x07, 0x01, 0x02, 0x20, 0x00, 0xFB, 0x00, 0x0F]))
+        
+        /**
+         Command Complete [2002] - LE Read Buffer Size - Num LE Data Packets: 0x000F    0e 07 01 02 20 00 fb 00 0f
+         Parameter Length: 7 (0x07)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2002 (OGF: 0x08    OCF: 0x02) - [Low Energy] LE Read Buffer Size
+         HC LE Data Packet Length: 0x00FB
+         HC Total Num LE Data Packets: 0x000F
+         */
+        var readBufferSizeReturn: ReadBufferSize!
+        XCTAssertNoThrow(readBufferSizeReturn = try hostController.readBufferSize())
+        XCTAssert(hostController.queue.isEmpty)
+        
+        XCTAssertEqual(readBufferSizeReturn.dataPacketLength, 0x00FB)
+        XCTAssertEqual(readBufferSizeReturn.dataPacket, 0x000F)
+    }
+    
+    func testReadLocalSupportedFeatures() {
+        typealias ReadLocalSupportedFeatures = LowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
+        
+        let hostController = TestHostController()
+        
+        /**
+         SEND  [1001] Read Local Supported Features  03 20 00
+         [2003] Opcode: 0x2003 (OGF: 0x08    OCF: 0x03)
+         */
+        hostController.queue.append(
+            .command(LowEnergyCommand.readLocalSupportedFeatures.opcode,
+                     [0x03, 0x20, 0x00])
+        )
+        
+        hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x03, 0x20, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        /**
+         Command Complete [2003] - LE Read Local Supported Features     0e 0c 01 03 20 00 3f 00 00 00 00 00 00 00
+         Parameter Length: 12 (0x0C)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x2003 (OGF: 0x08    OCF: 0x03) - [Low Energy] LE Read Local Supported Features
+         LE Features: 0X000000000000003F
+         LE Encryption
+         Connection Parameters Request Procedure
+         Extended Reject Indication
+         Slave-initiated Features Exchange
+         LE Ping
+         LE Data Packet Length Extension
+         */
+        
+        var lowEnergyFeatureSet: LowEnergyFeatureSet!
+        XCTAssertNoThrow(lowEnergyFeatureSet = try hostController.readLocalSupportedFeatures())
+        XCTAssert(hostController.queue.isEmpty)
+        
+        XCTAssertEqual(lowEnergyFeatureSet.rawValue, 0x000000000000003F)
+    }
     
     func testName() {
         
@@ -566,8 +666,6 @@ final class HCITests: XCTestCase {
             let advertisingData: [UInt8] = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
             
             XCTAssertEqual(report.data, advertisingData)
-            
-            // TODO: Parse response data
         }
         
         do {
@@ -598,6 +696,40 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.rssi.rawValue, -44)
             XCTAssertEqual(report.data, [])
+        }
+        
+        do {
+            
+            /**
+             LE Meta Event - LE Advertising Report - 0 - 00:1A:AE:06:EF:9E  -70 dBm - BlueZ 5.43  3E 18 02 01 04 00 9E EF 06 AE 1A 00 0C 0B 09 42 6C 75 65 5A 20 35 2E 34 33 BA
+             
+             Parameter Length: 24 (0x18)
+             Num Reports: 0X01
+             Event Type: Scan Response (SCAN_RSP)
+             Address Type: Public
+             Peer Address: 00:1A:AE:06:EF:9E
+             Length Data: 0X0C
+             Local Name: BlueZ 5.43
+             Data: 0B 09 42 6C 75 65 5A 20 35 2E 34 33
+             RSSI: -70 dBm
+             */
+            
+            let data: [UInt8] = [0x3E, 0x18, 0x02, 0x01, 0x04, 0x00, 0x9E, 0xEF, 0x06, 0xAE, 0x1A, 0x00, 0x0C, 0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33, 0xBA]
+            
+            let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
+            
+            XCTAssertEqual(advertisingReports.count, 0x01)
+            
+            guard let report = advertisingReports.first
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(report.address, Address(rawValue: "00:1A:AE:06:EF:9E")!)
+            XCTAssertEqual(report.addressType, .public)
+            XCTAssertEqual(report.event, .scanResponse)
+            XCTAssertEqual(report.rssi.rawValue, -70)
+            XCTAssertEqual(report.data.count, 0x0C)
+            XCTAssertEqual(report.data, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
+            
         }
     }
     
