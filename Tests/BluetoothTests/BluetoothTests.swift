@@ -22,9 +22,11 @@ final class BluetoothTests: XCTestCase {
         ("testHCICommandTimeout", testHCICommandTimeout),
         ("testPOSIXError", testPOSIXError),
         ("testHCIVersion", testHCIVersion),
+        ("testLowEnergyAdvertisingData", testLowEnergyAdvertisingData),
         ("testLowEnergyAddressType", testLowEnergyAddressType),
         ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
         ("testLowEnergyFeature", testLowEnergyFeature),
+        ("testLowEnergyEventMask", testLowEnergyEventMask),
         ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
         ("testBitMaskOption", testBitMaskOption)
     ]
@@ -77,6 +79,16 @@ final class BluetoothTests: XCTestCase {
         XCTAssertNotEqual(HCIVersion.v4_0, .v5_0)
         XCTAssertLessThan(HCIVersion.v4_0, .v4_2)
         XCTAssertGreaterThan(HCIVersion.v5_0, .v4_2)
+    }
+    
+    func testLowEnergyAdvertisingData() {
+        
+        do {
+            
+            let advertisingData: LowEnergyAdvertisingData = [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33]
+            XCTAssertEqual(advertisingData.data.count, advertisingData.count)
+            XCTAssertEqual(advertisingData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
+        }
     }
     
     func testLowEnergyAddressType() {
@@ -188,6 +200,24 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(featureSet.rawValue, 0)
         XCTAssertEqual(featureSet.count, 0)
         XCTAssertEqual(featureSet.hashValue, 0)
+    }
+    
+    func testLowEnergyEventMask() {
+        
+        typealias EventMask = LowEnergyCommand.SetEventMaskParameter.EventMask
+        
+        XCTAssert(EventMask().isEmpty)
+        XCTAssert(EventMask(rawValue: 0x00).isEmpty)
+        XCTAssertEqual(0x0000_0000_0000_001F, 0b11111)
+        
+        XCTAssertEqual(EventMask(rawValue: 0x0000_0000_0000_001F),
+                       [.connectionComplete,
+                        .advertisingReport,
+                        .connectionUpdateComplete,
+                        .readRemoteFeaturesComplete,
+                        .longTermKeyRequest,
+                        .remoteConnectionParameterRequest],
+                       "The default is for bits 0 to 4 inclusive (the value 0x0000 0000 0000 001F) to be set.")
     }
     
     func testAdvertisingChannelHeader() {

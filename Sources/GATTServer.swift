@@ -80,12 +80,10 @@ public final class GATTServer {
     /// Update the value of a characteristic attribute.
     public func writeValue(_ value: Data, forCharacteristic uuid: BluetoothUUID) {
         
-        guard let declarationAttribute = database.first(where: { $0.uuid == uuid })
+        guard let attribute = database.first(where: { $0.uuid == uuid })
             else { fatalError("Invalid uuid \(uuid)") }
         
-        let valueHandle = declarationAttribute.handle + 1
-        
-        writeValue(value, forCharacteristic: valueHandle)
+        writeValue(value, forCharacteristic: attribute.handle)
     }
     
     // MARK: - Private Methods

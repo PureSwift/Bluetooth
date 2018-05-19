@@ -146,32 +146,13 @@ final class BluetoothUUIDTests: XCTestCase {
         🖨("")
         🖨("final class DefinedUUIDTests: XCTestCase {")
         🖨("")
-        
-        // generate allTests
-        var testMemberNameCache = [UInt16: String]()
-        
-        🖨("        static let allTests: [(String, (DefinedUUIDTests) -> () -> ())] = {")
+        🖨("    static let allTests = [")
+        🖨("        (\"testDefinedUUID\", testDefinedUUID)")
+        🖨("    ]")
         🖨("")
-        🖨("            var allTests = [(String, (DefinedUUIDTests) -> () -> ())]()")
+        🖨("    func testDefinedUUID() {")
         🖨("")
         
-        for (uuidValue, _) in uuids {
-            
-            let uuid = BluetoothUUID.bit16(uuidValue)
-            
-            guard let memberName = memberNameCache[uuidValue]
-                else { XCTFail("No extension generated for \(uuid)"); return }
-            
-            let testMemberName = "test" + uppercaseFirstLetter(memberName)
-            testMemberNameCache[uuidValue] = testMemberName
-            
-            🖨("            allTests.append((\"\(testMemberName)\", \(testMemberName)))")
-        }
-        
-        🖨("")
-        🖨("            return allTests")
-        🖨("        }()")
-        🖨("")
         
         // generate test methods
         
@@ -182,24 +163,19 @@ final class BluetoothUUIDTests: XCTestCase {
             guard let memberName = memberNameCache[uuidValue]
                 else { XCTFail("No extension generated for \(uuid)"); return }
             
-            guard let testMemberName = testMemberNameCache[uuidValue]
-                else { XCTFail("No test method generated for \(uuid)"); return }
             
-            
-            🖨("    /// Test \(name)")
-            🖨("    func \(testMemberName)() {")
-            🖨("")
-            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName).rawValue, \"\(uuid.rawValue)\")")
-            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(0x\(uuid.rawValue)))")
-            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(\(uuidValue)))")
-            🖨("         XCTAssertEqual(BluetoothUUID.\(memberName).name, \"\(name)\")")
-            🖨("         XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(\(uuidValue)))")
-            🖨("         XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(0x\(uuid.rawValue)))")
-            🖨("")
-            🖨("    }")
+            🖨("        /// \(name)")
+            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName).rawValue, \"\(uuid.rawValue)\")")
+            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(0x\(uuid.rawValue)))")
+            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(\(uuidValue)))")
+            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName).name, \"\(name)\")")
+            🖨("        XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(\(uuidValue)))")
+            🖨("        XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(0x\(uuid.rawValue)))")
             🖨("")
         }
         
+        🖨("    }")
+        🖨("")
         🖨("}")
         
         filename = NSTemporaryDirectory() + "DefinedUUIDTests.swift"
