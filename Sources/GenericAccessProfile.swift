@@ -1,3 +1,4 @@
+
 //
 //  GenericAccessProfile.swift
 //  Bluetooth
@@ -58,7 +59,7 @@ public struct GAPDataType: RawRepresentable {
     public static let incompleteListOf32BitServiceClassUUIDs: GAPDataType = 0x04
     
     /// Complete List of 32-bit Service Class UUIDs
-    public static let completeListOf32CitServiceClassUUIDs: GAPDataType = 0x05
+    public static let completeListOf32BitServiceClassUUIDs: GAPDataType = 0x05
     
     /// Incomplete List of 128-bit Service Class UUIDs
     public static let incompleteListOf128BitServiceClassUUIDs: GAPDataType = 0x06
@@ -225,7 +226,7 @@ internal let gapDataTypeNames: [GAPDataType: String] = [
     .incompleteListOf16BitServiceClassUUIDs: "Incomplete List of 16-bit Service Class UUIDs",
     .completeListOf16CitServiceClassUUIDs: "Complete List of 16-bit Service Class UUIDs",
     .incompleteListOf32BitServiceClassUUIDs: "Incomplete List of 32-bit Service Class UUIDs",
-    .completeListOf32CitServiceClassUUIDs: "Complete List of 32-bit Service Class UUIDs",
+    .completeListOf32BitServiceClassUUIDs: "Complete List of 32-bit Service Class UUIDs",
     .incompleteListOf128BitServiceClassUUIDs: "Incomplete List of 128-bit Service Class UUIDs",
     .completeListOf128BitServiceClassUUIDs: "Complete List of 128-bit Service Class UUIDs",
     .shortLocalName: "Shortened Local Name",
@@ -644,6 +645,76 @@ extension GAPCompleteLocalName: ExpressibleByStringLiteral {
         
         self.init(name: value)
     }
+}
+
+public struct GAPTxPowerLevel: GAPData {
+    
+    public static let length = MemoryLayout<UInt8>.size
+    
+    public static let min: GAPTxPowerLevel = -127
+    
+    public static let max: GAPTxPowerLevel = 127
+    
+    public static var dataType: GAPDataType = .txPowerLevel
+    
+    public let powerLevel: Int8
+    
+    public init?(powerLevel: Int8) {
+        
+        guard GAPTxPowerLevel.min.powerLevel <= powerLevel &&
+            GAPTxPowerLevel.max.powerLevel >= powerLevel
+            else { return nil }
+        
+        self.powerLevel = powerLevel
+    }
+    
+    fileprivate init(unsafe value: Int8) {
+        
+        self.powerLevel = value
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let level = Int8(bitPattern: data[0])
+        
+        self.init(powerLevel: level)
+    }
+    
+    public var data: Data {
+        
+        let byteValue = UInt8(bitPattern: powerLevel)
+        
+        return Data([byteValue])
+    }
+    
+}
+
+extension GAPTxPowerLevel: Equatable {
+    
+    public static func == (lhs: GAPTxPowerLevel, rhs: GAPTxPowerLevel) -> Bool {
+        
+        return lhs.powerLevel == rhs.powerLevel
+    }
+}
+
+extension GAPTxPowerLevel: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return powerLevel.description
+    }
+}
+
+extension GAPTxPowerLevel: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: Int8) {
+        
+        self.init(unsafe: value)
+    }
+    
 }
 
 // MARK: - Coding

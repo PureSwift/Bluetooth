@@ -104,5 +104,25 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(decoded[1] as! GAPCompleteListOf16BitServiceClassUUIDs, uuidList)
             XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
         }
+        
+        do {
+            let data = Data([0x02, 0x0A, 0x7F])
+            
+            XCTAssertEqual(data.count, 0x03)
+            
+            let txPowerLevel: GAPTxPowerLevel = 127
+            
+            let expectedData: [GAPData] = [txPowerLevel]
+            let types = expectedData.map { type(of: $0) }
+            
+            guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+                else { XCTFail("Could not decode"); return }
+            
+            XCTAssert(decoded.isEmpty == false)
+            XCTAssertEqual(decoded.count, 1)
+            XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+            
+            XCTAssertEqual(decoded[0] as! GAPTxPowerLevel, txPowerLevel)
+        }
     }
 }
