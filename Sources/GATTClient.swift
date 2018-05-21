@@ -188,44 +188,6 @@ public final class GATTClient {
         }
     }
     
-    /**
-     Discover All Characteristic Descriptors
-     
-     This sub-procedure is used by a client to find all the characteristic descriptor’s Attribute Handles and Attribute Types within a characteristic definition when only the characteristic handle range is known. The characteristic specified is identified by the characteristic handle range.
-     
-     ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
-     */
-    public func discoverAllCharacteristicDescriptors(of characteristic: Characteristic,
-                                                     completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
-        
-        /**
-         The Attribute Protocol Find Information Request shall be used with the Starting Handle set
-         to the handle of the specified characteristic value + 1 and the Ending Handle set to the
-         ending handle of the specified characteristic.
-         */
-        
-        let start = characteristic.handle.value + 1
-        
-        guard let end = cache.endHandle(for: characteristic)
-            else { fatalError("Could not retrieve handles") }
-        
-        let operation = DescriptorDiscoveryOperation(start: start, end: end) { [unowned self] (response) in
-            
-            // update cache
-            switch response {
-            case .error:
-                break
-            case let .value(value):
-                self.cache.update(value, for: characteristic)
-            }
-            
-            // call completion
-            completion(response)
-        }
-        
-        discoverDescriptors(operation: operation)
-    }
-    
     /// Read Characteristic Value
     ///
     /// This sub-procedure is used to read a Characteristic Value from a server when the client knows
@@ -305,6 +267,79 @@ public final class GATTClient {
     }
     
     /**
+     Discover All Characteristic Descriptors
+     
+     This sub-procedure is used by a client to find all the characteristic descriptor’s Attribute Handles and Attribute Types within a characteristic definition when only the characteristic handle range is known. The characteristic specified is identified by the characteristic handle range.
+     
+     ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
+     */
+    public func discoverDescriptors(of characteristic: Characteristic,
+                                    completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
+        
+        /**
+         The Attribute Protocol Find Information Request shall be used with the Starting Handle set
+         to the handle of the specified characteristic value + 1 and the Ending Handle set to the
+         ending handle of the specified characteristic.
+         */
+        
+        let start = characteristic.handle.value + 1
+        
+        guard let end = cache.endHandle(for: characteristic)
+            else { fatalError("Could not retrieve handles") }
+        
+        let operation = DescriptorDiscoveryOperation(start: start, end: end) { [unowned self] (response) in
+            
+            // update cache
+            switch response {
+            case .error:
+                break
+            case let .value(value):
+                self.cache.update(value, for: characteristic)
+            }
+            
+            // call completion
+            completion(response)
+        }
+        
+        discoverDescriptors(operation: operation)
+    }
+    
+    /// Read Characteristic Descriptor
+    ///
+    /// This sub-procedure is used to read a characteristic descriptor from a server when the client knows
+    /// the characteristic descriptor declaration’s Attribute handle.
+    ///
+    /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadCharacteristicValue.png)
+    public func readDescriptor(_ descriptor: Descriptor,
+                               completion: @escaping (GATTClientResponse<Data>) -> ()) {
+        
+        /**
+         The Attribute Protocol Read Request is used for this sub-procedure. The Read Request is used with the Attribute Handle parameter set to the characteristic descriptor handle. The Read Response returns the characteristic descriptor value in the Attribute Value parameter.
+         
+         An Error Response shall be sent by the server in response to the Read Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a read operation is not permitted on the Characteristic Value. The Error Code parameter is set accordingly.
+         */
+        
+        // read value and try to read blob if too big
+        readAttributeValue(descriptor.handle, completion: completion)
+    }
+    
+    /**
+     Write Descriptor
+     
+     Uses the appropriate procecedure to write the characteristic descriptor value.
+     */
+    public func writeDescriptor(_ descriptor: Descriptor,
+                                data: Data,
+                                reliableWrites: Bool = true,
+                                completion: ((GATTClientResponse<()>) -> ())?) {
+        
+        writeAttribute(descriptor.handle,
+                       data: data,
+                       reliableWrites: reliableWrites,
+                       completion: completion)
+    }
+    
+    /**
      Notifications
      
      This sub-procedure is used when a server is configured to notify a Characteristic Value to a client without expecting any Attribute Protocol layer acknowledgment that the notification was successfully received.
@@ -327,7 +362,7 @@ public final class GATTClient {
             
         } else {
             
-            discoverAllCharacteristicDescriptors(of: characteristic) { [unowned self] (response) in
+            discoverDescriptors(of: characteristic) { [unowned self] (response) in
                 
                 switch response {
                     
