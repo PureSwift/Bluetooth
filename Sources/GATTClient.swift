@@ -460,8 +460,6 @@ public final class GATTClient {
             }
             return
         })
-        
-        print(descriptor)
     }
     
     /// Read Characteristic Value
@@ -508,9 +506,9 @@ public final class GATTClient {
     }
     
     private func writeAttribute(_ handle: UInt16,
-                               data: Data,
-                               reliableWrites: Bool,
-                               completion: ((GATTClientResponse<()>) -> ())?) {
+                                data: Data,
+                                reliableWrites: Bool,
+                                completion: ((GATTClientResponse<()>) -> ())?) {
         
         // short value
         if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
@@ -549,8 +547,8 @@ public final class GATTClient {
     
     /// Write attribute request.
     private func writeAttributeValue(_ attribute: UInt16,
-                              data: Data,
-                              completion: @escaping (GATTClientResponse<()>) -> ()) {
+                                     data: Data,
+                                     completion: @escaping (GATTClientResponse<()>) -> ()) {
         
         let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
         
@@ -761,7 +759,7 @@ public final class GATTClient {
     }
     
     private func findInformationResponse(_ response: ATTResponse<ATTFindInformationResponse>,
-                                 operation: DescriptorDiscoveryOperation) {
+                                         operation: DescriptorDiscoveryOperation) {
         
         /**
          Two possible responses can be sent from the server for the Find Information Request: Find Information Response and Error Response.
