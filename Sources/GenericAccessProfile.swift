@@ -72,7 +72,114 @@ public struct GAPDataType: RawRepresentable {
     /// Complete Local Name
     public static let completeLocalName: GAPDataType = 0x09
     
-    // FIXME: Add all GAP data types
+    /// TX Power Level
+    public static let txPowerLevel: GAPDataType = 0x0A
+    
+    /// Class of Device
+    public static let classOfDevice: GAPDataType = 0x0D
+    
+    /// Simple Pairing Hash C
+    public static let simplePairingHashC: GAPDataType = 0x0E
+    
+    /// Simple Pairing Hash C-192
+    public static let simplePairingHashC192: GAPDataType = 0x0E
+    
+    /// Simple Pairing Randomizer
+    public static let simplePairingRandomizer: GAPDataType = 0x0F
+    
+    /// Device ID
+    public static let deviceID: GAPDataType = 0x10
+    
+    /// Security Manager TK Value
+    public static let securityManagerTKValue: GAPDataType = 0x10
+    
+    /// Security Manager Out of Band Flags
+    public static let securityManagerOutOfBandFlags: GAPDataType = 0x11
+    
+    /// Slave Connection Interval Range
+    public static let slaveConnectionIntervalRange: GAPDataType = 0x12
+    
+    /// List of 16-bit Service Solicitation UUIDs
+    public static let listOf16BitServiceSolicitationUUIDs: GAPDataType = 0x14
+    
+    /// List of 128-bit Service Solicitation UUIDs
+    public static let listOf128BitServiceSolicitationUUIDs: GAPDataType = 0x15
+    
+    /// Service Data
+    public static let serviceData: GAPDataType = 0x16
+    
+    /// Service Data - 16-bit UUID
+    public static let serviceData16BitUUID: GAPDataType = 0x16
+    
+    /// Public Target Address
+    public static let publicTargetAddress: GAPDataType = 0x17
+    
+    /// Random Target Address
+    public static let randomTargetAddress: GAPDataType = 0x18
+    
+    /// Appearance
+    public static let appearance: GAPDataType = 0x19
+    
+    /// Advertising Interval
+    public static let advertisingInterval: GAPDataType = 0x1A
+    
+    /// LE Bluetooth Device Address
+    public static let LEBluetoothDeviceAddress: GAPDataType = 0x1B
+    
+    /// LE Role
+    public static let LERole: GAPDataType = 0x1C
+    
+    /// Simple Pairing Hash C-256
+    public static let simplePairingHashC256: GAPDataType = 0x1D
+    
+    /// Simple Pairing Randomizer R-256
+    public static let simplePairingRandomizerR256: GAPDataType = 0x1E
+    
+    /// List of 32-bit Service Solicitation UUIDs
+    public static let listOf32BitServiceSolicitationUUIDs: GAPDataType = 0x1F
+    
+    /// Service Data - 32-bit UUID
+    public static let serviceData32BitUUID: GAPDataType = 0x20
+    
+    /// Service Data - 128-bit UUID
+    public static let serviceData128BitUUID: GAPDataType = 0x21
+    
+    /// LE Secure Connections Confirmation Value
+    public static let LESecureConnectionsConfirmationValue: GAPDataType = 0x22
+    
+    /// LE Secure Connections Random Value
+    public static let LESecureConnectionsRandomValue: GAPDataType = 0x23
+    
+    /// URI
+    public static let uri: GAPDataType = 0x24
+    
+    /// Indoor Positioning
+    public static let indoorPositioning: GAPDataType = 0x25
+    
+    /// Transport Discovery Data
+    public static let transportDiscoveryData: GAPDataType = 0x26
+    
+    /// LE Supported Features
+    public static let LESupportedFeatures: GAPDataType = 0x27
+    
+    /// Channel Map Update Indication
+    public static let channelMapUpdateIndication: GAPDataType = 0x28
+    
+    /// PB-ADV
+    public static let pbADV: GAPDataType = 0x29
+    
+    /// Mesh Message
+    public static let meshMessage: GAPDataType = 0x2A
+    
+    /// Mesh Beacon
+    public static let meshBeacon: GAPDataType = 0x2B
+    
+    /// 3D Information Data
+    public static let informationData3D: GAPDataType = 0x3D
+    
+    /// Manufacturer Specific Data
+    public static let manufacturerSpecificData: GAPDataType = 0xFF
+    
 }
 
 extension GAPDataType: Equatable {
