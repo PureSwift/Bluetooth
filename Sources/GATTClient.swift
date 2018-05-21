@@ -28,7 +28,7 @@ public final class GATTClient {
     internal private(set) var cache = Cache()
     
     /// Currently writing a long value.
-    private var inLongWrite: Bool = false
+    internal private(set) var inLongWrite: Bool = false
     
     // MARK: - Initialization
     
@@ -44,7 +44,6 @@ public final class GATTClient {
         self.connection = ATTConnection(socket: socket)
         self.connection.maximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
-        self.registerATTHandlers()
         
         // queue MTU exchange
         self.exchangeMTU()
@@ -299,63 +298,10 @@ public final class GATTClient {
                                     reliableWrites: Bool = true,
                                     completion: ((GATTClientResponse<()>) -> ())?) {
         
-        // short value
-        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
-            
-            if let completion = completion {
-                
-                writeCharacteristicValue(characteristic,
-                                         data: data,
-                                         completion: completion)
-                
-            } else {
-                
-                writeCharacteristicCommand(characteristic,
-                                           data: data)
-            }
-            
-        } else {
-            
-            let completion = completion ?? { _ in }
-            
-            writeLongCharacteristicValue(characteristic,
-                                         data: data,
-                                         reliableWrites: reliableWrites,
-                                         completion: completion)
-        }
-    }
-    
-    public func writeDescriptor(descriptor: Descriptor,
-                                data: Data,
-                                reliableWrites: Bool,
-                                completion: ((GATTClientResponse<()>) -> ())?) {
-        
-        // short value
-        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
-            
-            if let completion = completion {
-                
-                writere
-                
-                writeCharacteristicValue(characteristic,
-                                         data: data,
-                                         completion: completion)
-                
-            } else {
-                
-                writeCharacteristicCommand(characteristic,
-                                           data: data)
-            }
-            
-        } else {
-            
-            let completion = completion ?? { _ in }
-            
-            writeLongCharacteristicValue(characteristic,
-                                         data: data,
-                                         reliableWrites: reliableWrites,
-                                         completion: completion)
-        }
+        writeAttribute(characteristic.handle.value,
+                       data: data,
+                       reliableWrites: reliableWrites,
+                       completion: completion)
     }
     
     /**
@@ -401,13 +347,6 @@ public final class GATTClient {
     }
     
     // MARK: - Private Methods
-    
-    @inline(__always)
-    private func registerATTHandlers() {
-        
-        // value confirmation
-        
-    }
     
     @inline(__always)
     private func send <Request: ATTProtocolDataUnit, Response> (_ request: Request, response: @escaping (ATTResponse<Response>) -> ()) {
@@ -463,7 +402,7 @@ public final class GATTClient {
                                            attributeType: serviceType.rawValue,
                                            attributeValue: [UInt8](uuid.littleEndian.data))
             
-            send(pdu) { [unowned self] in self.findByType($0, operation: operation) }
+            send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
             
         } else {
             
@@ -471,7 +410,7 @@ public final class GATTClient {
                                                 endHandle: end,
                                                 type: serviceType.uuid)
             
-            send(pdu) { [unowned self] in self.readByGroupType($0, operation: operation) }
+            send(pdu) { [unowned self] in self.readByGroupTypeResponse($0, operation: operation) }
         }
     }
     
@@ -491,7 +430,7 @@ public final class GATTClient {
                                        endHandle: service.end,
                                        attributeType: attributeType.uuid)
         
-        send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
     }
     
     private func discoverDescriptors(operation: DescriptorDiscoveryOperation) {
@@ -500,7 +439,7 @@ public final class GATTClient {
         
         let pdu = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
         
-        send(pdu) { [unowned self] in self.findInformation($0, operation: operation) }
+        send(pdu) { [unowned self] in self.findInformationResponse($0, operation: operation) }
     }
     
     private func register(notification: Notification?,
@@ -565,27 +504,93 @@ public final class GATTClient {
         let pdu = ATTReadBlobRequest(handle: operation.handle,
                                      offset: operation.offset)
         
-        send(pdu) { [unowned self] in self.readBlob($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readBlobResponse($0, operation: operation) }
     }
     
-    /**
-     Write Without Response
-     
-     This sub-procedure is used to write a Characteristic Value to a server when the client knows the Characteristic Value Handle and the client does not need an acknowledgement that the write was successfully performed. This sub-procedure only writes the first `(ATT_MTU – 3)` octets of a Characteristic Value. This sub-procedure cannot be used to write a long characteristic; instead the Write Long Characteristic Values sub-procedure should be used.
-     
-     If the Characteristic Value write request is the wrong size, or has an invalid value as defined by the profile, then the write shall not succeed and no error shall be generated by the server.
-     */
-    private func writeCharacteristicCommand(_ characteristic: Characteristic, data: Data) {
+    private func writeAttribute(_ handle: UInt16,
+                               data: Data,
+                               reliableWrites: Bool,
+                               completion: ((GATTClientResponse<()>) -> ())?) {
         
-        // The Attribute Protocol Write Command is used for this sub-procedure.
-        // The Attribute Handle parameter shall be set to the Characteristic Value Handle.
-        // The Attribute Value parameter shall be set to the new Characteristic Value.
+        // short value
+        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
+            
+            if let completion = completion {
+                
+                writeAttributeValue(handle,
+                                    data: data,
+                                    completion: completion)
+                
+            } else {
+                
+                writeAttributeCommand(handle,
+                                      data: data)
+            }
+            
+        } else {
+            
+            let completion = completion ?? { _ in }
+            
+            writeLongAttributeValue(handle,
+                                    data: data,
+                                    reliableWrites: reliableWrites,
+                                    completion: completion)
+        }
+    }
+    
+    private func writeAttributeCommand(_ attribute: UInt16, data: Data) {
         
         let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 3))
         
-        let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
+        let pdu = ATTWriteCommand(handle: attribute, value: data)
         
         send(pdu)
+    }
+    
+    /// Write attribute request.
+    private func writeAttributeValue(_ attribute: UInt16,
+                              data: Data,
+                              completion: @escaping (GATTClientResponse<()>) -> ()) {
+        
+        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
+        
+        let pdu = ATTWriteRequest(handle: attribute, value: data)
+
+        send(pdu) { [unowned self] in self.writeResponse($0, completion: completion) }
+    }
+    
+    private func writeLongAttributeValue(_ attribute: UInt16,
+                                         data: Data,
+                                         reliableWrites: Bool = false,
+                                         completion: @escaping (GATTClientResponse<()>) -> ()) {
+        
+        // The Attribute Protocol Prepare Write Request and Execute Write Request are used to perform this sub-procedure.
+        // The Attribute Handle parameter shall be set to the Characteristic Value Handle of the Characteristic Value to be written.
+        // The Part Attribute Value parameter shall be set to the part of the Attribute Value that is being written.
+        // The Value Offset parameter shall be the offset within the Characteristic Value to be written.
+        // To write the complete Characteristic Value the offset should be set to 0x0000 for the first Prepare Write Request.
+        // The offset for subsequent Prepare Write Requests is the next octet that has yet to be written.
+        // The Prepare Write Request is repeated until the complete Characteristic Value has been transferred,
+        // after which an Executive Write Request is used to write the complete value.
+        
+        guard inLongWrite == false
+            else { completion(.error(GATTClientError.inLongWrite)); return }
+        
+        let bytes = [UInt8](data)
+        
+        let firstValuePart = [UInt8](bytes.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
+        
+        let pdu = ATTPrepareWriteRequest(handle: attribute,
+                                         offset: 0x00,
+                                         partValue: firstValuePart)
+        
+        let operation = WriteOperation(handle: attribute,
+                                       data: bytes,
+                                       reliableWrites: reliableWrites,
+                                       lastRequest: pdu,
+                                       completion: completion)
+        
+        send(pdu) { [unowned self] in self.prepareWriteResponse($0, operation: operation) }
     }
     
     /**
@@ -619,71 +624,6 @@ public final class GATTClient {
         let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
         
         send(pdu)
-    }
-    
-    /**
-     Write Characteristic Value
-     
-     This sub-procedure is used to write a Characteristic Value to a server when the client knows the Characteristic Value Handle. This sub-procedure only writes the first (ATT_MTU – 3) octets of a Characteristic Value. This sub-procedure cannot be used to write a long Attribute; instead the Write Long Characteristic Values sub-procedure should be used.
-     
-     ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/WriteCharacteristicValue.png)
-     */
-    private func writeCharacteristicValue(_ characteristic: Characteristic,
-                                          data: Data,
-                                          completion: @escaping (GATTClientResponse<()>) -> ()) {
-        
-        // The Attribute Protocol Write Request is used to for this sub-procedure.
-        // The Attribute Handle parameter shall be set to the Characteristic Value Handle.
-        // The Attribute Value parameter shall be set to the new characteristic.
-        
-        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
-        
-        let pdu = ATTWriteRequest(handle: characteristic.handle.value, value: data)
-        
-        // A Write Response shall be sent by the server if the write of the Characteristic Value succeeded.
-        
-        send(pdu) { [unowned self] in self.writeResponse($0, completion: completion) }
-    }
-    
-    /**
-     Write Long Characteristic Values
-     
-     This sub-procedure is used to write a Characteristic Value to a server when the client knows the Characteristic Value Handle but the length of the Characteristic Value is longer than can be sent in a single Write Request Attribute Protocol message.
-     
-    ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/WriteLongCharacteristicValues.png)
-     */
-    private func writeLongCharacteristicValue(_ characteristic: Characteristic,
-                                              data: Data,
-                                              reliableWrites: Bool = false,
-                                              completion: @escaping (GATTClientResponse<()>) -> ()) {
-        
-        // The Attribute Protocol Prepare Write Request and Execute Write Request are used to perform this sub-procedure.
-        // The Attribute Handle parameter shall be set to the Characteristic Value Handle of the Characteristic Value to be written.
-        // The Part Attribute Value parameter shall be set to the part of the Attribute Value that is being written.
-        // The Value Offset parameter shall be the offset within the Characteristic Value to be written.
-        // To write the complete Characteristic Value the offset should be set to 0x0000 for the first Prepare Write Request.
-        // The offset for subsequent Prepare Write Requests is the next octet that has yet to be written.
-        // The Prepare Write Request is repeated until the complete Characteristic Value has been transferred,
-        // after which an Executive Write Request is used to write the complete value.
-        
-        guard inLongWrite == false
-            else { completion(.error(GATTClientError.inLongWrite)); return }
-        
-        let bytes = [UInt8](data)
-        
-        let firstValuePart = [UInt8](bytes.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
-        
-        let pdu = ATTPrepareWriteRequest(handle: characteristic.handle.value,
-                                         offset: 0x00,
-                                         partValue: firstValuePart)
-        
-        let operation = WriteOperation(uuid: characteristic.uuid,
-                                       data: bytes,
-                                       reliableWrites: reliableWrites,
-                                       lastRequest: pdu,
-                                       completion: completion)
-        
-        send(pdu) { [unowned self] in self.prepareWrite($0, operation: operation) }
     }
     
     // MARK: - Callbacks
@@ -756,7 +696,7 @@ public final class GATTClient {
                                                     endHandle: operation.end,
                                                     type: operation.type.uuid)
                 
-                send(pdu) { [unowned self] in self.readByGroupType($0, operation: operation) }
+                send(pdu) { [unowned self] in self.readByGroupTypeResponse($0, operation: operation) }
                 
             } else {
                 
@@ -811,7 +751,7 @@ public final class GATTClient {
                                                attributeType: operation.type.rawValue,
                                                attributeValue: [UInt8](serviceUUID.littleEndian.data))
                 
-                send(pdu) { [unowned self] in self.findByType($0, operation: operation) }
+                send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
                 
             } else {
                 
@@ -1119,7 +1059,7 @@ public final class GATTClient {
                 operation.lastRequest = pdu
                 operation.sentData += attributeValuePart
                 
-                send(pdu) { [unowned self] in self.prepareWrite($0, operation: operation) }
+                send(pdu) { [unowned self] in self.prepareWriteResponse($0, operation: operation) }
                 
             } else {
                 
@@ -1129,7 +1069,7 @@ public final class GATTClient {
                 // all data sent
                 let pdu = ATTExecuteWriteRequest(flag: .write)
                 
-                send(pdu) { [unowned self] in self.executeWrite($0, operation: operation) }
+                send(pdu) { [unowned self] in self.executeWriteResponse($0, operation: operation) }
             }
         }
     }
@@ -1677,7 +1617,7 @@ private extension GATTClient {
         
         typealias Completion = (GATTClientResponse<Void>) -> ()
         
-        let uuid: BluetoothUUID
+        let handle: UInt16
         
         let completion: Completion
         
@@ -1691,7 +1631,7 @@ private extension GATTClient {
         
         var lastRequest: ATTPrepareWriteRequest
         
-        init(uuid: BluetoothUUID,
+        init(handle: UInt16,
              data: [UInt8],
              reliableWrites: Bool,
              lastRequest: ATTPrepareWriteRequest,
@@ -1699,7 +1639,7 @@ private extension GATTClient {
             
             precondition(data.isEmpty == false)
             
-            self.uuid = uuid
+            self.handle = handle
             self.completion = completion
             self.data = data
             self.reliableWrites = reliableWrites
