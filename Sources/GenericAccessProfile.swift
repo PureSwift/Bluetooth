@@ -517,6 +517,178 @@ internal struct Bit16UUIDList {
     }
 }
 
+/// GAP Incomplete List of 32-bit Service Class UUIDs
+public struct GAPIncompleteListOf32BitServiceClassUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .incompleteListOf32BitServiceClassUUIDs
+    
+    public var uuids: [UInt32]
+    
+    public init(uuids: [UInt32] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit32UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit32UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPIncompleteListOf32BitServiceClassUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt32...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPIncompleteListOf32BitServiceClassUUIDs: Equatable {
+    
+    public static func == (lhs: GAPIncompleteListOf32BitServiceClassUUIDs, rhs: GAPIncompleteListOf32BitServiceClassUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPIncompleteListOf32BitServiceClassUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+/// GAP Complete List of 32-bit Service Class UUIDs
+public struct GAPCompleteListOf32BitServiceClassUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .completeListOf32BitServiceClassUUIDs
+    
+    public var uuids: [UInt32]
+    
+    public init(uuids: [UInt32] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit32UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit32UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPCompleteListOf32BitServiceClassUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt32...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPCompleteListOf32BitServiceClassUUIDs: Equatable {
+    
+    public static func == (lhs: GAPCompleteListOf32BitServiceClassUUIDs, rhs: GAPCompleteListOf32BitServiceClassUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPCompleteListOf32BitServiceClassUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+internal struct Bit32UUIDList {
+    
+    public var uuids: [UInt32]
+    
+    public init(uuids: [UInt32]) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        var uuids = [UInt32]()
+        uuids.reserveCapacity(data.count / 4)
+        
+        var index = 0
+        while index < data.count {
+            
+            guard index + 3 < data.count
+                else { return nil }
+            
+            let value = UInt32(littleEndian: UInt32(bytes: (data[index], data[index + 1], data[index + 2], data[index + 3])))
+            
+            index += 4
+            
+            uuids.append(value)
+        }
+        
+        self.uuids = uuids
+    }
+    
+    public var data: Data {
+        
+        return uuids.reduce(Data(), { $0.0 + [$0.1.littleEndian.bytes.0, $0.1.littleEndian.bytes.1, $0.1.littleEndian.bytes.2, $0.1.littleEndian.bytes.3] })
+    }
+}
+
+internal struct Bit128UUIDList {
+    
+    public var uuids: [UInt128]
+    
+    public init(uuids: [UInt128]) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        var uuids = [UInt128]()
+        uuids.reserveCapacity(data.count / 16)
+        
+        var index = 0
+        while index < data.count {
+            
+            guard index + 15 < data.count
+                else { return nil }
+            
+            let value = UInt128(littleEndian: UInt128(bytes: (data[index], data[index + 1], data[index + 2], data[index + 3], data[index + 4], data[index + 5], data[index + 6], data[index + 7], data[index + 8], data[index + 9], data[index + 10], data[index + 11], data[index + 12], data[index + 13], data[index + 14], data[index + 15])))
+            
+            index += 16
+            
+            uuids.append(value)
+        }
+        
+        self.uuids = uuids
+    }
+    
+    public var data: Data {
+        
+        return uuids.reduce(Data(), { $0.0 + [$0.1.littleEndian.bytes.0, $0.1.littleEndian.bytes.1, $0.1.littleEndian.bytes.2, $0.1.littleEndian.bytes.3, $0.1.littleEndian.bytes.4, $0.1.littleEndian.bytes.5, $0.1.littleEndian.bytes.6, $0.1.littleEndian.bytes.7, $0.1.littleEndian.bytes.8, $0.1.littleEndian.bytes.9, $0.1.littleEndian.bytes.10, $0.1.littleEndian.bytes.11, $0.1.littleEndian.bytes.12, $0.1.littleEndian.bytes.13, $0.1.littleEndian.bytes.14, $0.1.littleEndian.bytes.15] })
+    }
+}
+
 /**
  GAP Shortened Local Name
  
