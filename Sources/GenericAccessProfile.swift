@@ -653,18 +653,118 @@ internal struct Bit32UUIDList {
     }
 }
 
-internal struct Bit128UUIDList {
+/// GAP Incomplete List of 128-bit Service Class UUIDs
+public struct GAPIncompleteListOf128BitServiceClassUUIDs: GAPData {
     
-    public var uuids: [UInt128]
+    public static let dataType: GAPDataType = .incompleteListOf128BitServiceClassUUIDs
     
-    public init(uuids: [UInt128]) {
+    public var uuids: [UUID]
+    
+    public init(uuids: [UUID] = []) {
         
         self.uuids = uuids
     }
     
     public init?(data: Data) {
         
-        var uuids = [UInt128]()
+        guard let list = Bit128UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit128UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPIncompleteListOf128BitServiceClassUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UUID...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPIncompleteListOf128BitServiceClassUUIDs: Equatable {
+    
+    public static func == (lhs: GAPIncompleteListOf128BitServiceClassUUIDs, rhs: GAPIncompleteListOf128BitServiceClassUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPIncompleteListOf128BitServiceClassUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+/// GAP Complete List of 128-bit Service Class UUIDs
+public struct GAPCompleteListOf128BitServiceClassUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .completeListOf128BitServiceClassUUIDs
+    
+    public var uuids: [UUID]
+    
+    public init(uuids: [UUID] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit128UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit128UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPCompleteListOf128BitServiceClassUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UUID...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPCompleteListOf128BitServiceClassUUIDs: Equatable {
+    
+    public static func == (lhs: GAPCompleteListOf128BitServiceClassUUIDs, rhs: GAPCompleteListOf128BitServiceClassUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPCompleteListOf128BitServiceClassUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+internal struct Bit128UUIDList {
+    
+    public var uuids: [UUID]
+    
+    public init(uuids: [UUID]) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        var uuids = [UUID]()
         uuids.reserveCapacity(data.count / 16)
         
         var index = 0
@@ -673,7 +773,7 @@ internal struct Bit128UUIDList {
             guard index + 15 < data.count
                 else { return nil }
             
-            let value = UInt128(littleEndian: UInt128(bytes: (data[index], data[index + 1], data[index + 2], data[index + 3], data[index + 4], data[index + 5], data[index + 6], data[index + 7], data[index + 8], data[index + 9], data[index + 10], data[index + 11], data[index + 12], data[index + 13], data[index + 14], data[index + 15])))
+            let value = UUID(bytes: (data[index], data[index + 1], data[index + 2], data[index + 3], data[index + 4], data[index + 5], data[index + 6], data[index + 7], data[index + 8], data[index + 9], data[index + 10], data[index + 11], data[index + 12], data[index + 13], data[index + 14], data[index + 15]))
             
             index += 16
             
@@ -685,7 +785,7 @@ internal struct Bit128UUIDList {
     
     public var data: Data {
         
-        return uuids.reduce(Data(), { $0.0 + [$0.1.littleEndian.bytes.0, $0.1.littleEndian.bytes.1, $0.1.littleEndian.bytes.2, $0.1.littleEndian.bytes.3, $0.1.littleEndian.bytes.4, $0.1.littleEndian.bytes.5, $0.1.littleEndian.bytes.6, $0.1.littleEndian.bytes.7, $0.1.littleEndian.bytes.8, $0.1.littleEndian.bytes.9, $0.1.littleEndian.bytes.10, $0.1.littleEndian.bytes.11, $0.1.littleEndian.bytes.12, $0.1.littleEndian.bytes.13, $0.1.littleEndian.bytes.14, $0.1.littleEndian.bytes.15] })
+        return uuids.reduce(Data(), { $0.0 + [$0.1.bytes.0, $0.1.bytes.1, $0.1.bytes.2, $0.1.bytes.3, $0.1.bytes.4, $0.1.bytes.5, $0.1.bytes.6, $0.1.bytes.7, $0.1.bytes.8, $0.1.bytes.9, $0.1.bytes.10, $0.1.bytes.11, $0.1.bytes.12, $0.1.bytes.13, $0.1.bytes.14, $0.1.bytes.15] })
     }
 }
 
@@ -833,7 +933,7 @@ public struct GAPTxPowerLevel: GAPData {
     
     public init?(powerLevel: Int8) {
         
-        guard GAPTxPowerLevel.min.powerLevel <= powerLevel &&
+        guard GAPTxPowerLevel.min.powerLevel <= powerLevel,
             GAPTxPowerLevel.max.powerLevel >= powerLevel
             else { return nil }
         

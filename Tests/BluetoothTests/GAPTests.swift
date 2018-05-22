@@ -15,6 +15,7 @@ final class GAPTests: XCTestCase {
     static let allTests = [
         ("testBit16UUIDList", testBit16UUIDList),
         ("testBit32UUIDList", testBit32UUIDList),
+        ("testBit128UUIDList", testBit128UUIDList),
         ("testDataType", testDataType),
         ("testCoding", testCoding)
     ]
@@ -66,6 +67,27 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(list.uuids, [0x18041803, 0x06041802])
             
         }
+    }
+    
+    func testBit128UUIDList() {
+        
+        XCTAssertNil(Bit128UUIDList(data: Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06])),
+                     "Can only initialize from multiples of 16 bytes")
+        
+        XCTAssertEqual(Bit128UUIDList(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
+        
+        do {
+            
+            // 128 bit UUIDs: 0x18041803 0x06041802 0x18041803 0x18030602
+            let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18])
+            
+            guard let list = Bit128UUIDList(data: data)
+                else { XCTFail("Could not parse from data"); return }
+            
+            XCTAssertEqual(list.data, data)
+            XCTAssertEqual(list.uuids, [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))])
+        }
+        
     }
     
     func testCoding() {
@@ -156,6 +178,38 @@ final class GAPTests: XCTestCase {
             
             XCTAssertEqual(decoded[0] as! GAPFlags, flags)
             XCTAssertEqual(decoded[1] as! GAPCompleteListOf32BitServiceClassUUIDs, uuidList)
+            XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+        }
+        
+        do {
+            
+            /**
+             Length Data: 0x23
+             Flags: 0x1A
+             128 bit UUIDs: 0x1803 0x1804 0x1802 0x0107 0x01F4 0x01F5 0x01F6 0x01F7
+             Local Name: Test 128bits
+             Data: 02 01 1a 11 07 03 18 04 18 02 18 04 06 03 18 04 18 02 06 03 18 0d 09 54 65 73 74 20 31 32 38 62 69 74 73
+             */
+            
+            let data = Data([0x02, 0x01, 0x1a, 0x11, 0x07, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18, 0x0d, 0x09, 0x54, 0x65, 0x73, 0x74, 0x20, 0x31, 0x32, 0x38, 0x62, 0x69, 0x74, 0x73])
+            XCTAssertEqual(data.count, 0x23)
+            
+            let flags: GAPFlags = 0x1A
+            let uuidList: GAPCompleteListOf128BitServiceClassUUIDs = [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))]
+            let localName: GAPCompleteLocalName = "Test 128bits"
+            
+            let expectedData: [GAPData] = [flags, uuidList, localName]
+            let types = expectedData.map { type(of: $0) }
+            
+            guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+                else { XCTFail("Could not decode"); return }
+            
+            XCTAssert(decoded.isEmpty == false)
+            XCTAssertEqual(decoded.count, 3)
+            XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+            
+            XCTAssertEqual(decoded[0] as! GAPFlags, flags)
+            XCTAssertEqual(decoded[1] as! GAPCompleteListOf128BitServiceClassUUIDs, uuidList)
             XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
         }
         
