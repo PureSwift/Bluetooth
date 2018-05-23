@@ -85,7 +85,7 @@ public struct GAPDataType: RawRepresentable {
     public static let simplePairingHashC192: GAPDataType = 0x0E
     
     /// Simple Pairing Randomizer
-    public static let simplePairingRandomizer: GAPDataType = 0x0F
+    public static let simplePairingRandomizerR: GAPDataType = 0x0F
     
     /// Device ID
     public static let deviceID: GAPDataType = 0x10
@@ -1094,6 +1094,223 @@ extension GAPSimplePairingHashC: CustomStringConvertible {
     public var description: String {
         
         return "\(hash.0) \(hash.1) \(hash.2) \(hash.3) \(hash.4) \(hash.5) \(hash.6) \(hash.7) \(hash.8) \(hash.9) \(hash.10) \(hash.11) \(hash.12) \(hash.13) \(hash.14) \(hash.15)"
+    }
+}
+
+public struct GAPSimplePairingRandomizerR: GAPData {
+    
+    public typealias Hash = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+    
+    public static let length = MemoryLayout<Hash>.size
+    
+    public static var dataType: GAPDataType = .simplePairingRandomizerR
+    
+    public let hash: Hash
+    
+    public init(hash: Hash) {
+        
+        self.hash = hash
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let hash = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian, data[3].littleEndian, data[4].littleEndian, data[5].littleEndian, data[6].littleEndian, data[7].littleEndian, data[8].littleEndian, data[9].littleEndian, data[10].littleEndian, data[11].littleEndian, data[12].littleEndian, data[13].littleEndian, data[14].littleEndian, data[15].littleEndian)
+        
+        self.init(hash: hash)
+    }
+    
+    public var data: Data {
+        
+        return Data([hash.0.littleEndian, hash.1.littleEndian, hash.2.littleEndian, hash.3.littleEndian, hash.4.littleEndian, hash.5.littleEndian, hash.6.littleEndian, hash.7.littleEndian, hash.8.littleEndian, hash.9.littleEndian, hash.10.littleEndian, hash.11.littleEndian, hash.12.littleEndian, hash.13.littleEndian, hash.14.littleEndian, hash.15.littleEndian])
+    }
+}
+
+extension GAPSimplePairingRandomizerR: Equatable {
+    
+    public static func == (lhs: GAPSimplePairingRandomizerR, rhs: GAPSimplePairingRandomizerR) -> Bool {
+        
+        return lhs.hash.0 == rhs.hash.0 &&
+                lhs.hash.1 == rhs.hash.1 &&
+                lhs.hash.2 == rhs.hash.2 &&
+                lhs.hash.3 == rhs.hash.3 &&
+                lhs.hash.4 == rhs.hash.4 &&
+                lhs.hash.5 == rhs.hash.5 &&
+                lhs.hash.6 == rhs.hash.6 &&
+                lhs.hash.7 == rhs.hash.7 &&
+                lhs.hash.8 == rhs.hash.8 &&
+                lhs.hash.9 == rhs.hash.9 &&
+                lhs.hash.10 == rhs.hash.10 &&
+                lhs.hash.11 == rhs.hash.11 &&
+                lhs.hash.12 == rhs.hash.12 &&
+                lhs.hash.13 == rhs.hash.13 &&
+                lhs.hash.14 == rhs.hash.14 &&
+                lhs.hash.15 == rhs.hash.15
+    }
+}
+
+extension GAPSimplePairingRandomizerR: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(hash.0) \(hash.1) \(hash.2) \(hash.3) \(hash.4) \(hash.5) \(hash.6) \(hash.7) \(hash.8) \(hash.9) \(hash.10) \(hash.11) \(hash.12) \(hash.13) \(hash.14) \(hash.15)"
+    }
+}
+
+public struct GAPSecurityManagerTKValue: GAPData {
+    
+    public typealias Hash = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+    
+    public static let length = MemoryLayout<Hash>.size
+    
+    public static var dataType: GAPDataType = .securityManagerTKValue
+    
+    public let hash: Hash
+    
+    public init(hash: Hash) {
+        
+        self.hash = hash
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let hash = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian, data[3].littleEndian, data[4].littleEndian, data[5].littleEndian, data[6].littleEndian, data[7].littleEndian, data[8].littleEndian, data[9].littleEndian, data[10].littleEndian, data[11].littleEndian, data[12].littleEndian, data[13].littleEndian, data[14].littleEndian, data[15].littleEndian)
+        
+        self.init(hash: hash)
+    }
+    
+    public var data: Data {
+        
+        return Data([hash.0.littleEndian, hash.1.littleEndian, hash.2.littleEndian, hash.3.littleEndian, hash.4.littleEndian, hash.5.littleEndian, hash.6.littleEndian, hash.7.littleEndian, hash.8.littleEndian, hash.9.littleEndian, hash.10.littleEndian, hash.11.littleEndian, hash.12.littleEndian, hash.13.littleEndian, hash.14.littleEndian, hash.15.littleEndian])
+    }
+}
+
+extension GAPSecurityManagerTKValue: Equatable {
+    
+    public static func == (lhs: GAPSecurityManagerTKValue, rhs: GAPSecurityManagerTKValue) -> Bool {
+        
+        return lhs.hash.0 == rhs.hash.0 &&
+            lhs.hash.1 == rhs.hash.1 &&
+            lhs.hash.2 == rhs.hash.2 &&
+            lhs.hash.3 == rhs.hash.3 &&
+            lhs.hash.4 == rhs.hash.4 &&
+            lhs.hash.5 == rhs.hash.5 &&
+            lhs.hash.6 == rhs.hash.6 &&
+            lhs.hash.7 == rhs.hash.7 &&
+            lhs.hash.8 == rhs.hash.8 &&
+            lhs.hash.9 == rhs.hash.9 &&
+            lhs.hash.10 == rhs.hash.10 &&
+            lhs.hash.11 == rhs.hash.11 &&
+            lhs.hash.12 == rhs.hash.12 &&
+            lhs.hash.13 == rhs.hash.13 &&
+            lhs.hash.14 == rhs.hash.14 &&
+            lhs.hash.15 == rhs.hash.15
+    }
+}
+
+extension GAPSecurityManagerTKValue: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(hash.0) \(hash.1) \(hash.2) \(hash.3) \(hash.4) \(hash.5) \(hash.6) \(hash.7) \(hash.8) \(hash.9) \(hash.10) \(hash.11) \(hash.12) \(hash.13) \(hash.14) \(hash.15)"
+    }
+}
+
+/**
+ GAPSecurityManagerOOBFlag
+ 
+ The Security Manager Out of Band data type allows an out of band mechanism to be used by the Security Manager to communicate discovery information as well as other information related to the pairing process.
+ 
+ The Security Manager Out of Band data type size is 1 octet.
+ */
+public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
+    /// OOB Flags Field
+    ///
+    /// 0 = OOB data not present, 1 = OOB data present
+    case oobFlagsField = 0b01
+    
+    /// LE supported (Host)
+    ///
+    /// bit 65 of LMP Extended Feature bits (Page 1)
+    case supportedLE = 0b10
+    
+    /// Simultaneous LE and BR/EDR to Same Device Capable (Host)
+    ///
+    /// bit 66 of LMP Extended Feature bits (Page 1)
+    case simultaneousLEandBREDR = 0b100
+    
+    /// Address type
+    ///
+    /// 0 = Public Address, 1 = Random Address
+    case addressType = 0b1000
+    
+    public static let all: Set<GAPSecurityManagerOOBFlag> = [
+        .oobFlagsField,
+        .supportedLE,
+        .simultaneousLEandBREDR,
+        .addressType
+    ]
+}
+
+public struct GAPSecurityManagerOOBFlags: GAPData {
+    
+    public static let length = MemoryLayout<UInt8>.size
+    
+    public static let dataType: GAPDataType = .securityManagerOutOfBandFlags
+    
+    public var flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>
+    
+    public init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag> = 0) {
+        
+        self.flags = flags
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[0])
+    }
+    
+    public var data: Data {
+        
+        return Data([flags.rawValue])
+    }
+}
+
+extension GAPSecurityManagerOOBFlags: Equatable {
+    
+    public static func == (lhs: GAPSecurityManagerOOBFlags, rhs: GAPSecurityManagerOOBFlags) -> Bool {
+        
+        return lhs.flags == rhs.flags
+    }
+}
+
+extension GAPSecurityManagerOOBFlags: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(flags.rawValue)
+    }
+}
+
+extension GAPSecurityManagerOOBFlags: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral rawValue: GAPSecurityManagerOOBFlag.RawValue) {
+        
+        self.init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: rawValue))
     }
 }
 
