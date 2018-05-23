@@ -988,6 +988,115 @@ extension GAPTxPowerLevel: ExpressibleByIntegerLiteral {
     
 }
 
+public struct GAPClassOfDevice: GAPData {
+    
+    public typealias Identifier = (UInt8, UInt8, UInt8)
+    
+    public static let length = MemoryLayout<Identifier>.size
+    
+    public static var dataType: GAPDataType = .classOfDevice
+    
+    public let device: Identifier
+    
+    public init(device: Identifier) {
+        
+        self.device = device
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let device = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian)
+        
+        self.init(device: device)
+    }
+    
+    public var data: Data {
+        
+        return Data([device.0.littleEndian, device.1.littleEndian, device.2.littleEndian])
+    }
+}
+
+extension GAPClassOfDevice: Equatable {
+    
+    public static func == (lhs: GAPClassOfDevice, rhs: GAPClassOfDevice) -> Bool {
+        
+        return lhs.device == rhs.device
+    }
+}
+
+extension GAPClassOfDevice: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(device.0) \(device.1) \(device.2)"
+    }
+}
+
+public struct GAPSimplePairingHashC: GAPData {
+    
+    public typealias Hash = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+    
+    public static let length = MemoryLayout<Hash>.size
+    
+    public static var dataType: GAPDataType = .simplePairingHashC
+    
+    public let hash: Hash
+    
+    public init(hash: Hash) {
+        
+        self.hash = hash
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let hash = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian, data[3].littleEndian, data[4].littleEndian, data[5].littleEndian, data[6].littleEndian, data[7].littleEndian, data[8].littleEndian, data[9].littleEndian, data[10].littleEndian, data[11].littleEndian, data[12].littleEndian, data[13].littleEndian, data[14].littleEndian, data[15].littleEndian)
+        
+        self.init(hash: hash)
+    }
+    
+    public var data: Data {
+        
+        return Data([hash.0.littleEndian, hash.1.littleEndian, hash.2.littleEndian, hash.3.littleEndian, hash.4.littleEndian, hash.5.littleEndian, hash.6.littleEndian, hash.7.littleEndian, hash.8.littleEndian, hash.9.littleEndian, hash.10.littleEndian, hash.11.littleEndian, hash.12.littleEndian, hash.13.littleEndian, hash.14.littleEndian, hash.15.littleEndian])
+    }
+}
+
+extension GAPSimplePairingHashC: Equatable {
+    
+    public static func == (lhs: GAPSimplePairingHashC, rhs: GAPSimplePairingHashC) -> Bool {
+        
+        return lhs.hash.0 == rhs.hash.0 &&
+                lhs.hash.1 == rhs.hash.1 &&
+                lhs.hash.2 == rhs.hash.2 &&
+                lhs.hash.3 == rhs.hash.3 &&
+                lhs.hash.4 == rhs.hash.4 &&
+                lhs.hash.5 == rhs.hash.5 &&
+                lhs.hash.6 == rhs.hash.6 &&
+                lhs.hash.7 == rhs.hash.7 &&
+                lhs.hash.8 == rhs.hash.8 &&
+                lhs.hash.9 == rhs.hash.9 &&
+                lhs.hash.10 == rhs.hash.10 &&
+                lhs.hash.11 == rhs.hash.11 &&
+                lhs.hash.12 == rhs.hash.12 &&
+                lhs.hash.13 == rhs.hash.13 &&
+                lhs.hash.14 == rhs.hash.14 &&
+                lhs.hash.15 == rhs.hash.15
+    }
+}
+
+extension GAPSimplePairingHashC: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(hash.0) \(hash.1) \(hash.2) \(hash.3) \(hash.4) \(hash.5) \(hash.6) \(hash.7) \(hash.8) \(hash.9) \(hash.10) \(hash.11) \(hash.12) \(hash.13) \(hash.14) \(hash.15)"
+    }
+}
+
 // MARK: - Coding
 
 public struct GAPDataElement {
