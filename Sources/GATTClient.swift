@@ -24,8 +24,11 @@ public final class GATTClient {
     @_versioned
     internal let connection: ATTConnection
     
-    /// Currently writing a long value.
+    /// Whether the client is currently writing a long value.
     internal private(set) var inLongWrite: Bool = false
+    
+    ///
+    internal private(set) var notifications = [UInt16: Notification]()
     
     // MARK: - Initialization
     
@@ -41,6 +44,9 @@ public final class GATTClient {
         self.connection = ATTConnection(socket: socket)
         self.connection.maximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
+        
+        // setup notifications and indications
+        self.registerATTHandlers()
         
         // queue MTU exchange
         self.exchangeMTU()
@@ -282,43 +288,49 @@ public final class GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
-    public func registerNotifications(for characteristic: Characteristic,
-                                      descriptors: [Descriptor],
-                                      notification: Notification?,
-                                      completion: @escaping (GATTClientResponse<()>) -> ()) {
-        /*
-        let cachedDescriptors = cache.descriptors(for: characteristic)
+    public func registerNotification(_ notification: Notification?,
+                                     for characteristic: Characteristic,
+                                     descriptors: [GATTClient.Descriptor],
+                                     clientConfiguration: GATTClientCharacteristicConfiguration = GATTClientCharacteristicConfiguration(),
+                                     completion: @escaping (GATTClientResponse<()>) -> ()) {
         
-        // make sure we fetched descriptors first
-        if cachedDescriptors.contains(where: { $0.uuid == .clientCharacteristicConfiguration }) {
-            
-            register(notification: notification,
-                     for: characteristic,
-                     descriptors: cachedDescriptors,
-                     completion: completion)
-            
+        guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
+            else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
+        
+        let enableNotifications = notification != nil
+        
+        var clientConfiguration = clientConfiguration
+        
+        if enableNotifications {
+            clientConfiguration.configuration.insert(.notify)
         } else {
+            clientConfiguration.configuration.remove(.notify)
+        }
+        
+        writeDescriptor(descriptor, data: clientConfiguration.byteValue) { [unowned self] (response) in
             
-            discoverDescriptors(of: characteristic) { [unowned self] (response) in
+            switch response {
                 
-                switch response {
-                    
-                case let .error(error):
-                    
-                    completion(.error(error))
-                    
-                case let .value(descriptors):
-                    
-                    self.register(notification: notification,
-                                  for: characteristic,
-                                  descriptors: descriptors,
-                                  completion: completion)
-                }
+            case .error:
+                break
+                
+            case .value:
+                
+                self.notifications[characteristic.handle.value] = notification
             }
-        }*/
+            
+            completion(response)
+        }
     }
     
     // MARK: - Private Methods
+    
+    @inline(__always)
+    private func registerATTHandlers() {
+        
+        // value confirmation
+        connection.register(notification)
+    }
     
     @inline(__always)
     private func send <Request: ATTProtocolDataUnit, Response> (_ request: Request, response: @escaping (ATTResponse<Response>) -> ()) {
@@ -413,26 +425,6 @@ public final class GATTClient {
         
         send(pdu) { [unowned self] in self.findInformationResponse($0, operation: operation) }
     }
-    /*
-    private func register(notification: Notification?,
-                          for characteristic: Characteristic,
-                          descriptors: [GATTClient.Descriptor],
-                          completion: @escaping (GATTClientResponse<()>) -> ()) {
-        
-        guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
-            else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
-        
-        let enableNotifications = notification != nil
-        
-        cache.cache(for: characteristic, update: {
-            if enableNotifications {
-                $0.clientConfiguration.configuration.insert(.notify)
-            } else {
-                $0.clientConfiguration.configuration.remove(.notify)
-            }
-            return
-        })
-    }*/
     
     /// Read Characteristic Value
     ///
@@ -1064,6 +1056,14 @@ public final class GATTClient {
             
             complete { $0.success() }
         }
+    }
+    
+    private func notification(_ notification: ATTHandleValueNotification) {
+        
+        guard let callback = self.notifications[notification.handle]
+            else { return }
+        
+        callback(Data(notification.value))
     }
 }
 
