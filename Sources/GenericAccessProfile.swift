@@ -1391,6 +1391,156 @@ extension GAPSlaveConnectionIntervalRange: CustomStringConvertible {
     }
 }
 
+/// GAP List of 16 bit Service Solicitation UUIDs
+public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .listOf16BitServiceSolicitationUUIDs
+    
+    public var uuids: [UInt16]
+    
+    public init(uuids: [UInt16] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit16UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit16UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPListOf16BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt16...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPListOf16BitServiceSolicitationUUIDs: Equatable {
+    
+    public static func == (lhs: GAPListOf16BitServiceSolicitationUUIDs, rhs: GAPListOf16BitServiceSolicitationUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPListOf16BitServiceSolicitationUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+/// GAP List of 32 bit Service Solicitation UUIDs
+public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .listOf32BitServiceSolicitationUUIDs
+    
+    public var uuids: [UInt32]
+    
+    public init(uuids: [UInt32] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit32UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids
+    }
+    
+    public var data: Data {
+        
+        return Bit32UUIDList(uuids: uuids).data
+    }
+}
+
+extension GAPListOf32BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt32...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPListOf32BitServiceSolicitationUUIDs: Equatable {
+    
+    public static func == (lhs: GAPListOf32BitServiceSolicitationUUIDs, rhs: GAPListOf32BitServiceSolicitationUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPListOf32BitServiceSolicitationUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
+/// GAP List of 128 bit Service Solicitation UUIDs
+public struct GAPListOf128BitServiceSolicitationUUIDs: GAPData {
+    
+    public static let dataType: GAPDataType = .listOf128BitServiceSolicitationUUIDs
+    
+    public var uuids: [UUID]
+    
+    public init(uuids: [UUID] = []) {
+        
+        self.uuids = uuids
+    }
+    
+    public init?(data: Data) {
+        
+        guard let list = Bit128UUIDList(data: data)
+            else { return nil }
+        
+        self.uuids = list.uuids.map(UUID.init)
+    }
+    
+    public var data: Data {
+        
+        return Bit128UUIDList(uuids: uuids.map(UInt128.init)).data
+    }
+}
+
+extension GAPListOf128BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UUID...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+extension GAPListOf128BitServiceSolicitationUUIDs: Equatable {
+    
+    public static func == (lhs: GAPListOf128BitServiceSolicitationUUIDs, rhs: GAPListOf128BitServiceSolicitationUUIDs) -> Bool {
+        
+        return lhs.uuids == rhs.uuids
+    }
+}
+
+extension GAPListOf128BitServiceSolicitationUUIDs: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.description
+    }
+}
+
 // MARK: - Coding
 
 public struct GAPDataElement {
