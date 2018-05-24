@@ -1497,10 +1497,8 @@ extension GAPListOf128BitServiceSolicitationUUIDs: CustomStringConvertible {
     }
 }
 
-/// GAP Service Data - 16 bit UUID
-///
 /// The Service Data data type consists of a service UUID with the data associated with that service.
-
+///
 /// Size: 2 or more octets
 /// The first 2 octets contain the 16 bit Service UUID followed by additional service data
 public struct GAPServiceData16BitUUID: GAPData {
@@ -1550,6 +1548,122 @@ extension GAPServiceData16BitUUID: Equatable {
 }
 
 extension GAPServiceData16BitUUID: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuid.description + serviceData.map { String($0) }.description
+    }
+}
+
+/// The Service Data data type consists of a service UUID with the data associated with that service.
+///
+/// Size: 4 or more octets
+/// The first 4 octets contain the 32 bit Service UUID followed by additional service data
+public struct GAPServiceData32BitUUID: GAPData {
+    
+    public static let uuidLength = MemoryLayout<UInt32>.size
+    
+    public static let dataType: GAPDataType = .serviceData32BitUUID
+    
+    public var uuid: UInt32
+    public var serviceData: [UInt8] = []
+    
+    public init(uuid: UInt32, serviceData: [UInt8] = []) {
+        
+        self.uuid = uuid
+        self.serviceData = serviceData
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count >= type(of: self).uuidLength
+            else { return nil }
+        
+        let uuid = UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))
+        var serviceData = [UInt8]()
+        
+        data.enumerated().forEach { (index, element) in
+            if index >= GAPServiceData32BitUUID.uuidLength {
+                serviceData.append(element)
+            }
+        }
+        
+        self.init(uuid: uuid, serviceData: serviceData)
+    }
+    
+    public var data: Data {
+        
+        return serviceData.reduce(Data(), { $0.0 + [$0.1] })
+    }
+}
+
+extension GAPServiceData32BitUUID: Equatable {
+    
+    public static func == (lhs: GAPServiceData32BitUUID, rhs: GAPServiceData32BitUUID) -> Bool {
+        
+        return lhs.uuid == rhs.uuid && lhs.serviceData == rhs.serviceData
+    }
+}
+
+extension GAPServiceData32BitUUID: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuid.description + serviceData.map { String($0) }.description
+    }
+}
+
+/// The Service Data data type consists of a service UUID with the data associated with that service.
+///
+/// Size: 16 or more octets
+/// The first 16 octets contain the 128 bit Service UUID followed by additional service data
+public struct GAPServiceData128BitUUID: GAPData {
+    
+    public static let uuidLength = MemoryLayout<UInt128>.size
+    
+    public static let dataType: GAPDataType = .serviceData128BitUUID
+    
+    public var uuid: UUID
+    public var serviceData: [UInt8] = []
+    
+    public init(uuid: UUID, serviceData: [UInt8] = []) {
+        
+        self.uuid = uuid
+        self.serviceData = serviceData
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count >= type(of: self).uuidLength
+            else { return nil }
+        
+        let uuid = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])))
+        var serviceData = [UInt8]()
+        
+        data.enumerated().forEach { (index, element) in
+            if index >= GAPServiceData128BitUUID.uuidLength {
+                serviceData.append(element)
+            }
+        }
+        
+        self.init(uuid: UUID(uuid), serviceData: serviceData)
+    }
+    
+    public var data: Data {
+        
+        return serviceData.reduce(Data(), { $0.0 + [$0.1] })
+    }
+}
+
+extension GAPServiceData128BitUUID: Equatable {
+    
+    public static func == (lhs: GAPServiceData128BitUUID, rhs: GAPServiceData128BitUUID) -> Bool {
+        
+        return lhs.uuid == rhs.uuid && lhs.serviceData == rhs.serviceData
+    }
+}
+
+extension GAPServiceData128BitUUID: CustomStringConvertible {
     
     public var description: String {
         
