@@ -16,7 +16,7 @@ final class GATTTests: XCTestCase {
         ("testGATT", testGATT),
         ("testMTUExchange", testMTUExchange),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
-        ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor)
+        ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor),
         ("testCharacteristicExtendedPropertiesDescriptor", testCharacteristicExtendedPropertiesDescriptor)
     ]
     
@@ -737,12 +737,10 @@ final class GATTTests: XCTestCase {
     
     func testCharacteristicExtendedPropertiesDescriptor() {
         XCTAssertEqual(GATTCharacteristicExtendedProperties().properties.rawValue, 0)
-        XCTAssertEqual(GATTCharacteristicExtendedProperties().properties.all.rawValue,3)
+        XCTAssertEqual(GATTCharacteristicExtendedProperties.Property.all.rawValue,3)
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data()))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x03])))
-        XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00 ,0x00])))
-        XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00 ,0x03])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00, 0x00, 0x00])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00, 0x00, 0x03])))
         XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x00, 0x00]))?.properties, [])
@@ -761,7 +759,6 @@ final class GATTTests: XCTestCase {
         
         XCTAssertEqual(extendedProperties.properties, [])
         XCTAssertEqual(extendedProperties.properties.rawValue, 0)
-        XCTAssertEqual(extendedProperties.properties.all.rawValue, 3)
         
     }
 }
