@@ -926,7 +926,7 @@ public struct GAPTxPowerLevel: GAPData {
     
     public static let max: GAPTxPowerLevel = 127
     
-    public static var dataType: GAPDataType = .txPowerLevel
+    public static let dataType: GAPDataType = .txPowerLevel
     
     public let powerLevel: Int8
     
@@ -994,7 +994,7 @@ public struct GAPClassOfDevice: GAPData {
     
     public static let length = MemoryLayout<Identifier>.size
     
-    public static var dataType: GAPDataType = .classOfDevice
+    public static let dataType: GAPDataType = .classOfDevice
     
     public let device: Identifier
     
@@ -1041,7 +1041,7 @@ public struct GAPSimplePairingHashC: GAPData {
     
     public static let length = MemoryLayout<Hash>.size
     
-    public static var dataType: GAPDataType = .simplePairingHashC
+    public static let dataType: GAPDataType = .simplePairingHashC
     
     public let hash: Hash
     
@@ -1103,7 +1103,7 @@ public struct GAPSimplePairingRandomizerR: GAPData {
     
     public static let length = MemoryLayout<Hash>.size
     
-    public static var dataType: GAPDataType = .simplePairingRandomizerR
+    public static let dataType: GAPDataType = .simplePairingRandomizerR
     
     public let hash: Hash
     
@@ -1165,7 +1165,7 @@ public struct GAPSecurityManagerTKValue: GAPData {
     
     public static let length = MemoryLayout<Hash>.size
     
-    public static var dataType: GAPDataType = .securityManagerTKValue
+    public static let dataType: GAPDataType = .securityManagerTKValue
     
     public let hash: Hash
     
@@ -1337,7 +1337,7 @@ extension GAPSecurityManagerOOBFlags: ExpressibleByIntegerLiteral {
 
 public struct GAPSlaveConnectionIntervalRange: GAPData {
     
-    public static let length = MemoryLayout<UInt32>.size
+    public static let length = 4
     
     public static let min: UInt16 = 0x0006
     
@@ -1345,7 +1345,7 @@ public struct GAPSlaveConnectionIntervalRange: GAPData {
     
     public static let undefined: UInt16 = 0xFFFF
     
-    public static var dataType: GAPDataType = .slaveConnectionIntervalRange
+    public static let dataType: GAPDataType = .slaveConnectionIntervalRange
     
     public let intervalRange: (UInt16, UInt16)
     
@@ -1363,14 +1363,17 @@ public struct GAPSlaveConnectionIntervalRange: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let interval = (UInt16(bytes: (data[0], data[1])).littleEndian, UInt16(bytes: (data[2], data[3])).littleEndian)
+        let min = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        let max = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
         
-        self.init(intervalRange: interval)
+        self.init(intervalRange: (min, max))
     }
     
     public var data: Data {
         
-        return Data([intervalRange.0.bytes.0.littleEndian, intervalRange.0.bytes.1.littleEndian, intervalRange.1.bytes.0.littleEndian, intervalRange.1.bytes.1.littleEndian])
+        let range = (min: intervalRange.0.littleEndian.bytes, max: intervalRange.1.littleEndian.bytes)
+        
+        return Data([range.min.0, range.min.1, range.max.0, range.max.1])
     }
     
 }
