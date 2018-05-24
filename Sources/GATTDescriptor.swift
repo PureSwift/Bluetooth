@@ -52,6 +52,7 @@ public protocol GATTDescriptor {
 public extension GATT.CharacteristicDescriptor {
     
     public typealias ClientConfiguration = GATTClientCharacteristicConfiguration
+    public typealias ExtendedProperties = GATTCharacteristicExtendedProperties
 }
 
 /// GATT Client Characteristic Configuration Descriptor
@@ -120,5 +121,70 @@ public extension GATTClientCharacteristicConfiguration {
         case indicate = 0b10
         
         public static let all: Set<Configuration> = [.notify, .indicate]
+    }
+}
+
+/// GATT Characteristic Extended Properties
+///
+/// The Characteristic Extended Properties descriptor defines additional Characteristic Properties.
+///
+/// If the Characteristic Extended Properties bit of the Characteristic Properties is set, then this descriptor exists.
+/// The Characteristic Extended Properties descriptor is a bit field defining Reliable Write and Writeable Auxiliaries are enabled for the Characteristic.
+/// This descriptor is readable without authentication and authorization being required.
+public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .characteristicExtendedProperties
+    
+    public static let length = 2
+    
+    public var configuration: BitMaskOptionSet<Configuration>
+    
+    public init(configuration: BitMaskOptionSet<Configuration> = []) {
+        
+        self.configuration = configuration
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count == type(of: self).length
+            else { return nil }
+        
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        
+        self.configuration = BitMaskOptionSet<Configuration>(rawValue: rawValue)
+    }
+    
+    public var byteValue: Data {
+        
+        let bytes = configuration.rawValue.littleEndian.bytes
+        
+        return Data([bytes.0, bytes.1])
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [.read])
+    }
+}
+
+public extension GATTCharacteristicExtendedProperties {
+    
+    /// GATT Characteristic Extended Properties Options
+    public enum Configuration: UInt16, BitMaskOption {
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt16
+        #endif
+        
+        /// Reliable Write enabled
+        case reliableWrite = 0b01
+        
+        /// Writable Auxiliaries  enabled
+        case writableAuxiliaries = 0b10
+        
+        public static let all: Set<Configuration> = [.reliableWrite, .writableAuxiliaries]
     }
 }
