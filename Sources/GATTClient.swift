@@ -153,7 +153,7 @@ public final class GATTClient {
                                    completion: @escaping (GATTClientResponse<Data>) -> ()) {
         
         // read value and try to read blob if too big
-        readAttributeValue(characteristic.value, completion: completion)
+        readAttributeValue(characteristic.handle.value, completion: completion)
     }
     
     /// Read Using Characteristic UUID
@@ -195,7 +195,7 @@ public final class GATTClient {
         // The Attribute Protocol Read Multiple Request is used with the Set Of Handles parameter set to the Characteristic Value Handles.
         // The Read Multiple Response returns the Characteristic Values in the Set Of Values parameter.
         
-        let handles = characteristics.map { $0.value }
+        let handles = characteristics.map { $0.handle.value }
         
         guard let pdu = ATTReadMultipleRequest(handles: handles)
             else { fatalError("Must provide at least 2 characteristics") }
@@ -215,7 +215,7 @@ public final class GATTClient {
                                     reliableWrites: Bool = true,
                                     completion: ((GATTClientResponse<()>) -> ())?) {
         
-        writeAttribute(characteristic.value,
+        writeAttribute(characteristic.handle.value,
                        data: data,
                        reliableWrites: reliableWrites,
                        completion: completion)
@@ -229,7 +229,6 @@ public final class GATTClient {
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
      */
     public func discoverDescriptors(for characteristic: Characteristic,
-                                    end: UInt16? = nil,
                                     completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
         
         /**
@@ -238,9 +237,9 @@ public final class GATTClient {
          ending handle of the specified characteristic.
          */
         
-        let start = characteristic.value + 1
+        let start = characteristic.handle.value + 1
         
-        let end = end ?? start
+        let end = start // FIXME:
         
         let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
         
@@ -317,7 +316,7 @@ public final class GATTClient {
                 
             case .value:
                 
-                self.notifications[characteristic.value] = notification
+                self.notifications[characteristic.handle.value] = notification
             }
             
             completion(response)
@@ -584,7 +583,7 @@ public final class GATTClient {
         
         // TODO: Sign Data
         
-        let pdu = ATTWriteCommand(handle: characteristic.value, value: data)
+        let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
         
         send(pdu)
     }
@@ -825,9 +824,7 @@ public final class GATTClient {
                 
                 let characteristic = Characteristic(uuid: declaration.uuid,
                                                     properties: declaration.properties,
-                                                    declaration: handle,
-                                                    value: declaration.valueHandle,
-                                                    end: 0) // FIXME:
+                                                    handle: (handle, declaration.valueHandle))
                 
                 operation.foundData.append(characteristic)
                 
@@ -1188,11 +1185,7 @@ public extension GATTClient {
         
         public let properties: BitMaskOptionSet<Property>
         
-        public let declaration: UInt16
-        
-        public let value: UInt16
-        
-        internal let end: UInt16
+        public let handle: (declaration: UInt16, value: UInt16)
     }
     
     /// A discovered descriptor
@@ -1270,6 +1263,14 @@ private extension GATTClient {
         var foundDescriptors = [Descriptor]()
         
         let completion: (GATTClientResponse<[Descriptor]>) -> ()
+        
+        init(characteristic: Characteristic,
+             completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
+            
+            self.start = characteristic.handle.declaration
+            self.end = characteristic.handle.value
+            self.completion = completion
+        }
         
         init(start: UInt16,
              end: UInt16,
