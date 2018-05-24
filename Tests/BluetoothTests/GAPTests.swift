@@ -23,7 +23,9 @@ final class GAPTests: XCTestCase {
         ("testGAPCompleteListOf128BitServiceClassUUIDs", testGAPCompleteListOf128BitServiceClassUUIDs),
         ("testGAPTxPowerLevel", testGAPTxPowerLevel),
         ("testGAPSlaveConnectionIntervalRange", testGAPSlaveConnectionIntervalRange),
-        ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID)
+        ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID),
+        ("testGAPServiceData32BitUUID", testGAPServiceData32BitUUID),
+        ("testGAPServiceData128BitUUID", testGAPServiceData128BitUUID)
     ]
     
     func testDataType() {
@@ -272,5 +274,46 @@ final class GAPTests: XCTestCase {
         }
         
         XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])), GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])))
+    }
+    
+    func testGAPServiceData32BitUUID() {
+        
+        XCTAssertNil(GAPServiceData32BitUUID(data: Data([0x4f])))
+        
+        do {
+            let data = Data([0x4f, 0x30, 0x4f, 0x30])
+            let serviceData = GAPServiceData32BitUUID(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
+        }
+        
+        do {
+            let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
+            let serviceData = GAPServiceData32BitUUID(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
+            XCTAssertEqual(serviceData.serviceData.count, 1)
+        }
+        
+        XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])), GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
+    }
+    
+    func testGAPServiceData128BitUUID() {
+        
+        XCTAssertNil(GAPServiceData128BitUUID(data: Data([0x4f])))
+
+        do {
+            let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56])
+            let serviceData = GAPServiceData128BitUUID(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
+        }
+
+        do {
+            let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])
+            let serviceData = GAPServiceData128BitUUID(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
+            XCTAssertEqual(serviceData.serviceData.count, 4)
+        }
+
+        XCTAssertEqual(GAPServiceData128BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])),
+                       GAPServiceData128BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])))
     }
 }
