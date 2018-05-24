@@ -1535,7 +1535,9 @@ public struct GAPServiceData16BitUUID: GAPData {
     
     public var data: Data {
         
-        return serviceData.reduce(Data(), { $0.0 + [$0.1] })
+        let data = UInt16(littleEndian: uuid).data
+        
+        return serviceData.reduce(data, { $0.0 + [$0.1] })
     }
 }
 
@@ -1593,7 +1595,9 @@ public struct GAPServiceData32BitUUID: GAPData {
     
     public var data: Data {
         
-        return serviceData.reduce(Data(), { $0.0 + [$0.1] })
+        let data = UInt32(littleEndian: uuid).data
+        
+        return serviceData.reduce(data, { $0.0 + [$0.1] })
     }
 }
 
@@ -1650,8 +1654,9 @@ public struct GAPServiceData128BitUUID: GAPData {
     }
     
     public var data: Data {
+        let data = UInt128(uuid: uuid).littleEndian.data
         
-        return serviceData.reduce(Data(), { $0.0 + [$0.1] })
+        return serviceData.reduce(data, { $0.0 + [$0.1] })
     }
 }
 
@@ -1668,6 +1673,54 @@ extension GAPServiceData128BitUUID: CustomStringConvertible {
     public var description: String {
         
         return uuid.description + serviceData.map { String($0) }.description
+    }
+}
+
+/// The Appearance data type defines the external appearance of the device.
+/// This value shall be the same as the Appearance characteristic, as defined in Vol. 3, Part C, Section 12.2.
+public struct GAPAppearance: GAPData {
+    
+    public static let length = MemoryLayout<UInt16>.size
+    
+    public static let dataType: GAPDataType = .appearance
+    
+    public var appearance: UInt16
+    
+    public init(appearance: UInt16) {
+        
+        self.appearance = appearance
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let appearance = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        self.init(appearance: appearance)
+    }
+    
+    public var data: Data {
+        
+        let value = appearance.littleEndian
+        return Data(bytes: [value.bytes.0, value.bytes.1])
+    }
+}
+
+extension GAPAppearance: Equatable {
+    
+    public static func == (lhs: GAPAppearance, rhs: GAPAppearance) -> Bool {
+        
+        return lhs.appearance == rhs.appearance
+    }
+}
+
+extension GAPAppearance: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return appearance.description
     }
 }
 
