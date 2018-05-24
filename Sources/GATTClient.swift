@@ -229,6 +229,7 @@ public final class GATTClient {
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
      */
     public func discoverDescriptors(for characteristic: Characteristic,
+                                    service: (declaration: Service, characteristics: [Characteristic]),
                                     completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
         
         /**
@@ -239,7 +240,7 @@ public final class GATTClient {
         
         let start = characteristic.handle.value + 1
         
-        let end = start // FIXME:
+        let end = endHandle(for: characteristic, service: service)
         
         let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
         
@@ -352,6 +353,34 @@ public final class GATTClient {
         
         guard let _ = connection.send(request)
             else { fatalError("Could not add PDU to queue: \(request)") }
+    }
+    
+    internal func endHandle(for characteristic: Characteristic,
+                            service: (declaration: Service, characteristics: [Characteristic])) -> UInt16 {
+        
+        // calculate ending handle of characteristic
+        
+        let end: UInt16
+        
+        guard let index = service.characteristics.index(where: { $0.handle.declaration == characteristic.handle.declaration })
+            else { fatalError("Invalid characteristics \(service.characteristics.map { $0.uuid })") }
+        
+        let nextIndex = index + 1
+        
+        // get start handle of next characteristic
+        if nextIndex < service.characteristics.count {
+            
+            let nextCharacteristic = service.characteristics[nextIndex]
+            
+            end = nextCharacteristic.handle.declaration - 1
+            
+        } else {
+            
+            // use service end handle
+            end = service.declaration.end
+        }
+        
+        return end
     }
     
     // MARK: Requests
@@ -1263,14 +1292,6 @@ private extension GATTClient {
         var foundDescriptors = [Descriptor]()
         
         let completion: (GATTClientResponse<[Descriptor]>) -> ()
-        
-        init(characteristic: Characteristic,
-             completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
-            
-            self.start = characteristic.handle.declaration
-            self.end = characteristic.handle.value
-            self.completion = completion
-        }
         
         init(start: UInt16,
              end: UInt16,
