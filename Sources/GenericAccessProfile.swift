@@ -1008,14 +1008,14 @@ public struct GAPClassOfDevice: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let device = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian)
+        let device = (data[0], data[1], data[2])
         
         self.init(device: device)
     }
     
     public var data: Data {
         
-        return Data([device.0.littleEndian, device.1.littleEndian, device.2.littleEndian])
+        return Data([device.0, device.1, device.2])
     }
 }
 
@@ -1037,17 +1037,15 @@ extension GAPClassOfDevice: CustomStringConvertible {
 
 public struct GAPSimplePairingHashC: GAPData {
     
-    public typealias Hash = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
-    
-    public static let length = MemoryLayout<Hash>.size
+    public static let length = MemoryLayout<UUID>.size
     
     public static let dataType: GAPDataType = .simplePairingHashC
     
-    public let hash: Hash
+    public let uuid: UUID
     
-    public init(hash: Hash) {
+    public init(uuid: UUID) {
         
-        self.hash = hash
+        self.uuid = uuid
     }
     
     public init?(data: Data) {
@@ -1055,14 +1053,15 @@ public struct GAPSimplePairingHashC: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let hash = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian, data[3].littleEndian, data[4].littleEndian, data[5].littleEndian, data[6].littleEndian, data[7].littleEndian, data[8].littleEndian, data[9].littleEndian, data[10].littleEndian, data[11].littleEndian, data[12].littleEndian, data[13].littleEndian, data[14].littleEndian, data[15].littleEndian)
+        let bytes = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
+        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: bytes)))
         
-        self.init(hash: hash)
+        self.init(uuid: uuid)
     }
     
     public var data: Data {
         
-        return Data([hash.0.littleEndian, hash.1.littleEndian, hash.2.littleEndian, hash.3.littleEndian, hash.4.littleEndian, hash.5.littleEndian, hash.6.littleEndian, hash.7.littleEndian, hash.8.littleEndian, hash.9.littleEndian, hash.10.littleEndian, hash.11.littleEndian, hash.12.littleEndian, hash.13.littleEndian, hash.14.littleEndian, hash.15.littleEndian])
+        return uuid.data
     }
 }
 
@@ -1070,22 +1069,7 @@ extension GAPSimplePairingHashC: Equatable {
     
     public static func == (lhs: GAPSimplePairingHashC, rhs: GAPSimplePairingHashC) -> Bool {
         
-        return lhs.hash.0 == rhs.hash.0 &&
-                lhs.hash.1 == rhs.hash.1 &&
-                lhs.hash.2 == rhs.hash.2 &&
-                lhs.hash.3 == rhs.hash.3 &&
-                lhs.hash.4 == rhs.hash.4 &&
-                lhs.hash.5 == rhs.hash.5 &&
-                lhs.hash.6 == rhs.hash.6 &&
-                lhs.hash.7 == rhs.hash.7 &&
-                lhs.hash.8 == rhs.hash.8 &&
-                lhs.hash.9 == rhs.hash.9 &&
-                lhs.hash.10 == rhs.hash.10 &&
-                lhs.hash.11 == rhs.hash.11 &&
-                lhs.hash.12 == rhs.hash.12 &&
-                lhs.hash.13 == rhs.hash.13 &&
-                lhs.hash.14 == rhs.hash.14 &&
-                lhs.hash.15 == rhs.hash.15
+        return lhs.uuid == rhs.uuid
     }
 }
 
@@ -1093,23 +1077,21 @@ extension GAPSimplePairingHashC: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(hash.0) \(hash.1) \(hash.2) \(hash.3) \(hash.4) \(hash.5) \(hash.6) \(hash.7) \(hash.8) \(hash.9) \(hash.10) \(hash.11) \(hash.12) \(hash.13) \(hash.14) \(hash.15)"
+        return uuid.description
     }
 }
 
 public struct GAPSimplePairingRandomizerR: GAPData {
     
-    public typealias Hash = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
-    
-    public static let length = MemoryLayout<Hash>.size
+    public static let length = MemoryLayout<UUID>.size
     
     public static let dataType: GAPDataType = .simplePairingRandomizerR
     
-    public let hash: Hash
+    public let uuid: UUID
     
-    public init(hash: Hash) {
+    public init(uuid: UUID) {
         
-        self.hash = hash
+        self.uuid = uuid
     }
     
     public init?(data: Data) {
@@ -1117,14 +1099,15 @@ public struct GAPSimplePairingRandomizerR: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let hash = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian, data[3].littleEndian, data[4].littleEndian, data[5].littleEndian, data[6].littleEndian, data[7].littleEndian, data[8].littleEndian, data[9].littleEndian, data[10].littleEndian, data[11].littleEndian, data[12].littleEndian, data[13].littleEndian, data[14].littleEndian, data[15].littleEndian)
+        let bytes = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
+        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: bytes)))
         
-        self.init(hash: hash)
+        self.init(uuid: uuid)
     }
     
     public var data: Data {
         
-        return Data([hash.0.littleEndian, hash.1.littleEndian, hash.2.littleEndian, hash.3.littleEndian, hash.4.littleEndian, hash.5.littleEndian, hash.6.littleEndian, hash.7.littleEndian, hash.8.littleEndian, hash.9.littleEndian, hash.10.littleEndian, hash.11.littleEndian, hash.12.littleEndian, hash.13.littleEndian, hash.14.littleEndian, hash.15.littleEndian])
+        return uuid.data
     }
 }
 
@@ -1132,22 +1115,7 @@ extension GAPSimplePairingRandomizerR: Equatable {
     
     public static func == (lhs: GAPSimplePairingRandomizerR, rhs: GAPSimplePairingRandomizerR) -> Bool {
         
-        return lhs.hash.0 == rhs.hash.0 &&
-                lhs.hash.1 == rhs.hash.1 &&
-                lhs.hash.2 == rhs.hash.2 &&
-                lhs.hash.3 == rhs.hash.3 &&
-                lhs.hash.4 == rhs.hash.4 &&
-                lhs.hash.5 == rhs.hash.5 &&
-                lhs.hash.6 == rhs.hash.6 &&
-                lhs.hash.7 == rhs.hash.7 &&
-                lhs.hash.8 == rhs.hash.8 &&
-                lhs.hash.9 == rhs.hash.9 &&
-                lhs.hash.10 == rhs.hash.10 &&
-                lhs.hash.11 == rhs.hash.11 &&
-                lhs.hash.12 == rhs.hash.12 &&
-                lhs.hash.13 == rhs.hash.13 &&
-                lhs.hash.14 == rhs.hash.14 &&
-                lhs.hash.15 == rhs.hash.15
+        return lhs.uuid == rhs.uuid
     }
 }
 
@@ -1155,23 +1123,21 @@ extension GAPSimplePairingRandomizerR: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(hash.0) \(hash.1) \(hash.2) \(hash.3) \(hash.4) \(hash.5) \(hash.6) \(hash.7) \(hash.8) \(hash.9) \(hash.10) \(hash.11) \(hash.12) \(hash.13) \(hash.14) \(hash.15)"
+        return uuid.description
     }
 }
 
 public struct GAPSecurityManagerTKValue: GAPData {
     
-    public typealias Hash = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
-    
-    public static let length = MemoryLayout<Hash>.size
+    public static let length = MemoryLayout<UUID>.size
     
     public static let dataType: GAPDataType = .securityManagerTKValue
     
-    public let hash: Hash
+    public let uuid: UUID
     
-    public init(hash: Hash) {
+    public init(uuid: UUID) {
         
-        self.hash = hash
+        self.uuid = uuid
     }
     
     public init?(data: Data) {
@@ -1179,14 +1145,15 @@ public struct GAPSecurityManagerTKValue: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let hash = (data[0].littleEndian, data[1].littleEndian, data[2].littleEndian, data[3].littleEndian, data[4].littleEndian, data[5].littleEndian, data[6].littleEndian, data[7].littleEndian, data[8].littleEndian, data[9].littleEndian, data[10].littleEndian, data[11].littleEndian, data[12].littleEndian, data[13].littleEndian, data[14].littleEndian, data[15].littleEndian)
+        let bytes = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
+        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: bytes)))
         
-        self.init(hash: hash)
+        self.init(uuid: uuid)
     }
     
     public var data: Data {
         
-        return Data([hash.0.littleEndian, hash.1.littleEndian, hash.2.littleEndian, hash.3.littleEndian, hash.4.littleEndian, hash.5.littleEndian, hash.6.littleEndian, hash.7.littleEndian, hash.8.littleEndian, hash.9.littleEndian, hash.10.littleEndian, hash.11.littleEndian, hash.12.littleEndian, hash.13.littleEndian, hash.14.littleEndian, hash.15.littleEndian])
+        return uuid.data
     }
 }
 
@@ -1194,22 +1161,7 @@ extension GAPSecurityManagerTKValue: Equatable {
     
     public static func == (lhs: GAPSecurityManagerTKValue, rhs: GAPSecurityManagerTKValue) -> Bool {
         
-        return lhs.hash.0 == rhs.hash.0 &&
-            lhs.hash.1 == rhs.hash.1 &&
-            lhs.hash.2 == rhs.hash.2 &&
-            lhs.hash.3 == rhs.hash.3 &&
-            lhs.hash.4 == rhs.hash.4 &&
-            lhs.hash.5 == rhs.hash.5 &&
-            lhs.hash.6 == rhs.hash.6 &&
-            lhs.hash.7 == rhs.hash.7 &&
-            lhs.hash.8 == rhs.hash.8 &&
-            lhs.hash.9 == rhs.hash.9 &&
-            lhs.hash.10 == rhs.hash.10 &&
-            lhs.hash.11 == rhs.hash.11 &&
-            lhs.hash.12 == rhs.hash.12 &&
-            lhs.hash.13 == rhs.hash.13 &&
-            lhs.hash.14 == rhs.hash.14 &&
-            lhs.hash.15 == rhs.hash.15
+        return lhs.uuid == rhs.uuid
     }
 }
 
@@ -1217,7 +1169,7 @@ extension GAPSecurityManagerTKValue: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(hash.0) \(hash.1) \(hash.2) \(hash.3) \(hash.4) \(hash.5) \(hash.6) \(hash.7) \(hash.8) \(hash.9) \(hash.10) \(hash.11) \(hash.12) \(hash.13) \(hash.14) \(hash.15)"
+        return uuid.description
     }
 }
 
@@ -1394,6 +1346,10 @@ extension GAPSlaveConnectionIntervalRange: CustomStringConvertible {
     }
 }
 
+/// A Peripheral device may send the Service Solicitation data type to invite Central devices that expose one or more of the services specified in the Service Solicitation data to connect. The Peripheral device should be in the undirected connectable mode and in one of the discoverable modes. This enables a Central device providing one or more of these services to connect to the Peripheral device, so that the Peripheral device can use the services on the Central device.
+
+/// Note: Central and Peripheral are GAP roles as defined in Vol.3, Part C, Section 2.2.2.
+
 /// GAP List of 16 bit Service Solicitation UUIDs
 public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData {
     
@@ -1541,6 +1497,66 @@ extension GAPListOf128BitServiceSolicitationUUIDs: CustomStringConvertible {
     public var description: String {
         
         return uuids.description
+    }
+}
+
+/// GAP Service Data - 16 bit UUID
+///
+/// The Service Data data type consists of a service UUID with the data associated with that service.
+
+/// Size: 2 or more octets
+/// The first 2 octets contain the 16 bit Service UUID followed by additional service data
+public struct GAPServiceData16BitUUID: GAPData {
+    
+    public static let uuidLength = MemoryLayout<UInt16>.size
+    
+    public static let dataType: GAPDataType = .serviceData16BitUUID
+    
+    public var uuid: UInt16
+    public var serviceData: [UInt8] = []
+    
+    public init(uuid: UInt16, serviceData: [UInt8] = []) {
+        
+        self.uuid = uuid
+        self.serviceData = serviceData
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count >= type(of: self).uuidLength
+            else { return nil }
+        
+        let uuid = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        var serviceData = [UInt8]()
+        
+        data.enumerated().forEach { (index, element) in
+            if index >= GAPServiceData16BitUUID.uuidLength {
+                serviceData.append(element)
+            }
+        }
+        
+        self.init(uuid: uuid, serviceData: serviceData)
+    }
+    
+    public var data: Data {
+        
+        return serviceData.reduce(Data(), { $0.0 + [$0.1] })
+    }
+}
+
+extension GAPServiceData16BitUUID: Equatable {
+    
+    public static func == (lhs: GAPServiceData16BitUUID, rhs: GAPServiceData16BitUUID) -> Bool {
+        
+        return lhs.uuid == rhs.uuid && lhs.serviceData == rhs.serviceData
+    }
+}
+
+extension GAPServiceData16BitUUID: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuid.description + serviceData.map { String($0) }.description
     }
 }
 
