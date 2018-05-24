@@ -137,11 +137,11 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
     
     public static let length = 2
     
-    public var configuration: BitMaskOptionSet<Configuration>
+    public var properties: BitMaskOptionSet<Property>
     
-    public init(configuration: BitMaskOptionSet<Configuration> = []) {
+    public init(properties: BitMaskOptionSet<Property> = []) {
         
-        self.configuration = configuration
+        self.properties = properties
     }
     
     public init?(byteValue: Data) {
@@ -151,12 +151,12 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
         
         let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
         
-        self.configuration = BitMaskOptionSet<Configuration>(rawValue: rawValue)
+        self.properties = BitMaskOptionSet<Property>(rawValue: rawValue)
     }
     
     public var byteValue: Data {
         
-        let bytes = configuration.rawValue.littleEndian.bytes
+        let bytes = properties.rawValue.littleEndian.bytes
         
         return Data([bytes.0, bytes.1])
     }
@@ -172,7 +172,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
 public extension GATTCharacteristicExtendedProperties {
     
     /// GATT Characteristic Extended Properties Options
-    public enum Configuration: UInt16, BitMaskOption {
+    public enum Property: UInt16, BitMaskOption {
         
         #if swift(>=3.2)
         #elseif swift(>=3.0)
@@ -185,6 +185,6 @@ public extension GATTCharacteristicExtendedProperties {
         /// Writable Auxiliaries  enabled
         case writableAuxiliaries = 0b10
         
-        public static let all: Set<Configuration> = [.reliableWrite, .writableAuxiliaries]
+        public static let all: Set<Property> = [.reliableWrite, .writableAuxiliaries]
     }
 }

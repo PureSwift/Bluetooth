@@ -736,8 +736,8 @@ final class GATTTests: XCTestCase {
     }
     
     func testCharacteristicExtendedPropertiesDescriptor() {
-        XCTAssertEqual(GATTCharacteristicExtendedProperties().configuration.rawValue, 0)
-        XCTAssertEqual(GATTCharacteristicExtendedProperties().configuration.all.rawValue,3)
+        XCTAssertEqual(GATTCharacteristicExtendedProperties().properties.rawValue, 0)
+        XCTAssertEqual(GATTCharacteristicExtendedProperties().properties.all.rawValue,3)
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data()))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x03])))
@@ -745,13 +745,13 @@ final class GATTTests: XCTestCase {
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00 ,0x03])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00, 0x00, 0x00])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(byteValue: Data([0x00, 0x00, 0x03])))
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x00, 0x00]))?.configuration, [])
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x01, 0x00]))?.configuration, [.reliableWrite])
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x02, 0x00]))?.configuration, [.writableAuxiliaries])
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x03, 0x00]))?.configuration, [.reliableWrite, .writableAuxiliaries])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x00, 0x00]))?.properties, [])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x01, 0x00]))?.properties, [.reliableWrite])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x02, 0x00]))?.properties, [.writableAuxiliaries])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(byteValue: Data([0x03, 0x00]))?.properties, [.reliableWrite, .writableAuxiliaries])
         
         var extendedProperties = GATTCharacteristicExtendedProperties()
-        XCTAssertEqual(extendedProperties.configuration, [])
+        XCTAssertEqual(extendedProperties.properties, [])
         
         extendedProperties.configuration.insert(.reliableWrite)
         XCTAssertEqual(extendedProperties.byteValue, Data([0x01, 0x00]))
@@ -759,9 +759,9 @@ final class GATTTests: XCTestCase {
         XCTAssert(extendedProperties.configuration.remove(.reliableWrite))
         XCTAssertEqual(extendedProperties.byteValue, Data([0x00, 0x00]))
         
-        XCTAssertEqual(extendedProperties.configuration, [])
-        XCTAssertEqual(extendedProperties.configuration.rawValue, 0)
-        XCTAssertEqual(extendedProperties.configuration.all.rawValue, 3)
+        XCTAssertEqual(extendedProperties.properties, [])
+        XCTAssertEqual(extendedProperties.properties.rawValue, 0)
+        XCTAssertEqual(extendedProperties.properties.all.rawValue, 3)
         
     }
 }
