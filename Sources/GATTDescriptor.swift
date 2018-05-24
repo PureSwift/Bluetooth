@@ -53,6 +53,7 @@ public extension GATT.CharacteristicDescriptor {
     
     public typealias ClientConfiguration = GATTClientCharacteristicConfiguration
     public typealias ExtendedProperties = GATTCharacteristicExtendedProperties
+    public typealias ServerConfiguration = GATTServerCharacteristicConfiguration
 }
 
 /// GATT Client Characteristic Configuration Descriptor
@@ -124,7 +125,7 @@ public extension GATTClientCharacteristicConfiguration {
     }
 }
 
-/// GATT Characteristic Extended Properties
+/// GATT Characteristic Extended Properties Descriptor
 ///
 /// The Characteristic Extended Properties descriptor defines additional Characteristic Properties.
 ///
@@ -188,3 +189,68 @@ public extension GATTCharacteristicExtendedProperties {
         public static let all: Set<Property> = [.reliableWrite, .writableAuxiliaries]
     }
 }
+
+/// GATT Server Characteristic Configuration Descriptor
+///
+/// The Server Characteristic Configuration descriptor defines how the characteristic descriptor is associated with may be configured for the server.
+///
+/// Only one Server Characteristic Configuration descriptor exists in a characteristic definition.
+/// A client may write this configuration descriptor to control the configuration of the characteristic on the server for all clients.
+/// There is a single instantiation of this descriptor for all clients.
+/// Authentication and authorization may be required by the server to write this descriptor.
+public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .serverCharacteristicConfiguration
+    
+    public static let length = 1
+    
+    public var serverConfiguration: BitMaskOptionSet<ServerConfiguration>
+    
+    public init(serverConfiguration: BitMaskOptionSet<ServerConfiguration> = []){
+        
+        self.serverConfiguration = serverConfiguration
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count == type(of: self).length
+            else { return nil }
+        
+        let rawValue = byteValue[0]
+        
+        self.serverConfiguration = BitMaskOptionSet<ServerConfiguration>(rawValue: UInt16(rawValue))
+    }
+    
+    public var byteValue: Data {
+        
+        let bytes = serverConfiguration.rawValue.littleEndian.bytes
+        
+        return Data([bytes.0])
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [.write])
+    }
+}
+
+extension GATTServerCharacteristicConfiguration {
+    
+    /// GATT Server Characteristics Configuration Options
+    public enum ServerConfiguration: UInt16, BitMaskOption {
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt16
+        #endif
+        
+        /// Broadcasts enabled
+        case broadcasts = 0b01
+        
+        public static let all: Set<ServerConfiguration> = [.broadcasts]
+    }
+}
+
+
