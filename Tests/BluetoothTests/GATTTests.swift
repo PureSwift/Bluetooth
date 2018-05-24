@@ -17,7 +17,8 @@ final class GATTTests: XCTestCase {
         ("testMTUExchange", testMTUExchange),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
         ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor),
-        ("testCharacteristicExtendedPropertiesDescriptor", testCharacteristicExtendedPropertiesDescriptor)
+        ("testCharacteristicExtendedPropertiesDescriptor", testCharacteristicExtendedPropertiesDescriptor),
+        ("testCharacteristicServerConfigurationDescriptor", testCharacteristicsServerConfigurationDescriptor)
     ]
     
     func testMTUExchange() {
@@ -759,6 +760,32 @@ final class GATTTests: XCTestCase {
         
         XCTAssertEqual(extendedProperties.properties, [])
         XCTAssertEqual(extendedProperties.properties.rawValue, 0)
+        
+    }
+    
+    func testCharacteristicsServerConfigurationDescriptor() {
+        XCTAssertEqual(GATTServerCharacteristicConfiguration().serverConfiguration.rawValue, 0)
+        XCTAssertEqual(GATTServerCharacteristicConfiguration.ServerConfiguration.all.rawValue, 1)
+        XCTAssertNil(GATTServerCharacteristicConfiguration(byteValue: Data()))
+        XCTAssertNil(GATTServerCharacteristicConfiguration(byteValue: Data([0x00, 0x00])))
+        XCTAssertNil(GATTServerCharacteristicConfiguration(byteValue: Data([0x00, 0x01])))
+        XCTAssertNil(GATTServerCharacteristicConfiguration(byteValue: Data([0x00, 0x00, 0x00])))
+        XCTAssertNil(GATTServerCharacteristicConfiguration(byteValue: Data([0x00, 0x00, 0x01])))
+        XCTAssertEqual(GATTServerCharacteristicConfiguration(byteValue: Data([0x00]))?.serverConfiguration, [])
+        XCTAssertEqual(GATTServerCharacteristicConfiguration(byteValue: Data([0x01]))?.serverConfiguration, [.broadcasts])
+        
+        var serverConfiguration = GATTServerCharacteristicConfiguration()
+        XCTAssertEqual(serverConfiguration.serverConfiguration, [])
+        
+        serverConfiguration.serverConfiguration.insert(.broadcasts)
+        XCTAssertEqual(serverConfiguration.byteValue, Data([0x01]))
+        
+        XCTAssert(serverConfiguration.serverConfiguration.remove(.broadcasts))
+        XCTAssertEqual(serverConfiguration.byteValue, Data([0x00]))
+        
+        XCTAssertEqual(serverConfiguration.serverConfiguration, [])
+        XCTAssertEqual(serverConfiguration.serverConfiguration.rawValue, 0)
+        
         
     }
 }
