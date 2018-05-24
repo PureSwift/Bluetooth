@@ -1053,8 +1053,7 @@ public struct GAPSimplePairingHashC: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let bytes = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
-        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: bytes)))
+        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))))
         
         self.init(uuid: uuid)
     }
@@ -1099,8 +1098,7 @@ public struct GAPSimplePairingRandomizerR: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let bytes = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
-        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: bytes)))
+        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))))
         
         self.init(uuid: uuid)
     }
@@ -1145,8 +1143,7 @@ public struct GAPSecurityManagerTKValue: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let bytes = (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
-        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: bytes)))
+        let uuid = UUID(UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))))
         
         self.init(uuid: uuid)
     }
