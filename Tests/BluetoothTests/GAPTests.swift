@@ -25,7 +25,8 @@ final class GAPTests: XCTestCase {
         ("testGAPSlaveConnectionIntervalRange", testGAPSlaveConnectionIntervalRange),
         ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID),
         ("testGAPServiceData32BitUUID", testGAPServiceData32BitUUID),
-        ("testGAPServiceData128BitUUID", testGAPServiceData128BitUUID)
+        ("testGAPServiceData128BitUUID", testGAPServiceData128BitUUID),
+        ("testGAPAppearance", testGAPAppearance)
     ]
     
     func testDataType() {
@@ -264,6 +265,8 @@ final class GAPTests: XCTestCase {
             let data = Data([0x4f, 0x30])
             let serviceData = GAPServiceData16BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 2)
+            XCTAssertEqual(serviceData.data, data)
+            XCTAssertEqual(serviceData.data.count, 2)
         }
         
         do {
@@ -271,9 +274,12 @@ final class GAPTests: XCTestCase {
             let serviceData = GAPServiceData16BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 2)
             XCTAssertEqual(serviceData.serviceData.count, 3)
+            XCTAssertEqual(serviceData.data, data)
+            XCTAssertEqual(serviceData.data.count, 5)
         }
         
-        XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])), GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])))
+        XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])),
+                       GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])))
     }
     
     func testGAPServiceData32BitUUID() {
@@ -284,6 +290,8 @@ final class GAPTests: XCTestCase {
             let data = Data([0x4f, 0x30, 0x4f, 0x30])
             let serviceData = GAPServiceData32BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
+            XCTAssertEqual(serviceData.data, data)
+            XCTAssertEqual(serviceData.data.count, 4)
         }
         
         do {
@@ -291,9 +299,12 @@ final class GAPTests: XCTestCase {
             let serviceData = GAPServiceData32BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
             XCTAssertEqual(serviceData.serviceData.count, 1)
+            XCTAssertEqual(serviceData.data, data)
+            XCTAssertEqual(serviceData.data.count, 5)
         }
         
-        XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])), GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
+        XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])),
+                       GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
     }
     
     func testGAPServiceData128BitUUID() {
@@ -304,6 +315,8 @@ final class GAPTests: XCTestCase {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56])
             let serviceData = GAPServiceData128BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
+            XCTAssertEqual(serviceData.data, data)
+            XCTAssertEqual(serviceData.data.count, 16)
         }
 
         do {
@@ -311,9 +324,27 @@ final class GAPTests: XCTestCase {
             let serviceData = GAPServiceData128BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
             XCTAssertEqual(serviceData.serviceData.count, 4)
+            XCTAssertEqual(serviceData.data, data)
+            XCTAssertEqual(serviceData.data.count, 20)
         }
 
         XCTAssertEqual(GAPServiceData128BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])),
                        GAPServiceData128BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])))
+    }
+    
+    func testGAPAppearance() {
+        
+        XCTAssertNil(GAPAppearance(data: Data([0x4f])))
+        XCTAssertNil(GAPAppearance(data: Data([0x4f, 0x4f, 0x4f])))
+        
+        do {
+            let data = Data([0x4f, 0xf8])
+            let appearance = GAPAppearance(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: appearance), 2)
+            XCTAssertEqual(appearance.data, data)
+            XCTAssertEqual(appearance.data.count, 2)
+        }
+        
+        XCTAssertEqual(GAPAppearance(data: Data([0x4f, 0xf8])), GAPAppearance(data: Data([0x4f, 0xf8])))
     }
 }

@@ -38,6 +38,11 @@ public extension UInt16 {
         
         return unsafeBitCast(self, to: (UInt8, UInt8).self)
     }
+    
+    public var data: Data {
+        
+        return Data(bytes: [bytes.0, bytes.1])
+    }
 }
 
 public extension UInt32 {
@@ -52,6 +57,11 @@ public extension UInt32 {
     public var bytes: (UInt8, UInt8, UInt8, UInt8) {
         
         return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8).self)
+    }
+    
+    public var data: Data {
+        
+        return Data(bytes: [bytes.0, bytes.1, bytes.2, bytes.3])
     }
 }
 
