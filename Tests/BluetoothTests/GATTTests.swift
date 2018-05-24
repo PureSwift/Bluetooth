@@ -753,10 +753,10 @@ final class GATTTests: XCTestCase {
         var extendedProperties = GATTCharacteristicExtendedProperties()
         XCTAssertEqual(extendedProperties.properties, [])
         
-        extendedProperties.configuration.insert(.reliableWrite)
+        extendedProperties.properties.insert(.reliableWrite)
         XCTAssertEqual(extendedProperties.byteValue, Data([0x01, 0x00]))
         
-        XCTAssert(extendedProperties.configuration.remove(.reliableWrite))
+        XCTAssert(extendedProperties.properties.remove(.reliableWrite))
         XCTAssertEqual(extendedProperties.byteValue, Data([0x00, 0x00]))
         
         XCTAssertEqual(extendedProperties.properties, [])
