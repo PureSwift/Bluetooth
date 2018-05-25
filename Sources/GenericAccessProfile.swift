@@ -1965,6 +1965,52 @@ public enum GAPLEBluetoothDeviceAddressType: UInt8 {
     }
 }
 
+/// The LE Role data type defines the LE role capabilities of the device.
+/// The LE Role data type size is 1 octet.
+public struct GAPLERole: GAPData {
+    
+    public static let length = MemoryLayout<UInt8>.size
+    
+    public static let dataType: GAPDataType = .LERole
+    
+    public let role: GAPLERoleType
+    
+    public init(role: GAPLERoleType) {
+        
+        self.role = role
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length, let role = GAPLERoleType(rawValue: data[0])
+            else { return nil }
+        
+        self.init(role: role)
+    }
+    
+    public var data: Data {
+        
+        return Data([role.rawValue])
+    }
+    
+}
+
+public enum GAPLERoleType: UInt8 {
+    
+    /// Only Peripheral Role supported
+    case onlyPeripheralRoleSupported = 0x00
+    
+    /// Only Central Role supported
+    case onlyCentralRoleSupported = 0x01
+    
+    /// Peripheral and Central Role supported, Peripheral Role preferred for connection establishment
+    case bothSupportedPeripheralPreferred = 0x02
+    
+    /// Peripheral and Central Role supported, Central Role preferred for connection establishment
+    case bothSupportedCentralPreferred = 0x03
+    
+}
+
 // MARK: - Coding
 
 public struct GAPDataElement {
