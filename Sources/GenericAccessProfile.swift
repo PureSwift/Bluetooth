@@ -1218,7 +1218,7 @@ public struct GAPSecurityManagerOOBFlags: GAPData {
     
     public static let dataType: GAPDataType = .securityManagerOutOfBandFlags
     
-    public var flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>
+    public let flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>
     
     public init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag> = 0) {
         
@@ -1352,7 +1352,7 @@ public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData {
     
     public static let dataType: GAPDataType = .listOf16BitServiceSolicitationUUIDs
     
-    public var uuids: [UInt16]
+    public let uuids: [UInt16]
     
     public init(uuids: [UInt16] = []) {
         
@@ -1402,7 +1402,7 @@ public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
     
     public static let dataType: GAPDataType = .listOf32BitServiceSolicitationUUIDs
     
-    public var uuids: [UInt32]
+    public let uuids: [UInt32]
     
     public init(uuids: [UInt32] = []) {
         
@@ -1452,7 +1452,7 @@ public struct GAPListOf128BitServiceSolicitationUUIDs: GAPData {
     
     public static let dataType: GAPDataType = .listOf128BitServiceSolicitationUUIDs
     
-    public var uuids: [UUID]
+    public let uuids: [UUID]
     
     public init(uuids: [UUID] = []) {
         
@@ -1507,8 +1507,8 @@ public struct GAPServiceData16BitUUID: GAPData {
     
     public static let dataType: GAPDataType = .serviceData16BitUUID
     
-    public var uuid: UInt16
-    public var serviceData: [UInt8] = []
+    public let uuid: UInt16
+    public private(set) var serviceData: [UInt8] = []
     
     public init(uuid: UInt16, serviceData: [UInt8] = []) {
         
@@ -1567,8 +1567,8 @@ public struct GAPServiceData32BitUUID: GAPData {
     
     public static let dataType: GAPDataType = .serviceData32BitUUID
     
-    public var uuid: UInt32
-    public var serviceData: [UInt8] = []
+    public let uuid: UInt32
+    public private(set) var serviceData: [UInt8] = []
     
     public init(uuid: UInt32, serviceData: [UInt8] = []) {
         
@@ -1627,8 +1627,8 @@ public struct GAPServiceData128BitUUID: GAPData {
     
     public static let dataType: GAPDataType = .serviceData128BitUUID
     
-    public var uuid: UUID
-    public var serviceData: [UInt8] = []
+    public let uuid: UUID
+    public private(set) var serviceData: [UInt8] = []
     
     public init(uuid: UUID, serviceData: [UInt8] = []) {
         
@@ -1684,7 +1684,7 @@ public struct GAPAppearance: GAPData {
     
     public static let dataType: GAPDataType = .appearance
     
-    public var appearance: UInt16
+    public let appearance: UInt16
     
     public init(appearance: UInt16) {
         
@@ -1721,6 +1721,157 @@ extension GAPAppearance: CustomStringConvertible {
     public var description: String {
         
         return appearance.description
+    }
+}
+
+public struct GAPTargetAddress {
+    
+    public typealias ByteValue = (UInt8, UInt8, UInt8)
+    
+    public let companyAssigned: ByteValue
+    
+    public let companyId: ByteValue
+    
+    public init(companyAssigned: ByteValue, companyId: ByteValue) {
+        
+        self.companyAssigned = companyAssigned
+        self.companyId = companyId
+    }
+    
+    public var data: Data {
+     
+        return Data(bytes: [companyAssigned.0, companyAssigned.1, companyAssigned.2, companyId.0, companyId.1, companyId.2])
+    }
+    
+}
+
+extension GAPTargetAddress: Equatable {
+    
+    public static func == (lhs: GAPTargetAddress, rhs: GAPTargetAddress) -> Bool {
+        
+        return lhs.companyAssigned == rhs.companyAssigned && lhs.companyId == rhs.companyId
+    }
+    
+}
+
+/// The Public Target Address data type defines the address of one or more intended recipients of an advertisement when one or more devices were bonded using a public address.
+/// This data type is intended to be used to avoid a situation where a bonded device unnecessarily responds to an advertisement intended for another bonded device.
+///
+/// Size: Multiples of 6 octets
+/// The format of each 6 octet address is the same as the Public Device Address defined in Vol. 6, Part B, Section 1.3.
+///
+/// The public device address is divided into the following two fields:
+/// company_assigned field is contained in the 24 least significant bits
+/// company_id field is contained in the 24 most significant bits
+public struct GAPPublicTargetAddress: GAPData {
+    
+    public static let length = MemoryLayout<UInt8>.size * 6
+    
+    public static let dataType: GAPDataType = .publicTargetAddress
+    
+    public let targetAddresses: [GAPTargetAddress]
+    
+    public init(targetAddresses: [GAPTargetAddress]) {
+        
+        self.targetAddresses = targetAddresses
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count % type(of: self).length == 0
+            else { return nil }
+        
+        var index = 0
+        var addresses = [GAPTargetAddress]()
+        
+        while index < data.count {
+            
+            let address = GAPTargetAddress(companyAssigned: (data[index], data[index+1], data[index+2]), companyId: (data[index+3], data[index+4], data[index+5]))
+            addresses.append(address)
+            
+            index += type(of: self).length
+        }
+        
+        self.init(targetAddresses: addresses)
+    }
+    
+    public var data: Data {
+        
+        return targetAddresses.reduce(Data(), { $0.0 + $0.1.data })
+    }
+    
+}
+
+extension GAPPublicTargetAddress: Equatable {
+    
+    public static func == (lhs: GAPPublicTargetAddress, rhs: GAPPublicTargetAddress) -> Bool {
+        
+        return lhs.targetAddresses == rhs.targetAddresses
+    }
+}
+
+extension GAPPublicTargetAddress: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return targetAddresses.description
+    }
+}
+
+public struct GAPRandomTargetAddress: GAPData {
+    
+    public typealias ByteValue = (UInt8, UInt8, UInt8)
+    
+    public static let length = MemoryLayout<UInt8>.size * 6
+    
+    public static let dataType: GAPDataType = .randomTargetAddress
+    
+    public let targetAddresses: [GAPTargetAddress]
+    
+    public init(targetAddresses: [GAPTargetAddress]) {
+        
+        self.targetAddresses = targetAddresses
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count % type(of: self).length == 0
+            else { return nil }
+        
+        var index = 0
+        var addresses = [GAPTargetAddress]()
+        
+        while index < data.count {
+            
+            let address = GAPTargetAddress(companyAssigned: (data[index], data[index+1], data[index+2]), companyId: (data[index+3], data[index+4], data[index+5]))
+            addresses.append(address)
+            
+            index += type(of: self).length
+        }
+        
+        self.init(targetAddresses: addresses)
+    }
+    
+    public var data: Data {
+        
+        return targetAddresses.reduce(Data(), { $0.0 + $0.1.data })
+    }
+    
+}
+
+extension GAPRandomTargetAddress: Equatable {
+    
+    public static func == (lhs: GAPRandomTargetAddress, rhs: GAPRandomTargetAddress) -> Bool {
+        
+        return lhs.targetAddresses == rhs.targetAddresses
+    }
+}
+
+extension GAPRandomTargetAddress: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return targetAddresses.description
     }
 }
 
