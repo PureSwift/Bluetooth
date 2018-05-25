@@ -551,6 +551,10 @@ final class GATTTests: XCTestCase {
                     guard let foundService = services.first(where: { $0.uuid == service.uuid })
                         else { XCTFail("Service \(service.uuid) not found"); return }
                     
+                    XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
+                    XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
+                    XCTAssertEqual(foundService.type.uuid, database.first!.uuid)
+                    
                     client.discoverAllCharacteristics(of: foundService)  {
                         
                         switch $0 {

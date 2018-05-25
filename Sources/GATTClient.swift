@@ -639,7 +639,8 @@ public final class GATTClient {
         }
     }
     
-    private func readByGroupTypeResponse(_ response: ATTResponse<ATTReadByGroupTypeResponse>, operation: DiscoveryOperation<Service>) {
+    private func readByGroupTypeResponse(_ response: ATTResponse<ATTReadByGroupTypeResponse>,
+                                         operation: DiscoveryOperation<Service>) {
         
         // Read By Group Type Response returns a list of Attribute Handle, End Group Handle, and Attribute Value tuples
         // corresponding to the services supported by the server. Each Attribute Value contained in the response is the 
@@ -791,6 +792,8 @@ public final class GATTClient {
                 
                 foundData = values.map { Descriptor(uuid: .bit128($0.1), handle: $0.0) }
             }
+            
+            operation.foundDescriptors += foundData
             
             // get more if possible
             let lastHandle = foundData.last?.handle ?? 0x00
