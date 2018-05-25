@@ -507,9 +507,9 @@ final class GATTTests: XCTestCase {
         
         let descriptors = [
             GATTClientCharacteristicConfiguration().descriptor,
-            GATT.Descriptor(uuid: BluetoothUUID(),
-                            value: Data("test".utf8),
-                            permissions: [.read, .write])
+            //GATT.Descriptor(uuid: BluetoothUUID(),
+            //                value: Data("test".utf8),
+            //                permissions: [.read, .write])
         ]
         
         let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
