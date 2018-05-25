@@ -17,6 +17,7 @@ final class GATTTests: XCTestCase {
         ("testMTUExchange", testMTUExchange),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
         ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor),
+        ("testDescriptors", testDescriptors),
         ("testNotification", testNotification)
     ]
     
@@ -502,6 +503,137 @@ final class GATTTests: XCTestCase {
         mockData.client.forEach { print($0.map { "0x" + $0.toHexadecimal() }) }
     }
     
+    func testDescriptors() {
+        
+        let descriptors = [
+            GATTClientCharacteristicConfiguration().descriptor,
+            GATT.Descriptor(uuid: BluetoothUUID(),
+                            value: Data("test".utf8),
+                            permissions: [.read, .write])
+        ]
+        
+        let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
+                                                 value: Data(),
+                                                 permissions: [.read],
+                                                 properties: [.read],
+                                                 descriptors: descriptors)
+        
+        let service = GATT.Service.init(uuid: BluetoothUUID(),
+                                        primary: true,
+                                        characteristics: [characteristic])
+        
+        let database = GATTDatabase(services: [service])
+        
+        // server
+        let serverSocket = TestL2CAPSocket()
+        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
+        server.log = { print("GATT Server: " + $0) }
+        server.connection.log = { print("Server ATT: " + $0) }
+        server.database = database
+        
+        // client
+        let clientSocket = TestL2CAPSocket()
+        let client = GATTClient(socket: clientSocket)
+        client.log = { print("GATT Client: " + $0) }
+        client.connection.log = { print("Client ATT: " + $0) }
+        
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
+        
+        // discover service
+        client.discoverAllPrimaryServices() {
+            
+            switch $0 {
+                
+            case let .error(error):
+                
+                XCTFail("Error \(error)")
+                
+            case let .value(services):
+                
+                guard let foundService = services.first(where: { $0.uuid == service.uuid })
+                    else { XCTFail("Service \(service.uuid) not found"); return }
+                
+                XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
+                XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
+                XCTAssertEqual(foundService.type.uuid, database.first!.uuid)
+                
+                client.discoverAllCharacteristics(of: foundService)  {
+                    
+                    switch $0 {
+                        
+                    case let .error(error):
+                        
+                        XCTFail("Error \(error)")
+                        
+                    case let .value(characteristics):
+                        
+                        guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
+                            else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
+                        
+                        XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, BluetoothUUID.characteristic)
+                        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
+                        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
+                        XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
+                        
+                        client.discoverDescriptors(for: foundCharacteristic, service: (foundService, characteristics)) {
+                            
+                            switch $0 {
+                                
+                            case let .error(error):
+                                
+                                XCTFail("Error \(error)")
+                                
+                            case let .value(foundDescriptors):
+                                
+                                XCTAssert(foundDescriptors.isEmpty == false, "No descriptors found")
+                                XCTAssertEqual(foundDescriptors.map({ $0.uuid }), descriptors.map({ $0.uuid }))
+                                
+                                for (index, descriptor) in foundDescriptors.enumerated() {
+                                    
+                                    let expectedValue = descriptors[index].value
+                                    
+                                    client.readDescriptor(descriptor) {
+                                        
+                                        switch $0 {
+                                            
+                                        case let .error(error):
+                                            
+                                            XCTFail("Error \(error)")
+                                            
+                                        case let .value(readValue):
+                                            
+                                            XCTAssertEqual(readValue, expectedValue)
+                                            
+                                            let newValue = Data("new value".utf8)
+                                            
+                                            client.writeDescriptor(descriptor, data: newValue) {
+                                                
+                                                switch $0 {
+                                                    
+                                                case let .error(error):
+                                                    
+                                                    XCTFail("Error \(error)")
+                                                    
+                                                case .value:
+                                                    
+                                                    XCTAssertEqual(newValue, server.database[handle: descriptor.handle].value)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // run fake sockets
+        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+    }
+    
     func testNotification() {
         
         func test(with characteristics: [GATT.Characteristic], newData: [Data]) {
@@ -510,9 +642,7 @@ final class GATTTests: XCTestCase {
                                             primary: true,
                                             characteristics: characteristics)
             
-            var database = GATTDatabase()
-            
-            database.add(service: service)
+            var database = GATTDatabase(services: [service])
             
             // server
             let serverSocket = TestL2CAPSocket()
