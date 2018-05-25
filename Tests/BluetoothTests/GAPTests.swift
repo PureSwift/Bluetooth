@@ -28,7 +28,8 @@ final class GAPTests: XCTestCase {
         ("testGAPServiceData128BitUUID", testGAPServiceData128BitUUID),
         ("testGAPAppearance", testGAPAppearance),
         ("testGAPPublicTargetAddress", testGAPPublicTargetAddress),
-        ("testGAPRandomTargetAddress", testGAPRandomTargetAddress)
+        ("testGAPRandomTargetAddress", testGAPRandomTargetAddress),
+        ("testGAPAdvertisingInterval", testGAPAdvertisingInterval)
     ]
     
     func testDataType() {
@@ -380,5 +381,20 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(targetAddress.data.count, 12)
         }
         
+    }
+    
+    func testGAPAdvertisingInterval() {
+    
+        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x4f])))
+        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x4f, 0xf8, 0x30])))
+        
+        do {
+            let data = Data([0xf8, 0x30])
+            let advertisingInterval = GAPAdvertisingInterval(data: data)!
+            
+            XCTAssertEqual(advertisingInterval.data, data)
+            XCTAssertEqual(MemoryLayout.size(ofValue: advertisingInterval), 2)
+            XCTAssertEqual(advertisingInterval.data.count, 2)
+        }
     }
 }
