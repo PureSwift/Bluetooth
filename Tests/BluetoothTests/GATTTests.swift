@@ -507,9 +507,12 @@ final class GATTTests: XCTestCase {
         
         let descriptors = [
             GATTClientCharacteristicConfiguration().descriptor,
-            //GATT.Descriptor(uuid: BluetoothUUID(),
-            //                value: Data("test".utf8),
-            //                permissions: [.read, .write])
+            GATT.Descriptor(uuid: .savantSystems,
+                            value: Data("Savant".utf8),
+                            permissions: [.read]),
+            GATT.Descriptor(uuid: .savantSystems2,
+                            value: Data("Savant2".utf8),
+                            permissions: [.write])
         ]
         
         let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
@@ -592,33 +595,40 @@ final class GATTTests: XCTestCase {
                                 for (index, descriptor) in foundDescriptors.enumerated() {
                                     
                                     let expectedValue = descriptors[index].value
+                                    let descriptorPermissions = descriptors[index].permissions
                                     
-                                    client.readDescriptor(descriptor) {
+                                    if descriptorPermissions.contains(.read) {
                                         
-                                        switch $0 {
+                                        client.readDescriptor(descriptor) {
                                             
-                                        case let .error(error):
-                                            
-                                            XCTFail("Error \(error)")
-                                            
-                                        case let .value(readValue):
-                                            
-                                            XCTAssertEqual(readValue, expectedValue)
-                                            
-                                            let newValue = Data("new value".utf8)
-                                            
-                                            client.writeDescriptor(descriptor, data: newValue) {
+                                            switch $0 {
                                                 
-                                                switch $0 {
-                                                    
-                                                case let .error(error):
-                                                    
-                                                    XCTFail("Error \(error)")
-                                                    
-                                                case .value:
-                                                    
-                                                    XCTAssertEqual(newValue, server.database[handle: descriptor.handle].value)
-                                                }
+                                            case let .error(error):
+                                                
+                                                XCTFail("Error \(error)")
+                                                
+                                            case let .value(readValue):
+                                                
+                                                XCTAssertEqual(readValue, expectedValue)
+                                            }
+                                        }
+                                    }
+                                    
+                                    if descriptorPermissions.contains(.write) {
+                                     
+                                        let newValue = Data("new value".utf8)
+                                        
+                                        client.writeDescriptor(descriptor, data: newValue) {
+                                            
+                                            switch $0 {
+                                                
+                                            case let .error(error):
+                                                
+                                                XCTFail("Error \(error)")
+                                                
+                                            case .value:
+                                                
+                                                XCTAssertEqual(newValue, server.database[handle: descriptor.handle].value)
                                             }
                                         }
                                     }
