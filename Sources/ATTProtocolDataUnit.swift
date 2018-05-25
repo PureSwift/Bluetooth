@@ -406,7 +406,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
         
         public var byteValue: [UInt8] {
             
-            var bytes = [UInt8]()
+            var data = [UInt8]()
             
             switch self {
                 
@@ -418,7 +418,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let uuidBytes = pair.1.littleEndian.bytes
                     
-                    bytes += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1]
+                    data += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1]
                 }
                 
             case let .bit128(value):
@@ -429,11 +429,11 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
                     
                     let uuidBytes = pair.1.littleEndian.bytes
                     
-                    bytes += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1]
+                    data += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1, uuidBytes.2, uuidBytes.3, uuidBytes.4, uuidBytes.5, uuidBytes.6, uuidBytes.7, uuidBytes.8, uuidBytes.9, uuidBytes.10, uuidBytes.11, uuidBytes.12, uuidBytes.13, uuidBytes.14, uuidBytes.15]
                 }
             }
             
-            return bytes
+            return data
         }
     }
 }
