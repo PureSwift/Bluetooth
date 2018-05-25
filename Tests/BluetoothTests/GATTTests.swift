@@ -507,6 +507,9 @@ final class GATTTests: XCTestCase {
         
         let descriptors = [
             GATTClientCharacteristicConfiguration().descriptor,
+            GATT.Descriptor(uuid: BluetoothUUID(),
+                            value: Data("UInt128 Descriptor".utf8),
+                            permissions: [.read, .write]),
             GATT.Descriptor(uuid: .savantSystems,
                             value: Data("Savant".utf8),
                             permissions: [.read]),
@@ -590,6 +593,7 @@ final class GATTTests: XCTestCase {
                             case let .value(foundDescriptors):
                                 
                                 XCTAssert(foundDescriptors.isEmpty == false, "No descriptors found")
+                                XCTAssertEqual(foundDescriptors.count, descriptors.count)
                                 XCTAssertEqual(foundDescriptors.map({ $0.uuid }), descriptors.map({ $0.uuid }))
                                 
                                 for (index, descriptor) in foundDescriptors.enumerated() {
