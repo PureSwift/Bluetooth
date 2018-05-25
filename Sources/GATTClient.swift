@@ -24,11 +24,11 @@ public final class GATTClient {
     @_versioned
     internal let connection: ATTConnection
     
-    @_versioned
-    internal private(set) var cache = Cache()
+    /// Whether the client is currently writing a long value.
+    internal private(set) var inLongWrite: Bool = false
     
-    /// Currently writing a long value.
-    private var inLongWrite: Bool = false
+    ///
+    internal private(set) var notifications = [UInt16: Notification]()
     
     // MARK: - Initialization
     
@@ -44,6 +44,8 @@ public final class GATTClient {
         self.connection = ATTConnection(socket: socket)
         self.connection.maximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
+        
+        // setup notifications and indications
         self.registerATTHandlers()
         
         // queue MTU exchange
@@ -77,19 +79,7 @@ public final class GATTClient {
         /// The Attribute Protocol Read By Group Type Request shall be used with 
         /// the Attribute Type parameter set to the UUID for «Primary Service». 
         /// The Starting Handle shall be set to 0x0001 and the Ending Handle shall be set to 0xFFFF.
-        discoverServices(start: 0x0001, end: 0xFFFF, primary: true) { [unowned self] (response) in
-            
-            // update cache
-            switch response {
-            case .error:
-                break
-            case let .value(value):
-                self.cache.update(value)
-            }
-            
-            // call completion
-            completion(response)
-        }
+        discoverServices(start: 0x0001, end: 0xFFFF, primary: true, completion: completion)
     }
     
     /// Discover Primary Service by Service UUID
@@ -108,19 +98,7 @@ public final class GATTClient {
         // parameter set to the UUID for «Primary Service» and the Attribute Value set to the 16-bit
         // Bluetooth UUID or 128-bit UUID for the specific primary service. 
         // The Starting Handle shall be set to 0x0001 and the Ending Handle shall be set to 0xFFFF.
-        discoverServices(uuid: uuid, start: 0x0001, end: 0xFFFF, primary: true) { [unowned self] (response) in
-            
-            // update cache
-            switch response {
-            case .error:
-                break
-            case let .value(value):
-                self.cache.update(value, isCompleteSet: false)
-            }
-            
-            // call completion
-            completion(response)
-        }
+        discoverServices(uuid: uuid, start: 0x0001, end: 0xFFFF, primary: true, completion: completion)
     }
     
     /// Discover All Characteristics of a Service
@@ -140,19 +118,7 @@ public final class GATTClient {
         // starting handle of the specified service and the Ending Handle shall be set to the 
         // ending handle of the specified service.
         
-        discoverCharacteristics(service: service) { [unowned self] (response) in
-            
-            // update cache
-            switch response {
-            case .error:
-                break
-            case let .value(value):
-                self.cache.services[service.uuid]?.update(value)
-            }
-            
-            // call completion
-            completion(response)
-        }
+        discoverCharacteristics(service: service, completion: completion)
     }
     
     /// Discover Characteristics by UUID
@@ -174,57 +140,7 @@ public final class GATTClient {
         // The Attribute Type is set to the UUID for «Characteristic» and the Starting Handle and Ending Handle
         // parameters shall be set to the service handle range.
         
-        discoverCharacteristics(uuid: uuid, service: service) { [unowned self] (response) in
-            
-            // update cache
-            switch response {
-            case .error:
-                break
-            case let .value(value):
-                self.cache.services[service.uuid]?.update(value, isCompleteSet: false)
-            }
-            
-            // call completion
-            completion(response)
-        }
-    }
-    
-    /**
-     Discover All Characteristic Descriptors
-     
-     This sub-procedure is used by a client to find all the characteristic descriptor’s Attribute Handles and Attribute Types within a characteristic definition when only the characteristic handle range is known. The characteristic specified is identified by the characteristic handle range.
-     
-     ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
-     */
-    public func discoverAllCharacteristicDescriptors(of characteristic: Characteristic,
-                                                     completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
-        
-        /**
-         The Attribute Protocol Find Information Request shall be used with the Starting Handle set
-         to the handle of the specified characteristic value + 1 and the Ending Handle set to the
-         ending handle of the specified characteristic.
-         */
-        
-        let start = characteristic.handle.value + 1
-        
-        guard let end = cache.endHandle(for: characteristic)
-            else { fatalError("Could not retrieve handles") }
-        
-        let operation = DescriptorDiscoveryOperation(start: start, end: end) { [unowned self] (response) in
-            
-            // update cache
-            switch response {
-            case .error:
-                break
-            case let .value(value):
-                self.cache.update(value, for: characteristic)
-            }
-            
-            // call completion
-            completion(response)
-        }
-        
-        discoverDescriptors(operation: operation)
+        discoverCharacteristics(uuid: uuid, service: service, completion: completion)
     }
     
     /// Read Characteristic Value
@@ -237,7 +153,7 @@ public final class GATTClient {
                                    completion: @escaping (GATTClientResponse<Data>) -> ()) {
         
         // read value and try to read blob if too big
-        readCharacteristicValue(characteristic.handle.value, completion: completion)
+        readAttributeValue(characteristic.handle.value, completion: completion)
     }
     
     /// Read Using Characteristic UUID
@@ -262,7 +178,7 @@ public final class GATTClient {
         
         let operation = ReadUsingUUIDOperation(uuid: uuid, completion: completion)
         
-        send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
     }
     
     /// Read Multiple Characteristic Values
@@ -286,7 +202,7 @@ public final class GATTClient {
         
         let operation = ReadMultipleOperation(characteristics: characteristics, completion: completion)
         
-        send(pdu) { [unowned self] in self.readMultiple($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readMultipleResponse($0, operation: operation) }
     }
     
     /**
@@ -299,30 +215,71 @@ public final class GATTClient {
                                     reliableWrites: Bool = true,
                                     completion: ((GATTClientResponse<()>) -> ())?) {
         
-        // short value
-        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - 3 {
-            
-            if let completion = completion {
-                
-                writeCharacteristicValue(characteristic,
-                                         data: data,
-                                         completion: completion)
-                
-            } else {
-                
-                writeCharacteristicCommand(characteristic,
-                                           data: data)
-            }
-            
-        } else {
-            
-            let completion = completion ?? { _ in }
-            
-            writeLongCharacteristicValue(characteristic,
-                                         data: data,
-                                         reliableWrites: reliableWrites,
-                                         completion: completion)
-        }
+        writeAttribute(characteristic.handle.value,
+                       data: data,
+                       reliableWrites: reliableWrites,
+                       completion: completion)
+    }
+    
+    /**
+     Discover All Characteristic Descriptors
+     
+     This sub-procedure is used by a client to find all the characteristic descriptor’s Attribute Handles and Attribute Types within a characteristic definition when only the characteristic handle range is known. The characteristic specified is identified by the characteristic handle range.
+     
+     ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
+     */
+    public func discoverDescriptors(for characteristic: Characteristic,
+                                    service: (declaration: Service, characteristics: [Characteristic]),
+                                    completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
+        
+        /**
+         The Attribute Protocol Find Information Request shall be used with the Starting Handle set
+         to the handle of the specified characteristic value + 1 and the Ending Handle set to the
+         ending handle of the specified characteristic.
+         */
+        
+        let start = characteristic.handle.value + 1
+        
+        let end = endHandle(for: characteristic, service: service)
+        
+        let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
+        
+        discoverDescriptors(operation: operation)
+    }
+    
+    /// Read Characteristic Descriptor
+    ///
+    /// This sub-procedure is used to read a characteristic descriptor from a server when the client knows
+    /// the characteristic descriptor declaration’s Attribute handle.
+    ///
+    /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadCharacteristicValue.png)
+    public func readDescriptor(_ descriptor: Descriptor,
+                               completion: @escaping (GATTClientResponse<Data>) -> ()) {
+        
+        /**
+         The Attribute Protocol Read Request is used for this sub-procedure. The Read Request is used with the Attribute Handle parameter set to the characteristic descriptor handle. The Read Response returns the characteristic descriptor value in the Attribute Value parameter.
+         
+         An Error Response shall be sent by the server in response to the Read Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a read operation is not permitted on the Characteristic Value. The Error Code parameter is set accordingly.
+         */
+        
+        // read value and try to read blob if too big
+        readAttributeValue(descriptor.handle, completion: completion)
+    }
+    
+    /**
+     Write Descriptor
+     
+     Uses the appropriate procecedure to write the characteristic descriptor value.
+     */
+    public func writeDescriptor(_ descriptor: Descriptor,
+                                data: Data,
+                                reliableWrites: Bool = true,
+                                completion: ((GATTClientResponse<()>) -> ())?) {
+        
+        writeAttribute(descriptor.handle,
+                       data: data,
+                       reliableWrites: reliableWrites,
+                       completion: completion)
     }
     
     /**
@@ -332,38 +289,38 @@ public final class GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
-    public func registerNotifications(for characteristic: Characteristic,
-                                      notification: Notification?,
-                                      completion: @escaping (GATTClientResponse<()>) -> ()) {
+    public func registerNotification(_ notification: Notification?,
+                                     for characteristic: Characteristic,
+                                     descriptors: [GATTClient.Descriptor],
+                                     clientConfiguration: GATTClientCharacteristicConfiguration = GATTClientCharacteristicConfiguration(),
+                                     completion: @escaping (GATTClientResponse<()>) -> ()) {
         
-        let cachedDescriptors = cache.descriptors(for: characteristic)
+        guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
+            else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
         
-        // make sure we fetched descriptors first
-        if cachedDescriptors.contains(where: { $0.uuid == .clientCharacteristicConfiguration }) {
-            
-            register(notification: notification,
-                     for: characteristic,
-                     descriptors: cachedDescriptors,
-                     completion: completion)
-            
+        let enableNotifications = notification != nil
+        
+        var clientConfiguration = clientConfiguration
+        
+        if enableNotifications {
+            clientConfiguration.configuration.insert(.notify)
         } else {
+            clientConfiguration.configuration.remove(.notify)
+        }
+        
+        writeDescriptor(descriptor, data: clientConfiguration.byteValue) { [unowned self] (response) in
             
-            discoverAllCharacteristicDescriptors(of: characteristic) { [unowned self] (response) in
+            switch response {
                 
-                switch response {
-                    
-                case let .error(error):
-                    
-                    completion(.error(error))
-                    
-                case let .value(descriptors):
-                    
-                    self.register(notification: notification,
-                                  for: characteristic,
-                                  descriptors: descriptors,
-                                  completion: completion)
-                }
+            case .error:
+                break
+                
+            case .value:
+                
+                self.notifications[characteristic.handle.value] = notification
             }
+            
+            completion(response)
         }
     }
     
@@ -373,7 +330,7 @@ public final class GATTClient {
     private func registerATTHandlers() {
         
         // value confirmation
-        
+        connection.register(notification)
     }
     
     @inline(__always)
@@ -396,6 +353,34 @@ public final class GATTClient {
         
         guard let _ = connection.send(request)
             else { fatalError("Could not add PDU to queue: \(request)") }
+    }
+    
+    internal func endHandle(for characteristic: Characteristic,
+                            service: (declaration: Service, characteristics: [Characteristic])) -> UInt16 {
+        
+        // calculate ending handle of characteristic
+        
+        let end: UInt16
+        
+        guard let index = service.characteristics.index(where: { $0.handle.declaration == characteristic.handle.declaration })
+            else { fatalError("Invalid characteristics \(service.characteristics.map { $0.uuid })") }
+        
+        let nextIndex = index + 1
+        
+        // get start handle of next characteristic
+        if nextIndex < service.characteristics.count {
+            
+            let nextCharacteristic = service.characteristics[nextIndex]
+            
+            end = nextCharacteristic.handle.declaration - 1
+            
+        } else {
+            
+            // use service end handle
+            end = service.declaration.end
+        }
+        
+        return end
     }
     
     // MARK: Requests
@@ -430,7 +415,7 @@ public final class GATTClient {
                                            attributeType: serviceType.rawValue,
                                            attributeValue: [UInt8](uuid.littleEndian.data))
             
-            send(pdu) { [unowned self] in self.findByType($0, operation: operation) }
+            send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
             
         } else {
             
@@ -438,7 +423,7 @@ public final class GATTClient {
                                                 endHandle: end,
                                                 type: serviceType.uuid)
             
-            send(pdu) { [unowned self] in self.readByGroupType($0, operation: operation) }
+            send(pdu) { [unowned self] in self.readByGroupTypeResponse($0, operation: operation) }
         }
     }
     
@@ -458,7 +443,7 @@ public final class GATTClient {
                                        endHandle: service.end,
                                        attributeType: attributeType.uuid)
         
-        send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
     }
     
     private func discoverDescriptors(operation: DescriptorDiscoveryOperation) {
@@ -467,29 +452,7 @@ public final class GATTClient {
         
         let pdu = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
         
-        send(pdu) { [unowned self] in self.findInformation($0, operation: operation) }
-    }
-    
-    private func register(notification: Notification?,
-                          for characteristic: Characteristic,
-                          descriptors: [GATTClient.Descriptor],
-                          completion: @escaping (GATTClientResponse<()>) -> ()) {
-        
-        guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
-            else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
-        
-        let enableNotifications = notification != nil
-        
-        cache.cache(for: characteristic, update: {
-            if enableNotifications {
-                $0.clientConfiguration.configuration.insert(.notify)
-            } else {
-                $0.clientConfiguration.configuration.remove(.notify)
-            }
-            return
-        })
-        
-        print(descriptor)
+        send(pdu) { [unowned self] in self.findInformationResponse($0, operation: operation) }
     }
     
     /// Read Characteristic Value
@@ -498,7 +461,7 @@ public final class GATTClient {
     /// the Characteristic Value Handle.
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadCharacteristicValue.png)
-    private func readCharacteristicValue(_ handle: UInt16, completion: @escaping (GATTClientResponse<Data>) -> ()) {
+    private func readAttributeValue(_ handle: UInt16, completion: @escaping (GATTClientResponse<Data>) -> ()) {
         
         // The Attribute Protocol Read Request is used with the
         // Attribute Handle parameter set to the Characteristic Value Handle.
@@ -509,7 +472,7 @@ public final class GATTClient {
         
         let operation = ReadOperation(handle: handle, completion: completion)
         
-        send(pdu) { [unowned self] in self.readCharacteristicValueResponse($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readResponse($0, operation: operation) }
     }
     
     /// Read Long Characteristic Value
@@ -520,7 +483,7 @@ public final class GATTClient {
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadLongCharacteristicValues.png)
     @inline(__always)
-    private func readLongCharacteristicValue(_ operation: ReadOperation) {
+    private func readLongAttributeValue(_ operation: ReadOperation) {
         
         // The Attribute Protocol Read Blob Request is used to perform this sub-procedure.
         // The Attribute Handle shall be set to the Characteristic Value Handle of the Characteristic Value to be read.
@@ -532,27 +495,93 @@ public final class GATTClient {
         let pdu = ATTReadBlobRequest(handle: operation.handle,
                                      offset: operation.offset)
         
-        send(pdu) { [unowned self] in self.readBlob($0, operation: operation) }
+        send(pdu) { [unowned self] in self.readBlobResponse($0, operation: operation) }
     }
     
-    /**
-     Write Without Response
-     
-     This sub-procedure is used to write a Characteristic Value to a server when the client knows the Characteristic Value Handle and the client does not need an acknowledgement that the write was successfully performed. This sub-procedure only writes the first `(ATT_MTU – 3)` octets of a Characteristic Value. This sub-procedure cannot be used to write a long characteristic; instead the Write Long Characteristic Values sub-procedure should be used.
-     
-     If the Characteristic Value write request is the wrong size, or has an invalid value as defined by the profile, then the write shall not succeed and no error shall be generated by the server.
-     */
-    private func writeCharacteristicCommand(_ characteristic: Characteristic, data: Data) {
+    private func writeAttribute(_ handle: UInt16,
+                                data: Data,
+                                reliableWrites: Bool,
+                                completion: ((GATTClientResponse<()>) -> ())?) {
         
-        // The Attribute Protocol Write Command is used for this sub-procedure.
-        // The Attribute Handle parameter shall be set to the Characteristic Value Handle.
-        // The Attribute Value parameter shall be set to the new Characteristic Value.
+        // short value
+        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
+            
+            if let completion = completion {
+                
+                writeAttributeValue(handle,
+                                    data: data,
+                                    completion: completion)
+                
+            } else {
+                
+                writeAttributeCommand(handle,
+                                      data: data)
+            }
+            
+        } else {
+            
+            let completion = completion ?? { _ in }
+            
+            writeLongAttributeValue(handle,
+                                    data: data,
+                                    reliableWrites: reliableWrites,
+                                    completion: completion)
+        }
+    }
+    
+    private func writeAttributeCommand(_ attribute: UInt16, data: Data) {
         
         let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 3))
         
-        let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
+        let pdu = ATTWriteCommand(handle: attribute, value: data)
         
         send(pdu)
+    }
+    
+    /// Write attribute request.
+    private func writeAttributeValue(_ attribute: UInt16,
+                                     data: Data,
+                                     completion: @escaping (GATTClientResponse<()>) -> ()) {
+        
+        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
+        
+        let pdu = ATTWriteRequest(handle: attribute, value: data)
+
+        send(pdu) { [unowned self] in self.writeResponse($0, completion: completion) }
+    }
+    
+    private func writeLongAttributeValue(_ attribute: UInt16,
+                                         data: Data,
+                                         reliableWrites: Bool = false,
+                                         completion: @escaping (GATTClientResponse<()>) -> ()) {
+        
+        // The Attribute Protocol Prepare Write Request and Execute Write Request are used to perform this sub-procedure.
+        // The Attribute Handle parameter shall be set to the Characteristic Value Handle of the Characteristic Value to be written.
+        // The Part Attribute Value parameter shall be set to the part of the Attribute Value that is being written.
+        // The Value Offset parameter shall be the offset within the Characteristic Value to be written.
+        // To write the complete Characteristic Value the offset should be set to 0x0000 for the first Prepare Write Request.
+        // The offset for subsequent Prepare Write Requests is the next octet that has yet to be written.
+        // The Prepare Write Request is repeated until the complete Characteristic Value has been transferred,
+        // after which an Executive Write Request is used to write the complete value.
+        
+        guard inLongWrite == false
+            else { completion(.error(GATTClientError.inLongWrite)); return }
+        
+        let bytes = [UInt8](data)
+        
+        let firstValuePart = [UInt8](bytes.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
+        
+        let pdu = ATTPrepareWriteRequest(handle: attribute,
+                                         offset: 0x00,
+                                         partValue: firstValuePart)
+        
+        let operation = WriteOperation(handle: attribute,
+                                       data: bytes,
+                                       reliableWrites: reliableWrites,
+                                       lastRequest: pdu,
+                                       completion: completion)
+        
+        send(pdu) { [unowned self] in self.prepareWriteResponse($0, operation: operation) }
     }
     
     /**
@@ -588,71 +617,6 @@ public final class GATTClient {
         send(pdu)
     }
     
-    /**
-     Write Characteristic Value
-     
-     This sub-procedure is used to write a Characteristic Value to a server when the client knows the Characteristic Value Handle. This sub-procedure only writes the first (ATT_MTU – 3) octets of a Characteristic Value. This sub-procedure cannot be used to write a long Attribute; instead the Write Long Characteristic Values sub-procedure should be used.
-     
-     ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/WriteCharacteristicValue.png)
-     */
-    private func writeCharacteristicValue(_ characteristic: Characteristic,
-                                          data: Data,
-                                          completion: @escaping (GATTClientResponse<()>) -> ()) {
-        
-        // The Attribute Protocol Write Request is used to for this sub-procedure.
-        // The Attribute Handle parameter shall be set to the Characteristic Value Handle.
-        // The Attribute Value parameter shall be set to the new characteristic.
-        
-        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
-        
-        let pdu = ATTWriteRequest(handle: characteristic.handle.value, value: data)
-        
-        // A Write Response shall be sent by the server if the write of the Characteristic Value succeeded.
-        
-        send(pdu) { [unowned self] in self.write($0, completion: completion) }
-    }
-    
-    /**
-     Write Long Characteristic Values
-     
-     This sub-procedure is used to write a Characteristic Value to a server when the client knows the Characteristic Value Handle but the length of the Characteristic Value is longer than can be sent in a single Write Request Attribute Protocol message.
-     
-    ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/WriteLongCharacteristicValues.png)
-     */
-    private func writeLongCharacteristicValue(_ characteristic: Characteristic,
-                                              data: Data,
-                                              reliableWrites: Bool = false,
-                                              completion: @escaping (GATTClientResponse<()>) -> ()) {
-        
-        // The Attribute Protocol Prepare Write Request and Execute Write Request are used to perform this sub-procedure.
-        // The Attribute Handle parameter shall be set to the Characteristic Value Handle of the Characteristic Value to be written.
-        // The Part Attribute Value parameter shall be set to the part of the Attribute Value that is being written.
-        // The Value Offset parameter shall be the offset within the Characteristic Value to be written.
-        // To write the complete Characteristic Value the offset should be set to 0x0000 for the first Prepare Write Request.
-        // The offset for subsequent Prepare Write Requests is the next octet that has yet to be written.
-        // The Prepare Write Request is repeated until the complete Characteristic Value has been transferred,
-        // after which an Executive Write Request is used to write the complete value.
-        
-        guard inLongWrite == false
-            else { completion(.error(GATTClientError.inLongWrite)); return }
-        
-        let bytes = [UInt8](data)
-        
-        let firstValuePart = [UInt8](bytes.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
-        
-        let pdu = ATTPrepareWriteRequest(handle: characteristic.handle.value,
-                                         offset: 0x00,
-                                         partValue: firstValuePart)
-        
-        let operation = WriteOperation(uuid: characteristic.uuid,
-                                       data: bytes,
-                                       reliableWrites: reliableWrites,
-                                       lastRequest: pdu,
-                                       completion: completion)
-        
-        send(pdu) { [unowned self] in self.prepareWrite($0, operation: operation) }
-    }
-    
     // MARK: - Callbacks
     
     private func exchangeMTUResponse(_ response: ATTResponse<ATTMaximumTransmissionUnitResponse>) {
@@ -675,7 +639,8 @@ public final class GATTClient {
         }
     }
     
-    private func readByGroupType(_ response: ATTResponse<ATTReadByGroupTypeResponse>, operation: DiscoveryOperation<Service>) {
+    private func readByGroupTypeResponse(_ response: ATTResponse<ATTReadByGroupTypeResponse>,
+                                         operation: DiscoveryOperation<Service>) {
         
         // Read By Group Type Response returns a list of Attribute Handle, End Group Handle, and Attribute Value tuples
         // corresponding to the services supported by the server. Each Attribute Value contained in the response is the 
@@ -723,7 +688,7 @@ public final class GATTClient {
                                                     endHandle: operation.end,
                                                     type: operation.type.uuid)
                 
-                send(pdu) { [unowned self] in self.readByGroupType($0, operation: operation) }
+                send(pdu) { [unowned self] in self.readByGroupTypeResponse($0, operation: operation) }
                 
             } else {
                 
@@ -732,7 +697,7 @@ public final class GATTClient {
         }
     }
     
-    private func findByType(_ response: ATTResponse<ATTFindByTypeResponse>, operation: DiscoveryOperation<Service>) {
+    private func findByTypeResponse(_ response: ATTResponse<ATTFindByTypeResponse>, operation: DiscoveryOperation<Service>) {
         
         // Find By Type Value Response returns a list of Attribute Handle ranges. 
         // The Attribute Handle range is the starting handle and the ending handle of the service definition.
@@ -778,7 +743,7 @@ public final class GATTClient {
                                                attributeType: operation.type.rawValue,
                                                attributeValue: [UInt8](serviceUUID.littleEndian.data))
                 
-                send(pdu) { [unowned self] in self.findByType($0, operation: operation) }
+                send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
                 
             } else {
                 
@@ -787,8 +752,8 @@ public final class GATTClient {
         }
     }
     
-    private func findInformation(_ response: ATTResponse<ATTFindInformationResponse>,
-                                 operation: DescriptorDiscoveryOperation) {
+    private func findInformationResponse(_ response: ATTResponse<ATTFindInformationResponse>,
+                                         operation: DescriptorDiscoveryOperation) {
         
         /**
          Two possible responses can be sent from the server for the Find Information Request: Find Information Response and Error Response.
@@ -828,6 +793,8 @@ public final class GATTClient {
                 foundData = values.map { Descriptor(uuid: .bit128($0.1), handle: $0.0) }
             }
             
+            operation.foundDescriptors += foundData
+            
             // get more if possible
             let lastHandle = foundData.last?.handle ?? 0x00
             
@@ -835,10 +802,12 @@ public final class GATTClient {
             guard lastHandle >= operation.start
                 else { operation.completion(.error(Error.invalidResponse(pdu))); return }
             
-            operation.start = lastHandle + 1
+            let start = lastHandle + 1
             
             // need to continue discovery
-            if lastHandle != 0, operation.start < operation.end {
+            if lastHandle != 0, start < operation.end {
+                
+                operation.start = start
                 
                 discoverDescriptors(operation: operation)
                 
@@ -850,7 +819,8 @@ public final class GATTClient {
         }
     }
     
-    private func readByType(_ response: ATTResponse<ATTReadByTypeResponse>, operation: DiscoveryOperation<Characteristic>) {
+    private func readByTypeResponse(_ response: ATTResponse<ATTReadByTypeResponse>,
+                                    operation: DiscoveryOperation<Characteristic>) {
         
         typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
         
@@ -917,7 +887,7 @@ public final class GATTClient {
                                                endHandle: operation.end,
                                                attributeType: operation.type.uuid)
                 
-                send(pdu) { [unowned self] in self.readByType($0, operation: operation) }
+                send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
                 
             } else {
                 
@@ -927,8 +897,8 @@ public final class GATTClient {
         }
     }
     
-    /// Read Characteristic Value Response
-    private func readCharacteristicValueResponse(_ response: ATTResponse<ATTReadResponse>, operation: ReadOperation) {
+    /// Read Characteristic (or Descriptor) Value Response
+    private func readResponse(_ response: ATTResponse<ATTReadResponse>, operation: ReadOperation) {
         
         // The Read Response only contains a Characteristic Value that is less than or equal to (ATT_MTU – 1) octets in length.
         // If the Characteristic Value is greater than (ATT_MTU – 1) octets in length, the Read Long Characteristic Value procedure
@@ -952,13 +922,13 @@ public final class GATTClient {
             } else {
                 
                 // read blob
-                readLongCharacteristicValue(operation)
+                readLongAttributeValue(operation)
             }
         }
     }
     
     /// Read Blob Response
-    private func readBlob(_ response: ATTResponse<ATTReadBlobResponse>, operation: ReadOperation) {
+    private func readBlobResponse(_ response: ATTResponse<ATTReadBlobResponse>, operation: ReadOperation) {
         
         // For each Read Blob Request a Read Blob Response is received with a portion of the Characteristic Value contained in the Part Attribute Value parameter.
         
@@ -980,12 +950,12 @@ public final class GATTClient {
             } else {
                 
                 // read blob
-                readLongCharacteristicValue(operation)
+                readLongAttributeValue(operation)
             }
         }
     }
     
-    private func readMultiple(_ response: ATTResponse<ATTReadMultipleResponse>, operation: ReadMultipleOperation) {
+    private func readMultipleResponse(_ response: ATTResponse<ATTReadMultipleResponse>, operation: ReadMultipleOperation) {
         
         switch response {
             
@@ -999,7 +969,7 @@ public final class GATTClient {
         }
     }
     
-    private func readByType(_ response: ATTResponse<ATTReadByTypeResponse>, operation: ReadUsingUUIDOperation) {
+    private func readByTypeResponse(_ response: ATTResponse<ATTReadByTypeResponse>, operation: ReadUsingUUIDOperation) {
         
         // Read By Type Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the characteristics
         // contained in the handle range provided.
@@ -1023,7 +993,7 @@ public final class GATTClient {
      
      An Error Response shall be sent by the server in response to the Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Characteristic Value that is written is the wrong size, or has an invalid value as defined by the profile, then the value shall not be written and an Error Response shall be sent with the Error Code set to Application Error by the server.
      */
-    private func write(_ response: ATTResponse<ATTWriteResponse>, completion: (GATTClientResponse<()>) -> ()) {
+    private func writeResponse(_ response: ATTResponse<ATTWriteResponse>, completion: (GATTClientResponse<()>) -> ()) {
         
         switch response {
             
@@ -1042,7 +1012,7 @@ public final class GATTClient {
      
      An Error Response shall be sent by the server in response to the Prepare Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Attribute Value that is written is the wrong size, or has an invalid value as defined by the profile, then the write shall not succeed and an Error Response shall be sent with the Error Code set to Application Error by the server.
      */
-    private func prepareWrite(_ response: ATTResponse<ATTPrepareWriteResponse>, operation: WriteOperation) {
+    private func prepareWriteResponse(_ response: ATTResponse<ATTPrepareWriteResponse>, operation: WriteOperation) {
         
         @inline(__always)
         func complete(_ completion: (WriteOperation) -> ()) {
@@ -1086,7 +1056,7 @@ public final class GATTClient {
                 operation.lastRequest = pdu
                 operation.sentData += attributeValuePart
                 
-                send(pdu) { [unowned self] in self.prepareWrite($0, operation: operation) }
+                send(pdu) { [unowned self] in self.prepareWriteResponse($0, operation: operation) }
                 
             } else {
                 
@@ -1096,12 +1066,12 @@ public final class GATTClient {
                 // all data sent
                 let pdu = ATTExecuteWriteRequest(flag: .write)
                 
-                send(pdu) { [unowned self] in self.executeWrite($0, operation: operation) }
+                send(pdu) { [unowned self] in self.executeWriteResponse($0, operation: operation) }
             }
         }
     }
     
-    private func executeWrite(_ response: ATTResponse<ATTExecuteWriteResponse>, operation: WriteOperation) {
+    private func executeWriteResponse(_ response: ATTResponse<ATTExecuteWriteResponse>, operation: WriteOperation) {
         
         @inline(__always)
         func complete(_ completion: (WriteOperation) -> ()) {
@@ -1120,6 +1090,14 @@ public final class GATTClient {
             
             complete { $0.success() }
         }
+    }
+    
+    private func notification(_ notification: ATTHandleValueNotification) {
+        
+        guard let callback = self.notifications[notification.handle]
+            else { return }
+        
+        callback(Data(notification.value))
     }
 }
 
@@ -1255,186 +1233,6 @@ public extension GATTClient {
 
 // MARK: - Private Supporting Types
 
-internal extension GATTClient {
-    
-    internal struct Cache {
-        
-        fileprivate(set) var services = [BluetoothUUID: CachedService]()
-        
-        mutating func update(_ newValue: [Service], isCompleteSet: Bool = true) {
-            
-            if isCompleteSet {
-                
-                // remove services that no longer exist on the server
-                self.services.keys
-                    .filter { uuid in newValue.contains(where: { $0.uuid == uuid }) }
-                    .forEach { self.services[$0] = nil }
-            }
-            
-            // update cache
-            newValue.forEach {
-                let newValue: CachedService
-                if var oldValue = self.services[$0.uuid] {
-                    oldValue.service = $0
-                    newValue = oldValue
-                } else {
-                    newValue = CachedService(service: $0, characteristics: [:])
-                }
-                self.services[$0.uuid] = newValue
-            }
-        }
-        
-        func cache <T> (for characteristic: Characteristic, update: (inout CachedCharacteristic) -> (T)) -> T {
-            
-            for service in self.services.values {
-                
-                for var characteristicCache in service.characteristics.values {
-                    
-                    guard characteristicCache.characteristic.handle == characteristic.handle,
-                        characteristicCache.characteristic.uuid == characteristic.uuid
-                        else { continue }
-                    
-                    return update(&characteristicCache)
-                }
-            }
-            
-            fatalError("Characteristic \(characteristic.uuid) not found")
-        }
-        
-        func endHandle(for characteristic: GATTClient.Characteristic) -> UInt16? {
-            
-            for service in services.values {
-                
-                let characteristics = Array(service.characteristics.values)
-                
-                for (index, characteristicCache) in characteristics.enumerated() {
-                    
-                    guard characteristicCache.characteristic.handle == characteristic.handle,
-                        characteristicCache.characteristic.uuid == characteristic.uuid
-                        else { continue }
-                    
-                    let nextIndex = index + 1
-                    
-                    let end: UInt16
-                    
-                    // get start handle of next characteristic
-                    if nextIndex < characteristics.count {
-                        
-                        let nextCharacteristic = characteristics[index]
-                        
-                        end = nextCharacteristic.characteristic.handle.declaration
-                        
-                    } else {
-                        
-                        // use service end handle
-                        end = service.service.end
-                    }
-                    
-                    return end
-                }
-            }
-            
-            return nil
-        }
-        
-        func descriptors(for characteristic: Characteristic) -> [Descriptor] {
-            
-            for service in self.services.values {
-                
-                for characteristicCache in service.characteristics.values {
-                    
-                    guard characteristicCache.characteristic.handle == characteristic.handle,
-                        characteristicCache.characteristic.uuid == characteristic.uuid
-                        else { continue }
-                    
-                    return Array(characteristicCache.descriptors.values)
-                }
-            }
-            
-            return []
-        }
-        
-        @discardableResult
-        mutating func update(_ newValue: [GATTClient.Descriptor], for characteristic: GATTClient.Characteristic) -> Bool {
-            
-            for (serviceUUID, service) in self.services {
-                
-                for (characteristicUUID, characteristicCache) in service.characteristics {
-                    
-                    guard characteristicCache.characteristic.handle == characteristic.handle,
-                        characteristicCache.characteristic.uuid == characteristic.uuid
-                        else { continue }
-                    
-                    // update cache
-                    self.services[serviceUUID]?.characteristics[characteristicUUID]?.update(newValue)
-                }
-            }
-            
-            return false
-        }
-    }
-}
-
-internal extension GATTClient.Cache {
-    
-    internal struct CachedService {
-        
-        fileprivate(set) var service: GATTClient.Service
-        
-        fileprivate(set) var characteristics = [BluetoothUUID: CachedCharacteristic]()
-        
-        mutating func update(_ newValue: [GATTClient.Characteristic], isCompleteSet: Bool = true) {
-            
-            // remove services that no longer exist on the server
-            if isCompleteSet {
-                
-                self.characteristics.keys
-                    .filter { uuid in newValue.contains(where: { $0.uuid == uuid }) }
-                    .forEach { self.characteristics[$0] = nil }
-            }
-            
-            // update cache
-            newValue.forEach {
-                let newValue: CachedCharacteristic
-                if var oldValue = self.characteristics[$0.uuid] {
-                    oldValue.characteristic = $0
-                    newValue = oldValue
-                } else {
-                    newValue = CachedCharacteristic($0)
-                }
-                self.characteristics[$0.uuid] = newValue
-            }
-        }
-    }
-    
-    internal struct CachedCharacteristic {
-        
-        typealias Descriptor = GATTClient.Descriptor
-        
-        fileprivate(set) var characteristic: GATTClient.Characteristic
-        
-        fileprivate(set) var descriptors = [BluetoothUUID: Descriptor]()
-        
-        fileprivate(set) var clientConfiguration = GATTClientCharacteristicConfiguration()
-        
-        fileprivate init(_ characteristic: GATTClient.Characteristic) {
-            
-            self.characteristic = characteristic
-        }
-        
-        mutating func update(_ newValue: [GATTClient.Descriptor]) {
-            
-            // remove services that no longer exist on the server
-            self.descriptors.keys
-                .filter { uuid in newValue.contains(where: { $0.uuid == uuid }) }
-                .forEach { self.descriptors[$0] = nil }
-            
-            // update cache
-            newValue.forEach { self.descriptors[$0.uuid] = $0 }
-        }
-    }
-}
-
 fileprivate final class DiscoveryOperation <T> {
     
     let uuid: BluetoothUUID?
@@ -1499,14 +1297,6 @@ private extension GATTClient {
         var foundDescriptors = [Descriptor]()
         
         let completion: (GATTClientResponse<[Descriptor]>) -> ()
-        
-        init(characteristic: Characteristic,
-             completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
-            
-            self.start = characteristic.handle.declaration
-            self.end = characteristic.handle.value
-            self.completion = completion
-        }
         
         init(start: UInt16,
              end: UInt16,
@@ -1644,7 +1434,7 @@ private extension GATTClient {
         
         typealias Completion = (GATTClientResponse<Void>) -> ()
         
-        let uuid: BluetoothUUID
+        let handle: UInt16
         
         let completion: Completion
         
@@ -1658,7 +1448,7 @@ private extension GATTClient {
         
         var lastRequest: ATTPrepareWriteRequest
         
-        init(uuid: BluetoothUUID,
+        init(handle: UInt16,
              data: [UInt8],
              reliableWrites: Bool,
              lastRequest: ATTPrepareWriteRequest,
@@ -1666,7 +1456,7 @@ private extension GATTClient {
             
             precondition(data.isEmpty == false)
             
-            self.uuid = uuid
+            self.handle = handle
             self.completion = completion
             self.data = data
             self.reliableWrites = reliableWrites
