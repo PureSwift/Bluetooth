@@ -26,7 +26,9 @@ final class GAPTests: XCTestCase {
         ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID),
         ("testGAPServiceData32BitUUID", testGAPServiceData32BitUUID),
         ("testGAPServiceData128BitUUID", testGAPServiceData128BitUUID),
-        ("testGAPAppearance", testGAPAppearance)
+        ("testGAPAppearance", testGAPAppearance),
+        ("testGAPPublicTargetAddress", testGAPPublicTargetAddress),
+        ("testGAPRandomTargetAddress", testGAPRandomTargetAddress)
     ]
     
     func testDataType() {
@@ -346,5 +348,37 @@ final class GAPTests: XCTestCase {
         }
         
         XCTAssertEqual(GAPAppearance(data: Data([0x4f, 0xf8])), GAPAppearance(data: Data([0x4f, 0xf8])))
+    }
+    
+    func testGAPPublicTargetAddress() {
+        
+        XCTAssertNil(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])))
+        XCTAssertNil(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])))
+        
+        do {
+            let data = Data([0xf8, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0xf8, 0x91, 0x7e])
+            let targetAddress = GAPPublicTargetAddress(data: data)!
+            
+            XCTAssertEqual(targetAddress.data, data)
+            XCTAssertEqual(targetAddress.targetAddresses.count, 2)
+            XCTAssertEqual(targetAddress.data.count, 12)
+        }
+        
+    }
+    
+    func testGAPRandomTargetAddress() {
+        
+        XCTAssertNil(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])))
+        XCTAssertNil(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])))
+        
+        do {
+            let data = Data([0xf8, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0xf8, 0x91, 0x7e])
+            let targetAddress = GAPRandomTargetAddress(data: data)!
+            
+            XCTAssertEqual(targetAddress.data, data)
+            XCTAssertEqual(targetAddress.targetAddresses.count, 2)
+            XCTAssertEqual(targetAddress.data.count, 12)
+        }
+        
     }
 }
