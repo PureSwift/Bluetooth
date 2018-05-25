@@ -29,7 +29,8 @@ final class GAPTests: XCTestCase {
         ("testGAPAppearance", testGAPAppearance),
         ("testGAPPublicTargetAddress", testGAPPublicTargetAddress),
         ("testGAPRandomTargetAddress", testGAPRandomTargetAddress),
-        ("testGAPAdvertisingInterval", testGAPAdvertisingInterval)
+        ("testGAPAdvertisingInterval", testGAPAdvertisingInterval),
+        ("testGAPLEBluetoothDeviceAddress", testGAPLEBluetoothDeviceAddress)
     ]
     
     func testDataType() {
@@ -349,6 +350,7 @@ final class GAPTests: XCTestCase {
         }
         
         XCTAssertEqual(GAPAppearance(data: Data([0x4f, 0xf8])), GAPAppearance(data: Data([0x4f, 0xf8])))
+        XCTAssertEqual(GAPAppearance(appearance: 0xf5).data.count, GAPAppearance.length)
     }
     
     func testGAPPublicTargetAddress() {
@@ -361,7 +363,7 @@ final class GAPTests: XCTestCase {
             let targetAddress = GAPPublicTargetAddress(data: data)!
             
             XCTAssertEqual(targetAddress.data, data)
-            XCTAssertEqual(targetAddress.targetAddresses.count, 2)
+            XCTAssertEqual(targetAddress.addresses.count, 2)
             XCTAssertEqual(targetAddress.data.count, 12)
         }
         
@@ -377,10 +379,9 @@ final class GAPTests: XCTestCase {
             let targetAddress = GAPRandomTargetAddress(data: data)!
             
             XCTAssertEqual(targetAddress.data, data)
-            XCTAssertEqual(targetAddress.targetAddresses.count, 2)
+            XCTAssertEqual(targetAddress.addresses.count, 2)
             XCTAssertEqual(targetAddress.data.count, 12)
         }
-        
     }
     
     func testGAPAdvertisingInterval() {
@@ -393,8 +394,38 @@ final class GAPTests: XCTestCase {
             let advertisingInterval = GAPAdvertisingInterval(data: data)!
             
             XCTAssertEqual(advertisingInterval.data, data)
-            XCTAssertEqual(MemoryLayout.size(ofValue: advertisingInterval), 2)
-            XCTAssertEqual(advertisingInterval.data.count, 2)
+            XCTAssertEqual(advertisingInterval.data.count, GAPAdvertisingInterval.length)
+            XCTAssertEqual(MemoryLayout.size(ofValue: advertisingInterval), GAPAdvertisingInterval.length)
         }
+    }
+    
+    func testGAPLEBluetoothDeviceAddress() {
+        
+        XCTAssertNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x30, 0xff])))
+        XCTAssertNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0xf8, 0x30])))
+        XCTAssertNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x02])))
+        XCTAssertNotNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x01])))
+        XCTAssertNotNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x00])))
+        
+        do {
+            let data = Data([0x4f, 0x4f, 0xf8, 0x30, 0xf8, 0x30, 0x01])
+            let deviceAddress = GAPLEBluetoothDeviceAddress(data: data)!
+            
+            XCTAssertEqual(deviceAddress.data, data)
+            XCTAssertEqual(deviceAddress.data.count, GAPLEBluetoothDeviceAddress.length)
+            XCTAssertEqual(deviceAddress.type, .random)
+        }
+        
+        do {
+            let data = Data([0x4f, 0x4f, 0xf8, 0x30, 0xf8, 0x30, 0x00])
+            let deviceAddress = GAPLEBluetoothDeviceAddress(data: data)!
+            
+            XCTAssertEqual(deviceAddress.data, data)
+            XCTAssertEqual(deviceAddress.data.count, GAPLEBluetoothDeviceAddress.length)
+            XCTAssertEqual(deviceAddress.type, .public)
+        }
+        
+        XCTAssertEqual(GAPLEBluetoothDeviceAddress(address: .zero, type: .public).data.count, GAPLEBluetoothDeviceAddress.length)
+        XCTAssertEqual(GAPLEBluetoothDeviceAddress(address: .zero, type: .random).data.count, GAPLEBluetoothDeviceAddress.length)
     }
 }
