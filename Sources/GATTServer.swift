@@ -601,6 +601,8 @@ public final class GATTServer {
             guard encodedLength <= Int(connection.maximumTransmissionUnit.rawValue)
                 else { break }
             
+            var mismatchedType = false
+            
             // encode attribute
             switch (attribute.uuid, format) {
                 
@@ -612,8 +614,14 @@ public final class GATTServer {
                 
                 bit128Pairs.append((attribute.handle, type))
                 
-            default: break // mismatching types
+            default:
+                
+                mismatchedType = true // mismatching types
             }
+            
+            // stop enumerating
+            guard mismatchedType == false
+                else { break }
         }
         
         let data: AttributeData
