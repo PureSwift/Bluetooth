@@ -788,6 +788,32 @@ final class GATTTests: XCTestCase {
         
         
     }
+    
+    func testCharacteristicsAggregateFormatDescriptor() {
+        XCTAssertEqual(GATTAggregateFormatDescriptor().aggregateFormat, [])
+        XCTAssertNil(GATTAggregateFormatDescriptor(byteValue: Data([0x00])))
+        XCTAssertNil(GATTAggregateFormatDescriptor(byteValue: Data([0x00, 0x00, 0x00])))
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x00, 0x00]))?.aggregateFormat, [0x00])
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x20, 0x00]))?.aggregateFormat, [0x20])
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x20, 0x00, 0x30, 0x00]))?.aggregateFormat, [0x20, 0x30])
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x40, 0x00, 0x50, 0x00, 0x60, 0x00]))?.aggregateFormat, [0x40, 0x50, 0x60])
+        
+        var aggregateFormat = GATTAggregateFormatDescriptor()
+        XCTAssertEqual(aggregateFormat.aggregateFormat, [])
+        
+        aggregateFormat.aggregateFormat.append(UInt16(bitPattern: 0x40))
+        XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00]))
+        aggregateFormat.aggregateFormat.append(UInt16(bitPattern: 0x50))
+        XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00,0x50,0x00]))
+        aggregateFormat.aggregateFormat.append(UInt16(bitPattern: 0x60))
+        XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00,0x50,0x00,0x60,0x00]))
+        aggregateFormat.aggregateFormat.removeLast()
+        XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00,0x50,0x00]))
+        aggregateFormat.aggregateFormat.removeLast()
+        XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00]))
+        aggregateFormat.aggregateFormat.removeLast()
+        XCTAssertEqual(aggregateFormat.aggregateFormat, [])
+    }
 }
 
 extension GATTTests {
