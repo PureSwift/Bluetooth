@@ -69,7 +69,7 @@ public struct TestProfile {
     public static let Notify = Characteristic(uuid: BluetoothUUID(rawValue: "7F799666-678C-41E7-9380-EEB713E532F6")!,
                                               value: Data(),
                                               permissions: [.read],
-                                              properties: [.notify],
+                                              properties: [.read, .notify],
                                               descriptors: [GATTClientCharacteristicConfiguration().descriptor])
     
     public static let TestDefinedService = Service(uuid: .savantSystems2,
