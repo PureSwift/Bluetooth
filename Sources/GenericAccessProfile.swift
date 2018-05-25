@@ -1875,6 +1875,60 @@ extension GAPRandomTargetAddress: CustomStringConvertible {
     }
 }
 
+public struct GAPAdvertisingInterval: GAPData {
+    
+    public static let length = MemoryLayout<UInt16>.size
+    
+    public static let units: Double = 0.0625
+    
+    public static let dataType: GAPDataType = .advertisingInterval
+    
+    public let interval: UInt16
+    
+    public var miliseconds: Double {
+        
+        return Double(interval) * type(of: self).units
+    }
+    
+    public init(interval: UInt16) {
+        
+        self.interval = interval
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let interval = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        self.init(interval: interval)
+    }
+    
+    public var data: Data {
+        
+        let value = interval.littleEndian
+        
+        return Data(bytes: [value.bytes.0, value.bytes.1])
+    }
+}
+
+extension GAPAdvertisingInterval: Equatable {
+    
+    public static func == (lhs: GAPAdvertisingInterval, rhs: GAPAdvertisingInterval) -> Bool {
+        
+        return lhs.interval == rhs.interval
+    }
+}
+
+extension GAPAdvertisingInterval: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return interval.description
+    }
+}
+
 // MARK: - Coding
 
 public struct GAPDataElement {
