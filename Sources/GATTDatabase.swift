@@ -17,7 +17,8 @@ public struct GATTDatabase {
     internal private(set) var attributeGroups = [AttributeGroup]()
     
     /// Do not access directly, use `newHandle()`
-    private var lastHandle: UInt16 = 0x0000
+    @_versioned
+    internal private(set) var lastHandle: UInt16 = 0x0000
     
     // MARK: - Initialization
     
