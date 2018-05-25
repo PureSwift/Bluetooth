@@ -1724,7 +1724,7 @@ extension GAPAppearance: CustomStringConvertible {
     }
 }
 
-public struct GAPTargetAddress {
+public struct GAPAddress {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)
     
@@ -1745,9 +1745,9 @@ public struct GAPTargetAddress {
     
 }
 
-extension GAPTargetAddress: Equatable {
+extension GAPAddress: Equatable {
     
-    public static func == (lhs: GAPTargetAddress, rhs: GAPTargetAddress) -> Bool {
+    public static func == (lhs: GAPAddress, rhs: GAPAddress) -> Bool {
         
         return lhs.companyAssigned == rhs.companyAssigned && lhs.companyId == rhs.companyId
     }
@@ -1769,9 +1769,9 @@ public struct GAPPublicTargetAddress: GAPData {
     
     public static let dataType: GAPDataType = .publicTargetAddress
     
-    public let targetAddresses: [GAPTargetAddress]
+    public let targetAddresses: [GAPAddress]
     
-    public init(targetAddresses: [GAPTargetAddress]) {
+    public init(targetAddresses: [GAPAddress]) {
         
         self.targetAddresses = targetAddresses
     }
@@ -1782,11 +1782,11 @@ public struct GAPPublicTargetAddress: GAPData {
             else { return nil }
         
         var index = 0
-        var addresses = [GAPTargetAddress]()
+        var addresses = [GAPAddress]()
         
         while index < data.count {
             
-            let address = GAPTargetAddress(companyAssigned: (data[index], data[index+1], data[index+2]), companyId: (data[index+3], data[index+4], data[index+5]))
+            let address = GAPAddress(companyAssigned: (data[index], data[index+1], data[index+2]), companyId: (data[index+3], data[index+4], data[index+5]))
             addresses.append(address)
             
             index += type(of: self).length
@@ -1826,9 +1826,9 @@ public struct GAPRandomTargetAddress: GAPData {
     
     public static let dataType: GAPDataType = .randomTargetAddress
     
-    public let targetAddresses: [GAPTargetAddress]
+    public let targetAddresses: [GAPAddress]
     
-    public init(targetAddresses: [GAPTargetAddress]) {
+    public init(targetAddresses: [GAPAddress]) {
         
         self.targetAddresses = targetAddresses
     }
@@ -1839,11 +1839,11 @@ public struct GAPRandomTargetAddress: GAPData {
             else { return nil }
         
         var index = 0
-        var addresses = [GAPTargetAddress]()
+        var addresses = [GAPAddress]()
         
         while index < data.count {
             
-            let address = GAPTargetAddress(companyAssigned: (data[index], data[index+1], data[index+2]), companyId: (data[index+3], data[index+4], data[index+5]))
+            let address = GAPAddress(companyAssigned: (data[index], data[index+1], data[index+2]), companyId: (data[index+3], data[index+4], data[index+5]))
             addresses.append(address)
             
             index += type(of: self).length
@@ -1926,6 +1926,60 @@ extension GAPAdvertisingInterval: CustomStringConvertible {
     public var description: String {
         
         return interval.description
+    }
+}
+
+/// The LE Bluetooth Device Address data type defines the device address of the local device and the address type on the LE transport.
+///
+/// Size: 7 octets.
+/// The format of the 6 least significant Octets is the same as the Device Address defined in [Vol. 6], Part B, Section 1.3.
+/// The least significant bit of the most significant octet defines if the Device Address is a Public Address or a Random Address.
+/// LSB = 1 Then Random Device Address. LSB = 0 Then Public Device Address.
+/// Bits 1 to 7 in the most significant octet are reserved for future use.
+public struct GAPLEBluetoothDeviceAddress: GAPData {
+    
+    public static let length = 7
+    
+    public static let dataType: GAPDataType = .LEBluetoothDeviceAddress
+    
+    public let address: (GAPAddress, GAPLEBluetoothDeviceAddressType)
+    
+    public init(address: (GAPAddress, GAPLEBluetoothDeviceAddressType)) {
+        
+        self.address = address
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let address = GAPAddress(companyAssigned: (data[0], data[1], data[2]), companyId: (data[3], data[4], data[5]))
+        
+        guard let type = GAPLEBluetoothDeviceAddressType(rawValue: data[6])
+            else { return nil }
+        
+        self.init(address: (address, type))
+    }
+    
+    public var data: Data {
+        
+        return address.0.data + address.1.data
+    }
+    
+}
+
+public enum GAPLEBluetoothDeviceAddressType: UInt8 {
+    
+    /// LE Limited Discoverable Mode
+    case ´public´ = 0b00
+    
+    /// LE General Discoverable Mode
+    case random = 0b01
+    
+    public var data: Data {
+        
+        return Data(bytes: [self.rawValue])
     }
 }
 
