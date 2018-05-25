@@ -18,7 +18,8 @@ final class GATTTests: XCTestCase {
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
         ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor),
         ("testCharacteristicExtendedPropertiesDescriptor", testCharacteristicExtendedPropertiesDescriptor),
-        ("testCharacteristicServerConfigurationDescriptor", testCharacteristicsServerConfigurationDescriptor)
+        ("testCharacteristicServerConfigurationDescriptor", testCharacteristicsServerConfigurationDescriptor),
+        ("testCharacteristicsAggregateFormatDescriptor",testCharacteristicsAggregateFormatDescriptor)
     ]
     
     func testMTUExchange() {

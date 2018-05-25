@@ -54,6 +54,7 @@ public extension GATT.CharacteristicDescriptor {
     public typealias ClientConfiguration = GATTClientCharacteristicConfiguration
     public typealias ExtendedProperties = GATTCharacteristicExtendedProperties
     public typealias ServerConfiguration = GATTServerCharacteristicConfiguration
+    public typealias AggegateFormat = GATTAggregateFormatDescriptor
 }
 
 /// GATT Client Characteristic Configuration Descriptor
