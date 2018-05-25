@@ -7,7 +7,6 @@
 
 [![Build Status][build-status-badge]][build-status-url]
 [![CodeBeat][codebeat-badge]][codebeat-url]
-[![CodeCov.io][codecov-badge]][codecov-url]
 [![Docs][docs-badge]][docs-url]
 
 [![SPM compatible][spm-badge]][spm-url]
@@ -54,7 +53,6 @@ For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/
 
 ## Code Coverage
 
-- [codecov.io][codecov-url]
 - [xcov][xcov-url]
 
 ## See Also
@@ -89,8 +87,6 @@ License
 [carthage-url]: https://github.com/Carthage/Carthage
 [codebeat-badge]: https://codebeat.co/badges/3eaf4fc3-6514-4f2d-83d5-ffd879f319d2
 [codebeat-url]: https://codebeat.co/projects/github-com-pureswift-bluetooth-master
-[codecov-badge]: https://img.shields.io/codecov/c/github/PureSwift/Bluetooth/master.svg
-[codecov-url]: https://codecov.io/gh/PureSwift/Bluetooth/branch/master
 [docs-badge]: http://pureswift.github.io/Bluetooth/docs/badge.svg
 [docs-url]: http://pureswift.github.io/Bluetooth/docs/
 [xcov-url]: http://pureswift.github.io/Bluetooth/xcov
