@@ -16,7 +16,8 @@ final class GATTTests: XCTestCase {
         ("testGATT", testGATT),
         ("testMTUExchange", testMTUExchange),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
-        ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor)
+        ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor),
+        ("testNotification", testNotification)
     ]
     
     func testMTUExchange() {
@@ -499,6 +500,127 @@ final class GATTTests: XCTestCase {
         clientSocket.cache.forEach { print($0.map { "0x" + $0.toHexadecimal() }) }
         print("GATT Client Expected")
         mockData.client.forEach { print($0.map { "0x" + $0.toHexadecimal() }) }
+    }
+    
+    func testNotification() {
+        
+        func test(with characteristics: [GATT.Characteristic], newData: [Data]) {
+            
+            let service = GATT.Service.init(uuid: BluetoothUUID(),
+                                            primary: true,
+                                            characteristics: characteristics)
+            
+            var database = GATTDatabase()
+            
+            database.add(service: service)
+            
+            // server
+            let serverSocket = TestL2CAPSocket()
+            let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
+            server.log = { print("GATT Server: " + $0) }
+            server.connection.log = { print("Server ATT: " + $0) }
+            server.database = database
+            
+            // client
+            let clientSocket = TestL2CAPSocket()
+            let client = GATTClient(socket: clientSocket)
+            client.log = { print("GATT Client: " + $0) }
+            client.connection.log = { print("Client ATT: " + $0) }
+            
+            clientSocket.target = serverSocket
+            serverSocket.target = clientSocket // weak references
+            
+            var recievedNotifications = [Data]()
+            
+            func notification(_ data: Data) {
+                
+                recievedNotifications.append(data)
+            }
+            
+            // discover service
+            client.discoverAllPrimaryServices() {
+                
+                switch $0 {
+                    
+                case let .error(error):
+                    
+                    XCTFail("Error \(error)")
+                    
+                case let .value(services):
+                    
+                    guard let foundService = services.first(where: { $0.uuid == service.uuid })
+                        else { XCTFail("Service \(service.uuid) not found"); return }
+                    
+                    client.discoverAllCharacteristics(of: foundService)  {
+                        
+                        switch $0 {
+                            
+                        case let .error(error):
+                            
+                            XCTFail("Error \(error)")
+                            
+                        case let .value(characteristics):
+                            
+                            guard let notificationCharacteristic = characteristics.first(where: { $0.properties.contains(.notify) })
+                                else { XCTFail("Characteristic not found"); return }
+                            
+                            client.discoverDescriptors(for: notificationCharacteristic, service: (foundService, characteristics)) {
+                                
+                                switch $0 {
+                                    
+                                case let .error(error):
+                                    
+                                    XCTFail("Error \(error)")
+                                    
+                                case let .value(descriptors):
+                                    
+                                    XCTAssert(descriptors.isEmpty == false, "No descriptors found")
+                                    
+                                    client.registerNotification(notification, for: notificationCharacteristic, descriptors: descriptors) {
+                                        
+                                        switch $0 {
+                                            
+                                        case let .error(error):
+                                            
+                                            XCTFail("Error \(error)")
+                                            
+                                        case .value:
+                                            
+                                            newData.forEach { server.writeValue($0, forCharacteristic: notificationCharacteristic.uuid) }
+                                            
+                                            client.registerNotification(nil, for: notificationCharacteristic, descriptors: descriptors) {
+                                                
+                                                switch $0 {
+                                                    
+                                                case let .error(error):
+                                                    
+                                                    XCTFail("Error \(error)")
+                                                    
+                                                case .value:
+                                                    
+                                                    XCTAssertEqual(recievedNotifications, newData)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // run fake sockets
+            XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+        }
+        
+        test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
+        
+        test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
+        
+        test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
+        
+        test(with: [TestProfile.Notify], newData: [Data("test1".utf8), Data("test2".utf8), Data("test3".utf8)])
     }
     
     func testGATT() {

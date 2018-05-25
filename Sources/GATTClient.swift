@@ -799,10 +799,12 @@ public final class GATTClient {
             guard lastHandle >= operation.start
                 else { operation.completion(.error(Error.invalidResponse(pdu))); return }
             
-            operation.start = lastHandle + 1
+            let start = lastHandle + 1
             
             // need to continue discovery
-            if lastHandle != 0, operation.start < operation.end {
+            if lastHandle != 0, start < operation.end {
+                
+                operation.start = start
                 
                 discoverDescriptors(operation: operation)
                 
