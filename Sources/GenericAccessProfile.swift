@@ -99,9 +99,6 @@ public struct GAPDataType: RawRepresentable {
     /// List of 128-bit Service Solicitation UUIDs
     public static let listOf128BitServiceSolicitationUUIDs: GAPDataType = 0x15
     
-    /// Service Data
-    public static let serviceData: GAPDataType = 0x16
-    
     /// Service Data - 16-bit UUID
     public static let serviceData16BitUUID: GAPDataType = 0x16
     

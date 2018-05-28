@@ -25,6 +25,7 @@ final class GAPTests: XCTestCase {
         ("testGAPIncompleteListOf32BitServiceClassUUIDs", testGAPIncompleteListOf32BitServiceClassUUIDs),
         ("testGAPIncompleteListOf128BitServiceClassUUIDs", testGAPIncompleteListOf128BitServiceClassUUIDs),
         ("testGAPTxPowerLevel", testGAPTxPowerLevel),
+        ("testGAPClassOfDevice", testGAPClassOfDevice),
         ("testGAPSlaveConnectionIntervalRange", testGAPSlaveConnectionIntervalRange),
         ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID),
         ("testGAPServiceData32BitUUID", testGAPServiceData32BitUUID),
@@ -334,6 +335,25 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
         
         XCTAssertEqual(decoded[0] as! GAPTxPowerLevel, txPowerLevel)
+    }
+    
+    func testGAPClassOfDevice() {
+        
+        let data = Data([0x04, 0x0d, 0x18, 0xf3, 0xff])
+        XCTAssertEqual(data.count, 0x05)
+        
+        let device = GAPClassOfDevice(device: (0x18, 0xf3, 0xff))
+        let expectedData: [GAPData] = [device]
+        let types = expectedData.map { type(of: $0) }
+        
+        guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+            else { XCTFail("Could not decode"); return }
+        
+        XCTAssert(decoded.isEmpty == false)
+        XCTAssertEqual(decoded.count, 1)
+        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        
+        XCTAssertEqual(decoded[0] as! GAPClassOfDevice, device)
     }
     
     func testGAPSlaveConnectionIntervalRange() {
