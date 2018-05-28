@@ -31,7 +31,9 @@ final class GAPTests: XCTestCase {
         ("testGAPRandomTargetAddress", testGAPRandomTargetAddress),
         ("testGAPAdvertisingInterval", testGAPAdvertisingInterval),
         ("testGAPLEBluetoothDeviceAddress", testGAPLEBluetoothDeviceAddress),
-        ("testGAPLERole", testGAPLERole)
+        ("testGAPLERole", testGAPLERole),
+        ("testGAPURI", testGAPURI),
+        ("testGAPLESupportedFeatures", testGAPLESupportedFeatures)
     ]
     
     func testDataType() {
@@ -475,4 +477,49 @@ final class GAPTests: XCTestCase {
         }
         
     }
+    
+    func testGAPURI() {
+        
+        let data = Data([0x07, 0x24, 0x4d, 0x79, 0x20, 0x75, 0x72, 0x69])
+        let uri = GAPURI(name: "My uri")
+        let expectedData: [GAPData] = [uri]
+        let types = expectedData.map { type(of: $0) }
+        
+        guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+            else { XCTFail("Could not decode"); return }
+        
+        XCTAssert(decoded.isEmpty == false)
+        XCTAssertEqual(decoded.count, 1)
+        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        
+        XCTAssertEqual(decoded[0] as! GAPURI, uri)
+    }
+    
+    func testGAPLESupportedFeatures() {
+        
+        do {
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x00, 0x00, 0x4d, 0x00, 0x00])
+            XCTAssertEqual(supportedFeatures.data.count, 3)
+            XCTAssertEqual(supportedFeatures.data, Data([0x00, 0x00, 0x4d]))
+        }
+        
+        do {
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x3d, 0x12, 0x00])
+            XCTAssertEqual(supportedFeatures.data.count, 2)
+            XCTAssertEqual(supportedFeatures.data, Data([0x3d, 0x12]))
+        }
+        
+        do {
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x3d, 0x12, 0x00, 0x00, 0xff, 0x4e])
+            XCTAssertEqual(supportedFeatures.data.count, 4)
+            XCTAssertEqual(supportedFeatures.data, Data([0x3d, 0x12, 0xff, 0x4e]))
+        }
+        
+        do {
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x3d, 0x12, 0x4d, 0x4e, 0x4e])
+            XCTAssertEqual(supportedFeatures.data.count, 5)
+            XCTAssertEqual(supportedFeatures.data, Data([0x3d, 0x12, 0x4d, 0x4e, 0x4e]))
+        }
+    }
+    
 }
