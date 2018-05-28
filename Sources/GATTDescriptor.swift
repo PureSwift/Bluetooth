@@ -270,7 +270,7 @@ extension GATTServerCharacteristicConfiguration {
 /// the Characteris Aggregate Format Value is 0x405060.
 public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
-    public static var uuid: BluetoothUUID = .characteristicAggregateFormat
+    public static let uuid: BluetoothUUID = .characteristicAggregateFormat
     
     public var aggregateFormat: [UInt16]
     
@@ -298,4 +298,257 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
                                permissions: [.read])
     }
     
+}
+
+/// Format Types
+///
+/// If a format is not a whole number of octets, then the data shall be contained within the least significant bits of the value, and all other bits shall be set to zero on transmission and ignored upon receipt.
+/// If the Characteristic Value is less than an octet, it occupies an entire octet.
+public struct FormatType: RawRepresentable {
+    
+    public var rawValue: UInt8
+    
+    public init?(rawValue: UInt8) {
+        
+        self.rawValue = rawValue
+    }
+    
+    public static let rfu: FormatType = 0x00
+    public static let boolean: FormatType = 0x01
+    public static let bit2: FormatType = 0x02
+    public static let nibble: FormatType = 0x03
+    public static let uint8: FormatType = 0x04
+    public static let uint12: FormatType = 0x05
+    public static let uint16: FormatType = 0x06
+    public static let uint24: FormatType = 0x07
+    public static let uint32: FormatType = 0x08
+    public static let uint48: FormatType = 0x09
+    public static let uint64: FormatType = 0x0A
+    public static let uint128: FormatType = 0x0B
+    public static let sint8: FormatType = 0x0C
+    public static let sint12: FormatType = 0x0D
+    public static let sint16: FormatType = 0x0E
+    public static let sint24: FormatType = 0x0F
+    public static let sint32: FormatType = 0x10
+    public static let sint48: FormatType = 0x11
+    public static let sint64: FormatType = 0x12
+    public static let sint128: FormatType = 0x13
+    public static let float32: FormatType = 0x14
+    public static let float64: FormatType = 0x15
+    public static let sfloat: FormatType = 0x16
+    public static let float: FormatType = 0x17
+    public static let duint16: FormatType = 0x18
+    public static let utf8s: FormatType = 0x19
+    public static let utf16s: FormatType = 0x1A
+    public static let Struct: FormatType = 0x1B
+}
+
+extension FormatType: Equatable {
+    
+    public static func == (lhs: FormatType, rhs: FormatType) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension FormatType: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
+extension FormatType: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.rawValue = value
+    }
+}
+
+extension FormatType: CustomStringConvertible {
+    
+    public var name: String? {
+        
+        return formatTypeNames[self]
+    }
+    
+    public var description: String {
+        
+        return formatTypeDescription[self]!
+    }
+}
+
+internal let formatTypeNames: [FormatType: String] = [
+    .rfu: "rfu",
+    .boolean: "boolean",
+    .bit2: "2bit",
+    .nibble: "nibble",
+    .uint8: "uint8",
+    .uint12: "uint12",
+    .uint16: "uint16",
+    .uint24: "uint24",
+    .uint32: "uint32",
+    .uint48: "uint48",
+    .uint64: "uint64",
+    .uint128: "uint128",
+    .sint8: "sint8",
+    .sint12: "sint12",
+    .sint16: "sint16",
+    .sint24: "sint24",
+    .sint32: "sint32",
+    .sint48: "sint48",
+    .sint64: "sint64",
+    .sint128: "sint128",
+    .float32: "float32",
+    .float64: "float64",
+    .sfloat: "SFLOAT",
+    .float: "FLOAT",
+    .duint16: "duint16",
+    .utf8s: "utf8s",
+    .utf16s: "utf16s",
+    .Struct: "struct"
+]
+internal let formatTypeDescription: [FormatType: String] = [
+    .rfu: "Reserve for future use",
+    .boolean: "unsigned 1-bit; 0=false, 1=true",
+    .bit2: "unsigned 2-bit integer",
+    .nibble: "unsigned 4-bit integer",
+    .uint8: "unsigned 8-bit integer",
+    .uint12: "unsigned 12-bit integer",
+    .uint16: "unsigned 16-bit integer",
+    .uint24: "unsigned 24-bit integer",
+    .uint32: "unsigned 32-bit integer",
+    .uint48: "unsigned 48-bit integer",
+    .uint64: "unsigned 64-bit integer",
+    .uint128: "unsigned 128-bit integer",
+    .sint8: "signed 8-bit integer",
+    .sint12: "signed 12-bit integer",
+    .sint16: "signed 16-bit integer",
+    .sint24: "signed 24-bit integer",
+    .sint32: "signed 32-bit integer",
+    .sint48: "signed 48-bit integer",
+    .sint64: "signed 64-bit integer",
+    .sint128: "signed 128-bit integer",
+    .float32: "IEEE-754 32-bit floating point",
+    .float64: "IEEE-754 64-bit floating point",
+    .sfloat: "IEEE-11073 16-bit SFLOAT",
+    .float: "IEEE-11073 32-bit FLOAT",
+    .duint16: "IEEE-20601 format",
+    .utf8s: "UTF-8 string",
+    .utf16s: "UTF-16 string",
+    .Struct: "Opaque structure"
+]
+
+/// GATT Characteristic Presentation Format Descriptor
+///
+/// The Characteristic Presentation Format descriptor defines the format of the Characteristic Value.
+///
+/// One or more Characteristic Presentation Format descriptors may be present.
+/// If multiple of these descriptors are present, then a Aggregate Formate descriptor is present.
+/// This descriptor is read only and does not require authentication or authorization to read.
+/// This descriptor is composed of five parts: format, exponent, unit, name space and description.
+/// The Format field determines how a single value contained in the Characteristic Value is formatted.
+/// The Exponent field is used with interger data types to determine how the Characteristic Value is furhter formatted.
+/// The actual value = Characteristic Value * 10^Exponent.
+///
+/// Examples:
+/// When encoding an IPv4 address, the uint32 Format type is used.
+/// When encoding an IPv6 address, the uint128 Format type is used.
+/// When encoding a Bluetooth address (BD_ADDR), the uint48 Format type is used.
+/// For a Characteristic Value of 23 and an Exponent of 2, the actual value is 2300
+/// For a Characteristi Value of 3892 and an Exponent of -3, the actual value is 3.892
+public struct GATTFormatDescriptor: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .characteristicFormat
+    
+    public static let length = 7
+    
+    public let format: FormatType
+    
+    public let exponent: Int8
+    
+    public let unit: UInt16
+    
+    public let namespace: UInt8
+    
+    public let description: UInt16
+    
+    public init(format: FormatType, exponent: Int8, unit: UInt16, namespace: UInt8, description: UInt16) {
+        
+        self.format = format
+        self.exponent = exponent
+        self.unit = unit
+        self.namespace = namespace
+        self.description = description
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count == type(of: self).length else {
+            return nil
+        }
+        
+        let formatType = FormatType.init(rawValue: byteValue[0])!
+        let exponent = Int8(bitPattern: byteValue[1])
+        let unit = UInt16(bytes: (byteValue[2], byteValue[3]))
+        let namespace = UInt8(littleEndian: byteValue[4])
+        let description = UInt16(bytes: (byteValue[5], byteValue[6]))
+        
+        self.init(format: formatType,
+                  exponent: exponent,
+                  unit: unit,
+                  namespace: namespace,
+                  description: description)
+    }
+    
+    public var byteValue: Data {
+        
+        return Data([format.rawValue,
+                     UInt8(bitPattern: exponent),
+                     unit.bytes.0,
+                     unit.bytes.1,
+                     namespace,
+                     description.bytes.0,
+                     description.bytes.1])
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [.read])
+    }
+}
+
+/// GATT Characteristic User Description Descriptor
+///
+/// The Characteristic User Description descriptor provides a textual user description for a characteristic value.
+///
+/// If the Writable Auxiliary bit of the Characteristics Properties is set then this descriptor is written.
+/// Only one User Description descriptor exists in a characteristic definition.
+public struct GATTUserDescription: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .characteristicUserDescription
+    
+    public var userDescription: String
+    
+    public init(userDescription: String) {
+        
+        self.userDescription = userDescription
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard let rawValue = String(data: byteValue, encoding: .utf8)
+            else { return nil }
+        
+        self.init(userDescription: rawValue)
+    }
+    
+    public var byteValue: Data {
+        
+        return Data(userDescription.utf8)
+    }
 }
