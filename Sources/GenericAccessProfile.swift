@@ -2130,7 +2130,7 @@ public struct GAPLESupportedFeatures: GAPData {
                 continue
             }
             
-            supportedData += [element]
+            supportedData.append(element)
             
             if element != GAPLESupportedFeatures.omittedValue {
                 lastNonZero = element
