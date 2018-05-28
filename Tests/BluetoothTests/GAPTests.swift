@@ -35,7 +35,8 @@ final class GAPTests: XCTestCase {
         ("testGAPURI", testGAPURI),
         ("testGAPLESupportedFeatures", testGAPLESupportedFeatures),
         ("testGAPLESecureConnectionsConfirmation", testGAPLESecureConnectionsConfirmation),
-        ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom)
+        ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom),
+        ("testGAPChannelMapUpdateIndication", testGAPChannelMapUpdateIndication)
     ]
     
     func testDataType() {
@@ -556,6 +557,16 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])), GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])))
         XCTAssertEqual(GAPLESecureConnectionsRandom(random: 0xf5).data.count, GAPLESecureConnectionsRandom.length)
+    }
+    
+    func testGAPChannelMapUpdateIndication() {
+        
+        do {
+            let data = Data([0x4d, 0x3e, 0x12, 0x3a, 0x18, 0x4d, 0x3e])
+            let channelMap = GAPChannelMapUpdateIndication(channelMap: (0x4d, 0x3e, 0x12, 0x3a, 0x18), instant: (0x4d, 0x3e))
+            XCTAssertEqual(channelMap.data.count, GAPChannelMapUpdateIndication.length)
+            XCTAssertEqual(channelMap.data, data)
+        }
     }
     
     
