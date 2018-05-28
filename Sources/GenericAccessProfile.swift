@@ -81,14 +81,8 @@ public struct GAPDataType: RawRepresentable {
     /// Simple Pairing Hash C
     public static let simplePairingHashC: GAPDataType = 0x0E
     
-    /// Simple Pairing Hash C-192
-    public static let simplePairingHashC192: GAPDataType = 0x0E
-    
     /// Simple Pairing Randomizer
     public static let simplePairingRandomizerR: GAPDataType = 0x0F
-    
-    /// Device ID
-    public static let deviceID: GAPDataType = 0x10
     
     /// Security Manager TK Value
     public static let securityManagerTKValue: GAPDataType = 0x10

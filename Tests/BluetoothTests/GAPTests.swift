@@ -21,6 +21,9 @@ final class GAPTests: XCTestCase {
         ("testGAPCompleteListOf16BitServiceClassUUIDs", testGAPCompleteListOf16BitServiceClassUUIDs),
         ("testGAPCompleteListOf32BitServiceClassUUIDs", testGAPCompleteListOf32BitServiceClassUUIDs),
         ("testGAPCompleteListOf128BitServiceClassUUIDs", testGAPCompleteListOf128BitServiceClassUUIDs),
+        ("testGAPIncompleteListOf16BitServiceClassUUIDs", testGAPIncompleteListOf16BitServiceClassUUIDs),
+        ("testGAPIncompleteListOf32BitServiceClassUUIDs", testGAPIncompleteListOf32BitServiceClassUUIDs),
+        ("testGAPIncompleteListOf128BitServiceClassUUIDs", testGAPIncompleteListOf128BitServiceClassUUIDs),
         ("testGAPTxPowerLevel", testGAPTxPowerLevel),
         ("testGAPSlaveConnectionIntervalRange", testGAPSlaveConnectionIntervalRange),
         ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID),
@@ -158,6 +161,38 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
+    func testGAPIncompleteListOf16BitServiceClassUUIDs() {
+        
+        /**
+         Length Data: 0X16
+         Flags: 0X1A
+         16 bit UUIDs: 0X1803 0X1804 0X1802
+         Local Name: Proximity
+         Data: 02 01 1A 07 03 03 18 04 18 02 18 0A 09 50 72 6F 78 69 6D 69 74 79
+         */
+        
+        let data = Data([0x02, 0x01, 0x1A, 0x07, 0x02, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79])
+        XCTAssertEqual(data.count, 0x16)
+        
+        let flags: GAPFlags = 0x1A
+        let uuidList: GAPIncompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
+        let localName: GAPCompleteLocalName = "Proximity"
+        
+        let expectedData: [GAPData] = [flags, uuidList, localName]
+        let types = expectedData.map { type(of: $0) }
+        
+        guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+            else { XCTFail("Could not decode"); return }
+        
+        XCTAssert(decoded.isEmpty == false)
+        XCTAssertEqual(decoded.count, 3)
+        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        
+        XCTAssertEqual(decoded[0] as! GAPFlags, flags)
+        XCTAssertEqual(decoded[1] as! GAPIncompleteListOf16BitServiceClassUUIDs, uuidList)
+        XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+    }
+    
     func testGAPCompleteListOf32BitServiceClassUUIDs() {
         
         /**
@@ -187,6 +222,38 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(decoded[0] as! GAPFlags, flags)
         XCTAssertEqual(decoded[1] as! GAPCompleteListOf32BitServiceClassUUIDs, uuidList)
+        XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+    }
+    
+    func testGAPIncompleteListOf32BitServiceClassUUIDs() {
+        
+        /**
+         Length Data: 0x2E
+         Flags: 0x1A
+         32 bit UUIDs: 0x1803 0x1804 0x1802 0x0107 0x01F4 0x01F5 0x01F6 0x01F7
+         Local Name: Freedom
+         Data: 02 01 1A 21 05 03 18 00 00 04 18 00 00 02 18 00 00 07 01 00 00 F4 01 00 00 F5 01 00 00 F6 01 00 00 F7 01 00 00 08 09 46 72 65 65 64 6f 6d
+         */
+        
+        let data = Data([0x02, 0x01, 0x1A, 0x21, 0x04, 0x03, 0x18, 0x00, 0x00, 0x04, 0x18, 0x00, 0x00, 0x02, 0x18, 0x00, 0x00, 0x07, 0x01, 0x00, 0x00, 0xF4, 0x01, 0x00, 0x00, 0xF5, 0x01, 0x00, 0x00, 0xF6, 0x01, 0x00, 0x00, 0xF7, 0x01, 0x00, 0x00, 0x08, 0x09, 0x46, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x6d])
+        XCTAssertEqual(data.count, 0x2E)
+        
+        let flags: GAPFlags = 0x1A
+        let uuidList: GAPIncompleteListOf32BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802, 0x0107, 0x01F4, 0x01F5, 0x01F6, 0x01F7]
+        let localName: GAPCompleteLocalName = "Freedom"
+        
+        let expectedData: [GAPData] = [flags, uuidList, localName]
+        let types = expectedData.map { type(of: $0) }
+        
+        guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+            else { XCTFail("Could not decode"); return }
+        
+        XCTAssert(decoded.isEmpty == false)
+        XCTAssertEqual(decoded.count, 3)
+        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        
+        XCTAssertEqual(decoded[0] as! GAPFlags, flags)
+        XCTAssertEqual(decoded[1] as! GAPIncompleteListOf32BitServiceClassUUIDs, uuidList)
         XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
@@ -220,6 +287,33 @@ final class GAPTests: XCTestCase {
         //            XCTAssertEqual(decoded[0] as! GAPFlags, flags)
         //            XCTAssertEqual(decoded[1] as! GAPCompleteListOf128BitServiceClassUUIDs, uuidList)
         //            XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+    }
+    
+    func testGAPIncompleteListOf128BitServiceClassUUIDs() {
+        
+        /**
+         Length Data: 0x23
+         Flags: 0x1A
+         128 bit UUIDs: 0x1803 0x1804 0x1802 0x0107 0x01F4 0x01F5 0x01F6 0x01F7
+         Local Name: Test 128bits
+         Data: 02 01 1a 11 07 03 18 04 18 02 18 04 06 03 18 04 18 02 06 03 18 0d 09 54 65 73 74 20 31 32 38 62 69 74 73
+         */
+        
+        let data = Data([0x02, 0x01, 0x1a, 0x11, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18, 0x0d, 0x09, 0x54, 0x65, 0x73, 0x74, 0x20, 0x31, 0x32, 0x38, 0x62, 0x69, 0x74, 0x73])
+        XCTAssertEqual(data.count, 0x23)
+        
+        let flags: GAPFlags = 0x1A
+        let uuidList: GAPIncompleteListOf128BitServiceClassUUIDs = [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))]
+        let localName: GAPCompleteLocalName = "Test 128bits"
+        
+        let expectedData: [GAPData] = [flags, uuidList, localName]
+        let types = expectedData.map { type(of: $0) }
+        
+        guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
+            else { XCTFail("Could not decode"); return }
+        
+        XCTAssert(decoded.isEmpty == false)
+        XCTAssertEqual(decoded.count, 3)
     }
     
     func testGAPTxPowerLevel() {
