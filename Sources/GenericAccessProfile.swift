@@ -1125,6 +1125,98 @@ extension GAPSimplePairingRandomizerR: CustomStringConvertible {
     }
 }
 
+public struct GAPLESecureConnectionsConfirmation: GAPData {
+    
+    public static let length = MemoryLayout<UInt16>.size
+    
+    public static let dataType: GAPDataType = .LESecureConnectionsConfirmationValue
+    
+    public let confirmation: UInt16
+    
+    public init(confirmation: UInt16) {
+        
+        self.confirmation = confirmation
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let confirmation = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        self.init(confirmation: confirmation)
+    }
+    
+    public var data: Data {
+        
+        let value = confirmation.littleEndian
+        return Data(bytes: [value.bytes.0, value.bytes.1])
+    }
+}
+
+extension GAPLESecureConnectionsConfirmation: Equatable {
+    
+    public static func == (lhs: GAPLESecureConnectionsConfirmation, rhs: GAPLESecureConnectionsConfirmation) -> Bool {
+        
+        return lhs.confirmation == rhs.confirmation
+    }
+}
+
+extension GAPLESecureConnectionsConfirmation: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return confirmation.description
+    }
+}
+
+public struct GAPLESecureConnectionsRandom: GAPData {
+    
+    public static let length = MemoryLayout<UInt16>.size
+    
+    public static let dataType: GAPDataType = .LESecureConnectionsRandomValue
+    
+    public let random: UInt16
+    
+    public init(random: UInt16) {
+        
+        self.random = random
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let random = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        self.init(random: random)
+    }
+    
+    public var data: Data {
+        
+        let value = random.littleEndian
+        return Data(bytes: [value.bytes.0, value.bytes.1])
+    }
+}
+
+extension GAPLESecureConnectionsRandom: Equatable {
+    
+    public static func == (lhs: GAPLESecureConnectionsRandom, rhs: GAPLESecureConnectionsRandom) -> Bool {
+        
+        return lhs.random == rhs.random
+    }
+}
+
+extension GAPLESecureConnectionsRandom: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return random.description
+    }
+}
+
 public struct GAPSecurityManagerTKValue: GAPData {
     
     public static let length = MemoryLayout<UUID>.size

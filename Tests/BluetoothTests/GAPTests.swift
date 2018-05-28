@@ -26,14 +26,16 @@ final class GAPTests: XCTestCase {
         ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID),
         ("testGAPServiceData32BitUUID", testGAPServiceData32BitUUID),
         ("testGAPServiceData128BitUUID", testGAPServiceData128BitUUID),
-        ("testGAPAppearance", testGAPAppearance),
         ("testGAPPublicTargetAddress", testGAPPublicTargetAddress),
         ("testGAPRandomTargetAddress", testGAPRandomTargetAddress),
+        ("testGAPAppearance", testGAPAppearance),
         ("testGAPAdvertisingInterval", testGAPAdvertisingInterval),
         ("testGAPLEBluetoothDeviceAddress", testGAPLEBluetoothDeviceAddress),
         ("testGAPLERole", testGAPLERole),
         ("testGAPURI", testGAPURI),
-        ("testGAPLESupportedFeatures", testGAPLESupportedFeatures)
+        ("testGAPLESupportedFeatures", testGAPLESupportedFeatures),
+        ("testGAPLESecureConnectionsConfirmation", testGAPLESecureConnectionsConfirmation),
+        ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom)
     ]
     
     func testDataType() {
@@ -521,5 +523,40 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(supportedFeatures.data, Data([0x3d, 0x12, 0x4d, 0x4e, 0x4e]))
         }
     }
+    
+    func testGAPLESecureConnectionsConfirmation() {
+        
+        XCTAssertNil(GAPLESecureConnectionsConfirmation(data: Data([0x4f])))
+        XCTAssertNil(GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0x4f, 0x4f])))
+        
+        do {
+            let data = Data([0x4f, 0xf8])
+            let confirmation = GAPLESecureConnectionsConfirmation(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: confirmation), 2)
+            XCTAssertEqual(confirmation.data, data)
+            XCTAssertEqual(confirmation.data.count, 2)
+        }
+        
+        XCTAssertEqual(GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0xf8])), GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0xf8])))
+        XCTAssertEqual(GAPLESecureConnectionsConfirmation(confirmation: 0xf5).data.count, GAPLESecureConnectionsConfirmation.length)
+    }
+    
+    func testGAPLESecureConnectionsRandom() {
+        
+        XCTAssertNil(GAPLESecureConnectionsRandom(data: Data([0x4f])))
+        XCTAssertNil(GAPLESecureConnectionsRandom(data: Data([0x4f, 0x4f, 0x4f])))
+        
+        do {
+            let data = Data([0x4f, 0xf8])
+            let random = GAPLESecureConnectionsRandom(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: random), 2)
+            XCTAssertEqual(random.data, data)
+            XCTAssertEqual(random.data.count, 2)
+        }
+        
+        XCTAssertEqual(GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])), GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])))
+        XCTAssertEqual(GAPLESecureConnectionsRandom(random: 0xf5).data.count, GAPLESecureConnectionsRandom.length)
+    }
+    
     
 }
