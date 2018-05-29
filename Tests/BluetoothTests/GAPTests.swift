@@ -17,6 +17,7 @@ final class GAPTests: XCTestCase {
         ("testBit32UUIDList", testBit32UUIDList),
         ("testBit128UUIDList", testBit128UUIDList),
         ("testDataType", testDataType),
+        ("testGAPShortLocalName", testGAPShortLocalName),
         ("testGAPCompleteLocalName", testGAPCompleteLocalName),
         ("testGAPCompleteListOf16BitServiceClassUUIDs", testGAPCompleteListOf16BitServiceClassUUIDs),
         ("testGAPCompleteListOf32BitServiceClassUUIDs", testGAPCompleteListOf32BitServiceClassUUIDs),
@@ -103,6 +104,31 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(list.data, data)
         //XCTAssertEqual(list.uuids.map { $0.description }, [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))])
+    }
+    
+    func testGAPShortLocalName() {
+        
+        /**
+         Length Data: 0X0C
+         Local Name: BlueZ 5.43
+         Data: 0B 09 42 6C 75 65 5A 20 35 2E 34 33
+         */
+        let data = Data([0x0B, 0x08, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
+        let name: GAPShortLocalName = "BlueZ 5.43"
+        XCTAssertEqual(data.count, 0x0C)
+        XCTAssertEqual(data.count, 12)
+        
+        var decoded = [GAPData]()
+        XCTAssertNoThrow(decoded = try GAPDataDecoder.decode(data, types: [GAPShortLocalName.self], ignoreUnknownType: false))
+        
+        XCTAssert(decoded.isEmpty == false)
+        XCTAssertEqual(decoded.count, 1)
+        
+        guard let nameData = decoded.first as? GAPShortLocalName
+            else { XCTFail(); return }
+        
+        XCTAssertEqual(nameData, name)
+        XCTAssertEqual(GAPDataEncoder.encode([name]), data)
     }
     
     func testGAPCompleteLocalName() {
