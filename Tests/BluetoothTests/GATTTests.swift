@@ -16,7 +16,6 @@ final class GATTTests: XCTestCase {
         ("testGATT", testGATT),
         ("testMTUExchange", testMTUExchange),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
-        ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor),
         ("testDescriptors", testDescriptors),
         ("testNotification", testNotification)
     ]
@@ -976,32 +975,6 @@ final class GATTTests: XCTestCase {
         
         // run fake sockets
         XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
-    }
-    
-    func testCharacteristicClientConfigurationDescriptor() {
-        
-        XCTAssertEqual(GATTClientCharacteristicConfiguration().configuration.rawValue, 0)
-        XCTAssertEqual(GATTClientCharacteristicConfiguration.Configuration.all.rawValue, 3)
-        
-        XCTAssertNil(GATTClientCharacteristicConfiguration(byteValue: Data()))
-        XCTAssertNil(GATTClientCharacteristicConfiguration(byteValue: Data([0x00])))
-        XCTAssertNil(GATTClientCharacteristicConfiguration(byteValue: Data([0x00, 0x00, 0x03])))
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(byteValue: Data([0x00, 0x00]))?.configuration, [])
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(byteValue: Data([0x01, 0x00]))?.configuration, [.notify])
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(byteValue: Data([0x02, 0x00]))?.configuration, [.indicate])
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(byteValue: Data([0x03, 0x00]))?.configuration, [.notify, .indicate])
-        
-        var clientConfiguration = GATTClientCharacteristicConfiguration()
-        XCTAssertEqual(clientConfiguration.configuration, [])
-        
-        clientConfiguration.configuration.insert(.notify)
-        XCTAssertEqual(clientConfiguration.byteValue, Data([0x01, 00]))
-        
-        XCTAssert(clientConfiguration.configuration.remove(.notify))
-        XCTAssertEqual(clientConfiguration.byteValue, Data([0x00, 0x00]))
-        XCTAssertEqual(clientConfiguration.configuration, [])
-        XCTAssertEqual(clientConfiguration.configuration.rawValue, 0)
-        
     }
 }
 

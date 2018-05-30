@@ -34,7 +34,7 @@ public extension POSIXError {
     #endif
 }
 
-#if os(Linux)
+#if os(Linux) || os(Android)
     
     /// Enumeration describing POSIX error codes.
     public struct POSIXError: Error {
