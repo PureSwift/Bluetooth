@@ -2353,25 +2353,26 @@ public struct GAPIndoorPositioning: GAPData {
     public var data: Data {
         
         var data = Data([flags.rawValue])
+        data.reserveCapacity(GAPIndoorPositioning.length)
         
         let latitude = globalCoordinatesLatitude.littleEndian.bytes
-        data.append(contentsOf: [latitude.0, latitude.1, latitude.2, latitude.3])
+        data += [latitude.0, latitude.1, latitude.2, latitude.3]
         
         let longitude = globalCoordinatesLongitude.littleEndian.bytes
-        data.append(contentsOf: [longitude.0, longitude.1, longitude.2, longitude.3])
+        data += [longitude.0, longitude.1, longitude.2, longitude.3]
         
         let north = localCoordinatesNorth.littleEndian.bytes
-        data.append(contentsOf: [north.0, north.1])
+        data += [north.0, north.1]
         
         let east = localCoordinatesEast.littleEndian.bytes
-        data.append(contentsOf: [east.0, east.1])
+        data += [east.0, east.1]
         
         data.append(txPower)
         
         data.append(floorNumber)
         
         let altitude = self.altitude.littleEndian.bytes
-        data.append(contentsOf: [altitude.0, altitude.1])
+        data += [altitude.0, altitude.1]
         
         data.append(uncertainty)
         
@@ -2415,11 +2416,6 @@ public enum GAPIndoorPositioningFlag: UInt8, BitMaskOption {
     /// (0 = Location Name is not present, 1 = Location Name is present)
     case locationName = 0b1000000
     
-    public var data: Data {
-        
-        return Data(bytes: [self.rawValue])
-    }
-    
     public static let all: Set<GAPIndoorPositioningFlag> = [
         .coordinates,
         .coordinateSystemUsed,
@@ -2428,6 +2424,153 @@ public enum GAPIndoorPositioningFlag: UInt8, BitMaskOption {
         .floorNumber,
         .uncertainty,
         .locationName
+    ]
+}
+
+public struct GAPTransportDiscoveryBlock {
+    
+    public static let minLength = 2
+    
+    public let organizationID: UInt8
+    
+    public let flags: BitMaskOptionSet<GAPTransportDiscoveryDataFlag>
+    
+    public let dataLength: UInt8
+    
+    public let transportData: [UInt8]
+    
+    public var data: Data {
+        
+        let data = Data([organizationID, flags.rawValue, dataLength])
+        return transportData.reduce(data, { $0.0 + [$0.1] })
+    }
+    
+}
+
+extension GAPTransportDiscoveryBlock: Equatable {
+    
+    public static func == (lhs: GAPTransportDiscoveryBlock, rhs: GAPTransportDiscoveryBlock) -> Bool {
+        
+        return lhs.organizationID == rhs.organizationID &&
+                lhs.flags == rhs.flags &&
+                lhs.dataLength == rhs.dataLength &&
+                lhs.transportData == rhs.transportData
+    }
+    
+}
+
+extension GAPTransportDiscoveryBlock: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(organizationID) \(flags) \(dataLength) \(transportData)"
+    }
+    
+}
+
+public struct GAPTransportDiscoveryData: GAPData {
+    
+    public static let length = 18
+    
+    public static let minBlocks = 1
+    
+    public static let dataType: GAPDataType = .transportDiscoveryData
+    
+    public let code: UInt8
+    
+    public let blocks: [GAPTransportDiscoveryBlock]
+    
+    public init(code: UInt8, blocks: [GAPTransportDiscoveryBlock]) {
+        
+        self.code = code
+        self.blocks = blocks
+    }
+    
+    public init?(data: Data) {
+        
+        var index = 1
+        var blocks = [GAPTransportDiscoveryBlock]()
+        
+        while index < data.count {
+            
+            guard index + GAPTransportDiscoveryBlock.minLength < data.count
+                else { return nil }
+            
+            let flags = BitMaskOptionSet<GAPTransportDiscoveryDataFlag>(rawValue: data[index+1])
+            let length = Int(data[index+2])
+            
+            guard index + GAPTransportDiscoveryBlock.minLength + length < data.count
+                else { return nil }
+            
+            let transportData: [UInt8] = stride(from: index+3, to: index+3+length, by: 1).map { data[Int($0)] }
+            let block = GAPTransportDiscoveryBlock(organizationID: data[index], flags: flags, dataLength: data[index+2], transportData: transportData)
+            blocks.append(block)
+            
+            index += (GAPTransportDiscoveryBlock.minLength + length + 1)
+        }
+        
+        guard blocks.count >= GAPTransportDiscoveryData.minBlocks
+            else { return nil }
+        
+        self.init(code: data[0], blocks: blocks)
+    }
+    
+    public var data: Data {
+        
+        return blocks.reduce(Data([code]), { $0.0 + $0.1.data })
+    }
+    
+}
+
+extension GAPTransportDiscoveryData: Equatable {
+    
+    public static func == (lhs: GAPTransportDiscoveryData, rhs: GAPTransportDiscoveryData) -> Bool {
+        
+        return lhs.code == rhs.code && lhs.blocks == rhs.blocks
+    }
+}
+
+extension GAPTransportDiscoveryData: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return code.description + blocks.description
+    }
+}
+
+public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
+    /// Seeker
+    case seeker = 0b01
+    
+    /// Provider
+    case provider = 0b10
+    
+    /// Transport Data Incomplete
+    case dataIncomplete = 0b100
+    
+    /// Transport State
+    case stateOn = 0b1000
+    
+    /// Temporarily Unavailable
+    case temporalilyUnavailable = 0b10000
+    
+    public var data: Data {
+        
+        return Data(bytes: [self.rawValue])
+    }
+    
+    public static let all: Set<GAPTransportDiscoveryDataFlag> = [
+        .seeker,
+        .provider,
+        .dataIncomplete,
+        .stateOn,
+        .temporalilyUnavailable
     ]
 }
 
