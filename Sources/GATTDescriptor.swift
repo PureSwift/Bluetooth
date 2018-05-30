@@ -186,7 +186,7 @@ public extension GATTCharacteristicExtendedProperties {
         /// Reliable Write enabled
         case reliableWrite = 0b01
         
-        /// Writable Auxiliaries  enabled
+        /// Writable Auxiliaries enabled
         case writableAuxiliaries = 0b10
         
         public static let all: Set<Property> = [.reliableWrite, .writableAuxiliaries]
@@ -221,14 +221,12 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
         
         let rawValue = byteValue[0]
         
-        self.serverConfiguration = BitMaskOptionSet<ServerConfiguration>(rawValue: UInt16(rawValue))
+        self.serverConfiguration = BitMaskOptionSet<ServerConfiguration>(rawValue: rawValue)
     }
     
     public var byteValue: Data {
         
-        let bytes = serverConfiguration.rawValue.littleEndian.bytes
-        
-        return Data([bytes.0])
+        return Data([serverConfiguration.rawValue])
     }
     
     public var descriptor: GATT.Descriptor {
@@ -242,11 +240,11 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
 extension GATTServerCharacteristicConfiguration {
     
     /// GATT Server Characteristics Configuration Options
-    public enum ServerConfiguration: UInt16, BitMaskOption {
+    public enum ServerConfiguration: UInt8, BitMaskOption {
         
         #if swift(>=3.2)
         #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
+        public typealias RawValue = UInt8
         #endif
         
         /// Broadcasts enabled
@@ -274,23 +272,26 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicAggregateFormat
     
-    public var aggregateFormat: [UInt16]
+    public var handles: [UInt16]
     
-    public init(aggregateFormat: [UInt16] = []) {
+    public init(handles: [UInt16] = []) {
         
-        self.aggregateFormat = aggregateFormat
+        self.handles = handles
     }
     
     public init?(byteValue: Data) {
         
+        // this is not actually UInt16 UUID, but handles
+        // since the binary format is the same we can reuse code
         guard let list = Bit16UUIDList(data: byteValue)
             else { return nil }
-        self.aggregateFormat = list.uuids
+        
+        self.handles = list.uuids
     }
     
     public var byteValue: Data {
         
-        return (Bit16UUIDList(uuids: aggregateFormat)).data
+        return (Bit16UUIDList(uuids: handles)).data
     }
     
     public var descriptor: GATT.Descriptor {
@@ -304,17 +305,20 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
 
 /// Characteristic Format Types
 ///
-/// If a format is not a whole number of octets, then the data shall be contained within the least significant bits of the value, and all other bits shall be set to zero on transmission and ignored upon receipt.
+/// If a format is not a whole number of octets, then the data shall be contained within
+/// the least significant bits of the value, and all other bits shall be set to zero on transmission
+/// and ignored upon receipt.
+///
 /// If the Characteristic Value is less than an octet, it occupies an entire octet.
 public struct CharacteristicFormatType: RawRepresentable {
     
-    public let length = 27
+    public let length = 1
     
     public var rawValue: UInt8
     
     public init?(rawValue: UInt8) {
         
-        guard Int(rawValue) <= 27
+        guard rawValue <= 27
             else { return nil }
         
         self.rawValue = rawValue
@@ -347,7 +351,7 @@ public struct CharacteristicFormatType: RawRepresentable {
     public static let duint16: CharacteristicFormatType = 0x18
     public static let utf8s: CharacteristicFormatType = 0x19
     public static let utf16s: CharacteristicFormatType = 0x1A
-    public static let Struct: CharacteristicFormatType = 0x1B
+    public static let `struct`: CharacteristicFormatType = 0x1B
 }
 
 extension CharacteristicFormatType: Equatable {
@@ -378,16 +382,16 @@ extension CharacteristicFormatType: CustomStringConvertible {
     
     public var name: String? {
         
-        return formatTypeNames[self]
+        return characteristicFormatTypeNames[self]
     }
     
     public var description: String {
         
-        return formatTypeDescription[self]!
+        return characteristicFormatTypeDescription[self] ?? rawValue.description
     }
 }
 
-internal let formatTypeNames: [CharacteristicFormatType: String] = [
+internal let characteristicFormatTypeNames: [CharacteristicFormatType: String] = [
     .rfu: "rfu",
     .boolean: "boolean",
     .bit2: "2bit",
@@ -415,9 +419,10 @@ internal let formatTypeNames: [CharacteristicFormatType: String] = [
     .duint16: "duint16",
     .utf8s: "utf8s",
     .utf16s: "utf16s",
-    .Struct: "struct"
+    .struct: "struct"
 ]
-internal let formatTypeDescription: [CharacteristicFormatType: String] = [
+
+internal let characteristicFormatTypeDescription: [CharacteristicFormatType: String] = [
     .rfu: "Reserve for future use",
     .boolean: "unsigned 1-bit; 0=false, 1=true",
     .bit2: "unsigned 2-bit integer",
@@ -445,7 +450,7 @@ internal let formatTypeDescription: [CharacteristicFormatType: String] = [
     .duint16: "IEEE-20601 format",
     .utf8s: "UTF-8 string",
     .utf16s: "UTF-16 string",
-    .Struct: "Opaque structure"
+    .struct: "Opaque structure"
 ]
 
 /// GATT Characteristic Presentation Format Descriptor
@@ -508,8 +513,8 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public var byteValue: Data {
         
-        let unitBytes = unit.bytes
-        let descriptionBytes = description.bytes
+        let unitBytes = unit.littleEndian.bytes
+        let descriptionBytes = description.littleEndian.bytes
         
         return Data([format.rawValue,
                      UInt8(bitPattern: exponent),
