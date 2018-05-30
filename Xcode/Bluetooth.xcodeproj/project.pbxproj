@@ -378,7 +378,7 @@
 		6E14247F206CFFC500BF72BC /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		6E1A0C4C208006370095C29E /* DefinedUUIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefinedUUIDTests.swift; sourceTree = "<group>"; };
 		6E2809881FCF499100B2D68E /* HCIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIVersion.swift; sourceTree = "<group>"; };
-		6E30AE2D20BEFEEC0072D101 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Data.swift; path = ../Data.swift; sourceTree = "<group>"; };
+		6E30AE2D20BEFEEC0072D101 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		6E32290F1FCDC47F0035605D /* HCIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIError.swift; sourceTree = "<group>"; };
 		6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyIdentifier.swift; sourceTree = "<group>"; };
 		6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvertisingChannelHeader.swift; sourceTree = "<group>"; };
