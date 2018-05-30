@@ -3057,19 +3057,19 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.dialogSemiconductorBV, .bit32(65182))
         XCTAssertNotEqual(BluetoothUUID.dialogSemiconductorBV, .bit32(0xFE9E))
 
-        /// Google
+        /// Google Inc.
         XCTAssertEqual(BluetoothUUID.google.rawValue, "FE9F")
         XCTAssertEqual(BluetoothUUID.google, .bit16(0xFE9F))
         XCTAssertEqual(BluetoothUUID.google, .bit16(65183))
-        XCTAssertEqual(BluetoothUUID.google.name, "Google")
+        XCTAssertEqual(BluetoothUUID.google.name, "Google Inc.")
         XCTAssertNotEqual(BluetoothUUID.google, .bit32(65183))
         XCTAssertNotEqual(BluetoothUUID.google, .bit32(0xFE9F))
 
-        /// Google
+        /// Google Inc.
         XCTAssertEqual(BluetoothUUID.google2.rawValue, "FEA0")
         XCTAssertEqual(BluetoothUUID.google2, .bit16(0xFEA0))
         XCTAssertEqual(BluetoothUUID.google2, .bit16(65184))
-        XCTAssertEqual(BluetoothUUID.google2.name, "Google")
+        XCTAssertEqual(BluetoothUUID.google2.name, "Google Inc.")
         XCTAssertNotEqual(BluetoothUUID.google2, .bit32(65184))
         XCTAssertNotEqual(BluetoothUUID.google2, .bit32(0xFEA0))
 
@@ -3145,11 +3145,11 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.savantSystems2, .bit32(65193))
         XCTAssertNotEqual(BluetoothUUID.savantSystems2, .bit32(0xFEA9))
 
-        /// Google
+        /// Google Inc.
         XCTAssertEqual(BluetoothUUID.google3.rawValue, "FEAA")
         XCTAssertEqual(BluetoothUUID.google3, .bit16(0xFEAA))
         XCTAssertEqual(BluetoothUUID.google3, .bit16(65194))
-        XCTAssertEqual(BluetoothUUID.google3.name, "Google")
+        XCTAssertEqual(BluetoothUUID.google3.name, "Google Inc.")
         XCTAssertNotEqual(BluetoothUUID.google3, .bit32(65194))
         XCTAssertNotEqual(BluetoothUUID.google3, .bit32(0xFEAA))
 
@@ -3513,11 +3513,11 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.broadcomCorporation2, .bit32(65239))
         XCTAssertNotEqual(BluetoothUUID.broadcomCorporation2, .bit32(0xFED7))
 
-        /// Google
+        /// Google Inc.
         XCTAssertEqual(BluetoothUUID.google4.rawValue, "FED8")
         XCTAssertEqual(BluetoothUUID.google4, .bit16(0xFED8))
         XCTAssertEqual(BluetoothUUID.google4, .bit16(65240))
-        XCTAssertEqual(BluetoothUUID.google4.name, "Google")
+        XCTAssertEqual(BluetoothUUID.google4.name, "Google Inc.")
         XCTAssertNotEqual(BluetoothUUID.google4, .bit32(65240))
         XCTAssertNotEqual(BluetoothUUID.google4, .bit32(0xFED8))
 
@@ -3625,11 +3625,11 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit32(65253))
         XCTAssertNotEqual(BluetoothUUID.nordicSemiconductorAsa2, .bit32(0xFEE5))
 
-        /// Seed Labs, Inc.
+        /// Silvair, Inc.
         XCTAssertEqual(BluetoothUUID.seedLabs.rawValue, "FEE6")
         XCTAssertEqual(BluetoothUUID.seedLabs, .bit16(0xFEE6))
         XCTAssertEqual(BluetoothUUID.seedLabs, .bit16(65254))
-        XCTAssertEqual(BluetoothUUID.seedLabs.name, "Seed Labs, Inc.")
+        XCTAssertEqual(BluetoothUUID.seedLabs.name, "Silvair, Inc.")
         XCTAssertNotEqual(BluetoothUUID.seedLabs, .bit32(65254))
         XCTAssertNotEqual(BluetoothUUID.seedLabs, .bit32(0xFEE6))
 
@@ -3729,19 +3729,19 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.csr3, .bit32(65266))
         XCTAssertNotEqual(BluetoothUUID.csr3, .bit32(0xFEF2))
 
-        /// Google
+        /// Google Inc.
         XCTAssertEqual(BluetoothUUID.google5.rawValue, "FEF3")
         XCTAssertEqual(BluetoothUUID.google5, .bit16(0xFEF3))
         XCTAssertEqual(BluetoothUUID.google5, .bit16(65267))
-        XCTAssertEqual(BluetoothUUID.google5.name, "Google")
+        XCTAssertEqual(BluetoothUUID.google5.name, "Google Inc.")
         XCTAssertNotEqual(BluetoothUUID.google5, .bit32(65267))
         XCTAssertNotEqual(BluetoothUUID.google5, .bit32(0xFEF3))
 
-        /// Google
+        /// Google Inc.
         XCTAssertEqual(BluetoothUUID.google6.rawValue, "FEF4")
         XCTAssertEqual(BluetoothUUID.google6, .bit16(0xFEF4))
         XCTAssertEqual(BluetoothUUID.google6, .bit16(65268))
-        XCTAssertEqual(BluetoothUUID.google6.name, "Google")
+        XCTAssertEqual(BluetoothUUID.google6.name, "Google Inc.")
         XCTAssertNotEqual(BluetoothUUID.google6, .bit32(65268))
         XCTAssertNotEqual(BluetoothUUID.google6, .bit32(0xFEF4))
 
@@ -3793,11 +3793,11 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.paypal2, .bit32(65274))
         XCTAssertNotEqual(BluetoothUUID.paypal2, .bit32(0xFEFA))
 
-        /// Stollmann E+V GmbH
+        /// Telit Wireless Solutions
         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.rawValue, "FEFB")
         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2, .bit16(0xFEFB))
         XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2, .bit16(65275))
-        XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.name, "Stollmann E+V GmbH")
+        XCTAssertEqual(BluetoothUUID.stollmannEVGmbh2.name, "Telit Wireless Solutions")
         XCTAssertNotEqual(BluetoothUUID.stollmannEVGmbh2, .bit32(65275))
         XCTAssertNotEqual(BluetoothUUID.stollmannEVGmbh2, .bit32(0xFEFB))
 
