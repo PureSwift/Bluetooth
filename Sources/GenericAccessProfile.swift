@@ -115,10 +115,10 @@ public struct GAPDataType: RawRepresentable {
     public static let advertisingInterval: GAPDataType = 0x1A
     
     /// LE Bluetooth Device Address
-    public static let LEBluetoothDeviceAddress: GAPDataType = 0x1B
+    public static let lowEnergyDeviceAddress: GAPDataType = 0x1B
     
     /// LE Role
-    public static let LERole: GAPDataType = 0x1C
+    public static let lowEnergyRole: GAPDataType = 0x1C
     
     /// Simple Pairing Hash C-256
     public static let simplePairingHashC256: GAPDataType = 0x1D
@@ -136,10 +136,10 @@ public struct GAPDataType: RawRepresentable {
     public static let serviceData128BitUUID: GAPDataType = 0x21
     
     /// LE Secure Connections Confirmation Value
-    public static let LESecureConnectionsConfirmationValue: GAPDataType = 0x22
+    public static let lowEnergySecureConnectionsConfirmation: GAPDataType = 0x22
     
     /// LE Secure Connections Random Value
-    public static let LESecureConnectionsRandomValue: GAPDataType = 0x23
+    public static let lowEnergySecureConnectionsRandom: GAPDataType = 0x23
     
     /// URI
     public static let uri: GAPDataType = 0x24
@@ -151,13 +151,13 @@ public struct GAPDataType: RawRepresentable {
     public static let transportDiscoveryData: GAPDataType = 0x26
     
     /// LE Supported Features
-    public static let LESupportedFeatures: GAPDataType = 0x27
+    public static let lowEnergySupportedFeatures: GAPDataType = 0x27
     
     /// Channel Map Update Indication
     public static let channelMapUpdateIndication: GAPDataType = 0x28
     
     /// PB-ADV
-    public static let pbADV: GAPDataType = 0x29
+    public static let pbAdv: GAPDataType = 0x29
     
     /// Mesh Message
     public static let meshMessage: GAPDataType = 0x2A
@@ -1135,7 +1135,7 @@ public struct GAPLESecureConnectionsConfirmation: GAPData {
     
     public static let length = MemoryLayout<UInt16>.size
     
-    public static let dataType: GAPDataType = .LESecureConnectionsConfirmationValue
+    public static let dataType: GAPDataType = .lowEnergySecureConnectionsConfirmation
     
     public let confirmation: UInt16
     
@@ -1184,7 +1184,7 @@ public struct GAPLESecureConnectionsRandom: GAPData {
     
     public static let length = MemoryLayout<UInt16>.size
     
-    public static let dataType: GAPDataType = .LESecureConnectionsRandomValue
+    public static let dataType: GAPDataType = .lowEnergySecureConnectionsRandom
     
     public let random: UInt16
     
@@ -2026,7 +2026,7 @@ public struct GAPLEBluetoothDeviceAddress: GAPData {
     
     public static let length = 7
     
-    public static let dataType: GAPDataType = .LEBluetoothDeviceAddress
+    public static let dataType: GAPDataType = .lowEnergyDeviceAddress
     
     public let address: Address
     
@@ -2075,7 +2075,7 @@ public struct GAPLERole: GAPData {
     
     public static let length = MemoryLayout<UInt8>.size
     
-    public static let dataType: GAPDataType = .LERole
+    public static let dataType: GAPDataType = .lowEnergyRole
     
     public let role: GAPLERoleType
     
@@ -2189,7 +2189,7 @@ public struct GAPLESupportedFeatures: GAPData {
     
     public static let omittedValue: UInt8 = 0x00
     
-    public static let dataType: GAPDataType = .LESupportedFeatures
+    public static let dataType: GAPDataType = .lowEnergySupportedFeatures
     
     public let supportedFeatures: [UInt8]
     
@@ -2203,9 +2203,7 @@ public struct GAPLESupportedFeatures: GAPData {
         var supportedFeatures = [UInt8]()
         var lastNonZero: UInt8?
         
-        for i in 0..<data.count {
-            
-            let element = data[i]
+        for element in data {
             
             if lastNonZero != nil, element == GAPLESupportedFeatures.omittedValue {
                 continue
@@ -2226,10 +2224,8 @@ public struct GAPLESupportedFeatures: GAPData {
         var supportedData = Data()
         var lastNonZero: UInt8?
         
-        for i in 0..<supportedFeatures.count {
-            
-            let element = supportedFeatures[i]
-            
+        for element in supportedFeatures {
+                        
             if lastNonZero != nil, element == GAPLESupportedFeatures.omittedValue {
                 continue
             }
@@ -2612,11 +2608,15 @@ public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
     ]
 }
 
-/// Any advertisement using the Mesh Message AD Type shall be non-connectable and non-scannable undirected advertising events.
-/// If a node receives a Mesh Message AD Type in a connectable advertisement or scannable advertising event, the message shall be ignored.
+/// Any advertisement using the Mesh Message AD Type shall be non-connectable and
+/// non-scannable undirected advertising events.
+/// If a node receives a Mesh Message AD Type in a connectable advertisement or scannable advertising event,
+/// the message shall be ignored.
 ///
-/// Note: Non-connectable advertisements are used since there is no need to include the Flags AD Type in the advertising packets, thereby enabling two additional octets to be allocated to the Network PDU (see [7]).
-/// To lower the probability of packet collisions on all advertising channels, it is recommended to randomize the gap between consecutive packets within an Advertising Event (see [1]).
+/// - Note: Non-connectable advertisements are used since there is no need to include the Flags AD Type
+/// in the advertising packets, thereby enabling two additional octets to be allocated to the Network PDU.
+/// To lower the probability of packet collisions on all advertising channels,
+/// it is recommended to randomize the gap between consecutive packets within an Advertising Event.
 public struct GAPMeshMessage: GAPData {
     
     public static let length = MemoryLayout<UInt16>.size
