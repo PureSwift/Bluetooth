@@ -18,7 +18,8 @@ XCTMain([
     testCase(iBeaconTests.allTests),
     testCase(HCITests.allTests),
     testCase(AttributeProtocolTests.allTests),
+    testCase(GAPTests.allTests),
     testCase(GATTTests.allTests),
     testCase(GATTDatabaseTests.allTests),
-    testCase(GAPTests.allTests)
+    testCase(GATTDescriptorTests.allTests)
     ])
