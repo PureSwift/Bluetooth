@@ -41,7 +41,8 @@ final class GAPTests: XCTestCase {
         ("testGAPLESupportedFeatures", testGAPLESupportedFeatures),
         ("testGAPLESecureConnectionsConfirmation", testGAPLESecureConnectionsConfirmation),
         ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom),
-        ("testGAPChannelMapUpdateIndication", testGAPChannelMapUpdateIndication)
+        ("testGAPChannelMapUpdateIndication", testGAPChannelMapUpdateIndication),
+        ("testGAPTransportDiscoveryData", testGAPTransportDiscoveryData)
     ]
     
     func testDataType() {
@@ -709,5 +710,47 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    
+    func testGAPTransportDiscoveryData() {
+        
+        do {
+            let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
+            let transport = GAPTransportDiscoveryData(data: data)
+            XCTAssertEqual(transport!.data, data)
+        }
+        
+        do {
+            let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01, 0x4d, 0b1011, 0x04, 0x02, 0x02, 0x02, 0x02])
+            let transport = GAPTransportDiscoveryData(data: data)
+            XCTAssertEqual(transport!.data, data)
+        }
+        
+        do {
+            let data = Data([0x05])
+            let transport = GAPTransportDiscoveryData(data: data)
+            XCTAssertNil(transport)
+        }
+        
+        do {
+            let data = Data([])
+            let transport = GAPTransportDiscoveryData(data: data)
+            XCTAssertNil(transport)
+        }
+        
+        do {
+            let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01])
+            let transport = GAPTransportDiscoveryData(data: data)
+            XCTAssertNil(transport)
+        }
+        
+        do {
+            let data = Data([0x05, 0x4d, 0b10000])
+            let transport = GAPTransportDiscoveryData(data: data)
+            XCTAssertNil(transport)
+        }
+        
+        do {
+            let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
+            XCTAssertEqual(GAPTransportDiscoveryData(data: data), GAPTransportDiscoveryData(data: data))
+        }
+    }
 }
