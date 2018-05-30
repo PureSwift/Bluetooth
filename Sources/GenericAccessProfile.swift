@@ -909,6 +909,10 @@ extension GAPCompleteLocalName: ExpressibleByStringLiteral {
     }
 }
 
+/// The TX Power Level data type indicates the transmitted power level of the packet containing the data type.
+/// The TX Power Level should be the radiated power level.
+///
+/// Note: When the TX Power Level data type is not present, the TX power level of the packet is unknown.
 public struct GAPTxPowerLevel: GAPData {
     
     public static let length = MemoryLayout<UInt8>.size
@@ -979,6 +983,8 @@ extension GAPTxPowerLevel: ExpressibleByIntegerLiteral {
     
 }
 
+/// Specifies the class of the device
+/// Size: 3 octets
 public struct GAPClassOfDevice: GAPData {
     
     public typealias Identifier = (UInt8, UInt8, UInt8)
@@ -1026,6 +1032,9 @@ extension GAPClassOfDevice: CustomStringConvertible {
     }
 }
 
+/// Specifies the Simple Pairing Hash C
+/// Size: 16 octets
+/// Format defined in [Vol. 2], Part H Section 7.2.2
 public struct GAPSimplePairingHashC: GAPData {
     
     public static let length = MemoryLayout<UUID>.size
@@ -1071,6 +1080,9 @@ extension GAPSimplePairingHashC: CustomStringConvertible {
     }
 }
 
+/// Specifies the Simple Pairing Randomizer
+/// Size: 16 octets
+/// Format defined in [Vol. 2], Part H Section 7.2.2
 public struct GAPSimplePairingRandomizerR: GAPData {
     
     public static let length = MemoryLayout<UUID>.size
@@ -1116,6 +1128,9 @@ extension GAPSimplePairingRandomizerR: CustomStringConvertible {
     }
 }
 
+/// Specifies the LE Secure Connections Confirmation Value
+/// Size: 16 octets
+/// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
 public struct GAPLESecureConnectionsConfirmation: GAPData {
     
     public static let length = MemoryLayout<UInt16>.size
@@ -1162,6 +1177,9 @@ extension GAPLESecureConnectionsConfirmation: CustomStringConvertible {
     }
 }
 
+/// Specifies the LE Secure Connections Random Value
+/// Size: 16 octets
+/// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
 public struct GAPLESecureConnectionsRandom: GAPData {
     
     public static let length = MemoryLayout<UInt16>.size
@@ -1208,6 +1226,9 @@ extension GAPLESecureConnectionsRandom: CustomStringConvertible {
     }
 }
 
+/// The Security Manager TK Value data type allows an out of band mechanism to be used by the Security Manager to communicate the TK value.
+/// Size: 16 octets
+/// Value as used in pairing over LE Physical channel. Format defined in [Vol. 3], Part H Section 2.3
 public struct GAPSecurityManagerTKValue: GAPData {
     
     public static let length = MemoryLayout<UUID>.size
