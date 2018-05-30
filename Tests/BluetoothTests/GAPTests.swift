@@ -42,7 +42,8 @@ final class GAPTests: XCTestCase {
         ("testGAPLESecureConnectionsConfirmation", testGAPLESecureConnectionsConfirmation),
         ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom),
         ("testGAPChannelMapUpdateIndication", testGAPChannelMapUpdateIndication),
-        ("testGAPTransportDiscoveryData", testGAPTransportDiscoveryData)
+        ("testGAPTransportDiscoveryData", testGAPTransportDiscoveryData),
+        ("testGAPMeshMessage", testGAPMeshMessage)
     ]
     
     func testDataType() {
@@ -751,6 +752,21 @@ final class GAPTests: XCTestCase {
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
             XCTAssertEqual(GAPTransportDiscoveryData(data: data), GAPTransportDiscoveryData(data: data))
+        }
+    }
+    
+    func testGAPMeshMessage() {
+        
+        XCTAssertNil(GAPMeshMessage(data: Data([0x4f])))
+        XCTAssertNil(GAPMeshMessage(data: Data([0x4f, 0xf8, 0x30])))
+        
+        do {
+            let data = Data([0xf8, 0x30])
+            let message = GAPMeshMessage(data: data)!
+            
+            XCTAssertEqual(message.data, data)
+            XCTAssertEqual(message.data.count, GAPMeshMessage.length)
+            XCTAssertEqual(MemoryLayout.size(ofValue: message), GAPMeshMessage.length)
         }
     }
 }
