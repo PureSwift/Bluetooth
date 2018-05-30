@@ -2176,12 +2176,12 @@ public extension BluetoothUUID {
     static var setpointMedical: BluetoothUUID {
         return .bit16(0xFE52)
     }
-/*
+
     /// 3M (`0xFE53`)
-    static var 3M: BluetoothUUID {
+    static var uuid3M: BluetoothUUID {
         return .bit16(0xFE53)
     }
-*/
+
     /// Motiv, Inc. (`0xFE54`)
     static var motiv: BluetoothUUID {
         return .bit16(0xFE54)
