@@ -3488,15 +3488,15 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertEqual(BluetoothUUID.setpointMedical.name, "SetPoint Medical")
         XCTAssertNotEqual(BluetoothUUID.setpointMedical, .bit32(65106))
         XCTAssertNotEqual(BluetoothUUID.setpointMedical, .bit32(0xFE52))
-/*
+
         /// 3M
-        XCTAssertEqual(BluetoothUUID.3M.rawValue, "FE53")
-        XCTAssertEqual(BluetoothUUID.3M, .bit16(0xFE53))
-        XCTAssertEqual(BluetoothUUID.3M, .bit16(65107))
-        XCTAssertEqual(BluetoothUUID.3M.name, "3M")
-        XCTAssertNotEqual(BluetoothUUID.3M, .bit32(65107))
-        XCTAssertNotEqual(BluetoothUUID.3M, .bit32(0xFE53))
-*/
+        XCTAssertEqual(BluetoothUUID.uuid3M.rawValue, "FE53")
+        XCTAssertEqual(BluetoothUUID.uuid3M, .bit16(0xFE53))
+        XCTAssertEqual(BluetoothUUID.uuid3M, .bit16(65107))
+        XCTAssertEqual(BluetoothUUID.uuid3M.name, "3M")
+        XCTAssertNotEqual(BluetoothUUID.uuid3M, .bit32(65107))
+        XCTAssertNotEqual(BluetoothUUID.uuid3M, .bit32(0xFE53))
+
         /// Motiv, Inc.
         XCTAssertEqual(BluetoothUUID.motiv.rawValue, "FE54")
         XCTAssertEqual(BluetoothUUID.motiv, .bit16(0xFE54))
