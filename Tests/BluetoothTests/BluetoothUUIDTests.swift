@@ -90,9 +90,11 @@ final class BluetoothUUIDTests: XCTestCase {
             let uuid = BluetoothUUID.bit16(uuidValue)
             
             let sanitizedName = name
+                .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
                 .replacingOccurrences(of: "The ", with: "")
                 .replacingOccurrences(of: "A/V", with: "av")
                 .replacingOccurrences(of: " Inc", with: "")
+                .replacingOccurrences(of: " INC", with: "")
                 .replacingOccurrences(of: " LLC", with: "")
                 .replacingOccurrences(of: "Co.,", with: "")
                 .replacingOccurrences(of: "Ltd", with: "")
@@ -100,6 +102,14 @@ final class BluetoothUUIDTests: XCTestCase {
                 .replacingOccurrences(of: "3D ", with: "uuid3D")
                 .replacingOccurrences(of: "360", with: "uuid360")
                 .replacingOccurrences(of: "3M", with: "uuid3M")
+                .replacingOccurrences(of: " ASA", with: "")
+                .replacingOccurrences(of: " d.o.o.", with: "")
+                .replacingOccurrences(of: " AG", with: "")
+                .replacingOccurrences(of: " SA", with: "")
+                .replacingOccurrences(of: " gmbh", with: "")
+                .replacingOccurrences(of: " GmbH", with: "")
+                .replacingOccurrences(of: " B.V.", with: "")
+                .replacingOccurrences(of: " AG & Co. KG", with: "")
             
             let llamaCaseName = llamaCase(sanitizedName)
             
