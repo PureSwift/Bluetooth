@@ -136,10 +136,10 @@ public struct GAPDataType: RawRepresentable {
     public static let serviceData128BitUUID: GAPDataType = 0x21
     
     /// LE Secure Connections Confirmation Value
-    public static let lowEnergySecureConnectionsConfirmationValue: GAPDataType = 0x22
+    public static let lowEnergySecureConnectionsConfirmation: GAPDataType = 0x22
     
     /// LE Secure Connections Random Value
-    public static let lowEnergySecureConnectionsRandomValue: GAPDataType = 0x23
+    public static let lowEnergySecureConnectionsRandom: GAPDataType = 0x23
     
     /// URI
     public static let uri: GAPDataType = 0x24
@@ -1120,7 +1120,7 @@ public struct GAPLESecureConnectionsConfirmation: GAPData {
     
     public static let length = MemoryLayout<UInt16>.size
     
-    public static let dataType: GAPDataType = .LESecureConnectionsConfirmationValue
+    public static let dataType: GAPDataType = .lowEnergySecureConnectionsConfirmation
     
     public let confirmation: UInt16
     
@@ -1166,7 +1166,7 @@ public struct GAPLESecureConnectionsRandom: GAPData {
     
     public static let length = MemoryLayout<UInt16>.size
     
-    public static let dataType: GAPDataType = .LESecureConnectionsRandomValue
+    public static let dataType: GAPDataType = .lowEnergySecureConnectionsRandom
     
     public let random: UInt16
     
@@ -2005,7 +2005,7 @@ public struct GAPLEBluetoothDeviceAddress: GAPData {
     
     public static let length = 7
     
-    public static let dataType: GAPDataType = .LEBluetoothDeviceAddress
+    public static let dataType: GAPDataType = .lowEnergyDeviceAddress
     
     public let address: Address
     
@@ -2054,7 +2054,7 @@ public struct GAPLERole: GAPData {
     
     public static let length = MemoryLayout<UInt8>.size
     
-    public static let dataType: GAPDataType = .LERole
+    public static let dataType: GAPDataType = .lowEnergyRole
     
     public let role: GAPLERoleType
     
@@ -2168,7 +2168,7 @@ public struct GAPLESupportedFeatures: GAPData {
     
     public static let omittedValue: UInt8 = 0x00
     
-    public static let dataType: GAPDataType = .LESupportedFeatures
+    public static let dataType: GAPDataType = .lowEnergySupportedFeatures
     
     public let supportedFeatures: [UInt8]
     
@@ -2182,9 +2182,7 @@ public struct GAPLESupportedFeatures: GAPData {
         var supportedFeatures = [UInt8]()
         var lastNonZero: UInt8?
         
-        for i in 0..<data.count {
-            
-            let element = data[i]
+        for element in data {
             
             if lastNonZero != nil, element == GAPLESupportedFeatures.omittedValue {
                 continue
@@ -2205,10 +2203,8 @@ public struct GAPLESupportedFeatures: GAPData {
         var supportedData = Data()
         var lastNonZero: UInt8?
         
-        for i in 0..<supportedFeatures.count {
-            
-            let element = supportedFeatures[i]
-            
+        for element in supportedFeatures {
+                        
             if lastNonZero != nil, element == GAPLESupportedFeatures.omittedValue {
                 continue
             }
