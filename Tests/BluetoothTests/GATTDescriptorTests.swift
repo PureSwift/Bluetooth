@@ -101,29 +101,29 @@ final class GATTDescriptorTests: XCTestCase {
     }
     
     func testCharacteristicsAggregateFormatDescriptor() {
-        XCTAssertEqual(GATTAggregateFormatDescriptor().aggregateFormat, [])
+        XCTAssertEqual(GATTAggregateFormatDescriptor().handles, [])
         XCTAssertNil(GATTAggregateFormatDescriptor(byteValue: Data([0x00])))
         XCTAssertNil(GATTAggregateFormatDescriptor(byteValue: Data([0x00, 0x00, 0x00])))
-        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x00, 0x00]))!.aggregateFormat, [0x00])
-        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x20, 0x00]))!.aggregateFormat, [0x20])
-        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x20, 0x00, 0x30, 0x00]))!.aggregateFormat, [0x20, 0x30])
-        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x40, 0x00, 0x50, 0x00, 0x60, 0x00]))!.aggregateFormat, [0x40, 0x50, 0x60])
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x00, 0x00]))!.handles, [0x00])
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x20, 0x00]))!.handles, [0x20])
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x20, 0x00, 0x30, 0x00]))!.handles, [0x20, 0x30])
+        XCTAssertEqual(GATTAggregateFormatDescriptor(byteValue: Data([0x40, 0x00, 0x50, 0x00, 0x60, 0x00]))!.handles, [0x40, 0x50, 0x60])
         
         var aggregateFormat = GATTAggregateFormatDescriptor()
-        XCTAssertEqual(aggregateFormat.aggregateFormat, [])
+        XCTAssertEqual(aggregateFormat.handles, [])
         
-        aggregateFormat.aggregateFormat.append(UInt16(bitPattern: 0x40))
+        aggregateFormat.handles.append(UInt16( 0x40))
         XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00]))
-        aggregateFormat.aggregateFormat.append(UInt16(bitPattern: 0x50))
+        aggregateFormat.handles.append(UInt16(bitPattern: 0x50))
         XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00,0x50,0x00]))
-        aggregateFormat.aggregateFormat.append(UInt16(bitPattern: 0x60))
+        aggregateFormat.handles.append(UInt16(bitPattern: 0x60))
         XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00,0x50,0x00,0x60,0x00]))
-        aggregateFormat.aggregateFormat.removeLast()
+        aggregateFormat.handles.removeLast()
         XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00,0x50,0x00]))
-        aggregateFormat.aggregateFormat.removeLast()
+        aggregateFormat.handles.removeLast()
         XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00]))
-        aggregateFormat.aggregateFormat.removeLast()
-        XCTAssertEqual(aggregateFormat.aggregateFormat, [])
+        aggregateFormat.handles.removeLast()
+        XCTAssertEqual(aggregateFormat.handles, [])
     }
     
     func testCharacteristicsFormatDescriptor() {
