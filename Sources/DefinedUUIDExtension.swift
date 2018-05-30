@@ -193,7 +193,7 @@ public extension BluetoothUUID {
     }
 
     /// Headset AG (`0x1112`)
-    static var headsetAg: BluetoothUUID {
+    static var headset2: BluetoothUUID {
         return .bit16(0x1112)
     }
 
@@ -1648,7 +1648,7 @@ public extension BluetoothUUID {
     }
 
     /// Robert Bosch GmbH (`0xFDE8`)
-    static var robertBoschGmbh: BluetoothUUID {
+    static var robertBosch: BluetoothUUID {
         return .bit16(0xFDE8)
     }
 
@@ -1683,7 +1683,7 @@ public extension BluetoothUUID {
     }
 
     /// ART AND PROGRAM, INC. (`0xFDEF`)
-    static var artAndProgramInc: BluetoothUUID {
+    static var artAndProgram: BluetoothUUID {
         return .bit16(0xFDEF)
     }
 
@@ -1748,7 +1748,7 @@ public extension BluetoothUUID {
     }
 
     /// Optrel AG (`0xFDFC`)
-    static var optrelAg: BluetoothUUID {
+    static var optrel: BluetoothUUID {
         return .bit16(0xFDFC)
     }
 
@@ -1763,12 +1763,12 @@ public extension BluetoothUUID {
     }
 
     /// OSRAM GmbH (`0xFDFF`)
-    static var osramGmbh: BluetoothUUID {
+    static var osram: BluetoothUUID {
         return .bit16(0xFDFF)
     }
 
     /// Amazon.com Services, Inc. (`0xFE00`)
-    static var amazonComServices: BluetoothUUID {
+    static var amazon: BluetoothUUID {
         return .bit16(0xFE00)
     }
 
@@ -1778,12 +1778,12 @@ public extension BluetoothUUID {
     }
 
     /// Robert Bosch GmbH (`0xFE02`)
-    static var robertBoschGmbh2: BluetoothUUID {
+    static var robertBosch2: BluetoothUUID {
         return .bit16(0xFE02)
     }
 
     /// Amazon.com Services, Inc. (`0xFE03`)
-    static var amazonComServices2: BluetoothUUID {
+    static var amazon2: BluetoothUUID {
         return .bit16(0xFE03)
     }
 
@@ -1813,12 +1813,12 @@ public extension BluetoothUUID {
     }
 
     /// ruwido austria gmbh (`0xFE0A`)
-    static var ruwidoAustriaGmbh: BluetoothUUID {
+    static var ruwidoAustria: BluetoothUUID {
         return .bit16(0xFE0A)
     }
 
     /// ruwido austria gmbh (`0xFE0B`)
-    static var ruwidoAustriaGmbh2: BluetoothUUID {
+    static var ruwidoAustria2: BluetoothUUID {
         return .bit16(0xFE0B)
     }
 
@@ -1838,7 +1838,7 @@ public extension BluetoothUUID {
     }
 
     /// Philips Lighting B.V. (`0xFE0F`)
-    static var philipsLightingBV: BluetoothUUID {
+    static var philipsLighting: BluetoothUUID {
         return .bit16(0xFE0F)
     }
 
@@ -1848,12 +1848,12 @@ public extension BluetoothUUID {
     }
 
     /// GMC-I Messtechnik GmbH (`0xFE11`)
-    static var gmcIMesstechnikGmbh: BluetoothUUID {
+    static var gmcIMesstechnik: BluetoothUUID {
         return .bit16(0xFE11)
     }
 
     /// M-Way Solutions GmbH (`0xFE12`)
-    static var mWaySolutionsGmbh: BluetoothUUID {
+    static var mWaySolutions: BluetoothUUID {
         return .bit16(0xFE12)
     }
 
@@ -1868,7 +1868,7 @@ public extension BluetoothUUID {
     }
 
     /// Amazon.com Services, Inc. (`0xFE15`)
-    static var amazonComServices3: BluetoothUUID {
+    static var amazon3: BluetoothUUID {
         return .bit16(0xFE15)
     }
 
@@ -1878,7 +1878,7 @@ public extension BluetoothUUID {
     }
 
     /// Telit Wireless Solutions GmbH (`0xFE17`)
-    static var telitWirelessSolutionsGmbh: BluetoothUUID {
+    static var telitWirelessSolutions: BluetoothUUID {
         return .bit16(0xFE17)
     }
 
@@ -2003,12 +2003,12 @@ public extension BluetoothUUID {
     }
 
     /// Volkswagen AG (`0xFE30`)
-    static var volkswagenAg: BluetoothUUID {
+    static var volkswagen: BluetoothUUID {
         return .bit16(0xFE30)
     }
 
     /// Volkswagen AG (`0xFE31`)
-    static var volkswagenAg2: BluetoothUUID {
+    static var volkswagen2: BluetoothUUID {
         return .bit16(0xFE31)
     }
 
@@ -2018,7 +2018,7 @@ public extension BluetoothUUID {
     }
 
     /// CHIPOLO d.o.o. (`0xFE33`)
-    static var chipoloDOO: BluetoothUUID {
+    static var chipolo: BluetoothUUID {
         return .bit16(0xFE33)
     }
 
@@ -2048,12 +2048,12 @@ public extension BluetoothUUID {
     }
 
     /// TTS Tooltechnic Systems AG & Co. (`0xFE39`)
-    static var ttsTooltechnicSystemsAgCo: BluetoothUUID {
+    static var ttsTooltechnicSystemsCo: BluetoothUUID {
         return .bit16(0xFE39)
     }
 
     /// TTS Tooltechnic Systems AG & Co. (`0xFE3A`)
-    static var ttsTooltechnicSystemsAgCo2: BluetoothUUID {
+    static var ttsTooltechnicSystemsCo2: BluetoothUUID {
         return .bit16(0xFE3A)
     }
 
@@ -2098,7 +2098,7 @@ public extension BluetoothUUID {
     }
 
     /// Andreas Stihl AG & Co. KG (`0xFE43`)
-    static var andreasStihlAgCoKg: BluetoothUUID {
+    static var andreasStihlCoKg: BluetoothUUID {
         return .bit16(0xFE43)
     }
 
@@ -2138,12 +2138,12 @@ public extension BluetoothUUID {
     }
 
     /// Philips Lighting B.V. (`0xFE4B`)
-    static var philipsLightingBV2: BluetoothUUID {
+    static var philipsLighting2: BluetoothUUID {
         return .bit16(0xFE4B)
     }
 
     /// Volkswagen AG (`0xFE4C`)
-    static var volkswagenAg3: BluetoothUUID {
+    static var volkswagen3: BluetoothUUID {
         return .bit16(0xFE4C)
     }
 
@@ -2203,12 +2203,12 @@ public extension BluetoothUUID {
     }
 
     /// Nordic Semiconductor ASA (`0xFE58`)
-    static var nordicSemiconductorAsa: BluetoothUUID {
+    static var nordicSemiconductor: BluetoothUUID {
         return .bit16(0xFE58)
     }
 
     /// Nordic Semiconductor ASA (`0xFE59`)
-    static var nordicSemiconductorAsa2: BluetoothUUID {
+    static var nordicSemiconductor2: BluetoothUUID {
         return .bit16(0xFE59)
     }
 
@@ -2223,7 +2223,7 @@ public extension BluetoothUUID {
     }
 
     /// million hunters GmbH (`0xFE5C`)
-    static var millionHuntersGmbh: BluetoothUUID {
+    static var millionHunters: BluetoothUUID {
         return .bit16(0xFE5C)
     }
 
@@ -2248,7 +2248,7 @@ public extension BluetoothUUID {
     }
 
     /// Logitech International SA (`0xFE61`)
-    static var logitechInternationalSa: BluetoothUUID {
+    static var logitechInternational: BluetoothUUID {
         return .bit16(0xFE61)
     }
 
@@ -2263,12 +2263,12 @@ public extension BluetoothUUID {
     }
 
     /// Siemens AG (`0xFE64`)
-    static var siemensAg: BluetoothUUID {
+    static var siemens: BluetoothUUID {
         return .bit16(0xFE64)
     }
 
     /// CHIPOLO d.o.o. (`0xFE65`)
-    static var chipoloDOO2: BluetoothUUID {
+    static var chipolo2: BluetoothUUID {
         return .bit16(0xFE65)
     }
 
@@ -2373,7 +2373,7 @@ public extension BluetoothUUID {
     }
 
     /// Bragi GmbH (`0xFE7A`)
-    static var bragiGmbh: BluetoothUUID {
+    static var bragi: BluetoothUUID {
         return .bit16(0xFE7A)
     }
 
@@ -2383,7 +2383,7 @@ public extension BluetoothUUID {
     }
 
     /// Stollmann E+V GmbH (`0xFE7C`)
-    static var stollmannEVGmbh: BluetoothUUID {
+    static var stollmannEV: BluetoothUUID {
         return .bit16(0xFE7C)
     }
 
@@ -2553,7 +2553,7 @@ public extension BluetoothUUID {
     }
 
     /// Dialog Semiconductor B.V. (`0xFE9E`)
-    static var dialogSemiconductorBV: BluetoothUUID {
+    static var dialogSemiconductor: BluetoothUUID {
         return .bit16(0xFE9E)
     }
 
@@ -2903,12 +2903,12 @@ public extension BluetoothUUID {
     }
 
     /// Nordic Semiconductor ASA (`0xFEE4`)
-    static var nordicSemiconductorAsa3: BluetoothUUID {
+    static var nordicSemiconductor3: BluetoothUUID {
         return .bit16(0xFEE4)
     }
 
     /// Nordic Semiconductor ASA (`0xFEE5`)
-    static var nordicSemiconductorAsa4: BluetoothUUID {
+    static var nordicSemiconductor4: BluetoothUUID {
         return .bit16(0xFEE5)
     }
 
@@ -2988,7 +2988,7 @@ public extension BluetoothUUID {
     }
 
     /// Dialog Semiconductor GmbH (`0xFEF5`)
-    static var dialogSemiconductorGmbh: BluetoothUUID {
+    static var dialogSemiconductor2: BluetoothUUID {
         return .bit16(0xFEF5)
     }
 
@@ -3018,7 +3018,7 @@ public extension BluetoothUUID {
     }
 
     /// Telit Wireless Solutions (`0xFEFB`)
-    static var telitWirelessSolutions: BluetoothUUID {
+    static var telitWirelessSolutions2: BluetoothUUID {
         return .bit16(0xFEFB)
     }
 
