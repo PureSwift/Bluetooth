@@ -20,6 +20,8 @@ final class GATTTests: XCTestCase {
         ("testCharacteristicExtendedPropertiesDescriptor", testCharacteristicExtendedPropertiesDescriptor),
         ("testCharacteristicServerConfigurationDescriptor", testCharacteristicsServerConfigurationDescriptor),
         ("testCharacteristicsAggregateFormatDescriptor",testCharacteristicsAggregateFormatDescriptor),
+        ("testCharacteristicsFormatDescriptor",testCharacteristicsFormatDescriptor),
+        ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor),
         ("testDescriptors", testDescriptors),
         ("testNotification", testNotification)
     ]
@@ -1084,6 +1086,34 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(aggregateFormat.byteValue, Data([0x40,0x00]))
         aggregateFormat.aggregateFormat.removeLast()
         XCTAssertEqual(aggregateFormat.aggregateFormat, [])
+    }
+    
+    func testCharacteristicsFormatDescriptor() {
+        let value = Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00])
+        XCTAssertEqual(value.count, 0x07)
+        
+        XCTAssertNil(GATTFormatDescriptor(byteValue: Data([0x00])))
+        XCTAssertNil(GATTFormatDescriptor(byteValue: Data([0x00, 0x00, 0x00])))
+        XCTAssertNil(GATTFormatDescriptor(byteValue: Data([0x00, 0x00, 0x00 , 0x00, 0x00])))
+        XCTAssertNil(GATTFormatDescriptor(byteValue: Data([0x00, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00, 0x00])))
+        XCTAssertNil(GATTFormatDescriptor(byteValue: Data([0x1C, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00])))
+        XCTAssertNil(GATTFormatDescriptor(byteValue: Data([0xFF, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00])))
+        
+        XCTAssertEqual(GATTFormatDescriptor(byteValue: Data([0x00, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00]))?.format, CharacteristicFormatType.rfu)
+        
+        XCTAssertEqual(GATTFormatDescriptor(byteValue: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.format, CharacteristicFormatType.float)
+        XCTAssertEqual(GATTFormatDescriptor(byteValue: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.exponent, 0x00)
+        XCTAssertEqual(GATTFormatDescriptor(byteValue: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.unit, 0x27AC)
+        XCTAssertEqual(GATTFormatDescriptor(byteValue: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.namespace, 0x01)
+        XCTAssertEqual(GATTFormatDescriptor(byteValue: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.description, 0x0000)
+        
+        let format = GATTFormatDescriptor(byteValue: value)
+        XCTAssertEqual(format?.format, 0x17)
+        
+    }
+    
+    func testCharacteristicsUserDescriptionDescriptor() {
+        
     }
 }
 

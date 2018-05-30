@@ -55,6 +55,8 @@ public extension GATT.CharacteristicDescriptor {
     public typealias ExtendedProperties = GATTCharacteristicExtendedProperties
     public typealias ServerConfiguration = GATTServerCharacteristicConfiguration
     public typealias AggegateFormat = GATTAggregateFormatDescriptor
+    public typealias Format = GATTFormatDescriptor
+    public typealias UserDescription = GATTUserDescription
 }
 
 /// GATT Client Characteristic Configuration Descriptor
@@ -300,58 +302,63 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
 }
 
-/// Format Types
+/// Characteristic Format Types
 ///
 /// If a format is not a whole number of octets, then the data shall be contained within the least significant bits of the value, and all other bits shall be set to zero on transmission and ignored upon receipt.
 /// If the Characteristic Value is less than an octet, it occupies an entire octet.
-public struct FormatType: RawRepresentable {
+public struct CharacteristicFormatType: RawRepresentable {
+    
+    public let length = 27
     
     public var rawValue: UInt8
     
     public init?(rawValue: UInt8) {
         
+        guard Int(rawValue) <= 27
+            else { return nil }
+        
         self.rawValue = rawValue
     }
     
-    public static let rfu: FormatType = 0x00
-    public static let boolean: FormatType = 0x01
-    public static let bit2: FormatType = 0x02
-    public static let nibble: FormatType = 0x03
-    public static let uint8: FormatType = 0x04
-    public static let uint12: FormatType = 0x05
-    public static let uint16: FormatType = 0x06
-    public static let uint24: FormatType = 0x07
-    public static let uint32: FormatType = 0x08
-    public static let uint48: FormatType = 0x09
-    public static let uint64: FormatType = 0x0A
-    public static let uint128: FormatType = 0x0B
-    public static let sint8: FormatType = 0x0C
-    public static let sint12: FormatType = 0x0D
-    public static let sint16: FormatType = 0x0E
-    public static let sint24: FormatType = 0x0F
-    public static let sint32: FormatType = 0x10
-    public static let sint48: FormatType = 0x11
-    public static let sint64: FormatType = 0x12
-    public static let sint128: FormatType = 0x13
-    public static let float32: FormatType = 0x14
-    public static let float64: FormatType = 0x15
-    public static let sfloat: FormatType = 0x16
-    public static let float: FormatType = 0x17
-    public static let duint16: FormatType = 0x18
-    public static let utf8s: FormatType = 0x19
-    public static let utf16s: FormatType = 0x1A
-    public static let Struct: FormatType = 0x1B
+    public static let rfu: CharacteristicFormatType = 0x00
+    public static let boolean: CharacteristicFormatType = 0x01
+    public static let bit2: CharacteristicFormatType = 0x02
+    public static let nibble: CharacteristicFormatType = 0x03
+    public static let uint8: CharacteristicFormatType = 0x04
+    public static let uint12: CharacteristicFormatType = 0x05
+    public static let uint16: CharacteristicFormatType = 0x06
+    public static let uint24: CharacteristicFormatType = 0x07
+    public static let uint32: CharacteristicFormatType = 0x08
+    public static let uint48: CharacteristicFormatType = 0x09
+    public static let uint64: CharacteristicFormatType = 0x0A
+    public static let uint128: CharacteristicFormatType = 0x0B
+    public static let sint8: CharacteristicFormatType = 0x0C
+    public static let sint12: CharacteristicFormatType = 0x0D
+    public static let sint16: CharacteristicFormatType = 0x0E
+    public static let sint24: CharacteristicFormatType = 0x0F
+    public static let sint32: CharacteristicFormatType = 0x10
+    public static let sint48: CharacteristicFormatType = 0x11
+    public static let sint64: CharacteristicFormatType = 0x12
+    public static let sint128: CharacteristicFormatType = 0x13
+    public static let float32: CharacteristicFormatType = 0x14
+    public static let float64: CharacteristicFormatType = 0x15
+    public static let sfloat: CharacteristicFormatType = 0x16
+    public static let float: CharacteristicFormatType = 0x17
+    public static let duint16: CharacteristicFormatType = 0x18
+    public static let utf8s: CharacteristicFormatType = 0x19
+    public static let utf16s: CharacteristicFormatType = 0x1A
+    public static let Struct: CharacteristicFormatType = 0x1B
 }
 
-extension FormatType: Equatable {
+extension CharacteristicFormatType: Equatable {
     
-    public static func == (lhs: FormatType, rhs: FormatType) -> Bool {
+    public static func == (lhs: CharacteristicFormatType, rhs: CharacteristicFormatType) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension FormatType: Hashable {
+extension CharacteristicFormatType: Hashable {
     
     public var hashValue: Int {
         
@@ -359,7 +366,7 @@ extension FormatType: Hashable {
     }
 }
 
-extension FormatType: ExpressibleByIntegerLiteral {
+extension CharacteristicFormatType: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
         
@@ -367,7 +374,7 @@ extension FormatType: ExpressibleByIntegerLiteral {
     }
 }
 
-extension FormatType: CustomStringConvertible {
+extension CharacteristicFormatType: CustomStringConvertible {
     
     public var name: String? {
         
@@ -380,7 +387,7 @@ extension FormatType: CustomStringConvertible {
     }
 }
 
-internal let formatTypeNames: [FormatType: String] = [
+internal let formatTypeNames: [CharacteristicFormatType: String] = [
     .rfu: "rfu",
     .boolean: "boolean",
     .bit2: "2bit",
@@ -410,7 +417,7 @@ internal let formatTypeNames: [FormatType: String] = [
     .utf16s: "utf16s",
     .Struct: "struct"
 ]
-internal let formatTypeDescription: [FormatType: String] = [
+internal let formatTypeDescription: [CharacteristicFormatType: String] = [
     .rfu: "Reserve for future use",
     .boolean: "unsigned 1-bit; 0=false, 1=true",
     .bit2: "unsigned 2-bit integer",
@@ -465,7 +472,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public static let length = 7
     
-    public let format: FormatType
+    public let format: CharacteristicFormatType
     
     public let exponent: Int8
     
@@ -475,7 +482,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public let description: UInt16
     
-    public init(format: FormatType, exponent: Int8, unit: UInt16, namespace: UInt8, description: UInt16) {
+    public init(format: CharacteristicFormatType, exponent: Int8, unit: UInt16, namespace: UInt8, description: UInt16) {
         
         self.format = format
         self.exponent = exponent
@@ -486,32 +493,32 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public init?(byteValue: Data) {
         
-        guard byteValue.count == type(of: self).length else {
-            return nil
-        }
+        guard byteValue.count == type(of: self).length
+            else { return nil }
         
-        let formatType = FormatType.init(rawValue: byteValue[0])!
-        let exponent = Int8(bitPattern: byteValue[1])
-        let unit = UInt16(bytes: (byteValue[2], byteValue[3]))
-        let namespace = UInt8(littleEndian: byteValue[4])
-        let description = UInt16(bytes: (byteValue[5], byteValue[6]))
+        guard let format = CharacteristicFormatType.init(rawValue: byteValue[0])
+            else { return nil }
         
-        self.init(format: formatType,
-                  exponent: exponent,
-                  unit: unit,
-                  namespace: namespace,
-                  description: description)
+        self.init(format: format,
+                  exponent: Int8(bitPattern: byteValue[1]),
+                  unit: UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3]))),
+                  namespace: byteValue[4],
+                  description: UInt16(littleEndian: UInt16(bytes: (byteValue[5], byteValue[6]))))
     }
     
     public var byteValue: Data {
         
+        let unitBytes = unit.bytes
+        let descriptionBytes = description.bytes
+        
         return Data([format.rawValue,
                      UInt8(bitPattern: exponent),
-                     unit.bytes.0,
-                     unit.bytes.1,
+                     unitBytes.0,
+                     unitBytes.1,
                      namespace,
-                     description.bytes.0,
-                     description.bytes.1])
+                     descriptionBytes.0,
+                     descriptionBytes.1
+            ])
     }
     
     public var descriptor: GATT.Descriptor {
