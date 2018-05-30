@@ -6,8 +6,6 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 public extension Int64 {
     
     func toInt() -> Int? {
