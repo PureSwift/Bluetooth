@@ -2240,6 +2240,10 @@ extension GAPLESupportedFeatures: CustomStringConvertible {
     }
 }
 
+/// The channel map (channelMap) used for periodic advertisements may be updated at any time by the advertiser.
+/// The advertiser can update the channel map by sending the Channel Map Update Indication data type in the extended header of the packet containing the AUX_SYNC_IND PDU.
+/// The advertiser’s Host may provide an initial channel map using the LE Set Host Channel Classification HCI Command; however the advertiser’s Controller can update the channels that were marked as unknown by the Host in the channel map based on channel assessments without being requested to by the Host.
+/// The Channel Map Update Indication data type shall only be present in the extended header of the packet containing the AUX_SYNC_IND PDU.
 public struct GAPChannelMapUpdateIndication: GAPData {
     
     public static let length = 7
@@ -2287,6 +2291,8 @@ extension GAPChannelMapUpdateIndication: CustomStringConvertible {
     }
 }
 
+/// The Indoor Positioning Service exposes location information to support mobile devices to position themselves in an environment where GNSS signals are not available, for example in indoor premises.
+/// The location information is mainly exposed via advertising and the GATT- based service is primarily intended for configuration.
 public struct GAPIndoorPositioning: GAPData {
     
     public static let length = 18
@@ -2427,6 +2433,15 @@ public enum GAPIndoorPositioningFlag: UInt8, BitMaskOption {
     ]
 }
 
+/// A Transport Block includes the following fields: Organization ID, TDS Flags, Transport Data Length, and Transport Data.
+/// One or more Transport Block(s) may be present in the Transport Discovery Data AD Type.
+/// The value of the fields in this section relate only to the transport which the block describes (i.e., they pertain only to that Transport Block).
+/// The data contained in the Transport Block shall be able to be fully parsed by Clients even if size or other restrictions require that full data is in the GATT database.
+/// The structure of the Transport Block may be repeated in case there are multiple services (on the same or different transports) to advertise simultaneously.
+///
+/// The structure may repeat as long as there is space available. These Transport Blocks may be from the same organization or from different organizations.
+/// Where multiple Transport Blocks are used, the advertising device should list these in order of descending priority or preference.
+/// For example, if the blocks represent more than one supported service, the order represents preferred support (e.g., perhaps a printer is capable of printing using a faster technology from one organization, but also a slower technology from another organization). If the blocks represent more than one required service, the order represents preferred service order (e.g., perhaps a device requires an immediate service, but also another service that is of lower priority).
 public struct GAPTransportDiscoveryBlock {
     
     public static let minLength = 2
@@ -2468,9 +2483,11 @@ extension GAPTransportDiscoveryBlock: CustomStringConvertible {
     
 }
 
+/// The Transport Discovery Data AD Type shall be present in the Advertising Data (i.e., AdvData) and may also be present in the Extended Inquiry Response (EIR).
+/// EIR and Advertising Packets may be of different sizes and may contain different information within the Transport Discovery Data AD Type.
+///
+/// Note 1: Typically 0-26 (inclusive of the Flags AD Type), however larger values may be supported in future updates of the Core Specification.
 public struct GAPTransportDiscoveryData: GAPData {
-    
-    public static let length = 18
     
     public static let minBlocks = 1
     
@@ -2562,7 +2579,7 @@ public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
     
     public var data: Data {
         
-        return Data(bytes: [self.rawValue])
+        return Data([self.rawValue])
     }
     
     public static let all: Set<GAPTransportDiscoveryDataFlag> = [
