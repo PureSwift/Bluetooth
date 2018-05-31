@@ -133,7 +133,7 @@ public extension CompanyIdentifier {
     }
 
     /// Rohde & Schwarz GmbH & Co. KG (`25`)
-    static var rohdeSchwarzCoKg: CompanyIdentifier {
+    static var rohdeSchwarz: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 25)
     }
 
@@ -273,7 +273,7 @@ public extension CompanyIdentifier {
     }
 
     /// Eclipse (HQ Espana) S.L. (`53`)
-    static var eclipseHqEspanaSL: CompanyIdentifier {
+    static var eclipseHqEspana: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 53)
     }
 
@@ -488,7 +488,7 @@ public extension CompanyIdentifier {
     }
 
     /// RivieraWaves S.A.S (`96`)
-    static var rivierawavesSAS: CompanyIdentifier {
+    static var rivierawavess: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 96)
     }
 
@@ -733,7 +733,7 @@ public extension CompanyIdentifier {
     }
 
     /// Advanced PANMOBIL Systems GmbH & Co. KG (`145`)
-    static var advancedPanmobilSystemsCoKg: CompanyIdentifier {
+    static var advancedPanmobilSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 145)
     }
 
@@ -1748,7 +1748,7 @@ public extension CompanyIdentifier {
     }
 
     /// Pitius Tec S.L. (`348`)
-    static var pitiusTecSL: CompanyIdentifier {
+    static var pitiusTec: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 348)
     }
 
@@ -2053,7 +2053,7 @@ public extension CompanyIdentifier {
     }
 
     /// SALTO SYSTEMS S.L. (`409`)
-    static var saltoSystemsSL: CompanyIdentifier {
+    static var saltoSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 409)
     }
 
@@ -2208,7 +2208,7 @@ public extension CompanyIdentifier {
     }
 
     /// i+D3 S.L. (`440`)
-    static var iD3SL: CompanyIdentifier {
+    static var iD3: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 440)
     }
 
@@ -2743,7 +2743,7 @@ public extension CompanyIdentifier {
     }
 
     /// Philip Morris Products S.A. (`547`)
-    static var philipMorrisProductsSA: CompanyIdentifier {
+    static var philipMorrisProducts: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 547)
     }
 
@@ -2753,7 +2753,7 @@ public extension CompanyIdentifier {
     }
 
     /// Nestlé Nespresso S.A. (`549`)
-    static var nestléNespressoSA: CompanyIdentifier {
+    static var nestléNespresso: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 549)
     }
 
@@ -3173,7 +3173,7 @@ public extension CompanyIdentifier {
     }
 
     /// steute Schaltgerate GmbH & Co. KG (`633`)
-    static var steuteSchaltgerateCoKg: CompanyIdentifier {
+    static var steuteSchaltgerate: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 633)
     }
 
@@ -3243,7 +3243,7 @@ public extension CompanyIdentifier {
     }
 
     /// Wally Ventures S.L. (`647`)
-    static var wallyVenturesSL: CompanyIdentifier {
+    static var wallyVentures: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 647)
     }
 
@@ -3428,7 +3428,7 @@ public extension CompanyIdentifier {
     }
 
     /// RTB Elektronik GmbH & Co. KG (`684`)
-    static var rtbElektronikCoKg: CompanyIdentifier {
+    static var rtbElektronik: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 684)
     }
 
@@ -4478,12 +4478,12 @@ public extension CompanyIdentifier {
     }
 
     /// lulabytes S.L. (`894`)
-    static var lulabytesSL: CompanyIdentifier {
+    static var lulabytes: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 894)
     }
 
     /// Nestec S.A. (`895`)
-    static var nestecSA: CompanyIdentifier {
+    static var nestec: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 895)
     }
 
@@ -4878,7 +4878,7 @@ public extension CompanyIdentifier {
     }
 
     /// CONTRINEX S.A. (`974`)
-    static var contrinexSA: CompanyIdentifier {
+    static var contrinex: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 974)
     }
 
@@ -5008,7 +5008,7 @@ public extension CompanyIdentifier {
     }
 
     /// Reiner Kartengeraete GmbH & Co. KG. (`1000`)
-    static var reinerKartengeraeteCoKg: CompanyIdentifier {
+    static var reinerKartengeraete: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1000)
     }
 
@@ -5273,7 +5273,7 @@ public extension CompanyIdentifier {
     }
 
     /// Benning Elektrotechnik und Elektronik GmbH & Co. KG (`1053`)
-    static var benningElektrotechnikUndElektronikCoKg: CompanyIdentifier {
+    static var benningElektrotechnikUndElektronik: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1053)
     }
 
@@ -5313,7 +5313,7 @@ public extension CompanyIdentifier {
     }
 
     /// Unify Software and Solutions GmbH & Co. KG (`1061`)
-    static var unifySoftwareAndSolutionsCoKg: CompanyIdentifier {
+    static var unifySoftwareAndSolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1061)
     }
 
@@ -5778,7 +5778,7 @@ public extension CompanyIdentifier {
     }
 
     /// POS Tuning Udo Vosshenrich GmbH & Co. KG (`1154`)
-    static var posTuningUdoVosshenrichCoKg: CompanyIdentifier {
+    static var posTuningUdoVosshenrich: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1154)
     }
 
@@ -5868,7 +5868,7 @@ public extension CompanyIdentifier {
     }
 
     /// SENNHEISER electronic GmbH & Co. KG (`1172`)
-    static var sennheiserElectronicCoKg: CompanyIdentifier {
+    static var sennheiserElectronic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1172)
     }
 
@@ -5948,7 +5948,7 @@ public extension CompanyIdentifier {
     }
 
     /// Herbert Waldmann GmbH & Co. KG (`1188`)
-    static var herbertWaldmannCoKg: CompanyIdentifier {
+    static var herbertWaldmann: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1188)
     }
 
@@ -6068,7 +6068,7 @@ public extension CompanyIdentifier {
     }
 
     /// Draegerwerk AG & Co. KGaA (`1212`)
-    static var draegerwerkaa: CompanyIdentifier {
+    static var draegerwerkAa: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1212)
     }
 
@@ -6163,7 +6163,7 @@ public extension CompanyIdentifier {
     }
 
     /// DOM Sicherheitstechnik GmbH & Co. KG (`1231`)
-    static var domSicherheitstechnikCoKg: CompanyIdentifier {
+    static var domSicherheitstechnik: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1231)
     }
 
@@ -6383,7 +6383,7 @@ public extension CompanyIdentifier {
     }
 
     /// Benchmark Drives GmbH & Co. KG (`1275`)
-    static var benchmarkDrivesCoKg: CompanyIdentifier {
+    static var benchmarkDrives: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1275)
     }
 
@@ -6758,7 +6758,7 @@ public extension CompanyIdentifier {
     }
 
     /// Apexar Technologies S.A. (`1350`)
-    static var apexarTechnologiesSA: CompanyIdentifier {
+    static var apexarTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1350)
     }
 
@@ -6768,7 +6768,7 @@ public extension CompanyIdentifier {
     }
 
     /// Knick Elektronische Messgeraete GmbH & Co. KG (`1352`)
-    static var knickElektronischeMessgeraeteCoKg: CompanyIdentifier {
+    static var knickElektronischeMessgeraete: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1352)
     }
 
@@ -6883,7 +6883,7 @@ public extension CompanyIdentifier {
     }
 
     /// PROTECH S.A.S. DI GIRARDI ANDREA & C. (`1375`)
-    static var protechSASDiGirardiAndreaC: CompanyIdentifier {
+    static var protechsDiGirardiAndreaC: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1375)
     }
 
@@ -7068,7 +7068,7 @@ public extension CompanyIdentifier {
     }
 
     /// Gira Giersiepen GmbH & Co. KG (`1412`)
-    static var giraGiersiepenCoKg: CompanyIdentifier {
+    static var giraGiersiepen: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1412)
     }
 
@@ -7393,7 +7393,7 @@ public extension CompanyIdentifier {
     }
 
     /// SELVE GmbH & Co. KG (`1477`)
-    static var selveCoKg: CompanyIdentifier {
+    static var selve: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1477)
     }
 
@@ -7883,7 +7883,7 @@ public extension CompanyIdentifier {
     }
 
     /// WEG S.A. (`1575`)
-    static var wegSA: CompanyIdentifier {
+    static var weg: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1575)
     }
 
@@ -7958,7 +7958,7 @@ public extension CompanyIdentifier {
     }
 
     /// ELECTRONICA INTEGRAL DE SONIDO S.A. (`1590`)
-    static var electronicaIntegralDeSonidoSA: CompanyIdentifier {
+    static var electronicaIntegralDeSonido: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1590)
     }
 
@@ -8038,7 +8038,7 @@ public extension CompanyIdentifier {
     }
 
     /// SGV Group Holding GmbH & Co. KG (`1606`)
-    static var sgvGroupHoldingCoKg: CompanyIdentifier {
+    static var sgvGroupHolding: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1606)
     }
 

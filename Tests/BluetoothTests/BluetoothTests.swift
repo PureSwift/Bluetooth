@@ -566,8 +566,10 @@ func sanitize(name: String) -> String {
         .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
         .replacingOccurrences(of: "The ", with: "")
         .replacingOccurrences(of: "A/V", with: "av")
-        .replacingOccurrences(of: " AG & Co. KG", with: "")
-        .replacingOccurrences(of: " AG & Co.", with: "")
+        .replacingOccurrences(of: "AG & Co. KGaA", with: "")
+        .replacingOccurrences(of: "AG & Co. KG", with: "")
+        .replacingOccurrences(of: "GmbH & Co. KG", with: "")
+        .replacingOccurrences(of: "AG & Co.", with: "")
         .replacingOccurrences(of: " Corp.", with: "")
         .replacingOccurrences(of: "Co.,", with: "")
         .replacingOccurrences(of: "Co.,Ltd", with: "")
@@ -586,8 +588,8 @@ func sanitize(name: String) -> String {
         .replacingOccurrences(of: " LTD", with: "")
         .replacingOccurrences(of: " Ltd", with: "")
         .replacingOccurrences(of: " A/S", with: "")
-        .replacingOccurrences(of: "  S.A.", with: "")
-        .replacingOccurrences(of: "  S.L.", with: "")
+        .replacingOccurrences(of: " S.A.", with: "")
+        .replacingOccurrences(of: " S.L.", with: "")
         .replacingOccurrences(of: " Incorporated", with: "")
     
     // if first letter is a number, add prefix
