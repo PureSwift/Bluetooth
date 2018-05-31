@@ -2955,6 +2955,65 @@ public struct GAPMeshBeacon: GAPData {
     
 }
 
+public struct GAPManufacturerSpecificData: GAPData {
+    
+    public static let minLength = MemoryLayout<UInt16>.size
+    
+    public static let dataType: GAPDataType = .manufacturerSpecificData
+    
+    public let companyIdentifier: CompanyIdentifier
+    
+    public private(set) var additionalData: [UInt8] = []
+    
+    public init(companyIdentifier: CompanyIdentifier, additionalData: [UInt8] = []) {
+        
+        self.companyIdentifier = companyIdentifier
+        self.additionalData = additionalData
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count >= type(of: self).minLength
+            else { return nil }
+        
+        let companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        var additionalData = [UInt8]()
+        
+        data.enumerated().forEach { (index, element) in
+            if index >= GAPManufacturerSpecificData.minLength {
+                additionalData.append(element)
+            }
+        }
+        
+        self.init(companyIdentifier: companyIdentifier, additionalData: additionalData)
+    }
+    
+    public var data: Data {
+        
+        let bytes = UInt16(littleEndian: companyIdentifier.rawValue).bytes
+        let data = Data([bytes.0, bytes.1])
+        
+        return additionalData.reduce(data, { $0.0 + [$0.1] })
+    }
+    
+}
+
+extension GAPManufacturerSpecificData: Equatable {
+    
+    public static func == (lhs: GAPManufacturerSpecificData, rhs: GAPManufacturerSpecificData) -> Bool {
+        
+        return lhs.companyIdentifier == rhs.companyIdentifier && lhs.additionalData == rhs.additionalData
+    }
+}
+
+extension GAPManufacturerSpecificData: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return companyIdentifier.description + additionalData.map { String($0) }.description
+    }
+}
+
 // MARK: - Coding
 
 public struct GAPDataElement {
