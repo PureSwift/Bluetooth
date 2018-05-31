@@ -334,6 +334,7 @@ extension GAPFlags: ExpressibleByIntegerLiteral {
  
  The Flags field may be zero or more octets long. This allows the Flags field to be extended while using the minimum number of octets within the data packet.
  */
+
 public enum GAPFlag: UInt8, BitMaskOption {
     
     #if swift(>=3.2)
@@ -1841,7 +1842,7 @@ extension GAPAppearance: CustomStringConvertible {
 /// company_id field is contained in the 24 most significant bits
 public struct GAPPublicTargetAddress: GAPData {
     
-    public static let length = MemoryLayout<UInt8>.size * 6
+    public static let addressLength = MemoryLayout<UInt8>.size * 6
     
     public static let dataType: GAPDataType = .publicTargetAddress
     
@@ -1854,7 +1855,7 @@ public struct GAPPublicTargetAddress: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count % type(of: self).length == 0
+        guard data.count % type(of: self).addressLength == 0
             else { return nil }
         
         var index = 0
@@ -1865,7 +1866,7 @@ public struct GAPPublicTargetAddress: GAPData {
             let address = Address(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5]))
             addresses.append(address)
             
-            index += type(of: self).length
+            index += type(of: self).addressLength
         }
         
         self.init(addresses: addresses)
@@ -1904,7 +1905,7 @@ public struct GAPRandomTargetAddress: GAPData {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)
     
-    public static let length = MemoryLayout<UInt8>.size * 6
+    public static let addressLength = MemoryLayout<UInt8>.size * 6
     
     public static let dataType: GAPDataType = .randomTargetAddress
     
@@ -1917,7 +1918,7 @@ public struct GAPRandomTargetAddress: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count % type(of: self).length == 0
+        guard data.count % type(of: self).addressLength == 0
             else { return nil }
         
         var index = 0
@@ -1928,7 +1929,7 @@ public struct GAPRandomTargetAddress: GAPData {
             let address = Address(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5]))
             addresses.append(address)
             
-            index += type(of: self).length
+            index += type(of: self).addressLength
         }
         
         self.init(addresses: addresses)
@@ -2662,6 +2663,296 @@ extension GAPMeshMessage: CustomStringConvertible {
         
         return message.description
     }
+}
+
+public enum GAPBeacon {
+    
+    case unprovisionedDevice(GAPUnprovisionedDeviceBeacon)
+    
+    case secureNetwork(GAPSecureNetworkBeacon)
+    
+}
+
+public enum GAPBeaconType: UInt8 {
+    
+    case unprovisionedDevice = 0x00
+    
+    case secureNetwork = 0x01
+    
+}
+
+public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
+    case other = 0b01
+    
+    case electronic = 0b10
+    
+    case machineReadableCode = 0b100
+    
+    case barCode = 0b1000
+    
+    case nearFieldCommunication = 0b10000
+    
+    case number = 0b100000
+    
+    case string = 0b1000000
+    
+    case onBox = 0b100000000000
+    
+    case insideBox = 0b1000000000000
+    
+    case onPieceOfPaper = 0b10000000000000
+    
+    case insideManual = 0b100000000000000
+    
+    case onDevice = 0b1000000000000000
+    
+    public static let all: Set<GAPOOBInformationFlag> = [
+        .other,
+        .electronic,
+        .machineReadableCode,
+        .barCode,
+        .nearFieldCommunication,
+        .number,
+        .string,
+        .onBox,
+        .insideBox,
+        .onPieceOfPaper,
+        .insideManual,
+        .onDevice
+    ]
+    
+}
+
+/**
+    The Unprovisioned Device beacon is used by devices that are unprovisioned to allow them to be discovered by a Provisioner.
+ 
+    • Beacon type: Unprovisioned Device beacon type (0x00). Size is 1 octet
+    • Device UUID: Device UUID uniquely identifying this device (see Section 3.10.3). Size is 16 octets
+    • OOB Information: Size is 2 octets
+    • URI Hash: Hash of the associated URI advertised with the URI AD Type (optional field). Size is 4 octets
+ */
+public struct GAPUnprovisionedDeviceBeacon {
+    
+    public static let minLength = 19
+    
+    public static let maxLength = 23
+    
+    public let beaconType: GAPBeaconType
+    
+    public let deviceUUID: UUID
+    
+    public let oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>
+    
+    public let uriHash: UInt32?
+    
+    public init(beaconType: GAPBeaconType, deviceUUID: UUID, oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>, uriHash: UInt32? = nil) {
+        
+        self.beaconType = beaconType
+        self.deviceUUID = deviceUUID
+        self.oobInformationFlags = oobInformationFlags
+        self.uriHash = uriHash
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == GAPUnprovisionedDeviceBeacon.minLength || data.count == GAPUnprovisionedDeviceBeacon.maxLength
+            else { return nil }
+        
+        guard let beaconType = GAPBeaconType(rawValue: data[0])
+            else { return nil }
+        
+        let deviceUUID = UUID(UInt128(littleEndian: UInt128(bytes: (data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16]))))
+        let oobInformationFlags = BitMaskOptionSet<GAPOOBInformationFlag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[17], data[18]))))
+        var uriHash: UInt32?
+        
+        if data.count == type(of: self).maxLength {
+            
+            uriHash = UInt32(littleEndian: UInt32(bytes: (data[19], data[20], data[21], data[22])))
+        }
+        
+        self.init(beaconType: beaconType, deviceUUID: deviceUUID, oobInformationFlags: oobInformationFlags, uriHash: uriHash)
+    }
+    
+    var data: Data {
+        
+        var data = Data()
+        
+        data.append(beaconType.rawValue)
+        
+        data.append(UInt128(uuid: deviceUUID).littleEndian.data)
+        
+        let flagsBytes = oobInformationFlags.rawValue.littleEndian.bytes
+        data += [flagsBytes.0, flagsBytes.1]
+        
+        if let uriBytes = uriHash?.littleEndian.bytes {
+            data += [uriBytes.0, uriBytes.1, uriBytes.2, uriBytes.3]
+        }
+        
+        return data
+    }
+}
+
+public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
+    
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt8
+    #endif
+    
+    case keyRefresh = 0b01
+    
+    case ivUpdate = 0b10
+    
+    public static let all: Set<GAPSecureNetworkFlag> = [
+        .keyRefresh,
+        .ivUpdate
+    ]
+    
+}
+
+/**
+    The Secure Network beacon is used by nodes to identify the subnet and its security state
+ 
+    • Beacon type: Secure Network beacon (0x01). Size is 1 octet
+    • Flags: Contains the Key Refresh Flag and IV Update Flag. Size is 1 octet
+    • Network ID: Contains the value of the Network ID. Size is 8 octet
+    • IV Index: Contains the current IV Index. Size is 4 octet
+    • Authentication Value: Authenticates security network beacon. Size is 8 octet
+ 
+    - Note:
+    The Authentication Value field is computed as defined below:
+    Authentication Value = AES-CMACBeaconKey (Flags || Network ID || IV Index) [0–7]
+ */
+public struct GAPSecureNetworkBeacon {
+    
+    public static let length = 22
+    
+    public let beaconType: GAPBeaconType
+    
+    public let flags: BitMaskOptionSet<GAPSecureNetworkFlag>
+    
+    public let networkID: UInt64
+    
+    public let ivIndex: UInt32
+    
+    public let authenticationValue: UInt64
+    
+    public init(beaconType: GAPBeaconType, flags: BitMaskOptionSet<GAPSecureNetworkFlag>, networkID: UInt64, ivIndex: UInt32, authenticationValue: UInt64) {
+        
+        self.beaconType = beaconType
+        self.flags = flags
+        self.networkID = networkID
+        self.ivIndex = ivIndex
+        self.authenticationValue = authenticationValue
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        guard let beaconType = GAPBeaconType(rawValue: data[0])
+            else { return nil }
+        
+        let flags = BitMaskOptionSet<GAPSecureNetworkFlag>(rawValue: data[1])
+        let networkID = UInt64(littleEndian: UInt64(bytes: (data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9])))
+        let ivIndex = UInt32(littleEndian: UInt32(bytes: (data[10], data[11], data[12], data[13])))
+        let authenticationValue = UInt64(littleEndian: UInt64(bytes: (data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21])))
+        
+        self.init(beaconType: beaconType, flags: flags, networkID: networkID, ivIndex: ivIndex, authenticationValue: authenticationValue)
+    }
+    
+    var data: Data {
+        
+        var data = Data()
+        
+        data.append(beaconType.rawValue)
+        
+        data.append(flags.rawValue)
+        
+        let networkIDBytes = networkID.littleEndian.bytes
+        data += [networkIDBytes.0, networkIDBytes.1, networkIDBytes.2, networkIDBytes.3, networkIDBytes.4, networkIDBytes.5, networkIDBytes.6, networkIDBytes.7]
+        
+        let ivIndexBytes = ivIndex.littleEndian.bytes
+        data += [ivIndexBytes.0, ivIndexBytes.1, ivIndexBytes.2, ivIndexBytes.3]
+        
+        let authValueBytes = authenticationValue.littleEndian.bytes
+        data += [authValueBytes.0, authValueBytes.1, authValueBytes.2, authValueBytes.3, authValueBytes.4, authValueBytes.5, authValueBytes.6, authValueBytes.7]
+        
+        return data
+    }
+    
+}
+
+/**
+    Mesh beacons are packets advertised periodically by nodes and unprovisioned devices.
+    Mesh beacons are contained in a «Mesh Beacon» AD Type. The first octet of the Mesh Beacon advertising data payload (Beacon Type field) determines the type of beacon.
+    Mesh beacons are forwarded to other bearers using the Proxy protocol (see Section 6).
+ */
+public struct GAPMeshBeacon: GAPData {
+    
+    public static let typeLength = 1
+    
+    public static let dataType: GAPDataType = .meshBeacon
+    
+    public let type: GAPBeacon
+    
+    public init(type: GAPBeacon) {
+        
+        self.type = type
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count >= type(of: self).typeLength
+            else { return nil }
+        
+        guard let type = GAPBeaconType(rawValue: data[0])
+            else { return nil }
+        
+        let reducedData = data.subdata(in: (1..<data.count))
+        
+        switch type {
+
+        case .unprovisionedDevice:
+            
+            guard let beacon = GAPUnprovisionedDeviceBeacon(data: reducedData)
+                else { return nil }
+            
+            self.init(type: .unprovisionedDevice(beacon))
+            
+        case .secureNetwork:
+            
+            guard let beacon = GAPSecureNetworkBeacon(data: reducedData)
+                else { return nil }
+            
+            self.init(type: .secureNetwork(beacon))
+            
+        }
+    }
+    
+    public var data: Data {
+        
+        switch type {
+            
+        case .unprovisionedDevice(let beacon):
+            
+            return Data([GAPBeaconType.unprovisionedDevice.rawValue]) + beacon.data
+            
+        case .secureNetwork(let beacon):
+            
+            return Data([GAPBeaconType.secureNetwork.rawValue]) + beacon.data
+            
+        }
+        
+    }
+    
 }
 
 // MARK: - Coding

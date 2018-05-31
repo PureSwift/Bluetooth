@@ -43,7 +43,8 @@ final class GAPTests: XCTestCase {
         ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom),
         ("testGAPChannelMapUpdateIndication", testGAPChannelMapUpdateIndication),
         ("testGAPTransportDiscoveryData", testGAPTransportDiscoveryData),
-        ("testGAPMeshMessage", testGAPMeshMessage)
+        ("testGAPMeshMessage", testGAPMeshMessage),
+        ("testGAPMeshBeacon", testGAPMeshBeacon)
     ]
     
     func testDataType() {
@@ -757,6 +758,7 @@ final class GAPTests: XCTestCase {
     
     func testGAPMeshMessage() {
         
+        XCTAssertNil(GAPMeshMessage(data: Data([])))
         XCTAssertNil(GAPMeshMessage(data: Data([0x4f])))
         XCTAssertNil(GAPMeshMessage(data: Data([0x4f, 0xf8, 0x30])))
         
@@ -768,5 +770,33 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(message.data.count, GAPMeshMessage.length)
             XCTAssertEqual(MemoryLayout.size(ofValue: message), GAPMeshMessage.length)
         }
+    }
+    
+    func testGAPMeshBeacon() {
+        
+        XCTAssertNil(GAPMeshBeacon(data: Data([])))
+        XCTAssertNil(GAPMeshBeacon(data: Data([0x02, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])))
+        XCTAssertNil(GAPMeshBeacon(data: Data([0x02, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10])))
+        
+        // Unprovisioned Device
+        do {
+            let data = Data([0x00, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])
+            let beacon = GAPMeshBeacon(data: data)!
+            XCTAssertEqual(beacon.data, data)
+        }
+        
+        do {
+            let data = Data([0x00, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10])
+            let beacon = GAPMeshBeacon(data: data)!
+            XCTAssertEqual(beacon.data, data)
+        }
+        
+        // Secure Network
+        do {
+            let data = Data([0x01, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30])
+            let beacon = GAPMeshBeacon(data: data)!
+            XCTAssertEqual(beacon.data, data)
+        }
+        
     }
 }
