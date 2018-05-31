@@ -3194,12 +3194,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.smartInnovation, .bit32(0xFE2D))
 
         /// ERi,Inc.
-        XCTAssertEqual(BluetoothUUID.eriInc.rawValue, "FE2E")
-        XCTAssertEqual(BluetoothUUID.eriInc, .bit16(0xFE2E))
-        XCTAssertEqual(BluetoothUUID.eriInc, .bit16(65070))
-        XCTAssertEqual(BluetoothUUID.eriInc.name, "ERi,Inc.")
-        XCTAssertNotEqual(BluetoothUUID.eriInc, .bit32(65070))
-        XCTAssertNotEqual(BluetoothUUID.eriInc, .bit32(0xFE2E))
+        XCTAssertEqual(BluetoothUUID.eri.rawValue, "FE2E")
+        XCTAssertEqual(BluetoothUUID.eri, .bit16(0xFE2E))
+        XCTAssertEqual(BluetoothUUID.eri, .bit16(65070))
+        XCTAssertEqual(BluetoothUUID.eri.name, "ERi,Inc.")
+        XCTAssertNotEqual(BluetoothUUID.eri, .bit32(65070))
+        XCTAssertNotEqual(BluetoothUUID.eri, .bit32(0xFE2E))
 
         /// CRESCO Wireless, Inc
         XCTAssertEqual(BluetoothUUID.crescoWireless.rawValue, "FE2F")
@@ -3354,12 +3354,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.inugoSystemsLimited2, .bit32(0xFE41))
 
         /// Nets A/S
-        XCTAssertEqual(BluetoothUUID.netsAS.rawValue, "FE42")
-        XCTAssertEqual(BluetoothUUID.netsAS, .bit16(0xFE42))
-        XCTAssertEqual(BluetoothUUID.netsAS, .bit16(65090))
-        XCTAssertEqual(BluetoothUUID.netsAS.name, "Nets A/S")
-        XCTAssertNotEqual(BluetoothUUID.netsAS, .bit32(65090))
-        XCTAssertNotEqual(BluetoothUUID.netsAS, .bit32(0xFE42))
+        XCTAssertEqual(BluetoothUUID.nets.rawValue, "FE42")
+        XCTAssertEqual(BluetoothUUID.nets, .bit16(0xFE42))
+        XCTAssertEqual(BluetoothUUID.nets, .bit16(65090))
+        XCTAssertEqual(BluetoothUUID.nets.name, "Nets A/S")
+        XCTAssertNotEqual(BluetoothUUID.nets, .bit32(65090))
+        XCTAssertNotEqual(BluetoothUUID.nets, .bit32(0xFE42))
 
         /// Andreas Stihl AG & Co. KG
         XCTAssertEqual(BluetoothUUID.andreasStihl.rawValue, "FE43")
@@ -3386,12 +3386,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.snapchat, .bit32(0xFE45))
 
         /// B&O Play A/S
-        XCTAssertEqual(BluetoothUUID.bOPlayAS.rawValue, "FE46")
-        XCTAssertEqual(BluetoothUUID.bOPlayAS, .bit16(0xFE46))
-        XCTAssertEqual(BluetoothUUID.bOPlayAS, .bit16(65094))
-        XCTAssertEqual(BluetoothUUID.bOPlayAS.name, "B&O Play A/S")
-        XCTAssertNotEqual(BluetoothUUID.bOPlayAS, .bit32(65094))
-        XCTAssertNotEqual(BluetoothUUID.bOPlayAS, .bit32(0xFE46))
+        XCTAssertEqual(BluetoothUUID.bOPlay.rawValue, "FE46")
+        XCTAssertEqual(BluetoothUUID.bOPlay, .bit16(0xFE46))
+        XCTAssertEqual(BluetoothUUID.bOPlay, .bit16(65094))
+        XCTAssertEqual(BluetoothUUID.bOPlay.name, "B&O Play A/S")
+        XCTAssertNotEqual(BluetoothUUID.bOPlay, .bit32(65094))
+        XCTAssertNotEqual(BluetoothUUID.bOPlay, .bit32(0xFE46))
 
         /// General Motors
         XCTAssertEqual(BluetoothUUID.generalMotors.rawValue, "FE47")
@@ -3570,12 +3570,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.millionHunters, .bit32(0xFE5C))
 
         /// Grundfos A/S
-        XCTAssertEqual(BluetoothUUID.grundfosAS.rawValue, "FE5D")
-        XCTAssertEqual(BluetoothUUID.grundfosAS, .bit16(0xFE5D))
-        XCTAssertEqual(BluetoothUUID.grundfosAS, .bit16(65117))
-        XCTAssertEqual(BluetoothUUID.grundfosAS.name, "Grundfos A/S")
-        XCTAssertNotEqual(BluetoothUUID.grundfosAS, .bit32(65117))
-        XCTAssertNotEqual(BluetoothUUID.grundfosAS, .bit32(0xFE5D))
+        XCTAssertEqual(BluetoothUUID.grundfos.rawValue, "FE5D")
+        XCTAssertEqual(BluetoothUUID.grundfos, .bit16(0xFE5D))
+        XCTAssertEqual(BluetoothUUID.grundfos, .bit16(65117))
+        XCTAssertEqual(BluetoothUUID.grundfos.name, "Grundfos A/S")
+        XCTAssertNotEqual(BluetoothUUID.grundfos, .bit32(65117))
+        XCTAssertNotEqual(BluetoothUUID.grundfos, .bit32(0xFE5D))
 
         /// Plastc Corporation
         XCTAssertEqual(BluetoothUUID.plastcCorporation.rawValue, "FE5E")
@@ -3922,12 +3922,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.saltoSystemsSL, .bit32(0xFE88))
 
         /// B&O Play A/S
-        XCTAssertEqual(BluetoothUUID.bOPlayAS2.rawValue, "FE89")
-        XCTAssertEqual(BluetoothUUID.bOPlayAS2, .bit16(0xFE89))
-        XCTAssertEqual(BluetoothUUID.bOPlayAS2, .bit16(65161))
-        XCTAssertEqual(BluetoothUUID.bOPlayAS2.name, "B&O Play A/S")
-        XCTAssertNotEqual(BluetoothUUID.bOPlayAS2, .bit32(65161))
-        XCTAssertNotEqual(BluetoothUUID.bOPlayAS2, .bit32(0xFE89))
+        XCTAssertEqual(BluetoothUUID.bOPlay2.rawValue, "FE89")
+        XCTAssertEqual(BluetoothUUID.bOPlay2, .bit16(0xFE89))
+        XCTAssertEqual(BluetoothUUID.bOPlay2, .bit16(65161))
+        XCTAssertEqual(BluetoothUUID.bOPlay2.name, "B&O Play A/S")
+        XCTAssertNotEqual(BluetoothUUID.bOPlay2, .bit32(65161))
+        XCTAssertNotEqual(BluetoothUUID.bOPlay2, .bit32(0xFE89))
 
         /// Apple, Inc.
         XCTAssertEqual(BluetoothUUID.apple3.rawValue, "FE8A")
@@ -4858,12 +4858,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.gimbal2, .bit32(0xFEFD))
 
         /// GN ReSound A/S
-        XCTAssertEqual(BluetoothUUID.gnResoundAS.rawValue, "FEFE")
-        XCTAssertEqual(BluetoothUUID.gnResoundAS, .bit16(0xFEFE))
-        XCTAssertEqual(BluetoothUUID.gnResoundAS, .bit16(65278))
-        XCTAssertEqual(BluetoothUUID.gnResoundAS.name, "GN ReSound A/S")
-        XCTAssertNotEqual(BluetoothUUID.gnResoundAS, .bit32(65278))
-        XCTAssertNotEqual(BluetoothUUID.gnResoundAS, .bit32(0xFEFE))
+        XCTAssertEqual(BluetoothUUID.gnResound.rawValue, "FEFE")
+        XCTAssertEqual(BluetoothUUID.gnResound, .bit16(0xFEFE))
+        XCTAssertEqual(BluetoothUUID.gnResound, .bit16(65278))
+        XCTAssertEqual(BluetoothUUID.gnResound.name, "GN ReSound A/S")
+        XCTAssertNotEqual(BluetoothUUID.gnResound, .bit32(65278))
+        XCTAssertNotEqual(BluetoothUUID.gnResound, .bit32(0xFEFE))
 
         /// GN Netcom
         XCTAssertEqual(BluetoothUUID.gnNetcom.rawValue, "FEFF")

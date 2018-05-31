@@ -114,6 +114,7 @@ final class BluetoothUUIDTests: XCTestCase {
                 .replacingOccurrences(of: " LLC", with: "")
                 .replacingOccurrences(of: " LTD", with: "")
                 .replacingOccurrences(of: " Ltd", with: "")
+                .replacingOccurrences(of: " A/S", with: "")
             
             let llamaCaseName = llamaCase(sanitizedName)
             
