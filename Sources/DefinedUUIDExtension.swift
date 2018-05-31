@@ -1993,7 +1993,7 @@ public extension BluetoothUUID {
     }
 
     /// ERi,Inc. (`0xFE2E`)
-    static var eriInc: BluetoothUUID {
+    static var eri: BluetoothUUID {
         return .bit16(0xFE2E)
     }
 
@@ -2093,7 +2093,7 @@ public extension BluetoothUUID {
     }
 
     /// Nets A/S (`0xFE42`)
-    static var netsAS: BluetoothUUID {
+    static var nets: BluetoothUUID {
         return .bit16(0xFE42)
     }
 
@@ -2113,7 +2113,7 @@ public extension BluetoothUUID {
     }
 
     /// B&O Play A/S (`0xFE46`)
-    static var bOPlayAS: BluetoothUUID {
+    static var bOPlay: BluetoothUUID {
         return .bit16(0xFE46)
     }
 
@@ -2228,7 +2228,7 @@ public extension BluetoothUUID {
     }
 
     /// Grundfos A/S (`0xFE5D`)
-    static var grundfosAS: BluetoothUUID {
+    static var grundfos: BluetoothUUID {
         return .bit16(0xFE5D)
     }
 
@@ -2448,7 +2448,7 @@ public extension BluetoothUUID {
     }
 
     /// B&O Play A/S (`0xFE89`)
-    static var bOPlayAS2: BluetoothUUID {
+    static var bOPlay2: BluetoothUUID {
         return .bit16(0xFE89)
     }
 
@@ -3033,7 +3033,7 @@ public extension BluetoothUUID {
     }
 
     /// GN ReSound A/S (`0xFEFE`)
-    static var gnResoundAS: BluetoothUUID {
+    static var gnResound: BluetoothUUID {
         return .bit16(0xFEFE)
     }
 
