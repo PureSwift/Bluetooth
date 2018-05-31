@@ -6068,7 +6068,7 @@ public extension CompanyIdentifier {
     }
 
     /// Draegerwerk AG & Co. KGaA (`1212`)
-    static var draegerwerkAa: CompanyIdentifier {
+    static var draegerwerk: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1212)
     }
 

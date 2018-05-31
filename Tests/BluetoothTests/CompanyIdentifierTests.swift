@@ -6079,9 +6079,9 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.neatebox.description, "Neatebox Ltd")
 
         /// Draegerwerk AG & Co. KGaA
-        XCTAssertEqual(CompanyIdentifier.draegerwerkAa.rawValue, 1212)
-        XCTAssertEqual(CompanyIdentifier.draegerwerkAa.name, "Draegerwerk AG & Co. KGaA")
-        XCTAssertEqual(CompanyIdentifier.draegerwerkAa.description, "Draegerwerk AG & Co. KGaA")
+        XCTAssertEqual(CompanyIdentifier.draegerwerk.rawValue, 1212)
+        XCTAssertEqual(CompanyIdentifier.draegerwerk.name, "Draegerwerk AG & Co. KGaA")
+        XCTAssertEqual(CompanyIdentifier.draegerwerk.description, "Draegerwerk AG & Co. KGaA")
 
         /// AlbynMedical
         XCTAssertEqual(CompanyIdentifier.albynmedical.rawValue, 1213)
