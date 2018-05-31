@@ -9,6 +9,7 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
+// swiftlint:disable type_body_length
 final class DefinedUUIDTests: XCTestCase {
 
     static let allTests = [
@@ -4892,3 +4893,4 @@ final class DefinedUUIDTests: XCTestCase {
     }
 
 }
+// swiftlint:enable type_body_length

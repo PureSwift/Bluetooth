@@ -275,7 +275,6 @@
 		6EB98F1B20BF803E00FCE78E /* CompanyIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB98F1920BF803E00FCE78E /* CompanyIdentifierExtension.swift */; };
 		6EB98F1C20BF803E00FCE78E /* CompanyIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB98F1920BF803E00FCE78E /* CompanyIdentifierExtension.swift */; };
 		6EB98F1D20BF803E00FCE78E /* CompanyIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB98F1920BF803E00FCE78E /* CompanyIdentifierExtension.swift */; };
-		6EB98F2320BF81D700FCE78E /* CompanyIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB98F1E20BF80DC00FCE78E /* CompanyIdentifierTests.swift */; };
 		6EBD96B9207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBD96B8207A600B0037D253 /* ATTMaximumTransmissionUnit.swift */; };
 		6EBD96BA207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBD96B8207A600B0037D253 /* ATTMaximumTransmissionUnit.swift */; };
 		6EBD96BB207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBD96B8207A600B0037D253 /* ATTMaximumTransmissionUnit.swift */; };
@@ -1245,7 +1244,6 @@
 				6E65DF912075CD9F005BD2A0 /* UUIDTests.swift in Sources */,
 				6E740C6720659CE8006589F6 /* HCITests.swift in Sources */,
 				6E65DF932075D29C005BD2A0 /* iBeaconTests.swift in Sources */,
-				6EB98F2320BF81D700FCE78E /* CompanyIdentifierTests.swift in Sources */,
 				6E443A0A2085D108005F4D5F /* TestProfile.swift in Sources */,
 				6E65DF952075D568005BD2A0 /* XCTest.swift in Sources */,
 				6E04273D20800B0700AD3C75 /* DefinedUUIDTests.swift in Sources */,
