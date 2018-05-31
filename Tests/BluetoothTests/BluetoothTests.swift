@@ -282,6 +282,7 @@ final class BluetoothTests: XCTestCase {
     // MARK: - Code Generators
     
     #if os(macOS) && swift(>=3.2)
+    
     func testGenerateDefinedUUID() {
         
         let uuids = definedUUIDs.sorted(by: { $0.0.key < $0.1.key })
@@ -520,6 +521,7 @@ final class BluetoothTests: XCTestCase {
         
         print("Generated Swift code \(filename)")
     }
+    
     #endif
 }
 
@@ -558,12 +560,12 @@ func uppercaseFirstLetter(_ string: String) -> String {
 func sanitize(name: String) -> String {
     
     var name = name
-        .replacingOccurrences(of: "\"", with: "")
         .replacingOccurrences(of: "3D ", with: "uuid3D")
         .replacingOccurrences(of: "IF, LLC", with: "ifLLC")
         .replacingOccurrences(of: "WHERE, Inc.", with: "whereInc")
         .replacingOccurrences(of: " A/S", with: "")
         .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
+        .replacingOccurrences(of: ", Ltd. (QTIL)", with: "")
         .replacingOccurrences(of: "The ", with: "")
         .replacingOccurrences(of: "A/V", with: "av")
         .replacingOccurrences(of: "AG & Co. KGaA", with: "")
@@ -582,6 +584,7 @@ func sanitize(name: String) -> String {
         .replacingOccurrences(of: " GmbH", with: "")
         .replacingOccurrences(of: " B.V.", with: "")
         .replacingOccurrences(of: ",Inc.", with: "")
+        .replacingOccurrences(of: " Incorporated", with: "")
         .replacingOccurrences(of: " Inc", with: "")
         .replacingOccurrences(of: " INC", with: "")
         .replacingOccurrences(of: " LLC", with: "")
@@ -590,7 +593,6 @@ func sanitize(name: String) -> String {
         .replacingOccurrences(of: " A/S", with: "")
         .replacingOccurrences(of: " S.A.", with: "")
         .replacingOccurrences(of: " S.L.", with: "")
-        .replacingOccurrences(of: " Incorporated", with: "")
     
     // if first letter is a number, add prefix
     if let firstCharacter = name.first,
