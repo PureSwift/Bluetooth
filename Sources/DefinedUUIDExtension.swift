@@ -2443,7 +2443,7 @@ public extension BluetoothUUID {
     }
 
     /// SALTO SYSTEMS S.L. (`0xFE88`)
-    static var saltoSystemsSL: BluetoothUUID {
+    static var saltoSystems: BluetoothUUID {
         return .bit16(0xFE88)
     }
 

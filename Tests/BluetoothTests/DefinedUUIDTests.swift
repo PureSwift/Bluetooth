@@ -3915,12 +3915,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.qingdaoYeelinkInformationTechnology青岛亿联客信息技术有限公司, .bit32(0xFE87))
 
         /// SALTO SYSTEMS S.L.
-        XCTAssertEqual(BluetoothUUID.saltoSystemsSL.rawValue, "FE88")
-        XCTAssertEqual(BluetoothUUID.saltoSystemsSL, .bit16(0xFE88))
-        XCTAssertEqual(BluetoothUUID.saltoSystemsSL, .bit16(65160))
-        XCTAssertEqual(BluetoothUUID.saltoSystemsSL.name, "SALTO SYSTEMS S.L.")
-        XCTAssertNotEqual(BluetoothUUID.saltoSystemsSL, .bit32(65160))
-        XCTAssertNotEqual(BluetoothUUID.saltoSystemsSL, .bit32(0xFE88))
+        XCTAssertEqual(BluetoothUUID.saltoSystems.rawValue, "FE88")
+        XCTAssertEqual(BluetoothUUID.saltoSystems, .bit16(0xFE88))
+        XCTAssertEqual(BluetoothUUID.saltoSystems, .bit16(65160))
+        XCTAssertEqual(BluetoothUUID.saltoSystems.name, "SALTO SYSTEMS S.L.")
+        XCTAssertNotEqual(BluetoothUUID.saltoSystems, .bit32(65160))
+        XCTAssertNotEqual(BluetoothUUID.saltoSystems, .bit32(0xFE88))
 
         /// B&O Play A/S
         XCTAssertEqual(BluetoothUUID.bOPlay2.rawValue, "FE89")
