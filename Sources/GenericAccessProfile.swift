@@ -2685,7 +2685,7 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
     
     #if swift(>=3.2)
     #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
+    public typealias RawValue = UInt16
     #endif
     
     case other = 0b01
