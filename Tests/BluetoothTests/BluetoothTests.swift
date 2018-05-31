@@ -563,6 +563,7 @@ func sanitize(name: String) -> String {
         .replacingOccurrences(of: "A/V", with: "av")
         .replacingOccurrences(of: " AG & Co. KG", with: "")
         .replacingOccurrences(of: " AG & Co.", with: "")
+        .replacingOccurrences(of: " Corp.", with: "")
         .replacingOccurrences(of: "Co.,", with: "")
         .replacingOccurrences(of: "Co.,Ltd", with: "")
         .replacingOccurrences(of: " AG", with: "")

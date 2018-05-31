@@ -4402,12 +4402,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.plusLocationSystems, .bit32(0xFEC4))
 
         /// Realtek Semiconductor Corp.
-        XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp.rawValue, "FEC5")
-        XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp, .bit16(0xFEC5))
-        XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp, .bit16(65221))
-        XCTAssertEqual(BluetoothUUID.realtekSemiconductorCorp.name, "Realtek Semiconductor Corp.")
-        XCTAssertNotEqual(BluetoothUUID.realtekSemiconductorCorp, .bit32(65221))
-        XCTAssertNotEqual(BluetoothUUID.realtekSemiconductorCorp, .bit32(0xFEC5))
+        XCTAssertEqual(BluetoothUUID.realtekSemiconductor.rawValue, "FEC5")
+        XCTAssertEqual(BluetoothUUID.realtekSemiconductor, .bit16(0xFEC5))
+        XCTAssertEqual(BluetoothUUID.realtekSemiconductor, .bit16(65221))
+        XCTAssertEqual(BluetoothUUID.realtekSemiconductor.name, "Realtek Semiconductor Corp.")
+        XCTAssertNotEqual(BluetoothUUID.realtekSemiconductor, .bit32(65221))
+        XCTAssertNotEqual(BluetoothUUID.realtekSemiconductor, .bit32(0xFEC5))
 
         /// Kocomojo, LLC
         XCTAssertEqual(BluetoothUUID.kocomojo.rawValue, "FEC6")
@@ -4682,20 +4682,20 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.tencentHoldingsLimited2, .bit32(0xFEE7))
 
         /// Quintic Corp.
-        XCTAssertEqual(BluetoothUUID.quinticCorp.rawValue, "FEE8")
-        XCTAssertEqual(BluetoothUUID.quinticCorp, .bit16(0xFEE8))
-        XCTAssertEqual(BluetoothUUID.quinticCorp, .bit16(65256))
-        XCTAssertEqual(BluetoothUUID.quinticCorp.name, "Quintic Corp.")
-        XCTAssertNotEqual(BluetoothUUID.quinticCorp, .bit32(65256))
-        XCTAssertNotEqual(BluetoothUUID.quinticCorp, .bit32(0xFEE8))
+        XCTAssertEqual(BluetoothUUID.quintic.rawValue, "FEE8")
+        XCTAssertEqual(BluetoothUUID.quintic, .bit16(0xFEE8))
+        XCTAssertEqual(BluetoothUUID.quintic, .bit16(65256))
+        XCTAssertEqual(BluetoothUUID.quintic.name, "Quintic Corp.")
+        XCTAssertNotEqual(BluetoothUUID.quintic, .bit32(65256))
+        XCTAssertNotEqual(BluetoothUUID.quintic, .bit32(0xFEE8))
 
         /// Quintic Corp.
-        XCTAssertEqual(BluetoothUUID.quinticCorp2.rawValue, "FEE9")
-        XCTAssertEqual(BluetoothUUID.quinticCorp2, .bit16(0xFEE9))
-        XCTAssertEqual(BluetoothUUID.quinticCorp2, .bit16(65257))
-        XCTAssertEqual(BluetoothUUID.quinticCorp2.name, "Quintic Corp.")
-        XCTAssertNotEqual(BluetoothUUID.quinticCorp2, .bit32(65257))
-        XCTAssertNotEqual(BluetoothUUID.quinticCorp2, .bit32(0xFEE9))
+        XCTAssertEqual(BluetoothUUID.quintic2.rawValue, "FEE9")
+        XCTAssertEqual(BluetoothUUID.quintic2, .bit16(0xFEE9))
+        XCTAssertEqual(BluetoothUUID.quintic2, .bit16(65257))
+        XCTAssertEqual(BluetoothUUID.quintic2.name, "Quintic Corp.")
+        XCTAssertNotEqual(BluetoothUUID.quintic2, .bit32(65257))
+        XCTAssertNotEqual(BluetoothUUID.quintic2, .bit32(0xFEE9))
 
         /// Swirl Networks, Inc.
         XCTAssertEqual(BluetoothUUID.swirlNetworks.rawValue, "FEEA")

@@ -18,17 +18,17 @@ public extension CompanyIdentifier {
     }
 
     /// Intel Corp. (`2`)
-    static var intelCorp: CompanyIdentifier {
+    static var intel: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2)
     }
 
     /// IBM Corp. (`3`)
-    static var ibmCorp: CompanyIdentifier {
+    static var ibm: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3)
     }
 
     /// Toshiba Corp. (`4`)
-    static var toshibaCorp: CompanyIdentifier {
+    static var toshiba: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 4)
     }
 
@@ -293,7 +293,7 @@ public extension CompanyIdentifier {
     }
 
     /// Integrated System Solution Corp. (`57`)
-    static var integratedSystemSolutionCorp: CompanyIdentifier {
+    static var integratedSystemSolution: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 57)
     }
 
@@ -718,7 +718,7 @@ public extension CompanyIdentifier {
     }
 
     /// Quintic Corp. (`142`)
-    static var quinticCorp: CompanyIdentifier {
+    static var quintic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 142)
     }
 
@@ -748,7 +748,7 @@ public extension CompanyIdentifier {
     }
 
     /// Airoha Technology Corp. (`148`)
-    static var airohaTechnologyCorp: CompanyIdentifier {
+    static var airohaTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 148)
     }
 
@@ -1248,7 +1248,7 @@ public extension CompanyIdentifier {
     }
 
     /// AceUni Corp., Ltd. (`248`)
-    static var aceuniCorp: CompanyIdentifier {
+    static var aceuni: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 248)
     }
 
@@ -2253,7 +2253,7 @@ public extension CompanyIdentifier {
     }
 
     /// BRADATECH Corp. (`449`)
-    static var bradatechCorp: CompanyIdentifier {
+    static var bradatech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 449)
     }
 
@@ -3103,7 +3103,7 @@ public extension CompanyIdentifier {
     }
 
     /// DEKA Research & Development Corp. (`619`)
-    static var dekaResearchDevelopmentCorp: CompanyIdentifier {
+    static var dekaResearchDevelopment: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 619)
     }
 
@@ -3703,7 +3703,7 @@ public extension CompanyIdentifier {
     }
 
     /// Carmanah Technologies Corp. (`739`)
-    static var carmanahTechnologiesCorp: CompanyIdentifier {
+    static var carmanahTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 739)
     }
 
@@ -3823,7 +3823,7 @@ public extension CompanyIdentifier {
     }
 
     /// Clarius Mobile Health Corp. (`763`)
-    static var clariusMobileHealthCorp: CompanyIdentifier {
+    static var clariusMobileHealth: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 763)
     }
 
@@ -5078,7 +5078,7 @@ public extension CompanyIdentifier {
     }
 
     /// Iton Technology Corp. (`1014`)
-    static var itonTechnologyCorp: CompanyIdentifier {
+    static var itonTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1014)
     }
 
@@ -5088,7 +5088,7 @@ public extension CompanyIdentifier {
     }
 
     /// Rockford Corp. (`1016`)
-    static var rockfordCorp: CompanyIdentifier {
+    static var rockford: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1016)
     }
 
@@ -6098,7 +6098,7 @@ public extension CompanyIdentifier {
     }
 
     /// Dmet Products Corp. (`1218`)
-    static var dmetProductsCorp: CompanyIdentifier {
+    static var dmetProducts: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1218)
     }
 
@@ -6643,7 +6643,7 @@ public extension CompanyIdentifier {
     }
 
     /// Center ID Corp. (`1327`)
-    static var centerIdCorp: CompanyIdentifier {
+    static var centerId: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1327)
     }
 
@@ -6698,7 +6698,7 @@ public extension CompanyIdentifier {
     }
 
     /// Savitech Corp., (`1338`)
-    static var savitechCorp: CompanyIdentifier {
+    static var savitech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1338)
     }
 
@@ -6983,7 +6983,7 @@ public extension CompanyIdentifier {
     }
 
     /// Lighting Science Group Corp. (`1395`)
-    static var lightingScienceGroupCorp: CompanyIdentifier {
+    static var lightingScienceGroup: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1395)
     }
 

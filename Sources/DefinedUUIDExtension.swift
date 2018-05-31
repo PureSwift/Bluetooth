@@ -2748,7 +2748,7 @@ public extension BluetoothUUID {
     }
 
     /// Realtek Semiconductor Corp. (`0xFEC5`)
-    static var realtekSemiconductorCorp: BluetoothUUID {
+    static var realtekSemiconductor: BluetoothUUID {
         return .bit16(0xFEC5)
     }
 
@@ -2923,12 +2923,12 @@ public extension BluetoothUUID {
     }
 
     /// Quintic Corp. (`0xFEE8`)
-    static var quinticCorp: BluetoothUUID {
+    static var quintic: BluetoothUUID {
         return .bit16(0xFEE8)
     }
 
     /// Quintic Corp. (`0xFEE9`)
-    static var quinticCorp2: BluetoothUUID {
+    static var quintic2: BluetoothUUID {
         return .bit16(0xFEE9)
     }
 
