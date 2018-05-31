@@ -58,7 +58,7 @@ public extension CompanyIdentifier {
     }
 
     /// Qualcomm Technologies International, Ltd. (QTIL) (`10`)
-    static var qualcommTechnologiesInternationalQtil: CompanyIdentifier {
+    static var qualcommTechnologiesInternational: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 10)
     }
 
@@ -2068,7 +2068,7 @@ public extension CompanyIdentifier {
     }
 
     /// Cokiya Incorporated (`412`)
-    static var cokiyaorporated: CompanyIdentifier {
+    static var cokiya: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 412)
     }
 
@@ -3713,7 +3713,7 @@ public extension CompanyIdentifier {
     }
 
     /// Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 ) (`741`)
-    static var espressiforporated乐鑫信息科技上海有限公司: CompanyIdentifier {
+    static var espressif乐鑫信息科技上海有限公司: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 741)
     }
 
@@ -4503,7 +4503,7 @@ public extension CompanyIdentifier {
     }
 
     /// Kronos Incorporated (`899`)
-    static var kronosorporated: CompanyIdentifier {
+    static var kronos: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 899)
     }
 
@@ -5343,7 +5343,7 @@ public extension CompanyIdentifier {
     }
 
     /// iMicroMed Incorporated (`1067`)
-    static var imicromedorporated: CompanyIdentifier {
+    static var imicromed: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1067)
     }
 
@@ -7223,7 +7223,7 @@ public extension CompanyIdentifier {
     }
 
     /// Axiomware Systems Incorporated (`1443`)
-    static var axiomwareSystemsorporated: CompanyIdentifier {
+    static var axiomwareSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1443)
     }
 
@@ -7533,7 +7533,7 @@ public extension CompanyIdentifier {
     }
 
     /// Human, Incorporated (`1505`)
-    static var humanOrporated: CompanyIdentifier {
+    static var human: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1505)
     }
 
