@@ -2955,6 +2955,14 @@ public struct GAPMeshBeacon: GAPData {
     
 }
 
+/**
+    The Manufacturer Specific data type is used for manufacturer specific data.
+    The first two data octets shall contain a company identifier code from the Assigned Numbers - Company Identifiers document.
+    The interpretation of any other octets within the data shall be defined by the manufacturer specified by the company identifier.
+ 
+    Size: 2 or more octets
+    The first 2 octets contain the Company Identifier Code followed by additional manufacturer specific data
+ */
 public struct GAPManufacturerSpecificData: GAPData {
     
     public static let minLength = MemoryLayout<UInt16>.size
