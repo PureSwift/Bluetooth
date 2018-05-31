@@ -59,6 +59,7 @@
 		6E38DFED20875A8000D8765A /* GATTDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A2C2085D4E2005F4D5F /* GATTDescriptor.swift */; };
 		6E38DFEE20875A8100D8765A /* GATTDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A2C2085D4E2005F4D5F /* GATTDescriptor.swift */; };
 		6E38DFEF20875A8200D8765A /* GATTDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A2C2085D4E2005F4D5F /* GATTDescriptor.swift */; };
+		6E3AD30920BF951600EAC58A /* CompanyIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB98F1E20BF80DC00FCE78E /* CompanyIdentifierTests.swift */; };
 		6E443A072085CF12005F4D5F /* GATTDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A062085CF12005F4D5F /* GATTDatabaseTests.swift */; };
 		6E443A0A2085D108005F4D5F /* TestProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A082085D0EA005F4D5F /* TestProfile.swift */; };
 		6E443A2D2085D4E2005F4D5F /* GATTDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E443A2C2085D4E2005F4D5F /* GATTDescriptor.swift */; };
@@ -1244,6 +1245,7 @@
 				6E65DF912075CD9F005BD2A0 /* UUIDTests.swift in Sources */,
 				6E740C6720659CE8006589F6 /* HCITests.swift in Sources */,
 				6E65DF932075D29C005BD2A0 /* iBeaconTests.swift in Sources */,
+				6E3AD30920BF951600EAC58A /* CompanyIdentifierTests.swift in Sources */,
 				6E443A0A2085D108005F4D5F /* TestProfile.swift in Sources */,
 				6E65DF952075D568005BD2A0 /* XCTest.swift in Sources */,
 				6E04273D20800B0700AD3C75 /* DefinedUUIDTests.swift in Sources */,
