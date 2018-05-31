@@ -44,7 +44,8 @@ final class GAPTests: XCTestCase {
         ("testGAPChannelMapUpdateIndication", testGAPChannelMapUpdateIndication),
         ("testGAPTransportDiscoveryData", testGAPTransportDiscoveryData),
         ("testGAPMeshMessage", testGAPMeshMessage),
-        ("testGAPMeshBeacon", testGAPMeshBeacon)
+        ("testGAPMeshBeacon", testGAPMeshBeacon),
+        ("testGAPManufacturerSpecificData", testGAPManufacturerSpecificData)
     ]
     
     func testDataType() {
@@ -798,5 +799,30 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(beacon.data, data)
         }
         
+    }
+    
+    func testGAPManufacturerSpecificData() {
+        
+        XCTAssertNil(GAPManufacturerSpecificData(data: Data([0x4f])))
+        
+        do {
+            let data = Data([0x4f, 0x30])
+            let manufacturerData = GAPManufacturerSpecificData(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier), 2)
+            XCTAssertEqual(manufacturerData.data, data)
+            XCTAssertEqual(manufacturerData.data.count, 2)
+        }
+        
+        do {
+            let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
+            let manufacturerData = GAPManufacturerSpecificData(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier), 2)
+            XCTAssertEqual(manufacturerData.additionalData.count, 3)
+            XCTAssertEqual(manufacturerData.data, data)
+            XCTAssertEqual(manufacturerData.data.count, 5)
+        }
+        
+        XCTAssertEqual(GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])),
+                       GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])))
     }
 }
