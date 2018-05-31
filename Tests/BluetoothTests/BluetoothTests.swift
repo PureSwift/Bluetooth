@@ -361,6 +361,7 @@ final class BluetoothTests: XCTestCase {
         🖨("import Foundation")
         🖨("@testable import Bluetooth")
         🖨("")
+        🖨("// swiftlint:disable type_body_length")
         🖨("final class DefinedUUIDTests: XCTestCase {")
         🖨("")
         🖨("    static let allTests = [")
@@ -394,15 +395,14 @@ final class BluetoothTests: XCTestCase {
         🖨("    }")
         🖨("")
         🖨("}")
+        🖨("// swiftlint:enable type_body_length")
         
         filename = NSTemporaryDirectory() + "DefinedUUIDTests.swift"
         XCTAssertNoThrow(try generatedCode.write(toFile: filename, atomically: true, encoding: .utf8))
         
         print("Generated Swift code \(filename)")
     }
-    #endif
     
-    #if os(macOS) && swift(>=3.2)
     func testGenerateDefinedCompanyIdentifier() {
         
         let blacklist: [UInt16] = [
@@ -486,6 +486,7 @@ final class BluetoothTests: XCTestCase {
         🖨("import Foundation")
         🖨("@testable import Bluetooth")
         🖨("")
+        🖨("// swiftlint:disable type_body_length")
         🖨("final class CompanyIdentifierTests: XCTestCase {")
         🖨("")
         🖨("    static let allTests = [")
@@ -503,7 +504,7 @@ final class BluetoothTests: XCTestCase {
                 else { XCTFail("No extension generated for \(identifier)"); return }
             
             🖨("        /// \(name)")
-            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).rawValue, \"\(identifier)\")")
+            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).rawValue, \(identifier))")
             🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).name, \"\(name)\")")
             🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).description, \"\(name)\")")
             🖨("")
@@ -512,6 +513,7 @@ final class BluetoothTests: XCTestCase {
         🖨("    }")
         🖨("")
         🖨("}")
+        🖨("// swiftlint:enable type_body_length")
         
         filename = NSTemporaryDirectory() + "CompanyIdentifierTests.swift"
         XCTAssertNoThrow(try generatedCode.write(toFile: filename, atomically: true, encoding: .utf8))
@@ -522,6 +524,8 @@ final class BluetoothTests: XCTestCase {
 }
 
 // MARK: - Utilities
+
+#if os(macOS) && swift(>=3.2)
 
 // https://gist.github.com/AmitaiB/bbfcba3a21411ee6d3f972320bcd1ecd
 func camelCase(_ string: String) -> String {
@@ -554,6 +558,7 @@ func uppercaseFirstLetter(_ string: String) -> String {
 func sanitize(name: String) -> String {
     
     var name = name
+        .replacingOccurrences(of: "\"", with: "")
         .replacingOccurrences(of: "3D ", with: "uuid3D")
         .replacingOccurrences(of: "IF, LLC", with: "ifLLC")
         .replacingOccurrences(of: "WHERE, Inc.", with: "whereInc")
@@ -581,6 +586,9 @@ func sanitize(name: String) -> String {
         .replacingOccurrences(of: " LTD", with: "")
         .replacingOccurrences(of: " Ltd", with: "")
         .replacingOccurrences(of: " A/S", with: "")
+        .replacingOccurrences(of: "  S.A.", with: "")
+        .replacingOccurrences(of: "  S.L.", with: "")
+        .replacingOccurrences(of: " Incorporated", with: "")
     
     // if first letter is a number, add prefix
     if let firstCharacter = name.first,
@@ -591,3 +599,5 @@ func sanitize(name: String) -> String {
     
     return name
 }
+
+#endif
