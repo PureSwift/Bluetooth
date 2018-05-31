@@ -1643,7 +1643,7 @@ public extension BluetoothUUID {
     }
 
     /// SECOM Co., LTD (`0xFDE7`)
-    static var secomLtd: BluetoothUUID {
+    static var secom: BluetoothUUID {
         return .bit16(0xFDE7)
     }
 
@@ -2038,22 +2038,22 @@ public extension BluetoothUUID {
     }
 
     /// Spaceek LTD (`0xFE37`)
-    static var spaceekLtd: BluetoothUUID {
+    static var spaceek: BluetoothUUID {
         return .bit16(0xFE37)
     }
 
     /// Spaceek LTD (`0xFE38`)
-    static var spaceekLtd2: BluetoothUUID {
+    static var spaceek2: BluetoothUUID {
         return .bit16(0xFE38)
     }
 
     /// TTS Tooltechnic Systems AG & Co. (`0xFE39`)
-    static var ttsTooltechnicSystemsCo: BluetoothUUID {
+    static var ttsTooltechnicSystems: BluetoothUUID {
         return .bit16(0xFE39)
     }
 
     /// TTS Tooltechnic Systems AG & Co. (`0xFE3A`)
-    static var ttsTooltechnicSystemsCo2: BluetoothUUID {
+    static var ttsTooltechnicSystems2: BluetoothUUID {
         return .bit16(0xFE3A)
     }
 
@@ -2098,7 +2098,7 @@ public extension BluetoothUUID {
     }
 
     /// Andreas Stihl AG & Co. KG (`0xFE43`)
-    static var andreasStihlCoKg: BluetoothUUID {
+    static var andreasStihl: BluetoothUUID {
         return .bit16(0xFE43)
     }
 

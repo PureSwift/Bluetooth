@@ -2634,12 +2634,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.intellettoTechnologies, .bit32(0xFDE6))
 
         /// SECOM Co., LTD
-        XCTAssertEqual(BluetoothUUID.secomLtd.rawValue, "FDE7")
-        XCTAssertEqual(BluetoothUUID.secomLtd, .bit16(0xFDE7))
-        XCTAssertEqual(BluetoothUUID.secomLtd, .bit16(64999))
-        XCTAssertEqual(BluetoothUUID.secomLtd.name, "SECOM Co., LTD")
-        XCTAssertNotEqual(BluetoothUUID.secomLtd, .bit32(64999))
-        XCTAssertNotEqual(BluetoothUUID.secomLtd, .bit32(0xFDE7))
+        XCTAssertEqual(BluetoothUUID.secom.rawValue, "FDE7")
+        XCTAssertEqual(BluetoothUUID.secom, .bit16(0xFDE7))
+        XCTAssertEqual(BluetoothUUID.secom, .bit16(64999))
+        XCTAssertEqual(BluetoothUUID.secom.name, "SECOM Co., LTD")
+        XCTAssertNotEqual(BluetoothUUID.secom, .bit32(64999))
+        XCTAssertNotEqual(BluetoothUUID.secom, .bit32(0xFDE7))
 
         /// Robert Bosch GmbH
         XCTAssertEqual(BluetoothUUID.robertBosch.rawValue, "FDE8")
@@ -3266,36 +3266,36 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.huaweiTechnologies3, .bit32(0xFE36))
 
         /// Spaceek LTD
-        XCTAssertEqual(BluetoothUUID.spaceekLtd.rawValue, "FE37")
-        XCTAssertEqual(BluetoothUUID.spaceekLtd, .bit16(0xFE37))
-        XCTAssertEqual(BluetoothUUID.spaceekLtd, .bit16(65079))
-        XCTAssertEqual(BluetoothUUID.spaceekLtd.name, "Spaceek LTD")
-        XCTAssertNotEqual(BluetoothUUID.spaceekLtd, .bit32(65079))
-        XCTAssertNotEqual(BluetoothUUID.spaceekLtd, .bit32(0xFE37))
+        XCTAssertEqual(BluetoothUUID.spaceek.rawValue, "FE37")
+        XCTAssertEqual(BluetoothUUID.spaceek, .bit16(0xFE37))
+        XCTAssertEqual(BluetoothUUID.spaceek, .bit16(65079))
+        XCTAssertEqual(BluetoothUUID.spaceek.name, "Spaceek LTD")
+        XCTAssertNotEqual(BluetoothUUID.spaceek, .bit32(65079))
+        XCTAssertNotEqual(BluetoothUUID.spaceek, .bit32(0xFE37))
 
         /// Spaceek LTD
-        XCTAssertEqual(BluetoothUUID.spaceekLtd2.rawValue, "FE38")
-        XCTAssertEqual(BluetoothUUID.spaceekLtd2, .bit16(0xFE38))
-        XCTAssertEqual(BluetoothUUID.spaceekLtd2, .bit16(65080))
-        XCTAssertEqual(BluetoothUUID.spaceekLtd2.name, "Spaceek LTD")
-        XCTAssertNotEqual(BluetoothUUID.spaceekLtd2, .bit32(65080))
-        XCTAssertNotEqual(BluetoothUUID.spaceekLtd2, .bit32(0xFE38))
+        XCTAssertEqual(BluetoothUUID.spaceek2.rawValue, "FE38")
+        XCTAssertEqual(BluetoothUUID.spaceek2, .bit16(0xFE38))
+        XCTAssertEqual(BluetoothUUID.spaceek2, .bit16(65080))
+        XCTAssertEqual(BluetoothUUID.spaceek2.name, "Spaceek LTD")
+        XCTAssertNotEqual(BluetoothUUID.spaceek2, .bit32(65080))
+        XCTAssertNotEqual(BluetoothUUID.spaceek2, .bit32(0xFE38))
 
         /// TTS Tooltechnic Systems AG & Co.
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo.rawValue, "FE39")
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo, .bit16(0xFE39))
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo, .bit16(65081))
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo.name, "TTS Tooltechnic Systems AG & Co.")
-        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystemsCo, .bit32(65081))
-        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystemsCo, .bit32(0xFE39))
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems.rawValue, "FE39")
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems, .bit16(0xFE39))
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems, .bit16(65081))
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems.name, "TTS Tooltechnic Systems AG & Co.")
+        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystems, .bit32(65081))
+        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystems, .bit32(0xFE39))
 
         /// TTS Tooltechnic Systems AG & Co.
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo2.rawValue, "FE3A")
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo2, .bit16(0xFE3A))
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo2, .bit16(65082))
-        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystemsCo2.name, "TTS Tooltechnic Systems AG & Co.")
-        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystemsCo2, .bit32(65082))
-        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystemsCo2, .bit32(0xFE3A))
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems2.rawValue, "FE3A")
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems2, .bit16(0xFE3A))
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems2, .bit16(65082))
+        XCTAssertEqual(BluetoothUUID.ttsTooltechnicSystems2.name, "TTS Tooltechnic Systems AG & Co.")
+        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystems2, .bit32(65082))
+        XCTAssertNotEqual(BluetoothUUID.ttsTooltechnicSystems2, .bit32(0xFE3A))
 
         /// Dolby Laboratories
         XCTAssertEqual(BluetoothUUID.dolbyLaboratories.rawValue, "FE3B")
@@ -3362,12 +3362,12 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.netsAS, .bit32(0xFE42))
 
         /// Andreas Stihl AG & Co. KG
-        XCTAssertEqual(BluetoothUUID.andreasStihlCoKg.rawValue, "FE43")
-        XCTAssertEqual(BluetoothUUID.andreasStihlCoKg, .bit16(0xFE43))
-        XCTAssertEqual(BluetoothUUID.andreasStihlCoKg, .bit16(65091))
-        XCTAssertEqual(BluetoothUUID.andreasStihlCoKg.name, "Andreas Stihl AG & Co. KG")
-        XCTAssertNotEqual(BluetoothUUID.andreasStihlCoKg, .bit32(65091))
-        XCTAssertNotEqual(BluetoothUUID.andreasStihlCoKg, .bit32(0xFE43))
+        XCTAssertEqual(BluetoothUUID.andreasStihl.rawValue, "FE43")
+        XCTAssertEqual(BluetoothUUID.andreasStihl, .bit16(0xFE43))
+        XCTAssertEqual(BluetoothUUID.andreasStihl, .bit16(65091))
+        XCTAssertEqual(BluetoothUUID.andreasStihl.name, "Andreas Stihl AG & Co. KG")
+        XCTAssertNotEqual(BluetoothUUID.andreasStihl, .bit32(65091))
+        XCTAssertNotEqual(BluetoothUUID.andreasStihl, .bit32(0xFE43))
 
         /// SK Telecom
         XCTAssertEqual(BluetoothUUID.skTelecom.rawValue, "FE44")
