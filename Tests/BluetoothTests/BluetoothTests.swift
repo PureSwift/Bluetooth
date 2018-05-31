@@ -504,10 +504,12 @@ final class BluetoothTests: XCTestCase {
             guard let memberName = memberNameCache[identifier]
                 else { XCTFail("No extension generated for \(identifier)"); return }
             
+            let stringLiteral = name.replacingOccurrences(of: "\"", with: "\\\"")
+            
             🖨("        /// \(name)")
             🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).rawValue, \(identifier))")
-            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).name, \"\(name)\")")
-            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).description, \"\(name)\")")
+            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).name, \"\(stringLiteral)\")")
+            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).description, \"\(stringLiteral)\")")
             🖨("")
         }
         
@@ -560,6 +562,7 @@ func uppercaseFirstLetter(_ string: String) -> String {
 func sanitize(name: String) -> String {
     
     var name = name
+        .replacingOccurrences(of: "\"", with: "")
         .replacingOccurrences(of: "3D ", with: "uuid3D")
         .replacingOccurrences(of: "IF, LLC", with: "ifLLC")
         .replacingOccurrences(of: "WHERE, Inc.", with: "whereInc")
