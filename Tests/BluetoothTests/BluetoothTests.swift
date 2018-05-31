@@ -315,32 +315,7 @@ final class BluetoothTests: XCTestCase {
             
             let uuid = BluetoothUUID.bit16(uuidValue)
             
-            let sanitizedName = name
-                .replacingOccurrences(of: "3D ", with: "uuid3D")
-                .replacingOccurrences(of: "360", with: "uuid360")
-                .replacingOccurrences(of: "3M", with: "uuid3M")
-                .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
-                .replacingOccurrences(of: "The ", with: "")
-                .replacingOccurrences(of: "A/V", with: "av")
-                .replacingOccurrences(of: " AG & Co. KG", with: "")
-                .replacingOccurrences(of: " AG & Co.", with: "")
-                .replacingOccurrences(of: "Co.,", with: "")
-                .replacingOccurrences(of: "Co.,Ltd", with: "")
-                .replacingOccurrences(of: " AG", with: "")
-                .replacingOccurrences(of: " Sp. z o.o.", with: "")
-                .replacingOccurrences(of: " ASA", with: "")
-                .replacingOccurrences(of: " d.o.o.", with: "")
-                .replacingOccurrences(of: " SA", with: "")
-                .replacingOccurrences(of: " gmbh", with: "")
-                .replacingOccurrences(of: " GmbH", with: "")
-                .replacingOccurrences(of: " B.V.", with: "")
-                .replacingOccurrences(of: ",Inc.", with: "")
-                .replacingOccurrences(of: " Inc", with: "")
-                .replacingOccurrences(of: " INC", with: "")
-                .replacingOccurrences(of: " LLC", with: "")
-                .replacingOccurrences(of: " LTD", with: "")
-                .replacingOccurrences(of: " Ltd", with: "")
-                .replacingOccurrences(of: " A/S", with: "")
+            let sanitizedName = sanitize(name: name)
             
             let llamaCaseName = llamaCase(sanitizedName)
             
@@ -430,7 +405,13 @@ final class BluetoothTests: XCTestCase {
     #if os(macOS) && swift(>=3.2)
     func testGenerateDefinedCompanyIdentifier() {
         
-        let companies = companyIdentifiers.sorted(by: { $0.0.key < $0.1.key })
+        let blacklist: [UInt16] = [
+            .max // remove internal use identifier
+        ]
+        
+        let companies = companyIdentifiers
+            .sorted(by: { $0.0.key < $0.1.key })
+            .filter { blacklist.contains($0.key) == false }
         
         var generatedCode = ""
         
@@ -459,32 +440,7 @@ final class BluetoothTests: XCTestCase {
         
         for (identifier, name) in companies {
             
-            let sanitizedName = name
-                .replacingOccurrences(of: "3D ", with: "uuid3D")
-                .replacingOccurrences(of: "360", with: "uuid360")
-                .replacingOccurrences(of: "3M", with: "uuid3M")
-                .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
-                .replacingOccurrences(of: "The ", with: "")
-                .replacingOccurrences(of: "A/V", with: "av")
-                .replacingOccurrences(of: " AG & Co. KG", with: "")
-                .replacingOccurrences(of: " AG & Co.", with: "")
-                .replacingOccurrences(of: "Co.,", with: "")
-                .replacingOccurrences(of: "Co.,Ltd", with: "")
-                .replacingOccurrences(of: " AG", with: "")
-                .replacingOccurrences(of: " Sp. z o.o.", with: "")
-                .replacingOccurrences(of: " ASA", with: "")
-                .replacingOccurrences(of: " d.o.o.", with: "")
-                .replacingOccurrences(of: " SA", with: "")
-                .replacingOccurrences(of: " gmbh", with: "")
-                .replacingOccurrences(of: " GmbH", with: "")
-                .replacingOccurrences(of: " B.V.", with: "")
-                .replacingOccurrences(of: ",Inc.", with: "")
-                .replacingOccurrences(of: " Inc", with: "")
-                .replacingOccurrences(of: " INC", with: "")
-                .replacingOccurrences(of: " LLC", with: "")
-                .replacingOccurrences(of: " LTD", with: "")
-                .replacingOccurrences(of: " Ltd", with: "")
-                .replacingOccurrences(of: " A/S", with: "")
+            let sanitizedName = sanitize(name: name)
             
             let llamaCaseName = llamaCase(sanitizedName)
             
@@ -593,4 +549,44 @@ func uppercaseFirstLetter(_ string: String) -> String {
         result = firstLetter.uppercased() + result
     }
     return result
+}
+
+func sanitize(name: String) -> String {
+    
+    var name = name
+        .replacingOccurrences(of: "3D ", with: "uuid3D")
+        .replacingOccurrences(of: "IF, LLC", with: "ifLLC")
+        .replacingOccurrences(of: "WHERE, Inc.", with: "whereInc")
+        .replacingOccurrences(of: " A/S", with: "")
+        .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
+        .replacingOccurrences(of: "The ", with: "")
+        .replacingOccurrences(of: "A/V", with: "av")
+        .replacingOccurrences(of: " AG & Co. KG", with: "")
+        .replacingOccurrences(of: " AG & Co.", with: "")
+        .replacingOccurrences(of: "Co.,", with: "")
+        .replacingOccurrences(of: "Co.,Ltd", with: "")
+        .replacingOccurrences(of: " AG", with: "")
+        .replacingOccurrences(of: " Sp. z o.o.", with: "")
+        .replacingOccurrences(of: " ASA", with: "")
+        .replacingOccurrences(of: " d.o.o.", with: "")
+        .replacingOccurrences(of: " SA", with: "")
+        .replacingOccurrences(of: " gmbh", with: "")
+        .replacingOccurrences(of: " GmbH", with: "")
+        .replacingOccurrences(of: " B.V.", with: "")
+        .replacingOccurrences(of: ",Inc.", with: "")
+        .replacingOccurrences(of: " Inc", with: "")
+        .replacingOccurrences(of: " INC", with: "")
+        .replacingOccurrences(of: " LLC", with: "")
+        .replacingOccurrences(of: " LTD", with: "")
+        .replacingOccurrences(of: " Ltd", with: "")
+        .replacingOccurrences(of: " A/S", with: "")
+    
+    // if first letter is a number, add prefix
+    if let firstCharacter = name.first,
+        let _ = Int(String(firstCharacter)) {
+        
+        name = "uuid" + name
+    }
+    
+    return name
 }
