@@ -2665,20 +2665,11 @@ extension GAPMeshMessage: CustomStringConvertible {
     }
 }
 
-public enum GAPBeacon {
-    
-    case unprovisionedDevice(GAPUnprovisionedDeviceBeacon)
-    
-    case secureNetwork(GAPSecureNetworkBeacon)
-    
-}
-
 public enum GAPBeaconType: UInt8 {
     
     case unprovisionedDevice = 0x00
     
     case secureNetwork = 0x01
-    
 }
 
 public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
@@ -2751,7 +2742,9 @@ public struct GAPUnprovisionedDeviceBeacon {
     
     public let uriHash: UInt32?
     
-    public init(beaconType: GAPBeaconType, deviceUUID: UUID, oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>, uriHash: UInt32? = nil) {
+    public init(beaconType: GAPBeaconType,
+                deviceUUID: UUID,
+                oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>, uriHash: UInt32? = nil) {
         
         self.beaconType = beaconType
         self.deviceUUID = deviceUUID
@@ -2895,18 +2888,15 @@ public struct GAPSecureNetworkBeacon {
     Mesh beacons are contained in a «Mesh Beacon» AD Type. The first octet of the Mesh Beacon advertising data payload (Beacon Type field) determines the type of beacon.
     Mesh beacons are forwarded to other bearers using the Proxy protocol (see Section 6).
  */
-public struct GAPMeshBeacon: GAPData {
+public enum GAPMeshBeacon: GAPData {
     
-    public static let typeLength = 1
+    internal static let typeLength = 1
     
     public static let dataType: GAPDataType = .meshBeacon
     
-    public let type: GAPBeacon
+    case unprovisionedDevice(GAPUnprovisionedDeviceBeacon)
     
-    public init(type: GAPBeacon) {
-        
-        self.type = type
-    }
+    case secureNetwork(GAPSecureNetworkBeacon)
     
     public init?(data: Data) {
         
@@ -2916,7 +2906,7 @@ public struct GAPMeshBeacon: GAPData {
         guard let type = GAPBeaconType(rawValue: data[0])
             else { return nil }
         
-        let reducedData = data.subdata(in: (1..<data.count))
+        let reducedData = data.subdata(in: (1 ..< data.count))
         
         switch type {
 
@@ -2925,21 +2915,21 @@ public struct GAPMeshBeacon: GAPData {
             guard let beacon = GAPUnprovisionedDeviceBeacon(data: reducedData)
                 else { return nil }
             
-            self.init(type: .unprovisionedDevice(beacon))
+            self = .unprovisionedDevice(beacon)
             
         case .secureNetwork:
             
             guard let beacon = GAPSecureNetworkBeacon(data: reducedData)
                 else { return nil }
             
-            self.init(type: .secureNetwork(beacon))
+            self = .secureNetwork(beacon)
             
         }
     }
     
     public var data: Data {
         
-        switch type {
+        switch self {
             
         case .unprovisionedDevice(let beacon):
             
@@ -2965,15 +2955,16 @@ public struct GAPMeshBeacon: GAPData {
  */
 public struct GAPManufacturerSpecificData: GAPData {
     
-    public static let minLength = MemoryLayout<UInt16>.size
+    public static let minimumLength = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .manufacturerSpecificData
     
-    public let companyIdentifier: CompanyIdentifier
+    public var companyIdentifier: CompanyIdentifier
     
-    public private(set) var additionalData: [UInt8] = []
+    public var additionalData: Data
     
-    public init(companyIdentifier: CompanyIdentifier, additionalData: [UInt8] = []) {
+    public init(companyIdentifier: CompanyIdentifier,
+                additionalData: Data = Data()) {
         
         self.companyIdentifier = companyIdentifier
         self.additionalData = additionalData
@@ -2981,16 +2972,20 @@ public struct GAPManufacturerSpecificData: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minLength
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         let companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
-        var additionalData = [UInt8]()
         
-        data.enumerated().forEach { (index, element) in
-            if index >= GAPManufacturerSpecificData.minLength {
-                additionalData.append(element)
-            }
+        var additionalData = Data()
+        
+        if data.count > type(of: self).minimumLength {
+            
+            additionalData = Data(data.suffix(from: 2))
+            
+        } else {
+            
+            additionalData = Data()
         }
         
         self.init(companyIdentifier: companyIdentifier, additionalData: additionalData)
@@ -2998,10 +2993,9 @@ public struct GAPManufacturerSpecificData: GAPData {
     
     public var data: Data {
         
-        let bytes = UInt16(littleEndian: companyIdentifier.rawValue).bytes
-        let data = Data([bytes.0, bytes.1])
+        let identifierBytes = companyIdentifier.rawValue.littleEndian.bytes
         
-        return additionalData.reduce(data, { $0.0 + [$0.1] })
+        return Data([identifierBytes.0, identifierBytes.1]) + additionalData
     }
     
 }
