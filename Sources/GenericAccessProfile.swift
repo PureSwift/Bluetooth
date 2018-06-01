@@ -2753,7 +2753,7 @@ public struct GAPUnprovisionedDeviceBeacon {
     
     public init?(data: Data) {
         
-        guard let length = Length(rawValue: data.count)
+        guard let length = DataLength(rawValue: data.count)
             else { return nil }
         
         guard let beaconType = GAPBeaconType(rawValue: data[0]),
@@ -2766,15 +2766,13 @@ public struct GAPUnprovisionedDeviceBeacon {
         
         let uriHash: UInt32?
         
-        switch length {
-            
-        case .withoutURI:
-            
-            uriHash = nil
-            
-        case .withURI:
+        if length.uriHash {
             
             uriHash = UInt32(littleEndian: UInt32(bytes: (data[19], data[20], data[21], data[22])))
+            
+        } else {
+            
+            uriHash = nil
         }
         
         self.init(deviceUUID: deviceUUID, oobInformationFlags: oobInformationFlags, uriHash: uriHash)
@@ -2782,26 +2780,64 @@ public struct GAPUnprovisionedDeviceBeacon {
     
     var data: Data {
         
-        var data = Data()
+        let length = DataLength(uriHash: uriHash != nil)
+        
+        var data = Data(capacity: length.rawValue)
         
         data.append(type(of: self).beaconType.rawValue)
         
         data.append(UInt128(uuid: deviceUUID).littleEndian.data)
         
         let flagsBytes = oobInformationFlags.rawValue.littleEndian.bytes
+        
         data += [flagsBytes.0, flagsBytes.1]
         
         if let uriBytes = uriHash?.littleEndian.bytes {
+            
             data += [uriBytes.0, uriBytes.1, uriBytes.2, uriBytes.3]
         }
         
         return data
     }
     
-    enum Length: Int {
+    struct DataLength: RawRepresentable {
         
-        case withoutURI = 19
-        case withURI = 23
+        static let minimum = DataLength(19)
+        
+        static let maximum = DataLength(23)
+        
+        let rawValue: Int
+        
+        init?(rawValue: Int) {
+            
+            guard rawValue >= DataLength.minimum.rawValue,
+                rawValue <= DataLength.maximum.rawValue
+                else { return nil }
+            
+            self.rawValue = rawValue
+        }
+        
+        init(uriHash: Bool) {
+            
+            var length = DataLength.minimum.rawValue
+            
+            if uriHash {
+                
+                length += 4
+            }
+            
+            self.init(length)
+        }
+        
+        private init(_ unsafe: Int) {
+            
+            self.rawValue = unsafe
+        }
+        
+        var uriHash: Bool {
+            
+            return rawValue >= DataLength.minimum.rawValue + 4
+        }
     }
 }
 
