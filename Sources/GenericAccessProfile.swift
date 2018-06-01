@@ -2148,24 +2148,28 @@ public struct GAPURI: GAPData {
     
     public static let dataType: GAPDataType = .uri
     
-    public let name: String
+    public let uri: URL
     
-    public init(name: String) {
+    public init(uri: URL) {
         
-        self.name = name
+        self.uri = uri
     }
     
     public init?(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let string = String(data: data, encoding: .utf8),
+            let uri = URL(string: string)
             else { return nil }
         
-        self.init(name: rawValue)
+        self.uri = uri
     }
     
     public var data: Data {
         
-        return Data(name.utf8)
+        guard let data = uri.absoluteString.data(using: .utf8)
+            else { fatalError("Unable to encode string") }
+        
+        return data
     }
 }
 
@@ -2173,7 +2177,7 @@ extension GAPURI: Equatable {
     
     public static func == (lhs: GAPURI, rhs: GAPURI) -> Bool {
         
-        return lhs.name == rhs.name
+        return lhs.uri == rhs.uri
     }
 }
 
@@ -2181,32 +2185,16 @@ extension GAPURI: CustomStringConvertible {
     
     public var description: String {
         
-        return name
-    }
-}
-
-extension GAPURI: ExpressibleByStringLiteral {
-    
-    public init(stringLiteral value: String) {
-        
-        self.init(name: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(name: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
-        
-        self.init(name: value)
+        return uri.description
     }
 }
 
 /// The LE Supported Features data type defines the LE features supported by the device.
 /// All 0x00 octets after the last non-zero octet shall be omitted from the value transmitted.
 ///
-/// The LE Supported Features data type size is zero or more octets long. This allows the LE Supported Features to be represented while using the minimum number of octets within the data packet.
+/// The LE Supported Features data type size is zero or more octets long.
+/// This allows the LE Supported Features to be represented while using
+/// the minimum number of octets within the data packet.
 public struct GAPLESupportedFeatures: GAPData {
     
     public static let omittedValue: UInt8 = 0x00
