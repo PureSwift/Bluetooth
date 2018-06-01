@@ -1958,7 +1958,8 @@ extension GAPRandomTargetAddress: CustomStringConvertible {
     }
 }
 
-/// The Advertising Interval data type contains the advInterval value as defined in the Core specification, Volume 6, Part B, Section 4.4.2.2.
+/// The Advertising Interval data type contains the `advInterval` value
+/// as defined in the Core specification, Volume 6, Part B, Section 4.4.2.2.
 ///
 /// Size: 2 octets (UINT16)
 /// Units: 0.625 ms
@@ -2045,7 +2046,8 @@ public struct GAPLEDeviceAddress: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length, let type = GAPLEDeviceAddressType(rawValue: data[6])
+        guard data.count == type(of: self).length,
+            let type = GAPLEDeviceAddressType(rawValue: data[6])
             else { return nil }
         
         let address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
@@ -2949,7 +2951,7 @@ public struct GAPSecureNetworkBeacon {
  */
 public enum GAPMeshBeacon: GAPData {
     
-    internal static let typeLength = 1
+    internal static let minimumLength = 2
     
     public static let dataType: GAPDataType = .meshBeacon
     
@@ -2959,26 +2961,24 @@ public enum GAPMeshBeacon: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).typeLength
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         guard let type = GAPBeaconType(rawValue: data[0])
             else { return nil }
         
-        let reducedData = data.subdata(in: (1 ..< data.count))
-        
         switch type {
 
         case .unprovisionedDevice:
             
-            guard let beacon = GAPUnprovisionedDeviceBeacon(data: reducedData)
+            guard let beacon = GAPUnprovisionedDeviceBeacon(data: data)
                 else { return nil }
             
             self = .unprovisionedDevice(beacon)
             
         case .secureNetwork:
             
-            guard let beacon = GAPSecureNetworkBeacon(data: reducedData)
+            guard let beacon = GAPSecureNetworkBeacon(data: data)
                 else { return nil }
             
             self = .secureNetwork(beacon)
@@ -2992,11 +2992,11 @@ public enum GAPMeshBeacon: GAPData {
             
         case let .unprovisionedDevice(beacon):
             
-            return Data([GAPBeaconType.unprovisionedDevice.rawValue]) + beacon.data
+            return beacon.data
             
         case let .secureNetwork(beacon):
             
-            return Data([GAPBeaconType.secureNetwork.rawValue]) + beacon.data
+            return beacon.data
             
         }
     }
