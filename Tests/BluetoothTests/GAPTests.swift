@@ -610,8 +610,9 @@ final class GAPTests: XCTestCase {
     
     func testGAPURI() {
         
-        let data = Data([0x07, 0x24, 0x4d, 0x79, 0x20, 0x75, 0x72, 0x69])
-        let uri = GAPURI(name: "My uri")
+        let uriString = "/my/uri/string"
+        let data = Data([15, 0x24, 47, 109, 121, 47, 117, 114, 105, 47, 115, 116, 114, 105, 110, 103])
+        let uri = GAPURI(uri: URL(string: uriString)!)
         let expectedData: [GAPData] = [uri]
         let types = expectedData.map { type(of: $0) }
         
@@ -623,6 +624,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
         
         XCTAssertEqual(decoded[0] as! GAPURI, uri)
+        XCTAssertEqual((decoded[0] as! GAPURI).description, uriString)
     }
     
     func testGAPLESupportedFeatures() {
