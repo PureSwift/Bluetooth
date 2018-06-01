@@ -45,7 +45,8 @@ final class GAPTests: XCTestCase {
         ("testGAPTransportDiscoveryData", testGAPTransportDiscoveryData),
         ("testGAPMeshMessage", testGAPMeshMessage),
         ("testGAPMeshBeacon", testGAPMeshBeacon),
-        ("testGAPManufacturerSpecificData", testGAPManufacturerSpecificData)
+        ("testGAPManufacturerSpecificData", testGAPManufacturerSpecificData),
+        ("testGAPPBADV", testGAPPBADV)
     ]
     
     func testDataType() {
@@ -824,5 +825,31 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])),
                        GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])))
+    }
+    
+    func testGAPPBADV() {
+        
+        XCTAssertNil(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x12])))
+        XCTAssertNil(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
+        XCTAssertNil(GAPPBADV(data: Data([])))
+        
+        do {
+            let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])
+            let pbadv = GAPPBADV(data: data)!
+            XCTAssertEqual(MemoryLayout.size(ofValue: pbadv.linkID), 4)
+            XCTAssertEqual(pbadv.data, data)
+            XCTAssertEqual(pbadv.data.count, 6)
+        }
+        
+        do {
+            let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38, 0x4f, 0x30, 0x4f, 0x30, 0x4f])
+            let pbadv = GAPPBADV(data: data)!
+            XCTAssertEqual(pbadv.genericProvisioningPDU.count, 6)
+            XCTAssertEqual(pbadv.data, data)
+            XCTAssertEqual(pbadv.data.count, 11)
+        }
+        
+        XCTAssertEqual(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])),
+                       GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])))
     }
 }
