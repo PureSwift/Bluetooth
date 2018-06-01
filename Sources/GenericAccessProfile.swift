@@ -2016,14 +2016,18 @@ extension GAPAdvertisingInterval: CustomStringConvertible {
     }
 }
 
-/// The LE Bluetooth Device Address data type defines the device address of the local device and the address type on the LE transport.
+/// The LE Bluetooth Device Address data type defines the device address of the local device
+/// and the address type on the LE transport.
 ///
 /// Size: 7 octets.
-/// The format of the 6 least significant Octets is the same as the Device Address defined in [Vol. 6], Part B, Section 1.3.
-/// The least significant bit of the most significant octet defines if the Device Address is a Public Address or a Random Address.
+/// The format of the 6 least significant Octets is the same as the Device Address
+/// defined in [Vol. 6], Part B, Section 1.3.
+/// The least significant bit of the most significant octet defines if the Device Address
+/// is a Public Address or a Random Address.
+/// - Note:
 /// LSB = 1 Then Random Device Address. LSB = 0 Then Public Device Address.
 /// Bits 1 to 7 in the most significant octet are reserved for future use.
-public struct GAPLEBluetoothDeviceAddress: GAPData {
+public struct GAPLEDeviceAddress: GAPData {
     
     public static let length = 7
     
@@ -2053,7 +2057,6 @@ public struct GAPLEBluetoothDeviceAddress: GAPData {
         
         return address.data + Data([type.rawValue])
     }
-    
 }
 
 /// GAP LE Device Address Type.
@@ -2068,54 +2071,29 @@ public enum GAPLEDeviceAddressType: UInt8 {
 
 /// The LE Role data type defines the LE role capabilities of the device.
 /// The LE Role data type size is 1 octet.
-public struct GAPLERole: GAPData {
+public enum GAPLERole: UInt8, GAPData {
     
     public static let length = MemoryLayout<UInt8>.size
     
     public static let dataType: GAPDataType = .lowEnergyRole
     
-    public let role: GAPLERoleType
-    
-    public init(role: GAPLERoleType) {
-        
-        self.role = role
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length, let role = GAPLERoleType(rawValue: data[0])
-            else { return nil }
-        
-        self.init(role: role)
-    }
-    
-    public var data: Data {
-        
-        return Data([role.rawValue])
-    }
-    
-}
-
-/// GAP LE Role Type
-public enum GAPLERoleType: UInt8 {
-    
-    /// Only Peripheral Role supported
+    /// Only Peripheral Role supported.
     case onlyPeripheralRoleSupported = 0x00
     
-    /// Only Central Role supported
+    /// Only Central Role supported.
     case onlyCentralRoleSupported = 0x01
     
-    /// Peripheral and Central Role supported, Peripheral Role preferred for connection establishment
+    /// Peripheral and Central Role supported, Peripheral Role preferred for connection establishment.
     case bothSupportedPeripheralPreferred = 0x02
     
-    /// Peripheral and Central Role supported, Central Role preferred for connection establishment
+    /// Peripheral and Central Role supported, Central Role preferred for connection establishment.
     case bothSupportedCentralPreferred = 0x03
     
-    /// Bluetooth LE Role (e.g. Central or peripheral)
+    /// Bluetooth LE Role (e.g. Central or peripheral).
     public enum Role: UInt8, BitMaskOption { // not part of BT spec
         
-        case central
-        case peripheral
+        case central = 0b01
+        case peripheral = 0b10
         
         public static var all: Set<Role> = [.central, .peripheral]
     }
@@ -2128,7 +2106,7 @@ public enum GAPLERoleType: UInt8 {
         case .onlyCentralRoleSupported:
             return [.central]
         case .bothSupportedPeripheralPreferred,
-            .bothSupportedCentralPreferred:
+             .bothSupportedCentralPreferred:
             return [.central, .peripheral]
         }
     }
@@ -2137,12 +2115,25 @@ public enum GAPLERoleType: UInt8 {
         
         switch self {
         case .onlyPeripheralRoleSupported,
-            .bothSupportedPeripheralPreferred:
+             .bothSupportedPeripheralPreferred:
             return .peripheral
         case .onlyCentralRoleSupported,
              .bothSupportedCentralPreferred:
             return .central
         }
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        self.init(rawValue: data[0])
+    }
+    
+    public var data: Data {
+        
+        return Data([rawValue])
     }
 }
 

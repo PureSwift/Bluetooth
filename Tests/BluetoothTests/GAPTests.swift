@@ -35,7 +35,7 @@ final class GAPTests: XCTestCase {
         ("testGAPRandomTargetAddress", testGAPRandomTargetAddress),
         ("testGAPAppearance", testGAPAppearance),
         ("testGAPAdvertisingInterval", testGAPAdvertisingInterval),
-        ("testGAPLEBluetoothDeviceAddress", testGAPLEBluetoothDeviceAddress),
+        ("testGAPLEDeviceAddress", testGAPLEDeviceAddress),
         ("testGAPLERole", testGAPLERole),
         ("testGAPURI", testGAPURI),
         ("testGAPLESupportedFeatures", testGAPLESupportedFeatures),
@@ -550,80 +550,62 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    func testGAPLEBluetoothDeviceAddress() {
+    func testGAPLEDeviceAddress() {
         
-        XCTAssertNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x30, 0xff])))
-        XCTAssertNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0xf8, 0x30])))
-        XCTAssertNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x02])))
-        XCTAssertNotNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x01])))
-        XCTAssertNotNil(GAPLEBluetoothDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x00])))
+        XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x30, 0xff])))
+        XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0xf8, 0x30])))
+        XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x02])))
+        XCTAssertNotNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x01])))
+        XCTAssertNotNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x00])))
         
         do {
             let data = Data([0x4f, 0x4f, 0xf8, 0x30, 0xf8, 0x30, 0x01])
-            let deviceAddress = GAPLEBluetoothDeviceAddress(data: data)!
+            let deviceAddress = GAPLEDeviceAddress(data: data)!
             
             XCTAssertEqual(deviceAddress.data, data)
-            XCTAssertEqual(deviceAddress.data.count, GAPLEBluetoothDeviceAddress.length)
+            XCTAssertEqual(deviceAddress.data.count, GAPLEDeviceAddress.length)
             XCTAssertEqual(deviceAddress.type, .random)
         }
         
         do {
             let data = Data([0x4f, 0x4f, 0xf8, 0x30, 0xf8, 0x30, 0x00])
-            let deviceAddress = GAPLEBluetoothDeviceAddress(data: data)!
+            let deviceAddress = GAPLEDeviceAddress(data: data)!
             
             XCTAssertEqual(deviceAddress.data, data)
-            XCTAssertEqual(deviceAddress.data.count, GAPLEBluetoothDeviceAddress.length)
+            XCTAssertEqual(deviceAddress.data.count, GAPLEDeviceAddress.length)
             XCTAssertEqual(deviceAddress.type, .public)
         }
         
-        XCTAssertEqual(GAPLEBluetoothDeviceAddress(address: .zero, type: .public).data.count, GAPLEBluetoothDeviceAddress.length)
-        XCTAssertEqual(GAPLEBluetoothDeviceAddress(address: .zero, type: .random).data.count, GAPLEBluetoothDeviceAddress.length)
+        XCTAssertEqual(GAPLEDeviceAddress(address: .zero, type: .public).data.count, GAPLEDeviceAddress.length)
+        XCTAssertEqual(GAPLEDeviceAddress(address: .zero, type: .random).data.count, GAPLEDeviceAddress.length)
     }
     
     func testGAPLERole() {
         
+        XCTAssertNil(GAPLERole(data: Data([])))
         XCTAssertNil(GAPLERole(data: Data([0x4f])))
-        XCTAssertNotNil(GAPLERole(data: Data([GAPLERoleType.onlyPeripheralRoleSupported.rawValue])))
-        XCTAssertNotNil(GAPLERole(data: Data([GAPLERoleType.onlyCentralRoleSupported.rawValue])))
-        XCTAssertNotNil(GAPLERole(data: Data([GAPLERoleType.bothSupportedPeripheralPreferred.rawValue])))
-        XCTAssertNotNil(GAPLERole(data: Data([GAPLERoleType.bothSupportedCentralPreferred.rawValue])))
+        XCTAssertNil(GAPLERole(data: Data([0x04])))
+        XCTAssertNil(GAPLERole(data: Data([0xFF])))
         
-        do {
-            let data = Data([GAPLERoleType.onlyPeripheralRoleSupported.rawValue])
-            let role = GAPLERole(data: data)!
-            
-            XCTAssertEqual(role.data, data)
-            XCTAssertEqual(role.data.count, GAPLERole.length)
-            XCTAssertEqual(role.role, .onlyPeripheralRoleSupported)
-        }
+        XCTAssertEqual(GAPLERole(data: Data([0x00])), .onlyPeripheralRoleSupported)
+        XCTAssertEqual(GAPLERole(data: Data([0x01])), .onlyCentralRoleSupported)
+        XCTAssertEqual(GAPLERole(data: Data([0x02])), .bothSupportedPeripheralPreferred)
+        XCTAssertEqual(GAPLERole(data: Data([0x03])), .bothSupportedCentralPreferred)
         
-        do {
-            let data = Data([GAPLERoleType.onlyCentralRoleSupported.rawValue])
-            let role = GAPLERole(data: data)!
-            
-            XCTAssertEqual(role.data, data)
-            XCTAssertEqual(role.data.count, GAPLERole.length)
-            XCTAssertEqual(role.role, .onlyCentralRoleSupported)
-        }
+        XCTAssertEqual(GAPLERole.onlyPeripheralRoleSupported.data, Data([0x00]))
+        XCTAssertEqual(GAPLERole.onlyCentralRoleSupported.data, Data([0x01]))
+        XCTAssertEqual(GAPLERole.bothSupportedPeripheralPreferred.data, Data([0x02]))
+        XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.data, Data([0x03]))
         
-        do {
-            let data = Data([GAPLERoleType.bothSupportedPeripheralPreferred.rawValue])
-            let role = GAPLERole(data: data)!
-            
-            XCTAssertEqual(role.data, data)
-            XCTAssertEqual(role.data.count, GAPLERole.length)
-            XCTAssertEqual(role.role, .bothSupportedPeripheralPreferred)
-        }
+        XCTAssertEqual(GAPLERole.onlyPeripheralRoleSupported.supported, [.peripheral])
+        XCTAssertEqual(GAPLERole.onlyCentralRoleSupported.supported, [.central])
+        XCTAssertEqual(GAPLERole.bothSupportedPeripheralPreferred.supported, [.central, .peripheral])
+        XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.supported, [.central, .peripheral])
         
-        do {
-            let data = Data([GAPLERoleType.bothSupportedCentralPreferred.rawValue])
-            let role = GAPLERole(data: data)!
-            
-            XCTAssertEqual(role.data, data)
-            XCTAssertEqual(role.data.count, GAPLERole.length)
-            XCTAssertEqual(role.role, .bothSupportedCentralPreferred)
-        }
-        
+        XCTAssertEqual(GAPLERole.onlyPeripheralRoleSupported.preferred, .peripheral)
+        XCTAssertEqual(GAPLERole.onlyCentralRoleSupported.preferred, .central)
+        XCTAssertEqual(GAPLERole.bothSupportedPeripheralPreferred.preferred, .peripheral)
+        XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.preferred, .central)
     }
     
     func testGAPURI() {
