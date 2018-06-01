@@ -2031,9 +2031,9 @@ public struct GAPLEBluetoothDeviceAddress: GAPData {
     
     public let address: Address
     
-    public let type: GAPLEBluetoothDeviceAddressType
+    public let type: GAPLEDeviceAddressType
     
-    public init(address: Address, type: GAPLEBluetoothDeviceAddressType) {
+    public init(address: Address, type: GAPLEDeviceAddressType) {
         
         self.address = address
         self.type = type
@@ -2041,7 +2041,7 @@ public struct GAPLEBluetoothDeviceAddress: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length, let type = GAPLEBluetoothDeviceAddressType(rawValue: data[6])
+        guard data.count == type(of: self).length, let type = GAPLEDeviceAddressType(rawValue: data[6])
             else { return nil }
         
         let address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
@@ -2051,23 +2051,19 @@ public struct GAPLEBluetoothDeviceAddress: GAPData {
     
     public var data: Data {
         
-        return address.data + type.data
+        return address.data + Data([type.rawValue])
     }
     
 }
 
-public enum GAPLEBluetoothDeviceAddressType: UInt8 {
+/// GAP LE Device Address Type.
+public enum GAPLEDeviceAddressType: UInt8 {
     
-    /// LSB = 0 Then Public Device Address
-    case `public` = 0b00
+    /// Public Device Address
+    case `public` = 0x00
     
-    /// LSB = 1 Then Random Device Address
-    case random = 0b01
-    
-    public var data: Data {
-        
-        return Data(bytes: [self.rawValue])
-    }
+    /// Random Device Address
+    case random = 0x01
 }
 
 /// The LE Role data type defines the LE role capabilities of the device.
@@ -2100,6 +2096,7 @@ public struct GAPLERole: GAPData {
     
 }
 
+/// GAP LE Role Type
 public enum GAPLERoleType: UInt8 {
     
     /// Only Peripheral Role supported
@@ -2114,6 +2111,39 @@ public enum GAPLERoleType: UInt8 {
     /// Peripheral and Central Role supported, Central Role preferred for connection establishment
     case bothSupportedCentralPreferred = 0x03
     
+    /// Bluetooth LE Role (e.g. Central or peripheral)
+    public enum Role: UInt8, BitMaskOption { // not part of BT spec
+        
+        case central
+        case peripheral
+        
+        public static var all: Set<Role> = [.central, .peripheral]
+    }
+    
+    public var supported: BitMaskOptionSet<Role> {
+        
+        switch self {
+        case .onlyPeripheralRoleSupported:
+            return [.peripheral]
+        case .onlyCentralRoleSupported:
+            return [.central]
+        case .bothSupportedPeripheralPreferred,
+            .bothSupportedCentralPreferred:
+            return [.central, .peripheral]
+        }
+    }
+    
+    public var preferred: Role {
+        
+        switch self {
+        case .onlyPeripheralRoleSupported,
+            .bothSupportedPeripheralPreferred:
+            return .peripheral
+        case .onlyCentralRoleSupported,
+             .bothSupportedCentralPreferred:
+            return .central
+        }
+    }
 }
 
 /**
