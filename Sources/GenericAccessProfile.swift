@@ -2739,7 +2739,7 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
     • OOB Information: Size is 2 octets
     • URI Hash: Hash of the associated URI advertised with the URI AD Type (optional field). Size is 4 octets
  */
-public struct GAPUnprovisionedDeviceBeacon {
+public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol {
     
     /// Unprovisioned Device beacon type (0x00).
     public static let beaconType: GAPBeaconType = .unprovisionedDevice
@@ -2789,7 +2789,7 @@ public struct GAPUnprovisionedDeviceBeacon {
         self.init(deviceUUID: deviceUUID, oobInformationFlags: oobInformationFlags, uriHash: uriHash)
     }
     
-    var data: Data {
+    public var data: Data {
         
         let length = DataLength(uriHash: uriHash != nil)
         
@@ -2883,11 +2883,11 @@ public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
     The Authentication Value field is computed as defined below:
     Authentication Value = AES-CMACBeaconKey (Flags || Network ID || IV Index) [0–7]
  */
-public struct GAPSecureNetworkBeacon {
+public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol {
     
-    public static let length = 22
+    internal static let length = 22
     
-    public let beaconType: GAPBeaconType
+    public static let beaconType: GAPBeaconType = .secureNetwork
     
     public let flags: BitMaskOptionSet<GAPSecureNetworkFlag>
     
@@ -2897,9 +2897,11 @@ public struct GAPSecureNetworkBeacon {
     
     public let authenticationValue: UInt64
     
-    public init(beaconType: GAPBeaconType, flags: BitMaskOptionSet<GAPSecureNetworkFlag>, networkID: UInt64, ivIndex: UInt32, authenticationValue: UInt64) {
+    public init(flags: BitMaskOptionSet<GAPSecureNetworkFlag>,
+                networkID: UInt64,
+                ivIndex: UInt32,
+                authenticationValue: UInt64) {
         
-        self.beaconType = beaconType
         self.flags = flags
         self.networkID = networkID
         self.ivIndex = ivIndex
@@ -2911,37 +2913,43 @@ public struct GAPSecureNetworkBeacon {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let beaconType = GAPBeaconType(rawValue: data[0])
+        guard let beaconType = GAPBeaconType(rawValue: data[0]),
+            beaconType == type(of: self).beaconType
             else { return nil }
         
         let flags = BitMaskOptionSet<GAPSecureNetworkFlag>(rawValue: data[1])
+        
         let networkID = UInt64(littleEndian: UInt64(bytes: (data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9])))
+        
         let ivIndex = UInt32(littleEndian: UInt32(bytes: (data[10], data[11], data[12], data[13])))
+        
         let authenticationValue = UInt64(littleEndian: UInt64(bytes: (data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21])))
         
-        self.init(beaconType: beaconType, flags: flags, networkID: networkID, ivIndex: ivIndex, authenticationValue: authenticationValue)
+        self.init(flags: flags, networkID: networkID, ivIndex: ivIndex, authenticationValue: authenticationValue)
     }
     
-    var data: Data {
+    public var data: Data {
         
-        var data = Data()
+        var data = Data(capacity: type(of: self).length)
         
-        data.append(beaconType.rawValue)
+        data.append(type(of: self).beaconType.rawValue)
         
         data.append(flags.rawValue)
         
         let networkIDBytes = networkID.littleEndian.bytes
+        
         data += [networkIDBytes.0, networkIDBytes.1, networkIDBytes.2, networkIDBytes.3, networkIDBytes.4, networkIDBytes.5, networkIDBytes.6, networkIDBytes.7]
         
         let ivIndexBytes = ivIndex.littleEndian.bytes
+        
         data += [ivIndexBytes.0, ivIndexBytes.1, ivIndexBytes.2, ivIndexBytes.3]
         
         let authValueBytes = authenticationValue.littleEndian.bytes
+        
         data += [authValueBytes.0, authValueBytes.1, authValueBytes.2, authValueBytes.3, authValueBytes.4, authValueBytes.5, authValueBytes.6, authValueBytes.7]
         
         return data
     }
-    
 }
 
 /**
@@ -3000,6 +3008,16 @@ public enum GAPMeshBeacon: GAPData {
             
         }
     }
+}
+
+/// The protocol for GAP Mesh Beacon types.
+public protocol GAPMeshBeaconProtocol {
+    
+    static var beaconType: GAPBeaconType { get }
+    
+    init?(data: Data)
+    
+    var data: Data { get }
 }
 
 /**
