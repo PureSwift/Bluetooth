@@ -8,43 +8,83 @@
 
 import Foundation
 
-// swiftlint:disable type_name
-/// Describes an iBeacon to be advertised.
-public struct iBeacon {
-// swiftlint:enable type_name
+/**
+ Apple iBeacon
+ 
+ iBeacon is an exciting technology enabling new location awareness possibilities for apps. Leveraging Bluetooth Low Energy (BLE), a device with iBeacon technology can be used to establish a region around an object. This allows an iOS device to determine when it has entered or left the region, along with an estimation of proximity to a beacon . There are both hardware and software components to consider when using iBeacon technology, and this document will give an introduction to both, along with suggested uses and best practices to help ensure a highly effective deployment leading to an outstanding user experience.
+ 
+ Devices with iBeacon technology can be powered using coin cell batteries for a month or longer, or operate for months at a time using larger batteries, or can be powered externally for extended periods of time. iOS devices can also be configured to generate iBeacon advertisements, although this functionality is limited in scope. This would be appropriate for uses such as a Point Of Sale or kiosk application, or for an application that wants to become an iBeacon for a short time while someone is actively using the application.
+ 
+ - SeeAlso: [Getting Started with iBeacon](https://developer.apple.com/ibeacon/Getting-Started-with-iBeacon.pdf).
+ */
+public struct AppleBeacon {
+    
+    /// The company that created this specification.
+    public static let company: CompanyIdentifier = .apple
     
     /// The unique ID of the beacons being targeted.
+    ///
+    /// Application developers should define a UUID specific to their app and deployment use case.
     public var uuid: Foundation.UUID
     
     /// The value identifying a group of beacons.
+    ///
+    /// Further specifies a specific iBeacon and use case.
+    /// For example, this could define a sub-region within a larger region defined by the UUID.
     public var major: UInt16
     
     /// The value identifying a specific beacon within a group.
+    ///
+    /// Allows further subdivision of region or use case, specified by the application developer.
     public var minor: UInt16
     
     /// The received signal strength indicator (RSSI) value (measured in decibels) for the device.
     public var rssi: RSSI
     
-    /// The advertising interval.
-    public var interval: UInt16
-    
     public init(uuid: Foundation.UUID,
                 major: UInt16 = 0,
                 minor: UInt16 = 0,
-                rssi: RSSI,
-                interval: UInt16 = 200) {
+                rssi: RSSI) {
         
         self.uuid = uuid
         self.major = major
         self.minor = minor
         self.rssi = rssi
-        self.interval = interval
     }
 }
 
-public extension iBeacon {
+public extension AppleBeacon {
     
-    var advertisingDataCommand: LowEnergyCommand.SetAdvertisingDataParameter {
+    /// The advertising interval for iBeacon.
+    public struct AdvertisingInterval: RawRepresentable {
+        
+        public let rawValue: UInt16
+        
+        public init?(rawValue: UInt16) {
+            
+            guard rawValue <= AdvertisingInterval.max.rawValue,
+                    rawValue >= AdvertisingInterval.min.rawValue
+                else { return nil }
+            
+            self.rawValue = rawValue
+        }
+        
+        private init(_ unsafe: UInt16) {
+            
+            self.rawValue = unsafe
+        }
+        
+        public static let `default` = AdvertisingInterval(200)
+        
+        public static let max = AdvertisingInterval(.max)
+        
+        public static let min = AdvertisingInterval(100)
+    }
+}
+
+internal extension AppleBeacon {
+    
+    func advertisingDataCommand(flags: GAPFlags = 0b000011010, ) -> LowEnergyCommand.SetAdvertisingDataParameter {
         
         var dataParameter = LowEnergyCommand.SetAdvertisingDataParameter()
         
@@ -100,11 +140,14 @@ public extension iBeacon {
 public extension BluetoothHostControllerInterface {
     
     /// Enable iBeacon functionality.
-    func iBeacon(_ iBeacon: iBeacon,
+    func iBeacon(_ beacon: AppleBeacon,
+                 interval: AppleBeacon.AdvertisingInterval = .default,
                  timeout: HCICommandTimeout = .default) throws {
         
+        typealias AdvertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter
+        
         // set advertising parameters
-        let advertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter(interval: (iBeacon.interval, iBeacon.interval))
+        let advertisingParameters = AdvertisingParameters(interval: (interval.rawValue, interval.rawValue))
                 
         try deviceRequest(advertisingParameters, timeout: timeout)
         
@@ -113,7 +156,7 @@ public extension BluetoothHostControllerInterface {
         catch HCIError.commandDisallowed { /* ignore, means already turned on */ }
         
         // set iBeacon data
-        let advertisingDataCommand = iBeacon.advertisingDataCommand
+        let advertisingDataCommand = beacon.advertisingDataCommand
         
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }
