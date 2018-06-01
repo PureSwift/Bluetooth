@@ -2730,23 +2730,22 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
  */
 public struct GAPUnprovisionedDeviceBeacon {
     
-    public static let minLength = 19
+    /// Unprovisioned Device beacon type (0x00).
+    public static let beaconType: GAPBeaconType = .unprovisionedDevice
     
-    public static let maxLength = 23
-    
-    public let beaconType: GAPBeaconType
-    
+    /// Device UUID uniquely identifying this device.
     public let deviceUUID: UUID
     
+    /// OOB Information
     public let oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>
     
+    /// Hash of the associated URI advertised with the URI AD Type (optional field).
     public let uriHash: UInt32?
     
-    public init(beaconType: GAPBeaconType,
-                deviceUUID: UUID,
-                oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>, uriHash: UInt32? = nil) {
+    public init(deviceUUID: UUID,
+                oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>,
+                uriHash: UInt32? = nil) {
         
-        self.beaconType = beaconType
         self.deviceUUID = deviceUUID
         self.oobInformationFlags = oobInformationFlags
         self.uriHash = uriHash
@@ -2754,29 +2753,38 @@ public struct GAPUnprovisionedDeviceBeacon {
     
     public init?(data: Data) {
         
-        guard data.count == GAPUnprovisionedDeviceBeacon.minLength || data.count == GAPUnprovisionedDeviceBeacon.maxLength
+        guard let length = Length(rawValue: data.count)
             else { return nil }
         
-        guard let beaconType = GAPBeaconType(rawValue: data[0])
+        guard let beaconType = GAPBeaconType(rawValue: data[0]),
+            beaconType == type(of: self).beaconType
             else { return nil }
         
         let deviceUUID = UUID(UInt128(littleEndian: UInt128(bytes: (data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16]))))
-        let oobInformationFlags = BitMaskOptionSet<GAPOOBInformationFlag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[17], data[18]))))
-        var uriHash: UInt32?
         
-        if data.count == type(of: self).maxLength {
+        let oobInformationFlags = BitMaskOptionSet<GAPOOBInformationFlag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[17], data[18]))))
+        
+        let uriHash: UInt32?
+        
+        switch length {
+            
+        case .withoutURI:
+            
+            uriHash = nil
+            
+        case .withURI:
             
             uriHash = UInt32(littleEndian: UInt32(bytes: (data[19], data[20], data[21], data[22])))
         }
         
-        self.init(beaconType: beaconType, deviceUUID: deviceUUID, oobInformationFlags: oobInformationFlags, uriHash: uriHash)
+        self.init(deviceUUID: deviceUUID, oobInformationFlags: oobInformationFlags, uriHash: uriHash)
     }
     
     var data: Data {
         
         var data = Data()
         
-        data.append(beaconType.rawValue)
+        data.append(type(of: self).beaconType.rawValue)
         
         data.append(UInt128(uuid: deviceUUID).littleEndian.data)
         
@@ -2788,6 +2796,12 @@ public struct GAPUnprovisionedDeviceBeacon {
         }
         
         return data
+    }
+    
+    enum Length: Int {
+        
+        case withoutURI = 19
+        case withURI = 23
     }
 }
 
@@ -2931,18 +2945,16 @@ public enum GAPMeshBeacon: GAPData {
         
         switch self {
             
-        case .unprovisionedDevice(let beacon):
+        case let .unprovisionedDevice(beacon):
             
             return Data([GAPBeaconType.unprovisionedDevice.rawValue]) + beacon.data
             
-        case .secureNetwork(let beacon):
+        case let .secureNetwork(beacon):
             
             return Data([GAPBeaconType.secureNetwork.rawValue]) + beacon.data
             
         }
-        
     }
-    
 }
 
 /**
