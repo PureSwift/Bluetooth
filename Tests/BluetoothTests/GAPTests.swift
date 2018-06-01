@@ -46,7 +46,8 @@ final class GAPTests: XCTestCase {
         ("testGAPMeshMessage", testGAPMeshMessage),
         ("testGAPMeshBeacon", testGAPMeshBeacon),
         ("testGAPManufacturerSpecificData", testGAPManufacturerSpecificData),
-        ("testGAPPBADV", testGAPPBADV)
+        ("testGAPPBADV", testGAPPBADV),
+        ("testGAP3DInformation", testGAP3DInformation)
     ]
     
     func testDataType() {
@@ -766,20 +767,20 @@ final class GAPTests: XCTestCase {
         
         // Unprovisioned Device
         do {
-            let data = Data([0x00, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])
+            let data = Data([0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])
             let beacon = GAPMeshBeacon(data: data)!
             XCTAssertEqual(beacon.data, data)
         }
         
         do {
-            let data = Data([0x00, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10])
+            let data = Data([0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10])
             let beacon = GAPMeshBeacon(data: data)!
             XCTAssertEqual(beacon.data, data)
         }
         
         // Secure Network
         do {
-            let data = Data([0x01, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30])
+            let data = Data([0x01, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30])
             let beacon = GAPMeshBeacon(data: data)!
             XCTAssertEqual(beacon.data, data)
         }
@@ -835,5 +836,23 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])),
                        GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])))
+    }
+    
+    func testGAP3DInformation() {
+        
+        XCTAssertNil(GAP3DInformation(data: Data([0x4f])))
+        XCTAssertNil(GAP3DInformation(data: Data([])))
+        
+        do {
+            let data = Data([0b01, 0x2e])
+            let information = GAP3DInformation(data: data)
+            XCTAssertEqual(information!.data, data)
+        }
+        
+        do {
+            let data = Data([0b100, 0x2e])
+            let information = GAP3DInformation(data: data)
+            XCTAssertEqual(information!.data, data)
+        }
     }
 }
