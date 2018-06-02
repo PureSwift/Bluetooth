@@ -145,7 +145,6 @@ public extension Appearance {
         public static let generic: Appearance = 320
     }
     
-    
     public enum RemoteControl {
         
         public static let category: Appearance.Category = 6
@@ -205,4 +204,3 @@ public extension Appearance {
 }
 
 // TODO: Complete list of definitions
-

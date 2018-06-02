@@ -129,15 +129,11 @@ extension BluetoothUUID: RawRepresentable {
             
         case let .bit16(value):
             
-            let bytes = value.bigEndian.bytes
-            
-            return bytes.0.toHexadecimal() + bytes.1.toHexadecimal()
+            return value.toHexadecimal()
             
         case let .bit32(value):
             
-            let bytes = value.bigEndian.bytes
-            
-            return bytes.0.toHexadecimal() + bytes.1.toHexadecimal() + bytes.2.toHexadecimal() + bytes.3.toHexadecimal()
+            return value.toHexadecimal()
             
         case let .bit128(value):
             
