@@ -1529,9 +1529,9 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.sony.description, "Sony Corporation")
 
         /// ASSA ABLOY
-        XCTAssertEqual(CompanyIdentifier.assaloy.rawValue, 302)
-        XCTAssertEqual(CompanyIdentifier.assaloy.name, "ASSA ABLOY")
-        XCTAssertEqual(CompanyIdentifier.assaloy.description, "ASSA ABLOY")
+        XCTAssertEqual(CompanyIdentifier.assaAbloy.rawValue, 302)
+        XCTAssertEqual(CompanyIdentifier.assaAbloy.name, "ASSA ABLOY")
+        XCTAssertEqual(CompanyIdentifier.assaAbloy.description, "ASSA ABLOY")
 
         /// Clarion Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.clarion.rawValue, 303)

@@ -391,6 +391,11 @@ func uppercaseFirstLetter(_ string: String) -> String {
 
 func sanitize(name: String) -> String {
     
+    let blackList = ["ASSA ABLOY"]
+    
+    guard blackList.contains(name) == false
+        else { return name }
+    
     var name = name
         .replacingOccurrences(of: "LLC \"", with: "")
         .replacingOccurrences(of: "\"", with: "")
@@ -399,7 +404,6 @@ func sanitize(name: String) -> String {
         .replacingOccurrences(of: "WHERE, Inc.", with: "whereInc")
         .replacingOccurrences(of: " A/S", with: "")
         .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
-        .replacingOccurrences(of: "ASSA ABLOY", with: "assaAbloy")
         .replacingOccurrences(of: ", Ltd. (QTIL)", with: "")
         .replacingOccurrences(of: "The ", with: "")
         .replacingOccurrences(of: "A/V", with: "av")
