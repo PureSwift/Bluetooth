@@ -453,7 +453,7 @@ public extension CompanyIdentifier {
     }
 
     /// Nordic Semiconductor ASA (`89`)
-    static var nordicSemiconductora: CompanyIdentifier {
+    static var nordicSemiconductor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 89)
     }
 

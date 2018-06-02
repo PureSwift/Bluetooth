@@ -3531,20 +3531,20 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.dottedLabs, .bit32(0xFE57))
 
         /// Nordic Semiconductor ASA
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora.rawValue, "FE58")
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora, .bit16(0xFE58))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora, .bit16(65112))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora.name, "Nordic Semiconductor ASA")
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora, .bit32(65112))
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora, .bit32(0xFE58))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor.rawValue, "FE58")
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor, .bit16(0xFE58))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor, .bit16(65112))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor.name, "Nordic Semiconductor ASA")
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor, .bit32(65112))
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor, .bit32(0xFE58))
 
         /// Nordic Semiconductor ASA
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora2.rawValue, "FE59")
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora2, .bit16(0xFE59))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora2, .bit16(65113))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora2.name, "Nordic Semiconductor ASA")
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora2, .bit32(65113))
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora2, .bit32(0xFE59))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor2.rawValue, "FE59")
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor2, .bit16(0xFE59))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor2, .bit16(65113))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor2.name, "Nordic Semiconductor ASA")
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor2, .bit32(65113))
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor2, .bit32(0xFE59))
 
         /// Chronologics Corporation
         XCTAssertEqual(BluetoothUUID.chronologics.rawValue, "FE5A")
@@ -4651,20 +4651,20 @@ final class DefinedUUIDTests: XCTestCase {
         XCTAssertNotEqual(BluetoothUUID.anki2, .bit32(0xFEE3))
 
         /// Nordic Semiconductor ASA
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora3.rawValue, "FEE4")
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora3, .bit16(0xFEE4))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora3, .bit16(65252))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora3.name, "Nordic Semiconductor ASA")
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora3, .bit32(65252))
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora3, .bit32(0xFEE4))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor3.rawValue, "FEE4")
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor3, .bit16(0xFEE4))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor3, .bit16(65252))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor3.name, "Nordic Semiconductor ASA")
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor3, .bit32(65252))
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor3, .bit32(0xFEE4))
 
         /// Nordic Semiconductor ASA
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora4.rawValue, "FEE5")
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora4, .bit16(0xFEE5))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora4, .bit16(65253))
-        XCTAssertEqual(BluetoothUUID.nordicSemiconductora4.name, "Nordic Semiconductor ASA")
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora4, .bit32(65253))
-        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductora4, .bit32(0xFEE5))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor4.rawValue, "FEE5")
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor4, .bit16(0xFEE5))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor4, .bit16(65253))
+        XCTAssertEqual(BluetoothUUID.nordicSemiconductor4.name, "Nordic Semiconductor ASA")
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor4, .bit32(65253))
+        XCTAssertNotEqual(BluetoothUUID.nordicSemiconductor4, .bit32(0xFEE5))
 
         /// Silvair, Inc.
         XCTAssertEqual(BluetoothUUID.silvair.rawValue, "FEE6")
