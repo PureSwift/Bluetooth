@@ -1776,9 +1776,9 @@ public struct GAPAppearance: GAPData {
     
     public static let dataType: GAPDataType = .appearance
     
-    public let appearance: UInt16
+    public let appearance: Appearance
     
-    public init(appearance: UInt16) {
+    public init(appearance: Appearance) {
         
         self.appearance = appearance
     }
@@ -1788,15 +1788,16 @@ public struct GAPAppearance: GAPData {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let appearance = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        let appearance = Appearance(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
         self.init(appearance: appearance)
     }
     
     public var data: Data {
         
-        let value = appearance.littleEndian
-        return Data(bytes: [value.bytes.0, value.bytes.1])
+        let bytes = appearance.rawValue.littleEndian.bytes
+        
+        return Data(bytes: [bytes.0, bytes.1])
     }
 }
 
@@ -1805,14 +1806,6 @@ extension GAPAppearance: Equatable {
     public static func == (lhs: GAPAppearance, rhs: GAPAppearance) -> Bool {
         
         return lhs.appearance == rhs.appearance
-    }
-}
-
-extension GAPAppearance: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return appearance.description
     }
 }
 
@@ -2080,6 +2073,11 @@ public enum GAPLERole: UInt8, GAPData {
     
     /// Bluetooth LE Role (e.g. Central or peripheral).
     public enum Role: UInt8, BitMaskOption { // not part of BT spec
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt8
+        #endif
         
         case central = 0b01
         case peripheral = 0b10
