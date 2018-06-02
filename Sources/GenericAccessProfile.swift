@@ -472,6 +472,7 @@ extension GAPCompleteListOf16BitServiceClassUUIDs: CustomStringConvertible {
     }
 }
 
+/// Encodes / Decodes an array of 16 bit values. 
 internal struct Bit16UUIDList {
     
     public var uuids: [UInt16]
@@ -608,6 +609,7 @@ extension GAPCompleteListOf32BitServiceClassUUIDs: CustomStringConvertible {
     }
 }
 
+/// Encodes / Decodes an array of 32 bit values.
 internal struct Bit32UUIDList {
     
     public var uuids: [UInt32]
@@ -744,6 +746,7 @@ extension GAPCompleteListOf128BitServiceClassUUIDs: CustomStringConvertible {
     }
 }
 
+/// Encodes / Decodes an array of 128 bit values.
 internal struct Bit128UUIDList {
     
     public var uuids: [UInt128]
