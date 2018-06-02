@@ -2203,7 +2203,7 @@ extension GAPURI: CustomStringConvertible {
     
     public var description: String {
         
-        return uri.description
+        return uri.absoluteString
     }
 }
 
