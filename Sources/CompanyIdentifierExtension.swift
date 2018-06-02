@@ -1518,7 +1518,7 @@ public extension CompanyIdentifier {
     }
 
     /// ASSA ABLOY (`302`)
-    static var assaloy: CompanyIdentifier {
+    static var assaAbloy: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 302)
     }
 
