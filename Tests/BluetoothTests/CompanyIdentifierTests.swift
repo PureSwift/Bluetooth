@@ -464,9 +464,9 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.vizio.description, "Vizio, Inc.")
 
         /// Nordic Semiconductor ASA
-        XCTAssertEqual(CompanyIdentifier.nordicSemiconductora.rawValue, 89)
-        XCTAssertEqual(CompanyIdentifier.nordicSemiconductora.name, "Nordic Semiconductor ASA")
-        XCTAssertEqual(CompanyIdentifier.nordicSemiconductora.description, "Nordic Semiconductor ASA")
+        XCTAssertEqual(CompanyIdentifier.nordicSemiconductor.rawValue, 89)
+        XCTAssertEqual(CompanyIdentifier.nordicSemiconductor.name, "Nordic Semiconductor ASA")
+        XCTAssertEqual(CompanyIdentifier.nordicSemiconductor.description, "Nordic Semiconductor ASA")
 
         /// EM Microelectronic-Marin SA
         XCTAssertEqual(CompanyIdentifier.emMicroelectronicMarin.rawValue, 90)

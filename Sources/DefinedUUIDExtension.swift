@@ -2203,12 +2203,12 @@ public extension BluetoothUUID {
     }
 
     /// Nordic Semiconductor ASA (`0xFE58`)
-    static var nordicSemiconductora: BluetoothUUID {
+    static var nordicSemiconductor: BluetoothUUID {
         return .bit16(0xFE58)
     }
 
     /// Nordic Semiconductor ASA (`0xFE59`)
-    static var nordicSemiconductora2: BluetoothUUID {
+    static var nordicSemiconductor2: BluetoothUUID {
         return .bit16(0xFE59)
     }
 
@@ -2903,12 +2903,12 @@ public extension BluetoothUUID {
     }
 
     /// Nordic Semiconductor ASA (`0xFEE4`)
-    static var nordicSemiconductora3: BluetoothUUID {
+    static var nordicSemiconductor3: BluetoothUUID {
         return .bit16(0xFEE4)
     }
 
     /// Nordic Semiconductor ASA (`0xFEE5`)
-    static var nordicSemiconductora4: BluetoothUUID {
+    static var nordicSemiconductor4: BluetoothUUID {
         return .bit16(0xFEE5)
     }
 
