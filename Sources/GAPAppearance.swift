@@ -6,10 +6,15 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+public extension GAP {
+    
+    public typealias Appearance = GAPAppearance
+}
+
 /// GAP Appearance
 ///
 /// - SeeAlso: [org.bluetooth.characteristic.gap.appearance.xml](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.gap.appearance.xml)
-public struct Appearance: RawRepresentable {
+public struct GAPAppearance: RawRepresentable {
     
     public var rawValue: UInt16
     
@@ -26,7 +31,7 @@ public struct Appearance: RawRepresentable {
     }*/
 }
 
-extension Appearance: ExpressibleByIntegerLiteral {
+extension GAPAppearance: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
         
@@ -34,15 +39,15 @@ extension Appearance: ExpressibleByIntegerLiteral {
     }
 }
 
-extension Appearance: Equatable {
+extension GAPAppearance: Equatable {
     
-    public static func == (lhs: Appearance, rhs: Appearance) -> Bool {
+    public static func == (lhs: GAPAppearance, rhs: GAPAppearance) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension Appearance: Hashable {
+extension GAPAppearance: Hashable {
     
     public var hashValue: Int {
         
@@ -50,7 +55,7 @@ extension Appearance: Hashable {
     }
 }
 
-public extension Appearance {
+public extension GAPAppearance {
     
     public struct Category: RawRepresentable {
         
@@ -63,7 +68,7 @@ public extension Appearance {
     }
 }
 
-extension Appearance.Category: ExpressibleByIntegerLiteral {
+extension GAPAppearance.Category: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
         
@@ -71,7 +76,7 @@ extension Appearance.Category: ExpressibleByIntegerLiteral {
     }
 }
 
-public extension Appearance {
+public extension GAPAppearance {
     
     public struct Subcategory: RawRepresentable {
         
@@ -84,7 +89,7 @@ public extension Appearance {
     }
 }
 
-extension Appearance.Subcategory: ExpressibleByIntegerLiteral {
+extension GAPAppearance.Subcategory: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
         
@@ -94,7 +99,7 @@ extension Appearance.Subcategory: ExpressibleByIntegerLiteral {
 
 // MARK: - Values
 
-public extension Appearance {
+public extension GAPAppearance {
     
     public enum Unknown {
         
