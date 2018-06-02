@@ -421,6 +421,7 @@ final class GAPTests: XCTestCase {
             let data = Data([0x4f, 0x30])
             let serviceData = GAPServiceData16BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 2)
+            XCTAssertEqual(serviceData.serviceData.count, 0)
             XCTAssertEqual(serviceData.data, data)
             XCTAssertEqual(serviceData.data.count, 2)
         }
@@ -446,6 +447,7 @@ final class GAPTests: XCTestCase {
             let data = Data([0x4f, 0x30, 0x4f, 0x30])
             let serviceData = GAPServiceData32BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
+            XCTAssertEqual(serviceData.serviceData.count, 0)
             XCTAssertEqual(serviceData.data, data)
             XCTAssertEqual(serviceData.data.count, 4)
         }
@@ -471,6 +473,7 @@ final class GAPTests: XCTestCase {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56])
             let serviceData = GAPServiceData128BitUUID(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
+            XCTAssertEqual(serviceData.serviceData.count, 0)
             XCTAssertEqual(serviceData.data, data)
             XCTAssertEqual(serviceData.data.count, 16)
         }

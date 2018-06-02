@@ -916,11 +916,11 @@ extension GAPCompleteLocalName: ExpressibleByStringLiteral {
 /// Note: When the TX Power Level data type is not present, the TX power level of the packet is unknown.
 public struct GAPTxPowerLevel: GAPData {
     
-    public static let length = MemoryLayout<UInt8>.size
+    internal static let length = MemoryLayout<UInt8>.size
     
-    public static let min: GAPTxPowerLevel = -127
+    internal static let min: GAPTxPowerLevel = -127
     
-    public static let max: GAPTxPowerLevel = 127
+    internal static let max: GAPTxPowerLevel = 127
     
     public static let dataType: GAPDataType = .txPowerLevel
     
@@ -990,7 +990,7 @@ public struct GAPClassOfDevice: GAPData {
     
     public typealias Identifier = (UInt8, UInt8, UInt8)
     
-    public static let length = MemoryLayout<Identifier>.size
+    internal static let length = MemoryLayout<Identifier>.size
     
     public static let dataType: GAPDataType = .classOfDevice
     
@@ -1038,7 +1038,7 @@ extension GAPClassOfDevice: CustomStringConvertible {
 /// Format defined in [Vol. 2], Part H Section 7.2.2
 public struct GAPSimplePairingHashC: GAPData {
     
-    public static let length = MemoryLayout<UUID>.size
+    internal static let length = MemoryLayout<UUID>.size
     
     public static let dataType: GAPDataType = .simplePairingHashC
     
@@ -1086,7 +1086,7 @@ extension GAPSimplePairingHashC: CustomStringConvertible {
 /// Format defined in [Vol. 2], Part H Section 7.2.2
 public struct GAPSimplePairingRandomizerR: GAPData {
     
-    public static let length = MemoryLayout<UUID>.size
+    internal static let length = MemoryLayout<UUID>.size
     
     public static let dataType: GAPDataType = .simplePairingRandomizerR
     
@@ -1134,7 +1134,7 @@ extension GAPSimplePairingRandomizerR: CustomStringConvertible {
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
 public struct GAPLESecureConnectionsConfirmation: GAPData {
     
-    public static let length = MemoryLayout<UInt16>.size
+    internal static let length = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .lowEnergySecureConnectionsConfirmation
     
@@ -1183,7 +1183,7 @@ extension GAPLESecureConnectionsConfirmation: CustomStringConvertible {
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
 public struct GAPLESecureConnectionsRandom: GAPData {
     
-    public static let length = MemoryLayout<UInt16>.size
+    internal static let length = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .lowEnergySecureConnectionsRandom
     
@@ -1232,7 +1232,7 @@ extension GAPLESecureConnectionsRandom: CustomStringConvertible {
 /// Value as used in pairing over LE Physical channel. Format defined in [Vol. 3], Part H Section 2.3
 public struct GAPSecurityManagerTKValue: GAPData {
     
-    public static let length = MemoryLayout<UUID>.size
+    internal static let length = MemoryLayout<UUID>.size
     
     public static let dataType: GAPDataType = .securityManagerTKValue
     
@@ -1319,7 +1319,7 @@ public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
 
 public struct GAPSecurityManagerOOBFlags: GAPData {
     
-    public static let length = MemoryLayout<UInt8>.size
+    internal static let length = MemoryLayout<UInt8>.size
     
     public static let dataType: GAPDataType = .securityManagerOutOfBandFlags
     
@@ -1391,7 +1391,7 @@ extension GAPSecurityManagerOOBFlags: ExpressibleByIntegerLiteral {
 
 public struct GAPSlaveConnectionIntervalRange: GAPData {
     
-    public static let length = 4
+    internal static let length = 4
     
     public static let min: UInt16 = 0x0006
     
@@ -1608,14 +1608,14 @@ extension GAPListOf128BitServiceSolicitationUUIDs: CustomStringConvertible {
 /// The first 2 octets contain the 16 bit Service UUID followed by additional service data
 public struct GAPServiceData16BitUUID: GAPData {
     
-    public static let uuidLength = MemoryLayout<UInt16>.size
+    internal static let uuidLength = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .serviceData16BitUUID
     
     public let uuid: UInt16
-    public private(set) var serviceData: [UInt8] = []
+    public private(set) var serviceData: Data
     
-    public init(uuid: UInt16, serviceData: [UInt8] = []) {
+    public init(uuid: UInt16, serviceData: Data = Data()) {
         
         self.uuid = uuid
         self.serviceData = serviceData
@@ -1627,13 +1627,7 @@ public struct GAPServiceData16BitUUID: GAPData {
             else { return nil }
         
         let uuid = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        var serviceData = [UInt8]()
-        
-        data.enumerated().forEach { (index, element) in
-            if index >= GAPServiceData16BitUUID.uuidLength {
-                serviceData.append(element)
-            }
-        }
+        let serviceData = data.subdata(in: (type(of: self).uuidLength..<data.count))
         
         self.init(uuid: uuid, serviceData: serviceData)
     }
@@ -1669,14 +1663,14 @@ extension GAPServiceData16BitUUID: CustomStringConvertible {
 /// The first 4 octets contain the 32 bit Service UUID followed by additional service data
 public struct GAPServiceData32BitUUID: GAPData {
     
-    public static let uuidLength = MemoryLayout<UInt32>.size
+    internal static let uuidLength = MemoryLayout<UInt32>.size
     
     public static let dataType: GAPDataType = .serviceData32BitUUID
     
     public let uuid: UInt32
-    public private(set) var serviceData: [UInt8] = []
+    public private(set) var serviceData: Data
     
-    public init(uuid: UInt32, serviceData: [UInt8] = []) {
+    public init(uuid: UInt32, serviceData: Data = Data()) {
         
         self.uuid = uuid
         self.serviceData = serviceData
@@ -1688,13 +1682,7 @@ public struct GAPServiceData32BitUUID: GAPData {
             else { return nil }
         
         let uuid = UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))
-        var serviceData = [UInt8]()
-        
-        data.enumerated().forEach { (index, element) in
-            if index >= GAPServiceData32BitUUID.uuidLength {
-                serviceData.append(element)
-            }
-        }
+        let serviceData = data.subdata(in: (type(of: self).uuidLength..<data.count))
         
         self.init(uuid: uuid, serviceData: serviceData)
     }
@@ -1730,14 +1718,14 @@ extension GAPServiceData32BitUUID: CustomStringConvertible {
 /// The first 16 octets contain the 128 bit Service UUID followed by additional service data
 public struct GAPServiceData128BitUUID: GAPData {
     
-    public static let uuidLength = MemoryLayout<UInt128>.size
+    internal static let uuidLength = MemoryLayout<UInt128>.size
     
     public static let dataType: GAPDataType = .serviceData128BitUUID
     
     public let uuid: UUID
-    public private(set) var serviceData: [UInt8] = []
+    public private(set) var serviceData: Data
     
-    public init(uuid: UUID, serviceData: [UInt8] = []) {
+    public init(uuid: UUID, serviceData: Data = Data()) {
         
         self.uuid = uuid
         self.serviceData = serviceData
@@ -1749,13 +1737,7 @@ public struct GAPServiceData128BitUUID: GAPData {
             else { return nil }
         
         let uuid = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])))
-        var serviceData = [UInt8]()
-        
-        data.enumerated().forEach { (index, element) in
-            if index >= GAPServiceData128BitUUID.uuidLength {
-                serviceData.append(element)
-            }
-        }
+        let serviceData = data.subdata(in: (type(of: self).uuidLength..<data.count))
         
         self.init(uuid: UUID(uuid), serviceData: serviceData)
     }
@@ -1787,7 +1769,7 @@ extension GAPServiceData128BitUUID: CustomStringConvertible {
 /// This value shall be the same as the Appearance characteristic, as defined in Vol. 3, Part C, Section 12.2.
 public struct GAPAppearance: GAPData {
     
-    public static let length = MemoryLayout<UInt16>.size
+    internal static let length = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .appearance
     
@@ -1842,7 +1824,7 @@ extension GAPAppearance: CustomStringConvertible {
 /// company_id field is contained in the 24 most significant bits
 public struct GAPPublicTargetAddress: GAPData {
     
-    public static let addressLength = MemoryLayout<UInt8>.size * 6
+    internal static let addressLength = MemoryLayout<UInt8>.size * 6
     
     public static let dataType: GAPDataType = .publicTargetAddress
     
@@ -1860,6 +1842,7 @@ public struct GAPPublicTargetAddress: GAPData {
         
         var index = 0
         var addresses = [Address]()
+        addresses.reserveCapacity(data.count / type(of: self).addressLength )
         
         while index < data.count {
             
@@ -1905,7 +1888,7 @@ public struct GAPRandomTargetAddress: GAPData {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)
     
-    public static let addressLength = MemoryLayout<UInt8>.size * 6
+    internal static let addressLength = MemoryLayout<UInt8>.size * 6
     
     public static let dataType: GAPDataType = .randomTargetAddress
     
@@ -1923,6 +1906,7 @@ public struct GAPRandomTargetAddress: GAPData {
         
         var index = 0
         var addresses = [Address]()
+        addresses.reserveCapacity(data.count / type(of: self).addressLength )
         
         while index < data.count {
             
@@ -1965,7 +1949,7 @@ extension GAPRandomTargetAddress: CustomStringConvertible {
 /// Units: 0.625 ms
 public struct GAPAdvertisingInterval: GAPData {
     
-    public static let length = MemoryLayout<UInt16>.size
+    internal static let length = MemoryLayout<UInt16>.size
     
     public static let units: Double = 0.0625
     
@@ -2030,7 +2014,7 @@ extension GAPAdvertisingInterval: CustomStringConvertible {
 /// Bits 1 to 7 in the most significant octet are reserved for future use.
 public struct GAPLEDeviceAddress: GAPData {
     
-    public static let length = 7
+    internal static let length = 7
     
     public static let dataType: GAPDataType = .lowEnergyDeviceAddress
     
@@ -2075,7 +2059,7 @@ public enum GAPLEDeviceAddressType: UInt8 {
 /// The LE Role data type size is 1 octet.
 public enum GAPLERole: UInt8, GAPData {
     
-    public static let length = MemoryLayout<UInt8>.size
+    internal static let length = MemoryLayout<UInt8>.size
     
     public static let dataType: GAPDataType = .lowEnergyRole
     
@@ -2275,7 +2259,7 @@ extension GAPLESupportedFeatures: CustomStringConvertible {
 /// The Channel Map Update Indication data type shall only be present in the extended header of the packet containing the AUX_SYNC_IND PDU.
 public struct GAPChannelMapUpdateIndication: GAPData {
     
-    public static let length = 7
+    internal static let length = 7
     
     public static let dataType: GAPDataType = .channelMapUpdateIndication
     
@@ -2324,7 +2308,7 @@ extension GAPChannelMapUpdateIndication: CustomStringConvertible {
 /// The location information is mainly exposed via advertising and the GATT- based service is primarily intended for configuration.
 public struct GAPIndoorPositioning: GAPData {
     
-    public static let length = 18
+    internal static let length = 18
     
     public static let dataType: GAPDataType = .indoorPositioning
     
@@ -2473,7 +2457,7 @@ public enum GAPIndoorPositioningFlag: UInt8, BitMaskOption {
 /// For example, if the blocks represent more than one supported service, the order represents preferred support (e.g., perhaps a printer is capable of printing using a faster technology from one organization, but also a slower technology from another organization). If the blocks represent more than one required service, the order represents preferred service order (e.g., perhaps a device requires an immediate service, but also another service that is of lower priority).
 public struct GAPTransportDiscoveryBlock {
     
-    public static let minLength = 2
+    internal static let minLength = 2
     
     public let organizationID: UInt8
     
@@ -2518,7 +2502,7 @@ extension GAPTransportDiscoveryBlock: CustomStringConvertible {
 /// Note 1: Typically 0-26 (inclusive of the Flags AD Type), however larger values may be supported in future updates of the Core Specification.
 public struct GAPTransportDiscoveryData: GAPData {
     
-    public static let minBlocks = 1
+    internal static let minBlocks = 1
     
     public static let dataType: GAPDataType = .transportDiscoveryData
     
@@ -2631,7 +2615,7 @@ public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
 /// it is recommended to randomize the gap between consecutive packets within an Advertising Event.
 public struct GAPMeshMessage: GAPData {
     
-    public static let length = MemoryLayout<UInt16>.size
+    internal static let length = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .meshMessage
     
@@ -3030,7 +3014,7 @@ public protocol GAPMeshBeaconProtocol {
  */
 public struct GAPManufacturerSpecificData: GAPData {
     
-    public static let minimumLength = MemoryLayout<UInt16>.size
+    internal static let minimumLength = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .manufacturerSpecificData
     
@@ -3113,13 +3097,13 @@ extension GAPManufacturerSpecificData: CustomStringConvertible {
  */
 public struct GAPPBADV: GAPData {
     
-    public static let provisioningMaxLength = 24
+    internal static let provisioningMaxLength = 24
     
-    public static let provisioningMinLength = 1
+    internal static let provisioningMinLength = 1
     
-    public static let maxLength = MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMaxLength
+    internal static let maxLength = MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMaxLength
     
-    public static let minLength = MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMinLength
+    internal static let minLength = MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMinLength
     
     public static var dataType: GAPDataType = .pbAdv
     
@@ -3213,7 +3197,7 @@ extension GAPPBADV: CustomStringConvertible {
  */
 public struct GAP3DInformation: GAPData {
     
-    public static let minLength = 2
+    internal static let minLength = 2
     
     public static var dataType: GAPDataType = .informationData3D
     
