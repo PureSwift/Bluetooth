@@ -223,9 +223,22 @@ public extension LowEnergyCommand {
         public static let length = 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1
         
         /// Interval for non-directed advertising.
+        ///
+        /// - Note: The `Advertising_Interval_Min` and `Advertising_Interval_Max` should not be the same value
+        /// to enable the Controller to determine the best advertising interval given other activities.
+        ///
+        /// For directed advertising, when Advertising_Type is `0x01` (ADV_DIRECT_IND),
+        /// the `Advertising_Interval_Min` and `Advertising_Interval_Max` parameters are not used and shall be ignored.
+        ///
+        /// The `Advertising_Interval_Min` and `Advertising_Interval_Max` shall not be set to less than
+        /// `0x00A0` (100 ms) if the Advertising_Type is set to `0x02` (ADV_SCAN_IND) or `0x03` (ADV_NONCONN_IND).
         public var interval: (minimum: UInt16, maximum: UInt16)
         
+        /// Ssed to determine the packet type that is used for advertising when advertising is enabled.
         public var advertisingType: AdvertisingType
+        
+        /// Determines if the advertising packets are identified with the Public Device Address of the device, or a Random Device Address as written by the LE_Set_Random_Address command.
+        public var ownAddressType: LowEnergyAddressType
         
         public var addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType)
         
@@ -236,12 +249,14 @@ public extension LowEnergyCommand {
         
         public var filterPolicy: FilterPolicy
         
-        public init(interval: (minimum: UInt16, maximum: UInt16) = (0x0800, 0x0800),
+        public init(interval: (min: UInt16, max: UInt16) = (0x0800, 0x0800),
                     advertisingType: AdvertisingType = AdvertisingType(),
                     addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.public, .public),
                     directAddress: Address = .zero,
                     channelMap: ChannelMap = ChannelMap(),
                     filterPolicy: FilterPolicy = FilterPolicy()) {
+            
+            assert(interval.min <= interval.min, "The Advertising_Interval_Min shall be less than or equal to the Advertising_Interval_Max.")
             
             self.interval = interval
             self.advertisingType = advertisingType
