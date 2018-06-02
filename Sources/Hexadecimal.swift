@@ -25,10 +25,15 @@ internal extension UInt16 {
     
     func toHexadecimal() -> String {
         
-        let bytes = self.bigEndian.bytes
+        var string = String(self, radix: 16)
         
-        return bytes.0.toHexadecimal()
-            + bytes.1.toHexadecimal()
+        while string.utf8.count < (MemoryLayout<UInt16>.size * 2) {
+            
+            // prepend zeroes
+            string = "0" + string
+        }
+        
+        return string.uppercased()
     }
 }
 
@@ -36,12 +41,15 @@ internal extension UInt32 {
     
     func toHexadecimal() -> String {
         
-        let bytes = self.bigEndian.bytes
+        var string = String(self, radix: 16)
         
-        return bytes.0.toHexadecimal()
-            + bytes.1.toHexadecimal()
-            + bytes.2.toHexadecimal()
-            + bytes.3.toHexadecimal()
+        while string.utf8.count < (MemoryLayout<UInt32>.size * 2) {
+            
+            // prepend zeroes
+            string = "0" + string
+        }
+        
+        return string.uppercased()
     }
 }
 
@@ -49,15 +57,14 @@ internal extension UInt64 {
     
     func toHexadecimal() -> String {
         
-        let bytes = self.bigEndian.bytes
+        var string = String(self, radix: 16)
         
-        return bytes.0.toHexadecimal()
-            + bytes.1.toHexadecimal()
-            + bytes.2.toHexadecimal()
-            + bytes.3.toHexadecimal()
-            + bytes.4.toHexadecimal()
-            + bytes.5.toHexadecimal()
-            + bytes.6.toHexadecimal()
-            + bytes.7.toHexadecimal()
+        while string.utf8.count < (MemoryLayout<UInt64>.size * 2) {
+            
+            // prepend zeroes
+            string = "0" + string
+        }
+        
+        return string.uppercased()
     }
 }
