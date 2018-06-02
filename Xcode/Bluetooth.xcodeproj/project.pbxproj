@@ -50,6 +50,7 @@
 		6E1F936D20C2183E0030367F /* GAPAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F936B20C2183E0030367F /* GAPAppearance.swift */; };
 		6E1F936E20C2183E0030367F /* GAPAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F936B20C2183E0030367F /* GAPAppearance.swift */; };
 		6E1F936F20C2183E0030367F /* GAPAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F936B20C2183E0030367F /* GAPAppearance.swift */; };
+		6E1F937520C22D7E0030367F /* DarwinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F937020C228B70030367F /* DarwinTests.swift */; };
 		6E2809891FCF499100B2D68E /* HCIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2809881FCF499100B2D68E /* HCIVersion.swift */; };
 		6E30AE2E20BEFEEC0072D101 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30AE2D20BEFEEC0072D101 /* Data.swift */; };
 		6E30AE2F20BEFEEC0072D101 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30AE2D20BEFEEC0072D101 /* Data.swift */; };
@@ -397,6 +398,7 @@
 		6E1A0C4C208006370095C29E /* DefinedUUIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefinedUUIDTests.swift; sourceTree = "<group>"; };
 		6E1F936620C213B60030367F /* ClassOfDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassOfDevice.swift; sourceTree = "<group>"; };
 		6E1F936B20C2183E0030367F /* GAPAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPAppearance.swift; sourceTree = "<group>"; };
+		6E1F937020C228B70030367F /* DarwinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinTests.swift; sourceTree = "<group>"; };
 		6E2809881FCF499100B2D68E /* HCIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIVersion.swift; sourceTree = "<group>"; };
 		6E30AE2D20BEFEEC0072D101 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		6E30AE3220BF182A0072D101 /* GATTDescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTDescriptorTests.swift; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 				6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */,
 				6E65DF942075D568005BD2A0 /* XCTest.swift */,
 				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
+				6E1F937020C228B70030367F /* DarwinTests.swift */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
@@ -1268,6 +1271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E1F937520C22D7E0030367F /* DarwinTests.swift in Sources */,
 				6E65DF83207552E4005BD2A0 /* UInt128Tests.swift in Sources */,
 				6E65DF912075CD9F005BD2A0 /* UUIDTests.swift in Sources */,
 				6E740C6720659CE8006589F6 /* HCITests.swift in Sources */,
