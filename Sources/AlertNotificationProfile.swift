@@ -18,13 +18,41 @@ public struct GATTAlertNotification {
 
 }
 
-public struct SupportedNewAlertCategoryCharacteristic {
+public struct GATTSupportedNewAlertCategoryCharacteristic: GATTProfileCharacteristic {
     
+    public static var UUID: BluetoothUUID { return .supportedNewAlertCategory }
     
+    public init?(data: Data) {
+        
+        
+    }
     
 }
 
-public enum AlertCategoryIdBitMask0: UInt8, BitMaskOption {
+public struct GATTAlertCategoryIdBitMaskCharacteristic: GATTProfileCharacteristic {
+    
+    internal static let length = 2
+    
+    public static var UUID: BluetoothUUID { return .alertCategoryIdBitMask }
+    
+    public var bitMask0: BitMaskOptionSet<GATTAlertCategoryIdBitMask0>
+    
+    public var bitMask1: BitMaskOptionSet<GATTAlertCategoryIdBitMask1>
+    
+    public init(bitMask0: GATTAlertCategoryIdBitMask0, bitMask1: GATTAlertCategoryIdBitMask1)
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        bitMask0 = data[0]
+        bitMask1 = data[1]
+    }
+    
+}
+
+public enum GATTAlertCategoryIdBitMask0: UInt8, BitMaskOption {
     
     #if swift(>=3.2)
     #elseif swift(>=3.0)
@@ -47,7 +75,7 @@ public enum AlertCategoryIdBitMask0: UInt8, BitMaskOption {
     
     case schedule = 0b10000000
     
-    public static var all: Set<AlertCategoryIdBitMask0> = [
+    public static var all: Set<GATTAlertCategoryIdBitMask0> = [
         .simpleAlert,
         .email,
         .news,
@@ -60,7 +88,7 @@ public enum AlertCategoryIdBitMask0: UInt8, BitMaskOption {
     
 }
 
-public enum AlertCategoryIdBitMask1: UInt8, BitMaskOption {
+public enum GATTAlertCategoryIdBitMask1: UInt8, BitMaskOption {
     
     #if swift(>=3.2)
     #elseif swift(>=3.0)
@@ -71,7 +99,7 @@ public enum AlertCategoryIdBitMask1: UInt8, BitMaskOption {
     
     case instantMessage = 0b10
     
-    public static var all: Set<AlertCategoryIdBitMask1> = [
+    public static var all: Set<GATTAlertCategoryIdBitMask1> = [
         .highPrioritized,
         .instantMessage
     ]
