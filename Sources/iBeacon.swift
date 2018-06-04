@@ -80,9 +80,9 @@ public struct AppleBeacon {
         
         let uuid = BluetoothUUID(bigEndian: BluetoothUUID(data: Data(data[2 ..< 18]))!)
         
-        let major = UInt16(littleEndian: UInt16(bytes: (data[18], data[19])))
+        let major = UInt16(bigEndian: UInt16(bytes: (data[18], data[19])))
         
-        let minor = UInt16(littleEndian: UInt16(bytes: (data[20], data[21])))
+        let minor = UInt16(bigEndian: UInt16(bytes: (data[20], data[21])))
         
         let rssiValue = Int8(bitPattern: data[22])
         

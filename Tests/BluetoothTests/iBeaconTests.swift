@@ -63,11 +63,14 @@ final class iBeaconTests: XCTestCase {
         
         XCTAssertEqual(advertisingData, testData)
         
-        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.flags, flags)
-        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.uuid, beacon.uuid)
-        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.major, beacon.major)
-        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.minor, beacon.minor)
-        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.rssi, beacon.rssi)
+        guard let decoded = AppleBeacon.from(advertisingData: testData)
+            else { XCTFail(); return }
+        
+        XCTAssertEqual(decoded.flags, flags)
+        XCTAssertEqual(decoded.beacon.uuid, beacon.uuid)
+        XCTAssertEqual(decoded.beacon.major, beacon.major)
+        XCTAssertEqual(decoded.beacon.minor, beacon.minor)
+        XCTAssertEqual(decoded.beacon.rssi, beacon.rssi)
     }
     
     func testCommand() {
