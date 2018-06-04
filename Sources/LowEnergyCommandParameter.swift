@@ -197,7 +197,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setRandomAddress // 0x0005
         
-        public static let length = 6
+        internal static let length = 6
         
         public var address: Address
         
@@ -220,7 +220,7 @@ public extension LowEnergyCommand {
     public struct SetAdvertisingParametersParameter: HCICommandParameter {
         
         public static let command = LowEnergyCommand.setAdvertisingParameters // 0x0006
-        public static let length = 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1
+        internal static let length = 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1
         
         /// Interval for non-directed advertising.
         ///
@@ -379,7 +379,7 @@ public extension LowEnergyCommand {
     public struct SetAdvertisingDataParameter: HCICommandParameter { // HCI_LE_Set_Advertising_Data
         
         public static let command = LowEnergyCommand.setAdvertisingData // 0x0008
-        public static let length = 32
+        internal static let length = 32
         
         /// 31 octets of advertising data. 
         public var data: LowEnergyAdvertisingData
@@ -401,7 +401,7 @@ public extension LowEnergyCommand {
     public struct SetScanResponseDataParameter: HCICommandParameter { // HCI_LE_Set_Scan_Response_ Data
         
         public static let command = LowEnergyCommand.setScanResponseData // 0x0009
-        public static let length = 32
+        internal static let length = 32
         
         /// 31 octets of scan response data.
         public var data: LowEnergyAdvertisingData // Scan_Response_Data
@@ -433,7 +433,7 @@ public extension LowEnergyCommand {
     public struct SetAdvertiseEnableParameter: HCICommandParameter { // HCI_LE_Set_Advertising_Enable
         
         public static let command = LowEnergyCommand.setAdvertiseEnable // 0x000A
-        public static let length = 1
+        internal static let length = 1
         
         public var isEnabled: Bool
         
@@ -457,7 +457,7 @@ public extension LowEnergyCommand {
     public struct SetScanParametersParameter: HCICommandParameter { // HCI_LE_Set_Scan_Parameters
         
         public static let command = LowEnergyCommand.setScanParameters // 0x000B
-        public static let length = 1 + 2 + 2 + 1 + 1
+        internal static let length = 1 + 2 + 2 + 1 + 1
         
         public typealias TimeInterval = LowEnergyScanTimeInterval
         
@@ -536,7 +536,7 @@ public extension LowEnergyCommand {
     public struct SetScanEnableParameter: HCICommandParameter { // HCI_LE_Set_Scan_Enable
         
         public static let command = LowEnergyCommand.setScanEnable // 0x000C
-        public static let length = 2
+        internal static let length = 2
         
         /// Whether scanning is enabled or disabled.
         public var isEnabled: Bool // LE_Scan_Enable
@@ -583,7 +583,7 @@ public extension LowEnergyCommand {
     public struct CreateConnectionParameter: HCICommandParameter { // LE_Create_Connection
         
         public static let command = LowEnergyCommand.createConnection // 0x000D
-        public static let length = 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2
+        internal static let length = 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2
         
         public typealias SupervisionTimeout = LowEnergySupervisionTimeout
         
@@ -3522,7 +3522,7 @@ public extension LowEnergyCommand {
     public struct ReadBufferSizeReturnParameter: HCICommandReturnParameter {
         
         public static let command = LowEnergyCommand.readBufferSize //0x0002
-        public static let length = 3
+        internal static let length = 3
         
         public let dataPacketLength: UInt16
         public let dataPacket: UInt8
@@ -3546,7 +3546,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readLocalSupportedFeatures // 0x0003
         
-        public static let length = 8
+        internal static let length = 8
         
         public let features: LowEnergyFeatureSet
         
@@ -3575,7 +3575,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readAdvertisingChannelTXPower // 0x0007
         
-        public static let length = 1
+        internal static let length = 1
         
         public let transmitPowerLevel: TransmitPowerLevel
         
@@ -3644,7 +3644,7 @@ public extension LowEnergyCommand {
     public struct ReadWhiteListSizeReturnParameter: HCICommandReturnParameter { // HCI_LE_Read_White_List_Size
         
         public static let command = LowEnergyCommand.readWhiteListSize //0x000F
-        public static let length = 1
+        internal static let length = 1
         
         /// The white list size.
         public let size: UInt8 // White_List_Size
@@ -3667,7 +3667,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readChannelMap //0x0015
         
-        public static let length: Int = 7
+        internal static let length: Int = 7
         
         public let connectionHandle: UInt16 // Connection_Handle
         
@@ -3698,7 +3698,7 @@ public extension LowEnergyCommand {
 
         public static let command = LowEnergyCommand.encrypt //0x0017
         
-        public static let length: Int = 16
+        internal static let length: Int = 16
         
         /// 128 bit encrypted data block.
         /// The most significant octet of the Encrypted_Data corresponds to out[0] using the notation specified in FIPS 197.
@@ -3723,7 +3723,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.random //0x0018
         
-        public static let length: Int = 8
+        internal static let length: Int = 8
         
         /// Random Number
         public let randomNumber: UInt64 //Random_Number
@@ -3745,7 +3745,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.longTermKeyReply //0x001A
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         /// Connection_Handle
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
@@ -3768,7 +3768,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.longTermKeyNegativeReply //0x001B
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         /// Connection_Handle
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
@@ -3792,7 +3792,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.remoteConnectionParameterRequestReply //0x0020
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         /// Connection_Handle
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
@@ -3817,7 +3817,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         /// Connection_Handle
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
@@ -3838,7 +3838,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setDataLengthCommand //0x0022
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         /// Connection_Handle
         /// Range 0x0000-0x0EFF (all other values reserved for future use)
@@ -3861,7 +3861,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readSuggestedDefaultDataLengthCommand //0x0023
         
-        public static let length: Int = 4
+        internal static let length: Int = 4
         
         public let suggestedMaxTxOctets: LowEnergyMaxTxOctets
         
@@ -3895,7 +3895,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.testEnd //0x001F
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         public let numberOfPackets: UInt16
         
@@ -3915,7 +3915,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readSupportedStates //0x001C
         
-        public static let length: Int = 8
+        internal static let length: Int = 8
         
         public let state: LowEnergyStateSet
         
@@ -3944,7 +3944,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readResolvedListSize //0x002A
         
-        public static let length: Int = 1
+        internal static let length: Int = 1
         
         public let resolvingListSize: UInt8 //Resolving_List_Size
         
@@ -3972,7 +3972,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readPeerResolvableAddress //0x002B
         
-        public static let length: Int = 6
+        internal static let length: Int = 6
         
         /// Resolvable Private Address being used by the peer device
         public let peerResolvableAddress: UInt64 //Peer_Resolvable_Address
@@ -4001,7 +4001,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readLocalResolvableAddress //0x002C
         
-        public static let length: Int = 6
+        internal static let length: Int = 6
         
         /// Resolvable Private Address being used by the local device
         public let localResolvableAddress: UInt64 //Local_Resolvable_Address
@@ -4022,7 +4022,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readMaximumDataLength //0x002F
         
-        public static let length: Int = 8
+        internal static let length: Int = 8
         
         /// Maximum number of payload octets that the local Controller supports for transmission
         /// of a single Link Layer packet on a data connection.
@@ -4163,7 +4163,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readPhy //0x0030
         
-        public static let length: Int = 4
+        internal static let length: Int = 4
         
         public let connectionHandle: UInt16
         
@@ -4195,7 +4195,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.setExtendedAdvertisingParameters //0x0036
         
-        public static let length: Int = 1
+        internal static let length: Int = 1
         
         public let selectedTxPower: LowEnergyTxPower
         
@@ -4218,7 +4218,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readMaximumAdvertisingDataLength //0x003A
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         /// Maximum supported advertising data length
         public let maximumAdvertisingDataLength: UInt16
@@ -4241,7 +4241,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readNumberOfSupportedAdvertisingSets //0x003B
         
-        public static let length: Int = 1
+        internal static let length: Int = 1
         
         /// Number of advertising sets supported at the same time
         public let numSupportedAdvertisingSets: UInt8 //Num_Supported_Advertising_Sets
@@ -4261,7 +4261,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readPeriodicAdvertiserListSize //0x004A
         
-        public static let length: Int = 1
+        internal static let length: Int = 1
         
         /// Total number of Periodic Advertiser list entries that can be stored in the Controller
         public let periodicAdvertiserListSize: UInt8
@@ -4281,7 +4281,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readTransmitPower //0x004B
         
-        public static let length: Int = 2
+        internal static let length: Int = 2
         
         public let minTxPower: TxPower
         
@@ -4353,7 +4353,7 @@ public extension LowEnergyCommand {
         
         public static let command = LowEnergyCommand.readRFPathCompensation //0x004C
         
-        public static let length: Int = 4
+        internal static let length: Int = 4
         
         public let rfTxPathCompensationValue: RfTxPathCompensationValue
         public let rfRxPathCompensationValue: RfRxPathCompensationValue

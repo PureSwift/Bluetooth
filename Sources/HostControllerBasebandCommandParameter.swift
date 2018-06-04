@@ -94,7 +94,7 @@ public extension HostControllerBasebandCommand {
         
         public static let command = HostControllerBasebandCommand.writeLocalName
         
-        public static let length = HCI.maximumNameLength
+        internal static let length = HCI.maximumNameLength
         
         public let localName: String
         
@@ -158,7 +158,7 @@ public extension HostControllerBasebandCommand {
     public struct ReadLocalNameReturnParameter: HCICommandReturnParameter {
         
         public static let command = HostControllerBasebandCommand.readLocalName
-        public static let length = HCI.maximumNameLength //248
+        internal static let length = HCI.maximumNameLength //248
         
         public let localName: String
         
@@ -179,7 +179,7 @@ public extension HostControllerBasebandCommand {
     public struct ReadConnectionAcceptTimeoutReturnParameter: HCICommandReturnParameter {
         
         public static let command = HostControllerBasebandCommand.readConnectionAcceptTimeout
-        public static let length = ConnectionAcceptTimeout.length
+        internal static let length = ConnectionAcceptTimeout.length
         
         public let timeout: ConnectionAcceptTimeout
         
@@ -209,7 +209,7 @@ public extension HostControllerBasebandCommand {
 /// Time Range: 0.625 ms - 29 s
 public struct ConnectionAcceptTimeout: RawRepresentable, Equatable, Hashable, Comparable {
     
-    public static let length = MemoryLayout<UInt16>.size
+    internal static let length = MemoryLayout<UInt16>.size
     
     /// 0.625 ms
     public static let min = ConnectionAcceptTimeout(0x0001)
