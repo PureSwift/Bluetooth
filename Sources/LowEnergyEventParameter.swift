@@ -26,7 +26,7 @@ public extension LowEnergyEvent {
     public struct ConnectionCompleteParameter: HCIEventParameter {
         
         public static let event = LowEnergyEvent.connectionComplete // 0x01
-        public static let length = 18
+        internal static let length = 18
         
         /// Connection supervision timeout.
         ///
@@ -172,7 +172,7 @@ public extension LowEnergyEvent {
     public struct AdvertisingReportEventParameter: HCIEventParameter {
         
         public static let event = LowEnergyEvent.advertisingReport // 0x02
-        public static let length = 1 + Report.length // must have at least one report
+        internal static let length = 1 + Report.length // must have at least one report
         
         public let reports: [Report]
         
@@ -209,7 +209,7 @@ public extension LowEnergyEvent {
         
         public struct Report {
             
-            public static let length = 1 + 1 + 6 + 1 + /* 0 - 31 */ 0 + 1
+            internal static let length = 1 + 1 + 6 + 1 + /* 0 - 31 */ 0 + 1
             
             public let event: Event
             
@@ -295,7 +295,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.connectionUpdateComplete // 0x03
         
-        public static let length: Int = 9
+        internal static let length: Int = 9
         
         /// `0x00` if Connection successfully completed.
         /// `HCIError` value otherwise.
@@ -351,7 +351,7 @@ public extension LowEnergyEvent {
     
         public static let event = LowEnergyEvent.readRemoteUsedFeaturesComplete // 0x04
         
-        public static let length: Int = 11
+        internal static let length: Int = 11
         
         public typealias Status = HCIStatus
         
@@ -402,7 +402,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.longTermKeyRequest // 0x05
         
-        public static let length: Int = 12
+        internal static let length: Int = 12
         
         public let handle: UInt16 // Connection_Handle
         
@@ -438,7 +438,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.remoteConnectionParameterRequest // 0x06
         
-        public static let length: Int = 10
+        internal static let length: Int = 10
         
         public let handle: UInt16 // Connection_Handle
         
@@ -486,7 +486,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.dataLengthChange // 0x07
         
-        public static let length: Int = 10
+        internal static let length: Int = 10
         
         public let handle: UInt16 // Connection_Handle
         
@@ -539,7 +539,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.readLocalP256PublicKeyComplete // 0x08
         
-        public static let length: Int = 65
+        internal static let length: Int = 65
         
          public let status: HCIStatus
         
@@ -569,7 +569,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.generateDHKeyComplete // 0x09
         
-        public static let length: Int = 33
+        internal static let length: Int = 33
         
         public let status: HCIStatus
         
@@ -599,7 +599,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x0A
         
-        public static let length: Int = 30
+        internal static let length: Int = 30
         
         public let status: HCIStatus
         
@@ -709,7 +709,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.directedAdvertisingReport // 0x0B
         
-        public static let length = 1 + Report.length // must have at least one report
+        internal static let length = 1 + Report.length // must have at least one report
         
         public let reports: [Report]
         
@@ -746,7 +746,7 @@ public extension LowEnergyEvent {
         
         public struct Report {
             
-            public static let length = 1 + 1 + 6 + 1 + 6 + 1
+            internal static let length = 1 + 1 + 6 + 1 + 6 + 1
             
             public let event: UInt8
             
@@ -844,7 +844,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.phyUpdateComplete // 0x0C
         
-        public static let length: Int = 5
+        internal static let length: Int = 5
         
         public let status: HCIStatus
         
@@ -890,7 +890,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.extendedAdvertisingReport // 0x0D
         
-        public static let length = 1 + Report.length // must have at least one report
+        internal static let length = 1 + Report.length // must have at least one report
         
         public let reports: [Report]
         
@@ -927,7 +927,7 @@ public extension LowEnergyEvent {
         
         public struct Report {
             
-            public static let length = 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1
+            internal static let length = 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1
         
             public let eventType: EventType
             
@@ -1168,7 +1168,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.periodicAdvertisingSyncEstablished // 0x0E
         
-        public static let length = 15
+        internal static let length = 15
         
         public let status: HCIStatus
         
@@ -1290,7 +1290,7 @@ public extension LowEnergyEvent {
         public static let event = LowEnergyEvent.periodicAdvertisingReport // 0x0F
         
         /// Minimum length
-        public static let length = 7
+        internal static let length = 7
         
         public let syncHandle: UInt16 // Sync_Handle
         
@@ -1367,7 +1367,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.periodicAdvertisingSyncLost // 0x10
         
-        public static let length = 2
+        internal static let length = 2
         
         public let syncHandle: UInt16 // Sync_Handle
         
@@ -1389,7 +1389,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.advertisingSetTerminated // 0x12
         
-        public static let length: Int = 5
+        internal static let length: Int = 5
         
         public let status: HCIStatus
         
@@ -1429,7 +1429,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.scanRequestReceived // 0x13
         
-        public static let length: Int = 8
+        internal static let length: Int = 8
         
         public let advertisingHandle: UInt8
         
@@ -1462,7 +1462,7 @@ public extension LowEnergyEvent {
         
         public static let event = LowEnergyEvent.channelSelectionAlgorithm // 0x14
         
-        public static let length: Int = 3
+        internal static let length: Int = 3
     
         public let connectionHandle: UInt16 // Connection_Handle
         

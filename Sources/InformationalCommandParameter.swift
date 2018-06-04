@@ -23,7 +23,7 @@ public extension InformationalCommand {
         
         public static let command = InformationalCommand.readLocalVersionInformation
         
-        public static let length = 8 // 1 + 2 + 1 + 2 + 2
+        internal static let length = 8 // 1 + 2 + 1 + 2 + 2
         
         /// Version of the Bluetooth Host Controller Interface.
         public let hciVersion: HCIVersion
@@ -74,7 +74,7 @@ public extension InformationalCommand {
         
         public static let command = InformationalCommand.readDeviceAddress
         
-        public static let length = 6
+        internal static let length = 6
         
         /// The Bluetooth address of the device.
         public let address: Address

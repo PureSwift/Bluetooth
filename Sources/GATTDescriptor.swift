@@ -74,7 +74,7 @@ public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .clientCharacteristicConfiguration
     
-    public static let length = 2
+    internal static let length = 2
     
     public var configuration: BitMaskOptionSet<Configuration>
     
@@ -139,7 +139,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicExtendedProperties
     
-    public static let length = 2
+    internal static let length = 2
     
     public var properties: BitMaskOptionSet<Property>
     
@@ -205,7 +205,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .serverCharacteristicConfiguration
     
-    public static let length = 1
+    internal static let length = 1
     
     public var serverConfiguration: BitMaskOptionSet<ServerConfiguration>
     
@@ -475,7 +475,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicFormat
     
-    public static let length = 7
+    internal static let length = 7
     
     public let format: CharacteristicFormatType
     
