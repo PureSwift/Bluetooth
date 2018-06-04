@@ -493,30 +493,30 @@ final class GAPTests: XCTestCase {
     
     func testGAPAppearance() {
         
-        XCTAssertNil(GAPAppearance(data: Data([])))
-        XCTAssertNil(GAPAppearance(data: Data([0x00])))
-        XCTAssertNil(GAPAppearance(data: Data([0x00, 0x00, 0x00])))
-        XCTAssertNil(GAPAppearance(data: Data([0x4f, 0x4f, 0x4f])))
-        XCTAssertNil(GAPAppearance(data: Data([0x00, 0x00, 0x00, 0x00])))
+        XCTAssertNil(GAPAppearanceData(data: Data([])))
+        XCTAssertNil(GAPAppearanceData(data: Data([0x00])))
+        XCTAssertNil(GAPAppearanceData(data: Data([0x00, 0x00, 0x00])))
+        XCTAssertNil(GAPAppearanceData(data: Data([0x4f, 0x4f, 0x4f])))
+        XCTAssertNil(GAPAppearanceData(data: Data([0x00, 0x00, 0x00, 0x00])))
         
         do {
             let data = Data([0x4f, 0xf8])
-            let appearance = GAPAppearance(data: data)!
+            let appearance = GAPAppearanceData(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: appearance), 2)
             XCTAssertEqual(appearance.data, data)
             XCTAssertEqual(appearance.data.count, 2)
         }
         
-        XCTAssertEqual(GAPAppearance(data: Data([0x4f, 0xf8])), GAPAppearance(data: Data([0x4f, 0xf8])))
-        XCTAssertEqual(GAPAppearance(appearance: 0xf5).data.count, GAPAppearance.length)
+        XCTAssertEqual(GAPAppearanceData(data: Data([0x4f, 0xf8])), GAPAppearanceData(data: Data([0x4f, 0xf8])))
+        XCTAssertEqual(GAPAppearanceData(appearance: 0xf5).data.count, GAPAppearanceData.length)
         
-        XCTAssertEqual(GAPAppearance(appearance: 0).data, Data([0x00, 0x00]))
-        XCTAssertEqual(GAPAppearance(appearance: Appearance.Unknown.unknown).data, Data([0x00, 0x00]))
-        XCTAssertEqual(GAPAppearance(data: Data([0x00, 0x00]))?.appearance, Appearance.Unknown.unknown)
+        XCTAssertEqual(GAPAppearanceData(appearance: 0).data, Data([0x00, 0x00]))
+        XCTAssertEqual(GAPAppearanceData(appearance: GAPAppearance.Unknown.unknown).data, Data([0x00, 0x00]))
+        XCTAssertEqual(GAPAppearanceData(data: Data([0x00, 0x00]))?.appearance, GAPAppearance.Unknown.unknown)
         
-        XCTAssertEqual(GAPAppearance(appearance: 64).data.map { $0 }, Data([64, 0]).map { $0 })
-        XCTAssertEqual(GAPAppearance(appearance: Appearance.Phone.generic).data, Data([64, 0]))
-        XCTAssertEqual(GAPAppearance(data: Data([64, 0]))?.appearance, Appearance.Phone.generic)
+        XCTAssertEqual(GAPAppearanceData(appearance: 64).data.map { $0 }, Data([64, 0]).map { $0 })
+        XCTAssertEqual(GAPAppearanceData(appearance: GAPAppearance.Phone.generic).data, Data([64, 0]))
+        XCTAssertEqual(GAPAppearanceData(data: Data([64, 0]))?.appearance, GAPAppearance.Phone.generic)
     }
     
     func testGAPPublicTargetAddress() {

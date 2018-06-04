@@ -103,108 +103,108 @@ public extension GAPAppearance {
     
     public enum Unknown {
         
-        public static let category: Appearance.Category = 0
+        public static let category: GAPAppearance.Category = 0
         
-        public static let unknown: Appearance = 0
+        public static let unknown: GAPAppearance = 0
     }
     
     public enum Phone {
         
-        public static let category: Appearance.Category = 1
+        public static let category: GAPAppearance.Category = 1
         
-        public static let generic: Appearance = 64
+        public static let generic: GAPAppearance = 64
     }
     
     public enum Computer {
         
-        public static let category: Appearance.Category = 2
+        public static let category: GAPAppearance.Category = 2
         
-        public static let generic: Appearance = 128
+        public static let generic: GAPAppearance = 128
     }
     
     /// GAP Appearance Watch category namepace
     public enum Watch {
         
         /// GAP Appearance Watch category
-        public static let category: Appearance.Category = 3
+        public static let category: GAPAppearance.Category = 3
         
         /// Generic Watch
-        public static let generic: Appearance = 192
+        public static let generic: GAPAppearance = 192
         
         /// Watch: Sports Watch
-        public static let sports: Appearance = 193
+        public static let sports: GAPAppearance = 193
     }
     
     /// GAP Appearance Clock category namepace
     public enum Clock {
         
-        public static let category: Appearance.Category = 4
+        public static let category: GAPAppearance.Category = 4
         
-        public static let generic: Appearance = 256
+        public static let generic: GAPAppearance = 256
     }
     
     public enum Display {
         
-        public static let category: Appearance.Category = 5
+        public static let category: GAPAppearance.Category = 5
         
-        public static let generic: Appearance = 320
+        public static let generic: GAPAppearance = 320
     }
     
     public enum RemoteControl {
         
-        public static let category: Appearance.Category = 6
+        public static let category: GAPAppearance.Category = 6
         
         /// Generic Remote Control
-        public static let generic: Appearance = 384
+        public static let generic: GAPAppearance = 384
     }
     
     public enum EyeGlasses {
         
-        public static let category: Appearance.Category = 7
+        public static let category: GAPAppearance.Category = 7
         
-        public static let generic: Appearance = 448
+        public static let generic: GAPAppearance = 448
     }
     
     public enum Tag {
         
-        public static let category: Appearance.Category = 8
+        public static let category: GAPAppearance.Category = 8
         
-        public static let generic: Appearance = 512
+        public static let generic: GAPAppearance = 512
     }
     
     public enum Keyring {
         
-        public static let category: Appearance.Category = 9
+        public static let category: GAPAppearance.Category = 9
         
-        public static let generic: Appearance = 576
+        public static let generic: GAPAppearance = 576
     }
     
     public enum MediaPlayer {
         
-        public static let category: Appearance.Category = 10
+        public static let category: GAPAppearance.Category = 10
         
-        public static let generic: Appearance = 640
+        public static let generic: GAPAppearance = 640
     }
     
     public enum BarcodeScanner {
         
-        public static let category: Appearance.Category = 11
+        public static let category: GAPAppearance.Category = 11
         
-        public static let generic: Appearance = 704
+        public static let generic: GAPAppearance = 704
     }
     
     public enum Thermometer {
         
-        public static let category: Appearance.Category = 12
+        public static let category: GAPAppearance.Category = 12
         
-        public static let generic: Appearance = 768
+        public static let generic: GAPAppearance = 768
     }
     
     public enum HeartrateSensor {
         
-        public static let category: Appearance.Category = 13
+        public static let category: GAPAppearance.Category = 13
         
-        public static let generic: Appearance = 832
+        public static let generic: GAPAppearance = 832
     }
 }
 

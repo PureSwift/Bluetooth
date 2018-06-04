@@ -19,12 +19,14 @@ final class iBeaconTests: XCTestCase {
     
     func testData() {
         
-        let value = iBeacon(uuid: UUID(uuidString: "f7826da6-4fa2-4e98-8024-bc5b71e0893e")!,
-                            major: 0xAA,
-                            minor: 0xBB,
-                            rssi: RSSI(rawValue: Int8(bitPattern: 0xb3))!)
+        let flags: GAPFlags = 0x1a
         
-        let advertisingDataCommand = value.advertisingDataCommand
+        let beacon = AppleBeacon(uuid: UUID(uuidString: "f7826da6-4fa2-4e98-8024-bc5b71e0893e")!,
+                                 major: 0xAA,
+                                 minor: 0xBB,
+                                 rssi: RSSI(rawValue: Int8(bitPattern: 0xb3))!)
+        
+        let advertisingData = LowEnergyAdvertisingData(beacon: beacon, flags: flags)
         
         let testData = LowEnergyAdvertisingData(length: 30, bytes: (
             0x02, //    Data length – 2 bytes    constant preamble
@@ -59,14 +61,20 @@ final class iBeaconTests: XCTestCase {
             0xb3 , //   Signal power (calibrated RSSI@1m)    signal power value
             0x00))
         
-        XCTAssertEqual(advertisingDataCommand.data, testData)
+        XCTAssertEqual(advertisingData, testData)
+        
+        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.flags, flags)
+        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.uuid, beacon.uuid)
+        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.major, beacon.major)
+        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.minor, beacon.minor)
+        XCTAssertEqual(AppleBeacon.from(advertisingData: testData)?.beacon.rssi, beacon.rssi)
     }
     
     func testCommand() {
         
         let uuid = UUID(rawValue: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!
         
-        let beacon = iBeacon(uuid: uuid, major: 1, minor: 1, rssi: RSSI(rawValue: -29)!, interval: 100)
+        let beacon = AppleBeacon(uuid: uuid, major: 1, minor: 1, rssi: RSSI(rawValue: -29)!)
         
         let hostController = TestHostController()
         
@@ -130,6 +138,6 @@ final class iBeaconTests: XCTestCase {
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x08, 0x20, 0x00]))
         
-        XCTAssertNoThrow(try hostController.iBeacon(beacon))
+        XCTAssertNoThrow(try hostController.iBeacon(beacon, flags: 0x1A, interval: AppleBeacon.AdvertisingInterval(rawValue: 100)!))
     }
 }

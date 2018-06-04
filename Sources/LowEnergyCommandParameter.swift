@@ -232,35 +232,41 @@ public extension LowEnergyCommand {
         ///
         /// The `Advertising_Interval_Min` and `Advertising_Interval_Max` shall not be set to less than
         /// `0x00A0` (100 ms) if the Advertising_Type is set to `0x02` (ADV_SCAN_IND) or `0x03` (ADV_NONCONN_IND).
-        public var interval: (minimum: UInt16, maximum: UInt16)
+        public var interval: (min: UInt16, max: UInt16)
         
         /// Ssed to determine the packet type that is used for advertising when advertising is enabled.
         public var advertisingType: AdvertisingType
         
-        /// Determines if the advertising packets are identified with the Public Device Address of the device, or a Random Device Address as written by the LE_Set_Random_Address command.
+        /// Determines if the advertising packets are identified with the Public Device Address of the device,
+        /// or a Random Device Address as written by the `LE_Set_Random_Address` command.
         public var ownAddressType: LowEnergyAddressType
         
-        public var addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType)
+        /// Address type
+        public var directAddresssType: LowEnergyAddressType // Direct_Address_Type
         
         /// Public Device Address or Random Device Address of the device to be connected.
         public var directAddress: Address
         
-        public var channelMap: ChannelMap
+        public var channelMap: BitMaskOptionSet<ChannelMap>
         
         public var filterPolicy: FilterPolicy
         
         public init(interval: (min: UInt16, max: UInt16) = (0x0800, 0x0800),
                     advertisingType: AdvertisingType = AdvertisingType(),
-                    addressType: (own: LowEnergyAddressType, direct: LowEnergyAddressType) = (.public, .public),
+                    ownAddressType: LowEnergyAddressType = .public,
+                    directAddresssType: LowEnergyAddressType = .public,
                     directAddress: Address = .zero,
-                    channelMap: ChannelMap = ChannelMap(),
+                    channelMap: BitMaskOptionSet<ChannelMap> = .all,
                     filterPolicy: FilterPolicy = FilterPolicy()) {
             
             assert(interval.min <= interval.min, "The Advertising_Interval_Min shall be less than or equal to the Advertising_Interval_Max.")
             
+            assert(channelMap.rawValue != 0, "00000000b is Reserved for future use")
+            
             self.interval = interval
             self.advertisingType = advertisingType
-            self.addressType = addressType
+            self.ownAddressType = ownAddressType
+            self.directAddresssType = directAddresssType
             self.directAddress = directAddress
             self.channelMap = channelMap
             self.filterPolicy = filterPolicy
@@ -268,15 +274,26 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let minimumIntervalBytes = interval.minimum.littleEndian.bytes
-            let maximumIntervalBytes = interval.maximum.littleEndian.bytes
+            let minimumIntervalBytes = interval.min.littleEndian.bytes
+            let maximumIntervalBytes = interval.max.littleEndian.bytes
             
-            return [minimumIntervalBytes.0, minimumIntervalBytes.1,
-                    maximumIntervalBytes.0, maximumIntervalBytes.1,
+            let directAddressBytes = directAddress.littleEndian.bytes
+            
+            return [minimumIntervalBytes.0,
+                    minimumIntervalBytes.1,
+                    maximumIntervalBytes.0,
+                    maximumIntervalBytes.1,
                     advertisingType.rawValue,
-                    addressType.own.rawValue,
-                    addressType.direct.rawValue,
-                    directAddress.bytes.0, directAddress.bytes.1, directAddress.bytes.2, directAddress.bytes.3, directAddress.bytes.4, directAddress.bytes.5, channelMap.rawValue, filterPolicy.rawValue]
+                    ownAddressType.rawValue,
+                    directAddresssType.rawValue,
+                    directAddressBytes.0,
+                    directAddressBytes.1,
+                    directAddressBytes.2,
+                    directAddressBytes.3,
+                    directAddressBytes.4,
+                    directAddressBytes.5,
+                    channelMap.rawValue,
+                    filterPolicy.rawValue]
         }
         
         public enum AdvertisingType: UInt8 {
@@ -296,15 +313,18 @@ public extension LowEnergyCommand {
             public init() { self = .undirected }
         }
         
-        public enum ChannelMap: UInt8 {
+        public enum ChannelMap: UInt8, BitMaskOption {
             
-            /// Default (all channels enabled)
-            case all                    = 0b00000111
+            /// Enable channel 37 use
             case channel37              = 0b00000001
+            
+            /// Enable channel 38 use
             case channel38              = 0b00000010
+            
+            /// Enable channel 39 use
             case channel39              = 0b00000100
             
-            public init() { self = .all }
+            public static let all: Set<ChannelMap> = [.channel37, .channel38, .channel39]
         }
         
         public enum FilterPolicy: UInt8 {
