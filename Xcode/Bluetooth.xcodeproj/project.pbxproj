@@ -11,6 +11,7 @@
 		35A2DF6D20C21FFF008B9A77 /* AlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2DF6B20C21FFF008B9A77 /* AlertNotificationProfile.swift */; };
 		35A2DF6E20C21FFF008B9A77 /* AlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2DF6B20C21FFF008B9A77 /* AlertNotificationProfile.swift */; };
 		35A2DF6F20C21FFF008B9A77 /* AlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2DF6B20C21FFF008B9A77 /* AlertNotificationProfile.swift */; };
+		35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7CADC20C5E72100F797AE /* GATTProfile.swift */; };
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
 		512F4B47208A562E00576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
 		512F4B48208A564400576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
@@ -372,6 +373,7 @@
 
 /* Begin PBXFileReference section */
 		35A2DF6B20C21FFF008B9A77 /* AlertNotificationProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertNotificationProfile.swift; sourceTree = "<group>"; };
+		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
 		512F4B46208A562E00576F34 /* UInt256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt256.swift; sourceTree = "<group>"; };
 		512F4B4B208A567A00576F34 /* UInt512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt512.swift; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 			isa = PBXGroup;
 			children = (
 				35A2DF6B20C21FFF008B9A77 /* AlertNotificationProfile.swift */,
+				35B7CADC20C5E72100F797AE /* GATTProfile.swift */,
 			);
 			name = GATTProfiles;
 			sourceTree = "<group>";
@@ -1240,6 +1243,7 @@
 				6E124BB8207DAFFD0060E2E9 /* LowEnergyRandomAddress.swift in Sources */,
 				6E9578C6209270FC00BAA133 /* GenericAccessProfile.swift in Sources */,
 				6EE84DF91CAF891E00A40C4D /* HCIGeneralEvent.swift in Sources */,
+				35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */,
 				6E60A30120695CC600E42351 /* GATTClient.swift in Sources */,
 				6EE84DD51CAF603000A40C4D /* BluetoothUUID.swift in Sources */,
 				6E60A30F2069603700E42351 /* L2CAPSocket.swift in Sources */,
