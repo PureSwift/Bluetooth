@@ -45,12 +45,12 @@ public struct AppleBeacon {
     public var minor: UInt16
     
     /// The received signal strength indicator (RSSI) value (measured in decibels) for the device.
-    public var rssi: RSSI
+    public var rssi: Int8
     
     public init(uuid: Foundation.UUID,
                 major: UInt16 = 0,
                 minor: UInt16 = 0,
-                rssi: RSSI) {
+                rssi: Int8) {
         
         self.uuid = uuid
         self.major = major
@@ -84,10 +84,7 @@ public struct AppleBeacon {
         
         let minor = UInt16(bigEndian: UInt16(bytes: (data[20], data[21])))
         
-        let rssiValue = Int8(bitPattern: data[22])
-        
-        guard let rssi = RSSI(rawValue: rssiValue)
-            else { return nil }
+        let rssi = Int8(bitPattern: data[22])
         
         self.init(uuid: UUID(bluetooth: uuid), major: major, minor: minor, rssi: rssi)
     }
@@ -102,7 +99,7 @@ public struct AppleBeacon {
         
         let minorBytes = minor.bigEndian.bytes
         
-        let rssiByte = UInt8(bitPattern: rssi.rawValue)
+        let rssiByte = UInt8(bitPattern: rssi)
         
         // TLV coding
         let additionalData = tlvPrefix
