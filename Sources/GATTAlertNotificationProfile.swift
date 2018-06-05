@@ -8,6 +8,12 @@
 
 import Foundation
 
+public struct GATTAlertNotificationService: GATTProfileService {
+    
+    public static let UUID: BluetoothUUID = .supportedNewAlertCategory
+    
+}
+
 /**
      Category that the server supports for new alert.
  
