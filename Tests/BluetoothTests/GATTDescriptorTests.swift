@@ -153,10 +153,10 @@ final class GATTDescriptorTests: XCTestCase {
     
     func testCharacteristicsUserDescriptionDescriptor() {
         
-        XCTAssertNil(GATTUserDescription(byteValue: Data([0xFF])))
+        XCTAssertNil(GATTUserDescription(byteValue: Data([0xff])))
         
-        var userDescription = GATTUserDescription(userDescription: "")
-        XCTAssertEqual(userDescription.byteValue, Data())
+        var userDescription = GATTUserDescription(userDescription: "hola")
+        XCTAssertEqual(userDescription.byteValue, Data([0x68, 0x6f, 0x6c, 0x61]))
         
         userDescription.userDescription = "Test"
         XCTAssertEqual(userDescription.byteValue, Data([0x54, 0x65, 0x73, 0x74]))
