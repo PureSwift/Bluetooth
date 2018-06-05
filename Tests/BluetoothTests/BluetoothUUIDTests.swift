@@ -10,10 +10,6 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
-#if os(macOS) || os(iOS) || os(tvOS) || (os(watchOS) && swift(>=3.2))
-import CoreBluetooth
-#endif
-
 final class BluetoothUUIDTests: XCTestCase {
     
     static let allTests = [
@@ -24,8 +20,6 @@ final class BluetoothUUIDTests: XCTestCase {
         ("testDefinedUUID", testDefinedUUID),
         ("test32BitUUID", test32BitUUID)
     ]
-    
-    lazy var randomUUIDs = (1 ... 100000).map { _ in UUID() }
     
     func testMalformed() {
         
@@ -200,6 +194,8 @@ final class BluetoothUUIDTests: XCTestCase {
                                                   uuidValue.bigEndian.bytes.3]))
         
         XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
+        
+        XCTAssertEqual(BluetoothUUID.bit16(1000).rawValue, "03E8")
     }
     
     func testPerformanceStringParse() {
@@ -229,83 +225,8 @@ final class BluetoothUUIDTests: XCTestCase {
         
         measure { uuids.forEach { let _ = $0.data } }
     }
-    
-    #if os(macOS) || os(iOS) || os(tvOS) || (os(watchOS) && swift(>=3.2))
-    
-    func testCoreBluetooth() {
-        
-        do {
-            
-            let uuid = BluetoothUUID.bit16(0xFEA9)
-            
-            let coreBluetoothUUID = uuid.toCoreBluetooth()
-            
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
-        }
-        
-        do {
-            
-            let uuid = BluetoothUUID() // 128 bit
-            
-            let coreBluetoothUUID = uuid.toCoreBluetooth()
-            
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
-        }
-        
-        do {
-            
-            let coreBluetoothUUID = CBUUID(string: "FEA9")
-            
-            let uuid = BluetoothUUID(coreBluetooth: coreBluetoothUUID)
-            
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
-        }
-        
-        do {
-            
-            let coreBluetoothUUID = CBUUID(string: "68753A44-4D6F-1226-9C60-0050E4C00067")
-            
-            let uuid = BluetoothUUID(coreBluetooth: coreBluetoothUUID)
-            
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
-        }
-    }
-    
-    func testCoreBluetoothPerfomanceStringParse() {
-        
-        let uuids = randomUUIDs.map { $0.uuidString }
-        
-        measure { uuids.forEach { _ = CBUUID(string: $0) } }
-    }
-    
-    func testCoreBluetoothPerfomanceString() {
-        
-        let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
-        
-        measure { uuids.forEach { let _ = $0.uuidString } }
-    }
-    
-    func testCoreBluetoothPerformanceDataParse() {
-        
-        let uuids = randomUUIDs.map { $0.data }
-        
-        measure { uuids.forEach { _ = CBUUID(data: $0) } }
-    }
-    
-    func testCoreBluetoothPerformanceData() {
-        
-        let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
-        
-        measure { uuids.forEach { let _ = $0.data } }
-    }
-    
-    #endif
 }
+
+// MARK: - 
+
+let randomUUIDs = (1 ... 100000).map { _ in UUID() }
