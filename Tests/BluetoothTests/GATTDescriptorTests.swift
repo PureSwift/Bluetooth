@@ -18,7 +18,8 @@ final class GATTDescriptorTests: XCTestCase {
         ("testCharacteristicServerConfigurationDescriptor", testCharacteristicsServerConfigurationDescriptor),
         ("testCharacteristicsAggregateFormatDescriptor",testCharacteristicsAggregateFormatDescriptor),
         ("testCharacteristicsFormatDescriptor",testCharacteristicsFormatDescriptor),
-        ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor)
+        ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor),
+        ("testCharacteristicsReportReferenceDescriptor", testCharacteristicReportReferenceDescriptor)
     ]
     
     func testCharacteristicClientConfigurationDescriptor() {
@@ -152,6 +153,30 @@ final class GATTDescriptorTests: XCTestCase {
     
     func testCharacteristicsUserDescriptionDescriptor() {
         
+        XCTAssertNil(GATTUserDescription(byteValue: Data([0xFF])))
         
+        var userDescription = GATTUserDescription(userDescription: "")
+        XCTAssertEqual(userDescription.byteValue, Data())
+        
+        userDescription.userDescription = "Test"
+        XCTAssertEqual(userDescription.byteValue, Data([0x54, 0x65, 0x73, 0x74]))
+    }
+    
+    func testCharacteristicReportReferenceDescriptor() {
+        
+        XCTAssertNil(GATTReportReference(byteValue: Data()))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x00])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x00, 0x00])))
+        
+        var reportReference = GATTReportReference(byteValue: Data([0x00, 0x01]))
+        XCTAssertEqual(reportReference?.reportID, 0x00)
+        XCTAssertEqual(reportReference?.reportType, GATTReportReference.ReportType.InputReport)
+        
+        reportReference = GATTReportReference(byteValue: Data([0x00, 0x02]))
+        XCTAssertEqual(reportReference?.reportType, GATTReportReference.ReportType.OutputReport)
+        
+        reportReference = GATTReportReference(byteValue: Data([0x00, 0x03]))
+        XCTAssertEqual(reportReference?.reportType, GATTReportReference.ReportType.FeatureReport)
     }
 }
