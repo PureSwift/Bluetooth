@@ -23,3 +23,12 @@ public protocol GATTProfileCharacteristic {
     
     var characteristic: GATT.Characteristic { get }
 }
+
+extension GATTProfileCharacteristic {
+    
+    public var characteristic: GATT.Characteristic {
+        
+        return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [], descriptors: [])
+    }
+    
+}
