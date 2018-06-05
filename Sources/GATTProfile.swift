@@ -11,6 +11,8 @@ import Foundation
 public protocol GATTProfileService {
     
     static var UUID: BluetoothUUID { get }
+    
+    var service: GATT.Service { get }
 }
 
 public protocol GATTProfileCharacteristic {
@@ -18,5 +20,8 @@ public protocol GATTProfileCharacteristic {
     static var UUID: BluetoothUUID { get }
     
     init?(data: Data)
+    
+    var data: Data { get }
+    
+    var characteristic: GATT.Characteristic { get }
 }
-
