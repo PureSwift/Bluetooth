@@ -108,11 +108,6 @@ public struct GATTAlertNotificationService: GATTProfileService {
             return Data([bitMask0.rawValue, bitMask1.rawValue])
         }
         
-        public var characteristic: GATT.Characteristic {
-            
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [], descriptors: [])
-        }
-        
         public enum BitMask0: UInt8, BitMaskOption {
             
             #if swift(>=3.2)
@@ -285,10 +280,6 @@ public struct GATTAlertNotificationService: GATTProfileService {
             return Data([rawValue])
         }
         
-        public var characteristic: GATT.Characteristic {
-            
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [], descriptors: [])
-        }
     }
     
     /**
