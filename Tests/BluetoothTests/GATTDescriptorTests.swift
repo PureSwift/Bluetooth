@@ -19,7 +19,8 @@ final class GATTDescriptorTests: XCTestCase {
         ("testCharacteristicsAggregateFormatDescriptor",testCharacteristicsAggregateFormatDescriptor),
         ("testCharacteristicsFormatDescriptor",testCharacteristicsFormatDescriptor),
         ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor),
-        ("testCharacteristicsReportReferenceDescriptor", testCharacteristicReportReferenceDescriptor)
+        ("testCharacteristicsReportReferenceDescriptor", testCharacteristicReportReferenceDescriptor),
+        ("testTimeTriggerSettingDescriptor", testTimeTriggerSettingDescriptor)
     ]
     
     func testCharacteristicClientConfigurationDescriptor() {
@@ -176,5 +177,30 @@ final class GATTDescriptorTests: XCTestCase {
         
         reportReference = GATTReportReference(byteValue: Data([0x00, 0x03]))
         XCTAssertEqual(reportReference?.reportType, GATTReportReference.ReportType.FeatureReport)
+    }
+    
+    func testTimeTriggerSettingDescriptor() {
+        
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data()))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x00])))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x03,0x00])))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x04,0x00])))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x02,0x00])))
+        
+        let valueNone = Data([0x00, 0x10])
+        let valueTimeInterval = Data([0x01, 0x00, 0x00, 0x00])
+        let valueTimeIntervalIndicate = Data([0x02, 0x00, 0x00, 0x00])
+        let valueCount = Data([0x03, 0x00, 0x00])
+        var timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueNone)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueNone.count)
+        
+        timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueTimeIntervalIndicate)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueTimeIntervalIndicate.count)
+        
+        timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueTimeInterval)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueTimeInterval.count)
+        
+        timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueCount)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueCount.count)
     }
 }
