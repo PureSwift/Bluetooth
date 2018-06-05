@@ -47,6 +47,8 @@ public protocol GATTDescriptor {
     init?(byteValue: Data)
     
     var byteValue: Data { get }
+    
+    var descriptor: GATT.Descriptor { get }
 }
 
 public extension GATT.CharacteristicDescriptor {
@@ -57,6 +59,7 @@ public extension GATT.CharacteristicDescriptor {
     public typealias AggegateFormat = GATTAggregateFormatDescriptor
     public typealias Format = GATTFormatDescriptor
     public typealias UserDescription = GATTUserDescription
+    public typealias ReportReference = GATTReportReference
 }
 
 /// GATT Client Characteristic Configuration Descriptor
@@ -562,5 +565,67 @@ public struct GATTUserDescription: GATTDescriptor {
     public var byteValue: Data {
         
         return Data(userDescription.utf8)
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [])
+    }
+}
+
+/// GATT Report Reference Descriptor
+///
+/// Mapping information in the form of a Report ID and Report Type which maps the current parent characteristic to the Report ID(s) and Report Type (s) defined within the Report Map characteristic.
+public struct GATTReportReference: GATTDescriptor {
+    
+    public enum ReportType: UInt8 {
+        
+        /// Input Report
+        case InputReport = 0x01
+        
+        /// Output Report
+        case OutputReport = 0x02
+        
+        /// Feature Report
+        case FeatureReport = 0x03
+        
+    }
+    
+    public static let uuid: BluetoothUUID = .reportReference
+    
+    public static let length = 2
+    
+    public var reportID: UInt8
+    
+    public var reportType: ReportType
+    
+    public init(reportID: UInt8, reportType: ReportType) {
+        
+        self.reportID = reportID
+        self.reportType = reportType
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count == type(of: self).length
+            else { return nil }
+        
+        guard let reportType = ReportType(rawValue: byteValue[1])
+            else { return nil }
+        
+        self.init(reportID: byteValue[0], reportType: reportType)
+    }
+    
+    public var byteValue: Data {
+        
+        return Data([reportID, reportType.rawValue])
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [])
     }
 }
