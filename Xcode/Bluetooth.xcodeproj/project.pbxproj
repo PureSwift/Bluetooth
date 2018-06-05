@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		35A2DF6C20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2DF6B20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift */; };
-		35A2DF6D20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2DF6B20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift */; };
-		35A2DF6E20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2DF6B20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift */; };
-		35A2DF6F20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2DF6B20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift */; };
 		35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7CADC20C5E72100F797AE /* GATTProfile.swift */; };
+		35B8CE8420C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */; };
+		35B8CE8520C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */; };
+		35B8CE8620C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */; };
+		35B8CE8720C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */; };
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
 		512F4B47208A562E00576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
 		512F4B48208A564400576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
@@ -385,8 +385,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		35A2DF6B20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAlertNotificationProfile.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
+		35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTAlertNotificationProfile.swift; sourceTree = "<group>"; };
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
 		512F4B46208A562E00576F34 /* UInt256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt256.swift; sourceTree = "<group>"; };
 		512F4B4B208A567A00576F34 /* UInt512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt512.swift; sourceTree = "<group>"; };
@@ -547,8 +547,8 @@
 		35A2DF6A20C21FD3008B9A77 /* GATTProfiles */ = {
 			isa = PBXGroup;
 			children = (
+				35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */,
 				35B7CADC20C5E72100F797AE /* GATTProfile.swift */,
-				35A2DF6B20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift */,
 			);
 			name = GATTProfiles;
 			sourceTree = "<group>";
@@ -1042,6 +1042,7 @@
 				6E49B24320532D45002EA5DC /* AdvertisingChannelHeader.swift in Sources */,
 				6E60A30D20695FFB00E42351 /* ATTConnection.swift in Sources */,
 				6E49B24420532D45002EA5DC /* ATTProtocolDataUnit.swift in Sources */,
+				35B8CE8720C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */,
 				6E740C6D2065A2D1006589F6 /* HostControllerBasebandCommandParameter.swift in Sources */,
 				6E740C4020657EEB006589F6 /* HostControllerBasebandCommand.swift in Sources */,
 				6E49B24520532D45002EA5DC /* ProtocolServiceMultiplexer.swift in Sources */,
@@ -1083,7 +1084,6 @@
 				6E49B25620532D45002EA5DC /* ATT.swift in Sources */,
 				6E49B25720532D45002EA5DC /* LowEnergyCommandParameter.swift in Sources */,
 				6EAD977220BF796200673DB7 /* DefinedCompanies.swift in Sources */,
-				35A2DF6F20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */,
 				6E124BC5207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
 				6E49B25820532D45002EA5DC /* HCIGeneralEvent.swift in Sources */,
 				6E65DF8F20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
@@ -1129,6 +1129,7 @@
 				6E572AD91FCE763F00CDC763 /* AdvertisingChannelHeader.swift in Sources */,
 				6E60A30C20695FFB00E42351 /* ATTConnection.swift in Sources */,
 				6EB2EA091CD5A8A7000CF975 /* ATTProtocolDataUnit.swift in Sources */,
+				35B8CE8620C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */,
 				6E740C6C2065A2D1006589F6 /* HostControllerBasebandCommandParameter.swift in Sources */,
 				6E740C3F20657EEB006589F6 /* HostControllerBasebandCommand.swift in Sources */,
 				6EB2EA0A1CD5A8A7000CF975 /* ProtocolServiceMultiplexer.swift in Sources */,
@@ -1170,7 +1171,6 @@
 				6EB2EA111CD5A8A7000CF975 /* ATT.swift in Sources */,
 				6EB2EA121CD5A8A7000CF975 /* LowEnergyCommandParameter.swift in Sources */,
 				6EAD977120BF796200673DB7 /* DefinedCompanies.swift in Sources */,
-				35A2DF6E20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */,
 				6E124BC4207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
 				6EB2EA131CD5A8A7000CF975 /* HCIGeneralEvent.swift in Sources */,
 				6E65DF8E20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
@@ -1216,6 +1216,7 @@
 				6EBD96B9207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */,
 				6EE84DFD1CAF891E00A40C4D /* HCICommand.swift in Sources */,
 				6EE84DED1CAF881B00A40C4D /* ATTProtocolDataUnit.swift in Sources */,
+				35B8CE8420C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */,
 				6EE84DE61CAF828800A40C4D /* ProtocolServiceMultiplexer.swift in Sources */,
 				6EE84DE91CAF85AE00A40C4D /* GATT.swift in Sources */,
 				6E9578C12092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */,
@@ -1224,7 +1225,6 @@
 				6E60A3142069646200E42351 /* SecurityLevel.swift in Sources */,
 				6EE84DFE1CAF891E00A40C4D /* LinkControlCommand.swift in Sources */,
 				6E704C8F1E95C45800484A22 /* Hexadecimal.swift in Sources */,
-				35A2DF6C20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */,
 				6E60A2EC20695AE100E42351 /* POSIXError.swift in Sources */,
 				6E60A30520695CC600E42351 /* GATTServer.swift in Sources */,
 				6E740C3B20657ED3006589F6 /* LinkPolicyCommand.swift in Sources */,
@@ -1337,6 +1337,7 @@
 				6E572AD81FCE763E00CDC763 /* AdvertisingChannelHeader.swift in Sources */,
 				6E60A30B20695FFB00E42351 /* ATTConnection.swift in Sources */,
 				6EF45FA91CC6D04D001F7A39 /* ATTProtocolDataUnit.swift in Sources */,
+				35B8CE8520C646C1000BEC39 /* GATTAlertNotificationProfile.swift in Sources */,
 				6E740C6B2065A2D1006589F6 /* HostControllerBasebandCommandParameter.swift in Sources */,
 				6E740C3E20657EEB006589F6 /* HostControllerBasebandCommand.swift in Sources */,
 				6EF45FAA1CC6D04D001F7A39 /* ProtocolServiceMultiplexer.swift in Sources */,
@@ -1378,7 +1379,6 @@
 				6EF45FB11CC6D04D001F7A39 /* ATT.swift in Sources */,
 				6EF45FB21CC6D04D001F7A39 /* LowEnergyCommandParameter.swift in Sources */,
 				6EAD977020BF796200673DB7 /* DefinedCompanies.swift in Sources */,
-				35A2DF6D20C21FFF008B9A77 /* GATTAlertNotificationProfile.swift in Sources */,
 				6E124BC3207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
 				6EF45FB31CC6D04D001F7A39 /* HCIGeneralEvent.swift in Sources */,
 				6E65DF8D20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
