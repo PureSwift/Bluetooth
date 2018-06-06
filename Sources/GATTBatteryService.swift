@@ -8,6 +8,13 @@
 
 import Foundation
 
+/**
+ The Battery Service exposes the state of a battery within a device.
+ 
+ The Battery Service exposes the Battery State and Battery Level of a single battery or set of batteries in a device.
+ 
+ This service has no dependencies on other GATT-based services.
+ */
 public struct GATTBatteryService: GATTProfileService {
     
     public static let UUID: BluetoothUUID = .batteryService
