@@ -61,6 +61,8 @@ public extension GATT.CharacteristicDescriptor {
     public typealias UserDescription = GATTUserDescription
     public typealias ReportReference = GATTReportReference
     public typealias TimeTriggerSetting = GATTTimeTriggerSetting
+    public typealias ExternalReportReference = GATTExternalReportReference
+    public typealias NumberOfDigitals = GATTNumberOfDigitals
 }
 
 /// GATT Client Characteristic Configuration Descriptor
@@ -710,6 +712,73 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
             return Data([conditionByte, bytes.0, bytes.1])
             
         }
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [])
+    }
+}
+
+/// GATT External Report Reference Descriptor
+///
+/// The External Report Reference characteristic descriptor allows a HID Host to map information from the Report Map characteristic value for Input Report, Output Report or Feature Report data to the Characteristic UUID of external service characteristics used to transfer the associated data.
+public struct GATTExternalReportReference: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .externalReportReference
+    
+    public let gatt_UUID: BluetoothUUID
+    
+    public init(gattUUID: BluetoothUUID) {
+        
+        self.gatt_UUID = gattUUID
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard let gattUUID = BluetoothUUID(data: byteValue)
+            else { return nil }
+        
+        self.init(gattUUID: gattUUID)
+    }
+    
+    public var byteValue: Data {
+        
+        return gatt_UUID.data
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [])
+    }
+}
+
+/// GATT Number of Digitals Descriptor
+///
+/// The Characteristic Number of Digitals descriptor is used for defining the number of digitals in a characteristic.
+public struct GATTNumberOfDigitals: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .numberOfDigitals
+    
+    public static let length = 1
+    
+    public var numberOfDigitals: UInt8
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count == type(of: self).length
+            else { return nil }
+        
+        numberOfDigitals = byteValue[0]
+    }
+    
+    public var byteValue: Data {
+        
+        return Data([numberOfDigitals])
     }
     
     public var descriptor: GATT.Descriptor {

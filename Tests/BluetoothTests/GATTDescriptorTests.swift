@@ -20,7 +20,9 @@ final class GATTDescriptorTests: XCTestCase {
         ("testCharacteristicsFormatDescriptor",testCharacteristicsFormatDescriptor),
         ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor),
         ("testCharacteristicsReportReferenceDescriptor", testCharacteristicReportReferenceDescriptor),
-        ("testTimeTriggerSettingDescriptor", testTimeTriggerSettingDescriptor)
+        ("testTimeTriggerSettingDescriptor", testTimeTriggerSettingDescriptor),
+        ("testExternalReportReference", testExternalReportReferenceDescriptor),
+        ("testNumberOfDigitalsDescriptor",testNumberOfDigitalsDescritor)
     ]
     
     func testCharacteristicClientConfigurationDescriptor() {
@@ -202,5 +204,31 @@ final class GATTDescriptorTests: XCTestCase {
         
         timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueCount)
         XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueCount.count)
+    }
+    
+    func testExternalReportReferenceDescriptor() {
+        
+        XCTAssertNil(GATTExternalReportReference(byteValue: Data()))
+        XCTAssertNil(GATTExternalReportReference(byteValue: Data([0x00])))
+        
+        let aerobicHeartRateLowerLimit = BluetoothUUID.aerobicHeartRateLowerLimit.data
+        var externalReportReference = GATTExternalReportReference(byteValue: aerobicHeartRateLowerLimit)
+        XCTAssertEqual(externalReportReference?.byteValue, aerobicHeartRateLowerLimit)
+        
+        let batteryLevel = BluetoothUUID.batteryLevel.data
+        externalReportReference = GATTExternalReportReference(byteValue: Data([0x19, 0x2A]))
+        XCTAssertEqual(externalReportReference?.byteValue, batteryLevel)
+        
+        externalReportReference = GATTExternalReportReference(gattUUID: BluetoothUUID.batteryService)
+        XCTAssertEqual(externalReportReference?.byteValue, BluetoothUUID.batteryService.data)
+    }
+    
+    func testNumberOfDigitalsDescritor() {
+        
+        XCTAssertNil(GATTNumberOfDigitals(byteValue: Data()))
+        XCTAssertNil(GATTNumberOfDigitals(byteValue: Data([0x00, 0x00])))
+        
+        let numbersOfDigitals = GATTNumberOfDigitals(byteValue: Data([0x00]))
+        XCTAssertEqual(numbersOfDigitals?.byteValue, Data([0x00]))
     }
 }
