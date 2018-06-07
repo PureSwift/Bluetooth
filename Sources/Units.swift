@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Unit: RawRepresentable {
+public protocol Unit: RawRepresentable {
     
     static var unitType: UnitIdentifier { get }
     
@@ -18,28 +18,28 @@ protocol Unit: RawRepresentable {
 
 public struct PercentageUnit: Unit {
     
-    static var unitType: UnitIdentifier { return .percentage }
+    public static var unitType: UnitIdentifier { return .percentage }
     
-    public var percentage: UInt8
+    public var value: UInt8
     
-    public init?(rawValue percentage: UInt8) {
+    public init?(rawValue value: UInt8) {
         
-        self.percentage = percentage
+        self.value = value
     }
     
     fileprivate init(unsafe value: UInt8) {
         
-        self.percentage = value
+        self.value = value
     }
     
     public var rawValue: UInt8 {
         
-        return percentage
+        return value
     }
     
     public var data: Data {
         
-        return Data([percentage])
+        return Data([value])
     }
     
 }
@@ -48,22 +48,22 @@ extension PercentageUnit: Comparable {
     
     public static func == (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-        return lhs.percentage == rhs.percentage
+        return lhs.value == rhs.value
     }
     
     public static func < (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-        return lhs.percentage < rhs.percentage
+        return lhs.value < rhs.value
     }
     
     public static func <= (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-        return lhs.percentage <= rhs.percentage
+        return lhs.value <= rhs.value
     }
     
     public static func >= (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-        return lhs.percentage >= rhs.percentage
+        return lhs.value >= rhs.value
     }
     
 }
@@ -81,7 +81,178 @@ extension PercentageUnit: CustomStringConvertible {
     
     public var description: String {
         
-        return percentage.description
+        return value.description
+    }
+    
+}
+
+public struct MilimetreOfMercuryUnit: Unit {
+    
+    public static var unitType: UnitIdentifier { return .millimetreOfMercury }
+    
+    public var value: UInt16
+    
+    public init?(rawValue value: UInt16) {
+        
+        self.value = value
+    }
+    
+    fileprivate init(unsafe value: UInt16) {
+        
+        self.value = value
+    }
+    
+    public var rawValue: UInt16 {
+        
+        return value
+    }
+    
+    public var data: Data {
+        
+        let bytes = value.littleEndian.bytes
+        
+        return Data([bytes.0, bytes.1])
+    }
+    
+}
+
+extension MilimetreOfMercuryUnit: Equatable {
+    
+    public static func == (lhs: MilimetreOfMercuryUnit, rhs: MilimetreOfMercuryUnit) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension MilimetreOfMercuryUnit: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension MilimetreOfMercuryUnit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+    
+}
+
+public struct PascalUnit: Unit {
+    
+    public static var unitType: UnitIdentifier { return .pascalPressure }
+    
+    public var value: UInt16
+    
+    public init?(rawValue value: UInt16) {
+        
+        self.value = value
+    }
+    
+    fileprivate init(unsafe value: UInt16) {
+        
+        self.value = value
+    }
+    
+    public var rawValue: UInt16 {
+        
+        return value
+    }
+    
+    public var data: Data {
+        
+        let bytes = value.littleEndian.bytes
+        
+        return Data([bytes.0, bytes.1])
+    }
+    
+}
+
+extension PascalUnit: Equatable {
+    
+    public static func == (lhs: PascalUnit, rhs: PascalUnit) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension PascalUnit: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension PascalUnit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+    
+}
+
+public struct BeatsPerMinuteUnit: Unit {
+    
+    public static var unitType: UnitIdentifier { return .beatsPerMinute }
+    
+    public var value: UInt16
+    
+    public init?(rawValue value: UInt16) {
+        
+        self.value = value
+    }
+    
+    fileprivate init(unsafe value: UInt16) {
+        
+        self.value = value
+    }
+    
+    public var rawValue: UInt16 {
+        
+        return value
+    }
+    
+    public var data: Data {
+        
+        let bytes = value.littleEndian.bytes
+        
+        return Data([bytes.0, bytes.1])
+    }
+    
+}
+
+extension BeatsPerMinuteUnit: Equatable {
+    
+    public static func == (lhs: BeatsPerMinuteUnit, rhs: BeatsPerMinuteUnit) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension BeatsPerMinuteUnit: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension BeatsPerMinuteUnit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
     }
     
 }
