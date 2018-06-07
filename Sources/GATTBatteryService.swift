@@ -21,17 +21,17 @@ public struct GATTBatteryService: GATTProfileService {
 
     public struct BatteryLevel: GATTProfileCharacteristic {
         
-        internal static let max: BatteryLevel = 100
+        internal static let max = BatteryLevel(unsafe: 100)
         
-        internal static let min: BatteryLevel = 0
+        internal static let min = BatteryLevel(unsafe: 0)
         
         internal static let length = 1
         
         public static let UUID: BluetoothUUID = .batteryLevel
         
-        public var level: UInt8
+        public var level: PercentageUnit
         
-        public init?(level: UInt8) {
+        public init?(level: PercentageUnit) {
             
             guard BatteryLevel.min.level <= level, BatteryLevel.max.level >= level
                 else { return nil }
@@ -39,7 +39,7 @@ public struct GATTBatteryService: GATTProfileService {
             self.level = level
         }
         
-        fileprivate init(unsafe value: UInt8) {
+        fileprivate init(unsafe value: PercentageUnit) {
             
             self.level = value
         }
@@ -49,12 +49,15 @@ public struct GATTBatteryService: GATTProfileService {
             guard data.count == type(of: self).length
                 else { return nil }
             
-            self.init(level: data[0])
+            guard let percentage = PercentageUnit(rawValue: data[0])
+                else { return nil }
+            
+            self.init(level: percentage)
         }
         
         public var data: Data {
             
-            return Data([level])
+            return Data([level.percentage])
         }
         
         public var characteristic: GATT.Characteristic {
@@ -72,15 +75,6 @@ extension GATTBatteryService.BatteryLevel: Equatable {
                            rhs: GATTBatteryService.BatteryLevel) -> Bool {
         
         return lhs.level == rhs.level
-    }
-    
-}
-
-extension GATTBatteryService.BatteryLevel: ExpressibleByIntegerLiteral {
-
-    public init(integerLiteral value: UInt8) {
-        
-        self.init(unsafe: value)
     }
     
 }
