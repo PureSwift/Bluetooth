@@ -146,7 +146,7 @@ public extension UnitIdentifier {
     }
     
     /// pressure (pascal)
-    static var pressure: UnitIdentifier {
+    static var pascalPressure: UnitIdentifier {
         return UnitIdentifier(rawValue: 0x2724)
     }
     

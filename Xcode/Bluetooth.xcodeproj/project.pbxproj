@@ -11,6 +11,10 @@
 		3571E29120C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
 		3571E29220C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
 		3571E29320C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
+		3571E29520C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */; };
+		3571E29620C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */; };
+		3571E29720C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */; };
+		3571E29820C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */; };
 		3580287920C8308E0096227B /* UnitIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287820C8308E0096227B /* UnitIdentifier.swift */; };
 		3580287A20C8308E0096227B /* UnitIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287820C8308E0096227B /* UnitIdentifier.swift */; };
 		3580287B20C8308E0096227B /* UnitIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287820C8308E0096227B /* UnitIdentifier.swift */; };
@@ -402,6 +406,7 @@
 
 /* Begin PBXFileReference section */
 		3571E28F20C894BA0017ACD2 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
+		3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBloodPressureService.swift; sourceTree = "<group>"; };
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryService.swift; sourceTree = "<group>"; };
@@ -568,6 +573,7 @@
 			isa = PBXGroup;
 			children = (
 				358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */,
+				3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */,
 			);
 			name = GATTServices;
 			sourceTree = "<group>";
@@ -1121,6 +1127,7 @@
 				6E124BC5207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
 				6E49B25820532D45002EA5DC /* HCIGeneralEvent.swift in Sources */,
 				6E65DF8F20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
+				3571E29820C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */,
 				6E35CB28207FFB030039619C /* DefinedUUIDExtension.swift in Sources */,
 				6E98ACC0207F89F600DBFE85 /* ATTError.swift in Sources */,
 				6E60A2E52069564A00E42351 /* GATTDatabase.swift in Sources */,
@@ -1212,6 +1219,7 @@
 				6E124BC4207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
 				6EB2EA131CD5A8A7000CF975 /* HCIGeneralEvent.swift in Sources */,
 				6E65DF8E20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
+				3571E29720C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */,
 				6E35CB27207FFB030039619C /* DefinedUUIDExtension.swift in Sources */,
 				6E98ACBF207F89F600DBFE85 /* ATTError.swift in Sources */,
 				6E60A2E42069564A00E42351 /* GATTDatabase.swift in Sources */,
@@ -1247,6 +1255,7 @@
 				6E32291C1FCE4C4F0035605D /* LowEnergyAddressType.swift in Sources */,
 				6EE910251FDE5841007AD3EA /* UInt128.swift in Sources */,
 				6EE84E061CAF8AD500A40C4D /* HCI.swift in Sources */,
+				3571E29520C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */,
 				6E3229141FCDD40C0035605D /* CompanyIdentifier.swift in Sources */,
 				6EE84DFF1CAF891E00A40C4D /* LinkControlCommandParameter.swift in Sources */,
 				6E60A30A20695FFB00E42351 /* ATTConnection.swift in Sources */,
@@ -1428,6 +1437,7 @@
 				6E124BC3207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
 				6EF45FB31CC6D04D001F7A39 /* HCIGeneralEvent.swift in Sources */,
 				6E65DF8D20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
+				3571E29620C8B8330017ACD2 /* GATTBloodPressureService.swift in Sources */,
 				6E35CB26207FFB030039619C /* DefinedUUIDExtension.swift in Sources */,
 				6E98ACBE207F89F600DBFE85 /* ATTError.swift in Sources */,
 				6E60A2E32069564A00E42351 /* GATTDatabase.swift in Sources */,

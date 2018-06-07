@@ -57,7 +57,7 @@ public struct GATTBatteryService: GATTProfileService {
         
         public var data: Data {
             
-            return Data([level.percentage])
+            return Data([level.value])
         }
         
         public var characteristic: GATT.Characteristic {
