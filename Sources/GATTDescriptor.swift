@@ -110,7 +110,7 @@ public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.read, .write])
+                               permissions: [.read, .writeAuthentication])
     }
 }
 
@@ -175,7 +175,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.read])
+                               permissions: [.read, .noAuthorization])
     }
 }
 
@@ -239,7 +239,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.write])
+                               permissions: [.read, .writeAuthentication])
     }
 }
 
@@ -536,7 +536,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.read])
+                               permissions: [.read, .noAuthorization])
     }
 }
 
