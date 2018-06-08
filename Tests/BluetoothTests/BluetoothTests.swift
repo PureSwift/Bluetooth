@@ -13,6 +13,7 @@ import Foundation
 final class BluetoothTests: XCTestCase {
     
     static let allTests = [
+        ("testAdvertisingInterval", testAdvertisingInterval),
         ("testSecurityLevel", testSecurityLevel),
         ("testCompanyIdentifier", testCompanyIdentifier),
         ("testHCICommandTimeout", testHCICommandTimeout),
@@ -26,6 +27,13 @@ final class BluetoothTests: XCTestCase {
         ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
         ("testBitMaskOption", testBitMaskOption)
     ]
+    
+    func testAdvertisingInterval() {
+        
+        let value = AdvertisingInterval.default
+        
+        
+    }
     
     func testSecurityLevel() {
         
