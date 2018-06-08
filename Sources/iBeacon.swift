@@ -28,6 +28,8 @@ public struct AppleBeacon {
     /// The length of the TLV encoded data.
     internal static let length: UInt8 = 0x15 // length: 21 = 16 byte UUID + 2 bytes major + 2 bytes minor + 1 byte RSSI
     
+    internal static let additionalDataLength = Int(length) + 2
+    
     /// The unique ID of the beacons being targeted.
     ///
     /// Application developers should define a UUID specific to their app and deployment use case.
@@ -62,10 +64,8 @@ public struct AppleBeacon {
         
         let data = manufactererData.additionalData
         
-        let additionalDataLength = type(of: self).length + 2
-        
         guard manufactererData.companyIdentifier == type(of: self).companyIdentifier,
-            data.count == additionalDataLength
+            data.count == type(of: self).additionalDataLength
             else { return nil }
         
         let dataType = data[0]
@@ -106,7 +106,7 @@ public struct AppleBeacon {
             + uuidBytes
             + Data([majorBytes.0, majorBytes.1, minorBytes.0, minorBytes.1, rssiByte])
         
-        assert(additionalData.count == type(of: self).length + 2)
+        assert(additionalData.count == type(of: self).additionalDataLength)
         
         let manufactererData = GAPManufacturerSpecificData(companyIdentifier: type(of: self).companyIdentifier,
                                                            additionalData: additionalData)
@@ -157,7 +157,7 @@ public extension BluetoothHostControllerInterface {
         typealias SetAdvertisingData = LowEnergyCommand.SetAdvertisingDataParameter
         
         // set advertising parameters
-        let advertisingParameters = AdvertisingParameters(interval: (interval, interval))
+        let advertisingParameters = AdvertisingParameters(interval: (min: interval, max: interval))
                 
         try deviceRequest(advertisingParameters, timeout: timeout)
         

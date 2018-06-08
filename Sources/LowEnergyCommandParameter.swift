@@ -257,7 +257,7 @@ public extension LowEnergyCommand {
                     directAddresssType: LowEnergyAddressType = .public,
                     directAddress: Address = .zero,
                     channelMap: BitMaskOptionSet<ChannelMap> = .all,
-                    filterPolicy: FilterPolicy = FilterPolicy()) {
+                    filterPolicy: FilterPolicy = .any) {
             
             assert(interval.min <= interval.min, "The Advertising_Interval_Min shall be less than or equal to the Advertising_Interval_Max.")
             
@@ -314,6 +314,11 @@ public extension LowEnergyCommand {
         }
         
         public enum ChannelMap: UInt8, BitMaskOption {
+            
+            #if swift(>=3.2)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt8
+            #endif
             
             /// Enable channel 37 use
             case channel37              = 0b00000001
