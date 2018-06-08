@@ -174,6 +174,6 @@ final class iBeaconTests: XCTestCase {
         
         XCTAssertNoThrow(try hostController.iBeacon(beacon,
                                                     flags: 0x1A,
-                                                    interval: AppleBeacon.AdvertisingInterval(rawValue: 100)!))
+                                                    interval: AdvertisingInterval(rawValue: 100)!))
     }
 }

@@ -115,35 +115,6 @@ public struct AppleBeacon {
     }
 }
 
-public extension AppleBeacon {
-    
-    /// The advertising interval for iBeacon.
-    public struct AdvertisingInterval: RawRepresentable {
-        
-        public let rawValue: UInt16
-        
-        public init?(rawValue: UInt16) {
-            
-            guard rawValue <= AdvertisingInterval.max.rawValue,
-                    rawValue >= AdvertisingInterval.min.rawValue
-                else { return nil }
-            
-            self.rawValue = rawValue
-        }
-        
-        private init(_ unsafe: UInt16) {
-            
-            self.rawValue = unsafe
-        }
-        
-        public static let `default` = AdvertisingInterval(200)
-        
-        public static let max = AdvertisingInterval(.max)
-        
-        public static let min = AdvertisingInterval(100)
-    }
-}
-
 internal extension LowEnergyAdvertisingData {
     
     init(beacon: AppleBeacon, flags: GAPFlags) {
@@ -179,14 +150,14 @@ public extension BluetoothHostControllerInterface {
     /// Enable iBeacon functionality.
     func iBeacon(_ beacon: AppleBeacon,
                  flags: GAPFlags,
-                 interval: AppleBeacon.AdvertisingInterval = .default,
+                 interval: AdvertisingInterval = .default,
                  timeout: HCICommandTimeout = .default) throws {
         
         typealias AdvertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter
         typealias SetAdvertisingData = LowEnergyCommand.SetAdvertisingDataParameter
         
         // set advertising parameters
-        let advertisingParameters = AdvertisingParameters(interval: (interval.rawValue, interval.rawValue))
+        let advertisingParameters = AdvertisingParameters(interval: (interval, interval))
                 
         try deviceRequest(advertisingParameters, timeout: timeout)
         

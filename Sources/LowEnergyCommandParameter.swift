@@ -232,7 +232,7 @@ public extension LowEnergyCommand {
         ///
         /// The `Advertising_Interval_Min` and `Advertising_Interval_Max` shall not be set to less than
         /// `0x00A0` (100 ms) if the Advertising_Type is set to `0x02` (ADV_SCAN_IND) or `0x03` (ADV_NONCONN_IND).
-        public var interval: (min: UInt16, max: UInt16)
+        public var interval: (min: AdvertisingInterval, max: AdvertisingInterval)
         
         /// Ssed to determine the packet type that is used for advertising when advertising is enabled.
         public var advertisingType: AdvertisingType
@@ -251,7 +251,7 @@ public extension LowEnergyCommand {
         
         public var filterPolicy: FilterPolicy
         
-        public init(interval: (min: UInt16, max: UInt16) = (0x0800, 0x0800),
+        public init(interval: (min: AdvertisingInterval, max: AdvertisingInterval) = (.default, .default),
                     advertisingType: AdvertisingType = AdvertisingType(),
                     ownAddressType: LowEnergyAddressType = .public,
                     directAddresssType: LowEnergyAddressType = .public,
@@ -274,8 +274,8 @@ public extension LowEnergyCommand {
         
         public var byteValue: [UInt8] {
             
-            let minimumIntervalBytes = interval.min.littleEndian.bytes
-            let maximumIntervalBytes = interval.max.littleEndian.bytes
+            let minimumIntervalBytes = interval.min.rawValue.littleEndian.bytes
+            let maximumIntervalBytes = interval.max.rawValue.littleEndian.bytes
             
             let directAddressBytes = directAddress.littleEndian.bytes
             
