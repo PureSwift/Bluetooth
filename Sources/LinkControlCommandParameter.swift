@@ -18,7 +18,7 @@ public extension LinkControlCommand {
         
         public static let command = LinkControlCommand.inquiry
         
-        internal static let length = 5
+        public static let length = 5
         
         public var lap: (UInt8, UInt8, UInt8) = (0, 0, 0)
         
@@ -38,7 +38,7 @@ public extension LinkControlCommand {
         
         public static let command = LinkControlCommand.remoteNameRequest
         
-        internal static let length = 10
+        public static let length = 10
         
         public var address = Address()
         

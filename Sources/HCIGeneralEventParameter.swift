@@ -15,7 +15,7 @@ public extension HCIGeneralEvent {
     public struct CommandCompleteParameter: HCIEventParameter {
         
         public static let event = HCIGeneralEvent.commandComplete
-        internal static let length = 3
+        public static let length = 3
         
         /// The Number of HCI command packets which are allowed to be sent to the Controller from the Host.
         public var numberOfCommandPackets: UInt8
@@ -34,7 +34,7 @@ public extension HCIGeneralEvent {
     public struct CommandStatusParameter: HCIEventParameter {
         
         public static let event = HCIGeneralEvent.commandStatus
-        internal static let length = 4
+        public static let length = 4
         
         public var status: HCIStatus
         public var ncmd: UInt8
@@ -59,7 +59,7 @@ public extension HCIGeneralEvent {
     public struct RemoteNameRequestCompleteParameter: HCIEventParameter {
         
         public static let event = HCIGeneralEvent.remoteNameRequestComplete
-        internal static let length = 255
+        public static let length = 255
         
         public var status: HCIStatus
         public var address: Address
@@ -98,7 +98,7 @@ public extension HCIGeneralEvent {
         
         public static let event = HCIGeneralEvent.encryptionChange
         
-        internal static let length: Int = 4
+        public static let length: Int = 4
         
         public let status: HCIStatus
         
@@ -169,7 +169,7 @@ public extension HCIGeneralEvent {
         
         public static let event = HCIGeneralEvent.encryptionKeyRefreshComplete // 0x30
         
-        internal static let length: Int = 3
+        public static let length: Int = 3
         
         public let status: HCIStatus
         
@@ -194,7 +194,7 @@ public extension HCIGeneralEvent {
     public struct LowEnergyMetaParameter: HCIEventParameter {
         
         public static let event = HCIGeneralEvent.lowEnergyMeta
-        internal static let length = 1 // 1 ... HCI.maximumEventSize
+        public static let length = 1 // 1 ... HCI.maximumEventSize
         
         public let subevent: LowEnergyEvent
         public let data: [UInt8]

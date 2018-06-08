@@ -30,7 +30,7 @@ public extension LinkPolicyCommand {
         
         public static let command = LinkPolicyCommand.holdMode
         
-        internal static let length = MemoryLayout<UInt16>.size + Interval.length
+        public static let length = MemoryLayout<UInt16>.size + Interval.length
         
         /// Connection Handle
         public var connectionHandle: UInt16
@@ -77,7 +77,7 @@ public extension LinkPolicyCommand {
          */
         public struct Interval: RawRepresentable, Equatable {
             
-            internal static let length = MemoryLayout<UInt16>.size + MemoryLayout<UInt16>.size
+            public static let length = MemoryLayout<UInt16>.size + MemoryLayout<UInt16>.size
             
             public typealias RawValue = CountableClosedRange<UInt16>
             

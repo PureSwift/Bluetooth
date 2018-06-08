@@ -22,7 +22,7 @@ public protocol HCIPacketHeader {
 /// HCI Command Packet Header
 public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
     
-    internal static let length = 3
+    public static let length = 3
     
     /// OCF & OGF
     public var opcode: UInt16
@@ -75,7 +75,7 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
 /// HCI Event Packet Header
 public struct HCIEventHeader: HCIPacketHeader {
     
-    internal static let length = 2
+    public static let length = 2
     
     public var event: HCIGeneralEvent
     
