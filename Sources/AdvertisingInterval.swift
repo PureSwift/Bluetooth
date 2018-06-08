@@ -26,11 +26,11 @@ public struct AdvertisingInterval {
     
     public let rawValue: UInt16
     
+    public static let min = AdvertisingInterval(0x0020)
+    
+    public static let max = AdvertisingInterval(0x4000)
+    
     public static let `default` = AdvertisingInterval(0x0800)
-    
-    public static let max = AdvertisingInterval(0x0020)
-    
-    public static let min = AdvertisingInterval(0x4000)
     
     public init?(rawValue: UInt16) {
         
