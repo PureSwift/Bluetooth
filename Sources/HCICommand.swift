@@ -58,9 +58,6 @@ public protocol HCICommandReturnParameter {
     
     static var command: HCICommandType { get }
     
-    /// Length of the command return parameter when encoded to data.
-    static var length: Int { get }
-    
     // Attempt to initialize command return parameter from data.
     init?(byteValue: [UInt8])
 }
