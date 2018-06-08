@@ -23,12 +23,22 @@ public struct GAPAppearance: RawRepresentable {
         self.rawValue = rawValue
     }
     
-    /*
     public init(category: Category,
                 subcategory: Subcategory) {
         
-        self.rawValue =
-    }*/
+        self.rawValue = category.rawValue << 6 + subcategory.rawValue
+    }
+    
+    public var category: Category {
+        
+        // category is stored in the first 10 bits
+        return Category(rawValue: rawValue >> 6)
+    }
+    
+    public var subcategory: Subcategory {
+        
+        return Subcategory(rawValue: rawValue - (rawValue >> 6) << 6)
+    }
 }
 
 extension GAPAppearance: ExpressibleByIntegerLiteral {
@@ -68,6 +78,22 @@ public extension GAPAppearance {
     }
 }
 
+extension GAPAppearance.Category: Equatable {
+    
+    public static func == (lhs: GAPAppearance.Category, rhs: GAPAppearance.Category) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GAPAppearance.Category: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
 extension GAPAppearance.Category: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
@@ -86,6 +112,22 @@ public extension GAPAppearance {
             
             self.rawValue = rawValue
         }
+    }
+}
+
+extension GAPAppearance.Subcategory: Equatable {
+    
+    public static func == (lhs: GAPAppearance.Subcategory, rhs: GAPAppearance.Subcategory) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GAPAppearance.Subcategory: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(rawValue)
     }
 }
 
