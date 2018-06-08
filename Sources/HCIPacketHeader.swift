@@ -9,7 +9,9 @@
 // MARK: - HCI Packet structures
 
 public protocol HCIPacketHeader {
-        
+    
+    static var length: Int { get }
+    
     init?(bytes: [UInt8])
     
     var byteValue: [UInt8] { get }

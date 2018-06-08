@@ -34,7 +34,6 @@ public extension HCIGeneralEvent {
     public struct CommandStatusParameter: HCIEventParameter {
         
         public static let event = HCIGeneralEvent.commandStatus
-        
         internal static let length = 4
         
         public var status: HCIStatus
