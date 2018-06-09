@@ -29,6 +29,11 @@ public final class GATTServer {
     
     public let maximumPreparedWrites: Int
     
+    public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
+        
+        return connection.maximumTransmissionUnit
+    }
+    
     // Don't modify
     @_versioned
     internal let connection: ATTConnection
