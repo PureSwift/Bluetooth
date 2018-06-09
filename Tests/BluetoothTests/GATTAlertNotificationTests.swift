@@ -89,7 +89,7 @@ final class GATTAlertNotificationTests: XCTestCase {
     
     func testUnreadAlertStatus() {
         
-        let data = Data([0x03, 0x00])
+        let data = Data([0x01, 0x04])
         
         guard let characteristic = GATTAlertNotificationService.UnreadAlertStatus(data: data)
             else { XCTFail("Could not decode from bytes"); return }
