@@ -12,6 +12,70 @@ public struct GATTBloodPressureService: GATTProfileService {
     
     public static let UUID: BluetoothUUID = .bloodPressure
     
+    public struct BloodPressureFeature: GATTProfileCharacteristic {
+        
+        public static var UUID: BluetoothUUID { return .bloodPressureFeature }
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public var flags: BitMaskOptionSet<Flag>
+        
+        public init(flags: BitMaskOptionSet<Flag>) {
+            
+            self.flags = flags
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count >= type(of: self).length
+                else { return nil }
+            
+            let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+            
+            self.init(flags: flags)
+        }
+        
+        public var data: Data {
+            
+            let bytes = flags.rawValue.littleEndian.bytes
+            
+            return Data([bytes.0, bytes.1])
+        }
+        
+        public enum Flag: UInt16, BitMaskOption {
+            
+            internal static let length = MemoryLayout<UInt16>.size
+            
+            #if swift(>=3.2)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt16
+            #endif
+            
+            case bodyMovementDetectionSupport = 0b01
+            
+            case cuttFitDetectionSupport = 0b10
+            
+            case irregularPulseDetectionSupport = 0b100
+            
+            case pulseRateRageDetectionSupport = 0b1000
+            
+            case measurementPositionDetectionSupport = 0b10000
+            
+            case multipleBondSupport = 0b100000
+            
+            public static let all: Set<Flag> = [
+                .bodyMovementDetectionSupport,
+                .cuttFitDetectionSupport,
+                .irregularPulseDetectionSupport,
+                .pulseRateRageDetectionSupport,
+                .measurementPositionDetectionSupport,
+                .multipleBondSupport
+            ]
+            
+        }
+        
+    }
+    
     public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         
         public static var UUID: BluetoothUUID { return .bloodPressureMeasurement }
