@@ -251,7 +251,7 @@ public extension LowEnergyCommand {
         
         public var filterPolicy: FilterPolicy
         
-        public init(interval: (min: AdvertisingInterval, max: AdvertisingInterval) = (.default, .default),
+        public init(interval: (min: AdvertisingInterval, max: AdvertisingInterval) = (.default, .max),
                     advertisingType: AdvertisingType = AdvertisingType(),
                     ownAddressType: LowEnergyAddressType = .public,
                     directAddresssType: LowEnergyAddressType = .public,
@@ -259,7 +259,7 @@ public extension LowEnergyCommand {
                     channelMap: BitMaskOptionSet<ChannelMap> = .all,
                     filterPolicy: FilterPolicy = .any) {
             
-            assert(interval.min <= interval.min, "The Advertising_Interval_Min shall be less than or equal to the Advertising_Interval_Max.")
+            assert(interval.min <= interval.max, "The Advertising_Interval_Min shall be less than or equal to the Advertising_Interval_Max.")
             
             assert(channelMap.rawValue != 0, "00000000b is Reserved for future use")
             
