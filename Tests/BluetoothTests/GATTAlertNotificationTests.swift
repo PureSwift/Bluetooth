@@ -48,6 +48,8 @@ final class GATTAlertNotificationTests: XCTestCase {
     
     func testNewAlert() {
         
+        typealias Information = GATTAlertNotificationService.NewAlert.Information
+        
         let data = Data([0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64])
         
         guard let characteristic = GATTAlertNotificationService.NewAlert(data: data)
@@ -59,6 +61,10 @@ final class GATTAlertNotificationTests: XCTestCase {
         XCTAssertEqual(characteristic.categoryID, .email)
         XCTAssertEqual(characteristic.newAlertsCount, 4)
         XCTAssertEqual(characteristic.information.rawValue, "Richard")
+        
+        XCTAssertNil(Information(rawValue: "Alsey Coleman Miller ABCDEFGHIJKLMNOP"))
+        XCTAssertNotNil(Information(rawValue: ""))
+        XCTAssertNotNil(Information(rawValue: "Alsey Coleman"))
     }
     
     func testAlertCategoryID() {

@@ -251,9 +251,15 @@ public extension GATTAlertNotificationService.NewAlert {
     /// Alert textual information.
     public struct Information: RawRepresentable {
         
+        /// The minimum length of “UTF-8 string” is 0 octets and maximum length of “UTF-8 string” is 18 octets.
         internal static let length = (min: 0, max: 18)
         
         public let rawValue: String
+        
+        public init() {
+            
+            self.rawValue = ""
+        }
         
         public init?(rawValue: String) {
             
