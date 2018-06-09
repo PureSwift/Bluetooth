@@ -17,7 +17,7 @@ import Foundation
  */
 public struct GATTBatteryService: GATTProfileService {
     
-    public static let UUID: BluetoothUUID = .batteryService
+    public static let uuid: BluetoothUUID = .batteryService
 
     public struct BatteryLevel: GATTProfileCharacteristic {
         
@@ -27,7 +27,7 @@ public struct GATTBatteryService: GATTProfileService {
         
         internal static let length = 1
         
-        public static let UUID: BluetoothUUID = .batteryLevel
+        public static let uuid: BluetoothUUID = .batteryLevel
         
         public var level: PercentageUnit
         
@@ -62,7 +62,7 @@ public struct GATTBatteryService: GATTProfileService {
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [.read], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid, value: data, permissions: [], properties: [.read], descriptors: [])
         }
         
     }
