@@ -14,17 +14,20 @@ final class iBeaconTests: XCTestCase {
     
     static let allTests = [
         ("testData", testData),
-        ("testCommand", testCommand)
+        ("testCommand", testCommand),
+        ("testEstimoteBeacon", testEstimoteBeacon)
     ]
     
     func testData() {
         
-        let value = iBeacon(uuid: UUID(uuidString: "f7826da6-4fa2-4e98-8024-bc5b71e0893e")!,
-                            major: 0xAA,
-                            minor: 0xBB,
-                            rssi: RSSI(rawValue: Int8(bitPattern: 0xb3))!)
+        let flags: GAPFlags = 0x1a
         
-        let advertisingDataCommand = value.advertisingDataCommand
+        let beacon = AppleBeacon(uuid: UUID(uuidString: "f7826da6-4fa2-4e98-8024-bc5b71e0893e")!,
+                                 major: 0xAA,
+                                 minor: 0xBB,
+                                 rssi: Int8(bitPattern: 0xb3))
+        
+        let advertisingData = LowEnergyAdvertisingData(beacon: beacon, flags: flags)
         
         let testData = LowEnergyAdvertisingData(length: 30, bytes: (
             0x02, //    Data length – 2 bytes    constant preamble
@@ -59,14 +62,53 @@ final class iBeaconTests: XCTestCase {
             0xb3 , //   Signal power (calibrated RSSI@1m)    signal power value
             0x00))
         
-        XCTAssertEqual(advertisingDataCommand.data, testData)
+        XCTAssertEqual(advertisingData, testData)
+        
+        guard let decoded = AppleBeacon.from(advertisingData: testData)
+            else { XCTFail(); return }
+        
+        XCTAssertEqual(decoded.flags, flags)
+        XCTAssertEqual(decoded.beacon.uuid, beacon.uuid)
+        XCTAssertEqual(decoded.beacon.major, beacon.major)
+        XCTAssertEqual(decoded.beacon.minor, beacon.minor)
+        XCTAssertEqual(decoded.beacon.rssi, beacon.rssi)
+    }
+    
+    func testEstimoteBeacon() {
+        
+        let expectedData = Data([0x4c, 0x00, 0x02, 0x15, 0xb9, 0x40, 0x7f, 0x30, 0xf5, 0xf8, 0x46, 0x6e, 0xaf, 0xf9, 0x25, 0x55, 0x6b, 0x57, 0xfe, 0x6d, 0x29, 0x4c, 0x90, 0x39, 0x74])
+        
+        let uuid = UUID(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")!
+        
+        let major: UInt16 = 0x294c
+        
+        let minor: UInt16 = 0x9039
+        
+        let rssi: Int8 = 116
+        
+        let beacon = AppleBeacon(uuid: uuid, major: major, minor: minor, rssi: rssi)
+        
+        guard let manufactererData = GAPManufacturerSpecificData(data: expectedData)
+            else { XCTFail(); return }
+        
+        XCTAssertEqual(beacon.manufactererData, manufactererData)
+
+        XCTAssertEqual(manufactererData.companyIdentifier, .apple)
+        
+        guard let decodedBeacon = AppleBeacon(manufactererData: manufactererData)
+            else { XCTFail(); return }
+        
+        XCTAssertEqual(decodedBeacon.uuid, uuid)
+        XCTAssertEqual(decodedBeacon.major, major)
+        XCTAssertEqual(decodedBeacon.minor, minor)
+        XCTAssertEqual(decodedBeacon.rssi, rssi)
     }
     
     func testCommand() {
         
         let uuid = UUID(rawValue: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!
         
-        let beacon = iBeacon(uuid: uuid, major: 1, minor: 1, rssi: RSSI(rawValue: -29)!, interval: 100)
+        let beacon = AppleBeacon(uuid: uuid, major: 1, minor: 1, rssi: -29)
         
         let hostController = TestHostController()
         
@@ -130,6 +172,8 @@ final class iBeaconTests: XCTestCase {
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x08, 0x20, 0x00]))
         
-        XCTAssertNoThrow(try hostController.iBeacon(beacon))
+        XCTAssertNoThrow(try hostController.iBeacon(beacon,
+                                                    flags: 0x1A,
+                                                    interval: AdvertisingInterval(rawValue: 100)!))
     }
 }
