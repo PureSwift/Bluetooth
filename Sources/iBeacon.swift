@@ -8,103 +8,156 @@
 
 import Foundation
 
-// swiftlint:disable type_name
-/// Describes an iBeacon to be advertised.
-public struct iBeacon {
-// swiftlint:enable type_name
+/**
+ Apple iBeacon
+ 
+ iBeacon is an exciting technology enabling new location awareness possibilities for apps. Leveraging Bluetooth Low Energy (BLE), a device with iBeacon technology can be used to establish a region around an object. This allows an iOS device to determine when it has entered or left the region, along with an estimation of proximity to a beacon . There are both hardware and software components to consider when using iBeacon technology, and this document will give an introduction to both, along with suggested uses and best practices to help ensure a highly effective deployment leading to an outstanding user experience.
+ 
+ Devices with iBeacon technology can be powered using coin cell batteries for a month or longer, or operate for months at a time using larger batteries, or can be powered externally for extended periods of time. iOS devices can also be configured to generate iBeacon advertisements, although this functionality is limited in scope. This would be appropriate for uses such as a Point Of Sale or kiosk application, or for an application that wants to become an iBeacon for a short time while someone is actively using the application.
+ 
+ - SeeAlso: [Getting Started with iBeacon](https://developer.apple.com/ibeacon/Getting-Started-with-iBeacon.pdf).
+ */
+public struct AppleBeacon {
+    
+    /// The company that created this specification.
+    public static let companyIdentifier: CompanyIdentifier = .apple
+    
+    /// Apple iBeacon data type.
+    internal static let appleDataType: UInt8 = 0x02 // iBeacon
+    
+    /// The length of the TLV encoded data.
+    internal static let length: UInt8 = 0x15 // length: 21 = 16 byte UUID + 2 bytes major + 2 bytes minor + 1 byte RSSI
+    
+    internal static let additionalDataLength = Int(length) + 2
     
     /// The unique ID of the beacons being targeted.
+    ///
+    /// Application developers should define a UUID specific to their app and deployment use case.
     public var uuid: Foundation.UUID
     
     /// The value identifying a group of beacons.
+    ///
+    /// Further specifies a specific iBeacon and use case.
+    /// For example, this could define a sub-region within a larger region defined by the UUID.
     public var major: UInt16
     
     /// The value identifying a specific beacon within a group.
+    ///
+    /// Allows further subdivision of region or use case, specified by the application developer.
     public var minor: UInt16
     
     /// The received signal strength indicator (RSSI) value (measured in decibels) for the device.
-    public var rssi: RSSI
-    
-    /// The advertising interval.
-    public var interval: UInt16
+    public var rssi: Int8
     
     public init(uuid: Foundation.UUID,
                 major: UInt16 = 0,
                 minor: UInt16 = 0,
-                rssi: RSSI,
-                interval: UInt16 = 200) {
+                rssi: Int8) {
         
         self.uuid = uuid
         self.major = major
         self.minor = minor
         self.rssi = rssi
-        self.interval = interval
     }
-}
-
-public extension iBeacon {
     
-    var advertisingDataCommand: LowEnergyCommand.SetAdvertisingDataParameter {
+    public init?(manufactererData: GAPManufacturerSpecificData) {
         
-        var dataParameter = LowEnergyCommand.SetAdvertisingDataParameter()
+        let data = manufactererData.additionalData
         
-        dataParameter.data.length = 30
+        guard manufactererData.companyIdentifier == type(of: self).companyIdentifier,
+            data.count == type(of: self).additionalDataLength
+            else { return nil }
         
-        dataParameter.data.bytes.0 = 0x02  // length of flags
-        dataParameter.data.bytes.1 = 0x01  // flags type
-        dataParameter.data.bytes.2 = 0x1a  // Flags: 000011010
-        dataParameter.data.bytes.3 = 0x1a  // length
-        dataParameter.data.bytes.4 = 0xff  // vendor specific
-        dataParameter.data.bytes.5 = 0x4c  // Apple, Inc
-        dataParameter.data.bytes.6 = 0x00  // Apple, Inc
-        dataParameter.data.bytes.7 = 0x02  // iBeacon
-        dataParameter.data.bytes.8 = 0x15  // length: 21 = 16 byte UUID + 2 bytes major + 2 bytes minor + 1 byte RSSI
+        let dataType = data[0]
         
-        // set UUID bytes
+        guard dataType == type(of: self).appleDataType
+            else { return nil }
+        
+        let length = data[1]
+        
+        guard length == type(of: self).length
+            else { return nil }
+        
+        let uuid = BluetoothUUID(bigEndian: BluetoothUUID(data: Data(data[2 ..< 18]))!)
+        
+        let major = UInt16(bigEndian: UInt16(bytes: (data[18], data[19])))
+        
+        let minor = UInt16(bigEndian: UInt16(bytes: (data[20], data[21])))
+        
+        let rssi = Int8(bitPattern: data[22])
+        
+        self.init(uuid: UUID(bluetooth: uuid), major: major, minor: minor, rssi: rssi)
+    }
+    
+    public var manufactererData: GAPManufacturerSpecificData {
+        
+        let tlvPrefix = Data([type(of: self).appleDataType, type(of: self).length])
         
         let uuidBytes = BluetoothUUID(uuid: uuid).bigEndian.data
         
-        dataParameter.data.bytes.9 = uuidBytes[0]
-        dataParameter.data.bytes.10 = uuidBytes[1]
-        dataParameter.data.bytes.11 = uuidBytes[2]
-        dataParameter.data.bytes.12 = uuidBytes[3]
-        dataParameter.data.bytes.13 = uuidBytes[4]
-        dataParameter.data.bytes.14 = uuidBytes[5]
-        dataParameter.data.bytes.15 = uuidBytes[6]
-        dataParameter.data.bytes.16 = uuidBytes[7]
-        dataParameter.data.bytes.17 = uuidBytes[8]
-        dataParameter.data.bytes.18 = uuidBytes[9]
-        dataParameter.data.bytes.19 = uuidBytes[10]
-        dataParameter.data.bytes.20 = uuidBytes[11]
-        dataParameter.data.bytes.21 = uuidBytes[12]
-        dataParameter.data.bytes.22 = uuidBytes[13]
-        dataParameter.data.bytes.23 = uuidBytes[14]
-        dataParameter.data.bytes.24 = uuidBytes[15]
-        
         let majorBytes = major.bigEndian.bytes
-        
-        dataParameter.data.bytes.25 = majorBytes.0
-        dataParameter.data.bytes.26 = majorBytes.1
         
         let minorBytes = minor.bigEndian.bytes
         
-        dataParameter.data.bytes.27 = minorBytes.0
-        dataParameter.data.bytes.28 = minorBytes.1
+        let rssiByte = UInt8(bitPattern: rssi)
         
-        dataParameter.data.bytes.29 = UInt8(bitPattern: rssi.rawValue)
+        // TLV coding
+        let additionalData = tlvPrefix
+            + uuidBytes
+            + Data([majorBytes.0, majorBytes.1, minorBytes.0, minorBytes.1, rssiByte])
         
-        return dataParameter
+        assert(additionalData.count == type(of: self).additionalDataLength)
+        
+        let manufactererData = GAPManufacturerSpecificData(companyIdentifier: type(of: self).companyIdentifier,
+                                                           additionalData: additionalData)
+        
+        return manufactererData
+    }
+}
+
+internal extension LowEnergyAdvertisingData {
+    
+    init(beacon: AppleBeacon, flags: GAPFlags) {
+        
+        let data = GAPDataEncoder.encode([flags, beacon.manufactererData])
+        
+        guard let advertisingData = LowEnergyAdvertisingData(data: data)
+            else { fatalError("Data too large to fit in advertisment (\(data.count) bytes)") }
+        
+        self = advertisingData
+    }
+}
+
+internal extension AppleBeacon {
+    
+    static func from(advertisingData: LowEnergyAdvertisingData) -> (beacon: AppleBeacon, flags: GAPFlags)? {
+        
+        let types: [GAPData.Type] = [GAPFlags.self, GAPManufacturerSpecificData.self]
+        
+        guard let decodedGapData = try? GAPDataDecoder.decode(advertisingData.data, types: types),
+            decodedGapData.count == 2,
+            let flags = decodedGapData[0] as? GAPFlags,
+            let manufactererData = decodedGapData[1] as? GAPManufacturerSpecificData,
+            let beacon = AppleBeacon(manufactererData: manufactererData)
+            else { return nil }
+        
+        return (beacon, flags)
     }
 }
 
 public extension BluetoothHostControllerInterface {
     
     /// Enable iBeacon functionality.
-    func iBeacon(_ iBeacon: iBeacon,
+    func iBeacon(_ beacon: AppleBeacon,
+                 flags: GAPFlags,
+                 interval: AdvertisingInterval = .default,
                  timeout: HCICommandTimeout = .default) throws {
         
+        typealias AdvertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter
+        typealias SetAdvertisingData = LowEnergyCommand.SetAdvertisingDataParameter
+        
         // set advertising parameters
-        let advertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter(interval: (iBeacon.interval, iBeacon.interval))
+        let advertisingParameters = AdvertisingParameters(interval: (min: interval, max: interval))
                 
         try deviceRequest(advertisingParameters, timeout: timeout)
         
@@ -113,7 +166,8 @@ public extension BluetoothHostControllerInterface {
         catch HCIError.commandDisallowed { /* ignore, means already turned on */ }
         
         // set iBeacon data
-        let advertisingDataCommand = iBeacon.advertisingDataCommand
+        let advertisingData = LowEnergyAdvertisingData(beacon: beacon, flags: flags)
+        let advertisingDataCommand = SetAdvertisingData(data: advertisingData)
         
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }

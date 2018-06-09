@@ -63,7 +63,7 @@ public extension UInt64 {
         self = unsafeBitCast(bytes, to: UInt64.self)
     }
     
-    /// Converts to four bytes.
+    /// Converts to eight bytes.
     public var bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8) {
         
         return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8).self)

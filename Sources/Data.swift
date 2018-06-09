@@ -8,7 +8,8 @@
 
 import Foundation
 
-#if os(Linux)
+#if swift(>=3.1)
+#elseif swift(>=3.0)
 internal extension Data {
     
     static func += (data: inout Data, bytes: [UInt8]) {
