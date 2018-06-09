@@ -24,7 +24,7 @@ public struct GAPAppearance: RawRepresentable {
     }
     
     public init(category: Category,
-                subcategory: Subcategory) {
+                subcategory: Subcategory = 0) {
         
         self.rawValue = category.rawValue << 6 + subcategory.rawValue
     }
@@ -141,25 +141,52 @@ extension GAPAppearance.Subcategory: ExpressibleByIntegerLiteral {
 
 // MARK: - Values
 
+public extension GAPAppearance.Category {
+    
+    /// GAP Appearance Unknown category
+    public static var unknown: GAPAppearance.Category { return 0 }
+    
+    /// GAP Appearance Phone category
+    public static var phone: GAPAppearance.Category { return 1 }
+    
+    /// GAP Appearance Computer category
+    public static var computer: GAPAppearance.Category { return 2 }
+    
+    /// GAP Appearance Watch category
+    public static var watch: GAPAppearance.Category { return 3 }
+    
+    /// GAP Appearance Clock category
+    public static var clock: GAPAppearance.Category { return 4 }
+    
+    /// GAP Appearance Display category
+    public static var display: GAPAppearance.Category { return 5 }
+    
+    /// GAP Appearance RemoteControl category
+    public static var remoteControl: GAPAppearance.Category { return 6 }
+}
+
 public extension GAPAppearance {
     
+    /// GAP Appearance Unknown
     public enum Unknown {
         
-        public static let category: GAPAppearance.Category = 0
+        public static let category: GAPAppearance.Category = .unknown
         
         public static let unknown: GAPAppearance = 0
     }
     
+    /// GAP Appearance Phone
     public enum Phone {
         
-        public static let category: GAPAppearance.Category = 1
+        public static let category: GAPAppearance.Category = .phone
         
         public static let generic: GAPAppearance = 64
     }
     
+    /// GAP Appearance Computer
     public enum Computer {
         
-        public static let category: GAPAppearance.Category = 2
+        public static let category: GAPAppearance.Category = .computer
         
         public static let generic: GAPAppearance = 128
     }
@@ -168,7 +195,7 @@ public extension GAPAppearance {
     public enum Watch {
         
         /// GAP Appearance Watch category
-        public static let category: GAPAppearance.Category = 3
+        public static let category: GAPAppearance.Category = .watch
         
         /// Generic Watch
         public static let generic: GAPAppearance = 192
@@ -180,14 +207,14 @@ public extension GAPAppearance {
     /// GAP Appearance Clock category namepace
     public enum Clock {
         
-        public static let category: GAPAppearance.Category = 4
+        public static let category: GAPAppearance.Category = .clock
         
         public static let generic: GAPAppearance = 256
     }
     
     public enum Display {
         
-        public static let category: GAPAppearance.Category = 5
+        public static let category: GAPAppearance.Category = .display
         
         public static let generic: GAPAppearance = 320
     }
