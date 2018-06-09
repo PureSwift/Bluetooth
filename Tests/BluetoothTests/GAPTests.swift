@@ -518,18 +518,32 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPAppearanceData(appearance: GAPAppearance.Phone.generic).data, Data([64, 0]))
         XCTAssertEqual(GAPAppearanceData(data: Data([64, 0]))?.appearance, GAPAppearance.Phone.generic)
         
+        XCTAssertEqual(GAP.Appearance(category: .unknown), GAP.Appearance.Unknown.unknown)
         XCTAssertEqual(GAP.Appearance.Unknown.unknown.category, GAP.Appearance.Unknown.category)
+        XCTAssertEqual(GAP.Appearance.Unknown.unknown.category, .unknown)
         XCTAssertEqual(GAP.Appearance.Unknown.unknown.category, 0)
         XCTAssertEqual(GAP.Appearance.Unknown.unknown.subcategory, 0)
+        
+        XCTAssertEqual(GAP.Appearance(category: .phone), GAP.Appearance.Phone.generic)
         XCTAssertEqual(GAP.Appearance.Phone.generic.category, GAP.Appearance.Phone.category)
+        XCTAssertEqual(GAP.Appearance.Phone.generic.category, .phone)
         XCTAssertEqual(GAP.Appearance.Phone.generic.category, 1)
         XCTAssertEqual(GAP.Appearance.Phone.generic.subcategory, 0)
+        
+        XCTAssertEqual(GAP.Appearance(category: .computer), GAP.Appearance.Computer.generic)
+        XCTAssertEqual(GAP.Appearance.Computer.generic.category, .computer)
         XCTAssertEqual(GAP.Appearance.Computer.generic.category, GAP.Appearance.Computer.category)
         XCTAssertEqual(GAP.Appearance.Computer.generic.category, 2)
         XCTAssertEqual(GAP.Appearance.Computer.generic.subcategory, 0)
+        
+        XCTAssertEqual(GAP.Appearance(category: .watch), GAP.Appearance.Watch.generic)
+        XCTAssertEqual(GAP.Appearance.Watch.generic.category, .watch)
         XCTAssertEqual(GAP.Appearance.Watch.generic.category, GAP.Appearance.Watch.category)
         XCTAssertEqual(GAP.Appearance.Watch.generic.category, 3)
         XCTAssertEqual(GAP.Appearance.Watch.generic.subcategory, 0)
+        
+        XCTAssertEqual(GAP.Appearance(category: .watch, subcategory: 1), GAP.Appearance.Watch.sports)
+        XCTAssertEqual(GAP.Appearance.Watch.sports.category, .watch)
         XCTAssertEqual(GAP.Appearance.Watch.sports.category, GAP.Appearance.Watch.category)
         XCTAssertEqual(GAP.Appearance.Watch.sports.category, 3)
         XCTAssertEqual(GAP.Appearance.Watch.sports.subcategory, 1)
