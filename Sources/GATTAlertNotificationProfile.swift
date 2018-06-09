@@ -187,11 +187,11 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         public var numberOfNewAlerts: UInt8
         
-        public var textStringInformation: Data
+        public var textStringInformation: String
         
         public init(categoryID: AlertCategoryID,
                     numberOfNewAlerts: UInt8,
-                    textStringInformation: Data) {
+                    textStringInformation: String) {
             
             self.categoryID = categoryID
             self.numberOfNewAlerts = numberOfNewAlerts
@@ -207,15 +207,22 @@ public struct GATTAlertNotificationService: GATTProfileService {
                 else { return nil }
             
             let numberOfNewAlerts = data[1]
-            let textStringInformation = data.subdata(in: (2..<data.count))
+            let textStringInformationData = data.subdata(in: (2..<data.count))
             
-            self.init(categoryID: categoryID, numberOfNewAlerts: numberOfNewAlerts, textStringInformation: textStringInformation)
+            guard let textStringInformation = String(data: textStringInformationData, encoding: .utf8)
+                else { return nil }
+            
+            self.init(categoryID: categoryID,
+                      numberOfNewAlerts: numberOfNewAlerts,
+                      textStringInformation: textStringInformation)
         }
         
         public var data: Data {
             
-            let data = Data([categoryID.rawValue, numberOfNewAlerts])
-            return textStringInformation.reduce(data, { $0.0 + [$0.1] })
+            guard let textStringInformationData = textStringInformation.data(using: .utf8)
+                else { fatalError("Could not encode string") }
+            
+            return Data([categoryID.rawValue, numberOfNewAlerts]) + textStringInformationData
         }
         
         public var characteristic: GATT.Characteristic {
@@ -379,7 +386,11 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).uuid, value: data, permissions: [], properties: [.notify], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [],
+                                       properties: [.notify],
+                                       descriptors: [])
         }
         
     }
@@ -432,7 +443,11 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).uuid, value: data, permissions: [], properties: [.notify], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [],
+                                       properties: [.notify],
+                                       descriptors: [])
         }
         
         public enum CommandID: UInt8 {
@@ -527,5 +542,4 @@ extension GATTAlertNotificationService.AlertNotificationControlPoint: Equatable 
         
         return lhs.commandID == rhs.commandID && lhs.categoryID == rhs.categoryID
     }
-    
 }
