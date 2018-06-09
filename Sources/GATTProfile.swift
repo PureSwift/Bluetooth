@@ -10,12 +10,12 @@ import Foundation
 
 public protocol GATTProfileService {
     
-    static var UUID: BluetoothUUID { get }
+    static var uuid: BluetoothUUID { get }
 }
 
 public protocol GATTProfileCharacteristic {
     
-    static var UUID: BluetoothUUID { get }
+    static var uuid: BluetoothUUID { get }
     
     init?(data: Data)
     
@@ -28,7 +28,11 @@ extension GATTProfileCharacteristic {
     
     public var characteristic: GATT.Characteristic {
         
-        return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [], descriptors: [])
+        return GATT.Characteristic(uuid: type(of: self).uuid,
+                                   value: data,
+                                   permissions: [.read],
+                                   properties: [.read],
+                                   descriptors: [])
     }
     
 }

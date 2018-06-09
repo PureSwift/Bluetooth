@@ -24,7 +24,7 @@ import Foundation
  */
 public struct GATTAlertNotificationService: GATTProfileService {
     
-    public static let UUID: BluetoothUUID = .alertNotificationService
+    public static let uuid: BluetoothUUID = .alertNotificationService
     
     /**
      Category that the server supports for new alert.
@@ -37,7 +37,7 @@ public struct GATTAlertNotificationService: GATTProfileService {
      */
     public struct SupportedNewAlertCategory: GATTProfileCharacteristic {
         
-        public static var UUID: BluetoothUUID { return .supportedNewAlertCategory }
+        public static var uuid: BluetoothUUID { return .supportedNewAlertCategory }
         
         public var alertCategoryBitMask: AlertCategoryIdBitMask
         
@@ -77,7 +77,7 @@ public struct GATTAlertNotificationService: GATTProfileService {
      
      The value 0x03 is interpreted as “Simple Alert and Email bits set”
      */
-    public struct AlertCategoryIdBitMask: GATTProfileCharacteristic {
+    public struct AlertCategory: GATTProfileCharacteristic {
         
         internal static let length = 2
         
@@ -141,7 +141,6 @@ public struct GATTAlertNotificationService: GATTProfileService {
                 .voiceMail,
                 .schedule
             ]
-            
         }
         
         public enum BitMask1: UInt8, BitMaskOption {

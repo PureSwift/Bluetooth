@@ -10,7 +10,7 @@
 public typealias Integer = BinaryInteger
 #endif
 
-public extension Range where Bound: Integer {
+internal extension Range where Bound: Integer {
     
     func isSubset(_ other: Range) -> Bool {
         
