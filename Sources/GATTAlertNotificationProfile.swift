@@ -24,7 +24,11 @@ import Foundation
  */
 public struct GATTAlertNotificationService: GATTProfileService {
     
-    public static let UUID: BluetoothUUID = .alertNotificationService
+    public static let uuid: BluetoothUUID = .alertNotificationService
+    
+}
+
+public extension GATTAlertNotificationService {
     
     /**
      Category that the server supports for new alert.
@@ -37,7 +41,7 @@ public struct GATTAlertNotificationService: GATTProfileService {
      */
     public struct SupportedNewAlertCategory: GATTProfileCharacteristic {
         
-        public static var UUID: BluetoothUUID { return .supportedNewAlertCategory }
+        public static var uuid: BluetoothUUID { return .supportedNewAlertCategory }
         
         public var alertCategoryBitMask: AlertCategoryIdBitMask
         
@@ -64,10 +68,16 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [.read], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [.read],
+                                       properties: [.read],
+                                       descriptors: [])
         }
-        
     }
+}
+
+public extension GATTAlertNotificationService {
     
     /**
      The value of the characteristic is a bit mask implemented as an array of unsigned 8 bit integers.
@@ -81,7 +91,7 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         internal static let length = 2
         
-        public static var UUID: BluetoothUUID { return .alertCategoryIdBitMask }
+        public static var uuid: BluetoothUUID { return .alertCategoryIdBitMask }
         
         public var bitMask0: BitMaskOptionSet<BitMask0>
         
@@ -141,7 +151,6 @@ public struct GATTAlertNotificationService: GATTProfileService {
                 .voiceMail,
                 .schedule
             ]
-            
         }
         
         public enum BitMask1: UInt8, BitMaskOption {
@@ -162,6 +171,9 @@ public struct GATTAlertNotificationService: GATTProfileService {
             
         }
     }
+}
+
+public extension GATTAlertNotificationService {
     
     /**
      This characteristic defines the category of the alert and how many new alerts of that category have occurred in the server device.
@@ -179,19 +191,24 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         internal static let minLength = 2
         
-        public static var UUID: BluetoothUUID { return .newAlert }
+        public static var uuid: BluetoothUUID { return .newAlert }
         
+        /// Alert category.
         public var categoryID: AlertCategoryID
         
-        public var numberOfNewAlerts: UInt8
+        /// Number of new alerts.
+        public var newAlertsCount: UInt8
         
-        public var textStringInformation: Data
+        /// Alert textual information.
+        public var information: Information
         
-        public init(categoryID: AlertCategoryID, numberOfNewAlerts: UInt8, textStringInformation: Data) {
+        public init(categoryID: AlertCategoryID,
+                    newAlertsCount: UInt8,
+                    information: Information) {
             
             self.categoryID = categoryID
-            self.numberOfNewAlerts = numberOfNewAlerts
-            self.textStringInformation = textStringInformation
+            self.newAlertsCount = newAlertsCount
+            self.information = information
         }
         
         public init?(data: Data) {
@@ -203,23 +220,93 @@ public struct GATTAlertNotificationService: GATTProfileService {
                 else { return nil }
             
             let numberOfNewAlerts = data[1]
-            let textStringInformation = data.subdata(in: (2..<data.count))
+            let textStringInformationData = data.subdata(in: (2..<data.count))
             
-            self.init(categoryID: categoryID, numberOfNewAlerts: numberOfNewAlerts, textStringInformation: textStringInformation)
+            guard let information = Information(data: textStringInformationData)
+                else { return nil }
+            
+            self.init(categoryID: categoryID,
+                      newAlertsCount: numberOfNewAlerts,
+                      information: information)
         }
         
         public var data: Data {
             
-            let data = Data([categoryID.rawValue, numberOfNewAlerts])
-            return textStringInformation.reduce(data, { $0.0 + [$0.1] })
+            return Data([categoryID.rawValue, newAlertsCount]) + information.data
         }
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [.read, .write], properties: [.notify], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [.read, .write],
+                                       properties: [.notify],
+                                       descriptors: [])
+        }
+    }
+}
+
+public extension GATTAlertNotificationService.NewAlert {
+    
+    /// Alert textual information.
+    public struct Information: RawRepresentable {
+        
+        /// The minimum length of “UTF-8 string” is 0 octets and maximum length of “UTF-8 string” is 18 octets.
+        internal static let length = (min: 0, max: 18)
+        
+        public let rawValue: String
+        
+        public init() {
+            
+            self.rawValue = ""
         }
         
+        public init?(rawValue: String) {
+            
+            let length = rawValue.utf8.count
+            
+            guard length >= type(of: self).length.min,
+                length <= type(of: self).length.max
+                else { return nil }
+            
+            self.rawValue = rawValue
+        }
+        
+        public init?(data: Data) {
+            
+            guard let string = String(data: data, encoding: .utf8)
+                else { return nil }
+            
+            self.init(rawValue: string)
+        }
+        
+        public var data: Data {
+            
+            guard let data = rawValue.data(using: .utf8)
+                else { fatalError("Could not encode string") }
+            
+            return data
+        }
     }
+}
+
+extension GATTAlertNotificationService.NewAlert.Information: Equatable {
+    
+    public static func == (lhs: GATTAlertNotificationService.NewAlert.Information, rhs: GATTAlertNotificationService.NewAlert.Information) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTAlertNotificationService.NewAlert.Information: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue
+    }
+}
+
+public extension GATTAlertNotificationService {
     
     /**
      Categories of alerts/messages.
@@ -235,7 +322,7 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         internal static let length = 1
         
-        public static var UUID: BluetoothUUID { return .alertCategoryId }
+        public static var uuid: BluetoothUUID { return .alertCategoryId }
         
         /// Simple Alert: General text alert or non-text alert
         case simpleAlert = 0
@@ -281,6 +368,9 @@ public struct GATTAlertNotificationService: GATTProfileService {
         }
         
     }
+}
+
+public extension GATTAlertNotificationService {
     
     /**
      Category that the server supports for unread alert.
@@ -292,7 +382,7 @@ public struct GATTAlertNotificationService: GATTProfileService {
      */
     public struct SupportedUnreadAlertCategory: GATTProfileCharacteristic {
         
-        public static var UUID: BluetoothUUID { return .supportedUnreadAlertCategory }
+        public static var uuid: BluetoothUUID { return .supportedUnreadAlertCategory }
         
         public var alertCategoryBitMask: AlertCategoryIdBitMask
         
@@ -319,10 +409,16 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [.read], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [],
+                                       properties: [.read],
+                                       descriptors: [])
         }
-        
     }
+}
+
+public extension GATTAlertNotificationService {
     
     /**
      This characteristic shows how many numbers of unread alerts exist in the specific category in the device.
@@ -336,7 +432,7 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         internal static let length = 2
         
-        public static var UUID: BluetoothUUID { return .unreadAlertStatus }
+        public static var uuid: BluetoothUUID { return .unreadAlertStatus }
         
         public var categoryID: AlertCategoryID
         
@@ -368,10 +464,17 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [.notify], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [],
+                                       properties: [.notify],
+                                       descriptors: [])
         }
         
     }
+}
+
+public extension GATTAlertNotificationService {
     
     /**
      Control point of the Alert Notification server. Client can write the command here to request the several functions toward the server.
@@ -388,13 +491,16 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         internal static let length = 2
         
-        public static var UUID: BluetoothUUID { return .alertNotificationControlPoint }
+        public static var uuid: BluetoothUUID { return .alertNotificationControlPoint }
         
+        /// The command ID that defines the server’s actions.
         public var commandID: CommandID
         
+        /// The target category that the command ID applies for.
         public var categoryID: AlertCategoryID
         
-        public init(commandID: CommandID, categoryID: AlertCategoryID) {
+        public init(commandID: CommandID,
+                    categoryID: AlertCategoryID) {
             
             self.commandID = commandID
             self.categoryID = categoryID
@@ -421,7 +527,11 @@ public struct GATTAlertNotificationService: GATTProfileService {
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).UUID, value: data, permissions: [], properties: [.notify], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [.read],
+                                       properties: [.notify],
+                                       descriptors: [])
         }
         
         public enum CommandID: UInt8 {
@@ -443,11 +553,8 @@ public struct GATTAlertNotificationService: GATTProfileService {
             
             /// Notify Unread Category Status immediately
             case notifyUnreadCategoryStatusImmediately
-            
         }
-        
     }
-    
 }
 
 extension GATTAlertNotificationService.SupportedNewAlertCategory: Equatable {
@@ -476,8 +583,8 @@ extension GATTAlertNotificationService.NewAlert: Equatable {
                            rhs: GATTAlertNotificationService.NewAlert) -> Bool {
         
         return lhs.categoryID == rhs.categoryID &&
-            lhs.numberOfNewAlerts == rhs.numberOfNewAlerts &&
-            lhs.textStringInformation == rhs.textStringInformation
+            lhs.newAlertsCount == rhs.newAlertsCount &&
+            lhs.information == rhs.information
     }
     
 }
@@ -499,7 +606,6 @@ extension GATTAlertNotificationService.SupportedUnreadAlertCategory: Equatable {
         
         return lhs.alertCategoryBitMask == rhs.alertCategoryBitMask
     }
-    
 }
 
 extension GATTAlertNotificationService.UnreadAlertStatus: Equatable {
@@ -519,5 +625,4 @@ extension GATTAlertNotificationService.AlertNotificationControlPoint: Equatable 
         
         return lhs.commandID == rhs.commandID && lhs.categoryID == rhs.categoryID
     }
-    
 }

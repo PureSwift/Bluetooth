@@ -6,10 +6,15 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+public extension GAP {
+    
+    public typealias Appearance = GAPAppearance
+}
+
 /// GAP Appearance
 ///
 /// - SeeAlso: [org.bluetooth.characteristic.gap.appearance.xml](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.gap.appearance.xml)
-public struct Appearance: RawRepresentable {
+public struct GAPAppearance: RawRepresentable {
     
     public var rawValue: UInt16
     
@@ -18,15 +23,25 @@ public struct Appearance: RawRepresentable {
         self.rawValue = rawValue
     }
     
-    /*
     public init(category: Category,
-                subcategory: Subcategory) {
+                subcategory: Subcategory = 0) {
         
-        self.rawValue =
-    }*/
+        self.rawValue = category.rawValue << 6 + subcategory.rawValue
+    }
+    
+    public var category: Category {
+        
+        // category is stored in the first 10 bits
+        return Category(rawValue: rawValue >> 6)
+    }
+    
+    public var subcategory: Subcategory {
+        
+        return Subcategory(rawValue: rawValue - (rawValue >> 6) << 6)
+    }
 }
 
-extension Appearance: ExpressibleByIntegerLiteral {
+extension GAPAppearance: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
         
@@ -34,15 +49,15 @@ extension Appearance: ExpressibleByIntegerLiteral {
     }
 }
 
-extension Appearance: Equatable {
+extension GAPAppearance: Equatable {
     
-    public static func == (lhs: Appearance, rhs: Appearance) -> Bool {
+    public static func == (lhs: GAPAppearance, rhs: GAPAppearance) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension Appearance: Hashable {
+extension GAPAppearance: Hashable {
     
     public var hashValue: Int {
         
@@ -50,7 +65,7 @@ extension Appearance: Hashable {
     }
 }
 
-public extension Appearance {
+public extension GAPAppearance {
     
     public struct Category: RawRepresentable {
         
@@ -63,7 +78,23 @@ public extension Appearance {
     }
 }
 
-extension Appearance.Category: ExpressibleByIntegerLiteral {
+extension GAPAppearance.Category: Equatable {
+    
+    public static func == (lhs: GAPAppearance.Category, rhs: GAPAppearance.Category) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GAPAppearance.Category: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
+extension GAPAppearance.Category: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
         
@@ -71,7 +102,7 @@ extension Appearance.Category: ExpressibleByIntegerLiteral {
     }
 }
 
-public extension Appearance {
+public extension GAPAppearance {
     
     public struct Subcategory: RawRepresentable {
         
@@ -84,7 +115,23 @@ public extension Appearance {
     }
 }
 
-extension Appearance.Subcategory: ExpressibleByIntegerLiteral {
+extension GAPAppearance.Subcategory: Equatable {
+    
+    public static func == (lhs: GAPAppearance.Subcategory, rhs: GAPAppearance.Subcategory) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GAPAppearance.Subcategory: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
+
+extension GAPAppearance.Subcategory: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
         
@@ -94,112 +141,139 @@ extension Appearance.Subcategory: ExpressibleByIntegerLiteral {
 
 // MARK: - Values
 
-public extension Appearance {
+public extension GAPAppearance.Category {
     
+    /// GAP Appearance Unknown category
+    public static var unknown: GAPAppearance.Category { return 0 }
+    
+    /// GAP Appearance Phone category
+    public static var phone: GAPAppearance.Category { return 1 }
+    
+    /// GAP Appearance Computer category
+    public static var computer: GAPAppearance.Category { return 2 }
+    
+    /// GAP Appearance Watch category
+    public static var watch: GAPAppearance.Category { return 3 }
+    
+    /// GAP Appearance Clock category
+    public static var clock: GAPAppearance.Category { return 4 }
+    
+    /// GAP Appearance Display category
+    public static var display: GAPAppearance.Category { return 5 }
+    
+    /// GAP Appearance RemoteControl category
+    public static var remoteControl: GAPAppearance.Category { return 6 }
+}
+
+public extension GAPAppearance {
+    
+    /// GAP Appearance Unknown
     public enum Unknown {
         
-        public static let category: Appearance.Category = 0
+        public static let category: GAPAppearance.Category = .unknown
         
-        public static let unknown: Appearance = 0
+        public static let unknown: GAPAppearance = 0
     }
     
+    /// GAP Appearance Phone
     public enum Phone {
         
-        public static let category: Appearance.Category = 1
+        public static let category: GAPAppearance.Category = .phone
         
-        public static let generic: Appearance = 64
+        public static let generic: GAPAppearance = 64
     }
     
+    /// GAP Appearance Computer
     public enum Computer {
         
-        public static let category: Appearance.Category = 2
+        public static let category: GAPAppearance.Category = .computer
         
-        public static let generic: Appearance = 128
+        public static let generic: GAPAppearance = 128
     }
     
     /// GAP Appearance Watch category namepace
     public enum Watch {
         
         /// GAP Appearance Watch category
-        public static let category: Appearance.Category = 3
+        public static let category: GAPAppearance.Category = .watch
         
         /// Generic Watch
-        public static let generic: Appearance = 192
+        public static let generic: GAPAppearance = 192
         
         /// Watch: Sports Watch
-        public static let sports: Appearance = 193
+        public static let sports: GAPAppearance = 193
     }
     
     /// GAP Appearance Clock category namepace
     public enum Clock {
         
-        public static let category: Appearance.Category = 4
+        public static let category: GAPAppearance.Category = .clock
         
-        public static let generic: Appearance = 256
+        public static let generic: GAPAppearance = 256
     }
     
     public enum Display {
         
-        public static let category: Appearance.Category = 5
+        public static let category: GAPAppearance.Category = .display
         
-        public static let generic: Appearance = 320
+        public static let generic: GAPAppearance = 320
     }
     
     public enum RemoteControl {
         
-        public static let category: Appearance.Category = 6
+        public static let category: GAPAppearance.Category = 6
         
         /// Generic Remote Control
-        public static let generic: Appearance = 384
+        public static let generic: GAPAppearance = 384
     }
     
     public enum EyeGlasses {
         
-        public static let category: Appearance.Category = 7
+        public static let category: GAPAppearance.Category = 7
         
-        public static let generic: Appearance = 448
+        public static let generic: GAPAppearance = 448
     }
     
     public enum Tag {
         
-        public static let category: Appearance.Category = 8
+        public static let category: GAPAppearance.Category = 8
         
-        public static let generic: Appearance = 512
+        public static let generic: GAPAppearance = 512
     }
     
     public enum Keyring {
         
-        public static let category: Appearance.Category = 9
+        public static let category: GAPAppearance.Category = 9
         
-        public static let generic: Appearance = 576
+        public static let generic: GAPAppearance = 576
     }
     
     public enum MediaPlayer {
         
-        public static let category: Appearance.Category = 10
+        public static let category: GAPAppearance.Category = 10
         
-        public static let generic: Appearance = 640
+        public static let generic: GAPAppearance = 640
     }
     
     public enum BarcodeScanner {
         
-        public static let category: Appearance.Category = 11
+        public static let category: GAPAppearance.Category = 11
         
-        public static let generic: Appearance = 704
+        public static let generic: GAPAppearance = 704
     }
     
     public enum Thermometer {
         
-        public static let category: Appearance.Category = 12
+        public static let category: GAPAppearance.Category = 12
         
-        public static let generic: Appearance = 768
+        public static let generic: GAPAppearance = 768
     }
     
     public enum HeartrateSensor {
         
-        public static let category: Appearance.Category = 13
+        public static let category: GAPAppearance.Category = 13
         
-        public static let generic: Appearance = 832
+        public static let generic: GAPAppearance = 832
     }
 }
 

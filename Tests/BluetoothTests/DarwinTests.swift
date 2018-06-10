@@ -22,9 +22,9 @@ final class DarwinTests: XCTestCase {
     
     func testGAPAppearance() {
         
-        XCTAssertEqual(Appearance.Unknown.unknown.rawValue, IOKitBluetoothGAPAppearance.Unknown.rawValue)
-        XCTAssertEqual(Appearance.Phone.generic.rawValue, IOKitBluetoothGAPAppearance.GenericPhone.rawValue)
-        XCTAssertEqual(Appearance.Computer.generic.rawValue, IOKitBluetoothGAPAppearance.GenericComputer.rawValue)
+        XCTAssertEqual(GAPAppearance.Unknown.unknown.rawValue, IOKitBluetoothGAPAppearance.Unknown.rawValue)
+        XCTAssertEqual(GAPAppearance.Phone.generic.rawValue, IOKitBluetoothGAPAppearance.GenericPhone.rawValue)
+        XCTAssertEqual(GAPAppearance.Computer.generic.rawValue, IOKitBluetoothGAPAppearance.GenericComputer.rawValue)
     }
     
     func testCompanyIdentifiers() {
