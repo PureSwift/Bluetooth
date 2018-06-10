@@ -21,27 +21,30 @@ public struct GATTBatteryService: GATTProfileService {
 
     public struct BatteryLevel: GATTProfileCharacteristic {
         
-        internal static let max = BatteryLevel(unsafe: 100)
+        internal static let max = BatteryLevel(100)
         
-        internal static let min = BatteryLevel(unsafe: 0)
+        internal static let min = BatteryLevel(0)
         
         internal static let length = 1
         
-        public static let uuid: BluetoothUUID = .batteryLevel
+        public static var uuid: BluetoothUUID { return .batteryLevel }
         
-        public var level: PercentageUnit
+        public static var unit: UnitIdentifier = .percentage
         
-        public init?(level: PercentageUnit) {
+        public var level: UInt8
+        
+        public init?(level: UInt8) {
             
-            guard BatteryLevel.min.level <= level, BatteryLevel.max.level >= level
+            guard BatteryLevel.min.level <= level,
+                BatteryLevel.max.level >= level
                 else { return nil }
             
             self.level = level
         }
         
-        fileprivate init(unsafe value: PercentageUnit) {
+        fileprivate init(_ unsafe: UInt8) {
             
-            self.level = value
+            self.level = unsafe
         }
         
         public init?(data: Data) {
@@ -49,24 +52,22 @@ public struct GATTBatteryService: GATTProfileService {
             guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let percentage = PercentageUnit(rawValue: data[0])
-                else { return nil }
-            
-            self.init(level: percentage)
+            self.init(level: data[0])
         }
         
         public var data: Data {
-            
-            return Data([level.value])
+            return Data([level])
         }
         
         public var characteristic: GATT.Characteristic {
             
-            return GATT.Characteristic(uuid: type(of: self).uuid, value: data, permissions: [], properties: [.read], descriptors: [])
+            return GATT.Characteristic(uuid: type(of: self).uuid,
+                                       value: data,
+                                       permissions: [.read],
+                                       properties: [.read, .notify],
+                                       descriptors: [GATTClientCharacteristicConfiguration().descriptor])
         }
-        
     }
-    
 }
 
 extension GATTBatteryService.BatteryLevel: Equatable {
@@ -76,13 +77,12 @@ extension GATTBatteryService.BatteryLevel: Equatable {
         
         return lhs.level == rhs.level
     }
-    
 }
 
 extension GATTBatteryService.BatteryLevel: CustomStringConvertible {
     
     public var description: String {
         
-        return level.description
+        return "\(level)%"
     }
 }

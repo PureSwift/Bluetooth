@@ -25,7 +25,6 @@ import Foundation
 public struct GATTAlertNotificationService: GATTProfileService {
     
     public static let uuid: BluetoothUUID = .alertNotificationService
-    
 }
 
 public extension GATTAlertNotificationService {
@@ -220,7 +219,7 @@ public extension GATTAlertNotificationService {
                 else { return nil }
             
             let numberOfNewAlerts = data[1]
-            let textStringInformationData = data.subdata(in: (2..<data.count))
+            let textStringInformationData = data.subdata(in: (2 ..< data.count))
             
             guard let information = Information(data: textStringInformationData)
                 else { return nil }
