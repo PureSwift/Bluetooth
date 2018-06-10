@@ -55,6 +55,44 @@ extension UnitIdentifier: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue.description
+        let valueString = rawValue.toHexadecimal()
+        
+        if let name = self.name {
+            
+            return valueString + " " + "(" + name + ")"
+            
+        } else {
+            
+            return valueString
+        }
     }
 }
+
+// MARK: - Definitions
+
+public extension UnitIdentifier {
+    
+    /// The name of the unit.
+    var name: String? {
+        
+        return units[rawValue]?.name
+    }
+    
+    /// The Bluetooth type namespace of the unit.
+    var type: String? {
+        
+        return units[rawValue]?.type
+    }
+}
+
+internal let units: [UInt16: (name: String, type: String)] = [
+    
+    0x2700: ("unitless", "org.bluetooth.unit.unitless"),
+    0x2701: ("length (metre)", "org.bluetooth.unit.length.metre"),
+    0x2702: ("mass (kilogram)", "org.bluetooth.unit.mass.kilogram"),
+    0x2702: ("time (second)", "org.bluetooth.unit.time.second"),
+    
+    // TODO: List all units
+    
+    0x27AD: ("percentage", "org.bluetooth.unit.percentage")
+]
