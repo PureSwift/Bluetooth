@@ -698,5 +698,3 @@ extension SecondUnit: CustomStringConvertible {
     }
     
 }
-
-

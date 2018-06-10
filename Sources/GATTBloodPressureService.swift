@@ -10,11 +10,11 @@ import Foundation
 
 public struct GATTBloodPressureService: GATTProfileService {
     
-    public static let UUID: BluetoothUUID = .bloodPressure
+    public static let uuid: BluetoothUUID = .bloodPressure
     
     public struct BloodPressureFeature: GATTProfileCharacteristic {
         
-        public static var UUID: BluetoothUUID { return .bloodPressureFeature }
+        public static var uuid: BluetoothUUID { return .bloodPressureFeature }
         
         internal static let length = MemoryLayout<UInt16>.size
         
@@ -78,7 +78,7 @@ public struct GATTBloodPressureService: GATTProfileService {
     
     public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         
-        public static var UUID: BluetoothUUID { return .bloodPressureMeasurement }
+        public static var uuid: BluetoothUUID { return .bloodPressureMeasurement }
         
         internal static let length = MemoryLayout<UInt8>.size
         
@@ -262,7 +262,7 @@ public struct GATTBloodPressureService: GATTProfileService {
         
         public struct DateTime: GATTProfileCharacteristic {
             
-            public static var UUID: BluetoothUUID { return .dateTime }
+            public static var uuid: BluetoothUUID { return .dateTime }
             
             internal static let length = 7
             

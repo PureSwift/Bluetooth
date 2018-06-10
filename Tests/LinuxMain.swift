@@ -21,5 +21,6 @@ XCTMain([
     testCase(GAPTests.allTests),
     testCase(GATTTests.allTests),
     testCase(GATTDatabaseTests.allTests),
-    testCase(GATTDescriptorTests.allTests)
+    testCase(GATTDescriptorTests.allTests),
+    testCase(GATTAlertNotificationTests.allTests)
     ])

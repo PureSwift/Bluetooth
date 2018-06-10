@@ -13,6 +13,7 @@ import Foundation
 final class BluetoothTests: XCTestCase {
     
     static let allTests = [
+        ("testAdvertisingInterval", testAdvertisingInterval),
         ("testSecurityLevel", testSecurityLevel),
         ("testCompanyIdentifier", testCompanyIdentifier),
         ("testHCICommandTimeout", testHCICommandTimeout),
@@ -26,6 +27,26 @@ final class BluetoothTests: XCTestCase {
         ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
         ("testBitMaskOption", testBitMaskOption)
     ]
+    
+    func testAdvertisingInterval() {
+        
+        let value = AdvertisingInterval.default
+        
+        XCTAssertNil(AdvertisingInterval(rawValue: 0))
+        XCTAssertNil(AdvertisingInterval(rawValue: .max))
+        
+        // Equatable, comparable, hashable
+        XCTAssert(value < .max)
+        XCTAssert(value > .min)
+        XCTAssertNotEqual(value, .max)
+        XCTAssertNotEqual(value, .min)
+        XCTAssertEqual(value.hashValue, Int(value.rawValue))
+        
+        // Range: 0x0020 to 0x4000
+        XCTAssertEqual(AdvertisingInterval.min.miliseconds, 20.0, "The `advInterval` shall be an integer multiple of 0.625 ms in the range of `20` ms to `10.24` s")
+        XCTAssertEqual(AdvertisingInterval.max.miliseconds, 10.24 * 1000, "The `advInterval` shall be an integer multiple of 0.625 ms in the range of `20` ms to `10.24` s")
+        XCTAssertEqual(AdvertisingInterval.default.miliseconds, 1.28 * 1000, "Default: N = 0x0800 (1.28 second)")
+    }
     
     func testSecurityLevel() {
         
