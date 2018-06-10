@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol GATTProfile {
+    
+    static var services: [GATTProfileService.Type] { get }
+}
+
 public protocol GATTProfileService {
     
     static var uuid: BluetoothUUID { get }
