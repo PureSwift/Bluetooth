@@ -17,8 +17,6 @@ import Foundation
  */
 public struct GATTBatteryService: GATTProfileService {
     
-    public static let name = "Battery Service"
-    
     public static let uuid: BluetoothUUID = .batteryService
 
     public struct BatteryLevel: GATTProfileCharacteristic {

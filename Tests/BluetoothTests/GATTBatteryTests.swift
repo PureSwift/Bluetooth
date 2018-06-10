@@ -24,7 +24,7 @@ final class GATTBatteryTests: XCTestCase {
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.level, batteryLevel)
         XCTAssertEqual(characteristic.description, "34%")
-        XCTAssertEqual(GATTBatteryService.BatteryLevel.unit.description, "0x27AD (percentage)")
+        XCTAssertEqual(GATTBatteryService.BatteryLevel.unit.description, "27AD (percentage)")
         XCTAssertEqual(GATTBatteryService.BatteryLevel.unit.type, "org.bluetooth.unit.percentage")
     }
 }

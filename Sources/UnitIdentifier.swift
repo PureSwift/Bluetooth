@@ -90,7 +90,7 @@ internal let units: [UInt16: (name: String, type: String)] = [
     0x2700: ("unitless", "org.bluetooth.unit.unitless"),
     0x2701: ("length (metre)", "org.bluetooth.unit.length.metre"),
     0x2702: ("mass (kilogram)", "org.bluetooth.unit.mass.kilogram"),
-    0x2702: ("time (second)", "org.bluetooth.unit.time.second"),
+    0x2703: ("time (second)", "org.bluetooth.unit.time.second"),
     
     // TODO: List all units
     
