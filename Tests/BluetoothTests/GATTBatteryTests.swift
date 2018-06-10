@@ -12,6 +12,10 @@ import Foundation
 
 final class GATTBatteryTests: XCTestCase {
     
+    static let allTests = [
+        ("testBatteryLevel", testBatteryLevel)
+    ]
+    
     func testBatteryLevel() {
         
         let data = Data([0x22])
