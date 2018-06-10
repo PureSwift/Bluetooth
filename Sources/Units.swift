@@ -11,77 +11,48 @@ import Foundation
 protocol Unit: RawRepresentable {
     
     static var unitType: UnitIdentifier { get }
-    
-    var data: Data { get }
-    
 }
 
 public struct PercentageUnit: Unit {
     
     static var unitType: UnitIdentifier { return .percentage }
     
-    public var percentage: UInt8
+    public var rawValue: UInt
     
-    public init?(rawValue percentage: UInt8) {
+    public init(rawValue: UInt) {
         
-        self.percentage = percentage
+        self.rawValue = rawValue
     }
-    
-    fileprivate init(unsafe value: UInt8) {
-        
-        self.percentage = value
-    }
-    
-    public var rawValue: UInt8 {
-        
-        return percentage
-    }
-    
-    public var data: Data {
-        
-        return Data([percentage])
-    }
-    
 }
 
-extension PercentageUnit: Comparable {
+extension PercentageUnit: Equatable {
     
     public static func == (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-        return lhs.percentage == rhs.percentage
+        return lhs.rawValue == rhs.rawValue
     }
+}
+    
+extension PercentageUnit: Comparable {
     
     public static func < (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-        return lhs.percentage < rhs.percentage
+        return lhs.rawValue < rhs.rawValue
     }
-    
-    public static func <= (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
-        
-        return lhs.percentage <= rhs.percentage
-    }
-    
-    public static func >= (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
-        
-        return lhs.percentage >= rhs.percentage
-    }
-    
 }
 
 extension PercentageUnit: ExpressibleByIntegerLiteral {
     
-    public init(integerLiteral value: UInt8) {
+    public init(integerLiteral value: UInt) {
         
-        self.init(unsafe: value)
+        self.init(rawValue: value)
     }
-    
 }
 
 extension PercentageUnit: CustomStringConvertible {
     
     public var description: String {
         
-        return percentage.description
+        return rawValue.description
     }
-    
 }
