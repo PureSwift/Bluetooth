@@ -24,6 +24,9 @@
 		3580287F20C832870096227B /* UnitIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287D20C832870096227B /* UnitIdentifierExtension.swift */; };
 		3580288020C832870096227B /* UnitIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287D20C832870096227B /* UnitIdentifierExtension.swift */; };
 		3580288120C832870096227B /* UnitIdentifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287D20C832870096227B /* UnitIdentifierExtension.swift */; };
+		3588AC1C20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
+		3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
+		3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		358CB4DB20C796A20003DC60 /* GATTBatteryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */; };
 		358CB4DC20C796A20003DC60 /* GATTBatteryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */; };
 		358CB4DD20C796A20003DC60 /* GATTBatteryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */; };
@@ -1085,6 +1088,7 @@
 				6E9E4E86206DB68600D489E9 /* LowEnergyChannelMap.swift in Sources */,
 				6E49B23E20532D45002EA5DC /* HCIEvent.swift in Sources */,
 				6E740C5220657F46006589F6 /* TestingCommand.swift in Sources */,
+				3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */,
 				6E60A323206979CF00E42351 /* iBeacon.swift in Sources */,
 				6ECBCF1B206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6E49B23F20532D45002EA5DC /* HCI.swift in Sources */,
@@ -1178,6 +1182,7 @@
 				6E9E4E85206DB68600D489E9 /* LowEnergyChannelMap.swift in Sources */,
 				6EB2EA041CD5A8A7000CF975 /* HCIEvent.swift in Sources */,
 				6E740C5120657F46006589F6 /* TestingCommand.swift in Sources */,
+				3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */,
 				6E60A322206979CF00E42351 /* iBeacon.swift in Sources */,
 				6ECBCF1A206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6EB2EA051CD5A8A7000CF975 /* HCI.swift in Sources */,
@@ -1399,6 +1404,7 @@
 				6E9E4E84206DB68600D489E9 /* LowEnergyChannelMap.swift in Sources */,
 				6EF45FA41CC6D04D001F7A39 /* HCIEvent.swift in Sources */,
 				6E740C5020657F46006589F6 /* TestingCommand.swift in Sources */,
+				3588AC1C20CD05AC00F9FA8C /* GAPData.swift in Sources */,
 				6E60A321206979CF00E42351 /* iBeacon.swift in Sources */,
 				6ECBCF19206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6EF45FA51CC6D04D001F7A39 /* HCI.swift in Sources */,

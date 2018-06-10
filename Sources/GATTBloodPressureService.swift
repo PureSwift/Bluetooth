@@ -172,6 +172,11 @@ public struct GATTBloodPressureService: GATTProfileService {
         
         public enum Flag: UInt8, BitMaskOption, CustomStringConvertible {
             
+            #if swift(>=3.2)
+            #elseif swift(>=3.0)
+            public typealias RawValue = UInt8
+            #endif
+            
             case bloodPressureUnits = 0b01
             
             case timestamp = 0b10
