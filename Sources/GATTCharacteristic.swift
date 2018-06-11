@@ -117,15 +117,15 @@ public struct GATTSupportedNewAlertCategory: GATTProfileCharacteristic {
     
     public init?(data: Data) {
         
-        guard let bitmask = BitMaskOptionSet<Category>(bitmaskArray: data)
+        guard let bitmask = Category.RawValue(bitmaskArray: data)
             else { return nil }
         
-        self.categories = bitmask
+        self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
     }
     
     public var data: Data {
         
-        return categories.bitmaskArray
+        return categories.rawValue.bitmaskArray
     }
     
     public var characteristic: GATT.Characteristic {
@@ -168,15 +168,15 @@ public struct GATTAlertCategoryBitMask: GATTProfileCharacteristic {
     
     public init?(data: Data) {
         
-        guard let bitmask = BitMaskOptionSet<Category>(bitmaskArray: data)
+        guard let bitmask = Category.RawValue(bitmaskArray: data)
             else { return nil }
         
-        self.categories = bitmask
+        self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
     }
     
     public var data: Data {
         
-        return categories.bitmaskArray
+        return categories.rawValue.bitmaskArray
     }
 }
 
@@ -479,15 +479,15 @@ public struct GATTSupportedUnreadAlertCategory: GATTProfileCharacteristic {
     
     public init?(data: Data) {
         
-        guard let bitmask = BitMaskOptionSet<Category>(bitmaskArray: data)
+        guard let bitmask = Category.RawValue(bitmaskArray: data)
             else { return nil }
         
-        self.categories = bitmask
+        self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
     }
     
     public var data: Data {
         
-        return categories.bitmaskArray
+        return categories.rawValue.bitmaskArray
     }
     
     public var characteristic: GATT.Characteristic {
@@ -1048,34 +1048,32 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
 
 // MARK: - Internal
 
-internal extension BitMaskOptionSet {
+internal extension UInt64 {
     
     /// The value of the characteristic is a bit mask implemented as an array of unsigned 8 bit integers.
     init?(bitmaskArray data: Data) {
         
         if data.count == MemoryLayout<UInt64>.size {
             
-            let rawValue = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
-            
-            self.init(rawValue: RawValue(rawValue))
+            self = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
             
         } else if data.count >= MemoryLayout<UInt32>.size {
             
             let rawValue = UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))
             
-            self.init(rawValue: RawValue(rawValue))
+            self = UInt64(rawValue)
             
         } else if data.count >= MemoryLayout<UInt16>.size {
             
             let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
-            self.init(rawValue: RawValue(rawValue))
+            self = UInt64(rawValue)
             
         } else if data.count >= MemoryLayout<UInt8>.size {
             
             let rawValue = data[0]
             
-            self.init(rawValue: RawValue(rawValue))
+            self = UInt64(rawValue)
             
         } else {
             
@@ -1086,31 +1084,27 @@ internal extension BitMaskOptionSet {
     /// The value of the characteristic is a bit mask implemented as an array of unsigned 8 bit integers.
     var bitmaskArray: Data {
         
-        if rawValue <= numericCast(UInt8.max) {
+        if self <= numericCast(UInt8.max) {
             
-            return Data([UInt8(rawValue)])
+            return Data([UInt8(self)])
             
-        } else if rawValue <= numericCast(UInt16.max) {
+        } else if self <= numericCast(UInt16.max) {
             
-            let bytes = UInt16(rawValue).littleEndian.bytes
+            let bytes = UInt16(self).littleEndian.bytes
             
             return Data([bytes.0, bytes.1])
             
-        } else if rawValue <= numericCast(UInt32.max) {
+        } else if self <= numericCast(UInt32.max) {
             
-            let bytes = UInt32(rawValue).littleEndian.bytes
+            let bytes = UInt32(self).littleEndian.bytes
             
             return Data([bytes.0, bytes.1, bytes.2, bytes.3])
             
-        } else if rawValue <= numericCast(UInt64.max) {
-            
-            let bytes = UInt64(rawValue).littleEndian.bytes
-            
-            return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7])
-            
         } else {
             
-            fatalError("\(rawValue) is to big to encode into byte array")
+            let bytes = self.littleEndian.bytes
+            
+            return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7])
         }
     }
 }
