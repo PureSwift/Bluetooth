@@ -770,12 +770,7 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
     
     /// The Flags field is included in the Blood Pressure Measurement characteristic.
     /// Reserved for Future Use (RFU) bits in the Flags field shall be set to 0.
-    internal var flags: BitMaskOptionSet<Flag> {
-        
-        var flags = BitMaskOptionSet<Flag>()
-        
-        
-    }
+    var flags: BitMaskOptionSet<Flag>
     
     /**
      Blood Pressure Measurement Compound Value Field
@@ -864,6 +859,8 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
             
             fields.append(.measurementStatus(flag))
         }
+        
+        fatalError()
     }
     
     public var data: Data {
@@ -873,7 +870,7 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         return fields.reduce(data, { $0.0 + $0.1.data })
     }
     
-    public enum Flag: UInt8, BitMaskOption, CustomStringConvertible {
+    public enum Flag: UInt8, BitMaskOption {
         
         #if swift(>=3.2)
         #elseif swift(>=3.0)

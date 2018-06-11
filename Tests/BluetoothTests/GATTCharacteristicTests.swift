@@ -29,53 +29,51 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let batteryLevel: UInt8 = 34
         
-        guard let characteristic = GATTBatteryService.BatteryLevel(data: data)
+        guard let characteristic = GATTBatteryLevel(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.level, batteryLevel)
         XCTAssertEqual(characteristic.description, "34%")
-        XCTAssertEqual(GATTBatteryService.BatteryLevel.unit.description, "27AD (percentage)")
-        XCTAssertEqual(GATTBatteryService.BatteryLevel.unit.type, "org.bluetooth.unit.percentage")
+        XCTAssertEqual(GATTBatteryLevel.unit.description, "27AD (percentage)")
+        XCTAssertEqual(GATTBatteryLevel.unit.type, "org.bluetooth.unit.percentage")
     }
     
     func testSupportedNewAlertCategory() {
         
-        let data = Data([0x0a, 0x00])
+        let data = Data([0x0a])
         
-        guard let characteristic = GATTAlertNotificationService.SupportedNewAlertCategory(data: data)
+        guard let characteristic = GATTSupportedNewAlertCategory(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        
-        XCTAssertEqual(characteristic.alertCategoryBitMask.bitMask0, [.call, .email], "The value 0x0a is interpreted that this server supports “Call” and “Email” categories.")
+        XCTAssertEqual(characteristic.categories, [.call, .email], "The value 0x0a is interpreted that this server supports “Call” and “Email” categories.")
     }
     
     func testAlertCategoryIdBitMask() {
         
-        let data = Data([0x03, 0x00])
+        let data = Data([0x03])
         
-        guard let characteristic = GATTAlertNotificationService.AlertCategoryIdBitMask(data: data)
+        guard let characteristic = GATTAlertCategoryBitMask(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        
-        XCTAssertEqual(characteristic.bitMask0, [.simpleAlert, .email], "The value 0x03 is interpreted as “Simple Alert and Email bits set")
+        XCTAssertEqual(characteristic.categories, [.simpleAlert, .email], "The value 0x03 is interpreted as “Simple Alert and Email bits set")
     }
     
     func testNewAlert() {
         
-        typealias Information = GATTAlertNotificationService.NewAlert.Information
+        typealias Information = GATTNewAlert.Information
         
         let data = Data([0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64])
         
-        guard let characteristic = GATTAlertNotificationService.NewAlert(data: data)
+        guard let characteristic = GATTNewAlert(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         
         // The value 0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64 are interpreted that the server has 4 new email messages and the last message was sent by “Richard”.
-        XCTAssertEqual(characteristic.categoryID, .email)
+        XCTAssertEqual(characteristic.category, .email)
         XCTAssertEqual(characteristic.newAlertsCount, 4)
         XCTAssertEqual(characteristic.information.rawValue, "Richard")
         
@@ -88,25 +86,24 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x01])
         
-        guard let characteristic = GATTAlertNotificationService.AlertCategoryID(data: data)
+        guard let characteristic = GATTAlertCategory(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         
         XCTAssertEqual(characteristic, .email, "The value 0x01 is interpreted as “Email”")
-        
     }
     
     func testSupportedUnreadAlertCategory() {
         
         let data = Data([0x03, 0x00])
         
-        guard let characteristic = GATTAlertNotificationService.SupportedUnreadAlertCategory(data: data)
+        guard let characteristic = GATTSupportedUnreadAlertCategory(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         
-        XCTAssertEqual(characteristic.alertCategoryBitMask.bitMask0, [.email, .simpleAlert], "The value 0x03 is interpreted that this server supports “Simple Alert” and “Email” categories for unread alert.")
+        XCTAssertEqual(characteristic.categories, [.email, .simpleAlert], "The value 0x03 is interpreted that this server supports “Simple Alert” and “Email” categories for unread alert.")
         
     }
     
@@ -114,13 +111,13 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x01, 0x04])
         
-        guard let characteristic = GATTAlertNotificationService.UnreadAlertStatus(data: data)
+        guard let characteristic = GATTUnreadAlertStatus(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         
         // The value 0x01, 0x04 are interpreted that the server has 4 unread messages in Email category.
-        XCTAssertEqual(characteristic.categoryID, .email)
+        XCTAssertEqual(characteristic.category, .email)
         XCTAssertEqual(characteristic.unreadCount, 4)
     }
     
@@ -128,14 +125,14 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x02, 0x01])
         
-        guard let characteristic = GATTAlertNotificationService.AlertNotificationControlPoint(data: data)
+        guard let characteristic = GATTAlertNotificationControlPoint(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         
         // The data 0x02 0x01 interprets “Disable New Incoming Notification for Email Category”.
-        XCTAssertEqual(characteristic.commandID, .disableNewIncomingAlertNotification)
-        XCTAssertEqual(characteristic.categoryID, .email)
+        XCTAssertEqual(characteristic.command, .disableNewIncomingAlertNotification)
+        XCTAssertEqual(characteristic.category, .email)
     }
     
 }
