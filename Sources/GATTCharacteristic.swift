@@ -929,7 +929,24 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
             meanArterialPressureBytes.1
             ])
         
+        data.reserveCapacity(totalBytes)
         
+        if let timestamp = self.timestamp {
+            
+            data.append(timestamp.data)
+        }
+        
+        if let pulseRate = self.pulseRate {
+            
+            let bytes = pulseRate.littleEndian.builtin.bytes
+            
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let userIdentifier = self.userIdentifier {
+            
+            data.append(userIdentifier)
+        }
         
         assert(data.count == totalBytes)
         
