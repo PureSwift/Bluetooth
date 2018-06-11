@@ -759,6 +759,8 @@ public struct GATTBloodPressureFeature: GATTProfileCharacteristic {
  Blood Pressure Measurement
  
  The Blood Pressure Measurement characteristic shall be used to send Blood Pressure measurements. Included in the characteristic are a Flags field (containing units of Blood Pressure and used to show presence of optional fields), the Blood Pressure Measurement Compound Value field and, depending upon the contents of the Flags field, Time Stamp (time of the measurement), Pulse Rate, User ID and Measurement Status fields.
+ 
+ - SeeAlso: [Blood Pressure Measurement](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.blood_pressure_measurement.xml)
  */
 public struct BloodPressureMeasurement: GATTProfileCharacteristic {
     
@@ -1016,7 +1018,6 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
             
             return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minutes.rawValue, seconds.rawValue])
         }
-        
     }
     
     public enum MeasurementStatusFlag: UInt16, BitMaskOption {
@@ -1045,9 +1046,7 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
             .pulseRateRageDetection,
             .measurementPositionDetection
         ]
-        
     }
-    
 }
 
 // MARK: - Internal
