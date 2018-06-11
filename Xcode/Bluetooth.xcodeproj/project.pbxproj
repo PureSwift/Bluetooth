@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3531BBDA20CD013700EBB028 /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
+		3531BF4C20CEEF8F00F31BC3 /* UnitIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */; };
 		3571E29020C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
 		3571E29120C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
 		3571E29220C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
@@ -414,6 +415,7 @@
 
 /* Begin PBXFileReference section */
 		3531BBD920CD013700EBB028 /* GAPData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GAPData.swift; sourceTree = "<group>"; };
+		3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierTests.swift; sourceTree = "<group>"; };
 		3571E28F20C894BA0017ACD2 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
@@ -657,6 +659,7 @@
 				6E65DF942075D568005BD2A0 /* XCTest.swift */,
 				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
 				6E1F937020C228B70030367F /* DarwinTests.swift */,
+				3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
@@ -1391,6 +1394,7 @@
 				512F4B52208B341600576F34 /* UInt512Tests.swift in Sources */,
 				6E142480206CFFC500BF72BC /* HostController.swift in Sources */,
 				6E781B0220CE4DF800786867 /* GATTCharacteristicTests.swift in Sources */,
+				3531BF4C20CEEF8F00F31BC3 /* UnitIdentifierTests.swift in Sources */,
 				6E7F4A4120928E2B00E877F1 /* GAPTests.swift in Sources */,
 				6ECBCF0B206E683C00312117 /* L2CAPSocket.swift in Sources */,
 				6E30AE3720BF1A530072D101 /* GATTDescriptorTests.swift in Sources */,
