@@ -85,6 +85,11 @@
 		6E1F937920C241830030367F /* AdvertisingInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F937620C241830030367F /* AdvertisingInterval.swift */; };
 		6E1F937A20C241830030367F /* AdvertisingInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F937620C241830030367F /* AdvertisingInterval.swift */; };
 		6E2809891FCF499100B2D68E /* HCIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2809881FCF499100B2D68E /* HCIVersion.swift */; };
+		6E2B995C20CBA86E000C76EF /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C5209270FC00BAA133 /* GAPData.swift */; };
+		6E2B995D20CBA86F000C76EF /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C5209270FC00BAA133 /* GAPData.swift */; };
+		6E2B995E20CBA86F000C76EF /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C5209270FC00BAA133 /* GAPData.swift */; };
+		6E2B995F20CBA891000C76EF /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C5209270FC00BAA133 /* GAPData.swift */; };
+		6E2B996520CD76C1000C76EF /* GATTBatteryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B996020CD725B000C76EF /* GATTBatteryTests.swift */; };
 		6E30AE2E20BEFEEC0072D101 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30AE2D20BEFEEC0072D101 /* Data.swift */; };
 		6E30AE2F20BEFEEC0072D101 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30AE2D20BEFEEC0072D101 /* Data.swift */; };
 		6E30AE3020BEFEEC0072D101 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30AE2D20BEFEEC0072D101 /* Data.swift */; };
@@ -442,6 +447,7 @@
 		6E1F937020C228B70030367F /* DarwinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinTests.swift; sourceTree = "<group>"; };
 		6E1F937620C241830030367F /* AdvertisingInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisingInterval.swift; sourceTree = "<group>"; };
 		6E2809881FCF499100B2D68E /* HCIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIVersion.swift; sourceTree = "<group>"; };
+		6E2B996020CD725B000C76EF /* GATTBatteryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryTests.swift; sourceTree = "<group>"; };
 		6E30AE2D20BEFEEC0072D101 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		6E30AE3220BF182A0072D101 /* GATTDescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTDescriptorTests.swift; sourceTree = "<group>"; };
 		6E32290F1FCDC47F0035605D /* HCIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HCIError.swift; sourceTree = "<group>"; };
@@ -579,20 +585,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		358CB4D920C796460003DC60 /* GATTServices */ = {
-			isa = PBXGroup;
-			children = (
-				358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */,
-				3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */,
-			);
-			name = GATTServices;
-			sourceTree = "<group>";
-		};
 		35A2DF6A20C21FD3008B9A77 /* GATT Profiles */ = {
 			isa = PBXGroup;
 			children = (
 				35B7CADC20C5E72100F797AE /* GATTProfile.swift */,
 				35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */,
+				358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */,
+                3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */,
 			);
 			name = "GATT Profiles";
 			sourceTree = "<group>";
@@ -681,6 +680,7 @@
 				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
 				6E1F937020C228B70030367F /* DarwinTests.swift */,
 				6E71F33520CB614A00D08901 /* GATTAlertNotificationTests.swift */,
+				6E2B996020CD725B000C76EF /* GATTBatteryTests.swift */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
@@ -743,7 +743,6 @@
 		6EE84DD11CAF5DC800A40C4D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				358CB4D920C796460003DC60 /* GATTServices */,
 				35A2DF6A20C21FD3008B9A77 /* GATT Profiles */,
 				6E704C961E95C4B300484A22 /* Extensions */,
 				6E704C761E95C32D00484A22 /* BitMaskOption.swift */,
@@ -1087,6 +1086,7 @@
 				6E71F33420CB60D600D08901 /* GATTProfile.swift in Sources */,
 				6E9E4E86206DB68600D489E9 /* LowEnergyChannelMap.swift in Sources */,
 				6E49B23E20532D45002EA5DC /* HCIEvent.swift in Sources */,
+				6E2B995E20CBA86F000C76EF /* GAPData.swift in Sources */,
 				6E740C5220657F46006589F6 /* TestingCommand.swift in Sources */,
 				3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */,
 				6E60A323206979CF00E42351 /* iBeacon.swift in Sources */,
@@ -1181,6 +1181,7 @@
 				6E71F33320CB60D500D08901 /* GATTProfile.swift in Sources */,
 				6E9E4E85206DB68600D489E9 /* LowEnergyChannelMap.swift in Sources */,
 				6EB2EA041CD5A8A7000CF975 /* HCIEvent.swift in Sources */,
+				6E2B995D20CBA86F000C76EF /* GAPData.swift in Sources */,
 				6E740C5120657F46006589F6 /* TestingCommand.swift in Sources */,
 				3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */,
 				6E60A322206979CF00E42351 /* iBeacon.swift in Sources */,
@@ -1271,6 +1272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E2B995F20CBA891000C76EF /* GAPData.swift in Sources */,
 				6E740C5920658006006589F6 /* LinkPolicyCommandParameter.swift in Sources */,
 				6E9E4E83206DB68600D489E9 /* LowEnergyChannelMap.swift in Sources */,
 				3531BBDA20CD013700EBB028 /* GAPData.swift in Sources */,
@@ -1382,6 +1384,7 @@
 				6E04273D20800B0700AD3C75 /* DefinedUUIDTests.swift in Sources */,
 				6E04273A208008A200AD3C75 /* BluetoothUUIDTests.swift in Sources */,
 				512F4B52208B341600576F34 /* UInt512Tests.swift in Sources */,
+				6E2B996520CD76C1000C76EF /* GATTBatteryTests.swift in Sources */,
 				6E142480206CFFC500BF72BC /* HostController.swift in Sources */,
 				6E7F4A4120928E2B00E877F1 /* GAPTests.swift in Sources */,
 				6ECBCF0B206E683C00312117 /* L2CAPSocket.swift in Sources */,
@@ -1403,6 +1406,7 @@
 				6E71F33220CB60D500D08901 /* GATTProfile.swift in Sources */,
 				6E9E4E84206DB68600D489E9 /* LowEnergyChannelMap.swift in Sources */,
 				6EF45FA41CC6D04D001F7A39 /* HCIEvent.swift in Sources */,
+				6E2B995C20CBA86E000C76EF /* GAPData.swift in Sources */,
 				6E740C5020657F46006589F6 /* TestingCommand.swift in Sources */,
 				3588AC1C20CD05AC00F9FA8C /* GAPData.swift in Sources */,
 				6E60A321206979CF00E42351 /* iBeacon.swift in Sources */,
