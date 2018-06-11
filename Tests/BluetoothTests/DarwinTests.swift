@@ -357,6 +357,249 @@ final class DarwinTests: XCTestCase {
         
         print("Generated Swift code \(filename)")
     }
+    
+    func testGenerateUnitIdentifier() {
+        
+        let units = [
+            0x2700: "unitless",
+            0x2701: "metre",
+            0x2702: "kilogram",
+            0x2703: "second",
+            0x2704: "ampere",
+            0x2705: "kelvin",
+            0x2706: "mole",
+            0x2707: "candela",
+            0x2710: "area",
+            0x2711: "volume",
+            0x2712: "velocity",
+            0x2713: "acceleration",
+            0x2714: "wavenumber",
+            0x2715: "density",
+            0x2716: "surfaceDensity",
+            0x2717: "specificVolume",
+            0x2718: "currentDensity",
+            0x2719: "magneticFieldStrengh",
+            0x271A: "amountConcentration",
+            0x271B: "massConcentration",
+            0x271C: "luminance",
+            0x271D: "refractiveIndex",
+            0x271E: "relativePermeability",
+            0x2720: "planeAngle",
+            0x2721: "solidAngle",
+            0x2722: "frequency",
+            0x2723: "force",
+            0x2724: "pascalPressure",
+            0x2725: "energy",
+            0x2726: "power",
+            0x2727: "coulomb",
+            0x2728: "electricPotential",
+            0x2729: "capitance",
+            0x272A: "electricResistance",
+            0x272B: "electricConductance",
+            0x272C: "magneticFlux",
+            0x272D: "magneticFluxDensity",
+            0x272E: "inductance",
+            0x272F: "celsius",
+            0x2730: "luminousFlux",
+            0x2731: "illuminance",
+            0x2732: "becquerel",
+            0x2733: "absorbedDose",
+            0x2734: "sievert",
+            0x2735: "katal",
+            0x2740: "pascalSecond",
+            0x2741: "newtonMetre",
+            0x2742: "surfaceTension",
+            0x2743: "angularVelocity",
+            0x2744: "angularAcceleration",
+            0x2745: "heatFluxDensity",
+            0x2746: "heatCapacity",
+            0x2747: "specificHeatCapacity",
+            0x2748: "specificEnergy",
+            0x2749: "thermalConductivity",
+            0x274A: "energyDensity",
+            0x274B: "electricFieldStrength",
+            0x274C: "electricChargeDensity",
+            0x274D: "surfaceChargeDensity",
+            0x274E: "electricFluxDensity",
+            0x274F: "permittivity",
+            0x2750: "permeability",
+            0x2751: "molarEnergy",
+            0x2752: "molarEntropy",
+            0x2753: "exposure",
+            0x2754: "absorbedDoseRate",
+            0x2755: "radradiantIntensityiance",
+            0x2756: "radiance",
+            0x2757: "catalyticActivity",
+            0x2760: "minute",
+            0x2761: "dhouray",
+            0x2762: "ddayegree",
+            0x2763: "degree",
+            0x2764: "plaplaneAngleMinuteneAngleSecond",
+            0x2765: "heplaneAngleSecondctare",
+            0x2766: "hectare",
+            0x2767: "litre",
+            0x2768: "tonne",
+            0x2780: "bar",
+            0x2781: "millimetreOfMercury",
+            0x2782: "ngstrm",
+            0x2783: "nauticalMile",
+            0x2784: "barn",
+            0x2785: "velocityKnot",
+            0x2786: "neper",
+            0x2787: "bel",
+            0x27A0: "yard",
+            0x27A1: "parsec",
+            0x27A2: "inch",
+            0x27A3: "foot",
+            0x27A4: "mile",
+            0x27A5: "pressurePoundForce",
+            0x27A6: "kilometrePerHour",
+            0x27A7: "milePerHour",
+            0x27A8: "revolutionPerMinute",
+            0x27A9: "gramCalorie",
+            0x27AA: "kilogramCalorie",
+            0x27AB: "kilowattHour",
+            0x27AC: "degreeFahrenheit",
+            0x27AD: "percentage",
+            0x27AE: "perMille",
+            0x27AF: "beatsPerMinute",
+            0x27B0: "ampereHours",
+            0x27B1: "milligramPerDecilitre",
+            0x27B2: "millimolePerLitre",
+            0x27B3: "year",
+            0x27B4: "month",
+            0x27B5: "concentration",
+            0x27B6: "irrandiance",
+            0x27B7: "millilitre",
+            0x27B8: "pound",
+            0x27B9: "metabolicEquivalent",
+            0x27BA: "step",
+            0x27BC: "stroke",
+            0x27BD: "pace",
+            0x27BE: "luminousEfficacy",
+            0x27BF: "luminousEnergy",
+            0x27C0: "luminousExposure",
+            0x27C1: "massFlow",
+            0x27C2: "volumeFlow"
+        ]
+        
+        let blacklist: [UInt16] = [
+            .max // remove internal use identifier
+        ]
+        
+        let companies = companyIdentifiers
+            .sorted(by: { $0.0.key < $0.1.key })
+            .filter { blacklist.contains($0.key) == false }
+        
+        var generatedCode = ""
+        
+        var memberNameCache = [UInt16: String]()
+        
+        func 🖨(_ text: String) {
+            
+            generatedCode += text + "\n"
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        
+        let fileDate = dateFormatter.string(from: Date())
+        
+        🖨("//")
+        🖨("//  CompanyIdentifierExtension.swift")
+        🖨("//  Bluetooth")
+        🖨("//")
+        🖨("//  Generated by Alsey Coleman Miller on \(fileDate).")
+        🖨("//")
+        🖨("")
+        🖨("public extension CompanyIdentifier {")
+        🖨("")
+        
+        for (identifier, name) in companies {
+            
+            let sanitizedName = sanitize(name: name)
+            
+            let llamaCaseName = llamaCase(sanitizedName)
+            
+            var memberName = llamaCaseName
+            
+            // prevent duplicate entries
+            var duplicateNumber = 1
+            while memberNameCache.values.contains(memberName) {
+                
+                duplicateNumber += 1
+                memberName = llamaCaseName + "\(duplicateNumber)"
+            }
+            
+            let comment = name + " " + "(`\(identifier)`)"
+            
+            🖨("    /// " + comment)
+            🖨("    static var " + memberName + ": CompanyIdentifier {")
+            🖨("        return CompanyIdentifier(rawValue: \(identifier))")
+            🖨("    }")
+            🖨("")
+            
+            memberNameCache[identifier] = memberName
+        }
+        
+        🖨("}")
+        
+        var filename = NSTemporaryDirectory() + "CompanyIdentifierExtension.swift"
+        XCTAssertNoThrow(try generatedCode.write(toFile: filename, atomically: true, encoding: .utf8))
+        
+        print("Generated Swift code \(filename)")
+        
+        // generate unit test for extensions
+        generatedCode = ""
+        
+        🖨("//")
+        🖨("//  CompanyIdentifierTests.swift")
+        🖨("//  Bluetooth")
+        🖨("//")
+        🖨("//  Generated by Alsey Coleman Miller on \(fileDate).")
+        🖨("//")
+        🖨("")
+        🖨("import XCTest")
+        🖨("import Foundation")
+        🖨("@testable import Bluetooth")
+        🖨("")
+        🖨("// swiftlint:disable type_body_length")
+        🖨("final class CompanyIdentifierTests: XCTestCase {")
+        🖨("")
+        🖨("    static let allTests = [")
+        🖨("        (\"testCompanies\", testCompanies)")
+        🖨("    ]")
+        🖨("")
+        🖨("    func testCompanies() {")
+        🖨("")
+        
+        // generate test methods
+        
+        for (identifier, name) in companies {
+            
+            guard let memberName = memberNameCache[identifier]
+                else { XCTFail("No extension generated for \(identifier)"); return }
+            
+            let stringLiteral = name.replacingOccurrences(of: "\"", with: "\\\"")
+            
+            🖨("        /// \(name)")
+            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).rawValue, \(identifier))")
+            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).name, \"\(stringLiteral)\")")
+            🖨("        XCTAssertEqual(CompanyIdentifier.\(memberName).description, \"\(stringLiteral)\")")
+            🖨("")
+        }
+        
+        🖨("    }")
+        🖨("")
+        🖨("}")
+        🖨("// swiftlint:enable type_body_length")
+        
+        filename = NSTemporaryDirectory() + "CompanyIdentifierTests.swift"
+        XCTAssertNoThrow(try generatedCode.write(toFile: filename, atomically: true, encoding: .utf8))
+        
+        print("Generated Swift code \(filename)")
+    }
 }
 
 // MARK: - Utilities
