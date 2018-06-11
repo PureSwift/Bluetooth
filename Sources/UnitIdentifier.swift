@@ -205,5 +205,5 @@ internal let units: [UInt16: (name: String, type: String)] = [
     0x27BF: ("luminous energy (lumen hour)", "org.bluetooth.unit.luminous_energy.lumen_hour"),
     0x27C0: ("luminous exposure (lux hour)", "org.bluetooth.unit.luminous_exposure.lux_hour"),
     0x27C1: ("mass flow (gram per second)", "org.bluetooth.unit.mass_flow.gram_per_second"),
-    0x27C2: ("volume flow (litre per second)", "org.bluetooth.unit.volume_flow.litre_per_second"),
+    0x27C2: ("volume flow (litre per second)", "org.bluetooth.unit.volume_flow.litre_per_second")
 ]
