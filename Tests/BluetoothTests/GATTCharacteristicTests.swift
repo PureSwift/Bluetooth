@@ -96,13 +96,13 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testSupportedUnreadAlertCategory() {
         
-        let data = Data([0x03, 0x00])
+        let data = Data([0x03])
         
         guard let characteristic = GATTSupportedUnreadAlertCategory(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        
+        XCTAssertEqual(characteristic, GATTSupportedUnreadAlertCategory(data: Data([0x03, 0x00])))
         XCTAssertEqual(characteristic.categories, [.email, .simpleAlert], "The value 0x03 is interpreted that this server supports “Simple Alert” and “Email” categories for unread alert.")
         
     }
