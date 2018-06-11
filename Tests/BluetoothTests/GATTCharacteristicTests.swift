@@ -1,8 +1,8 @@
 //
-//  GATTAlertNotificationServiceTests.swift
-//  BluetoothTests
+//  GATTCharacteristicTests.swift
+//  Bluetooth
 //
-//  Created by Alsey Coleman Miller on 6/8/18.
+//  Created by Alsey Coleman Miller on 6/10/18.
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
@@ -10,9 +10,10 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
-final class GATTAlertNotificationTests: XCTestCase {
+final class GATTCharacteristicTests: XCTestCase {
     
     static let allTests = [
+        ("testBatteryLevel", testBatteryLevel),
         ("testSupportedNewAlertCategory", testSupportedNewAlertCategory),
         ("testAlertCategoryIdBitMask", testAlertCategoryIdBitMask),
         ("testNewAlert", testNewAlert),
@@ -21,6 +22,22 @@ final class GATTAlertNotificationTests: XCTestCase {
         ("testUnreadAlertStatus", testUnreadAlertStatus),
         ("testAlertNotificationControlPoint", testAlertNotificationControlPoint)
     ]
+    
+    func testBatteryLevel() {
+        
+        let data = Data([0x22])
+        
+        let batteryLevel: UInt8 = 34
+        
+        guard let characteristic = GATTBatteryService.BatteryLevel(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.level, batteryLevel)
+        XCTAssertEqual(characteristic.description, "34%")
+        XCTAssertEqual(GATTBatteryService.BatteryLevel.unit.description, "27AD (percentage)")
+        XCTAssertEqual(GATTBatteryService.BatteryLevel.unit.type, "org.bluetooth.unit.percentage")
+    }
     
     func testSupportedNewAlertCategory() {
         
@@ -77,7 +94,7 @@ final class GATTAlertNotificationTests: XCTestCase {
         XCTAssertEqual(characteristic.data, data)
         
         XCTAssertEqual(characteristic, .email, "The value 0x01 is interpreted as “Email”")
-       
+        
     }
     
     func testSupportedUnreadAlertCategory() {
@@ -120,4 +137,5 @@ final class GATTAlertNotificationTests: XCTestCase {
         XCTAssertEqual(characteristic.commandID, .disableNewIncomingAlertNotification)
         XCTAssertEqual(characteristic.categoryID, .email)
     }
+    
 }
