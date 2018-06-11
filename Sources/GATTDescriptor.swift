@@ -65,6 +65,7 @@ public extension GATT.CharacteristicDescriptor {
     public typealias NumberOfDigitals = GATTNumberOfDigitals
 }
 
+// MARK: - Client Characteristic Configuration
 /// GATT Client Characteristic Configuration Descriptor
 ///
 /// The Client Characteristic Configuration descriptor defines how the characteristic may be
@@ -110,7 +111,7 @@ public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.read, .writeAuthentication])
+                               permissions: [.read, .write])
     }
 }
 
@@ -134,6 +135,7 @@ public extension GATTClientCharacteristicConfiguration {
     }
 }
 
+// MARK: - Characteristic Extended Properties
 /// GATT Characteristic Extended Properties Descriptor
 ///
 /// The Characteristic Extended Properties descriptor defines additional Characteristic Properties.
@@ -175,7 +177,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.read, .noAuthorization])
+                               permissions: [.read])
     }
 }
 
@@ -199,6 +201,7 @@ public extension GATTCharacteristicExtendedProperties {
     }
 }
 
+// MARK: - Server Characteristic Configuration
 /// GATT Server Characteristic Configuration Descriptor
 ///
 /// The Server Characteristic Configuration descriptor defines how the characteristic descriptor is associated with may be configured for the server.
@@ -239,7 +242,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.read, .writeAuthentication])
+                               permissions: [.read, .write])
     }
 }
 
@@ -260,6 +263,7 @@ extension GATTServerCharacteristicConfiguration {
     }
 }
 
+// MARK: - Characteristic Aggregate Format
 /// GATT Characteristic Aggregate Format Descriptor
 ///
 /// The Characteristic Aggregate Format descriptor defines the format of an aggregated Characteristic Value.
@@ -309,6 +313,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
 }
 
+// MARK: - Characteristic Format Types
 /// Characteristic Format Types
 ///
 /// If a format is not a whole number of octets, then the data shall be contained within
@@ -459,6 +464,7 @@ internal let characteristicFormatTypeDescription: [CharacteristicFormatType: Str
     .struct: "Opaque structure"
 ]
 
+// MARK: - Characteristic Presentation Format
 /// GATT Characteristic Presentation Format Descriptor
 ///
 /// The Characteristic Presentation Format descriptor defines the format of the Characteristic Value.
@@ -536,10 +542,11 @@ public struct GATTFormatDescriptor: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.read, .noAuthorization])
+                               permissions: [.read])
     }
 }
 
+// MARK: - Characteristic User Description
 /// GATT Characteristic User Description Descriptor
 ///
 /// The Characteristic User Description descriptor provides a textual user description for a characteristic value.
@@ -577,6 +584,7 @@ public struct GATTUserDescription: GATTDescriptor {
     }
 }
 
+// MARK: - Report Reference
 /// GATT Report Reference Descriptor
 ///
 /// Mapping information in the form of a Report ID and Report Type which maps the current parent characteristic to the Report ID(s) and Report Type (s) defined within the Report Map characteristic.
@@ -641,6 +649,7 @@ public enum GATTTimeTriggerSettingCondition: UInt8 {
     case count = 0x03
 }
 
+// MARK: - Time Trigger Setting
 /// GATT Time Trigger Setting Descriptor
 ///
 /// The value of the descriptor has two parts.
@@ -722,6 +731,7 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
     }
 }
 
+// MARK: - External Report Reference
 /// GATT External Report Reference Descriptor
 ///
 /// The External Report Reference characteristic descriptor allows a HID Host to map information from the Report Map characteristic value for Input Report, Output Report or Feature Report data to the Characteristic UUID of external service characteristics used to transfer the associated data.
@@ -757,6 +767,7 @@ public struct GATTExternalReportReference: GATTDescriptor {
     }
 }
 
+// MARK: - Number of Digitals
 /// GATT Number of Digitals Descriptor
 ///
 /// The Characteristic Number of Digitals descriptor is used for defining the number of digitals in a characteristic.
