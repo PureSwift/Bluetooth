@@ -824,7 +824,7 @@ public struct GATTBloodPressureFeature: GATTProfileCharacteristic {
  
  - SeeAlso: [Blood Pressure Measurement](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.blood_pressure_measurement.xml)
  */
-public struct BloodPressureMeasurement: GATTProfileCharacteristic {
+public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
     
     public static var uuid: BluetoothUUID { return .bloodPressureMeasurement }
     
@@ -879,6 +879,19 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
     /// Measurement Status
     public var measurementStatus: MeasurementStatus?
     
+    public init(compoundValue: CompoundValue,
+                timestamp: GATTDateTime? = nil,
+                pulseRate: SFloat? = nil,
+                userIdentifier: UInt8? = nil,
+                measurementStatus: MeasurementStatus? = nil) {
+        
+        self.compoundValue = compoundValue
+        self.timestamp = timestamp
+        self.pulseRate = pulseRate
+        self.userIdentifier = userIdentifier
+        self.measurementStatus = measurementStatus
+    }
+    
     public init?(data: Data) {
         
         guard data.count >= type(of: self).length
@@ -886,7 +899,83 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         
         let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
         
-        fatalError()
+        let unit: Unit = flags.contains(.bloodPressureUnits) ? .mmHg : .kPa
+        
+        let systolic = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
+        
+        let diastolic = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[3], data[4]))))
+        
+        let meanArterialPressure = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
+        
+        self.compoundValue = CompoundValue(unit: unit, systolic: systolic, diastolic: diastolic, meanArterialPressure: meanArterialPressure)
+        
+        var index = 6 // last accessed index
+        
+        if flags.contains(.timestamp) {
+            
+            guard index + GATTDateTime.length < data.count
+                else { return nil }
+            
+            let timestampData = Data(data[index + 1 ... index + GATTDateTime.length])
+            
+            assert(timestampData.count == GATTDateTime.length)
+            
+            guard let timestamp = GATTDateTime(data: timestampData)
+                else { return nil }
+            
+            self.timestamp = timestamp
+            
+            index += GATTDateTime.length
+            
+        } else {
+            
+            self.timestamp = nil
+        }
+        
+        if flags.contains(.pulseRate) {
+            
+            guard index + MemoryLayout<UInt16>.size < data.count
+                else { return nil }
+            
+            self.pulseRate = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            
+            index += MemoryLayout<UInt16>.size
+            
+        } else {
+            
+            self.pulseRate = nil
+        }
+        
+        if flags.contains(.userID) {
+            
+            guard index + 1 < data.count
+                else { return nil }
+            
+            self.userIdentifier = data[index + 1]
+            
+            index += 1
+            
+        } else {
+            
+            self.pulseRate = nil
+        }
+        
+        if flags.contains(.measurementStatus) {
+            
+            guard index + MemoryLayout<MeasurementStatus.RawValue>.size < data.count
+                else { return nil }
+            
+            guard let measurementStatus = MeasurementStatus(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+                else { return nil }
+            
+            self.measurementStatus = measurementStatus
+            
+            index += MemoryLayout<MeasurementStatus.RawValue>.size
+            
+        } else {
+            
+            self.pulseRate = nil
+        }
     }
     
     public var data: Data {
@@ -953,6 +1042,7 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         return data
     }
     
+    /// These flags define which data fields are present in the Characteristic value.
     internal enum Flag: UInt8, BitMaskOption {
         
         #if swift(>=3.2)
@@ -960,24 +1050,42 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         public typealias RawValue = UInt8
         #endif
         
+        /// Blood pressure for Systolic, Diastolic and MAP in units of kPa
         case bloodPressureUnits = 0b01
         
+        /// Time Stamp present
         case timestamp = 0b10
         
+        /// Pulse Rate present
         case pulseRate = 0b100
         
+        /// User ID present
         case userID = 0b1000
         
+        /// Measurement Status present
         case measurementStatus = 0b10000
         
         public static var all: Set<Flag> = [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus]
     }
     
     /// Unit of measurement
-    public enum Unit {
+    public enum Unit: UInt16 {
         
-        case mmHg
-        case kPa
+        /// Millimetre of Mercury
+        case mmHg = 0x2781
+        
+        /// Kilo Pascal
+        case kPa = 0x2724
+        
+        public init?(unit: UnitIdentifier) {
+            
+            self.init(rawValue: unit.rawValue)
+        }
+        
+        public var unit: UnitIdentifier {
+            
+            return UnitIdentifier(rawValue: rawValue)
+        }
     }
     
     /**
