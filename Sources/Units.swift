@@ -11,11 +11,6 @@ import Foundation
 public protocol Unit: RawRepresentable {
     
     static var unitType: UnitIdentifier { get }
-    
-    init?(data: Data)
-    
-    var data: Data { get }
-    
 }
 
 public struct PercentageUnit: Unit {
@@ -23,77 +18,44 @@ public struct PercentageUnit: Unit {
     internal static let length = MemoryLayout<UInt8>.size
     
     public static var unitType: UnitIdentifier { return .percentage }
+
+    public var rawValue: UInt
     
-    public var value: UInt8
-    
-    public init?(rawValue value: UInt8) {
+    public init(rawValue: UInt) {
         
-        self.value = value
+        self.rawValue = rawValue
     }
+}
+
+extension PercentageUnit: Equatable {
     
-    public init?(data: Data) {
+    public static func == (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        self.init(rawValue: data[0])
+        return lhs.rawValue == rhs.rawValue
     }
-    
-    fileprivate init(unsafe value: UInt8) {
-        
-        self.value = value
-    }
-    
-    public var rawValue: UInt8 {
-        
-        return value
-    }
-    
-    public var data: Data {
-        
-        return Data([value])
-    }
-    
 }
 
 extension PercentageUnit: Comparable {
     
-    public static func == (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
-        
-        return lhs.value == rhs.value
-    }
-    
     public static func < (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
-        
-        return lhs.value < rhs.value
+
+        return lhs.rawValue < rhs.rawValue
     }
-    
-    public static func <= (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
-        
-        return lhs.value <= rhs.value
-    }
-    
-    public static func >= (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
-        
-        return lhs.value >= rhs.value
-    }
-    
 }
 
 extension PercentageUnit: ExpressibleByIntegerLiteral {
     
-    public init(integerLiteral value: UInt8) {
+    public init(integerLiteral value: UInt) {
         
-        self.init(unsafe: value)
+        self.init(rawValue: value)
     }
-    
 }
 
 extension PercentageUnit: CustomStringConvertible {
     
     public var description: String {
         
-        return value.description
+        return rawValue.description
     }
     
 }
@@ -696,5 +658,4 @@ extension SecondUnit: CustomStringConvertible {
         
         return value.description
     }
-    
 }
