@@ -13,7 +13,7 @@ public struct SFloat {
     
     internal private(set) var builtin: UInt16
     
-    fileprivate init(_ builtin: UInt16) {
+    internal init(_ builtin: UInt16) {
         
         self.builtin = builtin
     }
