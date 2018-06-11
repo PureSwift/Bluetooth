@@ -13,7 +13,7 @@ public struct SFloat {
     
     internal private(set) var builtin: UInt16
     
-    internal init(_ builtin: UInt16) {
+    internal init(builtin: UInt16) {
         
         self.builtin = builtin
     }
@@ -85,6 +85,6 @@ extension SFloat: ByteSwap {
     /// A representation of this float with the byte order swapped.
     public var byteSwapped: SFloat {
         
-        return SFloat(builtin.byteSwapped)
+        return SFloat(builtin: builtin.byteSwapped)
     }
 }

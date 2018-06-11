@@ -135,4 +135,17 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.category, .email)
     }
     
+    func testBloodPressureMeasurement() {
+        
+        typealias CompoundValue = GATTBloodPressureMeasurement.CompoundValue
+        
+        let characteristic = GATTBloodPressureMeasurement(compoundValue:
+            CompoundValue(unit: .mmHg,
+                          systolic: SFloat(builtin: 0x00),
+                          diastolic: SFloat(builtin: 0x00),
+                          meanArterialPressure: SFloat(builtin: 0x00))
+        )
+        
+        XCTAssertEqual(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data), Array(characteristic.data))
+    }
 }
