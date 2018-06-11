@@ -11,14 +11,11 @@ import Foundation
 public protocol Unit: RawRepresentable {
     
     static var unitType: UnitIdentifier { get }
-<<<<<<< HEAD
     
     init?(data: Data)
     
     var data: Data { get }
     
-=======
->>>>>>> e99c8295c94ea546eecc5af78951601d5fec37e8
 }
 
 public struct PercentageUnit: Unit {
@@ -26,7 +23,6 @@ public struct PercentageUnit: Unit {
     internal static let length = MemoryLayout<UInt8>.size
     
     public static var unitType: UnitIdentifier { return .percentage }
-<<<<<<< HEAD
     
     public var value: UInt8
     
@@ -58,22 +54,12 @@ public struct PercentageUnit: Unit {
         return Data([value])
     }
     
-=======
-
-    public var rawValue: UInt
-    
-    public init(rawValue: UInt) {
-        
-        self.rawValue = rawValue
-    }
->>>>>>> e99c8295c94ea546eecc5af78951601d5fec37e8
 }
 
 extension PercentageUnit: Comparable {
     
     public static func == (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
-<<<<<<< HEAD
         return lhs.value == rhs.value
     }
     
@@ -90,17 +76,6 @@ extension PercentageUnit: Comparable {
     public static func >= (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
         
         return lhs.value >= rhs.value
-=======
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension PercentageUnit: Comparable {
-    
-    public static func < (lhs: PercentageUnit, rhs: PercentageUnit) -> Bool {
-
-        return lhs.rawValue < rhs.rawValue
->>>>>>> e99c8295c94ea546eecc5af78951601d5fec37e8
     }
     
 }
@@ -118,11 +93,7 @@ extension PercentageUnit: CustomStringConvertible {
     
     public var description: String {
         
-<<<<<<< HEAD
         return value.description
-=======
-        return rawValue.description
->>>>>>> e99c8295c94ea546eecc5af78951601d5fec37e8
     }
     
 }

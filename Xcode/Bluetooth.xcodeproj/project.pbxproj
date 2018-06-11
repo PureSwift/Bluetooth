@@ -574,20 +574,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-<<<<<<< HEAD
-=======
-		35A2DF6A20C21FD3008B9A77 /* GATT Profiles */ = {
-			isa = PBXGroup;
-			children = (
-				35B7CADC20C5E72100F797AE /* GATTProfile.swift */,
-				35B8CE8320C646C1000BEC39 /* GATTAlertNotificationProfile.swift */,
-				358CB4DA20C796A20003DC60 /* GATTBatteryService.swift */,
-                3571E29420C8B8330017ACD2 /* GATTBloodPressureService.swift */,
-			);
-			name = "GATT Profiles";
-			sourceTree = "<group>";
-		};
->>>>>>> e99c8295c94ea546eecc5af78951601d5fec37e8
 		6E1F937B20C24C720030367F /* GAP */ = {
 			isa = PBXGroup;
 			children = (
@@ -752,10 +738,6 @@
 		6EE84DD11CAF5DC800A40C4D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-=======
-				35A2DF6A20C21FD3008B9A77 /* GATT Profiles */,
->>>>>>> e99c8295c94ea546eecc5af78951601d5fec37e8
 				6E704C961E95C4B300484A22 /* Extensions */,
 				6E704C761E95C32D00484A22 /* BitMaskOption.swift */,
 				6E704C7A1E95C34D00484A22 /* ByteValue.swift */,
