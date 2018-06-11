@@ -1046,6 +1046,65 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
     }
 }
 
+public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateLowerLimit }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        guard let beats = BeatsPerMinute(rawValue: data[0])
+            else { return nil }
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+    public struct BeatsPerMinute: Unit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .beatsPerMinute }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+    }
+}
+
+extension GATTSupportedNewAlertCategory: Equatable {
+    
+    public static func == (lhs: GATTSupportedNewAlertCategory,
+                           rhs: GATTSupportedNewAlertCategory) -> Bool {
+        
+        return lhs.categories == rhs.categories
+    }
+}
+
 // MARK: - Internal
 
 internal extension UInt64 {
