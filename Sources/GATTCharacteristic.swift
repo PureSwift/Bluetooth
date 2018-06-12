@@ -156,15 +156,24 @@ public struct GATTDateTime: GATTProfileCharacteristic {
 
 public extension GATTDateTime {
     
+    /// Default calender to use for `Date` conversion.
+    private static var calendar: Calendar {
+        
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC")!
+        return calendar
+    }
+    
+    /// Initialize with the current date.
     public init() {
         
         self.init(date: Date())
     }
     
+    /// Initialize with the specified date.
     public init(date: Date) {
         
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "UTC")!
+        let calendar = type(of: self).calendar
         
         let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second],
                                                      from: date)
@@ -175,6 +184,7 @@ public extension GATTDateTime {
         self = dateTime
     }
     
+    /// Initialize with the specified `DateComponents`.
     init?(dateComponents: DateComponents) {
         
         guard let year = Year(rawValue: UInt16(dateComponents.year ?? 0)),
@@ -191,6 +201,46 @@ public extension GATTDateTime {
                   hour: hour,
                   minute: minutes,
                   second: seconds)
+    }
+    
+    /// Date components for the date time.
+    var dateComponents: DateComponents {
+        
+        let calendar = type(of: self).calendar
+        
+        return DateComponents(calendar: calendar,
+                              timeZone: calendar.timeZone,
+                              year: year == .unknown ? nil : Int(year.rawValue),
+                              month: month == .unknown ? nil : Int(month.rawValue),
+                              day: day == .unknown ? nil : Int(day.rawValue),
+                              hour: Int(hour.rawValue),
+                              minute: Int(minute.rawValue),
+                              second: Int(second.rawValue))
+    }
+}
+
+public extension Date {
+    
+    /// Initialize from `Bluetooth.GATTDateTime`.
+    init?(dateTime: GATTDateTime) {
+        
+        guard let date = dateTime.dateComponents.date
+            else { return nil }
+        
+        self = date
+    }
+}
+
+extension GATTDateTime: Equatable {
+    
+    public static func == (lhs: GATTDateTime, rhs: GATTDateTime) -> Bool {
+        
+        return lhs.year == rhs.year
+            && lhs.month == rhs.month
+            && lhs.day == rhs.day
+            && lhs.hour == lhs.hour
+            && lhs.minute == lhs.minute
+            && lhs.second == rhs.second
     }
 }
 
