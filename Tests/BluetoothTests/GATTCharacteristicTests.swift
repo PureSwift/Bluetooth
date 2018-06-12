@@ -27,15 +27,19 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testDateTime() {
         
+        /// remove subsecond precision
+        let date = Date(timeIntervalSinceReferenceDate: TimeInterval(Int(Date.timeIntervalSinceReferenceDate)))
+        
         // Date conversion
         XCTAssertNotEqual(GATTDateTime().year, .unknown)
         XCTAssertNotEqual(GATTDateTime().month, .unknown)
         XCTAssertNotEqual(GATTDateTime().day, .unknown)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).year.rawValue, 2001)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).month, .january)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).day.rawValue, 1)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).hour.rawValue, 0)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).minute.rawValue, 0)
+        XCTAssertEqual(Date(dateTime: GATTDateTime(date: date)), date)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).year.rawValue, 2001)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).month, .january)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).day.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 60*60)).hour.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 60)).minute.rawValue, 1)
         XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).second.rawValue, 30)
         
         // create valid values
