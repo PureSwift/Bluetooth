@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		3531BBDA20CD013700EBB028 /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3531BF4C20CEEF8F00F31BC3 /* UnitIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */; };
-		3571E29020C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
-		3571E29120C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
-		3571E29220C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
-		3571E29320C894BA0017ACD2 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Units.swift */; };
+		3571E29020C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
+		3571E29120C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
+		3571E29220C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
+		3571E29320C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
 		3580287920C8308E0096227B /* UnitIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287820C8308E0096227B /* UnitIdentifier.swift */; };
 		3580287A20C8308E0096227B /* UnitIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287820C8308E0096227B /* UnitIdentifier.swift */; };
 		3580287B20C8308E0096227B /* UnitIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580287820C8308E0096227B /* UnitIdentifier.swift */; };
@@ -416,7 +416,7 @@
 /* Begin PBXFileReference section */
 		3531BBD920CD013700EBB028 /* GAPData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GAPData.swift; sourceTree = "<group>"; };
 		3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierTests.swift; sourceTree = "<group>"; };
-		3571E28F20C894BA0017ACD2 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
+		3571E28F20C894BA0017ACD2 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
@@ -758,16 +758,17 @@
 			isa = PBXGroup;
 			children = (
 				6E704C961E95C4B300484A22 /* Extensions */,
+				6E781B0E20CE560D00786867 /* Numeric Data Types */,
 				6E704C761E95C32D00484A22 /* BitMaskOption.swift */,
 				6E704C7A1E95C34D00484A22 /* ByteValue.swift */,
 				6E65DF8B20755CCD005BD2A0 /* ByteSwap.swift */,
 				6EE84DE21CAF80AE00A40C4D /* Address.swift */,
-				6E781B0E20CE560D00786867 /* Numeric Data Types */,
 				6EE84DD41CAF603000A40C4D /* BluetoothUUID.swift */,
 				6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */,
 				6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */,
 				3580287820C8308E0096227B /* UnitIdentifier.swift */,
-				3571E28F20C894BA0017ACD2 /* Units.swift */,
+				3580287D20C832870096227B /* UnitIdentifierExtension.swift */,
+				3571E28F20C894BA0017ACD2 /* Unit.swift */,
 				6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */,
 				6EAD976E20BF796200673DB7 /* DefinedCompanies.swift */,
 				6EB98F1920BF803E00FCE78E /* CompanyIdentifierExtension.swift */,
@@ -779,7 +780,6 @@
 				6E60A30E2069603700E42351 /* L2CAPSocket.swift */,
 				6E60A31F206979CF00E42351 /* iBeacon.swift */,
 				6E738B55206D920C00CEB343 /* LowEnergyFeature.swift */,
-				3580287D20C832870096227B /* UnitIdentifierExtension.swift */,
 				6EED6429207413F30077CECE /* LowEnergyState.swift */,
 				6E124BC6207E553E0060E2E9 /* RSSI.swift */,
 				6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */,
@@ -1170,7 +1170,7 @@
 				6E60A30420695CC600E42351 /* GATTClient.swift in Sources */,
 				3580287C20C8308E0096227B /* UnitIdentifier.swift in Sources */,
 				6E740C4320657EF0006589F6 /* LinkPolicyCommand.swift in Sources */,
-				3571E29320C894BA0017ACD2 /* Units.swift in Sources */,
+				3571E29320C894BA0017ACD2 /* Unit.swift in Sources */,
 				6E60A3122069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6E124BC0207E2EFC0060E2E9 /* InformationalCommandParameter.swift in Sources */,
 				6E60A2FE20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
@@ -1264,7 +1264,7 @@
 				6E60A30320695CC600E42351 /* GATTClient.swift in Sources */,
 				3580287B20C8308E0096227B /* UnitIdentifier.swift in Sources */,
 				6E740C4220657EEF006589F6 /* LinkPolicyCommand.swift in Sources */,
-				3571E29220C894BA0017ACD2 /* Units.swift in Sources */,
+				3571E29220C894BA0017ACD2 /* Unit.swift in Sources */,
 				6E60A3112069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6E124BBF207E2EFC0060E2E9 /* InformationalCommandParameter.swift in Sources */,
 				6E60A2FD20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
@@ -1328,7 +1328,7 @@
 				6ECBCF21206FC3A200312117 /* Array.swift in Sources */,
 				6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				5138F5D920786E5700EC4C50 /* LowEnergyPhyCommands.swift in Sources */,
-				3571E29020C894BA0017ACD2 /* Units.swift in Sources */,
+				3571E29020C894BA0017ACD2 /* Unit.swift in Sources */,
 				6EE84DFC1CAF891E00A40C4D /* LowEnergyEventParameter.swift in Sources */,
 				6EE84E011CAF891E00A40C4D /* LowEnergyCommandParameter.swift in Sources */,
 				6E443A2D2085D4E2005F4D5F /* GATTDescriptor.swift in Sources */,
@@ -1487,7 +1487,7 @@
 				6E60A30220695CC600E42351 /* GATTClient.swift in Sources */,
 				3580287A20C8308E0096227B /* UnitIdentifier.swift in Sources */,
 				6E740C4120657EEF006589F6 /* LinkPolicyCommand.swift in Sources */,
-				3571E29120C894BA0017ACD2 /* Units.swift in Sources */,
+				3571E29120C894BA0017ACD2 /* Unit.swift in Sources */,
 				6E60A3102069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6E124BBE207E2EFC0060E2E9 /* InformationalCommandParameter.swift in Sources */,
 				6E60A2FC20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
