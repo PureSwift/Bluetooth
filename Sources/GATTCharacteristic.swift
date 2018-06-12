@@ -106,7 +106,12 @@ public struct GATTDateTime: GATTProfileCharacteristic {
     
     public var seconds: Second
     
-    public init(year: Year, month: Month, day: Day, hour: Hour, minutes: Minute, seconds: Second) {
+    public init(year: Year,
+                month: Month,
+                day: Day,
+                hour: Hour,
+                minutes: Minute,
+                seconds: Second) {
         
         self.year = year
         self.month = month
@@ -121,23 +126,18 @@ public struct GATTDateTime: GATTProfileCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let year = Year(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
-            else {return nil }
+        let year = Year(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
         guard let month = Month(rawValue: data[2])
             else { return nil }
         
-        guard let day = Day(rawValue: data[3])
-            else { return nil }
+        let day = Day(rawValue: data[3])
         
-        guard let hour = Hour(rawValue: data[4])
-            else { return nil }
+        let hour = Hour(rawValue: data[4])
         
-        guard let minutes = Minute(rawValue: data[5])
-            else { return nil }
+        let minutes = Minute(rawValue: data[5])
         
-        guard let seconds = Second(rawValue: data[6])
-            else { return nil }
+        let seconds = Second(rawValue: data[6])
         
         self.init(year: year, month: month, day: day, hour: hour, minutes: minutes, seconds: seconds)
     }
@@ -158,6 +158,8 @@ public extension GATTDateTime {
         
         public static var unitType: UnitIdentifier { return .year }
         
+        public static var unkown
+        
         public var value: UInt16
         
         public init?(data: Data) {
@@ -170,7 +172,7 @@ public extension GATTDateTime {
             self.init(rawValue: value)
         }
         
-        public init?(rawValue value: UInt16) {
+        public init(rawValue value: UInt16) {
             
             self.value = value
         }
@@ -294,7 +296,7 @@ public extension GATTDateTime {
         
         public var value: UInt8
         
-        public init?(rawValue value: UInt8) {
+        public init(rawValue value: UInt8) {
             
             self.value = value
         }
@@ -358,7 +360,7 @@ public extension GATTDateTime {
         
         public var value: UInt8
         
-        public init?(rawValue value: UInt8) {
+        public init(rawValue value: UInt8) {
             
             self.value = value
         }
@@ -424,7 +426,7 @@ public extension GATTDateTime {
         
         public var value: UInt8
         
-        public init?(rawValue value: UInt8) {
+        public init(rawValue value: UInt8) {
             
             self.value = value
         }
@@ -490,7 +492,7 @@ public extension GATTDateTime {
         
         public var value: UInt8
         
-        public init?(rawValue value: UInt8) {
+        public init(rawValue value: UInt8) {
             
             self.value = value
         }
