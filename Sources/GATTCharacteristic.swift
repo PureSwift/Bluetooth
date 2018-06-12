@@ -156,6 +156,40 @@ public struct GATTDateTime: GATTProfileCharacteristic {
 
 public extension GATTDateTime {
     
+    public init() {
+        
+        self.init(date: Date())!
+    }
+    
+    public init?(date: Date, calendar: Calendar = Calendar(identifier: .gregorian)) {
+        
+        let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                                     from: date)
+        
+        self.init(dateComponents: dateComponents)
+    }
+    
+    init?(dateComponents: DateComponents) {
+        
+        guard let year = Year(rawValue: UInt16(dateComponents.year ?? 0)),
+            let month = Month(rawValue: UInt8(dateComponents.month ?? 0)),
+            let day = Day(rawValue: UInt8(dateComponents.day ?? 0)),
+            let hour = Hour(rawValue: UInt8(dateComponents.hour ?? 0)),
+            let minutes = Minute(rawValue: UInt8(dateComponents.minute ?? 0)),
+            let seconds = Second(rawValue: UInt8(dateComponents.second ?? 0))
+            else { return nil }
+        
+        self.init(year: year,
+                  month: month,
+                  day: day,
+                  hour: hour,
+                  minutes: minutes,
+                  seconds: seconds)
+    }
+}
+
+public extension GATTDateTime {
+    
     /// Year as defined by the Gregorian calendar.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
