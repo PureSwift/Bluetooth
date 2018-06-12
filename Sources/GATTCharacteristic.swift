@@ -111,23 +111,23 @@ public struct GATTDateTime: GATTProfileCharacteristic {
     
     public var hour: Hour
     
-    public var minutes: Minute
+    public var minute: Minute
     
-    public var seconds: Second
+    public var second: Second
     
     public init(year: Year,
                 month: Month,
                 day: Day,
                 hour: Hour,
-                minutes: Minute,
-                seconds: Second) {
+                minute: Minute,
+                second: Second) {
         
         self.year = year
         self.month = month
         self.day = day
         self.hour = hour
-        self.minutes = minutes
-        self.seconds = seconds
+        self.minute = minute
+        self.second = second
     }
     
     public init?(data: Data) {
@@ -139,18 +139,18 @@ public struct GATTDateTime: GATTProfileCharacteristic {
             let month = Month(rawValue: data[2]),
             let day = Day(rawValue: data[3]),
             let hour = Hour(rawValue: data[4]),
-            let minutes = Minute(rawValue: data[5]),
-            let seconds = Second(rawValue: data[6])
+            let minute = Minute(rawValue: data[5]),
+            let second = Second(rawValue: data[6])
             else { return nil }
         
-        self.init(year: year, month: month, day: day, hour: hour, minutes: minutes, seconds: seconds)
+        self.init(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
     }
     
     public var data: Data {
         
         let yearBytes = year.rawValue.littleEndian.bytes
         
-        return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minutes.rawValue, seconds.rawValue])
+        return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minute.rawValue, second.rawValue])
     }
 }
 
@@ -158,15 +158,21 @@ public extension GATTDateTime {
     
     public init() {
         
-        self.init(date: Date())!
+        self.init(date: Date())
     }
     
-    public init?(date: Date, calendar: Calendar = Calendar(identifier: .gregorian)) {
+    public init(date: Date) {
+        
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC")!
         
         let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second],
                                                      from: date)
         
-        self.init(dateComponents: dateComponents)
+        guard let dateTime = GATTDateTime(dateComponents: dateComponents)
+            else { fatalError("Could not create \(GATTDateTime.self) from \(date)") }
+        
+        self = dateTime
     }
     
     init?(dateComponents: DateComponents) {
@@ -183,8 +189,8 @@ public extension GATTDateTime {
                   month: month,
                   day: day,
                   hour: hour,
-                  minutes: minutes,
-                  seconds: seconds)
+                  minute: minutes,
+                  second: seconds)
     }
 }
 
