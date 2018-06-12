@@ -1581,21 +1581,16 @@ public struct GATTAerobicHeartRateUpperLimit: GATTProfileCharacteristic {
         
         public static var unitType: UnitIdentifier { return .beatsPerMinute }
         
-        public var value: UInt8
+        public var rawValue: UInt8
         
         public init?(rawValue value: UInt8) {
             
-            self.value = value
+            self.rawValue = value
         }
         
         fileprivate init(unsafe value: UInt8) {
             
-            self.value = value
-        }
-        
-        public var rawValue: UInt8 {
-            
-            return value
+            self.rawValue = value
         }
         
     }
@@ -1605,7 +1600,7 @@ extension GATTAerobicHeartRateUpperLimit.BeatsPerMinute: CustomStringConvertible
     
     public var description: String {
         
-        return value.description
+        return rawValue.description
     }
     
 }
@@ -1615,7 +1610,7 @@ extension GATTAerobicHeartRateUpperLimit.BeatsPerMinute: Equatable {
     public static func == (lhs: GATTAerobicHeartRateUpperLimit.BeatsPerMinute,
                            rhs: GATTAerobicHeartRateUpperLimit.BeatsPerMinute) -> Bool {
         
-        return lhs.value == rhs.value
+        return lhs.rawValue == rhs.rawValue
     }
     
 }
