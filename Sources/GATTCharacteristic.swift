@@ -1539,6 +1539,13 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
     }
 }
 
+/**
+ Aerobic Heart Rate Lower Limit
+ 
+ Lower limit of the heart rate where the user enhances his endurance while exercising
+ 
+ - SeeAlso: [Aerobic Heart Rate Lower Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_lower_limit.xml)
+ */
 public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
@@ -1568,7 +1575,7 @@ public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
         return Data([beats.rawValue])
     }
     
-    public struct BeatsPerMinute: Unit {
+    public struct BeatsPerMinute: BluetoothUnit {
         
         internal static let length = MemoryLayout<UInt8>.size
         
@@ -1581,6 +1588,11 @@ public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
             self.value = value
         }
         
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
         public var rawValue: UInt8 {
             
             return value
@@ -1589,12 +1601,48 @@ public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
     }
 }
 
-extension GATTSupportedNewAlertCategory: Equatable {
+extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: CustomStringConvertible {
     
-    public static func == (lhs: GATTSupportedNewAlertCategory,
-                           rhs: GATTSupportedNewAlertCategory) -> Bool {
+    public var description: String {
         
-        return lhs.categories == rhs.categories
+        return value.description
+    }
+    
+}
+
+extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateLowerLimit.BeatsPerMinute,
+                           rhs: GATTAerobicHeartRateLowerLimit.BeatsPerMinute) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTAerobicHeartRateLowerLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateLowerLimit,
+                           rhs: GATTAerobicHeartRateLowerLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
     }
 }
 
