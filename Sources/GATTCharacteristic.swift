@@ -94,19 +94,19 @@ public struct GATTDateTime: GATTProfileCharacteristic {
     
     internal static let length = 7
     
-    public var year: YearUnit
+    public var year: Year
     
-    public var month: MonthUnit
+    public var month: Month
     
-    public var day: DayUnit
+    public var day: Day
     
-    public var hour: HourUnit
+    public var hour: Hour
     
-    public var minutes: MinuteUnit
+    public var minutes: Minute
     
-    public var seconds: SecondUnit
+    public var seconds: Second
     
-    public init(year: YearUnit, month: MonthUnit, day: DayUnit, hour: HourUnit, minutes: MinuteUnit, seconds: SecondUnit) {
+    public init(year: Year, month: Month, day: Day, hour: Hour, minutes: Minute, seconds: Second) {
         
         self.year = year
         self.month = month
@@ -121,22 +121,22 @@ public struct GATTDateTime: GATTProfileCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let year = YearUnit(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        guard let year = Year(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
             else {return nil }
         
-        guard let month = MonthUnit(rawValue: data[2])
+        guard let month = Month(rawValue: data[2])
             else { return nil }
         
-        guard let day = DayUnit(rawValue: data[3])
+        guard let day = Day(rawValue: data[3])
             else { return nil }
         
-        guard let hour = HourUnit(rawValue: data[4])
+        guard let hour = Hour(rawValue: data[4])
             else { return nil }
         
-        guard let minutes = MinuteUnit(rawValue: data[5])
+        guard let minutes = Minute(rawValue: data[5])
             else { return nil }
         
-        guard let seconds = SecondUnit(rawValue: data[6])
+        guard let seconds = Second(rawValue: data[6])
             else { return nil }
         
         self.init(year: year, month: month, day: day, hour: hour, minutes: minutes, seconds: seconds)
@@ -147,6 +147,402 @@ public struct GATTDateTime: GATTProfileCharacteristic {
         let yearBytes = year.rawValue.littleEndian.bytes
         
         return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minutes.rawValue, seconds.rawValue])
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Year: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public static var unitType: UnitIdentifier { return .year }
+        
+        public var value: UInt16
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            let value = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+            
+            self.init(rawValue: value)
+        }
+        
+        public init?(rawValue value: UInt16) {
+            
+            self.value = value
+        }
+        
+        fileprivate init(unsafe value: UInt16) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt16 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            let bytes = value.littleEndian.bytes
+            
+            return Data([bytes.0, bytes.1])
+        }
+    }
+}
+
+extension GATTDateTime.Year: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Year, rhs: GATTDateTime.Year) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+}
+
+extension GATTDateTime.Year: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Year: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public enum Month: UInt8, BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public static var unitType: UnitIdentifier { return .month }
+        
+        case unknown = 0
+        
+        case january
+        
+        case february
+        
+        case march
+        
+        case april
+        
+        case may
+        
+        case june
+        
+        case july
+        
+        case august
+        
+        case september
+        
+        case october
+        
+        case november
+        
+        case december
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        public var data: Data {
+            
+            return Data([self.rawValue])
+        }
+    }
+}
+
+extension GATTDateTime.Month: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Month, rhs: GATTDateTime.Month) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTDateTime.Month: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Day: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Day: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Day, rhs: GATTDateTime.Day) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+}
+
+extension GATTDateTime.Day: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+}
+
+extension GATTDateTime.Day: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Hour: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Hour: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Hour, rhs: GATTDateTime.Hour) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTDateTime.Hour: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Hour: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Minute: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Minute: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Minute, rhs: GATTDateTime.Minute) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTDateTime.Minute: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Minute: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Second: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Second: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Second, rhs: GATTDateTime.Second) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTDateTime.Second: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Second: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
     }
 }
 
@@ -824,7 +1220,7 @@ public struct GATTBloodPressureFeature: GATTProfileCharacteristic {
  
  - SeeAlso: [Blood Pressure Measurement](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.blood_pressure_measurement.xml)
  */
-public struct BloodPressureMeasurement: GATTProfileCharacteristic {
+public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
     
     public static var uuid: BluetoothUUID { return .bloodPressureMeasurement }
     
@@ -877,7 +1273,20 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
     public var userIdentifier: UInt8?
     
     /// Measurement Status
-    public var measurementStatus: MeasurementStatus?
+    public var measurementStatus: BitMaskOptionSet<MeasurementStatus>?
+    
+    public init(compoundValue: CompoundValue,
+                timestamp: GATTDateTime? = nil,
+                pulseRate: SFloat? = nil,
+                userIdentifier: UInt8? = nil,
+                measurementStatus: BitMaskOptionSet<MeasurementStatus>? = nil) {
+        
+        self.compoundValue = compoundValue
+        self.timestamp = timestamp
+        self.pulseRate = pulseRate
+        self.userIdentifier = userIdentifier
+        self.measurementStatus = measurementStatus
+    }
     
     public init?(data: Data) {
         
@@ -886,7 +1295,80 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         
         let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
         
-        fatalError()
+        let unit: Unit = flags.contains(.bloodPressureUnits) ? .kPa : .mmHg
+        
+        let systolic = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
+        
+        let diastolic = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[3], data[4]))))
+        
+        let meanArterialPressure = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
+        
+        self.compoundValue = CompoundValue(unit: unit, systolic: systolic, diastolic: diastolic, meanArterialPressure: meanArterialPressure)
+        
+        var index = 6 // last accessed index
+        
+        if flags.contains(.timestamp) {
+            
+            guard index + GATTDateTime.length < data.count
+                else { return nil }
+            
+            let timestampData = Data(data[index + 1 ... index + GATTDateTime.length])
+            
+            assert(timestampData.count == GATTDateTime.length)
+            
+            guard let timestamp = GATTDateTime(data: timestampData)
+                else { return nil }
+            
+            self.timestamp = timestamp
+            
+            index += GATTDateTime.length
+            
+        } else {
+            
+            self.timestamp = nil
+        }
+        
+        if flags.contains(.pulseRate) {
+            
+            guard index + MemoryLayout<UInt16>.size < data.count
+                else { return nil }
+            
+            self.pulseRate = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            
+            index += MemoryLayout<UInt16>.size
+            
+        } else {
+            
+            self.pulseRate = nil
+        }
+        
+        if flags.contains(.userID) {
+            
+            guard index + 1 < data.count
+                else { return nil }
+            
+            self.userIdentifier = data[index + 1]
+            
+            index += 1
+            
+        } else {
+            
+            self.pulseRate = nil
+        }
+        
+        if flags.contains(.measurementStatus) {
+            
+            guard index + MemoryLayout<MeasurementStatus.RawValue>.size < data.count
+                else { return nil }
+            
+            self.measurementStatus = BitMaskOptionSet<MeasurementStatus>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            
+            index += MemoryLayout<MeasurementStatus.RawValue>.size
+            
+        } else {
+            
+            self.pulseRate = nil
+        }
     }
     
     public var data: Data {
@@ -929,13 +1411,38 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
             meanArterialPressureBytes.1
             ])
         
+        data.reserveCapacity(totalBytes)
         
+        if let timestamp = self.timestamp {
+            
+            data.append(timestamp.data)
+        }
         
-        assert(data.count == totalBytes)
+        if let pulseRate = self.pulseRate {
+            
+            let bytes = pulseRate.littleEndian.builtin.bytes
+            
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let userIdentifier = self.userIdentifier {
+            
+            data.append(userIdentifier)
+        }
+        
+        if let measurementStatus = self.measurementStatus {
+            
+            let bytes = measurementStatus.rawValue.littleEndian.bytes
+            
+            data += [bytes.0, bytes.1]
+        }
+        
+        assert(data.count == totalBytes, "Encoded data is \(data.count), expected is \(totalBytes)")
         
         return data
     }
     
+    /// These flags define which data fields are present in the Characteristic value.
     internal enum Flag: UInt8, BitMaskOption {
         
         #if swift(>=3.2)
@@ -943,24 +1450,42 @@ public struct BloodPressureMeasurement: GATTProfileCharacteristic {
         public typealias RawValue = UInt8
         #endif
         
+        /// Blood pressure for Systolic, Diastolic and MAP in units of kPa
         case bloodPressureUnits = 0b01
         
+        /// Time Stamp present
         case timestamp = 0b10
         
+        /// Pulse Rate present
         case pulseRate = 0b100
         
+        /// User ID present
         case userID = 0b1000
         
+        /// Measurement Status present
         case measurementStatus = 0b10000
         
         public static var all: Set<Flag> = [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus]
     }
     
     /// Unit of measurement
-    public enum Unit {
+    public enum Unit: UInt16 {
         
-        case mmHg
-        case kPa
+        /// Millimetre of Mercury
+        case mmHg = 0x2781
+        
+        /// Kilo Pascal
+        case kPa = 0x2724
+        
+        public init?(unit: UnitIdentifier) {
+            
+            self.init(rawValue: unit.rawValue)
+        }
+        
+        public var unit: UnitIdentifier {
+            
+            return UnitIdentifier(rawValue: rawValue)
+        }
     }
     
     /**

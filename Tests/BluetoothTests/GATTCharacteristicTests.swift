@@ -20,7 +20,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAlertCategoryID", testAlertCategoryID),
         ("testSupportedUnreadAlertCategory", testSupportedUnreadAlertCategory),
         ("testUnreadAlertStatus", testUnreadAlertStatus),
-        ("testAlertNotificationControlPoint", testAlertNotificationControlPoint)
+        ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
+        ("testBloodPressureMeasurement", testBloodPressureMeasurement)
     ]
     
     func testBatteryLevel() {
@@ -135,4 +136,26 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.category, .email)
     }
     
+    func testBloodPressureMeasurement() {
+        
+        typealias Unit = GATTBloodPressureMeasurement.Unit
+        typealias CompoundValue = GATTBloodPressureMeasurement.CompoundValue
+        typealias MeasurementStatus = GATTBloodPressureMeasurement.MeasurementStatus
+        
+        XCTAssertEqual(Unit.mmHg.unit, .millimetreOfMercury)
+        XCTAssertEqual(Unit.kPa.unit, .pascalPressure)
+        XCTAssertEqual(.mmHg, Unit(unit: .millimetreOfMercury))
+        XCTAssertEqual(.kPa, Unit(unit: .pascalPressure))
+        
+        let characteristic = GATTBloodPressureMeasurement(compoundValue:
+            CompoundValue(unit: .kPa,
+                          systolic: SFloat(builtin: 0xAA),
+                          diastolic: SFloat(builtin: 0xBB),
+                          meanArterialPressure: SFloat(builtin: 0xCC)),
+            userIdentifier: 0x1B,
+            measurementStatus: .all
+        )
+        
+        XCTAssertEqual(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()), Array(characteristic.data))
+    }
 }
