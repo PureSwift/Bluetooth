@@ -1548,6 +1548,8 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
  */
 public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
     
+    public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+    
     internal static let length = MemoryLayout<UInt8>.size
     
     public static var uuid: BluetoothUUID { return .aerobicHeartRateLowerLimit }
@@ -1574,7 +1576,30 @@ public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
         return Data([beats.rawValue])
     }
     
-    public struct BeatsPerMinute: BluetoothUnit {
+}
+
+extension GATTAerobicHeartRateLowerLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateLowerLimit,
+                           rhs: GATTAerobicHeartRateLowerLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
+// MARK: - Reusable
+
+public enum GATTBeatsPerMinute {
+    
+    public struct Byte: BluetoothUnit {
         
         internal static let length = MemoryLayout<UInt8>.size
         
@@ -1595,7 +1620,7 @@ public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
     }
 }
 
-extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: CustomStringConvertible {
+extension GATTBeatsPerMinute.Byte: CustomStringConvertible {
     
     public var description: String {
         
@@ -1604,40 +1629,23 @@ extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: CustomStringConvertible
     
 }
 
-extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: Equatable {
+extension GATTBeatsPerMinute.Byte: Equatable {
     
-    public static func == (lhs: GATTAerobicHeartRateLowerLimit.BeatsPerMinute,
-                           rhs: GATTAerobicHeartRateLowerLimit.BeatsPerMinute) -> Bool {
+    public static func == (lhs: GATTBeatsPerMinute.Byte,
+                           rhs: GATTBeatsPerMinute.Byte) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
     
 }
 
-extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: ExpressibleByIntegerLiteral {
+extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
         
         self.init(unsafe: value)
     }
     
-}
-
-extension GATTAerobicHeartRateLowerLimit: Equatable {
-    
-    public static func == (lhs: GATTAerobicHeartRateLowerLimit,
-                           rhs: GATTAerobicHeartRateLowerLimit) -> Bool {
-        
-        return lhs.beats == rhs.beats
-    }
-}
-
-extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return beats.description
-    }
 }
 
 // MARK: - Internal
