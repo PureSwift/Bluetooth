@@ -94,19 +94,19 @@ public struct GATTDateTime: GATTProfileCharacteristic {
     
     internal static let length = 7
     
-    public var year: YearUnit
+    public var year: Year
     
-    public var month: MonthUnit
+    public var month: Month
     
-    public var day: DayUnit
+    public var day: Day
     
-    public var hour: HourUnit
+    public var hour: Hour
     
-    public var minutes: MinuteUnit
+    public var minutes: Minute
     
-    public var seconds: SecondUnit
+    public var seconds: Second
     
-    public init(year: YearUnit, month: MonthUnit, day: DayUnit, hour: HourUnit, minutes: MinuteUnit, seconds: SecondUnit) {
+    public init(year: Year, month: Month, day: Day, hour: Hour, minutes: Minute, seconds: Second) {
         
         self.year = year
         self.month = month
@@ -121,22 +121,22 @@ public struct GATTDateTime: GATTProfileCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let year = YearUnit(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        guard let year = Year(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
             else {return nil }
         
-        guard let month = MonthUnit(rawValue: data[2])
+        guard let month = Month(rawValue: data[2])
             else { return nil }
         
-        guard let day = DayUnit(rawValue: data[3])
+        guard let day = Day(rawValue: data[3])
             else { return nil }
         
-        guard let hour = HourUnit(rawValue: data[4])
+        guard let hour = Hour(rawValue: data[4])
             else { return nil }
         
-        guard let minutes = MinuteUnit(rawValue: data[5])
+        guard let minutes = Minute(rawValue: data[5])
             else { return nil }
         
-        guard let seconds = SecondUnit(rawValue: data[6])
+        guard let seconds = Second(rawValue: data[6])
             else { return nil }
         
         self.init(year: year, month: month, day: day, hour: hour, minutes: minutes, seconds: seconds)
@@ -147,6 +147,402 @@ public struct GATTDateTime: GATTProfileCharacteristic {
         let yearBytes = year.rawValue.littleEndian.bytes
         
         return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minutes.rawValue, seconds.rawValue])
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Year: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public static var unitType: UnitIdentifier { return .year }
+        
+        public var value: UInt16
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            let value = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+            
+            self.init(rawValue: value)
+        }
+        
+        public init?(rawValue value: UInt16) {
+            
+            self.value = value
+        }
+        
+        fileprivate init(unsafe value: UInt16) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt16 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            let bytes = value.littleEndian.bytes
+            
+            return Data([bytes.0, bytes.1])
+        }
+    }
+}
+
+extension GATTDateTime.Year: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Year, rhs: GATTDateTime.Year) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+}
+
+extension GATTDateTime.Year: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Year: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public enum Month: UInt8, BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public static var unitType: UnitIdentifier { return .month }
+        
+        case unknown = 0
+        
+        case january
+        
+        case february
+        
+        case march
+        
+        case april
+        
+        case may
+        
+        case june
+        
+        case july
+        
+        case august
+        
+        case september
+        
+        case october
+        
+        case november
+        
+        case december
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        public var data: Data {
+            
+            return Data([self.rawValue])
+        }
+    }
+}
+
+extension GATTDateTime.Month: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Month, rhs: GATTDateTime.Month) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTDateTime.Month: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Day: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Day: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Day, rhs: GATTDateTime.Day) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+}
+
+extension GATTDateTime.Day: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+}
+
+extension GATTDateTime.Day: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Hour: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Hour: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Hour, rhs: GATTDateTime.Hour) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTDateTime.Hour: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Hour: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Minute: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Minute: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Minute, rhs: GATTDateTime.Minute) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTDateTime.Minute: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Minute: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+}
+
+public extension GATTDateTime {
+    
+    public struct Second: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public init?(data: Data) {
+            
+            guard data.count == type(of: self).length
+                else { return nil }
+            
+            self.init(rawValue: data[0])
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+        public var data: Data {
+            
+            return Data([value])
+        }
+    }
+}
+
+extension GATTDateTime.Second: Equatable {
+    
+    public static func == (lhs: GATTDateTime.Second, rhs: GATTDateTime.Second) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTDateTime.Second: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTDateTime.Second: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
     }
 }
 
