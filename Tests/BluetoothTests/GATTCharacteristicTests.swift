@@ -13,6 +13,7 @@ import Foundation
 final class GATTCharacteristicTests: XCTestCase {
     
     static let allTests = [
+        ("testDateTime", testDateTime),
         ("testBatteryLevel", testBatteryLevel),
         ("testSupportedNewAlertCategory", testSupportedNewAlertCategory),
         ("testAlertCategoryIdBitMask", testAlertCategoryIdBitMask),
@@ -23,6 +24,54 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
         ("testBloodPressureMeasurement", testBloodPressureMeasurement)
     ]
+    
+    func testDateTime() {
+        
+        // create valid values
+        (1582...9999).forEach { XCTAssertNotNil(GATTDateTime.Year(rawValue: $0)) }
+        XCTAssertEqual(GATTDateTime.Year(rawValue: 0), .unknown)
+        (1...12).forEach { XCTAssertNotNil(GATTDateTime.Month(rawValue: $0)) }
+        XCTAssertEqual(GATTDateTime.Month(rawValue: 0), .unknown)
+        (1...31).forEach { XCTAssertNotNil(GATTDateTime.Day(rawValue: $0)) }
+        XCTAssertEqual(GATTDateTime.Day(rawValue: 0), .unknown)
+        (0...23).forEach { XCTAssertNotNil(GATTDateTime.Hour(rawValue: $0)) }
+        (0...59).forEach { XCTAssertNotNil(GATTDateTime.Minute(rawValue: $0)) } 
+        (0...59).forEach { XCTAssertNotNil(GATTDateTime.Second(rawValue: $0)) }
+        
+        // encoding
+        do {
+            
+            let data = Data([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+            
+            guard let characteristic = GATTDateTime(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.year, .unknown)
+            XCTAssertEqual(characteristic.month, .unknown)
+            XCTAssertEqual(characteristic.day, .unknown)
+            XCTAssertEqual(characteristic.hour, .min)
+            XCTAssertEqual(characteristic.minutes, .min)
+            XCTAssertEqual(characteristic.seconds, .min)
+        }
+        
+        // encoding
+        do {
+            
+            let data = Data([203, 7, 4, 24, 12, 5, 30])
+            
+            guard let characteristic = GATTDateTime(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.year.rawValue, 1995)
+            XCTAssertEqual(characteristic.month, .april)
+            XCTAssertEqual(characteristic.day.rawValue, 24)
+            XCTAssertEqual(characteristic.hour.rawValue, 12)
+            XCTAssertEqual(characteristic.minutes.rawValue, 5)
+            XCTAssertEqual(characteristic.seconds.rawValue, 30)
+        }
+    }
     
     func testBatteryLevel() {
         
