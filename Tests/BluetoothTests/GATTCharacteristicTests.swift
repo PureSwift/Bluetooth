@@ -38,6 +38,15 @@ final class GATTCharacteristicTests: XCTestCase {
         (0...59).forEach { XCTAssertNotNil(GATTDateTime.Minute(rawValue: $0)) } 
         (0...59).forEach { XCTAssertNotNil(GATTDateTime.Second(rawValue: $0)) }
         
+        XCTAssertNil(GATTDateTime(data: Data()), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid values")
+        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
+        
         // encoding
         do {
             
