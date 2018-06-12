@@ -31,12 +31,12 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertNotEqual(GATTDateTime().year, .unknown)
         XCTAssertNotEqual(GATTDateTime().month, .unknown)
         XCTAssertNotEqual(GATTDateTime().day, .unknown)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.year.rawValue, 2001)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.month, .january)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.day.rawValue, 1)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.hour.rawValue, 0)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.minutes.rawValue, 0)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.seconds.rawValue, 30)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).year.rawValue, 2001)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).month, .january)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).day.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).hour.rawValue, 0)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).minute.rawValue, 0)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).second.rawValue, 30)
         
         // create valid values
         (1582...9999).forEach { XCTAssertNotNil(GATTDateTime.Year(rawValue: $0)) }
@@ -57,6 +57,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00])), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid values")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF])), "Invalid values")
         XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
         
         // encoding
@@ -72,8 +73,8 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.month, .unknown)
             XCTAssertEqual(characteristic.day, .unknown)
             XCTAssertEqual(characteristic.hour, .min)
-            XCTAssertEqual(characteristic.minutes, .min)
-            XCTAssertEqual(characteristic.seconds, .min)
+            XCTAssertEqual(characteristic.minute, .min)
+            XCTAssertEqual(characteristic.second, .min)
         }
         
         // encoding
@@ -89,8 +90,8 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.month, .april)
             XCTAssertEqual(characteristic.day.rawValue, 24)
             XCTAssertEqual(characteristic.hour.rawValue, 12)
-            XCTAssertEqual(characteristic.minutes.rawValue, 5)
-            XCTAssertEqual(characteristic.seconds.rawValue, 30)
+            XCTAssertEqual(characteristic.minute.rawValue, 5)
+            XCTAssertEqual(characteristic.second.rawValue, 30)
         }
     }
     
