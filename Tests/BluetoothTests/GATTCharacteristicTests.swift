@@ -27,6 +27,17 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testDateTime() {
         
+        // Date conversion
+        XCTAssertNotEqual(GATTDateTime().year, .unknown)
+        XCTAssertNotEqual(GATTDateTime().month, .unknown)
+        XCTAssertNotEqual(GATTDateTime().day, .unknown)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.year.rawValue, 2001)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.month, .january)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.day.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.hour.rawValue, 0)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.minutes.rawValue, 0)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30))?.seconds.rawValue, 30)
+        
         // create valid values
         (1582...9999).forEach { XCTAssertNotNil(GATTDateTime.Year(rawValue: $0)) }
         XCTAssertEqual(GATTDateTime.Year(rawValue: 0), .unknown)
@@ -38,6 +49,7 @@ final class GATTCharacteristicTests: XCTestCase {
         (0...59).forEach { XCTAssertNotNil(GATTDateTime.Minute(rawValue: $0)) } 
         (0...59).forEach { XCTAssertNotNil(GATTDateTime.Second(rawValue: $0)) }
         
+        // test decoding
         XCTAssertNil(GATTDateTime(data: Data()), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0x00])), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00])), "Invalid length")
