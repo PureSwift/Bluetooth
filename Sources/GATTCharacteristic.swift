@@ -1564,8 +1564,7 @@ public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let beats = BeatsPerMinute(rawValue: data[0])
-            else { return nil }
+        let beats = BeatsPerMinute(rawValue: data[0])
         
         self.init(beats: beats)
     }
@@ -1581,21 +1580,16 @@ public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
         
         public static var unitType: UnitIdentifier { return .beatsPerMinute }
         
-        public var value: UInt8
+        public var rawValue: UInt8
         
-        public init?(rawValue value: UInt8) {
+        public init(rawValue value: UInt8) {
             
-            self.value = value
+            self.rawValue = value
         }
         
         fileprivate init(unsafe value: UInt8) {
             
-            self.value = value
-        }
-        
-        public var rawValue: UInt8 {
-            
-            return value
+            self.rawValue = value
         }
         
     }
@@ -1605,7 +1599,7 @@ extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: CustomStringConvertible
     
     public var description: String {
         
-        return value.description
+        return rawValue.description
     }
     
 }
@@ -1615,7 +1609,7 @@ extension GATTAerobicHeartRateLowerLimit.BeatsPerMinute: Equatable {
     public static func == (lhs: GATTAerobicHeartRateLowerLimit.BeatsPerMinute,
                            rhs: GATTAerobicHeartRateLowerLimit.BeatsPerMinute) -> Bool {
         
-        return lhs.value == rhs.value
+        return lhs.rawValue == rhs.rawValue
     }
     
 }
