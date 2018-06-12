@@ -22,7 +22,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testSupportedUnreadAlertCategory", testSupportedUnreadAlertCategory),
         ("testUnreadAlertStatus", testUnreadAlertStatus),
         ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
-        ("testBloodPressureMeasurement", testBloodPressureMeasurement)
+        ("testBloodPressureMeasurement", testBloodPressureMeasurement),
+        ("testAlertLevel", testAlertLevel)
     ]
     
     func testDateTime() {
@@ -215,5 +216,17 @@ final class GATTCharacteristicTests: XCTestCase {
         )
         
         XCTAssertEqual(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()), Array(characteristic.data))
+    }
+    
+    func testAlertLevel() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTAlertLevel(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .mildAlert, "The value 0x01 should be interpreted as mild Alert")
+        XCTAssertEqual(GATTAlertLevel.uuid, .alertLevel)
     }
 }
