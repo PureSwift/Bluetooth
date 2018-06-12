@@ -1539,6 +1539,113 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
     }
 }
 
+/**
+ Aerobic Heart Rate Upper Limit
+ 
+ Upper limit of the heart rate where the user enhances his endurance while exercising
+ 
+ - SeeAlso: [Aerobic Heart Rate Upper Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_upper_limit.xml)
+ */
+public struct GATTAerobicHeartRateUpperLimit: GATTProfileCharacteristic {
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateUpperLimit }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        guard let beats = BeatsPerMinute(rawValue: data[0])
+            else { return nil }
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+    public struct BeatsPerMinute: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .beatsPerMinute }
+        
+        public var value: UInt8
+        
+        public init?(rawValue value: UInt8) {
+            
+            self.value = value
+        }
+        
+        fileprivate init(unsafe value: UInt8) {
+            
+            self.value = value
+        }
+        
+        public var rawValue: UInt8 {
+            
+            return value
+        }
+        
+    }
+}
+
+extension GATTAerobicHeartRateUpperLimit.BeatsPerMinute: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return value.description
+    }
+    
+}
+
+extension GATTAerobicHeartRateUpperLimit.BeatsPerMinute: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateUpperLimit.BeatsPerMinute,
+                           rhs: GATTAerobicHeartRateUpperLimit.BeatsPerMinute) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+    
+}
+
+extension GATTAerobicHeartRateUpperLimit.BeatsPerMinute: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(unsafe: value)
+    }
+    
+}
+
+extension GATTAerobicHeartRateUpperLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateUpperLimit,
+                           rhs: GATTAerobicHeartRateUpperLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateUpperLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
 // MARK: - Internal
 
 internal extension UInt64 {
