@@ -877,13 +877,13 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
     public var userIdentifier: UInt8?
     
     /// Measurement Status
-    public var measurementStatus: MeasurementStatus?
+    public var measurementStatus: BitMaskOptionSet<MeasurementStatus>?
     
     public init(compoundValue: CompoundValue,
                 timestamp: GATTDateTime? = nil,
                 pulseRate: SFloat? = nil,
                 userIdentifier: UInt8? = nil,
-                measurementStatus: MeasurementStatus? = nil) {
+                measurementStatus: BitMaskOptionSet<MeasurementStatus>? = nil) {
         
         self.compoundValue = compoundValue
         self.timestamp = timestamp
@@ -899,7 +899,7 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
         
         let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
         
-        let unit: Unit = flags.contains(.bloodPressureUnits) ? .mmHg : .kPa
+        let unit: Unit = flags.contains(.bloodPressureUnits) ? .kPa : .mmHg
         
         let systolic = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
         
@@ -965,10 +965,7 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
             guard index + MemoryLayout<MeasurementStatus.RawValue>.size < data.count
                 else { return nil }
             
-            guard let measurementStatus = MeasurementStatus(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
-                else { return nil }
-            
-            self.measurementStatus = measurementStatus
+            self.measurementStatus = BitMaskOptionSet<MeasurementStatus>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
             
             index += MemoryLayout<MeasurementStatus.RawValue>.size
             
@@ -1037,7 +1034,14 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
             data.append(userIdentifier)
         }
         
-        assert(data.count == totalBytes)
+        if let measurementStatus = self.measurementStatus {
+            
+            let bytes = measurementStatus.rawValue.littleEndian.bytes
+            
+            data += [bytes.0, bytes.1]
+        }
+        
+        assert(data.count == totalBytes, "Encoded data is \(data.count), expected is \(totalBytes)")
         
         return data
     }
