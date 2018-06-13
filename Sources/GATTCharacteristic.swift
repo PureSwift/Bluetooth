@@ -111,23 +111,23 @@ public struct GATTDateTime: GATTProfileCharacteristic {
     
     public var hour: Hour
     
-    public var minutes: Minute
+    public var minute: Minute
     
-    public var seconds: Second
+    public var second: Second
     
     public init(year: Year,
                 month: Month,
                 day: Day,
                 hour: Hour,
-                minutes: Minute,
-                seconds: Second) {
+                minute: Minute,
+                second: Second) {
         
         self.year = year
         self.month = month
         self.day = day
         self.hour = hour
-        self.minutes = minutes
-        self.seconds = seconds
+        self.minute = minute
+        self.second = second
     }
     
     public init?(data: Data) {
@@ -139,18 +139,108 @@ public struct GATTDateTime: GATTProfileCharacteristic {
             let month = Month(rawValue: data[2]),
             let day = Day(rawValue: data[3]),
             let hour = Hour(rawValue: data[4]),
-            let minutes = Minute(rawValue: data[5]),
-            let seconds = Second(rawValue: data[6])
+            let minute = Minute(rawValue: data[5]),
+            let second = Second(rawValue: data[6])
             else { return nil }
         
-        self.init(year: year, month: month, day: day, hour: hour, minutes: minutes, seconds: seconds)
+        self.init(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
     }
     
     public var data: Data {
         
         let yearBytes = year.rawValue.littleEndian.bytes
         
-        return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minutes.rawValue, seconds.rawValue])
+        return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minute.rawValue, second.rawValue])
+    }
+}
+
+public extension GATTDateTime {
+    
+    /// Default calender to use for `Date` conversion.
+    private static var calendar: Calendar {
+        
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC")!
+        return calendar
+    }
+    
+    /// Initialize with the current date.
+    public init() {
+        
+        self.init(date: Date())
+    }
+    
+    /// Initialize with the specified date.
+    public init(date: Date) {
+        
+        let calendar = type(of: self).calendar
+        
+        let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                                     from: date)
+        
+        guard let dateTime = GATTDateTime(dateComponents: dateComponents)
+            else { fatalError("Could not create \(GATTDateTime.self) from \(date)") }
+        
+        self = dateTime
+    }
+    
+    /// Initialize with the specified `DateComponents`.
+    init?(dateComponents: DateComponents) {
+        
+        guard let year = Year(rawValue: UInt16(dateComponents.year ?? 0)),
+            let month = Month(rawValue: UInt8(dateComponents.month ?? 0)),
+            let day = Day(rawValue: UInt8(dateComponents.day ?? 0)),
+            let hour = Hour(rawValue: UInt8(dateComponents.hour ?? 0)),
+            let minutes = Minute(rawValue: UInt8(dateComponents.minute ?? 0)),
+            let seconds = Second(rawValue: UInt8(dateComponents.second ?? 0))
+            else { return nil }
+        
+        self.init(year: year,
+                  month: month,
+                  day: day,
+                  hour: hour,
+                  minute: minutes,
+                  second: seconds)
+    }
+    
+    /// Date components for the date time.
+    var dateComponents: DateComponents {
+        
+        let calendar = type(of: self).calendar
+        
+        return DateComponents(calendar: calendar,
+                              timeZone: calendar.timeZone,
+                              year: year == .unknown ? nil : Int(year.rawValue),
+                              month: month == .unknown ? nil : Int(month.rawValue),
+                              day: day == .unknown ? nil : Int(day.rawValue),
+                              hour: Int(hour.rawValue),
+                              minute: Int(minute.rawValue),
+                              second: Int(second.rawValue))
+    }
+}
+
+public extension Date {
+    
+    /// Initialize from `Bluetooth.GATTDateTime`.
+    init?(dateTime: GATTDateTime) {
+        
+        guard let date = dateTime.dateComponents.date
+            else { return nil }
+        
+        self = date
+    }
+}
+
+extension GATTDateTime: Equatable {
+    
+    public static func == (lhs: GATTDateTime, rhs: GATTDateTime) -> Bool {
+        
+        return lhs.year == rhs.year
+            && lhs.month == rhs.month
+            && lhs.day == rhs.day
+            && lhs.hour == lhs.hour
+            && lhs.minute == lhs.minute
+            && lhs.second == rhs.second
     }
 }
 
@@ -1444,6 +1534,118 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
 }
 
 /**
+ Aerobic Heart Rate Lower Limit
+ 
+ Lower limit of the heart rate where the user enhances his endurance while exercising
+ 
+ - SeeAlso: [Aerobic Heart Rate Lower Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_lower_limit.xml)
+ */
+public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
+    
+    public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateLowerLimit }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let beats = BeatsPerMinute(rawValue: data[0])
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+}
+
+extension GATTAerobicHeartRateLowerLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateLowerLimit,
+                           rhs: GATTAerobicHeartRateLowerLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
+/**
+ Aerobic Heart Rate Upper Limit
+ 
+ Upper limit of the heart rate where the user enhances his endurance while exercising
+ 
+ - SeeAlso: [Aerobic Heart Rate Upper Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_upper_limit.xml)
+ */
+public struct GATTAerobicHeartRateUpperLimit: GATTProfileCharacteristic {
+    
+    public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateUpperLimit }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let beats = BeatsPerMinute(rawValue: data[0])
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+}
+
+extension GATTAerobicHeartRateUpperLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateUpperLimit,
+                           rhs: GATTAerobicHeartRateUpperLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateUpperLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
+/**
  Alert Level
  
  The level of an alert a device is to sound. If this level is changed while the alert is being sounded, the new level should take effect.
@@ -1485,6 +1687,50 @@ public enum GATTAlertLevel: UInt8, GATTProfileCharacteristic {
     public var data: Data {
         
         return Data([rawValue])
+    }
+}
+
+// MARK: - Supporting Types
+
+public enum GATTBeatsPerMinute {
+    
+    public struct Byte: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .beatsPerMinute }
+        
+        public var rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: Equatable {
+    
+    public static func == (lhs: GATTBeatsPerMinute.Byte,
+                           rhs: GATTBeatsPerMinute.Byte) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
     }
 }
 
