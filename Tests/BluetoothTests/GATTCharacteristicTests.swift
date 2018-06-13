@@ -252,5 +252,6 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.altitude, altitude)
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAltitude.uuid, .altitude)
+        XCTAssert(GATTAltitude(data: data) == GATTAltitude(data: data))
     }
 }
