@@ -590,31 +590,18 @@ public struct GATTUserDescription: GATTDescriptor {
 /// Mapping information in the form of a Report ID and Report Type which maps the current parent characteristic to the Report ID(s) and Report Type (s) defined within the Report Map characteristic.
 public struct GATTReportReference: GATTDescriptor {
     
-    public enum ReportType: UInt8 {
-        
-        /// Input Report
-        case InputReport = 0x01
-        
-        /// Output Report
-        case OutputReport = 0x02
-        
-        /// Feature Report
-        case FeatureReport = 0x03
-        
-    }
-    
     public static let uuid: BluetoothUUID = .reportReference
     
     public static let length = 2
     
-    public var reportID: UInt8
+    public var identifier: Identifier
     
-    public var reportType: ReportType
+    public var type: ReportType
     
-    public init(reportID: UInt8, reportType: ReportType) {
+    public init(identifier: Identifier, type: ReportType) {
         
-        self.reportID = reportID
-        self.reportType = reportType
+        self.identifier = identifier
+        self.type = type
     }
     
     public init?(byteValue: Data) {
@@ -625,22 +612,77 @@ public struct GATTReportReference: GATTDescriptor {
         guard let reportType = ReportType(rawValue: byteValue[1])
             else { return nil }
         
-        self.init(reportID: byteValue[0], reportType: reportType)
+        self.init(identifier: Identifier(rawValue: byteValue[0]), type: reportType)
     }
     
     public var byteValue: Data {
         
-        return Data([reportID, reportType.rawValue])
+        return Data([identifier.rawValue, type.rawValue])
     }
     
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [])
+                               permissions: [.read])
     }
 }
 
+public extension GATTReportReference {
+    
+    /// GATT Report Type
+    public enum ReportType: UInt8 {
+        
+        /// Input Report
+        case input = 0x01
+        
+        /// Output Report
+        case output = 0x02
+        
+        /// Feature Report
+        case feature = 0x03
+    }
+}
+
+public extension GATTReportReference {
+    
+    public struct Identifier: RawRepresentable {
+        
+        public var rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}
+
+extension GATTReportReference.Identifier: Equatable {
+    
+    public static func == (lhs: GATTReportReference.Identifier,
+                           rhs: GATTReportReference.Identifier) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTReportReference.Identifier: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTReportReference.Identifier: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
+
+/// GATT Time Trigger Setting Condition
 public enum GATTTimeTriggerSettingCondition: UInt8 {
     
     case none = 0x00
@@ -727,7 +769,7 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [])
+                               permissions: [.read])
     }
 }
 
@@ -739,31 +781,31 @@ public struct GATTExternalReportReference: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .externalReportReference
     
-    public let gatt_UUID: BluetoothUUID
+    public let uuid: BluetoothUUID
     
-    public init(gattUUID: BluetoothUUID) {
+    public init(uuid: BluetoothUUID) {
         
-        self.gatt_UUID = gattUUID
+        self.uuid = uuid
     }
     
     public init?(byteValue: Data) {
         
-        guard let gattUUID = BluetoothUUID(data: byteValue)
+        guard let uuid = BluetoothUUID(data: byteValue)
             else { return nil }
         
-        self.init(gattUUID: gattUUID)
+        self.init(uuid: BluetoothUUID(littleEndian: uuid))
     }
     
     public var byteValue: Data {
         
-        return gatt_UUID.data
+        return uuid.data
     }
     
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [])
+                               permissions: [.read])
     }
 }
 
@@ -771,31 +813,61 @@ public struct GATTExternalReportReference: GATTDescriptor {
 /// GATT Number of Digitals Descriptor
 ///
 /// The Characteristic Number of Digitals descriptor is used for defining the number of digitals in a characteristic.
-public struct GATTNumberOfDigitals: GATTDescriptor {
+public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
     
     public static let uuid: BluetoothUUID = .numberOfDigitals
     
     public static let length = 1
     
-    public var numberOfDigitals: UInt8
+    public var rawValue: UInt8
+    
+    public init(rawValue: UInt8) {
+        
+        self.rawValue = rawValue
+    }
     
     public init?(byteValue: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
         
-        numberOfDigitals = byteValue[0]
+        rawValue = byteValue[0]
     }
     
     public var byteValue: Data {
         
-        return Data([numberOfDigitals])
+        return Data([rawValue])
     }
     
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [])
+                               permissions: [.read])
+    }
+}
+
+extension GATTNumberOfDigitals: Equatable {
+    
+    public static func == (lhs: GATTNumberOfDigitals,
+                           rhs: GATTNumberOfDigitals) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTNumberOfDigitals: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTNumberOfDigitals: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
     }
 }
