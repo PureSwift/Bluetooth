@@ -25,7 +25,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testBloodPressureMeasurement", testBloodPressureMeasurement),
         ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit),
         ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit),
-        ("testAlertLevel", testAlertLevel)
+        ("testAlertLevel", testAlertLevel),
+        ("testAerobicThreshold", testAerobicThreshold)
     ]
     
     func testDateTime() {
@@ -250,15 +251,15 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x22])
         
-        let rateLowerLimit: BeatsPerMinute = 34
+        let beats: BeatsPerMinute = 34
         
         guard let characteristic = GATTAerobicHeartRateLowerLimit(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.beats, rateLowerLimit)
+        XCTAssertEqual(characteristic.beats, beats)
         XCTAssertEqual(characteristic.description, "34")
-        XCTAssertEqual(rateLowerLimit.description, "34")
+        XCTAssertEqual(beats.description, "34")
         XCTAssertEqual(GATTAerobicHeartRateLowerLimit.uuid, .aerobicHeartRateLowerLimit)
         XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
     }
@@ -271,15 +272,15 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x22])
         
-        let rateLowerLimit: BeatsPerMinute = 34
+        let beats: BeatsPerMinute = 34
         
         guard let characteristic = GATTAerobicHeartRateUpperLimit(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.beats, rateLowerLimit)
+        XCTAssertEqual(characteristic.beats, beats)
         XCTAssertEqual(characteristic.description, "34")
-        XCTAssertEqual(rateLowerLimit.description, "34")
+        XCTAssertEqual(beats.description, "34")
         XCTAssertEqual(GATTAerobicHeartRateUpperLimit.uuid, .aerobicHeartRateUpperLimit)
         XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
     }
@@ -294,5 +295,26 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic, .mild, "The value 0x01 should be interpreted as mild Alert")
         XCTAssertEqual(GATTAlertLevel.uuid, .alertLevel)
+    }
+    
+    func testAerobicThreshold() {
+        
+        typealias BeatsPerMinute = GATTAerobicThreshold.BeatsPerMinute
+        
+        XCTAssertNil(GATTAerobicThreshold(data: Data([0x4f, 0x45])))
+        
+        let data = Data([0x32])
+        
+        let beats: BeatsPerMinute = 50
+        
+        guard let characteristic = GATTAerobicThreshold(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.beats, beats)
+        XCTAssertEqual(characteristic.description, "50")
+        XCTAssertEqual(beats.description, "50")
+        XCTAssertEqual(GATTAerobicThreshold.uuid, .aerobicThreshold)
+        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
     }
 }
