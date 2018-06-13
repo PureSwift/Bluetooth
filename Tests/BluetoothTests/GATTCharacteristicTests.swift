@@ -23,7 +23,9 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testUnreadAlertStatus", testUnreadAlertStatus),
         ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
         ("testBloodPressureMeasurement", testBloodPressureMeasurement),
-        ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit)
+        ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit),
+        ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit),
+        ("testAlertLevel", testAlertLevel)
     ]
     
     func testDateTime() {
@@ -259,5 +261,38 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(rateLowerLimit.description, "34")
         XCTAssertEqual(GATTAerobicHeartRateLowerLimit.uuid, .aerobicHeartRateLowerLimit)
         XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+    }
+    
+    func testAerobicHeartRateUpperLimit() {
+        
+        typealias BeatsPerMinute = GATTAerobicHeartRateUpperLimit.BeatsPerMinute
+        
+        XCTAssertNil(GATTAerobicHeartRateUpperLimit(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x22])
+        
+        let rateLowerLimit: BeatsPerMinute = 34
+        
+        guard let characteristic = GATTAerobicHeartRateUpperLimit(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.beats, rateLowerLimit)
+        XCTAssertEqual(characteristic.description, "34")
+        XCTAssertEqual(rateLowerLimit.description, "34")
+        XCTAssertEqual(GATTAerobicHeartRateUpperLimit.uuid, .aerobicHeartRateUpperLimit)
+        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+    }
+    
+    func testAlertLevel() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTAlertLevel(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .mild, "The value 0x01 should be interpreted as mild Alert")
+        XCTAssertEqual(GATTAlertLevel.uuid, .alertLevel)
     }
 }
