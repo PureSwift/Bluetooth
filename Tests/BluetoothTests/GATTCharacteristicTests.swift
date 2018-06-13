@@ -23,10 +23,32 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testUnreadAlertStatus", testUnreadAlertStatus),
         ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
         ("testBloodPressureMeasurement", testBloodPressureMeasurement),
+        ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit),
+        ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit),
         ("testAlertLevel", testAlertLevel)
     ]
     
     func testDateTime() {
+        
+        /// remove subsecond precision
+        let date = Date(timeIntervalSinceReferenceDate: TimeInterval(Int(Date.timeIntervalSinceReferenceDate)))
+        
+        // Date conversion
+        XCTAssertNotEqual(GATTDateTime().year, .unknown)
+        XCTAssertNotEqual(GATTDateTime().month, .unknown)
+        XCTAssertNotEqual(GATTDateTime().day, .unknown)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).year.rawValue, 2001)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).month, .january)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).day.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 3600)).hour.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 60)).minute.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).second.rawValue, 30)
+        
+        // Crashes on Linux
+        // fatal error: copy(with:) is not yet implemented: file Foundation/NSCalendar.swift, line 1434
+        #if os(macOS)
+        XCTAssertEqual(Date(dateTime: GATTDateTime(date: date)), date)
+        #endif
         
         // create valid values
         (1582...9999).forEach { XCTAssertNotNil(GATTDateTime.Year(rawValue: $0)) }
@@ -39,6 +61,7 @@ final class GATTCharacteristicTests: XCTestCase {
         (0...59).forEach { XCTAssertNotNil(GATTDateTime.Minute(rawValue: $0)) } 
         (0...59).forEach { XCTAssertNotNil(GATTDateTime.Second(rawValue: $0)) }
         
+        // test decoding
         XCTAssertNil(GATTDateTime(data: Data()), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0x00])), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00])), "Invalid length")
@@ -46,6 +69,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00])), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
         XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid values")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF])), "Invalid values")
         XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
         
         // encoding
@@ -61,8 +85,8 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.month, .unknown)
             XCTAssertEqual(characteristic.day, .unknown)
             XCTAssertEqual(characteristic.hour, .min)
-            XCTAssertEqual(characteristic.minutes, .min)
-            XCTAssertEqual(characteristic.seconds, .min)
+            XCTAssertEqual(characteristic.minute, .min)
+            XCTAssertEqual(characteristic.second, .min)
         }
         
         // encoding
@@ -78,8 +102,8 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.month, .april)
             XCTAssertEqual(characteristic.day.rawValue, 24)
             XCTAssertEqual(characteristic.hour.rawValue, 12)
-            XCTAssertEqual(characteristic.minutes.rawValue, 5)
-            XCTAssertEqual(characteristic.seconds.rawValue, 30)
+            XCTAssertEqual(characteristic.minute.rawValue, 5)
+            XCTAssertEqual(characteristic.second.rawValue, 30)
         }
     }
     
@@ -216,6 +240,48 @@ final class GATTCharacteristicTests: XCTestCase {
         )
         
         XCTAssertEqual(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()), Array(characteristic.data))
+    }
+    
+    func testAerobicHeartRateLowerLimit() {
+        
+        typealias BeatsPerMinute = GATTAerobicHeartRateLowerLimit.BeatsPerMinute
+        
+        XCTAssertNil(GATTAerobicHeartRateLowerLimit(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x22])
+        
+        let rateLowerLimit: BeatsPerMinute = 34
+        
+        guard let characteristic = GATTAerobicHeartRateLowerLimit(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.beats, rateLowerLimit)
+        XCTAssertEqual(characteristic.description, "34")
+        XCTAssertEqual(rateLowerLimit.description, "34")
+        XCTAssertEqual(GATTAerobicHeartRateLowerLimit.uuid, .aerobicHeartRateLowerLimit)
+        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+    }
+    
+    func testAerobicHeartRateUpperLimit() {
+        
+        typealias BeatsPerMinute = GATTAerobicHeartRateUpperLimit.BeatsPerMinute
+        
+        XCTAssertNil(GATTAerobicHeartRateUpperLimit(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x22])
+        
+        let rateLowerLimit: BeatsPerMinute = 34
+        
+        guard let characteristic = GATTAerobicHeartRateUpperLimit(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.beats, rateLowerLimit)
+        XCTAssertEqual(characteristic.description, "34")
+        XCTAssertEqual(rateLowerLimit.description, "34")
+        XCTAssertEqual(GATTAerobicHeartRateUpperLimit.uuid, .aerobicHeartRateUpperLimit)
+        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
     }
     
     func testAlertLevel() {
