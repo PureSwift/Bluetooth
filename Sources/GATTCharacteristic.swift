@@ -1670,11 +1670,14 @@ public enum GATTAlertLevel: UInt8, GATTProfileCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    case noAlert = 0
+    /// No alert.
+    case none = 0x00
     
-    case mildAlert
+    /// Mild alert.
+    case mild = 0x01
     
-    case highAlert
+    /// High alert.
+    case high = 0x02
     
     public init?(data: Data) {
         

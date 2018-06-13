@@ -292,7 +292,7 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic, .mildAlert, "The value 0x01 should be interpreted as mild Alert")
+        XCTAssertEqual(characteristic, .mild, "The value 0x01 should be interpreted as mild Alert")
         XCTAssertEqual(GATTAlertLevel.uuid, .alertLevel)
     }
 }
