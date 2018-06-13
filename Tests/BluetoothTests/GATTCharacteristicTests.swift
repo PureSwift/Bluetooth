@@ -353,5 +353,6 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.analog, analog)
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalog.uuid, .analog)
+        XCTAssert(GATTAnalog(data: data) == GATTAnalog(data: data))
     }
 }
