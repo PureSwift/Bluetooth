@@ -1533,6 +1533,106 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
     }
 }
 
+/**
+ Aerobic Heart Rate Lower Limit
+ 
+ Lower limit of the heart rate where the user enhances his endurance while exercising
+ 
+ - SeeAlso: [Aerobic Heart Rate Lower Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_lower_limit.xml)
+ */
+public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
+    
+    public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateLowerLimit }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let beats = BeatsPerMinute(rawValue: data[0])
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+}
+
+extension GATTAerobicHeartRateLowerLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateLowerLimit,
+                           rhs: GATTAerobicHeartRateLowerLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
+// MARK: - Supporting Types
+
+public enum GATTBeatsPerMinute {
+    
+    public struct Byte: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .beatsPerMinute }
+        
+        public var rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: Equatable {
+    
+    public static func == (lhs: GATTBeatsPerMinute.Byte,
+                           rhs: GATTBeatsPerMinute.Byte) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 // MARK: - Internal
 
 internal extension UInt64 {
