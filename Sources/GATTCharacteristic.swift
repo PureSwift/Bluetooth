@@ -1602,7 +1602,7 @@ public struct GATTAerobicHeartRateUpperLimit: GATTProfileCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .aerobicHeartRateLowerLimit }
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateUpperLimit }
     
     public var beats: BeatsPerMinute
     
