@@ -13,6 +13,7 @@ import Foundation
 final class GATTCharacteristicTests: XCTestCase {
     
     static let allTests = [
+        ("testDateTime", testDateTime),
         ("testBatteryLevel", testBatteryLevel),
         ("testSupportedNewAlertCategory", testSupportedNewAlertCategory),
         ("testAlertCategoryIdBitMask", testAlertCategoryIdBitMask),
@@ -24,6 +25,85 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testBloodPressureMeasurement", testBloodPressureMeasurement),
         ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit)
     ]
+    
+    func testDateTime() {
+        
+        /// remove subsecond precision
+        let date = Date(timeIntervalSinceReferenceDate: TimeInterval(Int(Date.timeIntervalSinceReferenceDate)))
+        
+        // Date conversion
+        XCTAssertNotEqual(GATTDateTime().year, .unknown)
+        XCTAssertNotEqual(GATTDateTime().month, .unknown)
+        XCTAssertNotEqual(GATTDateTime().day, .unknown)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).year.rawValue, 2001)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).month, .january)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).day.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 3600)).hour.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 60)).minute.rawValue, 1)
+        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).second.rawValue, 30)
+        
+        // Crashes on Linux
+        // fatal error: copy(with:) is not yet implemented: file Foundation/NSCalendar.swift, line 1434
+        #if os(macOS)
+        XCTAssertEqual(Date(dateTime: GATTDateTime(date: date)), date)
+        #endif
+        
+        // create valid values
+        (1582...9999).forEach { XCTAssertNotNil(GATTDateTime.Year(rawValue: $0)) }
+        XCTAssertEqual(GATTDateTime.Year(rawValue: 0), .unknown)
+        (1...12).forEach { XCTAssertNotNil(GATTDateTime.Month(rawValue: $0)) }
+        XCTAssertEqual(GATTDateTime.Month(rawValue: 0), .unknown)
+        (1...31).forEach { XCTAssertNotNil(GATTDateTime.Day(rawValue: $0)) }
+        XCTAssertEqual(GATTDateTime.Day(rawValue: 0), .unknown)
+        (0...23).forEach { XCTAssertNotNil(GATTDateTime.Hour(rawValue: $0)) }
+        (0...59).forEach { XCTAssertNotNil(GATTDateTime.Minute(rawValue: $0)) } 
+        (0...59).forEach { XCTAssertNotNil(GATTDateTime.Second(rawValue: $0)) }
+        
+        // test decoding
+        XCTAssertNil(GATTDateTime(data: Data()), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
+        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid values")
+        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF])), "Invalid values")
+        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
+        
+        // encoding
+        do {
+            
+            let data = Data([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+            
+            guard let characteristic = GATTDateTime(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.year, .unknown)
+            XCTAssertEqual(characteristic.month, .unknown)
+            XCTAssertEqual(characteristic.day, .unknown)
+            XCTAssertEqual(characteristic.hour, .min)
+            XCTAssertEqual(characteristic.minute, .min)
+            XCTAssertEqual(characteristic.second, .min)
+        }
+        
+        // encoding
+        do {
+            
+            let data = Data([203, 7, 4, 24, 12, 5, 30])
+            
+            guard let characteristic = GATTDateTime(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.year.rawValue, 1995)
+            XCTAssertEqual(characteristic.month, .april)
+            XCTAssertEqual(characteristic.day.rawValue, 24)
+            XCTAssertEqual(characteristic.hour.rawValue, 12)
+            XCTAssertEqual(characteristic.minute.rawValue, 5)
+            XCTAssertEqual(characteristic.second.rawValue, 30)
+        }
+    }
     
     func testBatteryLevel() {
         
