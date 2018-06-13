@@ -168,17 +168,36 @@ final class GATTDescriptorTests: XCTestCase {
         XCTAssertNil(GATTReportReference(byteValue: Data()))
         XCTAssertNil(GATTReportReference(byteValue: Data([0x00])))
         XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x00])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x04])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0xFF, 0xFF])))
         XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x00, 0x00])))
         
-        var reportReference = GATTReportReference(byteValue: Data([0x00, 0x01]))
-        XCTAssertEqual(reportReference?.reportID, 0x00)
-        XCTAssertEqual(reportReference?.reportType, GATTReportReference.ReportType.InputReport)
+        do {
+            
+            guard let reportReference = GATTReportReference(byteValue: Data([0x00, 0x01]))
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(reportReference.identifier, 0x00)
+            XCTAssertEqual(reportReference.type, .input)
+        }
         
-        reportReference = GATTReportReference(byteValue: Data([0x00, 0x02]))
-        XCTAssertEqual(reportReference?.reportType, GATTReportReference.ReportType.OutputReport)
+        do {
+            
+            guard let reportReference = GATTReportReference(byteValue: Data([0xAA, 0x02]))
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(reportReference.identifier, 0xAA)
+            XCTAssertEqual(reportReference.type, .output)
+        }
         
-        reportReference = GATTReportReference(byteValue: Data([0x00, 0x03]))
-        XCTAssertEqual(reportReference?.reportType, GATTReportReference.ReportType.FeatureReport)
+        do {
+            
+            guard let reportReference = GATTReportReference(byteValue: Data([0xBB, 0x03]))
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(reportReference.identifier, 0xBB)
+            XCTAssertEqual(reportReference.type, .feature)
+        }
     }
     
     func testTimeTriggerSettingDescriptor() {
@@ -219,8 +238,8 @@ final class GATTDescriptorTests: XCTestCase {
         externalReportReference = GATTExternalReportReference(byteValue: Data([0x19, 0x2A]))
         XCTAssertEqual(externalReportReference?.byteValue, batteryLevel)
         
-        externalReportReference = GATTExternalReportReference(gattUUID: BluetoothUUID.batteryService)
-        XCTAssertEqual(externalReportReference?.byteValue, BluetoothUUID.batteryService.data)
+        externalReportReference = GATTExternalReportReference(uuid: .batteryService)
+        XCTAssertEqual(externalReportReference?.byteValue, BluetoothUUID.batteryService.littleEndian.data)
     }
     
     func testNumberOfDigitalsDescritor() {
