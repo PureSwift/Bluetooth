@@ -47,6 +47,8 @@ public protocol GATTDescriptor {
     init?(byteValue: Data)
     
     var byteValue: Data { get }
+    
+    var descriptor: GATT.Descriptor { get }
 }
 
 public extension GATT.CharacteristicDescriptor {
@@ -57,8 +59,13 @@ public extension GATT.CharacteristicDescriptor {
     public typealias AggegateFormat = GATTAggregateFormatDescriptor
     public typealias Format = GATTFormatDescriptor
     public typealias UserDescription = GATTUserDescription
+    public typealias ReportReference = GATTReportReference
+    public typealias TimeTriggerSetting = GATTTimeTriggerSetting
+    public typealias ExternalReportReference = GATTExternalReportReference
+    public typealias NumberOfDigitals = GATTNumberOfDigitals
 }
 
+// MARK: - Client Characteristic Configuration
 /// GATT Client Characteristic Configuration Descriptor
 ///
 /// The Client Characteristic Configuration descriptor defines how the characteristic may be
@@ -128,6 +135,7 @@ public extension GATTClientCharacteristicConfiguration {
     }
 }
 
+// MARK: - Characteristic Extended Properties
 /// GATT Characteristic Extended Properties Descriptor
 ///
 /// The Characteristic Extended Properties descriptor defines additional Characteristic Properties.
@@ -193,6 +201,7 @@ public extension GATTCharacteristicExtendedProperties {
     }
 }
 
+// MARK: - Server Characteristic Configuration
 /// GATT Server Characteristic Configuration Descriptor
 ///
 /// The Server Characteristic Configuration descriptor defines how the characteristic descriptor is associated with may be configured for the server.
@@ -233,7 +242,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: byteValue,
-                               permissions: [.write])
+                               permissions: [.read, .write])
     }
 }
 
@@ -254,6 +263,7 @@ extension GATTServerCharacteristicConfiguration {
     }
 }
 
+// MARK: - Characteristic Aggregate Format
 /// GATT Characteristic Aggregate Format Descriptor
 ///
 /// The Characteristic Aggregate Format descriptor defines the format of an aggregated Characteristic Value.
@@ -303,6 +313,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
 }
 
+// MARK: - Characteristic Format Types
 /// Characteristic Format Types
 ///
 /// If a format is not a whole number of octets, then the data shall be contained within
@@ -453,6 +464,7 @@ internal let characteristicFormatTypeDescription: [CharacteristicFormatType: Str
     .struct: "Opaque structure"
 ]
 
+// MARK: - Characteristic Presentation Format
 /// GATT Characteristic Presentation Format Descriptor
 ///
 /// The Characteristic Presentation Format descriptor defines the format of the Characteristic Value.
@@ -534,6 +546,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     }
 }
 
+// MARK: - Characteristic User Description
 /// GATT Characteristic User Description Descriptor
 ///
 /// The Characteristic User Description descriptor provides a textual user description for a characteristic value.
@@ -562,5 +575,299 @@ public struct GATTUserDescription: GATTDescriptor {
     public var byteValue: Data {
         
         return Data(userDescription.utf8)
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [])
+    }
+}
+
+// MARK: - Report Reference
+/// GATT Report Reference Descriptor
+///
+/// Mapping information in the form of a Report ID and Report Type which maps the current parent characteristic to the Report ID(s) and Report Type (s) defined within the Report Map characteristic.
+public struct GATTReportReference: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .reportReference
+    
+    public static let length = 2
+    
+    public var identifier: Identifier
+    
+    public var type: ReportType
+    
+    public init(identifier: Identifier, type: ReportType) {
+        
+        self.identifier = identifier
+        self.type = type
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count == type(of: self).length
+            else { return nil }
+        
+        guard let reportType = ReportType(rawValue: byteValue[1])
+            else { return nil }
+        
+        self.init(identifier: Identifier(rawValue: byteValue[0]), type: reportType)
+    }
+    
+    public var byteValue: Data {
+        
+        return Data([identifier.rawValue, type.rawValue])
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [.read])
+    }
+}
+
+public extension GATTReportReference {
+    
+    /// GATT Report Type
+    public enum ReportType: UInt8 {
+        
+        /// Input Report
+        case input = 0x01
+        
+        /// Output Report
+        case output = 0x02
+        
+        /// Feature Report
+        case feature = 0x03
+    }
+}
+
+public extension GATTReportReference {
+    
+    public struct Identifier: RawRepresentable {
+        
+        public var rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}
+
+extension GATTReportReference.Identifier: Equatable {
+    
+    public static func == (lhs: GATTReportReference.Identifier,
+                           rhs: GATTReportReference.Identifier) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTReportReference.Identifier: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTReportReference.Identifier: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
+
+/// GATT Time Trigger Setting Condition
+public enum GATTTimeTriggerSettingCondition: UInt8 {
+    
+    case none = 0x00
+    case indicateTimeInterval = 0x01
+    case timeInterval = 0x02
+    case count = 0x03
+}
+
+// MARK: - Time Trigger Setting
+/// GATT Time Trigger Setting Descriptor
+///
+/// The value of the descriptor has two parts.
+/// Part one is a condition field and occupies one octet, and part two is the comparison value (trigger point) that the characteristic value is checked against.
+public enum GATTTimeTriggerSetting: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .timeTriggerSetting
+    
+    public static let minimumLength = 2
+    
+    case valueC1(UInt8)
+    
+    case valueC2(UInt8, UInt8, UInt8)
+    
+    case valueC3(UInt16)
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count >= type(of: self).minimumLength
+            else { return nil }
+        
+        guard let condition = GATTTimeTriggerSettingCondition(rawValue: byteValue[0])
+            else { return nil }
+        
+        switch condition {
+            
+        case .none:
+            
+            self = .valueC1(byteValue[1])
+            
+        case .indicateTimeInterval:
+            
+            guard byteValue.count == 4
+                else { return nil }
+            self = .valueC2(byteValue[1], byteValue[2], byteValue[3])
+            
+        case .timeInterval:
+            
+            guard byteValue.count == 4
+                else { return nil }
+            self = .valueC2(byteValue[1], byteValue[2], byteValue[3])
+            
+        case .count:
+            
+            guard byteValue.count == 3
+                else { return nil }
+            self = .valueC3(UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2]))))
+        }
+    }
+    
+    public var byteValue: Data {
+        
+        switch self {
+            
+        case .valueC1(let byte):
+            
+            let conditionByte = GATTTimeTriggerSettingCondition.none.rawValue
+            return Data([conditionByte, byte])
+            
+        case .valueC2(let byte):
+        
+            let conditionByte = GATTTimeTriggerSettingCondition.timeInterval.rawValue
+            return Data([conditionByte, byte.0, byte.1, byte.2])
+            
+        case .valueC3(let byte):
+            
+            let conditionByte = GATTTimeTriggerSettingCondition.count.rawValue
+            let bytes = byte.bytes
+            return Data([conditionByte, bytes.0, bytes.1])
+            
+        }
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [.read])
+    }
+}
+
+// MARK: - External Report Reference
+/// GATT External Report Reference Descriptor
+///
+/// The External Report Reference characteristic descriptor allows a HID Host to map information from the Report Map characteristic value for Input Report, Output Report or Feature Report data to the Characteristic UUID of external service characteristics used to transfer the associated data.
+public struct GATTExternalReportReference: GATTDescriptor {
+    
+    public static let uuid: BluetoothUUID = .externalReportReference
+    
+    public let uuid: BluetoothUUID
+    
+    public init(uuid: BluetoothUUID) {
+        
+        self.uuid = uuid
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard let uuid = BluetoothUUID(data: byteValue)
+            else { return nil }
+        
+        self.init(uuid: BluetoothUUID(littleEndian: uuid))
+    }
+    
+    public var byteValue: Data {
+        
+        return uuid.data
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [.read])
+    }
+}
+
+// MARK: - Number of Digitals
+/// GATT Number of Digitals Descriptor
+///
+/// The Characteristic Number of Digitals descriptor is used for defining the number of digitals in a characteristic.
+public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
+    
+    public static let uuid: BluetoothUUID = .numberOfDigitals
+    
+    public static let length = 1
+    
+    public var rawValue: UInt8
+    
+    public init(rawValue: UInt8) {
+        
+        self.rawValue = rawValue
+    }
+    
+    public init?(byteValue: Data) {
+        
+        guard byteValue.count == type(of: self).length
+            else { return nil }
+        
+        rawValue = byteValue[0]
+    }
+    
+    public var byteValue: Data {
+        
+        return Data([rawValue])
+    }
+    
+    public var descriptor: GATT.Descriptor {
+        
+        return GATT.Descriptor(uuid: type(of: self).uuid,
+                               value: byteValue,
+                               permissions: [.read])
+    }
+}
+
+extension GATTNumberOfDigitals: Equatable {
+    
+    public static func == (lhs: GATTNumberOfDigitals,
+                           rhs: GATTNumberOfDigitals) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTNumberOfDigitals: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTNumberOfDigitals: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
     }
 }
