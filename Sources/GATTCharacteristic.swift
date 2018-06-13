@@ -1589,7 +1589,7 @@ extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
     }
 }
 
-// MARK: - Reusable
+// MARK: - Supporting Types
 
 public enum GATTBeatsPerMinute {
     
@@ -1601,16 +1601,10 @@ public enum GATTBeatsPerMinute {
         
         public var rawValue: UInt8
         
-        public init(rawValue value: UInt8) {
+        public init(rawValue: UInt8) {
             
-            self.rawValue = value
+            self.rawValue = rawValue
         }
-        
-        fileprivate init(unsafe value: UInt8) {
-            
-            self.rawValue = value
-        }
-        
     }
 }
 
@@ -1620,7 +1614,6 @@ extension GATTBeatsPerMinute.Byte: CustomStringConvertible {
         
         return rawValue.description
     }
-    
 }
 
 extension GATTBeatsPerMinute.Byte: Equatable {
@@ -1630,16 +1623,14 @@ extension GATTBeatsPerMinute.Byte: Equatable {
         
         return lhs.rawValue == rhs.rawValue
     }
-    
 }
 
 extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
         
-        self.init(unsafe: value)
+        self.init(rawValue: value)
     }
-    
 }
 
 // MARK: - Internal
