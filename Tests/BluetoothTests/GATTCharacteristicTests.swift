@@ -24,7 +24,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
         ("testBloodPressureMeasurement", testBloodPressureMeasurement),
         ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit),
-        ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit)
+        ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit),
+        ("testAlertLevel", testAlertLevel)
     ]
     
     func testDateTime() {
@@ -281,5 +282,17 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(rateLowerLimit.description, "34")
         XCTAssertEqual(GATTAerobicHeartRateUpperLimit.uuid, .aerobicHeartRateUpperLimit)
         XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+    }
+    
+    func testAlertLevel() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTAlertLevel(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .mild, "The value 0x01 should be interpreted as mild Alert")
+        XCTAssertEqual(GATTAlertLevel.uuid, .alertLevel)
     }
 }
