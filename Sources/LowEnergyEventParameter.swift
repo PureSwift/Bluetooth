@@ -200,7 +200,7 @@ public extension LowEnergyEvent {
                 guard let report = Report(data: reportBytes)
                     else { return nil }
                 
-                offset += Report.length + report.data.count
+                offset += Report.length + report.responseData.count
                 reports.append(report)
             }
             
@@ -918,7 +918,7 @@ public extension LowEnergyEvent {
                 guard let report = Report(data: reportBytes)
                     else { return nil }
                 
-                offset += Report.length + report.data.count
+                offset += Report.length + report.responseData.count
                 reports.append(report)
             }
             

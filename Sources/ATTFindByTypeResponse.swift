@@ -125,7 +125,7 @@ public extension ATTFindByTypeResponse {
             let foundAttributeBytes = foundAttribute.littleEndian.bytes
             let groupEndBytes = groupEnd.littleEndian.bytes
             
-            return [foundAttributeBytes.0, foundAttributeBytes.1, groupEndBytes.0, groupEndBytes.1]
+            return Data([foundAttributeBytes.0, foundAttributeBytes.1, groupEndBytes.0, groupEndBytes.1])
         }
     }
 }
