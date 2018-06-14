@@ -23,30 +23,6 @@ public extension BluetoothHostControllerInterface {
         return value.transmitPowerLevel
     }
     
-    /// LE Set Advertising Enable
-    ///
-    /// The LE Set Advertising Enable command is used to request the Controller to start or stop advertising.
-    /// The Controller manages the timing of advertisements as per the advertising parameters given in the
-    /// LE Set Advertising Parameters command.
-    func enableLowEnergyAdvertising(_ isEnabled: Bool = true,
-                                    timeout: HCICommandTimeout = .default) throws {
-        
-        let parameter = HCILESetAdvertiseEnable(isEnabled: isEnabled)
-        
-        try deviceRequest(parameter, timeout: timeout)
-    }
-    
-    /// LE Set Advertising Data Command
-    ///
-    /// Used to set the data used in advertising packets that have a data field.
-    func setLowEnergyAdvertisingData(_ data: LowEnergyAdvertisingData,
-                                     timeout: HCICommandTimeout = .default) throws {
-        
-        let parameter = HCILESetAdvertisingData(advertisingData: data)
-        
-        try deviceRequest(parameter, timeout: timeout)
-    }
-    
     /// LE Set Advertising Set Random Address Command
     ///
     /// The command is used by the Host to set the random device address specified by the Random_Address parameter.

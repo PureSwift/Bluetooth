@@ -8,6 +8,24 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+
+    /// LE Set Advertising Data Command
+    ///
+    /// Used to set the data used in advertising packets that have a data field.
+    func setLowEnergyAdvertisingData(_ data: LowEnergyAdvertisingData,
+                                     timeout: HCICommandTimeout = .default) throws {
+        
+        let parameter = HCILESetAdvertisingData(advertisingData: data)
+        
+        try deviceRequest(parameter, timeout: timeout)
+    }
+}
+
+// MARK: - Command
+
 /// LE Set Advertising Data Command
 ///
 /// Used to set the data used in advertising packets that have a data field.
