@@ -56,7 +56,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                                   event: EP.event.rawValue,
                                   eventParameterLength: EP.length)
         
-        guard let eventParameter = EP.init(data: data)
+        guard let eventParameter = EP(data: data)
             else { throw BluetoothHostControllerError.garbageResponse(data) }
         
         return eventParameter
@@ -108,8 +108,8 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         guard statusByte == 0x00
             else { throw HCIError(rawValue: statusByte)! }
         
-        guard let response = Return.init(data: Data(data.suffix(from: 1)))
-            else { throw BluetoothHostControllerError.garbageResponse(Data(data)) }
+        guard let response = Return(data: Data(data.suffix(from: 1)))
+            else { throw BluetoothHostControllerError.garbageResponse(data) }
         
         return response
     }
