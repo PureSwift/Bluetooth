@@ -74,7 +74,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [1, 16, 1, 0, 10]
+            let data = Data([1, 16, 1, 0, 10]
             
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -89,7 +89,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [1, 8, 0, 0, 6]
+            let data = Data([1, 8, 0, 0, 6]
             
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -102,7 +102,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [1, 16, 49, 0, 10]
+            let data = Data([1, 16, 49, 0, 10]
             
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -146,7 +146,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [2, 23, 0]
+            let data = Data([2, 23, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -157,7 +157,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [3, 23, 0]
+            let data = Data([3, 23, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -172,7 +172,7 @@ final class AttributeProtocolTests: XCTestCase {
         do {
             
             // bad response / malformed data
-            let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
+            let data = Data([16, 1, 0, 255, 255, 40, 0]
             
             guard let pdu = ATTReadByGroupTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -198,7 +198,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.type == .bit16(0x2800))
             XCTAssert(pdu.type != .bit16(0x0028))
             
-            let data: [UInt8] = pdu.data
+            let data: Data = pdu.data
             
             XCTAssert(data != [16, 1, 0, 255, 255, 40, 0], "Produced malformed data")
             XCTAssert(data == [16, 1, 0, 255, 255, 0, 40])
@@ -219,7 +219,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [17, 6, 1, 0, 5, 0, 0, 24, 6, 0, 9, 0, 1, 24, 16, 0, 20, 0, 10, 24]
+            let data = Data([17, 6, 1, 0, 5, 0, 0, 24, 6, 0, 9, 0, 1, 24, 16, 0, 20, 0, 10, 24]
             
             guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -233,7 +233,7 @@ final class AttributeProtocolTests: XCTestCase {
             // service UUID
             let uuidString = "60F14FE2-F972-11E5-B84F-23E070D5A8C7"
             
-            let data: [UInt8] = [17, 20, 40, 0, 48, 0, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
+            let data = Data([17, 20, 40, 0, 48, 0, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
             
             guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -255,7 +255,7 @@ final class AttributeProtocolTests: XCTestCase {
         do {
             
             // find C7A8D570-E023-4FB8-E511-72F9E24FF160
-            let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 96, 241, 79, 226, 249, 114, 17, 229, 184, 79, 35, 224, 112, 213, 168, 199]
+            let data = Data([6, 1, 0, 255, 255, 0, 40, 96, 241, 79, 226, 249, 114, 17, 229, 184, 79, 35, 224, 112, 213, 168, 199]
             
             guard let pdu = ATTFindByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -269,7 +269,7 @@ final class AttributeProtocolTests: XCTestCase {
         do {
             
             // find 60F14FE2-F972-11E5-B84F-23E070D5A8C7
-            let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
+            let data = Data([6, 1, 0, 255, 255, 0, 40, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
             
             guard let pdu = ATTFindByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -282,7 +282,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [7, 40, 0, 48, 0]
+            let data = Data([7, 40, 0, 48, 0]
             
             guard let pdu = ATTFindByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -305,7 +305,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
+            let data = Data([9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
             
             guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -322,7 +322,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
+            let data = Data([9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
             
             guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -366,7 +366,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0007 (07) [ 1D 08 00 0A 00 FF FF ]
              */
             
-            let data: [UInt8] = [0x1D, 0x08, 0x00, 0x0A, 0x00, 0xFF, 0xFF]
+            let data = Data([0x1D, 0x08, 0x00, 0x0A, 0x00, 0xFF, 0xFF]
             
             guard let pdu = ATTHandleValueIndication(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -386,7 +386,7 @@ final class AttributeProtocolTests: XCTestCase {
              Attribute Handle: 0x0008 (8)
              */
             
-            let data: [UInt8] = [0x1D, 0x08, 0x00]
+            let data = Data([0x1D, 0x08, 0x00]
             
             guard let pdu = ATTHandleValueIndication(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -410,7 +410,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0001 (01) [ 1E ]
              */
             
-            let data: [UInt8] = [0x1E]
+            let data = Data([0x1E]
             
             guard let pdu = ATTHandleValueConfirmation(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -433,7 +433,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0004 (04) [ 1B 16 00 64 ]
              */
             
-            let data: [UInt8] = [0x1B, 0x16, 0x00, 0x64]
+            let data = Data([0x1B, 0x16, 0x00, 0x64]
             
             guard let pdu = ATTHandleValueNotification(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -458,7 +458,7 @@ final class AttributeProtocolTests: XCTestCase {
              
              L2CAP Send       0x0042  SEND  Channel ID: 0x0004  Length: 0x0003 (03) [ 0A 16 00 ]
              */
-            let data: [UInt8] = [0x0A, 0x16, 0x00]
+            let data = Data([0x0A, 0x16, 0x00]
             
             guard let pdu = ATTReadRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -479,7 +479,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0002 (02) [ 0B 64 ]
              */
             
-            let data: [UInt8] = [0x0B, 0x64]
+            let data = Data([0x0B, 0x64]
             
             guard let pdu = ATTReadResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -503,7 +503,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Send       0x0042  SEND  Channel ID: 0x0004  Length: 0x0005 (05) [ 12 17 00 01 00 ]
              */
             
-            let data: [UInt8] = [0x12, 0x17, 0x00, 0x01, 0x00]
+            let data = Data([0x12, 0x17, 0x00, 0x01, 0x00]
             
             guard let pdu = ATTWriteRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -523,7 +523,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0001 (01) [ 13 ]
              */
             
-            let data: [UInt8] = [0x13]
+            let data = Data([0x13]
             
             guard let pdu = ATTWriteResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -545,7 +545,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Send Channel ID: 0x0004  Length: 0x0005 (05) [ 04 17 00 17 00 ]
              */
             
-            let data: [UInt8] = [0x04, 0x17, 0x00, 0x17, 0x00]
+            let data = Data([0x04, 0x17, 0x00, 0x17, 0x00]
             
             guard let pdu = ATTFindInformationRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -567,7 +567,7 @@ final class AttributeProtocolTests: XCTestCase {
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0006 (06) [ 05 01 17 00 02 29 ]
              */
             
-            let data: [UInt8] = [0x05, 0x01, 0x17, 0x00, 0x02, 0x29]
+            let data = Data([0x05, 0x01, 0x17, 0x00, 0x02, 0x29]
             
             guard let pdu = ATTFindInformationResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -583,7 +583,7 @@ final class AttributeProtocolTests: XCTestCase {
         do {
             
             // Find Information Request - Start Handle:0x0004 - End Handle:0x0004
-            let data: [UInt8] = [4, 4, 0, 4, 0]
+            let data = Data([4, 4, 0, 4, 0]
             
             guard let pdu = ATTFindInformationRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -599,7 +599,7 @@ final class AttributeProtocolTests: XCTestCase {
             // Opcode: 0x05
             // Format: 1 (Handles and 16 byte UUIDs)
             // Handle: 0x0004 UUID: 2902 (Client Characteristic Configuration)
-            let data: [UInt8] = [5, 1, 4, 0, 2, 41]
+            let data = Data([5, 1, 4, 0, 2, 41]
             
             guard let pdu = ATTFindInformationResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -626,7 +626,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [2, 185, 0]
+            let data = Data([2, 185, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -637,7 +637,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [3, 200, 0]
+            let data = Data([3, 200, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -648,7 +648,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [18, 4, 0, 1, 0]
+            let data = Data([18, 4, 0, 1, 0]
             
             guard let pdu = ATTWriteRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -668,7 +668,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [19]
+            let data = Data([19]
             
             guard let pdu = ATTWriteResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -682,7 +682,7 @@ final class AttributeProtocolTests: XCTestCase {
         // MTU Exchange
         do {
             
-            let data: [UInt8] = [2, 185, 0]
+            let data = Data([2, 185, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -693,7 +693,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [3, 200, 0]
+            let data = Data([3, 200, 0]
             
             guard let pdu = ATTMaximumTransmissionUnitResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -705,7 +705,7 @@ final class AttributeProtocolTests: XCTestCase {
         // Service Discovery
         do {
             
-            let data: [UInt8] = [16, 1, 0, 255, 255, 0, 40]
+            let data = Data([16, 1, 0, 255, 255, 0, 40]
             
             guard let pdu = ATTReadByGroupTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -718,7 +718,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [17, 20, 1, 0, 6, 0, 231, 207, 159, 173, 34, 222, 166, 180, 145, 78, 37, 213, 23, 49, 212, 52, 7, 0, 12, 0, 251, 52, 155, 95, 128, 0, 0, 128, 0, 16, 0, 0, 169, 254, 0, 0, 13, 0, 18, 0, 178, 26, 190, 138, 180, 130, 146, 145, 222, 73, 117, 102, 201, 67, 100, 139]
+            let data = Data([17, 20, 1, 0, 6, 0, 231, 207, 159, 173, 34, 222, 166, 180, 145, 78, 37, 213, 23, 49, 212, 52, 7, 0, 12, 0, 251, 52, 155, 95, 128, 0, 0, 128, 0, 16, 0, 0, 169, 254, 0, 0, 13, 0, 18, 0, 178, 26, 190, 138, 180, 130, 146, 145, 222, 73, 117, 102, 201, 67, 100, 139]
             
             guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -744,7 +744,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [16, 19, 0, 255, 255, 0, 40]
+            let data = Data([16, 19, 0, 255, 255, 0, 40]
             
             guard let pdu = ATTReadByGroupTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -757,7 +757,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [1, 16, 19, 0, 10]
+            let data = Data([1, 16, 19, 0, 10]
             
             guard let pdu = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -771,7 +771,7 @@ final class AttributeProtocolTests: XCTestCase {
         /// Characteristic Discovery
         do {
             
-            let data: [UInt8] = [8, 1, 0, 6, 0, 3, 40]
+            let data = Data([8, 1, 0, 6, 0, 3, 40]
             
             guard let pdu = ATTReadByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -784,7 +784,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148]
+            let data = Data([9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148]
             
             guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -830,7 +830,7 @@ final class AttributeProtocolTests: XCTestCase {
         /// Characteristic Discovery
         do {
             
-            let data: [UInt8] = [8, 7, 0, 12, 0, 3, 40]
+            let data = Data([8, 7, 0, 12, 0, 3, 40]
             
             guard let pdu = ATTReadByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -843,7 +843,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [9, 21, 8, 0, 18, 9, 0, 1, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204, 11, 0, 8, 12, 0, 2, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204]
+            let data = Data([9, 21, 8, 0, 18, 9, 0, 1, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204, 11, 0, 8, 12, 0, 2, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204]
             
             guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -887,7 +887,7 @@ final class AttributeProtocolTests: XCTestCase {
         /// Characteristic Discovery
         do {
             
-            let data: [UInt8] = [8, 13, 0, 18, 0, 3, 40]
+            let data = Data([8, 13, 0, 18, 0, 3, 40]
             
             guard let pdu = ATTReadByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
@@ -900,7 +900,7 @@ final class AttributeProtocolTests: XCTestCase {
         
         do {
             
-            let data: [UInt8] = [9, 21, 14, 0, 16, 15, 0, 148, 89, 241, 12, 105, 23, 110, 137, 175, 75, 151, 213, 45, 106, 139, 210, 17, 0, 8, 18, 0, 231, 116, 224, 184, 128, 249, 130, 161, 110, 70, 164, 15, 236, 148, 235, 104]
+            let data = Data([9, 21, 14, 0, 16, 15, 0, 148, 89, 241, 12, 105, 23, 110, 137, 175, 75, 151, 213, 45, 106, 139, 210, 17, 0, 8, 18, 0, 231, 116, 224, 184, 128, 249, 130, 161, 110, 70, 164, 15, 236, 148, 235, 104]
             
             guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
