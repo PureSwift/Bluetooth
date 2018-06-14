@@ -19,18 +19,6 @@ public extension BluetoothHostControllerInterface {
         return value.numberOfPackets
     }
     
-    /// LE Enhanced Receiver Test Command
-    ///
-    /// This command is used to start a test where the DUT receives test
-    /// reference packets at a fixed interval. The tester generates the test
-    /// reference packets.
-    func lowEnergyEnhancedReceiverTest(rxChannel: LowEnergyRxChannel, phy: HCILowEnergyCommand.HCILEEnhancedReceiverTest.Phy, modulationIndex: HCILowEnergyCommand.HCILEEnhancedReceiverTest.ModulationIndex, timeout: HCICommandTimeout = .default) throws {
-        
-        let parameters = HCILowEnergyCommand.HCILEEnhancedReceiverTest(rxChannel: rxChannel, phy: phy, modulationIndex: modulationIndex)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
     /// LE Enhanced Transmitter Test Command
     ///
     /// This command is used to start a test where the DUT generates test reference packets

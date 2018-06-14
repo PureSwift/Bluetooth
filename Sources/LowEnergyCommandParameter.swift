@@ -9,50 +9,6 @@
 import Foundation
 
 public extension HCILowEnergyCommand {
-    
-    /// LE Enhanced Receiver Test Command
-    ///
-    /// This command is used to start a test where the DUT receives test reference packets at a
-    /// fixed interval. The tester generates the test reference packets.
-    public struct HCILEEnhancedReceiverTest: HCICommandParameter {
-        
-        public static let command = HCILowEnergyCommand.enhancedReceiverTest //0x0033
-        
-        public let rxChannel: LowEnergyRxChannel
-        public let phy: Phy
-        public let modulationIndex: ModulationIndex
-        
-        public init(rxChannel: LowEnergyRxChannel, phy: Phy, modulationIndex: ModulationIndex) {
-            self.rxChannel = rxChannel
-            self.phy = phy
-            self.modulationIndex = modulationIndex
-        }
-        
-        public var data: Data {
-            return Data([rxChannel.rawValue, phy.rawValue, modulationIndex.rawValue])
-        }
-        
-        public enum Phy: UInt8 {
-            
-            /// Receiver set to use the LE 1M PHY
-            case le1MPhy        =   0x01
-            
-            /// Receiver set to use the LE 2M PHY
-            case le2MPhy        =   0x02
-            
-            /// Receiver set to use the LE Coded PHY
-            case leCodedPhy     =   0x03
-        }
-        
-        public enum ModulationIndex: UInt8 {
-            
-            /// Assume transmitter will have a standard modulation index
-            case standard = 0x00
-            
-            /// Assume transmitter will have a stable modulation index
-            case stable   = 0x01
-        }
-    }
   
     /// LE Enhanced Transmitter Test Command
     ///
