@@ -13,7 +13,7 @@ public extension BluetoothHostControllerInterface {
     /// Used to read the total number of white list entries that can be stored in the Controller.
     func lowEnergyReadWhiteListSize(timeout: HCICommandTimeout = .default) throws -> Int {
         
-        let sizeReturnParameter = try deviceRequest(LowEnergyCommand.ReadWhiteListSizeReturnParameter.self, timeout: timeout)
+        let sizeReturnParameter = try deviceRequest(HCILowEnergyCommand.ReadWhiteListSizeReturnParameter.self, timeout: timeout)
         
         return Int(sizeReturnParameter.size)
     }
@@ -24,7 +24,7 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyClearWhiteList(timeout: HCICommandTimeout = .default) throws {
         
         // clear white list
-        try deviceRequest(LowEnergyCommand.clearWhiteList, timeout: timeout)
+        try deviceRequest(HCILowEnergyCommand.clearWhiteList, timeout: timeout)
     }
     
     /// LE Add Device To White List Command
@@ -32,7 +32,7 @@ public extension BluetoothHostControllerInterface {
     /// Used to add a single device to the White List stored in the Controller.
     func lowEnergyAddDeviceToWhiteList(_ whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
         
-        try deviceRequest(LowEnergyCommand.AddDeviceToWhiteListParameter(device: whiteListDevice), timeout: timeout)
+        try deviceRequest(HCILowEnergyCommand.AddDeviceToWhiteListParameter(device: whiteListDevice), timeout: timeout)
     }
     
     /// LE Remove Device From White List Command
@@ -40,6 +40,6 @@ public extension BluetoothHostControllerInterface {
     /// Used to remove a single device from the White List stored in the Controller.
     func lowEnergyRemoveDeviceFromWhiteList(_ whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
         
-        try deviceRequest(LowEnergyCommand.RemoveDeviceFromWhiteListParameter(device: whiteListDevice), timeout: timeout)
+        try deviceRequest(HCILowEnergyCommand.RemoveDeviceFromWhiteListParameter(device: whiteListDevice), timeout: timeout)
     }
 }

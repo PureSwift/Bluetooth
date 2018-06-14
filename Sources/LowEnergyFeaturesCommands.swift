@@ -13,7 +13,7 @@ public extension BluetoothHostControllerInterface {
     /// This command requests the list of the supported LE features for the Controller.
     func readLocalSupportedFeatures(timeout: HCICommandTimeout = .default) throws -> LowEnergyFeatureSet {
         
-        let returValue = try deviceRequest(LowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter.self, timeout: timeout)
+        let returValue = try deviceRequest(HCILowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter.self, timeout: timeout)
         
         return returValue.features
     }
@@ -23,7 +23,7 @@ public extension BluetoothHostControllerInterface {
     /// The LE_Read_Supported_States command reads the states and state combinations that the link layer supports.
     func readSupportedStates(timeout: HCICommandTimeout = .default) throws -> LowEnergyStateSet {
         
-        let returValue = try deviceRequest(LowEnergyCommand.ReadSupportedStatesReturnParameter.self, timeout: timeout)
+        let returValue = try deviceRequest(HCILowEnergyCommand.ReadSupportedStatesReturnParameter.self, timeout: timeout)
         
         return returValue.state
     }
@@ -34,7 +34,7 @@ public extension BluetoothHostControllerInterface {
     /// the features used on the connection and the features supported by the remote device.
     func lowEnergyReadRemoteUsedFeatures(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> LowEnergyFeatureSet {
         
-        let parameters = LowEnergyCommand.ReadRemoteUsedFeaturesParameter(connectionHandle: connectionHandle)
+        let parameters = HCILowEnergyCommand.ReadRemoteUsedFeaturesParameter(connectionHandle: connectionHandle)
         
         let event =  try deviceRequest(parameters,
                                        LowEnergyEvent.ReadRemoteUsedFeaturesCompleteEventParameter.self,
@@ -56,17 +56,17 @@ public extension BluetoothHostControllerInterface {
     /// LE Read Transmit Power Command
     ///
     /// The command is used to read the minimum and maximum transmit powers supported by the Controller.ReadTransmitPowerReturnParameter
-    func lowEnergyReadTransmitPower(timeout: HCICommandTimeout = .default) throws -> LowEnergyCommand.ReadTransmitPowerReturnParameter {
+    func lowEnergyReadTransmitPower(timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.ReadTransmitPowerReturnParameter {
         
-        return try deviceRequest(LowEnergyCommand.ReadTransmitPowerReturnParameter.self, timeout: timeout)
+        return try deviceRequest(HCILowEnergyCommand.ReadTransmitPowerReturnParameter.self, timeout: timeout)
     }
     
     /// LE Read RF Path Compensation Command
     ///
     /// The command is used to read the RF Path Compensation Values parameter used in the Tx Power Level and RSSI calculation.
-    func lowEnergyReadRfPathCompensation(timeout: HCICommandTimeout = .default) throws -> LowEnergyCommand.ReadRfPathCompensationReturnParameter {
+    func lowEnergyReadRfPathCompensation(timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.ReadRfPathCompensationReturnParameter {
         
-        return try deviceRequest(LowEnergyCommand.ReadRfPathCompensationReturnParameter.self, timeout: timeout)
+        return try deviceRequest(HCILowEnergyCommand.ReadRfPathCompensationReturnParameter.self, timeout: timeout)
     }
     
     /// LE Write RF Path Compensation Command
@@ -77,7 +77,7 @@ public extension BluetoothHostControllerInterface {
                                           rfRxPathCompensationValue: RfRxPathCompensationValue,
                                           timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = LowEnergyCommand.WriteRfPathCompensationParameter(rfTxPathCompensationValue: rfTxPathCompensationValue, rfRxPathCompensationValue: rfRxPathCompensationValue)
+        let parameters = HCILowEnergyCommand.WriteRfPathCompensationParameter(rfTxPathCompensationValue: rfTxPathCompensationValue, rfRxPathCompensationValue: rfRxPathCompensationValue)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -87,10 +87,10 @@ public extension BluetoothHostControllerInterface {
     /// The command is used to allow the Host to specify the privacy mode to be used for a given entry on the resolving list.
     func lowEnergySetPrivacyMode(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
                                  peerIdentityAddress: Address,
-                                 privacyMode: LowEnergyCommand.SetPrivacyModeParameter.PrivacyMode = LowEnergyCommand.SetPrivacyModeParameter.PrivacyMode.networkPrivacy,
+                                 privacyMode: HCILowEnergyCommand.SetPrivacyModeParameter.PrivacyMode = HCILowEnergyCommand.SetPrivacyModeParameter.PrivacyMode.networkPrivacy,
                                  timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = LowEnergyCommand.SetPrivacyModeParameter(peerIdentityAddressType: peerIdentityAddressType,
+        let parameters = HCILowEnergyCommand.SetPrivacyModeParameter(peerIdentityAddressType: peerIdentityAddressType,
                                                                   peerIdentityAddress: peerIdentityAddress,
                                                                   privacyMode: privacyMode)
         
@@ -100,14 +100,14 @@ public extension BluetoothHostControllerInterface {
     /// LE Extended Create Connection Command
     ///
     /// The command is used to create a Link Layer connection to a connectable advertiser.
-    func lowEnergyExtendedCreateConnection(initialingFilterPolicy: LowEnergyCommand.ExtendedCreateConnectionParameter.InitialingFilterPolicy,
-                                           ownAddressType: LowEnergyCommand.ExtendedCreateConnectionParameter.OwnAddressType,
+    func lowEnergyExtendedCreateConnection(initialingFilterPolicy: HCILowEnergyCommand.ExtendedCreateConnectionParameter.InitialingFilterPolicy,
+                                           ownAddressType: HCILowEnergyCommand.ExtendedCreateConnectionParameter.OwnAddressType,
                                            peerAddressType: LowEnergyPeerIdentifyAddressType,
                                            peerAddress: Address,
-                                           initialingPHY: LowEnergyCommand.ExtendedCreateConnectionParameter.InitialingPHY,
+                                           initialingPHY: HCILowEnergyCommand.ExtendedCreateConnectionParameter.InitialingPHY,
                                            timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.EnhancedConnectionCompleteEventParameter {
         
-        let parameters = LowEnergyCommand.ExtendedCreateConnectionParameter(initialingFilterPolicy: initialingFilterPolicy,
+        let parameters = HCILowEnergyCommand.ExtendedCreateConnectionParameter(initialingFilterPolicy: initialingFilterPolicy,
                                                                   ownAddressType: ownAddressType,
                                                                   peerAddressType: peerAddressType,
                                                                   peerAddress: peerAddress,

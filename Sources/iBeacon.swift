@@ -153,8 +153,8 @@ public extension BluetoothHostControllerInterface {
                  interval: AdvertisingInterval = .default,
                  timeout: HCICommandTimeout = .default) throws {
         
-        typealias AdvertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter
-        typealias SetAdvertisingData = LowEnergyCommand.SetAdvertisingDataParameter
+        typealias AdvertisingParameters = HCILowEnergyCommand.SetAdvertisingParametersParameter
+        typealias SetAdvertisingData = HCILowEnergyCommand.SetAdvertisingDataParameter
         
         // set advertising parameters
         let advertisingParameters = AdvertisingParameters(interval: (min: interval, max: interval))
