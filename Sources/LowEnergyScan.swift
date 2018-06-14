@@ -30,23 +30,6 @@ public extension BluetoothHostControllerInterface {
         return foundDevices
     }
     
-    /// LE Set Extended Scan Response Data Command
-    ///
-    /// The command is used to provide scan response data used in scanning response PDUs. This command may be
-    /// issued at any time after the advertising set identified by the Advertising_Handle parameter has been
-    /// created using the LE Set Extended Advertising Parameters Command (see Section 7.8.53) regardless of
-    /// whether advertising in that set is enabled or disabled.
-    func setLowEnergyExtendedScanResponseData(advertisingHandle: UInt8,
-                                              operation: HCILowEnergyCommand.SetExtendedScanResponseDataParameter.Operation,
-                                              fragmentPreference: LowEnergyFragmentPreference,
-                                              scanResponseData: [UInt8],
-                                              timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.SetExtendedScanResponseDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, scanResponseData: scanResponseData)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
     /// LE Set Extended Scan Enable Command
     ///
     /// The command is used to enable or disable scanning.
