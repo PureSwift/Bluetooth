@@ -1841,6 +1841,134 @@ extension GATTAerobicThreshold: CustomStringConvertible {
     }
 }
 
+/**
+ Alert Status
+ 
+ The Alert Status characteristic defines the Status of alert.
+ Bit 0, meaning “Ringer State”
+ Bit 1, meaning “Vibrator State”
+ Bit 2, meaning "Display Alert Status"
+ 
+ - SeeAlso: [Alert Status](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_status.xml)
+ */
+public struct GATTAlertStatus: GATTProfileCharacteristic {
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .alertStatus}
+    
+    public var status: AlertStatus
+    
+    public init(status: AlertStatus) {
+        
+        self.status = status
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        guard let status = AlertStatus(rawValue: data[0])
+            else { return nil }
+        
+        self.status = status
+    }
+    
+    public var data: Data {
+        
+        return Data([status.rawValue])
+    }
+}
+extension GATTAlertStatus: Equatable {
+    
+    public static func == (lhs: GATTAlertStatus,
+                           rhs: GATTAlertStatus) -> Bool {
+        
+        return lhs.status == rhs.status
+    }
+}
+
+extension GATTAlertStatus: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return status.description
+    }
+}
+
+extension GATTAlertStatus {
+    
+    public struct AlertStatus: RawRepresentable {
+    
+        internal static let valueLimits = (min: 0, max: 2)
+        
+        public var rawValue: UInt8
+        
+        public let state: BitMaskOptionSet<State>
+        
+        public init?(rawValue: UInt8) {
+            
+            guard rawValue >= type(of: self).valueLimits.min,
+                rawValue <= type(of: self).valueLimits.max
+                else { return nil }
+            
+            self.state = BitMaskOptionSet<State>(rawValue: rawValue)
+            self.rawValue = rawValue
+        }
+        
+        // Ringer State
+        public static let ringer: AlertStatus = 0x00
+        
+        // Vibrate State
+        public static let vibrate: AlertStatus = 0x01
+        
+        // Display Alert Status
+        public static let display: AlertStatus = 0x02
+    }
+}
+
+extension GATTAlertStatus.AlertStatus: Equatable {
+    
+    public static func == (lhs: GATTAlertStatus.AlertStatus, rhs: GATTAlertStatus.AlertStatus) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTAlertStatus.AlertStatus: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTAlertStatus.AlertStatus: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.rawValue = value
+        self.state = BitMaskOptionSet<GATTAlertStatus.State>(rawValue: rawValue)
+    }
+}
+
+extension GATTAlertStatus {
+    
+    public enum State: UInt8, BitMaskOption {
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt8
+        #endif
+        
+        //State Active
+        case active = 0b01
+        
+        public static let all: Set<State> = [.active]
+    }
+}
+
 // MARK: - Supporting Types
 
 public enum GATTBeatsPerMinute {
