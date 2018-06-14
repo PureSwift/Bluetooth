@@ -8,6 +8,26 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// LE Long Term Key Request Negative Reply Command
+    ///
+    /// The command is used to reply to an LE Long Term Key Request event from
+    /// the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
+    func lowEnergyLongTermKeyRequestNegativeReply(handle: UInt16, timeout: HCICommandTimeout = .default) throws -> UInt16 {
+        
+        let parameters = HCILELongTermKeyRequestNegativeReply(connectionHandle: handle)
+        
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.LongTermKeyRequestNegativeReplyReturnParameter.self, timeout: timeout)
+        
+        return returnParameters.connectionHandle
+    }
+}
+
+// MARK: - Command
+
 /// LE Long Term Key Request Negative Reply Command
 ///
 /// The command is used to reply to an LE Long Term Key Request event

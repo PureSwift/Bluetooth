@@ -8,6 +8,38 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+
+    /// LE Read Remote Features Command
+    ///
+    /// The command requests, from the remote device identified by the connection handle,
+    /// the features used on the connection and the features supported by the remote device.
+    func lowEnergyReadRemoteUsedFeatures(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> LowEnergyFeatureSet {
+        
+        let parameters = HCILEReadRemoteUsedFeatures(connectionHandle: connectionHandle)
+        
+        let event =  try deviceRequest(parameters,
+                                       LowEnergyEvent.ReadRemoteUsedFeaturesCompleteEventParameter.self,
+                                       timeout: timeout)
+        
+        switch event.status {
+            
+        case let .error(error):
+            throw error
+            
+        case .success:
+            
+            assert(event.handle == connectionHandle, "Invalid connection handle \(event.handle)")
+            
+            return event.features
+        }
+    }
+}
+
+// MARK: - Command
+
 /// LE Read Remote Features Command
 ///
 /// The command requests, from the remote device identified by the connection handle,

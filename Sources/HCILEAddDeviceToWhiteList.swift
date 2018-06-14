@@ -8,6 +8,22 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+ 
+    /// LE Add Device To White List Command
+    ///
+    /// Used to add a single device to the White List stored in the Controller.
+    func lowEnergyAddDeviceToWhiteList(_ whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
+        
+        try deviceRequest(HCILEAddDeviceToWhiteList(device: whiteListDevice), timeout: timeout)
+    }
+    
+}
+
+// MARK: - Command
+
 /// LE Add Device To White List Command
 ///
 /// The command is used to add a single device to the White List stored in the Controller.
