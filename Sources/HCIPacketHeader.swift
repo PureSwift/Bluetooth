@@ -66,7 +66,7 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
         
         let opcodeBytes = opcode.littleEndian.bytes
         
-        return [opcodeBytes.0, opcodeBytes.1, parameterLength]
+        return Data([opcodeBytes.0, opcodeBytes.1, parameterLength])
     }
 }
 

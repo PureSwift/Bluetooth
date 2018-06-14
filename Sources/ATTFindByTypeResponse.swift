@@ -48,13 +48,14 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         let handleCount = handleBytesCount / handleLength
         
         // preallocate handles for better performance
-        var handles = [HandlesInformation](repeating: HandlesInformation(), count: handleCount)
+        var handles = [HandlesInformation]()
+        handles.reserveCapacity(handleCount)
         
         for index in 0 ..< handleCount {
             
             let byteIndex = (index * handleLength) + 1
             
-            let handleBytes = Array(data[byteIndex ..< byteIndex + handleLength])
+            let handleBytes = Data(data[byteIndex ..< byteIndex + handleLength])
             
             guard let handle = HandlesInformation(data: handleBytes)
                 else { return nil }
@@ -104,7 +105,7 @@ public extension ATTFindByTypeResponse {
         /// Group End Handle
         public var groupEnd: UInt16
         
-        public init(foundAttribute: UInt16 = 0, groupEnd: UInt16 = 0) {
+        public init(foundAttribute: UInt16, groupEnd: UInt16) {
             
             self.foundAttribute = foundAttribute
             self.groupEnd = groupEnd
