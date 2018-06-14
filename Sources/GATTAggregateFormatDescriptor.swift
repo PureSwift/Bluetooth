@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 // MARK: - Characteristic Aggregate Format
 /// GATT Characteristic Aggregate Format Descriptor
 ///

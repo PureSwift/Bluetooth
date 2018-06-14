@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 // MARK: - Number of Digitals
 /// GATT Number of Digitals Descriptor
 ///
