@@ -24,7 +24,7 @@
 /// When encoding an IPv6 address, the uint128 Format type is used.
 /// When encoding a Bluetooth address (BD_ADDR), the uint48 Format type is used.
 /// For a Characteristic Value of 23 and an Exponent of 2, the actual value is 2300
-/// For a Characteristi Value of 3892 and an Exponent of -3, the actual value is 3.892
+/// For a Characteristic Value of 3892 and an Exponent of -3, the actual value is 3.892
 public struct GATTFormatDescriptor: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicFormat
@@ -41,7 +41,11 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public let description: UInt16
     
-    public init(format: CharacteristicFormatType, exponent: Int8, unit: UInt16, namespace: UInt8, description: UInt16) {
+    public init(format: GATTCharacteristicFormatType,
+                exponent: Int8,
+                unit: UInt16,
+                namespace: UInt8,
+                description: UInt16) {
         
         self.format = format
         self.exponent = exponent
@@ -55,7 +59,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let format = CharacteristicFormatType.init(rawValue: data[0])
+        guard let format = GATTCharacteristicFormatType(rawValue: data[0])
             else { return nil }
         
         self.init(format: format,
