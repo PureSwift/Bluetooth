@@ -21,7 +21,7 @@ public extension BluetoothHostControllerInterface {
         let parameters = HCILEReadRemoteUsedFeatures(connectionHandle: connectionHandle)
         
         let event =  try deviceRequest(parameters,
-                                       LowEnergyEvent.ReadRemoteUsedFeaturesCompleteEventParameter.self,
+                                       HCILEReadRemoteUsedFeaturesComplete.self,
                                        timeout: timeout)
         
         switch event.status {
