@@ -36,7 +36,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
         
         // this is not actually UInt16 UUID, but handles
         // since the binary format is the same we can reuse code
-        guard let list = Bit16UUIDList(data: byteValue)
+        guard let list = Bit16UUIDList(data: data)
             else { return nil }
         
         self.handles = list.uuids
@@ -50,7 +50,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read])
     }
     

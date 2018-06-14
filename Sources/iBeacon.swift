@@ -167,7 +167,7 @@ public extension BluetoothHostControllerInterface {
         
         // set iBeacon data
         let advertisingData = LowEnergyAdvertisingData(beacon: beacon, flags: flags)
-        let advertisingDataCommand = SetAdvertisingData(data: advertisingData)
+        let advertisingDataCommand = SetAdvertisingData(advertisingData: advertisingData)
         
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }

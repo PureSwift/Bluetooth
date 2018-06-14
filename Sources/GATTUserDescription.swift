@@ -26,7 +26,7 @@ public struct GATTUserDescription: GATTDescriptor {
     
     public init?(data: Data) {
         
-        guard let rawValue = String(data: byteValue, encoding: .utf8)
+        guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
         self.init(userDescription: rawValue)
@@ -39,7 +39,7 @@ public struct GATTUserDescription: GATTDescriptor {
     
     public var descriptor: GATT.Descriptor {
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [])
     }
 }

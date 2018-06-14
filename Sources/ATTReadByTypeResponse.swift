@@ -20,26 +20,31 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     internal static let length = 1 + 1 + AttributeData.length
     
     /// A list of Attribute Data.
-    public let data: [AttributeData]
+    public let attributeData: [AttributeData]
     
-    public init?(data: [AttributeData]) {
+    public init?(attributeData: [AttributeData]) {
         
         // must have at least one attribute data
-        guard data.isEmpty == false else { return nil }
+        guard attributeData.isEmpty == false else { return nil }
         
-        let length = data[0].value.count
+        let length = attributeData[0].value.count
         
         // length must be at least 3 bytes
         guard length >= AttributeData.length else { return nil }
         
         // validate the length of each pair
-        for pair in data {
+        for pair in attributeData {
             
             guard pair.value.count == length
                 else { return nil }
         }
         
-        self.data = data
+        self.attributeData = attributeData
+    }
+    
+    internal init(_ unsafe: [AttributeData]) {
+        
+        self.attributeData = unsafe
     }
     
     public init?(data: Data) {

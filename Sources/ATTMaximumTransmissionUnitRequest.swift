@@ -34,15 +34,15 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        let clientMTU = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        let clientMTU = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
         self.clientMTU = clientMTU
     }

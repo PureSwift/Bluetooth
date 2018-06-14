@@ -182,16 +182,16 @@ public extension HCILowEnergyCommand {
         public static let length = 32
         
         /// 31 octets of advertising data. 
-        public var data: LowEnergyAdvertisingData
+        public var advertisingData: LowEnergyAdvertisingData
         
-        public init(data: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
+        public init(advertisingData: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
             
-            self.data = data
+            self.advertisingData = advertisingData
         }
         
         public var data: Data {
             
-            return [data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
+            return [advertisingData.length, advertisingData.bytes.0, advertisingData.bytes.1, advertisingData.bytes.2, advertisingData.bytes.3, advertisingData.bytes.4, advertisingData.bytes.5, advertisingData.bytes.6, advertisingData.bytes.7, advertisingData.bytes.8, advertisingData.bytes.9, advertisingData.bytes.10, advertisingData.bytes.11, advertisingData.bytes.12, advertisingData.bytes.13, advertisingData.bytes.14, advertisingData.bytes.15, advertisingData.bytes.16, advertisingData.bytes.17, advertisingData.bytes.18, advertisingData.bytes.19, advertisingData.bytes.20, advertisingData.bytes.21, advertisingData.bytes.22, advertisingData.bytes.23, advertisingData.bytes.24, advertisingData.bytes.25, advertisingData.bytes.26, advertisingData.bytes.27, advertisingData.bytes.28, advertisingData.bytes.29, advertisingData.bytes.30]
         }
     }
     
@@ -213,7 +213,7 @@ public extension HCILowEnergyCommand {
         
         public var data: Data {
             
-            return [data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30]
+            return Data([data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30])
         }
     }
     
