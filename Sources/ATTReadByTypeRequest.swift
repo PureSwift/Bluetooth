@@ -32,7 +32,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         self.attributeType = attributeType
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard let length = Length(rawValue: byteValue.count)
             else { return nil }
@@ -61,7 +61,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let startHandleBytes = startHandle.littleEndian.bytes
         

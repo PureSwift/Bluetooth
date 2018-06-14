@@ -42,7 +42,7 @@ public extension InformationalCommand {
         /// - Note: This value is implementation dependent.
         public let lmpSubversion: UInt16
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -79,7 +79,7 @@ public extension InformationalCommand {
         /// The Bluetooth address of the device.
         public let address: Address
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }

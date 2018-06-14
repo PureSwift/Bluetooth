@@ -28,9 +28,9 @@ public extension LinkControlCommand {
         
         public init() { }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
-            return [lap.0, lap.1, lap.2, length, count]
+            return Data([lap.0, lap.1, lap.2, length, count])
         }
     }
     
@@ -50,25 +50,25 @@ public extension LinkControlCommand {
         
         public init() { }
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
-            guard byteValue.count == RemoteNameRequestParameter.length
+            guard data.count == RemoteNameRequestParameter.length
                 else { return nil }
             
-            self.address = Address(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5]))
+            self.address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
             
-            self.pscanRepMode = byteValue[6]
-            self.pscanMode = byteValue[7]
-            self.clockOffset = UInt16(bytes: (byteValue[8], byteValue[9])).littleEndian
+            self.pscanRepMode = data[6]
+            self.pscanMode = data[7]
+            self.clockOffset = UInt16(bytes: (data[8], data[9])).littleEndian
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             let address = self.address.bytes
             
             let clockOffsetBytes = clockOffset.littleEndian.bytes
             
-            return [address.0, address.1, address.2, address.3, address.4, address.5, pscanRepMode, pscanMode, clockOffsetBytes.0, clockOffsetBytes.1]
+            return Data([address.0, address.1, address.2, address.3, address.4, address.5, pscanRepMode, pscanMode, clockOffsetBytes.0, clockOffsetBytes.1])
         }
     }
 }

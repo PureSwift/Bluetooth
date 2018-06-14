@@ -16,7 +16,7 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     
     public static let attributeOpcode = ATT.Opcode.errorResponse
     
-    public static let length = 5
+    internal static let length = 5
     
     /// The request that generated this error response
     public var requestOpcode: ATT.Opcode
@@ -36,7 +36,7 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
         self.errorCode = error
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard byteValue.count == ATTErrorResponse.length else { return nil }
         
@@ -56,7 +56,7 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
         self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (attributeHandleByte1, attributeHandleByte2)))
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         var bytes = [UInt8](repeating: 0, count: ATTErrorResponse.length)
         

@@ -21,7 +21,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.findByTypeRequest
     
     /// Minimum length.
-    public static let length = 1 + 2 + 2 + 2 + 0
+    internal static let length = 1 + 2 + 2 + 2 + 0
     
     /// First requested handle number
     public var startHandle: UInt16
@@ -43,7 +43,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
         self.attributeValue = attributeValue
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard byteValue.count >= ATTFindByTypeRequest.length else { return nil }
         
@@ -70,7 +70,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let startHandleBytes = self.startHandle.littleEndian.bytes
         

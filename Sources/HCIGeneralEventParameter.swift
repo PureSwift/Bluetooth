@@ -21,7 +21,7 @@ public extension HCIGeneralEvent {
         public var numberOfCommandPackets: UInt8
         public var opcode: UInt16
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == CommandCompleteParameter.length
                 else { return nil }
@@ -40,7 +40,7 @@ public extension HCIGeneralEvent {
         public var ncmd: UInt8
         public var opcode: UInt16
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == CommandStatusParameter.length
                 else { return nil }
@@ -65,7 +65,7 @@ public extension HCIGeneralEvent {
         public var address: Address
         public var name: String
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == RemoteNameRequestCompleteParameter.length
                 else { return nil }
@@ -115,7 +115,7 @@ public extension HCIGeneralEvent {
         /// to 0x01 when encryption is on and using E0 and to 0x02 when encryption is on and using AES-CCM.
         public let encryptionEnabled: EncryptionEnabled
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == EncryptionChangeEventParameter.length
                 else { return nil }
@@ -175,7 +175,7 @@ public extension HCIGeneralEvent {
         
         public let handle: UInt16 // Connection_Handle
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             guard byteValue.count == EncryptionKeyRefreshCompleteEventParameter.length
                 else { return nil }
             
@@ -199,7 +199,7 @@ public extension HCIGeneralEvent {
         public let subevent: LowEnergyEvent
         public let data: [UInt8]
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count >= LowEnergyMetaParameter.length,
                 let subevent = LowEnergyEvent(rawValue: byteValue[0])

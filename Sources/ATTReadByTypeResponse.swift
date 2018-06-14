@@ -17,7 +17,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.readByTypeResponse
     
     /// Minimum length
-    public static let length = 1 + 1 + AttributeData.length
+    internal static let length = 1 + 1 + AttributeData.length
     
     /// A list of Attribute Data.
     public let data: [AttributeData]
@@ -42,7 +42,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
         self.data = data
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard byteValue.count >= ATTReadByTypeResponse.length
             else { return nil }
@@ -77,7 +77,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
         self.data = attributeData
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let valueLength = UInt8(2 + data[0].value.count)
         
@@ -100,40 +100,41 @@ public extension ATTReadByTypeResponse {
     public struct AttributeData {
         
         /// Minimum length.
-        public static let length = 2
+        internal static let length = 2
         
         /// Attribute Handle
         public var handle: UInt16
         
         /// Attribute Value
-        public var value: [UInt8]
+        public var value: Data
         
-        public init(handle: UInt16 = 0, value: [UInt8] = []) {
+        public init(handle: UInt16,
+                    value: Data) {
             
             self.handle = handle
             self.value = value
         }
         
-        public init?(byteValue: [UInt8] = []) {
+        public init?(data: Data) {
             
             guard byteValue.count >= AttributeData.length
                 else { return nil }
             
-            self.handle = UInt16(bytes: (byteValue[0], byteValue[1])).littleEndian
+            self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
             
             if byteValue.count > AttributeData.length {
                 
                 let startingIndex = AttributeData.length
                 
-                self.value = Array(byteValue.suffix(from: startingIndex))
+                self.value = Data(byteValue.suffix(from: startingIndex))
                 
             } else {
                 
-                self.value = []
+                self.value = Data()
             }
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             let handleBytes = handle.littleEndian.bytes
             

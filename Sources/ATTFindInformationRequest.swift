@@ -15,7 +15,7 @@ import Foundation
 public struct ATTFindInformationRequest: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.findInformationRequest
-    public static let length = 5
+    internal static let length = 5
     
     public var startHandle: UInt16
     
@@ -27,7 +27,7 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
         self.endHandle = endHandle
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
@@ -41,7 +41,7 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
         self.endHandle = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         var bytes = [UInt8](repeating: 0, count: type(of: self).length)
         

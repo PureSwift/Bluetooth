@@ -48,7 +48,7 @@ public extension HostControllerBasebandCommand {
         ///
         public var filterType: FilterType // Filter_Type
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             fatalError("\(#function) TODO")
         }
@@ -106,20 +106,20 @@ public extension HostControllerBasebandCommand {
             self.localName = localName
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             let maxLength = type(of: self).length
             
-            var bytes = [UInt8](localName.utf8)
+            var data = Data(localName.utf8)
             
-            assert(bytes.count <= maxLength)
+            assert(data.count <= maxLength)
             
-            if bytes.count < type(of: self).length {
+            if data.count < maxLength {
                 
-                bytes += [UInt8](repeating: 0x00, count: maxLength - bytes.count)
+                data += Data(repeating: 0x00, count: maxLength - data.count)
             }
             
-            return bytes
+            return data
         }
     }
     
@@ -139,11 +139,11 @@ public extension HostControllerBasebandCommand {
             self.timeout = timeout
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             let timeoutBytes = timeout.rawValue.littleEndian.bytes
             
-            return [timeoutBytes.0, timeoutBytes.1]
+            return Data([timeoutBytes.0, timeoutBytes.1])
         }
     }
 }
@@ -162,9 +162,9 @@ public extension HostControllerBasebandCommand {
         
         public let localName: String
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
-            var data = unsafeBitCast(byteValue, to: [Int8].self)
+            var data = unsafeBitCast([UInt8](data), to: [Int8].self)
             
             guard let localName = String(validatingUTF8: &data)
                 else { return nil }
@@ -183,12 +183,12 @@ public extension HostControllerBasebandCommand {
         
         public let timeout: ConnectionAcceptTimeout
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
             guard let timeout = ConnectionAcceptTimeout(rawValue: rawValue)
                 else { return nil }

@@ -17,36 +17,36 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATTOpcode.findInformationResponse
     
     /// Length ranges from 6, to the maximum MTU size.
-    public static let length = 6
+    internal static let length = 6
     
     /// The information data whose format is determined by the Format field.
-    public var data: AttributeData
+    public var attributeData: AttributeData
     
-    public init(data: AttributeData) {
+    public init(attributeData: AttributeData) {
         
-        self.data = data
+        self.attributeData = attributeData
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count >= ATTFindInformationResponse.length else { return nil }
+        guard data.count >= ATTFindInformationResponse.length else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
-        let formatByte = byteValue[1]
-        let remainderData = Array(byteValue.suffix(from: 2))
+        let attributeOpcodeByte = data[0]
+        let formatByte = data[1]
+        let remainderData = Data(data.suffix(from: 2))
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
             let format = Format(rawValue: formatByte),
-            let data = AttributeData(byteValue: remainderData, format: format)
+            let attributeData = AttributeData(data: remainderData, format: format)
             else { return nil }
         
-        self.data = data
+        self.attributeData = attributeData
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         // first 2 bytes are opcode and format
-        return [type(of: self).attributeOpcode.rawValue, data.format.rawValue] + data.byteValue
+        return Data([type(of: self).attributeOpcode.rawValue, attributeData.format.rawValue]) + attributeData.data
     }
 }
 
@@ -126,13 +126,13 @@ public extension ATTFindInformationResponse {
          }
          }*/
         
-        public init?(byteValue: [UInt8], format: Format) {
+        public init?(data: Data, format: Format) {
             
             let pairLength = format.length
             
-            guard byteValue.count % pairLength == 0 else { return nil }
+            guard data.count % pairLength == 0 else { return nil }
             
-            let pairCount = byteValue.count / pairLength
+            let pairCount = data.count / pairLength
             
             var bit16Pairs: [(UInt16, UInt16)] = []
             
@@ -142,7 +142,7 @@ public extension ATTFindInformationResponse {
                 
                 let byteIndex = pairIndex * pairLength
                 
-                let pairBytes = Array(byteValue[byteIndex ..< byteIndex + pairLength])
+                let pairBytes = Data(data[byteIndex ..< byteIndex + pairLength])
                 
                 let handle = UInt16(littleEndian: UInt16(bytes: (pairBytes[0], pairBytes[1])))
                 
@@ -174,9 +174,9 @@ public extension ATTFindInformationResponse {
             }
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
-            var data = [UInt8]()
+            var data = Data()
             
             switch self {
                 

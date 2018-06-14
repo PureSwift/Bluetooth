@@ -44,7 +44,7 @@ public extension LinkPolicyCommand {
             self.interval = interval
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             // Connection_Handle
             let handleBytes = connectionHandle.littleEndian.bytes
@@ -55,12 +55,12 @@ public extension LinkPolicyCommand {
             // Hold_Mode_Min_Interval
             let intervalMinBytes = interval.rawValue.lowerBound.littleEndian.bytes
             
-            return [handleBytes.0,
-                    handleBytes.1,
-                    intervalMaxBytes.0,
-                    intervalMaxBytes.1,
-                    intervalMinBytes.0,
-                    intervalMinBytes.1]
+            return Data([handleBytes.0,
+                         handleBytes.1,
+                         intervalMaxBytes.0,
+                         intervalMaxBytes.1,
+                         intervalMinBytes.0,
+                         intervalMinBytes.1])
         }
         
         /**

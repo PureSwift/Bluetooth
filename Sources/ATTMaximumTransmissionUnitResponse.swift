@@ -16,7 +16,7 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
     /// 0x03 = Exchange MTU Response
     public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitResponse
     
-    public static let length = 3
+    internal static let length = 3
     
     /// Server Rx MTU
     ///
@@ -28,24 +28,24 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit {
         self.serverMTU = serverMTU
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        let serverMTU = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        let serverMTU = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
         self.serverMTU = serverMTU
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
-        var bytes = [UInt8](repeating: 0, count: type(of: self).length)
+        var bytes = Data(repeating: 0, count: type(of: self).length)
         
         bytes[0] = type(of: self).attributeOpcode.rawValue
         
