@@ -30,10 +30,10 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
     
     public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let rawValue = byteValue[0]
+        let rawValue = data[0]
         
         self.serverConfiguration = BitMaskOptionSet<ServerConfiguration>(rawValue: rawValue)
     }
@@ -46,7 +46,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read, .write])
     }
 }

@@ -25,10 +25,10 @@ public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
     
     public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        rawValue = byteValue[0]
+        rawValue = data[0]
     }
     
     public var data: Data {
@@ -39,7 +39,7 @@ public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read])
     }
 }

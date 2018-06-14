@@ -52,17 +52,17 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        guard let format = CharacteristicFormatType.init(rawValue: byteValue[0])
+        guard let format = CharacteristicFormatType.init(rawValue: data[0])
             else { return nil }
         
         self.init(format: format,
-                  exponent: Int8(bitPattern: byteValue[1]),
-                  unit: UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3]))),
-                  namespace: byteValue[4],
-                  description: UInt16(littleEndian: UInt16(bytes: (byteValue[5], byteValue[6]))))
+                  exponent: Int8(bitPattern: data[1]),
+                  unit: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))),
+                  namespace: data[4],
+                  description: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
     }
     
     public var data: Data {
@@ -83,7 +83,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read])
     }
 }

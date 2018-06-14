@@ -535,16 +535,16 @@ public final class GATTServer {
         
         var limitedAttributes = [attributeData[0]]
         
-        var response = ATTReadByTypeResponse(data: limitedAttributes)!
+        var response = ATTReadByTypeResponse(limitedAttributes)
         
         // limit for MTU if first handle is too large
         if response.data.count > Int(connection.maximumTransmissionUnit.rawValue) {
             
             let maxLength = min(min(Int(connection.maximumTransmissionUnit.rawValue) - 4, 253), limitedAttributes[0].value.count)
             
-            limitedAttributes[0].value = Array(limitedAttributes[0].value.prefix(maxLength))
+            limitedAttributes[0].value = Data(limitedAttributes[0].value.prefix(maxLength))
             
-            response = ATTReadByTypeResponse(data: limitedAttributes)!
+            response = ATTReadByTypeResponse(limitedAttributes)
             
         } else {
             
@@ -553,17 +553,17 @@ public final class GATTServer {
                 
                 limitedAttributes.append(data)
                 
-                guard let limitedResponse = ATTReadByTypeResponse(data: limitedAttributes)
+                guard let limitedResponse = ATTReadByTypeResponse(attributeData: limitedAttributes)
                     else { fatalErrorResponse("Could not create ATTReadByTypeResponse. Attribute Data: \(attributeData)", opcode, pdu.startHandle) }
                 
-                guard limitedResponse.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
+                guard limitedResponse.data.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
                 
                 response = limitedResponse
             }
         }
         
-        assert(response.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue),
-               "Response \(response.byteValue.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
+        assert(response.data.count <= Int(connection.maximumTransmissionUnit.rawValue),
+               "Response \(response.data.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
         
         respond(response)
     }
@@ -627,14 +627,14 @@ public final class GATTServer {
                 else { break }
         }
         
-        let data: AttributeData
+        let attributeData: AttributeData
         
         switch format {
-        case .bit16: data = .bit16(bit16Pairs)
-        case .bit128: data = .bit128(bit128Pairs)
+        case .bit16: attributeData = .bit16(bit16Pairs)
+        case .bit128: attributeData = .bit128(bit128Pairs)
         }
         
-        let response = ATTFindInformationResponse(data: data)
+        let response = ATTFindInformationResponse(attributeData: attributeData)
         
         respond(response)
     }
@@ -713,7 +713,7 @@ public final class GATTServer {
         guard database.attributes.isEmpty == false
             else { errorResponse(opcode, .invalidHandle, pdu.handles[0]); return }
         
-        var values = [UInt8]()
+        var values = Data()
         
         for handle in pdu.handles {
             
@@ -731,7 +731,7 @@ public final class GATTServer {
                 return
             }
             
-            values += Array(attribute.value)
+            values += attribute.value
         }
         
         let response = ATTReadMultipleResponse(values: values)
@@ -922,7 +922,7 @@ internal extension GATTDatabase {
                 
                 let match = range.contains(attribute.handle)
                     && attribute.uuid == .bit16(type)
-                    && Array(attribute.value) == value
+                    && attribute.value == value
                 
                 guard match else { continue }
                 

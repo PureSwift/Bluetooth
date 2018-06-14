@@ -45,28 +45,28 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard byteValue.count >= ATTFindByTypeRequest.length else { return nil }
+        guard data.count >= ATTFindByTypeRequest.length else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.startHandle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.startHandle = UInt16(bytes: (data[1], data[2])).littleEndian
         
-        self.endHandle = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+        self.endHandle = UInt16(bytes: (data[3], data[4])).littleEndian
         
-        self.attributeType = UInt16(bytes: (byteValue[5], byteValue[6])).littleEndian
+        self.attributeType = UInt16(bytes: (data[5], data[6])).littleEndian
         
         /// if attributeValue is included
-        if byteValue.count >= 7 {
+        if data.count >= 7 {
             
             // rest of data is attribute
-            self.attributeValue = Array(byteValue.suffix(from: 7))
+            self.attributeValue = Data(data.suffix(from: 7))
             
         } else {
             
-            self.attributeValue = []
+            self.attributeValue = Data()
         }
     }
     

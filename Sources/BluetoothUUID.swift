@@ -148,21 +148,19 @@ public extension BluetoothUUID {
     
     public init?(data: Data) {
         
-        let byteValue = data
-        
-        switch byteValue.count {
+        switch data.count {
             
         // 16 bit
         case 2:
             
-            let value = UInt16(bytes: (byteValue[0], byteValue[1]))
+            let value = UInt16(bytes: (data[0], data[1]))
             
             self = .bit16(value)
             
         // 32 bit
         case 4:
             
-            let value = UInt32(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3]))
+            let value = UInt32(bytes: (data[0], data[1], data[2], data[3]))
             
             self = .bit32(value)
             

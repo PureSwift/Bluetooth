@@ -29,16 +29,16 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.startHandle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
-        self.endHandle = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+        self.startHandle = UInt16(littleEndian: bytes: (data[1], data[2])))
+        self.endHandle = UInt16(littleEndian: bytes: (data[3], data[4])))
     }
     
     public var data: Data {

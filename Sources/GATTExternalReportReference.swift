@@ -23,7 +23,7 @@ public struct GATTExternalReportReference: GATTDescriptor {
     
     public init?(data: Data) {
         
-        guard let uuid = BluetoothUUID(data: byteValue)
+        guard let uuid = BluetoothUUID(data: data)
             else { return nil }
         
         self.init(uuid: BluetoothUUID(littleEndian: uuid))
@@ -37,7 +37,7 @@ public struct GATTExternalReportReference: GATTDescriptor {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read])
     }
 }

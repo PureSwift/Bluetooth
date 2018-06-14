@@ -28,13 +28,13 @@ public struct GATTReportReference: GATTDescriptor {
     
     public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        guard let reportType = ReportType(rawValue: byteValue[1])
+        guard let reportType = ReportType(rawValue: data[1])
             else { return nil }
         
-        self.init(identifier: Identifier(rawValue: byteValue[0]), type: reportType)
+        self.init(identifier: Identifier(rawValue: data[0]), type: reportType)
     }
     
     public var data: Data {
@@ -45,7 +45,7 @@ public struct GATTReportReference: GATTDescriptor {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read])
     }
 }

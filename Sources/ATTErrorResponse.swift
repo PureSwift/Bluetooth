@@ -38,13 +38,13 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     
     public init?(data: Data) {
         
-        guard byteValue.count == ATTErrorResponse.length else { return nil }
+        guard data.count == ATTErrorResponse.length else { return nil }
         
-        let attributeOpcodeByte     = byteValue[0]
-        let requestOpcodeByte       = byteValue[1]
-        let attributeHandleByte1    = byteValue[2]
-        let attributeHandleByte2    = byteValue[3]
-        let errorByte               = byteValue[4]
+        let attributeOpcodeByte     = data[0]
+        let requestOpcodeByte       = data[1]
+        let attributeHandleByte1    = data[2]
+        let attributeHandleByte2    = data[3]
+        let errorByte               = data[4]
         
         guard attributeOpcodeByte == ATTErrorResponse.attributeOpcode.rawValue,
             let requestOpcode = ATTOpcode(rawValue: requestOpcodeByte),

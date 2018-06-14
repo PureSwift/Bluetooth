@@ -34,35 +34,35 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
     
     public init?(data: Data) {
         
-        guard byteValue.count >= type(of: self).minimumLength
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
-        guard let condition = GATTTimeTriggerSettingCondition(rawValue: byteValue[0])
+        guard let condition = GATTTimeTriggerSettingCondition(rawValue: data[0])
             else { return nil }
         
         switch condition {
             
         case .none:
             
-            self = .valueC1(byteValue[1])
+            self = .valueC1(data[1])
             
         case .indicateTimeInterval:
             
-            guard byteValue.count == 4
+            guard data.count == 4
                 else { return nil }
-            self = .valueC2(byteValue[1], byteValue[2], byteValue[3])
+            self = .valueC2(data[1], data[2], data[3])
             
         case .timeInterval:
             
-            guard byteValue.count == 4
+            guard data.count == 4
                 else { return nil }
-            self = .valueC2(byteValue[1], byteValue[2], byteValue[3])
+            self = .valueC2(data[1], data[2], data[3])
             
         case .count:
             
-            guard byteValue.count == 3
+            guard data.count == 3
                 else { return nil }
-            self = .valueC3(UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2]))))
+            self = .valueC3(UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
         }
     }
     
@@ -92,7 +92,7 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read])
     }
 }

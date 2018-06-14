@@ -313,7 +313,7 @@ public final class GATTClient {
             clientConfiguration.configuration.remove(.notify)
         }
         
-        writeDescriptor(descriptor, data: clientConfiguration.byteValue) { [unowned self] (response) in
+        writeDescriptor(descriptor, data: clientConfiguration.data) { [unowned self] (response) in
             
             switch response {
                 
