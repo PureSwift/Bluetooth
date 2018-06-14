@@ -60,7 +60,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             guard let handle = HandlesInformation(data: handleBytes)
                 else { return nil }
             
-            handles[index] = handle
+            handles.append(handle)
         }
         
         self.handlesInformationList = handles

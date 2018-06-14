@@ -56,8 +56,8 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                                   event: EP.event.rawValue,
                                   eventParameterLength: EP.length)
         
-        guard let eventParameter = EP(data: data)
-            else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: data)) }
+        guard let eventParameter = EP.init(data: data)
+            else { throw BluetoothHostControllerError.garbageResponse(data) }
         
         return eventParameter
     }
@@ -91,7 +91,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                                   eventParameterLength: EP.length)
         
         guard let eventParameter = EP(data: data)
-            else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: data)) }
+            else { throw BluetoothHostControllerError.garbageResponse(data) }
         
         return eventParameter
     }
@@ -108,7 +108,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         guard statusByte == 0x00
             else { throw HCIError(rawValue: statusByte)! }
         
-        guard let response = Return(data: Array(data.suffix(from: 1)))
+        guard let response = Return.init(data: Data(data.suffix(from: 1)))
             else { throw BluetoothHostControllerError.garbageResponse(Data(data)) }
         
         return response
@@ -129,7 +129,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         guard statusByte == 0x00
             else { throw HCIError(rawValue: statusByte)! }
         
-        guard let response = Return(data: Array(data.suffix(from: 1)))
+        guard let response = Return(data: Data(data.suffix(from: 1)))
             else { throw BluetoothHostControllerError.garbageResponse(Data(data)) }
         
         return response
@@ -156,7 +156,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                 queue.removeFirst()
                 
                 let actualBytesRead = eventBuffer.count
-                let eventData = Array(eventBuffer[HCIEventHeader.length ..< actualBytesRead])
+                let eventData = Data(eventBuffer[HCIEventHeader.length ..< actualBytesRead])
                 
                 // filter other events
                 guard let eventDataCodeByte = eventBuffer.first,
@@ -185,9 +185,9 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     // MARK: - Private
     
     private func hciRequest<T: HCICommand>(_ command: T,
-                                                    commandParameterData: [UInt8] = [],
-                                                    event: UInt8 = 0,
-                                                    eventParameterLength: Int = 0) throws -> [UInt8] {
+                                           commandParameterData: Data = Data(),
+                                           event: UInt8 = 0,
+                                           eventParameterLength: Int = 0) throws -> Data {
         
         log("\(#function) \(command) (\(commandParameterData.count) bytes)")
         
@@ -202,7 +202,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         
         // validate command
         guard testCommand.0 == opcode,
-            testCommand.1 == commandData else {
+            testCommand.1 == [UInt8](commandData) else {
                 
                 print("Provided command \(opcode)")
                 print(commandData)
@@ -223,11 +223,11 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             case let .event(eventBuffer):
                 
                 let actualBytesRead = eventBuffer.count
-                let headerData = Array(eventBuffer[0 ..< HCIEventHeader.length])
-                let eventData = Array(eventBuffer[(HCIEventHeader.length) ..< actualBytesRead])
+                let headerData = Data(eventBuffer[0 ..< HCIEventHeader.length])
+                let eventData = Data(eventBuffer[(HCIEventHeader.length) ..< actualBytesRead])
                 
-                guard let eventHeader = HCIEventHeader(bytes: headerData)
-                    else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: headerData)) }
+                guard let eventHeader = HCIEventHeader(data: headerData)
+                    else { throw BluetoothHostControllerError.garbageResponse(headerData) }
                 
                 log("Event: \(eventHeader.event)")
                 
@@ -235,10 +235,10 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                 case .commandStatus:
                     
-                    let parameterData = Array(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandStatusParameter.length)))
+                    let parameterData = Data(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandStatusParameter.length)))
                     
                     guard let parameter = HCIGeneralEvent.CommandStatusParameter(data: parameterData)
-                        else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: parameterData)) }
+                        else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     /// must be command status for sent command
                     guard parameter.opcode == opcode
@@ -262,14 +262,14 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     // success!
                     //try done()
                     let dataLength = min(eventData.count, eventParameterLength)
-                    return Array(eventData.suffix(dataLength))
+                    return Data(eventData.suffix(dataLength))
                     
                 case .commandComplete:
                     
-                    let parameterData = Array(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandCompleteParameter.length)))
+                    let parameterData = Data(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandCompleteParameter.length)))
                     
                     guard let parameter = HCIGeneralEvent.CommandCompleteParameter(data: parameterData)
-                        else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: parameterData)) }
+                        else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     guard parameter.opcode == opcode else { continue }
                     
@@ -280,16 +280,16 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     let data = eventData.suffix(eventParameterLength)
                     
                     let dataLength = max(data.count, commandCompleteParameterLength)
-                    return Array(data.suffix(dataLength))
+                    return Data(data.suffix(dataLength))
                     
                 case .remoteNameRequestComplete:
                     
                     guard eventHeader.event.rawValue == event else { break }
                     
-                    let parameterData = Array(eventData.prefix(min(eventData.count, HCIGeneralEvent.RemoteNameRequestCompleteParameter.length)))
+                    let parameterData = Data(eventData.prefix(min(eventData.count, HCIGeneralEvent.RemoteNameRequestCompleteParameter.length)))
                     
                     guard let parameter = HCIGeneralEvent.RemoteNameRequestCompleteParameter(data: parameterData)
-                        else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: parameterData)) }
+                        else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     if commandParameterData.isEmpty == false {
                         
@@ -303,14 +303,14 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     // success!
                     //try done()
                     let dataLength = min(eventData.count - 1, eventParameterLength)
-                    return Array(eventData.suffix(dataLength))
+                    return Data(eventData.suffix(dataLength))
                     
                 case .lowEnergyMeta:
                     
                     let parameterData = eventData
                     
                     guard let metaParameter = HCIGeneralEvent.LowEnergyMetaParameter(data: parameterData)
-                        else { throw BluetoothHostControllerError.garbageResponse(Data(bytes: parameterData)) }
+                        else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     // LE event should match
                     guard metaParameter.subevent.rawValue == event
@@ -318,7 +318,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                     // success!
                     //try done()
-                    return metaParameter.data
+                    return metaParameter.eventData
                     
                 // all other events
                 default:
@@ -327,7 +327,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                     //try done()
                     let dataLength = min(eventData.count, eventParameterLength)
-                    return Array(eventData.suffix(dataLength))
+                    return Data(eventData.suffix(dataLength))
                 }
                 
             case .command:

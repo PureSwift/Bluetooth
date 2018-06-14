@@ -478,7 +478,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             guard let attributeData = AttributeData(data: attributeBytes)
                 else { return nil }
                 
-            attributeDataList[index] = attributeData
+            attributeDataList.append(attributeData)
         }
         
         self.attributeData = attributeDataList
