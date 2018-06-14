@@ -451,7 +451,7 @@ final class HCITests: XCTestCase {
     
     func testLowEnergyScan() {
         
-        typealias Report = LowEnergyEvent.AdvertisingReportEventParameter.Report
+        typealias Report = HCILEAdvertisingReport.Report
         
         typealias ScanParameters = HCILESetScanParameters
         
@@ -586,7 +586,7 @@ final class HCITests: XCTestCase {
     
     func testAdvertisingReport() {
         
-        typealias Report = LowEnergyEvent.AdvertisingReportEventParameter.Report
+        typealias Report = HCILEAdvertisingReport.Report
         
         func parseAdvertisingReport(_ readBytes: Int, _ data: [UInt8]) -> [Report] {
             
@@ -597,7 +597,7 @@ final class HCITests: XCTestCase {
             
             XCTAssert(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
             
-            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(data: meta.eventData)
+            guard let advertisingReport = HCILEAdvertisingReport(data: meta.eventData)
                 else { XCTFail("Could not parse \(eventData)"); return [] }
             
             return advertisingReport.reports
@@ -794,7 +794,7 @@ final class HCITests: XCTestCase {
             
             XCTAssert(metaEvent.subevent == .connectionComplete)
             
-            guard let event = LowEnergyEvent.ConnectionCompleteParameter(data: metaEvent.eventData)
+            guard let event = HCILEConnectionComplete(data: metaEvent.eventData)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(event.status == .success)
@@ -871,7 +871,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x3E, 0x13, 0x01, 0x00, 0x41, 0x00, 0x00, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x09, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x05]))
         
-        var connection: LowEnergyEvent.ConnectionCompleteParameter!
+        var connection: HCILEConnectionComplete!
         XCTAssertNoThrow(connection = try hostController.lowEnergyCreateConnection(parameters: parameters))
         XCTAssert(hostController.queue.isEmpty)
         XCTAssertEqual(connection.status.rawValue, 0x00)
