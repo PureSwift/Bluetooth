@@ -16,9 +16,9 @@ public extension BluetoothHostControllerInterface {
     /// and returns the Encrypted_Data to the Host.
     func lowEnergyEncrypt(key: UInt128, data: UInt128, timeout: HCICommandTimeout = .default) throws -> UInt128 {
         
-        let parameters = LowEnergyCommand.EncryptParameter(key: key, data: data)
+        let parameters = HCILowEnergyCommand.EncryptParameter(key: key, data: data)
         
-        let returnParameters = try deviceRequest(parameters, LowEnergyCommand.EncryptReturnParameter.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.EncryptReturnParameter.self, timeout: timeout)
         
         return returnParameters.encryptedData
     }
@@ -28,7 +28,7 @@ public extension BluetoothHostControllerInterface {
     /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
     func lowEnergyRandom(timeout: HCICommandTimeout = .default) throws -> UInt64 {
         
-        let returnParameters = try deviceRequest(LowEnergyCommand.RandomReturnParameter.self, timeout: timeout)
+        let returnParameters = try deviceRequest(HCILowEnergyCommand.RandomReturnParameter.self, timeout: timeout)
         
         return returnParameters.randomNumber
     }
@@ -49,7 +49,7 @@ public extension BluetoothHostControllerInterface {
          - Note: A Command Complete event is not sent by the Controller to indicate that this command has been completed. Instead, the Encryption Change or Encryption Key Refresh Complete events indicate that this command has been completed.
          */
         
-        let command = LowEnergyCommand.StartEncryptionParameter(connectionHandle: connectionHandle,
+        let command = HCILowEnergyCommand.StartEncryptionParameter(connectionHandle: connectionHandle,
                                                                 randomNumber: randomNumber,
                                                                 encryptedDiversifier: encryptedDiversifier,
                                                                 longTermKey: longTermKey)

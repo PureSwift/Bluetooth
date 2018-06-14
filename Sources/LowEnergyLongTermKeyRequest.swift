@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// this Connection_Handle. 
     func lowEnergyLongTermKeyRequestReply(handle: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let parameters = LowEnergyCommand.LongTermKeyRequestReplyParameter(connectionHandle: handle, longTermKey: longTermKey)
+        let parameters = HCILowEnergyCommand.LongTermKeyRequestReplyParameter(connectionHandle: handle, longTermKey: longTermKey)
         
-        let returnParameters = try deviceRequest(parameters, LowEnergyCommand.LongTermKeyRequestReplyReturnParameter.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.LongTermKeyRequestReplyReturnParameter.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }
@@ -28,9 +28,9 @@ public extension BluetoothHostControllerInterface {
     /// the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
     func lowEnergyLongTermKeyRequestNegativeReply(handle: UInt16, timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let parameters = LowEnergyCommand.LongTermKeyRequestNegativeReplyParameter(connectionHandle: handle)
+        let parameters = HCILowEnergyCommand.LongTermKeyRequestNegativeReplyParameter(connectionHandle: handle)
         
-        let returnParameters = try deviceRequest(parameters, LowEnergyCommand.LongTermKeyRequestNegativeReplyReturnParameter.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.LongTermKeyRequestNegativeReplyReturnParameter.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }

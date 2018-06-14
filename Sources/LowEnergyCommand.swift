@@ -1,5 +1,5 @@
 //
-//  LowEnergyCommand.swift
+//  HCILowEnergyCommand.swift
 //  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 1/14/16.
@@ -7,7 +7,7 @@
 //
 
 /// Bluetooth Low Energy Command opcode
-public enum LowEnergyCommand: UInt16, HCICommand {
+public enum HCILowEnergyCommand: UInt16, HCICommand {
     
     public static let opcodeGroupField = HCIOpcodeGroupField.lowEnergy
     
@@ -245,7 +245,7 @@ public enum LowEnergyCommand: UInt16, HCICommand {
 
 // MARK: - Name
 
-public extension LowEnergyCommand {
+public extension HCILowEnergyCommand {
     
     public var name: String {
         

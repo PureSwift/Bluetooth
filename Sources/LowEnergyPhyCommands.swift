@@ -12,11 +12,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This ommand is used to read the current transmitter PHY and receiver PHY
     /// on the connection identified by the Connection_Handle.
-    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> LowEnergyCommand.ReadPHYReturnParameter {
+    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.ReadPHYReturnParameter {
         
-        let parameters = LowEnergyCommand.ReadPHYParameter(connectionHandle: connectionHandle)
+        let parameters = HCILowEnergyCommand.ReadPHYParameter(connectionHandle: connectionHandle)
         
-        let value = try deviceRequest(parameters, LowEnergyCommand.ReadPHYReturnParameter.self, timeout: timeout)
+        let value = try deviceRequest(parameters, HCILowEnergyCommand.ReadPHYReturnParameter.self, timeout: timeout)
         
         return value
     }
@@ -30,7 +30,7 @@ public extension BluetoothHostControllerInterface {
                                 rxPhys: LowEnergyRxPhys,
                                 timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = LowEnergyCommand.SetDefaultPhyParameter(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
+        let parameters = HCILowEnergyCommand.SetDefaultPhyParameter(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -48,7 +48,7 @@ public extension BluetoothHostControllerInterface {
                                   phyOptions: LowEnergyPhyOptions,
                                   timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.PhyUpdateCompleteEventParameter {
         
-        let parameters = LowEnergyCommand.SetPhyParameter(connectionHandle: connectionHandle,
+        let parameters = HCILowEnergyCommand.SetPhyParameter(connectionHandle: connectionHandle,
                                                           allPhys: allPhys,
                                                           txPhys: txPhys,
                                                           rxPhys: rxPhys,

@@ -56,7 +56,7 @@ final class HCITests: XCTestCase {
 
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.setAdvertisingParameters.opcode,
+            .command(HCILowEnergyCommand.setAdvertisingParameters.opcode,
                      [0x06, 0x20, 0x0f, 0x14, 0x00, 0x1E, 0x00, 0x01, 0x01, 0x00, 0x77, 0xD8, 0x47, 0xA3, 0x39, 0x54, 0x01, 0x00])
         )
         
@@ -65,7 +65,7 @@ final class HCITests: XCTestCase {
     }
     
     func testReadBufferSize(){
-        typealias ReadBufferSize = LowEnergyCommand.ReadBufferSizeReturnParameter
+        typealias ReadBufferSize = HCILowEnergyCommand.ReadBufferSizeReturnParameter
         
         let hostController = TestHostController()
         
@@ -74,7 +74,7 @@ final class HCITests: XCTestCase {
          [2002] Opcode: 0x2002 (OGF: 0x08    OCF: 0x02)
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.readBufferSize.opcode,
+            .command(HCILowEnergyCommand.readBufferSize.opcode,
                      [0x02, 0x20, 0x00])
         )
         
@@ -98,7 +98,7 @@ final class HCITests: XCTestCase {
     }
     
     func testReadLocalSupportedFeatures() {
-        typealias ReadLocalSupportedFeatures = LowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
+        typealias ReadLocalSupportedFeatures = HCILowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
         
         let hostController = TestHostController()
         
@@ -107,7 +107,7 @@ final class HCITests: XCTestCase {
          [2003] Opcode: 0x2003 (OGF: 0x08    OCF: 0x03)
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.readLocalSupportedFeatures.opcode,
+            .command(HCILowEnergyCommand.readLocalSupportedFeatures.opcode,
                      [0x03, 0x20, 0x00])
         )
         
@@ -143,7 +143,7 @@ final class HCITests: XCTestCase {
         XCTAssert(InformationalCommand.readLocalVersionInformation.name == "Read Local Version Information")
         XCTAssert(HostControllerBasebandCommand.readLocalName.name == "Read Local Name")
         XCTAssert(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
-        XCTAssert(LowEnergyCommand.createConnection.name == "LE Create Connection")
+        XCTAssert(HCILowEnergyCommand.createConnection.name == "LE Create Connection")
         
         func testCommand <T: HCICommand> (_ command: T.Type) {
             
@@ -164,7 +164,7 @@ final class HCITests: XCTestCase {
         testCommand(InformationalCommand.self)
         testCommand(HostControllerBasebandCommand.self)
         testCommand(StatusParametersCommand.self)
-        testCommand(LowEnergyCommand.self)
+        testCommand(HCILowEnergyCommand.self)
         
         func testCommandNames <T: HCICommand> (_ command: T.Type, names: [String], skip: String = "Unknown") {
             
@@ -174,7 +174,7 @@ final class HCITests: XCTestCase {
             }
         }
         
-        testCommandNames(LowEnergyCommand.self, names: [
+        testCommandNames(HCILowEnergyCommand.self, names: [
             "Unknown",
             "LE Set Event Mask",
             "LE Read Buffer Size",
@@ -459,7 +459,7 @@ final class HCITests: XCTestCase {
         
         typealias Report = LowEnergyEvent.AdvertisingReportEventParameter.Report
         
-        typealias ScanParameters = LowEnergyCommand.SetScanParametersParameter
+        typealias ScanParameters = HCILowEnergyCommand.SetScanParametersParameter
         
         let scanParameters = ScanParameters(type: .active,
                                             interval: LowEnergyScanTimeInterval(rawValue: 0x01E0)!,
@@ -471,7 +471,7 @@ final class HCITests: XCTestCase {
         
         // SEND  [200C] LE Set Scan Enable - 0x00, Filter duplicates: 0  0C 20 02 00 01
         hostController.queue.append(
-            .command(LowEnergyCommand.setScanEnable.opcode,
+            .command(HCILowEnergyCommand.setScanEnable.opcode,
                      [0x0C, 0x20, 0x02, 0x00, 0x01])
         )
         
@@ -481,7 +481,7 @@ final class HCITests: XCTestCase {
         // SEND  [200B] LE Set Scan Parameters - Active - 30/300 (ms)  0B 20 07 01 E0 01 30 00 00 00
         hostController.queue.append(
             .command(
-                LowEnergyCommand.setScanParameters.opcode,
+                HCILowEnergyCommand.setScanParameters.opcode,
                 [0x0B, 0x20, 0x07, 0x01, 0xE0, 0x01, 0x30, 0x00, 0x00, 0x00])
             )
         
@@ -492,7 +492,7 @@ final class HCITests: XCTestCase {
         
         // SEND  [200C] LE Set Scan Enable - 0x01, Filter duplicates: 1  0C 20 02 01 00
         hostController.queue.append(
-            .command(LowEnergyCommand.setScanEnable.opcode,
+            .command(HCILowEnergyCommand.setScanEnable.opcode,
                      [0x0C, 0x20, 0x02, 0x01, 0x01])
             )
         
@@ -509,7 +509,7 @@ final class HCITests: XCTestCase {
             
         // SEND  [200C] LE Set Scan Enable - 0x00, Filter duplicates: 1  0C 20 02 00 01
         hostController.queue.append(
-            .command(LowEnergyCommand.setScanEnable.opcode,
+            .command(HCILowEnergyCommand.setScanEnable.opcode,
                      [0x0C, 0x20, 0x02, 0x00, 0x01])
             )
             
@@ -550,7 +550,7 @@ final class HCITests: XCTestCase {
          Connection Handle: 0041
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.readRemoteUsedFeatures.opcode,
+            .command(HCILowEnergyCommand.readRemoteUsedFeatures.opcode,
                      [0x16, 0x20, 0x02, 0x41, 0x00])
         )
         
@@ -810,9 +810,9 @@ final class HCITests: XCTestCase {
     
     func testLEConnectionCreate() {
         
-        typealias CommandParameter = LowEnergyCommand.CreateConnectionParameter
+        typealias CommandParameter = HCILowEnergyCommand.CreateConnectionParameter
         
-        typealias SupervisionTimeout = LowEnergyCommand.CreateConnectionParameter.SupervisionTimeout
+        typealias SupervisionTimeout = HCILowEnergyCommand.CreateConnectionParameter.SupervisionTimeout
         
         let hostController = TestHostController()
         
@@ -824,7 +824,7 @@ final class HCITests: XCTestCase {
                                           ownAddressType: .public,
                                           connectionInterval: LowEnergyConnectionIntervalRange(rawValue: 0x0006 ... 0x000C)!,
                                           connectionLatency: .zero,
-                                          supervisionTimeout: LowEnergyCommand.CreateConnectionParameter.SupervisionTimeout(rawValue: 0x00C8)!,
+                                          supervisionTimeout: HCILowEnergyCommand.CreateConnectionParameter.SupervisionTimeout(rawValue: 0x00C8)!,
                                           connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
         
         XCTAssertEqual(parameters.byteValue.count, 0x19)
@@ -854,7 +854,7 @@ final class HCITests: XCTestCase {
          Maximum CE Length: 0x0006 (3.75 ms)
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.createConnection.opcode,
+            .command(HCILowEnergyCommand.createConnection.opcode,
             [0x0D, 0x20, 0x19, 0x60, 0x00, 0x30, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x0C, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x04, 0x00, 0x06, 0x00])
         )
         
@@ -905,7 +905,7 @@ final class HCITests: XCTestCase {
          */
         
         hostController.queue.append(
-            .command(LowEnergyCommand.createConnectionCancel.opcode,
+            .command(HCILowEnergyCommand.createConnectionCancel.opcode,
                      [0x0E, 0x20, 0x00])
         )
         
@@ -933,7 +933,7 @@ final class HCITests: XCTestCase {
         
         // SEND  [2011] LE Add Device To White List - 0 - 58:E2:8F:7C:0B:B3  11 20 07 00 B3 0B 7C 8F E2 58
         hostController.queue.append(
-            .command(LowEnergyCommand.addDeviceToWhiteList.opcode,
+            .command(HCILowEnergyCommand.addDeviceToWhiteList.opcode,
                      [0x11, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
         )
         
@@ -958,7 +958,7 @@ final class HCITests: XCTestCase {
          Address: 58:E2:8F:7C:0B:B3
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.removeDeviceFromWhiteList.opcode,
+            .command(HCILowEnergyCommand.removeDeviceFromWhiteList.opcode,
                      [0x12, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
         )
         
@@ -1002,7 +1002,7 @@ final class HCITests: XCTestCase {
          Long Term Key: 2357EB0D0C24D85A985764ECCBECEC05
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.startEncryption.opcode,
+            .command(HCILowEnergyCommand.startEncryption.opcode,
                      [0x19, 0x20, 0x1C, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23]))
         
         /**
@@ -1072,7 +1072,7 @@ final class HCITests: XCTestCase {
          Plaintext_Data (16-octet value MSO to LSO): 0x0213243546576879acbdcedfe0f10213
          */
         
-        let commandHeader = HCICommandHeader(command: LowEnergyCommand.encrypt,
+        let commandHeader = HCICommandHeader(command: HCILowEnergyCommand.encrypt,
                                              parameterLength: 0x20)
         
         XCTAssertEqual(commandHeader.byteValue, [23, 32, 32])
@@ -1118,7 +1118,7 @@ final class HCITests: XCTestCase {
          Random Address: 68:60:B2:29:26:8D
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.setRandomAddress.opcode,
+            .command(HCILowEnergyCommand.setRandomAddress.opcode,
                      [0x05, 0x20, 0x06, 0x8D, 0x26, 0x29, 0xB2, 0x60, 0x68])
         )
         
