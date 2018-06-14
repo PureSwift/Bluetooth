@@ -459,7 +459,7 @@ final class HCITests: XCTestCase {
         
         typealias Report = LowEnergyEvent.AdvertisingReportEventParameter.Report
         
-        typealias ScanParameters = HCILowEnergyCommand.HCILESetScanParameters
+        typealias ScanParameters = HCILESetScanParameters
         
         let scanParameters = ScanParameters(type: .active,
                                             interval: LowEnergyScanTimeInterval(rawValue: 0x01E0)!,
@@ -810,9 +810,9 @@ final class HCITests: XCTestCase {
     
     func testLEConnectionCreate() {
         
-        typealias CommandParameter = HCILowEnergyCommand.HCILECreateConnection
+        typealias CommandParameter = HCILECreateConnection
         
-        typealias SupervisionTimeout = HCILowEnergyCommand.HCILECreateConnection.SupervisionTimeout
+        typealias SupervisionTimeout = HCILECreateConnection.SupervisionTimeout
         
         let hostController = TestHostController()
         
@@ -824,7 +824,7 @@ final class HCITests: XCTestCase {
                                           ownAddressType: .public,
                                           connectionInterval: LowEnergyConnectionIntervalRange(rawValue: 0x0006 ... 0x000C)!,
                                           connectionLatency: .zero,
-                                          supervisionTimeout: HCILowEnergyCommand.HCILECreateConnection.SupervisionTimeout(rawValue: 0x00C8)!,
+                                          supervisionTimeout: HCILECreateConnection.SupervisionTimeout(rawValue: 0x00C8)!,
                                           connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
         
         XCTAssertEqual(parameters.data.count, 0x19)
