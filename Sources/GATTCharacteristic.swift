@@ -1953,58 +1953,65 @@ extension GATTAnaerobicHeartRateUpperLimit: CustomStringConvertible {
     }
 }
 
-public enum GATTBarometricPressureTrend: Unitless, GATTProfileCharacteristic {
-    
+/**
+ Barometric Pressure Trend
+ */
+public enum GATTBarometricPressureTrend: UInt8, GATTProfileCharacteristic {
+
     internal static let length = MemoryLayout<UInt8>.size
-    
+
     public static var uuid: BluetoothUUID { return .barometricPressureTrend }
-    
+
+    // Unknown
     case unknown = 0x00
-    
+
+    // Continuously falling
     case continuoslyFalling = 0x01
     
+    // Continuously rising
     case continuoslyRising = 0x02
-    
+
+    // Falling, then steady
     case fallingThenSteady = 0x03
-    
+
+    // Rising, then steady
     case risingThenSteady = 0x04
-    
+
+    // Falling before a lesser rise
     case fallingBeforeLesserRise = 0x05
-    
+
+    // Falling before a greater rise
     case fallingBeforeGreaterRise = 0x06
-    
+
+    // Rising before a greater fall
     case risingBeforeGreaterFall = 0x07
-    
+
+    // Rising before a lesser fall
     case risingBeforeLesserFall = 0x08
-    
+
+    // Steady
     case steady = 0x09
-    
+
     public init?(data: Data) {
-        
+
         guard data.count == type(of: self).length
             else { return nil }
-        
+
         self.init(rawValue: data[0])
     }
-    
+
     public var data: Data {
-        
+
         return Data([rawValue])
     }
-    
+
 }
 
-public struct Unitless: BluetoothUnit {
+extension GATTBarometricPressureTrend: Equatable {
     
-    internal static let length = MemoryLayout<UInt8>.size
-    
-    public static var unitType: UnitIdentifier { return .unitless }
-    
-    public var rawValue: UInt8
-    
-    public init(rawValue: UInt8) {
+    public static func == (lhs: GATTBarometricPressureTrend, rhs: GATTBarometricPressureTrend) -> Bool {
         
-        self.rawValue = rawValue
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
