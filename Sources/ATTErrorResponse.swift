@@ -58,7 +58,7 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     
     public var data: Data {
         
-        var bytes = [UInt8](repeating: 0, count: ATTErrorResponse.length)
+        var bytes = Data(repeating: 0, count: ATTErrorResponse.length)
         
         bytes[0] = ATTErrorResponse.attributeOpcode.rawValue
         bytes[1] = requestOpcode.rawValue

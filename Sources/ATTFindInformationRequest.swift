@@ -43,7 +43,7 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
     
     public var data: Data {
         
-        var bytes = [UInt8](repeating: 0, count: type(of: self).length)
+        var bytes = Data(repeating: 0, count: type(of: self).length)
         
         bytes[0] = type(of: self).attributeOpcode.rawValue
         

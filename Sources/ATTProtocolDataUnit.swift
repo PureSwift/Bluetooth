@@ -261,7 +261,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
         
         let type = ATTReadBlobResponse.self
         
-        var handlesBytes = [UInt8](repeating: 0, count: handles.count * 2)
+        var handlesBytes = Data(repeating: 0, count: handles.count * 2)
         
         for handle in handles {
             

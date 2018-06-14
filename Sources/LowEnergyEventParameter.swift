@@ -195,7 +195,7 @@ public extension LowEnergyEvent {
             var offset = 1
             for _ in 0 ..< reportCount {
                 
-                let reportBytes = [UInt8](data.suffix(from: offset))
+                let reportBytes = Data(data.suffix(from: offset))
                 
                 guard let report = Report(data: reportBytes)
                     else { return nil }
@@ -732,7 +732,7 @@ public extension LowEnergyEvent {
             var offset = 1
             for _ in 0 ..< reportCount {
                 
-                let reportBytes = [UInt8](data.suffix(from: offset))
+                let reportBytes = Data(data.suffix(from: offset))
                 
                 guard let report = Report(data: reportBytes)
                     else { return nil }
@@ -913,7 +913,7 @@ public extension LowEnergyEvent {
             var offset = 1
             for _ in 0 ..< reportCount {
                 
-                let reportBytes = [UInt8](data.suffix(from: offset))
+                let reportBytes = Data(data.suffix(from: offset))
                 
                 guard let report = Report(data: reportBytes)
                     else { return nil }

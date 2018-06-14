@@ -71,7 +71,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         let handlesDataByteCount = handlesInformationList.count * HandlesInformation.length
         
         // preallocate memory to avoid performance penalty by increasing buffer
-        var handlesData = [UInt8](repeating: 0, count: handlesDataByteCount)
+        var handlesData = Data(repeating: 0, count: handlesDataByteCount)
         
         for (handleIndex, handle) in handlesInformationList.enumerated() {
             

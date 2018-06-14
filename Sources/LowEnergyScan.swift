@@ -50,8 +50,8 @@ public extension BluetoothHostControllerInterface {
                 else { return }
             
             // parse LE advertising report
-            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(data: metaEvent.data)
-                else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
+            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(data: metaEvent.eventData)
+                else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.eventData)) }
             
             // call closure on each device found
             advertisingReport.reports.forEach { foundDevice($0) }
@@ -92,7 +92,7 @@ public extension BluetoothHostControllerInterface {
                                   timeout: HCICommandTimeout = .default) throws {
         
         // set scan response parameters
-        let command = HCILowEnergyCommand.SetScanResponseDataParameter(data: data)
+        let command = HCILowEnergyCommand.SetScanResponseDataParameter(advertisingData: data)
         
         try deviceRequest(command, timeout: timeout)
     }
