@@ -604,7 +604,7 @@ final class HCITests: XCTestCase {
             XCTAssert(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
             
             guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(data: meta.eventData)
-                else { XCTFail("Could not parse"); return [] }
+                else { XCTFail("Could not parse \(eventData)"); return [] }
             
             return advertisingReport.reports
         }
