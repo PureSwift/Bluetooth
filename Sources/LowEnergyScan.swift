@@ -78,25 +78,6 @@ public extension BluetoothHostControllerInterface {
         return foundDevices
     }
     
-    /// Set the LE Scan Response
-    ///
-    /// - Parameter data: 31 byte static array representing the scan response data.
-    /// 
-    /// - Parameter length: The length of signficant bytes in the scan response data. 
-    /// Must be less than or equal to 31. 
-    /// 
-    /// - Parameter commandTimeout: The timeout to use for each HCI command.
-    ///
-    /// - Precondition: The provided length must be less than or equal to 31.
-    func setLowEnergyScanResponse(_ data: LowEnergyAdvertisingData,
-                                  timeout: HCICommandTimeout = .default) throws {
-        
-        // set scan response parameters
-        let command = HCILESetScanResponseData(advertisingData: data)
-        
-        try deviceRequest(command, timeout: timeout)
-    }
-    
     /// LE Set Extended Scan Response Data Command
     ///
     /// The command is used to provide scan response data used in scanning response PDUs. This command may be
