@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// The TX Power Level data type indicates the transmitted power level of the packet containing the data type.
 /// The TX Power Level should be the radiated power level.
 ///

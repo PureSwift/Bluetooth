@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /**
  
  The Slave Connection Interval Range data type contains the Peripheral’s preferred connection interval range, for all logical connections. See Vol 3, Part C, Section 12.3.

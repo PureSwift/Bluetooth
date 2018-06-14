@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// GAP List of 32 bit Service Solicitation UUIDs
 public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
     

@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /**
  The Manufacturer Specific data type is used for manufacturer specific data.
  The first two data octets shall contain a company identifier code from the Assigned Numbers - Company Identifiers document.

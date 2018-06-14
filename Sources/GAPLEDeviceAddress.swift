@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// The LE Bluetooth Device Address data type defines the device address of the local device
 /// and the address type on the LE transport.
 ///

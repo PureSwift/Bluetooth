@@ -6,6 +6,8 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 #if os(Linux)
     import Glibc
 #elseif os(OSX) || os(iOS)

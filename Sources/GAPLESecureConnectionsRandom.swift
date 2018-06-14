@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// Specifies the LE Secure Connections Random Value
 /// Size: 16 octets
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4

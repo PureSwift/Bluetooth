@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// A Transport Block includes the following fields: Organization ID, TDS Flags, Transport Data Length, and Transport Data.
 /// One or more Transport Block(s) may be present in the Transport Discovery Data AD Type.
 /// The value of the fields in this section relate only to the transport which the block describes (i.e., they pertain only to that Transport Block).

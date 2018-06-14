@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// Specifies the class of the device
 /// Size: 3 octets
 public struct GAPClassOfDevice: GAPData {

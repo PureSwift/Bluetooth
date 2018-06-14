@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 public enum GAPBeaconType: UInt8 {
     
     case unprovisionedDevice = 0x00

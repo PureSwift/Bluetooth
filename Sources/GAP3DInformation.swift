@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /**
  The 3DD shall include a section in its EIR data providing 3D Synchronization Profile
  
