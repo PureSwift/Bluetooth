@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// GATT Time Trigger Setting Condition
 public enum GATTTimeTriggerSettingCondition: UInt8 {
     

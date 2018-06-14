@@ -12,6 +12,8 @@
     import Darwin.C
 #endif
 
+import Foundation
+
 public extension LinkPolicyCommand {
     
     /**

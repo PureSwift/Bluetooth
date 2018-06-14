@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 // MARK: - Return Parameter
 
 public extension InformationalCommand {
