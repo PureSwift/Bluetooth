@@ -31,7 +31,7 @@ public extension BluetoothHostControllerInterface {
     func enableLowEnergyAdvertising(_ isEnabled: Bool = true,
                                     timeout: HCICommandTimeout = .default) throws {
         
-        let parameter = HCILowEnergyCommand.SetAdvertiseEnableParameter(isEnabled: isEnabled)
+        let parameter = HCILowEnergyCommand.HCILESetAdvertiseEnable(isEnabled: isEnabled)
         
         try deviceRequest(parameter, timeout: timeout)
     }
@@ -42,7 +42,7 @@ public extension BluetoothHostControllerInterface {
     func setLowEnergyAdvertisingData(_ data: LowEnergyAdvertisingData,
                                      timeout: HCICommandTimeout = .default) throws {
         
-        let parameter = HCILowEnergyCommand.SetAdvertisingDataParameter(advertisingData: data)
+        let parameter = HCILowEnergyCommand.HCILESetAdvertisingData(advertisingData: data)
         
         try deviceRequest(parameter, timeout: timeout)
     }
@@ -50,7 +50,7 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Advertising Parameters Command
     ///
     /// Used by the Host to set the advertising parameters.
-    func setLowEnergyAdvertisingParameters(_ parameters: HCILowEnergyCommand.SetAdvertisingParametersParameter,
+    func setLowEnergyAdvertisingParameters(_ parameters: HCILowEnergyCommand.HCILESetAdvertisingParameters,
                                            timeout: HCICommandTimeout = .default) throws {
         
         try deviceRequest(parameters, timeout: timeout)

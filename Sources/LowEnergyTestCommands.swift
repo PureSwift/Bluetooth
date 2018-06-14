@@ -14,7 +14,7 @@ public extension BluetoothHostControllerInterface {
     /// The tester generates the test reference packets.
     func lowEnergyReceiverTest(rxChannel: LowEnergyRxChannel, timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.ReceiverTestParameter(rxChannel: rxChannel)
+        let parameters = HCILowEnergyCommand.HCILEReceiverTest(rxChannel: rxChannel)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -28,7 +28,7 @@ public extension BluetoothHostControllerInterface {
                                   packetPayload: LowEnergyPacketPayload,
                                   timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.TransmitterTestParameter(txChannel: txChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload)
+        let parameters = HCILowEnergyCommand.HCILETransmitterTest(txChannel: txChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload)
         
         try deviceRequest(parameters, timeout: timeout)
     }
