@@ -197,7 +197,7 @@ public extension HCIGeneralEvent {
         public static let length = 1 // 1 ... HCI.maximumEventSize
         
         public let subevent: LowEnergyEvent
-        public let data: [UInt8]
+        public let eventData: Data
         
         public init?(data: Data) {
             
@@ -213,7 +213,7 @@ public extension HCIGeneralEvent {
                 
             } else {
                 
-                self.data = Data
+                self.data = Data()
             }
         }
     }

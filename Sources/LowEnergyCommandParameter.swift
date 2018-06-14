@@ -244,7 +244,7 @@ public extension HCILowEnergyCommand {
         
         public var data: Data {
             
-            return [isEnabled.byteValue]
+            return Data([isEnabled.byteValue])
         }
     }
     
@@ -300,7 +300,7 @@ public extension HCILowEnergyCommand {
             let ownAddressType = addressType.rawValue
             let filter = filterPolicy.rawValue
             
-            return [scanType, scanInterval.0, scanInterval.1, scanWindow.0, scanWindow.1, ownAddressType, filter]
+            return Data([scanType, scanInterval.0, scanInterval.1, scanWindow.0, scanWindow.1, ownAddressType, filter])
         }
         
         /// Controls the type of scan to perform
@@ -363,7 +363,7 @@ public extension HCILowEnergyCommand {
         
         public var data: Data {
             
-            return [isEnabled.byteValue, filterDuplicates.byteValue]
+            return Data([isEnabled.byteValue, filterDuplicates.byteValue])
         }
     }
     
@@ -481,7 +481,7 @@ public extension HCILowEnergyCommand {
             let connectionLengthMinBytes = connectionLength.rawValue.lowerBound.littleEndian.bytes
             let connectionLengthMaxBytes = connectionLength.rawValue.upperBound.littleEndian.bytes
             
-            return [scanIntervalBytes.0,
+            return Data([scanIntervalBytes.0,
                     scanIntervalBytes.1,
                     scanWindowBytes.0,
                     scanWindowBytes.1,
@@ -505,7 +505,7 @@ public extension HCILowEnergyCommand {
                     connectionLengthMinBytes.0,
                     connectionLengthMinBytes.1,
                     connectionLengthMaxBytes.0,
-                    connectionLengthMaxBytes.1]
+                    connectionLengthMaxBytes.1])
         }
         
         /// Used to determine whether the White List is used.
@@ -551,13 +551,13 @@ public extension HCILowEnergyCommand {
             let addressType = self.device.addressType.rawValue
             let addressBytes = self.device.address.littleEndian.bytes
             
-            return [addressType,
+            return Data([addressType,
                     addressBytes.0,
                     addressBytes.1,
                     addressBytes.2,
                     addressBytes.3,
                     addressBytes.4,
-                    addressBytes.5]
+                    addressBytes.5])
         }
     }
     
@@ -588,13 +588,13 @@ public extension HCILowEnergyCommand {
             let addressType = self.device.addressType.rawValue
             let addressBytes = self.device.address.littleEndian.bytes
             
-            return [addressType,
+            return Data([addressType,
                     addressBytes.0,
                     addressBytes.1,
                     addressBytes.2,
                     addressBytes.3,
                     addressBytes.4,
-                    addressBytes.5]
+                    addressBytes.5])
         }
     }
     
@@ -669,7 +669,7 @@ public extension HCILowEnergyCommand {
             let connectionLengthMinBytes = connectionLength.rawValue.lowerBound.littleEndian.bytes
             let connectionLengthMaxBytes = connectionLength.rawValue.upperBound.littleEndian.bytes
             
-            return [connectionHandle.littleEndian.bytes.0,
+            return Data([connectionHandle.littleEndian.bytes.0,
                     connectionHandle.littleEndian.bytes.1,
                     connectionIntervalMinBytes.0,
                     connectionIntervalMinBytes.1,
@@ -682,7 +682,7 @@ public extension HCILowEnergyCommand {
                     connectionLengthMinBytes.0,
                     connectionLengthMinBytes.1,
                     connectionLengthMaxBytes.0,
-                    connectionLengthMaxBytes.1]
+                    connectionLengthMaxBytes.1])
         }
     }
     
@@ -707,13 +707,13 @@ public extension HCILowEnergyCommand {
         }
         
         public var data: Data {
-            return [
+            return Data([
                 channelMap.0,
                 channelMap.1,
                 channelMap.2,
                 channelMap.3,
                 channelMap.4
-            ]
+            ])
         }
     }
     
@@ -740,10 +740,10 @@ public extension HCILowEnergyCommand {
             
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1
-            ]
+            ])
         }
     }
     
@@ -776,7 +776,7 @@ public extension HCILowEnergyCommand {
             let keyBytes = key.littleEndian.bytes
             let dataBytes = plainText.littleEndian.bytes
             
-            return [
+            return Data([
                 keyBytes.0,
                 keyBytes.1,
                 keyBytes.2,
@@ -809,7 +809,7 @@ public extension HCILowEnergyCommand {
                 dataBytes.13,
                 dataBytes.14,
                 dataBytes.15
-            ]
+            ])
         }
     }
     
@@ -857,7 +857,7 @@ public extension HCILowEnergyCommand {
             let encryptedDiversifierBytes = encryptedDiversifier.littleEndian.bytes
             let longTermKeyBytes = longTermKey.littleEndian.bytes
             
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1,
                 randomNumberBytes.0,
@@ -886,7 +886,7 @@ public extension HCILowEnergyCommand {
                 longTermKeyBytes.13,
                 longTermKeyBytes.14,
                 longTermKeyBytes.15
-            ]
+            ])
         }
     }
     
@@ -915,7 +915,7 @@ public extension HCILowEnergyCommand {
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             let longTermKeyBytes = longTermKey.littleEndian.bytes
             
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1,
                 longTermKeyBytes.0,
@@ -934,7 +934,7 @@ public extension HCILowEnergyCommand {
                 longTermKeyBytes.13,
                 longTermKeyBytes.14,
                 longTermKeyBytes.15
-            ]
+            ])
         }
     }
     
@@ -958,10 +958,10 @@ public extension HCILowEnergyCommand {
             
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
         
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1
-            ]
+            ])
         }
     }
     
@@ -984,7 +984,7 @@ public extension HCILowEnergyCommand {
         
         public var data: Data {
             
-            return [rxChannel.rawValue]
+            return Data([rxChannel.rawValue])
         }
     }
     
@@ -1019,7 +1019,7 @@ public extension HCILowEnergyCommand {
         
         public var data: Data {
             
-            return [txChannel.rawValue, packetPayload.rawValue]
+            return Data([txChannel.rawValue, packetPayload.rawValue])
         }
     }
     
@@ -1065,7 +1065,7 @@ public extension HCILowEnergyCommand {
             let connectionLengthMinBytes = length.rawValue.lowerBound.littleEndian.bytes
             let connectionLengthMaxBytes = length.rawValue.upperBound.littleEndian.bytes
             
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1,
                 connectionIntervalMinBytes.0,
@@ -1080,7 +1080,7 @@ public extension HCILowEnergyCommand {
                 connectionLengthMinBytes.1,
                 connectionLengthMaxBytes.0,
                 connectionLengthMaxBytes.1
-            ]
+            ])
         }
     }
     
@@ -1109,11 +1109,11 @@ public extension HCILowEnergyCommand {
             
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1,
                 reason
-            ]
+            ])
         }
     }
     
@@ -1146,14 +1146,14 @@ public extension HCILowEnergyCommand {
             let txOctetsBytes = txOctets.rawValue.littleEndian.bytes
             let txTimeBytes = txTime.rawValue.littleEndian.bytes
             
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1,
                 txOctetsBytes.0,
                 txOctetsBytes.1,
                 txTimeBytes.0,
                 txTimeBytes.1
-            ]
+            ])
         }
     }
     
@@ -1179,12 +1179,12 @@ public extension HCILowEnergyCommand {
             let suggestedMaxTxOctetsBytes = suggestedMaxTxOctets.rawValue.littleEndian.bytes
             let suggestedMaxTxTimeBytes = suggestedMaxTxTime.rawValue.littleEndian.bytes
             
-            return [
+            return Data([
                 suggestedMaxTxOctetsBytes.0,
                 suggestedMaxTxOctetsBytes.1,
                 suggestedMaxTxTimeBytes.0,
                 suggestedMaxTxTimeBytes.1
-            ]
+            ])
         }
     }
     
@@ -1208,7 +1208,7 @@ public extension HCILowEnergyCommand {
             
             let remoteP256PublicKeyBytes = remoteP256PublicKey.littleEndian.bytes
             
-            return [
+            return Data([
                 remoteP256PublicKeyBytes.0,
                 remoteP256PublicKeyBytes.1,
                 remoteP256PublicKeyBytes.2,
@@ -1274,7 +1274,7 @@ public extension HCILowEnergyCommand {
                 remoteP256PublicKeyBytes.61,
                 remoteP256PublicKeyBytes.62,
                 remoteP256PublicKeyBytes.63
-            ]
+            ])
         }
     }
     
@@ -1324,7 +1324,7 @@ public extension HCILowEnergyCommand {
             let peerIrkBytes = peerIrk.littleEndian.bytes
             let localIrkBytes = localIrk.littleEndian.bytes
             
-            return [
+            return Data([
                     peerIdentifyAddressType.rawValue,
                     peerIdentifyAddressBytes.0,
                     peerIdentifyAddressBytes.1,
@@ -1366,7 +1366,7 @@ public extension HCILowEnergyCommand {
                     localIrkBytes.13,
                     localIrkBytes.14,
                     localIrkBytes.15
-                ]
+                ])
         }
     }
     
@@ -1408,7 +1408,7 @@ public extension HCILowEnergyCommand {
             
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
-            return [
+            return Data([
                 peerIdentifyAddressType.rawValue,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
@@ -1418,7 +1418,7 @@ public extension HCILowEnergyCommand {
                 peerIdentifyAddressBytes.5,
                 peerIdentifyAddressBytes.6,
                 peerIdentifyAddressBytes.7
-            ]
+            ])
         }
     }
     
@@ -1452,7 +1452,7 @@ public extension HCILowEnergyCommand {
             
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
-            return [
+            return Data([
                 peerIdentifyAddressType.rawValue,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
@@ -1462,7 +1462,7 @@ public extension HCILowEnergyCommand {
                 peerIdentifyAddressBytes.5,
                 peerIdentifyAddressBytes.6,
                 peerIdentifyAddressBytes.7
-            ]
+            ])
         }
     }
     
@@ -1496,7 +1496,7 @@ public extension HCILowEnergyCommand {
             
             let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
             
-            return [
+            return Data([
                 peerIdentifyAddressType.rawValue,
                 peerIdentifyAddressBytes.0,
                 peerIdentifyAddressBytes.1,
@@ -1506,7 +1506,7 @@ public extension HCILowEnergyCommand {
                 peerIdentifyAddressBytes.5,
                 peerIdentifyAddressBytes.6,
                 peerIdentifyAddressBytes.7
-            ]
+            ])
         }
     }
     
@@ -1535,7 +1535,7 @@ public extension HCILowEnergyCommand {
         }
         
         public var data: Data {
-            return [addressResolutionEnable.rawValue]
+            return Data([addressResolutionEnable.rawValue])
         }
         
         public enum AddressResolutionEnable: UInt8 {
@@ -1575,8 +1575,8 @@ public extension HCILowEnergyCommand {
             
             let rpaTimeoutBytes = rpaTimeout.rawValue.littleEndian.bytes
             
-            return [rpaTimeoutBytes.0,
-                    rpaTimeoutBytes.1]
+            return Data([rpaTimeoutBytes.0,
+                    rpaTimeoutBytes.1])
         }
         
         /// RPA_Timeout measured in s
@@ -1645,10 +1645,10 @@ public extension HCILowEnergyCommand {
             
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             
-            return [
+            return Data([
                 connectionHandleBytes.0,
                 connectionHandleBytes.1
-            ]
+            ])
         }
     }
     
@@ -1675,7 +1675,7 @@ public extension HCILowEnergyCommand {
         }
         
         public var data: Data {
-            return [allPhys.rawValue, txPhys.rawValue, rxPhys.rawValue]
+            return Data([allPhys.rawValue, txPhys.rawValue, rxPhys.rawValue])
         }
     }
     
@@ -1713,14 +1713,14 @@ public extension HCILowEnergyCommand {
             let connectionHandleBytes = connectionHandle.littleEndian.bytes
             let phyOptionsBytes = phyOptions.rawValue.littleEndian.bytes
             
-            return [connectionHandleBytes.0,
+            return Data([connectionHandleBytes.0,
                     connectionHandleBytes.1,
                     allPhys.rawValue,
                     txPhys.rawValue,
                     rxPhys.rawValue,
                     phyOptionsBytes.0,
                     phyOptionsBytes.1
-            ]
+            ])
         }
     }
     
@@ -1743,7 +1743,7 @@ public extension HCILowEnergyCommand {
         }
         
         public var data: Data {
-            return [rxChannel.rawValue, phy.rawValue, modulationIndex.rawValue]
+            return Data([rxChannel.rawValue, phy.rawValue, modulationIndex.rawValue])
         }
         
         public enum Phy: UInt8 {
@@ -1805,7 +1805,7 @@ public extension HCILowEnergyCommand {
         
         public var data: Data {
             
-            return [txChannel.rawValue, lengthOfTestData, packetPayload.rawValue, phy.rawValue]
+            return Data([txChannel.rawValue, lengthOfTestData, packetPayload.rawValue, phy.rawValue])
         }
         
         public enum Phy: UInt8 {
@@ -1855,13 +1855,13 @@ public extension HCILowEnergyCommand {
             
             let advertisingRandomAddressBytes = advertisingRandomAddress.littleEndian.bytes
             
-            return [advertisingHandle,
+            return Data([advertisingHandle,
                     advertisingRandomAddressBytes.0,
                     advertisingRandomAddressBytes.1,
                     advertisingRandomAddressBytes.2,
                     advertisingRandomAddressBytes.3,
                     advertisingRandomAddressBytes.4,
-                    advertisingRandomAddressBytes.5]
+                    advertisingRandomAddressBytes.5])
         }
     }
     
@@ -1966,7 +1966,7 @@ public extension HCILowEnergyCommand {
             
             let advertisingTxPowerByte = UInt8.init(bitPattern: advertisingTxPower.rawValue)
             
-            return [advertisingHandle,
+            return Data([advertisingHandle,
                     advertisingEventPropertiesBytes.0,
                     advertisingEventPropertiesBytes.1,
                     primaryAdvertisingMinimumBytes.0,
@@ -1991,7 +1991,7 @@ public extension HCILowEnergyCommand {
                     secondaryAdvertisingPhy.rawValue,
                     advertisingSid,
                     scanRequestNotificationEnable.rawValue
-            ]
+            ])
         }
         
         /// The Scan_Request_Notification_Enable parameter indicates whether the Controller shall send
@@ -2212,10 +2212,10 @@ public extension HCILowEnergyCommand {
             
             let advertisingDataLength = UInt8(advertisingData.count)
             
-            return [advertisingHandle,
+            return Data([advertisingHandle,
                     operation.rawValue,
                     fragmentPreference.rawValue,
-                    advertisingDataLength] + advertisingData
+                    advertisingDataLength]) + advertisingData
         }
         
         public enum Operation: UInt8 { //Operation
@@ -2264,7 +2264,7 @@ public extension HCILowEnergyCommand {
             
             let scanResponseDataLength = UInt8(scanResponseData.count)
             
-            return [advertisingHandle, operation.rawValue,
+            return Data([advertisingHandle, operation.rawValue,
                     fragmentPreference.rawValue, scanResponseDataLength ] + scanResponseData
         }
         
@@ -2304,7 +2304,7 @@ public extension HCILowEnergyCommand {
         }
         
         public var data: Data {
-            return [advertisingHandle]
+            return Data([advertisingHandle])
         }
     }
     
@@ -2356,7 +2356,7 @@ public extension HCILowEnergyCommand {
             let periodicAdvertisingIntervalMinBytes = periodicAdvertisingInterval.rawValue.lowerBound.littleEndian.bytes
             let periodicAdvertisingIntervalMaxBytes = periodicAdvertisingInterval.rawValue.upperBound.littleEndian.bytes
             let advertisingEventPropertiesytes = advertisingEventProperties.rawValue.littleEndian.bytes
-            return [
+            return Data([
                 advertisingHandle,
                 periodicAdvertisingIntervalMinBytes.0,
                 periodicAdvertisingIntervalMinBytes.1,
@@ -2364,7 +2364,7 @@ public extension HCILowEnergyCommand {
                 periodicAdvertisingIntervalMaxBytes.1,
                 advertisingEventPropertiesytes.0,
                 advertisingEventPropertiesytes.1
-            ]
+            ])
         }
         
         public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable {
@@ -2442,7 +2442,7 @@ public extension HCILowEnergyCommand {
             
             let advertisingDataLength = UInt8(advertisingData.count)
             
-            return [advertisingHandle,
+            return Data([advertisingHandle,
                     operation.rawValue,
                     advertisingDataLength] + advertisingData
         }
@@ -2480,10 +2480,10 @@ public extension HCILowEnergyCommand {
         }
         
         public var data: Data {
-            return [
+            return Data([
                 enable.rawValue,
                 advertisingHandle
-            ]
+            ])
         }
         
         public enum Enable: UInt8 {
@@ -2657,14 +2657,14 @@ public extension HCILowEnergyCommand {
             let durationBytes = duration.rawValue.littleEndian.bytes
             let periodBytes = period.rawValue.littleEndian.bytes
             
-            return [
+            return Data([
                 enable.rawValue,
                 filterDuplicates.rawValue,
                 durationBytes.0,
                 durationBytes.1,
                 periodBytes.0,
                 periodBytes.1
-            ]
+            ])
         }
         
         /// The Enable parameter determines whether scanning is enabled or disabled.
@@ -2827,7 +2827,7 @@ public extension HCILowEnergyCommand {
             
             let addressBytes = peerAddress.littleEndian.bytes
             
-            return [initialingFilterPolicy.rawValue,
+            return Data([initialingFilterPolicy.rawValue,
                     ownAddressType.rawValue,
                     peerAddressType.rawValue,
                     addressBytes.0,
@@ -2836,7 +2836,7 @@ public extension HCILowEnergyCommand {
                     addressBytes.3,
                     addressBytes.4,
                     addressBytes.5
-                    ]
+                    ])
         }
         
         public enum InitialingFilterPolicy: UInt8 { // Initiating_Filter_Policy
@@ -3011,7 +3011,7 @@ public extension HCILowEnergyCommand {
                 syncTimeoutBytes.0,
                 syncTimeoutBytes.1,
                 unused
-            ]
+            ])
         }
         
         public struct SyncTimeout: RawRepresentable, Equatable, Hashable, Comparable {
@@ -3107,7 +3107,7 @@ public extension HCILowEnergyCommand {
         public var data: Data {
             let syncHandleBytes = syncHandle.littleEndian.bytes
             
-            return [syncHandleBytes.0, syncHandleBytes.1]
+            return Data([syncHandleBytes.0, syncHandleBytes.1])
         }
     }
     
@@ -3142,7 +3142,7 @@ public extension HCILowEnergyCommand {
             
             let addressBytes = address.littleEndian.bytes
             
-            return [
+            return Data([
                 advertiserAddressType.rawValue,
                 addressBytes.0,
                 addressBytes.1,
@@ -3151,7 +3151,7 @@ public extension HCILowEnergyCommand {
                 addressBytes.4,
                 addressBytes.5,
                 advertisingSid
-            ]
+            ])
         }
     }
     
@@ -3186,7 +3186,7 @@ public extension HCILowEnergyCommand {
             
             let addressBytes = address.littleEndian.bytes
             
-            return [
+            return Data([
                 advertiserAddressType.rawValue,
                 addressBytes.0,
                 addressBytes.1,
@@ -3195,7 +3195,7 @@ public extension HCILowEnergyCommand {
                 addressBytes.4,
                 addressBytes.5,
                 advertisingSid
-            ]
+            ])
         }
     }
     
@@ -3232,10 +3232,10 @@ public extension HCILowEnergyCommand {
             
             let rfRxPathCompensationValueBytes = UInt16.init(bitPattern: rfRxPathCompensationValue.rawValue).littleEndian.bytes
             
-            return [rfTxPathCompensationValueBytes.0,
+            return Data([rfTxPathCompensationValueBytes.0,
                     rfTxPathCompensationValueBytes.1,
                     rfRxPathCompensationValueBytes.0,
-                    rfRxPathCompensationValueBytes.1]
+                    rfRxPathCompensationValueBytes.1])
         }
     }
     
@@ -3263,7 +3263,7 @@ public extension HCILowEnergyCommand {
             
             let addressBytes = peerIdentityAddress.littleEndian.bytes
             
-            return [
+            return Data([
                 peerIdentityAddressType.rawValue,
                 addressBytes.0,
                 addressBytes.1,
@@ -3272,7 +3272,7 @@ public extension HCILowEnergyCommand {
                 addressBytes.4,
                 addressBytes.5,
                 privacyMode.rawValue
-            ]
+            ])
         }
         
         public enum PrivacyMode: UInt8 {
