@@ -75,7 +75,7 @@ public extension BluetoothHostControllerInterface {
             case .encryptionChange:
                 
                 // parse LE Encryption Change
-                guard let encryptionEvent = LowEnergyEvent.EncryptionChangeEventParameter(byteValue: metaEvent.data)
+                guard let encryptionEvent = LowEnergyEvent.EncryptionChangeEventParameter(data: metaEvent.data)
                     else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
                 
                 if let error = encryptionEvent.status.error {
@@ -90,7 +90,7 @@ public extension BluetoothHostControllerInterface {
             case .encryptionKeyRefreshComplete:
                 
                 // parse LE Key Refresh Complete
-                guard let encryptionEvent = LowEnergyEvent.EncryptionKeyRefreshCompleteEventParameter(byteValue: metaEvent.data)
+                guard let encryptionEvent = LowEnergyEvent.EncryptionKeyRefreshCompleteEventParameter(data: metaEvent.data)
                     else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
                 
                 if let error = encryptionEvent.status.error {

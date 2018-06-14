@@ -31,7 +31,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
     
     public static let length = 7
     
-    public let format: CharacteristicFormatType
+    public let format: GATTCharacteristicFormatType
     
     public let exponent: Int8
     

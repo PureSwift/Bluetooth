@@ -48,10 +48,10 @@ public struct HCILEReadChannelMap: HCICommandParameter { // HCI_LE_Read_Channel_
         
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
         
-        return [
+        return Data([
             connectionHandleBytes.0,
             connectionHandleBytes.1
-        ]
+        ])
     }
 }
 
@@ -84,11 +84,11 @@ public struct HCILEReadChannelMapReturnParameter: HCICommandReturnParameter {
     
     public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        self.connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        self.connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
-        self.channelMap = (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6])
+        self.channelMap = (data[2], data[3], data[4], data[5], data[6])
     }
 }

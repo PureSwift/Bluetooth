@@ -76,41 +76,41 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [1, 16, 1, 0, 10]
             
-            guard let errorResponse = ATTErrorResponse(byteValue: data)
+            guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(errorResponse.requestOpcode == .readByGroupTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0001)
             XCTAssert(errorResponse.errorCode == .attributeNotFound)
-            XCTAssert(errorResponse.byteValue == data)
+            XCTAssert(errorResponse.data == data)
             
-            XCTAssertEqual(errorResponse.byteValue, data)
+            XCTAssertEqual(errorResponse.data, data)
         }
         
         do {
             
             let data: [UInt8] = [1, 8, 0, 0, 6]
             
-            guard let errorResponse = ATTErrorResponse(byteValue: data)
+            guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(errorResponse.requestOpcode == .readByTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0000)
             XCTAssert(errorResponse.errorCode == .requestNotSupported)
-            XCTAssert(errorResponse.byteValue == data)
+            XCTAssert(errorResponse.data == data)
         }
         
         do {
             
             let data: [UInt8] = [1, 16, 49, 0, 10]
             
-            guard let errorResponse = ATTErrorResponse(byteValue: data)
+            guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(errorResponse.requestOpcode, .readByGroupTypeRequest)
             XCTAssertEqual(errorResponse.attributeHandle, 49)
             XCTAssertEqual(errorResponse.errorCode, .attributeNotFound)
-            XCTAssertEqual(errorResponse.byteValue, data)
+            XCTAssertEqual(errorResponse.data, data)
         }
     }
     
@@ -148,22 +148,22 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [2, 23, 0]
             
-            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
+            guard let pdu = ATTMaximumTransmissionUnitRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.clientMTU, 23)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
         }
         
         do {
             
             let data: [UInt8] = [3, 23, 0]
             
-            guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
+            guard let pdu = ATTMaximumTransmissionUnitResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.serverMTU, 23)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
         }
     }
     
@@ -174,13 +174,13 @@ final class AttributeProtocolTests: XCTestCase {
             // bad response / malformed data
             let data: [UInt8] = [16, 1, 0, 255, 255, 40, 0]
             
-            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+            guard let pdu = ATTReadByGroupTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(pdu.type == .bit16(0x0028))
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
             
             // correct values
             //XCTAssert(pdu.type == GATT.UUID.PrimaryService.uuid, "\(pdu.type)")
@@ -198,12 +198,12 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.type == .bit16(0x2800))
             XCTAssert(pdu.type != .bit16(0x0028))
             
-            let data: [UInt8] = pdu.byteValue
+            let data: [UInt8] = pdu.data
             
             XCTAssert(data != [16, 1, 0, 255, 255, 40, 0], "Produced malformed data")
             XCTAssert(data == [16, 1, 0, 255, 255, 0, 40])
             
-            guard let decoded = ATTReadByGroupTypeRequest(byteValue: pdu.byteValue)
+            guard let decoded = ATTReadByGroupTypeRequest(data: pdu.data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(decoded.startHandle == pdu.startHandle)
@@ -214,18 +214,18 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(decoded.type == GATT.UUID.primaryService.uuid, "\(decoded.type)")
             XCTAssert(decoded.type == .bit16(0x2800))
             XCTAssert(decoded.type != .bit16(0x0028))
-            XCTAssert(decoded.byteValue == pdu.byteValue)
+            XCTAssert(decoded.data == pdu.data)
         }
         
         do {
             
             let data: [UInt8] = [17, 6, 1, 0, 5, 0, 0, 24, 6, 0, 9, 0, 1, 24, 16, 0, 20, 0, 10, 24]
             
-            guard let pdu = ATTReadByGroupTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.data.isEmpty == false)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
         }
         
         do {
@@ -235,7 +235,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [17, 20, 40, 0, 48, 0, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
             
-            guard let pdu = ATTReadByGroupTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.data.count == 1)
@@ -246,7 +246,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(Data(pdu.data[0].value) == BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
             XCTAssert(BluetoothUUID(littleEndian:
                 BluetoothUUID(data: Data(pdu.data[0].value))!).rawValue == uuidString)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
         }
     }
     
@@ -257,13 +257,13 @@ final class AttributeProtocolTests: XCTestCase {
             // find C7A8D570-E023-4FB8-E511-72F9E24FF160
             let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 96, 241, 79, 226, 249, 114, 17, 229, 184, 79, 35, 224, 112, 213, 168, 199]
             
-            guard let pdu = ATTFindByTypeRequest(byteValue: data)
+            guard let pdu = ATTFindByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian.data)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
         }
         
         do {
@@ -271,20 +271,20 @@ final class AttributeProtocolTests: XCTestCase {
             // find 60F14FE2-F972-11E5-B84F-23E070D5A8C7
             let data: [UInt8] = [6, 1, 0, 255, 255, 0, 40, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96]
             
-            guard let pdu = ATTFindByTypeRequest(byteValue: data)
+            guard let pdu = ATTFindByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian.data)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
         }
         
         do {
             
             let data: [UInt8] = [7, 40, 0, 48, 0]
             
-            guard let pdu = ATTFindByTypeResponse(byteValue: data)
+            guard let pdu = ATTFindByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             guard let foundHandle = pdu.handlesInformationList.first,
@@ -293,7 +293,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(foundHandle.foundAttribute == 40)
             XCTAssert(foundHandle.groupEnd == 48)
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
         }
     }
     
@@ -307,10 +307,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
             
-            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
             
             guard let foundCharacteristicData = pdu.data.first,
                 pdu.data.count == 1
@@ -324,10 +324,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231]
             
-            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.byteValue == data)
+            XCTAssert(pdu.data == data)
             
             guard let characteristicData = pdu.data.first,
                 pdu.data.count == 1
@@ -368,14 +368,14 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x1D, 0x08, 0x00, 0x0A, 0x00, 0xFF, 0xFF]
             
-            guard let pdu = ATTHandleValueIndication(byteValue: data)
+            guard let pdu = ATTHandleValueIndication(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1d)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.handle, 0x0008)
             XCTAssertEqual(pdu.value, [0x0a, 0x00, 0xff, 0xff])
-            XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: [0x0a, 0x00, 0xff, 0xff]).byteValue, data)
+            XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: [0x0a, 0x00, 0xff, 0xff]).data, data)
         }
         
         do {
@@ -388,14 +388,14 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x1D, 0x08, 0x00]
             
-            guard let pdu = ATTHandleValueIndication(byteValue: data)
+            guard let pdu = ATTHandleValueIndication(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1D)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.handle, 0x0008)
             XCTAssertEqual(pdu.value, [])
-            XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: []).byteValue, data)
+            XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: []).data, data)
         }
     }
     
@@ -412,11 +412,11 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x1E]
             
-            guard let pdu = ATTHandleValueConfirmation(byteValue: data)
+            guard let pdu = ATTHandleValueConfirmation(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1e)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
         }
     }
     
@@ -435,14 +435,14 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x1B, 0x16, 0x00, 0x64]
             
-            guard let pdu = ATTHandleValueNotification(byteValue: data)
+            guard let pdu = ATTHandleValueNotification(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.handle, 0x0016)
             XCTAssertEqual(pdu.value, [0x64])
             
-            XCTAssertEqual(ATTHandleValueNotification(handle: 0x0016, value: [0x64]).byteValue, data)
+            XCTAssertEqual(ATTHandleValueNotification(handle: 0x0016, value: [0x64]).data, data)
         }
     }
     
@@ -460,11 +460,11 @@ final class AttributeProtocolTests: XCTestCase {
              */
             let data: [UInt8] = [0x0A, 0x16, 0x00]
             
-            guard let pdu = ATTReadRequest(byteValue: data)
+            guard let pdu = ATTReadRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x0a)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.handle, 0x0016)
         }
         
@@ -481,11 +481,11 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x0B, 0x64]
             
-            guard let pdu = ATTReadResponse(byteValue: data)
+            guard let pdu = ATTReadResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x0b)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.attributeValue, [0x64])
         }
     }
@@ -505,11 +505,11 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x12, 0x17, 0x00, 0x01, 0x00]
             
-            guard let pdu = ATTWriteRequest(byteValue: data)
+            guard let pdu = ATTWriteRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x12)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.handle, 0x0017)
             XCTAssertEqual(pdu.value, [0x01, 0x00])
         }
@@ -525,11 +525,11 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x13]
             
-            guard let pdu = ATTWriteResponse(byteValue: data)
+            guard let pdu = ATTWriteResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x13)
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
         }
     }
     
@@ -547,10 +547,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x04, 0x17, 0x00, 0x17, 0x00]
             
-            guard let pdu = ATTFindInformationRequest(byteValue: data)
+            guard let pdu = ATTFindInformationRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x04)
             XCTAssertEqual(pdu.startHandle, 0x0017)
             XCTAssertEqual(pdu.endHandle, 0x0017)
@@ -569,14 +569,14 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [0x05, 0x01, 0x17, 0x00, 0x02, 0x29]
             
-            guard let pdu = ATTFindInformationResponse(byteValue: data)
+            guard let pdu = ATTFindInformationResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
             let foundData = ATTFindInformationResponse.AttributeData.bit16([(0x0017, 0x2902)])
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
-            XCTAssertEqual(pdu.byteValue, data)
-            XCTAssertEqual(pdu.data.byteValue, foundData.byteValue)
+            XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.data.data, foundData.data)
             XCTAssertEqual("\(pdu.data)", "\(foundData)")
         }
         
@@ -585,10 +585,10 @@ final class AttributeProtocolTests: XCTestCase {
             // Find Information Request - Start Handle:0x0004 - End Handle:0x0004
             let data: [UInt8] = [4, 4, 0, 4, 0]
             
-            guard let pdu = ATTFindInformationRequest(byteValue: data)
+            guard let pdu = ATTFindInformationRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.startHandle, 0x04)
             XCTAssertEqual(pdu.endHandle, 0x04)
         }
@@ -601,10 +601,10 @@ final class AttributeProtocolTests: XCTestCase {
             // Handle: 0x0004 UUID: 2902 (Client Characteristic Configuration)
             let data: [UInt8] = [5, 1, 4, 0, 2, 41]
             
-            guard let pdu = ATTFindInformationResponse(byteValue: data)
+            guard let pdu = ATTFindInformationResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             
             guard case let .bit16(attributeData) = pdu.data
                 else { XCTFail("Invalid data"); return }
@@ -628,10 +628,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [2, 185, 0]
             
-            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
+            guard let pdu = ATTMaximumTransmissionUnitRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.clientMTU, 185)
         }
         
@@ -639,10 +639,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [3, 200, 0]
             
-            guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
+            guard let pdu = ATTMaximumTransmissionUnitResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.serverMTU, 200)
         }
         
@@ -650,17 +650,17 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [18, 4, 0, 1, 0]
             
-            guard let pdu = ATTWriteRequest(byteValue: data)
+            guard let pdu = ATTWriteRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.handle, 0x04)
             XCTAssertEqual(pdu.value, [1, 0])
             
-            guard let clientConfiguration = GATTClientCharacteristicConfiguration(byteValue: Data(pdu.value))
+            guard let clientConfiguration = GATTClientCharacteristicConfiguration(data: Data(pdu.value))
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(clientConfiguration.byteValue, Data(pdu.value))
+            XCTAssertEqual(clientConfiguration.data, Data(pdu.value))
             XCTAssertEqual(clientConfiguration.configuration, [.notify])
             XCTAssertNotEqual(clientConfiguration.configuration, [.notify, .indicate])
             XCTAssertNotEqual(clientConfiguration.configuration, [])
@@ -670,10 +670,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [19]
             
-            guard let pdu = ATTWriteResponse(byteValue: data)
+            guard let pdu = ATTWriteResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
         }
     }
     
@@ -684,10 +684,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [2, 185, 0]
             
-            guard let pdu = ATTMaximumTransmissionUnitRequest(byteValue: data)
+            guard let pdu = ATTMaximumTransmissionUnitRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.clientMTU, 185)
         }
         
@@ -695,10 +695,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [3, 200, 0]
             
-            guard let pdu = ATTMaximumTransmissionUnitResponse(byteValue: data)
+            guard let pdu = ATTMaximumTransmissionUnitResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.serverMTU, 200)
         }
         
@@ -707,10 +707,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [16, 1, 0, 255, 255, 0, 40]
             
-            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+            guard let pdu = ATTReadByGroupTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.type, BluetoothUUID.primaryService)
             XCTAssertEqual(pdu.startHandle, 0x0001)
             XCTAssertEqual(pdu.endHandle, .max)
@@ -720,10 +720,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [17, 20, 1, 0, 6, 0, 231, 207, 159, 173, 34, 222, 166, 180, 145, 78, 37, 213, 23, 49, 212, 52, 7, 0, 12, 0, 251, 52, 155, 95, 128, 0, 0, 128, 0, 16, 0, 0, 169, 254, 0, 0, 13, 0, 18, 0, 178, 26, 190, 138, 180, 130, 146, 145, 222, 73, 117, 102, 201, 67, 100, 139]
             
-            guard let pdu = ATTReadByGroupTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
                         
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.data.count, 3)
             
             XCTAssertEqual(pdu.data[0].attributeHandle, 1)
@@ -746,10 +746,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [16, 19, 0, 255, 255, 0, 40]
             
-            guard let pdu = ATTReadByGroupTypeRequest(byteValue: data)
+            guard let pdu = ATTReadByGroupTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.type, BluetoothUUID.primaryService)
             XCTAssertEqual(pdu.startHandle, 19)
             XCTAssertEqual(pdu.endHandle, .max)
@@ -759,10 +759,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [1, 16, 19, 0, 10]
             
-            guard let pdu = ATTErrorResponse(byteValue: data)
+            guard let pdu = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.errorCode, .attributeNotFound)
             XCTAssertEqual(pdu.attributeHandle, 19)
             XCTAssertEqual(pdu.requestOpcode, .readByGroupTypeRequest)
@@ -773,10 +773,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [8, 1, 0, 6, 0, 3, 40]
             
-            guard let pdu = ATTReadByTypeRequest(byteValue: data)
+            guard let pdu = ATTReadByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.startHandle, 1)
             XCTAssertEqual(pdu.endHandle, 6)
             XCTAssertEqual(pdu.attributeType, .characteristic)
@@ -786,10 +786,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148]
             
-            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.data.count, 2)
             XCTAssertEqual(pdu.data[0].handle, 2)
             XCTAssertEqual(pdu.data[1].handle, 5)
@@ -832,10 +832,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [8, 7, 0, 12, 0, 3, 40]
             
-            guard let pdu = ATTReadByTypeRequest(byteValue: data)
+            guard let pdu = ATTReadByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.startHandle, 7)
             XCTAssertEqual(pdu.endHandle, 12)
             XCTAssertEqual(pdu.attributeType, .characteristic)
@@ -845,10 +845,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [9, 21, 8, 0, 18, 9, 0, 1, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204, 11, 0, 8, 12, 0, 2, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204]
             
-            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.data.count, 2)
             XCTAssertEqual(pdu.data[0].handle, 8)
             XCTAssertEqual(pdu.data[1].handle, 11)
@@ -889,10 +889,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [8, 13, 0, 18, 0, 3, 40]
             
-            guard let pdu = ATTReadByTypeRequest(byteValue: data)
+            guard let pdu = ATTReadByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.startHandle, 13)
             XCTAssertEqual(pdu.endHandle, 18)
             XCTAssertEqual(pdu.attributeType, .characteristic)
@@ -902,10 +902,10 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data: [UInt8] = [9, 21, 14, 0, 16, 15, 0, 148, 89, 241, 12, 105, 23, 110, 137, 175, 75, 151, 213, 45, 106, 139, 210, 17, 0, 8, 18, 0, 231, 116, 224, 184, 128, 249, 130, 161, 110, 70, 164, 15, 236, 148, 235, 104]
             
-            guard let pdu = ATTReadByTypeResponse(byteValue: data)
+            guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(pdu.byteValue, data)
+            XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.data.count, 2)
             XCTAssertEqual(pdu.data[0].handle, 14)
             XCTAssertEqual(pdu.data[1].handle, 17)

@@ -50,7 +50,7 @@ public extension BluetoothHostControllerInterface {
                 else { return }
             
             // parse LE advertising report
-            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(byteValue: metaEvent.data)
+            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(data: metaEvent.data)
                 else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
             
             // call closure on each device found

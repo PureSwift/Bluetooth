@@ -88,32 +88,32 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == ConnectionCompleteParameter.length
+            guard data.count == ConnectionCompleteParameter.length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-            let roleByte = byteValue[3]
+            let roleByte = data[3]
             
-            let peerAddressTypeByte = byteValue[4]
+            let peerAddressTypeByte = data[4]
             
             let peerAddress = Address(littleEndian:
-                Address(bytes: (byteValue[5],
-                                byteValue[6],
-                                byteValue[7],
-                                byteValue[8],
-                                byteValue[9],
-                                byteValue[10])))
+                Address(bytes: (data[5],
+                                data[6],
+                                data[7],
+                                data[8],
+                                data[9],
+                                data[10])))
             
-            let intervalRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[11], byteValue[12])))
+            let intervalRawValue = UInt16(littleEndian: UInt16(bytes: (data[11], data[12])))
             
-            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[13], byteValue[14])))
+            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (data[13], data[14])))
             
-            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (byteValue[15], byteValue[16])))
+            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (data[15], data[16])))
             
-            let masterClockAccuracyByte = byteValue[17]
+            let masterClockAccuracyByte = data[17]
             
             // Parse enums and values ranges
             guard let status = Status(rawValue: statusByte),
@@ -178,11 +178,11 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count >= AdvertisingReportEventParameter.length
+            guard data.count >= AdvertisingReportEventParameter.length
                 else { return nil }
             
             // Number of responses in event.
-            let reportCount = Int(byteValue[0]) // Num_Reports
+            let reportCount = Int(data[0]) // Num_Reports
             
             // 0x01 - 0x19
             guard reportCount >= 0x01,
@@ -195,9 +195,9 @@ public extension LowEnergyEvent {
             var offset = 1
             for _ in 0 ..< reportCount {
                 
-                let reportBytes = [UInt8](byteValue.suffix(from: offset))
+                let reportBytes = [UInt8](data.suffix(from: offset))
                 
-                guard let report = Report(byteValue: reportBytes)
+                guard let report = Report(data: reportBytes)
                     else { return nil }
                 
                 offset += Report.length + report.data.count
@@ -229,38 +229,38 @@ public extension LowEnergyEvent {
             
             public init?(data: Data) {
                 
-                guard byteValue.count >= Report.length
+                guard data.count >= Report.length
                     else { return nil }
                 
                 // parse enums
-                guard let event = Event(rawValue: byteValue[0]),
-                    let addressType = LowEnergyAddressType(rawValue: byteValue[1])
+                guard let event = Event(rawValue: data[0]),
+                    let addressType = LowEnergyAddressType(rawValue: data[1])
                     else { return nil }
                 
                 let address = Address(littleEndian:
-                    Address(bytes: (byteValue[2],
-                                    byteValue[3],
-                                    byteValue[4],
-                                    byteValue[5],
-                                    byteValue[6],
-                                    byteValue[7])))
+                    Address(bytes: (data[2],
+                                    data[3],
+                                    data[4],
+                                    data[5],
+                                    data[6],
+                                    data[7])))
                 
-                let length = Int(byteValue[8])
+                let length = Int(data[8])
                 
                 self.event = event
                 self.addressType = addressType
                 self.address = address
                 
-                let data = [UInt8](byteValue[9 ..< (9 + length)])
+                let data = [UInt8](data[9 ..< (9 + length)])
                 assert(data.count == length)
                 self.data = data
                 
                 // not enough bytes
-                guard byteValue.count == (Report.length + length)
+                guard data.count == (Report.length + length)
                     else { return nil }
                 
                 // last byte
-                let rssiByte = Int8(bitPattern: byteValue[9 + length])
+                let rssiByte = Int8(bitPattern: data[9 + length])
                 
                 guard let rssi = RSSI(rawValue: rssiByte)
                     else { return nil }
@@ -314,18 +314,18 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-            let intervalRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[3], byteValue[4])))
+            let intervalRawValue = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
             
-            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[5], byteValue[6])))
+            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
             
-            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (byteValue[7], byteValue[8])))
+            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (data[7], data[8])))
             
             // Parse enums and values ranges
             guard let status = HCIStatus(rawValue: statusByte),
@@ -369,21 +369,21 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-            let featuresRawValue = UInt64(littleEndian: UInt64(bytes: (byteValue[3],
-                                                                       byteValue[4],
-                                                                       byteValue[5],
-                                                                       byteValue[6],
-                                                                       byteValue[7],
-                                                                       byteValue[8],
-                                                                       byteValue[9],
-                                                                       byteValue[10])))
+            let featuresRawValue = UInt64(littleEndian: UInt64(bytes: (data[3],
+                                                                       data[4],
+                                                                       data[5],
+                                                                       data[6],
+                                                                       data[7],
+                                                                       data[8],
+                                                                       data[9],
+                                                                       data[10])))
             
             guard let status = Status(rawValue: statusByte)
                 else { return nil }
@@ -413,14 +413,14 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
-            let randomNumber = UInt64(littleEndian: UInt64(bytes: ((byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9]))))
+            let randomNumber = UInt64(littleEndian: UInt64(bytes: ((data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9]))))
             
-            let encryptedDiversifier = UInt16(littleEndian: UInt16(bytes: (byteValue[10], byteValue[11])))
+            let encryptedDiversifier = UInt16(littleEndian: UInt16(bytes: (data[10], data[11])))
             
             self.handle = handle
             self.randomNumber = randomNumber
@@ -450,18 +450,18 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
-            let intervalMinRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            let intervalMinRawValue = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
             
-            let intervalMaxRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5])))
+            let intervalMaxRawValue = UInt16(littleEndian: UInt16(bytes: (data[4], data[5])))
             
-            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7])))
+            let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (data[6], data[7])))
             
-            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (byteValue[8], byteValue[9])))
+            let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (data[8], data[9])))
             
             // Parse enums and values ranges
             guard let interval = LowEnergyConnectionIntervalRange(rawValue: intervalMinRawValue ... intervalMaxRawValue),
@@ -515,14 +515,14 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
-            let maxTxOctets = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
-            let maxTxTime = UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5])))
-            let maxRxOctets = UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7])))
-            let maxRxTime = UInt16(littleEndian: UInt16(bytes: (byteValue[8], byteValue[9])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+            let maxTxOctets = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
+            let maxTxTime = UInt16(littleEndian: UInt16(bytes: (data[4], data[5])))
+            let maxRxOctets = UInt16(littleEndian: UInt16(bytes: (data[6], data[7])))
+            let maxRxTime = UInt16(littleEndian: UInt16(bytes: (data[8], data[9])))
             
             self.handle = handle
             self.maxTxOctets = maxTxOctets
@@ -547,15 +547,15 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
             
-            let localP256PublicKey = UInt512(littleEndian: UInt512(bytes: ((byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20], byteValue[21], byteValue[22], byteValue[23], byteValue[24], byteValue[25], byteValue[26], byteValue[27], byteValue[28], byteValue[29], byteValue[30], byteValue[31], byteValue[32], byteValue[33], byteValue[34], byteValue[35], byteValue[36], byteValue[37], byteValue[38], byteValue[39], byteValue[40], byteValue[41], byteValue[42], byteValue[43], byteValue[44], byteValue[45], byteValue[46], byteValue[47], byteValue[48], byteValue[49], byteValue[50], byteValue[51], byteValue[52], byteValue[53], byteValue[54], byteValue[55], byteValue[56], byteValue[57], byteValue[58], byteValue[59], byteValue[60], byteValue[61], byteValue[62], byteValue[63], byteValue[64]))))
+            let localP256PublicKey = UInt512(littleEndian: UInt512(bytes: ((data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23], data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31], data[32], data[33], data[34], data[35], data[36], data[37], data[38], data[39], data[40], data[41], data[42], data[43], data[44], data[45], data[46], data[47], data[48], data[49], data[50], data[51], data[52], data[53], data[54], data[55], data[56], data[57], data[58], data[59], data[60], data[61], data[62], data[63], data[64]))))
             
             self.status = status
             self.localP256PublicKey = localP256PublicKey
@@ -577,15 +577,15 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
             
-            let dhKey = UInt256(littleEndian: UInt256(bytes: ((byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20], byteValue[21], byteValue[22], byteValue[23], byteValue[24], byteValue[25], byteValue[26], byteValue[27], byteValue[28], byteValue[29], byteValue[30], byteValue[31], byteValue[32]))))
+            let dhKey = UInt256(littleEndian: UInt256(bytes: ((data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23], data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31], data[32]))))
             
             self.status = status
             self.dhKey = dhKey
@@ -646,44 +646,44 @@ public extension LowEnergyEvent {
         public let masterClockAccuracy: LowEnergyClockAccuracy
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let status = HCIStatus(rawValue: byteValue[0])
+            guard let status = HCIStatus(rawValue: data[0])
                 else { return nil }
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-            guard let role = LowEnergyRole(rawValue: byteValue[3])
+            guard let role = LowEnergyRole(rawValue: data[3])
                 else { return nil }
             
-            guard let peerAddressType = LowEnergyAddressType(rawValue: byteValue[4])
+            guard let peerAddressType = LowEnergyAddressType(rawValue: data[4])
                 else { return nil }
             
-            let peerAddress = Address(littleEndian: Address(bytes: (byteValue[5],
-                                                                    byteValue[6], byteValue[7],
-                                                                    byteValue[8], byteValue[9],
-                                                                    byteValue[10])))
+            let peerAddress = Address(littleEndian: Address(bytes: (data[5],
+                                                                    data[6], data[7],
+                                                                    data[8], data[9],
+                                                                    data[10])))
             
-            let localResolvableprivateAddress = Address(littleEndian: Address(bytes: (byteValue[11],
-                                                                                      byteValue[12], byteValue[13],
-                                                                                      byteValue[14], byteValue[15],
-                                                                                      byteValue[16])))
+            let localResolvableprivateAddress = Address(littleEndian: Address(bytes: (data[11],
+                                                                                      data[12], data[13],
+                                                                                      data[14], data[15],
+                                                                                      data[16])))
             
-            let peerResolvablePrivateAddress = Address(littleEndian: Address(bytes: (byteValue[17],
-                                                                                     byteValue[18], byteValue[19],
-                                                                                     byteValue[20], byteValue[21],
-                                                                                     byteValue[22])))
+            let peerResolvablePrivateAddress = Address(littleEndian: Address(bytes: (data[17],
+                                                                                     data[18], data[19],
+                                                                                     data[20], data[21],
+                                                                                     data[22])))
             
-            let connInternal = LowEnergyConnectionInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[23], byteValue[24]))))
+            let connInternal = LowEnergyConnectionInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (data[23], data[24]))))
             
-            guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[25], byteValue[26]))))
+            guard let latency = LowEnergyConnectionLatency(rawValue: UInt16(littleEndian: UInt16(bytes: (data[25], data[26]))))
                 else { return nil }
             
-            guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[27], byteValue[28]))))
+            guard let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: UInt16(littleEndian: UInt16(bytes: (data[27], data[28]))))
                 else { return nil }
             
-            guard let masterClockAccuracy = LowEnergyClockAccuracy(rawValue: byteValue[29])
+            guard let masterClockAccuracy = LowEnergyClockAccuracy(rawValue: data[29])
                 else { return nil }
             
             self.status = status
@@ -715,11 +715,11 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count >= type(of: self).length
+            guard data.count >= type(of: self).length
                 else { return nil }
             
             // Number of responses in event.
-            let reportCount = Int(byteValue[0]) // Num_Reports
+            let reportCount = Int(data[0]) // Num_Reports
             
             // 0x01 - 0x19
             guard reportCount > 0,
@@ -732,9 +732,9 @@ public extension LowEnergyEvent {
             var offset = 1
             for _ in 0 ..< reportCount {
                 
-                let reportBytes = [UInt8](byteValue.suffix(from: offset))
+                let reportBytes = [UInt8](data.suffix(from: offset))
                 
-                guard let report = Report(byteValue: reportBytes)
+                guard let report = Report(data: reportBytes)
                     else { return nil }
                 
                 offset += Report.length
@@ -770,34 +770,34 @@ public extension LowEnergyEvent {
             
             public init?(data: Data) {
                 
-                guard byteValue.count >= Report.length
+                guard data.count >= Report.length
                     else { return nil }
                 
                 // parse enums
-                let event = byteValue[0]
+                let event = data[0]
                 
-                guard let addressType = AddressType(rawValue: byteValue[1])
+                guard let addressType = AddressType(rawValue: data[1])
                     else { return nil }
                 
                 let address = Address(littleEndian:
-                    Address(bytes: (byteValue[2],
-                                    byteValue[3],
-                                    byteValue[4],
-                                    byteValue[5],
-                                    byteValue[6],
-                                    byteValue[7])))
+                    Address(bytes: (data[2],
+                                    data[3],
+                                    data[4],
+                                    data[5],
+                                    data[6],
+                                    data[7])))
                 
-                let directAddressType = byteValue[8]
+                let directAddressType = data[8]
                 
                 let directAddress = Address(littleEndian:
-                    Address(bytes: (byteValue[9],
-                                    byteValue[10],
-                                    byteValue[11],
-                                    byteValue[12],
-                                    byteValue[13],
-                                    byteValue[14])))
+                    Address(bytes: (data[9],
+                                    data[10],
+                                    data[11],
+                                    data[12],
+                                    data[13],
+                                    data[14])))
     
-                let rssiByte = Int8(bitPattern: byteValue[15])
+                let rssiByte = Int8(bitPattern: data[15])
                 
                 guard let rssi = RSSI(rawValue: rssiByte)
                     else { return nil }
@@ -856,20 +856,20 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
             
-            guard let txPhy = LowEnergyTxPhy(rawValue: byteValue[3])
+            guard let txPhy = LowEnergyTxPhy(rawValue: data[3])
                 else { return nil }
             
-            guard let rxPhy = LowEnergyRxPhy(rawValue: byteValue[4])
+            guard let rxPhy = LowEnergyRxPhy(rawValue: data[4])
                 else { return nil }
             
             self.status = status
@@ -896,11 +896,11 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count >= type(of: self).length
+            guard data.count >= type(of: self).length
                 else { return nil }
             
             // Number of responses in event.
-            let reportCount = Int(byteValue[0]) // Num_Reports
+            let reportCount = Int(data[0]) // Num_Reports
             
             // 0x01 - 0x0A
             guard reportCount > 0,
@@ -913,9 +913,9 @@ public extension LowEnergyEvent {
             var offset = 1
             for _ in 0 ..< reportCount {
                 
-                let reportBytes = [UInt8](byteValue.suffix(from: offset))
+                let reportBytes = [UInt8](data.suffix(from: offset))
                 
-                guard let report = Report(byteValue: reportBytes)
+                guard let report = Report(data: reportBytes)
                     else { return nil }
                 
                 offset += Report.length + report.data.count
@@ -955,45 +955,45 @@ public extension LowEnergyEvent {
             
             public init?(data: Data) {
                 
-                guard byteValue.count >= Report.length
+                guard data.count >= Report.length
                     else { return nil }
                 
-                guard let eventType = EventType(rawValue: UInt16(bytes: (byteValue[0], byteValue[1]))),
-                    let addressType = AddressType(rawValue: byteValue[2])
+                guard let eventType = EventType(rawValue: UInt16(bytes: (data[0], data[1]))),
+                    let addressType = AddressType(rawValue: data[2])
                     else { return nil }
                 
-                let address = Address(littleEndian: Address(bytes: (byteValue[3], byteValue[4],
-                                    byteValue[5], byteValue[6],
-                                    byteValue[7], byteValue[8])))
+                let address = Address(littleEndian: Address(bytes: (data[3], data[4],
+                                    data[5], data[6],
+                                    data[7], data[8])))
                 
-                guard let primaryPHY = PrimaryPHY(rawValue: byteValue[9]),
-                    let secondaryPHY = SecondaryPHY(rawValue: byteValue[10])
+                guard let primaryPHY = PrimaryPHY(rawValue: data[9]),
+                    let secondaryPHY = SecondaryPHY(rawValue: data[10])
                     else { return nil }
                 
-                let advertisingSID = byteValue[11]
+                let advertisingSID = data[11]
                 
-                let txPowerByte = Int8(bitPattern: byteValue[12])
+                let txPowerByte = Int8(bitPattern: data[12])
                 
                 guard let txPower = LowEnergyTxPower(rawValue: txPowerByte)
                     else { return nil }
                 
-                let rssiByte = Int8(bitPattern: byteValue[13])
+                let rssiByte = Int8(bitPattern: data[13])
                 
                 guard let rssi = RSSI(rawValue: rssiByte)
                     else { return nil }
                 
-                let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(bytes: (byteValue[14], byteValue[15])))
+                let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(bytes: (data[14], data[15])))
                 
-                guard let directAddressType = AddressType(rawValue: byteValue[16])
+                guard let directAddressType = AddressType(rawValue: data[16])
                     else { return nil }
                 
-                let directAddress = Address(littleEndian: Address(bytes: (byteValue[17], byteValue[18],
-                                    byteValue[19], byteValue[20],
-                                    byteValue[21], byteValue[22])))
+                let directAddress = Address(littleEndian: Address(bytes: (data[17], data[18],
+                                    data[19], data[20],
+                                    data[21], data[22])))
                 
-                let dataLength = Int(byteValue[23])
+                let dataLength = Int(data[23])
                 
-                let data = [UInt8](byteValue[24 ..< (24 + dataLength)])
+                let data = [UInt8](data[24 ..< (24 + dataLength)])
                 assert(data.count == dataLength)
                 
                 self.eventType = eventType
@@ -1191,27 +1191,27 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let status = HCIStatus(rawValue: byteValue[0])
+            guard let status = HCIStatus(rawValue: data[0])
                 else { return nil }
             
-            let syncHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let syncHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-            let advertisingSID = byteValue[3]
+            let advertisingSID = data[3]
             
-            guard let advertiserAddressType = LowEnergyAddressType(rawValue: byteValue[4])
+            guard let advertiserAddressType = LowEnergyAddressType(rawValue: data[4])
                 else { return nil }
             
-            let advertiserAddress = Address(littleEndian: Address(bytes: (byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10])))
+            let advertiserAddress = Address(littleEndian: Address(bytes: (data[5], data[6], data[7], data[8], data[9], data[10])))
             
-            guard let advertiserPHY = AdvertiserPhy(rawValue: byteValue[11])
+            guard let advertiserPHY = AdvertiserPhy(rawValue: data[11])
                 else { return nil }
             
-            let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[12], byteValue[13]))))
+            let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (data[12], data[13]))))
             
-            guard let advertiserClockAccuracy = LowEnergyClockAccuracy(rawValue: byteValue[14])
+            guard let advertiserClockAccuracy = LowEnergyClockAccuracy(rawValue: data[14])
                 else { return nil }
             
             self.status = status
@@ -1307,27 +1307,27 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count >= type(of: self).length
+            guard data.count >= type(of: self).length
                 else { return nil }
             
-            let syncHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let syncHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
-            guard let txPower = LowEnergyTxPower(rawValue: Int8(bitPattern: byteValue[2]))
+            guard let txPower = LowEnergyTxPower(rawValue: Int8(bitPattern: data[2]))
                 else { return nil }
 
-            guard let rssi = RSSI(rawValue: Int8(bitPattern: byteValue[3]))
+            guard let rssi = RSSI(rawValue: Int8(bitPattern: data[3]))
                 else { return nil }
             
-            let unused = byteValue[4]
+            let unused = data[4]
             
-            guard let dataStatus = DataStatus(rawValue: byteValue[5])
+            guard let dataStatus = DataStatus(rawValue: data[5])
                 else { return nil }
             
-            let dataLength = Int(byteValue[6])
+            let dataLength = Int(data[6])
             
             if dataLength > 0 {
                 
-                let bytes = byteValue[7 ... (7 + dataLength)]
+                let bytes = data[7 ... (7 + dataLength)]
                 
                 self.data = Data(bytes)
                 
@@ -1373,10 +1373,10 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let syncHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let syncHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
             self.syncHandle = syncHandle
         }
@@ -1401,17 +1401,17 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let status = HCIStatus(rawValue: byteValue[0])
+            guard let status = HCIStatus(rawValue: data[0])
                 else { return nil }
             
-            let advertisingHandle =  byteValue[1]
+            let advertisingHandle =  data[1]
             
-            let connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            let connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
             
-            let numCompletedExtendedAdvertisingEvents = byteValue[4]
+            let numCompletedExtendedAdvertisingEvents = data[4]
             
             self.status = status
             self.advertisingHandle = advertisingHandle
@@ -1439,15 +1439,15 @@ public extension LowEnergyEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let advertisingHandle =  byteValue[0]
+            let advertisingHandle =  data[0]
             
-            guard let scannerAddressType = LowEnergyAddressType(rawValue: byteValue[1])
+            guard let scannerAddressType = LowEnergyAddressType(rawValue: data[1])
                 else { return nil }
             
-            let scannerAddress = Address(littleEndian: Address(bytes: (byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
+            let scannerAddress = Address(littleEndian: Address(bytes: (data[2], data[3], data[4], data[5], data[6], data[7])))
             
             self.advertisingHandle = advertisingHandle
             self.scannerAddressType = scannerAddressType
@@ -1469,12 +1469,12 @@ public extension LowEnergyEvent {
         public let channelSelectionAlgorithm: ChannelSelectionAlgorithm
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
-            guard let channelSelectionAlgorithm = ChannelSelectionAlgorithm.init(rawValue: byteValue[2])
+            guard let channelSelectionAlgorithm = ChannelSelectionAlgorithm.init(rawValue: data[2])
                 else { return nil }
             
             self.connectionHandle = connectionHandle

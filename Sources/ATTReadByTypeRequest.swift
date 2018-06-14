@@ -34,40 +34,39 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard let length = Length(rawValue: byteValue.count)
+        guard let length = Length(rawValue: data.count)
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.startHandle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.startHandle = UInt16(bytes: (data[1], data[2])).littleEndian
         
-        self.endHandle = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+        self.endHandle = UInt16(bytes: (data[3], data[4])).littleEndian
         
         switch length {
             
         case .uuid16:
             
-            let value = UInt16(bytes: (byteValue[5], byteValue[6])).littleEndian
+            let value = UInt16(bytes: (data[5], data[6])).littleEndian
             
             self.attributeType = .bit16(value)
             
         case .uuid128:
             
             self.attributeType = BluetoothUUID(littleEndian:
-                BluetoothUUID(data: Data([byteValue[5], byteValue[6], byteValue[7], byteValue[8], byteValue[9], byteValue[10], byteValue[11], byteValue[12], byteValue[13], byteValue[14], byteValue[15], byteValue[16], byteValue[17], byteValue[18], byteValue[19], byteValue[20]]))!)
+                BluetoothUUID(data: Data([data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20]]))!)
         }
     }
     
     public var data: Data {
         
         let startHandleBytes = startHandle.littleEndian.bytes
-        
         let endHandleBytes = endHandle.littleEndian.bytes
         
-        return [type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + [UInt8](attributeType.littleEndian.data)
+        return Data([type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1]) + attributeType.littleEndian.data
     }
 }
 

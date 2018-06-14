@@ -985,12 +985,12 @@ extension GATTTests {
         // decode and compare
         for (testPDU, testData) in testPDUs {
             
-            guard let decodedPDU = type(of: testPDU).init(byteValue: testData)
+            guard let decodedPDU = type(of: testPDU).init(data: testData)
                 else { XCTFail("Could not decode \(type(of: testPDU))"); return }
             
             dump(decodedPDU)
             
-            XCTAssertEqual(decodedPDU.byteValue, testData)
+            XCTAssertEqual(decodedPDU.data, testData)
             
             var decodedDump = ""
             dump(decodedPDU, to: &decodedDump)

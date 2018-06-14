@@ -23,11 +23,11 @@ public extension HCIGeneralEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == CommandCompleteParameter.length
+            guard data.count == CommandCompleteParameter.length
                 else { return nil }
             
-            self.numberOfCommandPackets = byteValue[0]
-            self.opcode = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+            self.numberOfCommandPackets = data[0]
+            self.opcode = UInt16(bytes: (data[1], data[2])).littleEndian
         }
     }
     
@@ -42,17 +42,17 @@ public extension HCIGeneralEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == CommandStatusParameter.length
+            guard data.count == CommandStatusParameter.length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
             
             self.status = status
-            self.ncmd = byteValue[1]
-            self.opcode = UInt16(bytes: (byteValue[2], byteValue[3])).littleEndian
+            self.ncmd = data[1]
+            self.opcode = UInt16(bytes: (data[2], data[3])).littleEndian
         }
     }
     
@@ -67,18 +67,18 @@ public extension HCIGeneralEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == RemoteNameRequestCompleteParameter.length
+            guard data.count == RemoteNameRequestCompleteParameter.length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
             
             self.status = status
-            self.address = Address(bytes: (byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6]))
+            self.address = Address(bytes: (data[1], data[2], data[3], data[4], data[5], data[6]))
             
-            let nameBytes = Array(byteValue[7 ..< HCI.maximumNameLength])
+            let nameBytes = Array(data[7 ..< HCI.maximumNameLength])
             
             guard let name = String(data: Data(bytes: nameBytes), encoding: .utf8)
                 else { return nil }
@@ -117,14 +117,14 @@ public extension HCIGeneralEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count == EncryptionChangeEventParameter.length
+            guard data.count == EncryptionChangeEventParameter.length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-            let encryptionEnabledByte = byteValue[3]
+            let encryptionEnabledByte = data[3]
             
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
@@ -176,12 +176,12 @@ public extension HCIGeneralEvent {
         public let handle: UInt16 // Connection_Handle
         
         public init?(data: Data) {
-            guard byteValue.count == EncryptionKeyRefreshCompleteEventParameter.length
+            guard data.count == EncryptionKeyRefreshCompleteEventParameter.length
                 else { return nil }
             
-            let statusByte = byteValue[0]
+            let statusByte = data[0]
             
-            let handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
             guard let status = HCIStatus(rawValue: statusByte)
                 else { return nil }
@@ -201,19 +201,19 @@ public extension HCIGeneralEvent {
         
         public init?(data: Data) {
             
-            guard byteValue.count >= LowEnergyMetaParameter.length,
-                let subevent = LowEnergyEvent(rawValue: byteValue[0])
+            guard data.count >= LowEnergyMetaParameter.length,
+                let subevent = LowEnergyEvent(rawValue: data[0])
                 else { return nil }
             
             self.subevent = subevent
             
-            if byteValue.count > 1 {
+            if data.count > 1 {
                 
-                self.data = Array(byteValue.suffix(from: 1))
+                self.data = Data(data.suffix(from: 1))
                 
             } else {
                 
-                self.data = []
+                self.data = Data
             }
         }
     }

@@ -44,21 +44,21 @@ public extension InformationalCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let hciVersion = HCIVersion(rawValue: byteValue[0])
+            guard let hciVersion = HCIVersion(rawValue: data[0])
                 else { return nil }
             
             self.hciVersion = hciVersion
             
-            self.hciRevision = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+            self.hciRevision = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-            self.lmpVersion = byteValue[3]
+            self.lmpVersion = data[3]
             
-            self.manufacturer = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5]))))
+            self.manufacturer = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[4], data[5]))))
             
-            self.lmpSubversion = UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7])))
+            self.lmpSubversion = UInt16(littleEndian: UInt16(bytes: (data[6], data[7])))
         }
     }
     
@@ -81,10 +81,10 @@ public extension InformationalCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            self.address = Address(littleEndian: Address(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5])))
+            self.address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         }
     }
 }
