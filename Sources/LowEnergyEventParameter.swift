@@ -251,9 +251,9 @@ public extension LowEnergyEvent {
                 self.addressType = addressType
                 self.address = address
                 
-                let data = Data(data[9 ..< (9 + length)])
-                assert(data.count == length)
-                self.responseData = data
+                let responseData = Data(data[9 ..< (9 + length)])
+                assert(responseData.count == length)
+                self.responseData = responseData
                 
                 // not enough bytes
                 guard data.count == (Report.length + length)

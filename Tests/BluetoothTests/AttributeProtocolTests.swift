@@ -238,15 +238,15 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.data.count == 1)
-            XCTAssert(pdu.attributeData.first?.attributeHandle == 40)
-            XCTAssert(pdu.attributeData.first?.endGroupHandle == 48)
-            XCTAssert(pdu.attributeData[0].value == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60])) // proper little endian representation
-            XCTAssert(pdu.attributeData[0].value != Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7])) // invalid data
-            XCTAssert(Data(pdu.attributeData[0].value) == BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
-            XCTAssert(BluetoothUUID(littleEndian:
-                BluetoothUUID(data: Data(pdu.attributeData[0].value))!).rawValue == uuidString)
-            XCTAssert(pdu.data == data)
+            XCTAssertEqual(pdu.attributeData.count, 1)
+            XCTAssertEqual(pdu.attributeData.first?.attributeHandle, 40)
+            XCTAssertEqual(pdu.attributeData.first?.endGroupHandle, 48)
+            XCTAssertEqual(pdu.attributeData[0].value, Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60])) // proper little endian representation
+            XCTAssertNotEqual(pdu.attributeData[0].value, Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7])) // invalid data
+            XCTAssertEqual(pdu.attributeData[0].value, BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
+            XCTAssertEqual(BluetoothUUID(littleEndian:
+                BluetoothUUID(data: Data(pdu.attributeData[0].value))!).rawValue, uuidString)
+            XCTAssertEqual(pdu.data, data)
         }
     }
     
@@ -313,7 +313,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.data == data)
             
             guard let foundCharacteristicData = pdu.attributeData.first,
-                pdu.data.count == 1
+                pdu.attributeData.count == 1
                 else { XCTFail("Invalid response"); return }
             
             XCTAssert(foundCharacteristicData.handle == 41)
@@ -330,7 +330,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.data == data)
             
             guard let characteristicData = pdu.attributeData.first,
-                pdu.data.count == 1
+                pdu.attributeData.count == 1
                 else { XCTFail("Invalid response"); return }
             
             XCTAssert(characteristicData.handle == 41)
