@@ -58,7 +58,7 @@ public struct GAPPBADV: GAPData {
         
         let linkID = UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))
         let transactionNumber = data[4]
-        var genericProvisioningPDU = [UInt8]()
+        var genericProvisioningPDU = Data()
         
         data.enumerated().forEach { (index, element) in
             if index >= 5 {

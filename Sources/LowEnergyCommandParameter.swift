@@ -2265,7 +2265,7 @@ public extension HCILowEnergyCommand {
             let scanResponseDataLength = UInt8(scanResponseData.count)
             
             return Data([advertisingHandle, operation.rawValue,
-                    fragmentPreference.rawValue, scanResponseDataLength ] + scanResponseData
+                    fragmentPreference.rawValue, scanResponseDataLength]) + scanResponseData
         }
         
         public enum Operation: UInt8 { //Operation
@@ -2444,7 +2444,7 @@ public extension HCILowEnergyCommand {
             
             return Data([advertisingHandle,
                     operation.rawValue,
-                    advertisingDataLength] + advertisingData
+                    advertisingDataLength]) + advertisingData
         }
         
         public enum Operation: UInt8 { //Operation
@@ -2530,7 +2530,7 @@ public extension HCILowEnergyCommand {
                 length = 3 + 10
             }
             
-            var data = [UInt8]()
+            var data = Data()
             data.reserveCapacity(length) // improve buffer performance
             
             // Own_Address_Type
@@ -2996,7 +2996,7 @@ public extension HCILowEnergyCommand {
             let skipBytes = skip.littleEndian.bytes
             let syncTimeoutBytes = syncTimeout.rawValue.littleEndian.bytes
             
-            return[
+            return Data([
                 filterPolicy.rawValue,
                 advertisingSid,
                 advertisingAddressType.rawValue,

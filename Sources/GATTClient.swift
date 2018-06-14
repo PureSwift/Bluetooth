@@ -418,7 +418,7 @@ public final class GATTClient {
             let pdu = ATTFindByTypeRequest(startHandle: start,
                                            endHandle: end,
                                            attributeType: serviceType.rawValue,
-                                           attributeValue: [UInt8](uuid.littleEndian.data))
+                                           attributeValue: uuid.littleEndian.data)
             
             send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
             
@@ -536,7 +536,7 @@ public final class GATTClient {
     
     private func writeAttributeCommand(_ attribute: UInt16, data: Data) {
         
-        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 3))
+        let data = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 3))
         
         let pdu = ATTWriteCommand(handle: attribute, value: data)
         
@@ -548,7 +548,7 @@ public final class GATTClient {
                                      data: Data,
                                      completion: @escaping (GATTClientResponse<()>) -> ()) {
         
-        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
+        let data = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
         
         let pdu = ATTWriteRequest(handle: attribute, value: data)
 
@@ -572,16 +572,14 @@ public final class GATTClient {
         guard inLongWrite == false
             else { completion(.error(GATTClientError.inLongWrite)); return }
         
-        let bytes = [UInt8](data)
-        
-        let firstValuePart = [UInt8](bytes.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
+        let firstValuePart = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
         
         let pdu = ATTPrepareWriteRequest(handle: attribute,
                                          offset: 0x00,
                                          partValue: firstValuePart)
         
         let operation = WriteOperation(handle: attribute,
-                                       data: bytes,
+                                       data: data,
                                        reliableWrites: reliableWrites,
                                        lastRequest: pdu,
                                        completion: completion)
@@ -613,7 +611,7 @@ public final class GATTClient {
         // Section 10.2 then, a Write Without Response as defined in Section 4.9.1 shall be used instead of
         // a Signed Write Without Response.
         
-        let data = [UInt8](data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 15))
+        let data = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 15))
         
         // TODO: Sign Data
         
@@ -746,7 +744,7 @@ public final class GATTClient {
                 let pdu = ATTFindByTypeRequest(startHandle: operation.start,
                                                endHandle: operation.end,
                                                attributeType: operation.type.rawValue,
-                                               attributeValue: [UInt8](serviceUUID.littleEndian.data))
+                                               attributeValue: serviceUUID.littleEndian.data)
                 
                 send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
                 
@@ -1052,7 +1050,7 @@ public final class GATTClient {
                 // write next part
                 let maxLength = Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length // 5
                 let endIndex = min(offset + maxLength, operation.data.count)
-                let attributeValuePart = [UInt8](operation.data[offset ..<  endIndex])
+                let attributeValuePart = Data(operation.data[offset ..< endIndex])
                 
                 let pdu = ATTPrepareWriteRequest(handle: operation.lastRequest.handle,
                                                  offset: UInt16(offset),
@@ -1336,7 +1334,7 @@ private extension GATTClient {
         
         let handle: UInt16
         
-        var data = [UInt8]()
+        var data = Data()
         
         let completion: (GATTClientResponse<Data>) -> ()
         
@@ -1445,16 +1443,16 @@ private extension GATTClient {
         
         let reliableWrites: Bool
         
-        let data: [UInt8]
+        let data: Data
         
-        var sentData: [UInt8]
+        var sentData: Data
         
-        var receivedData: [UInt8]
+        var receivedData: Data
         
         var lastRequest: ATTPrepareWriteRequest
         
         init(handle: UInt16,
-             data: [UInt8],
+             data: Data,
              reliableWrites: Bool,
              lastRequest: ATTPrepareWriteRequest,
              completion: @escaping Completion) {
@@ -1467,7 +1465,7 @@ private extension GATTClient {
             self.reliableWrites = reliableWrites
             self.lastRequest = lastRequest
             self.sentData = lastRequest.partValue
-            self.receivedData = []
+            self.receivedData = Data()
         }
         
         @inline(__always)

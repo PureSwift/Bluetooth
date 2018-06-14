@@ -218,7 +218,7 @@ public extension LowEnergyEvent {
             public let address: Address // Address
             
             /// Advertising or scan response data
-            public let data: [UInt8] // Data
+            public let responseData: Data // Data
             
             /// RSSI
             ///
@@ -251,9 +251,9 @@ public extension LowEnergyEvent {
                 self.addressType = addressType
                 self.address = address
                 
-                let data = [UInt8](data[9 ..< (9 + length)])
+                let data = Data(data[9 ..< (9 + length)])
                 assert(data.count == length)
-                self.data = data
+                self.responseData = data
                 
                 // not enough bytes
                 guard data.count == (Report.length + length)
@@ -951,7 +951,7 @@ public extension LowEnergyEvent {
             
             public let directAddress: Address
             
-            public let data: [UInt8] //Data
+            public let responseData: Data //Data
             
             public init?(data: Data) {
                 
@@ -993,7 +993,7 @@ public extension LowEnergyEvent {
                 
                 let dataLength = Int(data[23])
                 
-                let data = [UInt8](data[24 ..< (24 + dataLength)])
+                let data = Data(data[24 ..< (24 + dataLength)])
                 assert(data.count == dataLength)
                 
                 self.eventType = eventType
@@ -1007,7 +1007,7 @@ public extension LowEnergyEvent {
                 self.periodicAdvertisingInterval = periodicAdvertisingInterval
                 self.directAddressType = directAddressType
                 self.directAddress = directAddress
-                self.data = data
+                self.responseData = data
             }
         }
         

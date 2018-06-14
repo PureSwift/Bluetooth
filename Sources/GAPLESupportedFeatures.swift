@@ -27,7 +27,7 @@ public struct GAPLESupportedFeatures: GAPData {
     
     public init?(data: Data) {
         
-        var supportedFeatures = [UInt8]()
+        var supportedFeatures = Data()
         var lastNonZero: UInt8?
         
         for element in data {

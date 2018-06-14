@@ -388,7 +388,7 @@ final class HCITests: XCTestCase {
             
             let localName = String(repeating: "M", count: 10)
             
-            let data: [UInt8] = [UInt8](localName.utf8) + Data(repeating: 0x00, count: WriteLocalNameParameter.length - 10)
+            let data = Data(localName.utf8) + Data(repeating: 0x00, count: WriteLocalNameParameter.length - 10)
             
             guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localName)
                 else { XCTFail(); return }
