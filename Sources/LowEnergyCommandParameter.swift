@@ -2144,11 +2144,11 @@ public extension HCILowEnergyCommand {
         
         public static let command = HCILowEnergyCommand.writeRFPathCompensation // 0x004D
         
-        public var rfTxPathCompensationValue: RfTxPathCompensationValue
-        public var rfRxPathCompensationValue: RfRxPathCompensationValue
+        public var rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue
+        public var rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue
 
-        public init(rfTxPathCompensationValue: RfTxPathCompensationValue,
-                    rfRxPathCompensationValue: RfRxPathCompensationValue) {
+        public init(rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
+                    rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue) {
             self.rfTxPathCompensationValue = rfTxPathCompensationValue
             self.rfRxPathCompensationValue = rfRxPathCompensationValue
         }
@@ -3024,18 +3024,18 @@ public extension HCILowEnergyCommand {
         
         public static let length: Int = 4
         
-        public let rfTxPathCompensationValue: RfTxPathCompensationValue
-        public let rfRxPathCompensationValue: RfRxPathCompensationValue
+        public let rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue
+        public let rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue
         
         public init?(data: Data) {
             
             guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let rfTxPathCompensationValue = RfTxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (data[0], data[1]))))
+            guard let rfTxPathCompensationValue = LowEnergyRfTxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (data[0], data[1]))))
                 else { return nil }
                 
-            guard let rfRxPathCompensationValue = RfRxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (data[2], data[3]))))
+            guard let rfRxPathCompensationValue = LowEnergyRfTxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (data[2], data[3]))))
                 else { return nil }
             
             self.rfTxPathCompensationValue = rfTxPathCompensationValue
@@ -3091,68 +3091,4 @@ public struct RfRxPathCompensationValue: RawRepresentable, Equatable, Hashable, 
         
         return Int(rawValue)
     }
-}
-
-/// RF_Tx_Path_Compensation_Value
-/// Size: 2 Octets (signed integer)
-/// Range: -128.0 dB (0xFB00) ≤ N ≤ 128.0 dB (0x0500)
-/// Units: 0.1 dB
-public struct RfTxPathCompensationValue: RawRepresentable, Equatable, Hashable, Comparable {
-    
-    public static let min = RfTxPathCompensationValue(-128)
-    
-    public static let max = RfTxPathCompensationValue(128)
-    
-    public let rawValue: Int16
-    
-    public init?(rawValue: Int16) {
-        
-        guard rawValue >= RfTxPathCompensationValue.min.rawValue,
-            rawValue <= RfTxPathCompensationValue.max.rawValue
-            else { return nil }
-        
-        assert((RfTxPathCompensationValue.min.rawValue ... RfTxPathCompensationValue.max.rawValue).contains(rawValue))
-        
-        self.rawValue = rawValue
-    }
-    
-    // Private, unsafe
-    private init(_ rawValue: Int16) {
-        self.rawValue = rawValue
-    }
-    
-    // Equatable
-    public static func == (lhs: RfTxPathCompensationValue, rhs: RfTxPathCompensationValue) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
-    // Comparable
-    public static func < (lhs: RfTxPathCompensationValue, rhs: RfTxPathCompensationValue) -> Bool {
-        
-        return lhs.rawValue < rhs.rawValue
-    }
-    
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
-}
-
-public enum LowEnergyAdvertiserAddressType: UInt8 { //Advertiser_Address_Type:
-    /// Public Device Address or Public Identity Address
-    case publicDeviceAddress = 0x00
-    
-    /// Random Device Address or Random (static) Identity Address
-    case randomDeviceAddress = 0x01
-}
-
-public enum LowEnergyFragmentPreference: UInt8 { //Fragment_Preference
-    
-    /// The Controller may fragment all Host advertising data
-    case fragmentAllHostAdvertisingData = 0x00
-    
-    /// The Controller should not fragment or should minimize fragmentation of Host advertising data
-    case shouldNotFragmentHostAdvertisingData = 0x01
 }
