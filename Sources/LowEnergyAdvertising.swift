@@ -23,43 +23,6 @@ public extension BluetoothHostControllerInterface {
         return value.transmitPowerLevel
     }
     
-    /// LE Set Advertising Set Random Address Command
-    ///
-    /// The command is used by the Host to set the random device address specified by the Random_Address parameter.
-    func setAdvertisingSetRandomAddress(advertisingHandle: UInt8,
-                                        advertisingRandomAddress: Address,
-                                        timeout: HCICommandTimeout = .default) throws {
-        
-        let parameters = HCILowEnergyCommand.HCILESetAdvertisingSetRandomAddress(advertisingHandle: advertisingHandle, advertisingRandomAddress: advertisingRandomAddress)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
-    /// LE Set Extended Advertising Parameters Command
-    ///
-    /// The command is used by the Host to set the advertising parameters.
-    func setExtendedAdvertisingParameters(_ parameters: HCILowEnergyCommand.HCILESetExtendedAdvertisingParameters,
-                                          timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
-        
-        let returnParameter = try deviceRequest(parameters, HCILowEnergyCommand.SetExtendedAdvertisingParametersReturnParameter.self, timeout: timeout)
-        
-        return returnParameter.selectedTxPower
-    }
-    
-    /// LE Set Extended Advertising Data Command
-    ///
-    /// The command is used to set the data used in advertising PDUs that have a data field.
-    func setExtendedAdvertisingData(advertisingHandle: UInt8,
-                                    operation: HCILowEnergyCommand.HCILESetExtendedAdvertisingData.Operation,
-                                    fragmentPreference: LowEnergyFragmentPreference,
-                                    advertisingData: [UInt8],
-                                    timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.HCILESetExtendedAdvertisingData(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingData: advertisingData)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
     /// LE Read Maximum Advertising Data Length Command
     ///
     /// The ommand is used to read the maximum length of data supported by the Controller for use

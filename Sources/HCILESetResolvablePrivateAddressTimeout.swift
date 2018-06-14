@@ -101,4 +101,3 @@ public struct HCILESetResolvablePrivateAddressTimeout: HCICommandParameter {
         }
     }
 }
-
