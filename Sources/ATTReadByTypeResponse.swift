@@ -49,48 +49,49 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard byteValue.count >= ATTReadByTypeResponse.length
+        guard data.count >= ATTReadByTypeResponse.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        let attributeDataLength = Int(byteValue[1])
+        let attributeDataLength = Int(data[1])
         
-        let attributeDataByteCount = byteValue.count - 2
+        let attributeDataByteCount = data.count - 2
         
         guard attributeDataByteCount % attributeDataLength == 0 else { return nil }
         
         let attributeDataCount = attributeDataByteCount / attributeDataLength
         
-        var attributeData = [AttributeData](repeating: AttributeData(), count: attributeDataCount)
+        var attributeData = [AttributeData]()
+        attributeData.reserveCapacity(attributeDataCount)
         
         for index in 0 ..< attributeDataCount {
             
             let byteIndex = 2 + (index * attributeDataLength)
             
-            let dataBytes = Array(byteValue[byteIndex ..< byteIndex + attributeDataLength])
+            let attributeBytes = Data(data[byteIndex ..< byteIndex + attributeDataLength])
             
-            guard let data = AttributeData(byteValue: dataBytes)
+            guard let attribute = AttributeData(data: attributeBytes)
                 else { return nil }
             
-            attributeData[index] = data
+            attributeData.append(attribute)
         }
         
-        self.data = attributeData
+        self.attributeData = attributeData
     }
     
     public var data: Data {
         
-        let valueLength = UInt8(2 + data[0].value.count)
+        let valueLength = UInt8(2 + attributeData[0].value.count)
         
-        var bytes = [type(of: self).attributeOpcode.rawValue, valueLength]
+        var bytes = Data([type(of: self).attributeOpcode.rawValue, valueLength])
         
-        for attributeData in data {
+        for attribute in attributeData {
             
-            bytes += attributeData.byteValue
+            bytes += attribute.data
         }
         
         return bytes
@@ -122,16 +123,16 @@ public extension ATTReadByTypeResponse {
         
         public init?(data: Data) {
             
-            guard byteValue.count >= AttributeData.length
+            guard data.count >= AttributeData.length
                 else { return nil }
             
-            self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            self.handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
-            if byteValue.count > AttributeData.length {
+            if data.count > AttributeData.length {
                 
                 let startingIndex = AttributeData.length
                 
-                self.value = Data(byteValue.suffix(from: startingIndex))
+                self.value = Data(data.suffix(from: startingIndex))
                 
             } else {
                 

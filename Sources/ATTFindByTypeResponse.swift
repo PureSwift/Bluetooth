@@ -31,17 +31,17 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard byteValue.count >= ATTFindByTypeResponse.length
+        guard data.count >= ATTFindByTypeResponse.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         let handleLength = HandlesInformation.length
         
-        let handleBytesCount = byteValue.count - 1
+        let handleBytesCount = data.count - 1
         
         guard handleBytesCount % handleLength == 0 else { return nil }
         
@@ -54,9 +54,9 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = (index * handleLength) + 1
             
-            let handleBytes = Array(byteValue[byteIndex ..< byteIndex + handleLength])
+            let handleBytes = Array(data[byteIndex ..< byteIndex + handleLength])
             
-            guard let handle = HandlesInformation(byteValue: handleBytes)
+            guard let handle = HandlesInformation(data: handleBytes)
                 else { return nil }
             
             handles[index] = handle
@@ -79,7 +79,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             
             let byteRange = startByteIndex ..< startByteIndex + HandlesInformation.length
             
-            handlesData.replaceSubrange(byteRange, with: handle.byteValue)
+            handlesData.replaceSubrange(byteRange, with: handle.data)
         }
         
         return [type(of: self).attributeOpcode.rawValue] + handlesData
@@ -112,11 +112,11 @@ public extension ATTFindByTypeResponse {
         
         public init?(data: Data) {
             
-            guard byteValue.count == HandlesInformation.length
+            guard data.count == HandlesInformation.length
                 else { return nil }
             
-            self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
-            self.groupEnd = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+            self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
         }
         
         public var data: Data {

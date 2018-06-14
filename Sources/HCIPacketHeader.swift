@@ -45,7 +45,7 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
     public static func from <T: HCICommandParameter> (_ commandParameter: T) -> (HCICommandHeader, [UInt8]) {
         
         let command = type(of: commandParameter).command
-        let parameterData = commandParameter.byteValue
+        let parameterData = commandParameter.data
         
         let header = HCICommandHeader(command: command,
                                       parameterLength: UInt8(parameterData.count))

@@ -33,9 +33,12 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
     public var attributeType: UInt16
     
     /// Attribute value to find.
-    public var attributeValue: [UInt8]
+    public var attributeValue: Data
     
-    public init(startHandle: UInt16 = 0, endHandle: UInt16 = 0, attributeType: UInt16 = 0, attributeValue: [UInt8] = []) {
+    public init(startHandle: UInt16,
+                endHandle: UInt16,
+                attributeType: UInt16,
+                attributeValue: Data) {
         
         self.startHandle = startHandle
         self.endHandle = endHandle
@@ -53,9 +56,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
             else { return nil }
         
         self.startHandle = UInt16(bytes: (data[1], data[2])).littleEndian
-        
         self.endHandle = UInt16(bytes: (data[3], data[4])).littleEndian
-        
         self.attributeType = UInt16(bytes: (data[5], data[6])).littleEndian
         
         /// if attributeValue is included

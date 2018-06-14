@@ -191,7 +191,7 @@ public extension HCILowEnergyCommand {
         
         public var data: Data {
             
-            return [advertisingData.length, advertisingData.bytes.0, advertisingData.bytes.1, advertisingData.bytes.2, advertisingData.bytes.3, advertisingData.bytes.4, advertisingData.bytes.5, advertisingData.bytes.6, advertisingData.bytes.7, advertisingData.bytes.8, advertisingData.bytes.9, advertisingData.bytes.10, advertisingData.bytes.11, advertisingData.bytes.12, advertisingData.bytes.13, advertisingData.bytes.14, advertisingData.bytes.15, advertisingData.bytes.16, advertisingData.bytes.17, advertisingData.bytes.18, advertisingData.bytes.19, advertisingData.bytes.20, advertisingData.bytes.21, advertisingData.bytes.22, advertisingData.bytes.23, advertisingData.bytes.24, advertisingData.bytes.25, advertisingData.bytes.26, advertisingData.bytes.27, advertisingData.bytes.28, advertisingData.bytes.29, advertisingData.bytes.30]
+            return Data([advertisingData.length, advertisingData.bytes.0, advertisingData.bytes.1, advertisingData.bytes.2, advertisingData.bytes.3, advertisingData.bytes.4, advertisingData.bytes.5, advertisingData.bytes.6, advertisingData.bytes.7, advertisingData.bytes.8, advertisingData.bytes.9, advertisingData.bytes.10, advertisingData.bytes.11, advertisingData.bytes.12, advertisingData.bytes.13, advertisingData.bytes.14, advertisingData.bytes.15, advertisingData.bytes.16, advertisingData.bytes.17, advertisingData.bytes.18, advertisingData.bytes.19, advertisingData.bytes.20, advertisingData.bytes.21, advertisingData.bytes.22, advertisingData.bytes.23, advertisingData.bytes.24, advertisingData.bytes.25, advertisingData.bytes.26, advertisingData.bytes.27, advertisingData.bytes.28, advertisingData.bytes.29, advertisingData.bytes.30])
         }
     }
     
@@ -204,16 +204,16 @@ public extension HCILowEnergyCommand {
         public static let length = 32
         
         /// 31 octets of scan response data.
-        public var data: LowEnergyAdvertisingData // Scan_Response_Data
+        public var advertisingData: LowEnergyAdvertisingData // Scan_Response_Data
         
-        public init(data: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
+        public init(advertisingData: LowEnergyAdvertisingData = LowEnergyAdvertisingData()) {
             
-            self.data = data
+            self.advertisingData = advertisingData
         }
         
         public var data: Data {
             
-            return Data([data.length, data.bytes.0, data.bytes.1, data.bytes.2, data.bytes.3, data.bytes.4, data.bytes.5, data.bytes.6, data.bytes.7, data.bytes.8, data.bytes.9, data.bytes.10, data.bytes.11, data.bytes.12, data.bytes.13, data.bytes.14, data.bytes.15, data.bytes.16, data.bytes.17, data.bytes.18, data.bytes.19, data.bytes.20, data.bytes.21, data.bytes.22, data.bytes.23, data.bytes.24, data.bytes.25, data.bytes.26, data.bytes.27, data.bytes.28, data.bytes.29, data.bytes.30])
+            return Data([advertisingData.length, advertisingData.bytes.0, advertisingData.bytes.1, advertisingData.bytes.2, advertisingData.bytes.3, advertisingData.bytes.4, advertisingData.bytes.5, advertisingData.bytes.6, advertisingData.bytes.7, advertisingData.bytes.8, advertisingData.bytes.9, advertisingData.bytes.10, advertisingData.bytes.11, advertisingData.bytes.12, advertisingData.bytes.13, advertisingData.bytes.14, advertisingData.bytes.15, advertisingData.bytes.16, advertisingData.bytes.17, advertisingData.bytes.18, advertisingData.bytes.19, advertisingData.bytes.20, advertisingData.bytes.21, advertisingData.bytes.22, advertisingData.bytes.23, advertisingData.bytes.24, advertisingData.bytes.25, advertisingData.bytes.26, advertisingData.bytes.27, advertisingData.bytes.28, advertisingData.bytes.29, advertisingData.bytes.30])
         }
     }
     
@@ -763,18 +763,18 @@ public extension HCILowEnergyCommand {
         
         /// 128 bit data block that is requested to be encrypted.
         /// The most significant octet of the PlainText_Data corresponds to in[0] using the notation specified in FIPS 197.
-        public let data: UInt128 //Plaintext_Data
+        public let plainText: UInt128 //Plaintext_Data
         
-        public init(key: UInt128, data: UInt128) {
+        public init(key: UInt128, plainText: UInt128) {
         
             self.key = key
-            self.data = data
+            self.plainText = plainText
         }
         
         public var data: Data {
             
             let keyBytes = key.littleEndian.bytes
-            let dataBytes = data.littleEndian.bytes
+            let dataBytes = plainText.littleEndian.bytes
             
             return [
                 keyBytes.0,
@@ -2530,17 +2530,17 @@ public extension HCILowEnergyCommand {
                 length = 3 + 10
             }
             
-            var byteValue = [UInt8]()
-            byteValue.reserveCapacity(length) // improve buffer performance
+            var data = [UInt8]()
+            data.reserveCapacity(length) // improve buffer performance
             
             // Own_Address_Type
-            byteValue.append(ownAddressType.rawValue)
+            data.append(ownAddressType.rawValue)
             
             // Scanning_Filter_Policy
-            byteValue.append(scanningFilterPolicy.rawValue)
+            data.append(scanningFilterPolicy.rawValue)
             
             // Scanning_PHYs
-            byteValue.append(scanningPHY.type.rawValue)
+            data.append(scanningPHY.type.rawValue)
             
             switch scanningPHY {
                 
@@ -2552,7 +2552,7 @@ public extension HCILowEnergyCommand {
                 let scanIntervalBytes = (scanInterval.0.rawValue.littleEndian, scanInterval.1.rawValue.littleEndian)
                 let scanWindowBytes = (scanWindow.0.rawValue.littleEndian, scanWindow.1.rawValue.littleEndian)
                 
-                byteValue += [scanType.0.rawValue,
+                data += [scanType.0.rawValue,
                               scanType.1.rawValue,
                               scanIntervalBytes.0.bytes.0,
                               scanIntervalBytes.0.bytes.1,
@@ -2564,9 +2564,9 @@ public extension HCILowEnergyCommand {
                               scanWindowBytes.1.bytes.1]
             }
             
-            assert(byteValue.count == length, "Invalid number of bytes")
+            assert(data.count == length, "Invalid number of bytes")
             
-            return byteValue
+            return data
         }
         
         public enum ScanningFilterPolicy: UInt8 {
@@ -3303,13 +3303,13 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let dataPacketLength = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            let dataPacketLength = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
             self.dataPacketLength = dataPacketLength
-            self.dataPacket = byteValue[2]
+            self.dataPacket = data[2]
         }
     }
     
@@ -3326,17 +3326,17 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let featuresRawValue = UInt64(littleEndian: UInt64(bytes: (byteValue[0],
-                                                                       byteValue[1],
-                                                                       byteValue[2],
-                                                                       byteValue[3],
-                                                                       byteValue[4],
-                                                                       byteValue[5],
-                                                                       byteValue[6],
-                                                                       byteValue[7])))
+            let featuresRawValue = UInt64(littleEndian: UInt64(bytes: (data[0],
+                                                                       data[1],
+                                                                       data[2],
+                                                                       data[3],
+                                                                       data[4],
+                                                                       data[5],
+                                                                       data[6],
+                                                                       data[7])))
             
             self.features = LowEnergyFeatureSet(rawValue: featuresRawValue)
         }
@@ -3355,10 +3355,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let transmitPowerLevel = TransmitPowerLevel(rawValue: Int8(bitPattern: byteValue[0]))
+            guard let transmitPowerLevel = TransmitPowerLevel(rawValue: Int8(bitPattern: data[0]))
                 else { return nil }
             
             self.transmitPowerLevel = transmitPowerLevel
@@ -3425,10 +3425,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            self.size = byteValue[0]
+            self.size = data[0]
         }
     }
     
@@ -3449,10 +3449,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let encryptedData = UInt128(data: Data(byteValue))
+            guard let encryptedData = UInt128(data: Data(data))
                 else { return nil }
             
             self.encryptedData = encryptedData
@@ -3473,10 +3473,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            self.randomNumber = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+            self.randomNumber = UInt64(littleEndian: UInt64(bytes: ((data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))))
         }
     }
     
@@ -3496,10 +3496,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         }
     }
     
@@ -3519,10 +3519,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         }
     }
     
@@ -3543,10 +3543,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         }
     }
     
@@ -3568,10 +3568,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         }
     }
     
@@ -3589,10 +3589,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         }
     }
     
@@ -3612,11 +3612,11 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let suggestedMaxTxOctetsUInt16 = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
-            let suggestedMaxTxTimeUInt16 = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
+            let suggestedMaxTxOctetsUInt16 = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+            let suggestedMaxTxTimeUInt16 = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
             
             guard let suggestedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: suggestedMaxTxOctetsUInt16)
                 else { return nil }
@@ -3644,10 +3644,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            numberOfPackets = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            numberOfPackets = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         }
     }
     
@@ -3664,10 +3664,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            let stateRawValue = UInt64(littleEndian: UInt64(bytes: (byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7])))
+            let stateRawValue = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
             
             guard let state = LowEnergyStateSet(rawValue: stateRawValue)
                 else { return nil }
@@ -3693,10 +3693,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            self.resolvingListSize = byteValue[0]
+            self.resolvingListSize = data[0]
         }
     }
     
@@ -3722,10 +3722,10 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            self.peerResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+            self.peerResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))))
         }
     }
     
@@ -3750,10 +3750,10 @@ public extension HCILowEnergyCommand {
         public let localResolvableAddress: UInt64 //Local_Resolvable_Address
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((byteValue[0], byteValue[1], byteValue[2], byteValue[3], byteValue[4], byteValue[5], byteValue[6], byteValue[7]))))
+            self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))))
         }
     }
     
@@ -3784,19 +3784,19 @@ public extension HCILowEnergyCommand {
         public let supportedMaxRxTime: SupportedMaxRxTime
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let supportedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1]))))
+            guard let supportedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
                 else { return nil }
             
-            guard let supportedMaxTxTime = LowEnergyMaxTxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3]))))
+            guard let supportedMaxTxTime = LowEnergyMaxTxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))))
                 else { return nil }
             
-            guard let supportedMaxRxOctets = SupportedMaxRxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[4], byteValue[5]))))
+            guard let supportedMaxRxOctets = SupportedMaxRxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (data[4], data[5]))))
                 else { return nil }
             
-            guard let supportedMaxRxTime = SupportedMaxRxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (byteValue[6], byteValue[7]))))
+            guard let supportedMaxRxTime = SupportedMaxRxTime(rawValue: UInt16(littleEndian: UInt16(bytes: (data[6], data[7]))))
                 else { return nil }
             
             self.supportedMaxTxOctets = supportedMaxTxOctets
@@ -3915,15 +3915,15 @@ public extension HCILowEnergyCommand {
         public let rxPhy: LowEnergyRxPhy
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            connectionHandle = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             
-            guard let txPhy = LowEnergyTxPhy(rawValue: byteValue[2])
+            guard let txPhy = LowEnergyTxPhy(rawValue: data[2])
                 else { return nil }
             
-            guard let rxPhy = LowEnergyRxPhy(rawValue: byteValue[3])
+            guard let rxPhy = LowEnergyRxPhy(rawValue: data[3])
                 else { return nil }
             
             self.txPhy = txPhy
@@ -3943,10 +3943,10 @@ public extension HCILowEnergyCommand {
         public let selectedTxPower: LowEnergyTxPower
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let selectedTxPower = LowEnergyTxPower(rawValue: Int8(bitPattern: byteValue[0]))
+            guard let selectedTxPower = LowEnergyTxPower(rawValue: Int8(bitPattern: data[0]))
                 else { return nil }
             
             self.selectedTxPower = selectedTxPower
@@ -3967,10 +3967,10 @@ public extension HCILowEnergyCommand {
         public let maximumAdvertisingDataLength: UInt16
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            maximumAdvertisingDataLength = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+            maximumAdvertisingDataLength = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         }
     }
     
@@ -3990,10 +3990,10 @@ public extension HCILowEnergyCommand {
         public let numSupportedAdvertisingSets: UInt8 //Num_Supported_Advertising_Sets
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            numSupportedAdvertisingSets = byteValue[0]
+            numSupportedAdvertisingSets = data[0]
         }
     }
     
@@ -4010,10 +4010,10 @@ public extension HCILowEnergyCommand {
         public let periodicAdvertiserListSize: UInt8
         
         public init?(data: Data) {
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            periodicAdvertiserListSize = byteValue[0]
+            periodicAdvertiserListSize = data[0]
         }
     }
     
@@ -4032,13 +4032,13 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let minTxPower = TxPower(rawValue: Int8(bitPattern: byteValue[0]))
+            guard let minTxPower = TxPower(rawValue: Int8(bitPattern: data[0]))
                 else { return nil }
             
-            guard let maxTxPower = TxPower(rawValue: Int8(bitPattern: byteValue[1]))
+            guard let maxTxPower = TxPower(rawValue: Int8(bitPattern: data[1]))
                 else { return nil }
             
             self.minTxPower = minTxPower
@@ -4103,13 +4103,13 @@ public extension HCILowEnergyCommand {
         
         public init?(data: Data) {
             
-            guard byteValue.count == type(of: self).length
+            guard data.count == type(of: self).length
                 else { return nil }
             
-            guard let rfTxPathCompensationValue = RfTxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (byteValue[0], byteValue[1]))))
+            guard let rfTxPathCompensationValue = RfTxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (data[0], data[1]))))
                 else { return nil }
                 
-            guard let rfRxPathCompensationValue = RfRxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (byteValue[2], byteValue[3]))))
+            guard let rfRxPathCompensationValue = RfRxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (data[2], data[3]))))
                 else { return nil }
             
             self.rfTxPathCompensationValue = rfTxPathCompensationValue
