@@ -17,7 +17,7 @@ public extension BluetoothHostControllerInterface {
                        parameters: HCILESetScanParameters = .init(),
                        timeout: HCICommandTimeout = .default,
                        shouldContinue: () -> (Bool),
-                       foundDevice: (LowEnergyScannedDevice) -> ()) throws {
+                       foundDevice: (HCILEAdvertisingReport.Report) -> ()) throws {
         
         // macro for enabling / disabling scan
         func enableScan(_ isEnabled: Bool = true) throws {
@@ -50,7 +50,7 @@ public extension BluetoothHostControllerInterface {
                 else { return }
             
             // parse LE advertising report
-            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(data: metaEvent.eventData)
+            guard let advertisingReport = HCILEAdvertisingReport(data: metaEvent.eventData)
                 else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.eventData)) }
             
             // call closure on each device found

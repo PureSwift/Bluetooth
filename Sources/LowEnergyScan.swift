@@ -10,18 +10,16 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    public typealias LowEnergyScannedDevice = LowEnergyEvent.AdvertisingReportEventParameter.Report
-    
     /// Scan LE devices for the specified time period.
     func lowEnergyScan(duration: TimeInterval = 10,
                        filterDuplicates: Bool = true,
                        parameters: HCILESetScanParameters = .init(),
-                       timeout: HCICommandTimeout = .default) throws -> [LowEnergyScannedDevice] {
+                       timeout: HCICommandTimeout = .default) throws -> [HCILEAdvertisingReport.Report] {
         
         let startDate = Date()
         let endDate = startDate + duration
         
-        var foundDevices = [LowEnergyScannedDevice]()
+        var foundDevices = [HCILEAdvertisingReport.Report]()
         
         try lowEnergyScan(filterDuplicates: filterDuplicates,
                           parameters: parameters,

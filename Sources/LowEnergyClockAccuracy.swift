@@ -18,3 +18,20 @@ public enum LowEnergyClockAccuracy: UInt8 {
     case ppm30      = 0x06
     case ppm20      = 0x07
 }
+
+public extension LowEnergyClockAccuracy {
+    
+    var ppm: UInt {
+        
+        switch self {
+        case .ppm500: return 500
+        case .ppm250: return 250
+        case .ppm150: return 150
+        case .ppm100: return 100
+        case .ppm75: return 75
+        case .ppm50: return 50
+        case .ppm30: return 30
+        case .ppm20: return 20
+        }
+    }
+}

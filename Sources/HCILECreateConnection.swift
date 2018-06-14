@@ -25,11 +25,11 @@ public extension BluetoothHostControllerInterface {
     }
     
     func lowEnergyCreateConnection(parameters: HCILECreateConnection,
-                                   timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.ConnectionCompleteParameter {
+                                   timeout: HCICommandTimeout = .default) throws -> HCILEConnectionComplete {
         
         // connect with specified parameters
         let event = try deviceRequest(parameters,
-                                      LowEnergyEvent.ConnectionCompleteParameter.self,
+                                      HCILEConnectionComplete.self,
                                       timeout: timeout)
         
         switch event.status {
