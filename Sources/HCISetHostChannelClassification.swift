@@ -8,6 +8,8 @@
 
 import Foundation
 
+// MARK: - Command
+
 /// LE Set Host Channel Classification Command
 ///
 /// command allows the Host to specify a channel classification for data channels based

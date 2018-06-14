@@ -8,6 +8,36 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// LE Remote Connection Parameter Request Reply Command
+    ///
+    /// Both the master Host and the slave Host use this command to reply to the HCI
+    /// LE Remote Connection Parameter Request event. This indicates that the Host
+    /// has accepted the remote device’s request to change connection parameters.
+    func lowEnergyRemoteConnectionParameterRequestReply(connectionHandle: UInt16,
+                                                        interval: LowEnergyConnectionIntervalRange,
+                                                        latency: LowEnergyConnectionLatency,
+                                                        timeOut: LowEnergySupervisionTimeout,
+                                                        length: LowEnergyConnectionLength,
+                                                        timeout: HCICommandTimeout = .default) throws -> UInt16 {
+        
+        let parameters = HCILERemoteConnectionParameterRequestReply(connectionHandle: connectionHandle,
+                                                                    interval: interval,
+                                                                    latency: latency,
+                                                                    timeOut: timeOut,
+                                                                    length: length)
+        
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestReplyReturnParameter.self, timeout: timeout)
+        
+        return returnParameters.connectionHandle
+    }
+}
+
+// MARK: - Command
+
 /// LE Remote Connection Parameter Request Reply Command
 ///
 /// Both the master Host and the slave Host use this command to reply to the HCI

@@ -8,6 +8,24 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// LE Encrypt Command
+    ///
+    /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
+    /// and returns the Encrypted_Data to the Host.
+    func lowEnergyEncrypt(key: UInt128, data: UInt128, timeout: HCICommandTimeout = .default) throws -> UInt128 {
+        
+        let parameters = HCILEEncrypt(key: key, plainText: data)
+        
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.EncryptReturnParameter.self, timeout: timeout)
+        
+        return returnParameters.encryptedData
+    }
+}
+
 /// LE Encrypt Command
 ///
 /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command

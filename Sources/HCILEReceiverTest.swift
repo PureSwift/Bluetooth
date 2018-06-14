@@ -8,6 +8,24 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// LE Receiver Test Command
+    ///
+    /// This command is used to start a test where the DUT receives test reference packets at a fixed interval.
+    /// The tester generates the test reference packets.
+    func lowEnergyReceiverTest(rxChannel: LowEnergyRxChannel, timeout: HCICommandTimeout = .default) throws {
+        
+        let parameters = HCILEReceiverTest(rxChannel: rxChannel)
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
+}
+
+// MARK: - Command
+
 /// LE Receiver Test Command
 ///
 /// This command is used to start a test where the DUT receives test reference

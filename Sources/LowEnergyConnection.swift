@@ -8,29 +8,6 @@
 
 public extension BluetoothHostControllerInterface {
     
-    /// LE Remote Connection Parameter Request Reply Command
-    ///
-    /// Both the master Host and the slave Host use this command to reply to the HCI
-    /// LE Remote Connection Parameter Request event. This indicates that the Host
-    /// has accepted the remote device’s request to change connection parameters.
-    func lowEnergyRemoteConnectionParameterRequestReply(connectionHandle: UInt16,
-                                                        interval: LowEnergyConnectionIntervalRange,
-                                                        latency: LowEnergyConnectionLatency,
-                                                        timeOut: LowEnergySupervisionTimeout,
-                                                        length: LowEnergyConnectionLength,
-                                                        timeout: HCICommandTimeout = .default) throws -> UInt16 {
-        
-        let parameters = HCILERemoteConnectionParameterRequestReply(connectionHandle: connectionHandle,
-                                                                                         interval: interval,
-                                                                                         latency: latency,
-                                                                                         timeOut: timeOut,
-                                                                                         length: length)
-        
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestReplyReturnParameter.self, timeout: timeout)
-        
-        return returnParameters.connectionHandle
-    }
-    
     /// LE Remote Connection Parameter Request Negative Reply Command
     ///
     /// Both the master Host and the slave Host use this command to reply to the HCI
@@ -59,26 +36,6 @@ public extension BluetoothHostControllerInterface {
         
         // cancel connection
         try deviceRequest(HCILowEnergyCommand.createConnectionCancel, timeout: timeout)
-    }
-    
-    /// LE Connection Update Command
-    ///
-    /// The LE_Connection_Update command is used to change the Link Layer connection parameters of a connection.
-    /// This command may be issued on both the master and slave.
-    func updateLowEnergyConnection(handle: UInt16,
-                                   connectionInterval: LowEnergyConnectionIntervalRange = .full,
-                                   connectionLatency: LowEnergyConnectionLatency = .zero,
-                                   supervisionTimeout: LowEnergySupervisionTimeout = .max,
-                                   connectionLength: LowEnergyConnectionLength = .full,
-                                   timeout: HCICommandTimeout = .default) throws {
-        
-        let parameters = HCILEUpdateConnection(connectionHandle: handle,
-                                                                    connectionInterval: connectionInterval,
-                                                                    connectionLatency: connectionLatency,
-                                                                    supervisionTimeout: supervisionTimeout,
-                                                                    connectionLength: connectionLength)
-        
-        try deviceRequest(parameters, timeout: timeout)
     }
     
     /// LE Set Data Length Command
