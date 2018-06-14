@@ -535,6 +535,10 @@
 		6E6AADE620D22CAB00DDE1CA /* ATTReadByTypeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADE420D22CAB00DDE1CA /* ATTReadByTypeResponse.swift */; };
 		6E6AADE720D22CAB00DDE1CA /* ATTReadByTypeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADE420D22CAB00DDE1CA /* ATTReadByTypeResponse.swift */; };
 		6E6AADE820D22CAB00DDE1CA /* ATTReadByTypeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADE420D22CAB00DDE1CA /* ATTReadByTypeResponse.swift */; };
+		6E6AADEA20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADE920D244CC00DDE1CA /* GATTCharacteristicFormatType.swift */; };
+		6E6AADEB20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADE920D244CC00DDE1CA /* GATTCharacteristicFormatType.swift */; };
+		6E6AADEC20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADE920D244CC00DDE1CA /* GATTCharacteristicFormatType.swift */; };
+		6E6AADED20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADE920D244CC00DDE1CA /* GATTCharacteristicFormatType.swift */; };
 		6E6AD98D1FCE8E4F007F0250 /* BluetoothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */; };
 		6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
 		6E704C781E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
@@ -881,6 +885,7 @@
 		6E6AADDA20D22B9400DDE1CA /* ATTFindByTypeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTFindByTypeResponse.swift; sourceTree = "<group>"; };
 		6E6AADDF20D22C0200DDE1CA /* ATTReadByTypeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTReadByTypeRequest.swift; sourceTree = "<group>"; };
 		6E6AADE420D22CAB00DDE1CA /* ATTReadByTypeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTReadByTypeResponse.swift; sourceTree = "<group>"; };
+		6E6AADE920D244CC00DDE1CA /* GATTCharacteristicFormatType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTCharacteristicFormatType.swift; sourceTree = "<group>"; };
 		6E6AD9891FCE8E4F007F0250 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
 		6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothTests.swift; sourceTree = "<group>"; };
 		6E704C761E95C32D00484A22 /* BitMaskOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitMaskOption.swift; sourceTree = "<group>"; };
@@ -1301,6 +1306,7 @@
 				6E97026420CE234C008AA9C6 /* GATTCharacteristic.swift */,
 				6E97026620CE236D008AA9C6 /* GATTService.swift */,
 				6E443A2C2085D4E2005F4D5F /* GATTDescriptor.swift */,
+				6E6AADE920D244CC00DDE1CA /* GATTCharacteristicFormatType.swift */,
 				6E6AAD7A20D2172E00DDE1CA /* Descriptors */,
 				6E6AAD7920D2170F00DDE1CA /* Services */,
 				6E6AAD6E20D215F900DDE1CA /* Characteristics */,
@@ -1726,6 +1732,7 @@
 				351829DE20D22DDF0009F82D /* GAPLERole.swift in Sources */,
 				6E740C6D2065A2D1006589F6 /* HostControllerBasebandCommandParameter.swift in Sources */,
 				6E740C4020657EEB006589F6 /* HostControllerBasebandCommand.swift in Sources */,
+				6E6AADED20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */,
 				35182A0620D22F7F0009F82D /* GAPManufacturerSpecificData.swift in Sources */,
 				6E49B24520532D45002EA5DC /* ProtocolServiceMultiplexer.swift in Sources */,
 				3518299D20D22CE60009F82D /* GAPSecurityManagerOOBFlags.swift in Sources */,
@@ -1901,6 +1908,7 @@
 				351829DD20D22DDF0009F82D /* GAPLERole.swift in Sources */,
 				6E740C6C2065A2D1006589F6 /* HostControllerBasebandCommandParameter.swift in Sources */,
 				6E740C3F20657EEB006589F6 /* HostControllerBasebandCommand.swift in Sources */,
+				6E6AADEC20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */,
 				35182A0520D22F7F0009F82D /* GAPManufacturerSpecificData.swift in Sources */,
 				6EB2EA0A1CD5A8A7000CF975 /* ProtocolServiceMultiplexer.swift in Sources */,
 				3518299C20D22CE60009F82D /* GAPSecurityManagerOOBFlags.swift in Sources */,
@@ -2067,6 +2075,7 @@
 				3518297220D22C400009F82D /* GAPTxPowerLevel.swift in Sources */,
 				6EBD96B9207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */,
 				6EE84DFD1CAF891E00A40C4D /* HCICommand.swift in Sources */,
+				6E6AADEA20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */,
 				6EE84DED1CAF881B00A40C4D /* ATTProtocolDataUnit.swift in Sources */,
 				3518291D20D222440009F82D /* GATTSupportedUnreadAlertCategory.swift in Sources */,
 				351829EA20D22E000009F82D /* GAPChannelMapUpdateIndication.swift in Sources */,
@@ -2286,6 +2295,7 @@
 				351829DC20D22DDF0009F82D /* GAPLERole.swift in Sources */,
 				6E740C6B2065A2D1006589F6 /* HostControllerBasebandCommandParameter.swift in Sources */,
 				6E740C3E20657EEB006589F6 /* HostControllerBasebandCommand.swift in Sources */,
+				6E6AADEB20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */,
 				35182A0420D22F7F0009F82D /* GAPManufacturerSpecificData.swift in Sources */,
 				6EF45FAA1CC6D04D001F7A39 /* ProtocolServiceMultiplexer.swift in Sources */,
 				3518299B20D22CE60009F82D /* GAPSecurityManagerOOBFlags.swift in Sources */,

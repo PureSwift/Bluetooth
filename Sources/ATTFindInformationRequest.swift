@@ -37,8 +37,8 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.startHandle = UInt16(littleEndian: bytes: (data[1], data[2])))
-        self.endHandle = UInt16(littleEndian: bytes: (data[3], data[4])))
+        self.startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
+        self.endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
     }
     
     public var data: Data {

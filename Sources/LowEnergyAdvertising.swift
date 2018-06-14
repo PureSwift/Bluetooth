@@ -42,7 +42,7 @@ public extension BluetoothHostControllerInterface {
     func setLowEnergyAdvertisingData(_ data: LowEnergyAdvertisingData,
                                      timeout: HCICommandTimeout = .default) throws {
         
-        let parameter = HCILowEnergyCommand.SetAdvertisingDataParameter(data: data)
+        let parameter = HCILowEnergyCommand.SetAdvertisingDataParameter(advertisingData: data)
         
         try deviceRequest(parameter, timeout: timeout)
     }

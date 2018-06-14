@@ -42,9 +42,9 @@ public struct GAPPBADV: GAPData {
     
     public let transactionNumber: UInt8
     
-    public let genericProvisioningPDU: [UInt8]
+    public let genericProvisioningPDU: Data
     
-    public init(linkID: UInt32, transactionNumber: UInt8, genericProvisioningPDU: [UInt8]) {
+    public init(linkID: UInt32, transactionNumber: UInt8, genericProvisioningPDU: Data) {
         
         self.linkID = linkID
         self.transactionNumber = transactionNumber
@@ -60,6 +60,7 @@ public struct GAPPBADV: GAPData {
         let transactionNumber = data[4]
         var genericProvisioningPDU = Data()
         
+        // FIXME: Use .suffix() instead
         data.enumerated().forEach { (index, element) in
             if index >= 5 {
                 genericProvisioningPDU.append(element)

@@ -12,7 +12,7 @@ public protocol HCIPacketHeader {
     
     static var length: Int { get }
     
-    init?(bytes: [UInt8])
+    init?(data: Data)
     
     var data: Data { get }
 }
@@ -42,7 +42,7 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
         self.parameterLength = parameterLength
     }
     
-    public static func from <T: HCICommandParameter> (_ commandParameter: T) -> (HCICommandHeader, [UInt8]) {
+    public static func from <T: HCICommandParameter> (_ commandParameter: T) -> (HCICommandHeader, Data) {
         
         let command = type(of: commandParameter).command
         let parameterData = commandParameter.data
@@ -53,13 +53,13 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
         return (header, parameterData)
     }
     
-    public init?(bytes: [UInt8]) {
+    public init?(data: Data) {
         
-        guard bytes.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        self.opcode = UInt16(bytes: (bytes[0], bytes[1])).littleEndian
-        self.parameterLength = bytes[2]
+        self.opcode = UInt16(littleEndian: UInt16(bytes: (data[0], bytes[1])))
+        self.parameterLength = data[2]
     }
     
     public var data: Data {
@@ -87,22 +87,22 @@ public struct HCIEventHeader: HCIPacketHeader {
         self.parameterLength = parameterLength
     }
     
-    public init?(bytes: [UInt8]) {
+    public init?(data: Data) {
         
-        guard bytes.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let eventByte = bytes[0]
+        let eventByte = data[0]
         
         guard let event = HCIGeneralEvent(rawValue: eventByte)
             else { return nil }
         
         self.event = event
-        self.parameterLength = bytes[1]
+        self.parameterLength = data[1]
     }
     
     public var data: Data {
         
-        return [event.rawValue, parameterLength]
+        return Data([event.rawValue, parameterLength])
     }
 }

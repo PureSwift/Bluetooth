@@ -661,9 +661,9 @@ public final class GATTClient {
         case let .value(pdu):
             
             // store PDU values
-            for serviceData in pdu.data {
+            for serviceData in pdu.attributeData {
                 
-                guard let littleEndianServiceUUID = BluetoothUUID(data: Data(serviceData.value))
+                guard let littleEndianServiceUUID = BluetoothUUID(data: serviceData.value)
                     else { operation.completion(.error(Error.invalidResponse(pdu))); return }
                 
                 let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
@@ -677,7 +677,7 @@ public final class GATTClient {
             }
             
             // get more if possible
-            let lastEnd = pdu.data.last?.endGroupHandle ?? 0x00
+            let lastEnd = pdu.attributeData.last?.endGroupHandle ?? 0x00
             
             // prevent infinite loop
             guard lastEnd >= operation.start
@@ -847,7 +847,7 @@ public final class GATTClient {
             operation.foundData.reserveCapacity(operation.foundData.count + pdu.data.count)
             
             // parse pdu data
-            for characteristicData in pdu.data {
+            for characteristicData in pdu.attributeData {
                 
                 let handle = characteristicData.handle
                 

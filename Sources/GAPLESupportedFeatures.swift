@@ -14,13 +14,13 @@
 /// the minimum number of octets within the data packet.
 public struct GAPLESupportedFeatures: GAPData {
     
-    public static let omittedValue: UInt8 = 0x00
+    internal static let omittedValue: UInt8 = 0x00
     
     public static let dataType: GAPDataType = .lowEnergySupportedFeatures
     
-    public let supportedFeatures: [UInt8]
+    public let supportedFeatures: Data
     
-    public init(supportedFeatures: [UInt8]) {
+    public init(supportedFeatures: Data) {
         
         self.supportedFeatures = supportedFeatures
     }
