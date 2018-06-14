@@ -8,6 +8,60 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// Scan LE devices.
+    func lowEnergyScan(filterDuplicates: Bool = true,
+                       parameters: HCILESetScanParameters = .init(),
+                       timeout: HCICommandTimeout = .default,
+                       shouldContinue: () -> (Bool),
+                       foundDevice: (LowEnergyScannedDevice) -> ()) throws {
+        
+        // macro for enabling / disabling scan
+        func enableScan(_ isEnabled: Bool = true) throws {
+            
+            let scanEnableCommand = HCILESetScanEnable(isEnabled: isEnabled,
+                                                       filterDuplicates: filterDuplicates)
+            
+            do { try deviceRequest(scanEnableCommand, timeout: timeout) }
+            catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
+        }
+        
+        // disable scanning first
+        do { try enableScan(false) }
+        catch HCIError.commandDisallowed { } // ignore error
+        
+        // set parameters
+        try deviceRequest(parameters, timeout: timeout)
+        
+        // enable scanning
+        try enableScan()
+        
+        // disable scanning after completion
+        defer { do { try enableScan(false) } catch { /* ignore all errors disabling scanning */ } }
+        
+        // poll for scanned devices
+        try pollEvent(HCIGeneralEvent.LowEnergyMetaParameter.self, shouldContinue: shouldContinue) { (metaEvent) in
+            
+            // only want advertising report
+            guard metaEvent.subevent == .advertisingReport
+                else { return }
+            
+            // parse LE advertising report
+            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(data: metaEvent.eventData)
+                else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.eventData)) }
+            
+            // call closure on each device found
+            advertisingReport.reports.forEach { foundDevice($0) }
+        }
+    }
+    
+}
+
+// MARK: - Command
+
 /// LE Set Scan Enable Command
 ///
 /// The `LE Set Scan Enable Command` command is used to start scanning.
