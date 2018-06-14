@@ -31,7 +31,7 @@ public extension BluetoothHostControllerInterface {
     func enableLowEnergyAdvertising(_ isEnabled: Bool = true,
                                     timeout: HCICommandTimeout = .default) throws {
         
-        let parameter = HCILowEnergyCommand.HCILESetAdvertiseEnable(isEnabled: isEnabled)
+        let parameter = HCILESetAdvertiseEnable(isEnabled: isEnabled)
         
         try deviceRequest(parameter, timeout: timeout)
     }
@@ -42,18 +42,9 @@ public extension BluetoothHostControllerInterface {
     func setLowEnergyAdvertisingData(_ data: LowEnergyAdvertisingData,
                                      timeout: HCICommandTimeout = .default) throws {
         
-        let parameter = HCILowEnergyCommand.HCILESetAdvertisingData(advertisingData: data)
+        let parameter = HCILESetAdvertisingData(advertisingData: data)
         
         try deviceRequest(parameter, timeout: timeout)
-    }
-    
-    /// LE Set Advertising Parameters Command
-    ///
-    /// Used by the Host to set the advertising parameters.
-    func setLowEnergyAdvertisingParameters(_ parameters: HCILowEnergyCommand.HCILESetAdvertisingParameters,
-                                           timeout: HCICommandTimeout = .default) throws {
-        
-        try deviceRequest(parameters, timeout: timeout)
     }
     
     /// LE Set Advertising Set Random Address Command
@@ -63,7 +54,7 @@ public extension BluetoothHostControllerInterface {
                                         advertisingRandomAddress: Address,
                                         timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.SetAdvertisingSetRandomAddress(advertisingHandle: advertisingHandle, advertisingRandomAddress: advertisingRandomAddress)
+        let parameters = HCILowEnergyCommand.HCILESetAdvertisingSetRandomAddress(advertisingHandle: advertisingHandle, advertisingRandomAddress: advertisingRandomAddress)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -71,7 +62,7 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Extended Advertising Parameters Command
     ///
     /// The command is used by the Host to set the advertising parameters.
-    func setExtendedAdvertisingParameters(_ parameters: HCILowEnergyCommand.SetExtendedAdvertisingParametersParameter,
+    func setExtendedAdvertisingParameters(_ parameters: HCILowEnergyCommand.HCILESetExtendedAdvertisingParameters,
                                           timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
         
         let returnParameter = try deviceRequest(parameters, HCILowEnergyCommand.SetExtendedAdvertisingParametersReturnParameter.self, timeout: timeout)
@@ -83,12 +74,12 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to set the data used in advertising PDUs that have a data field.
     func setExtendedAdvertisingData(advertisingHandle: UInt8,
-                                    operation: HCILowEnergyCommand.SetExtendedAdvertisingDataParameter.Operation,
+                                    operation: HCILowEnergyCommand.HCILESetExtendedAdvertisingData.Operation,
                                     fragmentPreference: LowEnergyFragmentPreference,
                                     advertisingData: [UInt8],
                                     timeout: HCICommandTimeout = .default)  throws {
         
-        let parameters = HCILowEnergyCommand.SetExtendedAdvertisingDataParameter(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingData: advertisingData)
+        let parameters = HCILowEnergyCommand.HCILESetExtendedAdvertisingData(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingData: advertisingData)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -276,7 +267,7 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyGenerateDHKey( remoteP256PublicKey: UInt512,
                                  timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.GenerateDHKeyParameter(remoteP256PublicKey: remoteP256PublicKey)
+        let parameters = HCILowEnergyCommand.HCILEGenerateDHKey(remoteP256PublicKey: remoteP256PublicKey)
         
         try deviceRequest(parameters, timeout: timeout)
     }
