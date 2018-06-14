@@ -50,7 +50,7 @@ public struct HCILESetRandomAddress: HCICommandParameter {
         self.address = address
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let bytes = address.littleEndian.bytes
         

@@ -86,7 +86,7 @@ public extension LowEnergyEvent {
         /// On a master, this parameter shall be set to 0x00.
         public let masterClockAccuracy: MasterClockAccuracy // Master_Clock_Accuracy
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == ConnectionCompleteParameter.length
                 else { return nil }
@@ -176,7 +176,7 @@ public extension LowEnergyEvent {
         
         public let reports: [Report]
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count >= AdvertisingReportEventParameter.length
                 else { return nil }
@@ -227,7 +227,7 @@ public extension LowEnergyEvent {
             /// Units: dBm
             public let rssi: RSSI // RSSI
             
-            public init?(byteValue: [UInt8]) {
+            public init?(data: Data) {
                 
                 guard byteValue.count >= Report.length
                     else { return nil }
@@ -312,7 +312,7 @@ public extension LowEnergyEvent {
         
         public let supervisionTimeout: LowEnergySupervisionTimeout
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -367,7 +367,7 @@ public extension LowEnergyEvent {
         /// LE features of the remote controller.
         public let features: LowEnergyFeatureSet
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -411,7 +411,7 @@ public extension LowEnergyEvent {
         
         public let encryptedDiversifier: UInt16
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -448,7 +448,7 @@ public extension LowEnergyEvent {
         
         public let supervisionTimeout: LowEnergySupervisionTimeout
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -513,7 +513,7 @@ public extension LowEnergyEvent {
         /// and equal to connEffectiveMaxRxTimeCoded while the connection is on the LE Coded PHY.
         public let maxRxTime: UInt16
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -545,7 +545,7 @@ public extension LowEnergyEvent {
         
         public let localP256PublicKey: UInt512
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -575,7 +575,7 @@ public extension LowEnergyEvent {
         
         public let dhKey: UInt256
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -645,7 +645,7 @@ public extension LowEnergyEvent {
         
         public let masterClockAccuracy: LowEnergyClockAccuracy
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             guard byteValue.count == type(of: self).length
                 else { return nil }
             
@@ -713,7 +713,7 @@ public extension LowEnergyEvent {
         
         public let reports: [Report]
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count >= type(of: self).length
                 else { return nil }
@@ -768,7 +768,7 @@ public extension LowEnergyEvent {
             /// Units: dBm
             public let rssi: RSSI // RSSI
             
-            public init?(byteValue: [UInt8]) {
+            public init?(data: Data) {
                 
                 guard byteValue.count >= Report.length
                     else { return nil }
@@ -854,7 +854,7 @@ public extension LowEnergyEvent {
         
         public let rxPhy: LowEnergyRxPhy
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -894,7 +894,7 @@ public extension LowEnergyEvent {
         
         public let reports: [Report]
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count >= type(of: self).length
                 else { return nil }
@@ -953,7 +953,7 @@ public extension LowEnergyEvent {
             
             public let data: [UInt8] //Data
             
-            public init?(byteValue: [UInt8]) {
+            public init?(data: Data) {
                 
                 guard byteValue.count >= Report.length
                     else { return nil }
@@ -1189,7 +1189,7 @@ public extension LowEnergyEvent {
         
         public let advertiserClockAccuracy: LowEnergyClockAccuracy
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -1305,7 +1305,7 @@ public extension LowEnergyEvent {
         
         public let data: Data
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count >= type(of: self).length
                 else { return nil }
@@ -1371,7 +1371,7 @@ public extension LowEnergyEvent {
         
         public let syncHandle: UInt16 // Sync_Handle
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -1399,7 +1399,7 @@ public extension LowEnergyEvent {
         
         public let numCompletedExtendedAdvertisingEvents: UInt8
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -1437,7 +1437,7 @@ public extension LowEnergyEvent {
         
         public let scannerAddress: Address
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == type(of: self).length
                 else { return nil }
@@ -1468,7 +1468,7 @@ public extension LowEnergyEvent {
         
         public let channelSelectionAlgorithm: ChannelSelectionAlgorithm
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             guard byteValue.count == type(of: self).length
                 else { return nil }
             

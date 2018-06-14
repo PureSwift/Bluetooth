@@ -52,7 +52,7 @@ public struct HCILESetEventMask: HCICommandParameter {
         self.eventMask = eventMask
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let eventMaskBytes = eventMask.rawValue.littleEndian.bytes
         

@@ -17,10 +17,10 @@ public protocol ATTProtocolDataUnit {
     static var attributeOpcode: ATT.Opcode { get }
     
     /// Converts PDU to raw bytes (little-endian).
-    var byteValue: [UInt8] { get }
+    var data: Data { get }
     
     /// Initializes PDU from raw bytes (little-endian).
-    init?(byteValue: [UInt8])
+    init?(data: Data)
 }
 
 /// Read Request
@@ -30,7 +30,7 @@ public protocol ATTProtocolDataUnit {
 public struct ATTReadRequest: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.readRequest
-    public static let length = 1 + 2
+    internal static let length = 1 + 2
     
     public var handle: UInt16
     
@@ -39,24 +39,24 @@ public struct ATTReadRequest: ATTProtocolDataUnit {
         self.handle = handle
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count == ATTReadRequest.length
+        guard data.count == ATTReadRequest.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == ATTReadRequest.attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(bytes: (data[1], data[2])).littleEndian
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
         
-        return [ATTReadRequest.attributeOpcode.rawValue, handleBytes.0, handleBytes.1]
+        return Data([ATTReadRequest.attributeOpcode.rawValue, handleBytes.0, handleBytes.1])
     }
 }
 
@@ -71,39 +71,39 @@ public struct ATTReadResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.readResponse
     
     /// Minimum length
-    public static let length = 1 + 0
+    internal static let length = 1 + 0
     
     /// The value of the attribute with the handle given.
-    public var attributeValue: [UInt8]
+    public var attributeValue: Data
     
-    public init(attributeValue: [UInt8] = []) {
+    public init(attributeValue: Data) {
         
         self.attributeValue = attributeValue
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count >= type(of: self).length
+        guard data.count >= type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        if byteValue.count > type(of: self).length {
+        if data.count > type(of: self).length {
             
-            self.attributeValue = Array(byteValue.suffix(from: 1))
+            self.attributeValue = Data(data.suffix(from: 1))
             
         } else {
             
-            self.attributeValue = []
+            self.attributeValue = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
-        return [ATTReadResponse.attributeOpcode.rawValue] + attributeValue
+        return Data([ATTReadResponse.attributeOpcode.rawValue]) + attributeValue
     }
 }
 
@@ -114,7 +114,7 @@ public struct ATTReadResponse: ATTProtocolDataUnit {
 public struct ATTReadBlobRequest: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.readBlobRequest
-    public static let length = 1 + 2 + 2
+    internal static let length = 1 + 2 + 2
     
     /// The handle of the attribute to be read.
     public var handle: UInt16
@@ -122,34 +122,33 @@ public struct ATTReadBlobRequest: ATTProtocolDataUnit {
     /// The offset of the first octet to be read.
     public var offset: UInt16
     
-    public init(handle: UInt16 = 0, offset: UInt16 = 0) {
+    public init(handle: UInt16,
+                offset: UInt16) {
         
         self.handle = handle
         self.offset = offset
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count == ATTReadBlobRequest.length
+        guard data.count == ATTReadBlobRequest.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == ATTReadBlobRequest.attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
-        
-        self.offset = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
+        self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
-        
         let offsetBytes = offset.littleEndian.bytes
         
-        return [ATTReadBlobRequest.attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1]
+        return Data([ATTReadBlobRequest.attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1])
     }
 }
 
@@ -162,43 +161,43 @@ public struct ATTReadBlobResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.readBlobResponse
     
     /// Minimum length
-    public static let length = 1 + 0
+    internal static let length = 1 + 0
     
     /// Part of the value of the attribute with the handle given. 
     ///
     ///
     /// The part attribute value shall be set to part of the value of the attribute identified 
     /// by the attribute handle and the value offset in the request.
-    public var partAttributeValue: [UInt8]
+    public var partAttributeValue: Data
     
-    public init(partAttributeValue: [UInt8] = []) {
+    public init(partAttributeValue: Data) {
         
         self.partAttributeValue = partAttributeValue
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count >= ATTReadBlobResponse.length
+        guard data.count >= ATTReadBlobResponse.length
         else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == ATTReadBlobResponse.attributeOpcode.rawValue
             else { return nil }
         
-        if byteValue.count > ATTReadBlobResponse.length {
+        if data.count > ATTReadBlobResponse.length {
                 
-            self.partAttributeValue = Array(byteValue.suffix(from: 1))
+            self.partAttributeValue = Data(data.suffix(from: 1))
                 
         } else {
             
-            self.partAttributeValue = []
+            self.partAttributeValue = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
-        return [ATTReadBlobResponse.attributeOpcode.rawValue] + partAttributeValue
+        return Data([ATTReadBlobResponse.attributeOpcode.rawValue]) + partAttributeValue
     }
 }
 
@@ -214,7 +213,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.readMultipleRequest
     
     /// Minimum length
-    public static let length = 1 + 4
+    internal static let length = 1 + 4
     
     public var handles: [UInt16]
     
@@ -226,21 +225,21 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
         self.handles = handles
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         let type = ATTReadBlobResponse.self
         
-        guard byteValue.count >= type.length
+        guard data.count >= type.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type.attributeOpcode.rawValue
             else { return nil }
         
-        let handleCount = (byteValue.count - 1) / 2
+        let handleCount = (data.count - 1) / 2
         
-        guard (byteValue.count - 1) % 2 == 0
+        guard (data.count - 1) % 2 == 0
             else { return nil }
         
         // preallocate handle buffer
@@ -250,7 +249,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
             
             let handleIndex = 1 + (index * 2)
             
-            let handle = UInt16(bytes: (byteValue[handleIndex], byteValue[handleIndex + 1])).littleEndian
+            let handle = UInt16(bytes: (data[handleIndex], data[handleIndex + 1])).littleEndian
             
             handles[index] = handle
         }
@@ -258,7 +257,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
         self.handles = handles
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let type = ATTReadBlobResponse.self
         
@@ -275,7 +274,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
             handlesBytes[handleByteIndex + 1] = handleBytes.1
         }
         
-        return [type.attributeOpcode.rawValue] + handlesBytes
+        return Data([type.attributeOpcode.rawValue]) + handlesBytes
     }
 }
 
@@ -288,42 +287,42 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.readMultipleResponse
     
     /// Minimum length
-    public static let length = 1 + 0
+    internal static let length = 1 + 0
     
-    public var values: [UInt8]
+    public var values: Data
     
-    public init(values: [UInt8] = []) {
+    public init(values: Data) {
         
         self.values = values
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         let type = ATTReadMultipleResponse.self
             
-        guard byteValue.count >= type.length
+        guard data.count >= type.length
             else { return nil }
             
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
             
         guard attributeOpcodeByte == type.attributeOpcode.rawValue
             else { return nil }
             
-        if byteValue.count > 1 {
+        if data.count > 1 {
             
-            self.values = Array(byteValue.suffix(from: 1))
+            self.values = Data(data.suffix(from: 1))
             
         } else {
             
-            self.values = []
+            self.values = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let type = ATTReadBlobResponse.self
         
-        return [type.attributeOpcode.rawValue] + values
+        return Data([type.attributeOpcode.rawValue]) + values
     }
 }
 
@@ -353,42 +352,41 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
         self.type = type
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard let length = Length(rawValue: byteValue.count)
+        guard let length = Length(rawValue: data.count)
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == ATTReadByGroupTypeRequest.attributeOpcode.rawValue
             else { return nil }
         
-        self.startHandle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.startHandle = UInt16(bytes: (data[1], data[2])).littleEndian
         
-        self.endHandle = UInt16(bytes: (byteValue[3], byteValue[4])).littleEndian
+        self.endHandle = UInt16(bytes: (data[3], data[4])).littleEndian
         
         switch length {
             
         case .UUID16:
             
-            let value = UInt16(bytes: (byteValue[5], byteValue[6])).littleEndian
+            let value = UInt16(bytes: (data[5], data[6])).littleEndian
         
         self.type = .bit16(value)
             
         case .UUID128:
             
         self.type = BluetoothUUID(littleEndian:
-            BluetoothUUID(data: Data(byteValue[5 ... 20]))!)
+            BluetoothUUID(data: Data(data[5 ... 20]))!)
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let startHandleBytes = startHandle.littleEndian.bytes
-        
         let endHandleBytes = endHandle.littleEndian.bytes
         
-        return [ATTReadByGroupTypeRequest.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1] + [UInt8](type.littleEndian.data)
+        return Data([ATTReadByGroupTypeRequest.attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1]) + Data(type.littleEndian.data)
     }
     
     private enum Length: Int {
@@ -419,87 +417,95 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.readByGroupTypeResponse
     
     /// Minimum length
-    public static let length = 1 + 1 + 4
+    internal static let length = 1 + 1 + 4
     
     /// A list of Attribute Data
-    public let data: [AttributeData]
+    public let attributeData: [AttributeData]
     
-    public init?(data: [AttributeData]) {
+    public init?(attributeData attributeDataList: [AttributeData]) {
         
         // must have at least one item
-        guard let valueLength = data.first?.value.count
+        guard let valueLength = attributeDataList.first?.value.count
             else { return nil }
         
-        for attributeData in data {
+        for attributeData in attributeDataList {
             
             // all items must have same length
             guard attributeData.value.count == valueLength
                 else { return nil }
         }
         
-        self.data = data
+        self.attributeData = attributeDataList
     }
     
-    public init?(byteValue: [UInt8]) {
+    internal init(_ unsafe: [AttributeData]) {
+        
+        self.attributeData = unsafe
+        
+        assert(ATTReadByGroupTypeResponse(attributeData: unsafe) != nil)
+    }
+    
+    public init?(data: Data) {
         
         let type = ATTReadByGroupTypeResponse.self
         
-        guard byteValue.count >= type.length
+        guard data.count >= type.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type.attributeOpcode.rawValue
             else { return nil }
         
-        let length = Int(byteValue[1])
+        let length = Int(data[1])
         
-        let attributeDataBytesCount = byteValue.count - 2
+        let attributeDataBytesCount = data.count - 2
         
         let attributeCount = attributeDataBytesCount / length
         
         guard attributeDataBytesCount % length == 0
             else { return nil }
         
-        var attributeDataList = [AttributeData](repeating: AttributeData(), count: attributeCount)
+        var attributeDataList = [AttributeData]()
+        attributeDataList.reserveCapacity(attributeCount)
         
         for index in 0 ..< attributeCount {
                 
             let byteIndex = 2 + (index * length)
 
-            let data = Array(byteValue[byteIndex ..< byteIndex + length])
+            let attributeBytes = Data(data[byteIndex ..< byteIndex + length])
                 
-            guard let attributeData = AttributeData(byteValue: data)
+            guard let attributeData = AttributeData(data: attributeBytes)
                 else { return nil }
                 
             attributeDataList[index] = attributeData
         }
         
-        self.data = attributeDataList
+        self.attributeData = attributeDataList
         
-        assert(length == (data[0].byteValue.count))
+        assert(length == (attributeData[0].data.count))
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let type = ATTReadByGroupTypeResponse.self
         
-        let length = UInt8(data[0].value.count + 4)
+        let length = UInt8(attributeData[0].value.count + 4)
         
-        var attributeDataBytes = [UInt8]()
+        var attributeDataBytes = Data()
         
-        for attributeData in data {
+        for attribute in attributeData {
             
-            attributeDataBytes += attributeData.byteValue
+            attributeDataBytes += attribute.data
         }
         
-        return [type.attributeOpcode.rawValue, length] + attributeDataBytes
+        return Data([type.attributeOpcode.rawValue, length]) + attributeDataBytes
     }
     
     public struct AttributeData {
         
         /// Minimum length
-        public static let length = 4
+        internal static let length = 4
         
         /// Attribute Handle
         public var attributeHandle: UInt16
@@ -508,42 +514,42 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
         public var endGroupHandle: UInt16
         
         /// Attribute Value
-        public var value: [UInt8]
+        public var value: Data
         
-        public init(attributeHandle: UInt16 = 0,
-                    endGroupHandle: UInt16 = 0,
-                    value: [UInt8] = []) {
+        public init(attributeHandle: UInt16,
+                    endGroupHandle: UInt16,
+                    value: Data) {
             
             self.attributeHandle = attributeHandle
             self.endGroupHandle = endGroupHandle
             self.value = value
         }
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
-            guard byteValue.count >= AttributeData.length
+            guard data.count >= AttributeData.length
                 else { return nil }
             
-            self.attributeHandle = UInt16(bytes: (byteValue[0], byteValue[1])).littleEndian
-            self.endGroupHandle = UInt16(bytes: (byteValue[2], byteValue[3])).littleEndian
+            self.attributeHandle = UInt16(bytes: (data[0], data[1])).littleEndian
+            self.endGroupHandle = UInt16(bytes: (data[2], data[3])).littleEndian
             
-            if byteValue.count > type(of: self).length {
+            if data.count > type(of: self).length {
                 
-                self.value = Array(byteValue.suffix(from: type(of: self).length))
+                self.value = Data(data.suffix(from: type(of: self).length))
                 
             } else {
                 
-                self.value = []
+                self.value = Data()
             }
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             let attributeHandleBytes = attributeHandle.littleEndian.bytes
             
             let endGroupHandleBytes = endGroupHandle.littleEndian.bytes
             
-            return [attributeHandleBytes.0, attributeHandleBytes.1, endGroupHandleBytes.0, endGroupHandleBytes.1] + value
+            return Data([attributeHandleBytes.0, attributeHandleBytes.1, endGroupHandleBytes.0, endGroupHandleBytes.1]) + value
         }
     }
 }
@@ -559,47 +565,47 @@ public struct ATTWriteRequest: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.writeRequest
     
     /// Minimum length
-    public static let length = 3
+    internal static let length = 3
     
     /// The handle of the attribute to be written.
     public var handle: UInt16
     
     /// The value to be written to the attribute.
-    public var value: [UInt8]
+    public var value: Data
     
-    public init(handle: UInt16 = 0, value: [UInt8] = []) {
+    public init(handle: UInt16, value: Data) {
         
         self.handle = handle
         self.value = value
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count >= type(of: self).length
+        guard data.count >= type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        if byteValue.count > type(of: self).length {
+        if data.count > type(of: self).length {
             
-            self.value = Array(byteValue.suffix(from: 3))
+            self.value = Data(data.suffix(from: 3))
             
         } else {
             
-            self.value = []
+            self.value = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
         
-        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
+        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1]) + value
     }
 }
 
@@ -610,24 +616,24 @@ public struct ATTWriteRequest: ATTProtocolDataUnit {
 public struct ATTWriteResponse: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.writeResponse
-    public static let length = 1
+    internal static let length = 1
     
     public init() { }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
-        return [type(of: self).attributeOpcode.rawValue]
+        return Data([type(of: self).attributeOpcode.rawValue])
     }
 }
 
@@ -639,47 +645,48 @@ public struct ATTWriteCommand: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.writeCommand
     
     /// Minimum length
-    public static let length = 3
+    internal static let length = 3
     
     /// The handle of the attribute to be set.
     public var handle: UInt16
     
     /// The value of be written to the attribute.
-    public var value: [UInt8]
+    public var value: Data
     
-    public init(handle: UInt16 = 0, value: [UInt8] = []) {
+    public init(handle: UInt16,
+                value: Data) {
         
         self.handle = handle
         self.value = value
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count >= type(of: self).length
+        guard data.count >= type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(bytes: (data[1], data[2])).littleEndian
         
-        if byteValue.count > type(of: self).length {
+        if data.count > type(of: self).length {
             
-            self.value = Array(byteValue.suffix(from: 3))
+            self.value = Data(data.suffix(from: 3))
             
         } else {
             
-            self.value = []
+            self.value = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
         
-        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
+        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1]) + value
     }
 }
 
@@ -694,57 +701,59 @@ public struct ATTSignedWriteCommand: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.signedWriteCommand
     
     /// Minimum length
-    public static let length = 1 + 2 + 0 + 12
+    internal static let length = 1 + 2 + 0 + 12
     
     /// The handle of the attribute to be set.
     public var handle: UInt16
     
     /// The value to be written to the attribute
-    public var value: [UInt8]
+    public var value: Data
     
     /// Authentication signature for the Attribute Upload, Attribute Handle and Attribute Value Parameters.
     public var signature: Signature
     
-    public init(handle: UInt16, value: [UInt8], signature: Signature) {
+    public init(handle: UInt16, value: Data, signature: Signature) {
         
         self.handle = handle
         self.value = value
         self.signature = signature
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         let type = ATTSignedWriteCommand.self
         
-        guard byteValue.count >= type.length
+        guard data.count >= type.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type.attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        if byteValue.count > type.length {
+        if data.count > type.length {
             
-            self.value = Array(byteValue[3 ..< byteValue.count - 12])
+            self.value = Data(data[3 ..< data.count - 12])
             
         } else {
             
-            self.value = []
+            self.value = Data()
         }
         
-        self.signature = (byteValue[byteValue.count - 12], byteValue[byteValue.count - 11], byteValue[byteValue.count - 10], byteValue[byteValue.count - 9], byteValue[byteValue.count - 8], byteValue[byteValue.count - 7], byteValue[byteValue.count - 6], byteValue[byteValue.count - 5], byteValue[byteValue.count - 4], byteValue[byteValue.count - 3], byteValue[byteValue.count - 2], byteValue[byteValue.count - 1])
+        self.signature = (data[data.count - 12], data[data.count - 11], data[data.count - 10], data[data.count - 9], data[data.count - 8], data[data.count - 7], data[data.count - 6], data[data.count - 5], data[data.count - 4], data[data.count - 3], data[data.count - 2], data[data.count - 1])
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let type = ATTSignedWriteCommand.self
         
         let handleBytes = handle.littleEndian.bytes
         
-        return [type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value + [signature.0, signature.1, signature.2, signature.3, signature.4, signature.5, signature.6, signature.7, signature.8, signature.9, signature.10, signature.11]
+        return Data([type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1])
+            + value
+            + Data([signature.0, signature.1, signature.2, signature.3, signature.4, signature.5, signature.6, signature.7, signature.8, signature.9, signature.10, signature.11])
     }
 }
 
@@ -760,7 +769,7 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.preparedWriteRequest
     
     /// Minimum length
-    public static let length = 1 + 2 + 2 + 0
+    internal static let length = 1 + 2 + 2 + 0
     
     /// The handle of the attribute to be written.
     public var handle: UInt16
@@ -769,46 +778,48 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
     public var offset: UInt16
     
     /// The value of the attribute to be written.
-    public var partValue: [UInt8]
+    public var partValue: Data
     
-    public init(handle: UInt16 = 0, offset: UInt16 = 0, partValue: [UInt8] = []) {
+    public init(handle: UInt16,
+                offset: UInt16,
+                partValue: Data) {
         
         self.handle = handle
         self.offset = offset
         self.partValue = partValue
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count >= type(of: self).length
+        guard data.count >= type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        self.offset = UInt16(littleEndian: UInt16(bytes: (byteValue[3], byteValue[4])))
+        self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         
-        if byteValue.count > type(of: self).length {
+        if data.count > type(of: self).length {
             
-            self.partValue = Array(byteValue.suffix(from: type(of: self).length))
+            self.partValue = Data(data.suffix(from: type(of: self).length))
             
         } else {
             
-            self.partValue = []
+            self.partValue = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
         
         let offsetBytes = offset.littleEndian.bytes
         
-        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1] + partValue
+        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1]) + partValue
     }
 }
 
@@ -820,7 +831,7 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.preparedWriteResponse
     
     /// Minimum length
-    public static let length = 1 + 2 + 2 + 0
+    internal static let length = 1 + 2 + 2 + 0
     
     /// The handle of the attribute to be written.
     public var handle: UInt16
@@ -829,46 +840,47 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
     public var offset: UInt16
     
     /// The value of the attribute to be written.
-    public var partValue: [UInt8]
+    public var partValue: Data
     
-    public init(handle: UInt16 = 0, offset: UInt16 = 0, partValue: [UInt8] = []) {
+    public init(handle: UInt16,
+                offset: UInt16,
+                partValue: Data) {
         
         self.handle = handle
         self.offset = offset
         self.partValue = partValue
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count >= type(of: self).length
+        guard data.count >= type(of: self).length
             else { return nil }
             
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
             
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
             
-        self.handle = UInt16(littleEndian: UInt16(bytes: (byteValue[1], byteValue[2])))
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
             
-        self.offset = UInt16(littleEndian: UInt16(bytes: (byteValue[3], byteValue[4])))
+        self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
             
-        if byteValue.count > type(of: self).length {
+        if data.count > type(of: self).length {
                 
-            self.partValue = Array(byteValue.suffix(from: type(of: self).length))
+            self.partValue = Data(data.suffix(from: type(of: self).length))
                 
         } else {
                 
-            self.partValue = []
+            self.partValue = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
-                
         let offsetBytes = offset.littleEndian.bytes
                 
-        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1] + partValue
+        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1]) + partValue
     }
 }
 
@@ -880,7 +892,7 @@ public struct ATTPrepareWriteResponse: ATTProtocolDataUnit {
 public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.executeWriteRequest
-    public static let length = 1 + 1
+    internal static let length = 1 + 1
     
     public var flag: Flag
     
@@ -889,13 +901,13 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
         self.flag = flag
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
-        let flagByte = byteValue[1]
+        let attributeOpcodeByte = data[0]
+        let flagByte = data[1]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
             let flag = Flag(rawValue: flagByte)
@@ -904,11 +916,11 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
         self.flag = flag
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let attributeOpcode = type(of: self).attributeOpcode
         
-        return [attributeOpcode.rawValue, flag.rawValue]
+        return Data([attributeOpcode.rawValue, flag.rawValue])
     }
     
     public enum Flag: UInt8 {
@@ -925,28 +937,28 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
 public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.executeWriteResponse
-    public static let length = 1
+    internal static let length = 1
     
     public init() { }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         let type = ATTExecuteWriteResponse.self
         
-        guard byteValue.count == type.length
+        guard data.count == type.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type.attributeOpcode.rawValue
             else { return nil }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let attributeOpcode = type(of: self).attributeOpcode
         
-        return [attributeOpcode.rawValue]
+        return Data([attributeOpcode.rawValue])
     }
 }
 
@@ -960,49 +972,49 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.handleValueNotification
     
     /// minimum length
-    public static let length = 1 + 2 + 0
+    internal static let length = 1 + 2 + 0
     
     /// The handle of the attribute.
     public var handle: UInt16
     
     /// The handle of the attribute.
-    public var value: [UInt8]
+    public var value: Data
     
-    public init(handle: UInt16, value: [UInt8]) {
+    public init(handle: UInt16, value: Data) {
         
         self.handle = handle
         self.value = value
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         let minimumLength = type(of: self).length
         
-        guard byteValue.count >= minimumLength
+        guard data.count >= minimumLength
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(bytes: (data[1], data[2])).littleEndian
         
-        if byteValue.count > minimumLength {
+        if data.count > minimumLength {
             
-            self.value = Array(byteValue.suffix(from: 3))
+            self.value = Data(data.suffix(from: 3))
             
         } else {
             
-            self.value = []
+            self.value = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
         
-        return [type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
+        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1]) + value
     }
 }
 
@@ -1014,51 +1026,51 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.handleValueIndication
     
     /// Minimum length
-    public static let length = 1 + 2 + 0
+    internal static let length = 1 + 2 + 0
     
     /// The handle of the attribute.
     public var handle: UInt16
     
     /// The handle of the attribute.
-    public var value: [UInt8]
+    public var value: Data
     
-    public init(handle: UInt16, value: [UInt8]) {
+    public init(handle: UInt16, value: Data) {
         
         self.handle = handle
         self.value = value
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         let type = ATTHandleValueIndication.self
         
-        guard byteValue.count >= type.length
+        guard data.count >= type.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type.attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (byteValue[1], byteValue[2])).littleEndian
+        self.handle = UInt16(bytes: (data[1], data[2])).littleEndian
         
-        if byteValue.count > type.length {
+        if data.count > type.length {
             
-            self.value = Array(byteValue.suffix(from: 3))
+            self.value = Data(data.suffix(from: 3))
             
         } else {
             
-            self.value = []
+            self.value = Data()
         }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let type = ATTHandleValueIndication.self
         
         let handleBytes = handle.littleEndian.bytes
         
-        return [type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1] + value
+        return Data([type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1]) + value
     }
 }
 
@@ -1070,25 +1082,25 @@ public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.handleValueConfirmation
     
-    public static let length = 1
+    internal static let length = 1
     
     public init() { }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         let type = ATTHandleValueConfirmation.self
         
-        guard byteValue.count >= type.length
+        guard data.count >= type.length
             else { return nil }
         
-        let attributeOpcodeByte = byteValue[0]
+        let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type.attributeOpcode.rawValue
             else { return nil }
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
-        return [ATTHandleValueConfirmation.attributeOpcode.rawValue]
+        return Data([ATTHandleValueConfirmation.attributeOpcode.rawValue])
     }
 }

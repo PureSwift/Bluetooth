@@ -17,7 +17,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     public static let attributeOpcode = ATT.Opcode.findByTypeResponse
     
     /// Minimum length.
-    public static let length = 1 + HandlesInformation.length
+    internal static let length = 1 + HandlesInformation.length
     
     /// A list of 1 or more Handle Informations.
     public var handlesInformationList: [HandlesInformation]
@@ -29,7 +29,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         self.handlesInformationList = handlesInformationList
     }
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard byteValue.count >= ATTFindByTypeResponse.length
             else { return nil }
@@ -65,7 +65,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         self.handlesInformationList = handles
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         // complex algorithm for better performance
         let handlesDataByteCount = handlesInformationList.count * HandlesInformation.length
@@ -96,7 +96,7 @@ public extension ATTFindByTypeResponse {
     /// and attribute value from the *Find By Type Value Request*.
     public struct HandlesInformation {
         
-        public static let length = 2 + 2
+        internal static let length = 2 + 2
         
         /// Found Attribute Handle
         public var foundAttribute: UInt16
@@ -110,7 +110,7 @@ public extension ATTFindByTypeResponse {
             self.groupEnd = groupEnd
         }
         
-        public init?(byteValue: [UInt8]) {
+        public init?(data: Data) {
             
             guard byteValue.count == HandlesInformation.length
                 else { return nil }
@@ -119,7 +119,7 @@ public extension ATTFindByTypeResponse {
             self.groupEnd = UInt16(littleEndian: UInt16(bytes: (byteValue[2], byteValue[3])))
         }
         
-        public var byteValue: [UInt8] {
+        public var data: Data {
             
             let foundAttributeBytes = foundAttribute.littleEndian.bytes
             let groupEndBytes = groupEnd.littleEndian.bytes

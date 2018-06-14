@@ -118,7 +118,7 @@ public final class ATTConnection {
         
         log?("Sending data... (\(sendOperation.data.count) bytes)")
         
-        try socket.send(Data(bytes: sendOperation.data))
+        try socket.send(sendOperation.data)
         
         let opcode = sendOperation.opcode
         
@@ -279,9 +279,9 @@ public final class ATTConnection {
     
     // MARK: - Private Methods
     
-    private func encode <T: ATTProtocolDataUnit> (PDU: T) -> [UInt8]? {
+    private func encode <T: ATTProtocolDataUnit> (PDU: T) -> Data? {
         
-        let data = PDU.byteValue
+        let data = PDU.data
         
         // actual PDU length
         let length = data.count
@@ -310,7 +310,7 @@ public final class ATTConnection {
         // Retry for error response
         if opcode == .errorResponse {
             
-            guard let errorResponse = ATTErrorResponse(byteValue: [UInt8](data))
+            guard let errorResponse = ATTErrorResponse(data: data)
                 else { throw Error.garbageResponse(data) }
             
             let (errorRequestOpcode, didRetry) = handle(errorResponse: errorResponse)
@@ -388,7 +388,7 @@ public final class ATTConnection {
             if type(of: notify).PDUType.attributeOpcode != opcode { continue }
             
             // attempt to deserialize
-            guard let PDU = foundPDU ?? type(of: notify).PDUType.init(byteValue: Array(data))
+            guard let PDU = foundPDU ?? type(of: notify).PDUType.init(data: data)
                 else { throw Error.garbageResponse(data) }
             
             foundPDU = PDU
@@ -558,7 +558,7 @@ fileprivate final class ATTSendOperation {
     let identifier: UInt
     
     /// The request data.
-    let data: [UInt8]
+    let data: Data
     
     /// The sent opcode
     let opcode: ATTOpcode
@@ -568,7 +568,7 @@ fileprivate final class ATTSendOperation {
     
     fileprivate init(identifier: UInt,
                      opcode: ATT.Opcode,
-                     data: [UInt8],
+                     data: Data,
                      response: (callback: (Response) -> (), responseType: ATTProtocolDataUnit.Type)? = nil) {
         
         self.identifier = identifier
@@ -587,14 +587,14 @@ fileprivate final class ATTSendOperation {
         
         if opcode == ATT.Opcode.errorResponse.rawValue {
             
-            guard let errorResponse = ATTErrorResponse(byteValue: [UInt8](data))
+            guard let errorResponse = ATTErrorResponse(data: data)
                 else { throw ATTConnectionError.garbageResponse(data) }
             
             responseInfo.callback(.error(errorResponse))
             
         } else {
             
-            guard let response = responseInfo.responseType.init(byteValue: [UInt8](data))
+            guard let response = responseInfo.responseType.init(data: data)
                 else { throw ATTConnectionError.garbageResponse(data) }
             
             responseInfo.callback(.value(response))

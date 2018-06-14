@@ -44,7 +44,7 @@ public struct HCILEReadChannelMap: HCICommandParameter { // HCI_LE_Read_Channel_
         self.connectionHandle = connectionHandle
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
         
@@ -82,7 +82,7 @@ public struct HCILEReadChannelMapReturnParameter: HCICommandReturnParameter {
     /// The most significant bits are reserved for future use.
     public let channelMap: LowEnergyChannelMap // Channel_Map
     
-    public init?(byteValue: [UInt8]) {
+    public init?(data: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }

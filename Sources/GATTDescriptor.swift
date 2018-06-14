@@ -42,13 +42,14 @@ public extension GATT {
 /// GATT Characteristic Descriptor
 public protocol GATTDescriptor {
     
+    /// Bluetooth UUID of the descriptor.
     static var uuid: BluetoothUUID { get }
     
-    init?(byteValue: Data)
+    /// Decode from data.
+    init?(data: Data)
     
-    var byteValue: Data { get }
-    
-    var descriptor: GATT.Descriptor { get }
+    /// Encode to data. 
+    var data: Data { get }
 }
 
 public extension GATT.CharacteristicDescriptor {
@@ -86,7 +87,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
         self.properties = properties
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
@@ -96,7 +97,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
         self.properties = BitMaskOptionSet<Property>(rawValue: rawValue)
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         let bytes = properties.rawValue.littleEndian.bytes
         
@@ -153,7 +154,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
         self.serverConfiguration = serverConfiguration
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
@@ -163,7 +164,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
         self.serverConfiguration = BitMaskOptionSet<ServerConfiguration>(rawValue: rawValue)
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         return Data([serverConfiguration.rawValue])
     }
@@ -219,7 +220,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
         self.handles = handles
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         // this is not actually UInt16 UUID, but handles
         // since the binary format is the same we can reuse code
@@ -229,7 +230,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
         self.handles = list.uuids
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         return (Bit16UUIDList(uuids: handles)).data
     }
@@ -438,7 +439,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
         self.description = description
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
@@ -453,7 +454,7 @@ public struct GATTFormatDescriptor: GATTDescriptor {
                   description: UInt16(littleEndian: UInt16(bytes: (byteValue[5], byteValue[6]))))
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         let unitBytes = unit.littleEndian.bytes
         let descriptionBytes = description.littleEndian.bytes
@@ -494,7 +495,7 @@ public struct GATTUserDescription: GATTDescriptor {
         self.userDescription = userDescription
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard let rawValue = String(data: byteValue, encoding: .utf8)
             else { return nil }
@@ -502,7 +503,7 @@ public struct GATTUserDescription: GATTDescriptor {
         self.init(userDescription: rawValue)
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         return Data(userDescription.utf8)
     }
@@ -534,7 +535,7 @@ public struct GATTReportReference: GATTDescriptor {
         self.type = type
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
@@ -545,7 +546,7 @@ public struct GATTReportReference: GATTDescriptor {
         self.init(identifier: Identifier(rawValue: byteValue[0]), type: reportType)
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         return Data([identifier.rawValue, type.rawValue])
     }
@@ -638,7 +639,7 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
     
     case valueC3(UInt16)
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard byteValue.count >= type(of: self).minimumLength
             else { return nil }
@@ -672,7 +673,7 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
         }
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         switch self {
             
@@ -718,7 +719,7 @@ public struct GATTExternalReportReference: GATTDescriptor {
         self.uuid = uuid
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard let uuid = BluetoothUUID(data: byteValue)
             else { return nil }
@@ -726,7 +727,7 @@ public struct GATTExternalReportReference: GATTDescriptor {
         self.init(uuid: BluetoothUUID(littleEndian: uuid))
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         return uuid.data
     }
@@ -756,7 +757,7 @@ public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
         self.rawValue = rawValue
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
         guard byteValue.count == type(of: self).length
             else { return nil }
@@ -764,7 +765,7 @@ public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
         rawValue = byteValue[0]
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         return Data([rawValue])
     }

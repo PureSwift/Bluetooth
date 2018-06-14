@@ -14,7 +14,7 @@ public protocol HCIPacketHeader {
     
     init?(bytes: [UInt8])
     
-    var byteValue: [UInt8] { get }
+    var data: Data { get }
 }
 
 // MARK: - Command Header
@@ -62,7 +62,7 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
         self.parameterLength = bytes[2]
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         let opcodeBytes = opcode.littleEndian.bytes
         
@@ -101,7 +101,7 @@ public struct HCIEventHeader: HCIPacketHeader {
         self.parameterLength = bytes[1]
     }
     
-    public var byteValue: [UInt8] {
+    public var data: Data {
         
         return [event.rawValue, parameterLength]
     }

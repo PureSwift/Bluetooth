@@ -32,17 +32,17 @@ public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
         self.configuration = configuration
     }
     
-    public init?(byteValue: Data) {
+    public init?(data: Data) {
         
-        guard byteValue.count == type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        let rawValue = UInt16(littleEndian: UInt16(bytes: (byteValue[0], byteValue[1])))
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
         self.configuration = BitMaskOptionSet<Configuration>(rawValue: rawValue)
     }
     
-    public var byteValue: Data {
+    public var data: Data {
         
         let bytes = configuration.rawValue.littleEndian.bytes
         
@@ -52,7 +52,7 @@ public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
     public var descriptor: GATT.Descriptor {
         
         return GATT.Descriptor(uuid: type(of: self).uuid,
-                               value: byteValue,
+                               value: data,
                                permissions: [.read, .write])
     }
 }
