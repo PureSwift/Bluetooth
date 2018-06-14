@@ -14,7 +14,7 @@ public extension BluetoothHostControllerInterface {
     /// on the connection identified by the Connection_Handle.
     func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.ReadPHYReturnParameter {
         
-        let parameters = HCILowEnergyCommand.ReadPHYParameter(connectionHandle: connectionHandle)
+        let parameters = HCILowEnergyCommand.HCILEReadPHY(connectionHandle: connectionHandle)
         
         let value = try deviceRequest(parameters, HCILowEnergyCommand.ReadPHYReturnParameter.self, timeout: timeout)
         
@@ -30,7 +30,7 @@ public extension BluetoothHostControllerInterface {
                                 rxPhys: LowEnergyRxPhys,
                                 timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.SetDefaultPhyParameter(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
+        let parameters = HCILowEnergyCommand.HCILESetDefaultPhy(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -48,7 +48,7 @@ public extension BluetoothHostControllerInterface {
                                   phyOptions: LowEnergyPhyOptions,
                                   timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.PhyUpdateCompleteEventParameter {
         
-        let parameters = HCILowEnergyCommand.SetPhyParameter(connectionHandle: connectionHandle,
+        let parameters = HCILowEnergyCommand.HCILESetPhy(connectionHandle: connectionHandle,
                                                           allPhys: allPhys,
                                                           txPhys: txPhys,
                                                           rxPhys: rxPhys,

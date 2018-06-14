@@ -16,7 +16,7 @@ public extension BluetoothHostControllerInterface {
     /// and returns the Encrypted_Data to the Host.
     func lowEnergyEncrypt(key: UInt128, data: UInt128, timeout: HCICommandTimeout = .default) throws -> UInt128 {
         
-        let parameters = HCILowEnergyCommand.HCILEEncrypt(key: key, plainText: data)
+        let parameters = HCILEEncrypt(key: key, plainText: data)
         
         let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.EncryptReturnParameter.self, timeout: timeout)
         
@@ -49,7 +49,7 @@ public extension BluetoothHostControllerInterface {
          - Note: A Command Complete event is not sent by the Controller to indicate that this command has been completed. Instead, the Encryption Change or Encryption Key Refresh Complete events indicate that this command has been completed.
          */
         
-        let command = HCILowEnergyCommand.HCILEStartEncryption(connectionHandle: connectionHandle,
+        let command = HCILEStartEncryption(connectionHandle: connectionHandle,
                                                                 randomNumber: randomNumber,
                                                                 encryptedDiversifier: encryptedDiversifier,
                                                                 longTermKey: longTermKey)

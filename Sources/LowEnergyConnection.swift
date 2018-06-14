@@ -20,7 +20,7 @@ public extension BluetoothHostControllerInterface {
                                                         length: LowEnergyConnectionLength,
                                                         timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let parameters = HCILowEnergyCommand.HCILERemoteConnectionParameterRequestReply(connectionHandle: connectionHandle,
+        let parameters = HCILERemoteConnectionParameterRequestReply(connectionHandle: connectionHandle,
                                                                                          interval: interval,
                                                                                          latency: latency,
                                                                                          timeOut: timeOut,
@@ -41,7 +41,7 @@ public extension BluetoothHostControllerInterface {
                                                                 reason: UInt8,
                                                                 timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let parameters = HCILowEnergyCommand.RemoteConnectionParameterRequestNegativeReplyParameter(connectionHandle: connectionHandle,
+        let parameters = HCILowEnergyCommand.HCILERemoteConnectionParameterRequestNegativeReply(connectionHandle: connectionHandle,
                                                                                                  reason: reason)
         
         let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestNegativeReplyReturnParameter.self, timeout: timeout)
@@ -54,14 +54,14 @@ public extension BluetoothHostControllerInterface {
                                    ownAddressType: LowEnergyAddressType = .public,
                                    timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let parameters = HCILowEnergyCommand.HCILECreateConnection(peerAddressType: peerAddressType,
+        let parameters = HCILECreateConnection(peerAddressType: peerAddressType,
                                                                     peerAddress: peerAddress,
                                                                     ownAddressType: ownAddressType)
         
         return try lowEnergyCreateConnection(parameters: parameters, timeout: timeout).handle
     }
     
-    func lowEnergyCreateConnection(parameters: HCILowEnergyCommand.HCILECreateConnection,
+    func lowEnergyCreateConnection(parameters: HCILECreateConnection,
                                    timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.ConnectionCompleteParameter {
         
         // connect with specified parameters
@@ -103,7 +103,7 @@ public extension BluetoothHostControllerInterface {
                                    connectionLength: LowEnergyConnectionLength = .full,
                                    timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.HCILEUpdateConnection(connectionHandle: handle,
+        let parameters = HCILEUpdateConnection(connectionHandle: handle,
                                                                     connectionInterval: connectionInterval,
                                                                     connectionLatency: connectionLatency,
                                                                     supervisionTimeout: supervisionTimeout,
@@ -121,7 +121,7 @@ public extension BluetoothHostControllerInterface {
                                 txTime: LowEnergyMaxTxTime,
                                 timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let parameters = HCILowEnergyCommand.SetDataLengthParameter(connectionHandle: connectionHandle,
+        let parameters = HCILowEnergyCommand.HCILESetDataLength(connectionHandle: connectionHandle,
                                                                        txOctets: txOctets,
                                                                        txTime: txTime)
         
@@ -147,7 +147,7 @@ public extension BluetoothHostControllerInterface {
                                                   suggestedMaxTxTime: LowEnergyMaxTxTime,
                                                   timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.WriteSuggestedDefaultDataLengthParameter(suggestedMaxTxOctets: suggestedMaxTxOctets,
+        let parameters = HCILowEnergyCommand.HCILEWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: suggestedMaxTxOctets,
                                                                                    suggestedMaxTxTime: suggestedMaxTxTime)
         
         try deviceRequest(parameters, timeout: timeout)

@@ -32,7 +32,7 @@ public extension BluetoothHostControllerInterface {
     /// Used to add a single device to the White List stored in the Controller.
     func lowEnergyAddDeviceToWhiteList(_ whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
         
-        try deviceRequest(HCILowEnergyCommand.HCILEAddDeviceToWhiteList(device: whiteListDevice), timeout: timeout)
+        try deviceRequest(HCILEAddDeviceToWhiteList(device: whiteListDevice), timeout: timeout)
     }
     
     /// LE Remove Device From White List Command
@@ -40,6 +40,6 @@ public extension BluetoothHostControllerInterface {
     /// Used to remove a single device from the White List stored in the Controller.
     func lowEnergyRemoveDeviceFromWhiteList(_ whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
         
-        try deviceRequest(HCILowEnergyCommand.HCILERemoveDeviceFromWhiteList(device: whiteListDevice), timeout: timeout)
+        try deviceRequest(HCILERemoveDeviceFromWhiteList(device: whiteListDevice), timeout: timeout)
     }
 }

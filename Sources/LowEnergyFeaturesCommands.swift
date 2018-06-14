@@ -34,7 +34,7 @@ public extension BluetoothHostControllerInterface {
     /// the features used on the connection and the features supported by the remote device.
     func lowEnergyReadRemoteUsedFeatures(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> LowEnergyFeatureSet {
         
-        let parameters = HCILowEnergyCommand.HCILEReadRemoteUsedFeatures(connectionHandle: connectionHandle)
+        let parameters = HCILEReadRemoteUsedFeatures(connectionHandle: connectionHandle)
         
         let event =  try deviceRequest(parameters,
                                        LowEnergyEvent.ReadRemoteUsedFeaturesCompleteEventParameter.self,

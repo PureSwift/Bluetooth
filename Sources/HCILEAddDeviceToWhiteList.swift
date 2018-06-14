@@ -8,45 +8,42 @@
 
 import Foundation
 
-public extension HCILowEnergyCommand {
+/// LE Add Device To White List Command
+///
+/// The command is used to add a single device to the White List stored in the Controller.
+///
+/// This command can be used at any time except when:
+/// * any advertising filter policy uses the White List and advertising is enabled.
+/// * the scanning filter policy uses the White List and scanning is enabled.
+/// * the initiator filter policy uses the White List and a create connection command is outstanding.
+///
+/// When a Controller cannot add a device to the White List because there is no space available,
+/// it shall return the error code Memory Capacity Exceeded (0x07).
+///
+/// Address is ignored when Address Type is set to 0xFF.
+public struct HCILEAddDeviceToWhiteList: HCICommandParameter { //HCI_LE_Add_Device_To_White_List
     
-    /// LE Add Device To White List Command
-    ///
-    /// The command is used to add a single device to the White List stored in the Controller.
-    ///
-    /// This command can be used at any time except when:
-    /// * any advertising filter policy uses the White List and advertising is enabled.
-    /// * the scanning filter policy uses the White List and scanning is enabled.
-    /// * the initiator filter policy uses the White List and a create connection command is outstanding.
-    ///
-    /// When a Controller cannot add a device to the White List because there is no space available,
-    /// it shall return the error code Memory Capacity Exceeded (0x07).
-    ///
-    /// Address is ignored when Address Type is set to 0xFF.
-    public struct HCILEAddDeviceToWhiteList: HCICommandParameter { //HCI_LE_Add_Device_To_White_List
+    public static let command = HCILowEnergyCommand.addDeviceToWhiteList //0x0011
+    
+    /// The white list device.
+    public var device: LowEnergyWhiteListDevice
+    
+    public init(device: LowEnergyWhiteListDevice) {
         
-        public static let command = HCILowEnergyCommand.addDeviceToWhiteList //0x0011
+        self.device = device
+    }
+    
+    public var data: Data {
         
-        /// The white list device.
-        public var device: LowEnergyWhiteListDevice
+        let addressType = self.device.addressType.rawValue
+        let addressBytes = self.device.address.littleEndian.bytes
         
-        public init(device: LowEnergyWhiteListDevice) {
-            
-            self.device = device
-        }
-        
-        public var data: Data {
-            
-            let addressType = self.device.addressType.rawValue
-            let addressBytes = self.device.address.littleEndian.bytes
-            
-            return Data([addressType,
-                         addressBytes.0,
-                         addressBytes.1,
-                         addressBytes.2,
-                         addressBytes.3,
-                         addressBytes.4,
-                         addressBytes.5])
-        }
+        return Data([addressType,
+                     addressBytes.0,
+                     addressBytes.1,
+                     addressBytes.2,
+                     addressBytes.3,
+                     addressBytes.4,
+                     addressBytes.5])
     }
 }

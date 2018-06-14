@@ -14,7 +14,7 @@ public extension BluetoothHostControllerInterface {
     /// The tester generates the test reference packets.
     func lowEnergyReceiverTest(rxChannel: LowEnergyRxChannel, timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.HCILEReceiverTest(rxChannel: rxChannel)
+        let parameters = HCILEReceiverTest(rxChannel: rxChannel)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -28,7 +28,7 @@ public extension BluetoothHostControllerInterface {
                                   packetPayload: LowEnergyPacketPayload,
                                   timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.HCILETransmitterTest(txChannel: txChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload)
+        let parameters = HCILETransmitterTest(txChannel: txChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -49,9 +49,9 @@ public extension BluetoothHostControllerInterface {
     /// This command is used to start a test where the DUT receives test
     /// reference packets at a fixed interval. The tester generates the test
     /// reference packets.
-    func lowEnergyEnhancedReceiverTest(rxChannel: LowEnergyRxChannel, phy: HCILowEnergyCommand.EnhancedReceiverTestParameter.Phy, modulationIndex: HCILowEnergyCommand.EnhancedReceiverTestParameter.ModulationIndex, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyEnhancedReceiverTest(rxChannel: LowEnergyRxChannel, phy: HCILowEnergyCommand.HCILEEnhancedReceiverTest.Phy, modulationIndex: HCILowEnergyCommand.HCILEEnhancedReceiverTest.ModulationIndex, timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.EnhancedReceiverTestParameter(rxChannel: rxChannel, phy: phy, modulationIndex: modulationIndex)
+        let parameters = HCILowEnergyCommand.HCILEEnhancedReceiverTest(rxChannel: rxChannel, phy: phy, modulationIndex: modulationIndex)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -60,9 +60,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to start a test where the DUT generates test reference packets
     /// at a fixed interval. The Controller shall transmit at maximum power.
-    func lowEnergyEnhancedTransmitterTest(txChannel: LowEnergyTxChannel, lengthOfTestData: UInt8, packetPayload: LowEnergyPacketPayload, phy: HCILowEnergyCommand.EnhancedTransmitterTest.Phy, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyEnhancedTransmitterTest(txChannel: LowEnergyTxChannel, lengthOfTestData: UInt8, packetPayload: LowEnergyPacketPayload, phy: HCILowEnergyCommand.HCILEEnhancedTransmitterTest.Phy, timeout: HCICommandTimeout = .default) throws {
         
-        let parameters = HCILowEnergyCommand.EnhancedTransmitterTest(txChannel: txChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload, phy: phy)
+        let parameters = HCILowEnergyCommand.HCILEEnhancedTransmitterTest(txChannel: txChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload, phy: phy)
         
         try deviceRequest(parameters, timeout: timeout)
     }
