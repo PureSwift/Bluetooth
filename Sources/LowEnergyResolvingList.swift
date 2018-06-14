@@ -29,16 +29,6 @@ public extension BluetoothHostControllerInterface {
         return value.resolvingListSize
     }
     
-    /// LE Set Resolvable Private Address Timeout Command
-    ///
-    /// The command set the length of time the Controller uses a Resolvable Private Address before a new resolvable private address is generated and starts being used.
-    func lowEnergySetResolvablePrivateAddressTimeout(rpaTimeout: HCILowEnergyCommand.HCILESetResolvablePrivateAddressTimeout.RPATimeout, timeout: HCICommandTimeout = .default) throws {
-        
-        let parameters = HCILowEnergyCommand.HCILESetResolvablePrivateAddressTimeout(rpaTimeout: rpaTimeout)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
     /// LE Read Maximum Data Length Command
     ///
     /// This ommand allows the Host to read the Controller’s maximum supported payload octets
