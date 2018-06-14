@@ -43,7 +43,7 @@ public extension BluetoothHostControllerInterface {
         defer { do { try enableScan(false) } catch { /* ignore all errors disabling scanning */ } }
         
         // poll for scanned devices
-        try pollEvent(HCIGeneralEvent.LowEnergyMetaParameter.self, shouldContinue: shouldContinue) { (metaEvent) in
+        try pollEvent(HCILowEnergyMetaEvent.self, shouldContinue: shouldContinue) { (metaEvent) in
             
             // only want advertising report
             guard metaEvent.subevent == .advertisingReport

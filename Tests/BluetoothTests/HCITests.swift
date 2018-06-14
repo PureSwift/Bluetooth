@@ -266,8 +266,6 @@ final class HCITests: XCTestCase {
     
     func testReadLocalVersionInformation() {
         
-        typealias LocalVersionInformation = InformationalCommand.ReadLocalVersionInformationReturnParameter
-        
         let hostController = TestHostController()
         
         /**
@@ -294,7 +292,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x01, 0x10, 0x00, 0x08, 0xC2, 0x12, 0x08, 0x0F, 0x00, 0x9A, 0x21]))
         
-        var localVersionInformation: LocalVersionInformation!
+        var localVersionInformation: HCILocalVersionInformation!
         XCTAssertNoThrow(localVersionInformation = try hostController.readLocalVersionInformation())
         XCTAssert(hostController.queue.isEmpty)
         
@@ -594,7 +592,7 @@ final class HCITests: XCTestCase {
             
             let eventData = Data(data[3 ..< readBytes])
             
-            guard let meta = HCIGeneralEvent.LowEnergyMetaParameter(data: eventData)
+            guard let meta = HCILowEnergyMetaEvent(data: eventData)
                 else { XCTFail("Could not parse"); return [] }
             
             XCTAssert(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
@@ -731,7 +729,7 @@ final class HCITests: XCTestCase {
     
     func testCommandStatusEvent() {
         
-        func parseEvent(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> HCIGeneralEvent.CommandStatusParameter? {
+        func parseEvent(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> HCICommandStatus? {
             
             let headerData = Data(eventBuffer[1 ..< 1 + HCIEventHeader.length])
             let eventData = Data(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
@@ -744,7 +742,7 @@ final class HCITests: XCTestCase {
             
             XCTAssert(eventHeader.event == .commandStatus)
             
-            guard let event = HCIGeneralEvent.CommandStatusParameter(data: eventData)
+            guard let event = HCICommandStatus(data: eventData)
                 else { return nil }
             
             return event
@@ -780,7 +778,7 @@ final class HCITests: XCTestCase {
             let readBytes = 7
             let data: [UInt8] = [4, 15, 4, 0, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            guard let event: HCIGeneralEvent.CommandStatusParameter = parseEvent(readBytes, data)
+            guard let event: HCICommandStatus = parseEvent(readBytes, data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(event.status == .success)
@@ -791,7 +789,7 @@ final class HCITests: XCTestCase {
             let readBytes = 22
             let data: [UInt8] = [4, 62, 19, 1, 0, 71, 0, 0, 0, 66, 103, 166, 50, 188, 172, 15, 0, 0, 0, 128, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            guard let metaEvent: HCIGeneralEvent.LowEnergyMetaParameter = parseEvent(readBytes, data)
+            guard let metaEvent: HCILowEnergyMetaEvent = parseEvent(readBytes, data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(metaEvent.subevent == .connectionComplete)
@@ -1035,11 +1033,9 @@ final class HCITests: XCTestCase {
     
     func testEncryptionChangeEvent() {
         
-        typealias Event = HCIGeneralEvent.EncryptionChangeEventParameter
-        
         let data = Data([/* 0x08, 0x04, */ 0x00, 0x41, 0x00, 0x01])
         
-        guard let event = HCIGeneralEvent.EncryptionChangeEventParameter(data: data)
+        guard let event = HCIEncryptionChange(data: data)
             else { XCTFail("Could not parse HCI Event"); return }
         
         XCTAssertEqual(event.status.rawValue, 0x00)
