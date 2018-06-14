@@ -79,9 +79,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.requestOpcode == .readByGroupTypeRequest)
+            XCTAssert(errorResponse.request == .readByGroupTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0001)
-            XCTAssert(errorResponse.errorCode == .attributeNotFound)
+            XCTAssert(errorResponse.error == .attributeNotFound)
             XCTAssert(errorResponse.data == data)
             
             XCTAssertEqual(errorResponse.data, data)
@@ -94,9 +94,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(errorResponse.requestOpcode == .readByTypeRequest)
+            XCTAssert(errorResponse.request == .readByTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0000)
-            XCTAssert(errorResponse.errorCode == .requestNotSupported)
+            XCTAssert(errorResponse.error == .requestNotSupported)
             XCTAssert(errorResponse.data == data)
         }
         
@@ -107,9 +107,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(errorResponse.requestOpcode, .readByGroupTypeRequest)
+            XCTAssertEqual(errorResponse.request, .readByGroupTypeRequest)
             XCTAssertEqual(errorResponse.attributeHandle, 49)
-            XCTAssertEqual(errorResponse.errorCode, .attributeNotFound)
+            XCTAssertEqual(errorResponse.error, .attributeNotFound)
             XCTAssertEqual(errorResponse.data, data)
         }
     }
@@ -763,9 +763,9 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
-            XCTAssertEqual(pdu.errorCode, .attributeNotFound)
+            XCTAssertEqual(pdu.error, .attributeNotFound)
             XCTAssertEqual(pdu.attributeHandle, 19)
-            XCTAssertEqual(pdu.requestOpcode, .readByGroupTypeRequest)
+            XCTAssertEqual(pdu.request, .readByGroupTypeRequest)
         }
         
         /// Characteristic Discovery
