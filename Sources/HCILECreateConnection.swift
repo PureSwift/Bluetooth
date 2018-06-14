@@ -8,6 +8,45 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    func lowEnergyCreateConnection(address peerAddress: Address,
+                                   type peerAddressType: LowEnergyAddressType = .public,
+                                   ownAddressType: LowEnergyAddressType = .public,
+                                   timeout: HCICommandTimeout = .default) throws -> UInt16 {
+        
+        let parameters = HCILECreateConnection(peerAddressType: peerAddressType,
+                                               peerAddress: peerAddress,
+                                               ownAddressType: ownAddressType)
+        
+        return try lowEnergyCreateConnection(parameters: parameters, timeout: timeout).handle
+    }
+    
+    func lowEnergyCreateConnection(parameters: HCILECreateConnection,
+                                   timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.ConnectionCompleteParameter {
+        
+        // connect with specified parameters
+        let event = try deviceRequest(parameters,
+                                      LowEnergyEvent.ConnectionCompleteParameter.self,
+                                      timeout: timeout)
+        
+        switch event.status {
+            
+        case let .error(error):
+            throw error
+            
+        case .success:
+            
+            return event
+        }
+    }
+    
+}
+
+// MARK: - Command
+
 /// LE Create Connection Command
 ///
 /// The LE Create Connection command is used to create a Link Layer connection to a connectable advertiser.
