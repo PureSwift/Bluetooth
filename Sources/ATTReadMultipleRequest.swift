@@ -66,8 +66,6 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
     
     public var data: Data {
         
-        let type = ATTReadBlobResponse.self
-        
         var handlesBytes = Data(repeating: 0, count: handles.count * 2)
         
         for handle in handles {
@@ -81,6 +79,6 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
             handlesBytes[handleByteIndex + 1] = handleBytes.1
         }
         
-        return Data([type.attributeOpcode.rawValue]) + handlesBytes
+        return Data([type(of: self).attributeOpcode.rawValue]) + handlesBytes
     }
 }

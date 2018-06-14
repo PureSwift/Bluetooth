@@ -583,6 +583,10 @@
 		6E6AAE2220D258E200DDE1CA /* ATTWriteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAE2020D258E200DDE1CA /* ATTWriteCommand.swift */; };
 		6E6AAE2320D258E200DDE1CA /* ATTWriteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAE2020D258E200DDE1CA /* ATTWriteCommand.swift */; };
 		6E6AAE2420D258E200DDE1CA /* ATTWriteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAE2020D258E200DDE1CA /* ATTWriteCommand.swift */; };
+		6E6AAE2620D2594C00DDE1CA /* ATTSignedWriteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAE2520D2594C00DDE1CA /* ATTSignedWriteCommand.swift */; };
+		6E6AAE2720D2595300DDE1CA /* ATTSignedWriteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAE2520D2594C00DDE1CA /* ATTSignedWriteCommand.swift */; };
+		6E6AAE2820D2595400DDE1CA /* ATTSignedWriteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAE2520D2594C00DDE1CA /* ATTSignedWriteCommand.swift */; };
+		6E6AAE2920D2595400DDE1CA /* ATTSignedWriteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAE2520D2594C00DDE1CA /* ATTSignedWriteCommand.swift */; };
 		6E6AD98D1FCE8E4F007F0250 /* BluetoothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */; };
 		6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
 		6E704C781E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
@@ -941,6 +945,7 @@
 		6E6AAE1620D258BA00DDE1CA /* ATTWriteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTWriteRequest.swift; sourceTree = "<group>"; };
 		6E6AAE1B20D258CD00DDE1CA /* ATTWriteResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTWriteResponse.swift; sourceTree = "<group>"; };
 		6E6AAE2020D258E200DDE1CA /* ATTWriteCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTWriteCommand.swift; sourceTree = "<group>"; };
+		6E6AAE2520D2594C00DDE1CA /* ATTSignedWriteCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTSignedWriteCommand.swift; sourceTree = "<group>"; };
 		6E6AD9891FCE8E4F007F0250 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
 		6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothTests.swift; sourceTree = "<group>"; };
 		6E704C761E95C32D00484A22 /* BitMaskOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitMaskOption.swift; sourceTree = "<group>"; };
@@ -1211,6 +1216,7 @@
 				6E6AAE1620D258BA00DDE1CA /* ATTWriteRequest.swift */,
 				6E6AAE1B20D258CD00DDE1CA /* ATTWriteResponse.swift */,
 				6E6AAE2020D258E200DDE1CA /* ATTWriteCommand.swift */,
+				6E6AAE2520D2594C00DDE1CA /* ATTSignedWriteCommand.swift */,
 			);
 			name = "Protocol Data Unit";
 			sourceTree = "<group>";
@@ -1804,6 +1810,7 @@
 				35182A0620D22F7F0009F82D /* GAPManufacturerSpecificData.swift in Sources */,
 				6E49B24520532D45002EA5DC /* ProtocolServiceMultiplexer.swift in Sources */,
 				3518299D20D22CE60009F82D /* GAPSecurityManagerOOBFlags.swift in Sources */,
+				6E6AAE2720D2595300DDE1CA /* ATTSignedWriteCommand.swift in Sources */,
 				6E49B24620532D45002EA5DC /* GATT.swift in Sources */,
 				6E49B24720532D45002EA5DC /* LinkControlCommand.swift in Sources */,
 				6E6AAE1520D2589C00DDE1CA /* ATTReadByGroupTypeResponse.swift in Sources */,
@@ -1991,6 +1998,7 @@
 				35182A0520D22F7F0009F82D /* GAPManufacturerSpecificData.swift in Sources */,
 				6EB2EA0A1CD5A8A7000CF975 /* ProtocolServiceMultiplexer.swift in Sources */,
 				3518299C20D22CE60009F82D /* GAPSecurityManagerOOBFlags.swift in Sources */,
+				6E6AAE2820D2595400DDE1CA /* ATTSignedWriteCommand.swift in Sources */,
 				6EB2EA0B1CD5A8A7000CF975 /* GATT.swift in Sources */,
 				6EB2EA0C1CD5A8A7000CF975 /* LinkControlCommand.swift in Sources */,
 				6E6AAE1420D2589C00DDE1CA /* ATTReadByGroupTypeResponse.swift in Sources */,
@@ -2165,6 +2173,7 @@
 				3518297220D22C400009F82D /* GAPTxPowerLevel.swift in Sources */,
 				6EBD96B9207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */,
 				6EE84DFD1CAF891E00A40C4D /* HCICommand.swift in Sources */,
+				6E6AAE2620D2594C00DDE1CA /* ATTSignedWriteCommand.swift in Sources */,
 				6E6AADEA20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */,
 				6EE84DED1CAF881B00A40C4D /* ATTProtocolDataUnit.swift in Sources */,
 				3518291D20D222440009F82D /* GATTSupportedUnreadAlertCategory.swift in Sources */,
@@ -2400,6 +2409,7 @@
 				35182A0420D22F7F0009F82D /* GAPManufacturerSpecificData.swift in Sources */,
 				6EF45FAA1CC6D04D001F7A39 /* ProtocolServiceMultiplexer.swift in Sources */,
 				3518299B20D22CE60009F82D /* GAPSecurityManagerOOBFlags.swift in Sources */,
+				6E6AAE2920D2595400DDE1CA /* ATTSignedWriteCommand.swift in Sources */,
 				6EF45FAB1CC6D04D001F7A39 /* GATT.swift in Sources */,
 				6EF45FAC1CC6D04D001F7A39 /* LinkControlCommand.swift in Sources */,
 				6E6AAE1320D2589C00DDE1CA /* ATTReadByGroupTypeResponse.swift in Sources */,
