@@ -14,7 +14,7 @@ public extension BluetoothHostControllerInterface {
 
     /// Scan LE devices.
     func lowEnergyScan(filterDuplicates: Bool = true,
-                       parameters: HCILowEnergyCommand.SetScanParametersParameter = .init(),
+                       parameters: HCILowEnergyCommand.HCILESetScanParameters = .init(),
                        timeout: HCICommandTimeout = .default,
                        shouldContinue: () -> (Bool),
                        foundDevice: (LowEnergyScannedDevice) -> ()) throws {
@@ -22,7 +22,7 @@ public extension BluetoothHostControllerInterface {
         // macro for enabling / disabling scan
         func enableScan(_ isEnabled: Bool = true) throws {
             
-            let scanEnableCommand = HCILowEnergyCommand.SetScanEnableParameter(isEnabled: isEnabled,
+            let scanEnableCommand = HCILowEnergyCommand.HCILESetScanEnable(isEnabled: isEnabled,
                                                                             filterDuplicates: filterDuplicates)
             
             do { try deviceRequest(scanEnableCommand, timeout: timeout) }
@@ -61,7 +61,7 @@ public extension BluetoothHostControllerInterface {
     /// Scan LE devices for the specified time period.
     func lowEnergyScan(duration: TimeInterval = 10,
                        filterDuplicates: Bool = true,
-                       parameters: HCILowEnergyCommand.SetScanParametersParameter = .init(),
+                       parameters: HCILowEnergyCommand.HCILESetScanParameters = .init(),
                        timeout: HCICommandTimeout = .default) throws -> [LowEnergyScannedDevice] {
         
         let startDate = Date()
@@ -92,7 +92,7 @@ public extension BluetoothHostControllerInterface {
                                   timeout: HCICommandTimeout = .default) throws {
         
         // set scan response parameters
-        let command = HCILowEnergyCommand.SetScanResponseDataParameter(advertisingData: data)
+        let command = HCILowEnergyCommand.HCILESetScanResponseData(advertisingData: data)
         
         try deviceRequest(command, timeout: timeout)
     }

@@ -144,7 +144,7 @@ final class BluetoothTests: XCTestCase {
     
     func testLowEnergyAdvertisingFilterPolicy() {
         
-        typealias FilterPolicy = HCILowEnergyCommand.SetAdvertisingParametersParameter.FilterPolicy
+        typealias FilterPolicy = HCILowEnergyCommand.HCILESetAdvertisingParameters.FilterPolicy
         
         XCTAssertEqual(FilterPolicy(), .any)
         XCTAssertEqual(FilterPolicy(whiteListScan: false, whiteListConnect: true), .whiteListConnect)
