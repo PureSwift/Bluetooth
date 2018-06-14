@@ -28,7 +28,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAlertLevel", testAlertLevel),
         ("testAerobicThreshold", testAerobicThreshold),
         ("testAnaerobicHeartRateLowerLimit", testAnaerobicHeartRateLowerLimit),
-        ("testAnaerobicHeartRateUpperLimit", testAnaerobicHeartRateUpperLimit)
+        ("testAnaerobicHeartRateUpperLimit", testAnaerobicHeartRateUpperLimit),
+        ("testBarometricPressureTrend", testBarometricPressureTrend),
     ]
     
     func testDateTime() {
@@ -381,5 +382,20 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(beats.description, "34")
         XCTAssertEqual(GATTAnaerobicHeartRateUpperLimit.uuid, .anaerobicHeartRateUpperLimit)
         XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+    }
+    
+    func testBarometricPressureTrend() {
+        
+        XCTAssertNil(GATTBarometricPressureTrend(data: Data([0x3d, 0x72])))
+        XCTAssertNil(GATTBarometricPressureTrend(data: Data([0xFF])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBarometricPressureTrend(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(GATTBarometricPressureTrend.uuid, .barometricPressureTrend)
+        XCTAssert(GATTBarometricPressureTrend(data: data) == GATTBarometricPressureTrend(data: data))
     }
 }
