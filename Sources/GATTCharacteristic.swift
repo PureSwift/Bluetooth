@@ -1855,13 +1855,13 @@ public struct GATTAlertStatus: GATTProfileCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .alertStatus}
+    public static var uuid: BluetoothUUID { return .alertStatus }
     
-    public var status: AlertStatus
+    public var states: BitMaskOptionSet<State>
     
-    public init(status: AlertStatus) {
+    public init(states: BitMaskOptionSet<State>) {
         
-        self.status = status
+        self.states = states
     }
     
     public init?(data: Data) {
@@ -1869,15 +1869,12 @@ public struct GATTAlertStatus: GATTProfileCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let status = AlertStatus(rawValue: data[0])
-            else { return nil }
-        
-        self.status = status
+        self.states = BitMaskOptionSet<State>(rawValue: data[0])
     }
     
     public var data: Data {
         
-        return Data([status.rawValue])
+        return Data([states.rawValue])
     }
 }
 extension GATTAlertStatus: Equatable {
@@ -1885,7 +1882,7 @@ extension GATTAlertStatus: Equatable {
     public static func == (lhs: GATTAlertStatus,
                            rhs: GATTAlertStatus) -> Bool {
         
-        return lhs.status == rhs.status
+        return lhs.states == rhs.states
     }
 }
 
@@ -1893,63 +1890,7 @@ extension GATTAlertStatus: CustomStringConvertible {
     
     public var description: String {
         
-        return status.description
-    }
-}
-
-extension GATTAlertStatus {
-    
-    public struct AlertStatus: RawRepresentable {
-    
-        internal static let valueLimits = (min: 0, max: 2)
-        
-        public var rawValue: UInt8
-        
-        public let state: BitMaskOptionSet<State>
-        
-        public init?(rawValue: UInt8) {
-            
-            guard rawValue >= type(of: self).valueLimits.min,
-                rawValue <= type(of: self).valueLimits.max
-                else { return nil }
-            
-            self.state = BitMaskOptionSet<State>(rawValue: rawValue)
-            self.rawValue = rawValue
-        }
-        
-        // Ringer State
-        public static let ringer: AlertStatus = 0x00
-        
-        // Vibrate State
-        public static let vibrate: AlertStatus = 0x01
-        
-        // Display Alert Status
-        public static let display: AlertStatus = 0x02
-    }
-}
-
-extension GATTAlertStatus.AlertStatus: Equatable {
-    
-    public static func == (lhs: GATTAlertStatus.AlertStatus, rhs: GATTAlertStatus.AlertStatus) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GATTAlertStatus.AlertStatus: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return rawValue.description
-    }
-}
-
-extension GATTAlertStatus.AlertStatus: ExpressibleByIntegerLiteral {
-    
-    public init(integerLiteral value: UInt8) {
-        
-        self.rawValue = value
-        self.state = BitMaskOptionSet<GATTAlertStatus.State>(rawValue: rawValue)
+        return states.rawValue.description
     }
 }
 
@@ -1962,10 +1903,12 @@ extension GATTAlertStatus {
         public typealias RawValue = UInt8
         #endif
         
-        //State Active
-        case active = 0b01
+        //State Ringer
+        case ringer = 0b01
+        case vibrate = 0b10
+        case display = 0b100
         
-        public static let all: Set<State> = [.active]
+        public static let all: Set<State> = [.ringer, .vibrate, .display]
     }
 }
 
