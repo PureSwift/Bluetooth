@@ -395,7 +395,9 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(GATTBarometricPressureTrend(data: Data([0x01])), .continuoslyFalling)
         XCTAssertEqual(GATTBarometricPressureTrend.uuid, .barometricPressureTrend)
+        XCTAssertEqual(GATTBarometricPressureTrend.unitType, .unitless)
         XCTAssert(GATTBarometricPressureTrend(data: data) == GATTBarometricPressureTrend(data: data))
     }
 }
