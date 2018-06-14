@@ -531,7 +531,7 @@ public final class GATTServer {
         guard attributes.isEmpty == false
             else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
         
-        let attributeData = attributes.map { AttributeData(handle: $0.handle, value: Array($0.value)) }
+        let attributeData = attributes.map { AttributeData(handle: $0.handle, value: $0.value) }
         
         var limitedAttributes = [attributeData[0]]
         
