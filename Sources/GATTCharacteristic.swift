@@ -1953,11 +1953,18 @@ extension GATTAnaerobicHeartRateUpperLimit: CustomStringConvertible {
     }
 }
 
-public enum GATTBarometricPressureTrend: Unitless, GATTProfileCharacteristic {
+/**
+ Barometric Pressure Trend
+ 
+ - SeeAlso: [Barometric Pressure Trend](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.barometric_pressure_trend.xml)
+ */
+public enum GATTBarometricPressureTrend: UInt8, GATTProfileCharacteristic, BluetoothUnit {
     
-    internal static let length = MemoryLayout<UInt8>.size
+    internal static let length = MemoryLayout<RawValue>.size
     
     public static var uuid: BluetoothUUID { return .barometricPressureTrend }
+    
+    public static var unitType: UnitIdentifier { return .unitless }
     
     case unknown = 0x00
     
@@ -1990,21 +1997,6 @@ public enum GATTBarometricPressureTrend: Unitless, GATTProfileCharacteristic {
     public var data: Data {
         
         return Data([rawValue])
-    }
-    
-}
-
-public struct Unitless: BluetoothUnit {
-    
-    internal static let length = MemoryLayout<UInt8>.size
-    
-    public static var unitType: UnitIdentifier { return .unitless }
-    
-    public var rawValue: UInt8
-    
-    public init(rawValue: UInt8) {
-        
-        self.rawValue = rawValue
     }
 }
 
