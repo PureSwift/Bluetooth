@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /// Read By Group Type Response
 ///
 /// The *Read By Group Type Response* is sent in reply to a received *Read By Group Type Request*
