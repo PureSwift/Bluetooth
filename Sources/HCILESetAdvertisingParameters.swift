@@ -10,13 +10,16 @@ import Foundation
 
 // MARK: - Method
 
-/// LE Set Advertising Parameters Command
-///
-/// Used by the Host to set the advertising parameters.
-func setLowEnergyAdvertisingParameters(_ parameters: HCILESetAdvertisingParameters,
-                                       timeout: HCICommandTimeout = .default) throws {
-    
-    try deviceRequest(parameters, timeout: timeout)
+public extension BluetoothHostControllerInterface {
+
+    /// LE Set Advertising Parameters Command
+    ///
+    /// Used by the Host to set the advertising parameters.
+    func setLowEnergyAdvertisingParameters(_ parameters: HCILESetAdvertisingParameters,
+                                           timeout: HCICommandTimeout = .default) throws {
+        
+        try deviceRequest(parameters, timeout: timeout)
+    }
 }
 
 // MARK: - Command

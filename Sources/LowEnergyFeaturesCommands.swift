@@ -73,8 +73,8 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to indicate the RF path gain or loss between the RF transceiver and
     /// the antenna contributed by intermediate components.
-    func lowEnergyWriteRfPathCompensation(rfTxPathCompensationValue: RfTxPathCompensationValue,
-                                          rfRxPathCompensationValue: RfRxPathCompensationValue,
+    func lowEnergyWriteRfPathCompensation(rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
+                                          rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
                                           timeout: HCICommandTimeout = .default) throws {
         
         let parameters = HCILowEnergyCommand.WriteRfPathCompensationParameter(rfTxPathCompensationValue: rfTxPathCompensationValue, rfRxPathCompensationValue: rfRxPathCompensationValue)
