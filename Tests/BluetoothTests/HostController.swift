@@ -235,9 +235,9 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                 case .commandStatus:
                     
-                    let parameterData = Data(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandStatusParameter.length)))
+                    let parameterData = Data(eventData.prefix(min(eventData.count, HCICommandStatus.length)))
                     
-                    guard let parameter = HCIGeneralEvent.CommandStatusParameter(data: parameterData)
+                    guard let parameter = HCICommandStatus(data: parameterData)
                         else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     /// must be command status for sent command
@@ -266,9 +266,9 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                 case .commandComplete:
                     
-                    let parameterData = Data(eventData.prefix(min(eventData.count, HCIGeneralEvent.CommandCompleteParameter.length)))
+                    let parameterData = Data(eventData.prefix(min(eventData.count, HCICommandComplete.length)))
                     
-                    guard let parameter = HCIGeneralEvent.CommandCompleteParameter(data: parameterData)
+                    guard let parameter = HCICommandComplete(data: parameterData)
                         else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     guard parameter.opcode == opcode else { continue }
@@ -276,7 +276,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     // success!
                     //try done()
                     
-                    let commandCompleteParameterLength = HCIGeneralEvent.CommandCompleteParameter.length
+                    let commandCompleteParameterLength = HCICommandComplete.length
                     let data = eventData.suffix(eventParameterLength)
                     
                     let dataLength = max(data.count, commandCompleteParameterLength)
@@ -286,9 +286,9 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                     guard eventHeader.event.rawValue == event else { break }
                     
-                    let parameterData = Data(eventData.prefix(min(eventData.count, HCIGeneralEvent.RemoteNameRequestCompleteParameter.length)))
+                    let parameterData = Data(eventData.prefix(min(eventData.count, HCIRemoteNameRequestComplete.length)))
                     
-                    guard let parameter = HCIGeneralEvent.RemoteNameRequestCompleteParameter(data: parameterData)
+                    guard let parameter = HCIRemoteNameRequestComplete(data: parameterData)
                         else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     if commandParameterData.isEmpty == false {
@@ -309,7 +309,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                     let parameterData = eventData
                     
-                    guard let metaParameter = HCIGeneralEvent.LowEnergyMetaParameter(data: parameterData)
+                    guard let metaParameter = HCILowEnergyMetaEvent(data: parameterData)
                         else { throw BluetoothHostControllerError.garbageResponse(parameterData) }
                     
                     // LE event should match
