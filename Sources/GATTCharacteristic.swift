@@ -8,6 +8,21 @@
 
 import Foundation
 
+/// GATT Characteristic protocol.
+///
+/// Describes a type that can encode / decode data to a characteristic type.
+public protocol GATTCharacteristic {
+    
+    /// The Bluetooth UUID of the characteristic.
+    static var uuid: BluetoothUUID { get }
+    
+    /// Decode from data.
+    init?(data: Data)
+    
+    /// Encode to data. 
+    var data: Data { get }
+}
+
 /**
  
  Supported New Alert Category
@@ -22,7 +37,7 @@ import Foundation
  
  - SeeAlso: [Supported New Alert Category](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.supported_new_alert_category.xml)
  */
-public struct GATTSupportedNewAlertCategory: GATTProfileCharacteristic {
+public struct GATTSupportedNewAlertCategory: GATTCharacteristic {
     
     public typealias Category = GATTAlertCategoryBitMask.Category
     
@@ -79,7 +94,7 @@ extension GATTSupportedNewAlertCategory: Equatable {
  
  - SeeAlso: [Alert Category ID Bit Mask](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_category_id_bit_mask.xml)
  */
-public struct GATTAlertCategoryBitMask: GATTProfileCharacteristic {
+public struct GATTAlertCategoryBitMask: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .alertCategoryIdBitMask }
     
@@ -169,7 +184,7 @@ extension GATTAlertCategoryBitMask: Equatable {
  
  - SeeAlso: [New Alert](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.new_alert.xml)
  */
-public enum GATTAlertCategory: UInt8, GATTProfileCharacteristic {
+public enum GATTAlertCategory: UInt8, GATTCharacteristic {
     
     internal static let length = 1
     
@@ -243,7 +258,7 @@ extension GATTAlertCategory: Equatable {
  
  The value `0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64` are interpreted that the server has 4 new email messages and the last message was sent by “Richard”.
  */
-public struct GATTNewAlert: GATTProfileCharacteristic {
+public struct GATTNewAlert: GATTCharacteristic {
     
     internal static let minLength = 2
     
@@ -384,7 +399,7 @@ extension GATTNewAlert.Information: CustomStringConvertible {
  
  - SeeAlso: [Supported Unread Alert Category](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.supported_unread_alert_category.xml)
  */
-public struct GATTSupportedUnreadAlertCategory: GATTProfileCharacteristic {
+public struct GATTSupportedUnreadAlertCategory: GATTCharacteristic {
     
     public typealias Category = GATTAlertCategoryBitMask.Category
     
@@ -441,7 +456,7 @@ extension GATTSupportedUnreadAlertCategory: Equatable {
  
  - SeeAlso: [Unread Alert Status](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.unread_alert_status.xml)
  */
-public struct GATTUnreadAlertStatus: GATTProfileCharacteristic {
+public struct GATTUnreadAlertStatus: GATTCharacteristic {
     
     internal static let length = 2
     
@@ -513,7 +528,7 @@ extension GATTUnreadAlertStatus: Equatable {
  
  - SeeAlso: [Alert Notification Control Point](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_notification_control_point.xml)
  */
-public struct GATTAlertNotificationControlPoint: GATTProfileCharacteristic {
+public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
     
     internal static let length = 2
     
@@ -606,7 +621,7 @@ extension GATTAlertNotificationControlPoint: Equatable {
  
  - SeeAlso: [https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.blood_pressure_feature.xml]()
  */
-public struct GATTBloodPressureFeature: GATTProfileCharacteristic {
+public struct GATTBloodPressureFeature: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .bloodPressureFeature }
     
@@ -682,7 +697,7 @@ public struct GATTBloodPressureFeature: GATTProfileCharacteristic {
  
  - SeeAlso: [Blood Pressure Measurement](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.blood_pressure_measurement.xml)
  */
-public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
+public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .bloodPressureMeasurement }
     
@@ -1008,7 +1023,7 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
  
  - SeeAlso: [Aerobic Heart Rate Lower Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_lower_limit.xml)
  */
-public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
+public struct GATTAerobicHeartRateLowerLimit: GATTCharacteristic {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
     
@@ -1064,7 +1079,7 @@ extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
  
  - SeeAlso: [Aerobic Heart Rate Upper Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_upper_limit.xml)
  */
-public struct GATTAerobicHeartRateUpperLimit: GATTProfileCharacteristic {
+public struct GATTAerobicHeartRateUpperLimit: GATTCharacteristic {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
     
@@ -1120,7 +1135,7 @@ extension GATTAerobicHeartRateUpperLimit: CustomStringConvertible {
  
  - SeeAlso: [ Age](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.age.xml)
  */
-public struct GATTAge: GATTProfileCharacteristic {
+public struct GATTAge: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
@@ -1223,7 +1238,7 @@ extension GATTAge: CustomStringConvertible {
  
  - SeeAlso: [Alert Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_level.xml)
  */
-public enum GATTAlertLevel: UInt8, GATTProfileCharacteristic {
+public enum GATTAlertLevel: UInt8, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .alertLevel }
     
@@ -1260,7 +1275,7 @@ public enum GATTAlertLevel: UInt8, GATTProfileCharacteristic {
  - SeeAlso: [Aerobic Threshold](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_threshold.xml)
  */
 
-public struct GATTAerobicThreshold: GATTProfileCharacteristic {
+public struct GATTAerobicThreshold: GATTCharacteristic {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
     
@@ -1316,7 +1331,7 @@ extension GATTAerobicThreshold: CustomStringConvertible {
  
  - SeeAlso: [Analog](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.analog.xml)
  */
-public struct GATTAnalog: GATTProfileCharacteristic {
+public struct GATTAnalog: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt16>.size
     

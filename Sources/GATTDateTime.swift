@@ -17,7 +17,7 @@ import Foundation
  
  - SeeAlso: [Date Time](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.date_time.xml)
  */
-public struct GATTDateTime: GATTProfileCharacteristic {
+public struct GATTDateTime: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .dateTime }
     
