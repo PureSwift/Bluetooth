@@ -48,27 +48,34 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard data.count >= ATTFindByTypeRequest.length else { return nil }
+        guard data.count >= type(of: self).length else { return nil }
         
         let attributeOpcodeByte = data[0]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.startHandle = UInt16(bytes: (data[1], data[2])).littleEndian
-        self.endHandle = UInt16(bytes: (data[3], data[4])).littleEndian
-        self.attributeType = UInt16(bytes: (data[5], data[6])).littleEndian
+        let startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
+        let endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
+        let attributeType = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
+        
+        let attributeValue: Data
         
         /// if attributeValue is included
         if data.count >= 7 {
             
             // rest of data is attribute
-            self.attributeValue = Data(data.suffix(from: 7))
+            attributeValue = Data(data.suffix(from: 7))
             
         } else {
             
-            self.attributeValue = Data()
+            attributeValue = Data()
         }
+        
+        self.init(startHandle: startHandle,
+                  endHandle: endHandle,
+                  attributeType: attributeType,
+                  attributeValue: attributeValue)
     }
     
     public var data: Data {
@@ -79,6 +86,12 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
         
         let attributeTypeBytes = self.attributeType.littleEndian.bytes
         
-        return [type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1, attributeTypeBytes.0, attributeTypeBytes.1] + attributeValue
+        return Data([type(of: self).attributeOpcode.rawValue,
+                     startHandleBytes.0,
+                     startHandleBytes.1,
+                     endHandleBytes.0,
+                     endHandleBytes.1,
+                     attributeTypeBytes.0,
+                     attributeTypeBytes.1]) + attributeValue
     }
 }
