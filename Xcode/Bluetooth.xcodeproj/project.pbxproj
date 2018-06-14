@@ -243,6 +243,18 @@
 		6E6AAD9C20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAD9A20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift */; };
 		6E6AAD9D20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAD9A20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift */; };
 		6E6AAD9E20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAD9A20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift */; };
+		6E6AADA120D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA020D21C2700DDE1CA /* ATTErrorResponse.swift */; };
+		6E6AADA220D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA020D21C2700DDE1CA /* ATTErrorResponse.swift */; };
+		6E6AADA320D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA020D21C2700DDE1CA /* ATTErrorResponse.swift */; };
+		6E6AADA420D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA020D21C2700DDE1CA /* ATTErrorResponse.swift */; };
+		6E6AADA620D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA520D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift */; };
+		6E6AADA720D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA520D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift */; };
+		6E6AADA820D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA520D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift */; };
+		6E6AADA920D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADA520D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift */; };
+		6E6AADAB20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADAA20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift */; };
+		6E6AADAC20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADAA20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift */; };
+		6E6AADAD20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADAA20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift */; };
+		6E6AADAE20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AADAA20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift */; };
 		6E6AD98D1FCE8E4F007F0250 /* BluetoothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */; };
 		6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
 		6E704C781E95C32D00484A22 /* BitMaskOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C761E95C32D00484A22 /* BitMaskOption.swift */; };
@@ -520,6 +532,9 @@
 		6E6AAD9020D2199600DDE1CA /* GAPFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPFlags.swift; sourceTree = "<group>"; };
 		6E6AAD9520D219DA00DDE1CA /* GAPIncompleteListOf16BitServiceClassUUIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPIncompleteListOf16BitServiceClassUUIDs.swift; sourceTree = "<group>"; };
 		6E6AAD9A20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPCompleteListOf16BitServiceClassUUIDs.swift; sourceTree = "<group>"; };
+		6E6AADA020D21C2700DDE1CA /* ATTErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTErrorResponse.swift; sourceTree = "<group>"; };
+		6E6AADA520D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTMaximumTransmissionUnitRequest.swift; sourceTree = "<group>"; };
+		6E6AADAA20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTMaximumTransmissionUnitResponse.swift; sourceTree = "<group>"; };
 		6E6AD9891FCE8E4F007F0250 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
 		6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothTests.swift; sourceTree = "<group>"; };
 		6E704C761E95C32D00484A22 /* BitMaskOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitMaskOption.swift; sourceTree = "<group>"; };
@@ -711,6 +726,9 @@
 		6E6AAD9F20D21ABC00DDE1CA /* Protocol Data Unit */ = {
 			isa = PBXGroup;
 			children = (
+				6E6AADA020D21C2700DDE1CA /* ATTErrorResponse.swift */,
+				6E6AADA520D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift */,
+				6E6AADAA20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift */,
 			);
 			name = "Protocol Data Unit";
 			sourceTree = "<group>";
@@ -1221,6 +1239,8 @@
 				6E6AAD7320D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
 				6E60A30820695CC600E42351 /* GATTServer.swift in Sources */,
 				6E49B24A20532D45002EA5DC /* Range.swift in Sources */,
+				6E6AADAE20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */,
+				6E6AADA420D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */,
 				6E6AAD9E20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift in Sources */,
 				6E49B24B20532D45002EA5DC /* BitMaskOption.swift in Sources */,
 				6E49B24C20532D45002EA5DC /* ByteValue.swift in Sources */,
@@ -1271,6 +1291,7 @@
 				6E49B25B20532D45002EA5DC /* BluetoothUUID.swift in Sources */,
 				6E60A30420695CC600E42351 /* GATTClient.swift in Sources */,
 				3580287C20C8308E0096227B /* UnitIdentifier.swift in Sources */,
+				6E6AADA920D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */,
 				6E740C4320657EF0006589F6 /* LinkPolicyCommand.swift in Sources */,
 				3571E29320C894BA0017ACD2 /* Unit.swift in Sources */,
 				6E6AAD8E20D2186C00DDE1CA /* GATTClientCharacteristicConfiguration.swift in Sources */,
@@ -1324,6 +1345,8 @@
 				6E6AAD7220D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
 				6E60A30720695CC600E42351 /* GATTServer.swift in Sources */,
 				6E704C891E95C41C00484A22 /* Range.swift in Sources */,
+				6E6AADAD20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */,
+				6E6AADA320D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */,
 				6E6AAD9D20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift in Sources */,
 				6E704C791E95C32D00484A22 /* BitMaskOption.swift in Sources */,
 				6E704C7D1E95C34D00484A22 /* ByteValue.swift in Sources */,
@@ -1374,6 +1397,7 @@
 				6EB2EA141CD5A8A7000CF975 /* BluetoothUUID.swift in Sources */,
 				6E60A30320695CC600E42351 /* GATTClient.swift in Sources */,
 				3580287B20C8308E0096227B /* UnitIdentifier.swift in Sources */,
+				6E6AADA820D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */,
 				6E740C4220657EEF006589F6 /* LinkPolicyCommand.swift in Sources */,
 				3571E29220C894BA0017ACD2 /* Unit.swift in Sources */,
 				6E6AAD8D20D2186C00DDE1CA /* GATTClientCharacteristicConfiguration.swift in Sources */,
@@ -1405,6 +1429,7 @@
 				6E740C4F20657F46006589F6 /* TestingCommand.swift in Sources */,
 				6E60A320206979CF00E42351 /* iBeacon.swift in Sources */,
 				6E32291C1FCE4C4F0035605D /* LowEnergyAddressType.swift in Sources */,
+				6E6AADAB20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */,
 				6EE910251FDE5841007AD3EA /* UInt128.swift in Sources */,
 				6EE84E061CAF8AD500A40C4D /* HCI.swift in Sources */,
 				6E3229141FCDD40C0035605D /* CompanyIdentifier.swift in Sources */,
@@ -1460,6 +1485,7 @@
 				6E740C4520657F25006589F6 /* InformationalCommand.swift in Sources */,
 				6E6AAD9120D2199600DDE1CA /* GAPFlags.swift in Sources */,
 				6E5808BE207D5B2E008F98BB /* LowEnergyFeaturesCommands.swift in Sources */,
+				6E6AADA620D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */,
 				6E6AAD7020D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
 				6E60A31920696D3E00E42351 /* HostControllerLocalName.swift in Sources */,
 				6E60A2F620695B6500E42351 /* LowEnergyConnection.swift in Sources */,
@@ -1473,6 +1499,7 @@
 				6E124BC2207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
 				6E738B56206D920C00CEB343 /* LowEnergyFeature.swift in Sources */,
 				6E704C981E95C6A500484A22 /* UUID.swift in Sources */,
+				6E6AADA120D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */,
 				6EE84DE11CAF7EE800A40C4D /* GATTAttributes.swift in Sources */,
 				6E3229101FCDC47F0035605D /* HCIError.swift in Sources */,
 				6E1F936C20C2183E0030367F /* GAPAppearance.swift in Sources */,
@@ -1565,6 +1592,8 @@
 				6E6AAD7120D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
 				6E60A30620695CC600E42351 /* GATTServer.swift in Sources */,
 				6E704C881E95C41C00484A22 /* Range.swift in Sources */,
+				6E6AADAC20D21DD100DDE1CA /* ATTMaximumTransmissionUnitResponse.swift in Sources */,
+				6E6AADA220D21C2700DDE1CA /* ATTErrorResponse.swift in Sources */,
 				6E6AAD9C20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift in Sources */,
 				6E704C781E95C32D00484A22 /* BitMaskOption.swift in Sources */,
 				6E704C7C1E95C34D00484A22 /* ByteValue.swift in Sources */,
@@ -1615,6 +1644,7 @@
 				6EF45FB41CC6D04D001F7A39 /* BluetoothUUID.swift in Sources */,
 				6E60A30220695CC600E42351 /* GATTClient.swift in Sources */,
 				3580287A20C8308E0096227B /* UnitIdentifier.swift in Sources */,
+				6E6AADA720D21CF900DDE1CA /* ATTMaximumTransmissionUnitRequest.swift in Sources */,
 				6E740C4120657EEF006589F6 /* LinkPolicyCommand.swift in Sources */,
 				3571E29120C894BA0017ACD2 /* Unit.swift in Sources */,
 				6E6AAD8C20D2186C00DDE1CA /* GATTClientCharacteristicConfiguration.swift in Sources */,
