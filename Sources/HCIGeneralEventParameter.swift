@@ -209,11 +209,11 @@ public extension HCIGeneralEvent {
             
             if data.count > 1 {
                 
-                self.data = Data(data.suffix(from: 1))
+                self.eventData = Data(data.suffix(from: 1))
                 
             } else {
                 
-                self.data = Data()
+                self.eventData = Data()
             }
         }
     }

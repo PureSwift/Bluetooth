@@ -785,7 +785,7 @@ public final class GATTClient {
             
             let foundData: [Descriptor]
             
-            switch pdu.data {
+            switch pdu.attributeData {
                 
             case let .bit16(values):
                 
@@ -875,7 +875,7 @@ public final class GATTClient {
             }
             
             // get more if possible
-            let lastEnd = pdu.data.last?.handle ?? 0x00
+            let lastEnd = pdu.attributeData.last?.handle ?? 0x00
             
             // prevent infinite loop
             guard lastEnd >= operation.start
@@ -985,7 +985,7 @@ public final class GATTClient {
             
         case let .value(pdu):
             
-            operation.success(pdu.data)
+            operation.success(pdu.attributeData)
         }
     }
     
@@ -1354,8 +1354,6 @@ private extension GATTClient {
         @inline(__always)
         func success() {
             
-            let data = Data(bytes: self.data)
-            
             completion(.value(data))
         }
         
@@ -1388,9 +1386,9 @@ private extension GATTClient {
         }
         
         @inline(__always)
-        func success(_ values: [UInt8]) {
+        func success(_ values: Data) {
             
-            completion(.value(Data(values)))
+            completion(.value(values))
         }
         
         @inline(__always)

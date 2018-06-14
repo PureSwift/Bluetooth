@@ -58,7 +58,7 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
         guard data.count == type(of: self).length
             else { return nil }
         
-        self.opcode = UInt16(littleEndian: UInt16(bytes: (data[0], bytes[1])))
+        self.opcode = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.parameterLength = data[2]
     }
     
