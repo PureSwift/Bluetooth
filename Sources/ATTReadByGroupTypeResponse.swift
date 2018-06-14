@@ -50,14 +50,12 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let type = ATTReadByGroupTypeResponse.self
-        
-        guard data.count >= type.length
+        guard data.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         let length = Int(data[1])
@@ -91,8 +89,6 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
     
     public var data: Data {
         
-        let type = ATTReadByGroupTypeResponse.self
-        
         let length = UInt8(attributeData[0].value.count + 4)
         
         var attributeDataBytes = Data()
@@ -102,7 +98,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             attributeDataBytes += attribute.data
         }
         
-        return Data([type.attributeOpcode.rawValue, length]) + attributeDataBytes
+        return Data([type(of: self).attributeOpcode.rawValue, length]) + attributeDataBytes
     }
     
     public struct AttributeData {

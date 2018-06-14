@@ -28,14 +28,12 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let type = ATTReadMultipleResponse.self
-        
-        guard data.count >= type.length
+        guard data.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         if data.count > 1 {
@@ -50,8 +48,6 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
     
     public var data: Data {
         
-        let type = ATTReadBlobResponse.self
-        
-        return Data([type.attributeOpcode.rawValue]) + values
+        return Data([type(of: self).attributeOpcode.rawValue]) + values
     }
 }
