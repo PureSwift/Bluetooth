@@ -7,3 +7,68 @@
 //
 
 import Foundation
+
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+
+    /// LE Set Data Length Command
+    ///
+    /// This command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+    /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+    func lowEnergySetDataLength(connectionHandle: UInt16,
+                                txOctets: LowEnergyMaxTxOctets,
+                                txTime: LowEnergyMaxTxTime,
+                                timeout: HCICommandTimeout = .default) throws -> UInt16 {
+        
+        let parameters = HCILESetDataLength(connectionHandle: connectionHandle,
+                                                                txOctets: txOctets,
+                                                                txTime: txTime)
+        
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.SetDataLengthReturnParameter.self, timeout: timeout)
+        
+        return returnParameters.connectionHandle
+    }
+}
+
+// MARK: - Command
+
+/// LE Set Data Length Command
+///
+/// This command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+/// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+public struct HCILESetDataLength: HCICommandParameter {
+    
+    public static let command = HCILowEnergyCommand.setDataLengthCommand //0x0022
+    
+    public var connectionHandle: UInt16
+    
+    public var txOctets: LowEnergyMaxTxOctets
+    
+    public var txTime: LowEnergyMaxTxTime
+    
+    public init(connectionHandle: UInt16,
+                txOctets: LowEnergyMaxTxOctets,
+                txTime: LowEnergyMaxTxTime) {
+        
+        self.connectionHandle = connectionHandle
+        self.txOctets = txOctets
+        self.txTime = txTime
+    }
+    
+    public var data: Data {
+        
+        let connectionHandleBytes = connectionHandle.littleEndian.bytes
+        let txOctetsBytes = txOctets.rawValue.littleEndian.bytes
+        let txTimeBytes = txTime.rawValue.littleEndian.bytes
+        
+        return Data([
+            connectionHandleBytes.0,
+            connectionHandleBytes.1,
+            txOctetsBytes.0,
+            txOctetsBytes.1,
+            txTimeBytes.0,
+            txTimeBytes.1
+            ])
+    }
+}

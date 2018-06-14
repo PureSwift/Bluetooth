@@ -8,24 +8,6 @@
 
 public extension BluetoothHostControllerInterface {
     
-    /// LE Remote Connection Parameter Request Negative Reply Command
-    ///
-    /// Both the master Host and the slave Host use this command to reply to the HCI
-    /// LE Remote Connection Parameter Request event. This indicates that the Host
-    /// has rejected the remote device’s request to change connection parameters.
-    /// The reason for the rejection is given in the Reason parameter.
-    func lowEnergyRemoteConnectionParameterRequestNegativeReply(connectionHandle: UInt16,
-                                                                reason: UInt8,
-                                                                timeout: HCICommandTimeout = .default) throws -> UInt16 {
-        
-        let parameters = HCILowEnergyCommand.HCILERemoteConnectionParameterRequestNegativeReply(connectionHandle: connectionHandle,
-                                                                                                 reason: reason)
-        
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestNegativeReplyReturnParameter.self, timeout: timeout)
-        
-        return returnParameters.connectionHandle
-    }
-    
     /// LE Create Connection Cancel Command
     ///
     /// The LE_Create_Connection_Cancel command is used to cancel the LE_Create_Connection command.
@@ -38,24 +20,6 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(HCILowEnergyCommand.createConnectionCancel, timeout: timeout)
     }
     
-    /// LE Set Data Length Command
-    ///
-    /// This command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
-    /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
-    func lowEnergySetDataLength(connectionHandle: UInt16,
-                                txOctets: LowEnergyMaxTxOctets,
-                                txTime: LowEnergyMaxTxTime,
-                                timeout: HCICommandTimeout = .default) throws -> UInt16 {
-        
-        let parameters = HCILowEnergyCommand.HCILESetDataLength(connectionHandle: connectionHandle,
-                                                                       txOctets: txOctets,
-                                                                       txTime: txTime)
-        
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.SetDataLengthReturnParameter.self, timeout: timeout)
-        
-        return returnParameters.connectionHandle
-    }
-    
     /// LE Read Suggested Default Data Length Command
     ///
     /// This command allows the Host to read the Host's suggested values (SuggestedMaxTxOctets and SuggestedMaxTxTime)
@@ -63,20 +27,6 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyReadSuggestedDefaultDataLength(timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.ReadSuggestedDefaultDataLengthReturnParameter {
         
         return try deviceRequest(HCILowEnergyCommand.ReadSuggestedDefaultDataLengthReturnParameter.self, timeout: timeout)
-    }
-    
-    /// LE Write Suggested Default Data Length Command
-    ///
-    /// The command allows the Host to specify its suggested values for the Controller's maximum transmission number
-    /// of payload octets and maximum packet transmission time to be used for new connections.
-    func lowEnergyWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: LowEnergyMaxTxOctets,
-                                                  suggestedMaxTxTime: LowEnergyMaxTxTime,
-                                                  timeout: HCICommandTimeout = .default) throws {
-        
-        let parameters = HCILowEnergyCommand.HCILEWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: suggestedMaxTxOctets,
-                                                                                   suggestedMaxTxTime: suggestedMaxTxTime)
-        
-        try deviceRequest(parameters, timeout: timeout)
     }
     
     /// LE Read Local P-256 Public Key Command
