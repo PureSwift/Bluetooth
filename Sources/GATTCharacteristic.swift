@@ -1953,6 +1953,61 @@ extension GATTAnaerobicHeartRateUpperLimit: CustomStringConvertible {
     }
 }
 
+public enum GATTBarometricPressureTrend: Unitless, GATTProfileCharacteristic {
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .barometricPressureTrend }
+    
+    case unknown = 0x00
+    
+    case continuoslyFalling = 0x01
+    
+    case continuoslyRising = 0x02
+    
+    case fallingThenSteady = 0x03
+    
+    case risingThenSteady = 0x04
+    
+    case fallingBeforeLesserRise = 0x05
+    
+    case fallingBeforeGreaterRise = 0x06
+    
+    case risingBeforeGreaterFall = 0x07
+    
+    case risingBeforeLesserFall = 0x08
+    
+    case steady = 0x09
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        self.init(rawValue: data[0])
+    }
+    
+    public var data: Data {
+        
+        return Data([rawValue])
+    }
+    
+}
+
+public struct Unitless: BluetoothUnit {
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var unitType: UnitIdentifier { return .unitless }
+    
+    public var rawValue: UInt8
+    
+    public init(rawValue: UInt8) {
+        
+        self.rawValue = rawValue
+    }
+}
+
 // MARK: - Supporting Types
 
 public enum GATTBeatsPerMinute {
