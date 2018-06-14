@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// The Service Data data type consists of a service UUID with the data associated with that service.
 ///
 /// Size: 4 or more octets

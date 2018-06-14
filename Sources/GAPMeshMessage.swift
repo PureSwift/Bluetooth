@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// Any advertisement using the Mesh Message AD Type shall be non-connectable and
 /// non-scannable undirected advertising events.
 /// If a node receives a Mesh Message AD Type in a connectable advertisement or scannable advertising event,

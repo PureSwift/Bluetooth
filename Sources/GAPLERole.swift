@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// The LE Role data type defines the LE role capabilities of the device.
 /// The LE Role data type size is 1 octet.
 public enum GAPLERole: UInt8, GAPData {

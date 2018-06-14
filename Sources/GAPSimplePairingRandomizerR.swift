@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// Specifies the Simple Pairing Randomizer
 /// Size: 16 octets
 /// Format defined in [Vol. 2], Part H Section 7.2.2

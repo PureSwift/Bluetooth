@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// The Indoor Positioning Service exposes location information to support mobile devices to position themselves in an environment where GNSS signals are not available, for example in indoor premises.
 /// The location information is mainly exposed via advertising and the GATT- based service is primarily intended for configuration.
 public struct GAPIndoorPositioning: GAPData {

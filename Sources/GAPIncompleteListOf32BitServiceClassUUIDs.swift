@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// GAP Incomplete List of 32-bit Service Class UUIDs
 public struct GAPIncompleteListOf32BitServiceClassUUIDs: GAPData {
     

@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// The Advertising Interval data type contains the `advInterval` value
 /// as defined in the Core specification, Volume 6, Part B, Section 4.4.2.2.
 ///

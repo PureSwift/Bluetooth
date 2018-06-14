@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// The LE Supported Features data type defines the LE features supported by the device.
 /// All 0x00 octets after the last non-zero octet shall be omitted from the value transmitted.
 ///
