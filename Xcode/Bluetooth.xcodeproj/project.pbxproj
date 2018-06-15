@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		3531BBDA20CD013700EBB028 /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3531BF4C20CEEF8F00F31BC3 /* UnitIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */; };
+		356EB94520D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
+		356EB94620D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
+		356EB94720D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
+		356EB94820D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
 		3571E29020C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
 		3571E29120C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
 		3571E29220C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
@@ -416,6 +420,7 @@
 /* Begin PBXFileReference section */
 		3531BBD920CD013700EBB028 /* GAPData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GAPData.swift; sourceTree = "<group>"; };
 		3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierTests.swift; sourceTree = "<group>"; };
+		356EB94420D453840022A48D /* GATTAnalogOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAnalogOutput.swift; sourceTree = "<group>"; };
 		3571E28F20C894BA0017ACD2 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
@@ -709,6 +714,7 @@
 				6E443A2C2085D4E2005F4D5F /* GATTDescriptor.swift */,
 				6E97026420CE234C008AA9C6 /* GATTCharacteristic.swift */,
 				6E97026620CE236D008AA9C6 /* GATTService.swift */,
+				356EB94420D453840022A48D /* GATTAnalogOutput.swift */,
 			);
 			name = Specifications;
 			sourceTree = "<group>";
@@ -1106,6 +1112,7 @@
 				6E1F936A20C213B60030367F /* ClassOfDevice.swift in Sources */,
 				6E9578C42092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */,
 				6E49B24020532D45002EA5DC /* LinkControlCommandParameter.swift in Sources */,
+				356EB94820D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6E49B24120532D45002EA5DC /* LowEnergyCommand.swift in Sources */,
 				512F4B48208A564400576F34 /* UInt256.swift in Sources */,
 				6E49B24220532D45002EA5DC /* HCICommand.swift in Sources */,
@@ -1200,6 +1207,7 @@
 				6E1F936920C213B60030367F /* ClassOfDevice.swift in Sources */,
 				6E9578C32092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */,
 				6EB2EA061CD5A8A7000CF975 /* LinkControlCommandParameter.swift in Sources */,
+				356EB94720D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6EB2EA071CD5A8A7000CF975 /* LowEnergyCommand.swift in Sources */,
 				512F4B4A208A564400576F34 /* UInt256.swift in Sources */,
 				6EB2EA081CD5A8A7000CF975 /* HCICommand.swift in Sources */,
@@ -1367,6 +1375,7 @@
 				6EE84DD51CAF603000A40C4D /* BluetoothUUID.swift in Sources */,
 				6E60A30F2069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6EB98F1A20BF803E00FCE78E /* CompanyIdentifierExtension.swift in Sources */,
+				356EB94520D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6E443A2F2085D606005F4D5F /* Bool.swift in Sources */,
 				6E60A2FB20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
 				511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */,
@@ -1423,6 +1432,7 @@
 				6E1F936820C213B60030367F /* ClassOfDevice.swift in Sources */,
 				6E9578C22092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */,
 				6EF45FA61CC6D04D001F7A39 /* LinkControlCommandParameter.swift in Sources */,
+				356EB94620D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6EF45FA71CC6D04D001F7A39 /* LowEnergyCommand.swift in Sources */,
 				512F4B49208A564400576F34 /* UInt256.swift in Sources */,
 				6EF45FA81CC6D04D001F7A39 /* HCICommand.swift in Sources */,
