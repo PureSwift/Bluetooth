@@ -1872,9 +1872,12 @@ public struct GATTAnalog: GATTProfileCharacteristic {
     public var data: Data {
         
         let bytes = analog.littleEndian.bytes
+
         return Data([bytes.0, bytes.1])
     }
+    
 }
+
 extension GATTAnalog: Equatable {
     
     public static func == (lhs: GATTAnalog,
