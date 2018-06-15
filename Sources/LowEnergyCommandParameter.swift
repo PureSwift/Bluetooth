@@ -8,10 +8,6 @@
 
 import Foundation
 
-public extension HCILowEnergyCommand {
-  
-}
-
 // MARK: - Command Return Parameters
 
 public extension HCILowEnergyCommand {
@@ -19,7 +15,7 @@ public extension HCILowEnergyCommand {
     /// LE Read Buffer Size Command
     ///
     /// The command is used to read the maximum size of the data portion of HCI LE ACL Data Packets sent from the Host to the Controller.
-    public struct ReadBufferSizeReturnParameter: HCICommandReturnParameter {
+    public struct HCILEReadBufferSizeReturn: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.readBufferSize //0x0002
         public static let length = 3
@@ -42,7 +38,7 @@ public extension HCILowEnergyCommand {
     /// LE Read Local Supported Features Command
     ///
     /// This command requests the list of the supported LE features for the Controller.
-    public struct ReadLocalSupportedFeaturesReturnParameter: HCICommandReturnParameter {
+    public struct HCILEReadLocalSupportedFeaturesReturn: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.readLocalSupportedFeatures // 0x0003
         
@@ -71,7 +67,7 @@ public extension HCILowEnergyCommand {
     /// LE Read Advertising Channel Tx Power Command
     ///
     /// The command is used by the Host to read the transmit power level used for LE advertising channel packets.
-    public struct ReadAdvertisingChannelTxPowerReturnParameter: HCICommandReturnParameter { //HCI_LE_Read_Advertising_ Channel_Tx_Power
+    public struct HCILEReadAdvertisingChannelTxPowerReturn: HCICommandReturnParameter { //HCI_LE_Read_Advertising_ Channel_Tx_Power
         
         public static let command = HCILowEnergyCommand.readAdvertisingChannelTXPower // 0x0007
         
@@ -141,7 +137,7 @@ public extension HCILowEnergyCommand {
     /// LE Read White List Size
     ///
     /// The command is used to read the total number of white list entries that can be stored in the Controller.
-    public struct ReadWhiteListSizeReturnParameter: HCICommandReturnParameter { // HCI_LE_Read_White_List_Size
+    public struct HCILEReadWhiteListSizeReturn: HCICommandReturnParameter { // HCI_LE_Read_White_List_Size
         
         public static let command = HCILowEnergyCommand.readWhiteListSize //0x000F
         public static let length = 1
@@ -158,37 +154,10 @@ public extension HCILowEnergyCommand {
         }
     }
     
-    /// LE Encrypt Command
-    ///
-    /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
-    /// and returns the Encrypted_Data to the Host.
-    /// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
-    public struct EncryptReturnParameter: HCICommandReturnParameter {
-
-        public static let command = HCILowEnergyCommand.encrypt //0x0017
-        
-        public static let length: Int = 16
-        
-        /// 128 bit encrypted data block.
-        /// The most significant octet of the Encrypted_Data corresponds to out[0] using the notation specified in FIPS 197.
-        public let encryptedData: UInt128
-        
-        public init?(data: Data) {
-            
-            guard data.count == type(of: self).length
-                else { return nil }
-            
-            guard let encryptedData = UInt128(data: Data(data))
-                else { return nil }
-            
-            self.encryptedData = encryptedData
-        }
-    }
-    
     /// LE Rand Command
     ///
     /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
-    public struct RandomReturnParameter: HCICommandReturnParameter { // HCI_LE_Rand
+    public struct HCILERandomReturn: HCICommandReturnParameter { // HCI_LE_Rand
         
         public static let command = HCILowEnergyCommand.random //0x0018
         
@@ -210,7 +179,7 @@ public extension HCILowEnergyCommand {
     ///
     /// The command is used to reply to an LE Long Term Key Request event from the Controller,
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
-    public struct LongTermKeyRequestReplyReturnParameter: HCICommandReturnParameter {
+    public struct HCILELongTermKeyRequestReplyReturn: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.longTermKeyReply //0x001A
         
@@ -233,7 +202,7 @@ public extension HCILowEnergyCommand {
     ///
     /// The command is used to reply to an LE Long Term Key Request event
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
-    public struct LongTermKeyRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
+    public struct HCILELongTermKeyRequestNegativeReplyReturn: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.longTermKeyNegativeReply //0x001B
         

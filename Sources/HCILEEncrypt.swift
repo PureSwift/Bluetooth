@@ -20,11 +20,13 @@ public extension BluetoothHostControllerInterface {
         
         let parameters = HCILEEncrypt(key: key, plainText: data)
         
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.EncryptReturnParameter.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILEEncryptReturn.self, timeout: timeout)
         
         return returnParameters.encryptedData
     }
 }
+
+// MARK: - Command
 
 /// LE Encrypt Command
 ///
@@ -89,5 +91,34 @@ public struct HCILEEncrypt: HCICommandParameter { // HCI_LE_Encrypt
             dataBytes.14,
             dataBytes.15
             ])
+    }
+}
+
+// MARK: - Return parameter
+
+/// LE Encrypt Command
+///
+/// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
+/// and returns the Encrypted_Data to the Host.
+/// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+public struct HCILEEncryptReturn: HCICommandReturnParameter {
+    
+    public static let command = HCILowEnergyCommand.encrypt //0x0017
+    
+    public static let length: Int = 16
+    
+    /// 128 bit encrypted data block.
+    /// The most significant octet of the Encrypted_Data corresponds to out[0] using the notation specified in FIPS 197.
+    public let encryptedData: UInt128
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        guard let encryptedData = UInt128(data: Data(data))
+            else { return nil }
+        
+        self.encryptedData = encryptedData
     }
 }
