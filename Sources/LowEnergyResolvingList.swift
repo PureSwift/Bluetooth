@@ -23,7 +23,7 @@ public extension BluetoothHostControllerInterface {
     /// entries in the resolving list that can be stored in the Controller.
     func lowEnergyReadResolvingListSize(timeout: HCICommandTimeout = .default) throws -> UInt8 {
         
-        let value = try deviceRequest(HCILowEnergyCommand.ReadResolvingListSizeReturnParameter.self,
+        let value = try deviceRequest(HCILowEnergyCommand.HCILEReadResolvingListSize.self,
                                       timeout: timeout)
         
         return value.resolvingListSize

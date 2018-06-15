@@ -13,7 +13,7 @@ public extension BluetoothHostControllerInterface {
     /// This command is used to stop any test which is in progress.
     func lowEnergyTestEnd(timeout: HCICommandTimeout = .default) throws -> UInt16 {
         
-        let value = try deviceRequest(HCILowEnergyCommand.TestEndReturnParameter.self,
+        let value = try deviceRequest(HCILowEnergyCommand.HCILETestEnd.self,
                                       timeout: timeout)
         
         return value.numberOfPackets

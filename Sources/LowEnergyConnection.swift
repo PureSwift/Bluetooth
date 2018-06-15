@@ -24,9 +24,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command allows the Host to read the Host's suggested values (SuggestedMaxTxOctets and SuggestedMaxTxTime)
     /// for the Controller's maximum transmitted number of payload octets and maximum packet transmission time to be used for new connections.
-    func lowEnergyReadSuggestedDefaultDataLength(timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.ReadSuggestedDefaultDataLengthReturnParameter {
+    func lowEnergyReadSuggestedDefaultDataLength(timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.HCILEReadSuggestedDefaultDataLength {
         
-        return try deviceRequest(HCILowEnergyCommand.ReadSuggestedDefaultDataLengthReturnParameter.self, timeout: timeout)
+        return try deviceRequest(HCILowEnergyCommand.HCILEReadSuggestedDefaultDataLength.self, timeout: timeout)
     }
     
     /// LE Read Local P-256 Public Key Command

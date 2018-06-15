@@ -30,7 +30,7 @@ public extension BluetoothHostControllerInterface {
                                                                     timeOut: timeOut,
                                                                     length: length)
         
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestReplyReturnParameter.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestReply.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }

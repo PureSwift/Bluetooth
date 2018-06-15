@@ -12,174 +12,11 @@ import Foundation
 
 public extension HCILowEnergyCommand {
     
-    /// LE Read Buffer Size Command
-    ///
-    /// The command is used to read the maximum size of the data portion of HCI LE ACL Data Packets sent from the Host to the Controller.
-    public struct HCILEReadBufferSizeReturn: HCICommandReturnParameter {
-        
-        public static let command = HCILowEnergyCommand.readBufferSize //0x0002
-        public static let length = 3
-        
-        public let dataPacketLength: UInt16
-        public let dataPacket: UInt8
-        
-        public init?(data: Data) {
-            
-            guard data.count == type(of: self).length
-                else { return nil }
-            
-            let dataPacketLength = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-            
-            self.dataPacketLength = dataPacketLength
-            self.dataPacket = data[2]
-        }
-    }
-    
-    /// LE Read Local Supported Features Command
-    ///
-    /// This command requests the list of the supported LE features for the Controller.
-    public struct HCILEReadLocalSupportedFeaturesReturn: HCICommandReturnParameter {
-        
-        public static let command = HCILowEnergyCommand.readLocalSupportedFeatures // 0x0003
-        
-        public static let length = 8
-        
-        public let features: LowEnergyFeatureSet
-        
-        public init?(data: Data) {
-            
-            guard data.count == type(of: self).length
-                else { return nil }
-            
-            let featuresRawValue = UInt64(littleEndian: UInt64(bytes: (data[0],
-                                                                       data[1],
-                                                                       data[2],
-                                                                       data[3],
-                                                                       data[4],
-                                                                       data[5],
-                                                                       data[6],
-                                                                       data[7])))
-            
-            self.features = LowEnergyFeatureSet(rawValue: featuresRawValue)
-        }
-    }
-    
-    /// LE Read Advertising Channel Tx Power Command
-    ///
-    /// The command is used by the Host to read the transmit power level used for LE advertising channel packets.
-    public struct HCILEReadAdvertisingChannelTxPowerReturn: HCICommandReturnParameter { //HCI_LE_Read_Advertising_ Channel_Tx_Power
-        
-        public static let command = HCILowEnergyCommand.readAdvertisingChannelTXPower // 0x0007
-        
-        public static let length = 1
-        
-        public let transmitPowerLevel: TransmitPowerLevel
-        
-        public init?(data: Data) {
-            
-            guard data.count == type(of: self).length
-                else { return nil }
-            
-            guard let transmitPowerLevel = TransmitPowerLevel(rawValue: Int8(bitPattern: data[0]))
-                else { return nil }
-            
-            self.transmitPowerLevel = transmitPowerLevel
-        }
-        
-        /// Size: 1 Octet (signed integer)
-        /// Range: -20 ≤ N ≤ 10
-        /// Units: dBm
-        /// Accuracy: +/- 4 dB
-        public struct TransmitPowerLevel: RawRepresentable, Equatable, Hashable, Comparable {
-            
-            public static let min = TransmitPowerLevel(-20)
-            
-            public static let max = TransmitPowerLevel(10)
-            
-            public let rawValue: Int8
-            
-            public init?(rawValue: Int8) {
-                
-                guard rawValue >= TransmitPowerLevel.min.rawValue,
-                    rawValue <= TransmitPowerLevel.max.rawValue
-                    else { return nil }
-                
-                assert((TransmitPowerLevel.min.rawValue ... TransmitPowerLevel.max.rawValue).contains(rawValue))
-                
-                self.rawValue = rawValue
-            }
-            
-            // Private, unsafe
-            private init(_ rawValue: Int8) {
-                self.rawValue = rawValue
-            }
-            
-            // Equatable
-            public static func == (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
-                
-                return lhs.rawValue == rhs.rawValue
-            }
-            
-            // Comparable
-            public static func < (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
-                
-                return lhs.rawValue < rhs.rawValue
-            }
-            
-            // Hashable
-            public var hashValue: Int {
-                
-                return Int(rawValue)
-            }
-        }
-    }
-    
-    /// LE Read White List Size
-    ///
-    /// The command is used to read the total number of white list entries that can be stored in the Controller.
-    public struct HCILEReadWhiteListSizeReturn: HCICommandReturnParameter { // HCI_LE_Read_White_List_Size
-        
-        public static let command = HCILowEnergyCommand.readWhiteListSize //0x000F
-        public static let length = 1
-        
-        /// The white list size.
-        public let size: UInt8 // White_List_Size
-        
-        public init?(data: Data) {
-            
-            guard data.count == type(of: self).length
-                else { return nil }
-            
-            self.size = data[0]
-        }
-    }
-    
-    /// LE Rand Command
-    ///
-    /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
-    public struct HCILERandomReturn: HCICommandReturnParameter { // HCI_LE_Rand
-        
-        public static let command = HCILowEnergyCommand.random //0x0018
-        
-        public static let length: Int = 8
-        
-        /// Random Number
-        public let randomNumber: UInt64 //Random_Number
-        
-        public init?(data: Data) {
-            
-            guard data.count == type(of: self).length
-                else { return nil }
-            
-            self.randomNumber = UInt64(littleEndian: UInt64(bytes: ((data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))))
-        }
-    }
-    
     /// LE Long Term Key Request Reply Command
     ///
     /// The command is used to reply to an LE Long Term Key Request event from the Controller,
     /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
-    public struct HCILELongTermKeyRequestReplyReturn: HCICommandReturnParameter {
+    public struct HCILELongTermKeyRequestReply: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.longTermKeyReply //0x001A
         
@@ -202,7 +39,7 @@ public extension HCILowEnergyCommand {
     ///
     /// The command is used to reply to an LE Long Term Key Request event
     /// from the Controller if the Host cannot provide a Long Term Key for this Connection_Handle.
-    public struct HCILELongTermKeyRequestNegativeReplyReturn: HCICommandReturnParameter {
+    public struct HCILELongTermKeyRequestNegativeReply: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.longTermKeyNegativeReply //0x001B
         
@@ -226,7 +63,7 @@ public extension HCILowEnergyCommand {
     /// Both the master Host and the slave Host use this command to reply to the HCI
     /// LE Remote Connection Parameter Request event. This indicates that the Host
     /// has accepted the remote device’s request to change connection parameters.
-    public struct RemoteConnectionParameterRequestReplyReturnParameter: HCICommandReturnParameter {
+    public struct RemoteConnectionParameterRequestReply: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.remoteConnectionParameterRequestReply //0x0020
         
@@ -251,7 +88,7 @@ public extension HCILowEnergyCommand {
     /// LE Remote Connection Parameter Request event. This indicates that the Host
     /// has rejected the remote device’s request to change connection parameters.
     /// The reason for the rejection is given in the Reason parameter.
-    public struct RemoteConnectionParameterRequestNegativeReplyReturnParameter: HCICommandReturnParameter {
+    public struct RemoteConnectionParameterRequestNegativeReply: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
         
@@ -272,7 +109,7 @@ public extension HCILowEnergyCommand {
     
     /// The LE_Set_Data_Length command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
     /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
-    public struct SetDataLengthReturnParameter: HCICommandReturnParameter {
+    public struct HCILESetDataLength: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.setDataLengthCommand //0x0022
         
@@ -295,7 +132,7 @@ public extension HCILowEnergyCommand {
     ///
     /// This command allows the Host to read the Host's suggested values (SuggestedMaxTxOctets and SuggestedMaxTxTime)
     /// for the Controller's maximum transmitted number of payload octets and maximum packet transmission time to be used for new connections.
-    public struct ReadSuggestedDefaultDataLengthReturnParameter: HCICommandReturnParameter {
+    public struct HCILEReadSuggestedDefaultDataLength: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.readSuggestedDefaultDataLengthCommand //0x0023
         
@@ -329,7 +166,7 @@ public extension HCILowEnergyCommand {
     /// This command is used to stop any test which is in progress. The Number_Of_Packets
     /// for a transmitter test shall be reported as 0x0000. The Number_Of_Packets is an unsigned number
     /// and contains the number of received packets.
-    public struct TestEndReturnParameter: HCICommandReturnParameter {
+    public struct HCILETestEnd: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.testEnd //0x001F
         
@@ -349,7 +186,7 @@ public extension HCILowEnergyCommand {
     /// LE Read Supported States
     ///
     /// The LE_Read_Supported_States command reads the states and state combinations that the link layer supports.
-    public struct ReadSupportedStatesReturnParameter: HCICommandReturnParameter {
+    public struct HCILEReadSupportedStates: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.readSupportedStates //0x001C
         
@@ -378,7 +215,7 @@ public extension HCILowEnergyCommand {
     /// Note: The number of entries that can be stored is not fixed and
     /// the Controller can change it at any time (e.g. because the memory
     /// used to store the list can also be used for other purposes).
-    public struct ReadResolvingListSizeReturnParameter: HCICommandReturnParameter {
+    public struct HCILEReadResolvingListSize: HCICommandReturnParameter {
         
         public static let command = HCILowEnergyCommand.readResolvedListSize //0x002A
         

@@ -20,7 +20,7 @@ public extension BluetoothHostControllerInterface {
         
         let parameters = HCILELongTermKeyRequestNegativeReply(connectionHandle: handle)
         
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.HCILELongTermKeyRequestNegativeReplyReturn.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.HCILELongTermKeyRequestNegativeReply.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }
