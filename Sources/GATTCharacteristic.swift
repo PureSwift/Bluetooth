@@ -1842,7 +1842,6 @@ extension GATTAerobicThreshold: CustomStringConvertible {
 }
 
 /**
-<<<<<<< HEAD
  Anaerobic Heart Rate Lower Limit
  
  Lower limit of the heart rate where the user enhances his anaerobic tolerance while exercising.
@@ -1862,7 +1861,24 @@ public struct GATTAnaerobicHeartRateLowerLimit: GATTProfileCharacteristic {
     public init(beats: BeatsPerMinute) {
         
         self.beats = beats
-=======
+    }
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let beats = BeatsPerMinute(rawValue: data[0])
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+}
+
+/**
  Analog
  
  The Analog characteristic is used to read or write the value of one of the IO Module’s analog signals.
@@ -1880,7 +1896,6 @@ public struct GATTAnalog: GATTProfileCharacteristic {
     public init(analog: UInt16) {
         
         self.analog = analog
->>>>>>> master
     }
     
     public init?(data: Data) {
@@ -1888,19 +1903,14 @@ public struct GATTAnalog: GATTProfileCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-<<<<<<< HEAD
-        let beats = BeatsPerMinute(rawValue: data[0])
-        
-        self.init(beats: beats)
-=======
         self.init(analog: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
->>>>>>> master
     }
     
     public var data: Data {
         
-<<<<<<< HEAD
-        return Data([beats.rawValue])
+        let bytes = analog.littleEndian.bytes
+        
+        return Data([bytes.0, bytes.1])
     }
     
 }
@@ -1975,9 +1985,6 @@ extension GATTAnaerobicHeartRateUpperLimit: CustomStringConvertible {
     public var description: String {
         
         return beats.description
-=======
-        let bytes = analog.littleEndian.bytes
-        return Data([bytes.0, bytes.1])
     }
 }
 extension GATTAnalog: Equatable {
@@ -1994,7 +2001,6 @@ extension GATTAnalog: CustomStringConvertible {
     public var description: String {
         
         return analog.description
->>>>>>> master
     }
 }
 
