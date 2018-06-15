@@ -65,7 +65,7 @@ final class HCITests: XCTestCase {
     }
     
     func testReadBufferSize(){
-        typealias ReadBufferSize = HCILowEnergyCommand.ReadBufferSizeReturnParameter
+        typealias ReadBufferSize = HCILowEnergyCommand.HCILEReadBufferSizeReturn
         
         let hostController = TestHostController()
         
@@ -98,7 +98,7 @@ final class HCITests: XCTestCase {
     }
     
     func testReadLocalSupportedFeatures() {
-        typealias ReadLocalSupportedFeatures = HCILowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
+        typealias ReadLocalSupportedFeatures = HCILowEnergyCommand.HCILEReadLocalSupportedFeaturesReturn
         
         let hostController = TestHostController()
         

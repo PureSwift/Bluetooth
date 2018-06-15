@@ -15,7 +15,7 @@ import Foundation
 /// command allows the Host to specify a channel classification for data channels based
 /// on its “local information”. This classification persists until overwritten with a subsequent LE_Set_Host_Channel_Classification command or
 /// until the Controller is reset using the Reset command
-public struct HCISetHostChannelClassification: HCICommandParameter { // HCI_LE_Set_Host_Channel_Classification
+public struct HCILESetHostChannelClassification: HCICommandParameter { // HCI_LE_Set_Host_Channel_Classification
     
     public static let command = HCILowEnergyCommand.setHostChannelClassification //0x0014
     

@@ -293,10 +293,10 @@
 		355BC22820D2C376001A07D3 /* HCILEUpdateConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22620D2C376001A07D3 /* HCILEUpdateConnection.swift */; };
 		355BC22920D2C376001A07D3 /* HCILEUpdateConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22620D2C376001A07D3 /* HCILEUpdateConnection.swift */; };
 		355BC22A20D2C376001A07D3 /* HCILEUpdateConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22620D2C376001A07D3 /* HCILEUpdateConnection.swift */; };
-		355BC22C20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCISetHostChannelClassification.swift */; };
-		355BC22D20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCISetHostChannelClassification.swift */; };
-		355BC22E20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCISetHostChannelClassification.swift */; };
-		355BC22F20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCISetHostChannelClassification.swift */; };
+		355BC22C20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCILESetHostChannelClassification.swift */; };
+		355BC22D20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCILESetHostChannelClassification.swift */; };
+		355BC22E20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCILESetHostChannelClassification.swift */; };
+		355BC22F20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC22B20D2C380001A07D3 /* HCILESetHostChannelClassification.swift */; };
 		355BC23120D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC23020D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift */; };
 		355BC23220D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC23020D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift */; };
 		355BC23320D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC23020D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift */; };
@@ -1271,7 +1271,7 @@
 		355BC21C20D2C35D001A07D3 /* HCILEAddDeviceToWhiteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILEAddDeviceToWhiteList.swift; sourceTree = "<group>"; };
 		355BC22120D2C366001A07D3 /* HCILERemoveDeviceFromWhiteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILERemoveDeviceFromWhiteList.swift; sourceTree = "<group>"; };
 		355BC22620D2C376001A07D3 /* HCILEUpdateConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILEUpdateConnection.swift; sourceTree = "<group>"; };
-		355BC22B20D2C380001A07D3 /* HCISetHostChannelClassification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCISetHostChannelClassification.swift; sourceTree = "<group>"; };
+		355BC22B20D2C380001A07D3 /* HCILESetHostChannelClassification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILESetHostChannelClassification.swift; sourceTree = "<group>"; };
 		355BC23020D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILEReadRemoteUsedFeatures.swift; sourceTree = "<group>"; };
 		355BC23520D2C392001A07D3 /* HCILEEncrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILEEncrypt.swift; sourceTree = "<group>"; };
 		355BC23A20D2C39B001A07D3 /* HCILEStartEncryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILEStartEncryption.swift; sourceTree = "<group>"; };
@@ -1754,7 +1754,7 @@
 				355BC21C20D2C35D001A07D3 /* HCILEAddDeviceToWhiteList.swift */,
 				355BC22120D2C366001A07D3 /* HCILERemoveDeviceFromWhiteList.swift */,
 				355BC22620D2C376001A07D3 /* HCILEUpdateConnection.swift */,
-				355BC22B20D2C380001A07D3 /* HCISetHostChannelClassification.swift */,
+				355BC22B20D2C380001A07D3 /* HCILESetHostChannelClassification.swift */,
 				355BC23020D2C389001A07D3 /* HCILEReadRemoteUsedFeatures.swift */,
 				355BC23520D2C392001A07D3 /* HCILEEncrypt.swift */,
 				355BC23A20D2C39B001A07D3 /* HCILEStartEncryption.swift */,
@@ -2494,7 +2494,7 @@
 				35182A0120D22E500009F82D /* GAPMeshBeacon.swift in Sources */,
 				6E60A2EF20695AE100E42351 /* POSIXError.swift in Sources */,
 				6E6AAD7320D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
-				355BC22F20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */,
+				355BC22F20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */,
 				6E60A30820695CC600E42351 /* GATTServer.swift in Sources */,
 				6E49B24A20532D45002EA5DC /* Range.swift in Sources */,
 				35182A2420D235520009F82D /* GATTAggregateFormatDescriptor.swift in Sources */,
@@ -2784,7 +2784,7 @@
 				35182A0020D22E500009F82D /* GAPMeshBeacon.swift in Sources */,
 				6E60A2EE20695AE100E42351 /* POSIXError.swift in Sources */,
 				6E6AAD7220D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
-				355BC22E20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */,
+				355BC22E20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */,
 				6E60A30720695CC600E42351 /* GATTServer.swift in Sources */,
 				6E704C891E95C41C00484A22 /* Range.swift in Sources */,
 				35182A2320D235520009F82D /* GATTAggregateFormatDescriptor.swift in Sources */,
@@ -3075,7 +3075,7 @@
 				3518296820D22C290009F82D /* GAPShortLocalName.swift in Sources */,
 				6E6AAE0D20D2584700DDE1CA /* ATTReadByGroupTypeRequest.swift in Sources */,
 				6EE84DFB1CAF891E00A40C4D /* LowEnergyEvent.swift in Sources */,
-				355BC22C20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */,
+				355BC22C20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */,
 				3518291320D221E30009F82D /* GATTAlertCategory.swift in Sources */,
 				355BC2EA20D3416D001A07D3 /* HCILEAddDeviceToPeriodicAdvertiserList.swift in Sources */,
 				6E6AADE020D22C0200DDE1CA /* ATTReadByTypeRequest.swift in Sources */,
@@ -3399,7 +3399,7 @@
 				351829FF20D22E500009F82D /* GAPMeshBeacon.swift in Sources */,
 				6E60A2ED20695AE100E42351 /* POSIXError.swift in Sources */,
 				6E6AAD7120D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
-				355BC22D20D2C380001A07D3 /* HCISetHostChannelClassification.swift in Sources */,
+				355BC22D20D2C380001A07D3 /* HCILESetHostChannelClassification.swift in Sources */,
 				6E60A30620695CC600E42351 /* GATTServer.swift in Sources */,
 				6E704C881E95C41C00484A22 /* Range.swift in Sources */,
 				35182A2220D235520009F82D /* GATTAggregateFormatDescriptor.swift in Sources */,
