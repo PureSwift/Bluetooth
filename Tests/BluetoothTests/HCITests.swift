@@ -38,7 +38,7 @@ final class HCITests: XCTestCase {
         ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter)
     ]
     
-    func testSetAdvertiseEnableParameter(){
+    func testSetAdvertiseEnableParameter() {
         
         let hostController = TestHostController()
         
@@ -64,8 +64,7 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x06, 0x20, 0x12]))
     }
     
-    func testReadBufferSize(){
-        typealias ReadBufferSize = HCILowEnergyCommand.HCILEReadBufferSizeReturn
+    func testReadBufferSize() {
         
         let hostController = TestHostController()
         
@@ -89,7 +88,7 @@ final class HCITests: XCTestCase {
          HC LE Data Packet Length: 0x00FB
          HC Total Num LE Data Packets: 0x000F
          */
-        var readBufferSizeReturn: ReadBufferSize!
+        var readBufferSizeReturn: HCILEReadBufferSize!
         XCTAssertNoThrow(readBufferSizeReturn = try hostController.readBufferSize())
         XCTAssert(hostController.queue.isEmpty)
         
@@ -98,7 +97,6 @@ final class HCITests: XCTestCase {
     }
     
     func testReadLocalSupportedFeatures() {
-        typealias ReadLocalSupportedFeatures = HCILowEnergyCommand.HCILEReadLocalSupportedFeaturesReturn
         
         let hostController = TestHostController()
         

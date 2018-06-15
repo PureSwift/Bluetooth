@@ -12,17 +12,6 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    /// LE Read Advertising Channel Tx Power Command
-    ///
-    /// The command is used by the Host to read the transmit power level used for LE advertising channel packets.
-    func readAdvertisingChannelTxPower(timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.HCILEReadAdvertisingChannelTxPowerReturn.TransmitPowerLevel {
-        
-        let value = try deviceRequest(HCILowEnergyCommand.HCILEReadAdvertisingChannelTxPowerReturn.self,
-                                      timeout: timeout)
-        
-        return value.transmitPowerLevel
-    }
-    
     /// LE Read Maximum Advertising Data Length Command
     ///
     /// The ommand is used to read the maximum length of data supported by the Controller for use

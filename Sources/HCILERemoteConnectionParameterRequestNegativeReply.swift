@@ -25,7 +25,7 @@ public extension BluetoothHostControllerInterface {
         let parameters = HCILERemoteConnectionParameterRequestNegativeReply(connectionHandle: connectionHandle,
                                                                                                 reason: reason)
         
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestNegativeReplyReturnParameter.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestNegativeReply.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }
