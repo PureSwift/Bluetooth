@@ -26,7 +26,7 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyReadLocalP256PublicKey(timeout: HCICommandTimeout = .default) throws -> UInt512 {
         
         let event = try deviceRequest(HCILowEnergyCommand.readLocalP256PublicKeyCommand,
-                          LowEnergyEvent.ReadLocalP256PublicKeyCompleteEventParameter.self,
+                          LowEnergyEvent.HCILEReadLocalP256PublicKeyComplete.self,
                           timeout: timeout)
         
         switch event.status {

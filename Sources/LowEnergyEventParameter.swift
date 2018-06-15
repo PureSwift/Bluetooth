@@ -13,7 +13,7 @@ public extension LowEnergyEvent {
     /// LE Read Local P-256 Public Key Complete Event
     ///
     /// This event is generated when local P-256 key generation is complete.
-    public struct ReadLocalP256PublicKeyCompleteEventParameter: HCIEventParameter {
+    public struct HCILEReadLocalP256PublicKeyComplete: HCIEventParameter {
         
         public static let event = LowEnergyEvent.readLocalP256PublicKeyComplete // 0x08
         
@@ -43,7 +43,7 @@ public extension LowEnergyEvent {
     /// LE Generate DHKey Complete Event
     ///
     /// This event indicates that LE Diffie Hellman key generation has been completed by the Controller.
-    public struct GenerateDHKeyCompleteEventParameter: HCIEventParameter {
+    public struct HCILEGenerateDHKeyComplete: HCIEventParameter {
         
         public static let event = LowEnergyEvent.generateDHKeyComplete // 0x09
         
@@ -73,7 +73,7 @@ public extension LowEnergyEvent {
     /// LE Enhanced Connection Complete Event
     ///
     /// The event indicates to both of the Hosts forming the connection that a new connection has been created.
-    public struct EnhancedConnectionCompleteEventParameter: HCIEventParameter {
+    public struct HCILEEnhancedConnectionComplete: HCIEventParameter {
         
         public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x0A
         
@@ -183,7 +183,7 @@ public extension LowEnergyEvent {
     /// The event indicates that directed advertisements have been received where the advertiser
     /// is using a resolvable private address for the TargetA field of the advertising PDU which
     /// the Controller is unable to resolve and the Scanning_Filter_Policy is equal to 0x02 or 0x03.
-    public struct DirectedAdvertisingReportEventParameter: HCIEventParameter {
+    public struct HCILEDirectedAdvertisingReport: HCIEventParameter {
         
         public static let event = LowEnergyEvent.directedAdvertisingReport // 0x0B
         
@@ -318,7 +318,7 @@ public extension LowEnergyEvent {
     ///
     /// If an LE_Set_PHY command was sent and the Controller determines that neither PHY will
     /// change as a result, it issues this event immediately.
-    public struct PhyUpdateCompleteEventParameter: HCIEventParameter {
+    public struct HCILEPhyUpdateComplete: HCIEventParameter {
         
         public static let event = LowEnergyEvent.phyUpdateComplete // 0x0C
         
@@ -364,7 +364,7 @@ public extension LowEnergyEvent {
     /// The Controller may coalesce multiple advertising reports from the same or different advertisers
     /// into a single LE Extended Advertising Report event, provided all the parameters from all the advertising reports
     /// fit in a single HCI event.
-    public struct ExtendedAdvertisingReportEventParameter: HCIEventParameter {
+    public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         public static let event = LowEnergyEvent.extendedAdvertisingReport // 0x0D
         
