@@ -24,6 +24,7 @@ public struct VendorCommand: HCICommand {
 
 public extension VendorCommand {
     
+    /// The names of the registered vendor commands.
     public static var names = [VendorCommand: String]()
     
     public var name: String {
@@ -32,4 +33,22 @@ public extension VendorCommand {
     }
 }
 
-// MARK: - 
+// MARK: - Equatable
+
+extension VendorCommand: Equatable {
+    
+    public static func == (lhs: VendorCommand, rhs: VendorCommand) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+// MARK: - Hashable
+
+extension VendorCommand: Hashable {
+    
+    public var hashValue: Int {
+        
+        return Int(rawValue)
+    }
+}
