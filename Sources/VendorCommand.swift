@@ -18,6 +18,11 @@ public struct VendorCommand: HCICommand {
         
         self.rawValue = rawValue
     }
+}
+
+// MARK: - Name
+
+public extension VendorCommand {
     
     public static var names = [VendorCommand: String]()
     
@@ -26,3 +31,5 @@ public struct VendorCommand: HCICommand {
         return type(of: self).names[self] ?? rawValue.toHexadecimal()
     }
 }
+
+// MARK: - 
