@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This ommand is used to read the current transmitter PHY and receiver PHY
     /// on the connection identified by the Connection_Handle.
-    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> HCILowEnergyCommand.ReadPHYReturnParameter {
+    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> HCILEReadPHYReturn {
         
         let parameters = HCILEReadPHY(connectionHandle: connectionHandle)
         
-        let value = try deviceRequest(parameters, HCILowEnergyCommand.ReadPHYReturnParameter.self, timeout: timeout)
+        let value = try deviceRequest(parameters, HCILEReadPHYReturn.self, timeout: timeout)
         
         return value
     }
@@ -52,5 +52,40 @@ public struct HCILEReadPHY: HCICommandParameter {
             connectionHandleBytes.0,
             connectionHandleBytes.1
             ])
+    }
+}
+
+// MARK: - Return parameter
+
+/// LE Read PHY Command
+///
+/// The command is used to read the current transmitter PHY and receiver PHY
+/// on the connection identified by the Connection_Handle.
+public struct HCILEReadPHYReturn: HCICommandReturnParameter {
+    
+    public static let command = HCILowEnergyCommand.readPhy //0x0030
+    
+    public static let length: Int = 4
+    
+    public let connectionHandle: UInt16
+    
+    public let txPhy: LowEnergyTxPhy
+    
+    public let rxPhy: LowEnergyRxPhy
+    
+    public init?(data: Data) {
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        guard let txPhy = LowEnergyTxPhy(rawValue: data[2])
+            else { return nil }
+        
+        guard let rxPhy = LowEnergyRxPhy(rawValue: data[3])
+            else { return nil }
+        
+        self.txPhy = txPhy
+        self.rxPhy = rxPhy
     }
 }
