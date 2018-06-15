@@ -1842,6 +1842,7 @@ extension GATTAerobicThreshold: CustomStringConvertible {
 }
 
 /**
+<<<<<<< HEAD
  Anaerobic Heart Rate Lower Limit
  
  Lower limit of the heart rate where the user enhances his anaerobic tolerance while exercising.
@@ -1861,6 +1862,25 @@ public struct GATTAnaerobicHeartRateLowerLimit: GATTProfileCharacteristic {
     public init(beats: BeatsPerMinute) {
         
         self.beats = beats
+=======
+ Analog
+ 
+ The Analog characteristic is used to read or write the value of one of the IO Module’s analog signals.
+ 
+ - SeeAlso: [Analog](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.analog.xml)
+ */
+public struct GATTAnalog: GATTProfileCharacteristic {
+    
+    internal static let length = MemoryLayout<UInt16>.size
+    
+    public static var uuid: BluetoothUUID { return .analog}
+    
+    public var analog: UInt16
+    
+    public init(analog: UInt16) {
+        
+        self.analog = analog
+>>>>>>> master
     }
     
     public init?(data: Data) {
@@ -1868,13 +1888,18 @@ public struct GATTAnaerobicHeartRateLowerLimit: GATTProfileCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
+<<<<<<< HEAD
         let beats = BeatsPerMinute(rawValue: data[0])
         
         self.init(beats: beats)
+=======
+        self.init(analog: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+>>>>>>> master
     }
     
     public var data: Data {
         
+<<<<<<< HEAD
         return Data([beats.rawValue])
     }
     
@@ -1950,6 +1975,26 @@ extension GATTAnaerobicHeartRateUpperLimit: CustomStringConvertible {
     public var description: String {
         
         return beats.description
+=======
+        let bytes = analog.littleEndian.bytes
+        return Data([bytes.0, bytes.1])
+    }
+}
+extension GATTAnalog: Equatable {
+    
+    public static func == (lhs: GATTAnalog,
+                           rhs: GATTAnalog) -> Bool {
+        
+        return lhs.analog == rhs.analog
+    }
+}
+
+extension GATTAnalog: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return analog.description
+>>>>>>> master
     }
 }
 
