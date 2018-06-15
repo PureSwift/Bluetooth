@@ -53,10 +53,12 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
         
         var bytes = Data(repeating: 0, count: type(of: self).length)
         
+        let attributeHandleBytes = attributeHandle.littleEndian.bytes
+        
         bytes[0] = type(of: self).attributeOpcode.rawValue
         bytes[1] = request.rawValue
-        bytes[2] = attributeHandle.littleEndian.bytes.0
-        bytes[3] = attributeHandle.littleEndian.bytes.1
+        bytes[2] = attributeHandleBytes.0
+        bytes[3] = attributeHandleBytes.1
         bytes[4] = error.rawValue
         
         return bytes
