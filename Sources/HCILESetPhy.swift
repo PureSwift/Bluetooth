@@ -23,7 +23,7 @@ public extension BluetoothHostControllerInterface {
                                   txPhys: LowEnergyTxPhys,
                                   rxPhys: LowEnergyRxPhys,
                                   phyOptions: LowEnergyPhyOptions,
-                                  timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.HCILEPhyUpdateComplete {
+                                  timeout: HCICommandTimeout = .default) throws -> HCILEPhyUpdateComplete {
         
         let parameters = HCILESetPhy(connectionHandle: connectionHandle,
                                                          allPhys: allPhys,
@@ -32,7 +32,7 @@ public extension BluetoothHostControllerInterface {
                                                          phyOptions: phyOptions)
         
         let event =  try deviceRequest(parameters,
-                                       LowEnergyEvent.HCILEPhyUpdateComplete.self,
+                                       HCILEPhyUpdateComplete.self,
                                        timeout: timeout)
         
         switch event.status {
