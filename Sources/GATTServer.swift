@@ -225,7 +225,7 @@ public final class GATTServer {
     }
     
     /// Handler for Write Request and Command
-    private func handleWriteRequest(opcode: ATT.Opcode, handle: UInt16, value: [UInt8], shouldRespond: Bool) {
+    private func handleWriteRequest(opcode: ATT.Opcode, handle: UInt16, value: Data, shouldRespond: Bool) {
         
         /// Conditionally respond
         @inline(__always)
@@ -254,16 +254,14 @@ public final class GATTServer {
             return
         }
         
-        let newData = Data(bytes: value)
-        
         // validate application errors with write callback
-        if let error = willWrite?(attribute.uuid, handle, attribute.value, newData) {
+        if let error = willWrite?(attribute.uuid, handle, attribute.value, value) {
             
             doResponse(errorResponse(opcode, error, handle))
             return
         }
         
-        database.write(newData, forAttribute: handle)
+        database.write(value, forAttribute: handle)
         
         doResponse(respond(ATTWriteResponse()))
         
@@ -284,8 +282,8 @@ public final class GATTServer {
         // Client configuration
         if let clientConfigurationDescriptor = characteristic.descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
             
-            guard let descriptor = GATTClientCharacteristicConfiguration(byteValue: clientConfigurationDescriptor.value)
-                else { fatalError("Invalid descriptor value \([UInt8](clientConfigurationDescriptor.value))") }
+            guard let descriptor = GATTClientCharacteristicConfiguration(data: clientConfigurationDescriptor.value)
+                else { return }
             
             // notify
             if descriptor.configuration.contains(.notify) {
@@ -295,15 +293,15 @@ public final class GATTServer {
                 // can be sent in a notification.
                 let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueNotification.length
                 
-                let value: [UInt8]
+                let value: Data
                 
                 if attribute.value.count > dataSize {
                     
-                    value = [UInt8]([UInt8](attribute.value).prefix(dataSize))
+                    value = Data(attribute.value.prefix(dataSize))
                     
                 } else {
                     
-                    value = [UInt8](attribute.value)
+                    value = attribute.value
                 }
                 
                 let notification = ATTHandleValueNotification(handle: attributeHandle, value: value)
@@ -319,15 +317,15 @@ public final class GATTServer {
                 /// can be sent in a indication.
                 let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueIndication.length
                 
-                let value: [UInt8]
+                let value: Data
                 
                 if attribute.value.count > dataSize {
                     
-                    value = [UInt8]([UInt8](attribute.value).prefix(dataSize))
+                    value = Data(attribute.value.prefix(dataSize))
                     
                 } else {
                     
-                    value = [UInt8](attribute.value)
+                    value = attribute.value
                 }
                 
                 let indication = ATTHandleValueIndication(handle: attributeHandle, value: value)
@@ -343,7 +341,7 @@ public final class GATTServer {
     private func handleReadRequest(opcode: ATT.Opcode,
                                    handle: UInt16,
                                    offset: UInt16 = 0,
-                                   isBlob: Bool = false) -> [UInt8]? {
+                                   isBlob: Bool = false) -> Data? {
         
         // no attributes
         guard database.attributes.isEmpty == false
@@ -374,27 +372,27 @@ public final class GATTServer {
         guard offset <= UInt16(attribute.value.count)
             else { errorResponse(opcode, .invalidOffset, handle); return nil }
         
-        var value: [UInt8]
+        var value: Data
         
         // Guard against invalid access if offset equals to value length
         if offset == UInt16(attribute.value.count) {
             
-            value = []
+            value = Data()
             
         } else if offset > 0 {
             
-            value = Array(attribute.value.suffix(from: Int(offset)))
+            value = Data(attribute.value.suffix(from: Int(offset)))
             
         } else {
             
-            value = Array(attribute.value)
+            value = attribute.value
         }
         
         // adjust value for MTU
-        value = Array(value.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 1))
+        value = Data(value.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 1))
         
         // validate application errors with read callback
-        if let error = willRead?(attribute.uuid, handle, Data(bytes: value), Int(offset)) {
+        if let error = willRead?(attribute.uuid, handle, value, Int(offset)) {
             
             errorResponse(opcode, error, handle)
             return nil
@@ -450,7 +448,7 @@ public final class GATTServer {
         
         for (index, attribute) in data.enumerated() {
             
-            let value = [UInt8](attribute.uuid.littleEndian.data)
+            let value = attribute.uuid.littleEndian.data
             
             if index > 0 {
                 
@@ -467,16 +465,16 @@ public final class GATTServer {
         
         var limitedAttributes = [attributeData[0]]
         
-        var response = ATTReadByGroupTypeResponse(data: limitedAttributes)!
+        var response = ATTReadByGroupTypeResponse(limitedAttributes)
         
         // limit for MTU if first handle is too large
-        if response.byteValue.count > Int(connection.maximumTransmissionUnit.rawValue) {
+        if response.data.count > Int(connection.maximumTransmissionUnit.rawValue) {
             
             let maxLength = min(min(Int(connection.maximumTransmissionUnit.rawValue) - 6, 251), limitedAttributes[0].value.count)
             
-            limitedAttributes[0].value = Array(limitedAttributes[0].value.prefix(maxLength))
+            limitedAttributes[0].value = Data(limitedAttributes[0].value.prefix(maxLength))
             
-            response = ATTReadByGroupTypeResponse(data: limitedAttributes)!
+            response = ATTReadByGroupTypeResponse(limitedAttributes)
             
         } else {
             
@@ -485,17 +483,17 @@ public final class GATTServer {
                 
                 limitedAttributes.append(data)
                 
-                guard let limitedResponse = ATTReadByGroupTypeResponse(data: limitedAttributes)
+                guard let limitedResponse = ATTReadByGroupTypeResponse(attributeData: limitedAttributes)
                     else { fatalErrorResponse("Could not create ATTReadByGroupTypeResponse. Attribute Data: \(attributeData)", opcode, pdu.startHandle) }
                 
-                guard limitedResponse.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
+                guard limitedResponse.data.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
                 
                 response = limitedResponse
             }
         }
         
-        assert(response.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue),
-               "Response \(response.byteValue.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
+        assert(response.data.count <= Int(connection.maximumTransmissionUnit.rawValue),
+               "Response \(response.data.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
         
         respond(response)
     }
@@ -533,20 +531,20 @@ public final class GATTServer {
         guard attributes.isEmpty == false
             else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
         
-        let attributeData = attributes.map { AttributeData(handle: $0.handle, value: Array($0.value)) }
+        let attributeData = attributes.map { AttributeData(handle: $0.handle, value: $0.value) }
         
         var limitedAttributes = [attributeData[0]]
         
-        var response = ATTReadByTypeResponse(data: limitedAttributes)!
+        var response = ATTReadByTypeResponse(limitedAttributes)
         
         // limit for MTU if first handle is too large
-        if response.byteValue.count > Int(connection.maximumTransmissionUnit.rawValue) {
+        if response.data.count > Int(connection.maximumTransmissionUnit.rawValue) {
             
             let maxLength = min(min(Int(connection.maximumTransmissionUnit.rawValue) - 4, 253), limitedAttributes[0].value.count)
             
-            limitedAttributes[0].value = Array(limitedAttributes[0].value.prefix(maxLength))
+            limitedAttributes[0].value = Data(limitedAttributes[0].value.prefix(maxLength))
             
-            response = ATTReadByTypeResponse(data: limitedAttributes)!
+            response = ATTReadByTypeResponse(limitedAttributes)
             
         } else {
             
@@ -555,17 +553,17 @@ public final class GATTServer {
                 
                 limitedAttributes.append(data)
                 
-                guard let limitedResponse = ATTReadByTypeResponse(data: limitedAttributes)
+                guard let limitedResponse = ATTReadByTypeResponse(attributeData: limitedAttributes)
                     else { fatalErrorResponse("Could not create ATTReadByTypeResponse. Attribute Data: \(attributeData)", opcode, pdu.startHandle) }
                 
-                guard limitedResponse.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
+                guard limitedResponse.data.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
                 
                 response = limitedResponse
             }
         }
         
-        assert(response.byteValue.count <= Int(connection.maximumTransmissionUnit.rawValue),
-               "Response \(response.byteValue.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
+        assert(response.data.count <= Int(connection.maximumTransmissionUnit.rawValue),
+               "Response \(response.data.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
         
         respond(response)
     }
@@ -629,14 +627,14 @@ public final class GATTServer {
                 else { break }
         }
         
-        let data: AttributeData
+        let attributeData: AttributeData
         
         switch format {
-        case .bit16: data = .bit16(bit16Pairs)
-        case .bit128: data = .bit128(bit128Pairs)
+        case .bit16: attributeData = .bit16(bit16Pairs)
+        case .bit128: attributeData = .bit128(bit128Pairs)
         }
         
-        let response = ATTFindInformationResponse(data: data)
+        let response = ATTFindInformationResponse(attributeData: attributeData)
         
         respond(response)
     }
@@ -715,7 +713,7 @@ public final class GATTServer {
         guard database.attributes.isEmpty == false
             else { errorResponse(opcode, .invalidHandle, pdu.handles[0]); return }
         
-        var values = [UInt8]()
+        var values = Data()
         
         for handle in pdu.handles {
             
@@ -733,7 +731,7 @@ public final class GATTServer {
                 return
             }
             
-            values += Array(attribute.value)
+            values += attribute.value
         }
         
         let response = ATTReadMultipleResponse(values: values)
@@ -850,7 +848,7 @@ private extension GATTServer {
         
         let handle: UInt16
         
-        let value: [UInt8]
+        let value: Data
         
         let offset: UInt16
     }
@@ -912,7 +910,7 @@ internal extension GATTDatabase {
         return attributes.filter { range.contains($0.handle) }
     }
     
-    func findByTypeValue(handle: (start: UInt16, end: UInt16), type: UInt16, value: [UInt8]) -> [(UInt16, UInt16)] {
+    func findByTypeValue(handle: (start: UInt16, end: UInt16), type: UInt16, value: Data) -> [(UInt16, UInt16)] {
         
         let range = handle.end < UInt16.max ? Range(handle.start ... handle.end) : Range(handle.start ..< handle.end)
         
@@ -924,7 +922,7 @@ internal extension GATTDatabase {
                 
                 let match = range.contains(attribute.handle)
                     && attribute.uuid == .bit16(type)
-                    && Array(attribute.value) == value
+                    && attribute.value == value
                 
                 guard match else { continue }
                 

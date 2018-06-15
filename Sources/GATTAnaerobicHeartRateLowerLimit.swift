@@ -15,7 +15,7 @@ import Foundation
  
  - SeeAlso: [Anaerobic Heart Rate Lower Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.anaerobic_heart_rate_lower_limit.xml)
  */
-public struct GATTAnaerobicHeartRateLowerLimit: GATTProfileCharacteristic {
+public struct GATTAnaerobicHeartRateLowerLimit: GATTCharacteristic {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
     

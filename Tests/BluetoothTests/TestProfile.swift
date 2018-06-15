@@ -59,7 +59,7 @@ public struct TestProfile {
                                                  permissions: [.write],
                                                  properties: [.write])
     
-    public static let WriteBlobValue = Data(bytes: [UInt8](repeating: 0xAA, count: 512))
+    public static let WriteBlobValue = Data([UInt8](repeating: 0xAA, count: 512))
     
     public static let WriteBlobWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "D4A6E516-C867-4582-BF66-0A02BD854613")!,
                                                                 value: Data(),

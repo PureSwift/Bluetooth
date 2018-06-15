@@ -6,9 +6,12 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// HCI Command.
 public protocol HCICommand: RawRepresentable, Hashable, CustomStringConvertible {
     
+    /// The command group opcode.
     static var opcodeGroupField: HCIOpcodeGroupField { get }
     
     init?(rawValue: HCIOpcodeCommandField)
@@ -48,7 +51,7 @@ public protocol HCICommandParameter {
     static var command: HCICommandType { get }
     
     /// Converts command parameter to raw bytes.
-    var byteValue: [UInt8] { get }
+    var data: Data { get }
 }
 
 /// The return value (not event) returned by an HCI command. 
@@ -62,5 +65,5 @@ public protocol HCICommandReturnParameter {
     static var length: Int { get }
     
     // Attempt to initialize command return parameter from data.
-    init?(byteValue: [UInt8])
+    init?(data: Data)
 }

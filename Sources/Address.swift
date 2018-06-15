@@ -93,7 +93,7 @@ extension Address: RawRepresentable {
         guard rawValue.utf8.count == 17
             else { return nil }
         
-        var bytes = [UInt8](repeating: 0, count: 6)
+        var bytes = Data(repeating: 0, count: 6)
         
         // parse bytes
         guard rawValue.withCString({ (cString) -> Bool in

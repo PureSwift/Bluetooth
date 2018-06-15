@@ -6,6 +6,8 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 #if os(Linux)
     import Glibc
 #elseif os(OSX) || os(iOS)
@@ -41,5 +43,5 @@ public protocol HCIEventParameter {
     static var length: Int { get }
     
     /// Attempt to initialize event parameter from data. 
-    init?(byteValue: [UInt8])
+    init?(data: Data)
 }

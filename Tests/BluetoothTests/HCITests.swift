@@ -38,7 +38,7 @@ final class HCITests: XCTestCase {
         ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter)
     ]
     
-    func testSetAdvertiseEnableParameter(){
+    func testSetAdvertiseEnableParameter() {
         
         let hostController = TestHostController()
         
@@ -56,7 +56,7 @@ final class HCITests: XCTestCase {
 
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.setAdvertisingParameters.opcode,
+            .command(HCILowEnergyCommand.setAdvertisingParameters.opcode,
                      [0x06, 0x20, 0x0f, 0x14, 0x00, 0x1E, 0x00, 0x01, 0x01, 0x00, 0x77, 0xD8, 0x47, 0xA3, 0x39, 0x54, 0x01, 0x00])
         )
         
@@ -64,8 +64,7 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x06, 0x20, 0x12]))
     }
     
-    func testReadBufferSize(){
-        typealias ReadBufferSize = LowEnergyCommand.ReadBufferSizeReturnParameter
+    func testReadBufferSize() {
         
         let hostController = TestHostController()
         
@@ -74,7 +73,7 @@ final class HCITests: XCTestCase {
          [2002] Opcode: 0x2002 (OGF: 0x08    OCF: 0x02)
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.readBufferSize.opcode,
+            .command(HCILowEnergyCommand.readBufferSize.opcode,
                      [0x02, 0x20, 0x00])
         )
         
@@ -89,7 +88,7 @@ final class HCITests: XCTestCase {
          HC LE Data Packet Length: 0x00FB
          HC Total Num LE Data Packets: 0x000F
          */
-        var readBufferSizeReturn: ReadBufferSize!
+        var readBufferSizeReturn: HCILEReadBufferSize!
         XCTAssertNoThrow(readBufferSizeReturn = try hostController.readBufferSize())
         XCTAssert(hostController.queue.isEmpty)
         
@@ -98,7 +97,6 @@ final class HCITests: XCTestCase {
     }
     
     func testReadLocalSupportedFeatures() {
-        typealias ReadLocalSupportedFeatures = LowEnergyCommand.ReadLocalSupportedFeaturesReturnParameter
         
         let hostController = TestHostController()
         
@@ -107,7 +105,7 @@ final class HCITests: XCTestCase {
          [2003] Opcode: 0x2003 (OGF: 0x08    OCF: 0x03)
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.readLocalSupportedFeatures.opcode,
+            .command(HCILowEnergyCommand.readLocalSupportedFeatures.opcode,
                      [0x03, 0x20, 0x00])
         )
         
@@ -143,7 +141,7 @@ final class HCITests: XCTestCase {
         XCTAssert(InformationalCommand.readLocalVersionInformation.name == "Read Local Version Information")
         XCTAssert(HostControllerBasebandCommand.readLocalName.name == "Read Local Name")
         XCTAssert(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
-        XCTAssert(LowEnergyCommand.createConnection.name == "LE Create Connection")
+        XCTAssert(HCILowEnergyCommand.createConnection.name == "LE Create Connection")
         
         func testCommand <T: HCICommand> (_ command: T.Type) {
             
@@ -164,7 +162,7 @@ final class HCITests: XCTestCase {
         testCommand(InformationalCommand.self)
         testCommand(HostControllerBasebandCommand.self)
         testCommand(StatusParametersCommand.self)
-        testCommand(LowEnergyCommand.self)
+        testCommand(HCILowEnergyCommand.self)
         
         func testCommandNames <T: HCICommand> (_ command: T.Type, names: [String], skip: String = "Unknown") {
             
@@ -174,7 +172,7 @@ final class HCITests: XCTestCase {
             }
         }
         
-        testCommandNames(LowEnergyCommand.self, names: [
+        testCommandNames(HCILowEnergyCommand.self, names: [
             "Unknown",
             "LE Set Event Mask",
             "LE Read Buffer Size",
@@ -266,8 +264,6 @@ final class HCITests: XCTestCase {
     
     func testReadLocalVersionInformation() {
         
-        typealias LocalVersionInformation = InformationalCommand.ReadLocalVersionInformationReturnParameter
-        
         let hostController = TestHostController()
         
         /**
@@ -294,7 +290,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x01, 0x10, 0x00, 0x08, 0xC2, 0x12, 0x08, 0x0F, 0x00, 0x9A, 0x21]))
         
-        var localVersionInformation: LocalVersionInformation!
+        var localVersionInformation: HCILocalVersionInformation!
         XCTAssertNoThrow(localVersionInformation = try hostController.readLocalVersionInformation())
         XCTAssert(hostController.queue.isEmpty)
         
@@ -331,12 +327,10 @@ final class HCITests: XCTestCase {
     
     func testReadLocalName() {
         
-        typealias ReadLocalNameReturnParameter = HostControllerBasebandCommand.ReadLocalNameReturnParameter
-        
-        do{
-            let data: [UInt8] = [/*0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00,*/ 0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+        do {
+            let data = Data([/*0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00,*/ 0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
             
-            guard let readLocalNameParameter = ReadLocalNameReturnParameter(byteValue: data)
+            guard let readLocalNameParameter = HCIReadLocalName(data: data)
                 else { XCTFail("Bytes couldn't convert to String"); return  }
             
             let dataString = "Alsey’s MacBook Pro"
@@ -368,19 +362,17 @@ final class HCITests: XCTestCase {
     
     func testWriteLocalName() {
         
-        typealias WriteLocalNameParameter = HostControllerBasebandCommand.WriteLocalNameParameter
-        
-        XCTAssert((WriteLocalNameParameter(localName: "")?.byteValue ?? []) == [UInt8](repeating: 0x00, count: WriteLocalNameParameter.length))
+        XCTAssert((HCIWriteLocalName(localName: "")?.data ?? Data()) == Data(repeating: 0x00, count: HCIWriteLocalName.length))
         
         // test local name lenght == 248
         do {
-            let localNameParameter = String(repeating: "M", count: WriteLocalNameParameter.length) //248
+            let localNameParameter = String(repeating: "M", count: HCIWriteLocalName.length) //248
             
-            guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localNameParameter)
+            guard let writeLocalNameParameter = HCIWriteLocalName(localName: localNameParameter)
                 else { XCTFail(); return  }
             
-            XCTAssert(writeLocalNameParameter.byteValue.isEmpty == false)
-            XCTAssertEqual(writeLocalNameParameter.byteValue.count, WriteLocalNameParameter.length)
+            XCTAssert(writeLocalNameParameter.data.isEmpty == false)
+            XCTAssertEqual(writeLocalNameParameter.data.count, HCIWriteLocalName.length)
         }
         
         // test local name shorter than 248 octets
@@ -388,21 +380,21 @@ final class HCITests: XCTestCase {
             
             let localName = String(repeating: "M", count: 10)
             
-            let data: [UInt8] = [UInt8](localName.utf8) + [UInt8](repeating: 0x00, count: WriteLocalNameParameter.length - 10)
+            let data = Data(localName.utf8) + Data(repeating: 0x00, count: HCIWriteLocalName.length - 10)
             
-            guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localName)
+            guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
                 else { XCTFail(); return }
             
-            XCTAssertEqual(writeLocalNameParameter.byteValue, data)
+            XCTAssertEqual(writeLocalNameParameter.data, data)
         }
         
         // test local name longer than 248
         do {
             let localNameParameter = String(repeating: "M", count: 260)
             
-            let writeLocalNameParameter = WriteLocalNameParameter(localName: localNameParameter)
+            let writeLocalNameParameter = HCIWriteLocalName(localName: localNameParameter)
             
-            XCTAssertNil(writeLocalNameParameter, "WriteLocalNameParameter was created with local name longer than 248")
+            XCTAssertNil(writeLocalNameParameter, "HCIWriteLocalName was created with local name longer than 248")
         }
         
         // compare byte localname
@@ -410,29 +402,29 @@ final class HCITests: XCTestCase {
             
             let localName = String(repeating: "M", count: 248)
             
-            guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localName)
+            guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
                 else { XCTFail(); return  }
             
             XCTAssertEqual(writeLocalNameParameter.localName, localName)
-            XCTAssert(writeLocalNameParameter.byteValue.isEmpty == false)
+            XCTAssert(writeLocalNameParameter.data.isEmpty == false)
             
-            let data = [UInt8](repeating: 77, count: 248)
+            let data = Data([UInt8](repeating: 77, count: 248))
             
-            XCTAssertEqual(writeLocalNameParameter.byteValue, data, "Local Name is not generating correct bytes")
+            XCTAssertEqual(writeLocalNameParameter.data, data, "Local Name is not generating correct bytes")
         }
         
         do {
             let localName = "Test"
             
-            guard let writeLocalNameParameter = WriteLocalNameParameter(localName: localName)
+            guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
                 else { XCTFail(); return  }
             
             XCTAssertEqual(writeLocalNameParameter.localName, localName)
-            XCTAssert(writeLocalNameParameter.byteValue.isEmpty == false)
+            XCTAssert(writeLocalNameParameter.data.isEmpty == false)
             
-            let data: [UInt8] = [/* 0x13, 0x0C, 0xF8, */ 0x54, 0x65, 0x73, 0x74, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+            let data = Data([/* 0x13, 0x0C, 0xF8, */ 0x54, 0x65, 0x73, 0x74, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
             
-            XCTAssertEqual(writeLocalNameParameter.byteValue, data, "\(WriteLocalNameParameter.self) is not generating valid data")
+            XCTAssertEqual(writeLocalNameParameter.data, data, "\(HCIWriteLocalName.self) is not generating valid data")
         }
         
         do {
@@ -457,9 +449,9 @@ final class HCITests: XCTestCase {
     
     func testLowEnergyScan() {
         
-        typealias Report = LowEnergyEvent.AdvertisingReportEventParameter.Report
+        typealias Report = HCILEAdvertisingReport.Report
         
-        typealias ScanParameters = LowEnergyCommand.SetScanParametersParameter
+        typealias ScanParameters = HCILESetScanParameters
         
         let scanParameters = ScanParameters(type: .active,
                                             interval: LowEnergyScanTimeInterval(rawValue: 0x01E0)!,
@@ -471,7 +463,7 @@ final class HCITests: XCTestCase {
         
         // SEND  [200C] LE Set Scan Enable - 0x00, Filter duplicates: 0  0C 20 02 00 01
         hostController.queue.append(
-            .command(LowEnergyCommand.setScanEnable.opcode,
+            .command(HCILowEnergyCommand.setScanEnable.opcode,
                      [0x0C, 0x20, 0x02, 0x00, 0x01])
         )
         
@@ -481,7 +473,7 @@ final class HCITests: XCTestCase {
         // SEND  [200B] LE Set Scan Parameters - Active - 30/300 (ms)  0B 20 07 01 E0 01 30 00 00 00
         hostController.queue.append(
             .command(
-                LowEnergyCommand.setScanParameters.opcode,
+                HCILowEnergyCommand.setScanParameters.opcode,
                 [0x0B, 0x20, 0x07, 0x01, 0xE0, 0x01, 0x30, 0x00, 0x00, 0x00])
             )
         
@@ -492,7 +484,7 @@ final class HCITests: XCTestCase {
         
         // SEND  [200C] LE Set Scan Enable - 0x01, Filter duplicates: 1  0C 20 02 01 00
         hostController.queue.append(
-            .command(LowEnergyCommand.setScanEnable.opcode,
+            .command(HCILowEnergyCommand.setScanEnable.opcode,
                      [0x0C, 0x20, 0x02, 0x01, 0x01])
             )
         
@@ -509,7 +501,7 @@ final class HCITests: XCTestCase {
             
         // SEND  [200C] LE Set Scan Enable - 0x00, Filter duplicates: 1  0C 20 02 00 01
         hostController.queue.append(
-            .command(LowEnergyCommand.setScanEnable.opcode,
+            .command(HCILowEnergyCommand.setScanEnable.opcode,
                      [0x0C, 0x20, 0x02, 0x00, 0x01])
             )
             
@@ -550,7 +542,7 @@ final class HCITests: XCTestCase {
          Connection Handle: 0041
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.readRemoteUsedFeatures.opcode,
+            .command(HCILowEnergyCommand.readRemoteUsedFeatures.opcode,
                      [0x16, 0x20, 0x02, 0x41, 0x00])
         )
         
@@ -592,19 +584,19 @@ final class HCITests: XCTestCase {
     
     func testAdvertisingReport() {
         
-        typealias Report = LowEnergyEvent.AdvertisingReportEventParameter.Report
+        typealias Report = HCILEAdvertisingReport.Report
         
         func parseAdvertisingReport(_ readBytes: Int, _ data: [UInt8]) -> [Report] {
             
-            let eventData = Array(data[3 ..< readBytes])
+            let eventData = Data(data[3 ..< readBytes])
             
-            guard let meta = HCIGeneralEvent.LowEnergyMetaParameter(byteValue: eventData)
+            guard let meta = HCILowEnergyMetaEvent(data: eventData)
                 else { XCTFail("Could not parse"); return [] }
             
             XCTAssert(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
             
-            guard let advertisingReport = LowEnergyEvent.AdvertisingReportEventParameter(byteValue: meta.data)
-                else { XCTFail("Could not parse"); return [] }
+            guard let advertisingReport = HCILEAdvertisingReport(data: meta.eventData)
+                else { XCTFail("Could not parse \(eventData)"); return [] }
             
             return advertisingReport.reports
         }
@@ -661,11 +653,11 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .undirected)
             XCTAssertEqual(report.rssi.rawValue, -45)
-            XCTAssertEqual(report.data.count, 0x16)
+            XCTAssertEqual(report.responseData.count, 0x16)
             
             let advertisingData: [UInt8] = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
             
-            XCTAssertEqual(report.data, advertisingData)
+            XCTAssertEqual(report.responseData, Data(advertisingData))
         }
         
         do {
@@ -682,7 +674,7 @@ final class HCITests: XCTestCase {
              RSSI: -44 dBm
              */
             
-            let data: [UInt8] = [0x3E, 0x0C, 0x02, 0x01, 0x04, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x00, 0xD4]
+            let data = Data([0x3E, 0x0C, 0x02, 0x01, 0x04, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x00, 0xD4])
             
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
             
@@ -695,7 +687,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.rssi.rawValue, -44)
-            XCTAssertEqual(report.data, [])
+            XCTAssertEqual(report.responseData, Data())
         }
         
         do {
@@ -714,7 +706,7 @@ final class HCITests: XCTestCase {
              RSSI: -70 dBm
              */
             
-            let data: [UInt8] = [0x3E, 0x18, 0x02, 0x01, 0x04, 0x00, 0x9E, 0xEF, 0x06, 0xAE, 0x1A, 0x00, 0x0C, 0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33, 0xBA]
+            let data = Data([0x3E, 0x18, 0x02, 0x01, 0x04, 0x00, 0x9E, 0xEF, 0x06, 0xAE, 0x1A, 0x00, 0x0C, 0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33, 0xBA])
             
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
             
@@ -727,20 +719,20 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.rssi.rawValue, -70)
-            XCTAssertEqual(report.data.count, 0x0C)
-            XCTAssertEqual(report.data, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
+            XCTAssertEqual(report.responseData.count, 0x0C)
+            XCTAssertEqual(report.responseData, Data([0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33]))
             
         }
     }
     
     func testCommandStatusEvent() {
         
-        func parseEvent(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> HCIGeneralEvent.CommandStatusParameter? {
+        func parseEvent(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> HCICommandStatus? {
             
-            let headerData = Array(eventBuffer[1 ..< 1 + HCIEventHeader.length])
-            let eventData = Array(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
+            let headerData = Data(eventBuffer[1 ..< 1 + HCIEventHeader.length])
+            let eventData = Data(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
             
-            guard let eventHeader = HCIEventHeader(bytes: headerData)
+            guard let eventHeader = HCIEventHeader(data: headerData)
                 else { return nil }
             
             XCTAssert(eventHeader.event.rawValue == headerData[0])
@@ -748,7 +740,7 @@ final class HCITests: XCTestCase {
             
             XCTAssert(eventHeader.event == .commandStatus)
             
-            guard let event = HCIGeneralEvent.CommandStatusParameter(byteValue: eventData)
+            guard let event = HCICommandStatus(data: eventData)
                 else { return nil }
             
             return event
@@ -784,7 +776,7 @@ final class HCITests: XCTestCase {
             let readBytes = 7
             let data: [UInt8] = [4, 15, 4, 0, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            guard let event: HCIGeneralEvent.CommandStatusParameter = parseEvent(readBytes, data)
+            guard let event: HCICommandStatus = parseEvent(readBytes, data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(event.status == .success)
@@ -795,12 +787,12 @@ final class HCITests: XCTestCase {
             let readBytes = 22
             let data: [UInt8] = [4, 62, 19, 1, 0, 71, 0, 0, 0, 66, 103, 166, 50, 188, 172, 15, 0, 0, 0, 128, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            guard let metaEvent: HCIGeneralEvent.LowEnergyMetaParameter = parseEvent(readBytes, data)
+            guard let metaEvent: HCILowEnergyMetaEvent = parseEvent(readBytes, data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(metaEvent.subevent == .connectionComplete)
             
-            guard let event = LowEnergyEvent.ConnectionCompleteParameter(byteValue: metaEvent.data)
+            guard let event = HCILEConnectionComplete(data: metaEvent.eventData)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(event.status == .success)
@@ -810,9 +802,9 @@ final class HCITests: XCTestCase {
     
     func testLEConnectionCreate() {
         
-        typealias CommandParameter = LowEnergyCommand.CreateConnectionParameter
+        typealias CommandParameter = HCILECreateConnection
         
-        typealias SupervisionTimeout = LowEnergyCommand.CreateConnectionParameter.SupervisionTimeout
+        typealias SupervisionTimeout = HCILECreateConnection.SupervisionTimeout
         
         let hostController = TestHostController()
         
@@ -824,10 +816,10 @@ final class HCITests: XCTestCase {
                                           ownAddressType: .public,
                                           connectionInterval: LowEnergyConnectionIntervalRange(rawValue: 0x0006 ... 0x000C)!,
                                           connectionLatency: .zero,
-                                          supervisionTimeout: LowEnergyCommand.CreateConnectionParameter.SupervisionTimeout(rawValue: 0x00C8)!,
+                                          supervisionTimeout: HCILECreateConnection.SupervisionTimeout(rawValue: 0x00C8)!,
                                           connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
         
-        XCTAssertEqual(parameters.byteValue.count, 0x19)
+        XCTAssertEqual(parameters.data.count, 0x19)
         XCTAssertEqual(parameters.scanInterval.miliseconds, 60)
         XCTAssertEqual(parameters.scanWindow.miliseconds, 30)
         XCTAssertEqual(parameters.connectionInterval.miliseconds, 7.5 ... 15)
@@ -854,7 +846,7 @@ final class HCITests: XCTestCase {
          Maximum CE Length: 0x0006 (3.75 ms)
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.createConnection.opcode,
+            .command(HCILowEnergyCommand.createConnection.opcode,
             [0x0D, 0x20, 0x19, 0x60, 0x00, 0x30, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x0C, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x04, 0x00, 0x06, 0x00])
         )
         
@@ -877,7 +869,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x3E, 0x13, 0x01, 0x00, 0x41, 0x00, 0x00, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x09, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x05]))
         
-        var connection: LowEnergyEvent.ConnectionCompleteParameter!
+        var connection: HCILEConnectionComplete!
         XCTAssertNoThrow(connection = try hostController.lowEnergyCreateConnection(parameters: parameters))
         XCTAssert(hostController.queue.isEmpty)
         XCTAssertEqual(connection.status.rawValue, 0x00)
@@ -905,7 +897,7 @@ final class HCITests: XCTestCase {
          */
         
         hostController.queue.append(
-            .command(LowEnergyCommand.createConnectionCancel.opcode,
+            .command(HCILowEnergyCommand.createConnectionCancel.opcode,
                      [0x0E, 0x20, 0x00])
         )
         
@@ -933,7 +925,7 @@ final class HCITests: XCTestCase {
         
         // SEND  [2011] LE Add Device To White List - 0 - 58:E2:8F:7C:0B:B3  11 20 07 00 B3 0B 7C 8F E2 58
         hostController.queue.append(
-            .command(LowEnergyCommand.addDeviceToWhiteList.opcode,
+            .command(HCILowEnergyCommand.addDeviceToWhiteList.opcode,
                      [0x11, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
         )
         
@@ -958,7 +950,7 @@ final class HCITests: XCTestCase {
          Address: 58:E2:8F:7C:0B:B3
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.removeDeviceFromWhiteList.opcode,
+            .command(HCILowEnergyCommand.removeDeviceFromWhiteList.opcode,
                      [0x12, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
         )
         
@@ -1002,7 +994,7 @@ final class HCITests: XCTestCase {
          Long Term Key: 2357EB0D0C24D85A985764ECCBECEC05
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.startEncryption.opcode,
+            .command(HCILowEnergyCommand.startEncryption.opcode,
                      [0x19, 0x20, 0x1C, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23]))
         
         /**
@@ -1039,11 +1031,9 @@ final class HCITests: XCTestCase {
     
     func testEncryptionChangeEvent() {
         
-        typealias Event = HCIGeneralEvent.EncryptionChangeEventParameter
+        let data = Data([/* 0x08, 0x04, */ 0x00, 0x41, 0x00, 0x01])
         
-        let data: [UInt8] = [/* 0x08, 0x04, */ 0x00, 0x41, 0x00, 0x01]
-        
-        guard let event = HCIGeneralEvent.EncryptionChangeEventParameter(byteValue: data)
+        guard let event = HCIEncryptionChange(data: data)
             else { XCTFail("Could not parse HCI Event"); return }
         
         XCTAssertEqual(event.status.rawValue, 0x00)
@@ -1072,14 +1062,14 @@ final class HCITests: XCTestCase {
          Plaintext_Data (16-octet value MSO to LSO): 0x0213243546576879acbdcedfe0f10213
          */
         
-        let commandHeader = HCICommandHeader(command: LowEnergyCommand.encrypt,
+        let commandHeader = HCICommandHeader(command: HCILowEnergyCommand.encrypt,
                                              parameterLength: 0x20)
         
-        XCTAssertEqual(commandHeader.byteValue, [23, 32, 32])
+        XCTAssertEqual(commandHeader.data, Data([23, 32, 32]))
         
         hostController.queue.append(
             .command(commandHeader.opcode,
-                     commandHeader.byteValue + [0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]
+                     commandHeader.data + [0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]
             )
         )
         
@@ -1094,7 +1084,7 @@ final class HCITests: XCTestCase {
         
         let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x14)
         
-        hostController.queue.append(.event(eventHeader.byteValue + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
+        hostController.queue.append(.event(eventHeader.data + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
         
         var encryptedData: UInt128 = 0
         XCTAssertNoThrow(encryptedData = try hostController.lowEnergyEncrypt(key: key, data: plainTextData))
@@ -1118,7 +1108,7 @@ final class HCITests: XCTestCase {
          Random Address: 68:60:B2:29:26:8D
          */
         hostController.queue.append(
-            .command(LowEnergyCommand.setRandomAddress.opcode,
+            .command(HCILowEnergyCommand.setRandomAddress.opcode,
                      [0x05, 0x20, 0x06, 0x8D, 0x26, 0x29, 0xB2, 0x60, 0x68])
         )
         
@@ -1141,15 +1131,15 @@ final class HCITests: XCTestCase {
 @_silgen_name("swift_bluetooth_parse_event")
 fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> T? {
     
-    let headerData = Array(eventBuffer[1 ..< 1 + HCIEventHeader.length])
-    let eventData = Array(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
+    let headerData = Data(eventBuffer[1 ..< 1 + HCIEventHeader.length])
+    let eventData = Data(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
     
-    guard let eventHeader = HCIEventHeader(bytes: headerData)
+    guard let eventHeader = HCIEventHeader(data: headerData)
         else { return nil }
     
     XCTAssert(eventHeader.event.rawValue == T.event.rawValue)
     
-    guard let event = T(byteValue: eventData)
+    guard let event = T(data: eventData)
         else { return nil }
     
     return event

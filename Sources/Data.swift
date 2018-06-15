@@ -16,5 +16,10 @@ internal extension Data {
         
         data.append(contentsOf: bytes)
     }
+    
+    static func += (rhs: inout Data, lhs: Data) {
+        
+        rhs.append(lhs)
+    }
 }
 #endif
