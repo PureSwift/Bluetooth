@@ -19,52 +19,45 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error {
     internal static let length = 5
     
     /// The request that generated this error response
-    public var requestOpcode: ATT.Opcode
+    public var request: ATT.Opcode
     
     /// The attribute handle that generated this error response.
     public var attributeHandle: UInt16
     
     /// The reason why the request has generated an error response.
-    public var errorCode: ATT.Error
+    public var error: ATT.Error
     
-    public init(requestOpcode: ATT.Opcode,
+    public init(request: ATT.Opcode,
                 attributeHandle: UInt16,
                 error: ATT.Error) {
         
-        self.requestOpcode = requestOpcode
+        self.request = request
         self.attributeHandle = attributeHandle
-        self.errorCode = error
+        self.error = error
     }
     
     public init?(data: Data) {
         
-        guard data.count == ATTErrorResponse.length else { return nil }
-        
-        let attributeOpcodeByte     = data[0]
-        let requestOpcodeByte       = data[1]
-        let attributeHandleByte1    = data[2]
-        let attributeHandleByte2    = data[3]
-        let errorByte               = data[4]
-        
-        guard attributeOpcodeByte == ATTErrorResponse.attributeOpcode.rawValue,
-            let requestOpcode = ATTOpcode(rawValue: requestOpcodeByte),
-            let errorCode = ATTError(rawValue: errorByte)
+        guard data.count == type(of: self).length,
+            data[0] == type(of: self).attributeOpcode.rawValue,
+            let request = ATTOpcode(rawValue: data[1]),
+            let error = ATTError(rawValue: data[4])
             else { return nil }
         
-        self.requestOpcode = requestOpcode
-        self.errorCode = errorCode
-        self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (attributeHandleByte1, attributeHandleByte2)))
+        let attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
+        
+        self.init(request: request, attributeHandle: attributeHandle, error: error)
     }
     
     public var data: Data {
         
-        var bytes = Data(repeating: 0, count: ATTErrorResponse.length)
+        var bytes = Data(repeating: 0, count: type(of: self).length)
         
-        bytes[0] = ATTErrorResponse.attributeOpcode.rawValue
-        bytes[1] = requestOpcode.rawValue
+        bytes[0] = type(of: self).attributeOpcode.rawValue
+        bytes[1] = request.rawValue
         bytes[2] = attributeHandle.littleEndian.bytes.0
         bytes[3] = attributeHandle.littleEndian.bytes.1
-        bytes[4] = errorCode.rawValue
+        bytes[4] = error.rawValue
         
         return bytes
     }

@@ -196,7 +196,7 @@ public final class ATTConnection {
     /// Sends an error.
     public func send(error: ATT.Error, opcode: ATTOpcode, handle: UInt16 = 0, response: ((ATTErrorResponse) -> ())? = nil) -> UInt? {
         
-        let error = ATTErrorResponse(requestOpcode: opcode, attributeHandle: handle, error: error)
+        let error = ATTErrorResponse(request: opcode, attributeHandle: handle, error: error)
         
         return self.send(error) // no callback for responses
     }
@@ -402,7 +402,7 @@ public final class ATTConnection {
         // If this was a request and no handler was registered for it, respond with "Not Supported"
         if foundPDU == nil && opcode.type == .request {
             
-            let errorResponse = ATTErrorResponse(requestOpcode: opcode, attributeHandle: 0x00, error: .requestNotSupported)
+            let errorResponse = ATTErrorResponse(request: opcode, attributeHandle: 0x00, error: .requestNotSupported)
             
             let _ = send(errorResponse)
         }
@@ -415,13 +415,13 @@ public final class ATTConnection {
     /// and whether the request will be sent again.
     private func handle(errorResponse: ATTErrorResponse) -> (opcode: ATTOpcode, didRetry: Bool) {
         
-        let opcode = errorResponse.requestOpcode
+        let opcode = errorResponse.request
         
         guard let pendingRequest = self.pendingRequest
             else { return (opcode, false)  }
         
         // Attempt to change security
-        guard changeSecurity(for: errorResponse.errorCode)
+        guard changeSecurity(for: errorResponse.error)
             else { return (opcode, false) }
         
         //print("Retrying operation \(pendingRequest)")
