@@ -8,6 +8,8 @@
 
 // MARK: - Command
 
+import Foundation
+
 /// Read Connection Accept Timeout Command
 ///
 /// This command reads the value for the Connection Accept Timeout configuration parameter.
