@@ -293,7 +293,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                     
                     if commandParameterData.isEmpty == false {
                         
-                        guard let commandParameter = LinkControlCommand.RemoteNameRequestParameter(data: commandParameterData)
+                        guard let commandParameter = HCIRemoteNameRequest(data: commandParameterData)
                             else { fatalError("HCI Command 'RemoteNameRequest' was sent, but the event parameter data does not correspond to 'RemoteNameRequestParameter'") }
                         
                         // must be different, for some reason
