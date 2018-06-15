@@ -153,8 +153,8 @@ public extension BluetoothHostControllerInterface {
                  interval: AdvertisingInterval = .default,
                  timeout: HCICommandTimeout = .default) throws {
         
-        typealias AdvertisingParameters = LowEnergyCommand.SetAdvertisingParametersParameter
-        typealias SetAdvertisingData = LowEnergyCommand.SetAdvertisingDataParameter
+        typealias AdvertisingParameters = HCILESetAdvertisingParameters
+        typealias SetAdvertisingData = HCILESetAdvertisingData
         
         // set advertising parameters
         let advertisingParameters = AdvertisingParameters(interval: (min: interval, max: interval))
@@ -167,7 +167,7 @@ public extension BluetoothHostControllerInterface {
         
         // set iBeacon data
         let advertisingData = LowEnergyAdvertisingData(beacon: beacon, flags: flags)
-        let advertisingDataCommand = SetAdvertisingData(data: advertisingData)
+        let advertisingDataCommand = SetAdvertisingData(advertisingData: advertisingData)
         
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }

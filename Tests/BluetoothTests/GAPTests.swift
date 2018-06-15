@@ -675,25 +675,25 @@ final class GAPTests: XCTestCase {
     func testGAPLESupportedFeatures() {
         
         do {
-            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x00, 0x00, 0x4d, 0x00, 0x00])
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: Data([0x00, 0x00, 0x4d, 0x00, 0x00]))
             XCTAssertEqual(supportedFeatures.data.count, 3)
             XCTAssertEqual(supportedFeatures.data, Data([0x00, 0x00, 0x4d]))
         }
         
         do {
-            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x3d, 0x12, 0x00])
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: Data([0x3d, 0x12, 0x00]))
             XCTAssertEqual(supportedFeatures.data.count, 2)
             XCTAssertEqual(supportedFeatures.data, Data([0x3d, 0x12]))
         }
         
         do {
-            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x3d, 0x12, 0x00, 0x00, 0xff, 0x4e])
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: Data([0x3d, 0x12, 0x00, 0x00, 0xff, 0x4e]))
             XCTAssertEqual(supportedFeatures.data.count, 4)
             XCTAssertEqual(supportedFeatures.data, Data([0x3d, 0x12, 0xff, 0x4e]))
         }
         
         do {
-            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: [0x3d, 0x12, 0x4d, 0x4e, 0x4e])
+            let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: Data([0x3d, 0x12, 0x4d, 0x4e, 0x4e]))
             XCTAssertEqual(supportedFeatures.data.count, 5)
             XCTAssertEqual(supportedFeatures.data, Data([0x3d, 0x12, 0x4d, 0x4e, 0x4e]))
         }

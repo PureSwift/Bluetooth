@@ -15,7 +15,7 @@ import Foundation
  
  - SeeAlso: [Analog Output](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.analog_output.xml)
  */
-public struct GATTAnalogOutput: GATTProfileCharacteristic {
+public struct GATTAnalogOutput: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt16>.size
     

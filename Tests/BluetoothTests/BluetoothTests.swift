@@ -144,7 +144,7 @@ final class BluetoothTests: XCTestCase {
     
     func testLowEnergyAdvertisingFilterPolicy() {
         
-        typealias FilterPolicy = LowEnergyCommand.SetAdvertisingParametersParameter.FilterPolicy
+        typealias FilterPolicy = HCILESetAdvertisingParameters.FilterPolicy
         
         XCTAssertEqual(FilterPolicy(), .any)
         XCTAssertEqual(FilterPolicy(whiteListScan: false, whiteListConnect: true), .whiteListConnect)
@@ -221,7 +221,7 @@ final class BluetoothTests: XCTestCase {
     
     func testLowEnergyEventMask() {
         
-        typealias EventMask = LowEnergyCommand.SetEventMaskParameter.EventMask
+        typealias EventMask = HCILESetEventMask.EventMask
         
         XCTAssert(EventMask().isEmpty)
         XCTAssert(EventMask(rawValue: 0x00).isEmpty)

@@ -13,9 +13,9 @@ import Foundation
  
  - SeeAlso: [Barometric Pressure Trend](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.barometric_pressure_trend.xml)
  */
-public enum GATTBarometricPressureTrend: UInt8, GATTProfileCharacteristic, BluetoothUnit {
+public enum GATTBarometricPressureTrend: UInt8, GATTCharacteristic, BluetoothUnit {
     
-    internal static let length = MemoryLayout<RawValue>.size
+    internal static let length = MemoryLayout<UInt8>.size
     
     public static var uuid: BluetoothUUID { return .barometricPressureTrend }
     
@@ -25,10 +25,10 @@ public enum GATTBarometricPressureTrend: UInt8, GATTProfileCharacteristic, Bluet
     case unknown = 0x00
     
     // Continuously falling
-    case continuoslyFalling = 0x01
+    case continuouslyFalling = 0x01
     
     // Continuously rising
-    case continuoslyRising = 0x02
+    case continuouslyRising = 0x02
     
     // Falling, then steady
     case fallingThenSteady = 0x03
