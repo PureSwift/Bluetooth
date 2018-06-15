@@ -435,7 +435,7 @@ final class GATTTests: XCTestCase {
              
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0005 (05) [ 01 10 43 00 0A ]
              */
-            (ATTErrorResponse(requestOpcode: ATTOpcode.readByGroupTypeRequest,
+            (ATTErrorResponse(request: .readByGroupTypeRequest,
                               attributeHandle: 0x0043,
                               error: .attributeNotFound),
             [0x01, 0x10, 0x43, 0x00, 0x0A])

@@ -1157,7 +1157,7 @@ extension GATTClientError: CustomNSError {
         case let .errorResponse(response):
             
             userInfo[NSLocalizedDescriptionKey] = NSLocalizedString(
-                "GATT Server responded with an error response (\(response.errorCode)).",
+                "GATT Server responded with an error response (\(response.error)).",
                 comment: "org.pureswift.Bluetooth.GATTClientError.errorResponse"
             )
             userInfo[NSUnderlyingErrorKey] = response as NSError
@@ -1275,7 +1275,7 @@ fileprivate final class DiscoveryOperation <T> {
     @inline(__always)
     func error(_ responseError: ATTErrorResponse) {
         
-        if responseError.errorCode == .attributeNotFound {
+        if responseError.error == .attributeNotFound {
             
             success()
             
@@ -1319,7 +1319,7 @@ private extension GATTClient {
         @inline(__always)
         func error(_ responseError: ATTErrorResponse) {
             
-            if responseError.errorCode == .attributeNotFound {
+            if responseError.error == .attributeNotFound {
                 
                 success()
                 
@@ -1360,7 +1360,7 @@ private extension GATTClient {
         @inline(__always)
         func error(_ responseError: ATTErrorResponse) {
             
-            if responseError.errorCode == .invalidOffset,
+            if responseError.error == .invalidOffset,
                 data.isEmpty == false {
                 
                 success()
