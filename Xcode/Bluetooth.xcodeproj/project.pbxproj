@@ -17,6 +17,22 @@
 		356EB93C20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB93A20D450180022A48D /* GATTAnaerobicHeartRateUpperLimit.swift */; };
 		356EB93D20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB93A20D450180022A48D /* GATTAnaerobicHeartRateUpperLimit.swift */; };
 		356EB93E20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB93A20D450180022A48D /* GATTAnaerobicHeartRateUpperLimit.swift */; };
+		356EB94F20D45CBA0022A48D /* GATTAlertStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94E20D45CBA0022A48D /* GATTAlertStatus.swift */; };
+		356EB95020D45CBA0022A48D /* GATTAlertStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94E20D45CBA0022A48D /* GATTAlertStatus.swift */; };
+		356EB95120D45CBA0022A48D /* GATTAlertStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94E20D45CBA0022A48D /* GATTAlertStatus.swift */; };
+		356EB95220D45CBA0022A48D /* GATTAlertStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94E20D45CBA0022A48D /* GATTAlertStatus.swift */; };
+		356EB94A20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94920D455340022A48D /* GATTBarometricPressureTrend.swift */; };
+		356EB94B20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94920D455340022A48D /* GATTBarometricPressureTrend.swift */; };
+		356EB94C20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94920D455340022A48D /* GATTBarometricPressureTrend.swift */; };
+		356EB94D20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94920D455340022A48D /* GATTBarometricPressureTrend.swift */; };
+		356EB94520D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
+		356EB94620D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
+		356EB94720D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
+		356EB94820D453840022A48D /* GATTAnalogOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB94420D453840022A48D /* GATTAnalogOutput.swift */; };
+		356EB94020D452460022A48D /* GATTAltitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB93F20D452460022A48D /* GATTAltitude.swift */; };
+		356EB94120D452460022A48D /* GATTAltitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB93F20D452460022A48D /* GATTAltitude.swift */; };
+		356EB94220D452460022A48D /* GATTAltitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB93F20D452460022A48D /* GATTAltitude.swift */; };
+		356EB94320D452460022A48D /* GATTAltitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EB93F20D452460022A48D /* GATTAltitude.swift */; };
 		3571E29020C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
 		3571E29120C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
 		3571E29220C894BA0017ACD2 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571E28F20C894BA0017ACD2 /* Unit.swift */; };
@@ -426,6 +442,10 @@
 		3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierTests.swift; sourceTree = "<group>"; };
 		356EB93520D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAnaerobicHeartRateLowerLimit.swift; sourceTree = "<group>"; };
 		356EB93A20D450180022A48D /* GATTAnaerobicHeartRateUpperLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAnaerobicHeartRateUpperLimit.swift; sourceTree = "<group>"; };
+		356EB94E20D45CBA0022A48D /* GATTAlertStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAlertStatus.swift; sourceTree = "<group>"; };
+		356EB94920D455340022A48D /* GATTBarometricPressureTrend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBarometricPressureTrend.swift; sourceTree = "<group>"; };
+		356EB94420D453840022A48D /* GATTAnalogOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAnalogOutput.swift; sourceTree = "<group>"; };
+		356EB93F20D452460022A48D /* GATTAltitude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAltitude.swift; sourceTree = "<group>"; };
 		3571E28F20C894BA0017ACD2 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
@@ -721,6 +741,10 @@
 				6E97026620CE236D008AA9C6 /* GATTService.swift */,
 				356EB93520D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift */,
 				356EB93A20D450180022A48D /* GATTAnaerobicHeartRateUpperLimit.swift */,
+				356EB94E20D45CBA0022A48D /* GATTAlertStatus.swift */,
+				356EB94920D455340022A48D /* GATTBarometricPressureTrend.swift */,
+				356EB94420D453840022A48D /* GATTAnalogOutput.swift */,
+				356EB93F20D452460022A48D /* GATTAltitude.swift */,
 			);
 			name = Specifications;
 			sourceTree = "<group>";
@@ -1115,9 +1139,11 @@
 				6E60A323206979CF00E42351 /* iBeacon.swift in Sources */,
 				6ECBCF1B206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6E49B23F20532D45002EA5DC /* HCI.swift in Sources */,
+				356EB94320D452460022A48D /* GATTAltitude.swift in Sources */,
 				6E1F936A20C213B60030367F /* ClassOfDevice.swift in Sources */,
 				6E9578C42092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */,
 				6E49B24020532D45002EA5DC /* LinkControlCommandParameter.swift in Sources */,
+				356EB94820D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6E49B24120532D45002EA5DC /* LowEnergyCommand.swift in Sources */,
 				512F4B48208A564400576F34 /* UInt256.swift in Sources */,
 				6E49B24220532D45002EA5DC /* HCICommand.swift in Sources */,
@@ -1144,6 +1170,7 @@
 				6E49B24D20532D45002EA5DC /* Address.swift in Sources */,
 				6E49B24E20532D45002EA5DC /* HCIGeneralEventParameter.swift in Sources */,
 				6E60A2C22068928400E42351 /* BluetoothHostController.swift in Sources */,
+				356EB94D20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */,
 				6E49B25020532D45002EA5DC /* DefinedUUID.swift in Sources */,
 				6E1F936F20C2183E0030367F /* GAPAppearance.swift in Sources */,
 				6E60A2EA2069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
@@ -1159,6 +1186,7 @@
 				6E60A2F920695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				6E49B25220532D45002EA5DC /* UUID.swift in Sources */,
 				6EBD96BC207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */,
+				356EB95220D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
 				6E124BCA207E553E0060E2E9 /* RSSI.swift in Sources */,
 				356EB93920D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6E49B25320532D45002EA5DC /* GATTAttributes.swift in Sources */,
@@ -1211,9 +1239,11 @@
 				6E60A322206979CF00E42351 /* iBeacon.swift in Sources */,
 				6ECBCF1A206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6EB2EA051CD5A8A7000CF975 /* HCI.swift in Sources */,
+				356EB94220D452460022A48D /* GATTAltitude.swift in Sources */,
 				6E1F936920C213B60030367F /* ClassOfDevice.swift in Sources */,
 				6E9578C32092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */,
 				6EB2EA061CD5A8A7000CF975 /* LinkControlCommandParameter.swift in Sources */,
+				356EB94720D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6EB2EA071CD5A8A7000CF975 /* LowEnergyCommand.swift in Sources */,
 				512F4B4A208A564400576F34 /* UInt256.swift in Sources */,
 				6EB2EA081CD5A8A7000CF975 /* HCICommand.swift in Sources */,
@@ -1240,6 +1270,7 @@
 				6EB2EA0E1CD5A8A7000CF975 /* Address.swift in Sources */,
 				6EB2EA0F1CD5A8A7000CF975 /* HCIGeneralEventParameter.swift in Sources */,
 				6E60A2C12068928400E42351 /* BluetoothHostController.swift in Sources */,
+				356EB94C20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */,
 				6EB45EF22001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E1F936E20C2183E0030367F /* GAPAppearance.swift in Sources */,
 				6E60A2E92069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
@@ -1255,6 +1286,7 @@
 				6E60A2F820695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				6E704C9A1E95C6A500484A22 /* UUID.swift in Sources */,
 				6EBD96BB207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */,
+				356EB95120D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
 				6E124BC9207E553E0060E2E9 /* RSSI.swift in Sources */,
 				356EB93820D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6EB2EA101CD5A8A7000CF975 /* GATTAttributes.swift in Sources */,
@@ -1332,6 +1364,7 @@
 				6E740C3B20657ED3006589F6 /* LinkPolicyCommand.swift in Sources */,
 				6EE84DFB1CAF891E00A40C4D /* LowEnergyEvent.swift in Sources */,
 				6E704C871E95C41C00484A22 /* Range.swift in Sources */,
+				356EB94F20D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
 				51F0880D20740C9600B7609C /* LowEnergyTestCommands.swift in Sources */,
 				6E30AE2E20BEFEEC0072D101 /* Data.swift in Sources */,
 				6E704C771E95C32D00484A22 /* BitMaskOption.swift in Sources */,
@@ -1354,6 +1387,7 @@
 				6EED642A207413F30077CECE /* LowEnergyState.swift in Sources */,
 				6EE84DE31CAF80AE00A40C4D /* Address.swift in Sources */,
 				6ECBCF18206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
+				356EB94A20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */,
 				512F4B47208A562E00576F34 /* UInt256.swift in Sources */,
 				6E65DF8C20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
 				3580287E20C832870096227B /* UnitIdentifierExtension.swift in Sources */,
@@ -1366,6 +1400,7 @@
 				6E740C3D20657EEB006589F6 /* HostControllerBasebandCommand.swift in Sources */,
 				6E2809891FCF499100B2D68E /* HCIVersion.swift in Sources */,
 				6E98ACBD207F89F600DBFE85 /* ATTError.swift in Sources */,
+				356EB94020D452460022A48D /* GATTAltitude.swift in Sources */,
 				6EE84DFA1CAF891E00A40C4D /* HCIGeneralEventParameter.swift in Sources */,
 				6E124BBD207E2EFC0060E2E9 /* InformationalCommandParameter.swift in Sources */,
 				6E124BC2207E329C0060E2E9 /* InformationalParameters.swift in Sources */,
@@ -1385,6 +1420,7 @@
 				6EE84DD51CAF603000A40C4D /* BluetoothUUID.swift in Sources */,
 				6E60A30F2069603700E42351 /* L2CAPSocket.swift in Sources */,
 				6EB98F1A20BF803E00FCE78E /* CompanyIdentifierExtension.swift in Sources */,
+				356EB94520D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6E443A2F2085D606005F4D5F /* Bool.swift in Sources */,
 				6E60A2FB20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
 				511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */,
@@ -1438,9 +1474,11 @@
 				6E60A321206979CF00E42351 /* iBeacon.swift in Sources */,
 				6ECBCF19206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				6EF45FA51CC6D04D001F7A39 /* HCI.swift in Sources */,
+				356EB94120D452460022A48D /* GATTAltitude.swift in Sources */,
 				6E1F936820C213B60030367F /* ClassOfDevice.swift in Sources */,
 				6E9578C22092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */,
 				6EF45FA61CC6D04D001F7A39 /* LinkControlCommandParameter.swift in Sources */,
+				356EB94620D453840022A48D /* GATTAnalogOutput.swift in Sources */,
 				6EF45FA71CC6D04D001F7A39 /* LowEnergyCommand.swift in Sources */,
 				512F4B49208A564400576F34 /* UInt256.swift in Sources */,
 				6EF45FA81CC6D04D001F7A39 /* HCICommand.swift in Sources */,
@@ -1467,6 +1505,7 @@
 				6EF45FAE1CC6D04D001F7A39 /* Address.swift in Sources */,
 				6EF45FAF1CC6D04D001F7A39 /* HCIGeneralEventParameter.swift in Sources */,
 				6E60A2C02068928400E42351 /* BluetoothHostController.swift in Sources */,
+				356EB94B20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */,
 				6EB45EF12001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E1F936D20C2183E0030367F /* GAPAppearance.swift in Sources */,
 				6E60A2E82069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
@@ -1482,6 +1521,7 @@
 				6E60A2F720695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				6E704C991E95C6A500484A22 /* UUID.swift in Sources */,
 				6EBD96BA207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */,
+				356EB95020D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
 				6E124BC8207E553E0060E2E9 /* RSSI.swift in Sources */,
 				356EB93720D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6EF45FB01CC6D04D001F7A39 /* GATTAttributes.swift in Sources */,
