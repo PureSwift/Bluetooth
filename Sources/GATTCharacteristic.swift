@@ -19,7 +19,7 @@ public protocol GATTCharacteristic {
     /// Decode from data.
     init?(data: Data)
     
-    /// Encode to data. 
+    /// Encode to data.
     var data: Data { get }
 }
 
