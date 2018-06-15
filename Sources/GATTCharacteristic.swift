@@ -1533,6 +1533,409 @@ public struct GATTBloodPressureMeasurement: GATTProfileCharacteristic {
     }
 }
 
+/**
+ Aerobic Heart Rate Lower Limit
+ 
+ Lower limit of the heart rate where the user enhances his endurance while exercising
+ 
+ - SeeAlso: [Aerobic Heart Rate Lower Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_lower_limit.xml)
+ */
+public struct GATTAerobicHeartRateLowerLimit: GATTProfileCharacteristic {
+    
+    public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateLowerLimit }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let beats = BeatsPerMinute(rawValue: data[0])
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+}
+
+extension GATTAerobicHeartRateLowerLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateLowerLimit,
+                           rhs: GATTAerobicHeartRateLowerLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
+/**
+ Aerobic Heart Rate Upper Limit
+ 
+ Upper limit of the heart rate where the user enhances his endurance while exercising
+ 
+ - SeeAlso: [Aerobic Heart Rate Upper Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_upper_limit.xml)
+ */
+public struct GATTAerobicHeartRateUpperLimit: GATTProfileCharacteristic {
+    
+    public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicHeartRateUpperLimit }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let beats = BeatsPerMinute(rawValue: data[0])
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+}
+
+extension GATTAerobicHeartRateUpperLimit: Equatable {
+    
+    public static func == (lhs: GATTAerobicHeartRateUpperLimit,
+                           rhs: GATTAerobicHeartRateUpperLimit) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicHeartRateUpperLimit: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
+/**
+ Age
+ 
+ Age of the User.
+ 
+ - SeeAlso: [ Age](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.age.xml)
+ */
+public struct GATTAge: GATTProfileCharacteristic {
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .age }
+    
+    public var year: Year
+    
+    public init(year: Year) {
+        
+        self.year = year
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let year = Year(rawValue: data[0])
+        
+        self.init(year: year)
+    }
+    
+    public var data: Data {
+        
+        return Data([year.rawValue])
+    }
+    
+    public struct Year: BluetoothUnit {
+        
+        public static var unitType: UnitIdentifier { return .year }
+        
+        public var rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            
+            self.rawValue = rawValue
+        }
+        
+    }
+    
+}
+
+extension GATTAge.Year: Equatable {
+    
+    public static func == (lhs: GATTAge.Year, rhs: GATTAge.Year) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTAge.Year: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTAge.Year: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
+
+extension GATTAge: Equatable {
+    
+    public static func == (lhs: GATTAge,
+                           rhs: GATTAge) -> Bool {
+        
+        return lhs.year == rhs.year
+    }
+}
+
+extension GATTAge: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return year.description
+    }
+}
+
+/**
+ Alert Level
+ 
+ The level of an alert a device is to sound. If this level is changed while the alert is being sounded, the new level should take effect.
+ 
+ The value of the characteristic shall be an unsigned 8 bit integer that has a fixed point exponent of 0. The Alert Level characteristic defines the level of alert, and is one of the following three values:
+ 
+ • Value 0, meaning “No Alert”
+ 
+ • Value 1, meaning “Mild Alert”
+ 
+ • EValue 2, meaning “High Alert”
+ 
+ • Example:
+ 
+ The value 0x01 is interpreted as “Mild Alert”
+ 
+ - SeeAlso: [Alert Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_level.xml)
+ */
+public enum GATTAlertLevel: UInt8, GATTProfileCharacteristic {
+    
+    public static var uuid: BluetoothUUID { return .alertLevel }
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    /// No alert.
+    case none = 0x00
+    
+    /// Mild alert.
+    case mild = 0x01
+    
+    /// High alert.
+    case high = 0x02
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        self.init(rawValue: data[0])
+    }
+    
+    public var data: Data {
+        
+        return Data([rawValue])
+    }
+}
+
+/**
+ Aerobic Threshold
+ 
+ First metabolic threshold.
+ 
+ - SeeAlso: [Aerobic Threshold](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_threshold.xml)
+ */
+
+public struct GATTAerobicThreshold: GATTProfileCharacteristic {
+    
+    public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static var uuid: BluetoothUUID { return .aerobicThreshold }
+    
+    public var beats: BeatsPerMinute
+    
+    public init(beats: BeatsPerMinute) {
+        
+        self.beats = beats
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        let beats = BeatsPerMinute(rawValue: data[0])
+        
+        self.init(beats: beats)
+    }
+    
+    public var data: Data {
+        
+        return Data([beats.rawValue])
+    }
+    
+}
+
+extension GATTAerobicThreshold: Equatable {
+    
+    public static func == (lhs: GATTAerobicThreshold,
+                           rhs: GATTAerobicThreshold) -> Bool {
+        
+        return lhs.beats == rhs.beats
+    }
+}
+
+extension GATTAerobicThreshold: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return beats.description
+    }
+}
+
+/**
+ Analog
+ 
+ The Analog characteristic is used to read or write the value of one of the IO Module’s analog signals.
+ 
+ - SeeAlso: [Analog](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.analog.xml)
+ */
+public struct GATTAnalog: GATTProfileCharacteristic {
+    
+    internal static let length = MemoryLayout<UInt16>.size
+    
+    public static var uuid: BluetoothUUID { return .analog}
+    
+    public var analog: UInt16
+    
+    public init(analog: UInt16) {
+        
+        self.analog = analog
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        self.init(analog: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+    }
+    
+    public var data: Data {
+        
+        let bytes = analog.littleEndian.bytes
+        return Data([bytes.0, bytes.1])
+    }
+}
+extension GATTAnalog: Equatable {
+    
+    public static func == (lhs: GATTAnalog,
+                           rhs: GATTAnalog) -> Bool {
+        
+        return lhs.analog == rhs.analog
+    }
+}
+
+extension GATTAnalog: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return analog.description
+    }
+}
+
+// MARK: - Supporting Types
+
+public enum GATTBeatsPerMinute {
+    
+    public struct Byte: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .beatsPerMinute }
+        
+        public var rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: Equatable {
+    
+    public static func == (lhs: GATTBeatsPerMinute.Byte,
+                           rhs: GATTBeatsPerMinute.Byte) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 // MARK: - Internal
 
 internal extension UInt64 {
