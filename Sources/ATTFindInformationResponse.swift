@@ -29,7 +29,8 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard data.count >= ATTFindInformationResponse.length else { return nil }
+        guard data.count >= ATTFindInformationResponse.length
+            else { return nil }
         
         let attributeOpcodeByte = data[0]
         let formatByte = data[1]
@@ -110,27 +111,12 @@ public extension ATTFindInformationResponse {
             }
         }
         
-        /*
-         public static func == (lhs: Data, rhs: Data) -> Bool {
-         
-         switch (lhs, rhs) {
-         
-         case let (.bit16(lhsValue), .bit16(rhsValue)):
-         return lhsValue == rhsValue
-         
-         case let (.bit128(lhsValue), .bit128(rhsValue)):
-         return lhsValue == rhsValue
-         
-         default:
-         return false
-         }
-         }*/
-        
         public init?(data: Data, format: Format) {
             
             let pairLength = format.length
             
-            guard data.count % pairLength == 0 else { return nil }
+            guard data.count % pairLength == 0
+                else { return nil }
             
             let pairCount = data.count / pairLength
             
