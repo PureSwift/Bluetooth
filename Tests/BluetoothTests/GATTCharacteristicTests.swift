@@ -28,9 +28,15 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit),
         ("testAlertLevel", testAlertLevel),
         ("testAerobicThreshold", testAerobicThreshold),
+        ("testAnaerobicHeartRateLowerLimit", testAnaerobicHeartRateLowerLimit),
+        ("testAnaerobicHeartRateUpperLimit", testAnaerobicHeartRateUpperLimit),
         ("testAge", testAge),
-        ("testAnalogOutput", testAnalogOutput),
         ("testAnalog", testAnalog),
+        ("testBarometricPressureTrend", testBarometricPressureTrend),
+        ("testAge", testAge),
+        ("testAnalog", testAnalog),
+        ("testAnalogOutput", testAnalogOutput),
+        ("testAlertStatus", testAlertStatus)
     ]
     
     func testDateTime() {
@@ -356,6 +362,86 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(year.description, "50")
         XCTAssertEqual(GATTAge.uuid, .age)
         XCTAssertEqual(Year.unitType, .year)
+    }
+    
+    func testAlertStatus() {
+        
+        let data = Data([0x37])
+        
+        guard let characteristic = GATTAlertStatus(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssert(characteristic.states.contains(.ringer))
+        XCTAssert(characteristic.states.contains(.displayAlert))
+        XCTAssert(characteristic.states.contains(.vibrate))
+        XCTAssert(characteristic.states.contains(GATTAlertStatus.State.all))
+        XCTAssertEqual(characteristic.description, "55")
+        XCTAssertEqual(GATTAlertStatus.uuid, .alertStatus)
+        XCTAssert(GATTAlertStatus(data: data) == GATTAlertStatus(data: data))
+    }
+
+    func testAnaerobicHeartRateLowerLimit() {
+        
+        typealias BeatsPerMinute = GATTAnaerobicHeartRateLowerLimit.BeatsPerMinute
+        
+        XCTAssertNil(GATTAnaerobicHeartRateLowerLimit(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x22])
+        
+        let beats: BeatsPerMinute = 34
+        
+        guard let characteristic = GATTAnaerobicHeartRateLowerLimit(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.beats, beats)
+        XCTAssertEqual(characteristic.description, "34")
+        XCTAssertEqual(beats.description, "34")
+        XCTAssertEqual(GATTAnaerobicHeartRateLowerLimit.uuid, .anaerobicHeartRateLowerLimit)
+        XCTAssertEqual(GATTAnaerobicHeartRateLowerLimit(data: data), GATTAnaerobicHeartRateLowerLimit(data: data))
+        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+        XCTAssertNotEqual(GATTAnaerobicHeartRateLowerLimit(data: Data([0x4f])), GATTAnaerobicHeartRateLowerLimit(data: Data([0x5e])))
+    }
+    
+    func testAnaerobicHeartRateUpperLimit() {
+        
+        typealias BeatsPerMinute = GATTAnaerobicHeartRateUpperLimit.BeatsPerMinute
+        
+        XCTAssertNil(GATTAnaerobicHeartRateUpperLimit(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x22])
+        
+        let beats: BeatsPerMinute = 34
+        
+        guard let characteristic = GATTAnaerobicHeartRateUpperLimit(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.beats, beats)
+        XCTAssertEqual(characteristic.description, "34")
+        XCTAssertEqual(beats.description, "34")
+        XCTAssertEqual(GATTAnaerobicHeartRateUpperLimit.uuid, .anaerobicHeartRateUpperLimit)
+        XCTAssertEqual(GATTAnaerobicHeartRateUpperLimit(data: data), GATTAnaerobicHeartRateUpperLimit(data: data))
+        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+        XCTAssertNotEqual(GATTAnaerobicHeartRateUpperLimit(data: Data([0x4f])), GATTAnaerobicHeartRateUpperLimit(data: Data([0x5e])))
+    }
+    
+    func testBarometricPressureTrend() {
+        
+        XCTAssertNil(GATTBarometricPressureTrend(data: Data([0x3d, 0x72])))
+        XCTAssertNil(GATTBarometricPressureTrend(data: Data([0xFF])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBarometricPressureTrend(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(GATTBarometricPressureTrend(data: Data([0x01])), .continuoslyFalling)
+        XCTAssertEqual(GATTBarometricPressureTrend.uuid, .barometricPressureTrend)
+        XCTAssertEqual(GATTBarometricPressureTrend.unitType, .unitless)
+        XCTAssert(GATTBarometricPressureTrend(data: data) == GATTBarometricPressureTrend(data: data))
     }
     
     func testAnalogOutput() {
