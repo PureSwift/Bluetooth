@@ -49,16 +49,6 @@ public extension BluetoothHostControllerInterface {
         return value.numSupportedAdvertisingSets
     }
     
-    /// LE Remove Advertising Set Command
-    ///
-    /// The command is used to remove an advertising set from the Controller.
-    func setLowEnergyRemoveAdvertisingSet(advertisingHandle: UInt8, timeout: HCICommandTimeout = .default) throws {
-        
-        let parameters = HCILowEnergyCommand.RemoveAdvertisingSetParameter(advertisingHandle: advertisingHandle)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
     /// LE Clear Advertising Sets Command
     ///
     /// The command is used to remove all existing advertising sets from the Controller.
@@ -70,46 +60,6 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyClearAdvertisingSets(timeout: HCICommandTimeout = .default) throws {
         
         try deviceRequest(HCILowEnergyCommand.clearAdvertisingSets, timeout: timeout)
-    }
-    
-    /// LE Set Periodic Advertising Parameters Command
-    ///
-    /// The  command is used by the Host to set the parameters for periodic advertising.
-    func setSetPeriodicAdvertisingParameters(advertisingHandle: UInt8,
-                                             periodicAdvertisingInterval: HCILowEnergyCommand.SetPeriodicAdvertisingParametersParameter.PeriodicAdvertisingInterval,
-                                             advertisingEventProperties: HCILowEnergyCommand.SetPeriodicAdvertisingParametersParameter.AdvertisingEventProperties,
-                                             timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.SetPeriodicAdvertisingParametersParameter(advertisingHandle: advertisingHandle, periodicAdvertisingInterval: periodicAdvertisingInterval, advertisingEventProperties: advertisingEventProperties)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
-    /// LE Set Periodic Advertising Data Command
-    ///
-    /// The command is used to set the data used in periodic advertising PDUs.
-    func setSetPeriodicAdvertisingData(advertisingHandle: UInt8,
-                                       operation: HCILowEnergyCommand.SetPeriodicAdvertisingDataParameter.Operation,
-                                       advertisingData: [UInt8],
-                                       timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.SetPeriodicAdvertisingDataParameter(advertisingHandle: advertisingHandle, operation: operation, advertisingData: advertisingData)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
-    /// LE Set Periodic Advertising Enable Command
-    ///
-    /// The  command is used to request the Controller to enable or disable the periodic advertising
-    /// for the advertising set specified by the Advertising_Handle parameter (ordinary advertising is not affected).
-    func setPeriodicAdvertisingEnable(enable: HCILowEnergyCommand.SetPeriodicAdvertisingEnableParameter.Enable,
-                                      advertisingHandle: UInt8,
-                                      timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.SetPeriodicAdvertisingEnableParameter(enable: enable,
-                                                                                advertisingHandle: advertisingHandle)
-        
-        try deviceRequest(parameters, timeout: timeout)
     }
     
     /// LE Periodic Advertising Create Sync Command

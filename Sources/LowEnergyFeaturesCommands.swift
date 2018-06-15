@@ -75,14 +75,14 @@ public extension BluetoothHostControllerInterface {
     /// LE Extended Create Connection Command
     ///
     /// The command is used to create a Link Layer connection to a connectable advertiser.
-    func lowEnergyExtendedCreateConnection(initialingFilterPolicy: HCILowEnergyCommand.ExtendedCreateConnectionParameter.InitialingFilterPolicy,
-                                           ownAddressType: HCILowEnergyCommand.ExtendedCreateConnectionParameter.OwnAddressType,
+    func lowEnergyExtendedCreateConnection(initialingFilterPolicy: HCILowEnergyCommand.HCILEExtendedCreateConnection.InitialingFilterPolicy,
+                                           ownAddressType: HCILowEnergyCommand.HCILEExtendedCreateConnection.OwnAddressType,
                                            peerAddressType: LowEnergyPeerIdentifyAddressType,
                                            peerAddress: Address,
-                                           initialingPHY: HCILowEnergyCommand.ExtendedCreateConnectionParameter.InitialingPHY,
+                                           initialingPHY: HCILowEnergyCommand.HCILEExtendedCreateConnection.InitialingPHY,
                                            timeout: HCICommandTimeout = .default) throws -> LowEnergyEvent.EnhancedConnectionCompleteEventParameter {
         
-        let parameters = HCILowEnergyCommand.ExtendedCreateConnectionParameter(initialingFilterPolicy: initialingFilterPolicy,
+        let parameters = HCILowEnergyCommand.HCILEExtendedCreateConnection(initialingFilterPolicy: initialingFilterPolicy,
                                                                   ownAddressType: ownAddressType,
                                                                   peerAddressType: peerAddressType,
                                                                   peerAddress: peerAddress,
