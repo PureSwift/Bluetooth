@@ -25,7 +25,7 @@ public extension BluetoothHostControllerInterface {
                                                                 txOctets: txOctets,
                                                                 txTime: txTime)
         
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.HCILESetDataLength.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILESetDataLengthReturn.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }
@@ -70,5 +70,28 @@ public struct HCILESetDataLength: HCICommandParameter {
             txTimeBytes.0,
             txTimeBytes.1
             ])
+    }
+}
+
+// MARK: - Return parameter
+
+/// The LE_Set_Data_Length command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
+/// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+public struct HCILESetDataLengthReturn: HCICommandReturnParameter {
+    
+    public static let command = HCILowEnergyCommand.setDataLengthCommand //0x0022
+    
+    public static let length: Int = 2
+    
+    /// Connection_Handle
+    /// Range 0x0000-0x0EFF (all other values reserved for future use)
+    public let connectionHandle: UInt16 // Connection_Handle
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
     }
 }

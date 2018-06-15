@@ -30,7 +30,7 @@ public extension BluetoothHostControllerInterface {
                                                                     timeOut: timeOut,
                                                                     length: length)
         
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.RemoteConnectionParameterRequestReply.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILERemoteConnectionParameterRequestReplyReturn.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }
@@ -96,5 +96,31 @@ public struct HCILERemoteConnectionParameterRequestReply: HCICommandParameter {
             connectionLengthMaxBytes.0,
             connectionLengthMaxBytes.1
             ])
+    }
+}
+
+// MARK: - Return parameter
+
+/// LE Remote Connection Parameter Request Reply Command
+///
+/// Both the master Host and the slave Host use this command to reply to the HCI
+/// LE Remote Connection Parameter Request event. This indicates that the Host
+/// has accepted the remote device’s request to change connection parameters.
+public struct HCILERemoteConnectionParameterRequestReplyReturn: HCICommandReturnParameter {
+    
+    public static let command = HCILowEnergyCommand.remoteConnectionParameterRequestReply //0x0020
+    
+    public static let length: Int = 2
+    
+    /// Connection_Handle
+    /// Range 0x0000-0x0EFF (all other values reserved for future use)
+    public let connectionHandle: UInt16 // Connection_Handle
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
     }
 }
