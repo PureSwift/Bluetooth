@@ -12,22 +12,6 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    
-    
-    /// LE Read Number of Supported Advertising Sets Command
-    ///
-    /// The command is used to read the maximum number of advertising sets supported by
-    /// the advertising Controller at the same time. Note: The number of advertising sets that
-    /// can be supported is not fixed and the Controller can change it at any time because the memory
-    /// used to store advertising sets can also be used for other purposes.
-    func readNumberOfSupportedAdvertisingSets(timeout: HCICommandTimeout = .default) throws -> UInt8 {
-        
-        let value = try deviceRequest(HCILowEnergyCommand.ReadNumberOfSupportedAdvertisingSetsReturnParameter.self,
-                                      timeout: timeout)
-        
-        return value.numSupportedAdvertisingSets
-    }
-    
     /// LE Clear Advertising Sets Command
     ///
     /// The command is used to remove all existing advertising sets from the Controller.
@@ -62,17 +46,6 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyClearPeriodicAdvertiserList(timeout: HCICommandTimeout = .default) throws {
         
         try deviceRequest(HCILowEnergyCommand.clearPeriodicAdvertiserList, timeout: timeout) //0x0049
-    }
-    
-    /// LE Read Periodic Advertiser List Size Command
-    ///
-    /// The command is used to read the total number of Periodic Advertiser list entries that can be stored in the Controller.
-    func lowEnergyReadPeriodicAdvertisingListSize(timeout: HCICommandTimeout = .default) throws -> UInt8 {
-        
-        let value = try deviceRequest(HCILowEnergyCommand.ReadPeriodicAdvertisingListSizeReturnParameter.self,
-                                      timeout: timeout)
-        
-        return value.periodicAdvertiserListSize
     }
     
 }
