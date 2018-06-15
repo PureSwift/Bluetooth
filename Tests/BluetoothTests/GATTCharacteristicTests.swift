@@ -29,7 +29,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAlertLevel", testAlertLevel),
         ("testAerobicThreshold", testAerobicThreshold),
         ("testAge", testAge),
-        ("testAnalog", testAnalog)
+        ("testAnalogOutput", testAnalogOutput),
+        ("testAnalog", testAnalog),
     ]
     
     func testDateTime() {
@@ -355,6 +356,21 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(year.description, "50")
         XCTAssertEqual(GATTAge.uuid, .age)
         XCTAssertEqual(Year.unitType, .year)
+    }
+    
+    func testAnalogOutput() {
+        
+        let data = Data([0x00, 0x00])
+        let output = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        guard let characteristics = GATTAnalogOutput(data: data)
+        else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristics.data, data)
+        XCTAssertEqual(characteristics.output, output)
+        XCTAssertEqual(characteristics.description, "0")
+        XCTAssertEqual(GATTAnalogOutput.uuid, .analogOutput)
+        XCTAssert(GATTAnalogOutput(data: data) == GATTAnalogOutput(data: data))
     }
     
     func testAnalog() {
