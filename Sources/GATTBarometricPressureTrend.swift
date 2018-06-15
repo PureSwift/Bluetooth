@@ -15,7 +15,7 @@ import Foundation
  */
 public enum GATTBarometricPressureTrend: UInt8, GATTCharacteristic, BluetoothUnit {
     
-    internal static let length = MemoryLayout<RawValue>.size
+    internal static let length = MemoryLayout<UInt8>.size
     
     public static var uuid: BluetoothUUID { return .barometricPressureTrend }
     
