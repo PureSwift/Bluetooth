@@ -32,8 +32,9 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAnaerobicHeartRateUpperLimit", testAnaerobicHeartRateUpperLimit),
         ("testBarometricPressureTrend", testBarometricPressureTrend),
         ("testAge", testAge),
+        ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
-        ("testAnalog", testAnalog)
+        ("testAlertStatus", testAlertStatus)
     ]
     
     func testDateTime() {
@@ -361,6 +362,23 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(Year.unitType, .year)
     }
     
+    func testAlertStatus() {
+        
+        let data = Data([0x37])
+        
+        guard let characteristic = GATTAlertStatus(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssert(characteristic.states.contains(.ringer))
+        XCTAssert(characteristic.states.contains(.displayAlert))
+        XCTAssert(characteristic.states.contains(.vibrate))
+        XCTAssert(characteristic.states.contains(GATTAlertStatus.State.all))
+        XCTAssertEqual(characteristic.description, "55")
+        XCTAssertEqual(GATTAlertStatus.uuid, .alertStatus)
+        XCTAssert(GATTAlertStatus(data: data) == GATTAlertStatus(data: data))
+    }
+
     func testAnaerobicHeartRateLowerLimit() {
         
         typealias BeatsPerMinute = GATTAnaerobicHeartRateLowerLimit.BeatsPerMinute
