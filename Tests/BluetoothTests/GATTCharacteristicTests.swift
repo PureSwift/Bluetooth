@@ -30,6 +30,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAerobicThreshold", testAerobicThreshold),
         ("testAnaerobicHeartRateLowerLimit", testAnaerobicHeartRateLowerLimit),
         ("testAnaerobicHeartRateUpperLimit", testAnaerobicHeartRateUpperLimit),
+        ("testAge", testAge),
+        ("testAnalog", testAnalog),
         ("testBarometricPressureTrend", testBarometricPressureTrend),
         ("testAge", testAge),
         ("testAnalog", testAnalog),
@@ -397,7 +399,9 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "34")
         XCTAssertEqual(beats.description, "34")
         XCTAssertEqual(GATTAnaerobicHeartRateLowerLimit.uuid, .anaerobicHeartRateLowerLimit)
+        XCTAssertEqual(GATTAnaerobicHeartRateLowerLimit(data: data), GATTAnaerobicHeartRateLowerLimit(data: data))
         XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+        XCTAssertNotEqual(GATTAnaerobicHeartRateLowerLimit(data: Data([0x4f])), GATTAnaerobicHeartRateLowerLimit(data: Data([0x5e])))
     }
     
     func testAnaerobicHeartRateUpperLimit() {
@@ -418,7 +422,9 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "34")
         XCTAssertEqual(beats.description, "34")
         XCTAssertEqual(GATTAnaerobicHeartRateUpperLimit.uuid, .anaerobicHeartRateUpperLimit)
+        XCTAssertEqual(GATTAnaerobicHeartRateUpperLimit(data: data), GATTAnaerobicHeartRateUpperLimit(data: data))
         XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+        XCTAssertNotEqual(GATTAnaerobicHeartRateUpperLimit(data: Data([0x4f])), GATTAnaerobicHeartRateUpperLimit(data: Data([0x5e])))
     }
     
     func testBarometricPressureTrend() {
