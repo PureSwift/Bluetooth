@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-/// Command Complete
+import Foundation
+
+/// HCI Command Complete
 public struct HCICommandComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.commandComplete
