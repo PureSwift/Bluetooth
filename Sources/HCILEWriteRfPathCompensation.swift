@@ -2,7 +2,7 @@
 //  HCILEWriteRfPathCompensation.swift
 //  Bluetooth
 //
-//  Created by Carlos Duclos on 6/14/18.
+//  Created by Alsey Coleman Miller on 6/14/18.
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
