@@ -19,7 +19,8 @@ public extension BluetoothHostControllerInterface {
         let startDate = Date()
         let endDate = startDate + duration
         
-        var foundDevices = [HCILEAdvertisingReport.Report]()
+        var foundDevices: [HCILEAdvertisingReport.Report] = []
+        foundDevices.reserveCapacity(2)
         
         try lowEnergyScan(filterDuplicates: filterDuplicates,
                           parameters: parameters,
