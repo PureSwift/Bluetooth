@@ -21,7 +21,7 @@ public extension BluetoothHostControllerInterface {
         
         let parameters = HCILELongTermKeyRequestReply(connectionHandle: handle, longTermKey: longTermKey)
         
-        let returnParameters = try deviceRequest(parameters, HCILowEnergyCommand.HCILELongTermKeyRequestReply.self, timeout: timeout)
+        let returnParameters = try deviceRequest(parameters, HCILELongTermKeyRequestReplyReturn.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }
@@ -74,5 +74,30 @@ public struct HCILELongTermKeyRequestReply: HCICommandParameter {
             longTermKeyBytes.14,
             longTermKeyBytes.15
             ])
+    }
+}
+
+// MARK: - Return parameter
+
+/// LE Long Term Key Request Reply Command
+///
+/// The command is used to reply to an LE Long Term Key Request event from the Controller,
+/// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
+public struct HCILELongTermKeyRequestReplyReturn: HCICommandReturnParameter {
+    
+    public static let command = HCILowEnergyCommand.longTermKeyReply //0x001A
+    
+    public static let length: Int = 2
+    
+    /// Connection_Handle
+    /// Range 0x0000-0x0EFF (all other values reserved for future use)
+    public let connectionHandle: UInt16 // Connection_Handle
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
     }
 }
