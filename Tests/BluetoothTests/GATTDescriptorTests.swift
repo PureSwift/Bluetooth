@@ -18,7 +18,11 @@ final class GATTDescriptorTests: XCTestCase {
         ("testCharacteristicServerConfigurationDescriptor", testCharacteristicsServerConfigurationDescriptor),
         ("testCharacteristicsAggregateFormatDescriptor",testCharacteristicsAggregateFormatDescriptor),
         ("testCharacteristicsFormatDescriptor",testCharacteristicsFormatDescriptor),
-        ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor)
+        ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor),
+        ("testCharacteristicsReportReferenceDescriptor", testCharacteristicReportReferenceDescriptor),
+        ("testTimeTriggerSettingDescriptor", testTimeTriggerSettingDescriptor),
+        ("testExternalReportReference", testExternalReportReferenceDescriptor),
+        ("testNumberOfDigitalsDescriptor",testNumberOfDigitalsDescritor)
     ]
     
     func testCharacteristicClientConfigurationDescriptor() {
@@ -152,6 +156,98 @@ final class GATTDescriptorTests: XCTestCase {
     
     func testCharacteristicsUserDescriptionDescriptor() {
         
+        var userDescription = GATTUserDescription(userDescription: "")
+        XCTAssertEqual(userDescription.byteValue, Data())
         
+        userDescription.userDescription = "Test"
+        XCTAssertEqual(userDescription.byteValue, Data([0x54, 0x65, 0x73, 0x74]))
+    }
+    
+    func testCharacteristicReportReferenceDescriptor() {
+        
+        XCTAssertNil(GATTReportReference(byteValue: Data()))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x00])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x04])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0xFF, 0xFF])))
+        XCTAssertNil(GATTReportReference(byteValue: Data([0x00, 0x00, 0x00])))
+        
+        do {
+            
+            guard let reportReference = GATTReportReference(byteValue: Data([0x00, 0x01]))
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(reportReference.identifier, 0x00)
+            XCTAssertEqual(reportReference.type, .input)
+        }
+        
+        do {
+            
+            guard let reportReference = GATTReportReference(byteValue: Data([0xAA, 0x02]))
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(reportReference.identifier, 0xAA)
+            XCTAssertEqual(reportReference.type, .output)
+        }
+        
+        do {
+            
+            guard let reportReference = GATTReportReference(byteValue: Data([0xBB, 0x03]))
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(reportReference.identifier, 0xBB)
+            XCTAssertEqual(reportReference.type, .feature)
+        }
+    }
+    
+    func testTimeTriggerSettingDescriptor() {
+        
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data()))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x00])))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x03,0x00])))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x04,0x00])))
+        XCTAssertNil(GATTTimeTriggerSetting(byteValue: Data([0x02,0x00])))
+        
+        let valueNone = Data([0x00, 0x10])
+        let valueTimeInterval = Data([0x01, 0x00, 0x00, 0x00])
+        let valueTimeIntervalIndicate = Data([0x02, 0x00, 0x00, 0x00])
+        let valueCount = Data([0x03, 0x00, 0x00])
+        var timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueNone)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueNone.count)
+        
+        timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueTimeIntervalIndicate)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueTimeIntervalIndicate.count)
+        
+        timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueTimeInterval)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueTimeInterval.count)
+        
+        timeTriggerSetting = GATTTimeTriggerSetting(byteValue: valueCount)
+        XCTAssertEqual(timeTriggerSetting?.byteValue.count, valueCount.count)
+    }
+    
+    func testExternalReportReferenceDescriptor() {
+        
+        XCTAssertNil(GATTExternalReportReference(byteValue: Data()))
+        XCTAssertNil(GATTExternalReportReference(byteValue: Data([0x00])))
+        
+        let aerobicHeartRateLowerLimit = BluetoothUUID.aerobicHeartRateLowerLimit.data
+        var externalReportReference = GATTExternalReportReference(byteValue: aerobicHeartRateLowerLimit)
+        XCTAssertEqual(externalReportReference?.byteValue, aerobicHeartRateLowerLimit)
+        
+        let batteryLevel = BluetoothUUID.batteryLevel.data
+        externalReportReference = GATTExternalReportReference(byteValue: Data([0x19, 0x2A]))
+        XCTAssertEqual(externalReportReference?.byteValue, batteryLevel)
+        
+        externalReportReference = GATTExternalReportReference(uuid: .batteryService)
+        XCTAssertEqual(externalReportReference?.byteValue, BluetoothUUID.batteryService.littleEndian.data)
+    }
+    
+    func testNumberOfDigitalsDescritor() {
+        
+        XCTAssertNil(GATTNumberOfDigitals(byteValue: Data()))
+        XCTAssertNil(GATTNumberOfDigitals(byteValue: Data([0x00, 0x00])))
+        
+        let numbersOfDigitals = GATTNumberOfDigitals(byteValue: Data([0x00]))
+        XCTAssertEqual(numbersOfDigitals?.byteValue, Data([0x00]))
     }
 }
