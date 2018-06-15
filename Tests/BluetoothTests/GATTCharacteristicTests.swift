@@ -23,6 +23,7 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testUnreadAlertStatus", testUnreadAlertStatus),
         ("testAlertNotificationControlPoint", testAlertNotificationControlPoint),
         ("testBloodPressureMeasurement", testBloodPressureMeasurement),
+        ("testAltitude", testAltitude),
         ("testAerobicHeartRateLowerLimit", testAerobicHeartRateLowerLimit),
         ("testAerobicHeartRateUpperLimit", testAerobicHeartRateUpperLimit),
         ("testAlertLevel", testAlertLevel),
@@ -243,6 +244,21 @@ final class GATTCharacteristicTests: XCTestCase {
         )
         
         XCTAssertEqual(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()), Array(characteristic.data))
+    }
+    
+    func testAltitude() {
+        
+        let data = Data([0x00, 0x00])
+        let altitude = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        guard let characteristics = GATTAltitude(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristics.data, data)
+        XCTAssertEqual(characteristics.altitude, altitude)
+        XCTAssertEqual(characteristics.description, "0")
+        XCTAssertEqual(GATTAltitude.uuid, .altitude)
+        XCTAssert(GATTAltitude(data: data) == GATTAltitude(data: data))
     }
     
     func testAerobicHeartRateLowerLimit() {
