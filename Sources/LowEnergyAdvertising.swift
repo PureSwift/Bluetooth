@@ -62,16 +62,6 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(HCILowEnergyCommand.clearAdvertisingSets, timeout: timeout)
     }
     
-    /// LE Periodic Advertising Create Sync Command
-    ///
-    /// The command is used to synchronize with periodic advertising from an advertiser
-    /// and begin receiving periodic advertising packets.
-    func setPeriodicAdvertisingCreateSyncParameters(_ parameters: HCILowEnergyCommand.PeriodicAdvertisingCreateSyncParameter,
-                                                    timeout: HCICommandTimeout = .default)  throws {
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
     /// LE Periodic Advertising Create Sync Cancel Command
     ///
     /// ommand is used to cancel the LE_Periodic_Advertising_Create_Sync command while it is pending.
@@ -81,48 +71,6 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyPeriodicAdvertisingCreateSyncCancel(timeout: HCICommandTimeout = .default) throws {
         
         try deviceRequest(HCILowEnergyCommand.periodicAdvertisingCreateSyncCancel, timeout: timeout)
-    }
-    
-    /// LE Periodic Advertising Terminate Sync Command
-    ///
-    /// The command is used to stop reception of the periodic advertising identified by the Sync_Handle parameter.
-    func setPeriodicAdvertisingTerminateSync(syncHandle: UInt16,
-                                             timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.PeriodicAdvertisingTerminateSyncParameter(syncHandle: syncHandle)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
-    /// LE Add Device To Periodic Advertiser List Command
-    ///
-    /// The command is used to add a single device to the Periodic Advertiser list stored in the Controller.
-    func addDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                           address: Address,
-                                           advertisingSid: UInt8,
-                                           timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.AddDeviceToPeriodicAdvertiserListParameter(advertiserAddressType: advertiserAddressType,
-                                                                            address: address,
-                                                                            advertisingSid: advertisingSid)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
-    /// LE Remove Device From Periodic Advertiser List Command
-    ///
-    /// The LE_Remove_Device_From_Periodic_Advertiser_List command is used to remove one device from the list of Periodic
-    /// Advertisers stored in the Controller. Removals from the Periodic Advertisers List take effect immediately.
-    func lowEnergyRemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                                       address: Address,
-                                                       advertisingSid: UInt8,
-                                                       timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.RemoveDeviceToPeriodicAdvertiserListParameter(advertiserAddressType: advertiserAddressType,
-                                                                                     address: address,
-                                                                                     advertisingSid: advertisingSid)
-        
-        try deviceRequest(parameters, timeout: timeout)
     }
     
     /// LE Clear Periodic Advertiser List Command
