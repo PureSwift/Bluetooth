@@ -25,10 +25,10 @@ public enum GATTBarometricPressureTrend: UInt8, GATTCharacteristic, BluetoothUni
     case unknown = 0x00
     
     // Continuously falling
-    case continuoslyFalling = 0x01
+    case continuouslyFalling = 0x01
     
     // Continuously rising
-    case continuoslyRising = 0x02
+    case continuouslyRising = 0x02
     
     // Falling, then steady
     case fallingThenSteady = 0x03
