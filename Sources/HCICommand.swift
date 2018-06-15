@@ -11,6 +11,7 @@ import Foundation
 /// HCI Command.
 public protocol HCICommand: RawRepresentable, Hashable, CustomStringConvertible {
     
+    /// The command group opcode.
     static var opcodeGroupField: HCIOpcodeGroupField { get }
     
     init?(rawValue: HCIOpcodeCommandField)
