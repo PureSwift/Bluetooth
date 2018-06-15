@@ -17,18 +17,6 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(HCILowEnergyCommand.clearResolvedList, timeout: timeout)
     }
     
-    /// LE Read Resolving List Size Command
-    ///
-    /// This command is used to read the total number of address translation
-    /// entries in the resolving list that can be stored in the Controller.
-    func lowEnergyReadResolvingListSize(timeout: HCICommandTimeout = .default) throws -> UInt8 {
-        
-        let value = try deviceRequest(HCILowEnergyCommand.HCILEReadResolvingListSize.self,
-                                      timeout: timeout)
-        
-        return value.resolvingListSize
-    }
-    
     /// LE Read Maximum Data Length Command
     ///
     /// This ommand allows the Host to read the Controller’s maximum supported payload octets
