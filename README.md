@@ -34,7 +34,7 @@ import PackageDescription
 
 let package = Package(
     dependencies: [
-        .Package(url: "https://github.com/PureSwift/Bluetooth.git", majorVersion: 1)
+        .Package(url: "https://github.com/PureSwift/Bluetooth.git", majorVersion: 2)
         ]
 )
 ```
