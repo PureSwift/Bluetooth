@@ -30,38 +30,6 @@ public extension BluetoothHostControllerInterface {
         return foundDevices
     }
     
-    /// LE Set Extended Scan Enable Command
-    ///
-    /// The command is used to enable or disable scanning.
-    func setLowEnergyExtendedScanEnable(enable: HCILowEnergyCommand.SetExtendedScanEnableParameter.Enable,
-                                        filterDuplicates: HCILowEnergyCommand.SetExtendedScanEnableParameter.FilterDuplicates,
-                                        duration: HCILowEnergyCommand.SetExtendedScanEnableParameter.Duration,
-                                        period: HCILowEnergyCommand.SetExtendedScanEnableParameter.Period,
-                                        timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.SetExtendedScanEnableParameter(enable: enable,
-                                                                         filterDuplicates: filterDuplicates,
-                                                                         duration: duration,
-                                                                         period: period)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
-    /// LE Set Extended Scan Parameters Command
-    ///
-    /// Used to set the extended scan parameters to be used on the advertising channels.
-    func setLowEnergyExtendedScanParameters(ownAddressType: LowEnergyAddressType,
-                                            scanningFilterPolicy: HCILowEnergyCommand.SetExtendedScanParametersParameter.ScanningFilterPolicy,
-                                            scanningPHY: HCILowEnergyCommand.SetExtendedScanParametersParameter.ScanningPHY,
-                                            timeout: HCICommandTimeout = .default)  throws {
-        
-        let parameters = HCILowEnergyCommand.SetExtendedScanParametersParameter(ownAddressType: ownAddressType,
-                                                                         scanningFilterPolicy: scanningFilterPolicy,
-                                                                         scanningPHY: scanningPHY)
-        
-        try deviceRequest(parameters, timeout: timeout)
-    }
-    
     /// LE Read Buffer Size Command
     ///
     /// The command is used to read the maximum size of the data portion of HCI LE ACL Data Packets sent from the Host to the Controller.
