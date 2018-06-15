@@ -263,7 +263,7 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2a56: "Digital",
     /* 0x2a57 undefined */
     0x2a58: "Analog",
-    /* 0x2a59 undefined */
+    0x2a59: "Analog Output",
     0x2a5a: "Aggregate",
     0x2a5b: "CSC Measurement",
     0x2a5c: "CSC Feature",
