@@ -2041,28 +2041,25 @@
 			isa = PBXGroup;
 			children = (
 				6E65DF84207552EE005BD2A0 /* AddressTests.swift */,
+				6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */,
 				6E6AD98B1FCE8E4F007F0250 /* BluetoothTests.swift */,
 				6E65DF802075135E005BD2A0 /* BluetoothUUIDTests.swift */,
 				6EB98F1E20BF80DC00FCE78E /* CompanyIdentifierTests.swift */,
+				6E1F937020C228B70030367F /* DarwinTests.swift */,
 				6E1A0C4C208006370095C29E /* DefinedUUIDTests.swift */,
-				3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */,
-				6E65DF902075CD9F005BD2A0 /* UUIDTests.swift */,
+				6E7F4A4020928E2B00E877F1 /* GAPTests.swift */,
+				6E97026820CE25BD008AA9C6 /* GATTCharacteristicTests.swift */,
+				6E443A062085CF12005F4D5F /* GATTDatabaseTests.swift */,
+				6E30AE3220BF182A0072D101 /* GATTDescriptorTests.swift */,
+				6EBD96BD207ABED60037D253 /* GATTTests.swift */,
+				6E740C5D206586D3006589F6 /* HCITests.swift */,
+				6E65DF922075D29C005BD2A0 /* iBeaconTests.swift */,
 				6E65DF82207552E4005BD2A0 /* UInt128Tests.swift */,
 				512F4B4D208B338500576F34 /* UInt256Tests.swift */,
 				512F4B4F208B339600576F34 /* UInt512Tests.swift */,
-				6E65DF922075D29C005BD2A0 /* iBeaconTests.swift */,
-				6E740C5D206586D3006589F6 /* HCITests.swift */,
-				6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */,
-				6EBD96BD207ABED60037D253 /* GATTTests.swift */,
-				6E443A062085CF12005F4D5F /* GATTDatabaseTests.swift */,
-				6E97026820CE25BD008AA9C6 /* GATTCharacteristicTests.swift */,
-				6E30AE3220BF182A0072D101 /* GATTDescriptorTests.swift */,
-				6E7F4A4020928E2B00E877F1 /* GAPTests.swift */,
-				6E14247F206CFFC500BF72BC /* HostController.swift */,
-				6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */,
-				6E65DF942075D568005BD2A0 /* XCTest.swift */,
-				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
-				6E1F937020C228B70030367F /* DarwinTests.swift */,
+				3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */,
+				6E65DF902075CD9F005BD2A0 /* UUIDTests.swift */,
+				6EE611BD20D4718300DBC88E /* Supporting Types */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
@@ -2070,13 +2067,13 @@
 		6E704C961E95C4B300484A22 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6ECBCF20206FC3A200312117 /* Array.swift */,
+				6E443A2E2085D606005F4D5F /* Bool.swift */,
+				6E30AE2D20BEFEEC0072D101 /* Data.swift */,
 				6E704C8E1E95C45800484A22 /* Hexadecimal.swift */,
 				6E704C821E95C41C00484A22 /* Integer.swift */,
 				6E704C831E95C41C00484A22 /* Range.swift */,
 				6E704C971E95C6A500484A22 /* UUID.swift */,
-				6ECBCF20206FC3A200312117 /* Array.swift */,
-				6E443A2E2085D606005F4D5F /* Bool.swift */,
-				6E30AE2D20BEFEEC0072D101 /* Data.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -2118,6 +2115,17 @@
 				6E6AAD6E20D215F900DDE1CA /* Characteristics */,
 			);
 			name = Specifications;
+			sourceTree = "<group>";
+		};
+		6EE611BD20D4718300DBC88E /* Supporting Types */ = {
+			isa = PBXGroup;
+			children = (
+				6E65DF942075D568005BD2A0 /* XCTest.swift */,
+				6E14247F206CFFC500BF72BC /* HostController.swift */,
+				6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */,
+				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
+			);
+			name = "Supporting Types";
 			sourceTree = "<group>";
 		};
 		6EE84DAD1CAF5C7C00A40C4D = {
@@ -2164,10 +2172,11 @@
 		6EE84DD11CAF5DC800A40C4D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6E704C961E95C4B300484A22 /* Extensions */,
+				6E781B0E20CE560D00786867 /* Numeric Data Types */,
 				6EE84DE21CAF80AE00A40C4D /* Address.swift */,
 				6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */,
 				6E1F937620C241830030367F /* AdvertisingInterval.swift */,
-				6E60A31E2069711600E42351 /* Attribute Protocol */,
 				6E704C761E95C32D00484A22 /* BitMaskOption.swift */,
 				6EE84DD41CAF603000A40C4D /* BluetoothUUID.swift */,
 				6E65DF8B20755CCD005BD2A0 /* ByteSwap.swift */,
@@ -2179,15 +2188,8 @@
 				6EAD976E20BF796200673DB7 /* DefinedCompanies.swift */,
 				6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */,
 				6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */,
-				6E704C961E95C4B300484A22 /* Extensions */,
-				6E1F937B20C24C720030367F /* GAP */,
-				6E7105B820CE21FF00D1E191 /* GATT */,
-				6EE84E021CAF892300A40C4D /* HCI */,
-				6E60A31D20696DD300E42351 /* Host Controller */,
 				6E60A31F206979CF00E42351 /* iBeacon.swift */,
 				6E60A30E2069603700E42351 /* L2CAPSocket.swift */,
-				6EFB3D8F20D2D78100364CA0 /* Low Energy */,
-				6E781B0E20CE560D00786867 /* Numeric Data Types */,
 				6E60A2EB20695AE000E42351 /* POSIXError.swift */,
 				6EE84DE41CAF828800A40C4D /* ProtocolServiceMultiplexer.swift */,
 				6E124BC6207E553E0060E2E9 /* RSSI.swift */,
@@ -2195,6 +2197,12 @@
 				3571E28F20C894BA0017ACD2 /* Unit.swift */,
 				3580287820C8308E0096227B /* UnitIdentifier.swift */,
 				3580287D20C832870096227B /* UnitIdentifierExtension.swift */,
+				6E60A31E2069711600E42351 /* Attribute Protocol */,
+				6E1F937B20C24C720030367F /* GAP */,
+				6E7105B820CE21FF00D1E191 /* GATT */,
+				6EE84E021CAF892300A40C4D /* HCI */,
+				6E60A31D20696DD300E42351 /* Host Controller */,
+				6EFB3D8F20D2D78100364CA0 /* Low Energy */,
 			);
 			name = Sources;
 			path = ../Sources;
