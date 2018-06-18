@@ -121,27 +121,30 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testBatteryLevel() {
         
-        typealias Percentage = GATTPercentage.Byte
-        
         let data = Data([0x22])
         
         guard let characteristic = GATTBatteryLevel(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
-        guard let percentage = Percentage(rawValue: 34)
+        guard let percentage = GATTBatteryPercentage(rawValue: 34)
             else { XCTFail("Could not init Percentage"); return }
         
-        let dictionary = [characteristic: "battery"]
-        
+        // test characteristic
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.level, percentage)
         XCTAssertEqual(characteristic.description, "34%")
         XCTAssertNotNil(GATTBatteryLevel(level: percentage)) 
         XCTAssertEqual(GATTBatteryLevel.uuid, .batteryLevel)
-        XCTAssertEqual(dictionary.first?.key, characteristic)
         XCTAssertEqual(GATTBatteryLevel(data: data), GATTBatteryLevel(data: data))
-        XCTAssertEqual(Percentage.unitType.description, "27AD (percentage)")
-        XCTAssertEqual(Percentage.unitType.type, "org.bluetooth.unit.percentage")
+        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryLevel(data: Data([$0]))) }
+        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryLevel(data: Data([$0]))) }
+        
+        // test percentage
+        XCTAssertEqual(GATTBatteryPercentage.unitType.description, "27AD (percentage)")
+        XCTAssertEqual(GATTBatteryPercentage.unitType.type, "org.bluetooth.unit.percentage")
+        XCTAssertEqual(GATTBatteryPercentage.unitType, .percentage)
+        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryPercentage(rawValue: $0)) }
+        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryPercentage(rawValue: $0)) }
     }
     
     func testSupportedNewAlertCategory() {

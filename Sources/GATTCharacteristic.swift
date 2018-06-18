@@ -67,48 +67,46 @@ extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
     }
 }
 
-public enum GATTPercentage {
+public struct GATTBatteryPercentage: BluetoothUnit {
     
-    public struct Byte: BluetoothUnit {
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static let min = GATTBatteryPercentage(0)
+    
+    public static let max = GATTBatteryPercentage(100)
+    
+    public static var unitType: UnitIdentifier { return .percentage }
+    
+    public var rawValue: UInt8
+    
+    public init?(rawValue value: UInt8) {
         
-        internal static let length = MemoryLayout<UInt8>.size
+        guard value <= GATTBatteryPercentage.max.rawValue,
+            value >= GATTBatteryPercentage.min.rawValue
+            else { return nil }
         
-        public static let min = Byte(0)
+        self.rawValue = value
+    }
+    
+    private init(_ unsafe: UInt8) {
         
-        public static let max = Byte(100)
-        
-        public static var unitType: UnitIdentifier { return .percentage }
-        
-        public var rawValue: UInt8
-        
-        public init?(rawValue value: UInt8) {
-            
-            guard value <= Byte.max.rawValue && value >= Byte.min.rawValue
-                else { return nil }
-            
-            self.rawValue = value
-        }
-        
-        private init(_ unsafe: UInt8) {
-            
-            self.rawValue = unsafe
-        }
+        self.rawValue = unsafe
     }
 }
 
-extension GATTPercentage.Byte: Equatable {
+extension GATTBatteryPercentage: Equatable {
     
-    public static func == (lhs: GATTPercentage.Byte, rhs: GATTPercentage.Byte) -> Bool {
+    public static func == (lhs: GATTBatteryPercentage, rhs: GATTBatteryPercentage) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension GATTPercentage.Byte: CustomStringConvertible {
+extension GATTBatteryPercentage: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue.description
+        return "\(rawValue)%"
     }
 }
 

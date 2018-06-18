@@ -15,7 +15,7 @@ import Foundation
 /// - SeeAlso: [Battery Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_level.xml)
 public struct GATTBatteryLevel: GATTCharacteristic {
     
-    public typealias Percentage = GATTPercentage.Byte
+    public typealias Percentage = GATTBatteryPercentage
     
     internal static let length = 1
     
@@ -26,11 +26,6 @@ public struct GATTBatteryLevel: GATTCharacteristic {
     public init(level: Percentage) {
         
         self.level = level
-    }
-    
-    private init(_ unsafe: Percentage) {
-        
-        self.level = unsafe
     }
     
     public init?(data: Data) {
@@ -48,15 +43,6 @@ public struct GATTBatteryLevel: GATTCharacteristic {
         
         return Data([level.rawValue])
     }
-    
-    public var characteristic: GATT.Characteristic {
-        
-        return GATT.Characteristic(uuid: type(of: self).uuid,
-                                   value: data,
-                                   permissions: [.read],
-                                   properties: [.read, .notify],
-                                   descriptors: [GATTClientCharacteristicConfiguration().descriptor])
-    }
 }
 
 extension GATTBatteryLevel: Equatable {
@@ -71,7 +57,7 @@ extension GATTBatteryLevel: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(level)%"
+        return level.description
     }
 }
 
