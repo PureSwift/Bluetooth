@@ -36,7 +36,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAge", testAge),
         ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
-        ("testAlertStatus", testAlertStatus)
+        ("testAlertStatus", testAlertStatus),
+        ("testBatteryPowerState", testBatteryPowerState)
     ]
     
     func testDateTime() {
@@ -482,5 +483,10 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalog.uuid, .analog)
         XCTAssert(GATTAnalog(data: data) == GATTAnalog(data: data))
+    }
+    
+    func testBatteryPowerState() {
+        
+        
     }
 }
