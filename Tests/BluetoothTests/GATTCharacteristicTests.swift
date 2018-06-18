@@ -135,10 +135,13 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertNotNil(GATTBatteryLevel(level: percentage)) 
         XCTAssertEqual(GATTBatteryLevel.uuid, .batteryLevel)
         XCTAssertEqual(GATTBatteryLevel(data: data), GATTBatteryLevel(data: data))
+        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryLevel(data: Data([$0]))) }
+        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryLevel(data: Data([$0]))) }
         
         // test percentage
         XCTAssertEqual(GATTBatteryPercentage.unitType.description, "27AD (percentage)")
         XCTAssertEqual(GATTBatteryPercentage.unitType.type, "org.bluetooth.unit.percentage")
+        XCTAssertEqual(GATTBatteryPercentage.unitType, .percentage)
         (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryPercentage(rawValue: $0)) }
         (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryPercentage(rawValue: $0)) }
     }
