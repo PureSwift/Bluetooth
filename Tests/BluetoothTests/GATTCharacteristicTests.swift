@@ -36,7 +36,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAge", testAge),
         ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
-        ("testAlertStatus", testAlertStatus)
+        ("testAlertStatus", testAlertStatus),
+        ("testBodySensorLocation", testBodySensorLocation)
     ]
     
     func testDateTime() {
@@ -472,5 +473,24 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalog.uuid, .analog)
         XCTAssert(GATTAnalog(data: data) == GATTAnalog(data: data))
+    }
+    
+    func testBodySensorLocation() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBodySensorLocation(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00])), .other, "The value 0x01 should be interpreted as Other")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01])), .chest, "The value 0x01 should be interpreted as Chest")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02])), .wrist, "The value 0x01 should be interpreted as Wrist")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03])), .finger, "The value 0x01 should be interpreted as Finger")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04])), .hand, "The value 0x01 should be interpreted as Hand")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05])), .earLobe, "The value 0x01 should be interpreted as Ear Lobe")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06])), .foot, "The value 0x01 should be interpreted as Foot")
+        XCTAssertEqual(GATTBodySensorLocation.uuid, .bodySensorLocation)¡
+        XCTAssertEqual(GATTBodySensorLocation(data: data), GATTBodySensorLocation(data: data))
     }
 }
