@@ -490,6 +490,16 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testBatteryPowerState() {
         
+        let data = Data([0xcd])
         
+        guard let characteristic = GATTBatteryPowerState(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertTrue(characteristic.states.contains(.criticallyLow))
+        XCTAssertTrue(characteristic.states.contains(.discharging))
+        XCTAssertTrue(characteristic.states.contains(.notSupportedPresent))
+        XCTAssertEqual(GATTBatteryPowerState.uuid, .batteryPowerState)
+        XCTAssert( GATTBatteryPowerState(data: data) ==  GATTBatteryPowerState(data: data))
     }
 }
