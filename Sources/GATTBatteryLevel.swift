@@ -15,7 +15,7 @@ import Foundation
 /// - SeeAlso: [Battery Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_level.xml)
 public struct GATTBatteryLevel: GATTCharacteristic {
     
-    public typealias Percentage = GATTPercentage.Byte
+    public typealias Percentage = GATTBatteryPercentage
     
     internal static let length = 1
     
@@ -71,7 +71,7 @@ extension GATTBatteryLevel: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(level)%"
+        return level.description
     }
 }
 

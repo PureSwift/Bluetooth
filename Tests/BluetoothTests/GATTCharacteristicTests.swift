@@ -120,7 +120,7 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testBatteryLevel() {
         
-        typealias Percentage = GATTPercentage.Byte
+        typealias Percentage = GATTBatteryPercentage
         
         let data = Data([0x22])
         
