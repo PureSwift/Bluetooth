@@ -620,9 +620,6 @@
 		6E04273A208008A200AD3C75 /* BluetoothUUIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E65DF802075135E005BD2A0 /* BluetoothUUIDTests.swift */; };
 		6E04273D20800B0700AD3C75 /* DefinedUUIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A0C4C208006370095C29E /* DefinedUUIDTests.swift */; };
 		6E124BC7207E553E0060E2E9 /* RSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E124BC6207E553E0060E2E9 /* RSSI.swift */; };
-		6E124BC8207E553E0060E2E9 /* RSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E124BC6207E553E0060E2E9 /* RSSI.swift */; };
-		6E124BC9207E553E0060E2E9 /* RSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E124BC6207E553E0060E2E9 /* RSSI.swift */; };
-		6E124BCA207E553E0060E2E9 /* RSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E124BC6207E553E0060E2E9 /* RSSI.swift */; };
 		6E142480206CFFC500BF72BC /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E14247F206CFFC500BF72BC /* HostController.swift */; };
 		6E1F936720C213B60030367F /* ClassOfDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F936620C213B60030367F /* ClassOfDevice.swift */; };
 		6E1F936820C213B60030367F /* ClassOfDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1F936620C213B60030367F /* ClassOfDevice.swift */; };
@@ -651,6 +648,9 @@
 		6E3229161FCDD6430035605D /* CompanyIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */; };
 		6E32291A1FCE45480035605D /* AdvertisingChannelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */; };
 		6E32291C1FCE4C4F0035605D /* LowEnergyAddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E32291B1FCE4C4F0035605D /* LowEnergyAddressType.swift */; };
+		6E353A4F20D80BBC00E94B73 /* RSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E124BC6207E553E0060E2E9 /* RSSI.swift */; };
+		6E353A5020D80BC100E94B73 /* RSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E124BC6207E553E0060E2E9 /* RSSI.swift */; };
+		6E353A5120D80BC600E94B73 /* RSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E124BC6207E553E0060E2E9 /* RSSI.swift */; };
 		6E35CB25207FFB030039619C /* DefinedUUIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */; };
 		6E35CB26207FFB030039619C /* DefinedUUIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */; };
 		6E35CB27207FFB030039619C /* DefinedUUIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */; };
@@ -2464,6 +2464,9 @@
 					6E49B23C20532D45002EA5DC = {
 						LastSwiftMigration = 0920;
 					};
+					6EB2EA021CD5A8A7000CF975 = {
+						LastSwiftMigration = 0930;
+					};
 					6EE84DB61CAF5C7C00A40C4D = {
 						CreatedOnToolsVersion = 7.3;
 						LastSwiftMigration = 0920;
@@ -2572,6 +2575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E353A5120D80BC600E94B73 /* RSSI.swift in Sources */,
 				6EFB3D6120D2D5D800364CA0 /* LowEnergyRxPhys.swift in Sources */,
 				6EFB3D9420D2D80A00364CA0 /* LowEnergyFragmentPreference.swift in Sources */,
 				6EFB3DE520D2EB3600364CA0 /* HCICommandComplete.swift in Sources */,
@@ -2773,11 +2777,9 @@
 				355BC20C20D2C335001A07D3 /* HCILESetAdvertiseEnable.swift in Sources */,
 				356EB8C120D418670022A48D /* HCILEReadWhiteListSize.swift in Sources */,
 				6EFB3D7020D2D69D00364CA0 /* LowEnergyConnectionIntervalRange.swift in Sources */,
-				6E124BCA207E553E0060E2E9 /* RSSI.swift in Sources */,
 				355BC27020D2D30D001A07D3 /* HCILEAddDeviceToResolvingList.swift in Sources */,
 				6E6AADFC20D2575900DDE1CA /* ATTReadBlobRequest.swift in Sources */,
 				356EB95220D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
-				6E124BCA207E553E0060E2E9 /* RSSI.swift in Sources */,
 				356EB93920D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6E49B25320532D45002EA5DC /* GATTAttributes.swift in Sources */,
 				6E6AAE2420D258E200DDE1CA /* ATTWriteCommand.swift in Sources */,
@@ -2894,6 +2896,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E353A5020D80BC100E94B73 /* RSSI.swift in Sources */,
 				6EFB3D6020D2D5D800364CA0 /* LowEnergyRxPhys.swift in Sources */,
 				6EFB3D9320D2D80A00364CA0 /* LowEnergyFragmentPreference.swift in Sources */,
 				6EFB3DE420D2EB3600364CA0 /* HCICommandComplete.swift in Sources */,
@@ -3095,11 +3098,9 @@
 				355BC20B20D2C335001A07D3 /* HCILESetAdvertiseEnable.swift in Sources */,
 				356EB8C020D418670022A48D /* HCILEReadWhiteListSize.swift in Sources */,
 				6EFB3D6F20D2D69D00364CA0 /* LowEnergyConnectionIntervalRange.swift in Sources */,
-				6E124BC9207E553E0060E2E9 /* RSSI.swift in Sources */,
 				355BC26F20D2D30D001A07D3 /* HCILEAddDeviceToResolvingList.swift in Sources */,
 				6E6AADFB20D2575900DDE1CA /* ATTReadBlobRequest.swift in Sources */,
 				356EB95120D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
-				6E124BC9207E553E0060E2E9 /* RSSI.swift in Sources */,
 				356EB93820D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6EB2EA101CD5A8A7000CF975 /* GATTAttributes.swift in Sources */,
 				6E6AAE2320D258E200DDE1CA /* ATTWriteCommand.swift in Sources */,
@@ -3586,6 +3587,7 @@
 				3588AC1C20CD05AC00F9FA8C /* GAPData.swift in Sources */,
 				3518294120D223810009F82D /* GATTAge.swift in Sources */,
 				6E60A321206979CF00E42351 /* iBeacon.swift in Sources */,
+				6E353A4F20D80BBC00E94B73 /* RSSI.swift in Sources */,
 				6ECBCF19206FBD0F00312117 /* HCICommandTimeout.swift in Sources */,
 				356EB91E20D442420022A48D /* HCILEPeriodicAdvertisingReport.swift in Sources */,
 				3518298720D22CBE0009F82D /* GAPLESecureConnectionsConfirmation.swift in Sources */,
@@ -3769,11 +3771,9 @@
 				355BC20A20D2C335001A07D3 /* HCILESetAdvertiseEnable.swift in Sources */,
 				356EB8BF20D418670022A48D /* HCILEReadWhiteListSize.swift in Sources */,
 				6EFB3D6E20D2D69D00364CA0 /* LowEnergyConnectionIntervalRange.swift in Sources */,
-				6E124BC8207E553E0060E2E9 /* RSSI.swift in Sources */,
 				355BC26E20D2D30D001A07D3 /* HCILEAddDeviceToResolvingList.swift in Sources */,
 				6E6AADFA20D2575900DDE1CA /* ATTReadBlobRequest.swift in Sources */,
 				356EB95020D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
-				6E124BC8207E553E0060E2E9 /* RSSI.swift in Sources */,
 				356EB93720D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6EF45FB01CC6D04D001F7A39 /* GATTAttributes.swift in Sources */,
 				6E6AAE2220D258E200DDE1CA /* ATTWriteCommand.swift in Sources */,
