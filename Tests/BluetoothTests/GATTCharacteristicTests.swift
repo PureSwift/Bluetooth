@@ -490,7 +490,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04])), .hand, "The value 0x01 should be interpreted as Hand")
         XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05])), .earLobe, "The value 0x01 should be interpreted as Ear Lobe")
         XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06])), .foot, "The value 0x01 should be interpreted as Foot")
-        XCTAssertEqual(GATTBodySensorLocation.uuid, .bodySensorLocation)¡
+        XCTAssertEqual(GATTBodySensorLocation.uuid, .bodySensorLocation)
         XCTAssertEqual(GATTBodySensorLocation(data: data), GATTBodySensorLocation(data: data))
     }
 }
