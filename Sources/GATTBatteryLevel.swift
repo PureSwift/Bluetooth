@@ -15,28 +15,20 @@ import Foundation
 /// - SeeAlso: [Battery Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_level.xml)
 public struct GATTBatteryLevel: GATTCharacteristic {
     
-    internal static let max = GATTBatteryLevel(100)
-    
-    internal static let min = GATTBatteryLevel(0)
+    public typealias Percentage = GATTPercentage.Byte
     
     internal static let length = 1
     
     public static var uuid: BluetoothUUID { return .batteryLevel }
     
-    public static var unit: UnitIdentifier { return .percentage }
+    public var level: Percentage
     
-    public var level: UInt8
-    
-    public init?(level: UInt8) {
-        
-        guard GATTBatteryLevel.min.level <= level,
-            GATTBatteryLevel.max.level >= level
-            else { return nil }
+    public init(level: Percentage) {
         
         self.level = level
     }
     
-    fileprivate init(_ unsafe: UInt8) {
+    private init(_ unsafe: Percentage) {
         
         self.level = unsafe
     }
@@ -46,12 +38,15 @@ public struct GATTBatteryLevel: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        self.init(level: data[0])
+        guard let level = Percentage(rawValue: data[0])
+            else { return nil }
+        
+        self.init(level: level)
     }
     
     public var data: Data {
         
-        return Data([level])
+        return Data([level.rawValue])
     }
     
     public var characteristic: GATT.Characteristic {
@@ -84,6 +79,6 @@ extension GATTBatteryLevel: Hashable {
     
     public var hashValue: Int {
         
-        return Int(level)
+        return Int(level.rawValue)
     }
 }

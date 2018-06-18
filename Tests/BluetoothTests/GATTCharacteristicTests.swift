@@ -120,18 +120,27 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testBatteryLevel() {
         
-        let data = Data([0x22])
+        typealias Percentage = GATTPercentage.Byte
         
-        let batteryLevel: UInt8 = 34
+        let data = Data([0x22])
         
         guard let characteristic = GATTBatteryLevel(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
+        guard let percentage = Percentage(rawValue: 34)
+            else { XCTFail("Could not init Percentage"); return }
+        
+        let dictionary = [characteristic: "battery"]
+        
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.level, batteryLevel)
+        XCTAssertEqual(characteristic.level, percentage)
         XCTAssertEqual(characteristic.description, "34%")
-        XCTAssertEqual(GATTBatteryLevel.unit.description, "27AD (percentage)")
-        XCTAssertEqual(GATTBatteryLevel.unit.type, "org.bluetooth.unit.percentage")
+        XCTAssertNotNil(GATTBatteryLevel(level: percentage)) 
+        XCTAssertEqual(GATTBatteryLevel.uuid, .batteryLevel)
+        XCTAssertEqual(dictionary.first?.key, characteristic)
+        XCTAssertEqual(GATTBatteryLevel(data: data), GATTBatteryLevel(data: data))
+        XCTAssertEqual(Percentage.unitType.description, "27AD (percentage)")
+        XCTAssertEqual(Percentage.unitType.type, "org.bluetooth.unit.percentage")
     }
     
     func testSupportedNewAlertCategory() {
@@ -140,6 +149,7 @@ final class GATTCharacteristicTests: XCTestCase {
         
         guard let characteristic = GATTSupportedNewAlertCategory(data: data)
             else { XCTFail("Could not decode from bytes"); return }
+        
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.categories, [.call, .email], "The value 0x0a is interpreted that this server supports “Call” and “Email” categories.")
