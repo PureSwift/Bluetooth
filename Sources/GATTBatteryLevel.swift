@@ -28,11 +28,6 @@ public struct GATTBatteryLevel: GATTCharacteristic {
         self.level = level
     }
     
-    private init(_ unsafe: Percentage) {
-        
-        self.level = unsafe
-    }
-    
     public init?(data: Data) {
         
         guard data.count == type(of: self).length
@@ -47,15 +42,6 @@ public struct GATTBatteryLevel: GATTCharacteristic {
     public var data: Data {
         
         return Data([level.rawValue])
-    }
-    
-    public var characteristic: GATT.Characteristic {
-        
-        return GATT.Characteristic(uuid: type(of: self).uuid,
-                                   value: data,
-                                   permissions: [.read],
-                                   properties: [.read, .notify],
-                                   descriptors: [GATTClientCharacteristicConfiguration().descriptor])
     }
 }
 
