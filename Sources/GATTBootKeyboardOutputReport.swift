@@ -57,3 +57,11 @@ extension GATTBootKeyboardOutputReport: CustomStringConvertible {
         return rawValue.description
     }
 }
+
+extension GATTBootKeyboardOutputReport: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
