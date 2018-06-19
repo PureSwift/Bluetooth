@@ -209,7 +209,8 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2a17: "Time Update State",
     0x2a18: "Glucose Measurement",
     0x2a19: "Battery Level",
-    /* 0x2a1a and 0x2a1b undefined */
+    0x2a1a: "Battery Power State",
+    0x2a1b: "Battery Level State",
     0x2a1c: "Temperature Measurement",
     0x2a1d: "Temperature Type",
     0x2a1e: "Intermediate Temperature",
