@@ -36,9 +36,47 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
     
     public var size: Size
     
-    public init(size: Size) {
+    public var glucoseConcentration: MilligramPerDecilitre
+    
+    public var timeOffset: Minute
+    
+    public var trendInformationField: MilligramPerDecilitre?
+    
+    public var qualityField: Percentage?
+    
+    public var sensorStatusAnnunciationField: SFloat?
+    
+    public var quality: MilligramPerDecilitre?
+    
+    internal var flags: BitMaskOptionSet<Flag> {
+        
+        var flags = BitMaskOptionSet<Flag>()
+        
+        if trendInformationField != nil {
+            
+            flags.insert(.trendInformation)
+        }
+        
+        if qualityField != nil {
+            
+            flags.insert(.quality)
+        }
+        
+        if sensorStatusAnnunciationField != nil {
+            
+            flags.insert(.warningOctet)
+            flags.insert(.tempOctet)
+            flags.insert(.statusOctet)
+        }
+        
+        return flags
+    }
+    
+    public init(size: Size, glucoseConcentration: MilligramPerDecilitre, timeOffset: Minute) {
         
         self.size = size
+        self.glucoseConcentration = glucoseConcentration
+        self.timeOffset = timeOffset
     }
     
     public init?(data: Data) {
@@ -46,15 +84,161 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         guard data.count >= type(of: self).length
             else { return nil }
         
+        guard let size = Size(rawValue: data[0])
+            else { return nil }
         
-        self.init(size: data[0])
+        guard let glucoseConcentration = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))))
+            else { return nil }
+        
+        guard let timeOffset = Minute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
+            else { return nil }
+        
+        self.init(size: size, glucoseConcentration: glucoseConcentration, timeOffset: timeOffset)
     }
-    
-    
     
     public var data: Data {
         
-        return Data([bytes.0, bytes.1])
+        return Data([size.rawValue])
+    }
+}
+
+public extension GATTCGMMeasurement {
+ 
+    public enum CGMSensorStatusAnnunciation: UInt32, BitMaskOption {
+        
+        /// Session Stopped
+        case sessionStopped = 0b01
+        
+        /// Device Battery Low
+        case deviceBatteryLow = 0b10
+        
+        /// Sensor type incorrect for device
+        case sensorTypeIncorrectForDevice = 0b100
+        
+        /// Sensor malfunction
+        case sensorMalfunction = 0b1000
+        
+        /// Device Specific Alert
+        case deviceSpecificAlert = 0b10000
+        
+        /// General device fault has occurred in the sensor
+        case generalDeviceFaultInSensor = 0b100000
+        
+        /// Time synchronization between sensor and collector required
+        case timeSyncBetweenSensorAndCollectionRequired = 0b1_00000000
+        
+        /// Calibration not allowed
+        case calibrationNotAllowed = 0b10_00000000
+        
+        /// Calibration recommended
+        case calidationRecommended = 0b100_00000000
+        
+        /// Calibration required
+        case calibrationRequired = 0b1000_00000000
+        
+        /// Sensor Temperature too high for valid test/result at time of measurement
+        case senroTempTooHigh = 0b10000_00000000
+        
+        /// Sensor temperature too low for valid test/result at time of measurement
+        case sensorTempTooLow = 0b100000_00000000
+        
+        /// Sensor result lower than the Patient Low level
+        case sensorResultLowerThanPatientLowLevel = 0b1_00000000_00000000
+        
+        /// Sensor result higher than the Patient High level
+        case sensorResultHigherThanPatientHighLevel = 0b10_00000000_00000000
+        
+        /// Sensor result lower than the Hypo level
+        case sensorResultLowerThanHypoLevel = 0b100_00000000_00000000
+        
+        /// Sensor result higher than the Hyper level
+        case sensorResultHigherThanHyperLevel = 0b1000_00000000_00000000
+        
+        /// Sensor Rate of Decrease exceeded
+        case sensorRateOfDecreaseExceeded = 0b100000_0000000_00000000
+        
+        /// Sensor Rate of Increase exceeded
+        case sensorRateOfIncreaseExceeded = 0b100000_00000000_00000000
+        
+        /// Sensor result lower than the device can process
+        case sensorResultLowerThanDeviceCanProcess = 0b1000000_00000000_00000000
+        
+        /// Sensor result higher than the device can process
+        case sensorResultHigherThanDeviceCanProcess = 0b1000000_00000000_000000000
+        
+        public static let all: Set<CGMSensorStatusAnnunciation> = [
+            .sessionStopped,
+            .deviceBatteryLow,
+            .sensorTypeIncorrectForDevice,
+            .sensorMalfunction,
+            .deviceSpecificAlert,
+            .generalDeviceFaultInSensor,
+            .timeSyncBetweenSensorAndCollectionRequired,
+            .calibrationNotAllowed,
+            .calidationRecommended,
+            .calibrationRequired,
+            .senroTempTooHigh,
+            .sensorTempTooLow,
+            .sensorResultLowerThanPatientLowLevel,
+            .sensorResultHigherThanPatientHighLevel,
+            .sensorResultLowerThanHypoLevel,
+            .sensorResultHigherThanHyperLevel,
+            .sensorRateOfDecreaseExceeded,
+            .sensorRateOfIncreaseExceeded,
+            .sensorResultLowerThanDeviceCanProcess,
+            .sensorResultHigherThanDeviceCanProcess
+        ]
+    }
+}
+
+public extension GATTCGMMeasurement {
+    
+    public struct Percentage: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public static var unitType: UnitIdentifier { return .percentage }
+        
+        public var rawValue: SFloat
+        
+        public init(rawValue value: SFloat) {
+            
+            self.rawValue = value
+        }
+        
+        private init(_ unsafe: SFloat) {
+            
+            self.rawValue = unsafe
+        }
+    }
+}
+
+public extension GATTCGMMeasurement {
+    
+    public enum Flag: UInt8, BitMaskOption {
+        
+        /// CGM Trend Information Present
+        case trendInformation = 0b01
+        
+        /// CGM Quality Present
+        case quality = 0b10
+        
+        /// Sensor Status Annunciation Field, Warning-Octet present
+        case warningOctet = 0b10000
+        
+        /// Sensor Status Annunciation Field, Cal/Temp-Octet present
+        case tempOctet = 0b100000
+        
+        /// Sensor Status Annunciation Field, Status-Octet present
+        case statusOctet = 0b1000000
+        
+        public static let all: Set<Flag> = [
+            .trendInformation,
+            .quality,
+            .warningOctet,
+            .tempOctet,
+            .statusOctet
+        ]
     }
 }
 
@@ -117,6 +301,22 @@ public extension GATTCGMMeasurement {
     }
 }
 
+extension GATTCGMMeasurement.MilligramPerDecilitre: Equatable {
+    
+    public static func == (lhs: GATTCGMMeasurement.MilligramPerDecilitre, rhs: GATTCGMMeasurement.MilligramPerDecilitre) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCGMMeasurement.MilligramPerDecilitre: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
 public extension GATTCGMMeasurement {
     
     public struct Minute: BluetoothUnit {
@@ -137,15 +337,15 @@ public extension GATTCGMMeasurement {
     }
 }
 
-extension GATTCGMMeasurement.MilligramPerDecilitre: Equatable {
+extension GATTCGMMeasurement.Minute: Equatable {
     
-    public static func == (lhs: GATTCGMMeasurement.MilligramPerDecilitre, rhs: GATTCGMMeasurement.MilligramPerDecilitre) -> Bool {
+    public static func == (lhs: GATTCGMMeasurement.Minute, rhs: GATTCGMMeasurement.Minute) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension GATTCGMMeasurement.MilligramPerDecilitre: CustomStringConvertible {
+extension GATTCGMMeasurement.Minute: CustomStringConvertible {
     
     public var description: String {
         
