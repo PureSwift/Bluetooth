@@ -33,12 +33,9 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAge", testAge),
         ("testAnalog", testAnalog),
         ("testBarometricPressureTrend", testBarometricPressureTrend),
-        ("testAge", testAge),
-        ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
         ("testAlertStatus", testAlertStatus),
         ("testBootMouseInputReport", testBootMouseInputReport),
-        ("testBatteryPowerState", testBatteryPowerState)
         ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
         ("testCentralAddressResolution", testCentralAddressResolution)
@@ -503,8 +500,8 @@ final class GATTCharacteristicTests: XCTestCase {
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
         XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
-        XCTAssertEqual(GATTBootMouseInputReport(data: data), GATTBootMouseInputReport(data: data))
     }
     
     func testBatteryPowerState() {
