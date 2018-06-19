@@ -21,36 +21,63 @@ The Peripheral checks if the peer device supports address resolution by reading 
  - Note:
  A device has only one instance of the Central Address Resolution characteristic. If the Central Address Resolution characteristic is not present, then it is assumed that Central Address Resolution is not supported.
  */
-public enum GATTCentralAddressResolution: UInt8, GATTCharacteristic {
+public struct GATTCentralAddressResolution: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .centralAddressResolution }
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    /// address resolution is not supported in this device
-    case notSupported = 0x00
+    /// Whether address resolution is supported in this device.
+    public var isSupported: Bool
     
-    /// address resolution is supported in this device
-    case supported = 0x01
+    public init(isSupported: Bool) {
+        
+        self.isSupported = isSupported
+    }
     
     public init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
         
-        self.init(rawValue: data[0])
+        guard let booleanValue = Bool(byteValue: data[0])
+            else { return nil }
+        
+        self.init(isSupported: booleanValue)
     }
     
     public var data: Data {
         
-        return Data([rawValue])
+        return Data([isSupported.byteValue])
     }
 }
+
+// MARK: - Equatable
+
+extension GATTCentralAddressResolution: Equatable {
+    
+    public static func == (lhs: GATTCentralAddressResolution, rhs: GATTCentralAddressResolution) -> Bool {
+        
+        return lhs.isSupported == rhs.isSupported
+    }
+}
+
+// MARK: - CustomStringConvertible
 
 extension GATTCentralAddressResolution: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue.description
+        return isSupported.description
+    }
+}
+
+// MARK: - ExpressibleByBooleanLiteral
+
+extension GATTCentralAddressResolution: ExpressibleByBooleanLiteral {
+    
+    public init(booleanLiteral value: Bool) {
+        
+        self.init(isSupported: value)
     }
 }
