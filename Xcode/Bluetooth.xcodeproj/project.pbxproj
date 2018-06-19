@@ -605,6 +605,7 @@
 		3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7CADC20C5E72100F797AE /* GATTProfile.swift */; };
+		4B5C022920D834E10079C645 /* GATTBodyCompositionMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C022820D834E10079C645 /* GATTBodyCompositionMeasurement.swift */; };
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
 		512F4B47208A562E00576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
 		512F4B48208A564400576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
@@ -1469,6 +1470,7 @@
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
+		4B5C022820D834E10079C645 /* GATTBodyCompositionMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBodyCompositionMeasurement.swift; sourceTree = "<group>"; };
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
 		512F4B46208A562E00576F34 /* UInt256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt256.swift; sourceTree = "<group>"; };
 		512F4B4B208A567A00576F34 /* UInt512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt512.swift; sourceTree = "<group>"; };
@@ -1771,6 +1773,7 @@
 				3518290820D221710009F82D /* GATTSupportedNewAlertCategory.swift */,
 				3518291C20D222440009F82D /* GATTSupportedUnreadAlertCategory.swift */,
 				3518292120D222A30009F82D /* GATTUnreadAlertStatus.swift */,
+				4B5C022820D834E10079C645 /* GATTBodyCompositionMeasurement.swift */,
 			);
 			name = Characteristics;
 			sourceTree = "<group>";
@@ -3519,6 +3522,7 @@
 				6E60A2FB20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */,
 				511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */,
 				6E704C841E95C41C00484A22 /* Integer.swift in Sources */,
+				4B5C022920D834E10079C645 /* GATTBodyCompositionMeasurement.swift in Sources */,
 				356EB8FA20D435390022A48D /* HCILEReadLocalP256PublicKeyComplete.swift in Sources */,
 				351829C720D22DB80009F82D /* GAPPublicTargetAddress.swift in Sources */,
 				6E6AAD9B20D21A1900DDE1CA /* GAPCompleteListOf16BitServiceClassUUIDs.swift in Sources */,
