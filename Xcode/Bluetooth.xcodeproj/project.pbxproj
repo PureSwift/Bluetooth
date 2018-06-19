@@ -606,6 +606,10 @@
 		3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7CADC20C5E72100F797AE /* GATTProfile.swift */; };
 		35CA73D920D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */; };
+		35CEF94320D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
+		35CEF94420D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
+		35CEF94520D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
+		35CEF94620D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
 		512F4B47208A562E00576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
 		512F4B48208A564400576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
@@ -692,6 +696,7 @@
 		6E49B25B20532D45002EA5DC /* BluetoothUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE84DD41CAF603000A40C4D /* BluetoothUUID.swift */; };
 		6E49B25C20532D45002EA5DC /* Integer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E704C821E95C41C00484A22 /* Integer.swift */; };
 		6E49B26020532D45002EA5DC /* Bluetooth.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EE84DBA1CAF5C7C00A40C4D /* Bluetooth.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6E4B733E20D95DD300FD6702 /* IntegerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B733D20D95DD300FD6702 /* IntegerTests.swift */; };
 		6E572AD61FCE763B00CDC763 /* LowEnergyAddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E32291B1FCE4C4F0035605D /* LowEnergyAddressType.swift */; };
 		6E572AD71FCE763C00CDC763 /* LowEnergyAddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E32291B1FCE4C4F0035605D /* LowEnergyAddressType.swift */; };
 		6E572AD81FCE763E00CDC763 /* AdvertisingChannelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3229191FCE45480035605D /* AdvertisingChannelHeader.swift */; };
@@ -1471,6 +1476,7 @@
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
 		35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTBootKeyboardInputReport.swift; sourceTree = "<group>"; };
+		35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryPowerState.swift; sourceTree = "<group>"; };
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
 		512F4B46208A562E00576F34 /* UInt256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt256.swift; sourceTree = "<group>"; };
 		512F4B4B208A567A00576F34 /* UInt512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt512.swift; sourceTree = "<group>"; };
@@ -1497,6 +1503,7 @@
 		6E443A2C2085D4E2005F4D5F /* GATTDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTDescriptor.swift; sourceTree = "<group>"; };
 		6E443A2E2085D606005F4D5F /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		6E49B26520532D45002EA5DC /* Bluetooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluetooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E4B733D20D95DD300FD6702 /* IntegerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerTests.swift; sourceTree = "<group>"; };
 		6E60A2BE2068928400E42351 /* BluetoothHostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothHostController.swift; sourceTree = "<group>"; };
 		6E60A2E12069564A00E42351 /* GATTDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTDatabase.swift; sourceTree = "<group>"; };
 		6E60A2E62069582500E42351 /* LowEnergyAdvertising.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyAdvertising.swift; sourceTree = "<group>"; };
@@ -1767,6 +1774,7 @@
 				356EB94420D453840022A48D /* GATTAnalogOutput.swift */,
 				356EB94920D455340022A48D /* GATTBarometricPressureTrend.swift */,
 				6E6AAD6F20D2161B00DDE1CA /* GATTBatteryLevel.swift */,
+				35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */,
 				3518292B20D222EF0009F82D /* GATTBloodPressureFeature.swift */,
 				3518293020D2231D0009F82D /* GATTBloodPressureManagement.swift */,
 				6E6AAD7420D2164600DDE1CA /* GATTDateTime.swift */,
@@ -2057,12 +2065,13 @@
 				6EBD96BD207ABED60037D253 /* GATTTests.swift */,
 				6E740C5D206586D3006589F6 /* HCITests.swift */,
 				6E65DF922075D29C005BD2A0 /* iBeaconTests.swift */,
+				6E4B733D20D95DD300FD6702 /* IntegerTests.swift */,
+				6EE611BD20D4718300DBC88E /* Supporting Types */,
 				6E65DF82207552E4005BD2A0 /* UInt128Tests.swift */,
 				512F4B4D208B338500576F34 /* UInt256Tests.swift */,
 				512F4B4F208B339600576F34 /* UInt512Tests.swift */,
 				3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */,
 				6E65DF902075CD9F005BD2A0 /* UUIDTests.swift */,
-				6EE611BD20D4718300DBC88E /* Supporting Types */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
@@ -2808,6 +2817,7 @@
 				351829F220D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
 				3518297F20D22C620009F82D /* GAPSimplePairingHashC.swift in Sources */,
 				3518296B20D22C290009F82D /* GAPShortLocalName.swift in Sources */,
+				35CEF94620D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
 				355BC25220D2C3C1001A07D3 /* HCILETransmitterTest.swift in Sources */,
 				356EB90220D435440022A48D /* HCILEGenerateDHKeyComplete.swift in Sources */,
 				355BC2C520D31610001A07D3 /* HCILESetPeriodicAdvertisingData.swift in Sources */,
@@ -3129,6 +3139,7 @@
 				351829F120D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
 				3518297E20D22C620009F82D /* GAPSimplePairingHashC.swift in Sources */,
 				3518296A20D22C290009F82D /* GAPShortLocalName.swift in Sources */,
+				35CEF94520D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
 				355BC25120D2C3C1001A07D3 /* HCILETransmitterTest.swift in Sources */,
 				356EB90120D435440022A48D /* HCILEGenerateDHKeyComplete.swift in Sources */,
 				355BC2C420D31610001A07D3 /* HCILESetPeriodicAdvertisingData.swift in Sources */,
@@ -3452,6 +3463,7 @@
 				3518292220D222A30009F82D /* GATTUnreadAlertStatus.swift in Sources */,
 				6E98ACBD207F89F600DBFE85 /* ATTError.swift in Sources */,
 				35CA73D920D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift in Sources */,
+				35CEF94320D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
 				355BC20920D2C335001A07D3 /* HCILESetAdvertiseEnable.swift in Sources */,
 				356EB8FF20D435440022A48D /* HCILEGenerateDHKeyComplete.swift in Sources */,
 				351829D620D22DD40009F82D /* GAPLEDeviceAddress.swift in Sources */,
@@ -3557,6 +3569,7 @@
 				6E142480206CFFC500BF72BC /* HostController.swift in Sources */,
 				6E781B0220CE4DF800786867 /* GATTCharacteristicTests.swift in Sources */,
 				3531BF4C20CEEF8F00F31BC3 /* UnitIdentifierTests.swift in Sources */,
+				6E4B733E20D95DD300FD6702 /* IntegerTests.swift in Sources */,
 				6E7F4A4120928E2B00E877F1 /* GAPTests.swift in Sources */,
 				6ECBCF0B206E683C00312117 /* L2CAPSocket.swift in Sources */,
 				6E30AE3720BF1A530072D101 /* GATTDescriptorTests.swift in Sources */,
@@ -3803,6 +3816,7 @@
 				351829F020D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
 				3518297D20D22C620009F82D /* GAPSimplePairingHashC.swift in Sources */,
 				3518296920D22C290009F82D /* GAPShortLocalName.swift in Sources */,
+				35CEF94420D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
 				355BC25020D2C3C1001A07D3 /* HCILETransmitterTest.swift in Sources */,
 				356EB90020D435440022A48D /* HCILEGenerateDHKeyComplete.swift in Sources */,
 				355BC2C320D31610001A07D3 /* HCILESetPeriodicAdvertisingData.swift in Sources */,
