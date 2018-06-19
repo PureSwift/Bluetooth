@@ -547,9 +547,9 @@ final class GATTCharacteristicTests: XCTestCase {
         guard let characteristic = GATTCentralAddressResolution(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic, .supported, "The value 0x01 should be interpreted as Supported")
+        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        XCTAssertEqual(characteristic, true, "The value 0x01 should be interpreted as Supported")
         XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
-        XCTAssertEqual(GATTCentralAddressResolution(data: data), GATTCentralAddressResolution(data: data))
+        XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
     }
 }

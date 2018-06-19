@@ -1784,13 +1784,13 @@
 				35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */,
 				3518292B20D222EF0009F82D /* GATTBloodPressureFeature.swift */,
 				3518293020D2231D0009F82D /* GATTBloodPressureManagement.swift */,
+				35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */,
+				35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */,
 				6E6AAD7420D2164600DDE1CA /* GATTDateTime.swift */,
 				3518291720D222230009F82D /* GATTNewAlert.swift */,
 				3518290820D221710009F82D /* GATTSupportedNewAlertCategory.swift */,
 				3518291C20D222440009F82D /* GATTSupportedUnreadAlertCategory.swift */,
 				3518292120D222A30009F82D /* GATTUnreadAlertStatus.swift */,
-				35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */,
-				35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */,
 			);
 			name = Characteristics;
 			sourceTree = "<group>";
