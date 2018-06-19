@@ -605,14 +605,14 @@
 		3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7CADC20C5E72100F797AE /* GATTProfile.swift */; };
-		35CEF94820D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
-		35CEF94920D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
-		35CEF94A20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
-		35CEF94B20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
 		35CEF94320D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
 		35CEF94420D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
 		35CEF94520D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
 		35CEF94620D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
+		35CEF94820D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
+		35CEF94920D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
+		35CEF94A20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
+		35CEF94B20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
 		512F4B47208A562E00576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
 		512F4B48208A564400576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
@@ -1478,8 +1478,8 @@
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
-		35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBodySensorLocation.swift; sourceTree = "<group>"; };
 		35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryPowerState.swift; sourceTree = "<group>"; };
+		35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBodySensorLocation.swift; sourceTree = "<group>"; };
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
 		512F4B46208A562E00576F34 /* UInt256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt256.swift; sourceTree = "<group>"; };
 		512F4B4B208A567A00576F34 /* UInt512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt512.swift; sourceTree = "<group>"; };
@@ -2069,12 +2069,12 @@
 				6E740C5D206586D3006589F6 /* HCITests.swift */,
 				6E65DF922075D29C005BD2A0 /* iBeaconTests.swift */,
 				6E4B733D20D95DD300FD6702 /* IntegerTests.swift */,
-				6EE611BD20D4718300DBC88E /* Supporting Types */,
 				6E65DF82207552E4005BD2A0 /* UInt128Tests.swift */,
 				512F4B4D208B338500576F34 /* UInt256Tests.swift */,
 				512F4B4F208B339600576F34 /* UInt512Tests.swift */,
 				3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */,
 				6E65DF902075CD9F005BD2A0 /* UUIDTests.swift */,
+				6EE611BD20D4718300DBC88E /* Supporting Types */,
 			);
 			path = BluetoothTests;
 			sourceTree = "<group>";
