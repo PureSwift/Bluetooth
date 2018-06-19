@@ -19,11 +19,23 @@ public struct GATTBatteryPowerState: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .batteryPowerState }
     
-    public var states: BitMaskOptionSet<State>
+    public var presentState: BatteryPresentState
     
-    public init(states: BitMaskOptionSet<State>) {
+    public var dischargeState: BatteryDischargeState
+    
+    public var chargeState: BatteryChargeState
+    
+    public var levelState: BatteryLevelState
+    
+    public init(presentState: BatteryPresentState = .unknown,
+                dischargeState: BatteryDischargeState = .unknown,
+                chargeState: BatteryChargeState = .unknown,
+                levelState: BatteryLevelState = .unknown) {
         
-        self.states = states
+        self.presentState = presentState
+        self.dischargeState = dischargeState
+        self.chargeState = chargeState
+        self.levelState = levelState
     }
     
     public init?(data: Data) {
@@ -31,86 +43,109 @@ public struct GATTBatteryPowerState: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let states = BitMaskOptionSet<State>(rawValue: data[0])
+        let bit2 = data[0].bit2()
         
-        self.init(states: states)
+        guard let presentState = BatteryPresentState(rawValue: bit2.0),
+            let dischargeState = BatteryDischargeState(rawValue: bit2.1),
+            let chargeState = BatteryChargeState(rawValue: bit2.2),
+            let levelState = BatteryLevelState(rawValue: bit2.3)
+            else { return nil }
+        
+        self.init(presentState: presentState,
+                  dischargeState: dischargeState,
+                  chargeState: chargeState,
+                  levelState: levelState)
     }
     
     public var data: Data {
         
-        return Data([states.rawValue])
-    }
-    
-    public enum State: UInt8, BitMaskOption {
-
-        // Unknown
-        case unknown = 0b00
-
-        // Not Supported Present
-        case notSupportedPresent = 0b01
-
-        // Not Present
-        case notPresent = 0b10
-
-        // Present
-        case present = 0b11
-
-        // Not Supported Discharge
-        case notSupportedDischarge = 0b0100
-
-        // Not Discharging
-        case notDischarging = 0b1000
-
-        // Discharging
-        case discharging = 0b1100
+        let byte = UInt8.bit2(presentState.rawValue,
+                              dischargeState.rawValue,
+                              chargeState.rawValue,
+                              levelState.rawValue)
         
-        // Not Chargeable
-        case notChargeable = 0b010000
-        
-        // Not Charging
-        case notCharging = 0b100000
-        
-        // Charging
-        case charging = 0b110000
-        
-        // Not Supported
-        case notSupported = 0b01000000
-        
-        // Good Level
-        case goodLevel = 0b10000000
-        
-        // Critically Low
-        case criticallyLow = 0b11000000
-
-        public static var all: Set<State> = [
-            .unknown,
-            .notSupportedPresent,
-            .notPresent,
-            .present,
-            .notSupportedDischarge,
-            .notDischarging,
-            .discharging,
-            .notChargeable,
-            .notCharging,
-            .charging,
-            .notSupported,
-            .goodLevel,
-            .criticallyLow
-        ]
+        return Data([byte])
     }
 }
+
+public extension GATTBatteryPowerState {
+    
+    /// State indicating whether the battery is present.
+    public enum BatteryPresentState: UInt8 {
+        
+        /// Unknown
+        case unknown = 0x00
+        
+        /// Not Supported
+        case notSupported = 0x01
+        
+        /// Not Present
+        case notPresent = 0x02
+        
+        /// Present
+        case present = 0x03
+    }
+    
+    /// Battery discharging state.
+    public enum BatteryDischargeState: UInt8 {
+        
+        /// Unknown
+        case unknown = 0x00
+        
+        /// Not Supported
+        case notSupported = 0x01
+        
+        /// Not Discharging
+        case notDischarging = 0x02
+        
+        /// Discharging
+        case discharging = 0x03
+    }
+    
+    /// Battery charging state.
+    public enum BatteryChargeState: UInt8 {
+        
+        /// Unknown
+        case unknown = 0x00
+        
+        /// Not Chargeable
+        case notChargeable = 0x01
+        
+        // for same API as other enums
+        /// Not Chargeable
+        public static var notSupported: BatteryChargeState { return .notChargeable }
+        
+        /// Not Charging
+        case notCharging = 0x02
+        
+        /// Charging
+        case charging = 0x03
+    }
+    
+    /// Battery charging state.
+    public enum BatteryLevelState: UInt8 {
+        
+        /// Unknown
+        case unknown = 0x00
+        
+        /// Not Supported
+        case notSupported = 0x01
+        
+        /// Good Level
+        case good = 0x02
+        
+        /// Critically Low Level
+        case criticallyLow = 0x03
+    }
+}
+
 extension GATTBatteryPowerState: Equatable {
     
     public static func == (lhs: GATTBatteryPowerState, rhs: GATTBatteryPowerState) -> Bool {
         
-        return lhs.states == rhs.states
-    }
-}
-
-extension GATTBatteryPowerState: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return states.description
+        return lhs.presentState == rhs.presentState
+            && lhs.dischargeState == rhs.dischargeState
+            && lhs.chargeState == rhs.chargeState
+            && lhs.levelState == rhs.levelState
     }
 }
