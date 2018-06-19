@@ -39,6 +39,9 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAlertStatus", testAlertStatus),
         ("testBootMouseInputReport", testBootMouseInputReport),
         ("testBatteryPowerState", testBatteryPowerState)
+        ("testBatteryPowerState", testBatteryPowerState),
+        ("testBodySensorLocation", testBodySensorLocation),
+        ("testCentralAddressResolution", testCentralAddressResolution)
     ]
     
     func testDateTime() {
@@ -465,7 +468,7 @@ final class GATTCharacteristicTests: XCTestCase {
         let output = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
         guard let characteristics = GATTAnalogOutput(data: data)
-        else { XCTFail("Could not decode from bytes"); return }
+        else { XCTFail("Could not decode fro<<<m bytes"); return }
         
         XCTAssertEqual(characteristics.data, data)
         XCTAssertEqual(characteristics.output, output)
@@ -517,6 +520,53 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.chargeState, .notCharging)
         XCTAssertEqual(characteristic.levelState, .criticallyLow)
         XCTAssertEqual(GATTBatteryPowerState.uuid, .batteryPowerState)
-        XCTAssert( GATTBatteryPowerState(data: data) ==  GATTBatteryPowerState(data: data))
+        XCTAssertEqual(GATTBatteryPowerState(data: data), GATTBatteryPowerState(data: data))
+    }
+    
+    func testBodySensorLocation() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBodySensorLocation(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        
+        // enum values
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00])), .other, "The value 0x00 should be interpreted as Other")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01])), .chest, "The value 0x01 should be interpreted as Chest")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02])), .wrist, "The value 0x02 should be interpreted as Wrist")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03])), .finger, "The value 0x03 should be interpreted as Finger")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04])), .hand, "The value 0x04 should be interpreted as Hand")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05])), .earLobe, "The value 0x05 should be interpreted as Ear Lobe")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06])), .foot, "The value 0x06 should be interpreted as Foot")
+        
+        // text values
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00]))?.description, "Other", "The value 0x00 should be interpreted as Other")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01]))?.description, "Chest", "The value 0x01 should be interpreted as Chest")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02]))?.description, "Wrist", "The value 0x02 should be interpreted as Wrist")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03]))?.description, "Finger", "The value 0x03 should be interpreted as Finger")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04]))?.description, "Hand", "The value 0x04 should be interpreted as Hand")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05]))?.description, "Ear Lobe", "The value 0x05 should be interpreted as Ear Lobe")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06]))?.description, "Foot", "The value 0x06 should be interpreted as Foot")
+        
+        // GATT characteristic UUID
+        XCTAssertEqual(GATTBodySensorLocation.uuid, .bodySensorLocation)
+        
+        // equality
+        XCTAssertEqual(GATTBodySensorLocation(data: data), GATTBodySensorLocation(data: data))
+    }
+    
+    func testCentralAddressResolution() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTCentralAddressResolution(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        XCTAssertEqual(characteristic, true, "The value 0x01 should be interpreted as Supported")
+        XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
+        XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
     }
 }
