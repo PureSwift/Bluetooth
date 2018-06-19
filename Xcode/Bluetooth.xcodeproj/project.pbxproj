@@ -605,6 +605,7 @@
 		3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7CADC20C5E72100F797AE /* GATTProfile.swift */; };
+		35CA73D920D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */; };
 		35CA73DB20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */; };
 		35CA73DC20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */; };
 		35CA73DD20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */; };
@@ -1482,6 +1483,7 @@
 		3580287820C8308E0096227B /* UnitIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifier.swift; sourceTree = "<group>"; };
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
+		35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTBootKeyboardInputReport.swift; sourceTree = "<group>"; };
 		35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTCentralAddressResolution.swift; sourceTree = "<group>"; };
 		35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryPowerState.swift; sourceTree = "<group>"; };
 		35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBodySensorLocation.swift; sourceTree = "<group>"; };
@@ -1765,6 +1767,7 @@
 		6E6AAD6E20D215F900DDE1CA /* Characteristics */ = {
 			isa = PBXGroup;
 			children = (
+				35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */,
 				3518293520D2233D0009F82D /* GATTAerobicHeartRateLowerLimit.swift */,
 				3518293A20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift */,
 				3518294920D223C30009F82D /* GATTAerobicThreshold.swift */,
@@ -3476,6 +3479,7 @@
 				6E6AADD620D22B5800DDE1CA /* ATTFindByTypeRequest.swift in Sources */,
 				3518292220D222A30009F82D /* GATTUnreadAlertStatus.swift in Sources */,
 				6E98ACBD207F89F600DBFE85 /* ATTError.swift in Sources */,
+				35CA73D920D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift in Sources */,
 				35CEF94320D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
 				355BC20920D2C335001A07D3 /* HCILESetAdvertiseEnable.swift in Sources */,
 				356EB8FF20D435440022A48D /* HCILEGenerateDHKeyComplete.swift in Sources */,
