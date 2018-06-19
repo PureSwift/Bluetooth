@@ -53,3 +53,27 @@ public enum GATTBodySensorLocation: UInt8, GATTCharacteristic {
         return Data([rawValue])
     }
 }
+
+// MARK: - CustomStringConvertible
+
+extension GATTBodySensorLocation: CustomStringConvertible {
+    
+    public var name: String {
+        
+        switch self {
+            
+        case .other: return "Other"
+        case .chest: return "Chest"
+        case .wrist: return "Wrist"
+        case .finger: return "Finger"
+        case .hand: return "Hand"
+        case .earLobe: return "Ear Lobe"
+        case .foot: return "Foot"
+        }
+    }
+    
+    public var description: String {
+        
+        return name
+    }
+}
