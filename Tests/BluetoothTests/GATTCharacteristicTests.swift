@@ -37,8 +37,9 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
         ("testAlertStatus", testAlertStatus),
+        ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
-        ("testBatteryPowerState", testBatteryPowerState)
+        ("testCentralAddressResolution", testCentralAddressResolution)
     ]
     
     func testDateTime() {
@@ -537,5 +538,18 @@ final class GATTCharacteristicTests: XCTestCase {
         
         // equality
         XCTAssertEqual(GATTBodySensorLocation(data: data), GATTBodySensorLocation(data: data))
+    }
+    
+    func testCentralAddressResolution() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTCentralAddressResolution(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        XCTAssertEqual(characteristic, true, "The value 0x01 should be interpreted as Supported")
+        XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
+        XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
     }
 }
