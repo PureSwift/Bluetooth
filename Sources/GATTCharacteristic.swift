@@ -67,6 +67,49 @@ extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
     }
 }
 
+public struct GATTBatteryPercentage: BluetoothUnit {
+    
+    internal static let length = MemoryLayout<UInt8>.size
+    
+    public static let min = GATTBatteryPercentage(0)
+    
+    public static let max = GATTBatteryPercentage(100)
+    
+    public static var unitType: UnitIdentifier { return .percentage }
+    
+    public var rawValue: UInt8
+    
+    public init?(rawValue value: UInt8) {
+        
+        guard value <= GATTBatteryPercentage.max.rawValue,
+            value >= GATTBatteryPercentage.min.rawValue
+            else { return nil }
+        
+        self.rawValue = value
+    }
+    
+    private init(_ unsafe: UInt8) {
+        
+        self.rawValue = unsafe
+    }
+}
+
+extension GATTBatteryPercentage: Equatable {
+    
+    public static func == (lhs: GATTBatteryPercentage, rhs: GATTBatteryPercentage) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTBatteryPercentage: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(rawValue)%"
+    }
+}
+
 // MARK: - Internal
 
 internal extension UInt64 {
