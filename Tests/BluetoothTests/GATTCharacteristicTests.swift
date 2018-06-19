@@ -122,16 +122,28 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x22])
         
-        let batteryLevel: UInt8 = 34
-        
         guard let characteristic = GATTBatteryLevel(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
+        guard let percentage = GATTBatteryPercentage(rawValue: 34)
+            else { XCTFail("Could not init Percentage"); return }
+        
+        // test characteristic
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.level, batteryLevel)
+        XCTAssertEqual(characteristic.level, percentage)
         XCTAssertEqual(characteristic.description, "34%")
-        XCTAssertEqual(GATTBatteryLevel.unit.description, "27AD (percentage)")
-        XCTAssertEqual(GATTBatteryLevel.unit.type, "org.bluetooth.unit.percentage")
+        XCTAssertNotNil(GATTBatteryLevel(level: percentage)) 
+        XCTAssertEqual(GATTBatteryLevel.uuid, .batteryLevel)
+        XCTAssertEqual(GATTBatteryLevel(data: data), GATTBatteryLevel(data: data))
+        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryLevel(data: Data([$0]))) }
+        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryLevel(data: Data([$0]))) }
+        
+        // test percentage
+        XCTAssertEqual(GATTBatteryPercentage.unitType.description, "27AD (percentage)")
+        XCTAssertEqual(GATTBatteryPercentage.unitType.type, "org.bluetooth.unit.percentage")
+        XCTAssertEqual(GATTBatteryPercentage.unitType, .percentage)
+        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryPercentage(rawValue: $0)) }
+        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryPercentage(rawValue: $0)) }
     }
     
     func testSupportedNewAlertCategory() {
@@ -140,6 +152,7 @@ final class GATTCharacteristicTests: XCTestCase {
         
         guard let characteristic = GATTSupportedNewAlertCategory(data: data)
             else { XCTFail("Could not decode from bytes"); return }
+        
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.categories, [.call, .email], "The value 0x0a is interpreted that this server supports “Call” and “Email” categories.")
