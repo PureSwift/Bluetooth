@@ -502,7 +502,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.description, "1")
         XCTAssertEqual(GATTBootKeyboardOutputReport.uuid, .bootKeyboardOutputReport)
-        XCTAssert(GATTBootKeyboardOutputReport(data: data) == GATTBootKeyboardOutputReport(data: data))
+        XCTAssertEqual(GATTBootKeyboardOutputReport(data: data), GATTBootKeyboardOutputReport(data: data))
     }
     
     func testBatteryPowerState() {
