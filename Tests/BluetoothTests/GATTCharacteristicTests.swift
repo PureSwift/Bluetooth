@@ -38,6 +38,7 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAnalogOutput", testAnalogOutput),
         ("testAlertStatus", testAlertStatus),
         ("testBootKeyboardInputReport", testBootKeyboardInputReport),
+        ("testBodySensorLocation", testBodySensorLocation),
         ("testBatteryPowerState", testBatteryPowerState)
     ]
     
@@ -517,6 +518,40 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.chargeState, .notCharging)
         XCTAssertEqual(characteristic.levelState, .criticallyLow)
         XCTAssertEqual(GATTBatteryPowerState.uuid, .batteryPowerState)
-        XCTAssert( GATTBatteryPowerState(data: data) ==  GATTBatteryPowerState(data: data))
+        XCTAssertEqual(GATTBatteryPowerState(data: data), GATTBatteryPowerState(data: data))
+    }
+    
+    func testBodySensorLocation() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBodySensorLocation(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        
+        // enum values
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00])), .other, "The value 0x00 should be interpreted as Other")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01])), .chest, "The value 0x01 should be interpreted as Chest")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02])), .wrist, "The value 0x02 should be interpreted as Wrist")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03])), .finger, "The value 0x03 should be interpreted as Finger")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04])), .hand, "The value 0x04 should be interpreted as Hand")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05])), .earLobe, "The value 0x05 should be interpreted as Ear Lobe")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06])), .foot, "The value 0x06 should be interpreted as Foot")
+        
+        // text values
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00]))?.description, "Other", "The value 0x00 should be interpreted as Other")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01]))?.description, "Chest", "The value 0x01 should be interpreted as Chest")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02]))?.description, "Wrist", "The value 0x02 should be interpreted as Wrist")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03]))?.description, "Finger", "The value 0x03 should be interpreted as Finger")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04]))?.description, "Hand", "The value 0x04 should be interpreted as Hand")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05]))?.description, "Ear Lobe", "The value 0x05 should be interpreted as Ear Lobe")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06]))?.description, "Foot", "The value 0x06 should be interpreted as Foot")
+        
+        // GATT characteristic UUID
+        XCTAssertEqual(GATTBodySensorLocation.uuid, .bodySensorLocation)
+        
+        // equality
+        XCTAssertEqual(GATTBodySensorLocation(data: data), GATTBodySensorLocation(data: data))
     }
 }
