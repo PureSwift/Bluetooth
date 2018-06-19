@@ -72,7 +72,7 @@ internal extension UInt64 {
     }
 }
 
-extension UInt8 {
+internal extension UInt8 {
     
     /// Initialize a byte from 2 bit enums.
     static func bit2(_ enum1: UInt8, _ enum2: UInt8, _ enum3: UInt8, _ enum4: UInt8) -> UInt8 {
