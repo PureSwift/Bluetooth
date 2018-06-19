@@ -57,3 +57,11 @@ extension GATTBootMouseInputReport: CustomStringConvertible {
         return rawValue.description
     }
 }
+
+extension GATTBootMouseInputReport: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
