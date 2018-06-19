@@ -501,7 +501,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.description, "1")
         XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
-        XCTAssert(GATTBootMouseInputReport(data: data) == GATTBootMouseInputReport(data: data))
+        XCTAssertEqual(GATTBootMouseInputReport(data: data), GATTBootMouseInputReport(data: data))
     }
     
     func testBatteryPowerState() {
