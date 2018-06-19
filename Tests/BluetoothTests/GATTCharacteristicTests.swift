@@ -36,7 +36,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAge", testAge),
         ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
-        ("testAlertStatus", testAlertStatus)
+        ("testAlertStatus", testAlertStatus),
+        ("testBootMouseInputReport", testBootMouseInputReport)
     ]
     
     func testDateTime() {
@@ -485,5 +486,20 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalog.uuid, .analog)
         XCTAssert(GATTAnalog(data: data) == GATTAnalog(data: data))
+    }
+    
+    func testBootMouseInputReport() {
+        
+        XCTAssertNil(GATTBootMouseInputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootMouseInputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
+        XCTAssert(GATTBootMouseInputReport(data: data) == GATTBootMouseInputReport(data: data))
     }
 }
