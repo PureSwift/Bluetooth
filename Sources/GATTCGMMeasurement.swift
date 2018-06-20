@@ -15,7 +15,6 @@ import Foundation
  
  [CGM Measurement](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.cgm_measurement.xml)
  
- 
  - Note:
  The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet
  
@@ -85,11 +84,21 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         return flags
     }
     
-    public init(size: Size, glucoseConcentration: MilligramPerDecilitre, timeOffset: Minute) {
+    public init(size: Size,
+                glucoseConcentration: MilligramPerDecilitre,
+                timeOffset: Minute,
+                sensorStatusAnnunciationField: BitMaskOptionSet<SensorStatus>? = nil,
+                trendInformationField: MilligramPerDecilitre? = nil,
+                qualityField: Percentage? = nil,
+                e2eCrc: UInt16? = nil) {
         
         self.size = size
         self.glucoseConcentration = glucoseConcentration
         self.timeOffset = timeOffset
+        self.sensorStatusAnnunciationField = sensorStatusAnnunciationField
+        self.trendInformationField = trendInformationField
+        self.qualityField = qualityField
+        self.e2eCrc = e2eCrc
     }
     
     public init?(data: Data) {
@@ -105,8 +114,7 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         guard let glucoseConcentration = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))))
             else { return nil }
         
-        guard let timeOffset = Minute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[4], data[5]))))
-            else { return nil }
+        let timeOffset = Minute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[4], data[5]))))
         
         self.init(size: size, glucoseConcentration: glucoseConcentration, timeOffset: timeOffset)
         
@@ -166,23 +174,13 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         
         data += [size.rawValue]
         
+        data += [flags.rawValue]
+        
         let glucoseBytes = glucoseConcentration.rawValue.builtin.littleEndian.bytes
         data += [glucoseBytes.0, glucoseBytes.1]
         
         let minuteBytes = timeOffset.rawValue.littleEndian.bytes
         data += [minuteBytes.0, minuteBytes.1]
-        
-        if let trendInformationField = trendInformationField {
-            
-            let trendInformationBytes = trendInformationField.rawValue.builtin.littleEndian.bytes
-            data += [trendInformationBytes.0, trendInformationBytes.1]
-        }
-        
-        if let qualityField = qualityField {
-            
-            let qualityFieldBytes = qualityField.rawValue.builtin.littleEndian.bytes
-            data += [qualityFieldBytes.0, qualityFieldBytes.1]
-        }
         
         if let sensorStatusAnnunciationField = sensorStatusAnnunciationField {
             
@@ -202,7 +200,18 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
                 
                 data += [sensorStatusAnnunciationBytes.2]
             }
+        }
+        
+        if let trendInformationField = trendInformationField {
             
+            let trendInformationBytes = trendInformationField.rawValue.builtin.littleEndian.bytes
+            data += [trendInformationBytes.0, trendInformationBytes.1]
+        }
+        
+        if let qualityField = qualityField {
+            
+            let qualityFieldBytes = qualityField.rawValue.builtin.littleEndian.bytes
+            data += [qualityFieldBytes.0, qualityFieldBytes.1]
         }
         
         if let e2eCrc = e2eCrc {
@@ -347,13 +356,13 @@ public extension GATTCGMMeasurement {
         case quality = 0b10
         
         /// Sensor Status Annunciation Field, Warning-Octet present
-        case warningOctet = 0b10000
+        case warningOctet = 0b100000
         
         /// Sensor Status Annunciation Field, Cal/Temp-Octet present
-        case tempOctet = 0b100000
+        case tempOctet = 0b1000000
         
         /// Sensor Status Annunciation Field, Status-Octet present
-        case statusOctet = 0b1000000
+        case statusOctet = 0b10000000
         
         public static let all: Set<Flag> = [
             .trendInformation,
@@ -448,14 +457,9 @@ public extension GATTCGMMeasurement {
         
         public let rawValue: UInt16
         
-        public init?(rawValue: UInt16) {
+        public init(rawValue: UInt16) {
             
             self.rawValue = rawValue
-        }
-        
-        private init(_ unsafe: UInt16) {
-            
-            self.rawValue = unsafe
         }
     }
 }
@@ -473,5 +477,13 @@ extension GATTCGMMeasurement.Minute: CustomStringConvertible {
     public var description: String {
         
         return rawValue.description
+    }
+}
+
+extension GATTCGMMeasurement.Minute: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
     }
 }

@@ -598,4 +598,69 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
         XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
     }
+    
+    func testCGMMeasurement() {
+        
+        typealias Percentage = GATTCGMMeasurement.Percentage
+        typealias MilligramPerDecilitre = GATTCGMMeasurement.MilligramPerDecilitre
+        typealias Size = GATTCGMMeasurement.Size
+        typealias Minute = GATTCGMMeasurement.Minute
+        typealias SensorStatus = GATTCGMMeasurement.SensorStatus
+        
+        XCTAssertNil(GATTCGMMeasurement(data: Data([0xf5])))
+        XCTAssertNil(GATTCGMMeasurement(data: Data([0x05, 0xf2, 0x61, 0x4a, 0x32, 0xcc])))
+
+        // test size
+        guard let size = Size(rawValue: 0x0d)
+            else { XCTFail("Could not init Size"); return }
+
+        XCTAssertEqual(size.description, "13")
+        XCTAssertNotNil(Size(rawValue: 8))
+
+        // test minute
+        XCTAssertEqual(Minute(rawValue: 100).description, "100")
+        XCTAssertEqual(Minute.unitType.description, "2760 (time (minute))")
+        XCTAssertEqual(Minute.unitType.type, "org.bluetooth.unit.time.minute")
+        XCTAssertEqual(Minute.unitType, .minute)
+        XCTAssertNotNil(Minute(rawValue: 480))
+
+        // test percentage
+        XCTAssertEqual(Percentage.unitType.description, "27AD (percentage)")
+        XCTAssertEqual(Percentage.unitType.type, "org.bluetooth.unit.percentage")
+        XCTAssertEqual(Percentage.unitType, .percentage)
+//        XCTAssertNotNil(Percentage(rawValue: SFloat(builtin: UInt16(200))))
+        
+        // test milligram per decilitre
+        XCTAssertEqual(MilligramPerDecilitre.unitType.description, "27B1 (mass density (milligram per decilitre))")
+        XCTAssertEqual(MilligramPerDecilitre.unitType.type, "org.bluetooth.unit.mass_density.milligram_per_decilitre")
+        XCTAssertEqual(MilligramPerDecilitre.unitType, .milligramPerDecilitre)
+        
+        XCTAssertEqual(GATTCGMMeasurement.uuid, .cgmMeasurement)
+        
+        // test GATTCGMMeasurement
+        do {
+            guard let glucose = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (0x1c, 0x02)))))
+                else { XCTFail("Could not init MilligramPerDecilitre"); return }
+            
+            let timeOffset = Minute(rawValue: 100)
+            
+            let sensorStatusValue = UInt32(littleEndian: UInt32(bytes: (0b0000_1111, 0b0000_1111, 0b0000_1111, 0b0000_0000)))
+            let sensorStatus = BitMaskOptionSet<SensorStatus>(rawValue: sensorStatusValue)
+            
+            let trendInformationField = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (0x1c, 0x02)))))
+            let qualityField = Percentage(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (0x1c, 0x02)))))
+            
+            let data = Data([0x0d, 0b1110_0011, 0x1c, 0x02, 0x64, 0x00, 0b0000_1111, 0b0000_1111, 0b0000_1111, 0x1c, 0x02, 0x1c, 0x02])
+            let measurement = GATTCGMMeasurement(size: size,
+                                                 glucoseConcentration: glucose,
+                                                 timeOffset: timeOffset,
+                                                 sensorStatusAnnunciationField: sensorStatus,
+                                                 trendInformationField: trendInformationField,
+                                                 qualityField: qualityField,
+                                                 e2eCrc: nil)
+            
+            XCTAssertEqual(measurement.data, data)
+        }
+        
+    }
 }
