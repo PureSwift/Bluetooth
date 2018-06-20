@@ -15,7 +15,7 @@ import Foundation
  */
 public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     
-    public static let minimunLength = MemoryLayout<UInt32>.size
+    internal static let minimunLength = MemoryLayout<UInt32>.size
     
     public static var uuid: BluetoothUUID { return .bodyCompositionMeasurement }
     
@@ -103,7 +103,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     
     public var weight: GATTBodyMass?
     
-    public var height: GATTBodyMass?
+    public var height: GATTBodyLenght?
     
     public init(bodyFatPercentage: GATTBodyPercentage,
                 timeStamp: GATTDateTime? = nil,
@@ -116,7 +116,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
                 bodyWaterMass: GATTBodyMass? = nil,
                 impedance: GATTBodyResistance? = nil,
                 weight: GATTBodyMass? = nil,
-                height: GATTBodyMass? = nil) {
+                height: GATTBodyLenght? = nil) {
         
         self.bodyFatPercentage = bodyFatPercentage
         self.timestamp = timeStamp
@@ -132,6 +132,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         self.height = height
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     public init?(data: Data) {
         
         guard data.count >= type(of: self).minimunLength
@@ -140,6 +141,8 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
         let massUnit = flags.contains(.measurementUnitSI) ? MassUnit.kilogram : MassUnit.kilogram
+        
+        let lenghtUnit = flags.contains(.measurementUnitSI) ? LenghtUnit.metre : LenghtUnit.inch
         
         self.bodyFatPercentage = GATTBodyPercentage(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))))!
         
@@ -269,13 +272,170 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         
         if flags.contains(.weight) {
             
+            guard index + MemoryLayout<UInt16>.size < data.count
+                else { return nil }
+            
+            self.weight = GATTBodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
+            
+            index += MemoryLayout<UInt16>.size
+        } else {
+            
             self.weight = nil
+        }
+        
+        if flags.contains(.height) {
+            
+            guard index + MemoryLayout<UInt16>.size < data.count
+                else { return nil }
+            
+            self.height = GATTBodyLenght(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: lenghtUnit)
+            
+            index += MemoryLayout<UInt16>.size
+        } else {
+            
+            self.height = nil
         }
     }
     
     public var data: Data {
         
-        return Data()
+        let flags = self.flags
+        
+        var totalBytes = 4
+        
+        if flags.contains(.timestamp) {
+            
+            totalBytes += GATTDateTime.length
+        }
+        
+        if flags.contains(.userID) {
+            
+            totalBytes += MemoryLayout<UInt8>.size
+        }
+        
+        if flags.contains(.basalMetabolism) {
+            
+            totalBytes += MemoryLayout<GATTBodyEnergy.RawValue>.size
+        }
+        
+        if flags.contains(.musclePercentage) {
+            
+            totalBytes += MemoryLayout<GATTBodyPercentage.RawValue>.size
+        }
+        
+        if flags.contains(.muscleMass) {
+            
+            totalBytes += MemoryLayout<UInt16>.size
+        }
+        
+        if flags.contains(.fatFreeMass) {
+            
+            totalBytes += MemoryLayout<UInt16>.size
+        }
+        
+        if flags.contains(.softLeanMass) {
+            
+            totalBytes += MemoryLayout<UInt16>.size
+        }
+        
+        if flags.contains(.bodyWaterMass) {
+            
+            totalBytes += MemoryLayout<UInt16>.size
+        }
+        
+        if flags.contains(.impedance) {
+            
+            totalBytes += MemoryLayout<GATTBodyResistance.RawValue>.size
+        }
+        
+        if flags.contains(.weight) {
+            
+           totalBytes += MemoryLayout<UInt16>.size
+        }
+        
+        if flags.contains(.height) {
+            
+            totalBytes += MemoryLayout<UInt16>.size
+        }
+        
+        let flagBytes = flags.rawValue.littleEndian.bytes
+        let bodyfatBytes = bodyFatPercentage.rawValue.littleEndian.bytes
+        
+        var data = Data([
+            flagBytes.0,
+            flagBytes.1,
+            bodyfatBytes.0,
+            bodyfatBytes.1
+            ])
+        
+        data.reserveCapacity(totalBytes)
+        
+        if let timestamp = self.timestamp {
+            
+            data.append(timestamp.data)
+        }
+        
+        if let userIdentifier = self.userIdentifier {
+            
+            data.append(userIdentifier)
+        }
+        
+        if let basalMetabolism = self.basalMetabolism {
+            
+            let bytes = basalMetabolism.rawValue.littleEndian.bytes
+            
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let musclePercentage = self.musclePercentage {
+            
+            let bytes = musclePercentage.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let muscleMass = self.muscleMass {
+            
+            let bytes = muscleMass.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let fatFreeMass = self.fatFreeMass {
+            
+            let bytes = fatFreeMass.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let softleanMass = self.softLeanMass {
+            
+            let bytes = softleanMass.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let bodyWaterMass = self.bodyWaterMass {
+            
+            let bytes = bodyWaterMass.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let impedance = self.impedance {
+            
+            let bytes = impedance.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let weight = self.weight {
+            
+            let bytes = weight.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        if let height = self.height {
+            
+            let bytes = height.rawValue.littleEndian.bytes
+            data += [bytes.0, bytes.1]
+        }
+        
+        return data
     }
     
     /// These flags define which data fields are present in the Characteristic value.
@@ -438,14 +598,9 @@ public struct GATTBodyEnergy: BluetoothUnit {
     
     public var rawValue: UInt16
     
-    public init?(rawValue value: UInt16) {
+    public init(rawValue value: UInt16) {
         
         self.rawValue = value
-    }
-    
-    private init(_ unsafe: UInt16) {
-        
-        self.rawValue = unsafe
     }
 }
 
@@ -461,7 +616,7 @@ extension GATTBodyEnergy: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(rawValue)%"
+        return rawValue.description
     }
 }
 
@@ -473,14 +628,9 @@ public struct GATTBodyResistance: BluetoothUnit {
     
     public var rawValue: UInt16
     
-    public init?(rawValue value: UInt16) {
+    public init(rawValue value: UInt16) {
         
         self.rawValue = value
-    }
-    
-    private init(_ unsafe: UInt16) {
-        
-        self.rawValue = unsafe
     }
 }
 
@@ -496,7 +646,7 @@ extension GATTBodyResistance: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(rawValue)%"
+        return rawValue.description
     }
 }
 
@@ -515,142 +665,33 @@ public struct GATTBodyMass {
     }
 }
 
-public struct GATTBodyMassSI: BluetoothUnit {
+extension GATTBodyMass: Equatable {
     
-    internal static let length = MemoryLayout<UInt16>.size
-    
-    public static var unitType: UnitIdentifier { return .kilogram }
-    
-    public var rawValue: UInt16
-    
-    public init?(rawValue value: UInt16) {
-        
-        self.rawValue = value
-    }
-    
-    private init(_ unsafe: UInt16) {
-        
-        self.rawValue = unsafe
-    }
-}
-
-extension GATTBodyMassSI: Equatable {
-    
-    public static func == (lhs: GATTBodyMassSI, rhs: GATTBodyMassSI) -> Bool {
+    public static func == (lhs: GATTBodyMass, rhs: GATTBodyMass) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension GATTBodyMassSI: CustomStringConvertible {
+extension GATTBodyMass: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(rawValue)%"
+        return rawValue.description
     }
 }
 
-public struct GATTBodyMassImperial: BluetoothUnit {
+public struct GATTBodyLenght {
     
     internal static let length = MemoryLayout<UInt16>.size
     
-    public static var unitType: UnitIdentifier { return .pound }
+    public var unit: LenghtUnit
     
     public var rawValue: UInt16
     
-    public init?(rawValue value: UInt16) {
+    public init?(rawValue value: UInt16, unit: LenghtUnit) {
         
         self.rawValue = value
-    }
-    
-    private init(_ unsafe: UInt16) {
-        
-        self.rawValue = unsafe
-    }
-}
-
-extension GATTBodyMassImperial: Equatable {
-    
-    public static func == (lhs: GATTBodyMassImperial, rhs: GATTBodyMassImperial) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GATTBodyMassImperial: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return "\(rawValue)%"
-    }
-}
-
-public struct GATTBodyLengthSI: BluetoothUnit {
-    
-    internal static let length = MemoryLayout<UInt16>.size
-    
-    public static var unitType: UnitIdentifier { return .metre }
-    
-    public var rawValue: UInt16
-    
-    public init?(rawValue value: UInt16) {
-        
-        self.rawValue = value
-    }
-    
-    private init(_ unsafe: UInt16) {
-        
-        self.rawValue = unsafe
-    }
-}
-
-extension GATTBodyLengthSI: Equatable {
-    
-    public static func == (lhs: GATTBodyLengthSI, rhs: GATTBodyLengthSI) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GATTBodyLengthSI: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return "\(rawValue)%"
-    }
-}
-
-public struct GATTLengthImperial: BluetoothUnit {
-    
-    internal static let length = MemoryLayout<UInt16>.size
-    
-    public static var unitType: UnitIdentifier { return .inch }
-    
-    public var rawValue: UInt16
-    
-    public init?(rawValue value: UInt16) {
-        
-        self.rawValue = value
-    }
-    
-    private init(_ unsafe: UInt16) {
-        
-        self.rawValue = unsafe
-    }
-}
-
-extension GATTLengthImperial: Equatable {
-    
-    public static func == (lhs: GATTLengthImperial, rhs: GATTLengthImperial) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GATTLengthImperial: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return "\(rawValue)%"
+        self.unit = unit
     }
 }
