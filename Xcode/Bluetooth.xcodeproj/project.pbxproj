@@ -609,6 +609,15 @@
 		35CA73E120D994F2000E49F7 /* GATTCGMMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DF20D994F2000E49F7 /* GATTCGMMeasurement.swift */; };
 		35CA73E220D994F2000E49F7 /* GATTCGMMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DF20D994F2000E49F7 /* GATTCGMMeasurement.swift */; };
 		35CA73E320D994F2000E49F7 /* GATTCGMMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DF20D994F2000E49F7 /* GATTCGMMeasurement.swift */; };
+		35CA73CF20D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */; };
+		35CA73D020D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */; };
+		35CA73D120D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */; };
+		35CA73D220D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */; };
+		35CA73D920D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */; };
+		35CA73DB20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */; };
+		35CA73DC20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */; };
+		35CA73DD20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */; };
+		35CA73DE20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */; };
 		35CEF94320D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
 		35CEF94420D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
 		35CEF94520D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */; };
@@ -617,6 +626,10 @@
 		35CEF94920D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
 		35CEF94A20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
 		35CEF94B20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
+		35CEF95720D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
+		35CEF95820D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
+		35CEF95920D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
+		35CEF95A20D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
 		512F4B47208A562E00576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
 		512F4B48208A564400576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
@@ -1483,8 +1496,12 @@
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
 		35CA73DF20D994F2000E49F7 /* GATTCGMMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTCGMMeasurement.swift; sourceTree = "<group>"; };
+		35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBootMouseInputReport.swift; sourceTree = "<group>"; };
+		35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTBootKeyboardInputReport.swift; sourceTree = "<group>"; };
+		35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTCentralAddressResolution.swift; sourceTree = "<group>"; };
 		35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryPowerState.swift; sourceTree = "<group>"; };
 		35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBodySensorLocation.swift; sourceTree = "<group>"; };
+		35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBootKeyboardOutputReport.swift; sourceTree = "<group>"; };
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
 		512F4B46208A562E00576F34 /* UInt256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt256.swift; sourceTree = "<group>"; };
 		512F4B4B208A567A00576F34 /* UInt512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt512.swift; sourceTree = "<group>"; };
@@ -1784,6 +1801,11 @@
 				35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */,
 				3518292B20D222EF0009F82D /* GATTBloodPressureFeature.swift */,
 				3518293020D2231D0009F82D /* GATTBloodPressureManagement.swift */,
+				35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */,
+				35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */,
+				35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */,
+				35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */,
+				35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */,
 				6E6AAD7420D2164600DDE1CA /* GATTDateTime.swift */,
 				3518291720D222230009F82D /* GATTNewAlert.swift */,
 				3518290820D221710009F82D /* GATTSupportedNewAlertCategory.swift */,
@@ -2773,6 +2795,7 @@
 				3518293E20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift in Sources */,
 				6E0245DB20683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6EFB3D8920D2D73700364CA0 /* LowEnergyRxPhy.swift in Sources */,
+				35CEF95A20D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				356EB8F320D42ED20022A48D /* HCILEReadTransmitPower.swift in Sources */,
 				6E60A2F920695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				356EB8BC20D4185B0022A48D /* HCILEReadAdvertisingChannelTxPower.swift in Sources */,
@@ -2804,6 +2827,7 @@
 				356EB95220D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
 				356EB93920D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6E49B25320532D45002EA5DC /* GATTAttributes.swift in Sources */,
+				35CA73D220D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */,
 				6E6AAE2420D258E200DDE1CA /* ATTWriteCommand.swift in Sources */,
 				355BC22520D2C366001A07D3 /* HCILERemoveDeviceFromWhiteList.swift in Sources */,
 				351829BB20D22D8F0009F82D /* GAPServiceData32BitUUID.swift in Sources */,
@@ -2825,6 +2849,7 @@
 				6E1F937A20C241830030367F /* AdvertisingInterval.swift in Sources */,
 				6EAD977220BF796200673DB7 /* DefinedCompanies.swift in Sources */,
 				351829F220D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
+				35CA73DE20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */,
 				3518297F20D22C620009F82D /* GAPSimplePairingHashC.swift in Sources */,
 				3518296B20D22C290009F82D /* GAPShortLocalName.swift in Sources */,
 				35CEF94620D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
@@ -3097,6 +3122,7 @@
 				3518293D20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift in Sources */,
 				6E0245DA20683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6EFB3D8820D2D73700364CA0 /* LowEnergyRxPhy.swift in Sources */,
+				35CEF95920D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				356EB8F220D42ED20022A48D /* HCILEReadTransmitPower.swift in Sources */,
 				6E60A2F820695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				356EB8BB20D4185B0022A48D /* HCILEReadAdvertisingChannelTxPower.swift in Sources */,
@@ -3128,6 +3154,7 @@
 				356EB95120D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
 				356EB93820D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6EB2EA101CD5A8A7000CF975 /* GATTAttributes.swift in Sources */,
+				35CA73D120D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */,
 				6E6AAE2320D258E200DDE1CA /* ATTWriteCommand.swift in Sources */,
 				355BC22420D2C366001A07D3 /* HCILERemoveDeviceFromWhiteList.swift in Sources */,
 				351829BA20D22D8F0009F82D /* GAPServiceData32BitUUID.swift in Sources */,
@@ -3149,6 +3176,7 @@
 				6E1F937920C241830030367F /* AdvertisingInterval.swift in Sources */,
 				6EAD977120BF796200673DB7 /* DefinedCompanies.swift in Sources */,
 				351829F120D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
+				35CA73DD20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */,
 				3518297E20D22C620009F82D /* GAPSimplePairingHashC.swift in Sources */,
 				3518296A20D22C290009F82D /* GAPShortLocalName.swift in Sources */,
 				35CEF94520D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
@@ -3282,6 +3310,7 @@
 				355BC24520D2C3AE001A07D3 /* HCILELongTermKeyRequestNegativeReply.swift in Sources */,
 				6EFB3D9B20D2D88100364CA0 /* LowEnergyRfTxPathCompensationValue.swift in Sources */,
 				6EFB3D3A20D2D4BC00364CA0 /* LowEnergyRxChannel.swift in Sources */,
+				35CA73CF20D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */,
 				6E6AAE3020D25A3800DDE1CA /* ATTPrepareWriteResponse.swift in Sources */,
 				35182A1720D235230009F82D /* GATTCharacteristicExtendedProperties.swift in Sources */,
 				356EB93120D4426E0022A48D /* HCILEChannelSelectionAlgorithm.swift in Sources */,
@@ -3362,6 +3391,7 @@
 				3518291320D221E30009F82D /* GATTAlertCategory.swift in Sources */,
 				356EB90420D435500022A48D /* HCILEEnhancedConnectionComplete.swift in Sources */,
 				355BC2EA20D3416D001A07D3 /* HCILEAddDeviceToPeriodicAdvertiserList.swift in Sources */,
+				35CA73DB20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */,
 				6E6AADE020D22C0200DDE1CA /* ATTReadByTypeRequest.swift in Sources */,
 				6E704C871E95C41C00484A22 /* Range.swift in Sources */,
 				6EFB3DDC20D2E0C900364CA0 /* HCIReadDeviceAddress.swift in Sources */,
@@ -3419,6 +3449,7 @@
 				6E443A2D2085D4E2005F4D5F /* GATTDescriptor.swift in Sources */,
 				3518299020D22CD10009F82D /* GAPSecurityManagerTKValue.swift in Sources */,
 				6EFB3D3F20D2D4EC00364CA0 /* LowEnergySupervisionTimeout.swift in Sources */,
+				35CEF95720D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				6EFB3DE720D2EB6500364CA0 /* HCICommandStatus.swift in Sources */,
 				6EFB3DE220D2EB3600364CA0 /* HCICommandComplete.swift in Sources */,
 				6EFB3EA720D4385200364CA0 /* HCIRemoteNameRequest.swift in Sources */,
@@ -3476,6 +3507,7 @@
 				6E6AADD620D22B5800DDE1CA /* ATTFindByTypeRequest.swift in Sources */,
 				3518292220D222A30009F82D /* GATTUnreadAlertStatus.swift in Sources */,
 				6E98ACBD207F89F600DBFE85 /* ATTError.swift in Sources */,
+				35CA73D920D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift in Sources */,
 				35CEF94320D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
 				355BC20920D2C335001A07D3 /* HCILESetAdvertiseEnable.swift in Sources */,
 				356EB8FF20D435440022A48D /* HCILEGenerateDHKeyComplete.swift in Sources */,
@@ -3777,6 +3809,7 @@
 				3518293C20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift in Sources */,
 				6E0245D920683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6EFB3D8720D2D73700364CA0 /* LowEnergyRxPhy.swift in Sources */,
+				35CEF95820D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				356EB8F120D42ED20022A48D /* HCILEReadTransmitPower.swift in Sources */,
 				6E60A2F720695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				356EB8BA20D4185B0022A48D /* HCILEReadAdvertisingChannelTxPower.swift in Sources */,
@@ -3808,6 +3841,7 @@
 				356EB95020D45CBA0022A48D /* GATTAlertStatus.swift in Sources */,
 				356EB93720D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				6EF45FB01CC6D04D001F7A39 /* GATTAttributes.swift in Sources */,
+				35CA73D020D9674D000E49F7 /* GATTBootMouseInputReport.swift in Sources */,
 				6E6AAE2220D258E200DDE1CA /* ATTWriteCommand.swift in Sources */,
 				355BC22320D2C366001A07D3 /* HCILERemoveDeviceFromWhiteList.swift in Sources */,
 				351829B920D22D8F0009F82D /* GAPServiceData32BitUUID.swift in Sources */,
@@ -3829,6 +3863,7 @@
 				6E1F937820C241830030367F /* AdvertisingInterval.swift in Sources */,
 				6EAD977020BF796200673DB7 /* DefinedCompanies.swift in Sources */,
 				351829F020D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
+				35CA73DC20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */,
 				3518297D20D22C620009F82D /* GAPSimplePairingHashC.swift in Sources */,
 				3518296920D22C290009F82D /* GAPShortLocalName.swift in Sources */,
 				35CEF94420D809B9009E1688 /* GATTBatteryPowerState.swift in Sources */,
