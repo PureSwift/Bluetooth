@@ -33,11 +33,15 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAge", testAge),
         ("testAnalog", testAnalog),
         ("testBarometricPressureTrend", testBarometricPressureTrend),
-        ("testAge", testAge),
-        ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
         ("testAlertStatus", testAlertStatus),
-        ("testBodyCompositionMeasurement", testBodyCompositionMeasurement)
+        ("testBodyCompositionMeasurement", testBodyCompositionMeasurement),
+        ("testBootMouseInputReport", testBootMouseInputReport),
+        ("testBootKeyboardOutputReport", testBootKeyboardOutputReport),
+        ("testBootKeyboardInputReport", testBootKeyboardInputReport),
+        ("testBatteryPowerState", testBatteryPowerState),
+        ("testBodySensorLocation", testBodySensorLocation),
+        ("testCentralAddressResolution", testCentralAddressResolution)
     ]
     
     func testDateTime() {
@@ -123,16 +127,28 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x22])
         
-        let batteryLevel: UInt8 = 34
-        
         guard let characteristic = GATTBatteryLevel(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
+        guard let percentage = GATTBatteryPercentage(rawValue: 34)
+            else { XCTFail("Could not init Percentage"); return }
+        
+        // test characteristic
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.level, batteryLevel)
+        XCTAssertEqual(characteristic.level, percentage)
         XCTAssertEqual(characteristic.description, "34%")
-        XCTAssertEqual(GATTBatteryLevel.unit.description, "27AD (percentage)")
-        XCTAssertEqual(GATTBatteryLevel.unit.type, "org.bluetooth.unit.percentage")
+        XCTAssertNotNil(GATTBatteryLevel(level: percentage)) 
+        XCTAssertEqual(GATTBatteryLevel.uuid, .batteryLevel)
+        XCTAssertEqual(GATTBatteryLevel(data: data), GATTBatteryLevel(data: data))
+        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryLevel(data: Data([$0]))) }
+        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryLevel(data: Data([$0]))) }
+        
+        // test percentage
+        XCTAssertEqual(GATTBatteryPercentage.unitType.description, "27AD (percentage)")
+        XCTAssertEqual(GATTBatteryPercentage.unitType.type, "org.bluetooth.unit.percentage")
+        XCTAssertEqual(GATTBatteryPercentage.unitType, .percentage)
+        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryPercentage(rawValue: $0)) }
+        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryPercentage(rawValue: $0)) }
     }
     
     func testSupportedNewAlertCategory() {
@@ -141,6 +157,7 @@ final class GATTCharacteristicTests: XCTestCase {
         
         guard let characteristic = GATTSupportedNewAlertCategory(data: data)
             else { XCTFail("Could not decode from bytes"); return }
+        
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.categories, [.call, .email], "The value 0x0a is interpreted that this server supports “Call” and “Email” categories.")
@@ -442,7 +459,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTBarometricPressureTrend(data: Data([0x01])), GATTBarometricPressureTrend.continuouslyFalling)
         XCTAssertEqual(GATTBarometricPressureTrend.uuid, .barometricPressureTrend)
         XCTAssertEqual(GATTBarometricPressureTrend.unitType, .unitless)
-        XCTAssert(GATTBarometricPressureTrend(data: data) == GATTBarometricPressureTrend(data: data))
+        XCTAssertEqual(GATTBarometricPressureTrend(data: data), GATTBarometricPressureTrend(data: data))
     }
     
     func testAnalogOutput() {
@@ -457,7 +474,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.output, output)
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalogOutput.uuid, .analogOutput)
-        XCTAssert(GATTAnalogOutput(data: data) == GATTAnalogOutput(data: data))
+        XCTAssertEqual(GATTAnalogOutput(data: data), GATTAnalogOutput(data: data))
     }
     
     func testAnalog() {
@@ -472,7 +489,115 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.analog, analog)
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalog.uuid, .analog)
-        XCTAssert(GATTAnalog(data: data) == GATTAnalog(data: data))
+        XCTAssertEqual(GATTAnalog(data: data), GATTAnalog(data: data))
+    }
+    
+    func testBootMouseInputReport() {
+        
+        XCTAssertNil(GATTBootMouseInputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootMouseInputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
+        XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
+    }
+    
+    func testBootKeyboardInputReport() {
+        
+        XCTAssertNil(GATTBootKeyboardInputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootKeyboardInputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(GATTBootKeyboardInputReport.uuid, .bootKeyboardInputReport)
+        XCTAssertEqual(GATTBootKeyboardInputReport(data: data), GATTBootKeyboardInputReport(data: data))
+    }
+    
+    func testBootKeyboardOutputReport() {
+        
+        XCTAssertNil(GATTBootKeyboardOutputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootKeyboardOutputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
+        XCTAssertEqual(GATTBootKeyboardOutputReport.uuid, .bootKeyboardOutputReport)
+    }
+    
+    func testBatteryPowerState() {
+        
+        let data = Data([0b00_01_10_11])
+        
+        guard let characteristic = GATTBatteryPowerState(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.presentState, .unknown)
+        XCTAssertEqual(characteristic.dischargeState, .notSupported)
+        XCTAssertEqual(characteristic.chargeState, .notCharging)
+        XCTAssertEqual(characteristic.levelState, .criticallyLow)
+        XCTAssertEqual(GATTBatteryPowerState.uuid, .batteryPowerState)
+        XCTAssertEqual(GATTBatteryPowerState(data: data), GATTBatteryPowerState(data: data))
+    }
+    
+    func testBodySensorLocation() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBodySensorLocation(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        
+        // enum values
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00])), .other, "The value 0x00 should be interpreted as Other")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01])), .chest, "The value 0x01 should be interpreted as Chest")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02])), .wrist, "The value 0x02 should be interpreted as Wrist")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03])), .finger, "The value 0x03 should be interpreted as Finger")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04])), .hand, "The value 0x04 should be interpreted as Hand")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05])), .earLobe, "The value 0x05 should be interpreted as Ear Lobe")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06])), .foot, "The value 0x06 should be interpreted as Foot")
+        
+        // text values
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00]))?.description, "Other", "The value 0x00 should be interpreted as Other")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01]))?.description, "Chest", "The value 0x01 should be interpreted as Chest")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02]))?.description, "Wrist", "The value 0x02 should be interpreted as Wrist")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03]))?.description, "Finger", "The value 0x03 should be interpreted as Finger")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04]))?.description, "Hand", "The value 0x04 should be interpreted as Hand")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05]))?.description, "Ear Lobe", "The value 0x05 should be interpreted as Ear Lobe")
+        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06]))?.description, "Foot", "The value 0x06 should be interpreted as Foot")
+        
+        // GATT characteristic UUID
+        XCTAssertEqual(GATTBodySensorLocation.uuid, .bodySensorLocation)
+        
+        // equality
+        XCTAssertEqual(GATTBodySensorLocation(data: data), GATTBodySensorLocation(data: data))
+    }
+    
+    func testCentralAddressResolution() {
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTCentralAddressResolution(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        XCTAssertEqual(characteristic, true, "The value 0x01 should be interpreted as Supported")
+        XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
+        XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
     }
     
     func testBodyCompositionMeasurement() {
