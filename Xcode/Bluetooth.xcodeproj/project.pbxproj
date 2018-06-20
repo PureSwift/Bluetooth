@@ -622,6 +622,10 @@
 		35CEF94920D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
 		35CEF94A20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
 		35CEF94B20D8251A009E1688 /* GATTBodySensorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */; };
+		35CEF95720D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
+		35CEF95820D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
+		35CEF95920D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
+		35CEF95A20D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */; };
 		511A657B2075B61400538116 /* LowEnergyResolvingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511A657A2075B61400538116 /* LowEnergyResolvingList.swift */; };
 		512F4B47208A562E00576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
 		512F4B48208A564400576F34 /* UInt256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F4B46208A562E00576F34 /* UInt256.swift */; };
@@ -1492,6 +1496,7 @@
 		35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTCentralAddressResolution.swift; sourceTree = "<group>"; };
 		35CEF94220D809B9009E1688 /* GATTBatteryPowerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryPowerState.swift; sourceTree = "<group>"; };
 		35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBodySensorLocation.swift; sourceTree = "<group>"; };
+		35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBootKeyboardOutputReport.swift; sourceTree = "<group>"; };
 		511A657A2075B61400538116 /* LowEnergyResolvingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyResolvingList.swift; sourceTree = "<group>"; };
 		512F4B46208A562E00576F34 /* UInt256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt256.swift; sourceTree = "<group>"; };
 		512F4B4B208A567A00576F34 /* UInt512.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt512.swift; sourceTree = "<group>"; };
@@ -1793,6 +1798,7 @@
 				3518293020D2231D0009F82D /* GATTBloodPressureManagement.swift */,
 				35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */,
 				35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */,
+				35CEF95620D869C2009E1688 /* GATTBootKeyboardOutputReport.swift */,
 				35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */,
 				35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */,
 				6E6AAD7420D2164600DDE1CA /* GATTDateTime.swift */,
@@ -2781,6 +2787,7 @@
 				3518293E20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift in Sources */,
 				6E0245DB20683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6EFB3D8920D2D73700364CA0 /* LowEnergyRxPhy.swift in Sources */,
+				35CEF95A20D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				356EB8F320D42ED20022A48D /* HCILEReadTransmitPower.swift in Sources */,
 				6E60A2F920695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				356EB8BC20D4185B0022A48D /* HCILEReadAdvertisingChannelTxPower.swift in Sources */,
@@ -3106,6 +3113,7 @@
 				3518293D20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift in Sources */,
 				6E0245DA20683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6EFB3D8820D2D73700364CA0 /* LowEnergyRxPhy.swift in Sources */,
+				35CEF95920D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				356EB8F220D42ED20022A48D /* HCILEReadTransmitPower.swift in Sources */,
 				6E60A2F820695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				356EB8BB20D4185B0022A48D /* HCILEReadAdvertisingChannelTxPower.swift in Sources */,
@@ -3432,6 +3440,7 @@
 				6E443A2D2085D4E2005F4D5F /* GATTDescriptor.swift in Sources */,
 				3518299020D22CD10009F82D /* GAPSecurityManagerTKValue.swift in Sources */,
 				6EFB3D3F20D2D4EC00364CA0 /* LowEnergySupervisionTimeout.swift in Sources */,
+				35CEF95720D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				6EFB3DE720D2EB6500364CA0 /* HCICommandStatus.swift in Sources */,
 				6EFB3DE220D2EB3600364CA0 /* HCICommandComplete.swift in Sources */,
 				6EFB3EA720D4385200364CA0 /* HCIRemoteNameRequest.swift in Sources */,
@@ -3789,6 +3798,7 @@
 				3518293C20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift in Sources */,
 				6E0245D920683DBD007FB15E /* HCIPacketHeader.swift in Sources */,
 				6EFB3D8720D2D73700364CA0 /* LowEnergyRxPhy.swift in Sources */,
+				35CEF95820D869C2009E1688 /* GATTBootKeyboardOutputReport.swift in Sources */,
 				356EB8F120D42ED20022A48D /* HCILEReadTransmitPower.swift in Sources */,
 				6E60A2F720695B6500E42351 /* LowEnergyConnection.swift in Sources */,
 				356EB8BA20D4185B0022A48D /* HCILEReadAdvertisingChannelTxPower.swift in Sources */,

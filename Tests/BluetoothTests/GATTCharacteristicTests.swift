@@ -36,6 +36,7 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAnalogOutput", testAnalogOutput),
         ("testAlertStatus", testAlertStatus),
         ("testBootMouseInputReport", testBootMouseInputReport),
+        ("testBootKeyboardOutputReport", testBootKeyboardOutputReport),
         ("testBootKeyboardInputReport", testBootKeyboardInputReport),
         ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
@@ -490,6 +491,21 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTAnalog(data: data), GATTAnalog(data: data))
     }
     
+    func testBootMouseInputReport() {
+        
+        XCTAssertNil(GATTBootMouseInputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootMouseInputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
+        XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
+    }
+    
     func testBootKeyboardInputReport() {
         
         XCTAssertNil(GATTBootKeyboardInputReport(data: Data([0x3d, 0x72])))
@@ -505,19 +521,19 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTBootKeyboardInputReport(data: data), GATTBootKeyboardInputReport(data: data))
     }
     
-    func testBootMouseInputReport() {
+    func testBootKeyboardOutputReport() {
         
-        XCTAssertNil(GATTBootMouseInputReport(data: Data([0x3d, 0x72])))
+        XCTAssertNil(GATTBootKeyboardOutputReport(data: Data([0x3d, 0x72])))
         
         let data = Data([0x01])
         
-        guard let characteristic = GATTBootMouseInputReport(data: data)
+        guard let characteristic = GATTBootKeyboardOutputReport(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.description, "1")
         XCTAssertEqual(characteristic, 1)
-        XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
+        XCTAssertEqual(GATTBootKeyboardOutputReport.uuid, .bootKeyboardOutputReport)
     }
     
     func testBatteryPowerState() {
