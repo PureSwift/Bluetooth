@@ -40,13 +40,13 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
     
     public var timeOffset: Minute
     
+    public var sensorStatusAnnunciationField: BitMaskOptionSet<SensorStatus>?
+    
     public var trendInformationField: MilligramPerDecilitre?
     
     public var qualityField: Percentage?
     
-    public var sensorStatusAnnunciationField: SFloat?
-    
-    public var quality: MilligramPerDecilitre?
+    public var E2ECRC: UInt16?
     
     internal var flags: BitMaskOptionSet<Flag> {
         
@@ -87,6 +87,8 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         guard let size = Size(rawValue: data[0])
             else { return nil }
         
+        let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
+        
         guard let glucoseConcentration = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))))
             else { return nil }
         
@@ -94,9 +96,62 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
             else { return nil }
         
         self.init(size: size, glucoseConcentration: glucoseConcentration, timeOffset: timeOffset)
+        
+        if flags.contains(.trendInformation) {
+            
+            self.trendInformationField = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))))
+            
+        } else {
+            
+            self.trendInformationField = nil
+        }
+        
+        if flags.contains(.quality) {
+            
+            self.qualityField = Percentage(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))))
+            
+        } else {
+            
+            self.qualityField = nil
+        }
+        
+        var bytes = 0
+        
+        bytes += flags.contains(.warningOctet) ? 1 : 0
+        
+        bytes += flags.contains(.tempOctet) ? 1 : 0
+        
+        bytes += flags.contains(.statusOctet) ? 1 : 0
+        
+        switch bytes {
+        case 1:
+            
+            let value = UInt32(littleEndian: UInt32(bytes: (data[0], 0, 0, 0)))
+            self.sensorStatusAnnunciationField = BitMaskOptionSet<SensorStatus>(rawValue: value)
+            
+        case 2:
+            
+            let value = UInt32(littleEndian: UInt32(bytes: (data[0], data[0], 0, 0)))
+            self.sensorStatusAnnunciationField = BitMaskOptionSet<SensorStatus>(rawValue: value)
+            
+        case 3:
+            
+            let value = UInt32(littleEndian: UInt32(bytes: (data[0], data[0], data[0], 0)))
+            self.sensorStatusAnnunciationField = BitMaskOptionSet<SensorStatus>(rawValue: value)
+            
+        default:
+            
+            self.sensorStatusAnnunciationField = nil
+        }
+        
     }
     
     public var data: Data {
+        
+        var data = Data()
+        data.reserveCapacity(Int(size.rawValue))
+        
+        
         
         return Data([size.rawValue])
     }
@@ -104,7 +159,12 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
 
 public extension GATTCGMMeasurement {
  
-    public enum CGMSensorStatusAnnunciation: UInt32, BitMaskOption {
+    public enum SensorStatus: UInt32, BitMaskOption {
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt32
+        #endif
         
         /// Session Stopped
         case sessionStopped = 0b01
@@ -164,9 +224,9 @@ public extension GATTCGMMeasurement {
         case sensorResultLowerThanDeviceCanProcess = 0b1000000_00000000_00000000
         
         /// Sensor result higher than the device can process
-        case sensorResultHigherThanDeviceCanProcess = 0b1000000_00000000_000000000
+        case sensorResultHigherThanDeviceCanProcess = 0b10000000_00000000_00000000
         
-        public static let all: Set<CGMSensorStatusAnnunciation> = [
+        public static let all: Set<SensorStatus> = [
             .sessionStopped,
             .deviceBatteryLow,
             .sensorTypeIncorrectForDevice,
@@ -216,6 +276,11 @@ public extension GATTCGMMeasurement {
 public extension GATTCGMMeasurement {
     
     public enum Flag: UInt8, BitMaskOption {
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt8
+        #endif
         
         /// CGM Trend Information Present
         case trendInformation = 0b01
