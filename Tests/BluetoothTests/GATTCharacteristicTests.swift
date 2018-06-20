@@ -33,11 +33,11 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAge", testAge),
         ("testAnalog", testAnalog),
         ("testBarometricPressureTrend", testBarometricPressureTrend),
-        ("testAge", testAge),
-        ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
         ("testAlertStatus", testAlertStatus),
         ("testBootKeyboardOutputReport", testBootKeyboardOutputReport),
+        ("testBootMouseInputReport", testBootMouseInputReport),
+        ("testBootKeyboardInputReport", testBootKeyboardInputReport),
         ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
         ("testCentralAddressResolution", testCentralAddressResolution)
@@ -458,7 +458,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTBarometricPressureTrend(data: Data([0x01])), GATTBarometricPressureTrend.continuouslyFalling)
         XCTAssertEqual(GATTBarometricPressureTrend.uuid, .barometricPressureTrend)
         XCTAssertEqual(GATTBarometricPressureTrend.unitType, .unitless)
-        XCTAssert(GATTBarometricPressureTrend(data: data) == GATTBarometricPressureTrend(data: data))
+        XCTAssertEqual(GATTBarometricPressureTrend(data: data), GATTBarometricPressureTrend(data: data))
     }
     
     func testAnalogOutput() {
@@ -467,13 +467,13 @@ final class GATTCharacteristicTests: XCTestCase {
         let output = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
         guard let characteristics = GATTAnalogOutput(data: data)
-        else { XCTFail("Could not decode from bytes"); return }
+        else { XCTFail("Could not decode fro<<<m bytes"); return }
         
         XCTAssertEqual(characteristics.data, data)
         XCTAssertEqual(characteristics.output, output)
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalogOutput.uuid, .analogOutput)
-        XCTAssert(GATTAnalogOutput(data: data) == GATTAnalogOutput(data: data))
+        XCTAssertEqual(GATTAnalogOutput(data: data), GATTAnalogOutput(data: data))
     }
     
     func testAnalog() {
@@ -488,7 +488,37 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.analog, analog)
         XCTAssertEqual(characteristics.description, "0")
         XCTAssertEqual(GATTAnalog.uuid, .analog)
-        XCTAssert(GATTAnalog(data: data) == GATTAnalog(data: data))
+        XCTAssertEqual(GATTAnalog(data: data), GATTAnalog(data: data))
+    }
+    
+    func testBootKeyboardInputReport() {
+        
+        XCTAssertNil(GATTBootKeyboardInputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootKeyboardInputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(GATTBootKeyboardInputReport.uuid, .bootKeyboardInputReport)
+        XCTAssertEqual(GATTBootKeyboardInputReport(data: data), GATTBootKeyboardInputReport(data: data))
+    }
+    
+    func testBootMouseInputReport() {
+        
+        XCTAssertNil(GATTBootMouseInputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootMouseInputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
+        XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
     }
     
     func testBootKeyboardOutputReport() {
