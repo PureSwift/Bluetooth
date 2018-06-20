@@ -466,7 +466,7 @@ final class GATTCharacteristicTests: XCTestCase {
         let output = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
         guard let characteristics = GATTAnalogOutput(data: data)
-        else { XCTFail("Could not decode fro<<<m bytes"); return }
+        else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristics.data, data)
         XCTAssertEqual(characteristics.output, output)

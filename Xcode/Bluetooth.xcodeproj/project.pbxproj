@@ -1772,7 +1772,6 @@
 		6E6AAD6E20D215F900DDE1CA /* Characteristics */ = {
 			isa = PBXGroup;
 			children = (
-				35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */,
 				3518293520D2233D0009F82D /* GATTAerobicHeartRateLowerLimit.swift */,
 				3518293A20D2235F0009F82D /* GATTAerobicHeartRateUpperLimit.swift */,
 				3518294920D223C30009F82D /* GATTAerobicThreshold.swift */,
@@ -1793,13 +1792,14 @@
 				3518292B20D222EF0009F82D /* GATTBloodPressureFeature.swift */,
 				3518293020D2231D0009F82D /* GATTBloodPressureManagement.swift */,
 				35CEF94720D8251A009E1688 /* GATTBodySensorLocation.swift */,
+				35CA73D820D96C0D000E49F7 /* GATTBootKeyboardInputReport.swift */,
+				35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */,
 				35CA73DA20D9735E000E49F7 /* GATTCentralAddressResolution.swift */,
 				6E6AAD7420D2164600DDE1CA /* GATTDateTime.swift */,
 				3518291720D222230009F82D /* GATTNewAlert.swift */,
 				3518290820D221710009F82D /* GATTSupportedNewAlertCategory.swift */,
 				3518291C20D222440009F82D /* GATTSupportedUnreadAlertCategory.swift */,
 				3518292120D222A30009F82D /* GATTUnreadAlertStatus.swift */,
-				35CA73CE20D9674D000E49F7 /* GATTBootMouseInputReport.swift */,
 			);
 			name = Characteristics;
 			sourceTree = "<group>";
