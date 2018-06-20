@@ -46,7 +46,7 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
     
     public var qualityField: Percentage?
     
-    public var E2ECRC: UInt16?
+    public var e2eCrc: UInt16?
     
     internal var flags: BitMaskOptionSet<Flag> {
         
@@ -62,11 +62,24 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
             flags.insert(.quality)
         }
         
-        if sensorStatusAnnunciationField != nil {
+        if let sensorStatusAnnunciationField = sensorStatusAnnunciationField {
             
-            flags.insert(.warningOctet)
-            flags.insert(.tempOctet)
-            flags.insert(.statusOctet)
+            let bytes = sensorStatusAnnunciationField.rawValue.littleEndian.bytes
+            
+            if bytes.0 != 0 {
+                
+                flags.insert(.warningOctet)
+            }
+            
+            if bytes.1 != 0 {
+                
+                flags.insert(.tempOctet)
+            }
+            
+            if bytes.2 != 0 {
+                
+                flags.insert(.statusOctet)
+            }
         }
         
         return flags
@@ -81,25 +94,25 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Size.min.rawValue
             else { return nil }
         
         guard let size = Size(rawValue: data[0])
             else { return nil }
         
-        let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
+        let flags = BitMaskOptionSet<Flag>(rawValue: data[1])
         
-        guard let glucoseConcentration = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))))
+        guard let glucoseConcentration = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))))
             else { return nil }
         
-        guard let timeOffset = Minute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
+        guard let timeOffset = Minute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[4], data[5]))))
             else { return nil }
         
         self.init(size: size, glucoseConcentration: glucoseConcentration, timeOffset: timeOffset)
         
         if flags.contains(.trendInformation) {
             
-            self.trendInformationField = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))))
+            self.trendInformationField = MilligramPerDecilitre(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[6], data[7])))))
             
         } else {
             
@@ -108,7 +121,7 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         
         if flags.contains(.quality) {
             
-            self.qualityField = Percentage(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))))
+            self.qualityField = Percentage(rawValue: SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[8], data[9])))))
             
         } else {
             
@@ -126,17 +139,17 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         switch bytes {
         case 1:
             
-            let value = UInt32(littleEndian: UInt32(bytes: (data[0], 0, 0, 0)))
+            let value = UInt32(littleEndian: UInt32(bytes: (data[10], 0, 0, 0)))
             self.sensorStatusAnnunciationField = BitMaskOptionSet<SensorStatus>(rawValue: value)
             
         case 2:
             
-            let value = UInt32(littleEndian: UInt32(bytes: (data[0], data[0], 0, 0)))
+            let value = UInt32(littleEndian: UInt32(bytes: (data[10], data[11], 0, 0)))
             self.sensorStatusAnnunciationField = BitMaskOptionSet<SensorStatus>(rawValue: value)
             
         case 3:
             
-            let value = UInt32(littleEndian: UInt32(bytes: (data[0], data[0], data[0], 0)))
+            let value = UInt32(littleEndian: UInt32(bytes: (data[10], data[11], data[12], 0)))
             self.sensorStatusAnnunciationField = BitMaskOptionSet<SensorStatus>(rawValue: value)
             
         default:
@@ -151,9 +164,54 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
         var data = Data()
         data.reserveCapacity(Int(size.rawValue))
         
+        data += [size.rawValue]
         
+        let glucoseBytes = glucoseConcentration.rawValue.builtin.littleEndian.bytes
+        data += [glucoseBytes.0, glucoseBytes.1]
         
-        return Data([size.rawValue])
+        let minuteBytes = timeOffset.rawValue.littleEndian.bytes
+        data += [minuteBytes.0, minuteBytes.1]
+        
+        if let trendInformationField = trendInformationField {
+            
+            let trendInformationBytes = trendInformationField.rawValue.builtin.littleEndian.bytes
+            data += [trendInformationBytes.0, trendInformationBytes.1]
+        }
+        
+        if let qualityField = qualityField {
+            
+            let qualityFieldBytes = qualityField.rawValue.builtin.littleEndian.bytes
+            data += [qualityFieldBytes.0, qualityFieldBytes.1]
+        }
+        
+        if let sensorStatusAnnunciationField = sensorStatusAnnunciationField {
+            
+            let sensorStatusAnnunciationBytes = sensorStatusAnnunciationField.rawValue.littleEndian.bytes
+            
+            if flags.contains(.warningOctet) {
+                
+                data += [sensorStatusAnnunciationBytes.0]
+            }
+            
+            if flags.contains(.tempOctet) {
+                
+                data += [sensorStatusAnnunciationBytes.1]
+            }
+            
+            if flags.contains(.statusOctet) {
+                
+                data += [sensorStatusAnnunciationBytes.2]
+            }
+            
+        }
+        
+        if let e2eCrc = e2eCrc {
+            
+            let e2eCrcBytes = e2eCrc.littleEndian.bytes
+            data += [e2eCrcBytes.0, e2eCrcBytes.1]
+        }
+        
+        return data
     }
 }
 
