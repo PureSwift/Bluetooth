@@ -28,11 +28,11 @@ public struct GATTCGMSessionRunTime: GATTCharacteristic {
     
     internal static let maxLength = 4
     
-    public var sessionRunTime: UInt16
+    public var sessionRunTime: Hour
     
     public var e2ecrc: GATTE2ecrc?
     
-    public init(sessionRunTime: UInt16, e2ecrc: GATTE2ecrc? = nil) {
+    public init(sessionRunTime: Hour, e2ecrc: GATTE2ecrc? = nil) {
         
         self.sessionRunTime = sessionRunTime
         self.e2ecrc = e2ecrc
@@ -43,7 +43,7 @@ public struct GATTCGMSessionRunTime: GATTCharacteristic {
         guard data.count >= type(of: self).minLength
             else { return nil }
         
-        let sessionRunTime = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        let sessionRunTime = Hour(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
         let validLength = (data.count == type(of: self).maxLength)
         let e2ecrc: GATTE2ecrc? = validLength ? GATTE2ecrc(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))) : nil
@@ -53,7 +53,7 @@ public struct GATTCGMSessionRunTime: GATTCharacteristic {
     
     public var data: Data {
         
-        let sessionRunTimeBytes = sessionRunTime.littleEndian.bytes
+        let sessionRunTimeBytes = sessionRunTime.rawValue.littleEndian.bytes
         
         let totalBytes = e2ecrc != nil ? type(of: self).maxLength : type(of: self).minLength
         
@@ -85,5 +85,45 @@ extension GATTCGMSessionRunTime: CustomStringConvertible {
     public var description: String {
         
         return "\(sessionRunTime) \(e2ecrc?.description ?? "")"
+    }
+}
+
+extension GATTCGMSessionRunTime {
+    
+    public struct Hour: BluetoothUnit {
+        
+        public static var unitType: UnitIdentifier { return .hour }
+        
+        public let rawValue: UInt16
+        
+        public init(rawValue: UInt16) {
+            
+            self.rawValue = rawValue
+        }
+    }
+    
+}
+
+extension GATTCGMSessionRunTime.Hour: Equatable {
+    
+    public static func == (lhs: GATTCGMSessionRunTime.Hour, rhs: GATTCGMSessionRunTime.Hour) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCGMSessionRunTime.Hour: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCGMSessionRunTime.Hour: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
     }
 }

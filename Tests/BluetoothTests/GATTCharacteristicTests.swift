@@ -609,9 +609,11 @@ final class GATTCharacteristicTests: XCTestCase {
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.sessionRunTime, 0xe51f)
+        XCTAssertEqual(characteristic.sessionRunTime.description, "58655")
         XCTAssertEqual(characteristic.description, "58655 41601")
         
         XCTAssertEqual(GATTCGMSessionRunTime.uuid, .cgmSessionRunTime)
+        XCTAssertEqual(GATTCGMSessionRunTime.Hour.unitType, .hour)
         XCTAssertEqual(GATTCGMSessionRunTime(data: data), GATTCGMSessionRunTime(data: data))
         
         XCTAssertEqual(GATTE2ecrc(rawValue: 470), 470)
