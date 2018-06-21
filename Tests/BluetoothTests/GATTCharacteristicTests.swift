@@ -44,7 +44,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testModelNumberString", testModelNumberString),
         ("testFirmwareRevisionString", testFirmwareRevisionString),
         ("testSoftwareRevisionString", testSoftwareRevisionString),
-        ("testManufacturerNameString", testManufacturerNameString)
+        ("testManufacturerNameString", testManufacturerNameString),
+        ("testPnPID", testPnPID)
     ]
     
     func testDateTime() {
@@ -611,7 +612,7 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.model, "bluetooth")
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
         XCTAssertEqual(characteristic.description, "bluetooth")
         XCTAssertEqual(GATTModelNumber.uuid, .modelNumberString)
         XCTAssertEqual(GATTModelNumber(data: data), "bluetooth")
@@ -625,7 +626,7 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.firmware, "bluetooth")
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
         XCTAssertEqual(characteristic.description, "bluetooth")
         XCTAssertEqual(GATTFirmwareRevisionString.uuid, .firmwareRevisionString)
         XCTAssertEqual(GATTFirmwareRevisionString(data: data), "bluetooth")
@@ -639,7 +640,7 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.software, "bluetooth")
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
         XCTAssertEqual(characteristic.description, "bluetooth")
         XCTAssertEqual(GATTSoftwareRevisionString.uuid, .softwareRevisionString)
         XCTAssertEqual(GATTSoftwareRevisionString(data: data), "bluetooth")
@@ -653,9 +654,28 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.manufacturer, "bluetooth")
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
         XCTAssertEqual(characteristic.description, "bluetooth")
         XCTAssertEqual(GATTManufacturerNameString.uuid, .manufacturerNameString)
         XCTAssertEqual(GATTManufacturerNameString(data: data), "bluetooth")
+    }
+    
+    func testPnPID() {
+        
+        let data = Data([0x02, 0x01, 0x5f, 0x01, 0x5f, 0x01, 0x5f])
+        
+        guard let characteristic = GATTPnPID(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.vendorIdSource, .fromVendorIDValue)
+        XCTAssertEqual(characteristic.description, "2 24321 24321 24321")
+        XCTAssertEqual(GATTPnPID.uuid, .pnpId)
+        XCTAssertEqual(GATTPnPID(data: data), GATTPnPID(data: data))
+        
+        XCTAssertEqual(characteristic.vendorIdSource.description, "2")
+        XCTAssertEqual(characteristic.vendorId, 24321)
+        XCTAssertEqual(characteristic.productId, 24321)
+        XCTAssertEqual(characteristic.productId, 24321)
     }
 }

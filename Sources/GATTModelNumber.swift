@@ -15,15 +15,15 @@ import Foundation
  
  The value of this characteristic is a UTF-8 string representing the model number assigned by the device vendor.
  */
-public struct GATTModelNumber: GATTCharacteristic {
+public struct GATTModelNumber: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .modelNumberString }
     
-    public let model: String
+    public let rawValue: String
     
-    public init(model: String) {
+    public init(rawValue: String) {
         
-        self.model = model
+        self.rawValue = rawValue
     }
     
     public init?(data: Data) {
@@ -31,12 +31,12 @@ public struct GATTModelNumber: GATTCharacteristic {
         guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
-        self.init(model: rawValue)
+        self.init(rawValue: rawValue)
     }
     
     public var data: Data {
         
-        return Data(model.utf8)
+        return Data(rawValue.utf8)
     }
 }
 
@@ -44,7 +44,7 @@ extension GATTModelNumber: Equatable {
     
     public static func == (lhs: GATTModelNumber, rhs: GATTModelNumber) -> Bool {
         
-        return lhs.model == rhs.model
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -52,7 +52,7 @@ extension GATTModelNumber: CustomStringConvertible {
     
     public var description: String {
         
-        return model
+        return rawValue
     }
 }
 
@@ -60,16 +60,16 @@ extension GATTModelNumber: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         
-        self.init(model: value)
+        self.init(rawValue: value)
     }
     
     public init(extendedGraphemeClusterLiteral value: String) {
         
-        self.init(model: value)
+        self.init(rawValue: value)
     }
     
     public init(unicodeScalarLiteral value: String) {
         
-        self.init(model: value)
+        self.init(rawValue: value)
     }
 }

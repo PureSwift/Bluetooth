@@ -15,15 +15,15 @@ import Foundation
  
  The value of this characteristic is a UTF-8 string representing the software revision for the software within the device.
  */
-public struct GATTSoftwareRevisionString: GATTCharacteristic {
+public struct GATTSoftwareRevisionString: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .softwareRevisionString }
     
-    public let software: String
+    public let rawValue: String
     
-    public init(software: String) {
+    public init(rawValue: String) {
         
-        self.software = software
+        self.rawValue = rawValue
     }
     
     public init?(data: Data) {
@@ -31,12 +31,12 @@ public struct GATTSoftwareRevisionString: GATTCharacteristic {
         guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
-        self.init(software: rawValue)
+        self.init(rawValue: rawValue)
     }
     
     public var data: Data {
         
-        return Data(software.utf8)
+        return Data(rawValue.utf8)
     }
 }
 
@@ -44,7 +44,7 @@ extension GATTSoftwareRevisionString: Equatable {
     
     public static func == (lhs: GATTSoftwareRevisionString, rhs: GATTSoftwareRevisionString) -> Bool {
         
-        return lhs.software == rhs.software
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -52,7 +52,7 @@ extension GATTSoftwareRevisionString: CustomStringConvertible {
     
     public var description: String {
         
-        return software
+        return rawValue
     }
 }
 
@@ -60,16 +60,16 @@ extension GATTSoftwareRevisionString: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         
-        self.init(software: value)
+        self.init(rawValue: value)
     }
     
     public init(extendedGraphemeClusterLiteral value: String) {
         
-        self.init(software: value)
+        self.init(rawValue: value)
     }
     
     public init(unicodeScalarLiteral value: String) {
         
-        self.init(software: value)
+        self.init(rawValue: value)
     }
 }
