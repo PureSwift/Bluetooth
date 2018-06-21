@@ -253,6 +253,10 @@
 		35182A4220D235A90009F82D /* GATTNumberOfDigitals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35182A3E20D235A90009F82D /* GATTNumberOfDigitals.swift */; };
 		3531BBDA20CD013700EBB028 /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3531BF4C20CEEF8F00F31BC3 /* UnitIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */; };
+		353FF03D20DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FF03C20DB22EF005B0A1F /* CGMSessionRunTime.swift */; };
+		353FF03E20DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FF03C20DB22EF005B0A1F /* CGMSessionRunTime.swift */; };
+		353FF03F20DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FF03C20DB22EF005B0A1F /* CGMSessionRunTime.swift */; };
+		353FF04020DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FF03C20DB22EF005B0A1F /* CGMSessionRunTime.swift */; };
 		355BC1FA20D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC1F920D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift */; };
 		355BC1FB20D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC1F920D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift */; };
 		355BC1FC20D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BC1F920D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift */; };
@@ -1403,6 +1407,7 @@
 		35182A3E20D235A90009F82D /* GATTNumberOfDigitals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTNumberOfDigitals.swift; sourceTree = "<group>"; };
 		3531BBD920CD013700EBB028 /* GAPData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GAPData.swift; sourceTree = "<group>"; };
 		3531BF4A20CEEF8400F31BC3 /* UnitIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierTests.swift; sourceTree = "<group>"; };
+		353FF03C20DB22EF005B0A1F /* CGMSessionRunTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGMSessionRunTime.swift; sourceTree = "<group>"; };
 		355BC1F920D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILESetAdvertisingParameters.swift; sourceTree = "<group>"; };
 		355BC1FE20D2C31F001A07D3 /* HCILESetAdvertisingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILESetAdvertisingData.swift; sourceTree = "<group>"; };
 		355BC20320D2C32A001A07D3 /* HCILESetScanResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILESetScanResponseData.swift; sourceTree = "<group>"; };
@@ -1806,6 +1811,7 @@
 				3518290820D221710009F82D /* GATTSupportedNewAlertCategory.swift */,
 				3518291C20D222440009F82D /* GATTSupportedUnreadAlertCategory.swift */,
 				3518292120D222A30009F82D /* GATTUnreadAlertStatus.swift */,
+				353FF03C20DB22EF005B0A1F /* CGMSessionRunTime.swift */,
 			);
 			name = Characteristics;
 			sourceTree = "<group>";
@@ -2852,6 +2858,7 @@
 				351829CF20D22DC20009F82D /* GAPRandomTargetAddress.swift in Sources */,
 				3518291620D221E30009F82D /* GATTAlertCategory.swift in Sources */,
 				6E6AAE1A20D258BA00DDE1CA /* ATTWriteRequest.swift in Sources */,
+				353FF04020DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */,
 				355BC20220D2C31F001A07D3 /* HCILESetAdvertisingData.swift in Sources */,
 				6EFB3D3820D2D46E00364CA0 /* LowEnergyTxChannel.swift in Sources */,
 				3518292A20D222CF0009F82D /* GATTAlertNotificationControlPoint.swift in Sources */,
@@ -3178,6 +3185,7 @@
 				351829CE20D22DC20009F82D /* GAPRandomTargetAddress.swift in Sources */,
 				3518291520D221E30009F82D /* GATTAlertCategory.swift in Sources */,
 				6E6AAE1920D258BA00DDE1CA /* ATTWriteRequest.swift in Sources */,
+				353FF03F20DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */,
 				355BC20120D2C31F001A07D3 /* HCILESetAdvertisingData.swift in Sources */,
 				6EFB3D3720D2D46E00364CA0 /* LowEnergyTxChannel.swift in Sources */,
 				3518292920D222CF0009F82D /* GATTAlertNotificationControlPoint.swift in Sources */,
@@ -3460,6 +3468,7 @@
 				6E6AADEF20D2571800DDE1CA /* ATTReadRequest.swift in Sources */,
 				6E65DF8C20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
 				35182A0320D22F7F0009F82D /* GAPManufacturerSpecificData.swift in Sources */,
+				353FF03D20DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */,
 				3580287E20C832870096227B /* UnitIdentifierExtension.swift in Sources */,
 				355BC2CC20D3162B001A07D3 /* HCILESetExtendedScanParameters.swift in Sources */,
 				356EB8EB20D42E950022A48D /* HCILEReadPeriodicAdvertisingListSize.swift in Sources */,
@@ -3863,6 +3872,7 @@
 				351829CD20D22DC20009F82D /* GAPRandomTargetAddress.swift in Sources */,
 				3518291420D221E30009F82D /* GATTAlertCategory.swift in Sources */,
 				6E6AAE1820D258BA00DDE1CA /* ATTWriteRequest.swift in Sources */,
+				353FF03E20DB22EF005B0A1F /* CGMSessionRunTime.swift in Sources */,
 				355BC20020D2C31F001A07D3 /* HCILESetAdvertisingData.swift in Sources */,
 				6EFB3D3620D2D46E00364CA0 /* LowEnergyTxChannel.swift in Sources */,
 				3518292820D222CF0009F82D /* GATTAlertNotificationControlPoint.swift in Sources */,

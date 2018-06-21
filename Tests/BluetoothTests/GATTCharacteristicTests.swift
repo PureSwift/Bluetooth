@@ -40,7 +40,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testBootKeyboardInputReport", testBootKeyboardInputReport),
         ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
-        ("testCentralAddressResolution", testCentralAddressResolution)
+        ("testCentralAddressResolution", testCentralAddressResolution),
+        ("testCGMSessionRunTime", testCGMSessionRunTime)
     ]
     
     func testDateTime() {
@@ -597,5 +598,23 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic, true, "The value 0x01 should be interpreted as Supported")
         XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
         XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
+    }
+    
+    func testCGMSessionRunTime() {
+        
+        let data = Data([0x1f, 0xe5, 0x81, 0xa2])
+        
+        guard let characteristic = CGMSessionRunTime(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.sessionRunTime, 0xe51f)
+        XCTAssertEqual(characteristic.description, "58655 41601")
+        
+        XCTAssertEqual(CGMSessionRunTime.uuid, .cgmSessionRunTime)
+        XCTAssertEqual(CGMSessionRunTime(data: data), CGMSessionRunTime(data: data))
+        
+        XCTAssertEqual(GATTE2ecrc(rawValue: 470), 470)
+        XCTAssertEqual(GATTE2ecrc(rawValue: 470).description, "470")
     }
 }
