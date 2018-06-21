@@ -18,7 +18,7 @@ import Foundation
  
  The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet
  */
-public struct CGMSessionRunTime: GATTCharacteristic {
+public struct GATTCGMSessionRunTime: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .cgmSessionRunTime }
     
@@ -71,16 +71,16 @@ public struct CGMSessionRunTime: GATTCharacteristic {
     }
 }
 
-extension CGMSessionRunTime: Equatable {
+extension GATTCGMSessionRunTime: Equatable {
     
-    public static func == (lhs: CGMSessionRunTime, rhs: CGMSessionRunTime) -> Bool {
+    public static func == (lhs: GATTCGMSessionRunTime, rhs: GATTCGMSessionRunTime) -> Bool {
         
         return lhs.sessionRunTime == rhs.sessionRunTime && lhs.e2ecrc == rhs.e2ecrc
         
     }
 }
 
-extension CGMSessionRunTime: CustomStringConvertible {
+extension GATTCGMSessionRunTime: CustomStringConvertible {
     
     public var description: String {
         

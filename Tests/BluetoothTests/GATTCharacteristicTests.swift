@@ -604,15 +604,15 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let data = Data([0x1f, 0xe5, 0x81, 0xa2])
         
-        guard let characteristic = CGMSessionRunTime(data: data)
+        guard let characteristic = GATTCGMSessionRunTime(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.sessionRunTime, 0xe51f)
         XCTAssertEqual(characteristic.description, "58655 41601")
         
-        XCTAssertEqual(CGMSessionRunTime.uuid, .cgmSessionRunTime)
-        XCTAssertEqual(CGMSessionRunTime(data: data), CGMSessionRunTime(data: data))
+        XCTAssertEqual(GATTCGMSessionRunTime.uuid, .cgmSessionRunTime)
+        XCTAssertEqual(GATTCGMSessionRunTime(data: data), GATTCGMSessionRunTime(data: data))
         
         XCTAssertEqual(GATTE2ecrc(rawValue: 470), 470)
         XCTAssertEqual(GATTE2ecrc(rawValue: 470).description, "470")
