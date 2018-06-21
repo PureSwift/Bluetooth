@@ -45,7 +45,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testFirmwareRevisionString", testFirmwareRevisionString),
         ("testSoftwareRevisionString", testSoftwareRevisionString),
         ("testManufacturerNameString", testManufacturerNameString),
-        ("testPnPID", testPnPID)
+        ("testPnPID", testPnPID),
+        ("testSystemID", testSystemID)
     ]
     
     func testDateTime() {
@@ -677,5 +678,33 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.vendorId, 24321)
         XCTAssertEqual(characteristic.productId, 24321)
         XCTAssertEqual(characteristic.productId, 24321)
+    }
+    
+    func testSystemID() {
+        
+        XCTAssertNil(GATTSystemID(data: Data([0xff, 0xff])))
+        
+        do {
+            let data = Data([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
+            
+            guard let characteristic = GATTSystemID(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.manufacturerIdentifier, 1099511627775)
+            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 16777215)
+            XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
+        }
+        
+        do {
+            let data = Data([0xf0, 0x00, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00])
+            
+            guard let characteristic = GATTSystemID(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.manufacturerIdentifier, 240)
+            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 40)
+            XCTAssertEqual(characteristic.description, "240 40")
+            XCTAssertEqual(characteristic.data, data)
+        }
     }
 }
