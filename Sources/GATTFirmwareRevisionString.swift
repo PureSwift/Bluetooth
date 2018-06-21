@@ -15,15 +15,15 @@ import Foundation
  
  The value of this characteristic is a UTF-8 string representing the firmware revision for the firmware within the device.
  */
-public struct GATTFirmwareRevisionString: GATTCharacteristic {
+public struct GATTFirmwareRevisionString: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .firmwareRevisionString }
     
-    public let firmware: String
+    public let rawValue: String
     
-    public init(firmware: String) {
+    public init(rawValue: String) {
         
-        self.firmware = firmware
+        self.rawValue = rawValue
     }
     
     public init?(data: Data) {
@@ -31,12 +31,12 @@ public struct GATTFirmwareRevisionString: GATTCharacteristic {
         guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
-        self.init(firmware: rawValue)
+        self.init(rawValue: rawValue)
     }
     
     public var data: Data {
         
-        return Data(firmware.utf8)
+        return Data(rawValue.utf8)
     }
 }
 
@@ -44,7 +44,7 @@ extension GATTFirmwareRevisionString: Equatable {
     
     public static func == (lhs: GATTFirmwareRevisionString, rhs: GATTFirmwareRevisionString) -> Bool {
         
-        return lhs.firmware == rhs.firmware
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -52,7 +52,7 @@ extension GATTFirmwareRevisionString: CustomStringConvertible {
     
     public var description: String {
         
-        return firmware
+        return rawValue
     }
 }
 
@@ -60,16 +60,16 @@ extension GATTFirmwareRevisionString: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         
-        self.init(firmware: value)
+        self.init(rawValue: value)
     }
     
     public init(extendedGraphemeClusterLiteral value: String) {
         
-        self.init(firmware: value)
+        self.init(rawValue: value)
     }
     
     public init(unicodeScalarLiteral value: String) {
         
-        self.init(firmware: value)
+        self.init(rawValue: value)
     }
 }

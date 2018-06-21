@@ -19,11 +19,11 @@ public struct GATTManufacturerNameString: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .manufacturerNameString }
     
-    public let manufacturer: String
+    public let rawValue: String
     
-    public init(manufacturer: String) {
+    public init(rawValue: String) {
         
-        self.manufacturer = manufacturer
+        self.rawValue = rawValue
     }
     
     public init?(data: Data) {
@@ -31,12 +31,12 @@ public struct GATTManufacturerNameString: GATTCharacteristic {
         guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
-        self.init(manufacturer: rawValue)
+        self.init(rawValue: rawValue)
     }
     
     public var data: Data {
         
-        return Data(manufacturer.utf8)
+        return Data(rawValue.utf8)
     }
 }
 
@@ -44,7 +44,7 @@ extension GATTManufacturerNameString: Equatable {
     
     public static func == (lhs: GATTManufacturerNameString, rhs: GATTManufacturerNameString) -> Bool {
         
-        return lhs.manufacturer == rhs.manufacturer
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -52,7 +52,7 @@ extension GATTManufacturerNameString: CustomStringConvertible {
     
     public var description: String {
         
-        return manufacturer
+        return rawValue
     }
 }
 
@@ -60,16 +60,16 @@ extension GATTManufacturerNameString: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         
-        self.init(manufacturer: value)
+        self.init(rawValue: value)
     }
     
     public init(extendedGraphemeClusterLiteral value: String) {
         
-        self.init(manufacturer: value)
+        self.init(rawValue: value)
     }
     
     public init(unicodeScalarLiteral value: String) {
         
-        self.init(manufacturer: value)
+        self.init(rawValue: value)
     }
 }
