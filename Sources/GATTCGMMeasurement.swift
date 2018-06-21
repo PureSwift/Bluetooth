@@ -103,7 +103,7 @@ public struct GATTCGMMeasurement: GATTCharacteristic {
     
     public init?(data: Data) {
         
-        guard data.count >= Size.min.rawValue
+        guard data.count >= Int(Size.min.rawValue)
             else { return nil }
         
         guard let size = Size(rawValue: data[0])
