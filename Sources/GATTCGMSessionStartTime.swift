@@ -8,11 +8,22 @@
 
 import Foundation
 
+/**
+ CGM Session Start Time
+ 
+ [CGM Session Start Time](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.cgm_session_start_time.xml)
+ 
+ - Note:
+ 
+    C1: Mandatory if device supports E2E-CRC (Bit 12 is set in CGM Feature) otherwise excluded.
+ 
+    The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet
+ */
 public struct GATTCGMSessionStartTime: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .cgmSessionStartTime }
     
-    internal static let length = 7
+    internal static let length = GATTDateTime.length + GATTTimeZone.length + GATTDstOffset.length
     
     public var datetime: GATTDateTime
     

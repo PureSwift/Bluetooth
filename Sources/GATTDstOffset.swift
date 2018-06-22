@@ -8,6 +8,11 @@
 
 import Foundation
 
+/**
+ DST Offset
+ 
+ [DST Offset](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.dst_offset.xml)
+ */
 public enum GATTDstOffset: UInt8, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .dstOffset }
