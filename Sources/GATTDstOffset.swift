@@ -47,3 +47,11 @@ public enum GATTDstOffset: UInt8, GATTCharacteristic {
         return Data([rawValue])
     }
 }
+
+extension GATTDstOffset: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}

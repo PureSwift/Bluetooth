@@ -41,13 +41,15 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
         ("testCentralAddressResolution", testCentralAddressResolution),
-        ("testCGMSessionRunTime", testCGMSessionRunTime)
+        ("testCGMSessionRunTime", testCGMSessionRunTime),
         ("testModelNumberString", testModelNumberString),
         ("testFirmwareRevisionString", testFirmwareRevisionString),
         ("testSoftwareRevisionString", testSoftwareRevisionString),
         ("testManufacturerNameString", testManufacturerNameString),
         ("testPnPID", testPnPID),
-        ("testSystemID", testSystemID)
+        ("testSystemID", testSystemID),
+        ("testDstOffset", testDstOffset),
+        ("testCGMSessionStartTime", testCGMSessionStartTime)
     ]
     
     func testDateTime() {
@@ -726,6 +728,62 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 40)
             XCTAssertEqual(characteristic.description, "240 40")
             XCTAssertEqual(characteristic.data, data)
+        }
+    }
+    
+    func testCGMSessionStartTime() {
+        
+        do {
+            XCTAssertNil(GATTTimeZone(rawValue: -128))
+            
+            let data = Data([0x08])
+            
+            guard let characteristic = GATTTimeZone(rawValue: 8)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.rawValue, 8)
+            XCTAssertEqual(characteristic.description, "8")
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(GATTTimeZone(rawValue: 42), GATTTimeZone(rawValue: 42))
+            
+            XCTAssertNil(GATTTimeZone(rawValue: -128))
+        }
+        
+        do {
+            let data = Data([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x08, 0x42, 0x6f])
+            
+            guard let characteristic = GATTCGMSessionStartTime(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.timezone, GATTTimeZone(rawValue: 0x08))
+            XCTAssertEqual(characteristic.dstOffset, GATTDstOffset(rawValue: 0x08))
+            XCTAssertEqual(characteristic.e2ecrc, GATTE2ecrc(rawValue: UInt16(bytes: (0x42, 0x6f))))
+            XCTAssertEqual(GATTCGMSessionStartTime.uuid, .cgmSessionStartTime)
+            XCTAssertEqual(GATTCGMSessionStartTime(data: data), GATTCGMSessionStartTime(data: data))
+        }
+    }
+    
+    func testDstOffset() {
+        
+        do {
+            let data = Data([0x08])
+            
+            guard let characteristic = GATTDstOffset(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.rawValue, 8)
+            XCTAssertEqual(characteristic.description, "8")
+            XCTAssertEqual(characteristic.data, data)
+            
+            XCTAssertEqual(GATTDstOffset(rawValue: 0x00), .standardTime)
+            XCTAssertEqual(GATTDstOffset(rawValue: 0x02), .halfAnHourDaylightTime)
+            XCTAssertEqual(GATTDstOffset(rawValue: 0x04), .daylightTime)
+            XCTAssertEqual(GATTDstOffset(rawValue: 0x08), .doubleDayLightTime)
+            XCTAssertEqual(GATTDstOffset(rawValue: 0xff), .unknown)
+            
+            XCTAssertEqual(GATTDstOffset.uuid, .dstOffset)
+            XCTAssertEqual(GATTDstOffset.uuid, .dstOffset)
         }
     }
 }

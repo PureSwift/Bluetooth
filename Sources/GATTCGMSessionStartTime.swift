@@ -35,7 +35,7 @@ public struct GATTCGMSessionStartTime: GATTCharacteristic {
     
     public var e2ecrc: GATTE2ecrc?
     
-    public init(datetime: GATTDateTime, timezone: GATTTimeZone, dstOffset: GATTDstOffset, e2ecrc: GATTE2ecrc?) {
+    public init(datetime: GATTDateTime, timezone: GATTTimeZone, dstOffset: GATTDstOffset, e2ecrc: GATTE2ecrc? = nil) {
         
         self.datetime = datetime
         self.timezone = timezone
@@ -93,13 +93,5 @@ extension GATTCGMSessionStartTime: Equatable {
                 lhs.timezone == rhs.timezone &&
                 lhs.dstOffset == rhs.dstOffset &&
                 lhs.e2ecrc == rhs.e2ecrc
-    }
-}
-
-extension GATTCGMSessionStartTime: CustomStringConvertible {
-
-    public var description: String {
-        
-        return "\(datetime) \(timezone) \(dstOffset) \(e2ecrc?.description ?? "")"
     }
 }

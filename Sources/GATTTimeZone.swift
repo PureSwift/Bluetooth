@@ -35,7 +35,7 @@ public struct GATTTimeZone: RawRepresentable, GATTCharacteristic {
             GATTTimeZone.max.rawValue >= rawValue
             else { return nil }
         
-        guard GATTTimeZone.unknown.rawValue == rawValue
+        guard GATTTimeZone.unknown.rawValue != rawValue
             else { return nil }
         
         self.rawValue = rawValue
