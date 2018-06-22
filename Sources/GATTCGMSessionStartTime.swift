@@ -23,7 +23,9 @@ public struct GATTCGMSessionStartTime: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .cgmSessionStartTime }
     
-    internal static let length = GATTDateTime.length + GATTTimeZone.length + GATTDstOffset.length
+    internal static let minLength = GATTDateTime.length + GATTTimeZone.length + GATTDstOffset.length
+    
+    internal static let maxLength = minLength + GATTE2ecrc.length
     
     public var datetime: GATTDateTime
     
@@ -31,16 +33,19 @@ public struct GATTCGMSessionStartTime: GATTCharacteristic {
     
     public var dstOffset: GATTDstOffset
     
-    public init(datetime: GATTDateTime, timezone: GATTTimeZone, dstOffset: GATTDstOffset) {
+    public var e2ecrc: GATTE2ecrc?
+    
+    public init(datetime: GATTDateTime, timezone: GATTTimeZone, dstOffset: GATTDstOffset, e2ecrc: GATTE2ecrc?) {
         
         self.datetime = datetime
         self.timezone = timezone
         self.dstOffset = dstOffset
+        self.e2ecrc = e2ecrc
     }
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count >= type(of: self).minLength
             else { return nil }
         
         var index = 0
@@ -56,12 +61,27 @@ public struct GATTCGMSessionStartTime: GATTCharacteristic {
         guard let dstOffset = GATTDstOffset(rawValue: data[index + 1])
             else { return nil }
         
-        self.init(datetime: datetime, timezone: timezone, dstOffset: dstOffset)
+        let validLength = (data.count == type(of: self).maxLength)
+        let e2ecrc: GATTE2ecrc? = validLength ? GATTE2ecrc(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 2], data[index + 3])))) : nil
+        
+        self.init(datetime: datetime, timezone: timezone, dstOffset: dstOffset, e2ecrc: e2ecrc)
     }
     
     public var data: Data {
         
-        return datetime.data + timezone.data + dstOffset.data
+        let totalBytes = e2ecrc != nil ? type(of: self).maxLength : type(of: self).minLength
+        
+        var data = Data()
+        data.reserveCapacity(totalBytes)
+        
+        data += datetime.data + timezone.data + dstOffset.data
+        
+        if let e2ecrcBytes = e2ecrc?.rawValue.littleEndian.bytes {
+            
+            data += [e2ecrcBytes.0, e2ecrcBytes.1]
+        }
+        
+        return data
     }
 }
 
@@ -71,7 +91,8 @@ extension GATTCGMSessionStartTime: Equatable {
         
         return lhs.datetime == rhs.datetime &&
                 lhs.timezone == rhs.timezone &&
-                lhs.dstOffset == rhs.dstOffset
+                lhs.dstOffset == rhs.dstOffset &&
+                lhs.e2ecrc == rhs.e2ecrc
     }
 }
 
@@ -79,6 +100,6 @@ extension GATTCGMSessionStartTime: CustomStringConvertible {
 
     public var description: String {
         
-        return "\(datetime) \(timezone) \(dstOffset)"
+        return "\(datetime) \(timezone) \(dstOffset) \(e2ecrc?.description ?? "")"
     }
 }
