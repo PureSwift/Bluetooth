@@ -27,7 +27,7 @@ internal extension Int {
     }
 }
 
-internal extension UInt16 {
+public extension UInt16 {
     
     /// Initializes value from two bytes.
     init(bytes: (UInt8, UInt8)) {
@@ -42,7 +42,7 @@ internal extension UInt16 {
     }
 }
 
-internal extension UInt32 {
+public extension UInt32 {
     
     /// Initializes value from four bytes.
     init(bytes: (UInt8, UInt8, UInt8, UInt8)) {
@@ -57,7 +57,7 @@ internal extension UInt32 {
     }
 }
 
-internal extension UInt64 {
+public extension UInt64 {
     
     /// Initializes value from four bytes.
     init(bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)) {
