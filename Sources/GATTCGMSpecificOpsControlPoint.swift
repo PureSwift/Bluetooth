@@ -26,122 +26,140 @@ import Foundation
  
      3.The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet
  */
-//public struct GATTCGMSpecificOpsControl {
-//    
-//    public static var uuid: BluetoothUUID { return .cgmSpecificOpsControlPoint }
-//    
-//    internal static let length = MemoryLayout<UInt64>.size
-//    
-//    public var code: OpCode
-//    
-//    public init?(code: OpCode) {
-//        
-//        self.code = code
-//    }
-//    
-//    public init?(data: Data) {
-//        
-//        guard data.count == type(of: self).length
-//            else { return nil }
-//        
-//        guard let code = OpCode(rawValue: data[0])
-//            else { return nil }
-//        
-//        self.init(code: code)
-//    }
-//    
-//    public var data: Data {
-//        
-//        return Data([code.rawValue])
-//    }
-//}
-//
-//extension GATTCGMSpecificOpsControl {
-//    
-//    public enum OpCode: UInt8 {
-//        
-//        /// The response to this control point is Response Code (Op Code 0x0F)
-//        case setCommunicationInterval = 1
-//        
-//        /// The normal response to this control point is Op Code 0x03. For error conditions, the response is defined in the Op Code - Response Codes field
-//        case getCommunicationInterval = 2
-//        
-//        /// This is the normal response to Op Code 0x02
-//        case communicationIntervalResponse = 3
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case setGlucoseCalibrationValue = 4
-//        
-//        /// The normal response to this control point is Op Code 0x06. for error conditions, the response is defined in the Op Code - Response Codes field
-//        case getGlucoseCalibrationValue = 5
-//        
-//        /// Glucose Calibration Value response
-//        case glucoseCalibrationValueResponse = 6
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case setPatientHighAlertLevel = 7
-//        
-//        /// The normal response to this control point is Op Code 0x09. For error conditions, the response is defined in the Op Code - Response Codes field
-//        case getPatientHighAlertLevel = 8
-//        
-//        /// This is the normal response to Op Code 0x08
-//        case patientHighAlertLevelResponse = 9
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case setPatientLowAlertLevel = 10
-//        
-//        /// The normal response to this control point is Op Code 0x0C. the response is defined in the Op Code - Response Codes field
-//        case getPatientLowAlertLevel = 11
-//        
-//        /// This is the normal response to Op Code 0x0B
-//        case patientLowAlertLevelResponse = 12
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case setHypoAlertLevel = 13
-//        
-//        /// The normal response to this control point is Op Code 0x0F. the response is defined in the Op Code - Response Codes field
-//        case getHypoAlertLevel = 14
-//        
-//        /// This is the normal response to Op Code 0x0E
-//        case hypoAlertLevelResponse = 15
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case setHyperAlertLevel = 16
-//        
-//        /// The normal response to this control point is Op Code 0x12. The response is defined in the Op Code - Response Codes field
-//        case getHyperAlertLevel = 17
-//        
-//        /// This is the normal response to Op Code 0x11
-//        case hyperAlertLevelResponse = 18
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case setRateOfDecreaseAlertLevel = 19
-//        
-//        /// The normal response to this control point is Op Code 0x15. For error conditions, the response is Response Code
-//        case getRateOfDecreaseAlertLevel = 20
-//        
-//        /// This is the normal response to Op Code 0x14
-//        case rateOfDecreaseAlertLevelResponse = 21
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case setRateOfIncreaseAlertLevel = 22
-//        
-//        /// The normal response to this control point is Op Code 0x18. For error conditions, the response is Response Code
-//        case getRateOfIncreaseAlertLevel = 23
-//        
-//        /// This is the normal response to Op Code 0x17
-//        case rateOfIncreaseAlertLevelResponse = 24
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case resetDeviceSpecificAlert = 25
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case startSession = 26
-//        
-//        /// The response to this control point is defined in Op Code - Response Codes field
-//        case stopSession = 27
-//        
-//        /// see Op Code - Response Codes field
-//        case responseCode = 28
-//    }
-//}
+public struct GATTCGMSpecificOpsControl: GATTCharacteristic {
+    
+    public static var uuid: BluetoothUUID { return .cgmSpecificOpsControlPoint }
+    
+    internal static let length = MemoryLayout<UInt64>.size
+    
+    public var code: OpCode
+    
+    public init?(code: OpCode) {
+        
+        self.code = code
+    }
+    
+    public init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        guard let code = OpCode(rawValue: data[0])
+            else { return nil }
+        
+        self.init(code: code)
+    }
+    
+    public var data: Data {
+        
+        return Data([code.rawValue])
+    }
+}
+
+extension GATTCGMSpecificOpsControl {
+    
+    public enum OpCode: UInt8 {
+        
+        /// The response to this control point is Response Code (Op Code 0x0F)
+        case setCommunicationInterval = 1
+        
+        /// The normal response to this control point is Op Code 0x03. For error conditions, the response is defined in the Op Code - Response Codes field
+        case getCommunicationInterval = 2
+        
+        /// This is the normal response to Op Code 0x02
+        case communicationIntervalResponse = 3
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case setGlucoseCalibrationValue = 4
+        
+        /// The normal response to this control point is Op Code 0x06. for error conditions, the response is defined in the Op Code - Response Codes field
+        case getGlucoseCalibrationValue = 5
+        
+        /// Glucose Calibration Value response
+        case glucoseCalibrationValueResponse = 6
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case setPatientHighAlertLevel = 7
+        
+        /// The normal response to this control point is Op Code 0x09. For error conditions, the response is defined in the Op Code - Response Codes field
+        case getPatientHighAlertLevel = 8
+        
+        /// This is the normal response to Op Code 0x08
+        case patientHighAlertLevelResponse = 9
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case setPatientLowAlertLevel = 10
+        
+        /// The normal response to this control point is Op Code 0x0C. the response is defined in the Op Code - Response Codes field
+        case getPatientLowAlertLevel = 11
+        
+        /// This is the normal response to Op Code 0x0B
+        case patientLowAlertLevelResponse = 12
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case setHypoAlertLevel = 13
+        
+        /// The normal response to this control point is Op Code 0x0F. the response is defined in the Op Code - Response Codes field
+        case getHypoAlertLevel = 14
+        
+        /// This is the normal response to Op Code 0x0E
+        case hypoAlertLevelResponse = 15
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case setHyperAlertLevel = 16
+        
+        /// The normal response to this control point is Op Code 0x12. The response is defined in the Op Code - Response Codes field
+        case getHyperAlertLevel = 17
+        
+        /// This is the normal response to Op Code 0x11
+        case hyperAlertLevelResponse = 18
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case setRateOfDecreaseAlertLevel = 19
+        
+        /// The normal response to this control point is Op Code 0x15. For error conditions, the response is Response Code
+        case getRateOfDecreaseAlertLevel = 20
+        
+        /// This is the normal response to Op Code 0x14
+        case rateOfDecreaseAlertLevelResponse = 21
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case setRateOfIncreaseAlertLevel = 22
+        
+        /// The normal response to this control point is Op Code 0x18. For error conditions, the response is Response Code
+        case getRateOfIncreaseAlertLevel = 23
+        
+        /// This is the normal response to Op Code 0x17
+        case rateOfIncreaseAlertLevelResponse = 24
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case resetDeviceSpecificAlert = 25
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case startSession = 26
+        
+        /// The response to this control point is defined in Op Code - Response Codes field
+        case stopSession = 27
+        
+        /// see Op Code - Response Codes field
+        case responseCode = 28
+    }
+    
+    public enum OpCodeResponseCode: UInt8 {
+        
+        /// Normal response for successful operation.
+        case success = 1
+        
+        /// Normal response if unsupported Op Code is received.
+        case notSupported = 2
+        
+        /// Normal response if Operand received does not meet the requirements of the service.
+        case invalidOperand = 3
+        
+        /// Normal response if unable to complete a procedure for any reason.
+        case procedureNotCompleted = 4
+        
+        /// Normal response if Operand received does not meet the range requirements
+        case parameterOutOfRange = 6
+    }
+}
