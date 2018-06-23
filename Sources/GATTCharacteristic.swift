@@ -109,3 +109,39 @@ extension GATTBatteryPercentage: CustomStringConvertible {
         return "\(rawValue)%"
     }
 }
+
+public struct GATTE2ecrc: RawRepresentable {
+    
+    internal static let length = MemoryLayout<UInt16>.size
+    
+    public var rawValue: UInt16
+    
+    public init(rawValue: UInt16) {
+        
+        self.rawValue = rawValue
+    }
+}
+
+extension GATTE2ecrc: Equatable {
+    
+    public static func == (lhs: GATTE2ecrc, rhs: GATTE2ecrc) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTE2ecrc: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(rawValue)"
+    }
+}
+
+extension GATTE2ecrc: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
+    }
+}
