@@ -524,8 +524,8 @@ final class GATTCharacteristicTests: XCTestCase {
         
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
         XCTAssertEqual(GATTBootKeyboardInputReport.uuid, .bootKeyboardInputReport)
-        XCTAssertEqual(GATTBootKeyboardInputReport(data: data), GATTBootKeyboardInputReport(data: data))
     }
     
     func testBootKeyboardOutputReport() {
