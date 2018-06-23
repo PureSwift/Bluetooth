@@ -33,14 +33,21 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testAge", testAge),
         ("testAnalog", testAnalog),
         ("testBarometricPressureTrend", testBarometricPressureTrend),
-        ("testAge", testAge),
-        ("testAnalog", testAnalog),
         ("testAnalogOutput", testAnalogOutput),
         ("testAlertStatus", testAlertStatus),
+        ("testBootMouseInputReport", testBootMouseInputReport),
+        ("testBootKeyboardOutputReport", testBootKeyboardOutputReport),
         ("testBootKeyboardInputReport", testBootKeyboardInputReport),
         ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
-        ("testCentralAddressResolution", testCentralAddressResolution)
+        ("testCentralAddressResolution", testCentralAddressResolution),
+        ("testCGMSessionRunTime", testCGMSessionRunTime),
+        ("testModelNumberString", testModelNumberString),
+        ("testFirmwareRevisionString", testFirmwareRevisionString),
+        ("testSoftwareRevisionString", testSoftwareRevisionString),
+        ("testManufacturerNameString", testManufacturerNameString),
+        ("testPnPID", testPnPID),
+        ("testSystemID", testSystemID)
     ]
     
     func testDateTime() {
@@ -491,6 +498,21 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTAnalog(data: data), GATTAnalog(data: data))
     }
     
+    func testBootMouseInputReport() {
+        
+        XCTAssertNil(GATTBootMouseInputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootMouseInputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
+        XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
+    }
+    
     func testBootKeyboardInputReport() {
         
         XCTAssertNil(GATTBootKeyboardInputReport(data: Data([0x3d, 0x72])))
@@ -504,6 +526,21 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "1")
         XCTAssertEqual(characteristic, 1)
         XCTAssertEqual(GATTBootKeyboardInputReport.uuid, .bootKeyboardInputReport)
+    }
+    
+    func testBootKeyboardOutputReport() {
+        
+        XCTAssertNil(GATTBootKeyboardOutputReport(data: Data([0x3d, 0x72])))
+        
+        let data = Data([0x01])
+        
+        guard let characteristic = GATTBootKeyboardOutputReport(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(characteristic, 1)
+        XCTAssertEqual(GATTBootKeyboardOutputReport.uuid, .bootKeyboardOutputReport)
     }
     
     func testBatteryPowerState() {
@@ -567,5 +604,128 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic, true, "The value 0x01 should be interpreted as Supported")
         XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
         XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
+    }
+    
+    func testCGMSessionRunTime() {
+        
+        let data = Data([0x1f, 0xe5, 0x81, 0xa2])
+        
+        guard let characteristic = GATTCGMSessionRunTime(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.sessionRunTime, 0xe51f)
+        XCTAssertEqual(characteristic.sessionRunTime.description, "58655")
+        XCTAssertEqual(characteristic.description, "58655 41601")
+        
+        XCTAssertEqual(GATTCGMSessionRunTime.uuid, .cgmSessionRunTime)
+        XCTAssertEqual(GATTCGMSessionRunTime.Hour.unitType, .hour)
+        XCTAssertEqual(GATTCGMSessionRunTime(data: data), GATTCGMSessionRunTime(data: data))
+        
+        XCTAssertEqual(GATTE2ecrc(rawValue: 470), 470)
+        XCTAssertEqual(GATTE2ecrc(rawValue: 470).description, "470")
+    }
+    
+    func testModelNumberString() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTModelNumber(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTModelNumber.uuid, .modelNumberString)
+        XCTAssertEqual(GATTModelNumber(data: data), "bluetooth")
+    }
+    
+    func testFirmwareRevisionString() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTFirmwareRevisionString(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTFirmwareRevisionString.uuid, .firmwareRevisionString)
+        XCTAssertEqual(GATTFirmwareRevisionString(data: data), "bluetooth")
+    }
+    
+    func testSoftwareRevisionString() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTSoftwareRevisionString(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTSoftwareRevisionString.uuid, .softwareRevisionString)
+        XCTAssertEqual(GATTSoftwareRevisionString(data: data), "bluetooth")
+    }
+    
+    func testManufacturerNameString() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTManufacturerNameString(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTManufacturerNameString.uuid, .manufacturerNameString)
+        XCTAssertEqual(GATTManufacturerNameString(data: data), "bluetooth")
+    }
+    
+    func testPnPID() {
+        
+        let data = Data([0x02, 0x01, 0x5f, 0x01, 0x5f, 0x01, 0x5f])
+        
+        guard let characteristic = GATTPnPID(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.vendorIdSource, .fromVendorIDValue)
+        XCTAssertEqual(characteristic.description, "2 24321 24321 24321")
+        XCTAssertEqual(GATTPnPID.uuid, .pnpId)
+        XCTAssertEqual(GATTPnPID(data: data), GATTPnPID(data: data))
+        
+        XCTAssertEqual(characteristic.vendorIdSource.description, "2")
+        XCTAssertEqual(characteristic.vendorId, 24321)
+        XCTAssertEqual(characteristic.productId, 24321)
+        XCTAssertEqual(characteristic.productId, 24321)
+    }
+    
+    func testSystemID() {
+        
+        XCTAssertNil(GATTSystemID(data: Data([0xff, 0xff])))
+        
+        do {
+            let data = Data([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
+            
+            guard let characteristic = GATTSystemID(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.manufacturerIdentifier, 1099511627775)
+            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 16777215)
+            XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
+        }
+        
+        do {
+            let data = Data([0xf0, 0x00, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00])
+            
+            guard let characteristic = GATTSystemID(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.manufacturerIdentifier, 240)
+            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 40)
+            XCTAssertEqual(characteristic.description, "240 40")
+            XCTAssertEqual(characteristic.data, data)
+        }
     }
 }
