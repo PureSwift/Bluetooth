@@ -34,9 +34,37 @@ public struct GATTCGMSpecificOpsControl: GATTCharacteristic {
     
     public var code: OpCode
     
-    public init?(code: OpCode) {
+    public var glucoseConcentration: MilligramPerDecilitre
+    
+    public var calibrationTime: Minute
+    
+    public var calibrationType: UInt8
+    
+    public var calibrationSampleLocation: UInt8
+    
+    public var nextCalibrationTime: Minute
+    
+    public var calibrationDataRecordNumber: UInt16
+    
+    public var calibrationStatus: CalibrationStatus
+    
+    public init(code: OpCode,
+                glucoseConcentration: MilligramPerDecilitre,
+                calibrationTime: Minute,
+                calibrationType: UInt8,
+                calibrationSampleLocation: UInt8,
+                nextCalibrationTime: Minute,
+                calibrationDataRecordNumber: UInt16,
+                calibrationStatus: CalibrationStatus) {
         
         self.code = code
+        self.glucoseConcentration = glucoseConcentration
+        self.calibrationTime = calibrationTime
+        self.calibrationType = calibrationType
+        self.calibrationSampleLocation = calibrationSampleLocation
+        self.nextCalibrationTime = nextCalibrationTime
+        self.calibrationDataRecordNumber = calibrationDataRecordNumber
+        self.calibrationStatus = calibrationStatus
     }
     
     public init?(data: Data) {
@@ -47,12 +75,127 @@ public struct GATTCGMSpecificOpsControl: GATTCharacteristic {
         guard let code = OpCode(rawValue: data[0])
             else { return nil }
         
-        self.init(code: code)
+        let glucoseConcentration = MilligramPerDecilitre(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        
+        let calibrationTime = Minute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))))
+        
+        let calibrationType = data[4] & 0b0000_1111
+        
+        let calibrationSampleLocation = data[4] & 0b1111_0000
+        
+        let nextCalibrationTime = Minute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[6], data[7]))))
+        
+        let calibrationDataRecordNumber = UInt16(littleEndian: UInt16(bytes: (data[8], data[9])))
+        
+        guard let calibrationStatus = CalibrationStatus(rawValue: data[10])
+            else { return nil }
+        
+        self.init(code: code,
+                  glucoseConcentration: glucoseConcentration,
+                  calibrationTime: calibrationTime,
+                  calibrationType: calibrationType,
+                  calibrationSampleLocation: calibrationSampleLocation,
+                  nextCalibrationTime: nextCalibrationTime,
+                  calibrationDataRecordNumber: calibrationDataRecordNumber,
+                  calibrationStatus: calibrationStatus)
     }
     
     public var data: Data {
         
-        return Data([code.rawValue])
+        let glucoseConcentrationBytes = glucoseConcentration.rawValue.littleEndian.bytes
+        
+        let calibrationTimeBytes = calibrationTime.rawValue.littleEndian.bytes
+        
+        let nextCalibrationTimeBytes = nextCalibrationTime.rawValue.littleEndian.bytes
+        
+        let calibrationDataRecordNumberBytes = calibrationDataRecordNumber.littleEndian.bytes
+        
+        return Data([code.rawValue,
+                     glucoseConcentrationBytes.0,
+                     glucoseConcentrationBytes.1,
+                     calibrationTimeBytes.0,
+                     calibrationTimeBytes.1,
+                     calibrationType | calibrationSampleLocation,
+                     nextCalibrationTimeBytes.0,
+                     nextCalibrationTimeBytes.1,
+                     calibrationDataRecordNumberBytes.0,
+                     calibrationDataRecordNumberBytes.1])
+    }
+}
+
+extension GATTCGMSpecificOpsControl: Equatable {
+    
+    public static func == (lhs: GATTCGMSpecificOpsControl, rhs: GATTCGMSpecificOpsControl) -> Bool {
+        
+        return lhs.code.rawValue == rhs.code.rawValue &&
+                lhs.glucoseConcentration.rawValue == rhs.glucoseConcentration.rawValue &&
+                lhs.calibrationTime.rawValue == rhs.calibrationTime.rawValue &&
+                lhs.calibrationType == rhs.calibrationType &&
+                lhs.calibrationSampleLocation == rhs.calibrationSampleLocation &&
+                lhs.nextCalibrationTime.rawValue == rhs.nextCalibrationTime.rawValue &&
+                lhs.calibrationDataRecordNumber == rhs.calibrationDataRecordNumber &&
+                lhs.calibrationStatus == rhs.calibrationStatus
+    }
+}
+
+extension GATTCGMSpecificOpsControl {
+    
+    public enum CalibrationStatus: UInt8 {
+        
+        /// Calibration Data rejected (Calibration failed)
+        case rejected = 0
+        
+        /// Calibration Data out of range
+        case outOfRange = 1
+        
+        /// Calibration Process Pending
+        case processPending = 2
+    }
+}
+
+extension GATTCGMSpecificOpsControl {
+    
+    public struct MilligramPerDecilitre: BluetoothUnit {
+        
+        public static var unitType: UnitIdentifier { return .milligramPerDecilitre }
+        
+        public let rawValue: UInt16
+        
+        public init(rawValue: UInt16) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}
+
+extension GATTCGMSpecificOpsControl {
+    
+    public struct Minute: BluetoothUnit {
+        
+        public static var unitType: UnitIdentifier { return .minute }
+        
+        public let rawValue: UInt16
+        
+        public init(rawValue: UInt16) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}
+
+extension GATTCGMSpecificOpsControl.Minute: Equatable {
+    
+    public static func == (lhs: GATTCGMSpecificOpsControl.Minute, rhs: GATTCGMSpecificOpsControl.Minute) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCGMSpecificOpsControl.Minute: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
     }
 }
 
@@ -144,6 +287,9 @@ extension GATTCGMSpecificOpsControl {
         /// see Op Code - Response Codes field
         case responseCode = 28
     }
+}
+
+extension GATTCGMSpecificOpsControl {
     
     public enum OpCodeResponseCode: UInt8 {
         
@@ -160,6 +306,6 @@ extension GATTCGMSpecificOpsControl {
         case procedureNotCompleted = 4
         
         /// Normal response if Operand received does not meet the range requirements
-        case parameterOutOfRange = 6
+        case parameterOutOfRange = 5
     }
 }
