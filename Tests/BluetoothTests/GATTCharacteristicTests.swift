@@ -41,7 +41,7 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testBatteryPowerState", testBatteryPowerState),
         ("testBodySensorLocation", testBodySensorLocation),
         ("testCentralAddressResolution", testCentralAddressResolution),
-        ("testCGMSessionRunTime", testCGMSessionRunTime)
+        ("testCGMSessionRunTime", testCGMSessionRunTime),
         ("testModelNumberString", testModelNumberString),
         ("testFirmwareRevisionString", testFirmwareRevisionString),
         ("testSoftwareRevisionString", testSoftwareRevisionString),
