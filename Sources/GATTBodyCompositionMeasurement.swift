@@ -103,9 +103,15 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     
     public var weight: GATTBodyMass?
     
-    public var height: GATTBodyLenght?
+    public var height: GATTBodyLength?
+    
+    public let massUnit: MassUnit
+    
+    public let lengthUnit: LengthUnit
     
     public init(bodyFatPercentage: GATTBodyPercentage,
+                massUnit: MassUnit,
+                lengthUnit: LengthUnit,
                 timeStamp: GATTDateTime? = nil,
                 userIdentifier: UInt8? = nil,
                 basalMetabolism: GATTBodyEnergy? = nil,
@@ -116,7 +122,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
                 bodyWaterMass: GATTBodyMass? = nil,
                 impedance: GATTBodyResistance? = nil,
                 weight: GATTBodyMass? = nil,
-                height: GATTBodyLenght? = nil) {
+                height: GATTBodyLength? = nil) {
         
         self.bodyFatPercentage = bodyFatPercentage
         self.timestamp = timeStamp
@@ -130,6 +136,8 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         self.impedance = impedance
         self.weight = weight
         self.height = height
+        self.massUnit = massUnit
+        self.lengthUnit = lengthUnit
     }
     
     // swiftlint:disable:next cyclomatic_complexity
@@ -140,11 +148,11 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
-        let massUnit = flags.contains(.measurementUnitSI) ? MassUnit.kilogram : MassUnit.kilogram
+        massUnit = flags.contains(.measurementUnitSI) ? .kilogram : .pound
         
-        let lenghtUnit = flags.contains(.measurementUnitSI) ? LenghtUnit.metre : LenghtUnit.inch
+        lengthUnit = flags.contains(.measurementUnitSI) ? .metre : .inch
         
-        self.bodyFatPercentage = GATTBodyPercentage(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))))!
+        self.bodyFatPercentage = GATTBodyPercentage(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))))
         
         var index = 3
         
@@ -288,7 +296,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.height = GATTBodyLenght(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: lenghtUnit)
+            self.height = GATTBodyLength(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: lengthUnit)
             
             index += MemoryLayout<UInt16>.size
         } else {
@@ -301,7 +309,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         
         let flags = self.flags
         
-        var totalBytes = 4
+        var totalBytes = MemoryLayout<UInt32>.size //Flags size + Body Fat Percentage size
         
         if flags.contains(.timestamp) {
             
@@ -489,8 +497,8 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         /// Multiple Packet Measurement
         case multiplePacket = 0b1000000000000
         
-        public static var all: Set<Flag> =
-            [.measurementUnitSI,
+        public static var all: Set<Flag> = [
+             .measurementUnitSI,
              .measurementUnitImperial,
              .timestamp,
              .userID,
@@ -503,46 +511,46 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
              .impedance,
              .weight,
              .height,
-             .multiplePacket]
-    }
-}
-
-// MARK: - Unit of measurement -
-public enum MassUnit: UInt16 {
-    
-    /// Mass kilogram
-    case kilogram = 0x2702
-    
-    /// Mass pound
-    case pound = 0x27B8
-    
-    public init?(unit: UnitIdentifier) {
-        
-        self.init(rawValue: unit.rawValue)
+             .multiplePacket
+        ]
     }
     
-    public var unit: UnitIdentifier {
+    public enum MassUnit: UInt16 {
         
-        return UnitIdentifier(rawValue: rawValue)
+        /// Mass kilogram
+        case kilogram = 0x2702
+        
+        /// Mass pound
+        case pound = 0x27B8
+        
+        public init?(unit: UnitIdentifier) {
+            
+            self.init(rawValue: unit.rawValue)
+        }
+        
+        public var unit: UnitIdentifier {
+            
+            return UnitIdentifier(rawValue: rawValue)
+        }
     }
-}
-
-public enum LenghtUnit: UInt16 {
     
-    /// Lenght metre
-    case metre = 0x2701
-    
-    /// lenght inch
-    case inch = 0x27A2
-    
-    public init?(unit: UnitIdentifier) {
+    public enum LengthUnit: UInt16 {
         
-        self.init(rawValue: unit.rawValue)
-    }
-    
-    public var unit: UnitIdentifier {
+        /// Length metre
+        case metre = 0x2701
         
-        return UnitIdentifier(rawValue: rawValue)
+        /// length inch
+        case inch = 0x27A2
+        
+        public init?(unit: UnitIdentifier) {
+            
+            self.init(rawValue: unit.rawValue)
+        }
+        
+        public var unit: UnitIdentifier {
+            
+            return UnitIdentifier(rawValue: rawValue)
+        }
     }
 }
 
@@ -551,26 +559,13 @@ public struct GATTBodyPercentage: BluetoothUnit {
     
     internal static let length = MemoryLayout<UInt16>.size
     
-    public static let min = GATTBodyPercentage(0)
-    
-    public static let max = GATTBodyPercentage(100)
-    
     public static var unitType: UnitIdentifier { return .percentage }
     
     public var rawValue: UInt16
     
-    public init?(rawValue value: UInt16) {
-        
-        guard value <= GATTBodyPercentage.max.rawValue,
-            value >= GATTBodyPercentage.min.rawValue
-            else { return nil }
+    public init(rawValue value: UInt16) {
         
         self.rawValue = value
-    }
-    
-    private init(_ unsafe: UInt16) {
-        
-        self.rawValue = unsafe
     }
 }
 
@@ -587,6 +582,14 @@ extension GATTBodyPercentage: CustomStringConvertible {
     public var description: String {
         
         return "\(rawValue)%"
+    }
+}
+
+extension GATTBodyPercentage: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
     }
 }
 
@@ -652,6 +655,8 @@ extension GATTBodyResistance: CustomStringConvertible {
 
 public struct GATTBodyMass {
     
+    public typealias MassUnit = GATTBodyCompositionMeasurement.MassUnit
+    
     internal static let length = MemoryLayout<UInt16>.size
     
     public var unit: MassUnit
@@ -681,15 +686,17 @@ extension GATTBodyMass: CustomStringConvertible {
     }
 }
 
-public struct GATTBodyLenght {
+public struct GATTBodyLength {
+    
+    public typealias LengthUnit = GATTBodyCompositionMeasurement.LengthUnit
     
     internal static let length = MemoryLayout<UInt16>.size
     
-    public var unit: LenghtUnit
+    public var unit: LengthUnit
     
     public var rawValue: UInt16
     
-    public init?(rawValue value: UInt16, unit: LenghtUnit) {
+    public init?(rawValue value: UInt16, unit: LengthUnit) {
         
         self.rawValue = value
         self.unit = unit
