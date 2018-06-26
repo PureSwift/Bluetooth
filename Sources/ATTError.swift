@@ -6,7 +6,12 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-/// Error codes for Error response PDU.
+/**
+ The possible errors returned by a GATT server (a remote peripheral) during Bluetooth low energy ATT transactions.
+ 
+ These error constants are based on the Bluetooth ATT error codes, defined in the Bluetooth 4.0 specification.
+ For more information about these errors, see the Bluetooth 4.0 specification, Volume 3, Part F, Section 3.4.1.1.
+ */
 public enum ATTError: UInt8, Error {
     
     /// Invalid Handle
