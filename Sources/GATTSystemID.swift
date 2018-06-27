@@ -27,9 +27,9 @@ public struct GATTSystemID: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt64>.size
     
-    internal static let maxManufacturerIdentifier: UInt64 = 1099511627775
+    public static let maxManufacturerIdentifier: UInt64 = 1099511627775
     
-    internal static let maxOrganizationallyUniqueIdentifier: UInt32 = 16777215
+    public static let maxOrganizationallyUniqueIdentifier: UInt32 = 16777215
     
     public var manufacturerIdentifier: UInt64 // uses 40 bits
     
