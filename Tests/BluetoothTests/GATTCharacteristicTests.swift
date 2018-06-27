@@ -660,19 +660,19 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         XCTAssertEqual(complexCharacteristic2.data, complexData)
         
-        XCTAssertEqual(Mass(unit: .kilogram), siMass?.unit)
+        XCTAssertEqual(Mass(unit: .kilogram), siMass.unit)
         XCTAssertNil(Mass(unit: .absorbedDose))
         XCTAssertEqual(kilogram.unit, UnitIdentifier.kilogram)
         
-        XCTAssertEqual(Length(unit: .metre), siLenght?.unit)
+        XCTAssertEqual(Length(unit: .metre), siLenght.unit)
         XCTAssertNil(Length(unit: .absorbedDose))
         XCTAssertEqual(inch.unit, UnitIdentifier.inch)
         
-        XCTAssertEqual(Mass.kilogram, siMass?.unit)
-        XCTAssertEqual(Mass.pound, imperialMass?.unit)
+        XCTAssertEqual(Mass.kilogram, siMass.unit)
+        XCTAssertEqual(Mass.pound, imperialMass.unit)
         
-        XCTAssertEqual(Length.metre, siLenght?.unit)
-        XCTAssertEqual(Length.inch, imperialLenght?.unit)
+        XCTAssertEqual(Length.metre, siLenght.unit)
+        XCTAssertEqual(Length.inch, imperialLenght.unit)
         
         XCTAssert(GATTBodyPercentage(rawValue: emptyUnit16) == GATTBodyPercentage(rawValue: emptyUnit16))
         XCTAssertEqual(GATTBodyPercentage(rawValue: emptyUnit16).description, "0%")
@@ -687,10 +687,10 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTBodyEnergy.unitType, .energy)
         
         XCTAssert(BodyMass(rawValue: emptyUnit16, unit: kilogram) == BodyMass(rawValue: emptyUnit16, unit: kilogram))
-        XCTAssertEqual(BodyMass(rawValue: emptyUnit16, unit: kilogram)!.description, "0")
+        XCTAssertEqual(BodyMass(rawValue: emptyUnit16, unit: kilogram).description, "0")
         
         XCTAssert(BodyLength(rawValue: emptyUnit16, unit: inch) == BodyLength(rawValue: emptyUnit16, unit: inch))
-        XCTAssertEqual(BodyLength(rawValue: emptyUnit16, unit: inch)?.description, "0")
+        XCTAssertEqual(BodyLength(rawValue: emptyUnit16, unit: inch).description, "0")
         
         guard let characteristic = GATTBodyCompositionMeasurement(data: data)
             else { XCTFail("Could not decode from bytes"); return }

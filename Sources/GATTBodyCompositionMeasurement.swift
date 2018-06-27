@@ -1,6 +1,6 @@
 //
 //  GATTBodyCompositionMeasurement.swift
-//  Bluetooth-macOS
+//  Bluetooth
 //
 //  Created by Jorge Loc Rubio on 6/18/18.
 //  Copyright © 2018 PureSwift. All rights reserved.
@@ -15,7 +15,7 @@ import Foundation
  */
 public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     
-    internal static let minimunLength = MemoryLayout<UInt32>.size
+    internal static let minimumLength = MemoryLayout<UInt32>.size
     
     public static var uuid: BluetoothUUID { return .bodyCompositionMeasurement }
     
@@ -143,7 +143,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     // swiftlint:disable:next cyclomatic_complexity
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minimunLength
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
@@ -563,9 +563,9 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         
         public var rawValue: UInt16
         
-        public init?(rawValue value: UInt16, unit: MassUnit) {
+        public init(rawValue: UInt16, unit: MassUnit) {
             
-            self.rawValue = value
+            self.rawValue = rawValue
             self.unit = unit
         }
     }
@@ -580,9 +580,9 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         
         public var rawValue: UInt16
         
-        public init?(rawValue value: UInt16, unit: LengthUnit) {
+        public init(rawValue: UInt16, unit: LengthUnit) {
             
-            self.rawValue = value
+            self.rawValue = rawValue
             self.unit = unit
         }
     }
@@ -597,9 +597,9 @@ public struct GATTBodyPercentage: BluetoothUnit {
     
     public var rawValue: UInt16
     
-    public init(rawValue value: UInt16) {
+    public init(rawValue: UInt16) {
         
-        self.rawValue = value
+        self.rawValue = rawValue
     }
 }
 
@@ -635,9 +635,9 @@ public struct GATTBodyEnergy: BluetoothUnit {
     
     public var rawValue: UInt16
     
-    public init(rawValue value: UInt16) {
+    public init(rawValue: UInt16) {
         
-        self.rawValue = value
+        self.rawValue = rawValue
     }
 }
 
@@ -665,9 +665,9 @@ public struct GATTBodyResistance: BluetoothUnit {
     
     public var rawValue: UInt16
     
-    public init(rawValue value: UInt16) {
+    public init(rawValue: UInt16) {
         
-        self.rawValue = value
+        self.rawValue = rawValue
     }
 }
 
