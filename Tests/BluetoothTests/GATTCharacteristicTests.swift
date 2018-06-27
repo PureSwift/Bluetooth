@@ -613,19 +613,30 @@ final class GATTCharacteristicTests: XCTestCase {
         let emptyUnit16 = UInt16(littleEndian: UInt16(bytes: (0x00, 0x00)))
         let data = Data([0x00, 0x00, 0x00, 0x00])
         
-        typealias massUnit = GATTBodyCompositionMeasurement.MassUnit
-        typealias lengthUnit = GATTBodyCompositionMeasurement.LengthUnit
+        typealias Mass = GATTBodyCompositionMeasurement.MassUnit
+        typealias Length = GATTBodyCompositionMeasurement.LengthUnit
+        typealias BodyMass = GATTBodyCompositionMeasurement.BodyMass
+        typealias BodyLength = GATTBodyCompositionMeasurement.BodyLength
         
-        let kilogram = massUnit(unit: .kilogram)
-        let pound = massUnit(unit: .pound)
-        let inch = lengthUnit(unit: .inch)
+        let kg = Mass(unit: .kilogram)
+        let mt = Length(rawValue: 0x2701)
+        let lb = Mass(unit: .pound)
+        let inc = Length(unit: .inch)
         
+        guard let kilogram = kg
+            else { XCTFail("Could not init mass"); return }
+        guard let metre = mt
+            else { XCTFail("Could not init mass"); return }
+        guard let pound = lb
+            else { XCTFail("Could not init mass"); return }
+        guard let inch = inc
+            else { XCTFail("Could not init mass"); return }
         
-        let SIMass = GATTBodyMass(rawValue: emptyUnit16, unit: massUnit(rawValue: 0x2702)!)
-        let ImperialMass = GATTBodyMass(rawValue: emptyUnit16, unit: massUnit(rawValue: 0x27B8)!)
+        let siMass = BodyMass(rawValue: emptyUnit16, unit: kilogram)
+        let imperialMass = BodyMass(rawValue: emptyUnit16, unit: pound)
         
-        let SILenght = GATTBodyLength(rawValue: emptyUnit16, unit: lengthUnit(rawValue: 0x2701)!)
-        let ImperialLenght = GATTBodyLength(rawValue: emptyUnit16, unit: lengthUnit(rawValue: 0x27A2)!)
+        let siLenght = BodyLength(rawValue: emptyUnit16, unit: metre)
+        let imperialLenght = BodyLength(rawValue: emptyUnit16, unit: inch)
         
         let Joule = GATTBodyEnergy(rawValue: emptyUnit16)
         let ohm = GATTBodyResistance(rawValue: emptyUnit16)
@@ -637,7 +648,7 @@ final class GATTCharacteristicTests: XCTestCase {
         let timeStamp = GATTDateTime(date: Date())
         let id = UInt8(bitPattern: 0x05)
         
-        let complexCharacteristic = GATTBodyCompositionMeasurement(bodyFatPercentage: percentage, massUnit: pound!, lengthUnit: inch!, timeStamp: timeStamp, userIdentifier: id, basalMetabolism: Joule, musclePercentage: integerPercentage, muscleMass: ImperialMass, fatFreeMass: ImperialMass, softLeanMass: ImperialMass, bodyWaterMass: ImperialMass, impedance: ohm, weight: ImperialMass, height: ImperialLenght)
+        let complexCharacteristic = GATTBodyCompositionMeasurement(bodyFatPercentage: percentage, massUnit: pound, lengthUnit: inch, timeStamp: timeStamp, userIdentifier: id, basalMetabolism: Joule, musclePercentage: integerPercentage, muscleMass: imperialMass, fatFreeMass: imperialMass, softLeanMass: imperialMass, bodyWaterMass: imperialMass, impedance: ohm, weight: imperialMass, height: imperialLenght)
         
         let complexData = complexCharacteristic.data
         let complexFlag = complexCharacteristic.flags
@@ -649,19 +660,19 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         XCTAssertEqual(complexCharacteristic2.data, complexData)
         
-        XCTAssertEqual(massUnit(unit: .kilogram), SIMass?.unit)
-        XCTAssertNil(massUnit(unit: .absorbedDose))
-        XCTAssertEqual(kilogram?.unit, UnitIdentifier.kilogram)
+        XCTAssertEqual(Mass(unit: .kilogram), siMass?.unit)
+        XCTAssertNil(Mass(unit: .absorbedDose))
+        XCTAssertEqual(kilogram.unit, UnitIdentifier.kilogram)
         
-        XCTAssertEqual(lengthUnit(unit: .metre), SILenght?.unit)
-        XCTAssertNil(lengthUnit(unit: .absorbedDose))
-        XCTAssertEqual(inch?.unit, UnitIdentifier.inch)
+        XCTAssertEqual(Length(unit: .metre), siLenght?.unit)
+        XCTAssertNil(Length(unit: .absorbedDose))
+        XCTAssertEqual(inch.unit, UnitIdentifier.inch)
         
-        XCTAssertEqual(massUnit.kilogram, SIMass?.unit)
-        XCTAssertEqual(massUnit.pound, ImperialMass?.unit)
+        XCTAssertEqual(Mass.kilogram, siMass?.unit)
+        XCTAssertEqual(Mass.pound, imperialMass?.unit)
         
-        XCTAssertEqual(lengthUnit.metre, SILenght?.unit)
-        XCTAssertEqual(lengthUnit.inch, ImperialLenght?.unit)
+        XCTAssertEqual(Length.metre, siLenght?.unit)
+        XCTAssertEqual(Length.inch, imperialLenght?.unit)
         
         XCTAssert(GATTBodyPercentage(rawValue: emptyUnit16) == GATTBodyPercentage(rawValue: emptyUnit16))
         XCTAssertEqual(GATTBodyPercentage(rawValue: emptyUnit16).description, "0%")
@@ -675,8 +686,11 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTBodyEnergy(rawValue: emptyUnit16).description, "0")
         XCTAssertEqual(GATTBodyEnergy.unitType, .energy)
         
-        XCTAssert(GATTBodyMass.init(rawValue: emptyUnit16, unit: kilogram!) == GATTBodyMass.init(rawValue: emptyUnit16, unit: kilogram!))
-        XCTAssertEqual(GATTBodyMass.init(rawValue: emptyUnit16, unit: kilogram!)!.description, "0")
+        XCTAssert(BodyMass(rawValue: emptyUnit16, unit: kilogram) == BodyMass(rawValue: emptyUnit16, unit: kilogram))
+        XCTAssertEqual(BodyMass(rawValue: emptyUnit16, unit: kilogram)!.description, "0")
+        
+        XCTAssert(BodyLength(rawValue: emptyUnit16, unit: inch) == BodyLength(rawValue: emptyUnit16, unit: inch))
+        XCTAssertEqual(BodyLength(rawValue: emptyUnit16, unit: inch)?.description, "0")
         
         guard let characteristic = GATTBodyCompositionMeasurement(data: data)
             else { XCTFail("Could not decode from bytes"); return }

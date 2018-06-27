@@ -91,19 +91,19 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     
     public var musclePercentage: GATTBodyPercentage?
     
-    public var muscleMass: GATTBodyMass?
+    public var muscleMass: BodyMass?
     
-    public var fatFreeMass: GATTBodyMass?
+    public var fatFreeMass: BodyMass?
     
-    public var softLeanMass: GATTBodyMass?
+    public var softLeanMass: BodyMass?
     
-    public var bodyWaterMass: GATTBodyMass?
+    public var bodyWaterMass: BodyMass?
     
     public var impedance: GATTBodyResistance?
     
-    public var weight: GATTBodyMass?
+    public var weight: BodyMass?
     
-    public var height: GATTBodyLength?
+    public var height: BodyLength?
     
     public let massUnit: MassUnit
     
@@ -116,13 +116,13 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
                 userIdentifier: UInt8? = nil,
                 basalMetabolism: GATTBodyEnergy? = nil,
                 musclePercentage: GATTBodyPercentage? = nil,
-                muscleMass: GATTBodyMass? = nil,
-                fatFreeMass: GATTBodyMass? = nil,
-                softLeanMass: GATTBodyMass? = nil,
-                bodyWaterMass: GATTBodyMass? = nil,
+                muscleMass: BodyMass? = nil,
+                fatFreeMass: BodyMass? = nil,
+                softLeanMass: BodyMass? = nil,
+                bodyWaterMass: BodyMass? = nil,
                 impedance: GATTBodyResistance? = nil,
-                weight: GATTBodyMass? = nil,
-                height: GATTBodyLength? = nil) {
+                weight: BodyMass? = nil,
+                height: BodyLength? = nil) {
         
         self.bodyFatPercentage = bodyFatPercentage
         self.timestamp = timeStamp
@@ -218,7 +218,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.muscleMass = GATTBodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
+            self.muscleMass = BodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
             
             index += MemoryLayout<UInt16>.size
         } else {
@@ -231,7 +231,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.fatFreeMass = GATTBodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
+            self.fatFreeMass = BodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
             
             index += MemoryLayout<UInt16>.size
         } else {
@@ -244,7 +244,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.softLeanMass = GATTBodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
+            self.softLeanMass = BodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
             
             index += MemoryLayout<UInt16>.size
         } else {
@@ -257,7 +257,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.bodyWaterMass = GATTBodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
+            self.bodyWaterMass = BodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
             
             index += MemoryLayout<UInt16>.size
         } else {
@@ -283,7 +283,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.weight = GATTBodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
+            self.weight = BodyMass(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: massUnit)
             
             index += MemoryLayout<UInt16>.size
         } else {
@@ -296,7 +296,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.height = GATTBodyLength(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: lengthUnit)
+            self.height = BodyLength(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))), unit: lengthUnit)
             
             index += MemoryLayout<UInt16>.size
         } else {
@@ -552,6 +552,40 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             return UnitIdentifier(rawValue: rawValue)
         }
     }
+    
+    public struct BodyMass {
+        
+        public typealias MassUnit = GATTBodyCompositionMeasurement.MassUnit
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public var unit: MassUnit
+        
+        public var rawValue: UInt16
+        
+        public init?(rawValue value: UInt16, unit: MassUnit) {
+            
+            self.rawValue = value
+            self.unit = unit
+        }
+    }
+    
+    public struct BodyLength {
+        
+        public typealias LengthUnit = GATTBodyCompositionMeasurement.LengthUnit
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public var unit: LengthUnit
+        
+        public var rawValue: UInt16
+        
+        public init?(rawValue value: UInt16, unit: LengthUnit) {
+            
+            self.rawValue = value
+            self.unit = unit
+        }
+    }
 }
 
 // MARK: - BluetoothUnits -
@@ -653,32 +687,15 @@ extension GATTBodyResistance: CustomStringConvertible {
     }
 }
 
-public struct GATTBodyMass {
+extension GATTBodyCompositionMeasurement.BodyMass: Equatable {
     
-    public typealias MassUnit = GATTBodyCompositionMeasurement.MassUnit
-    
-    internal static let length = MemoryLayout<UInt16>.size
-    
-    public var unit: MassUnit
-    
-    public var rawValue: UInt16
-    
-    public init?(rawValue value: UInt16, unit: MassUnit) {
-        
-        self.rawValue = value
-        self.unit = unit
-    }
-}
-
-extension GATTBodyMass: Equatable {
-    
-    public static func == (lhs: GATTBodyMass, rhs: GATTBodyMass) -> Bool {
+    public static func == (lhs: GATTBodyCompositionMeasurement.BodyMass, rhs: GATTBodyCompositionMeasurement.BodyMass) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension GATTBodyMass: CustomStringConvertible {
+extension GATTBodyCompositionMeasurement.BodyMass: CustomStringConvertible {
     
     public var description: String {
         
@@ -686,19 +703,18 @@ extension GATTBodyMass: CustomStringConvertible {
     }
 }
 
-public struct GATTBodyLength {
+extension GATTBodyCompositionMeasurement.BodyLength: Equatable {
     
-    public typealias LengthUnit = GATTBodyCompositionMeasurement.LengthUnit
-    
-    internal static let length = MemoryLayout<UInt16>.size
-    
-    public var unit: LengthUnit
-    
-    public var rawValue: UInt16
-    
-    public init?(rawValue value: UInt16, unit: LengthUnit) {
+    public static func == (lhs: GATTBodyCompositionMeasurement.BodyLength, rhs: GATTBodyCompositionMeasurement.BodyLength) -> Bool {
         
-        self.rawValue = value
-        self.unit = unit
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTBodyCompositionMeasurement.BodyLength: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
     }
 }
