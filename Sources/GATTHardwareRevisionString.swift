@@ -8,6 +8,13 @@
 
 import Foundation
 
+/**
+ Hardware Revision String
+ 
+ [Hardware Revision String](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.hardware_revision_string.xml)
+ 
+ The value of this characteristic is a UTF-8 string representing the hardware revision for the hardware within the device.
+ */
 public struct GATTHardwareRevisionString: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .hardwareRevisionString }

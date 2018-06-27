@@ -9,9 +9,9 @@
 import Foundation
 
 /**
- GATTSerialNumberString
+ Serial Number String
  
- [GATTSerialNumberString](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.serial_number_string.xml)
+ [Serial Number String](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.serial_number_string.xml)
  
  The value of this characteristic is a variable-length UTF-8 string representing the serial number for a particular instance of the device.
  */
