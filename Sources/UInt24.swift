@@ -41,9 +41,9 @@ extension UInt24: Equatable {
     
     public static func == (lhs: UInt24, rhs: UInt24) -> Bool {
         
-        return lhs.bytes.0 == rhs.bytes.0 &&
-            lhs.bytes.1 == rhs.bytes.1 &&
-            lhs.bytes.2 == rhs.bytes.2
+        return lhs.bytes.0 == rhs.bytes.0
+            && lhs.bytes.1 == rhs.bytes.1
+            && lhs.bytes.2 == rhs.bytes.2
     }
 }
 
@@ -66,8 +66,8 @@ extension UInt24: CustomStringConvertible {
         let bytes = self.bigEndian.bytes
         
         return bytes.0.toHexadecimal()
-            + bytes.1.toHexadecimal()
-            + bytes.2.toHexadecimal()
+             + bytes.1.toHexadecimal()
+             + bytes.2.toHexadecimal()
     }
 }
 
@@ -123,7 +123,7 @@ public extension UInt24 {
         
         let bytes = value.bigEndian.bytes
         
-        self = UInt24(bigEndian: UInt24(bytes: (bytes.0, bytes.1, bytes.2)))
+        self = UInt24(bigEndian: UInt24(bytes: (bytes.1, bytes.2, bytes.3)))
     }
 }
 

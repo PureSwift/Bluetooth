@@ -127,7 +127,7 @@ public extension UInt40 {
         
         let bytes = value.bigEndian.bytes
         
-        self = UInt40(bigEndian: UInt40(bytes: (bytes.0, bytes.1, bytes.2, bytes.3, bytes.4)))
+        self = UInt40(bigEndian: UInt40(bytes: (bytes.3, bytes.4, bytes.5, bytes.6, bytes.7)))
     }
 }
 
