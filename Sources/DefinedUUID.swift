@@ -372,6 +372,7 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2ac6: "Object List Control Point",
     0x2ac7: "Object List Filter",
     0x2ac8: "Object Changed",
+    0x2ace: "Cross Trainer Data",
     /* vendor defined */
     0xfeff: "GN Netcom",
     0xfefe: "GN ReSound A/S",
