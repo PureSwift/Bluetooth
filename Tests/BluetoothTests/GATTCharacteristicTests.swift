@@ -48,7 +48,9 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testSoftwareRevisionString", testSoftwareRevisionString),
         ("testManufacturerNameString", testManufacturerNameString),
         ("testPnPID", testPnPID),
-        ("testSystemID", testSystemID)
+        ("testSystemID", testSystemID),
+        ("testHardwareRevisionString", testHardwareRevisionString),
+        ("testSerialNumberString", testSerialNumberString)
     ]
     
     func testDateTime() {
@@ -763,6 +765,34 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "bluetooth")
         XCTAssertEqual(GATTSoftwareRevisionString.uuid, .softwareRevisionString)
         XCTAssertEqual(GATTSoftwareRevisionString(data: data), "bluetooth")
+    }
+    
+    func testHardwareRevisionString() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTHardwareRevisionString(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTHardwareRevisionString.uuid, .hardwareRevisionString)
+        XCTAssertEqual(GATTHardwareRevisionString(data: data), "bluetooth")
+    }
+    
+    func testSerialNumberString() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTSerialNumberString(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTSerialNumberString.uuid, .serialNumberString)
+        XCTAssertEqual(GATTSerialNumberString(data: data), "bluetooth")
     }
     
     func testManufacturerNameString() {
