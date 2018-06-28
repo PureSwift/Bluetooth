@@ -837,20 +837,34 @@ final class GATTCharacteristicTests: XCTestCase {
         
         do {
             
-            let data = Data()
+            /**
+             If the system ID is based of a Bluetooth Device Address with a Company Identifier (OUI) is 0x123456 and the Company Assigned Identifier is 0x9ABCDE, then the System Identifier is required to be 0x123456FFFE9ABCDE.
+             */
+            
+            let data = Data([0x56, 0x34, 0x12, 0xDE, 0xBC, 0x9A, 0xFE, 0xFF])
             
             let manufacturerIdentifier: UInt40 = 0xFFFE9ABCDE
             let organizationallyUniqueIdentifier: UInt24 = 0x123456
             
+            let characteristic = GATTSystemID(manufacturerIdentifier: manufacturerIdentifier,
+                                              organizationallyUniqueIdentifier: organizationallyUniqueIdentifier)
+                        
+            XCTAssertEqual(characteristic.manufacturerIdentifier, manufacturerIdentifier)
+            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, organizationallyUniqueIdentifier)
+            XCTAssertEqual(characteristic.description, "123456FFFE9ABCDE")
+            XCTAssertEqual(characteristic, GATTSystemID(data: data))
+        }
+        
+        do {
+            let data = Data([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+            
             guard let characteristic = GATTSystemID(data: data)
                 else { XCTFail("Could not decode from bytes"); return }
             
-            // If the system ID is based of a Bluetooth Device Address with a Company Identifier (OUI)
-            // is 0x123456 and the Company Assigned Identifier is 0x9ABCDE,
-            // then the System Identifier is required to be 0x123456FFFE9ABCDE.
-            XCTAssertEqual(characteristic.manufacturerIdentifier, manufacturerIdentifier)
-            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, organizationallyUniqueIdentifier)
-            XCTAssertEqual(characteristic, GATTSystemID(manufacturerIdentifier: manufacturerIdentifier, organizationallyUniqueIdentifier: organizationallyUniqueIdentifier))
+            XCTAssertEqual(characteristic.manufacturerIdentifier, 0x0000000000000000)
+            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 0x0000000000000000)
+            XCTAssertEqual(characteristic.description, "0000000000000000")
+            XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
         }
         
         do {
@@ -861,19 +875,8 @@ final class GATTCharacteristicTests: XCTestCase {
             
             XCTAssertEqual(characteristic.manufacturerIdentifier, 1099511627775)
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 16777215)
+            XCTAssertEqual(characteristic.description, "FFFFFFFFFFFFFFFF")
             XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
-        }
-        
-        do {
-            let data = Data([0xf0, 0x00, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00])
-            
-            guard let characteristic = GATTSystemID(data: data)
-                else { XCTFail("Could not decode from bytes"); return }
-            
-            XCTAssertEqual(characteristic.manufacturerIdentifier, 240)
-            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 40)
-            XCTAssertEqual(characteristic.description, "240 40")
-            XCTAssertEqual(characteristic.data, data)
         }
     }
 }
