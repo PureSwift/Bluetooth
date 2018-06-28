@@ -25,36 +25,36 @@ public struct GATTSystemID: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .systemId }
     
-    internal static let length = MemoryLayout<UInt64>.size
+    internal static let length = UInt40.length + UInt24.length
     
-    public static let maxManufacturerIdentifier: UInt64 = 1099511627775
+    public var manufacturerIdentifier: UInt40
     
-    public static let maxOrganizationallyUniqueIdentifier: UInt32 = 16777215
+    public var organizationallyUniqueIdentifier: UInt24
     
-    public var manufacturerIdentifier: UInt64 // uses 40 bits
-    
-    public var organizationallyUniqueIdentifier: UInt32 // uses 24 bits
-    
-    public init?(manufacturerIdentifier: UInt64, organizationallyUniqueIdentifier: UInt32) {
-        
-        guard manufacturerIdentifier <= type(of: self).maxManufacturerIdentifier,
-            organizationallyUniqueIdentifier <= type(of: self).maxOrganizationallyUniqueIdentifier
-            else { return nil }
+    public init(manufacturerIdentifier: UInt40,
+                organizationallyUniqueIdentifier: UInt24) {
         
         self.manufacturerIdentifier = manufacturerIdentifier
         self.organizationallyUniqueIdentifier = organizationallyUniqueIdentifier
     }
+    
+    /*
+    public init(address: Bluetooth.Address, organizationallyUniqueIdentifier: UInt24) {
+        
+        
+    }*/
     
     public init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
         
-        let manufacturerIdentifier = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], 0, 0, 0)))
+        let manufacturerIdentifier = UInt40(littleEndian: UInt40(bytes: (data[0], data[1], data[2], data[3], data[4])))
         
-        let organizationallyUniqueIdentifier = UInt32(littleEndian: UInt32(bytes: (data[5], data[6], data[7], 0)))
+        let organizationallyUniqueIdentifier = UInt24(littleEndian: UInt24(bytes: (data[5], data[6], data[7])))
         
-        self.init(manufacturerIdentifier: manufacturerIdentifier, organizationallyUniqueIdentifier: organizationallyUniqueIdentifier)
+        self.init(manufacturerIdentifier: manufacturerIdentifier,
+                  organizationallyUniqueIdentifier: organizationallyUniqueIdentifier)
     }
     
     public var data: Data {
@@ -63,24 +63,57 @@ public struct GATTSystemID: GATTCharacteristic {
         
         let organizationallyUniqueBytes = organizationallyUniqueIdentifier.littleEndian.bytes
         
-        return Data([manufacturerBytes.0, manufacturerBytes.1, manufacturerBytes.2, manufacturerBytes.3, manufacturerBytes.4,
-                     organizationallyUniqueBytes.0, organizationallyUniqueBytes.1, organizationallyUniqueBytes.2])
+        return Data([
+            manufacturerBytes.0,
+            manufacturerBytes.1,
+            manufacturerBytes.2,
+            manufacturerBytes.3,
+            manufacturerBytes.4,
+            organizationallyUniqueBytes.0,
+            organizationallyUniqueBytes.1,
+            organizationallyUniqueBytes.2
+            ])
     }
 }
+
+// MARK: - Equatable
 
 extension GATTSystemID: Equatable {
     
     public static func == (lhs: GATTSystemID, rhs: GATTSystemID) -> Bool {
         
-        return lhs.manufacturerIdentifier == rhs.manufacturerIdentifier &&
-                lhs.organizationallyUniqueIdentifier == rhs.organizationallyUniqueIdentifier
+        return lhs.manufacturerIdentifier == rhs.manufacturerIdentifier
+            && lhs.organizationallyUniqueIdentifier == rhs.organizationallyUniqueIdentifier
     }
 }
+
+// MARK: - Hashable
+
+extension GATTSystemID: Hashable {
+    
+    public var hashValue: Int {
+        
+        let manufacturerIdentifierBytes = manufacturerIdentifier.bigEndian.bytes
+        
+        let organizationallyUniqueIdentifierBytes = organizationallyUniqueIdentifier.bigEndian.bytes
+        
+        return UInt64(bigEndian: UInt64(bytes: (manufacturerIdentifierBytes.0,
+                                                manufacturerIdentifierBytes.1,
+                                                manufacturerIdentifierBytes.2,
+                                                manufacturerIdentifierBytes.3,
+                                                manufacturerIdentifierBytes.4,
+                                                organizationallyUniqueIdentifierBytes.0,
+                                                organizationallyUniqueIdentifierBytes.1,
+                                                organizationallyUniqueIdentifierBytes.2))).hashValue
+    }
+}
+
+// MARK: - CustomStringConvertible
 
 extension GATTSystemID: CustomStringConvertible {
     
     public var description: String {
         
-        return "\(manufacturerIdentifier.description) \(organizationallyUniqueIdentifier.description)"
+        return manufacturerIdentifier.description + organizationallyUniqueIdentifier.description
     }
 }
