@@ -841,7 +841,7 @@ final class GATTCharacteristicTests: XCTestCase {
              If the system ID is based of a Bluetooth Device Address with a Company Identifier (OUI) is 0x123456 and the Company Assigned Identifier is 0x9ABCDE, then the System Identifier is required to be 0x123456FFFE9ABCDE.
              */
             
-            let data = Data([0x56, 0x34, 0x12, 0xDE, 0xBC, 0x9A, 0xFE, 0xFF])
+            let data = Data([0x12, 0x34, 0x56, 0xFF, 0xFE, 0x9A, 0xBC, 0xDE].reversed())
             
             let manufacturerIdentifier: UInt40 = 0xFFFE9ABCDE
             let organizationallyUniqueIdentifier: UInt24 = 0x123456
