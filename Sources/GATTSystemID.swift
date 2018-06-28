@@ -21,21 +21,49 @@ import Foundation
  
     The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet.
  */
-public struct GATTSystemID: GATTCharacteristic {
+public struct GATTSystemID: GATTCharacteristic, RawRepresentable {
     
     public static var uuid: BluetoothUUID { return .systemId }
     
-    internal static let length = UInt40.length + UInt24.length
+    internal static let length = MemoryLayout<UInt64>.size
     
-    public var manufacturerIdentifier: UInt40
+    public var rawValue: UInt64
     
-    public var organizationallyUniqueIdentifier: UInt24
+    public init(rawValue: UInt64) {
+        
+        self.rawValue = rawValue
+    }
     
     public init(manufacturerIdentifier: UInt40,
                 organizationallyUniqueIdentifier: UInt24) {
         
-        self.manufacturerIdentifier = manufacturerIdentifier
-        self.organizationallyUniqueIdentifier = organizationallyUniqueIdentifier
+        let manufacturerIdentifierBytes = manufacturerIdentifier.bigEndian.bytes
+        
+        let organizationallyUniqueIdentifierBytes = organizationallyUniqueIdentifier.bigEndian.bytes
+        
+        self.rawValue = UInt64(bigEndian: UInt64(bytes: (organizationallyUniqueIdentifierBytes.0,
+                                                        organizationallyUniqueIdentifierBytes.1,
+                                                        organizationallyUniqueIdentifierBytes.2,
+                                                        manufacturerIdentifierBytes.0,
+                                                        manufacturerIdentifierBytes.1,
+                                                        manufacturerIdentifierBytes.2,
+                                                        manufacturerIdentifierBytes.3,
+                                                        manufacturerIdentifierBytes.4
+                                                        )))
+    }
+    
+    public var manufacturerIdentifier: UInt40 {
+        
+        let bytes = rawValue.bigEndian.bytes
+        
+        return UInt40(bigEndian: UInt40(bytes: (bytes.3, bytes.4, bytes.5, bytes.6, bytes.7)))
+    }
+    
+    public var organizationallyUniqueIdentifier: UInt24 {
+        
+        let bytes = rawValue.bigEndian.bytes
+        
+        return UInt24(bigEndian: UInt24(bytes: (bytes.0, bytes.1, bytes.2)))
     }
     
     /*
@@ -49,29 +77,24 @@ public struct GATTSystemID: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let manufacturerIdentifier = UInt40(littleEndian: UInt40(bytes: (data[0], data[1], data[2], data[3], data[4])))
+        let rawValue = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
         
-        let organizationallyUniqueIdentifier = UInt24(littleEndian: UInt24(bytes: (data[5], data[6], data[7])))
-        
-        self.init(manufacturerIdentifier: manufacturerIdentifier,
-                  organizationallyUniqueIdentifier: organizationallyUniqueIdentifier)
+        self.init(rawValue: rawValue)
     }
     
     public var data: Data {
         
-        let manufacturerBytes = manufacturerIdentifier.littleEndian.bytes
-        
-        let organizationallyUniqueBytes = organizationallyUniqueIdentifier.littleEndian.bytes
+        let bytes = rawValue.littleEndian.bytes
         
         return Data([
-            manufacturerBytes.0,
-            manufacturerBytes.1,
-            manufacturerBytes.2,
-            manufacturerBytes.3,
-            manufacturerBytes.4,
-            organizationallyUniqueBytes.0,
-            organizationallyUniqueBytes.1,
-            organizationallyUniqueBytes.2
+            bytes.0,
+            bytes.1,
+            bytes.2,
+            bytes.3,
+            bytes.4,
+            bytes.5,
+            bytes.6,
+            bytes.7
             ])
     }
 }
@@ -82,8 +105,7 @@ extension GATTSystemID: Equatable {
     
     public static func == (lhs: GATTSystemID, rhs: GATTSystemID) -> Bool {
         
-        return lhs.manufacturerIdentifier == rhs.manufacturerIdentifier
-            && lhs.organizationallyUniqueIdentifier == rhs.organizationallyUniqueIdentifier
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -93,18 +115,7 @@ extension GATTSystemID: Hashable {
     
     public var hashValue: Int {
         
-        let manufacturerIdentifierBytes = manufacturerIdentifier.bigEndian.bytes
-        
-        let organizationallyUniqueIdentifierBytes = organizationallyUniqueIdentifier.bigEndian.bytes
-        
-        return UInt64(bigEndian: UInt64(bytes: (manufacturerIdentifierBytes.0,
-                                                manufacturerIdentifierBytes.1,
-                                                manufacturerIdentifierBytes.2,
-                                                manufacturerIdentifierBytes.3,
-                                                manufacturerIdentifierBytes.4,
-                                                organizationallyUniqueIdentifierBytes.0,
-                                                organizationallyUniqueIdentifierBytes.1,
-                                                organizationallyUniqueIdentifierBytes.2))).hashValue
+        return rawValue.hashValue
     }
 }
 
@@ -114,6 +125,6 @@ extension GATTSystemID: CustomStringConvertible {
     
     public var description: String {
         
-        return manufacturerIdentifier.description + organizationallyUniqueIdentifier.description
+        return rawValue.bigEndian.toHexadecimal()
     }
 }
