@@ -830,7 +830,28 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testSystemID() {
         
+        XCTAssertNil(GATTSystemID(data: Data([])))
+        XCTAssertNil(GATTSystemID(data: Data([0xff])))
         XCTAssertNil(GATTSystemID(data: Data([0xff, 0xff])))
+        XCTAssertNil(GATTSystemID(data: Data([0xff, 0xff, 0xff])))
+        
+        do {
+            
+            let data = Data()
+            
+            let manufacturerIdentifier: UInt40 = 0xFFFE9ABCDE
+            let organizationallyUniqueIdentifier: UInt24 = 0x123456
+            
+            guard let characteristic = GATTSystemID(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            // If the system ID is based of a Bluetooth Device Address with a Company Identifier (OUI)
+            // is 0x123456 and the Company Assigned Identifier is 0x9ABCDE,
+            // then the System Identifier is required to be 0x123456FFFE9ABCDE.
+            XCTAssertEqual(characteristic.manufacturerIdentifier, manufacturerIdentifier)
+            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, organizationallyUniqueIdentifier)
+            XCTAssertEqual(characteristic, GATTSystemID(manufacturerIdentifier: manufacturerIdentifier, organizationallyUniqueIdentifier: organizationallyUniqueIdentifier))
+        }
         
         do {
             let data = Data([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
