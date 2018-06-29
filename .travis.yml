@@ -33,5 +33,5 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-iOS ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS ; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS ; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS ; fi
