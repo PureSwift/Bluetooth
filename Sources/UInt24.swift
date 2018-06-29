@@ -129,7 +129,7 @@ public extension UInt24 {
 
 public extension UInt32 {
     
-    /// Initialize from a unsigned 40-bit integer.
+    /// Initialize from a unsigned 24-bit integer.
     init(_ value: UInt24) {
         
         let bytes = value.bigEndian.bytes
