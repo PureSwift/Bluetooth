@@ -125,6 +125,6 @@ extension GATTSystemID: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue.bigEndian.toHexadecimal()
+        return rawValue.toHexadecimal()
     }
 }
