@@ -11,15 +11,9 @@ import Foundation
 /**
  System ID
  
- The SYSTEM ID characteristic consists of a structure with two fields. The first field are the LSOs and the second field contains the MSOs. This is a 64-bit structure which consists of a 40-bit manufacturer-defined identifier concatenated with a 24 bit unique Organizationally Unique Identifier (OUI). The OUI is issued by the IEEE Registration Authority (http://standards.ieee.org/regauth/index.html) and is required to be used in accordance with IEEE Standard 802-2001.6 while the least significant 40 bits are manufacturer defined.
- 
- If System ID generated based on a Bluetooth Device Address, it is required to be done as follows. System ID and the Bluetooth Device Address have a very similar structure: a Bluetooth Device Address is 48 bits in length and consists of a 24 bit Company Assigned Identifier (manufacturer defined identifier) concatenated with a 24 bit Company Identifier (OUI). In order to encapsulate a Bluetooth Device Address as System ID, the Company Identifier is concatenated with 0xFFFE followed by the Company Assigned Identifier of the Bluetooth Address. For more guidelines related to EUI-64, refer to http://standards.ieee.org/develop/regauth/tut/eui64.pdf.
+ The SYSTEM ID characteristic consists of a structure with two fields. The first field are the LSOs and the second field contains the MSOs. This is a 64-bit structure which consists of a 40-bit manufacturer-defined identifier concatenated with a 24 bit unique Organizationally Unique Identifier (OUI). The OUI is issued by the [IEEE Registration Authority](http://standards.ieee.org/regauth/index.html) and is required to be used in accordance with IEEE Standard 802-2001.6 while the least significant 40 bits are manufacturer defined.
  
  [System ID](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.system_id.xml)
- 
- - Note:
- 
-    The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet.
  */
 public struct GATTSystemID: GATTCharacteristic, RawRepresentable {
     
@@ -66,11 +60,29 @@ public struct GATTSystemID: GATTCharacteristic, RawRepresentable {
         return UInt24(bigEndian: UInt24(bytes: (bytes.0, bytes.1, bytes.2)))
     }
     
-    /*
-    public init(address: Bluetooth.Address, organizationallyUniqueIdentifier: UInt24) {
+    /// Initialize a System ID based on a Bluetooth Device Address.
+    public init(address: Bluetooth.Address) {
         
+        /**
+         If System ID generated based on a Bluetooth Device Address, it is required to be done as follows. System ID and the Bluetooth Device Address have a very similar structure: a Bluetooth Device Address is 48 bits in length and consists of a 24 bit Company Assigned Identifier (manufacturer defined identifier) concatenated with a 24 bit Company Identifier (OUI). In order to encapsulate a Bluetooth Device Address as System ID, the Company Identifier is concatenated with 0xFFFE followed by the Company Assigned Identifier of the Bluetooth Address.
+         
+         Example:
+         If the system ID is based of a Bluetooth Device Address with a Company Identifier (OUI) is 0x123456 and the Company Assigned Identifier is 0x9ABCDE, then the System Identifier is required to be 0x123456FFFE9ABCDE
+         */
         
-    }*/
+        let manufacturerIdentifierPrefix = UInt16(0xFFFE).bigEndian.bytes
+        
+        let addressBytes = address.bigEndian.bytes
+        
+        self.rawValue = UInt64(bigEndian: UInt64(bytes: (addressBytes.0,
+                                                         addressBytes.1,
+                                                         addressBytes.2,
+                                                         manufacturerIdentifierPrefix.0,
+                                                         manufacturerIdentifierPrefix.1,
+                                                         addressBytes.3,
+                                                         addressBytes.4,
+                                                         addressBytes.5)))
+    }
     
     public init?(data: Data) {
         
