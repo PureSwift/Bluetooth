@@ -830,6 +830,8 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testSystemID() {
         
+        XCTAssertEqual(GATTSystemID.uuid, .systemId)
+        
         XCTAssertNil(GATTSystemID(data: Data([])))
         XCTAssertNil(GATTSystemID(data: Data([0xff])))
         XCTAssertNil(GATTSystemID(data: Data([0xff, 0xff])))
@@ -843,6 +845,7 @@ final class GATTCharacteristicTests: XCTestCase {
             
             let data = Data([0x12, 0x34, 0x56, 0xFF, 0xFE, 0x9A, 0xBC, 0xDE].reversed())
             
+            let address = Address(rawValue: "12:34:56:9A:BC:DE")!
             let manufacturerIdentifier: UInt40 = 0xFFFE9ABCDE
             let organizationallyUniqueIdentifier: UInt24 = 0x123456
             
@@ -852,7 +855,11 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.manufacturerIdentifier, manufacturerIdentifier)
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, organizationallyUniqueIdentifier)
             XCTAssertEqual(characteristic.description, "123456FFFE9ABCDE")
+            XCTAssertEqual(characteristic.rawValue, 0x123456FFFE9ABCDE)
+            XCTAssertEqual(characteristic.hashValue, 0x123456FFFE9ABCDE)
+            XCTAssertEqual(characteristic.data, data)
             XCTAssertEqual(characteristic, GATTSystemID(data: data))
+            XCTAssertEqual(characteristic, GATTSystemID(address: address))
         }
         
         do {
@@ -864,6 +871,8 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.manufacturerIdentifier, 0x0000000000000000)
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 0x0000000000000000)
             XCTAssertEqual(characteristic.description, "0000000000000000")
+            XCTAssertEqual(characteristic.rawValue, 0x0000000000000000)
+            XCTAssertEqual(characteristic.hashValue, Int(bitPattern: UInt.min))
             XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
         }
         
@@ -876,6 +885,8 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.manufacturerIdentifier, 1099511627775)
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 16777215)
             XCTAssertEqual(characteristic.description, "FFFFFFFFFFFFFFFF")
+            XCTAssertEqual(characteristic.rawValue, 0xFFFFFFFFFFFFFFFF)
+            XCTAssertEqual(characteristic.hashValue, Int(bitPattern: UInt.max))
             XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
         }
     }
