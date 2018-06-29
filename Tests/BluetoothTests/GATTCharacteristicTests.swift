@@ -872,7 +872,7 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 0x0000000000000000)
             XCTAssertEqual(characteristic.description, "0000000000000000")
             XCTAssertEqual(characteristic.rawValue, 0x0000000000000000)
-            XCTAssertEqual(characteristic.hashValue, Int(bitPattern: UInt.min))
+            XCTAssertEqual(characteristic.hashValue, UInt64.min.hashValue)
             XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
         }
         
@@ -886,7 +886,7 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 16777215)
             XCTAssertEqual(characteristic.description, "FFFFFFFFFFFFFFFF")
             XCTAssertEqual(characteristic.rawValue, 0xFFFFFFFFFFFFFFFF)
-            XCTAssertEqual(characteristic.hashValue, Int(bitPattern: UInt.max))
+            XCTAssertEqual(characteristic.hashValue, UInt64.max.hashValue)
             XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
         }
     }
