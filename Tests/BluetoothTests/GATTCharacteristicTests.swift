@@ -904,5 +904,6 @@ final class GATTCharacteristicTests: XCTestCase {
         let configurations: BitMaskOptionSet<Configuration> = [.coordinates, .coordinateSystemUsed, .txPowerField, .altitudeField, .floorNumber, .locationName]
         XCTAssertEqual(characteristic.data, data)
         XCTAssertEqual(characteristic.configurations, configurations, "The value 0x03 is interpreted as “Simple Alert and Email bits set")
+        XCTAssertEqual(GATTIndoorPositioningConfiguration.uuid, .indoorPositioningConfiguration)
     }
 }
