@@ -1,5 +1,5 @@
 //
-//  GATTLongitud.swift
+//  GATTLatitude.swift
 //  Bluetooth
 //
 //  Created by Carlos Duclos on 7/3/18.
