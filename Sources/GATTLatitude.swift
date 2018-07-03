@@ -13,7 +13,7 @@ import Foundation
  
  The Latitude characteristic describes the WGS84 North coordinate of the device.
  
- - SeeAlso: [Altitude](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.latitude.xml)
+ - SeeAlso: [Latitude](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.latitude.xml)
  */
 public struct GATTLatitude: RawRepresentable, GATTCharacteristic {
     

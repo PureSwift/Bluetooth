@@ -13,7 +13,7 @@ import Foundation
  
  The Local North characteristic describes the North coordinate of the device using local coordinate system.
  
- - SeeAlso: [](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.local_north_coordinate.xml)
+ - SeeAlso: [Local North Coordinate](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.local_north_coordinate.xml)
  */
 public struct GATTLocalNorthCoordinate: RawRepresentable, GATTCharacteristic {
     
