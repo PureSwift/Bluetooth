@@ -11,7 +11,7 @@ import Foundation
 /**
  Indoor Positioning Configuration
  
- Description
+ The Indoor Positioning Configuration describes the set of characteristic values included in the Indoor Positioning Service AD type.
  
  - SeeAlso: [Indoor Positioning Configuration](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.indoor_positioning_configuration.xml)
  */
