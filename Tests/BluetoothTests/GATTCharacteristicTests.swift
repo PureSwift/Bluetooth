@@ -50,7 +50,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testPnPID", testPnPID),
         ("testSystemID", testSystemID),
         ("testHardwareRevisionString", testHardwareRevisionString),
-        ("testSerialNumberString", testSerialNumberString)
+        ("testSerialNumberString", testSerialNumberString),
+        ("testIndoorPositioningConfiguration", testIndoorPositioningConfiguration)
     ]
     
     func testDateTime() {
@@ -889,5 +890,20 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.hashValue, UInt64.max.hashValue)
             XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
         }
+    }
+    
+    func testIndoorPositioningConfiguration() {
+        
+        typealias Configuration = GATTIndoorPositioningConfiguration.Configuration
+        
+        let data = Data([0b00111111])
+        
+        guard let characteristic = GATTIndoorPositioningConfiguration(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        let configurations: BitMaskOptionSet<Configuration> = [.coordinates, .coordinateSystemUsed, .txPowerField, .altitudeField, .floorNumber, .locationName]
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.configurations, configurations, "The value 0x03 is interpreted as “Simple Alert and Email bits set")
+        XCTAssertEqual(GATTIndoorPositioningConfiguration.uuid, .indoorPositioningConfiguration)
     }
 }
