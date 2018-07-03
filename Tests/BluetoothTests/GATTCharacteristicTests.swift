@@ -957,4 +957,20 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTLocalNorthCoordinate.uuid, .localNorthCoordinate)
         XCTAssertEqual(GATTLocalNorthCoordinate(data: data), GATTLocalNorthCoordinate(data: data))
     }
+    
+    func testLocalEastCoordinate() {
+        
+        let data = Data([0xEA, 0x00])
+        let localEastCoordinate = Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        
+        guard let characteristic = GATTLocalEastCoordinate(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic, 234)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, localEastCoordinate)
+        XCTAssertEqual(characteristic.description, "234")
+        XCTAssertEqual(GATTLocalEastCoordinate.uuid, .localEastCoordinate)
+        XCTAssertEqual(GATTLocalEastCoordinate(data: data), GATTLocalEastCoordinate(data: data))
+    }
 }
