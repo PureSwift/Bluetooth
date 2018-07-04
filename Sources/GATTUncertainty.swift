@@ -9,11 +9,11 @@
 import Foundation
 
 /**
- Location Name
+ Uncertainty
  
- The Location Name characteristic describes the name of the location the device is installed in.
+ The Uncertainty characteristic describes the uncertainty of the location information the device exposes.
  
- - SeeAlso: [Location Name](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.location_name.xml)
+ - SeeAlso: [Uncertainty](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.uncertainty.xml)
  */
 public struct GATTUncertainty: GATTCharacteristic {
     
