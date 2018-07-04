@@ -8,6 +8,13 @@
 
 import Foundation
 
+/**
+ Location Name
+ 
+ The Location Name characteristic describes the name of the location the device is installed in.
+ 
+ - SeeAlso: [Location Name](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.location_name.xml)
+ */
 public struct GATTUncertainty: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
