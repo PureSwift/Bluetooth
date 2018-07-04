@@ -56,7 +56,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testLongitude", testLongitude),
         ("testLocalNorthCoordinate", testLocalNorthCoordinate),
         ("testFloorNumber", testFloorNumber),
-        ("testUncertainty", testUncertainty)
+        ("testUncertainty", testUncertainty),
+        ("testLocationName", testLocationName)
     ]
     
     func testDateTime() {
@@ -1004,5 +1005,19 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.precision, .unknown)
         XCTAssertEqual(GATTUncertainty.uuid, .uncertainty)
         XCTAssertEqual(GATTUncertainty(data: data), GATTUncertainty(data: data))
+    }
+    
+    func testLocationName() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTLocationName(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTLocationName.uuid, .locationName)
+        XCTAssertEqual(GATTLocationName(data: data), "bluetooth")
     }
 }
