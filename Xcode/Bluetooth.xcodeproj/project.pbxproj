@@ -269,6 +269,10 @@
 		35386B5A20EC30FA0016D662 /* GATTLocalEastCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386B5820EC30FA0016D662 /* GATTLocalEastCoordinate.swift */; };
 		35386B5B20EC30FA0016D662 /* GATTLocalEastCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386B5820EC30FA0016D662 /* GATTLocalEastCoordinate.swift */; };
 		35386B5C20EC30FA0016D662 /* GATTLocalEastCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386B5820EC30FA0016D662 /* GATTLocalEastCoordinate.swift */; };
+		35386B7620ED0F340016D662 /* GATTFloorNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386B7520ED0F340016D662 /* GATTFloorNumber.swift */; };
+		35386B7720ED0F340016D662 /* GATTFloorNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386B7520ED0F340016D662 /* GATTFloorNumber.swift */; };
+		35386B7820ED0F340016D662 /* GATTFloorNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386B7520ED0F340016D662 /* GATTFloorNumber.swift */; };
+		35386B7920ED0F340016D662 /* GATTFloorNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386B7520ED0F340016D662 /* GATTFloorNumber.swift */; };
 		353AE90420EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353AE90320EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift */; };
 		353AE90520EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353AE90320EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift */; };
 		353AE90620EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353AE90320EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift */; };
@@ -1474,6 +1478,7 @@
 		35386B4E20EC15FC0016D662 /* GATTLongitude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTLongitude.swift; sourceTree = "<group>"; };
 		35386B5320EC17600016D662 /* GATTLocalNorthCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTLocalNorthCoordinate.swift; sourceTree = "<group>"; };
 		35386B5820EC30FA0016D662 /* GATTLocalEastCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTLocalEastCoordinate.swift; sourceTree = "<group>"; };
+		35386B7520ED0F340016D662 /* GATTFloorNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTFloorNumber.swift; sourceTree = "<group>"; };
 		353AE90320EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTIndoorPositioningConfiguration.swift; sourceTree = "<group>"; };
 		353FF03C20DB22EF005B0A1F /* GATTCGMSessionRunTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTCGMSessionRunTime.swift; sourceTree = "<group>"; };
 		354FB03A20DC49BC0081B964 /* GATTSystemID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTSystemID.swift; sourceTree = "<group>"; };
@@ -1907,6 +1912,7 @@
 				35386B4E20EC15FC0016D662 /* GATTLongitude.swift */,
 				35386B5320EC17600016D662 /* GATTLocalNorthCoordinate.swift */,
 				35386B5820EC30FA0016D662 /* GATTLocalEastCoordinate.swift */,
+				35386B7520ED0F340016D662 /* GATTFloorNumber.swift */,
 			);
 			name = Characteristics;
 			sourceTree = "<group>";
@@ -2999,6 +3005,7 @@
 				6E49B25920532D45002EA5DC /* LowEnergyAddressType.swift in Sources */,
 				6E49B25A20532D45002EA5DC /* CompanyIdentifier.swift in Sources */,
 				6E49B25B20532D45002EA5DC /* BluetoothUUID.swift in Sources */,
+				35386B7920ED0F340016D662 /* GATTFloorNumber.swift in Sources */,
 				6EFB3D7A20D2D6CF00364CA0 /* LowEnergyPacketPayload.swift in Sources */,
 				6E60A30420695CC600E42351 /* GATTClient.swift in Sources */,
 				355BC2D920D33FA1001A07D3 /* HCILEReadPhy.swift in Sources */,
@@ -3341,6 +3348,7 @@
 				6E572AD71FCE763C00CDC763 /* LowEnergyAddressType.swift in Sources */,
 				6E3229161FCDD6430035605D /* CompanyIdentifier.swift in Sources */,
 				6EB2EA141CD5A8A7000CF975 /* BluetoothUUID.swift in Sources */,
+				35386B7820ED0F340016D662 /* GATTFloorNumber.swift in Sources */,
 				6EFB3D7920D2D6CF00364CA0 /* LowEnergyPacketPayload.swift in Sources */,
 				6E60A30320695CC600E42351 /* GATTClient.swift in Sources */,
 				355BC2D820D33FA1001A07D3 /* HCILEReadPhy.swift in Sources */,
@@ -3563,6 +3571,7 @@
 				355BC2F420D3418A001A07D3 /* HCILEWriteRfPathCompensation.swift in Sources */,
 				6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E6AADB020D21FD800DDE1CA /* HCILESetEventMask.swift in Sources */,
+				35386B7620ED0F340016D662 /* GATTFloorNumber.swift in Sources */,
 				6E069B7320E4FEE700669B76 /* UInt40.swift in Sources */,
 				355BC1FA20D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift in Sources */,
 				351829DB20D22DDF0009F82D /* GAPLERole.swift in Sources */,
@@ -4061,6 +4070,7 @@
 				6E572AD61FCE763B00CDC763 /* LowEnergyAddressType.swift in Sources */,
 				6E3229151FCDD6420035605D /* CompanyIdentifier.swift in Sources */,
 				6EF45FB41CC6D04D001F7A39 /* BluetoothUUID.swift in Sources */,
+				35386B7720ED0F340016D662 /* GATTFloorNumber.swift in Sources */,
 				6EFB3D7820D2D6CF00364CA0 /* LowEnergyPacketPayload.swift in Sources */,
 				6E60A30220695CC600E42351 /* GATTClient.swift in Sources */,
 				355BC2D720D33FA1001A07D3 /* HCILEReadPhy.swift in Sources */,
