@@ -54,7 +54,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testIndoorPositioningConfiguration", testIndoorPositioningConfiguration),
         ("testLatitude", testLatitude),
         ("testLongitude", testLongitude),
-        ("testLocalNorthCoordinate", testLocalNorthCoordinate)
+        ("testLocalNorthCoordinate", testLocalNorthCoordinate),
+        ("testFloorNumber", testFloorNumber)
     ]
     
     func testDateTime() {
@@ -972,5 +973,20 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "234")
         XCTAssertEqual(GATTLocalEastCoordinate.uuid, .localEastCoordinate)
         XCTAssertEqual(GATTLocalEastCoordinate(data: data), GATTLocalEastCoordinate(data: data))
+    }
+    
+    func testFloorNumber() {
+        
+        let data = Data([0xEA])
+        
+        guard let characteristic = GATTFloorNumber(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic, 234)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, data[0])
+        XCTAssertEqual(characteristic.description, "234")
+        XCTAssertEqual(GATTFloorNumber.uuid, .floorNumber)
+        XCTAssertEqual(GATTFloorNumber(data: data), GATTFloorNumber(data: data))
     }
 }
