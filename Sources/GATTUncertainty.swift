@@ -32,9 +32,9 @@ public struct GATTUncertainty: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let stationary = Stationary(rawValue: data[0] | 0b0000_0001),
-            let updateTime = UpdateTime(rawValue: (data[0] | 0b0000_1110) >> 1),
-            let precision = Precision(rawValue: (data[0] | 0b0111_0000) >> 4)
+        guard let stationary = Stationary(rawValue: data[0] & 0b0000_0001),
+            let updateTime = UpdateTime(rawValue: (data[0] & 0b0000_1110) >> 1),
+            let precision = Precision(rawValue: (data[0] & 0b0111_0000) >> 4)
             else { return nil }
         
         self.init(stationary: stationary, updateTime: updateTime, precision: precision)
@@ -42,7 +42,7 @@ public struct GATTUncertainty: GATTCharacteristic {
     
     public var data: Data {
         
-        let byte = stationary.rawValue | updateTime.rawValue | precision.rawValue
+        let byte = stationary.rawValue | (updateTime.rawValue << 1) | (precision.rawValue << 4)
         
         return Data([byte])
     }
@@ -108,6 +108,9 @@ public extension GATTUncertainty {
         
         /// Greater then 50m
         case greaterThen50m = 0x06
+        
+        /// Unknown
+        case unknown = 0x07
     }
 }
 

@@ -55,7 +55,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testLatitude", testLatitude),
         ("testLongitude", testLongitude),
         ("testLocalNorthCoordinate", testLocalNorthCoordinate),
-        ("testFloorNumber", testFloorNumber)
+        ("testFloorNumber", testFloorNumber),
+        ("testUncertainty", testUncertainty)
     ]
     
     func testDateTime() {
@@ -988,5 +989,20 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "234")
         XCTAssertEqual(GATTFloorNumber.uuid, .floorNumber)
         XCTAssertEqual(GATTFloorNumber(data: data), GATTFloorNumber(data: data))
+    }
+    
+    func testUncertainty() {
+        
+        let data = Data([0b0111_1111])
+        
+        guard let characteristic = GATTUncertainty(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.stationary, .mobile)
+        XCTAssertEqual(characteristic.updateTime, .upTo3541s)
+        XCTAssertEqual(characteristic.precision, .unknown)
+        XCTAssertEqual(GATTUncertainty.uuid, .uncertainty)
+        XCTAssertEqual(GATTUncertainty(data: data), GATTUncertainty(data: data))
     }
 }
