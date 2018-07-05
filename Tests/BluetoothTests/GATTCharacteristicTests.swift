@@ -50,7 +50,14 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testPnPID", testPnPID),
         ("testSystemID", testSystemID),
         ("testHardwareRevisionString", testHardwareRevisionString),
-        ("testSerialNumberString", testSerialNumberString)
+        ("testSerialNumberString", testSerialNumberString),
+        ("testIndoorPositioningConfiguration", testIndoorPositioningConfiguration),
+        ("testLatitude", testLatitude),
+        ("testLongitude", testLongitude),
+        ("testLocalNorthCoordinate", testLocalNorthCoordinate),
+        ("testFloorNumber", testFloorNumber),
+        ("testUncertainty", testUncertainty),
+        ("testLocationName", testLocationName)
     ]
     
     func testDateTime() {
@@ -889,5 +896,128 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.hashValue, UInt64.max.hashValue)
             XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
         }
+    }
+    
+    func testIndoorPositioningConfiguration() {
+        
+        typealias Configuration = GATTIndoorPositioningConfiguration.Configuration
+        
+        let data = Data([0b00111111])
+        
+        guard let characteristic = GATTIndoorPositioningConfiguration(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        let configurations: BitMaskOptionSet<Configuration> = [.coordinates, .coordinateSystemUsed, .txPowerField, .altitudeField, .floorNumber, .locationName]
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.configurations, configurations, "The value 0x03 is interpreted as “Simple Alert and Email bits set")
+        XCTAssertEqual(GATTIndoorPositioningConfiguration.uuid, .indoorPositioningConfiguration)
+    }
+    
+    func testLatitude() {
+        
+        let data = Data([0xEA, 0x00, 0x00, 0x00])
+        let latitude = Int32(bitPattern: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3]))))
+        
+        guard let characteristic = GATTLatitude(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic, 234)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, latitude)
+        XCTAssertEqual(characteristic.description, "234")
+        XCTAssertEqual(GATTLatitude.uuid, .latitude)
+        XCTAssertEqual(GATTLatitude(data: data), GATTLatitude(data: data))
+    }
+    
+    func testLongitude() {
+        
+        let data = Data([0xEA, 0x00, 0x00, 0x00])
+        let longitude = Int32(bitPattern: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3]))))
+        
+        guard let characteristic = GATTLongitude(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic, 234)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, longitude)
+        XCTAssertEqual(characteristic.description, "234")
+        XCTAssertEqual(GATTLongitude.uuid, .longitude)
+        XCTAssertEqual(GATTLongitude(data: data), GATTLongitude(data: data))
+    }
+    
+    func testLocalNorthCoordinate() {
+        
+        let data = Data([0xEA, 0x00])
+        let localNorthCoordinate = Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        
+        guard let characteristic = GATTLocalNorthCoordinate(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic, 234)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, localNorthCoordinate)
+        XCTAssertEqual(characteristic.description, "234")
+        XCTAssertEqual(GATTLocalNorthCoordinate.uuid, .localNorthCoordinate)
+        XCTAssertEqual(GATTLocalNorthCoordinate(data: data), GATTLocalNorthCoordinate(data: data))
+    }
+    
+    func testLocalEastCoordinate() {
+        
+        let data = Data([0xEA, 0x00])
+        let localEastCoordinate = Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        
+        guard let characteristic = GATTLocalEastCoordinate(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic, 234)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, localEastCoordinate)
+        XCTAssertEqual(characteristic.description, "234")
+        XCTAssertEqual(GATTLocalEastCoordinate.uuid, .localEastCoordinate)
+        XCTAssertEqual(GATTLocalEastCoordinate(data: data), GATTLocalEastCoordinate(data: data))
+    }
+    
+    func testFloorNumber() {
+        
+        let data = Data([0xEA])
+        
+        guard let characteristic = GATTFloorNumber(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic, 234)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, data[0])
+        XCTAssertEqual(characteristic.description, "234")
+        XCTAssertEqual(GATTFloorNumber.uuid, .floorNumber)
+        XCTAssertEqual(GATTFloorNumber(data: data), GATTFloorNumber(data: data))
+    }
+    
+    func testUncertainty() {
+        
+        let data = Data([0b0111_1111])
+        
+        guard let characteristic = GATTUncertainty(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.stationary, .mobile)
+        XCTAssertEqual(characteristic.updateTime, .upTo3541s)
+        XCTAssertEqual(characteristic.precision, .unknown)
+        XCTAssertEqual(GATTUncertainty.uuid, .uncertainty)
+        XCTAssertEqual(GATTUncertainty(data: data), GATTUncertainty(data: data))
+    }
+    
+    func testLocationName() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristic = GATTLocationName(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.rawValue, "bluetooth")
+        XCTAssertEqual(characteristic.description, "bluetooth")
+        XCTAssertEqual(GATTLocationName.uuid, .locationName)
+        XCTAssertEqual(GATTLocationName(data: data), "bluetooth")
     }
 }
