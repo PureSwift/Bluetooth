@@ -57,7 +57,12 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testLocalNorthCoordinate", testLocalNorthCoordinate),
         ("testFloorNumber", testFloorNumber),
         ("testUncertainty", testUncertainty),
-        ("testLocationName", testLocationName)
+        ("testDayOfWeek", testDayOfWeek),
+        ("testDateTime", testDateTime),
+        ("testDstOffset", testDstOffset),
+        ("testLocalTimeInformation", testLocalTimeInformation),
+        ("testTimeSource", testTimeSource),
+        ("testTimeAccuracy", testTimeAccuracy)
     ]
     
     func testDateTime() {
@@ -1116,5 +1121,24 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(GATTLocalTimeInformation.uuid, .localTimeInformation)
             XCTAssertEqual(GATTLocalTimeInformation(data: data), GATTLocalTimeInformation(data: data))
         }
+    }
+    
+    func testTimeSource() {
+        
+        let data = Data([1])
+        
+        guard let characteristic = GATTTimeSource(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .networkTimeProtocol)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(GATTTimeSource.uuid, .timeSource)
+        XCTAssertEqual(GATTTimeSource(data: data), GATTTimeSource(data: data))
+    }
+    
+    func testTimeAccuracy() {
+        
+        
     }
 }

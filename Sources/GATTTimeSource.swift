@@ -62,3 +62,12 @@ extension GATTTimeSource: Equatable {
         return lhs.rawValue == rhs.rawValue
     }
 }
+
+extension GATTTimeSource: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+    
+}
