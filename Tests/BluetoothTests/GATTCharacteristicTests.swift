@@ -1139,6 +1139,18 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testTimeAccuracy() {
         
-        
+        do {
+            let data = Data([0x0c])
+            
+            guard let characteristic = GATTTimeAccuracy(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.rawValue, 12)
+            XCTAssertEqual(characteristic.description, "12")
+            XCTAssertEqual(characteristic, 12)
+            XCTAssertEqual(GATTTimeAccuracy.uuid, .timeAccuracy)
+            XCTAssertEqual(GATTTimeAccuracy(data: data), GATTTimeAccuracy(data: data))
+        }
     }
 }
