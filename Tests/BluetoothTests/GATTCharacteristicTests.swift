@@ -62,7 +62,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testDstOffset", testDstOffset),
         ("testLocalTimeInformation", testLocalTimeInformation),
         ("testTimeSource", testTimeSource),
-        ("testTimeAccuracy", testTimeAccuracy)
+        ("testTimeAccuracy", testTimeAccuracy),
+        ("testReferenceTimeInfomation", testReferenceTimeInfomation)
     ]
     
     func testDateTime() {
@@ -1151,6 +1152,31 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic, 12)
             XCTAssertEqual(GATTTimeAccuracy.uuid, .timeAccuracy)
             XCTAssertEqual(GATTTimeAccuracy(data: data), GATTTimeAccuracy(data: data))
+        }
+    }
+    
+    func testReferenceTimeInfomation() {
+        
+        do {
+            typealias Day = GATTReferenceTimeInformation.Day
+            typealias Hour = GATTReferenceTimeInformation.Hour
+            
+            let data = Data([0x03, 0x0b, 5, 6])
+            
+            guard let characteristic = GATTReferenceTimeInformation(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.timeSource, .radioTimeSignal)
+            XCTAssertEqual(characteristic.timeAccuracy.rawValue, 0x0b)
+            XCTAssertEqual(characteristic.daysSinceUpdate, 5)
+            XCTAssertEqual(characteristic.daysSinceUpdate.description, "5")
+            XCTAssertEqual(characteristic.hoursSinceUpdate.rawValue , 6)
+            XCTAssertEqual(characteristic.hoursSinceUpdate.description , "6")
+            XCTAssertEqual(Day.unitType, .day)
+            XCTAssertEqual(Hour.unitType, .hour)
+            XCTAssertEqual(GATTReferenceTimeInformation.uuid, .referenceTimeInformation)
+            XCTAssertEqual(GATTReferenceTimeInformation(data: data), GATTReferenceTimeInformation(data: data))
         }
     }
 }

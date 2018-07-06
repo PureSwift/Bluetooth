@@ -8,6 +8,11 @@
 
 import Foundation
 
+/**
+ Reference Time Information
+ 
+ - SeeAlso: [Reference Time Information](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.reference_time_information.xml)
+ */
 public struct GATTReferenceTimeInformation: GATTCharacteristic {
     
     internal static let length = GATTTimeSource.length + GATTTimeAccuracy.length + 1 + 1
@@ -61,6 +66,17 @@ public struct GATTReferenceTimeInformation: GATTCharacteristic {
             timeAccuracy.data +
             Data([daysSinceUpdate.rawValue]) +
             Data([hoursSinceUpdate.rawValue])
+    }
+}
+
+extension GATTReferenceTimeInformation: Equatable {
+    
+    public static func == (lhs: GATTReferenceTimeInformation, rhs: GATTReferenceTimeInformation) -> Bool {
+        
+        return lhs.timeSource == rhs.timeSource &&
+            lhs.timeAccuracy == rhs.timeAccuracy &&
+            lhs.daysSinceUpdate == rhs.daysSinceUpdate &&
+            lhs.hoursSinceUpdate == rhs.hoursSinceUpdate
     }
 }
 
