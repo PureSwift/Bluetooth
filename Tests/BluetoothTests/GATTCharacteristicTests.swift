@@ -1020,4 +1020,52 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTLocationName.uuid, .locationName)
         XCTAssertEqual(GATTLocationName(data: data), "bluetooth")
     }
+    
+    func testDayOfWeek() {
+        
+        let data = Data([7])
+        
+        guard let characteristic = GATTDayOfWeek(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.day, .sunday)
+        XCTAssertEqual(characteristic.description, "7")
+        XCTAssertEqual(GATTDayOfWeek.uuid, .dayOfWeek)
+        XCTAssertEqual(GATTDayOfWeek.Day.unitType, .day)
+        XCTAssertEqual(GATTDayOfWeek(data: data), GATTDayOfWeek(data: data))
+    }
+    
+    func testDayDateTime() {
+        
+        do {
+            let data = Data([203, 7, 4, 24, 12, 5, 30, 7])
+            
+            guard let characteristic = GATTDayDateTime(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.dateTime.data, Data([203, 7, 4, 24, 12, 5, 30]))
+            XCTAssertEqual(characteristic.dayOfWeek, GATTDayOfWeek(day: .sunday))
+            XCTAssertEqual(characteristic.dayOfWeek.day, .sunday)
+            XCTAssertEqual(GATTDayDateTime.uuid, .dayDateTime)
+            XCTAssertEqual(GATTDayDateTime(data: data), GATTDayDateTime(data: data))
+        }
+    }
+    
+    func testExactTime256() {
+        
+        do {
+            let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245])
+            
+            guard let characteristic = GATTExactTime256(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.dayDateTime.data, Data([203, 7, 4, 24, 12, 5, 30, 7]))
+            XCTAssertEqual(characteristic.fractions256, 245)
+            XCTAssertEqual(GATTExactTime256.uuid, .exactTime256)
+            XCTAssertEqual(GATTExactTime256(data: data), GATTExactTime256(data: data))
+        }
+    }
 }

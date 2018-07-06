@@ -34,10 +34,10 @@ public struct GATTDayDateTime: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let dateTime = GATTDateTime(data: data.subdata(in: (0 ..< 6)))
+        guard let dateTime = GATTDateTime(data: data.subdata(in: (0 ..< 7)))
             else { return nil }
         
-        guard let dayOfWeek = GATTDayOfWeek(data: data.subdata(in: (6 ..< 7)))
+        guard let dayOfWeek = GATTDayOfWeek(data: data.subdata(in: (7 ..< 8)))
             else { return nil }
         
         self.init(dateTime: dateTime, dayOfWeek: dayOfWeek)

@@ -34,12 +34,10 @@ public struct GATTExactTime256: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let maxIndex = GATTDayDateTime.length - 1
-        
-        guard let dayDateTime = GATTDayDateTime(data: data.subdata(in: (0 ..< maxIndex)))
+        guard let dayDateTime = GATTDayDateTime(data: data.subdata(in: (0 ..< GATTDayDateTime.length)))
             else { return nil }
         
-        let fractions256 = data[maxIndex]
+        let fractions256 = data[GATTDayDateTime.length]
         
         self.init(dayDateTime: dayDateTime, fractions256: fractions256)
     }
