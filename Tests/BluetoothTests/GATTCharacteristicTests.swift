@@ -1101,4 +1101,20 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTDstOffset.uuid, .dstOffset)
         XCTAssertEqual(GATTDstOffset(data: data), GATTDstOffset(data: data))
     }
+    
+    func testLocalTimeInformation() {
+        
+        do {
+            let data = Data([0x0c, 4])
+            
+            guard let characteristic = GATTLocalTimeInformation(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.timeZone.data, Data([0x0c]))
+            XCTAssertEqual(characteristic.dstOffset, .daylightTime)
+            XCTAssertEqual(GATTLocalTimeInformation.uuid, .localTimeInformation)
+            XCTAssertEqual(GATTLocalTimeInformation(data: data), GATTLocalTimeInformation(data: data))
+        }
+    }
 }

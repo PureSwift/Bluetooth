@@ -37,7 +37,7 @@ public struct GATTLocalTimeInformation: GATTCharacteristic {
         guard let timeZone = GATTTimeZone(data: data.subdata(in: (0 ..< GATTTimeZone.length)))
             else { return nil }
         
-        guard let dstOffset = GATTDstOffset(data: data.subdata(in: (GATTTimeZone.length ..< GATTDstOffset.length)))
+        guard let dstOffset = GATTDstOffset(data: data.subdata(in: (GATTTimeZone.length ..< 2)))
             else { return nil }
         
         self.init(timeZone: timeZone, dstOffset: dstOffset)
