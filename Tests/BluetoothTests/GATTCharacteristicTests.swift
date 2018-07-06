@@ -1068,4 +1068,23 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(GATTExactTime256(data: data), GATTExactTime256(data: data))
         }
     }
+    
+    func testTimeZone() {
+        
+        XCTAssertNil(GATTTimeZone(rawValue: -50))
+        XCTAssertNil(GATTTimeZone(rawValue: 70))
+        XCTAssertNotNil(GATTTimeZone(rawValue: -128))
+        
+        do {
+            let data = Data([0x0c])
+            
+            guard let characteristic = GATTTimeZone(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.rawValue, 12)
+            XCTAssertEqual(GATTTimeZone.uuid, .timeZone)
+            XCTAssertEqual(GATTTimeZone(data: data), GATTTimeZone(data: data))
+        }
+    }
 }
