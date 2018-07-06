@@ -56,3 +56,12 @@ extension GATTDstOffset: Equatable {
         return lhs.rawValue == rhs.rawValue
     }
 }
+
+extension GATTDstOffset: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+    
+}

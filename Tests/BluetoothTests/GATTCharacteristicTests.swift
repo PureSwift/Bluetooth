@@ -1087,4 +1087,18 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(GATTTimeZone(data: data), GATTTimeZone(data: data))
         }
     }
+    
+    func testDstOffset() {
+        
+        let data = Data([4])
+        
+        guard let characteristic = GATTDstOffset(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .daylightTime)
+        XCTAssertEqual(characteristic.description, "4")
+        XCTAssertEqual(GATTDstOffset.uuid, .dstOffset)
+        XCTAssertEqual(GATTDstOffset(data: data), GATTDstOffset(data: data))
+    }
 }
