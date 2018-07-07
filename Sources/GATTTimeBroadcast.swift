@@ -8,6 +8,11 @@
 
 import Foundation
 
+/**
+ Time Broadcast
+ 
+ - SeeAlso: [Time Broadcast](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_broadcast.xml)
+ */
 public struct GATTTimeBroadcast: GATTCharacteristic {
     
     internal static let length =
