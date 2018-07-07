@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GATTTimeBroascast: GATTCharacteristic {
+public struct GATTTimeBroadcast: GATTCharacteristic {
     
     internal static let length =
         GATTExactTime256.length + GATTLocalTimeInformation.length + GATTReferenceTimeInformation.length
@@ -57,9 +57,9 @@ public struct GATTTimeBroascast: GATTCharacteristic {
     }
 }
 
-extension GATTTimeBroascast: Equatable {
+extension GATTTimeBroadcast: Equatable {
     
-    public static func == (lhs: GATTTimeBroascast, rhs: GATTTimeBroascast) -> Bool {
+    public static func == (lhs: GATTTimeBroadcast, rhs: GATTTimeBroadcast) -> Bool {
         
         return lhs.time == rhs.time &&
             lhs.localTime == rhs.localTime &&
