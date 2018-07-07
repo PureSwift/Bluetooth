@@ -63,7 +63,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testLocalTimeInformation", testLocalTimeInformation),
         ("testTimeSource", testTimeSource),
         ("testTimeAccuracy", testTimeAccuracy),
-        ("testReferenceTimeInfomation", testReferenceTimeInfomation)
+        ("testReferenceTimeInfomation", testReferenceTimeInfomation),
+        ("testTimeBroadcast", testTimeBroadcast)
     ]
     
     func testDateTime() {
@@ -1178,5 +1179,19 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(GATTReferenceTimeInformation.uuid, .referenceTimeInformation)
             XCTAssertEqual(GATTReferenceTimeInformation(data: data), GATTReferenceTimeInformation(data: data))
         }
+    }
+    
+    func testTimeBroadcast() {
+        let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245, 0x0c, 4, 0x03, 0x0b, 5, 6])
+        
+        guard let characteristic = GATTTimeBroascast(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.time, GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
+        XCTAssertEqual(characteristic.localTime, GATTLocalTimeInformation(data: Data([0x0c, 4])))
+        XCTAssertEqual(characteristic.referenceTime, GATTReferenceTimeInformation(data: Data([0x03, 0x0b, 5, 6])))
+        XCTAssertEqual(GATTTimeBroascast.uuid, .timeBroadcast)
+        XCTAssertEqual(GATTTimeBroascast(data: data), GATTTimeBroascast(data: data))
     }
 }

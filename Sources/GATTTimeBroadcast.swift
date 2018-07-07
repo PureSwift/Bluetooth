@@ -43,7 +43,7 @@ public struct GATTTimeBroascast: GATTCharacteristic {
         guard let localTime = GATTLocalTimeInformation(data: data.subdata(in: rangeLocalTime))
             else { return nil }
         
-        let rangeReferenceTime = Range<Int>(GATTExactTime256.length + GATTLocalTimeInformation.length ..< data.count - 1)
+        let rangeReferenceTime = Range<Int>(GATTExactTime256.length + GATTLocalTimeInformation.length ..< data.count)
         
         guard let referenceTime = GATTReferenceTimeInformation(data: data.subdata(in: rangeReferenceTime))
             else { return nil }
