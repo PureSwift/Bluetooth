@@ -57,7 +57,14 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testLocalNorthCoordinate", testLocalNorthCoordinate),
         ("testFloorNumber", testFloorNumber),
         ("testUncertainty", testUncertainty),
-        ("testLocationName", testLocationName)
+        ("testDayOfWeek", testDayOfWeek),
+        ("testDateTime", testDateTime),
+        ("testDstOffset", testDstOffset),
+        ("testLocalTimeInformation", testLocalTimeInformation),
+        ("testTimeSource", testTimeSource),
+        ("testTimeAccuracy", testTimeAccuracy),
+        ("testReferenceTimeInfomation", testReferenceTimeInfomation),
+        ("testTimeBroadcast", testTimeBroadcast)
     ]
     
     func testDateTime() {
@@ -1019,5 +1026,172 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "bluetooth")
         XCTAssertEqual(GATTLocationName.uuid, .locationName)
         XCTAssertEqual(GATTLocationName(data: data), "bluetooth")
+    }
+    
+    func testDayOfWeek() {
+        
+        let data = Data([7])
+        
+        guard let characteristic = GATTDayOfWeek(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.day, .sunday)
+        XCTAssertEqual(characteristic.description, "7")
+        XCTAssertEqual(GATTDayOfWeek.uuid, .dayOfWeek)
+        XCTAssertEqual(GATTDayOfWeek.Day.unitType, .day)
+        XCTAssertEqual(GATTDayOfWeek(data: data), GATTDayOfWeek(data: data))
+    }
+    
+    func testDayDateTime() {
+        
+        do {
+            let data = Data([203, 7, 4, 24, 12, 5, 30, 7])
+            
+            guard let characteristic = GATTDayDateTime(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.dateTime.data, Data([203, 7, 4, 24, 12, 5, 30]))
+            XCTAssertEqual(characteristic.dayOfWeek, GATTDayOfWeek(day: .sunday))
+            XCTAssertEqual(characteristic.dayOfWeek.day, .sunday)
+            XCTAssertEqual(GATTDayDateTime.uuid, .dayDateTime)
+            XCTAssertEqual(GATTDayDateTime(data: data), GATTDayDateTime(data: data))
+        }
+    }
+    
+    func testExactTime256() {
+        
+        do {
+            let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245])
+            
+            guard let characteristic = GATTExactTime256(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.dayDateTime.data, Data([203, 7, 4, 24, 12, 5, 30, 7]))
+            XCTAssertEqual(characteristic.fractions256, 245)
+            XCTAssertEqual(GATTExactTime256.uuid, .exactTime256)
+            XCTAssertEqual(GATTExactTime256(data: data), GATTExactTime256(data: data))
+        }
+    }
+    
+    func testTimeZone() {
+        
+        XCTAssertNil(GATTTimeZone(rawValue: -50))
+        XCTAssertNil(GATTTimeZone(rawValue: 70))
+        XCTAssertNotNil(GATTTimeZone(rawValue: -128))
+        
+        do {
+            let data = Data([0x0c])
+            
+            guard let characteristic = GATTTimeZone(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.rawValue, 12)
+            XCTAssertEqual(GATTTimeZone.uuid, .timeZone)
+            XCTAssertEqual(GATTTimeZone(data: data), GATTTimeZone(data: data))
+        }
+    }
+    
+    func testDstOffset() {
+        
+        let data = Data([4])
+        
+        guard let characteristic = GATTDstOffset(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .daylightTime)
+        XCTAssertEqual(characteristic.description, "4")
+        XCTAssertEqual(GATTDstOffset.uuid, .dstOffset)
+        XCTAssertEqual(GATTDstOffset(data: data), GATTDstOffset(data: data))
+    }
+    
+    func testLocalTimeInformation() {
+        
+        do {
+            let data = Data([0x0c, 4])
+            
+            guard let characteristic = GATTLocalTimeInformation(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.timeZone.data, Data([0x0c]))
+            XCTAssertEqual(characteristic.dstOffset, .daylightTime)
+            XCTAssertEqual(GATTLocalTimeInformation.uuid, .localTimeInformation)
+            XCTAssertEqual(GATTLocalTimeInformation(data: data), GATTLocalTimeInformation(data: data))
+        }
+    }
+    
+    func testTimeSource() {
+        
+        let data = Data([1])
+        
+        guard let characteristic = GATTTimeSource(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .networkTimeProtocol)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(GATTTimeSource.uuid, .timeSource)
+        XCTAssertEqual(GATTTimeSource(data: data), GATTTimeSource(data: data))
+    }
+    
+    func testTimeAccuracy() {
+        
+        do {
+            let data = Data([0x0c])
+            
+            guard let characteristic = GATTTimeAccuracy(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.rawValue, 12)
+            XCTAssertEqual(characteristic.description, "12")
+            XCTAssertEqual(characteristic, 12)
+            XCTAssertEqual(GATTTimeAccuracy.uuid, .timeAccuracy)
+            XCTAssertEqual(GATTTimeAccuracy(data: data), GATTTimeAccuracy(data: data))
+        }
+    }
+    
+    func testReferenceTimeInfomation() {
+        
+        do {
+            typealias Day = GATTReferenceTimeInformation.Day
+            typealias Hour = GATTReferenceTimeInformation.Hour
+            
+            let data = Data([0x03, 0x0b, 5, 6])
+            
+            guard let characteristic = GATTReferenceTimeInformation(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.timeSource, .radioTimeSignal)
+            XCTAssertEqual(characteristic.timeAccuracy.rawValue, 0x0b)
+            XCTAssertEqual(characteristic.daysSinceUpdate, 5)
+            XCTAssertEqual(characteristic.daysSinceUpdate.description, "5")
+            XCTAssertEqual(characteristic.hoursSinceUpdate.rawValue , 6)
+            XCTAssertEqual(characteristic.hoursSinceUpdate.description , "6")
+            XCTAssertEqual(Day.unitType, .day)
+            XCTAssertEqual(Hour.unitType, .hour)
+            XCTAssertEqual(GATTReferenceTimeInformation.uuid, .referenceTimeInformation)
+            XCTAssertEqual(GATTReferenceTimeInformation(data: data), GATTReferenceTimeInformation(data: data))
+        }
+    }
+    
+    func testTimeBroadcast() {
+        let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245, 0x0c, 4, 0x03, 0x0b, 5, 6])
+        
+        guard let characteristic = GATTTimeBroadcast(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.time, GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
+        XCTAssertEqual(characteristic.localTime, GATTLocalTimeInformation(data: Data([0x0c, 4])))
+        XCTAssertEqual(characteristic.referenceTime, GATTReferenceTimeInformation(data: Data([0x03, 0x0b, 5, 6])))
+        XCTAssertEqual(GATTTimeBroadcast.uuid, .timeBroadcast)
+        XCTAssertEqual(GATTTimeBroadcast(data: data), GATTTimeBroadcast(data: data))
     }
 }
