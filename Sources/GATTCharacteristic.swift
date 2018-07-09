@@ -176,3 +176,35 @@ public enum GATTKilogramCalorie {
         }
     }
 }
+
+extension GATTKilogramCalorie.Byte: Equatable {
+    
+    public static func == (lhs: GATTKilogramCalorie.Byte, rhs: GATTKilogramCalorie.Byte) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTKilogramCalorie.Byte: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(rawValue)"
+    }
+}
+
+extension GATTKilogramCalorie.Bits16: Equatable {
+    
+    public static func == (lhs: GATTKilogramCalorie.Bits16, rhs: GATTKilogramCalorie.Bits16) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTKilogramCalorie.Bits16: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "\(rawValue)"
+    }
+}

@@ -64,6 +64,11 @@ public struct GATTCrossTrainerData {
             flags.insert(.resistanceLevel)
         }
         
+        if instantaneousPower != nil {
+            
+            flags.insert(.instantaneousPower)
+        }
+        
         if averagePower != nil {
             
             flags.insert(.averagePower)
@@ -190,7 +195,7 @@ public struct GATTCrossTrainerData {
         
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], 0))))
         
-        var index = 3 // flags size
+        var index = 2 // flags size
         
         if flags.contains(.moreData) {
             
@@ -240,7 +245,7 @@ public struct GATTCrossTrainerData {
             
             self.averageStepRate = StepPerMinute(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 3], data[index + 4]))))
             
-            index += StepPerMinute.length + StepPerMinute.length
+            index += StepPerMinute.length * 2
         } else {
             
             self.stepPerMinute = nil
@@ -269,7 +274,7 @@ public struct GATTCrossTrainerData {
             
             self.negativeElevationGain = Metre.Bits16(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 3], data[index + 4]))))
             
-            index += Metre.Bits16.length + Metre.Bits16.length
+            index += Metre.Bits16.length * 2
         } else {
             
             self.positiveElevationGain = nil
@@ -874,13 +879,184 @@ extension GATTCrossTrainerData {
 
 extension GATTCrossTrainerData.KilometerPerHour: Equatable {
     
-    public static func == (lhs: GATTCrossTrainerData.KilometerPerHour, rhs: GATTCrossTrainerData.KilometerPerHour) -> Bool {
+    public static func == (lhs: GATTCrossTrainerData.KilometerPerHour,
+                           rhs: GATTCrossTrainerData.KilometerPerHour) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
 extension GATTCrossTrainerData.KilometerPerHour: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Metre.Bit24: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.Metre.Bit24,
+                           rhs: GATTCrossTrainerData.Metre.Bit24) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.Metre.Bit24: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Metre.Bits16: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.Metre.Bits16,
+                           rhs: GATTCrossTrainerData.Metre.Bits16) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.Metre.Bits16: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.StepPerMinute: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.StepPerMinute,
+                           rhs: GATTCrossTrainerData.StepPerMinute) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.StepPerMinute: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Unitless.Unsigned: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.Unitless.Unsigned,
+                           rhs: GATTCrossTrainerData.Unitless.Unsigned) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.Unitless.Unsigned: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Unitless.Signed: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.Unitless.Signed,
+                           rhs: GATTCrossTrainerData.Unitless.Signed) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.Unitless.Signed: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Percentage: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.Percentage,
+                           rhs: GATTCrossTrainerData.Percentage) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.Percentage: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.PlainAngleDegree: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.PlainAngleDegree,
+                           rhs: GATTCrossTrainerData.PlainAngleDegree) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.PlainAngleDegree: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Power: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.Power,
+                           rhs: GATTCrossTrainerData.Power) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.Power: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.MetabolicEquivalent: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.MetabolicEquivalent,
+                           rhs: GATTCrossTrainerData.MetabolicEquivalent) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.MetabolicEquivalent: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Time: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData.Time,
+                           rhs: GATTCrossTrainerData.Time) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTCrossTrainerData.Time: CustomStringConvertible {
     
     public var description: String {
         
