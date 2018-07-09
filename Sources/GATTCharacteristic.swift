@@ -193,6 +193,14 @@ extension GATTKilogramCalorie.Byte: CustomStringConvertible {
     }
 }
 
+extension GATTKilogramCalorie.Byte: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 extension GATTKilogramCalorie.Bits16: Equatable {
     
     public static func == (lhs: GATTKilogramCalorie.Bits16, rhs: GATTKilogramCalorie.Bits16) -> Bool {
@@ -206,5 +214,13 @@ extension GATTKilogramCalorie.Bits16: CustomStringConvertible {
     public var description: String {
         
         return "\(rawValue)"
+    }
+}
+
+extension GATTKilogramCalorie.Bits16: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
     }
 }

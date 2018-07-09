@@ -877,6 +877,34 @@ extension GATTCrossTrainerData {
     }
 }
 
+extension GATTCrossTrainerData: Equatable {
+    
+    public static func == (lhs: GATTCrossTrainerData,
+                           rhs: GATTCrossTrainerData) -> Bool {
+        
+        return lhs.instantaneousSpeed == rhs.instantaneousSpeed &&
+        lhs.averageSpeed == rhs.averageSpeed &&
+        lhs.totalDistance == rhs.totalDistance &&
+        lhs.stepPerMinute == rhs.stepPerMinute &&
+        lhs.averageStepRate == rhs.averageStepRate &&
+        lhs.strideCount == rhs.strideCount &&
+        lhs.positiveElevationGain == rhs.positiveElevationGain &&
+        lhs.negativeElevationGain == rhs.negativeElevationGain &&
+        lhs.inclination == rhs.inclination &&
+        lhs.rampAngleSetting == rhs.rampAngleSetting &&
+        lhs.resistanceLevel == rhs.resistanceLevel &&
+        lhs.instantaneousPower == rhs.instantaneousPower &&
+        lhs.averagePower == rhs.averagePower &&
+        lhs.totalEnergy == rhs.totalEnergy &&
+        lhs.energyPerHour == rhs.energyPerHour &&
+        lhs.energyPerMinute == rhs.energyPerMinute &&
+        lhs.heartRate == rhs.heartRate &&
+        lhs.metabolicEquivalent == rhs.metabolicEquivalent &&
+        lhs.elapsedTime == rhs.elapsedTime &&
+        lhs.remainingTime == rhs.remainingTime
+    }
+}
+
 extension GATTCrossTrainerData.KilometerPerHour: Equatable {
     
     public static func == (lhs: GATTCrossTrainerData.KilometerPerHour,
@@ -891,6 +919,14 @@ extension GATTCrossTrainerData.KilometerPerHour: CustomStringConvertible {
     public var description: String {
         
         return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.KilometerPerHour: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
     }
 }
 
@@ -928,6 +964,14 @@ extension GATTCrossTrainerData.Metre.Bits16: CustomStringConvertible {
     }
 }
 
+extension GATTCrossTrainerData.Metre.Bits16: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 extension GATTCrossTrainerData.StepPerMinute: Equatable {
     
     public static func == (lhs: GATTCrossTrainerData.StepPerMinute,
@@ -942,6 +986,14 @@ extension GATTCrossTrainerData.StepPerMinute: CustomStringConvertible {
     public var description: String {
         
         return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.StepPerMinute: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
     }
 }
 
@@ -962,6 +1014,14 @@ extension GATTCrossTrainerData.Unitless.Unsigned: CustomStringConvertible {
     }
 }
 
+extension GATTCrossTrainerData.Unitless.Unsigned: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 extension GATTCrossTrainerData.Unitless.Signed: Equatable {
     
     public static func == (lhs: GATTCrossTrainerData.Unitless.Signed,
@@ -976,6 +1036,14 @@ extension GATTCrossTrainerData.Unitless.Signed: CustomStringConvertible {
     public var description: String {
         
         return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Unitless.Signed: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: Int16) {
+        
+        self.init(rawValue: value)
     }
 }
 
@@ -996,6 +1064,14 @@ extension GATTCrossTrainerData.Percentage: CustomStringConvertible {
     }
 }
 
+extension GATTCrossTrainerData.Percentage: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: Int16) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 extension GATTCrossTrainerData.PlainAngleDegree: Equatable {
     
     public static func == (lhs: GATTCrossTrainerData.PlainAngleDegree,
@@ -1010,6 +1086,14 @@ extension GATTCrossTrainerData.PlainAngleDegree: CustomStringConvertible {
     public var description: String {
         
         return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.PlainAngleDegree: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: Int16) {
+        
+        self.init(rawValue: value)
     }
 }
 
@@ -1030,6 +1114,14 @@ extension GATTCrossTrainerData.Power: CustomStringConvertible {
     }
 }
 
+extension GATTCrossTrainerData.Power: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: Int16) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 extension GATTCrossTrainerData.MetabolicEquivalent: Equatable {
     
     public static func == (lhs: GATTCrossTrainerData.MetabolicEquivalent,
@@ -1047,6 +1139,14 @@ extension GATTCrossTrainerData.MetabolicEquivalent: CustomStringConvertible {
     }
 }
 
+extension GATTCrossTrainerData.MetabolicEquivalent: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt8) {
+        
+        self.init(rawValue: value)
+    }
+}
+
 extension GATTCrossTrainerData.Time: Equatable {
     
     public static func == (lhs: GATTCrossTrainerData.Time,
@@ -1061,5 +1161,13 @@ extension GATTCrossTrainerData.Time: CustomStringConvertible {
     public var description: String {
         
         return rawValue.description
+    }
+}
+
+extension GATTCrossTrainerData.Time: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(rawValue: value)
     }
 }

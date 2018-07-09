@@ -1210,15 +1210,15 @@ final class GATTCharacteristicTests: XCTestCase {
         typealias MetabolicEquivalent = GATTCrossTrainerData.MetabolicEquivalent
         typealias Time = GATTCrossTrainerData.Time
         
-//        XCTAssertNil(GATTCrossTrainerData(data: Data([0x00, 0x00])))
+        XCTAssertNil(GATTCrossTrainerData(data: Data([0x00, 0x00])))
         
         do {
-//            let data = Data([0b00000000, 0b00000000, 0b00000000])
-//            XCTAssertNotNil(GATTCrossTrainerData(data: data))
+            let data = Data([0b00000000, 0b00000000, 0b00000000])
+            XCTAssertNotNil(GATTCrossTrainerData(data: data))
         }
         
         do {
-            let data = Data([0b11111111, 0b11111111, 0b11111111, // flags
+            let data = Data([0b11111111, 0b01111111, 0x00, // flags
                              0x05, 0x05, // instantaneousSpeed
                              0x05, 0x05, // averageSpeed
                              0x05, 0x05, 0x05, // totalDistance
@@ -1237,6 +1237,9 @@ final class GATTCharacteristicTests: XCTestCase {
                 ])
             guard let characteristic = GATTCrossTrainerData(data: data)
                 else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertNotNil(characteristic)
+            XCTAssertEqual(GATTCrossTrainerData.uuid, .crossTrainerData)
             XCTAssertEqual(characteristic.instantaneousSpeed, KilometerPerHour(rawValue: 1285))
             XCTAssertEqual(characteristic.averageSpeed, KilometerPerHour(rawValue: 1285))
             XCTAssertEqual(characteristic.totalDistance, MetreBit24(rawValue: 328965))
@@ -1257,7 +1260,44 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.metabolicEquivalent, MetabolicEquivalent(rawValue: 5))
             XCTAssertEqual(characteristic.elapsedTime, Time(rawValue: 1285))
             XCTAssertEqual(characteristic.remainingTime, Time(rawValue: 1285))
-            XCTAssertNotNil(characteristic)
+            
+            XCTAssertEqual(KilometerPerHour.unitType, .kilometrePerHour)
+            XCTAssertEqual(StepPerMinute.unitType, .step)
+            XCTAssertEqual(MetreBit24.unitType, .metre)
+            XCTAssertEqual(MetreBit16.unitType, .metre)
+            XCTAssertEqual(UnitlessUnsigned.unitType, .unitless)
+            XCTAssertEqual(UnitlessSigned.unitType, .unitless)
+            XCTAssertEqual(Percentage.unitType, .percentage)
+            XCTAssertEqual(PlainAngleDegree.unitType, .degree)
+            XCTAssertEqual(Power.unitType, .power)
+            XCTAssertEqual(GATTKilogramCalorie.Bits16.unitType, .kilogramCalorie)
+            XCTAssertEqual(GATTKilogramCalorie.Byte.unitType, .kilogramCalorie)
+            XCTAssertEqual(MetabolicEquivalent.unitType, .metabolicEquivalent)
+            XCTAssertEqual(Time.unitType, .second)
+            
+            XCTAssertEqual(GATTCrossTrainerData(instantaneousSpeed: 1285,
+                                                averageSpeed: 1285,
+                                                totalDistance: MetreBit24(rawValue: 328965),
+                                                stepPerMinute: 1285,
+                                                averageStepRate: 1285,
+                                                strideCount: 1285,
+                                                positiveElevationGain: 1285,
+                                                negativeElevationGain: 1285,
+                                                inclination: 1285,
+                                                rampAngleSetting: 1285,
+                                                resistanceLevel: 1285,
+                                                instantaneousPower: 1285,
+                                                averagePower: 1285,
+                                                totalEnergy: 1285,
+                                                energyPerHour: 1285,
+                                                energyPerMinute: 5,
+                                                heartRate: 5,
+                                                metabolicEquivalent: 5,
+                                                elapsedTime: 1285,
+                                                remainingTime: 1285), characteristic)
+            
+            XCTAssertEqual(characteristic.flags, BitMaskOptionSet<GATTCrossTrainerData.Flag>(rawValue: UInt32(bytes: (0b11111111, 0b01111111, 0x00, 0x00))))
+            XCTAssertEqual(characteristic.data, data)
         }
         
     }
