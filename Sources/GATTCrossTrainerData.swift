@@ -10,11 +10,13 @@ import Foundation
 /**
  Cross Trainer Data
  
- [Cross Trainer Data](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.cross_trainer_data.xml)
+ The Cross Trainer Data characteristic is used to send training-related data to the Client from a cross trainer (Server).
+ 
+ - SeeAlso: [Cross Trainer Data](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.cross_trainer_data.xml)
  */
 public struct GATTCrossTrainerData {
     
-    internal static let minimumLength = MemoryLayout<UInt32>.size
+    internal static let minimumLength = MemoryLayout<UInt24>.size
     
     public static var uuid: BluetoothUUID { return .crossTrainerData }
     
@@ -67,14 +69,14 @@ public struct GATTCrossTrainerData {
             flags.insert(.averagePower)
         }
         
-        if  totalEnergy != nil &&
+        if totalEnergy != nil &&
             energyPerHour != nil &&
             energyPerMinute != nil {
             
             flags.insert(.expendedEnergy)
         }
         
-        if hearRate != nil {
+        if heartRate != nil {
             
             flags.insert(.heartRate)
         }
@@ -97,45 +99,88 @@ public struct GATTCrossTrainerData {
         return flags
     }
     
-    public var instantaneousSpeed: SpeedUnit?
+    public var instantaneousSpeed: KilometerPerHour?
     
-    public var averageSpeed: SpeedUnit?
+    public var averageSpeed: KilometerPerHour?
     
-    public var totalDistance: LengthUnit.Bit24?
+    public var totalDistance: Metre.Bit24?
     
     public var stepPerMinute: StepPerMinute?
     
     public var averageStepRate: StepPerMinute?
     
-    public var strideCount: Unitless?
+    public var strideCount: Unitless.Unsigned?
     
-    public var positiveElevationGain: LengthUnit.Bit16?
+    public var positiveElevationGain: Metre.Bits16?
     
-    public var negativeElevationGain: LengthUnit.Bit16?
+    public var negativeElevationGain: Metre.Bits16?
     
     public var inclination: Percentage?
     
-    public var rampAngleSetting: PlainAngle?
+    public var rampAngleSetting: PlainAngleDegree?
     
-    public var resistanceLevel: Unitless?
+    public var resistanceLevel: Unitless.Signed?
     
     public var instantaneousPower: Power?
     
     public var averagePower: Power?
     
-    public var totalEnergy: Energy?
+    public var totalEnergy: GATTKilogramCalorie.Bits16?
     
-    public var energyPerHour: Energy?
+    public var energyPerHour: GATTKilogramCalorie.Bits16?
     
-    public var energyPerMinute: Energy?
+    public var energyPerMinute: GATTKilogramCalorie.Byte?
     
-    public var hearRate: GATTBeatsPerMinute.Byte?
+    public var heartRate: GATTBeatsPerMinute.Byte?
     
     public var metabolicEquivalent: MetabolicEquivalent?
     
     public var elapsedTime: Time?
     
     public var remainingTime: Time?
+    
+    public init(instantaneousSpeed: KilometerPerHour? = nil,
+                averageSpeed: KilometerPerHour? = nil,
+                totalDistance: Metre.Bit24? = nil,
+                stepPerMinute: StepPerMinute? = nil,
+                averageStepRate: StepPerMinute? = nil,
+                strideCount: Unitless.Unsigned? = nil,
+                positiveElevationGain: Metre.Bits16? = nil,
+                negativeElevationGain: Metre.Bits16? = nil,
+                inclination: Percentage? = nil,
+                rampAngleSetting: PlainAngleDegree? = nil,
+                resistanceLevel: Unitless.Signed? = nil,
+                instantaneousPower: Power? = nil,
+                averagePower: Power? = nil,
+                totalEnergy: GATTKilogramCalorie.Bits16? = nil,
+                energyPerHour: GATTKilogramCalorie.Bits16? = nil,
+                energyPerMinute: GATTKilogramCalorie.Byte? = nil,
+                heartRate: GATTBeatsPerMinute.Byte? = nil,
+                metabolicEquivalent: MetabolicEquivalent? = nil,
+                elapsedTime: Time? = nil,
+                remainingTime: Time? = nil) {
+        
+        self.instantaneousSpeed = instantaneousSpeed
+        self.averageSpeed = averageSpeed
+        self.totalDistance = totalDistance
+        self.stepPerMinute = stepPerMinute
+        self.averageStepRate = averageStepRate
+        self.strideCount = strideCount
+        self.positiveElevationGain = positiveElevationGain
+        self.negativeElevationGain = negativeElevationGain
+        self.inclination = inclination
+        self.rampAngleSetting = rampAngleSetting
+        self.resistanceLevel = resistanceLevel
+        self.instantaneousPower = instantaneousPower
+        self.averagePower = averagePower
+        self.totalEnergy = totalEnergy
+        self.energyPerHour = energyPerHour
+        self.energyPerMinute = energyPerMinute
+        self.heartRate = heartRate
+        self.metabolicEquivalent = metabolicEquivalent
+        self.elapsedTime = elapsedTime
+        self.remainingTime = remainingTime
+    }
     
     // swiftlint:disable:next cyclomatic_complexity
     public init?(data: Data) {
@@ -145,16 +190,16 @@ public struct GATTCrossTrainerData {
         
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], 0))))
         
-        var index = 4 // flags size
+        var index = 3 // flags size
         
         if flags.contains(.moreData) {
             
-            guard index + SpeedUnit.length < data.count
+            guard index + KilometerPerHour.length < data.count
                 else { return nil }
             
-            self.instantaneousSpeed = SpeedUnit(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.instantaneousSpeed = KilometerPerHour(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
             
-            index += SpeedUnit.length
+            index += KilometerPerHour.length
         } else {
             
             self.instantaneousSpeed = nil
@@ -162,12 +207,12 @@ public struct GATTCrossTrainerData {
         
         if flags.contains(.averageSpeed) {
             
-            guard index + SpeedUnit.length < data.count
+            guard index + KilometerPerHour.length < data.count
                 else { return nil }
             
-            self.averageSpeed = SpeedUnit(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.averageSpeed = KilometerPerHour(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
             
-            index += SpeedUnit.length
+            index += KilometerPerHour.length
         } else {
             
             self.averageSpeed = nil
@@ -178,7 +223,7 @@ public struct GATTCrossTrainerData {
             guard index + MemoryLayout<UInt16>.size + MemoryLayout<UInt8>.size < data.count
                 else { return nil }
             
-            self.totalDistance = LengthUnit.Bit24(rawValue: UInt32(littleEndian: UInt32(bytes: (data[index + 1], data[index + 2], data[index + 3], 0))))
+            self.totalDistance = Metre.Bit24(rawValue: UInt24(littleEndian: UInt24(bytes: (data[index + 1], data[index + 2], data[index + 3]))))
             
             index += MemoryLayout<UInt16>.size + MemoryLayout<UInt8>.size
         } else {
@@ -204,12 +249,12 @@ public struct GATTCrossTrainerData {
         
         if flags.contains(.strideCount) {
             
-            guard index + Unitless.length < data.count
+            guard index + Unitless.Unsigned.length < data.count
                 else { return nil }
             
-            self.strideCount = Unitless(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.strideCount = Unitless.Unsigned(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
             
-            index += Unitless.length
+            index += Unitless.Unsigned.length
         } else {
             
             self.strideCount = nil
@@ -217,14 +262,14 @@ public struct GATTCrossTrainerData {
         
         if flags.contains(.elevationGain) {
             
-            guard index + LengthUnit.Bit16.length + LengthUnit.Bit16.length < data.count
+            guard index + Metre.Bits16.length + Metre.Bits16.length < data.count
                 else { return nil }
             
-            self.positiveElevationGain = LengthUnit.Bit16.init(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.positiveElevationGain = Metre.Bits16(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
             
-            self.negativeElevationGain = LengthUnit.Bit16.init(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 3], data[index + 4]))))
+            self.negativeElevationGain = Metre.Bits16(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 3], data[index + 4]))))
             
-            index += LengthUnit.Bit16.length + LengthUnit.Bit16.length
+            index += Metre.Bits16.length + Metre.Bits16.length
         } else {
             
             self.positiveElevationGain = nil
@@ -233,14 +278,14 @@ public struct GATTCrossTrainerData {
         
         if flags.contains(.inclinationAndRampAngleSetting) {
             
-            guard index + Percentage.length + PlainAngle.length < data.count
+            guard index + Percentage.length + PlainAngleDegree.length < data.count
                 else { return nil }
             
-            self.inclination = Percentage(rawValue: UInt16(bytes: (data[index + 1], data[index + 2])))
+            self.inclination = Percentage(rawValue: Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2])))))
             
-            self.rampAngleSetting = PlainAngle(rawValue: UInt16(bytes: (data[index + 3], data[index + 4])))
+            self.rampAngleSetting = PlainAngleDegree(rawValue: Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[index + 3], data[index + 4])))))
             
-            index += Percentage.length + PlainAngle.length
+            index += Percentage.length + PlainAngleDegree.length
         } else {
             
             self.inclination = nil
@@ -249,12 +294,12 @@ public struct GATTCrossTrainerData {
         
         if flags.contains(.resistanceLevel) {
             
-            guard index + Unitless.length < data.count
+            guard index + Unitless.Signed.length < data.count
                 else { return nil }
             
-            self.resistanceLevel = Unitless(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.resistanceLevel = Unitless.Signed(rawValue: Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2])))))
             
-            index += Unitless.length
+            index += Unitless.Signed.length
         } else {
             
             self.resistanceLevel = nil
@@ -265,7 +310,7 @@ public struct GATTCrossTrainerData {
             guard index + Power.length < data.count
                 else { return nil }
             
-            self.instantaneousPower = Power(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.instantaneousPower = Power(rawValue: Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2])))))
             
             index += Power.length
         } else {
@@ -278,7 +323,7 @@ public struct GATTCrossTrainerData {
             guard index + Power.length < data.count
                 else { return nil }
             
-            self.averagePower = Power(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.averagePower = Power(rawValue: Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2])))))
             
             index += Power.length
         } else {
@@ -288,16 +333,16 @@ public struct GATTCrossTrainerData {
         
         if flags.contains(.expendedEnergy) {
             
-            guard index + Energy.length + Energy.length + Energy.length < data.count
+            guard index + GATTKilogramCalorie.Bits16.length * 2 + GATTKilogramCalorie.Byte.length < data.count
                 else { return nil }
             
-            self.totalEnergy = Energy(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.totalEnergy = GATTKilogramCalorie.Bits16(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
             
-            self.energyPerHour = Energy(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 3], data[index + 4]))))
+            self.energyPerHour = GATTKilogramCalorie.Bits16(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 3], data[index + 4]))))
             
-            self.energyPerMinute = Energy(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 5], data[index + 6]))))
+            self.energyPerMinute = GATTKilogramCalorie.Byte(rawValue: data[index + 5])
             
-            index += Energy.length + Energy.length + Energy.length
+            index += GATTKilogramCalorie.Bits16.length * 2 + GATTKilogramCalorie.Byte.length
         } else {
             
             self.averageSpeed = nil
@@ -310,12 +355,12 @@ public struct GATTCrossTrainerData {
             guard index + GATTBeatsPerMinute.Byte.length < data.count
                 else { return nil }
             
-            self.hearRate = GATTBeatsPerMinute.Byte(rawValue: data[index + 1])
+            self.heartRate = GATTBeatsPerMinute.Byte(rawValue: data[index + 1])
             
             index += GATTBeatsPerMinute.Byte.length
         } else {
             
-            self.hearRate = nil
+            self.heartRate = nil
         }
         
         if flags.contains(.metabolicEquivalent) {
@@ -323,7 +368,7 @@ public struct GATTCrossTrainerData {
             guard index + MetabolicEquivalent.length < data.count
                 else { return nil }
             
-            self.metabolicEquivalent = MetabolicEquivalent(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.metabolicEquivalent = MetabolicEquivalent(rawValue: data[index + 1])
             
             index += MetabolicEquivalent.length
         } else {
@@ -362,46 +407,46 @@ public struct GATTCrossTrainerData {
         
         let flags = self.flags
         
-        var totalBytes = MemoryLayout<UInt32>.size //flag size
+        var totalBytes = MemoryLayout<UInt24>.size //flag size
         
         if flags.contains(.moreData) {
             
-            totalBytes += SpeedUnit.length
+            totalBytes += KilometerPerHour.length
         }
         
         if flags.contains(.averageSpeed) {
             
-            totalBytes += SpeedUnit.length
+            totalBytes += KilometerPerHour.length
         }
         
         if flags.contains(.totalDistance) {
             
-            totalBytes += MemoryLayout<UInt16>.size + MemoryLayout<UInt8>.size
+            totalBytes += MemoryLayout<UInt24>.size
         }
         
         if flags.contains(.stepCount) {
             
-            totalBytes += StepPerMinute.length + StepPerMinute.length
+            totalBytes += StepPerMinute.length * 2
         }
         
         if flags.contains(.strideCount) {
             
-            totalBytes += Unitless.length
+            totalBytes += Unitless.Unsigned.length
         }
         
         if flags.contains(.elevationGain) {
             
-            totalBytes += LengthUnit.Bit16.length + LengthUnit.Bit16.length
+            totalBytes += Metre.Bits16.length * 2
         }
         
         if flags.contains(.inclinationAndRampAngleSetting) {
             
-            totalBytes += Percentage.length + PlainAngle.length
+            totalBytes += Percentage.length + PlainAngleDegree.length
         }
         
         if flags.contains(.resistanceLevel) {
             
-            totalBytes += Unitless.length
+            totalBytes += Unitless.Signed.length
         }
         
         if flags.contains(.instantaneousPower) {
@@ -416,7 +461,7 @@ public struct GATTCrossTrainerData {
         
         if flags.contains(.expendedEnergy) {
             
-            totalBytes += Energy.length + Energy.length + Energy.length
+            totalBytes += GATTKilogramCalorie.Byte.length
         }
         
         if flags.contains(.heartRate) {
@@ -444,8 +489,7 @@ public struct GATTCrossTrainerData {
         var data = Data([
             flagBytes.0,
             flagBytes.1,
-            flagBytes.2,
-            flagBytes.3
+            flagBytes.2
             ])
         
         data.reserveCapacity(totalBytes)
@@ -508,35 +552,35 @@ public struct GATTCrossTrainerData {
         
         if let inclination = self.inclination {
             
-            let bytes = inclination.rawValue.littleEndian.bytes
+            let bytes = UInt16(bitPattern: inclination.rawValue).littleEndian.bytes
             
             data += [bytes.0, bytes.1]
         }
         
         if let rampAngleSetting = self.rampAngleSetting {
             
-            let bytes = rampAngleSetting.rawValue.littleEndian.bytes
+            let bytes = UInt16(bitPattern: rampAngleSetting.rawValue).littleEndian.bytes
             
             data += [bytes.0, bytes.1]
         }
         
         if let resistanceLevel = self.resistanceLevel {
             
-            let bytes = resistanceLevel.rawValue.littleEndian.bytes
+            let bytes = UInt16(bitPattern: resistanceLevel.rawValue).littleEndian.bytes
             
             data += [bytes.0, bytes.1]
         }
         
         if let instantaneousPower = self.instantaneousPower {
             
-            let bytes = instantaneousPower.rawValue.littleEndian.bytes
+            let bytes = UInt16(bitPattern: instantaneousPower.rawValue).littleEndian.bytes
             
             data += [bytes.0, bytes.1]
         }
         
         if let averagePower = self.averagePower {
             
-            let bytes = averagePower.rawValue.littleEndian.bytes
+            let bytes = UInt16(bitPattern: averagePower.rawValue).littleEndian.bytes
             
             data += [bytes.0, bytes.1]
         }
@@ -557,21 +601,17 @@ public struct GATTCrossTrainerData {
         
         if let energyPerMinute = self.energyPerMinute {
             
-            let bytes = energyPerMinute.rawValue.littleEndian.bytes
-            
-            data += [bytes.0, bytes.1]
+            data += [energyPerMinute.rawValue]
         }
         
-        if let hearRate = self.hearRate {
+        if let hearRate = self.heartRate {
             
-            data.append(hearRate.rawValue)
+            data += [hearRate.rawValue]
         }
         
         if let metabolicEquivalent = self.metabolicEquivalent {
-            
-            let bytes = metabolicEquivalent.rawValue.littleEndian.bytes
-            
-            data += [bytes.0, bytes.1]
+
+            data += [metabolicEquivalent.rawValue]
         }
         
         if let elapsedTime = self.elapsedTime {
@@ -666,8 +706,11 @@ public struct GATTCrossTrainerData {
             .movementDirection
         ]
     }
+}
+
+extension GATTCrossTrainerData {
     
-    public struct SpeedUnit: BluetoothUnit {
+    public struct KilometerPerHour: BluetoothUnit {
         
         internal static let length = MemoryLayout<UInt16>.size
         
@@ -681,23 +724,23 @@ public struct GATTCrossTrainerData {
         }
     }
     
-    public enum LengthUnit {
-    
+    public enum Metre {
+        
         public struct Bit24: BluetoothUnit {
             
-            internal static let length = MemoryLayout<UInt32>.size
+            internal static let length = MemoryLayout<UInt24>.size
             
             public static var unitType: UnitIdentifier { return .metre }
             
-            public var rawValue: UInt32
+            public var rawValue: UInt24
             
-            public init(rawValue: UInt32) {
+            public init(rawValue: UInt24) {
                 
                 self.rawValue = rawValue
             }
         }
         
-        public struct Bit16: BluetoothUnit {
+        public struct Bits16: BluetoothUnit {
             
             internal static let length = MemoryLayout<UInt16>.size
             
@@ -727,43 +770,60 @@ public struct GATTCrossTrainerData {
         }
     }
     
-    public struct Unitless: BluetoothUnit {
+    public enum Unitless {
         
-        internal static let length = MemoryLayout<UInt16>.size
-        
-        public static var unitType: UnitIdentifier { return .unitless }
-        
-        public var rawValue: UInt16
-        
-        public init(rawValue: UInt16) {
+        public struct Unsigned: BluetoothUnit {
             
-            self.rawValue = rawValue
+            internal static let length = MemoryLayout<UInt16>.size
+            
+            public static var unitType: UnitIdentifier { return .unitless }
+            
+            public var rawValue: UInt16
+            
+            public init(rawValue: UInt16) {
+                
+                self.rawValue = rawValue
+            }
+        }
+        
+        public struct Signed: BluetoothUnit {
+            
+            internal static let length = MemoryLayout<Int16>.size
+            
+            public static var unitType: UnitIdentifier { return .unitless }
+            
+            public var rawValue: Int16
+            
+            public init(rawValue: Int16) {
+                
+                self.rawValue = rawValue
+            }
         }
     }
     
     public struct Percentage: BluetoothUnit {
         
-        internal static let length = MemoryLayout<UInt16>.size
+        internal static let length = MemoryLayout<Int16>.size
         
         public static var unitType: UnitIdentifier { return .percentage }
         
-        public var rawValue: UInt16
+        public var rawValue: Int16
         
-        public init(rawValue: UInt16) {
+        public init(rawValue: Int16) {
             
             self.rawValue = rawValue
         }
     }
     
-    public struct PlainAngle: BluetoothUnit {
+    public struct PlainAngleDegree: BluetoothUnit {
         
-        internal static let length = MemoryLayout<UInt16>.size
+        internal static let length = MemoryLayout<Int16>.size
         
         public static var unitType: UnitIdentifier { return .degree }
         
-        public var rawValue: UInt16
+        public var rawValue: Int16
         
-        public init(rawValue: UInt16) {
+        public init(rawValue: Int16) {
             
             self.rawValue = rawValue
         }
@@ -771,27 +831,13 @@ public struct GATTCrossTrainerData {
     
     public struct Power: BluetoothUnit {
         
-        internal static let length = MemoryLayout<UInt16>.size
+        internal static let length = MemoryLayout<Int16>.size
         
         public static var unitType: UnitIdentifier { return .power }
         
-        public var rawValue: UInt16
+        public var rawValue: Int16
         
-        public init(rawValue: UInt16) {
-            
-            self.rawValue = rawValue
-        }
-    }
-    
-    public struct Energy: BluetoothUnit {
-        
-        internal static let length = MemoryLayout<UInt16>.size
-        
-        public static var unitType: UnitIdentifier { return .kilogramCalorie }
-        
-        public var rawValue: UInt16
-        
-        public init(rawValue: UInt16) {
+        public init(rawValue: Int16) {
             
             self.rawValue = rawValue
         }
@@ -799,13 +845,13 @@ public struct GATTCrossTrainerData {
     
     public struct MetabolicEquivalent: BluetoothUnit {
         
-        internal static let length = MemoryLayout<UInt16>.size
+        internal static let length = MemoryLayout<UInt8>.size
         
         public static var unitType: UnitIdentifier { return .metabolicEquivalent }
         
-        public var rawValue: UInt16
+        public var rawValue: UInt8
         
-        public init(rawValue: UInt16) {
+        public init(rawValue: UInt8) {
             
             self.rawValue = rawValue
         }
@@ -826,17 +872,15 @@ public struct GATTCrossTrainerData {
     }
 }
 
-
-
-extension GATTCrossTrainerData.SpeedUnit: Equatable {
+extension GATTCrossTrainerData.KilometerPerHour: Equatable {
     
-    public static func == (lhs: GATTCrossTrainerData.SpeedUnit, rhs: GATTCrossTrainerData.SpeedUnit) -> Bool {
+    public static func == (lhs: GATTCrossTrainerData.KilometerPerHour, rhs: GATTCrossTrainerData.KilometerPerHour) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
     }
 }
 
-extension GATTCrossTrainerData.SpeedUnit: CustomStringConvertible {
+extension GATTCrossTrainerData.KilometerPerHour: CustomStringConvertible {
     
     public var description: String {
         

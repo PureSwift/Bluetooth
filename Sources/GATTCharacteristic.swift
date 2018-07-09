@@ -145,3 +145,34 @@ extension GATTE2ecrc: ExpressibleByIntegerLiteral {
         self.init(rawValue: value)
     }
 }
+
+public enum GATTKilogramCalorie {
+    
+    public struct Byte: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt8>.size
+        
+        public static var unitType: UnitIdentifier { return .kilogramCalorie }
+        
+        public var rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            
+            self.rawValue = rawValue
+        }
+    }
+    
+    public struct Bits16: BluetoothUnit {
+        
+        internal static let length = MemoryLayout<UInt16>.size
+        
+        public static var unitType: UnitIdentifier { return .kilogramCalorie }
+        
+        public var rawValue: UInt16
+        
+        public init(rawValue: UInt16) {
+            
+            self.rawValue = rawValue
+        }
+    }
+}

@@ -64,7 +64,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testTimeSource", testTimeSource),
         ("testTimeAccuracy", testTimeAccuracy),
         ("testReferenceTimeInfomation", testReferenceTimeInfomation),
-        ("testTimeBroadcast", testTimeBroadcast)
+        ("testTimeBroadcast", testTimeBroadcast),
+        ("testCrossTrainerData", testCrossTrainerData)
     ]
     
     func testDateTime() {
@@ -1192,5 +1193,15 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.referenceTime, GATTReferenceTimeInformation(data: Data([0x03, 0x0b, 5, 6])))
         XCTAssertEqual(GATTTimeBroadcast.uuid, .timeBroadcast)
         XCTAssertEqual(GATTTimeBroadcast(data: data), GATTTimeBroadcast(data: data))
+    }
+    
+    func testCrossTrainerData() {
+        XCTAssertNil(GATTCrossTrainerData(data: Data([0x00, 0x00])))
+        
+        do {
+            let data = Data([0b00000000, 0b00000000, 0b00000000])
+            XCTAssertNotNil(GATTCrossTrainerData(data: data))
+        }
+        
     }
 }
