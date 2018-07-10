@@ -8,6 +8,11 @@
 
 import Foundation
 
+/**
+ Exact Time 100
+ 
+ [Exact Time 100](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.exact_time_100.xml)
+ */
 public struct GATTExactTime100: GATTCharacteristic {
     
     internal static let length = GATTDayDateTime.length + MemoryLayout<UInt8>.size

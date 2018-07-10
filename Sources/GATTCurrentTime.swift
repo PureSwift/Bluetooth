@@ -8,6 +8,11 @@
 
 import Foundation
 
+/**
+ Current Time
+ 
+ - SeeAlso: [Current Time](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.current_time.xml)
+ */
 public struct GATTCurrentTime: GATTCharacteristic {
     
     internal static let length = GATTExactTime256.length + MemoryLayout<UInt8>.size
