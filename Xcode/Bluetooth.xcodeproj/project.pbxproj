@@ -645,6 +645,10 @@
 		357709EC20F5074B00E1AC6F /* GATTTimeUpdateState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357709EA20F5074B00E1AC6F /* GATTTimeUpdateState.swift */; };
 		357709ED20F5074B00E1AC6F /* GATTTimeUpdateState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357709EA20F5074B00E1AC6F /* GATTTimeUpdateState.swift */; };
 		357709EE20F5074B00E1AC6F /* GATTTimeUpdateState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357709EA20F5074B00E1AC6F /* GATTTimeUpdateState.swift */; };
+		357709F020F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357709EF20F5137300E1AC6F /* GATTTimeWithDst.swift */; };
+		357709F120F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357709EF20F5137300E1AC6F /* GATTTimeWithDst.swift */; };
+		357709F220F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357709EF20F5137300E1AC6F /* GATTTimeWithDst.swift */; };
+		357709F320F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357709EF20F5137300E1AC6F /* GATTTimeWithDst.swift */; };
 		357FDA7220DC047C00DEE25C /* GATTModelNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357FDA7120DC047C00DEE25C /* GATTModelNumber.swift */; };
 		357FDA7320DC047C00DEE25C /* GATTModelNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357FDA7120DC047C00DEE25C /* GATTModelNumber.swift */; };
 		357FDA7420DC047C00DEE25C /* GATTModelNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357FDA7120DC047C00DEE25C /* GATTModelNumber.swift */; };
@@ -1632,6 +1636,7 @@
 		3571E28F20C894BA0017ACD2 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		357709E520F502AB00E1AC6F /* GATTTimeUpdateControlPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTTimeUpdateControlPoint.swift; sourceTree = "<group>"; };
 		357709EA20F5074B00E1AC6F /* GATTTimeUpdateState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTTimeUpdateState.swift; sourceTree = "<group>"; };
+		357709EF20F5137300E1AC6F /* GATTTimeWithDst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTTimeWithDst.swift; sourceTree = "<group>"; };
 		357FDA7120DC047C00DEE25C /* GATTModelNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTModelNumber.swift; sourceTree = "<group>"; };
 		357FDA7620DC08A200DEE25C /* GATTFirmwareRevisionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTFirmwareRevisionString.swift; sourceTree = "<group>"; };
 		357FDA7B20DC099900DEE25C /* GATTSoftwareRevisionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTSoftwareRevisionString.swift; sourceTree = "<group>"; };
@@ -2003,6 +2008,7 @@
 				351E940C20F3B4300069E88A /* GATTCrossTrainerData.swift */,
 				357709E520F502AB00E1AC6F /* GATTTimeUpdateControlPoint.swift */,
 				357709EA20F5074B00E1AC6F /* GATTTimeUpdateState.swift */,
+				357709EF20F5137300E1AC6F /* GATTTimeWithDst.swift */,
 			);
 			name = Characteristics;
 			sourceTree = "<group>";
@@ -2994,6 +3000,7 @@
 				355BC2CA20D31621001A07D3 /* HCILESetPeriodicAdvertisingEnable.swift in Sources */,
 				355BC2CF20D3162B001A07D3 /* HCILESetExtendedScanParameters.swift in Sources */,
 				356EB93E20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */,
+				357709F320F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
 				6E60A2F420695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4820657F25006589F6 /* InformationalCommand.swift in Sources */,
 				351829B120D22D7A0009F82D /* GAPListOf128BitServiceSolicitationUUIDs.swift in Sources */,
@@ -3352,6 +3359,7 @@
 				355BC2C920D31621001A07D3 /* HCILESetPeriodicAdvertisingEnable.swift in Sources */,
 				355BC2CE20D3162B001A07D3 /* HCILESetExtendedScanParameters.swift in Sources */,
 				356EB93D20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */,
+				357709F220F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
 				6E60A2F320695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4720657F25006589F6 /* InformationalCommand.swift in Sources */,
 				351829B020D22D7A0009F82D /* GAPListOf128BitServiceSolicitationUUIDs.swift in Sources */,
@@ -3732,6 +3740,7 @@
 				6EFB3EA720D4385200364CA0 /* HCIRemoteNameRequest.swift in Sources */,
 				6E6AADF420D2573900DDE1CA /* ATTReadResponse.swift in Sources */,
 				359E8ADE20EFCB3A00A6E24E /* GATTLocalTimeInformation.swift in Sources */,
+				357709F020F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
 				356EB93620D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				357709EB20F5074B00E1AC6F /* GATTTimeUpdateState.swift in Sources */,
 				6E60A2F120695B2700E42351 /* LowEnergyScan.swift in Sources */,
@@ -4104,6 +4113,7 @@
 				355BC2C820D31621001A07D3 /* HCILESetPeriodicAdvertisingEnable.swift in Sources */,
 				355BC2CD20D3162B001A07D3 /* HCILESetExtendedScanParameters.swift in Sources */,
 				356EB93C20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */,
+				357709F120F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
 				6E60A2F220695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4620657F25006589F6 /* InformationalCommand.swift in Sources */,
 				351829AF20D22D7A0009F82D /* GAPListOf128BitServiceSolicitationUUIDs.swift in Sources */,
