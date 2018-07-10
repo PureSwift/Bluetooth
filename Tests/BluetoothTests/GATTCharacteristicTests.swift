@@ -57,7 +57,15 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testLocalNorthCoordinate", testLocalNorthCoordinate),
         ("testFloorNumber", testFloorNumber),
         ("testUncertainty", testUncertainty),
-        ("testLocationName", testLocationName)
+        ("testDayOfWeek", testDayOfWeek),
+        ("testDateTime", testDateTime),
+        ("testDstOffset", testDstOffset),
+        ("testLocalTimeInformation", testLocalTimeInformation),
+        ("testTimeSource", testTimeSource),
+        ("testTimeAccuracy", testTimeAccuracy),
+        ("testReferenceTimeInfomation", testReferenceTimeInfomation),
+        ("testTimeBroadcast", testTimeBroadcast),
+        ("testCrossTrainerData", testCrossTrainerData)
     ]
     
     func testDateTime() {
@@ -616,7 +624,6 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
     }
     
-
     func testBodyCompositionMeasurement() {
         
         let emptyUnit16 = UInt16(littleEndian: UInt16(bytes: (0x00, 0x00)))
@@ -1019,5 +1026,279 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristic.description, "bluetooth")
         XCTAssertEqual(GATTLocationName.uuid, .locationName)
         XCTAssertEqual(GATTLocationName(data: data), "bluetooth")
+    }
+    
+    func testDayOfWeek() {
+        
+        let data = Data([7])
+        
+        guard let characteristic = GATTDayOfWeek(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.day, .sunday)
+        XCTAssertEqual(characteristic.description, "7")
+        XCTAssertEqual(GATTDayOfWeek.uuid, .dayOfWeek)
+        XCTAssertEqual(GATTDayOfWeek.Day.unitType, .day)
+        XCTAssertEqual(GATTDayOfWeek(data: data), GATTDayOfWeek(data: data))
+    }
+    
+    func testDayDateTime() {
+        
+        do {
+            let data = Data([203, 7, 4, 24, 12, 5, 30, 7])
+            
+            guard let characteristic = GATTDayDateTime(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.dateTime.data, Data([203, 7, 4, 24, 12, 5, 30]))
+            XCTAssertEqual(characteristic.dayOfWeek, GATTDayOfWeek(day: .sunday))
+            XCTAssertEqual(characteristic.dayOfWeek.day, .sunday)
+            XCTAssertEqual(GATTDayDateTime.uuid, .dayDateTime)
+            XCTAssertEqual(GATTDayDateTime(data: data), GATTDayDateTime(data: data))
+        }
+    }
+    
+    func testExactTime256() {
+        
+        do {
+            let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245])
+            
+            guard let characteristic = GATTExactTime256(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.dayDateTime.data, Data([203, 7, 4, 24, 12, 5, 30, 7]))
+            XCTAssertEqual(characteristic.fractions256, 245)
+            XCTAssertEqual(GATTExactTime256.uuid, .exactTime256)
+            XCTAssertEqual(GATTExactTime256(data: data), GATTExactTime256(data: data))
+        }
+    }
+    
+    func testTimeZone() {
+        
+        XCTAssertNil(GATTTimeZone(rawValue: -50))
+        XCTAssertNil(GATTTimeZone(rawValue: 70))
+        XCTAssertNotNil(GATTTimeZone(rawValue: -128))
+        
+        do {
+            let data = Data([0x0c])
+            
+            guard let characteristic = GATTTimeZone(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.rawValue, 12)
+            XCTAssertEqual(GATTTimeZone.uuid, .timeZone)
+            XCTAssertEqual(GATTTimeZone(data: data), GATTTimeZone(data: data))
+        }
+    }
+    
+    func testDstOffset() {
+        
+        let data = Data([4])
+        
+        guard let characteristic = GATTDstOffset(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .daylightTime)
+        XCTAssertEqual(characteristic.description, "4")
+        XCTAssertEqual(GATTDstOffset.uuid, .dstOffset)
+        XCTAssertEqual(GATTDstOffset(data: data), GATTDstOffset(data: data))
+    }
+    
+    func testLocalTimeInformation() {
+        
+        do {
+            let data = Data([0x0c, 4])
+            
+            guard let characteristic = GATTLocalTimeInformation(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.timeZone.data, Data([0x0c]))
+            XCTAssertEqual(characteristic.dstOffset, .daylightTime)
+            XCTAssertEqual(GATTLocalTimeInformation.uuid, .localTimeInformation)
+            XCTAssertEqual(GATTLocalTimeInformation(data: data), GATTLocalTimeInformation(data: data))
+        }
+    }
+    
+    func testTimeSource() {
+        
+        let data = Data([1])
+        
+        guard let characteristic = GATTTimeSource(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic, .networkTimeProtocol)
+        XCTAssertEqual(characteristic.description, "1")
+        XCTAssertEqual(GATTTimeSource.uuid, .timeSource)
+        XCTAssertEqual(GATTTimeSource(data: data), GATTTimeSource(data: data))
+    }
+    
+    func testTimeAccuracy() {
+        
+        do {
+            let data = Data([0x0c])
+            
+            guard let characteristic = GATTTimeAccuracy(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.rawValue, 12)
+            XCTAssertEqual(characteristic.description, "12")
+            XCTAssertEqual(characteristic, 12)
+            XCTAssertEqual(GATTTimeAccuracy.uuid, .timeAccuracy)
+            XCTAssertEqual(GATTTimeAccuracy(data: data), GATTTimeAccuracy(data: data))
+        }
+    }
+    
+    func testReferenceTimeInfomation() {
+        
+        do {
+            typealias Day = GATTReferenceTimeInformation.Day
+            typealias Hour = GATTReferenceTimeInformation.Hour
+            
+            let data = Data([0x03, 0x0b, 5, 6])
+            
+            guard let characteristic = GATTReferenceTimeInformation(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.timeSource, .radioTimeSignal)
+            XCTAssertEqual(characteristic.timeAccuracy.rawValue, 0x0b)
+            XCTAssertEqual(characteristic.daysSinceUpdate, 5)
+            XCTAssertEqual(characteristic.daysSinceUpdate.description, "5")
+            XCTAssertEqual(characteristic.hoursSinceUpdate.rawValue , 6)
+            XCTAssertEqual(characteristic.hoursSinceUpdate.description , "6")
+            XCTAssertEqual(Day.unitType, .day)
+            XCTAssertEqual(Hour.unitType, .hour)
+            XCTAssertEqual(GATTReferenceTimeInformation.uuid, .referenceTimeInformation)
+            XCTAssertEqual(GATTReferenceTimeInformation(data: data), GATTReferenceTimeInformation(data: data))
+        }
+    }
+    
+    func testTimeBroadcast() {
+        let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245, 0x0c, 4, 0x03, 0x0b, 5, 6])
+        
+        guard let characteristic = GATTTimeBroadcast(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.time, GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
+        XCTAssertEqual(characteristic.localTime, GATTLocalTimeInformation(data: Data([0x0c, 4])))
+        XCTAssertEqual(characteristic.referenceTime, GATTReferenceTimeInformation(data: Data([0x03, 0x0b, 5, 6])))
+        XCTAssertEqual(GATTTimeBroadcast.uuid, .timeBroadcast)
+        XCTAssertEqual(GATTTimeBroadcast(data: data), GATTTimeBroadcast(data: data))
+    }
+    
+    func testCrossTrainerData() {
+        
+        typealias KilometerPerHour = GATTCrossTrainerData.KilometerPerHour
+        typealias MetreBit24 = GATTCrossTrainerData.Metre.Bit24
+        typealias MetreBit16 = GATTCrossTrainerData.Metre.Bits16
+        typealias StepPerMinute = GATTCrossTrainerData.StepPerMinute
+        typealias UnitlessUnsigned = GATTCrossTrainerData.Unitless.Unsigned
+        typealias UnitlessSigned = GATTCrossTrainerData.Unitless.Signed
+        typealias Percentage = GATTCrossTrainerData.Percentage
+        typealias PlainAngleDegree = GATTCrossTrainerData.PlainAngleDegree
+        typealias Power = GATTCrossTrainerData.Power
+        typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
+        typealias MetabolicEquivalent = GATTCrossTrainerData.MetabolicEquivalent
+        typealias Time = GATTCrossTrainerData.Time
+        
+        XCTAssertNil(GATTCrossTrainerData(data: Data([0x00, 0x00])))
+        
+        do {
+            let data = Data([0b00000000, 0b00000000, 0b00000000])
+            XCTAssertNotNil(GATTCrossTrainerData(data: data))
+        }
+        
+        do {
+            let data = Data([0b11111111, 0b01111111, 0x00, // flags
+                             0x05, 0x05, // instantaneousSpeed
+                             0x05, 0x05, // averageSpeed
+                             0x05, 0x05, 0x05, // totalDistance
+                             0x05, 0x05, 0x05, 0x05, // stepCount
+                             0x05, 0x05, // strideCount
+                             0x05, 0x05, 0x05, 0x05, // elevationGain
+                             0x05, 0x05, 0x05, 0x05, // inclinationAndRampAngleSetting
+                             0x05, 0x05, // resistanceLevel
+                             0x05, 0x05, // instantaneousPower
+                             0x05, 0x05, // averagePower
+                             0x05, 0x05, 0x05, 0x05, 0x05, // expendedEnergy
+                             0x05, // heartRate
+                             0x05, // metabolicEquivalent
+                             0x05, 0x05, // elapsedTime
+                             0x05, 0x05 // remainingTime
+                ])
+            guard let characteristic = GATTCrossTrainerData(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertNotNil(characteristic)
+            XCTAssertEqual(GATTCrossTrainerData.uuid, .crossTrainerData)
+            XCTAssertEqual(characteristic.instantaneousSpeed, KilometerPerHour(rawValue: 1285))
+            XCTAssertEqual(characteristic.averageSpeed, KilometerPerHour(rawValue: 1285))
+            XCTAssertEqual(characteristic.totalDistance, MetreBit24(rawValue: 328965))
+            XCTAssertEqual(characteristic.stepPerMinute, StepPerMinute(rawValue: 1285))
+            XCTAssertEqual(characteristic.averageStepRate, StepPerMinute(rawValue: 1285))
+            XCTAssertEqual(characteristic.strideCount, UnitlessUnsigned(rawValue: 1285))
+            XCTAssertEqual(characteristic.positiveElevationGain, MetreBit16(rawValue: 1285))
+            XCTAssertEqual(characteristic.negativeElevationGain, MetreBit16(rawValue: 1285))
+            XCTAssertEqual(characteristic.inclination, Percentage(rawValue: 1285))
+            XCTAssertEqual(characteristic.rampAngleSetting, PlainAngleDegree(rawValue: 1285))
+            XCTAssertEqual(characteristic.resistanceLevel, UnitlessSigned(rawValue: 1285))
+            XCTAssertEqual(characteristic.instantaneousPower, Power(rawValue: 1285))
+            XCTAssertEqual(characteristic.averagePower, Power(rawValue: 1285))
+            XCTAssertEqual(characteristic.totalEnergy, GATTKilogramCalorie.Bits16(rawValue: 1285))
+            XCTAssertEqual(characteristic.energyPerHour, GATTKilogramCalorie.Bits16(rawValue: 1285))
+            XCTAssertEqual(characteristic.energyPerMinute, GATTKilogramCalorie.Byte(rawValue: 5))
+            XCTAssertEqual(characteristic.heartRate, GATTBeatsPerMinute.Byte(rawValue: 5))
+            XCTAssertEqual(characteristic.metabolicEquivalent, MetabolicEquivalent(rawValue: 5))
+            XCTAssertEqual(characteristic.elapsedTime, Time(rawValue: 1285))
+            XCTAssertEqual(characteristic.remainingTime, Time(rawValue: 1285))
+            
+            XCTAssertEqual(KilometerPerHour.unitType, .kilometrePerHour)
+            XCTAssertEqual(StepPerMinute.unitType, .step)
+            XCTAssertEqual(MetreBit24.unitType, .metre)
+            XCTAssertEqual(MetreBit16.unitType, .metre)
+            XCTAssertEqual(UnitlessUnsigned.unitType, .unitless)
+            XCTAssertEqual(UnitlessSigned.unitType, .unitless)
+            XCTAssertEqual(Percentage.unitType, .percentage)
+            XCTAssertEqual(PlainAngleDegree.unitType, .degree)
+            XCTAssertEqual(Power.unitType, .power)
+            XCTAssertEqual(GATTKilogramCalorie.Bits16.unitType, .kilogramCalorie)
+            XCTAssertEqual(GATTKilogramCalorie.Byte.unitType, .kilogramCalorie)
+            XCTAssertEqual(MetabolicEquivalent.unitType, .metabolicEquivalent)
+            XCTAssertEqual(Time.unitType, .second)
+            
+            XCTAssertEqual(GATTCrossTrainerData(instantaneousSpeed: 1285,
+                                                averageSpeed: 1285,
+                                                totalDistance: MetreBit24(rawValue: 328965),
+                                                stepPerMinute: 1285,
+                                                averageStepRate: 1285,
+                                                strideCount: 1285,
+                                                positiveElevationGain: 1285,
+                                                negativeElevationGain: 1285,
+                                                inclination: 1285,
+                                                rampAngleSetting: 1285,
+                                                resistanceLevel: 1285,
+                                                instantaneousPower: 1285,
+                                                averagePower: 1285,
+                                                totalEnergy: 1285,
+                                                energyPerHour: 1285,
+                                                energyPerMinute: 5,
+                                                heartRate: 5,
+                                                metabolicEquivalent: 5,
+                                                elapsedTime: 1285,
+                                                remainingTime: 1285), characteristic)
+            
+            XCTAssertEqual(characteristic.flags, BitMaskOptionSet<GATTCrossTrainerData.Flag>(rawValue: UInt32(bytes: (0b11111111, 0b01111111, 0x00, 0x00))))
+            XCTAssertEqual(characteristic.data, data)
+        }
+        
     }
 }

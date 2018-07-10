@@ -204,7 +204,7 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2a12: "Time Accuracy",
     0x2a13: "Time Source",
     0x2a14: "Reference Time Information",
-    /* 0x2a15 undefined */
+    0x2a15: "Time Broadcast",
     0x2a16: "Time Update Control Point",
     0x2a17: "Time Update State",
     0x2a18: "Glucose Measurement",
@@ -372,6 +372,7 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2ac6: "Object List Control Point",
     0x2ac7: "Object List Filter",
     0x2ac8: "Object Changed",
+    0x2ace: "Cross Trainer Data",
     /* vendor defined */
     0xfeff: "GN Netcom",
     0xfefe: "GN ReSound A/S",
