@@ -1367,4 +1367,22 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(GATTTimeWithDst(data: data), GATTTimeWithDst(data: data))
         }
     }
+    
+    func testCurrentTime() {
+        let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245, 0b00001111])
+        
+        guard let characteristic = GATTCurrentTime(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.exactTime, GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
+        XCTAssertEqual(characteristic.adjustReason, BitMaskOptionSet<GATTCurrentTime.Flag>(rawValue: 0b00001111))
+        XCTAssertEqual(GATTCurrentTime.uuid, .currentTime)
+        XCTAssertEqual(GATTCurrentTime(data: data), GATTCurrentTime(data: data))
+        
+        XCTAssertTrue(characteristic.adjustReason.contains(.manualTimeUpdate))
+        XCTAssertTrue(characteristic.adjustReason.contains(.externalReference))
+        XCTAssertTrue(characteristic.adjustReason.contains(.timeZoneChange))
+        XCTAssertTrue(characteristic.adjustReason.contains(.dstChange))
+    }
 }
