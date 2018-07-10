@@ -194,7 +194,7 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2a08: "Date Time",
     0x2a09: "Day of Week",
     0x2a0a: "Day Date Time",
-    /* 0x2a0b undefined */
+    0x2a0b: "Exact Time 100",
     0x2a0c: "Exact Time 256",
     0x2a0d: "DST Offset",
     0x2a0e: "Time Zone",

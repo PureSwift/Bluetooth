@@ -1063,6 +1063,22 @@ final class GATTCharacteristicTests: XCTestCase {
         }
     }
     
+    func testExactTime100() {
+        
+        do {
+            let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 45])
+            
+            guard let characteristic = GATTExactTime100(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.dayDateTime.data, Data([203, 7, 4, 24, 12, 5, 30, 7]))
+            XCTAssertEqual(characteristic.fraction100, GATTExactTime100.Second(rawValue: 45))
+            XCTAssertEqual(GATTExactTime100.uuid, .exactTime100)
+            XCTAssertEqual(GATTExactTime100(data: data), GATTExactTime100(data: data))
+        }
+    }
+    
     func testExactTime256() {
         
         do {
