@@ -65,7 +65,8 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testTimeAccuracy", testTimeAccuracy),
         ("testReferenceTimeInfomation", testReferenceTimeInfomation),
         ("testTimeBroadcast", testTimeBroadcast),
-        ("testCrossTrainerData", testCrossTrainerData)
+        ("testCrossTrainerData", testCrossTrainerData),
+        ("testTimeUpdateControlPoint", testTimeUpdateControlPoint),
     ]
     
     func testDateTime() {
@@ -1299,6 +1300,23 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.flags, BitMaskOptionSet<GATTCrossTrainerData.Flag>(rawValue: UInt32(bytes: (0b11111111, 0b01111111, 0x00, 0x00))))
             XCTAssertEqual(characteristic.data, data)
         }
+    }
+    
+    func testTimeUpdateControlPoint() {
         
+        let data = Data([1])
+        
+        do {
+            guard let characteristic = GATTTimeUpdateControlPoint(data: data)
+                else { XCTFail("Could not decode from bytes"); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.description, "1")
+        }
+        
+        XCTAssertEqual(GATTTimeUpdateControlPoint(data: Data([1])), .getReferenceUpdate)
+        XCTAssertEqual(GATTTimeUpdateControlPoint(data: Data([2])), .cancelReferenceUpdate)
+        XCTAssertEqual(GATTTimeUpdateControlPoint.uuid, .timeUpdateControlPoint)
+        XCTAssertEqual(GATTTimeUpdateControlPoint(data: data), GATTTimeUpdateControlPoint(data: data))
     }
 }
