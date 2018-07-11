@@ -71,7 +71,9 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testTimeWithDst", testTimeWithDst),
         ("testCurrentTime", testCurrentTime),
         ("testSecondaryTimeZone", testSecondaryTimeZone),
-        ("testDateUTC", testDateUTC)
+        ("testDateUTC", testDateUTC),
+        ("testScanRefresh", testScanRefresh),
+        ("testScanIntervalWindow", testScanIntervalWindow)
     ]
     
     func testDateTime() {
@@ -1425,5 +1427,34 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(GATTDateUTC.Day.unitType, .day)
             XCTAssertEqual(GATTDateUTC(data: data), GATTDateUTC(data: data))
         }
+    }
+    
+    func testScanRefresh() {
+        
+        XCTAssertNil(GATTScanRefresh(data: Data([1])))
+        
+        let data = Data([0x00])
+        
+        guard let characteristic = GATTScanRefresh(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(GATTScanRefresh.uuid, .scanRefresh)
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.description, "0")
+        XCTAssertEqual(characteristic, .serverRequiredRefresh)
+    }
+    
+    func testScanIntervalWindow() {
+        
+        let data = Data([0x0, 0x40, 0x0, 0x40])
+        
+        guard let characteristics = GATTScanIntervalWindow(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristics.data, data)
+        XCTAssertEqual(characteristics.scanInterval, LowEnergyScanTimeInterval(16384))
+        XCTAssertEqual(characteristics.scanWindow, LowEnergyScanTimeInterval(16384))
+        XCTAssertEqual(GATTScanIntervalWindow.uuid, .scanIntervalWindow)
+        XCTAssertEqual(GATTScanIntervalWindow(data: data), GATTScanIntervalWindow(data: data))
     }
 }
