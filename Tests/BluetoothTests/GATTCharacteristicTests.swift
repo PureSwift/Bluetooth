@@ -68,7 +68,10 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testCrossTrainerData", testCrossTrainerData),
         ("testTimeUpdateControlPoint", testTimeUpdateControlPoint),
         ("testTimeUpdateState", testTimeUpdateState),
-        ("testTimeWithDst", testTimeWithDst)
+        ("testTimeWithDst", testTimeWithDst),
+        ("testCurrentTime", testCurrentTime),
+        ("testSecondaryTimeZone", testSecondaryTimeZone),
+        ("testDateUTC", testDateUTC)
     ]
     
     func testDateTime() {
@@ -1384,5 +1387,41 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertTrue(characteristic.adjustReason.contains(.externalReference))
         XCTAssertTrue(characteristic.adjustReason.contains(.timeZoneChange))
         XCTAssertTrue(characteristic.adjustReason.contains(.dstChange))
+    }
+    
+    func testSecondaryTimeZone() {
+        
+        typealias TimeZone = GATTSecondaryTimeZone.TimeZone
+        typealias RelativeInformation = GATTSecondaryTimeZone.RelativeInformation
+        
+        let data = Data([0b10000011, 0x0c, 4])
+        
+        guard let characteristic = GATTSecondaryTimeZone(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristic.data, data)
+        XCTAssertEqual(characteristic.timeZone, .atDestination)
+        XCTAssertEqual(characteristic.relativeInformation, .localTime)
+        XCTAssertEqual(GATTSecondaryTimeZone.uuid, .secondaryTimeZone)
+        XCTAssertEqual(GATTSecondaryTimeZone(data: data), GATTSecondaryTimeZone(data: data))
+    }
+    
+    func testDateUTC() {
+        
+        XCTAssertNil(GATTDateUTC(rawValue: 16777215))
+        XCTAssertNotNil(GATTDateUTC(rawValue: 0))
+        
+        do {
+            let data = Data([0xFE, 0xFF, 0xFF])
+            
+            guard let characteristic = GATTDateUTC(data: data)
+                else { XCTFail(); return }
+            
+            XCTAssertEqual(characteristic.data, data)
+            XCTAssertEqual(characteristic.rawValue, 16777214)
+            XCTAssertEqual(characteristic.description, "FFFFFE")
+            XCTAssertEqual(GATTDateUTC.uuid, .dateUtc)
+            XCTAssertEqual(GATTDateUTC(data: data), GATTDateUTC(data: data))
+        }
     }
 }
