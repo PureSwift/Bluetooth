@@ -194,12 +194,12 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2a08: "Date Time",
     0x2a09: "Day of Week",
     0x2a0a: "Day Date Time",
-    /* 0x2a0b undefined */
+    0x2a0b: "Exact Time 100",
     0x2a0c: "Exact Time 256",
     0x2a0d: "DST Offset",
     0x2a0e: "Time Zone",
     0x2a0f: "Local Time Information",
-    /* 0x2a10 undefined */
+    0x2a10: "Secondary Time Zone",
     0x2a11: "Time with DST",
     0x2a12: "Time Accuracy",
     0x2a13: "Time Source",
@@ -373,6 +373,7 @@ internal let definedUUIDs: [UInt16: String] = [
     0x2ac7: "Object List Filter",
     0x2ac8: "Object Changed",
     0x2ace: "Cross Trainer Data",
+    0x2aed: "Date UTC",
     /* vendor defined */
     0xfeff: "GN Netcom",
     0xfefe: "GN ReSound A/S",

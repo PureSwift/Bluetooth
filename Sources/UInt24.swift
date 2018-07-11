@@ -37,7 +37,23 @@ public extension UInt24 {
 
 // MARK: - Equatable
 
-extension UInt24: Equatable {
+extension UInt24: Comparable {
+    
+    public static func > (lhs: UInt24, rhs: UInt24) -> Bool {
+        return UInt32(lhs) > UInt32(rhs)
+    }
+    
+    public static func < (lhs: UInt24, rhs: UInt24) -> Bool {
+        return UInt32(lhs) < UInt32(rhs)
+    }
+    
+    public static func >= (lhs: UInt24, rhs: UInt24) -> Bool {
+        return UInt32(lhs) >= UInt32(rhs)
+    }
+    
+    public static func <= (lhs: UInt24, rhs: UInt24) -> Bool {
+        return UInt32(lhs) <= UInt32(rhs)
+    }
     
     public static func == (lhs: UInt24, rhs: UInt24) -> Bool {
         
