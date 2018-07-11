@@ -1408,8 +1408,8 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testDateUTC() {
         
-        XCTAssertNil(GATTDateUTC(rawValue: 16777215))
-        XCTAssertNotNil(GATTDateUTC(rawValue: 0))
+        XCTAssertNil(GATTDateUTC.Day(rawValue: 16777215))
+        XCTAssertNotNil(GATTDateUTC.Day(rawValue: 0))
         
         do {
             let data = Data([0xFE, 0xFF, 0xFF])
@@ -1418,9 +1418,10 @@ final class GATTCharacteristicTests: XCTestCase {
                 else { XCTFail(); return }
             
             XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.rawValue, 16777214)
+            XCTAssertEqual(characteristic.date, GATTDateUTC.Day(rawValue: 16777214))
             XCTAssertEqual(characteristic.description, "FFFFFE")
             XCTAssertEqual(GATTDateUTC.uuid, .dateUtc)
+            XCTAssertEqual(GATTDateUTC.Day.unitType, .day)
             XCTAssertEqual(GATTDateUTC(data: data), GATTDateUTC(data: data))
         }
     }

@@ -8,32 +8,17 @@
 
 import Foundation
 
-public struct GATTDateUTC: RawRepresentable, GATTCharacteristic {
+public struct GATTDateUTC: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt24>.size
     
-    internal static let min = GATTDateUTC(1)
-    
-    internal static let max = GATTDateUTC(16777214)
-    
-    internal static let unknown = GATTDateUTC(0)
-    
     public static var uuid: BluetoothUUID { return .dateUtc }
     
-    public let rawValue: UInt24
+    public let date: Day
     
-    public init?(rawValue: UInt24) {
+    public init?(date: Day) {
         
-        guard rawValue == GATTDateUTC.unknown.rawValue
-            || (GATTDateUTC.min.rawValue <= rawValue && GATTDateUTC.max.rawValue >= rawValue)
-            else { return nil }
-        
-        self.rawValue = rawValue
-    }
-    
-    fileprivate init(_ unsafe: UInt24) {
-        
-        self.rawValue = unsafe
+        self.date = date
     }
     
     public init?(data: Data) {
@@ -41,29 +26,75 @@ public struct GATTDateUTC: RawRepresentable, GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let dateUTC = UInt24(littleEndian: UInt24(bytes: (data[0], data[1], data[2])))
+        guard let date = Day(rawValue: UInt24(littleEndian: UInt24(bytes: (data[0], data[1], data[2]))))
+            else { return nil }
         
-        self.init(rawValue: dateUTC)
+        self.init(date: date)
     }
     
     public var data: Data {
         
-        let bytes = rawValue.littleEndian.bytes
+        let bytes = date.rawValue.littleEndian.bytes
         
         return Data([bytes.0, bytes.1, bytes.2])
     }
-    
 }
 
 extension GATTDateUTC: Equatable {
     
     public static func == (lhs: GATTDateUTC, rhs: GATTDateUTC) -> Bool {
         
-        return lhs.rawValue == rhs.rawValue
+        return lhs.date == rhs.date
     }
 }
 
 extension GATTDateUTC: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return date.rawValue.description
+    }
+}
+
+extension GATTDateUTC {
+
+    public struct Day: BluetoothUnit {
+        
+        public static var unitType: UnitIdentifier { return .day }
+        
+        public static let unknown = Day(0)
+        
+        public static let min = Day(1)
+        
+        public static let max = Day(16777214)
+        
+        public let rawValue: UInt24
+        
+        public init?(rawValue: UInt24) {
+            
+            guard rawValue == Day.unknown.rawValue
+                || (rawValue <= Day.max.rawValue && rawValue >= Day.min.rawValue)
+                else { return nil }
+            
+            self.rawValue = rawValue
+        }
+        
+        private init(_ unsafe: UInt24) {
+            
+            self.rawValue = unsafe
+        }
+    }
+}
+
+extension GATTDateUTC.Day: Equatable {
+    
+    public static func == (lhs: GATTDateUTC.Day, rhs: GATTDateUTC.Day) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTDateUTC.Day: CustomStringConvertible {
     
     public var description: String {
         
