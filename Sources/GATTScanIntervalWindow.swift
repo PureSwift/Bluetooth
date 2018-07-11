@@ -23,11 +23,11 @@ public struct GATTScanIntervalWindow: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .scanIntervalWindow }
     
-    public var scanInterval: UInt16
+    public var scanInterval: LowEnergyScanTimeInterval
     
-    public var scanWindow: UInt16
+    public var scanWindow: LowEnergyScanTimeInterval
     
-    public init(scanInterval: UInt16, scanWindow: UInt16) {
+    public init(scanInterval: LowEnergyScanTimeInterval, scanWindow: LowEnergyScanTimeInterval) {
         
         self.scanInterval = scanInterval
         self.scanWindow = scanWindow
@@ -38,17 +38,19 @@ public struct GATTScanIntervalWindow: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let scanInterval = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        guard let scanInterval = LowEnergyScanTimeInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+            else { return nil }
         
-        let scanWindow = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
+        guard let scanWindow = LowEnergyScanTimeInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))))
+            else { return nil }
         
         self.init(scanInterval: scanInterval, scanWindow: scanWindow)
     }
     
     public var data: Data {
         
-        let scanIntervalBytes = scanInterval.littleEndian.bytes
-        let scanWindowBytes = scanWindow.littleEndian.bytes
+        let scanIntervalBytes = scanInterval.rawValue.littleEndian.bytes
+        let scanWindowBytes = scanWindow.rawValue.littleEndian.bytes
         
         return Data([scanIntervalBytes.0, scanIntervalBytes.1, scanWindowBytes.0, scanWindowBytes.1])
     }

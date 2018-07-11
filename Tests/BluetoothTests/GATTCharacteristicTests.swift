@@ -1445,14 +1445,14 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testScanIntervalWindow() {
         
-        let data = Data([0x00, 0x00,0x00, 0x00])
+        let data = Data([0x40, 0x00, 0x40, 0x00])
         
         guard let characteristics = GATTScanIntervalWindow(data: data)
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.scanInterval, 0)
-        XCTAssertEqual(characteristics.scanWindow, 0)
+        XCTAssertEqual(characteristics.scanInterval, LowEnergyScanTimeInterval(16384))
+        XCTAssertEqual(characteristics.scanWindow, LowEnergyScanTimeInterval(16384))
         XCTAssertEqual(GATTScanIntervalWindow.uuid, .scanIntervalWindow)
         XCTAssertEqual(GATTScanIntervalWindow(data: data), GATTScanIntervalWindow(data: data))
     }
