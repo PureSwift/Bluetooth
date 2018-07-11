@@ -1445,7 +1445,7 @@ final class GATTCharacteristicTests: XCTestCase {
     
     func testScanIntervalWindow() {
         
-        let data = Data([0x40, 0x00, 0x40, 0x00])
+        let data = Data([0x0, 0x40, 0x0, 0x40])
         
         guard let characteristics = GATTScanIntervalWindow(data: data)
             else { XCTFail("Could not decode from bytes"); return }
