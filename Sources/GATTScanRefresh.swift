@@ -8,6 +8,13 @@
 
 import Foundation
 
+/**
+ Scan Refresh
+ 
+ The Scan Refresh characteristic is used to notify the Client that the Server requires the Scan Interval Window characteristic to be written with the latest values upon notification.
+ 
+ - SeeAlso: [Scan Refresh](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.scan_refresh.xml)
+ */
 public enum GATTScanRefresh: UInt8, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
