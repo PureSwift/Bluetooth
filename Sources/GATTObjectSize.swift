@@ -34,11 +34,9 @@ public struct GATTObjectSize: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let currentSize = Size(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3]))))
-            else { return nil }
+        let currentSize = Size(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3]))))
         
-        guard let allocatedSize = Size(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3]))))
-            else { return nil }
+        let allocatedSize = Size(rawValue: UInt32(littleEndian: UInt32(bytes: (data[4], data[5], data[6], data[7]))))
         
         self.init(currentSize: currentSize, allocatedSize: allocatedSize)
     }
@@ -75,7 +73,7 @@ extension GATTObjectSize {
         
         public var rawValue: UInt32
         
-        public init?(rawValue: UInt32) {
+        public init(rawValue: UInt32) {
             
             self.rawValue = rawValue
         }

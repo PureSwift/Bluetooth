@@ -1470,8 +1470,8 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.rawValue, BluetoothUUID.bit16(16384))
-        XCTAssertEqual(characteristics.description, "4000")
+        XCTAssertEqual(characteristics.rawValue, 16384)
+        XCTAssertEqual(characteristics.description, "16384")
         XCTAssertEqual(GATTObjectType.uuid, .objectType)
         XCTAssertEqual(GATTObjectType(data: data), GATTObjectType(data: data))
     }

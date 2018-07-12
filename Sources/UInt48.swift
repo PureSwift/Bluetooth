@@ -158,4 +158,3 @@ public extension UInt64 {
         self = UInt64(bigEndian: UInt64(bytes: (0, 0, bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5)))
     }
 }
-

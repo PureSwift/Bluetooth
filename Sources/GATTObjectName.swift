@@ -19,7 +19,7 @@ import Foundation
  */
 public struct GATTObjectName: RawRepresentable, GATTCharacteristic {
     
-    internal static let length = MemoryLayout<UInt8>.size * 120
+    internal static let length = 120
     
     public static var uuid: BluetoothUUID { return .objectName }
     
@@ -27,7 +27,7 @@ public struct GATTObjectName: RawRepresentable, GATTCharacteristic {
     
     public init?(rawValue: String) {
         
-        guard Data(rawValue.utf8).count <= type(of: self).length
+        guard rawValue.utf8.count <= type(of: self).length
             else { return nil }
         
         self.rawValue = rawValue

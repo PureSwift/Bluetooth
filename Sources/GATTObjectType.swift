@@ -21,17 +21,11 @@ public struct GATTObjectType: RawRepresentable, GATTCharacteristic {
 
     public static var uuid: BluetoothUUID { return .objectType }
     
-    public let rawValue: BluetoothUUID
+    public let rawValue: UInt16
     
-    public init?(rawValue: BluetoothUUID) {
+    public init(rawValue: UInt16) {
         
-        switch rawValue {
-            
-        case .bit16: self.rawValue = rawValue
-            
-        default: return nil
-            
-        }
+        self.rawValue = rawValue
     }
     
     public init?(data: Data) {
@@ -39,16 +33,16 @@ public struct GATTObjectType: RawRepresentable, GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let value = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
-        let type = BluetoothUUID.bit16(value)
-        
-        self.init(rawValue: type)
+        self.init(rawValue: rawValue)
     }
     
     public var data: Data {
         
-        return rawValue.littleEndian.data
+        let bytes = rawValue.littleEndian.bytes
+        
+        return Data([bytes.0, bytes.1])
     }
 }
 

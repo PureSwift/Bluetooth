@@ -8,6 +8,11 @@
 
 import Foundation
 
+/**
+ Object ID
+ 
+ - SeeAlso: [Object ID](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.object_id.xml)
+ */
 public struct GATTObjectID: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt48>.size
@@ -22,7 +27,8 @@ public struct GATTObjectID: RawRepresentable, GATTCharacteristic {
     
     public init?(rawValue: UInt48) {
         
-        guard rawValue <= GATTObjectID.max && rawValue >= GATTObjectID.min
+        guard rawValue <= GATTObjectID.max,
+            rawValue >= GATTObjectID.min
             else { return nil }
         
         self.rawValue = rawValue
