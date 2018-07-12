@@ -15,9 +15,10 @@ final class UInt24Tests: XCTestCase {
     
     static let allTests = [
         ("testBitWidth", testBitWidth),
-        ("testEquatable", testEquatable),
+        ("testComparable", testComparable),
         ("testHashable", testHashable),
-        ("testExpressibleByIntegerLiteral", testExpressibleByIntegerLiteral)
+        ("testExpressibleByIntegerLiteral", testExpressibleByIntegerLiteral),
+        ("testData", testData)
     ]
     
     func testBitWidth() {
@@ -26,12 +27,15 @@ final class UInt24Tests: XCTestCase {
         XCTAssertEqual(UInt24.bitWidth, 24)
     }
     
-    func testEquatable() {
-        
+    func testComparable() {
         XCTAssertEqual(UInt24.zero, 0)
         XCTAssertEqual(UInt24.min, 0)
         XCTAssertEqual(UInt24.max, 16777215)
         XCTAssertEqual(UInt24.max, 0xFFFFFF)
+        XCTAssert(0xFFFFFF <= UInt24.max)
+        XCTAssert(0xFFFFFE < UInt24.max)
+        XCTAssert(0xFFFFFF >= UInt24.max)
+        XCTAssert(UInt24.max > 0xFFFFFE)
     }
     
     func testHashable() {
@@ -53,5 +57,13 @@ final class UInt24Tests: XCTestCase {
         ]
         
         values.forEach { XCTAssertEqual($0.0.description, $0.1) }
+    }
+    
+    func testData() {
+        
+        let data = Data([0xFF, 0xFF, 0xFF])
+        
+        XCTAssertEqual(UInt24(data: data), 16777215)
+        XCTAssertEqual(UInt24.max.data, data)
     }
 }

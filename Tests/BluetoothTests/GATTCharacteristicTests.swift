@@ -73,7 +73,11 @@ final class GATTCharacteristicTests: XCTestCase {
         ("testSecondaryTimeZone", testSecondaryTimeZone),
         ("testDateUTC", testDateUTC),
         ("testScanRefresh", testScanRefresh),
-        ("testScanIntervalWindow", testScanIntervalWindow)
+        ("testScanIntervalWindow", testScanIntervalWindow),
+        ("testObjectType", testObjectType),
+        ("testObjectName", testObjectName),
+        ("testObjectSize", testObjectSize),
+        ("testObjectID", testObjectID)
     ]
     
     func testDateTime() {
@@ -1500,5 +1504,19 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(characteristics.description, "bluetooth")
         XCTAssertEqual(GATTObjectName.uuid, .objectName)
         XCTAssertEqual(GATTObjectName(data: data), GATTObjectName(data: data))
+    }
+    
+    func testObjectID() {
+        
+        let data = Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
+        
+        guard let characteristics = GATTObjectID(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristics.data, data)
+        XCTAssertEqual(UInt64(characteristics.rawValue), 281474976710655)
+        XCTAssertEqual(characteristics.description, "FFFFFFFFFFFF")
+        XCTAssertEqual(GATTObjectID.uuid, .objectId)
+        XCTAssertEqual(GATTObjectID(data: data), GATTObjectID(data: data))
     }
 }
