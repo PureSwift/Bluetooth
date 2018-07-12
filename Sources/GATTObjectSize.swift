@@ -15,7 +15,7 @@ import Foundation
  */
 public struct GATTObjectSize: GATTCharacteristic {
     
-    internal static let length = MemoryLayout<UInt16>.size * 2
+    internal static let length = MemoryLayout<UInt32>.size * 2
     
     public static var uuid: BluetoothUUID { return .objectSize }
     
@@ -48,7 +48,24 @@ public struct GATTObjectSize: GATTCharacteristic {
         let currentSizeBytes = currentSize.rawValue.littleEndian.bytes
         let allocatedSizeBytes = allocatedSize.rawValue.littleEndian.bytes
         
-        return Data([currentSizeBytes.0, currentSizeBytes.1, allocatedSizeBytes.0, allocatedSizeBytes.1])
+        return Data([currentSizeBytes.0,
+                     currentSizeBytes.1,
+                     currentSizeBytes.2,
+                     currentSizeBytes.3,
+                     allocatedSizeBytes.0,
+                     allocatedSizeBytes.1,
+                     allocatedSizeBytes.2,
+                     allocatedSizeBytes.3
+            ])
+    }
+}
+
+extension GATTObjectSize: Equatable {
+    
+    public static func == (lhs: GATTObjectSize, rhs: GATTObjectSize) -> Bool {
+        
+        return lhs.currentSize == rhs.currentSize
+            && lhs.allocatedSize == rhs.allocatedSize
     }
 }
 
@@ -62,5 +79,13 @@ extension GATTObjectSize {
             
             self.rawValue = rawValue
         }
+    }
+}
+
+extension GATTObjectSize.Size: Equatable {
+    
+    public static func == (lhs: GATTObjectSize.Size, rhs: GATTObjectSize.Size) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
     }
 }

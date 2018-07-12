@@ -1457,4 +1457,48 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTScanIntervalWindow.uuid, .scanIntervalWindow)
         XCTAssertEqual(GATTScanIntervalWindow(data: data), GATTScanIntervalWindow(data: data))
     }
+    
+    func testObjectType() {
+        
+        let data = Data([0x0, 0x40])
+        
+        guard let characteristics = GATTObjectType(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristics.data, data)
+        XCTAssertEqual(characteristics.rawValue, BluetoothUUID.bit16(16384))
+        XCTAssertEqual(characteristics.description, "4000")
+        XCTAssertEqual(GATTObjectType.uuid, .objectType)
+        XCTAssertEqual(GATTObjectType(data: data), GATTObjectType(data: data))
+    }
+    
+    func testObjectSize() {
+        
+        typealias Size = GATTObjectSize.Size
+        
+        let data = Data([0x0A, 0x40, 0x00, 0x00, 0x0A, 0x40, 0x00, 0x00])
+        
+        guard let characteristics = GATTObjectSize(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristics.data, data)
+        XCTAssertEqual(characteristics.currentSize, Size(rawValue: 16394))
+        XCTAssertEqual(characteristics.allocatedSize, Size(rawValue: 16394))
+        XCTAssertEqual(GATTObjectSize.uuid, .objectSize)
+        XCTAssertEqual(GATTObjectSize(data: data), GATTObjectSize(data: data))
+    }
+    
+    func testObjectName() {
+        
+        let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
+        
+        guard let characteristics = GATTObjectName(data: data)
+            else { XCTFail("Could not decode from bytes"); return }
+        
+        XCTAssertEqual(characteristics.data, data)
+        XCTAssertEqual(characteristics.rawValue, "bluetooth")
+        XCTAssertEqual(characteristics.description, "bluetooth")
+        XCTAssertEqual(GATTObjectName.uuid, .objectName)
+        XCTAssertEqual(GATTObjectName(data: data), GATTObjectName(data: data))
+    }
 }

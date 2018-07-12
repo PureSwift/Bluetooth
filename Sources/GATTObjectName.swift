@@ -46,3 +46,19 @@ public struct GATTObjectName: RawRepresentable, GATTCharacteristic {
         return Data(rawValue.utf8)
     }
 }
+
+extension GATTObjectName: Equatable {
+    
+    public static func == (lhs: GATTObjectName, rhs: GATTObjectName) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+extension GATTObjectName: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return rawValue.description
+    }
+}
