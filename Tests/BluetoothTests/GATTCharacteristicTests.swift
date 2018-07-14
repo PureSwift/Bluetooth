@@ -1471,7 +1471,7 @@ final class GATTCharacteristicTests: XCTestCase {
         
         XCTAssertEqual(characteristics.data, data)
         XCTAssertEqual(characteristics.rawValue, 16384)
-        XCTAssertEqual(characteristics.description, "16384")
+        XCTAssertEqual(characteristics.description, "4000")
         XCTAssertEqual(GATTObjectType.uuid, .objectType)
         XCTAssertEqual(GATTObjectType(data: data), GATTObjectType(data: data))
     }
