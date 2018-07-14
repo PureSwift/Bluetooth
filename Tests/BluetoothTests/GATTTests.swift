@@ -15,6 +15,7 @@ final class GATTTests: XCTestCase {
     static let allTests = [
         ("testGATT", testGATT),
         ("testMTUExchange", testMTUExchange),
+        ("testDiscoverPrimaryServicesApple", testDiscoverPrimaryServicesApple),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
         ("testDescriptors", testDescriptors),
         ("testNotification", testNotification)
@@ -67,7 +68,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(clientSocket.cache, mockData.client)
     }
     
-    func testDiscoverPrimaryServices() {
+    func testDiscoverPrimaryServicesApple() {
         
         struct ProximityProfile {
             
@@ -449,7 +450,7 @@ final class GATTTests: XCTestCase {
         server.log = { print("GATT Server: " + $0) }
         server.connection.log = { print("Server ATT: " + $0) }
         server.database = GATTDatabase(services: ProximityProfile.services)
-        server.database.dump()
+        //server.database.dump()
         
         // client
         let clientSocket = TestL2CAPSocket()
@@ -487,19 +488,135 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(client.connection.maximumTransmissionUnit, mtu)
         
         // validate GATT PDUs
-        let mockData = split(pdu: testPDUs.map { $0.1 })
+        //let mockData = split(pdu: testPDUs.map { $0.1 })
         
         //XCTAssertEqual(serverSocket.cache, mockData.server)
-        print("GATT Server PDUs")
-        serverSocket.cache.forEach { print($0.map { "0x" + $0.toHexadecimal() }) }
-        print("GATT Server Expected")
-        mockData.server.forEach { print($0.map { "0x" + $0.toHexadecimal() }) }
-        
         //XCTAssertEqual(clientSocket.cache, mockData.client)
-        print("GATT Client PDUs")
-        clientSocket.cache.forEach { print($0.map { "0x" + $0.toHexadecimal() }) }
-        print("GATT Client Expected")
-        mockData.client.forEach { print($0.map { "0x" + $0.toHexadecimal() }) }
+    }
+    
+    func testDiscoverPrimaryServices() {
+        
+        let clientMTU = ATTMaximumTransmissionUnit(rawValue: 104)! // 0x0068
+        let serverMTU = ATTMaximumTransmissionUnit.default // 23
+        let finalMTU = serverMTU
+        XCTAssertEqual(ATTMaximumTransmissionUnit(server: clientMTU.rawValue, client: serverMTU.rawValue), finalMTU)
+        
+        let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
+            /**
+             Exchange MTU Request - MTU:104
+             Opcode: 0x02
+             Client Rx MTU: 0x0068
+             */
+            (ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue),
+             [0x02, 0x68, 0x00]),
+            /**
+             Exchange MTU Response - MTU:23
+             Opcode: 0x03
+             Client Rx MTU: 0x0017
+             */
+            (ATTMaximumTransmissionUnitResponse(serverMTU: serverMTU.rawValue),
+             [0x03, 0x17, 0x00]),
+            /**
+             Read By Group Type Request - Start Handle:0x0001 - End Handle:0xffff - UUID:2800 (GATT Primary Service Declaration)
+             Opcode: 0x10
+             Starting Handle: 0x0001
+             Ending Handle: 0xffff
+             Attribute Group Type: 2800 (GATT Primary Service Declaration)
+             */
+            (ATTReadByGroupTypeRequest(startHandle: 0x0001, endHandle: 0xffff, type: .primaryService),
+             [0x10, 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
+            /**
+             Read By Group Type Response
+             Opcode: 0x11
+             List Length: 0006
+             Attribute Handle: 0x0001 End Group Handle: 0x0004 UUID: 180F (Battery Service)
+             */
+            (ATTReadByGroupTypeResponse(attributeData: [
+                ATTReadByGroupTypeResponse.AttributeData(attributeHandle: 0x001,
+                                                         endGroupHandle: 0x0004,
+                                                         value: BluetoothUUID.batteryService.littleEndian.data)
+                ])!,
+             [0x11, 0x06, 0x01, 0x00, 0x04, 0x00, 0x0F, 0x18]),
+            /**
+             Read By Group Type Request - Start Handle:0x0005 - End Handle:0xffff - UUID:2800 (GATT Primary Service Declaration)
+             Opcode: 0x10
+             Starting Handle: 0x0005
+             Ending Handle: 0xffff
+             Attribute Group Type: 2800 (GATT Primary Service Declaration)
+             */
+            (ATTReadByGroupTypeRequest(startHandle: 0x0005, endHandle: 0xffff, type: .primaryService),
+             [0x10, 0x05, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
+            /**
+             Error Response - Attribute Handle: 0x0005 - Error Code: 0x0A - Attribute Not Found
+             Opcode: 0x01
+             Request Opcode In Error: 0x10 (Read By Group Type Request)
+             Attribute Handle In Error: 0x0005 (5)
+             Error Code: 0x0a (Attribute Not Found)
+             */
+            (ATTErrorResponse(request: .readByGroupTypeRequest, attributeHandle: 0x0005, error: .attributeNotFound),
+             [0x01, 0x10, 0x05, 0x00, 0x0A])
+        ]
+        
+        // decode and validate bytes
+        test(testPDUs)
+        
+        // service
+        let batteryLevel = GATTBatteryLevel(level: .min)
+        
+        let characteristics = [
+            GATT.Characteristic(uuid: type(of: batteryLevel).uuid,
+                                value: batteryLevel.data,
+                                permissions: [.read],
+                                properties: [.read, .notify],
+                                descriptors: [GATTClientCharacteristicConfiguration().descriptor])
+        ]
+        
+        let service = GATT.Service(uuid: .batteryService,
+                                   primary: true,
+                                   characteristics: characteristics)
+        
+        // server
+        let serverSocket = TestL2CAPSocket(name: "Server")
+        let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: serverMTU,  maximumPreparedWrites: .max)
+        server.log = { print("GATT Server: " + $0) }
+        server.connection.log = { print("Server ATT: " + $0) }
+        server.database = GATTDatabase(services: [service])
+        //server.database.dump()
+        
+        // client
+        let clientSocket = TestL2CAPSocket(name: "Client")
+        let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: clientMTU)
+        client.log = { print("GATT Client: " + $0) }
+        client.connection.log = { print("Client ATT: " + $0) }
+        
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
+        
+        client.discoverAllPrimaryServices {
+            
+            switch $0 {
+                
+            case let .error(error):
+                XCTFail("\(error)")
+                
+            case let .value(services):
+                
+                XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
+            }
+        }
+        
+        // run fake sockets
+        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
+        catch { XCTFail("Error: \(error)") }
+        
+        XCTAssertEqual(client.maximumTransmissionUnit, finalMTU)
+        XCTAssertEqual(server.maximumTransmissionUnit, finalMTU)
+        
+        // validate GATT PDUs
+        let mockData = split(pdu: testPDUs.map { $0.1 })
+        
+        XCTAssertEqual(serverSocket.cache.map { Array($0) }, mockData.server.map { Array($0) })
+        XCTAssertEqual(clientSocket.cache.map { Array($0) }, mockData.client.map { Array($0) })
     }
     
     func testDescriptors() {
