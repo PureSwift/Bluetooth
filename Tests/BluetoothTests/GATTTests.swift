@@ -615,8 +615,8 @@ final class GATTTests: XCTestCase {
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $0.1 })
         
-        XCTAssertEqual(serverSocket.cache.map { Array($0) }, mockData.server.map { Array($0) })
-        XCTAssertEqual(clientSocket.cache.map { Array($0) }, mockData.client.map { Array($0) })
+        XCTAssertEqual(serverSocket.cache, mockData.server)
+        XCTAssertEqual(clientSocket.cache, mockData.client)
     }
     
     func testDescriptors() {
