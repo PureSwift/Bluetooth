@@ -70,127 +70,6 @@ final class GATTTests: XCTestCase {
     
     func testDiscoverPrimaryServicesApple() {
         
-        struct ProximityProfile {
-            
-            static let services: [GATT.Service] = [
-                
-                GenericAccessService,
-                GenericAttributeService,
-                
-                Apple1Service,
-                Apple2Service,
-                
-                BatteryService,
-                CurrentTimeService,
-                DeviceInformationService,
-                
-                AppleNotificationService,
-                Apple4Service,
-                
-                LinkLossService,
-                TXPowerService,
-                ImmediateAlertService
-            ]
-            
-            static let GenericAccessService = GATT.Service(uuid: .bit16(0x1800),
-                                                           primary: true,
-                                                           characteristics: [
-                    
-                ]
-            )
-            
-            static let GenericAttributeService = GATT.Service(uuid: .bit16(0x1801),
-                                                              primary: true,
-                                                              characteristics: [
-                                                                GATT.Characteristic(uuid: BluetoothUUID(),
-                                                                                    value: Data(),
-                                                                                    permissions: [.read],
-                                                                                    properties: [.read],
-                                                                                    descriptors: []),
-                                                                GATT.Characteristic(uuid: BluetoothUUID(),
-                                                                                    value: Data(),
-                                                                                    permissions: [.read],
-                                                                                    properties: [.read],
-                                                                                    descriptors: []),
-                                                                GATT.Characteristic(uuid: BluetoothUUID(),
-                                                                                    value: Data(),
-                                                                                    permissions: [.read],
-                                                                                    properties: [.read],
-                                                                                    descriptors: []),
-                                                                GATT.Characteristic(uuid: BluetoothUUID(),
-                                                                                    value: Data(),
-                                                                                    permissions: [.read],
-                                                                                    properties: [.read],
-                                                                                    descriptors: []),
-                                                                GATT.Characteristic(uuid: BluetoothUUID(),
-                                                                                    value: Data(),
-                                                                                    permissions: [.read],
-                                                                                    properties: [.read],
-                                                                                    descriptors: [])
-                ]
-            )
-            
-            static let BatteryService = GATT.Service(uuid: .bit16(0x180F),
-                                                     primary: true,
-                                                     characteristics: [
-                ]
-            )
-            
-            static let CurrentTimeService = GATT.Service(uuid: .bit16(0x1805),
-                                                         primary: true,
-                                                         characteristics: [
-                ]
-            )
-            
-            static let DeviceInformationService = GATT.Service(uuid: .bit16(0x180A),
-                                                               primary: true,
-                                                               characteristics: [
-                ]
-            )
-            
-            static let LinkLossService = GATT.Service(uuid: .bit16(0x1803),
-                                                      primary: true,
-                                                      characteristics: [
-                ]
-            )
-            
-            static let TXPowerService = GATT.Service(uuid: .bit16(0x1804),
-                                                      primary: true,
-                                                      characteristics: [
-                ]
-            )
-            
-            static let ImmediateAlertService = GATT.Service(uuid: .bit16(0x1802),
-                                                            primary: true,
-                                                            characteristics: [
-                ]
-            )
-            
-            static let Apple1Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!),
-                                                            primary: true,
-                                                            characteristics: [
-                ]
-            )
-            
-            static let Apple2Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!),
-                                                    primary: true,
-                                                    characteristics: [
-                ]
-            )
-            
-            static let AppleNotificationService = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
-                                                    primary: true,
-                                                    characteristics: [
-                ]
-            )
-            
-            static let Apple4Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!),
-                                                    primary: true,
-                                                    characteristics: [
-                ]
-            )
-        }
-        
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 104)
             else { XCTFail(); return }
         
@@ -1204,4 +1083,125 @@ fileprivate extension ATTOpcodeType {
             return .client
         }
     }
+}
+
+struct ProximityProfile {
+    
+    static let services: [GATT.Service] = [
+        
+        GenericAccessService,
+        GenericAttributeService,
+        
+        Apple1Service,
+        Apple2Service,
+        
+        BatteryService,
+        CurrentTimeService,
+        DeviceInformationService,
+        
+        AppleNotificationService,
+        Apple4Service,
+        
+        LinkLossService,
+        TXPowerService,
+        ImmediateAlertService
+    ]
+    
+    static let GenericAccessService = GATT.Service(uuid: .bit16(0x1800),
+                                                   primary: true,
+                                                   characteristics: [
+                                                    
+        ]
+    )
+    
+    static let GenericAttributeService = GATT.Service(uuid: .bit16(0x1801),
+                                                      primary: true,
+                                                      characteristics: [
+                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                                            value: Data(),
+                                                                            permissions: [.read],
+                                                                            properties: [.read],
+                                                                            descriptors: []),
+                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                                            value: Data(),
+                                                                            permissions: [.read],
+                                                                            properties: [.read],
+                                                                            descriptors: []),
+                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                                            value: Data(),
+                                                                            permissions: [.read],
+                                                                            properties: [.read],
+                                                                            descriptors: []),
+                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                                            value: Data(),
+                                                                            permissions: [.read],
+                                                                            properties: [.read],
+                                                                            descriptors: []),
+                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                                            value: Data(),
+                                                                            permissions: [.read],
+                                                                            properties: [.read],
+                                                                            descriptors: [])
+        ]
+    )
+    
+    static let BatteryService = GATT.Service(uuid: .bit16(0x180F),
+                                             primary: true,
+                                             characteristics: [
+        ]
+    )
+    
+    static let CurrentTimeService = GATT.Service(uuid: .bit16(0x1805),
+                                                 primary: true,
+                                                 characteristics: [
+        ]
+    )
+    
+    static let DeviceInformationService = GATT.Service(uuid: .bit16(0x180A),
+                                                       primary: true,
+                                                       characteristics: [
+        ]
+    )
+    
+    static let LinkLossService = GATT.Service(uuid: .bit16(0x1803),
+                                              primary: true,
+                                              characteristics: [
+        ]
+    )
+    
+    static let TXPowerService = GATT.Service(uuid: .bit16(0x1804),
+                                             primary: true,
+                                             characteristics: [
+        ]
+    )
+    
+    static let ImmediateAlertService = GATT.Service(uuid: .bit16(0x1802),
+                                                    primary: true,
+                                                    characteristics: [
+        ]
+    )
+    
+    static let Apple1Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!),
+                                            primary: true,
+                                            characteristics: [
+        ]
+    )
+    
+    static let Apple2Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!),
+                                            primary: true,
+                                            characteristics: [
+        ]
+    )
+    
+    static let AppleNotificationService = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
+                                                       primary: true,
+                                                       characteristics: [
+        ]
+    )
+    
+    static let Apple4Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!),
+                                            primary: true,
+                                            characteristics: [
+        ]
+    )
 }
