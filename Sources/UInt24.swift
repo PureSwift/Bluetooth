@@ -35,7 +35,7 @@ public extension UInt24 {
     public static var zero: UInt24 { return .min }
 }
 
-// MARK: - Equatable
+// MARK: - Comparable
 
 extension UInt24: Comparable {
     

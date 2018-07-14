@@ -988,7 +988,7 @@ extension GATTTests {
             guard let decodedPDU = type(of: testPDU).init(data: Data(testData))
                 else { XCTFail("Could not decode \(type(of: testPDU))"); return }
             
-            dump(decodedPDU)
+            //dump(decodedPDU)
             
             XCTAssertEqual(decodedPDU.data, Data(testData))
             
