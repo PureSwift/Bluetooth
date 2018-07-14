@@ -58,6 +58,6 @@ extension GATTObjectType: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue.description
+        return BluetoothUUID.bit16(rawValue).description
     }
 }
