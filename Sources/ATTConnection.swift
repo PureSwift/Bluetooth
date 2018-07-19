@@ -20,6 +20,8 @@ public final class ATTConnection {
     
     public var log: ((String) -> ())?
     
+    public var writePending: (() -> ())?
+    
     // MARK: - Private Properties
     
     /// There's a pending incoming request.
@@ -262,20 +264,21 @@ public final class ATTConnection {
             writeQueue.append(sendOpcode)
         }
         
-        //wakeup_writer(att);
+        writePending?()
         
         return sendOpcode.identifier
     }
     
+    /*
     public func cancel(_ identifier: UInt) {
         
-        //wakeup_writer(att);
+        writePending?()
     }
     
     public func cancelAll() {
         
-        //wakeup_writer(att);
-    }
+        writePending?()
+    }*/
     
     // MARK: - Private Methods
     
@@ -317,7 +320,7 @@ public final class ATTConnection {
             
             requestOpcode = errorRequestOpcode
             
-            //wakeup_writer(att);
+            writePending?()
             
             /// Return if error response caused a retry
             guard didRetry == false
@@ -343,7 +346,7 @@ public final class ATTConnection {
         // success!
         try sendOperation.handle(data: data)
         
-        //wakeup_writer(att);
+        writePending?()
     }
     
     private func handle(confirmation data: Data, opcode: ATT.Opcode) throws {
@@ -357,7 +360,7 @@ public final class ATTConnection {
         // success!
         try sendOperation.handle(data: data)
         
-        //wakeup_writer(att);
+        writePending?()
     }
     
     private func handle(request data: Data, opcode: ATT.Opcode) throws {

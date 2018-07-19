@@ -20,6 +20,13 @@ public final class GATTClient {
     
     public var log: ((String) -> ())?
     
+    public var writePending: (() -> ())? {
+        
+        get { return connection.writePending }
+        
+        set { connection.writePending = newValue }
+    }
+    
     public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
         
         return connection.maximumTransmissionUnit

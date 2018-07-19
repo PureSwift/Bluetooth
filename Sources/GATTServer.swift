@@ -27,6 +27,13 @@ public final class GATTServer {
     
     public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
     
+    public var writePending: (() -> ())? {
+        
+        get { return connection.writePending }
+        
+        set { connection.writePending = newValue }
+    }
+    
     public let maximumPreparedWrites: Int
     
     public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
@@ -38,8 +45,6 @@ public final class GATTServer {
     @_versioned
     internal let connection: ATTConnection
     
-    // MARK: - Private Properties
-        
     private var preparedWrites = [PreparedWrite]()
     
     // MARK: - Initialization
