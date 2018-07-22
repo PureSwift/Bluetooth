@@ -51,10 +51,6 @@ Read the documentation [here](http://pureswift.github.io/Bluetooth/docs/).
 Documentation can be generated with [Jazzy](https://github.com/realm/jazzy).
 For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/tree/gh-pages) branch.
 
-## Code Coverage
-
-- [xcov][xcov-url]
-
 ## See Also
 
 - [BluetoothLinux](https://github.com/PureSwift/BluetoothLinux) - Pure Swift Linux Bluetooth Stack
