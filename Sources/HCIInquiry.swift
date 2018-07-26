@@ -95,8 +95,6 @@ public extension HCIInquiry {
     
     /// Maximum amount of time specified before the Inquiry is halted. Size: 1 octet
     /// Range: 0x01 – 0x30
-    /// Time = N * 1.28 sec
-    /// Range: 1.28 – 61.44 Sec
     public struct Length: RawRepresentable {
         
         public static let min = Length(0x01)
@@ -104,6 +102,13 @@ public extension HCIInquiry {
         public static let max = Length(0x30)
         
         public var rawValue: UInt8
+        
+        /// Time = N * 1.28 sec
+        /// Range: 1.28 – 61.44 Sec
+        public var seconds: Double {
+            
+            return Double(rawValue) * 1.28
+        }
         
         public init?(rawValue: UInt8) {
             
