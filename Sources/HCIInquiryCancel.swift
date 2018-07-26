@@ -12,7 +12,7 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    /// LE Receiver Test Command
+    /// Inquiry Cancel Command
     ///
     /// This command is used to start a test where the DUT receives test reference packets at a fixed interval.
     /// The tester generates the test reference packets.

@@ -2319,8 +2319,8 @@
 				6EFB3EA120D4380A00364CA0 /* HCIInquiry.swift */,
 				3540AE5F210928E5001F1C24 /* HCIInquiryCancel.swift */,
 				354030DB210A151000FDA34C /* HCIPeriodicInquiryMode.swift */,
-				6EFB3EA620D4385200364CA0 /* HCIRemoteNameRequest.swift */,
 				354030E0210A1F7300FDA34C /* HCIExitPeriodicInquiryMode.swift */,
+				6EFB3EA620D4385200364CA0 /* HCIRemoteNameRequest.swift */,
 			);
 			name = "Link Control";
 			sourceTree = "<group>";
