@@ -8,6 +8,33 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// Periodic Inquiry Mode Command
+    ///
+    /// Used to configure the BR/EDR Con- troller to enter the Periodic Inquiry Mode that performs an automatic Inquiry.
+    func periodicInquiryMode(maxLength: HCIPeriodicInquiryMode.MaxPeriodLength,
+                             minLength: HCIPeriodicInquiryMode.MinPeriodLength,
+                             lap: HCIPeriodicInquiryMode.LAP,
+                             length: HCIPeriodicInquiryMode.Length,
+                             responses: HCIPeriodicInquiryMode.Responses,
+                             timeout: HCICommandTimeout = .default) throws {
+        
+        let inquiry = HCIPeriodicInquiryMode(maxPeriodLength: maxLength,
+                                             minPeriodLength: minLength,
+                                             lap: lap,
+                                             length: length,
+                                             responses: responses)
+        
+        try deviceRequest(inquiry, timeout: timeout)
+    }
+}
+
+// MARK: - Command
+
+/// Periodic Inquiry Mode Command
 /// The Periodic_Inquiry_Mode command is used to configure the BR/EDR Con- troller to enter the Periodic Inquiry Mode that performs an automatic Inquiry. Max_Period_Length and Min_Period_Length define the time range between two consecutive inquiries, from the beginning of an inquiry until the start of the next inquiry. The BR/EDR Controller shall use this range to determine a new random time between two consecutive inquiries for each Inquiry. The LAP input parameter contains the LAP from which the inquiry access code shall be derived when the inquiry procedure is made. The Inquiry_Length parameter specifies the total duration of the Inquiry Mode and, when time expires, Inquiry will be halted. The Num_Responses parameter specifies the number of responses that can be received before the Inquiry is halted. This command is completed when the Inquiry process has been started by the BR/EDR Control- ler, and a Command Complete event is sent from the Controller to the Host. When each of the periodic Inquiry processes are completed, the Controller will send an Inquiry Complete event to the Host indicating that the latest periodic Inquiry process has finished. When a BR/EDR Controller responds to the Inquiry message an Inquiry Result event will occur to notify the Host of the dis- covery.
 ///
 /// - Note: Max_Period_Length > Min_Period_Length > Inquiry_Length

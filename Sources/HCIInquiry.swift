@@ -26,6 +26,8 @@ public extension BluetoothHostControllerInterface {
     }
 }
 
+// MARK: - Command
+
 /// Inquiry Command
 ///
 /// This command causes the BR/EDR Controller to enter Inquiry Mode. Inquiry Mode is used to discover other nearby BR/EDR Controllers. The LAP input parameter contains the LAP from which the inquiry access code shall be derived when the inquiry procedure is made. The Inquiry_Length parameter specifies the total duration of the Inquiry Mode and, when this time expires, Inquiry will be halted. The Num_Responses parameter specifies the number of responses that can be received before the Inquiry is halted. The event parame- ters of Inquiry Complete event will have a summary of the result from the Inquiry process, which reports the number of nearby BR/EDR Controllers that responded.
