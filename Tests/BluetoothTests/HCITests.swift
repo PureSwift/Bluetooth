@@ -35,7 +35,8 @@ final class HCITests: XCTestCase {
         ("testSetLERandomAddress", testSetLERandomAddress),
         ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
         ("testReadBufferSize", testReadBufferSize),
-        ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter)
+        ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter),
+        ("testInquiry", testInquiry)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -1124,6 +1125,61 @@ final class HCITests: XCTestCase {
         
         XCTAssertNoThrow(try hostController.lowEnergySetRandomAddress(randomAddress))
         XCTAssert(hostController.queue.isEmpty)
+    }
+    
+    func testInquiry() {
+        
+        let hostController = TestHostController()
+        
+        guard let lap = HCIInquiry.LAP(rawValue: UInt24(bytes: (0x00, 0x8b, 0x9e)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let length = HCIInquiry.Length(rawValue: 0x05)
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let responses = HCIInquiry.Responses(rawValue: 0x20)
+            else { XCTFail("Unable to init variable"); return }
+        
+        let _ = HCIInquiry(lap: lap, length: length, responses: responses)
+        
+        /**
+         [0401] Opcode: 0x0401 (OGF: 0x01    OCF: 0x01)
+         Parameter Length: 5 (0x05)
+         LAP: 0x9E8B00
+         Inquiry Length: 0x05
+         6.400000 seconds
+         Number of Responses: 0x20
+         Jul 26 15:27:21.774  HCI Command  01 04 05 00 8b 9e 05 20                      .......
+         */
+        hostController.queue.append(
+            .command(LinkControlCommand.inquiry.opcode, [0x01, 0x04, 0x05, 0x00, 0x8b, 0x9e, 0x05, 0x20])
+        )
+        
+        /**
+         Jul 26 15:27:21.774  HCI Event
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0401 (OGF: 0x01    OCF: 0x01) - [Link Control] HCI Inquiry
+         Jul 26 15:27:21.774  HCI Event  0f 04 00 01 01 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x01, 0x04]))
+        
+//        XCTAssertNoThrow(try hostController.inquiry(lap: lap, length: length, responses: responses, timeout: 9999999999))
+//        XCTAssert(hostController.queue.isEmpty)
+    }
+    
+    func testInquiryCancel() {
+        
+        let hostController = TestHostController()
+        
+        let _ = HCIInquiryCancel()
+        
+        hostController.queue.append(.command(LinkControlCommand.inquiry.opcode, [0x02, 0x04, 0x00]))
+        
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x02, 0x04, 0x00]))
+        
+//        XCTAssertNoThrow(try hostController.inquiryCancel())
     }
 }
 

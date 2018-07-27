@@ -5,7 +5,6 @@
 //  Created by Carlos Duclos on 7/26/18.
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
-// swiftlint:disable function_parameter_count
 
 import Foundation
 
@@ -16,18 +15,16 @@ public extension BluetoothHostControllerInterface {
     /// Create Connection Command
     ///
     /// This command causes the Link Manager to create a connection to the remote device with the BD_ADDR specified by the command parameters. This command causes the local BR/EDR Controller to begin the Page process to create a link level connection. The Link Manager will determine how the new ACL connection is established. This ACL connection is determined by the current state of the device, its piconet, and the state of the device to be connected.
-    func linkControlCreateConnection(address: Address,
-                                     packetType: HCICreateConnection.PacketType,
-                                     pageScanRepetitionMode: HCICreateConnection.PageScanRepetitionMode,
-                                     reserved: HCICreateConnection.Reserved,
-                                     clockOffset: HCICreateConnection.ClockOffset,
-                                     allowRoleSwitch: HCICreateConnection.AllowRoleSwitch,
-                                     timeout: HCICommandTimeout = .default) throws {
+    func createConnection(address: Address,
+                          packetType: HCICreateConnection.PacketType,
+                          pageScanRepetitionMode: HCICreateConnection.PageScanRepetitionMode,
+                          clockOffset: HCICreateConnection.ClockOffset,
+                          allowRoleSwitch: HCICreateConnection.AllowRoleSwitch,
+                          timeout: HCICommandTimeout = .default) throws {
         
         let createConnection = HCICreateConnection(address: address,
                                                    packetType: packetType,
                                                    pageScanRepetitionMode: pageScanRepetitionMode,
-                                                   reserved: reserved,
                                                    clockOffset: clockOffset,
                                                    allowRoleSwitch: allowRoleSwitch)
         
@@ -57,7 +54,7 @@ public struct HCICreateConnection: HCICommandParameter {
     public var pageScanRepetitionMode: PageScanRepetitionMode
     
     // Must be set to 0x00
-    public var reserved: Reserved
+    internal var reserved: Reserved
     
     /// The Clock_Offset parameter is the difference between its own clock and the clock of the remote device with BD_ADDR. Only bits 2 through 16 of the difference are used, and they are mapped to this parameter as bits 0 through 14 respectively.
     public var clockOffset: ClockOffset
@@ -68,14 +65,13 @@ public struct HCICreateConnection: HCICommandParameter {
     public init(address: Address,
                 packetType: PacketType,
                 pageScanRepetitionMode: PageScanRepetitionMode,
-                reserved: Reserved,
                 clockOffset: ClockOffset,
                 allowRoleSwitch: AllowRoleSwitch) {
         
         self.address = address
         self.packetType = packetType
         self.pageScanRepetitionMode = pageScanRepetitionMode
-        self.reserved = reserved
+        self.reserved = .mandatory
         self.clockOffset = clockOffset
         self.allowRoleSwitch = allowRoleSwitch
     }
@@ -169,6 +165,11 @@ extension HCICreateConnection {
     
     /// The Clock_Offset parameter is the difference between its own clock and the clock of the remote device with BD_ADDR. Only bits 2 through 16 of the difference are used, and they are mapped to this parameter as bits 0 through 14 respectively.
     public enum ClockOffset: UInt16, BitMaskOption {
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt16
+        #endif
         
         case valid = 0b10000000_00000000
         

@@ -1,5 +1,5 @@
 //
-//  HCIDisconnectConnection.swift
+//  HCIDisconnect.swift
 //  Bluetooth
 //
 //  Created by Carlos Duclos on 7/26/18.
@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// Disconnect Command
     ///
     /// The Disconnection command is used to terminate an existing connection. The Connection_Handle command parameter indicates which connection is to be disconnected. The Reason command parameter indicates the reason for ending the connection. The remote Controller will receive the Reason command parameter in the Disconnection Complete event. All synchronous connections on a physical link should be disconnected before the ACL connection on the same physical connection is disconnected.
-    func linkControlDisconnect(connectionHandle: UInt16,
-                               reason: HCIDisconnect.Reason,
-                               timeout: HCICommandTimeout = .default) throws {
+    func disconnect(connectionHandle: UInt16,
+                    reason: HCIDisconnect.Reason,
+                    timeout: HCICommandTimeout = .default) throws {
         
         let disconnect = HCIDisconnect(connectionHandle: connectionHandle, reason: reason)
         
@@ -83,16 +83,16 @@ extension HCIDisconnect {
             self.rawValue = rawValue
         }
         
+        private init(_ unsafe: RawValue) {
+            
+            self.rawValue = unsafe
+        }
+        
         private static var allValues: [RawValue] {
             
             return [Reason.authenticationFailure,
                     Reason.unsupportedRemoteFeature,
                     Reason.pairingWwithUnitKeyNotSupported] + Array(Reason.otherEndTerminatedConnection)
-        }
-        
-        private init(_ unsafe: RawValue) {
-            
-            self.rawValue = unsafe
         }
     }
 }
