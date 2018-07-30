@@ -20,16 +20,16 @@ public extension BluetoothHostControllerInterface {
                  responses: HCIInquiry.Responses,
                  timeout: HCICommandTimeout = .default,
                  shouldContinue: () -> (Bool),
-                 foundDevice: (HCIInquiryResult.Report) -> ()) throws {
+                 foundDevice: (HCIInquiryResult.Report) -> ()) throws -> HCIInquiryResult {
         
         let inquiry = HCIInquiry(lap: lap, length: length, responses: responses)
         
-        try deviceRequest(inquiry, timeout: timeout)
+        return try deviceRequest(inquiry, HCIInquiryResult.self, timeout: timeout)
         
-        try pollEvent(HCIInquiryResult.self, shouldContinue: shouldContinue) { (inquiryResult) in
-            
-            inquiryResult.reports.forEach { foundDevice($0) }
-        }
+//        try pollEvent(HCIInquiryResult.self, shouldContinue: shouldContinue) { (inquiryResult) in
+//            
+//            inquiryResult.reports.forEach { foundDevice($0) }
+//        }
     }
 }
 
