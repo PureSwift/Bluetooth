@@ -17,7 +17,7 @@ public extension BluetoothHostControllerInterface {
     /// This command causes the Link Manager to create a connection to the remote device with the BD_ADDR specified by the command parameters. This command causes the local BR/EDR Controller to begin the Page process to create a link level connection. The Link Manager will determine how the new ACL connection is established. This ACL connection is determined by the current state of the device, its piconet, and the state of the device to be connected.
     func createConnection(address: Address,
                           packetType: UInt16,
-                          pageScanRepetitionMode: HCICreateConnection.PageScanRepetitionMode,
+                          pageScanRepetitionMode: PageScanRepetitionMode,
                           clockOffset: BitMaskOptionSet<HCICreateConnection.ClockOffset>,
                           allowRoleSwitch: HCICreateConnection.AllowRoleSwitch,
                           timeout: HCICommandTimeout = .default) throws {
@@ -133,22 +133,6 @@ extension HCICreateConnection {
         
         /// DH5 may be used
         case packetDH5mayBeUsed = 0x8000
-    }
-}
-
-extension HCICreateConnection {
-    
-    /// The Page_Scan_Repetition_Mode parameter specifies the page scan repetition mode supported by the remote device with the BD_ADDR. This is the information that was acquired during the inquiry process.
-    public enum PageScanRepetitionMode: UInt8 {
-        
-        // R0
-        case r0 = 0x00
-        
-        // R1
-        case r1 = 0x01
-        
-        // R2
-        case r2 = 0x02
     }
 }
 
