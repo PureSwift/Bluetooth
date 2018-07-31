@@ -28,7 +28,15 @@ public extension BluetoothHostControllerInterface {
                                                    clockOffset: clockOffset,
                                                    allowRoleSwitch: allowRoleSwitch)
         
-        try deviceRequest(createConnection, timeout: timeout)
+        let commandStatus = try deviceRequest(createConnection, HCICommandStatus.self, timeout: timeout)
+        
+        switch commandStatus.status {
+        case let .error(error):
+            throw error
+            
+        case .success:
+            break
+        }
     }
 }
 

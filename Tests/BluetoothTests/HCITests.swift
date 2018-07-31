@@ -1196,7 +1196,6 @@ final class HCITests: XCTestCase {
     func testInquiryResult() {
         
         do {
-            
             /**
              Jul 26 21:39:43.265  HCI Event
              RECV  0x0000  04:B1:67:1D:F4:ED  Inquiry Result - EIR  - 04:B1:67:1D:F4:ED - Phone : Phone - RSSI: -72 dBm
@@ -1230,7 +1229,7 @@ final class HCITests: XCTestCase {
         /**
          [0402] Opcode: 0x0402 (OGF: 0x01    OCF: 0x02)
          Parameter Length: 0 (0x00)
-         Jul 26 21:39:51.983  HCI Command   02 04 00                                  ...
+         Jul 26 21:39:51.983  HCI Command   02 04 00s
          */
         hostController.queue.append(.command(LinkControlCommand.inquiryCancel.opcode, [0x02, 0x04, 0x00]))
         
@@ -1240,7 +1239,7 @@ final class HCITests: XCTestCase {
              Status: 0x00 - Success
              Num HCI Command Packets: 0x01
              Opcode: 0x0402 (OGF: 0x01    OCF: 0x02) - [Link Control] HCI Inquiry Cancel
-             Jul 26 21:39:51.986  HCI Event  0e 04 01 02 04 00                           ......
+             Jul 26 21:39:51.986  HCI Event  0e 04 01 02 04 00
             */
             let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
             
@@ -1330,7 +1329,7 @@ final class HCITests: XCTestCase {
              Status: 0x00 - Success
              Num HCI Command Packets: 0x01
              Opcode: 0x0404 (OGF: 0x01    OCF: 0x04) - [Link Control] Exit Periodic Inquiry Mode
-             Jul 31 11:19:59.716  HCI Event 0e 04 01 04 04 00                           ......
+             Jul 31 11:19:59.716  HCI Event 0e 04 01 04 04 00
              */
             let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
             
@@ -1338,6 +1337,92 @@ final class HCITests: XCTestCase {
         }
         
         XCTAssertNoThrow(try hostController.exitPeriodicInquiry())
+    }
+    
+    func testCreateConnection() {
+        
+        typealias ClockOffset = HCICreateConnection.ClockOffset
+        typealias AllowRoleSwitch = HCICreateConnection.AllowRoleSwitch
+        /**
+         [0405] Opcode: 0x0405 (OGF: 0x01    OCF: 0x05)
+         Parameter Length: 13 (0x0D)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Packet Type: 0xCC18
+         Page Scan Repetition Mode: 0x01
+         Page Scan Mode: 0x00
+         Clock Offset: 0x0000
+         Allow Role Switch: 0x00
+         Jul 31 12:06:31.407  HCI Command  0504 0daf d206 2d70 b018 cc01 0000 0000
+        */
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.createConnection.opcode,
+                                             [0x05, 0x04, 0x0d, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x18, 0xcc, 0x01, 0x00, 0x00, 0x00, 0x00]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0405 (OGF: 0x01    OCF: 0x05) - [Link Control] Create Connection
+             Jul 31 12:06:31.408  HCI Event 0f04 0001 0504
+             */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x05, 0x04]))
+        }
+        
+        do {
+            /**
+             Parameter Length: 11 (0x0B)
+             Status: 0x00 - Success
+             Connection Handle: 0x000D
+             Bluetooth Device Address: B0:70:2D:06:D2:AF
+             Link Type: 0x01
+             Encryption Mode: 0x00
+             Jul 31 12:06:31.943  HCI Event 030b 000d 00af d206 2d70 b001 00
+            */
+            let eventHeader = HCIEventHeader(event: .connectionComplete, parameterLength: 0x0b)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: 0x01)
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let allowSwitchRole = AllowRoleSwitch(rawValue: 0x00)
+            else { XCTFail("Unable to init variable"); return }
+
+        XCTAssertNoThrow(try hostController.createConnection(address: address,
+                                                                 packetType: 0xCC18,
+                                                                 pageScanRepetitionMode: pageScanRepetitionMode,
+                                                                 clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
+                                                                 allowRoleSwitch: allowSwitchRole))
+    }
+    
+    func testConnectionComplete() {
+        
+        /**
+         Parameter Length: 11 (0x0B)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Link Type: 0x01
+         Encryption Mode: 0x00
+         Jul 31 12:06:31.943  HCI Event 030b 000d 00af d206 2d70 b001 00
+         */
+        let data = Data([0x03, 0x0b, 0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00])
+        
+        guard let event = HCIConnectionComplete(data: data)
+            else { XCTFail("Could not parse"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF"))
+        XCTAssertEqual(event.status.rawValue, HCIStatus.success.rawValue)
+        XCTAssertEqual(event.linkType, HCIConnectionComplete.LinkType(rawValue: 0x01))
+        XCTAssertEqual(event.encryption, HCIConnectionComplete.Encryption(rawValue: 0x00))
     }
 }
 
