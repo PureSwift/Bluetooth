@@ -1172,9 +1172,8 @@ final class HCITests: XCTestCase {
              */
             let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
             
-            hostController.queue.append(.event(eventHeader.data + [0x0F, 0x04, 0x00, 0x01, 0x01, 0x04]))
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x01, 0x04]))
         }
-        
         
         do {
             /**
@@ -1184,7 +1183,7 @@ final class HCITests: XCTestCase {
              */
             let eventHeader = HCIEventHeader(event: .inquiryComplete, parameterLength: 0x01)
             
-            hostController.queue.append(.event(eventHeader.data + [0x01, 0x01, 0x00]))
+            hostController.queue.append(.event(eventHeader.data + [0x00]))
         }
         
         XCTAssertNoThrow(try hostController.inquiry(lap: lap,
