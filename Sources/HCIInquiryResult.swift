@@ -23,8 +23,8 @@ public struct HCIInquiryResult: HCIEventParameter {
         
         let reportCount = Int(data[2])
         
-//        guard (data.count - 2) / Report.length == reportCount
-//            else { return nil }
+        guard (data.count - 2) / Report.length == reportCount
+            else { return nil }
         
         var reports = [Report]()
         reports.reserveCapacity(reportCount)
@@ -78,7 +78,7 @@ extension HCIInquiryResult {
     
     public struct ClockOffset: RawRepresentable {
         
-        public static let length = 2
+        public static let length = MemoryLayout<UInt16>.size
         
         public var rawValue: UInt16
         

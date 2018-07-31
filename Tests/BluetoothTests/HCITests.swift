@@ -1134,7 +1134,7 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(HCIInquiry.Duration.max.seconds, 61.44, "Range: 1.28 – 61.44 Sec")
         (0x01 ... 0x30).forEach { XCTAssertNotNil(HCIInquiry.Duration(rawValue: UInt8($0)), "Could not initialize") }
         XCTAssertNil(HCIInquiry.Duration(rawValue: 0))
-        (UInt8(0x30) ..< .max).forEach { XCTAssertNil(HCIInquiry.Duration(rawValue: $0), "Should not initialize") }
+        (UInt8(0x31) ..< .max).forEach { XCTAssertNil(HCIInquiry.Duration(rawValue: $0), "Should not initialize") }
         
         guard let lap = HCIInquiry.LAP(rawValue: UInt24(bytes: (0x33, 0x8b, 0x9e)))
             else { XCTFail("Unable to init variable"); return }
@@ -1191,8 +1191,7 @@ final class HCITests: XCTestCase {
                                                     duration: duration,
                                                     responses: responses,
                                                     timeout: 10000,
-                                                    shouldContinue: { return true },
-                                                    foundDevice: { device in }))
+                                                    foundDevice: { _ in }))
     }
     
     func testInquiryResult() {
