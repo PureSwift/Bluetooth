@@ -1397,10 +1397,10 @@ final class HCITests: XCTestCase {
             else { XCTFail("Unable to init variable"); return }
 
         XCTAssertNoThrow(try hostController.createConnection(address: address,
-                                                                 packetType: 0xCC18,
-                                                                 pageScanRepetitionMode: pageScanRepetitionMode,
-                                                                 clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
-                                                                 allowRoleSwitch: allowSwitchRole))
+                                                             packetType: 0xCC18,
+                                                             pageScanRepetitionMode: pageScanRepetitionMode,
+                                                             clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
+                                                             allowRoleSwitch: allowSwitchRole))
     }
     
     func testConnectionComplete() {
@@ -1423,6 +1423,53 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(event.status.rawValue, HCIStatus.success.rawValue)
         XCTAssertEqual(event.linkType, HCIConnectionComplete.LinkType(rawValue: 0x01))
         XCTAssertEqual(event.encryption, HCIConnectionComplete.Encryption(rawValue: 0x00))
+    }
+    
+    func testDisconnect() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [0406] Opcode: 0x0406 (OGF: 0x01    OCF: 0x06)
+         Parameter Length: 3 (0x03)
+         Connection Handle: 0x000D
+         Reason: 0x13 - Remote User Terminated Connection
+         Jul 31 14:55:59.134  HCI Command  06 04 03 0d 00 13
+         */
+        
+        hostController.queue.append(.command(LinkControlCommand.disconnect.opcode,
+                                             [0x06, 0x04, 0x03, 0x0d, 0x00, 0x13]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0406 (OGF: 0x01    OCF: 0x06) - [Link Control] Disconnect
+             Jul 31 14:55:59.134  HCI Event  0f 04 00 01 06 04
+             */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x06, 0x04]))
+        }
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Connection Handle: 0x000D
+             Reason:  0x16 - Connection Terminated by Local Host
+             Jul 31 14:55:59.296  HCI Event 05 04 00 0d 00 16
+            */
+            let eventHeader = HCIEventHeader(event: .disconnectionComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0x16]))
+        }
+        
+        guard let reason = HCIDisconnect.Reason(rawValue: 0x13)
+            else { XCTFail("Could not parse"); return }
+        
+        XCTAssertNoThrow(try hostController.disconnect(connectionHandle: 0x000D, reason: reason))
     }
 }
 

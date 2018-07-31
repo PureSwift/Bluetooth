@@ -21,7 +21,7 @@ public extension BluetoothHostControllerInterface {
         
         let disconnect = HCIDisconnect(connectionHandle: connectionHandle, reason: reason)
         
-        try deviceRequest(disconnect, timeout: timeout)
+        try deviceRequest(disconnect, HCICommandStatus.self, timeout: timeout)
     }
 }
 
@@ -81,11 +81,6 @@ extension HCIDisconnect {
                 else { return nil }
             
             self.rawValue = rawValue
-        }
-        
-        private init(_ unsafe: RawValue) {
-            
-            self.rawValue = unsafe
         }
         
         private static var allValues: [RawValue] {
