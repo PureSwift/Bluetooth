@@ -1227,13 +1227,105 @@ final class HCITests: XCTestCase {
         
         let hostController = TestHostController()
         
-        let _ = HCIInquiryCancel()
+        /**
+         [0402] Opcode: 0x0402 (OGF: 0x01    OCF: 0x02)
+         Parameter Length: 0 (0x00)
+         Jul 26 21:39:51.983  HCI Command   02 04 00                                  ...
+         */
+        hostController.queue.append(.command(LinkControlCommand.inquiryCancel.opcode, [0x02, 0x04, 0x00]))
         
-        hostController.queue.append(.command(LinkControlCommand.inquiry.opcode, [0x02, 0x04, 0x00]))
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0402 (OGF: 0x01    OCF: 0x02) - [Link Control] HCI Inquiry Cancel
+             Jul 26 21:39:51.986  HCI Event  0e 04 01 02 04 00                           ......
+            */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x02, 0x04, 0x00]))
+        }
         
-        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x02, 0x04, 0x00]))
+        XCTAssertNoThrow(try hostController.inquiryCancel())
+    }
+    
+    func testPeriodicInquiryModeAndCancel() {
         
-//        XCTAssertNoThrow(try hostController.inquiryCancel())
+        let hostController = TestHostController()
+        
+        guard let maxDuration = HCIPeriodicInquiryMode.MaxDuration(rawValue: UInt16(bytes: (0x09, 0x00)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let minDuration = HCIPeriodicInquiryMode.MinDuration(rawValue: UInt16(bytes: (0x05, 0x00)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let lap = HCIPeriodicInquiryMode.LAP(rawValue: UInt24(bytes: (0x00, 0x8b, 0x9e)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let duration = HCIPeriodicInquiryMode.Duration(rawValue: 0x03)
+            else { XCTFail("Unable to init variable"); return }
+        
+        let responses = HCIPeriodicInquiryMode.Responses(rawValue: 0x20)
+        
+        /**
+         [0403] Opcode: 0x0403 (OGF: 0x01 OCF: 0x03)
+         Parameter Length: 9 (0x09)
+         Max Period Length: 0x09
+         Min Period Length: 0x05
+         LAP: 0x9E8B00
+         Inquiry Length: 0x03
+         Number of Responses: 0x20
+         Jul 27 10:46:57.461  HCI Command  00000000: 03 04 09 09 00 05 00 00 8b 9e 03 20
+         */
+        hostController.queue.append(.command(LinkControlCommand.periodicInquiry.opcode,
+                                             [0x03, 0x04, 0x09, 0x09, 0x00, 0x05, 0x00, 0x00, 0x8b, 0x9e, 0x03, 0x20]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0403 (OGF: 0x01    OCF: 0x03) - [Link Control] Periodic Inquiry Mode
+             Jul 27 10:46:57.462  HCI Event  0e 04 01 03 04 00
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x03, 0x04, 0x00]))
+        }
+        
+        XCTAssertNoThrow(try hostController.periodicInquiryMode(maxDuration: maxDuration,
+                                                                minDuration: minDuration,
+                                                                lap: lap,
+                                                                length: duration,
+                                                                responses: responses))
+    }
+    
+    func testExitPeriodicInquiryMode() {
+        
+        /**
+         [0404] Opcode: 0x0404 (OGF: 0x01    OCF: 0x04)
+         Parameter Length: 0 (0x00)
+         Jul 31 11:19:59.716  HCI Command  04 04 00 
+        */
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.exitPeriodicInquiry.opcode, [0x04, 0x04, 0x00]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0404 (OGF: 0x01    OCF: 0x04) - [Link Control] Exit Periodic Inquiry Mode
+             Jul 31 11:19:59.716  HCI Event 0e 04 01 04 04 00                           ......
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x04, 0x04, 0x00]))
+        }
+        
+        XCTAssertNoThrow(try hostController.exitPeriodicInquiry())
     }
 }
 
