@@ -135,7 +135,7 @@ public extension HCIPeriodicInquiryMode {
         
         public static let min = MinDuration(0x0002)
         
-        public static let max = MinDuration(0xFFFF)
+        public static let max = MinDuration(0xFFFE)
         
         public var rawValue: UInt16
         
@@ -209,9 +209,17 @@ public extension HCIPeriodicInquiryMode {
         
         public var rawValue: UInt8
         
+        /// Time = N * 1.28 sec
+        /// Range: 1.28 – 61.44 Sec
+        public var seconds: Double {
+            
+            return Double(rawValue) * 1.28
+        }
+        
         public init?(rawValue: UInt8) {
             
-            guard rawValue <= Duration.max.rawValue, rawValue >= Duration.min.rawValue
+            guard rawValue <= Duration.max.rawValue,
+                rawValue >= Duration.min.rawValue
                 else { return nil }
             
             self.rawValue = rawValue

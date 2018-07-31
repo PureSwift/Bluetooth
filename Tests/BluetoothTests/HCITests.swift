@@ -1252,6 +1252,18 @@ final class HCITests: XCTestCase {
     
     func testPeriodicInquiryModeAndCancel() {
         
+        XCTAssertEqual(HCIPeriodicInquiryMode.Duration.min.seconds, 1.28, "Range: 1.28 – 61.44 Sec")
+        XCTAssertEqual(HCIPeriodicInquiryMode.Duration.max.seconds, 61.44, "Range: 1.28 – 61.44 Sec")
+        (0x01 ... 0x30).forEach { XCTAssertNotNil(HCIPeriodicInquiryMode.Duration(rawValue: UInt8($0)), "Could not initialize") }
+        XCTAssertNil(HCIPeriodicInquiryMode.Duration(rawValue: 0))
+        (UInt8(0x31) ..< .max).forEach { XCTAssertNil(HCIPeriodicInquiryMode.Duration(rawValue: $0), "Should not initialize") }
+        
+        XCTAssertEqual(HCIPeriodicInquiryMode.MaxDuration.min.seconds, 3.84)
+        XCTAssertEqual(HCIPeriodicInquiryMode.MaxDuration.max.seconds, 83884.8)
+        XCTAssertEqual(HCIPeriodicInquiryMode.MinDuration.min.seconds, 2.56)
+        XCTAssertEqual(HCIPeriodicInquiryMode.MinDuration.max.seconds, 83883.52)
+        XCTAssertEqual(HCIPeriodicInquiryMode.Responses.unlimited.rawValue, 0x00)
+        
         let hostController = TestHostController()
         
         guard let maxDuration = HCIPeriodicInquiryMode.MaxDuration(rawValue: UInt16(bytes: (0x09, 0x00)))
