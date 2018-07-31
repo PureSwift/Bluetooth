@@ -16,13 +16,13 @@ public extension BluetoothHostControllerInterface {
     ///
     /// Causes the BR/EDR Controller to enter Inquiry Mode. Inquiry Mode is used to discover other nearby BR/EDR Controllers.
     func inquiry(lap: HCIInquiry.LAP,
-                 length: HCIInquiry.Length,
+                 duration: HCIInquiry.Duration = .max,
                  responses: HCIInquiry.Responses,
                  timeout: HCICommandTimeout = .default,
                  shouldContinue: () -> (Bool),
                  foundDevice: (HCIInquiryResult.Report) -> ()) throws -> HCIInquiryResult {
         
-        let inquiry = HCIInquiry(lap: lap, length: length, responses: responses)
+        let inquiry = HCIInquiry(lap: lap, duration: duration, responses: responses)
         
         return try deviceRequest(inquiry, HCIInquiryResult.self, timeout: timeout)
         
@@ -53,16 +53,16 @@ public struct HCIInquiry: HCICommandParameter {
     /// Range: 0x01 – 0x30
     /// Time = N * 1.28 sec
     /// Range: 1.28 – 61.44 Sec
-    public var length: Length
+    public var duration: Duration
     
     /// Maximum number of responses from the Inquiry before the Inquiry is halted.
     /// Range: 0x01 – 0xFF
     public var responses: Responses
     
-    public init(lap: LAP, length: Length, responses: Responses) {
+    public init(lap: LAP, duration: Duration, responses: Responses) {
         
         self.lap = lap
-        self.length = length
+        self.duration = duration
         self.responses = responses
     }
     
@@ -70,7 +70,7 @@ public struct HCIInquiry: HCICommandParameter {
         
         let lapBytes = lap.rawValue.littleEndian.bytes
         
-        return Data([lapBytes.0, lapBytes.1, lapBytes.2, length.rawValue, responses.rawValue])
+        return Data([lapBytes.0, lapBytes.1, lapBytes.2, duration.rawValue, responses.rawValue])
     }
 }
 
@@ -87,7 +87,8 @@ public extension HCIInquiry {
         
         public init?(rawValue: UInt24) {
             
-            guard rawValue <= LAP.max.rawValue, rawValue >= LAP.min.rawValue
+            guard rawValue <= LAP.max.rawValue,
+                rawValue >= LAP.min.rawValue
                 else { return nil }
             
             self.rawValue = rawValue
@@ -104,11 +105,11 @@ public extension HCIInquiry {
     
     /// Maximum amount of time specified before the Inquiry is halted. Size: 1 octet
     /// Range: 0x01 – 0x30
-    public struct Length: RawRepresentable {
+    public struct Duration: RawRepresentable {
         
-        public static let min = Length(0x01)
+        public static let min = Duration(0x01)
         
-        public static let max = Length(0x30)
+        public static let max = Duration(0x30)
         
         public var rawValue: UInt8
         
@@ -121,7 +122,8 @@ public extension HCIInquiry {
         
         public init?(rawValue: UInt8) {
             
-            guard rawValue <= Length.max.rawValue, rawValue >= Length.min.rawValue
+            guard rawValue <= Duration.max.rawValue,
+                rawValue >= Duration.min.rawValue
                 else { return nil }
             
             self.rawValue = rawValue
@@ -140,22 +142,17 @@ public extension HCIInquiry {
     /// Range: 0x01 – 0xFF
     public struct Responses: RawRepresentable {
 
-        public static let min = Responses(0x01)
+        public static let min = Responses(rawValue: 0x01)
         
-        public static let max = Responses(0xFF)
+        public static let max = Responses(rawValue: 0xFF)
         
-        public static let unlimited = Responses(0x00)
+        public static let unlimited = Responses(rawValue: 0x00)
         
         public var rawValue: UInt8
         
-        public init?(rawValue: UInt8) {
+        public init(rawValue: UInt8) {
             
             self.rawValue = rawValue
-        }
-        
-        private init(_ unsafe: UInt8) {
-            
-            self.rawValue = unsafe
         }
     }
 }

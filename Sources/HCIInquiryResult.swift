@@ -58,7 +58,7 @@ extension HCIInquiryResult {
         public var clockOffset: ClockOffset
         
         public init?(data: Data) {
-            print("report", data.hexEncodedString())
+            
             let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
             
             guard let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: data[6])

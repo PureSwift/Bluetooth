@@ -1130,18 +1130,23 @@ final class HCITests: XCTestCase {
     
     func testInquiry() {
         
-        let hostController = TestHostController()
+        XCTAssertEqual(HCIInquiry.Duration.min.seconds, 1.28, "Range: 1.28 – 61.44 Sec")
+        XCTAssertEqual(HCIInquiry.Duration.max.seconds, 61.44, "Range: 1.28 – 61.44 Sec")
+        (0x01 ... 0x30).forEach { XCTAssertNotNil(HCIInquiry.Duration(rawValue: UInt8($0)), "Could not initialize") }
+        XCTAssertNil(HCIInquiry.Duration(rawValue: 0))
+        (UInt8(0x30) ..< .max).forEach { XCTAssertNil(HCIInquiry.Duration(rawValue: $0), "Should not initialize") }
         
         guard let lap = HCIInquiry.LAP(rawValue: UInt24(bytes: (0x33, 0x8b, 0x9e)))
             else { XCTFail("Unable to init variable"); return }
         
-        guard let length = HCIInquiry.Length(rawValue: 0x0A)
+        guard let duration = HCIInquiry.Duration(rawValue: 0x0A)
             else { XCTFail("Unable to init variable"); return }
         
-        guard let responses = HCIInquiry.Responses(rawValue: 0xFF)
-            else { XCTFail("Unable to init variable"); return }
+        let responses = HCIInquiry.Responses(rawValue: 0xFF)
         
-        let _ = HCIInquiry(lap: lap, length: length, responses: responses)
+        XCTAssertNotNil(HCIInquiry(lap: lap, duration: duration, responses: responses))
+        
+        let hostController = TestHostController()
         
         /**
          [0401] Opcode: 0x0401 (OGF: 0x01    OCF: 0x01)
@@ -1183,7 +1188,7 @@ final class HCITests: XCTestCase {
         }
         
         XCTAssertNoThrow(try hostController.inquiry(lap: lap,
-                                                    length: length,
+                                                    duration: duration,
                                                     responses: responses,
                                                     timeout: 10000,
                                                     shouldContinue: { return true },
