@@ -23,7 +23,7 @@ public struct HCIInquiryResult: HCIEventParameter {
         
         let reportCount = Int(data[2])
         
-        guard (data.count - 2) / Report.length == reportCount
+        guard (data.count - 2) / Report.length >= reportCount
             else { return nil }
         
         var reports = [Report]()
