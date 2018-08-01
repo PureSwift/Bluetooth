@@ -25,7 +25,8 @@ final class BluetoothTests: XCTestCase {
         ("testLowEnergyFeature", testLowEnergyFeature),
         ("testLowEnergyEventMask", testLowEnergyEventMask),
         ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
-        ("testBitMaskOption", testBitMaskOption)
+        ("testBitMaskOption", testBitMaskOption),
+        ("testClassOfDevice", testClassOfDevice)
     ]
     
     func testAdvertisingInterval() {
@@ -293,6 +294,43 @@ final class BluetoothTests: XCTestCase {
             // comparison with other collections
             XCTAssert(set.contains([.read, .write]))
             XCTAssert(set == [.read, .write])
+        }
+    }
+    
+    func testClassOfDevice() {
+        
+        do {
+            let data = Data([0b00001101, 0b00100010, 0b11000000])
+            
+            guard let classOfDevice = ClassOfDevice(data: data)
+                else { XCTFail("Could not decode"); return }
+            
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.limitedDiscoverable))
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.telephony))
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.information))
+            XCTAssertFalse(classOfDevice.majorServiceClass.contains(.audio))
+            XCTAssertFalse(classOfDevice.majorServiceClass.contains(.objectTransfer))
+            
+            guard case let .phone(phone) = classOfDevice.majorDeviceClass
+                else { XCTFail("majorDeviceClass is wrong"); return }
+            
+            guard phone == .smartphone
+                else { XCTFail("majorDeviceClass is wrong"); return }
+        }
+        
+        do {
+            let data = Data([0b01000100, 0b00100101, 0b11100000])
+            
+            guard let classOfDevice = ClassOfDevice(data: data)
+                else { XCTFail("Could not decode"); return }
+            
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.audio))
+            
+            guard case let .peripheral(peripheral, device) = classOfDevice.majorDeviceClass
+                else { XCTFail("majorDeviceClass is wrong"); return }
+            
+            XCTAssertEqual(peripheral, .keyboard)
+            XCTAssertEqual(device, .joystick)
         }
     }
 }
