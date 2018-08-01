@@ -1218,6 +1218,7 @@ final class HCITests: XCTestCase {
             guard let event = HCIInquiryResult(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(event.reports[0].classOfDevice.majorDeviceClass, .miscellaneous)
             XCTAssertEqual(event.reports[0].address, Address(rawValue: "04:B1:67:1D:F4:ED"))
         }
     }

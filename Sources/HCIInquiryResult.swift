@@ -55,6 +55,8 @@ extension HCIInquiryResult {
         
         public var pageScanRepetitionMode: PageScanRepetitionMode
         
+        public var classOfDevice: ClassOfDevice
+        
         public var clockOffset: ClockOffset
         
         public init?(data: Data) {
@@ -64,11 +66,15 @@ extension HCIInquiryResult {
             guard let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: data[6])
                 else { return nil }
             
+            guard let classOfDevice = ClassOfDevice(data: data.subdata(in: Range<Int>(9 ... 11)))
+                else { return nil }
+            
             let clockOffset = ClockOffset(rawValue: UInt16(littleEndian: UInt16(bytes: (data[12], data[13]))))
             
             self.address = address
             self.pageScanRepetitionMode = pageScanRepetitionMode
             self.clockOffset = clockOffset
+            self.classOfDevice = classOfDevice
         }
         
     }

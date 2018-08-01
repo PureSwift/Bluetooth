@@ -40,9 +40,8 @@ public struct ClassOfDevice {
         let majorServiceValue = UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))) >> 5
         
         self.majorServiceClass = BitMaskOptionSet<MajorServiceClass>(rawValue: majorServiceValue)
-        
-        guard let majorDeviceClassType = MajorDeviceClassType(rawValue: (data[1] << 3) >> 3)
-            else { return nil }
+
+        let majorDeviceClassType = MajorDeviceClassType(rawValue: (data[1] << 3) >> 3) ?? MajorDeviceClassType.miscellaneous
         
         switch majorDeviceClassType {
             
