@@ -316,6 +316,8 @@ final class BluetoothTests: XCTestCase {
             
             guard phone == .smartphone
                 else { XCTFail("majorDeviceClass is wrong"); return }
+            
+            XCTAssertEqual(classOfDevice.data, data)
         }
         
         do {
@@ -331,6 +333,8 @@ final class BluetoothTests: XCTestCase {
             
             XCTAssertEqual(peripheral, .keyboard)
             XCTAssertEqual(device, .joystick)
+            XCTAssertEqual(classOfDevice.data, data)
         }
     }
 }
+

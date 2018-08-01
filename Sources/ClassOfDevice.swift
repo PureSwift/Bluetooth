@@ -12,7 +12,7 @@ public struct ClassOfDevice {
     
     internal static let length = 3
     
-    public let formatType: UInt8
+    public let formatType: FormatType
     
     public let majorServiceClass: BitMaskOptionSet<MajorServiceClass>
     
@@ -23,7 +23,10 @@ public struct ClassOfDevice {
         guard data.count == type(of: self).length
             else { return nil }
         
-        self.formatType = (data[0] << 6) >> 6
+        guard let formatType = FormatType(rawValue: (data[0] << 6) >> 6)
+            else { return nil }
+        
+        self.formatType = formatType
         
         let majorServiceValue = UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))) >> 5
         
@@ -38,36 +41,85 @@ public struct ClassOfDevice {
             self.majorDeviceClass = .miscellaneous
             
         case .computer:
-            self.majorDeviceClass = .computer(Computer(rawValue: data[0] >> 2) ?? .uncathegorized)
+            self.majorDeviceClass = .computer(Computer(rawValue: data[0] >> 2) ?? .uncategorized)
             
         case .phone:
-            self.majorDeviceClass = .phone(Phone(rawValue: data[0] >> 2) ?? .uncathegorized)
+            self.majorDeviceClass = .phone(Phone(rawValue: data[0] >> 2) ?? .uncategorized)
             
         case .lanNetwork:
             self.majorDeviceClass = .lanNetwork(NetworkAccessPoint(rawValue: data[0] >> 2) ?? .fullyAvailable)
             
         case .audioVideo:
-            self.majorDeviceClass = .audioVideo(AudioVideo(rawValue: data[0] >> 2) ?? .uncathegorized)
+            self.majorDeviceClass = .audioVideo(AudioVideo(rawValue: data[0] >> 2) ?? .uncategorized)
             
         case .peripheral:
             self.majorDeviceClass = .peripheral(PeripheralKeyboardPointing(rawValue: data[0] >> 6) ?? .notKeyboard,
-                                                PeripheralDevice(rawValue: (data[0] << 2) >> 4) ?? .uncathegorized)
+                                                PeripheralDevice(rawValue: (data[0] << 2) >> 4) ?? .uncategorized)
             
         case .imaging:
-            self.majorDeviceClass = .imaging(Imaging(rawValue: data[0] >> 4) ?? .uncathegorized)
+            self.majorDeviceClass = .imaging(BitMaskOptionSet<Imaging>(rawValue: data[0] >> 4))
             
         case .wearable:
-            self.majorDeviceClass = .wearable(Wearable(rawValue: data[0] >> 2) ?? .uncathegorized)
+            self.majorDeviceClass = .wearable(Wearable(rawValue: data[0] >> 2) ?? .uncategorized)
             
         case .toy:
-            self.majorDeviceClass = .toy(Toy(rawValue: data[0] >> 2) ?? .uncathegorized)
+            self.majorDeviceClass = .toy(Toy(rawValue: data[0] >> 2) ?? .uncategorized)
             
         case .health:
-            self.majorDeviceClass = .health(Health(rawValue: data[0] >> 2) ?? .uncathegorized)
+            self.majorDeviceClass = .health(Health(rawValue: data[0] >> 2) ?? .uncategorized)
             
-        case .uncathegorized:
-            self.majorDeviceClass = .uncathegorized
+        case .uncategorized:
+            self.majorDeviceClass = .uncategorized
         }
+    }
+    
+    public var data: Data {
+        
+        // combine Format Type with Major Device Class
+        let firstByte = formatType.rawValue | (majorDeviceClass.minorClassValue << 2)
+        
+        // get first 3 bits of the Mejor Service Class
+        let majorServiceClass3Bits = (majorServiceClass.rawValue.bytes.0 << 5) /// e.g. 11100000
+        
+        // combine part of the Major Device Class of part of the Major Service Class
+        let secondByte = majorDeviceClass.type.rawValue | majorServiceClass3Bits
+        
+        let thirdByte = (majorServiceClass.rawValue.bytes.1 << 5) | ((majorServiceClass.rawValue.bytes.0 >> 3) << 3)
+        
+        return Data([firstByte, secondByte, thirdByte])
+    }
+}
+
+public extension ClassOfDevice {
+    
+    public struct FormatType: RawRepresentable {
+        
+        public static let min = FormatType(0b00)
+        
+        public static let max = FormatType(0b11)
+        
+        public var rawValue: UInt8
+        
+        public init?(rawValue: UInt8) {
+            
+            guard rawValue <= type(of: self).max.rawValue, rawValue >= type(of: self).min.rawValue
+                else { return nil }
+            
+            self.rawValue = rawValue
+        }
+        
+        private init(_ unsafe: UInt8) {
+            
+            self.rawValue = unsafe
+        }
+    }
+}
+
+extension ClassOfDevice.FormatType: Equatable {
+ 
+    public static func == (lhs: ClassOfDevice.FormatType, rhs: ClassOfDevice.FormatType) -> Bool {
+        
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -144,7 +196,7 @@ public extension ClassOfDevice {
         case peripheral(PeripheralKeyboardPointing, PeripheralDevice)
         
         /// Imaging (printer, scanner, camera, display, ...)
-        case imaging(Imaging)
+        case imaging(BitMaskOptionSet<Imaging>)
 
         /// Wearable
         case wearable(Wearable)
@@ -156,7 +208,74 @@ public extension ClassOfDevice {
         case health(Health)
         
         /// Uncategorized: device code not specified
-        case uncathegorized
+        case uncategorized
+        
+        var type: MajorDeviceClassType {
+            
+            switch self {
+                
+            case .miscellaneous: return .miscellaneous
+                
+            case .computer: return .computer
+                
+            case .phone: return .phone
+                
+            case .lanNetwork: return .lanNetwork
+                
+            case .audioVideo: return .audioVideo
+                
+            case .peripheral: return .peripheral
+                
+            case .imaging: return .imaging
+                
+            case .wearable: return .wearable
+                
+            case .toy: return .toy
+                
+            case .health: return .health
+                
+            case .uncategorized: return .uncategorized
+            }
+        }
+        
+        var minorClassValue: UInt8 {
+            
+            switch self {
+                
+            case .miscellaneous:
+                return 0
+                
+            case .computer(let computer):
+                return computer.rawValue
+                
+            case .phone(let phone):
+                return phone.rawValue
+                
+            case .lanNetwork(let network):
+                return network.rawValue
+                
+            case .audioVideo(let audioVideo):
+                return audioVideo.rawValue
+                
+            case .peripheral(let keyboardPointing, let device):
+                return (keyboardPointing.rawValue << 4) | device.rawValue
+                
+            case .imaging(let imaging):
+                return imaging.rawValue
+                
+            case .wearable(let wearable):
+                return wearable.rawValue
+                
+            case .toy(let toy):
+                return toy.rawValue
+                
+            case .health(let health):
+                return health.rawValue
+                
+            case .uncategorized:
+                return MajorDeviceClassType.uncategorized.rawValue
+            }
+        }
     }
     
     public enum MajorDeviceClassType: UInt8 {
@@ -192,7 +311,7 @@ public extension ClassOfDevice {
         case health = 0b1001
 
         /// Uncategorized: device code not specified
-        case uncathegorized = 0b11111
+        case uncategorized = 0b11111
     }
 }
 
@@ -216,8 +335,8 @@ public extension ClassOfDevice.MinorDeviceClass {
     
     public enum Computer: UInt8 {
         
-        /// Uncathegorized
-        case uncathegorized = 0b00
+        /// Uncategorized
+        case uncategorized = 0b00
         
         /// Desktop workstation
         case desktopWorkstation = 0b01
@@ -247,7 +366,7 @@ public extension ClassOfDevice.MinorDeviceClass {
     public enum Phone: UInt8 {
         
         /// Uncategorized, code for device not assigned
-        case uncathegorized = 0b00
+        case uncategorized = 0b00
         
         /// Cellular
         case celullar = 0b01
@@ -301,7 +420,7 @@ public extension ClassOfDevice.MinorDeviceClass {
     public enum AudioVideo: UInt8 {
 
         /// Uncategorized, code not assigned
-        case uncathegorized = 0b00
+        case uncategorized = 0b00
         
         /// Wearable Headset Device
         case wearableHeadSet = 0b01
@@ -373,7 +492,7 @@ public extension ClassOfDevice.MinorDeviceClass {
     public enum PeripheralDevice: UInt8 {
         
         /// Uncategorized device
-        case uncathegorized = 0b00
+        case uncategorized = 0b00
         
         /// Joystick
         case joystick = 0b01
@@ -406,10 +525,15 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
 
-    public enum Imaging: UInt8 {
+    public enum Imaging: UInt8, BitMaskOption {
         
-        /// Uncathegorized
-        case uncathegorized = 0b00
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt8
+        #endif
+        
+        /// Uncategorized
+        case uncategorized = 0b00
         
         /// Display
         case display = 0b01
@@ -422,6 +546,14 @@ public extension ClassOfDevice.MinorDeviceClass {
         
         /// Printer
         case printer = 0b1000
+        
+        public static var all: Set<ClassOfDevice.MinorDeviceClass.Imaging> = [
+            .uncategorized,
+            .display,
+            .camera,
+            .scanner,
+            .printer
+        ]
     }
 }
 
@@ -429,8 +561,8 @@ public extension ClassOfDevice.MinorDeviceClass {
     
     public enum Wearable: UInt8 {
         
-        /// Uncathegorized
-        case uncathegorized = 0b00
+        /// Uncategorized
+        case uncategorized = 0b00
         
         /// Wristwatch
         case wristwatch = 0b01
@@ -453,8 +585,8 @@ public extension ClassOfDevice.MinorDeviceClass {
     
     public enum Toy: UInt8 {
         
-        /// Uncathegorized
-        case uncathegorized = 0b00
+        /// Uncategorized
+        case uncategorized = 0b00
         
         /// Robot
         case robot = 0b01
@@ -477,8 +609,8 @@ public extension ClassOfDevice.MinorDeviceClass {
     
     public enum Health: UInt8 {
         
-        /// Uncathegorized
-        case uncathegorized = 0b00
+        /// Uncategorized
+        case uncategorized = 0b00
         
         /// Blood Pressure Monitor
         case bloodPressureMonitor = 0b01
