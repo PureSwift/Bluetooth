@@ -81,10 +81,10 @@ public struct ClassOfDevice {
         // get first 3 bits of the Mejor Service Class
         let majorServiceClass3Bits = (majorServiceClass.rawValue.bytes.0 << 5) /// e.g. 11100000
         
-        // combine part of the Major Device Class of part of the Major Service Class
+        // combine part of the Major Device Class of part with the Major Service Class
         let secondByte = majorDeviceClass.type.rawValue | majorServiceClass3Bits
         
-        let thirdByte = (majorServiceClass.rawValue.bytes.1 << 5) | ((majorServiceClass.rawValue.bytes.0 >> 3) << 3)
+        let thirdByte = (majorServiceClass.rawValue.bytes.1 << 5) | (majorServiceClass.rawValue.bytes.0 >> 3)
         
         return Data([firstByte, secondByte, thirdByte])
     }
