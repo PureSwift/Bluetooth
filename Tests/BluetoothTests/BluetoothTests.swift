@@ -315,6 +315,19 @@ final class BluetoothTests: XCTestCase {
             
             XCTAssertEqual(classOfDevice.data, data)
             XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b01))
+            
+            guard let formatType = ClassOfDevice.FormatType(rawValue: 0b01)
+                else { XCTFail("Could not init formatType"); return }
+            
+            let majorServiceClass = BitMaskOptionSet<ClassOfDevice.MajorServiceClass>(rawValue: 0b11000010000)
+            let majorDeviceClass = ClassOfDevice.MajorDeviceClass.computer(.laptop)
+            let classOfDeviceManual = ClassOfDevice(formatType: formatType,
+                                                    majorServiceClass: majorServiceClass,
+                                                    majorDeviceClass: majorDeviceClass)
+            
+            XCTAssertEqual(classOfDevice.formatType, formatType)
+            XCTAssertEqual(classOfDevice.majorDeviceClass, majorDeviceClass)
+            XCTAssertEqual(classOfDevice, classOfDeviceManual)
         }
         
         do {

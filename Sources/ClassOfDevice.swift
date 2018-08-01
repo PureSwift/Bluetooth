@@ -12,11 +12,20 @@ public struct ClassOfDevice {
     
     internal static let length = 3
     
-    public let formatType: FormatType
+    public var formatType: FormatType
     
-    public let majorServiceClass: BitMaskOptionSet<MajorServiceClass>
+    public var majorServiceClass: BitMaskOptionSet<MajorServiceClass>
     
-    public let majorDeviceClass: MajorDeviceClass
+    public var majorDeviceClass: MajorDeviceClass
+    
+    public init(formatType: FormatType,
+                majorServiceClass: BitMaskOptionSet<MajorServiceClass>,
+                majorDeviceClass: MajorDeviceClass) {
+        
+        self.formatType = formatType
+        self.majorServiceClass = majorServiceClass
+        self.majorDeviceClass = majorDeviceClass
+    }
     
     public init?(data: Data) {
         
@@ -90,7 +99,17 @@ public struct ClassOfDevice {
     }
 }
 
-public extension ClassOfDevice {
+extension ClassOfDevice: Equatable {
+    
+    public static func == (lhs: ClassOfDevice, rhs: ClassOfDevice) -> Bool {
+        
+        return lhs.formatType == rhs.formatType
+            && lhs.majorServiceClass == rhs.majorServiceClass
+            && lhs.majorDeviceClass == rhs.majorDeviceClass
+    }
+}
+
+extension ClassOfDevice {
     
     public struct FormatType: RawRepresentable {
         
@@ -312,6 +331,14 @@ public extension ClassOfDevice {
 
         /// Uncategorized: device code not specified
         case uncategorized = 0b11111
+    }
+}
+
+extension ClassOfDevice.MajorDeviceClass: Equatable {
+    
+    public static func == (lhs: ClassOfDevice.MajorDeviceClass, rhs: ClassOfDevice.MajorDeviceClass) -> Bool {
+        
+        return lhs.type == rhs.type && lhs.minorClassValue == rhs.minorClassValue
     }
 }
 
