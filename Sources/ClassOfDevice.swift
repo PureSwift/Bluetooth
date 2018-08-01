@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 public struct ClassOfDevice {
     
     internal static let length = 3
@@ -72,6 +74,11 @@ public struct ClassOfDevice {
 public extension ClassOfDevice {
     
     public enum MajorServiceClass: UInt16, BitMaskOption {
+        
+        #if swift(>=3.2)
+        #elseif swift(>=3.0)
+        public typealias RawValue = UInt16
+        #endif
         
         /// Limited Discoverable Mode [Ref #1]
         case limitedDiscoverable = 0b01
