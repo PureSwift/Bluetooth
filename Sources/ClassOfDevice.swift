@@ -116,7 +116,7 @@ extension ClassOfDevice {
         
         public static let max = FormatType(0b11)
         
-        public var rawValue: UInt8
+        public let rawValue: UInt8
         
         public init?(rawValue: UInt8) {
             

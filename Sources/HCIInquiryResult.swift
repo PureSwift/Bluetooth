@@ -14,7 +14,7 @@ public struct HCIInquiryResult: HCIEventParameter {
     
     public static let length = 2 + 1 + Report.length
     
-    public var reports: [Report]
+    public let reports: [Report]
     
     public init?(data: Data) {
         

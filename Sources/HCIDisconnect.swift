@@ -59,23 +59,21 @@ extension HCIDisconnect {
     /// The Reason command parameter indicates the reason for ending the connection. The remote Controller will receive the Reason command parameter in the Disconnection Complete event.
     public struct Reason: RawRepresentable {
         
-        public typealias RawValue = UInt8
-        
         /// Authentication Failure
-        public static let authenticationFailure: RawValue = 0x05
+        public static let authenticationFailure = Reason(0x05)
         
         /// Other End Terminated Connection
-        public static let otherEndTerminatedConnection: CountableClosedRange<RawValue> = (0x13 ... 0x15)
+        public static let otherEndTerminatedConnection: CountableClosedRange<UInt8> = (0x13 ... 0x15)
         
         /// Unsupported Remote Feature
-        public static let unsupportedRemoteFeature: RawValue = 0x1a
+        public static let unsupportedRemoteFeature = Reason(0x1a)
         
         /// Pairing with Unit Key Not Supported
-        public static let pairingWwithUnitKeyNotSupported: RawValue = 0x29
+        public static let pairingWwithUnitKeyNotSupported = Reason(0x29)
         
-        public var rawValue: RawValue
+        public var rawValue: UInt8
         
-        public init?(rawValue: RawValue) {
+        public init?(rawValue: UInt8) {
             
             guard type(of: self).allValues.contains(rawValue)
                 else { return nil }
@@ -83,11 +81,16 @@ extension HCIDisconnect {
             self.rawValue = rawValue
         }
         
-        private static var allValues: [RawValue] {
+        private init(_ unsafe: UInt8) {
             
-            return [Reason.authenticationFailure,
-                    Reason.unsupportedRemoteFeature,
-                    Reason.pairingWwithUnitKeyNotSupported] + Array(Reason.otherEndTerminatedConnection)
+            self.rawValue = unsafe
+        }
+        
+        private static var allValues: [UInt8] {
+            
+            return [Reason.authenticationFailure.rawValue,
+                    Reason.unsupportedRemoteFeature.rawValue,
+                    Reason.pairingWwithUnitKeyNotSupported.rawValue] + Array(Reason.otherEndTerminatedConnection)
         }
     }
 }

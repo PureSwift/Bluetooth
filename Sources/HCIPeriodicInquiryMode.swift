@@ -114,7 +114,8 @@ public extension HCIPeriodicInquiryMode {
         
         public init?(rawValue: UInt24) {
             
-            guard rawValue <= LAP.max.rawValue, rawValue >= LAP.min.rawValue
+            guard rawValue <= LAP.max.rawValue,
+                rawValue >= LAP.min.rawValue
                 else { return nil }
             
             self.rawValue = rawValue
@@ -171,7 +172,7 @@ public extension HCIPeriodicInquiryMode {
         
         public static let max = MaxDuration(0xFFFF)
         
-        public var rawValue: UInt16
+        public let rawValue: UInt16
         
         /// Time = N * 1.28 sec
         /// Range: 3.84 – 83884.8 Sec 0.0 – 23.3 hours
@@ -182,7 +183,8 @@ public extension HCIPeriodicInquiryMode {
         
         public init?(rawValue: UInt16) {
             
-            guard rawValue <= MaxDuration.max.rawValue, rawValue >= MaxDuration.min.rawValue
+            guard rawValue <= MaxDuration.max.rawValue,
+                rawValue >= MaxDuration.min.rawValue
                 else { return nil }
             
             self.rawValue = rawValue
@@ -207,7 +209,7 @@ public extension HCIPeriodicInquiryMode {
         
         public static let max = Duration(0x30)
         
-        public var rawValue: UInt8
+        public let rawValue: UInt8
         
         /// Time = N * 1.28 sec
         /// Range: 1.28 – 61.44 Sec
