@@ -12,6 +12,27 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
+    /// Scan LE devices for the specified time period.
+    func lowEnergyScan(duration: TimeInterval,
+                       filterDuplicates: Bool = true,
+                       parameters: HCILESetScanParameters = .init(),
+                       timeout: HCICommandTimeout = .default) throws -> [HCILEAdvertisingReport.Report] {
+        
+        let startDate = Date()
+        let endDate = startDate + duration
+        
+        var foundDevices: [HCILEAdvertisingReport.Report] = []
+        foundDevices.reserveCapacity(1)
+        
+        try lowEnergyScan(filterDuplicates: filterDuplicates,
+                          parameters: parameters,
+                          timeout: timeout,
+                          shouldContinue: { Date() < endDate },
+                          foundDevice: { foundDevices.append($0) })
+        
+        return foundDevices
+    }
+    
     /// Scan LE devices.
     func lowEnergyScan(filterDuplicates: Bool = true,
                        parameters: HCILESetScanParameters = .init(),
@@ -30,8 +51,7 @@ public extension BluetoothHostControllerInterface {
         }
         
         // disable scanning first
-        do { try enableScan(false) }
-        catch HCIError.commandDisallowed { } // ignore error
+        try enableScan(false)
         
         // set parameters
         try deviceRequest(parameters, timeout: timeout)

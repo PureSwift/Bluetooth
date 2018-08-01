@@ -952,10 +952,6 @@
 		6E60A2ED20695AE100E42351 /* POSIXError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2EB20695AE000E42351 /* POSIXError.swift */; };
 		6E60A2EE20695AE100E42351 /* POSIXError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2EB20695AE000E42351 /* POSIXError.swift */; };
 		6E60A2EF20695AE100E42351 /* POSIXError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2EB20695AE000E42351 /* POSIXError.swift */; };
-		6E60A2F120695B2700E42351 /* LowEnergyScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F020695B2700E42351 /* LowEnergyScan.swift */; };
-		6E60A2F220695B2700E42351 /* LowEnergyScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F020695B2700E42351 /* LowEnergyScan.swift */; };
-		6E60A2F320695B2700E42351 /* LowEnergyScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F020695B2700E42351 /* LowEnergyScan.swift */; };
-		6E60A2F420695B2700E42351 /* LowEnergyScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F020695B2700E42351 /* LowEnergyScan.swift */; };
 		6E60A2F620695B6500E42351 /* LowEnergyConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F520695B6500E42351 /* LowEnergyConnection.swift */; };
 		6E60A2F720695B6500E42351 /* LowEnergyConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F520695B6500E42351 /* LowEnergyConnection.swift */; };
 		6E60A2F820695B6500E42351 /* LowEnergyConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F520695B6500E42351 /* LowEnergyConnection.swift */; };
@@ -1801,7 +1797,6 @@
 		6E60A2E12069564A00E42351 /* GATTDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTDatabase.swift; sourceTree = "<group>"; };
 		6E60A2E62069582500E42351 /* LowEnergyAdvertising.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyAdvertising.swift; sourceTree = "<group>"; };
 		6E60A2EB20695AE000E42351 /* POSIXError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POSIXError.swift; sourceTree = "<group>"; };
-		6E60A2F020695B2700E42351 /* LowEnergyScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyScan.swift; sourceTree = "<group>"; };
 		6E60A2F520695B6500E42351 /* LowEnergyConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyConnection.swift; sourceTree = "<group>"; };
 		6E60A2FA20695BC300E42351 /* LowEnergyWhiteList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyWhiteList.swift; sourceTree = "<group>"; };
 		6E60A2FF20695CC500E42351 /* GATTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTClient.swift; sourceTree = "<group>"; };
@@ -2026,7 +2021,6 @@
 			children = (
 				6E60A2BE2068928400E42351 /* BluetoothHostController.swift */,
 				6E60A2E62069582500E42351 /* LowEnergyAdvertising.swift */,
-				6E60A2F020695B2700E42351 /* LowEnergyScan.swift */,
 				6E60A2F520695B6500E42351 /* LowEnergyConnection.swift */,
 				6E60A2FA20695BC300E42351 /* LowEnergyWhiteList.swift */,
 				511A657A2075B61400538116 /* LowEnergyResolvingList.swift */,
@@ -3134,7 +3128,6 @@
 				356EB93E20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */,
 				357A94492110D1C8007607BB /* HCIConnectionComplete.swift in Sources */,
 				357709F320F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
-				6E60A2F420695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4820657F25006589F6 /* InformationalCommand.swift in Sources */,
 				351829B120D22D7A0009F82D /* GAPListOf128BitServiceSolicitationUUIDs.swift in Sources */,
 				6EEADB26208E5DC100CFD908 /* UInt512.swift in Sources */,
@@ -3513,7 +3506,6 @@
 				356EB93D20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */,
 				357A94482110D1C8007607BB /* HCIConnectionComplete.swift in Sources */,
 				357709F220F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
-				6E60A2F320695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4720657F25006589F6 /* InformationalCommand.swift in Sources */,
 				351829B020D22D7A0009F82D /* GAPListOf128BitServiceSolicitationUUIDs.swift in Sources */,
 				6EEADB25208E5DC100CFD908 /* UInt512.swift in Sources */,
@@ -3918,7 +3910,6 @@
 				357709F020F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
 				356EB93620D4500F0022A48D /* GATTAnaerobicHeartRateLowerLimit.swift in Sources */,
 				357709EB20F5074B00E1AC6F /* GATTTimeUpdateState.swift in Sources */,
-				6E60A2F120695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				356EB8E620D42D7B0022A48D /* HCILEReadNumberOfSupportedAdvertisingSets.swift in Sources */,
 				351829A920D22D6E0009F82D /* GAPListOf32BitServiceSolicitationUUIDs.swift in Sources */,
 				6EED642A207413F30077CECE /* LowEnergyState.swift in Sources */,
@@ -4308,7 +4299,6 @@
 				356EB93C20D450190022A48D /* GATTAnaerobicHeartRateUpperLimit.swift in Sources */,
 				357A94472110D1C8007607BB /* HCIConnectionComplete.swift in Sources */,
 				357709F120F5137300E1AC6F /* GATTTimeWithDst.swift in Sources */,
-				6E60A2F220695B2700E42351 /* LowEnergyScan.swift in Sources */,
 				6E740C4620657F25006589F6 /* InformationalCommand.swift in Sources */,
 				351829AF20D22D7A0009F82D /* GAPListOf128BitServiceSolicitationUUIDs.swift in Sources */,
 				6EEADB24208E5DC000CFD908 /* UInt512.swift in Sources */,

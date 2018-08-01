@@ -511,7 +511,7 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x0C, 0x20, 0x00]))
         
         var reports = [Report]()
-        XCTAssertNoThrow(reports = try hostController.lowEnergyScan(parameters: scanParameters))
+        XCTAssertNoThrow(reports = try hostController.lowEnergyScan(duration: 1.0, parameters: scanParameters))
         
         XCTAssert(hostController.queue.isEmpty)
         XCTAssert(reports.isEmpty == false)
