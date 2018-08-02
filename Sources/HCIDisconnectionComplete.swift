@@ -24,7 +24,7 @@ public struct HCIDisconnectionComplete: HCIEventParameter {
     public let handle: UInt16
     
     /// Reason for disconnection.
-    public let reason: UInt8
+    public let error: HCIError
     
     public init?(data: Data) {
         
@@ -36,9 +36,12 @@ public struct HCIDisconnectionComplete: HCIEventParameter {
         
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
+        guard let error = HCIError(rawValue: data[3])
+            else { return nil }
+        
         self.status = status
         self.handle = handle
-        self.reason = data[3]
+        self.error = error
     }
 
 }
