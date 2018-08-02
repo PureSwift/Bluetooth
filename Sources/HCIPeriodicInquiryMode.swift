@@ -172,7 +172,7 @@ public extension HCIPeriodicInquiryMode {
         
         public static let max = MaxDuration(0xFFFF)
         
-        public let rawValue: UInt16
+        public var rawValue: UInt16
         
         /// Time = N * 1.28 sec
         /// Range: 3.84 – 83884.8 Sec 0.0 – 23.3 hours
@@ -209,7 +209,7 @@ public extension HCIPeriodicInquiryMode {
         
         public static let max = Duration(0x30)
         
-        public let rawValue: UInt8
+        public var rawValue: UInt8
         
         /// Time = N * 1.28 sec
         /// Range: 1.28 – 61.44 Sec

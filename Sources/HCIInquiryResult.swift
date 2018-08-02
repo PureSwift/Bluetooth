@@ -51,13 +51,13 @@ extension HCIInquiryResult {
         
         public static let length = 6 + 1 + 1 + 1 + 3 + 2
         
-        public var address: Address
+        public let address: Address
         
-        public var pageScanRepetitionMode: PageScanRepetitionMode
+        public let pageScanRepetitionMode: PageScanRepetitionMode
         
-        public var classOfDevice: ClassOfDevice
+        public let classOfDevice: ClassOfDevice
         
-        public var clockOffset: ClockOffset
+        public let clockOffset: ClockOffset
         
         public init?(data: Data) {
             
@@ -86,7 +86,7 @@ extension HCIInquiryResult {
         
         public static let length = MemoryLayout<UInt16>.size
         
-        public var rawValue: UInt16
+        public let rawValue: UInt16
         
         public init(rawValue: UInt16) {
             
