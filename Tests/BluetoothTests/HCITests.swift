@@ -1415,7 +1415,7 @@ final class HCITests: XCTestCase {
          Encryption Mode: 0x00
          Jul 31 12:06:31.943  HCI Event 030b 000d 00af d206 2d70 b001 00
          */
-        let data = Data([0x03, 0x0b, 0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00])
+        let data = Data([0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00])
         
         guard let event = HCIConnectionComplete(data: data)
             else { XCTFail("Could not parse"); return }
@@ -1467,10 +1467,7 @@ final class HCITests: XCTestCase {
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0x16]))
         }
         
-        guard let reason = HCIDisconnect.Reason(rawValue: 0x13)
-            else { XCTFail("Could not parse"); return }
-        
-        XCTAssertNoThrow(try hostController.disconnect(connectionHandle: 0x000D, reason: reason))
+        XCTAssertNoThrow(try hostController.disconnect(connectionHandle: 0x000D, error: .remoteUserEndedConnection))
     }
 }
 
