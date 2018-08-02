@@ -28,7 +28,7 @@ public struct HCIDisconnectionComplete: HCIEventParameter {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
         guard let status = HCIStatus(rawValue: data[0])
