@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// Inquiry Complete Event
+///
+/// The Inquiry Complete event indicates that the Inquiry is finished. This event contains a Status parameter, which is used to indicate if the Inquiry completed successfully or if the Inquiry was not completed.
 public struct HCIInquiryComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.inquiryComplete

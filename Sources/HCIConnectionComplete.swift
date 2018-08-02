@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Connection Complete Event
+///
 /// The Connection Complete event indicates to both of the Hosts forming the connection that a new connection has been established. This event also indicates to the Host, which issued the Create_Connection, or Accept_Connection_ Request or Reject_Connection_Request command and then received a Command Status event, if the issued command failed or was successful.
 public struct HCIConnectionComplete: HCIEventParameter {
     

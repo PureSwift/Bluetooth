@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// Inquiry Result Event
+///
+/// The Inquiry Result event indicates that a BR/EDR Controller or multiple BR/ EDR Controllers have responded so far during the current Inquiry process. This event will be sent from the BR/EDR Controller to the Host as soon as an Inquiry Response from a remote device is received if the remote device supports only mandatory paging scheme. The BR/EDR Controller may queue these Inquiry Responses and send multiple BR/EDR Controllers information in one Inquiry Result event. The event can be used to return one or more Inquiry responses in one event.
 public struct HCIInquiryResult: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.inquiryResult

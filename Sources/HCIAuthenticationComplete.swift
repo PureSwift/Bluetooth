@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Authentication Complete Event
+///
 /// The Authentication Complete event occurs when authentication has been completed for the specified connection. The Connection_Handle must be a Connection_Handle for an ACL connection.
 public struct HCIAuthenticationComplete: HCIEventParameter {
     
