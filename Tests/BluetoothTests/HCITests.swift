@@ -1404,6 +1404,32 @@ final class HCITests: XCTestCase {
                                                              allowRoleSwitch: allowSwitchRole))
     }
     
+    func testCreateConnectionCancel() {
+        
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.createConnectionCancel.opcode,
+                                             [0x08, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0408 (OGF: 0x01    OCF: 0x03) - [Link Control] Create Connection
+             Aug 02 10:46:57.462  HCI Event  0e 04 01 08 04 00
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x08, 0x04, 0x00]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        XCTAssertNoThrow(try hostController.cancelConnection(address: address))
+    }
+    
     func testConnectionComplete() {
         
         /**
