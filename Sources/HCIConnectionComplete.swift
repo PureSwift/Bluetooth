@@ -13,7 +13,7 @@ public struct HCIConnectionComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.connectionComplete
     
-    public static let length: Int = 13
+    public static let length: Int = 11
     
     public let status: HCIStatus
     
@@ -29,20 +29,20 @@ public struct HCIConnectionComplete: HCIEventParameter {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
-        guard let status = HCIStatus(rawValue: data[2])
+        guard let status = HCIStatus(rawValue: data[0])
             else { return nil }
         
-        let handle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
+        let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        let address = Address(bytes: (data[5], data[6], data[7], data[8], data[9], data[10]))
+        let address = Address(bytes: (data[3], data[4], data[5], data[6], data[7], data[8]))
         
-        guard let linkType = LinkType(rawValue: data[11])
+        guard let linkType = LinkType(rawValue: data[9])
             else { return nil }
         
-        guard let encryption = Encryption(rawValue: data[12])
+        guard let encryption = Encryption(rawValue: data[10])
             else { return nil }
         
         self.status = status

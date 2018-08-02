@@ -13,7 +13,7 @@ public struct HCIAuthenticationComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.authenticationComplete
     
-    public static let length: Int = 4
+    public static let length: Int = 3
     
     public let status: HCIStatus
     
@@ -23,7 +23,7 @@ public struct HCIAuthenticationComplete: HCIEventParameter {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count == type(of: self).length
             else { return nil }
         
         guard let status = HCIStatus(rawValue: data[0])
