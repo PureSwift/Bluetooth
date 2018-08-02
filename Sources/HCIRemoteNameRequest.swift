@@ -21,18 +21,19 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
     
     internal static let length = 10
     
+    /// BD_ADDR for the device whose name is requested.
     public var address: Address
     
     public var pscanRepMode: PageScanRepetitionMode
     
-    // Must be set to 0x00
+    /// Must be set to 0x00
     internal var reserved: Reserved
     
-    public var clockOffset: UInt16
+    public var clockOffset: ClockOffset
     
     public init(address: Address,
                 pscanRepMode: PageScanRepetitionMode,
-                clockOffset: UInt16) {
+                clockOffset: ClockOffset) {
         
         self.address = address
         self.pscanRepMode = pscanRepMode
@@ -56,14 +57,14 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
         self.reserved = reserved
         self.pscanRepMode = pscanRepMode
         self.reserved = reserved
-        self.clockOffset = UInt16(littleEndian: UInt16(bytes: (data[8], data[9])))
+        self.clockOffset = ClockOffset(rawValue: UInt16(littleEndian: UInt16(bytes: (data[8], data[9]))))
     }
     
     public var data: Data {
         
         let addressBytes = address.littleEndian.bytes
         
-        let clockOffsetBytes = clockOffset.littleEndian.bytes
+        let clockOffsetBytes = clockOffset.rawValue.littleEndian.bytes
         
         return Data([addressBytes.0,
                      addressBytes.1,
@@ -84,5 +85,28 @@ extension HCIRemoteNameRequest {
     public enum Reserved: UInt8 {
         
         case mandatory = 0x00
+    }
+}
+
+extension HCIRemoteNameRequest {
+
+    public struct ClockOffset: RawRepresentable {
+        
+        public let rawValue: UInt16
+        
+        public var isValid: Bool {
+            
+            return rawValue >> 15 == 0b01
+        }
+        
+        public var offset: UInt16 {
+            
+            return (rawValue << 1) >> 1
+        }
+        
+        public init(rawValue: UInt16) {
+            
+            self.rawValue = rawValue
+        }
     }
 }
