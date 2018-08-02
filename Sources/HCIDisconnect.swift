@@ -61,7 +61,7 @@ extension HCIDisconnect {
     public struct Reason {
         
         /// Authentication Failure
-        public static let authenticationFailure: HCIError = .authenticationFailure //Reason(0x05)
+        public static let authenticationFailure: HCIError = .authenticationFailure
         
         /// Other End Terminated Connection
         public static let otherEndTerminatedConnection: [HCIError] = [
@@ -71,10 +71,10 @@ extension HCIDisconnect {
         ]
         
         /// Unsupported Remote Feature
-        public static let unsupportedRemoteFeature: HCIError = .unsupportedRemoteFeature //Reason(0x1a)
+        public static let unsupportedRemoteFeature: HCIError = .unsupportedRemoteFeature
         
         /// Pairing with Unit Key Not Supported
-        public static let pairingWithUnitKeyNotSupported: HCIError = .pairingWithUnitKeyNotSupported //Reason(0x29)
+        public static let pairingWithUnitKeyNotSupported: HCIError = .pairingWithUnitKeyNotSupported
         
         /// All the cases of the enum.
         public static var all: Set<HCIError> = Set([Reason.authenticationFailure,
