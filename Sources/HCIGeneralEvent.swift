@@ -24,6 +24,9 @@ public enum HCIGeneralEvent: UInt8, HCIEvent {
     /// Disconnection Complete
     case disconnectionComplete              = 0x05
     
+    /// Authentication Complete
+    case authenticationComplete             = 0x06
+    
     // TODO: Complete all HCI events
     
     /// Remote Name Request Complete
