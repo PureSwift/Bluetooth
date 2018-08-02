@@ -16,10 +16,10 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The Disconnection command is used to terminate an existing connection. The Connection_Handle command parameter indicates which connection is to be disconnected. The Reason command parameter indicates the reason for ending the connection. The remote Controller will receive the Reason command parameter in the Disconnection Complete event. All synchronous connections on a physical link should be disconnected before the ACL connection on the same physical connection is disconnected.
     func disconnect(connectionHandle: UInt16,
-                    reason: HCIDisconnect.Reason,
+                    error: HCIError,
                     timeout: HCICommandTimeout = .default) throws -> HCIDisconnectionComplete {
         
-        let disconnect = HCIDisconnect(connectionHandle: connectionHandle, reason: reason)
+        let disconnect = HCIDisconnect(connectionHandle: connectionHandle, error: error)
         
         return try deviceRequest(disconnect, HCIDisconnectionComplete.self, timeout: timeout)
     }
@@ -38,59 +38,48 @@ public struct HCIDisconnect: HCICommandParameter {
     public var connectionHandle: UInt16
     
     /// The Reason command parameter indicates the reason for ending the connection. The remote Controller will receive the Reason command parameter in the Disconnection Complete event.
-    public var reason: Reason
+    public var error: HCIError
     
-    public init(connectionHandle: UInt16, reason: Reason) {
+    public init(connectionHandle: UInt16,
+                error: HCIError) {
         
         self.connectionHandle = connectionHandle
-        self.reason = reason
+        self.error = error
     }
     
     public var data: Data {
         
-        let bytes = connectionHandle.littleEndian.bytes
+        let connectionBytes = connectionHandle.littleEndian.bytes
         
-        return Data([bytes.0, bytes.1, reason.rawValue])
+        return Data([connectionBytes.0, connectionBytes.1, error.rawValue])
     }
 }
 
 extension HCIDisconnect {
     
     /// The Reason command parameter indicates the reason for ending the connection. The remote Controller will receive the Reason command parameter in the Disconnection Complete event.
-    public struct Reason: RawRepresentable {
+    public struct Reason {
         
         /// Authentication Failure
-        public static let authenticationFailure = Reason(0x05)
+        public static let authenticationFailure: HCIError = .authenticationFailure //Reason(0x05)
         
         /// Other End Terminated Connection
-        public static let otherEndTerminatedConnection: CountableClosedRange<UInt8> = (0x13 ... 0x15)
+        public static let otherEndTerminatedConnection: [HCIError] = [
+            .remoteUserEndedConnection,
+            .remoteLowResources,
+            .remotePowerOff
+        ]
         
         /// Unsupported Remote Feature
-        public static let unsupportedRemoteFeature = Reason(0x1a)
+        public static let unsupportedRemoteFeature: HCIError = .unsupportedRemoteFeature //Reason(0x1a)
         
         /// Pairing with Unit Key Not Supported
-        public static let pairingWwithUnitKeyNotSupported = Reason(0x29)
+        public static let pairingWithUnitKeyNotSupported: HCIError = .pairingWithUnitKeyNotSupported //Reason(0x29)
         
-        public let rawValue: UInt8
-        
-        public init?(rawValue: UInt8) {
-            
-            guard type(of: self).allValues.contains(rawValue)
-                else { return nil }
-            
-            self.rawValue = rawValue
-        }
-        
-        private init(_ unsafe: UInt8) {
-            
-            self.rawValue = unsafe
-        }
-        
-        private static var allValues: [UInt8] {
-            
-            return [Reason.authenticationFailure.rawValue,
-                    Reason.unsupportedRemoteFeature.rawValue,
-                    Reason.pairingWwithUnitKeyNotSupported.rawValue] + Array(Reason.otherEndTerminatedConnection)
-        }
+        /// All the cases of the enum.
+        public static var all: Set<HCIError> = Set([Reason.authenticationFailure,
+                                                Reason.unsupportedRemoteFeature,
+                                                Reason.pairingWithUnitKeyNotSupported]
+                                                + Reason.otherEndTerminatedConnection)
     }
 }
