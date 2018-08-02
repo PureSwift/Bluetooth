@@ -1452,6 +1452,47 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(event.encryption, HCIConnectionComplete.Encryption(rawValue: 0x00))
     }
     
+    func testConnectionRequest() {
+        
+        
+    }
+    
+    func testAcceptConnectionRequest() {
+        
+        /**
+         [0409] Opcode: 0x0409 (OGF: 0x01    OCF: 0x09)
+         Parameter Length: 7 (0x07)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Role: 0x00
+         Aug 02 17:19:16.408  HCI Command  09 04 07 af d2 06 2d 70 b0 00
+        */
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.acceptConnection.opcode,
+                                             [0x09, 0x04, 0x07, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0409 (OGF: 0x01    OCF: 0x09) - [Link Control] Accept Connection Request
+             Aug 02 17:19:16.408  HCI Event  0f 04 00 01 09 04
+             */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x09, 0x04]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let role = HCIAcceptConnectionRequest.Role(rawValue: 0x00)
+        else { XCTFail("Unable to init Role"); return }
+        
+        XCTAssertNoThrow(try hostController.acceptConnection(address: address, role: role))
+    }
+    
     func testDisconnect() {
         
         let hostController = TestHostController()

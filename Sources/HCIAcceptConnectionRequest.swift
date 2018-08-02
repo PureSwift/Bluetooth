@@ -19,7 +19,14 @@ public extension BluetoothHostControllerInterface {
         
         let acceptConnection = HCIAcceptConnectionRequest(address: address, role: role)
         
-        try deviceRequest(acceptConnection, timeout: timeout)
+        let commandStatus = try deviceRequest(acceptConnection, HCICommandStatus.self, timeout: timeout)
+        
+        switch commandStatus.status {
+        case let .error(error):
+            throw error
+        case .success:
+            break
+        }
     }
 }
 
