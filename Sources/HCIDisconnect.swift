@@ -71,7 +71,7 @@ extension HCIDisconnect {
         /// Pairing with Unit Key Not Supported
         public static let pairingWwithUnitKeyNotSupported = Reason(0x29)
         
-        public var rawValue: UInt8
+        public let rawValue: UInt8
         
         public init?(rawValue: UInt8) {
             
