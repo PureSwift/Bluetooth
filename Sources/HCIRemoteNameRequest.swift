@@ -15,15 +15,24 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
     
     internal static let length = 10
     
-    public var address = Address()
+    public var address: Address
     
-    public var pscanRepMode: UInt8 = 0
+    public var pscanRepMode: UInt8
     
-    public var pscanMode: UInt8 = 0
+    public var pscanMode: UInt8
     
-    public var clockOffset: UInt16 = 0
+    public var clockOffset: UInt16
     
-    public init() { }
+    public init(address: Address,
+                pscanRepMode: UInt8,
+                pscanMode: UInt8,
+                clockOffset: UInt16) {
+        
+        self.address = address
+        self.pscanRepMode = pscanRepMode
+        self.pscanMode = pscanMode
+        self.clockOffset = clockOffset
+    }
     
     public init?(data: Data) {
         
@@ -34,15 +43,24 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
         
         self.pscanRepMode = data[6]
         self.pscanMode = data[7]
-        self.clockOffset = UInt16(bytes: (data[8], data[9])).littleEndian
+        self.clockOffset = UInt16(littleEndian: UInt16(bytes: (data[8], data[9])))
     }
     
     public var data: Data {
         
-        let address = self.address.bytes
+        let addressBytes = address.littleEndian.bytes
         
         let clockOffsetBytes = clockOffset.littleEndian.bytes
         
-        return Data([address.0, address.1, address.2, address.3, address.4, address.5, pscanRepMode, pscanMode, clockOffsetBytes.0, clockOffsetBytes.1])
+        return Data([addressBytes.0,
+                     addressBytes.1,
+                     addressBytes.2,
+                     addressBytes.3,
+                     addressBytes.4,
+                     addressBytes.5,
+                     pscanRepMode,
+                     pscanMode,
+                     clockOffsetBytes.0,
+                     clockOffsetBytes.1])
     }
 }

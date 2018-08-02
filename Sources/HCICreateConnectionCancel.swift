@@ -31,7 +31,6 @@ public struct HCICreateConnectionCancel: HCICommandParameter {
     }
 }
 
-
 // MARK: - Return parameter
 
 public struct HCICreateConnectionCancelReturn: HCICommandReturnParameter {
