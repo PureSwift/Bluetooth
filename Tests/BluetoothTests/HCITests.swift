@@ -43,7 +43,8 @@ final class HCITests: XCTestCase {
         ("testCreateConnection", testCreateConnection),
         ("testConnectionComplete", testConnectionComplete),
         ("testAcceptConnectionRequest", testAcceptConnectionRequest),
-        ("testLinkKeyRequestReply", testLinkKeyRequestReply)
+        ("testLinkKeyRequestReply", testLinkKeyRequestReply),
+        ("testLinkKeyRequest", testLinkKeyRequest)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -1579,6 +1580,21 @@ final class HCITests: XCTestCase {
                                                             0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e)))
         
         XCTAssertNoThrow(try hostController.linkKeyRequestReply(address: address, linkKey: linkKey))
+    }
+    
+    func testLinkKeyRequest() {
+        
+        /**
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 02 17:19:16.713  HCI Event  17 06 af d2 06 2d 70 b0
+        */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
+        
+        guard let event = HCILinkKeyRequest(data: data)
+            else { XCTFail("Could not parse"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF"))
     }
 }
 

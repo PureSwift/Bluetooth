@@ -777,6 +777,10 @@
 		358B7E2F2114B0DB0052132F /* HCILinkKeyRequestReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B7E2D2114B0DB0052132F /* HCILinkKeyRequestReply.swift */; };
 		358B7E302114B0DB0052132F /* HCILinkKeyRequestReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B7E2D2114B0DB0052132F /* HCILinkKeyRequestReply.swift */; };
 		358B7E312114B0DB0052132F /* HCILinkKeyRequestReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B7E2D2114B0DB0052132F /* HCILinkKeyRequestReply.swift */; };
+		358B7E332114C2A10052132F /* HCILinkKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */; };
+		358B7E342114C2A10052132F /* HCILinkKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */; };
+		358B7E352114C2A10052132F /* HCILinkKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */; };
+		358B7E362114C2A10052132F /* HCILinkKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */; };
 		3594F6BE20EFF56000D66603 /* GATTReferenceTimeInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3594F6BD20EFF56000D66603 /* GATTReferenceTimeInformation.swift */; };
 		3594F6BF20EFF56000D66603 /* GATTReferenceTimeInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3594F6BD20EFF56000D66603 /* GATTReferenceTimeInformation.swift */; };
 		3594F6C020EFF56000D66603 /* GATTReferenceTimeInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3594F6BD20EFF56000D66603 /* GATTReferenceTimeInformation.swift */; };
@@ -1774,6 +1778,7 @@
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		358161C721124C32000E44FE /* HCIDisconnectionComplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIDisconnectionComplete.swift; sourceTree = "<group>"; };
 		358B7E2D2114B0DB0052132F /* HCILinkKeyRequestReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILinkKeyRequestReply.swift; sourceTree = "<group>"; };
+		358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILinkKeyRequest.swift; sourceTree = "<group>"; };
 		3594F6BD20EFF56000D66603 /* GATTReferenceTimeInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTReferenceTimeInformation.swift; sourceTree = "<group>"; };
 		3594F6C220F0226400D66603 /* GATTTimeBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTTimeBroadcast.swift; sourceTree = "<group>"; };
 		359E8AD820EFC69700A6E24E /* GATTDstOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTDstOffset.swift; sourceTree = "<group>"; };
@@ -2636,6 +2641,7 @@
 				3579FC152113B3E40058026D /* HCIConnectionRequest.swift */,
 				358161C721124C32000E44FE /* HCIDisconnectionComplete.swift */,
 				3579FC0B211359AC0058026D /* HCIAuthenticationComplete.swift */,
+				358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */,
 				6EFB3DE020D2E66500364CA0 /* Low Energy */,
 			);
 			name = Event;
@@ -3016,6 +3022,7 @@
 				357D018D20F697E500F48840 /* GATTObjectType.swift in Sources */,
 				6E6AAE1F20D258CD00DDE1CA /* ATTWriteResponse.swift in Sources */,
 				351829D420D22DCA0009F82D /* GAPAdvertisingInterval.swift in Sources */,
+				358B7E362114C2A10052132F /* HCILinkKeyRequest.swift in Sources */,
 				6EFB3DDF20D2E0C900364CA0 /* HCIReadDeviceAddress.swift in Sources */,
 				357709E920F502AB00E1AC6F /* GATTTimeUpdateControlPoint.swift in Sources */,
 				35386B7E20ED12700016D662 /* GATTUncertainty.swift in Sources */,
@@ -3401,6 +3408,7 @@
 				357D018C20F697E500F48840 /* GATTObjectType.swift in Sources */,
 				6E6AAE1E20D258CD00DDE1CA /* ATTWriteResponse.swift in Sources */,
 				351829D320D22DCA0009F82D /* GAPAdvertisingInterval.swift in Sources */,
+				358B7E352114C2A10052132F /* HCILinkKeyRequest.swift in Sources */,
 				6EFB3DDE20D2E0C900364CA0 /* HCIReadDeviceAddress.swift in Sources */,
 				357709E820F502AB00E1AC6F /* GATTTimeUpdateControlPoint.swift in Sources */,
 				35386B7D20ED12700016D662 /* GATTUncertainty.swift in Sources */,
@@ -4069,6 +4077,7 @@
 				3518293120D2231D0009F82D /* GATTBloodPressureManagement.swift in Sources */,
 				6EE84DE71CAF828800A40C4D /* ATT.swift in Sources */,
 				6EFB3D8120D2D71D00364CA0 /* LowEnergyTxPhy.swift in Sources */,
+				358B7E332114C2A10052132F /* HCILinkKeyRequest.swift in Sources */,
 				3580287920C8308E0096227B /* UnitIdentifier.swift in Sources */,
 				3579FC162113B3E40058026D /* HCIConnectionRequest.swift in Sources */,
 				35182A2B20D2357A0009F82D /* GATTUserDescription.swift in Sources */,
@@ -4208,6 +4217,7 @@
 				357D018B20F697E500F48840 /* GATTObjectType.swift in Sources */,
 				6E6AAE1D20D258CD00DDE1CA /* ATTWriteResponse.swift in Sources */,
 				351829D220D22DCA0009F82D /* GAPAdvertisingInterval.swift in Sources */,
+				358B7E342114C2A10052132F /* HCILinkKeyRequest.swift in Sources */,
 				6EFB3DDD20D2E0C900364CA0 /* HCIReadDeviceAddress.swift in Sources */,
 				357709E720F502AB00E1AC6F /* GATTTimeUpdateControlPoint.swift in Sources */,
 				35386B7C20ED12700016D662 /* GATTUncertainty.swift in Sources */,
