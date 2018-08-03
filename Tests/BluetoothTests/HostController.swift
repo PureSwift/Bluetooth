@@ -200,9 +200,6 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             case let .command(testCommand) = firstMessage
             else { throw Error.invalidCommand }
         
-        print("testCommand.1", Data(testCommand.1).hexEncodedString())
-        print("commandData", commandData.hexEncodedString())
-        
         // validate command
         guard testCommand.0 == opcode,
             testCommand.1 == [UInt8](commandData) else {

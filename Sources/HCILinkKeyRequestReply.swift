@@ -16,9 +16,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The Link_Key_Request_Reply command is used to reply to a Link Key Request event from the Controller, and specifies the Link Key stored on the Host to be used as the link key for the connection with the other BR/EDR Controller specified by BD_ADDR. The Link Key Request event will be generated when the BR/EDR Controller needs a Link Key for a connection.
     /// When the BR/EDR Controller generates a Link Key Request event in order for the local Link Manager to respond to the request from the remote Link Manager (as a result of a Create_Connection or Authentication_Requested com- mand from the remote Host), the local Host must respond with either a Link_Key_Request_Reply or Link_Key_Request_Negative_Reply command before the remote Link Manager detects LMP response timeout.
-    func cancelConnection(address: Address,
-                          linkKey: UInt128,
-                          timeout: HCICommandTimeout = .default) throws {
+    func linkKeyRequestReply(address: Address,
+                             linkKey: UInt128,
+                             timeout: HCICommandTimeout = .default) throws {
         
         let linkKeyRequestReply = HCILinkKeyRequestReply(address: address, linkKey: linkKey)
         

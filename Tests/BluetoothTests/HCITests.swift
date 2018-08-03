@@ -37,7 +37,13 @@ final class HCITests: XCTestCase {
         ("testReadBufferSize", testReadBufferSize),
         ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter),
         ("testInquiry", testInquiry),
-        ("testInquiryResult", testInquiryResult)
+        ("testInquiryResult", testInquiryResult),
+        ("testPeriodicInquiryModeAndCancel", testPeriodicInquiryModeAndCancel),
+        ("testExitPeriodicInquiryMode", testExitPeriodicInquiryMode),
+        ("testCreateConnection", testCreateConnection),
+        ("testConnectionComplete", testConnectionComplete),
+        ("testAcceptConnectionRequest", testAcceptConnectionRequest),
+        ("testLinkKeyRequestReply", testLinkKeyRequestReply)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -1535,6 +1541,44 @@ final class HCITests: XCTestCase {
         }
         
         XCTAssertNoThrow(try hostController.disconnect(connectionHandle: 0x000D, error: .remoteUserEndedConnection))
+    }
+    
+    func testLinkKeyRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [040B] Opcode: 0x040B (OGF: 0x01    OCF: 0x0B)
+         Parameter Length: 22 (0x16)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Link Key: 0x2E95A8135CA3F466C26D7C63A0FCF53B
+         Aug 02 17:19:16.713  HCI Command  0b 04 16 af d2 06 2d 70 b0 3b f5 fc a0 63 7c 6d c2 66 f4 a3 5c 13 a8 95 2e
+         */
+        hostController.queue.append(.command(LinkControlCommand.linkKeyReply.opcode,
+                                             [0x0b, 0x04, 0x16, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x3b, 0xf5, 0xfc, 0xa0,
+                                              0x63, 0x7c, 0x6d, 0xc2, 0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e]))
+        
+        do {
+            /**
+             Parameter Length: 10 (0x0A)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x040B (OGF: 0x01    OCF: 0x0B) - [Link Control] Link Key Request Reply
+             Bluetooth Device Address: B0:70:2D:06:D2:AF
+             Aug 02 17:19:16.714  HCI Event  0e 0a 01 0b 04 00 af d2 06 2d 70 b0
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x0a)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x0b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        let linkKey = UInt128(littleEndian: UInt128(bytes: (0x3b, 0xf5, 0xfc, 0xa0, 0x63, 0x7c, 0x6d, 0xc2,
+                                                            0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e)))
+        
+        XCTAssertNoThrow(try hostController.linkKeyRequestReply(address: address, linkKey: linkKey))
     }
 }
 
