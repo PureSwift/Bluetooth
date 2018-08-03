@@ -200,6 +200,9 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             case let .command(testCommand) = firstMessage
             else { throw Error.invalidCommand }
         
+        print("testCommand.1", Data(testCommand.1).hexEncodedString())
+        print("commandData", commandData.hexEncodedString())
+        
         // validate command
         guard testCommand.0 == opcode,
             testCommand.1 == [UInt8](commandData) else {
@@ -365,5 +368,17 @@ extension Array {
         self.removeFirst()
         
         return first
+    }
+}
+
+extension Data {
+    struct HexEncodingOptions: OptionSet {
+        let rawValue: Int
+        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
+    }
+    
+    func hexEncodedString(options: HexEncodingOptions = []) -> String {
+        let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
+        return map { "0x" + String(format: format, $0) + ", " }.joined()
     }
 }
