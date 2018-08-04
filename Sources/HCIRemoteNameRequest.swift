@@ -8,6 +8,32 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// HCI Remote Name Request
+    ///
+    /// The Remote_Name_Request command is used to obtain the user-friendly name of another BR/EDR Controller. The user-friendly name is used to enable the user to distinguish one BR/EDR Controller from another. The BD_ADDR command parameter is used to identify the device for which the user-friendly name is to be obtained. The Page_Scan_Repetition_Mode parameter specifies the page scan repetition mode supported by the remote device with the BD_ADDR. This is the information that was acquired during the inquiry process. The Clock_Offset parameter is the difference between its own clock and the clock of the remote device with BD_ADDR. Only bits 2 through 16 of the difference are used and they are mapped to this parameter as bits 0 through 14 respectively. A Clock_Offset_Valid_Flag, located in bit 15 of the Clock_Offset command parameter, is used to indicate if the Clock Offset is valid or not.
+    ///
+    /// When the Remote Supported Host Features Notification event is unmasked and when the Remote_Name_Request command initiates a connection, the Link Manager shall read the remote LMP features mask pages 0 and 1.
+    ///
+    /// -  Note: If no connection exists between the local device and the device corresponding to the BD_ADDR, a temporary link layer connection will be estab- lished to obtain the LMP features and name of the remote device.
+    func remoteNameRequest(address: Address,
+                           pscanRepMode: PageScanRepetitionMode,
+                           clockOffset: HCIRemoteNameRequest.ClockOffset,
+                           timeout: HCICommandTimeout = .default) throws -> HCIRemoteNameRequestComplete {
+        
+        let remoteNameRequest = HCIRemoteNameRequest(address: address,
+                                                     pscanRepMode: pscanRepMode,
+                                                     clockOffset: clockOffset)
+        
+        return try deviceRequest(remoteNameRequest, HCIRemoteNameRequestComplete.self, timeout: timeout)
+    }
+}
+
+// MARK: - Command
+
 /// HCI Remote Name Request
 ///
 /// The Remote_Name_Request command is used to obtain the user-friendly name of another BR/EDR Controller. The user-friendly name is used to enable the user to distinguish one BR/EDR Controller from another. The BD_ADDR command parameter is used to identify the device for which the user-friendly name is to be obtained. The Page_Scan_Repetition_Mode parameter specifies the page scan repetition mode supported by the remote device with the BD_ADDR. This is the information that was acquired during the inquiry process. The Clock_Offset parameter is the difference between its own clock and the clock of the remote device with BD_ADDR. Only bits 2 through 16 of the difference are used and they are mapped to this parameter as bits 0 through 14 respectively. A Clock_Offset_Valid_Flag, located in bit 15 of the Clock_Offset command parameter, is used to indicate if the Clock Offset is valid or not.
@@ -48,14 +74,12 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
         
         self.address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
         
-        guard let pscanRepMode = PageScanRepetitionMode(rawValue: data[6])
-            else { return nil }
+        self.pscanRepMode = PageScanRepetitionMode(rawValue: data[6])
         
         guard let reserved = Reserved(rawValue: data[7])
             else { return nil }
         
         self.reserved = reserved
-        self.pscanRepMode = pscanRepMode
         self.reserved = reserved
         self.clockOffset = ClockOffset(rawValue: UInt16(littleEndian: UInt16(bytes: (data[8], data[9]))))
     }

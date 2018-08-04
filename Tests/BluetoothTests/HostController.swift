@@ -297,12 +297,12 @@ internal final class TestHostController: BluetoothHostControllerInterface {
                             else { fatalError("HCI Command 'RemoteNameRequest' was sent, but the event parameter data does not correspond to 'RemoteNameRequestParameter'") }
                         
                         // must be different, for some reason
-                        guard commandParameter.address != parameter.address else { continue }
+                        guard commandParameter.address == parameter.address else { continue }
                     }
                     
                     // success!
                     //try done()
-                    let dataLength = min(eventData.count - 1, eventParameterLength)
+                    let dataLength = min(eventData.count, eventParameterLength)
                     return Data(eventData.suffix(dataLength))
                     
                 case .lowEnergyMeta:

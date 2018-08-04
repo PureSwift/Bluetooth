@@ -66,16 +66,15 @@ extension HCIInquiryResult {
             
             let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
             
-            guard let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: data[6])
-                else { return nil }
+            self.address = address
+            
+            self.pageScanRepetitionMode = PageScanRepetitionMode(rawValue: data[6])
             
             guard let classOfDevice = ClassOfDevice(data: data.subdata(in: Range<Int>(9 ... 11)))
                 else { return nil }
             
             let clockOffset = ClockOffset(rawValue: UInt16(littleEndian: UInt16(bytes: (data[12], data[13]))))
             
-            self.address = address
-            self.pageScanRepetitionMode = pageScanRepetitionMode
             self.clockOffset = clockOffset
             self.classOfDevice = classOfDevice
         }
