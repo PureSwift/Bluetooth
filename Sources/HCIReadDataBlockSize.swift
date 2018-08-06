@@ -8,6 +8,22 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// Read Data Block Size
+    ///
+    /// The Read_Data_Block_Size command is used to read values regarding the maximum permitted data transfers over the Controller and the data buffering available in the Controller.
+    /// The Host uses this information when fragmenting data for transmission, and when performing block-based flow control, based on the Number Of Completed Data Blocks event. The Read_Data_Block_Size command shall be issued by the Host before it sends any data to the Controller.
+    func readDataBlockSize(timeout: HCICommandTimeout = .default) throws -> HCIReadDataBlockSizeReturn {
+        
+        return try deviceRequest(HCIReadDataBlockSizeReturn.self, timeout: timeout)
+    }
+}
+
+// MARK: - Return Parameter
+
 /// Read Data Block Size
 ///
 /// The Read_Data_Block_Size command is used to read values regarding the maximum permitted data transfers over the Controller and the data buffering available in the Controller.
