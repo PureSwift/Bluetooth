@@ -1682,11 +1682,45 @@ final class HCITests: XCTestCase {
          Total Number of Data Blocks: 64843 (0xFD4B)
          Aug 06 10:44:06.657  HCI Event  0e 04 01 0a 10 01
          */
-        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x0a, 0x10, 0x01]))
+        hostController.queue.append(.event([0x0e, 0x04, 0x00, 0x0a, 0x10, 0x01]))
+    }
+    
+    func testSetConnectionencryption() {
         
-        var readData: HCIReadDataBlockSizeReturn?
+        let hostController = TestHostController()
         
-        XCTAssertNoThrow(readData = try hostController.readDataBlockSize())
+        /**
+         Aug 06 16:15:52.560  HCI Command      0x000D  00:00:00:00:00:00  [0413] Set Connection Encryption - 0x01 - Connection Handle: 0x000D
+         [0413] Opcode: 0x0413 (OGF: 0x01    OCF: 0x13)
+         Parameter Length: 3 (0x03)
+         Connection Handle: 0x000D
+         Encryption: 0x01
+         Aug 06 16:15:52.560  HCI Command  13 04 03 0d 00 01
+        */
+        hostController.queue.append(.command(LinkControlCommand.setConnectionEncryption.opcode,
+                                             [0x13, 0x04, 0x03, 0x0d, 0x00, 0x01]))
+        
+        /**
+         Aug 06 16:15:52.561  HCI Event  0x0000  Command Status - Set Connection Encryption
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0413 (OGF: 0x01    OCF: 0x13) - [Link Control] Set Connection Encryption
+         Aug 06 16:15:52.561  HCI Event  0f 04 00 01 13 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x13, 0x04]))
+        
+        /**
+         Aug 06 16:15:52.577  HCI Event  0x000D  00:00:00:00:00:00  Encryption Change Complete - Encryption Enabled
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Encryption Enable: 0x01
+         Aug 06 16:15:52.577  HCI Event  0x0000 08 04 00 0d 00 01
+        */
+        hostController.queue.append(.event([0x08, 0x04, 0x00, 0x0d, 0x00, 0x01]))
+        
+        XCTAssertNoThrow(try hostController.setConnectionEncryption(handle: 0x000D, encryption: .enable))
     }
 }
 
