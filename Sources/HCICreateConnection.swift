@@ -20,7 +20,7 @@ public extension BluetoothHostControllerInterface {
                           pageScanRepetitionMode: PageScanRepetitionMode,
                           clockOffset: BitMaskOptionSet<HCICreateConnection.ClockOffset>,
                           allowRoleSwitch: HCICreateConnection.AllowRoleSwitch,
-                          timeout: HCICommandTimeout = .default) throws {
+                          timeout: HCICommandTimeout = .default) throws -> HCIConnectionComplete {
         
         let createConnection = HCICreateConnection(address: address,
                                                    packetType: packetType,
@@ -28,15 +28,7 @@ public extension BluetoothHostControllerInterface {
                                                    clockOffset: clockOffset,
                                                    allowRoleSwitch: allowRoleSwitch)
         
-        let commandStatus = try deviceRequest(createConnection, HCICommandStatus.self, timeout: timeout)
-        
-        switch commandStatus.status {
-        case let .error(error):
-            throw error
-            
-        case .success:
-            break
-        }
+        return try deviceRequest(createConnection, HCIConnectionComplete.self, timeout: timeout)
     }
 }
 

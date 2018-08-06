@@ -44,7 +44,8 @@ final class HCITests: XCTestCase {
         ("testConnectionComplete", testConnectionComplete),
         ("testAcceptConnectionRequest", testAcceptConnectionRequest),
         ("testLinkKeyRequestReply", testLinkKeyRequestReply),
-        ("testLinkKeyRequest", testLinkKeyRequest)
+        ("testLinkKeyRequest", testLinkKeyRequest),
+        ("testReadDataBlockSize", testReadDataBlockSize)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -1656,6 +1657,36 @@ final class HCITests: XCTestCase {
             else { XCTFail("Could not parse"); return }
         
         XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF"))
+    }
+    
+    func testReadDataBlockSize() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 10:44:06.657  HCI Command      0x0000                     [100A] Read Data Block Size
+         [100A] Opcode: 0x100A (OGF: 0x04    OCF: 0x0A)
+         Parameter Length: 0 (0x00)
+         Aug 06 10:44:06.657  HCI Command  0a 10 00
+        */
+        hostController.queue.append(.command(InformationalCommand.readDataBlockSize.opcode,
+                                             [0x0a, 0x10, 0x00]))
+        
+        /**
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x100A (OGF: 0x04    OCF: 0x0A) - [Informational] Read Data Block Size
+         Max ACL Data Packet Length: 4096 (0x1000)
+         Max ACL Data Block Length: 22 (0x16)
+         Total Number of Data Blocks: 64843 (0xFD4B)
+         Aug 06 10:44:06.657  HCI Event  0e 04 01 0a 10 01
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x0a, 0x10, 0x01]))
+        
+        var readData: HCIReadDataBlockSizeReturn?
+        
+        XCTAssertNoThrow(readData = try hostController.readDataBlockSize())
     }
 }
 
