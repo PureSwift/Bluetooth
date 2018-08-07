@@ -1763,10 +1763,9 @@ final class HCITests: XCTestCase {
         let value = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
         let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
         
-        var readRemoteFeatures: HCIReadRemoteSupportedFeaturesComplete?
-        XCTAssertNoThrow(readRemoteFeatures = try hostController.readRemoteSupportedFeatures(handle: 0x000D))
-        XCTAssertEqual(readRemoteFeatures?.handle, 0x000D)
-        XCTAssertEqual(readRemoteFeatures?.lmpFeatures, features)
+        var lmpFeatures: BitMaskOptionSet<LMPFeature>?
+        XCTAssertNoThrow(lmpFeatures = try hostController.readRemoteSupportedFeatures(handle: 0x000D))
+        XCTAssertEqual(lmpFeatures, features)        
     }
 }
 

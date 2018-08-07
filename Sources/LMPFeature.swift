@@ -204,12 +204,13 @@ public enum LMPFeature: UInt64, BitMaskOption {
         .enhancedDataRateACL3mbpsMode,
         .enhancedInquiryScan,
         .interlacedInquiryScan,
+        .interlacedPageScan,
         .rssiWithInquiryResults,
         .ev3Packets,
         .ev4Packets,
         .ev5Packets,
         .afhCapableSlave,
-        .afhClassificationMaster,
+        .afhClassificationSlave,
         .brEdrNotSupported,
         .leSupported,
         .slot3EnhancedDataRateACLPackets,
@@ -232,4 +233,67 @@ public enum LMPFeature: UInt64, BitMaskOption {
         .enhancedPowerControl,
         .extendedFeatures
     ]
+}
+
+public extension LMPFeature {
+    
+    public var name: String {
+        
+        switch self {
+        case .slotPackets3: return "3 slot packets"
+        case .slotPackets5: return "5 slot packets"
+        case .encryption: return "Encryption"
+        case .slotOffset: return "Slot offset"
+        case .timingAccuracy: return "Timing accuracy"
+        case .roleSwitch: return "Role switch"
+        case .holdMode: return "Hold mode"
+        case .sniffMode: return "Sniff mode"
+        case .parkState: return "Park state"
+        case .powerControlRequests: return "Power control requests"
+        case .channelQualityDrivenDataRate: return "Channel quality driven data rate (CQDDR)"
+        case .scoLink: return "SCO link"
+        case .hv2Packets: return "HV2 packets"
+        case .hv3Packets: return "HV3 packets"
+        case .uLawLogSynchronousData: return "u-law log synchronous data"
+        case .aLawLogSynchronousData: return "A-law log synchronous data"
+        case .csvdSynchronousData: return "CVSD synchronous data"
+        case .pagingParameterNegotiation: return "Paging parameter negotiation"
+        case .powerControl: return "Power control"
+        case .transparentSynchronousData: return "Transparent synchronous data"
+        case .flowControlLag: return "Flow control lag"
+        case .broadcastEncryption: return "Broadcast Encryption"
+        case .enhancedDataRateACL2mbpsMode: return "Enhanced Data Rate ACL 2 Mbps mode"
+        case .enhancedDataRateACL3mbpsMode: return "Enhanced Data Rate ACL 3 Mbps mode"
+        case .enhancedInquiryScan: return "Enhanced inquiry scan"
+        case .interlacedInquiryScan: return "Interlaced inquiry scan"
+        case .interlacedPageScan: return "Interlaced page scan"
+        case .rssiWithInquiryResults: return "RSSI with inquiry results"
+        case .ev3Packets: return "Extended SCO link (EV3 packets)"
+        case .ev4Packets: return "EV4 packets"
+        case .ev5Packets: return "EV5 packets"
+        case .afhCapableSlave: return "AFH capable slave"
+        case .afhClassificationSlave: return "AFH classification slave"
+        case .brEdrNotSupported: return "BR/EDR Not Supported"
+        case .leSupported: return "LE Supported (Controller)"
+        case .slot3EnhancedDataRateACLPackets: return "3-slot Enhanced Data Rate ACL packets"
+        case .slot5EnhancedDataRateACLPackets: return "5-slot Enhanced Data Rate ACL packets"
+        case .sniffSubrating: return "Sniff subrating"
+        case .pauseEncryption: return "Pause encryption"
+        case .afhCapableMaster: return "AFH capable master"
+        case .afhClassificationMaster: return "AFH classification master"
+        case .enhancedDataRateeSCO2mbpsMode: return "Enhanced Data Rate eSCO 2 Mbps mode"
+        case .enhancedDataRateeSCO3mbpsMode: return "Enhanced Data Rate eSCO 3 Mbps mode"
+        case .slot3EnhancedDataRateeSCOPackets: return "3-slot Enhanced Data Rate eSCO packets"
+        case .extendedInquiryResponse: return "Extended Inquiry Response"
+        case .simultanousLEandBREDR: return "Simultaneous LE and BR/EDR to Same Device Capa- ble (Controller)"
+        case .secureSimplePairing: return "Secure Simple Pairing"
+        case .encapsulatedPDU: return "Encapsulated PDU"
+        case .erroneousDataReporting: return "Erroneous Data Reporting"
+        case .nonFlushablePacketBoundaryFlag: return "Non-flushable Packet Boundary Flag"
+        case .linkSupervisionTimeoutChangedEvent: return "Link Supervision Timeout Changed Event"
+        case .inquiryTXPowerLevel: return "Inquiry TX Power Level"
+        case .enhancedPowerControl: return "Enhanced Power Control"
+        case .extendedFeatures: return "Extended features"
+        }
+    }
 }
