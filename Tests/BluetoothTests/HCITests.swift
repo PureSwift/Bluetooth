@@ -45,7 +45,9 @@ final class HCITests: XCTestCase {
         ("testAcceptConnectionRequest", testAcceptConnectionRequest),
         ("testLinkKeyRequestReply", testLinkKeyRequestReply),
         ("testLinkKeyRequest", testLinkKeyRequest),
-        ("testReadDataBlockSize", testReadDataBlockSize)
+        ("testReadDataBlockSize", testReadDataBlockSize),
+        ("testSetConnectionencryption", testSetConnectionencryption),
+        ("testReadRemoteSupportedFeatures", testReadRemoteSupportedFeatures)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -1721,6 +1723,50 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x08, 0x04, 0x00, 0x0d, 0x00, 0x01]))
         
         XCTAssertNoThrow(try hostController.setConnectionEncryption(handle: 0x000D, encryption: .enable))
+    }
+    
+    func testReadRemoteSupportedFeatures() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:32.896  HCI Command      0x000D  Carlos Duclos’s M  [041B] Read Remote Supported Features - Connection Handle: 0x000D
+         [041B] Opcode: 0x041B (OGF: 0x01    OCF: 0x1B)
+         Parameter Length: 2 (0x02)
+         Connection Handle: 0x000D
+         Aug 06 19:30:32.896  HCI Command  1b 04 02 0d 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.readRemoteFeatures.opcode,
+                                             [0x1b, 0x04, 0x02, 0x0d, 0x00]))
+        
+        /**
+         Aug 06 19:30:32.896  HCI Event     0x0000    Command Status - Read Remote Supported Features
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x041B (OGF: 0x01    OCF: 0x1B) - [Link Control] Read Remote Supported Features
+         Aug 06 19:30:32.896  HCI Event   0f 04 00 01 1b 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x1b, 0x04]))
+        
+        /**
+         Aug 06 19:30:32.896  HCI Event        0x000D  Carlos Duclos’s M  Read Remote Supported Features Complete
+         Parameter Length: 11 (0x0B)
+         Status: 0x00 - Success
+         Connection Handle: 0x0D
+         LMP Features: BD 02 04 38 08 00 00 00
+         Aug 06 19:30:32.896  HCI Event        0x0000   0b 0b 00 0d 00 bd 02 04 38 08 00 00 00
+         */
+        hostController.queue.append(.event([0x0b, 0x0b, 0x00, 0x0d, 0x00, 0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00]))
+        
+        let data = Data([0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00])
+        let value = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
+        let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
+        
+        var readRemoteFeatures: HCIReadRemoteSupportedFeaturesComplete?
+        XCTAssertNoThrow(readRemoteFeatures = try hostController.readRemoteSupportedFeatures(handle: 0x000D))
+        XCTAssertEqual(readRemoteFeatures?.handle, 0x000D)
+        XCTAssertEqual(readRemoteFeatures?.lmpFeatures, features)
     }
 }
 
