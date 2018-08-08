@@ -1768,6 +1768,18 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(lmpFeatures, features)
     }
     
+    func testReadRemoteExtendedFeatures() {
+        
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.readRemoteExtendedFeatures.opcode,
+                                             [0x1c, 0x04, 0x03, 0x0d, 0x00, 0x01]))
+     
+        hostController.queue.append(.event([0x23, 0x0D, 0x00, 0x0c, 0x00, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.readRemoteExtendedFeatures(handle: 0x000D, pageNumber: 01))
+    }
+    
     func testReadRemoteVersionInformation() {
         
         let hostController = TestHostController()
