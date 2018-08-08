@@ -21,7 +21,7 @@ public struct HCIReadRemoteSupportedFeaturesComplete: HCIEventParameter {
     
     public let handle: UInt16
     
-    public let lmpFeatures: BitMaskOptionSet<LMPFeature>
+    public let features: BitMaskOptionSet<LMPFeature>
     
     public init?(data: Data) {
         
@@ -33,12 +33,12 @@ public struct HCIReadRemoteSupportedFeaturesComplete: HCIEventParameter {
         
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        let lmpFeaturesValue = UInt64(littleEndian: UInt64(bytes: (data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])))
+        let featuresValue = UInt64(littleEndian: UInt64(bytes: (data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])))
         
-        let lmpFeatures = BitMaskOptionSet<LMPFeature>(rawValue: lmpFeaturesValue)
+        let features = BitMaskOptionSet<LMPFeature>(rawValue: featuresValue)
         
         self.status = status
         self.handle = handle
-        self.lmpFeatures = lmpFeatures
+        self.features = features
     }
 }

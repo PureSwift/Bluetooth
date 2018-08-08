@@ -22,7 +22,7 @@ public extension BluetoothHostControllerInterface {
         
         return try deviceRequest(readRemoteSupportedFeatures,
                                  HCIReadRemoteSupportedFeaturesComplete.self,
-                                 timeout: timeout).lmpFeatures
+                                 timeout: timeout).features
     }
 }
 
