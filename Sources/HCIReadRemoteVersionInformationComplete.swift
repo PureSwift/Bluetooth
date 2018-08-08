@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// Read Remote Extended Features Complete Event
+///
+/// The Read Remote Extended Features Complete event is used to indicate the completion of the process of the Link Manager obtaining the remote extended LMP features of the remote device specified by the Connection_Handle event parameter. The Connection_Handle will be a Connection_Handle for an ACL connection. The event parameters include a page of the remote devices extended LMP features.
 public struct HCIReadRemoteVersionInformationComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.readRemoteVersionInformationCompleteEvent
