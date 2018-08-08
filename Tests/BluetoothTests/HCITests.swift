@@ -1765,7 +1765,50 @@ final class HCITests: XCTestCase {
         
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
         XCTAssertNoThrow(lmpFeatures = try hostController.readRemoteSupportedFeatures(handle: 0x000D))
-        XCTAssertEqual(lmpFeatures, features)        
+        XCTAssertEqual(lmpFeatures, features)
+    }
+    
+    func testReadRemoteVersionInformation() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:32.895  HCI Command      0x000D  Carlos Duclos’s M  [041D] Read Remote Version Information - Connection Handle: 0x000D
+         [041D] Opcode: 0x041D (OGF: 0x01    OCF: 0x1D)
+         Parameter Length: 2 (0x02)
+         Connection Handle: 0x000D
+         Aug 06 19:30:32.895  HCI Command      0x0000  1d 04 02 0d 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.readRemoteVersion.opcode,
+                                             [0x1d, 0x04, 0x02, 0x0d, 0x00]))
+        
+        /**
+         Aug 06 19:30:32.895  HCI Event  0x0000   Command Status - Read Remote Version Information
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x041D (OGF: 0x01    OCF: 0x1D) - [Link Control] Read Remote Version Information
+         Aug 06 19:30:32.895  HCI Event   0x0000   0f 04 00 01 1d 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x1d, 0x04]))
+        
+        /**
+         Aug 06 19:30:32.895  HCI Event        0x000D  Carlos Duclos’s M  Read Remote Version Information Complete
+         Parameter Length: 8 (0x08)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         LMP Version: 0x03
+         Manufacturer Name: 0x004C (Undecoded)
+         LMP SubVersion: 0x031C
+         Aug 06 19:30:32.895  HCI Event   0x0000   0c 08 00 0d 00 03 4c 00 1c 03
+         */
+        hostController.queue.append(.event([0x0c, 0x08, 0x00, 0x0d, 0x00, 0x03, 0x4c, 0x00, 0x1c, 0x03]))
+        
+        var versionInformation: HCIReadRemoteVersionInformationComplete?
+        XCTAssertNoThrow(versionInformation = try hostController.readRemoteVersionInformation(handle: 0x000D))
+        XCTAssertEqual(versionInformation?.version, 0x03)
+        XCTAssertEqual(versionInformation?.companyId, 0x004c)
+        XCTAssertEqual(versionInformation?.subversion, 0x031c)
     }
 }
 
