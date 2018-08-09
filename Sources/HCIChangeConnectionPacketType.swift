@@ -8,13 +8,34 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// Change Connection Packet Type Command
+    ///
+    /// The Change_Connection_Packet_Type command is used to change which packet types can be used for a connection that is currently established. This allows current connections to be dynamically modified to support different types of user data. The Packet_Type command parameter specifies which packet types the Link Manager can use for the connection. When sending HCI ACL Data Packets the Link Manager shall only use the packet type(s) specified by the Packet_Type command parameter or the always-allowed DM1 packet type. The interpretation of the value for the Packet_Type command parameter will depend on the Link_Type command parameter returned in the Connection Complete event at the connection setup. Multiple packet types may be speci- fied for the Packet_Type command parameter by bitwise OR operation of the different packet types. For a definition of the different packet types see the Part B, Baseband Specification on page 59.
+    func changeConnectionPacketType(handle: UInt16,
+                                    packetType: PacketType,
+                                    timeout: HCICommandTimeout = .default) throws -> HCIStatus {
+        
+        let command = HCIChangeConnectionPacketType(handle: handle, packetType: packetType)
+        
+        return try deviceRequest(command,
+                                 HCIAuthenticationComplete.self,
+                                 timeout: timeout).status
+    }
+}
+
 // MARK: - Command
 
-/// Authentication Requested Command
+/// Change Connection Packet Type Command
 ///
-/// The Authentication_Requested command is used to try to authenticate the remote device associated with the specified Connection_Handle. On an authentication failure, the BR/EDR Controller or Link Manager shall not auto- matically detach the link. The Host is responsible for issuing a Disconnect com- mand to terminate the link if the action is appropriate.
+/// The Change_Connection_Packet_Type command is used to change which packet types can be used for a connection that is currently established. This allows current connections to be dynamically modified to support different types of user data. The Packet_Type command parameter specifies which packet types the Link Manager can use for the connection. When sending HCI ACL Data Packets the Link Manager shall only use the packet type(s) specified by the Packet_Type command parameter or the always-allowed DM1 packet type. The interpretation of the value for the Packet_Type command parameter will depend on the Link_Type command parameter returned in the Connection Complete event at the connection setup. Multiple packet types may be speci- fied for the Packet_Type command parameter by bitwise OR operation of the different packet types. For a definition of the different packet types see the Part B, Baseband Specification on page 59.
 ///
-/// - Note: The Connection_Handle command parameter is used to identify the other BR/EDR Controller, which forms the connection. The Connection_Handle should be a Connection_Handle for an ACL connection.
+/// - Note: The Host should enable as many packet types as possible for the Link Manager to perform efficiently. However, the Host must not enable packet types that the local device does not support.
+///
+/// - Note: To change an eSCO connection, use the Setup Synchronous Connection command.
 public struct HCIChangeConnectionPacketType: HCICommandParameter {
     
     public static let command = LinkControlCommand.setConnectionPacketType

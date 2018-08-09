@@ -12,9 +12,11 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    /// Read LMP Handle Command
+    /// Authentication Requested Command
     ///
-    /// This command reads the current LMP Handle associated with the Connection_Handle. The Connection_Handle shall be a SCO or eSCO Handle. If the Connection_Handle is a SCO Connection_Handle, then this command shall read the LMP SCO Handle for this connection. If the Connection_Handle is an eSCO Connection_Handle, then this command shall read the LMP eSCO Handle for this connection.
+    /// The Authentication_Requested command is used to try to authenticate the remote device associated with the specified Connection_Handle. On an authentication failure, the BR/EDR Controller or Link Manager shall not auto- matically detach the link. The Host is responsible for issuing a Disconnect com- mand to terminate the link if the action is appropriate.
+    ///
+    /// - Note: The Connection_Handle command parameter is used to identify the other BR/EDR Controller, which forms the connection. The Connection_Handle should be a Connection_Handle for an ACL connection.
     func authenticationRequested(handle: UInt16,
                                  timeout: HCICommandTimeout = .default) throws -> HCIStatus {
         

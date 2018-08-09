@@ -50,7 +50,8 @@ final class HCITests: XCTestCase {
         ("testReadRemoteSupportedFeatures", testReadRemoteSupportedFeatures),
         ("testReadRemoteExtendedFeatures", testReadRemoteExtendedFeatures),
         ("testReadRemoteVersionInformation", testReadRemoteVersionInformation),
-        ("testAuthenticationRequested", testAuthenticationRequested)
+        ("testAuthenticationRequested", testAuthenticationRequested),
+        ("testChangeConnectionPacketType", testChangeConnectionPacketType)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -1860,6 +1861,35 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x06, 0x03, 0x00, 0x0d, 0x00]))
         
         XCTAssertNoThrow(try hostController.authenticationRequested(handle: 0x000D))
+    }
+    
+    func testChangeConnectionPacketType() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:32.896  HCI Command      0x000D  Carlos Duclos’s M  [040F] Change Connection Packet Type - Connection Handle: 0x000D
+         [040F] Opcode: 0x040F (OGF: 0x01    OCF: 0x0F)
+         Parameter Length: 4 (0x04)
+         Connection Handle: 0x000D
+         Packet Type: 0xCC18
+         Aug 06 19:30:32.896  HCI Command    0x0000   0f 04 04 0d 00 18 cc                        .......
+        */
+        hostController.queue.append(.command(LinkControlCommand.authenticationRequested.opcode,
+                                             [0x0f, 0x04, 0x04, 0x0d, 0x00, 0x18, 0xcc]))
+        
+        /**
+         Aug 06 19:30:32.896  HCI Event        0x0000                     Command Status - Change Connection Packet Type
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x040F (OGF: 0x01    OCF: 0x0F) - [Link Control] Change Connection Packet Type
+         Aug 06 19:30:32.896  HCI Event    0x0000    0f 04 00 01 0f 04                           ......
+        */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x0f, 0x04]))
+        
+        let packetType: PacketType = .acl(BitMaskOptionSet<ACLPacketType>(rawValue: 0xcc18))
+        XCTAssertThrowsError(try hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType))
     }
 }
 
