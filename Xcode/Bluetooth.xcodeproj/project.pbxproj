@@ -325,6 +325,14 @@
 		35411FA0211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411F9E211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift */; };
 		35411FA1211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411F9E211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift */; };
 		35411FA2211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411F9E211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift */; };
+		35411FA4211BB4290055B09B /* HCIReadClockOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA3211BB4290055B09B /* HCIReadClockOffset.swift */; };
+		35411FA5211BB4290055B09B /* HCIReadClockOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA3211BB4290055B09B /* HCIReadClockOffset.swift */; };
+		35411FA6211BB4290055B09B /* HCIReadClockOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA3211BB4290055B09B /* HCIReadClockOffset.swift */; };
+		35411FA7211BB4290055B09B /* HCIReadClockOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA3211BB4290055B09B /* HCIReadClockOffset.swift */; };
+		35411FA9211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA8211BB4C80055B09B /* HCIReadClockOffsetComplete.swift */; };
+		35411FAA211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA8211BB4C80055B09B /* HCIReadClockOffsetComplete.swift */; };
+		35411FAB211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA8211BB4C80055B09B /* HCIReadClockOffsetComplete.swift */; };
+		35411FAC211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35411FA8211BB4C80055B09B /* HCIReadClockOffsetComplete.swift */; };
 		354FB03B20DC49BC0081B964 /* GATTSystemID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FB03A20DC49BC0081B964 /* GATTSystemID.swift */; };
 		354FB03C20DC49BC0081B964 /* GATTSystemID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FB03A20DC49BC0081B964 /* GATTSystemID.swift */; };
 		354FB03D20DC49BC0081B964 /* GATTSystemID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FB03A20DC49BC0081B964 /* GATTSystemID.swift */; };
@@ -1701,6 +1709,8 @@
 		3540AE5F210928E5001F1C24 /* HCIInquiryCancel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIInquiryCancel.swift; sourceTree = "<group>"; };
 		35411F99211B3DF10055B09B /* HCIReadRemoteExtendedFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadRemoteExtendedFeatures.swift; sourceTree = "<group>"; };
 		35411F9E211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadRemoteExtendedFeaturesComplete.swift; sourceTree = "<group>"; };
+		35411FA3211BB4290055B09B /* HCIReadClockOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadClockOffset.swift; sourceTree = "<group>"; };
+		35411FA8211BB4C80055B09B /* HCIReadClockOffsetComplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadClockOffsetComplete.swift; sourceTree = "<group>"; };
 		354FB03A20DC49BC0081B964 /* GATTSystemID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTSystemID.swift; sourceTree = "<group>"; };
 		355BC1F920D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILESetAdvertisingParameters.swift; sourceTree = "<group>"; };
 		355BC1FE20D2C31F001A07D3 /* HCILESetAdvertisingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILESetAdvertisingData.swift; sourceTree = "<group>"; };
@@ -2441,6 +2451,7 @@
 				35C5CFDC2119239400B65BE8 /* HCIReadRemoteSupportedFeatures.swift */,
 				35411F99211B3DF10055B09B /* HCIReadRemoteExtendedFeatures.swift */,
 				35C5CFED211A8DCC00B65BE8 /* HCIReadRemoteVersionInformation.swift */,
+				35411FA3211BB4290055B09B /* HCIReadClockOffset.swift */,
 			);
 			name = "Link Control";
 			sourceTree = "<group>";
@@ -2696,6 +2707,7 @@
 				35C5CFE1211924D200B65BE8 /* HCIReadRemoteFeaturesComplete.swift */,
 				35411F9E211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift */,
 				35C5CFF2211A945C00B65BE8 /* HCIReadRemoteVersionInformationComplete.swift */,
+				35411FA8211BB4C80055B09B /* HCIReadClockOffsetComplete.swift */,
 				6EFB3DE020D2E66500364CA0 /* Low Energy */,
 			);
 			name = Event;
@@ -3057,9 +3069,11 @@
 				355BC1FD20D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift in Sources */,
 				6E49B23E20532D45002EA5DC /* HCIEvent.swift in Sources */,
 				356EB92520D4424D0022A48D /* HCILEPeriodicAdvertisingSyncLost.swift in Sources */,
+				35411FAC211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */,
 				6E740C5220657F46006589F6 /* TestingCommand.swift in Sources */,
 				355BC29320D2ED8C001A07D3 /* HCILESetDefaultPhy.swift in Sources */,
 				3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */,
+				35411FA7211BB4290055B09B /* HCIReadClockOffset.swift in Sources */,
 				3579FC0F211359AC0058026D /* HCIAuthenticationComplete.swift in Sources */,
 				3518294320D223810009F82D /* GATTAge.swift in Sources */,
 				6E60A323206979CF00E42351 /* iBeacon.swift in Sources */,
@@ -3452,9 +3466,11 @@
 				355BC1FC20D2C2EA001A07D3 /* HCILESetAdvertisingParameters.swift in Sources */,
 				6EB2EA041CD5A8A7000CF975 /* HCIEvent.swift in Sources */,
 				356EB92420D4424D0022A48D /* HCILEPeriodicAdvertisingSyncLost.swift in Sources */,
+				35411FAB211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */,
 				6E740C5120657F46006589F6 /* TestingCommand.swift in Sources */,
 				355BC29220D2ED8C001A07D3 /* HCILESetDefaultPhy.swift in Sources */,
 				3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */,
+				35411FA6211BB4290055B09B /* HCIReadClockOffset.swift in Sources */,
 				3579FC0E211359AC0058026D /* HCIAuthenticationComplete.swift in Sources */,
 				3518294220D223810009F82D /* GATTAge.swift in Sources */,
 				6E60A322206979CF00E42351 /* iBeacon.swift in Sources */,
@@ -3922,6 +3938,7 @@
 				6E6AAE2620D2594C00DDE1CA /* ATTSignedWriteCommand.swift in Sources */,
 				35A0522620EEFD91008A084F /* GATTTimeZone.swift in Sources */,
 				6E6AADEA20D244CC00DDE1CA /* GATTCharacteristicFormatType.swift in Sources */,
+				35411FA9211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */,
 				356EB8B920D4185B0022A48D /* HCILEReadAdvertisingChannelTxPower.swift in Sources */,
 				6EFB3E0020D2EE7700364CA0 /* HCILEConnectionComplete.swift in Sources */,
 				6EE84DED1CAF881B00A40C4D /* ATTProtocolDataUnit.swift in Sources */,
@@ -4017,6 +4034,7 @@
 				6E6AADE520D22CAB00DDE1CA /* ATTReadByTypeResponse.swift in Sources */,
 				355BC26320D2D2FA001A07D3 /* HCILEWriteSuggestedDefaultDataLength.swift in Sources */,
 				355BC2F420D3418A001A07D3 /* HCILEWriteRfPathCompensation.swift in Sources */,
+				35411FA4211BB4290055B09B /* HCIReadClockOffset.swift in Sources */,
 				35D8A3EB210F69FE0033E47A /* HCIInquiryResult.swift in Sources */,
 				6EB45EF02001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E6AADB020D21FD800DDE1CA /* HCILESetEventMask.swift in Sources */,
@@ -4279,9 +4297,11 @@
 				6EF45FA41CC6D04D001F7A39 /* HCIEvent.swift in Sources */,
 				356EB92320D4424D0022A48D /* HCILEPeriodicAdvertisingSyncLost.swift in Sources */,
 				6E740C5020657F46006589F6 /* TestingCommand.swift in Sources */,
+				35411FAA211BB4C80055B09B /* HCIReadClockOffsetComplete.swift in Sources */,
 				355BC29120D2ED8C001A07D3 /* HCILESetDefaultPhy.swift in Sources */,
 				3588AC1C20CD05AC00F9FA8C /* GAPData.swift in Sources */,
 				3518294120D223810009F82D /* GATTAge.swift in Sources */,
+				35411FA5211BB4290055B09B /* HCIReadClockOffset.swift in Sources */,
 				3579FC0D211359AC0058026D /* HCIAuthenticationComplete.swift in Sources */,
 				6E60A321206979CF00E42351 /* iBeacon.swift in Sources */,
 				6E353A4F20D80BBC00E94B73 /* RSSI.swift in Sources */,
