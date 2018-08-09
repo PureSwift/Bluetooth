@@ -95,49 +95,6 @@ public struct HCICreateConnection: HCICommandParameter {
 
 extension HCICreateConnection {
     
-    /// The Packet_Type command parameter specifies which packet types the Link Manager shall use for the ACL connection. When sending HCI ACL Data Packets the Link Manager shall only use the packet type(s) specified by the Packet_Type command parameter or the always-allowed DM1 packet type. Multiple packet types may be specified for the Packet Type parameter by performing a bit-wise OR operation of the different packet types. The Link Manager may choose which packet type to be used from the list of acceptable packet types.
-    public enum PacketType: UInt16 {
-        
-        /// 2-DH1 may not be used
-        case packet2DH1mayNotBeUsed = 0x0002
-        
-        /// 3-DH1 may not be used
-        case packet3DH1mayNotBeUsed = 0x0004
-        
-        /// DM1 may be used
-        case packetDM1mayBeUsed = 0x0008
-        
-        /// DH1 may be used
-        case packetDH1mayBeUsed = 0x0010
-        
-        /// 2-DH3 may not be used
-        case packet2DH3mayNotBeUsed = 0x0100
-        
-        /// 3-DH3 may not be used
-        case packet3DH3mayNotBeUsed = 0x0200
-        
-        /// DM3 may be used
-        case packetDM3mayBeUsed = 0x0400
-        
-        /// DH3 may be used
-        case packetDH3mayBeUsed = 0x0800
-        
-        /// 2-DH5 may not be used
-        case packet2DH5mayBeUsed = 0x1000
-        
-        /// 3-DH5 may not be used
-        case packet3DH5mayBeUsed = 0x2000
-        
-        /// DM5 may be used
-        case packetDM5mayBeUsed = 0x4000
-        
-        /// DH5 may be used
-        case packetDH5mayBeUsed = 0x8000
-    }
-}
-
-extension HCICreateConnection {
-    
     // Must be set to 0x00
     public enum Reserved: UInt8 {
         

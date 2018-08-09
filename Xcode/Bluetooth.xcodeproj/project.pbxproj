@@ -321,6 +321,14 @@
 		35403BD4211CAF02006A819A /* HCIAuthenticationRequested.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BD2211CAF02006A819A /* HCIAuthenticationRequested.swift */; };
 		35403BD5211CAF02006A819A /* HCIAuthenticationRequested.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BD2211CAF02006A819A /* HCIAuthenticationRequested.swift */; };
 		35403BD6211CAF02006A819A /* HCIAuthenticationRequested.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BD2211CAF02006A819A /* HCIAuthenticationRequested.swift */; };
+		35403BD8211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BD7211CD059006A819A /* HCIChangeConnectionPacketType.swift */; };
+		35403BD9211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BD7211CD059006A819A /* HCIChangeConnectionPacketType.swift */; };
+		35403BDA211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BD7211CD059006A819A /* HCIChangeConnectionPacketType.swift */; };
+		35403BDB211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BD7211CD059006A819A /* HCIChangeConnectionPacketType.swift */; };
+		35403BDD211CE483006A819A /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BDC211CE483006A819A /* PacketType.swift */; };
+		35403BDE211CE483006A819A /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BDC211CE483006A819A /* PacketType.swift */; };
+		35403BDF211CE483006A819A /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BDC211CE483006A819A /* PacketType.swift */; };
+		35403BE0211CE483006A819A /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35403BDC211CE483006A819A /* PacketType.swift */; };
 		3540AE60210928E5001F1C24 /* HCIInquiryCancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540AE5F210928E5001F1C24 /* HCIInquiryCancel.swift */; };
 		3540AE61210929E8001F1C24 /* HCIInquiryCancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540AE5F210928E5001F1C24 /* HCIInquiryCancel.swift */; };
 		3540AE62210929E9001F1C24 /* HCIInquiryCancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540AE5F210928E5001F1C24 /* HCIInquiryCancel.swift */; };
@@ -1716,6 +1724,8 @@
 		354030EA210A497E00FDA34C /* HCIDisconnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIDisconnect.swift; sourceTree = "<group>"; };
 		35403BCD211CA5CB006A819A /* HCIReadLMPHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadLMPHandle.swift; sourceTree = "<group>"; };
 		35403BD2211CAF02006A819A /* HCIAuthenticationRequested.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIAuthenticationRequested.swift; sourceTree = "<group>"; };
+		35403BD7211CD059006A819A /* HCIChangeConnectionPacketType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIChangeConnectionPacketType.swift; sourceTree = "<group>"; };
+		35403BDC211CE483006A819A /* PacketType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
 		3540AE5F210928E5001F1C24 /* HCIInquiryCancel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIInquiryCancel.swift; sourceTree = "<group>"; };
 		35411F99211B3DF10055B09B /* HCIReadRemoteExtendedFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadRemoteExtendedFeatures.swift; sourceTree = "<group>"; };
 		35411F9E211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadRemoteExtendedFeaturesComplete.swift; sourceTree = "<group>"; };
@@ -2464,6 +2474,7 @@
 				35411FA3211BB4290055B09B /* HCIReadClockOffset.swift */,
 				35403BCD211CA5CB006A819A /* HCIReadLMPHandle.swift */,
 				35403BD2211CAF02006A819A /* HCIAuthenticationRequested.swift */,
+				35403BD7211CD059006A819A /* HCIChangeConnectionPacketType.swift */,
 			);
 			name = "Link Control";
 			sourceTree = "<group>";
@@ -2671,6 +2682,7 @@
 				3580287820C8308E0096227B /* UnitIdentifier.swift */,
 				3580287D20C832870096227B /* UnitIdentifierExtension.swift */,
 				35C5CFE82119E84900B65BE8 /* LMPFeature.swift */,
+				35403BDC211CE483006A819A /* PacketType.swift */,
 				6E60A31E2069711600E42351 /* Attribute Protocol */,
 				6E1F937B20C24C720030367F /* GAP */,
 				6E7105B820CE21FF00D1E191 /* GATT */,
@@ -3139,6 +3151,7 @@
 				355BC2DE20D340E8001A07D3 /* HCILEExtendedCreateConnection.swift in Sources */,
 				6E49B24320532D45002EA5DC /* AdvertisingChannelHeader.swift in Sources */,
 				3518296620D22BCF0009F82D /* GAPCompleteListOf128BitServiceClassUUIDs.swift in Sources */,
+				35403BDB211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */,
 				35182A1020D22FC20009F82D /* GAP3DInformation.swift in Sources */,
 				6EFB3DA820D2DB9700364CA0 /* LowEnergyClockAccuracy.swift in Sources */,
 				351829AC20D22D6E0009F82D /* GAPListOf32BitServiceSolicitationUUIDs.swift in Sources */,
@@ -3369,6 +3382,7 @@
 				355BC20720D2C32A001A07D3 /* HCILESetScanResponseData.swift in Sources */,
 				6E65DF8F20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
 				356EB8D520D427730022A48D /* HCILEReadSupportedStates.swift in Sources */,
+				35403BE0211CE483006A819A /* PacketType.swift in Sources */,
 				356E6A132118D89400DE4DEE /* HCISetConnectionEncryption.swift in Sources */,
 				351829E320D22DE90009F82D /* GAPURI.swift in Sources */,
 				35193EA2211898A100C7C383 /* HCIReadDataBlockSize.swift in Sources */,
@@ -3538,6 +3552,7 @@
 				355BC2DD20D340E8001A07D3 /* HCILEExtendedCreateConnection.swift in Sources */,
 				6E572AD91FCE763F00CDC763 /* AdvertisingChannelHeader.swift in Sources */,
 				3518296520D22BCF0009F82D /* GAPCompleteListOf128BitServiceClassUUIDs.swift in Sources */,
+				35403BDA211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */,
 				35182A0F20D22FC20009F82D /* GAP3DInformation.swift in Sources */,
 				6EFB3DA720D2DB9700364CA0 /* LowEnergyClockAccuracy.swift in Sources */,
 				351829AB20D22D6E0009F82D /* GAPListOf32BitServiceSolicitationUUIDs.swift in Sources */,
@@ -3768,6 +3783,7 @@
 				355BC20620D2C32A001A07D3 /* HCILESetScanResponseData.swift in Sources */,
 				6E65DF8E20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
 				356EB8D420D427730022A48D /* HCILEReadSupportedStates.swift in Sources */,
+				35403BDF211CE483006A819A /* PacketType.swift in Sources */,
 				356E6A122118D89400DE4DEE /* HCISetConnectionEncryption.swift in Sources */,
 				351829E220D22DE90009F82D /* GAPURI.swift in Sources */,
 				35193EA1211898A100C7C383 /* HCIReadDataBlockSize.swift in Sources */,
@@ -3929,6 +3945,7 @@
 				6EFB3DFB20D2EC9A00364CA0 /* HCILowEnergyMetaEvent.swift in Sources */,
 				355BC2D620D33FA1001A07D3 /* HCILEReadPhy.swift in Sources */,
 				6EFB3D3520D2D46E00364CA0 /* LowEnergyTxChannel.swift in Sources */,
+				35403BDD211CE483006A819A /* PacketType.swift in Sources */,
 				355BC22720D2C376001A07D3 /* HCILEUpdateConnection.swift in Sources */,
 				355BC27220D2D316001A07D3 /* HCILERemoveDeviceFromResolvingList.swift in Sources */,
 				6E6AAE3F20D25A8300DDE1CA /* ATTHandleValueNotification.swift in Sources */,
@@ -4045,6 +4062,7 @@
 				3518292720D222CF0009F82D /* GATTAlertNotificationControlPoint.swift in Sources */,
 				6EAD976F20BF796200673DB7 /* DefinedCompanies.swift in Sources */,
 				35A0521C20EEE550008A084F /* GATTDayDateTime.swift in Sources */,
+				35403BD8211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */,
 				512F4B4C208A567A00576F34 /* UInt512.swift in Sources */,
 				6E704C7B1E95C34D00484A22 /* ByteValue.swift in Sources */,
 				35411F9F211B3FAF0055B09B /* HCIReadRemoteExtendedFeaturesComplete.swift in Sources */,
@@ -4373,6 +4391,7 @@
 				355BC2DC20D340E8001A07D3 /* HCILEExtendedCreateConnection.swift in Sources */,
 				6E572AD81FCE763E00CDC763 /* AdvertisingChannelHeader.swift in Sources */,
 				3518296420D22BCF0009F82D /* GAPCompleteListOf128BitServiceClassUUIDs.swift in Sources */,
+				35403BD9211CD059006A819A /* HCIChangeConnectionPacketType.swift in Sources */,
 				35182A0E20D22FC20009F82D /* GAP3DInformation.swift in Sources */,
 				6EFB3DA620D2DB9700364CA0 /* LowEnergyClockAccuracy.swift in Sources */,
 				351829AA20D22D6E0009F82D /* GAPListOf32BitServiceSolicitationUUIDs.swift in Sources */,
@@ -4603,6 +4622,7 @@
 				355BC20520D2C32A001A07D3 /* HCILESetScanResponseData.swift in Sources */,
 				6E65DF8D20755CCD005BD2A0 /* ByteSwap.swift in Sources */,
 				356EB8D320D427730022A48D /* HCILEReadSupportedStates.swift in Sources */,
+				35403BDE211CE483006A819A /* PacketType.swift in Sources */,
 				356E6A112118D89400DE4DEE /* HCISetConnectionEncryption.swift in Sources */,
 				351829E120D22DE90009F82D /* GAPURI.swift in Sources */,
 				35193EA0211898A100C7C383 /* HCIReadDataBlockSize.swift in Sources */,
