@@ -47,7 +47,10 @@ final class HCITests: XCTestCase {
         ("testLinkKeyRequest", testLinkKeyRequest),
         ("testReadDataBlockSize", testReadDataBlockSize),
         ("testSetConnectionencryption", testSetConnectionencryption),
-        ("testReadRemoteSupportedFeatures", testReadRemoteSupportedFeatures)
+        ("testReadRemoteSupportedFeatures", testReadRemoteSupportedFeatures),
+        ("testReadRemoteExtendedFeatures", testReadRemoteExtendedFeatures),
+        ("testReadRemoteVersionInformation", testReadRemoteVersionInformation),
+        ("testAuthenticationRequested", testAuthenticationRequested)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -1821,6 +1824,42 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(versionInformation?.version, 0x03)
         XCTAssertEqual(versionInformation?.companyId, 0x004c)
         XCTAssertEqual(versionInformation?.subversion, 0x031c)
+    }
+    
+    func testAuthenticationRequested() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:33.031  HCI Command      0x000D  Carlos Duclos’s M  [0411] Authentication Requested - Connection Handle: 0x000D
+         [0411] Opcode: 0x0411 (OGF: 0x01    OCF: 0x11)
+         Parameter Length: 2 (0x02)
+         Connection Handle: 0x000D
+         Aug 06 19:30:33.031  HCI Command      0x0000     11 04 02 0d 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.authenticationRequested.opcode,
+                                             [0x11, 0x04, 0x02, 0x0d, 0x00]))
+        
+        /**
+         Aug 06 19:30:33.032  HCI Event        0x0000                     Command Status - Authentication Requested
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0411 (OGF: 0x01    OCF: 0x11) - [Link Control] Authentication Requested
+         Aug 06 19:30:33.032  HCI Event  0x0000  0f 04 00 01 11 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x11, 0x04]))
+        
+        /**
+         Aug 06 19:30:33.134  HCI Event        0x000D  Carlos Duclos’s M  Authentication Complete
+         Parameter Length: 3 (0x03)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Aug 06 19:30:33.134  HCI Event    0x0000   06 03 00 0d 00
+         */
+        hostController.queue.append(.event([0x06, 0x03, 0x00, 0x0d, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.authenticationRequested(handle: 0x000D))
     }
 }
 
