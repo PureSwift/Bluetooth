@@ -1920,7 +1920,50 @@ final class HCITests: XCTestCase {
         guard let address = Address(rawValue: "84:FC:FE:F3:F4:75")
             else { XCTFail("Unable to init variable"); return }
         
-        XCTAssertThrowsError(try hostController.linkKeyRequestNegativeReply(address: address))
+        XCTAssertNoThrow(try hostController.linkKeyRequestNegativeReply(address: address))
+    }
+    
+    func testPINCodeRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:43.300  HCI Command      0x0000  Carlos Duclos’s M  [040D] PIN Code Request Reply - 84:FC:FE:F3:F4:75
+         [040D] Opcode: 0x040D (OGF: 0x01    OCF: 0x0D)
+         Parameter Length: 23 (0x17)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         PIN Code Length: 0x04
+         PIN Code: 0000 (0x30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 00)
+         Aug 09 17:22:43.300  HCI Command      0x0000  0d 04 17 75 f4 f3 fe fc 84 04 30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.pinCodeReply.opcode,
+                                             [0x0d, 0x04, 0x17, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84, 0x04, 0x30, 0x30, 0x30,
+                                              0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        /**
+         Aug 09 17:22:43.302  HCI Event        0x0000  Carlos Duclos’s M  Command Complete [040D] - PIN Code Request Reply - 84:FC:FE:F3:F4:75
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x040D (OGF: 0x01    OCF: 0x0D) - [Link Control] PIN Code Request Reply
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.302  HCI Event        0x0000    0e 0a 01 0d 04 00 75 f4 f3 fe fc 84
+        */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0d, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
+        
+        guard let address = Address(rawValue: "84:FC:FE:F3:F4:75")
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let length = HCIPINCodeRequestReply.PINCodeLength(rawValue: 0x04)
+            else { XCTFail("Unable to init variable"); return }
+        
+        let data = Data([0x30, 0x30, 0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+        let pinCode = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
+                                                            data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])))
+        
+        XCTAssertNoThrow(try hostController.pinCodeRequestReply(address: address,
+                                                                pinCodeLength: length,
+                                                                pinCode: pinCode))
     }
 }
 

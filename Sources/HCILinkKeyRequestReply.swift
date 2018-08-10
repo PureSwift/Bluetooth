@@ -87,19 +87,16 @@ public struct HCILinkKeyRequestReplyReturn: HCICommandReturnParameter {
     
     public static let length: Int = 7
     
-    public let status: HCIStatus
-    
     /// BD_ADDR of the Device of which the Link Key request reply has completed.
     public var address: Address
     
     public init?(data: Data) {
         
-        guard let status = HCIStatus(rawValue: data[0])
+        guard data.count == HCILinkKeyRequestReplyReturn.length
             else { return nil }
         
-        let address = Address(littleEndian: Address(bytes: (data[1], data[2], data[3], data[4], data[5], data[6])))
+        let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         
-        self.status = status
         self.address = address
     }
 }
