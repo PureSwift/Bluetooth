@@ -1965,6 +1965,22 @@ final class HCITests: XCTestCase {
                                                                 pinCodeLength: length,
                                                                 pinCode: pinCode))
     }
+    
+    func testPINCodeRequest() {
+        
+        /**
+         Aug 09 17:22:43.298  HCI Event        0x0000  Carlos Duclos’s M  PIN code request - 84:FC:FE:F3:F4:75
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.298  HCI Event        0x0000  16 06 75 f4 f3 fe fc 84
+        */
+        let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84])
+        
+        guard let event = HCIPINCodeRequest(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "84:FC:FE:F3:F4:75")!)
+    }
 }
 
 @inline(__always)
