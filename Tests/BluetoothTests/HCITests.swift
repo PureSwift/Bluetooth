@@ -1891,6 +1891,37 @@ final class HCITests: XCTestCase {
         let packetType: PacketType = .acl(BitMaskOptionSet<ACLPacketType>(rawValue: 0xcc18))
         XCTAssertThrowsError(try hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType))
     }
+    
+    func testLinkKeyRequestNegativeReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:43.298  HCI Command      0x0000  Carlos Duclos’s M  [040C] Link Key Request Negative Reply - 84:FC:FE:F3:F4:75
+         [040C] Opcode: 0x040C (OGF: 0x01    OCF: 0x0C)
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.298  HCI Command    0x0000    0c 04 06 75 f4 f3 fe fc 84
+         */
+        hostController.queue.append(.command(LinkControlCommand.linkKeyNegativeReply.opcode,
+                                             [0x0c, 0x04, 0x06, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
+        
+        /**
+         Aug 09 17:22:43.298  HCI Event        0x0000  Carlos Duclos’s M  Command Complete [040C] - Link Key Request Negative Reply - 84:FC:FE:F3:F4:75
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x040C (OGF: 0x01    OCF: 0x0C) - [Link Control] Link Key Request Negative Reply
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.298  HCI Event        0x0000   0e 0a 01 0c 04 00 75 f4 f3 fe fc 84
+         */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0c, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
+        
+        guard let address = Address(rawValue: "84:FC:FE:F3:F4:75")
+            else { XCTFail("Unable to init variable"); return }
+        
+        XCTAssertThrowsError(try hostController.linkKeyRequestNegativeReply(address: address))
+    }
 }
 
 @inline(__always)
