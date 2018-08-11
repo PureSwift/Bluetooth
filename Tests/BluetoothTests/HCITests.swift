@@ -1981,6 +1981,44 @@ final class HCITests: XCTestCase {
         
         XCTAssertEqual(event.address, Address(rawValue: "84:FC:FE:F3:F4:75")!)
     }
+    
+    func testLinkKeyNotification() {
+        
+        /**
+         Aug 09 17:22:43.380  HCI Event        0x0000  Carlos Duclos’s M  Link Key Notification - 84:FC:FE:F3:F4:75
+         Parameter Length: 23 (0x17)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Link Key: 0xCCE5E51BF2FD53D43C149F83EC55300F
+         Key Type: 0x00
+         */
+        let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84])
+        
+        guard let event = HCILinkKeyNotification(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "84:FC:FE:F3:F4:75")!)
+    }
+    
+    func testModeChange() {
+        
+        /**
+         Aug 09 17:22:45.417  HCI Event        0x000D  Carlos Duclos’s M  Mode Change - Sniff Mode - 0.011250 seconds -  - Handle: 0x000D
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Current Mode: Sniff - 2.880000 seconds (0x02)
+         Interval: 0x0000 (0 ms)
+         Aug 09 17:22:45.417  HCI Event        0x0000  14 06 00 0d 00 02 12 00
+         */
+        let data = Data([0x00, 0x0d, 0x00, 0x02, 0x12, 0x00])
+        
+        guard let event = HCIModeChange(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.status.rawValue, HCIStatus(rawValue: 0x00)?.rawValue)
+        XCTAssertEqual(event.handle, 0x000D)
+        XCTAssertEqual(event.currentMode, HCIModeChange.Mode(rawValue: 0x02)!)
+    }
 }
 
 @inline(__always)
