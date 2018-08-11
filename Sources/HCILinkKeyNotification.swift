@@ -17,7 +17,7 @@ public struct HCILinkKeyNotification: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.linkKeyNotification
     
-    public static let length: Int = 6
+    public static let length: Int = 23
     
     public let address: Address
     
