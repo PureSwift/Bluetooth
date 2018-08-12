@@ -156,6 +156,10 @@ public extension BluetoothHostControllerInterface {
         typealias AdvertisingParameters = HCILESetAdvertisingParameters
         typealias SetAdvertisingData = HCILESetAdvertisingData
         
+        // stop advertising
+        do { try enableLowEnergyAdvertising(false, timeout: timeout) }
+        catch HCIError.commandDisallowed { /* ignore, means already turned on */ }
+        
         // set advertising parameters
         let advertisingParameters = AdvertisingParameters(interval: (min: interval, max: interval))
                 
