@@ -112,6 +112,28 @@ final class iBeaconTests: XCTestCase {
         
         let hostController = TestHostController()
         
+        /**
+         SEND  [200A] LE Set Advertise Enable - 0x00
+         [200A] Opcode: 0x200A (OGF: 0x08    OCF: 0x0A)
+         Parameter Length: 1 (0x01)
+         Advertising Enable: 00
+         */
+        
+        hostController.queue.append(
+            .command(HCILowEnergyCommand.setAdvertiseEnable.opcode,
+                     [0x0a, 0x20, 0x01, 0x00]
+            )
+        )
+        
+        /**
+         RECV  Command Complete [200A] - LE Set Advertise Enable
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x200A (OGF: 0x08    OCF: 0x0A) - [Low Energy] LE Set Advertise Enable
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x0a, 0x20, 0x00]))
+        
         // LE Set Advertising Parameters (15 bytes)
         hostController.queue.append(
             .command(HCILowEnergyCommand.setAdvertisingParameters.opcode,
