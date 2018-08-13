@@ -51,7 +51,13 @@ final class HCITests: XCTestCase {
         ("testReadRemoteExtendedFeatures", testReadRemoteExtendedFeatures),
         ("testReadRemoteVersionInformation", testReadRemoteVersionInformation),
         ("testAuthenticationRequested", testAuthenticationRequested),
-        ("testChangeConnectionPacketType", testChangeConnectionPacketType)
+        ("testChangeConnectionPacketType", testChangeConnectionPacketType),
+        ("testPINCodeRequest", testPINCodeRequest),
+        ("testPINCodeRequestReply", testPINCodeRequestReply),
+        ("testLinkKeyNotification", testLinkKeyNotification),
+        ("testModeChange", testModeChange),
+        ("testWriteLinkPolicySettings", testWriteLinkPolicySettings),
+        ("testQoSSetup", testQoSSetup)
     ]
     
     func testSetAdvertiseEnableParameter() {
