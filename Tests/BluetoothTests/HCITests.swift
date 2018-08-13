@@ -2053,6 +2053,63 @@ final class HCITests: XCTestCase {
             connectionHandle: 0x000D,
             settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F)))
     }
+    
+    func testQoSSetup() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:45.336  HCI Command      0x000D  Carlos Duclos’s M  [0807] QoS Setup - Connection Handle: 0x000D
+         [0807] Opcode: 0x0807 (OGF: 0x02    OCF: 0x07)
+         Parameter Length: 20 (0x14)
+         Connection Handle: 0x000D
+         Flags: 0x00
+         Service Type: 0x02
+         Token Rate: 0x00000000
+         Peak Bandwidth: 0x00000000
+         Latency: 0x00002BF2
+         Delay Variation: 0xFFFFFFFF
+         
+         */
+        hostController.queue.append(.command(LinkPolicyCommand.qosSetup.opcode,
+                                             [0x07, 0x08, 0x14, 0x0d, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                              0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]))
+        
+        /**
+         Aug 09 17:22:45.337  HCI Event        0x0000                     Command Status - QoS Setup
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0807 (OGF: 0x02    OCF: 0x07) - [Link Policy] QoS Setup
+         Aug 09 17:22:45.337  HCI Event        0x0000  0f 04 00 01 07 08
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x07, 0x08]))
+        
+        /**
+         Aug 09 17:22:45.345  HCI Event        0x000D  Carlos Duclos’s M  QoS Setup Complete
+         Parameter Length: 21 (0x15)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Flags: 0x00
+         Service Type: 0x02
+         Token Rate: 0x00000001
+         Peak Bandwidth: 0x00000000
+         Latency: 0x00002BF2
+         Delay Variation: 0xFFFFFFFFx
+        */
+        hostController.queue.append(.event([0x0d, 0x15, 0x00, 0x0d, 0x00, 0x00, 0x02, 0x01, 0x00, 0x00, 0x00,
+                                            0x00, 0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]))
+        
+        guard let serviceType = HCIQoSSetup.ServiceType(rawValue: 0x02)
+            else { XCTFail("Unable to parse service type"); return }
+        
+        XCTAssertNoThrow(try hostController.qosSetup(connectionHandle: 0x000D,
+                                                     serviceType: serviceType,
+                                                     tokenRate: 0x00000000,
+                                                     peakBandWidth: 0x00000000,
+                                                     latency: 0x00002BF2,
+                                                     delayVariation: 0xFFFFFFFF))
+    }
 }
 
 @inline(__always)

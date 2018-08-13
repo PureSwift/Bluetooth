@@ -17,8 +17,9 @@ public enum LinkPolicyCommand: UInt16, HCICommand {
     /// Connection Handle into the hold mode.
     case holdMode = 0x0001
     
-    case writeLinkPolicySettings = 0x000D
+    case qosSetup = 0x0007
     
+    case writeLinkPolicySettings = 0x000D
 }
 
 // MARK: - Name
