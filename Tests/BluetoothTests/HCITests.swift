@@ -2019,6 +2019,40 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(event.handle, 0x000D)
         XCTAssertEqual(event.currentMode, HCIModeChange.Mode(rawValue: 0x02)!)
     }
+    
+    func testWriteLinkPolicySettings() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:43.293  HCI Command      0x000D  Carlos Duclos’s M  [080D] Write Link Policy Settings - Connection Handle: 0x000D
+         [080D] Opcode: 0x080D (OGF: 0x02    OCF: 0x0D)
+         Parameter Length: 4 (0x04)
+         Connection Handle: 0x000D
+         Link Policy Settings: 0x000F
+         Master/Slave Switch: Enabled
+         Hold Mode:           Enabled
+         Sniff Mode:          Enabled
+         Park Mode:           Enabled
+         Aug 09 17:22:43.293  HCI Command      0x0000  0d 08 04 0d 00 0f 00
+         */
+        hostController.queue.append(.command(LinkPolicyCommand.writeLinkPolicySettings.opcode,
+                                             [0x0d, 0x08, 0x04, 0x0d, 0x00, 0x0f, 0x00]))
+        /**
+         Aug 09 17:22:43.293  HCI Event        0x0000                     Command Complete [080D] - Write Link Policy Settings
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x080D (OGF: 0x02    OCF: 0x0D) - [Link Policy] Write Link Policy Settings
+         Connection Handle: 0x000D
+         Aug 09 17:22:43.293  HCI Event        0x0000   0e 06 01 0d 08 00 0d 00
+         */
+        hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x0d, 0x08, 0x00, 0x0d, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.writeLinkPolicySettings(
+            connectionHandle: 0x000D,
+            settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F)))
+    }
 }
 
 @inline(__always)

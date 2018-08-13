@@ -15,7 +15,9 @@ public enum LinkPolicyCommand: UInt16, HCICommand {
     /// The Hold Mode command is used to alter the behavior of the Link Manager,
     /// and have it place the ACL baseband connection associated by the specified
     /// Connection Handle into the hold mode.
-    case holdMode                    = 0x0001
+    case holdMode = 0x0001
+    
+    case writeLinkPolicySettings = 0x000D
     
 }
 
