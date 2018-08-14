@@ -8,6 +8,31 @@
 
 import Foundation
 
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// Write Link Supervision Timeout Command
+    ///
+    /// This command writes the value for the Link_Supervision_Timeout parameter for a BR/EDR or AMP Controller. For BR/EDR Controllers, this command shall only be issued on the master for the given Connection Handle. If this command is issued on a slave, the command shall be rejected by the BR/EDR controller with the error code Command Disallowed. The command may be issued to any AMP Controller without restriction to role.
+    ///
+    /// The Handle used for this command shall be the ACL connection to the appro- priate device. This command will set the Link_Supervision_
+    /// Timeout values for other Synchronous Handles to that device.
+    func writeLinkSupervisionTimeout(handle: UInt16,
+                                     linkSupervisionTimeout: HCIWriteLinkSupervisionTimeout.LinkSupervisionTimeout,
+                                     timeout: HCICommandTimeout = .default) throws -> HCIWriteLinkSupervisionTimeoutReturn {
+        
+        let command = HCIWriteLinkSupervisionTimeout(handle: handle,
+                                                     linkSupervisionTimeout: linkSupervisionTimeout)
+        
+        return try deviceRequest(command, HCIWriteLinkSupervisionTimeoutReturn.self, timeout: timeout)
+    }
+}
+
+// MARK: - Command
+
+/// Write Link Supervision Timeout Command
+///
 /// This command writes the value for the Link_Supervision_Timeout parameter for a BR/EDR or AMP Controller. For BR/EDR Controllers, this command shall only be issued on the master for the given Connection Handle. If this command is issued on a slave, the command shall be rejected by the BR/EDR controller with the error code Command Disallowed. The command may be issued to any AMP Controller without restriction to role.
 ///
 /// The Handle used for this command shall be the ACL connection to the appro- priate device. This command will set the Link_Supervision_
@@ -59,7 +84,7 @@ extension HCIWriteLinkSupervisionTimeout {
             return Double(rawValue) * 0.625 / 1000
         }
         
-        public init?(rawValue: UInt16) {
+        public init(rawValue: UInt16) {
             
             self.rawValue = rawValue
         }
@@ -68,5 +93,24 @@ extension HCIWriteLinkSupervisionTimeout {
             
             self.rawValue = unsafe
         }
+    }
+}
+
+// MARK: - Return Parameter
+
+public struct HCIWriteLinkSupervisionTimeoutReturn: HCICommandReturnParameter {
+    
+    public static let command = HostControllerBasebandCommand.writeLinkSupervisionTimeout
+    
+    public static let length: Int = MemoryLayout<UInt16>.size
+    
+    public var handle: UInt16
+    
+    public init?(data: Data) {
+        
+        guard data.count == HCIWriteLinkSupervisionTimeoutReturn.length
+            else { return nil }
+        
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
     }
 }

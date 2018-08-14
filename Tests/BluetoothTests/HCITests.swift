@@ -2145,6 +2145,41 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(readPageTimeout?.pageTimeout.rawValue, 0x4000)
         XCTAssertEqual(readPageTimeout?.pageTimeout.duration, 10.24)
     }
+    
+    func testWriteLinkSupervisionTimeout() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:45.318  HCI Command      0x000D  Carlos Duclos’s M  [0C37] Write Link Supervision Timeout - Connection Handle: 0x000D
+         [0C37] Opcode: 0x0C37 (OGF: 0x03    OCF: 0x37)
+         Parameter Length: 4 (0x04)
+         Connection Handle: 0x000D
+         Link Supervision Timeout: 0x1F40
+         5000.000000 ms
+         Aug 09 17:22:45.318  HCI Command      0x0000   37 0c 04 0d 00 40 1f
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writeLinkSupervisionTimeout.opcode,
+                                             [0x37, 0x0c, 0x04, 0x0d, 0x00, 0x40, 0x1f]))
+        
+        /**
+         Aug 09 17:22:45.318  HCI Event        0x0000                     Command Complete [0C37] - Write Link Supervision Timeout - Connection Handle: 0x000D
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C37 (OGF: 0x03    OCF: 0x37) - [Host Controller] Write Link Supervision Timeout
+         Connection Handle: 0x000D
+         Aug 09 17:22:45.318  HCI Event        0x0000   0e 06 01 37 0c 00 0d 00
+         */
+        hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x37, 0x0c, 0x00, 0x0d, 0x00]))
+        
+        let timeout = HCIWriteLinkSupervisionTimeout.LinkSupervisionTimeout(rawValue: 0x1F40)
+        
+        var writeTimeout: HCIWriteLinkSupervisionTimeoutReturn?
+        XCTAssertNoThrow(writeTimeout = try hostController.writeLinkSupervisionTimeout(handle: 0x000D,
+                                                                                       linkSupervisionTimeout: timeout))
+        XCTAssertEqual(writeTimeout?.handle, 0x000D)
+    }
 }
 
 @inline(__always)
