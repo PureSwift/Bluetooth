@@ -54,34 +54,32 @@ public enum HostControllerBasebandCommand: UInt16, HCICommand {
     
     case deleteStoredLinkKey = 0x0012
     
-    /**
-     The Write Local Name command provides the ability to modify the user- friendly name for the BR/EDR Controller.
-     */
+    /// The Write Local Name command provides the ability to modify the user- friendly name for the BR/EDR Controller.
     case writeLocalName = 0x0013
     
-    /**
-     Read Connection Accept Timeout Command
-     
-     The Read Local Name command provides the ability to read the stored user- friendly name for the BR/EDR Controller.
-     */
-    case  readLocalName = 0x0014
+    /// Read Connection Accept Timeout Command
+    ///
+    /// The Read Local Name command provides the ability to read the stored user- friendly name for the BR/EDR Controller.
+    case readLocalName = 0x0014
     
-    /**
-     Read Connection Accept Timeout Command
-     
-     This command reads the value for the Connection Accept Timeout configuration parameter.
-     */
+    /// Read Connection Accept Timeout Command
+    ///
+    /// This command reads the value for the Connection Accept Timeout configuration parameter.
     case readConnectionAcceptTimeout = 0x0015
     
-    /**
-     Write Connection Accept Timeout Command
-     
-     This command writes the value for the Connection Accept Timeout configuration parameter.
-     */
+    /// Write Connection Accept Timeout Command
+    ///
+    /// This command writes the value for the Connection Accept Timeout configuration parameter.
     case writeConnectionAcceptTimeout = 0x0016
     
+    /// Read Page Timeout Command
+    ///
+    /// This command reads the value for the Page_Timeout configuration parameter.
     case readPageTimeout = 0x0017
     
+    /// Write Link Supervision Timeout Command
+    ///
+    /// This command writes the value for the Link_Supervision_Timeout parameter for a BR/EDR or AMP Controller.
     case writeLinkSupervisionTimeout = 0x0037
 }
 
