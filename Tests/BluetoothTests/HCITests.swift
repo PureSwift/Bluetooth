@@ -2180,6 +2180,26 @@ final class HCITests: XCTestCase {
                                                                                        linkSupervisionTimeout: timeout))
         XCTAssertEqual(writeTimeout?.handle, 0x000D)
     }
+    
+    func testNumberOfCompletedPackets() {
+        
+        /**
+         Aug 09 17:22:45.343  HCI Event        0x000D  Carlos Duclos’s M  Number of Completed Packets - Handle: 0x000D - Packets: 0x0001
+         Parameter Length: 5 (0x05)
+         Number of Handles: 0x01
+         Connection Handle: 0x000D
+         Number of Packets: 0x0001
+         Aug 09 17:22:45.343  HCI Event        0x0000   13 05 01 0d 00 01 00
+         */
+        let data = Data([0x01, 0x0d, 0x00, 0x01, 0x00])
+        
+        guard let event = HCINumberOfCompletedPackets(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.numberOfHandles, 0x01)
+        XCTAssertEqual(event.connectionHandle, 0x000D)
+        XCTAssertEqual(event.numberOfCompletedPackets, 0x0001)
+    }
 }
 
 @inline(__always)
