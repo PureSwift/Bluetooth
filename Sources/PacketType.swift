@@ -42,6 +42,11 @@ public enum PacketType {
 /// Seven packet types are defined for Basic Rate operation: DM1, DH1, DM3, DH3, DM5, DH5 and AUX1. Six additional packets are defined for Enhanced Data Rate operation: 2-DH1, 3-DH1, 2-DH3, 3-DH3, 2-DH5 and 3-DH5.
 public enum ACLPacketType: UInt16, BitMaskOption {
     
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt16
+    #endif
+    
     /// 2-DH1 may not be used
     case packet2DH1mayNotBeUsed = 0x0002
     
@@ -97,6 +102,11 @@ public enum ACLPacketType: UInt16, BitMaskOption {
 /// HV and DV packets are used on the synchronous SCO logical transport. The HV packets do not include a CRC and shall not be retransmitted. DV packets include a CRC on the data section, but not on the synchronous data section. The data section of DV packets shall be retransmitted. SCO packets may be routed to the synchronous I/O port. Four packets are allowed on the SCO logical transport: HV1, HV2, HV3 and DV. These packets are typically used for 64kb/s speech transmission but may be used for transparent synchronous data.
 public enum SCOPacketType: UInt16, BitMaskOption {
 
+    #if swift(>=3.2)
+    #elseif swift(>=3.0)
+    public typealias RawValue = UInt16
+    #endif
+    
     /// HV1
     case hv1 = 0x0020
     
