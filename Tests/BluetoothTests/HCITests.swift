@@ -57,7 +57,8 @@ final class HCITests: XCTestCase {
         ("testLinkKeyNotification", testLinkKeyNotification),
         ("testModeChange", testModeChange),
         ("testWriteLinkPolicySettings", testWriteLinkPolicySettings),
-        ("testQoSSetup", testQoSSetup)
+        ("testQoSSetup", testQoSSetup),
+        ("testReadPageTimeout", testReadPageTimeout)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -2115,6 +2116,34 @@ final class HCITests: XCTestCase {
                                                      peakBandWidth: 0x00000000,
                                                      latency: 0x00002BF2,
                                                      delayVariation: 0xFFFFFFFF))
+    }
+    
+    func testReadPageTimeout() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [0C17] Opcode: 0x0C17 (OGF: 0x03    OCF: 0x17)
+         Parameter Length: 0 (0x00)
+         Aug 09 17:22:36.898  HCI Command      0x0000    17 0c 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.readPageTimeout.opcode, [0x17, 0x0c, 0x00]))
+        
+        /**
+         Aug 09 17:22:36.899  HCI Event        0x0000  Command Complete [0C17] - Read Page Timeout - Page Timeout: 0x4000 (10.24 s)
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C17 (OGF: 0x03    OCF: 0x17) - [Host Controller] Read Page Timeout
+         Page Timeout: 0x4000 (10.24 s)
+         Aug 09 17:22:36.899  HCI Event        0x0000  0e 06 01 17 0c 00 00 40
+         */
+        hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x17, 0x0c, 0x00, 0x00, 0x40]))
+        
+        var readPageTimeout: HCIReadPageTimeoutReturn?
+        XCTAssertNoThrow(readPageTimeout = try hostController.readPageTimeout())
+        XCTAssertEqual(readPageTimeout?.pageTimeout.rawValue, 0x4000)
+        XCTAssertEqual(readPageTimeout?.pageTimeout.duration, 10.24)
     }
 }
 

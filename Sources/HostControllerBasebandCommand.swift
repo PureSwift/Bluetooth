@@ -77,6 +77,8 @@ public enum HostControllerBasebandCommand: UInt16, HCICommand {
      This command writes the value for the Connection Accept Timeout configuration parameter.
      */
     case writeConnectionAcceptTimeout = 0x0016
+    
+    case readPageTimeout = 0x0017
 }
 
 // MARK: - Name
