@@ -81,6 +81,8 @@ public enum HostControllerBasebandCommand: UInt16, HCICommand {
     case writeConnectionAcceptTimeout = 0x0016
     
     case readPageTimeout = 0x0017
+    
+    case writeLinkSupervisionTimeout = 0x0037
 }
 
 // MARK: - Name
