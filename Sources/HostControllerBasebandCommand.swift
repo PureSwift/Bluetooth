@@ -52,6 +52,8 @@ public enum HostControllerBasebandCommand: UInt16, HCICommand {
      */
     case setEventFilter = 0x0005
     
+    case deleteStoredLinkKey = 0x0012
+    
     /**
      The Write Local Name command provides the ability to modify the user- friendly name for the BR/EDR Controller.
      */
