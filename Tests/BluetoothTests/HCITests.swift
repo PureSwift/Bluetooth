@@ -655,9 +655,9 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.rssi.rawValue, -45)
             XCTAssertEqual(report.responseData.count, 0x16)
             
-            let advertisingData: [UInt8] = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
+            let advertisingData: LowEnergyAdvertisingData = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
             
-            XCTAssertEqual(report.responseData, Data(advertisingData))
+            XCTAssertEqual(report.responseData, advertisingData)
         }
         
         do {
@@ -687,7 +687,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.rssi.rawValue, -44)
-            XCTAssertEqual(report.responseData, Data())
+            XCTAssertEqual(report.responseData.data, Data())
         }
         
         do {
@@ -720,7 +720,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.rssi.rawValue, -70)
             XCTAssertEqual(report.responseData.count, 0x0C)
-            XCTAssertEqual(report.responseData, Data([0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33]))
+            XCTAssertEqual(report.responseData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
             
         }
     }

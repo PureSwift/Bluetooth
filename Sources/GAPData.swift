@@ -238,7 +238,6 @@ public struct GAPDataDecoder {
                 value = Data()
             }
             
-            
             elements.append(GAPDataElement(type: type, value: value))
         }
         
