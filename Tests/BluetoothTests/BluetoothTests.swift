@@ -108,6 +108,13 @@ final class BluetoothTests: XCTestCase {
         
         do {
             
+            // zeroed data
+            XCTAssertEqual(LowEnergyAdvertisingData(data: Data())?.data, Data())
+            XCTAssertEqual(LowEnergyAdvertisingData().data, Data())
+        }
+        
+        do {
+            
             let advertisingData: LowEnergyAdvertisingData = [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33]
             XCTAssertEqual(advertisingData.data.count, advertisingData.count)
             XCTAssertEqual(advertisingData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
