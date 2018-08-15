@@ -814,6 +814,10 @@
 		358505F12124751A0045C0CD /* HCIReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505EF2124751A0045C0CD /* HCIReset.swift */; };
 		358505F22124751A0045C0CD /* HCIReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505EF2124751A0045C0CD /* HCIReset.swift */; };
 		358505F32124751A0045C0CD /* HCIReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505EF2124751A0045C0CD /* HCIReset.swift */; };
+		358505F521247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */; };
+		358505F621247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */; };
+		358505F721247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */; };
+		358505F821247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */; };
 		3588AC1C20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
@@ -1900,6 +1904,7 @@
 		3580287D20C832870096227B /* UnitIdentifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitIdentifierExtension.swift; sourceTree = "<group>"; };
 		358161C721124C32000E44FE /* HCIDisconnectionComplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIDisconnectionComplete.swift; sourceTree = "<group>"; };
 		358505EF2124751A0045C0CD /* HCIReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReset.swift; sourceTree = "<group>"; };
+		358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadStoredLinkKey.swift; sourceTree = "<group>"; };
 		358B7E2D2114B0DB0052132F /* HCILinkKeyRequestReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILinkKeyRequestReply.swift; sourceTree = "<group>"; };
 		358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILinkKeyRequest.swift; sourceTree = "<group>"; };
 		3594F6BD20EFF56000D66603 /* GATTReferenceTimeInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTReferenceTimeInformation.swift; sourceTree = "<group>"; };
@@ -2514,6 +2519,7 @@
 				6EFB3DC220D2DDFA00364CA0 /* HCIReadLocalName.swift */,
 				6EFB3DCC20D2DEFC00364CA0 /* HCIReadConnectionAcceptTimeout.swift */,
 				3598E3A82122495300B93F40 /* HCIReadPageTimeout.swift */,
+				358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */,
 				3598E3AD2122738700B93F40 /* HCIDeleteStoredLinkKey.swift */,
 				35A100A72123296A00A2E283 /* HCIWriteLinkSupervisionTimeout.swift */,
 				358505EF2124751A0045C0CD /* HCIReset.swift */,
@@ -3212,6 +3218,7 @@
 				356EB94320D452460022A48D /* GATTAltitude.swift in Sources */,
 				6E1F936A20C213B60030367F /* ClassOfDevice.swift in Sources */,
 				355BC2E320D34152001A07D3 /* HCILEPeriodicAdvertisingCreateSync.swift in Sources */,
+				358505F821247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */,
 				6EFB3DDA20D2E05700364CA0 /* HCIReadLocalVersionInformation.swift in Sources */,
 				351829ED20D22E000009F82D /* GAPChannelMapUpdateIndication.swift in Sources */,
 				357FDA7F20DC099900DEE25C /* GATTSoftwareRevisionString.swift in Sources */,
@@ -3626,6 +3633,7 @@
 				356EB94220D452460022A48D /* GATTAltitude.swift in Sources */,
 				6E1F936920C213B60030367F /* ClassOfDevice.swift in Sources */,
 				355BC2E220D34152001A07D3 /* HCILEPeriodicAdvertisingCreateSync.swift in Sources */,
+				358505F721247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */,
 				6EFB3DD920D2E05700364CA0 /* HCIReadLocalVersionInformation.swift in Sources */,
 				351829EC20D22E000009F82D /* GAPChannelMapUpdateIndication.swift in Sources */,
 				357FDA7E20DC099900DEE25C /* GATTSoftwareRevisionString.swift in Sources */,
@@ -4034,6 +4042,7 @@
 				35D8A3F0210F6E770033E47A /* HCIPageScanRepetitionMode.swift in Sources */,
 				35182A1720D235230009F82D /* GATTCharacteristicExtendedProperties.swift in Sources */,
 				356EB93120D4426E0022A48D /* HCILEChannelSelectionAlgorithm.swift in Sources */,
+				358505F521247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */,
 				35193E9F211898A100C7C383 /* HCIReadDataBlockSize.swift in Sources */,
 				6EFB3D5920D2D5C400364CA0 /* LowEnergyPhyOptions.swift in Sources */,
 				35740E8520F5CDA100262361 /* GATTDateUTC.swift in Sources */,
@@ -4491,6 +4500,7 @@
 				356EB94120D452460022A48D /* GATTAltitude.swift in Sources */,
 				6E1F936820C213B60030367F /* ClassOfDevice.swift in Sources */,
 				355BC2E120D34152001A07D3 /* HCILEPeriodicAdvertisingCreateSync.swift in Sources */,
+				358505F621247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */,
 				6EFB3DD820D2E05700364CA0 /* HCIReadLocalVersionInformation.swift in Sources */,
 				351829EB20D22E000009F82D /* GAPChannelMapUpdateIndication.swift in Sources */,
 				357FDA7D20DC099900DEE25C /* GATTSoftwareRevisionString.swift in Sources */,
