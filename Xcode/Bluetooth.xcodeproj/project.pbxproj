@@ -818,6 +818,10 @@
 		358505F621247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */; };
 		358505F721247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */; };
 		358505F821247BA90045C0CD /* HCIReadStoredLinkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */; };
+		358505FA212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F9212488410045C0CD /* HCIReadLocalSupportedFeatures.swift */; };
+		358505FB212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F9212488410045C0CD /* HCIReadLocalSupportedFeatures.swift */; };
+		358505FC212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F9212488410045C0CD /* HCIReadLocalSupportedFeatures.swift */; };
+		358505FD212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358505F9212488410045C0CD /* HCIReadLocalSupportedFeatures.swift */; };
 		3588AC1C20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3588AC1D20CD05AC00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
 		3588AC1E20CD05AD00F9FA8C /* GAPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531BBD920CD013700EBB028 /* GAPData.swift */; };
@@ -1905,6 +1909,7 @@
 		358161C721124C32000E44FE /* HCIDisconnectionComplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIDisconnectionComplete.swift; sourceTree = "<group>"; };
 		358505EF2124751A0045C0CD /* HCIReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReset.swift; sourceTree = "<group>"; };
 		358505F421247BA90045C0CD /* HCIReadStoredLinkKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadStoredLinkKey.swift; sourceTree = "<group>"; };
+		358505F9212488410045C0CD /* HCIReadLocalSupportedFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadLocalSupportedFeatures.swift; sourceTree = "<group>"; };
 		358B7E2D2114B0DB0052132F /* HCILinkKeyRequestReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILinkKeyRequestReply.swift; sourceTree = "<group>"; };
 		358B7E322114C2A10052132F /* HCILinkKeyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCILinkKeyRequest.swift; sourceTree = "<group>"; };
 		3594F6BD20EFF56000D66603 /* GATTReferenceTimeInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTReferenceTimeInformation.swift; sourceTree = "<group>"; };
@@ -2505,6 +2510,7 @@
 				6EFB3DD620D2E05700364CA0 /* HCIReadLocalVersionInformation.swift */,
 				6EFB3DDB20D2E0C900364CA0 /* HCIReadDeviceAddress.swift */,
 				35193E9E211898A100C7C383 /* HCIReadDataBlockSize.swift */,
+				358505F9212488410045C0CD /* HCIReadLocalSupportedFeatures.swift */,
 			);
 			name = Informational;
 			sourceTree = "<group>";
@@ -3325,6 +3331,7 @@
 				356EB8D020D427620022A48D /* HCILETestEnd.swift in Sources */,
 				6EFB3E2120D2F1AB00364CA0 /* HCILEDataLengthChange.swift in Sources */,
 				359E8AEB20EFCF5500A6E24E /* GATTTimeAccuracy.swift in Sources */,
+				358505FD212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */,
 				6EFB3D8420D2D71D00364CA0 /* LowEnergyTxPhy.swift in Sources */,
 				354030EE210A497E00FDA34C /* HCIDisconnect.swift in Sources */,
 				6EFB3DC620D2DDFA00364CA0 /* HCIReadLocalName.swift in Sources */,
@@ -3740,6 +3747,7 @@
 				356EB8CF20D427620022A48D /* HCILETestEnd.swift in Sources */,
 				6EFB3E2020D2F1AB00364CA0 /* HCILEDataLengthChange.swift in Sources */,
 				359E8AEA20EFCF5500A6E24E /* GATTTimeAccuracy.swift in Sources */,
+				358505FC212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */,
 				6EFB3D8320D2D71D00364CA0 /* LowEnergyTxPhy.swift in Sources */,
 				354030ED210A497E00FDA34C /* HCIDisconnect.swift in Sources */,
 				6EFB3DC520D2DDFA00364CA0 /* HCIReadLocalName.swift in Sources */,
@@ -4033,6 +4041,7 @@
 				6EE910251FDE5841007AD3EA /* UInt128.swift in Sources */,
 				3518292C20D222EF0009F82D /* GATTBloodPressureFeature.swift in Sources */,
 				6EE84E061CAF8AD500A40C4D /* HCI.swift in Sources */,
+				358505FA212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */,
 				355BC24520D2C3AE001A07D3 /* HCILELongTermKeyRequestNegativeReply.swift in Sources */,
 				357A94462110D1C8007607BB /* HCIConnectionComplete.swift in Sources */,
 				6EFB3D9B20D2D88100364CA0 /* LowEnergyRfTxPathCompensationValue.swift in Sources */,
@@ -4607,6 +4616,7 @@
 				356EB8CE20D427620022A48D /* HCILETestEnd.swift in Sources */,
 				6EFB3E1F20D2F1AB00364CA0 /* HCILEDataLengthChange.swift in Sources */,
 				359E8AE920EFCF5500A6E24E /* GATTTimeAccuracy.swift in Sources */,
+				358505FB212488410045C0CD /* HCIReadLocalSupportedFeatures.swift in Sources */,
 				6EFB3D8220D2D71D00364CA0 /* LowEnergyTxPhy.swift in Sources */,
 				354030EC210A497E00FDA34C /* HCIDisconnect.swift in Sources */,
 				6EFB3DC420D2DDFA00364CA0 /* HCIReadLocalName.swift in Sources */,

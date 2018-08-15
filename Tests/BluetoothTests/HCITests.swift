@@ -33,7 +33,7 @@ final class HCITests: XCTestCase {
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
         ("testLowEnergyEncrypt", testLowEnergyEncrypt),
         ("testSetLERandomAddress", testSetLERandomAddress),
-        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testLEReadLocalSupportedFeatures", testLEReadLocalSupportedFeatures),
         ("testReadBufferSize", testReadBufferSize),
         ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter),
         ("testInquiry", testInquiry),
@@ -62,7 +62,8 @@ final class HCITests: XCTestCase {
         ("testWriteLinkSupervisionTimeout", testWriteLinkSupervisionTimeout),
         ("testNumberOfCompletedPackets", testNumberOfCompletedPackets),
         ("testReset", testReset),
-        ("testReadStoredLinkKey", testReadStoredLinkKey)
+        ("testReadStoredLinkKey", testReadStoredLinkKey),
+        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -123,7 +124,7 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(readBufferSizeReturn.dataPacket, 0x000F)
     }
     
-    func testReadLocalSupportedFeatures() {
+    func testLEReadLocalSupportedFeatures() {
         
         let hostController = TestHostController()
         
@@ -154,7 +155,7 @@ final class HCITests: XCTestCase {
          */
         
         var lowEnergyFeatureSet: LowEnergyFeatureSet!
-        XCTAssertNoThrow(lowEnergyFeatureSet = try hostController.readLocalSupportedFeatures())
+        XCTAssertNoThrow(lowEnergyFeatureSet = try hostController.lowEnergyReadLocalSupportedFeatures())
         XCTAssert(hostController.queue.isEmpty)
         
         XCTAssertEqual(lowEnergyFeatureSet.rawValue, 0x000000000000003F)
@@ -2261,6 +2262,48 @@ final class HCITests: XCTestCase {
         
         XCTAssertNoThrow(try hostController.readStoredLinkKey(address: Address(rawValue: "8C:85:90:94:8A:7E")!,
                                                               readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!))
+    }
+    
+    func testReadLocalSupportedFeatures() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.101  HCI Command      0x0000                     [1003] Read Local Supported Features
+         [1003] Opcode: 0x1003 (OGF: 0x04    OCF: 0x03)
+         Parameter Length: 0 (0x00)
+         Aug 02 17:18:10.101  HCI Command      0x0000   03 10 00
+         */
+        hostController.queue.append(.command(InformationalCommand.readLocalSupportedFeatures.opcode,
+                                             [0x03, 0x10, 0x00]))
+        
+        /**
+         Aug 02 17:18:10.102  HCI Event        0x0000                     Command Complete [1003] - Read Local Supported Features
+         Parameter Length: 12 (0x0C)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x1003 (OGF: 0x04    OCF: 0x03) - [Informational] Read Local Supported Features
+         LMP Features:
+         0, BF 1 1 1 1 1 1 0 1
+         1, FE 0 1 1 1 1 1 1 1
+         2, CF 1 1 1 1 0 0 1 1
+         3, FE 0 1 1 1 1 1 1 1
+         4, DB 1 1 0 1 1 0 1 1
+         5, FF 1 1 1 1 1 1 1 1
+         6, 7B 1 1 0 1 1 1 1 0
+         7, 87 1 1 1 0 0 0 0 1
+         Aug 02 17:18:10.102  HCI Event        0x0000  0e 0c 01 03 10 00 bf fe cf fe db ff 7b 87
+         */
+        hostController.queue.append(.event([0x0e, 0x0c, 0x01, 0x03, 0x10, 0x00, 0xbf,
+                                            0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87]))
+        
+        let data = Data([0xbf, 0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87])
+        let value = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
+        let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
+
+        var lmpFeatures: BitMaskOptionSet<LMPFeature>?
+        XCTAssertNoThrow(lmpFeatures = try hostController.readLocalSupportedFeatures())
+        XCTAssertEqual(lmpFeatures, features)
     }
 }
 
