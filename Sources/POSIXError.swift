@@ -34,6 +34,18 @@ public extension POSIXError {
     #endif
 }
 
+// MARK: - CustomStringConvertible
+
+extension POSIXError: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return String(cString: strerror(code.rawValue), encoding: .ascii) ?? "\(code)"
+    }
+}
+
+// MARK: - Linux
+
 #if os(Linux) || os(Android)
     
     /// Enumeration describing POSIX error codes.
