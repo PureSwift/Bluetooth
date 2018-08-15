@@ -35,9 +35,13 @@ playground.xcworkspace
 # Swift Package Manager
 #
 # Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
-# Package.pins
+Packages/
+Package.pins
 .build/
+
+
+# SPM Generated
+Bluetooth.xcodeproj/*
 
 # CocoaPods
 #
@@ -66,3 +70,4 @@ fastlane/test_output
 
 # Jazzy
 docs
+
