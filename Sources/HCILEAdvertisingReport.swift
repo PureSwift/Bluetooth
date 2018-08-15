@@ -98,6 +98,9 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
             self.addressType = addressType
             self.address = address
             
+            guard data.count >= (9 + length)
+                else { return nil }
+            
             let responseData = Data(data[9 ..< (9 + length)])
             assert(responseData.count == length)
             self.responseData = responseData
