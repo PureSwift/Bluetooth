@@ -64,6 +64,7 @@ final class HCITests: XCTestCase {
         ("testReset", testReset),
         ("testReadStoredLinkKey", testReadStoredLinkKey),
         ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testWriteClassOfDevice", testWriteClassOfDevice)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -2304,6 +2305,93 @@ final class HCITests: XCTestCase {
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
         XCTAssertNoThrow(lmpFeatures = try hostController.readLocalSupportedFeatures())
         XCTAssertEqual(lmpFeatures, features)
+    }
+    
+    func testWriteClassOfDevice() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.112  HCI Command      0x0000                     [0C24] Write Class of Device
+         [0C24] Opcode: 0x0C24 (OGF: 0x03    OCF: 0x24)
+         Parameter Length: 3 (0x03)
+         Class of device: 0x38010C
+         Service Class: 0x01C0
+         Capturing
+         Object Transfer
+         Audio
+         Major Class: 0x0001
+         Computer
+         Minor Class: 0x0003
+         Laptop
+         Aug 02 17:18:10.112  HCI Command      0x0000   24 0c 03 0c 01 38
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writeClassOfDevice.opcode,
+                                             [0x24, 0x0c, 0x03, 0x0c, 0x01, 0x38]))
+        
+        /**
+         Aug 02 17:18:10.112  HCI Event        0x0000                     Command Complete [0C24] - Write Class of Device
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C24 (OGF: 0x03    OCF: 0x24) - [Host Controller] Write Class of Device
+         Aug 02 17:18:10.112  HCI Event        0x0000  0e 04 01 24 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x24, 0x0c, 0x00]))
+        
+        guard let classOfDevice = ClassOfDevice(data: Data([0x0C, 0x01, 0x38]))
+            else { XCTFail("Failed to init class of device"); return }
+        
+        XCTAssertNoThrow(try hostController.writeClassOfDevice(classOfDevice: classOfDevice))
+    }
+    
+    func testReadClassOfDevice() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.124  HCI Command      0x0000                     [0C23] Read Class of Device
+         [0C23] Opcode: 0x0C23 (OGF: 0x03    OCF: 0x23)
+         Parameter Length: 0 (0x00)
+         Aug 02 17:18:10.124  HCI Command      0x0000   23 0c 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.readClassOfDevice.opcode,
+                                             [0x23, 0x0c, 0x00]))
+        
+        /**
+         Aug 02 17:18:10.124  HCI Event        0x0000                     Command Complete [0C23] - Read Class of Device
+         Parameter Length: 7 (0x07)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C23 (OGF: 0x03    OCF: 0x23) - [Host Controller] Read Class of Device
+         Class of Device: 0x38010C
+         Service Class: 0x01C0
+         Capturing
+         Object Transfer
+         Audio
+         Major Class: 0x0001
+         Computer
+         Minor Class: 0x0003
+         Laptop
+         Aug 02 17:18:10.124  HCI Event        0x0000   0e 07 01 23 0c 00 0c 01 38
+         */
+        hostController.queue.append(.event([0x0e, 0x07, 0x01, 0x23, 0x0c, 0x00, 0x0c, 0x01, 0x38]))
+        
+        var readClassOfDevice: ClassOfDevice?
+        XCTAssertNoThrow(readClassOfDevice = try hostController.readClassOfDevice())
+        
+        guard let classOfDevice = readClassOfDevice
+            else { XCTFail("Failed to init class of device"); return }
+        
+        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.capturing))
+        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.objectTransfer))
+        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.audio))
+        
+        guard case let .computer(computer) = classOfDevice.majorDeviceClass
+            else { XCTFail("Incorrect major device class"); return }
+        
+        guard computer == .laptop
+            else { XCTFail("minor device class is wrong"); return }
     }
 }
 
