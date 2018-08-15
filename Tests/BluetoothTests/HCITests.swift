@@ -61,7 +61,8 @@ final class HCITests: XCTestCase {
         ("testReadPageTimeout", testReadPageTimeout),
         ("testWriteLinkSupervisionTimeout", testWriteLinkSupervisionTimeout),
         ("testNumberOfCompletedPackets", testNumberOfCompletedPackets),
-        ("testReset", testReset)
+        ("testReset", testReset),
+        ("testReadStoredLinkKey", testReadStoredLinkKey)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -2228,6 +2229,38 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x03, 0x0c, 0x00]))
         
         XCTAssertNoThrow(try hostController.reset())
+    }
+    
+    func testReadStoredLinkKey() {
+    
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.102  HCI Command      0x0000                     [0C0D] Read Stored Link Key
+         [0C0D] Opcode: 0x0C0D (OGF: 0x03    OCF: 0x0D)
+         Parameter Length: 7 (0x07)
+         Bluetooth Device Address: (null)
+         Read All Flag: 0x01
+         Return link key for Device Address.
+         Aug 02 17:18:10.102  HCI Command      0x0000  0d 0c 07 7e 8a 94 90 85 8c 01
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.readStoredLinkKey.opcode,
+                                             [0x0d, 0x0c, 0x07, 0x7e, 0x8a, 0x94, 0x90, 0x85, 0x8c, 0x01]))
+        
+        /**
+         Aug 02 17:18:10.102  HCI Event        0x0000                     Command Complete [0C0D] - Read Stored Link Key - Num Keys Read: 0x0000
+         Parameter Length: 8 (0x08)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C0D (OGF: 0x03    OCF: 0x0D) - [Host Controller] Read Stored Link Key
+         Max Num Keys: 0x0007
+         Num Keys Read: 0x0000
+         Aug 02 17:18:10.102  HCI Event        0x0000   0e 08 01 0d 0c 00 07 00 00 00
+         */
+        hostController.queue.append(.event([0x0e, 0x08, 0x01, 0x0d, 0x0c, 0x00, 0x07, 0x00, 0x00, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.readStoredLinkKey(address: Address(rawValue: "8C:85:90:94:8A:7E")!,
+                                                              readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!))
     }
 }
 

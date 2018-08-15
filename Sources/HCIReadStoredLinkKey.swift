@@ -90,7 +90,7 @@ public struct HCIReadStoredLinkKeyReturn: HCICommandReturnParameter {
     
     public init?(data: Data) {
         
-        guard data.count == HCIDeleteStoredLinkKeyReturn.length
+        guard data.count == HCIReadStoredLinkKeyReturn.length
             else { return nil }
         
         self.maxNumberKeys = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
