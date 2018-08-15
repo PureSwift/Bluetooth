@@ -196,7 +196,7 @@ public extension LowEnergyAdvertisingData {
         
         let length = data.count
         
-        guard length >= 1,
+        guard length >= 0,
             length <= 31
             else { return nil }
         

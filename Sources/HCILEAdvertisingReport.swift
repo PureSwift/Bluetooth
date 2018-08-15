@@ -65,7 +65,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         public let address: Address // Address
         
         /// Advertising or scan response data
-        public let responseData: Data // Data
+        public let responseData: LowEnergyAdvertisingData // Data
         
         /// RSSI
         ///
@@ -98,9 +98,16 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
             self.addressType = addressType
             self.address = address
             
+            guard data.count >= (9 + length)
+                else { return nil }
+            
             let responseData = Data(data[9 ..< (9 + length)])
             assert(responseData.count == length)
-            self.responseData = responseData
+            
+            guard let advertisingData = LowEnergyAdvertisingData(data: responseData)
+                else { return nil }
+            
+            self.responseData = advertisingData
             
             // not enough bytes
             guard data.count == (Report.length + length)
