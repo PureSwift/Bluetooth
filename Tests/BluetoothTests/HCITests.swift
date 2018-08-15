@@ -58,7 +58,10 @@ final class HCITests: XCTestCase {
         ("testModeChange", testModeChange),
         ("testWriteLinkPolicySettings", testWriteLinkPolicySettings),
         ("testQoSSetup", testQoSSetup),
-        ("testReadPageTimeout", testReadPageTimeout)
+        ("testReadPageTimeout", testReadPageTimeout),
+        ("testWriteLinkSupervisionTimeout", testWriteLinkSupervisionTimeout),
+        ("testNumberOfCompletedPackets", testNumberOfCompletedPackets),
+        ("testReset", testReset)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -2199,6 +2202,32 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(event.numberOfHandles, 0x01)
         XCTAssertEqual(event.connectionHandle, 0x000D)
         XCTAssertEqual(event.numberOfCompletedPackets, 0x0001)
+    }
+    
+    func testReset() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:08.054  HCI Command      0x0000                     [0C03] Reset
+         [0C03] Opcode: 0x0C03 (OGF: 0x03    OCF: 0x03)
+         Parameter Length: 0 (0x00)
+         Aug 02 17:18:08.054  HCI Command      0x0000   03 0c 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.reset.opcode,
+                                             [0x03, 0x0c, 0x00]))
+        
+        /**
+         Aug 02 17:18:08.550  HCI Event        0x0000                     Command Complete [0C03] - Reset
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C03 (OGF: 0x03    OCF: 0x03) - [Host Controller] Reset
+         Aug 02 17:18:08.550  HCI Event        0x0000   0e 04 01 03 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x03, 0x0c, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.reset())
     }
 }
 
