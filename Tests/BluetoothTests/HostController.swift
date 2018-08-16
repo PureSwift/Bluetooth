@@ -18,7 +18,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     init(address: Address = .any) {
         
         self.address = address
-        self.log = { print("TestHostController: ", $0) }
+        self.log = { _ in } //{ print("TestHostController: ", $0) }
     }
     
     /// The Bluetooth Address of the controller.
