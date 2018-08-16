@@ -215,11 +215,24 @@ public struct GAPDataDecoder {
             // get length
             let length = Int(data[index]) // 0
             index += 1
-            guard index < data.count
-                else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
+            guard index < data.count else {
+                
+                if length == 0 {
+                    
+                    break // EOF
+                    
+                } else {
+                    
+                    throw Error.insufficientBytes(expected: index + 1, actual: data.count)
+                }
+            }
             
             // get type
             let type = GAPDataType(rawValue: data[index]) // 1
+            
+            // ignore zeroed bytes
+            guard (type.rawValue == 0 && length == 0) == false
+                else { break }
             
             // get value
             let value: Data
