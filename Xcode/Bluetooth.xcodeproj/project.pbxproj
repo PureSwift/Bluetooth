@@ -933,6 +933,10 @@
 		35B4ADA82125D20700183DB1 /* HCIWriteScanEnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B4ADA62125D20700183DB1 /* HCIWriteScanEnable.swift */; };
 		35B4ADA92125D20700183DB1 /* HCIWriteScanEnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B4ADA62125D20700183DB1 /* HCIWriteScanEnable.swift */; };
 		35B4ADAA2125D20700183DB1 /* HCIWriteScanEnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B4ADA62125D20700183DB1 /* HCIWriteScanEnable.swift */; };
+		35B4ADAC2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B4ADAB2125DC3800183DB1 /* HCIWritePageScanType.swift */; };
+		35B4ADAD2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B4ADAB2125DC3800183DB1 /* HCIWritePageScanType.swift */; };
+		35B4ADAE2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B4ADAB2125DC3800183DB1 /* HCIWritePageScanType.swift */; };
+		35B4ADAF2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B4ADAB2125DC3800183DB1 /* HCIWritePageScanType.swift */; };
 		35B7CADD20C5E72100F797AE /* GATTProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7CADC20C5E72100F797AE /* GATTProfile.swift */; };
 		35C5CFDD2119239400B65BE8 /* HCIReadRemoteSupportedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C5CFDC2119239400B65BE8 /* HCIReadRemoteSupportedFeatures.swift */; };
 		35C5CFDE2119239400B65BE8 /* HCIReadRemoteSupportedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C5CFDC2119239400B65BE8 /* HCIReadRemoteSupportedFeatures.swift */; };
@@ -1949,6 +1953,7 @@
 		35A100A72123296A00A2E283 /* HCIWriteLinkSupervisionTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIWriteLinkSupervisionTimeout.swift; sourceTree = "<group>"; };
 		35A100AC21238B0500A2E283 /* HCINumberOfCompletedPackets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCINumberOfCompletedPackets.swift; sourceTree = "<group>"; };
 		35B4ADA62125D20700183DB1 /* HCIWriteScanEnable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIWriteScanEnable.swift; sourceTree = "<group>"; };
+		35B4ADAB2125DC3800183DB1 /* HCIWritePageScanType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIWritePageScanType.swift; sourceTree = "<group>"; };
 		35B7CADC20C5E72100F797AE /* GATTProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTProfile.swift; sourceTree = "<group>"; };
 		35C5CFDC2119239400B65BE8 /* HCIReadRemoteSupportedFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadRemoteSupportedFeatures.swift; sourceTree = "<group>"; };
 		35C5CFE1211924D200B65BE8 /* HCIReadRemoteFeaturesComplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCIReadRemoteFeaturesComplete.swift; sourceTree = "<group>"; };
@@ -2547,6 +2552,7 @@
 				358505FE212490360045C0CD /* HCIWriteClassOfDevice.swift */,
 				358506032124A5610045C0CD /* HCIReadClassOfDevice.swift */,
 				35B4ADA62125D20700183DB1 /* HCIWriteScanEnable.swift */,
+				35B4ADAB2125DC3800183DB1 /* HCIWritePageScanType.swift */,
 			);
 			name = "Controller & Baseband";
 			sourceTree = "<group>";
@@ -3376,6 +3382,7 @@
 				3518290C20D221710009F82D /* GATTSupportedNewAlertCategory.swift in Sources */,
 				351829CA20D22DB80009F82D /* GAPPublicTargetAddress.swift in Sources */,
 				356EB94D20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */,
+				35B4ADAF2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */,
 				6E49B25020532D45002EA5DC /* DefinedUUID.swift in Sources */,
 				6E1F936F20C2183E0030367F /* GAPAppearance.swift in Sources */,
 				6E60A2EA2069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
@@ -3795,6 +3802,7 @@
 				3518290B20D221710009F82D /* GATTSupportedNewAlertCategory.swift in Sources */,
 				351829C920D22DB80009F82D /* GAPPublicTargetAddress.swift in Sources */,
 				356EB94C20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */,
+				35B4ADAE2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */,
 				6EB45EF22001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E1F936E20C2183E0030367F /* GAPAppearance.swift in Sources */,
 				6E60A2E92069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
@@ -4139,6 +4147,7 @@
 				356EB8B420D4184F0022A48D /* HCILEReadLocalSupportedFeatures.swift in Sources */,
 				351829F420D22E240009F82D /* GAPTransportDiscoveryData.swift in Sources */,
 				356E6A102118D89400DE4DEE /* HCISetConnectionEncryption.swift in Sources */,
+				35B4ADAC2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */,
 				35182A3520D2358F0009F82D /* GATTTimeTriggerSetting.swift in Sources */,
 				6E6AAE4920D25AB300DDE1CA /* ATTHandleValueConfirmation.swift in Sources */,
 				357709FA20F5358800E1AC6F /* GATTCurrentTime.swift in Sources */,
@@ -4670,6 +4679,7 @@
 				3518290A20D221710009F82D /* GATTSupportedNewAlertCategory.swift in Sources */,
 				351829C820D22DB80009F82D /* GAPPublicTargetAddress.swift in Sources */,
 				356EB94B20D455340022A48D /* GATTBarometricPressureTrend.swift in Sources */,
+				35B4ADAD2125DC3800183DB1 /* HCIWritePageScanType.swift in Sources */,
 				6EB45EF12001398100AE5A42 /* DefinedUUID.swift in Sources */,
 				6E1F936D20C2183E0030367F /* GAPAppearance.swift in Sources */,
 				6E60A2E82069582600E42351 /* LowEnergyAdvertising.swift in Sources */,
