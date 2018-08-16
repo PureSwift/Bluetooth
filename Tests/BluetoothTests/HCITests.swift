@@ -2423,6 +2423,35 @@ final class HCITests: XCTestCase {
         let scanEnable = HCIWriteScanEnable.ScanEnable(rawValue: 0x03)
         XCTAssertNoThrow(try hostController.writeScanEnable(scanEnable: scanEnable!))
     }
+    
+    func testWritePageScanType() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.128  HCI Command      0x0000                     [0C47] Write Page Scan Type
+         [0C47] Opcode: 0x0C47 (OGF: 0x03    OCF: 0x47)
+         Parameter Length: 1 (0x01)
+         Page Scan Type: 0x01
+         Interlaced Page Scan Type. Optional
+         Aug 02 17:18:10.128  HCI Command      0x0000  47 0c 01 01
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writePageScanType.opcode,
+                                             [0x47, 0x0c, 0x01, 0x01]))
+        
+        /**
+         Aug 02 17:18:10.128  HCI Event        0x0000                     Command Complete [0C47] - Write Page Scan Type
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C47 (OGF: 0x03    OCF: 0x47) - [Host Controller] Write Page Scan Type
+         Aug 02 17:18:10.128  HCI Event        0x0000  0e 04 01 47 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x47, 0x0c, 0x00]))
+        
+        let pageScanType = HCIWritePageScanType.PageScanType(rawValue: 0x01)
+        XCTAssertNoThrow(try hostController.writePageScanType(pageScanType: pageScanType!))
+    }
 }
 
 @inline(__always)
