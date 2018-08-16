@@ -2393,6 +2393,36 @@ final class HCITests: XCTestCase {
         guard computer == .laptop
             else { XCTFail("minor device class is wrong"); return }
     }
+    
+    func testWriteScanEnable() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.227  HCI Command      0x0000                     [0C1A] Write Scan Enable - Requesting Scan State: 0x03
+         [0C1A] Opcode: 0x0C1A (OGF: 0x03    OCF: 0x1A)
+         Parameter Length: 1 (0x01)
+         Scan Enable: 0x03
+         Inquiry Scan Enabled, Page Scan Enabled
+         Aug 02 17:18:10.227  HCI Command      0x0000   1a 0c 01 03
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writeScanEnable.opcode,
+                                             [0x1a, 0x0c, 0x01, 0x03]))
+        
+        /**
+         Aug 02 17:18:10.227  HCI Event        0x0000                     Command Complete [0C1A] - Write Scan Enable
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C1A (OGF: 0x03    OCF: 0x1A) - [Host Controller] Write Scan Enable
+         Aug 02 17:18:10.227  HCI Event        0x0000  0e 04 01 1a 0c 00
+
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1a, 0x0c, 0x00]))
+        
+        let scanEnable = HCIWriteScanEnable.ScanEnable(rawValue: 0x03)
+        XCTAssertNoThrow(try hostController.writeScanEnable(scanEnable: scanEnable!))
+    }
 }
 
 @inline(__always)
