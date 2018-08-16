@@ -74,7 +74,7 @@ extension HCIModeChange {
         
         public static let max = Interval(0xFFFE)
         
-        public var rawValue: UInt16
+        public let rawValue: UInt16
         
         public var duration: Double {
             
