@@ -96,7 +96,7 @@ extension HCIPINCodeRequestReply {
         
         public static let max = PINCodeLength(0x10)
         
-        public var rawValue: UInt8
+        public let rawValue: UInt8
         
         public init?(rawValue: UInt8) {
             
@@ -122,7 +122,7 @@ public struct HCIPINCodeRequestReplyReturn: HCICommandReturnParameter {
     
     public static let length: Int = 6
     
-    public var address: Address
+    public let address: Address
     
     public init?(data: Data) {
         

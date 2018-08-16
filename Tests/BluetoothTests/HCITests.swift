@@ -2452,6 +2452,38 @@ final class HCITests: XCTestCase {
         let pageScanType = HCIWritePageScanType.PageScanType(rawValue: 0x01)
         XCTAssertNoThrow(try hostController.writePageScanType(pageScanType: pageScanType!))
     }
+    
+    func testWritePageScanActivity() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.128  HCI Command      0x0000                     [0C1C] Write Page Scan Activity - 11.25/640 (ms)
+         [0C1C] Opcode: 0x0C1C (OGF: 0x03    OCF: 0x1C)
+         Parameter Length: 4 (0x04)
+         Page Scan Interval: 0x0400 (640 ms)
+         Page Scan Window: 0x0012 (11.25 ms)
+         Aug 02 17:18:10.128  HCI Command      0x0000   1c 0c 04 00 04 12 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writePageScanActivity.opcode,
+                                             [0x1c, 0x0c, 0x04, 0x00, 0x04, 0x12, 0x00]))
+        
+        /**
+         Aug 02 17:18:10.129  HCI Event        0x0000                     Command Complete [0C1C] - Write Page Scan Activity
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C1C (OGF: 0x03    OCF: 0x1C) - [Host Controller] Write Page Scan Activity
+         Aug 02 17:18:10.129  HCI Event        0x0000   0e 04 01 1c 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1c, 0x0c, 0x00]))
+        
+        let scanInterval = HCIWritePageScanActivity.PageScanInterval(rawValue: 0x0020)
+        let scanWindow = HCIWritePageScanActivity.PageScanWindow(rawValue: 0x0020)
+        
+        XCTAssertNoThrow(try hostController.writePageScanActivity(scanInterval: scanInterval!,
+                                                                  scanWindow: scanWindow!))
+    }
 }
 
 @inline(__always)
