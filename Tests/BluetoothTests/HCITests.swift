@@ -2639,6 +2639,73 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(event.connectionHandle, 0x000B)
         XCTAssertEqual(event.packetType, 0xCC18)
     }
+    
+    func testMaxSlotsChange() {
+        
+        /**
+         Aug 17 09:58:05.806  HCI Event        0x000B  iPhone             Max slots change - Max slots: 0x05 -
+         Parameter Length: 3 (0x03)
+         Connection Handle: 0x000B
+         LMP Max Slots: 0x05
+         Aug 17 09:58:05.806  HCI Event        0x0000                     00000000: 1b 03 0b 00 05
+
+         */
+        let data = Data([0x0b, 0x00, 0x05])
+        
+        guard let event = HCIMaxSlotsChange(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.connectionHandle, 0x000B)
+        XCTAssertEqual(event.maxSlotsLMP, 0x05)
+    }
+    
+    func testWritePageTimeout() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 17 09:58:04.840  HCI Command      0x0000                     [0C18] Write Page Timeout - 0x4000 (10.24 s)
+         [0C18] Opcode: 0x0C18 (OGF: 0x03    OCF: 0x18)
+         Parameter Length: 2 (0x02)
+         Page Timeout: 0x4000 (10240 ms)
+         Aug 17 09:58:04.840  HCI Command      0x0000                     00000000: 18 0c 02 00 40
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writePageTimeout.opcode,
+                                             [0x18, 0x0c, 0x02, 0x00, 0x40]))
+        
+        /**
+         Aug 17 09:58:04.840  HCI Event        0x0000                     Command Complete [0C18] - Write Page Timeout
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C18 (OGF: 0x03    OCF: 0x18) - [Host Controller] Write Page Timeout
+         Aug 17 09:58:04.840  HCI Event        0x0000                     00000000: 0e 04 01 18 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x18, 0x0c, 0x00]))
+        
+        guard let pageTimeout = HCIWritePageTimeout.PageTimeout(rawValue: 0x4000)
+            else { XCTFail("Unable to init pageTimeout"); return }
+        
+        XCTAssertNoThrow(try hostController.writePageTimeout(pageTimeout: pageTimeout))
+    }
+    
+    func testSimplePairingComplete() {
+        
+        /**
+         Aug 17 09:58:58.511  HCI Event        0x0000  iPhone             Simple Pairing Complete - B0:70:2D:06:D2:AF
+         Parameter Length: 7 (0x07)
+         Status: 0x00 - Success
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 17 09:58:58.511  HCI Event        0x0000                     00000000: 36 07 00 af d2 06 2d 70 b0
+         */
+        let data = Data([0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
+        
+        guard let event = HCISimplePairingComplete(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.status.rawValue, 0x00)
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+    }
 }
 
 @inline(__always)

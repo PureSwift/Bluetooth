@@ -17,9 +17,9 @@ public struct HCIConnectionPacketTypeChange: HCIEventParameter {
     
     public let status: HCIStatus
     
-    public var connectionHandle: UInt16
+    public let connectionHandle: UInt16
     
-    public var packetType: UInt16
+    public let packetType: UInt16
     
     public init?(data: Data) {
         
