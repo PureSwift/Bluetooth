@@ -68,7 +68,8 @@ final class HCITests: XCTestCase {
         ("testWriteScanEnable", testWriteScanEnable),
         ("testWritePageScanType", testWritePageScanType),
         ("testWritePageScanActivity", testWritePageScanActivity),
-        ("testIOCapabilityRequestReply", testIOCapabilityRequestReply)
+        ("testIOCapabilityRequestReply", testIOCapabilityRequestReply),
+        ("testIOCapabilityRequest", testIOCapabilityRequest)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -2532,6 +2533,22 @@ final class HCITests: XCTestCase {
                                                                      ioCapability: ioCapability,
                                                                      obbDataPresent: dataPresent,
                                                                      authenticationRequirements: authenticationRequeriments))
+    }
+    
+    func testIOCapabilityRequest() {
+        
+        /**
+         Aug 16 17:57:32.829  HCI Event        0x0000  iPhone             IO Capability Request - B0:70:2D:06:D2:AF
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 16 17:57:32.829  HCI Event        0x0000  31 06 af d2 06 2d 70 b0
+         */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
+        
+        guard let event = HCIIOCapabilityRequest(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
     }
 }
 
