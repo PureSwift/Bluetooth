@@ -2619,6 +2619,26 @@ final class HCITests: XCTestCase {
         
         XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
     }
+    
+    func testConnectionPacketTypeChange() {
+        
+        /**
+         Aug 17 09:58:05.811  HCI Event        0x000B  iPhone             Connection Packet Type Changed
+         Parameter Length: 5 (0x05)
+         Status: 0x00 - Success
+         Connection Handle: 0x000B
+         Packet Type: 0xCC18
+         Aug 17 09:58:05.811  HCI Event        0x0000                     00000000: 1d 05 00 0b 00 18 cc
+         */
+        let data = Data([0x00, 0x0b, 0x00, 0x18, 0xcc])
+        
+        guard let event = HCIConnectionPacketTypeChange(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.status.rawValue, 0x00)
+        XCTAssertEqual(event.connectionHandle, 0x000B)
+        XCTAssertEqual(event.packetType, 0xCC18)
+    }
 }
 
 @inline(__always)
