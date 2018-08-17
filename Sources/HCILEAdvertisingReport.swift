@@ -122,6 +122,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
             self.rssi = rssi
         }
         
+        /// Low Energy Advertising Event
         public enum Event: UInt8 { // Event_Type
             
             /// Connectable undirected advertising event
@@ -138,6 +139,18 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
             
             /// Scan Response
             case scanResponse       = 0x04 // SCAN_RSP
+            
+            /// Whether the event is connectable.
+            public var isConnectable: Bool {
+                
+                switch self {
+                case .undirected:       return true
+                case .directed:         return true
+                case .scannable:        return true // if you can scan, you can connect
+                case .nonConnectable:   return false
+                case .scanResponse:     return true
+                }
+            }
         }
     }
 }
