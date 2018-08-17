@@ -64,12 +64,15 @@ final class HCITests: XCTestCase {
         ("testReset", testReset),
         ("testReadStoredLinkKey", testReadStoredLinkKey),
         ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testReadClassOfDevice", testReadClassOfDevice),
         ("testWriteClassOfDevice", testWriteClassOfDevice),
         ("testWriteScanEnable", testWriteScanEnable),
         ("testWritePageScanType", testWritePageScanType),
         ("testWritePageScanActivity", testWritePageScanActivity),
         ("testIOCapabilityRequestReply", testIOCapabilityRequestReply),
-        ("testIOCapabilityRequest", testIOCapabilityRequest)
+        ("testIOCapabilityRequest", testIOCapabilityRequest),
+        ("testUserConfirmationRequest", testUserConfirmationRequest),
+        ("testUserConfirmationRequestReply", testUserConfirmationRequestReply)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -2546,6 +2549,72 @@ final class HCITests: XCTestCase {
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
         
         guard let event = HCIIOCapabilityRequest(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+    }
+    
+    func testIOCapabilityResponse() {
+        
+        /**
+         Aug 17 09:58:05.836  HCI Event        0x0000  iPhone             IO Capability Response - B0:70:2D:06:D2:AF
+         Parameter Length: 9 (0x09)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         IO Capability: 0x01 (Display Yes No)
+         OOB Data Present: 0x00
+         Authentication Requirements: 0x03 (MTIM prorection and dedicated bonding required)
+         Aug 17 09:58:05.836  HCI Event        0x0000                     00000000: 32 09 af d2 06 2d 70 b0 01 00 03
+         */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x03])
+        
+        guard let event = HCIIOCapabilityResponse(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+    }
+    
+    func testUserConfirmationRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 17 09:58:05.937  HCI Command      0x0000  iPhone             [042C] User Confirmation Request Reply - B0:70:2D:06:D2:AF
+         [042C] Opcode: 0x042C (OGF: 0x01    OCF: 0x2C)
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 17 09:58:05.937  HCI Command      0x0000                     00000000: 2c 04 06 af d2 06 2d 70 b0
+         */
+        hostController.queue.append(.command(LinkControlCommand.userConfirmationRequestReply.opcode,
+                                             [0x2c, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        /**
+         Aug 17 09:58:05.939  HCI Event        0x0000                     Command Complete [042C] - User Confirmation Request Reply
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x042C (OGF: 0x01    OCF: 0x2C) - [Link Control] User Confirmation Request Reply
+         Aug 17 09:58:05.939  HCI Event        0x0000                     00000000: 0e 0a 01 2c 04 00 af d2 06 2d 70 b0
+         */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2c, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init address"); return }
+        
+        XCTAssertNoThrow(try hostController.userConfirmationRequestReply(address: address))
+    }
+    
+    func testUserConfirmationRequest() {
+        
+        /**
+         Aug 17 09:58:05.935  HCI Event        0x0000  iPhone             User Confirmation Request - B0:70:2D:06:D2:AF
+         Parameter Length: 10 (0x0A)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Numeric Value: 715438
+         Aug 17 09:58:05.935  HCI Event        0x0000   33 0a af d2 06 2d 70 b0 ae ea 0a 00
+         */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0xae, 0xea, 0x0a, 0x00])
+        
+        guard let event = HCIUserConfirmationRequest(data: data)
             else { XCTFail("Unable to parse event"); return }
         
         XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
