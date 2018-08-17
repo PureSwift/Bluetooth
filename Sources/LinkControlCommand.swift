@@ -11,82 +11,139 @@ public enum LinkControlCommand: UInt16, HCICommand {
     public static let opcodeGroupField = HCIOpcodeGroupField.linkControl
     
     /// Command used to enter Inquiry mode where it discovers other Bluetooth devices.
-    case inquiry                    = 0x0001
+    case inquiry = 0x0001
     
     /// Command to cancel the Inquiry mode in which the Bluetooth device is in.
-    case inquiryCancel              = 0x0002
+    case inquiryCancel = 0x0002
     
     /// Command to set the device to enter Inquiry modes periodically according to the time interval set.
-    case periodicInquiry            = 0x0003
+    case periodicInquiry = 0x0003
     
     /// Command to exit the periodic Inquiry mode.
-    case exitPeriodicInquiry        = 0x0004
+    case exitPeriodicInquiry = 0x0004
     
     /// Command to create an ACL connection to the device specified by the BD_ADDR in the parameters.
-    case createConnection           = 0x0005
+    case createConnection = 0x0005
     
     /// Command to terminate the existing connection to a device.
-    case disconnect                 = 0x0006
+    case disconnect = 0x0006
     
     /// Create an SCO connection defined by the connection handle parameters.
-    case addSCOConnection           = 0x0007
+    case addSCOConnection = 0x0007
     
     /// Cancel Create Connection
-    case createConnectionCancel     = 0x0008
+    case createConnectionCancel = 0x0008
     
     /// Command to accept a new connection request.
-    case acceptConnection           = 0x0009
+    case acceptConnection = 0x0009
     
     /// Command to reject a new connection request.
-    case rejectConnection           = 0x000A
+    case rejectConnection = 0x000A
     
     /// Reply command to a link key request event sent from controller to the host.
-    case linkKeyReply               = 0x000B
+    case linkKeyReply = 0x000B
     
     /// Reply command to a link key request event from the controller to the host if there is no link key associated with the connection.
-    case linkKeyNegativeReply       = 0x000C
+    case linkKeyNegativeReply = 0x000C
     
     /// Reply command to a PIN code request event sent from a controller to the host.
-    case pinCodeReply               = 0x000D
+    case pinCodeReply = 0x000D
     
     /// Reply command to a PIN code request event sent from the controller to the host if there is no PIN associated with the connection.
-    case pinCodeNegativeReply       = 0x000E
+    case pinCodeNegativeReply = 0x000E
     
     /// Command to change the type of packets to be sent for an existing connection.
-    case setConnectionPacketType    = 0x000F
+    case setConnectionPacketType = 0x000F
     
     /// Command to establish authentication between two devices specified by the connection handle.
-    case authenticationRequested    = 0x0011
+    case authenticationRequested = 0x0011
     
     /// Command to enable or disable the link level encryption.
-    case setConnectionEncryption    = 0x0013
+    case setConnectionEncryption = 0x0013
     
     /// Command to force the change of a link key to a new one between two connected devices.
-    case changeConnectionLinkKey    = 0x0015
+    case changeConnectionLinkKey = 0x0015
     
     /// Command to force two devices to use the master's link key temporarily.
-    case masterLinkKey              = 0x0017
+    case masterLinkKey = 0x0017
     
     /// Command to determine the user friendly name of the connected device.
-    case remoteNameRequest          = 0x0019
+    case remoteNameRequest = 0x0019
     
     /// Cancels the remote name request.
-    case remoteNameRequestCancel    = 0x001A
+    case remoteNameRequestCancel = 0x001A
     
     /// Command to determine the features supported by the connected device.
-    case readRemoteFeatures         = 0x001B
+    case readRemoteFeatures = 0x001B
     
     /// Command to determine the extended features supported by the connected device.
     case readRemoteExtendedFeatures = 0x001C
     
     /// Command to determine the version information of the connected device.
-    case readRemoteVersion          = 0x001D
+    case readRemoteVersion = 0x001D
     
     /// Command to read the clock offset of the remote device.
-    case readClockOffset            = 0x001F
+    case readClockOffset = 0x001F
     
     /// Read LMP Handle
-    case readLMPHandle              = 0x0020
+    case readLMPHandle = 0x0020
+    
+    /// Setup Synchronous Connection Command
+    case setupSynchronousConnection = 0x0028
+    
+    /// Accept Synchronous Connection Request Command
+    case acceptSychronousConnection = 0x0029
+    
+    /// Reject Synchronous Connection Request Command
+    case rejectSynchronousConnection = 0x002A
+    
+    /// IO Capability Request Reply Command
+    case ioCapabilityRequestReply = 0x002B
+    
+    /// User Confirmation Request Reply Command
+    case userConfirmationRequestReply = 0x002C
+    
+    /// User Confirmation Request Negative Reply Command
+    case userConfirmationRequestNegativeReply = 0x002D
+    
+    /// User Passkey Request Reply Command
+    case userPasskeyRequestReply = 0x002E
+    
+    /// User Passkey Request Negative Reply Command
+    case userPasskeyRequestNegativeReply = 0x002F
+    
+    /// Remote OOB Data Request Reply Command
+    case remoteOOBDataRequestReply = 0x0030
+    
+    /// Remote OOB Data Request Negative Reply Command
+    case remoteOOBDataRequestNegativeReply = 0x0033
+    
+    /// IO Capability Request Negative Reply Command
+    case ioCapabilityRequestNegativeReply = 0x0034
+    
+    /// Create Physical Link Command
+    case createPhysicalLink = 0x0035
+    
+    /// Accept Physical Link Command
+    case acceptPhysicalLink = 0x0036
+    
+    /// Disconnect Physical Link Command
+    case disconnectPhysicalLink = 0x0037
+    
+    /// Create Logical Link Command
+    case createLogicalLink = 0x0038
+    
+    /// Accept Logical Link Command
+    case acceptLogicalLink = 0x0039
+    
+    /// Disconnect Logical Link Command
+    case disconnectLogicalLink = 0x003A
+    
+    /// Logical Link Cancel Command
+    case logicalLinkCancel = 0x003B
+    
+    /// Flow Spec Modify Command
+    case flowSpecModify = 0x003C
 }
 
 // MARK: - Name

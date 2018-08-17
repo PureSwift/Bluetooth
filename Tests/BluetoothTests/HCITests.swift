@@ -64,7 +64,11 @@ final class HCITests: XCTestCase {
         ("testReset", testReset),
         ("testReadStoredLinkKey", testReadStoredLinkKey),
         ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
-        ("testWriteClassOfDevice", testWriteClassOfDevice)
+        ("testWriteClassOfDevice", testWriteClassOfDevice),
+        ("testWriteScanEnable", testWriteScanEnable),
+        ("testWritePageScanType", testWritePageScanType),
+        ("testWritePageScanActivity", testWritePageScanActivity),
+        ("testIOCapabilityRequestReply", testIOCapabilityRequestReply)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -2478,11 +2482,56 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1c, 0x0c, 0x00]))
         
-        let scanInterval = HCIWritePageScanActivity.PageScanInterval(rawValue: 0x0020)
-        let scanWindow = HCIWritePageScanActivity.PageScanWindow(rawValue: 0x0020)
+        let scanInterval = HCIWritePageScanActivity.PageScanInterval(rawValue: 0x0400)
+        let scanWindow = HCIWritePageScanActivity.PageScanWindow(rawValue: 0x0012)
         
         XCTAssertNoThrow(try hostController.writePageScanActivity(scanInterval: scanInterval!,
                                                                   scanWindow: scanWindow!))
+    }
+    
+    func testIOCapabilityRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 16 17:57:32.832  HCI Command      0x0000  iPhone             [042B] IO Capability Request Reply - B0:70:2D:06:D2:AF
+         [042B] Opcode: 0x042B (OGF: 0x01    OCF: 0x2B)
+         Parameter Length: 9 (0x09)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         IO Capability: 0x01 (Display Yes No)
+         OOB Data Present: 0x00
+         Authentication Requirements: 0x02 (MITM protection not required and dedicated bonding required)
+         Aug 16 17:57:32.832  HCI Command      0x0000   2b 04 09 af d2 06 2d 70 b0 01 00 02
+         */
+        hostController.queue.append(.command(LinkControlCommand.ioCapabilityRequestReply.opcode,
+                                             [0x2b, 0x04, 0x09, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x02]))
+        
+        /**
+         Aug 16 17:57:32.832  HCI Event        0x0000                     Command Complete [042B] - IO Capability Request Reply
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x042B (OGF: 0x01    OCF: 0x2B) - [Link Control] IO Capability Request Reply
+         Aug 16 17:57:32.832  HCI Event        0x0000   0e 0a 01 2b 04 00 af d2 06 2d 70 b0
+         */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Cannot init address"); return }
+        
+        guard let ioCapability = HCIIOCapabilityRequestReply.IOCapability(rawValue: 0x01)
+            else { XCTFail("Cannot init ioCapability"); return }
+        
+        guard let dataPresent = HCIIOCapabilityRequestReply.OBBDataPresent(rawValue: 0x00)
+            else { XCTFail("Cannot init daatPresent"); return }
+        
+        guard let authenticationRequeriments = HCIIOCapabilityRequestReply.AuthenticationRequirements(rawValue: 0x02)
+            else { XCTFail("Cannot init daatPresent"); return }
+        
+        XCTAssertNoThrow(try hostController.ioCapabilityRequestReply(address: address,
+                                                                     ioCapability: ioCapability,
+                                                                     obbDataPresent: dataPresent,
+                                                                     authenticationRequirements: authenticationRequeriments))
     }
 }
 
