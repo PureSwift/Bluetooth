@@ -558,11 +558,13 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(reports[0].addressType, .random)
         XCTAssertEqual(reports[0].rssi.rawValue, -55)
         XCTAssertEqual(reports[0].event, .nonConnectable)
+        XCTAssertEqual(reports[0].event.isConnectable, false)
         
         XCTAssertEqual(reports[1].address, Address(rawValue: "C8:69:CD:46:0B:5D"))
         XCTAssertEqual(reports[1].addressType, .public)
         XCTAssertEqual(reports[1].rssi.rawValue, -54)
         XCTAssertEqual(reports[1].event, .undirected)
+        XCTAssertEqual(reports[1].event.isConnectable, true)
     }
     
     func testLEReadRemoteUsedFeatures() {
@@ -689,6 +691,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.address, Address(rawValue: "58:E2:8F:7C:0B:B3")!)
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .undirected)
+            XCTAssertEqual(report.event.isConnectable, true)
             XCTAssertEqual(report.rssi.rawValue, -45)
             XCTAssertEqual(report.responseData.count, 0x16)
             
@@ -723,6 +726,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.address, Address(rawValue: "58:E2:8F:7C:0B:B3")!)
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
+            XCTAssertEqual(report.event.isConnectable, true)
             XCTAssertEqual(report.rssi.rawValue, -44)
             XCTAssertEqual(report.responseData.data, Data())
         }
@@ -755,6 +759,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.address, Address(rawValue: "00:1A:AE:06:EF:9E")!)
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
+            XCTAssertEqual(report.event.isConnectable, true)
             XCTAssertEqual(report.rssi.rawValue, -70)
             XCTAssertEqual(report.responseData.count, 0x0C)
             XCTAssertEqual(report.responseData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
