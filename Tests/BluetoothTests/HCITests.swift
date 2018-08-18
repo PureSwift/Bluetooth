@@ -33,9 +33,46 @@ final class HCITests: XCTestCase {
         ("testEncryptionChangeEvent", testEncryptionChangeEvent),
         ("testLowEnergyEncrypt", testLowEnergyEncrypt),
         ("testSetLERandomAddress", testSetLERandomAddress),
-        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testLEReadLocalSupportedFeatures", testLEReadLocalSupportedFeatures),
         ("testReadBufferSize", testReadBufferSize),
-        ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter)
+        ("testSetAdvertiseEnableParameter", testSetAdvertiseEnableParameter),
+        ("testInquiry", testInquiry),
+        ("testInquiryResult", testInquiryResult),
+        ("testPeriodicInquiryModeAndCancel", testPeriodicInquiryModeAndCancel),
+        ("testExitPeriodicInquiryMode", testExitPeriodicInquiryMode),
+        ("testCreateConnection", testCreateConnection),
+        ("testConnectionComplete", testConnectionComplete),
+        ("testAcceptConnectionRequest", testAcceptConnectionRequest),
+        ("testLinkKeyRequestReply", testLinkKeyRequestReply),
+        ("testLinkKeyRequest", testLinkKeyRequest),
+        ("testReadDataBlockSize", testReadDataBlockSize),
+        ("testSetConnectionencryption", testSetConnectionencryption),
+        ("testReadRemoteSupportedFeatures", testReadRemoteSupportedFeatures),
+        ("testReadRemoteExtendedFeatures", testReadRemoteExtendedFeatures),
+        ("testReadRemoteVersionInformation", testReadRemoteVersionInformation),
+        ("testAuthenticationRequested", testAuthenticationRequested),
+        ("testChangeConnectionPacketType", testChangeConnectionPacketType),
+        ("testPINCodeRequest", testPINCodeRequest),
+        ("testPINCodeRequestReply", testPINCodeRequestReply),
+        ("testLinkKeyNotification", testLinkKeyNotification),
+        ("testModeChange", testModeChange),
+        ("testWriteLinkPolicySettings", testWriteLinkPolicySettings),
+        ("testQoSSetup", testQoSSetup),
+        ("testReadPageTimeout", testReadPageTimeout),
+        ("testWriteLinkSupervisionTimeout", testWriteLinkSupervisionTimeout),
+        ("testNumberOfCompletedPackets", testNumberOfCompletedPackets),
+        ("testReset", testReset),
+        ("testReadStoredLinkKey", testReadStoredLinkKey),
+        ("testReadLocalSupportedFeatures", testReadLocalSupportedFeatures),
+        ("testReadClassOfDevice", testReadClassOfDevice),
+        ("testWriteClassOfDevice", testWriteClassOfDevice),
+        ("testWriteScanEnable", testWriteScanEnable),
+        ("testWritePageScanType", testWritePageScanType),
+        ("testWritePageScanActivity", testWritePageScanActivity),
+        ("testIOCapabilityRequestReply", testIOCapabilityRequestReply),
+        ("testIOCapabilityRequest", testIOCapabilityRequest),
+        ("testUserConfirmationRequest", testUserConfirmationRequest),
+        ("testUserConfirmationRequestReply", testUserConfirmationRequestReply)
     ]
     
     func testSetAdvertiseEnableParameter() {
@@ -96,7 +133,7 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(readBufferSizeReturn.dataPacket, 0x000F)
     }
     
-    func testReadLocalSupportedFeatures() {
+    func testLEReadLocalSupportedFeatures() {
         
         let hostController = TestHostController()
         
@@ -127,7 +164,7 @@ final class HCITests: XCTestCase {
          */
         
         var lowEnergyFeatureSet: LowEnergyFeatureSet!
-        XCTAssertNoThrow(lowEnergyFeatureSet = try hostController.readLocalSupportedFeatures())
+        XCTAssertNoThrow(lowEnergyFeatureSet = try hostController.lowEnergyReadLocalSupportedFeatures())
         XCTAssert(hostController.queue.isEmpty)
         
         XCTAssertEqual(lowEnergyFeatureSet.rawValue, 0x000000000000003F)
@@ -728,6 +765,8 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.responseData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
             
         }
+        
+        
     }
     
     func testCommandStatusEvent() {
@@ -1129,6 +1168,1548 @@ final class HCITests: XCTestCase {
         
         XCTAssertNoThrow(try hostController.lowEnergySetRandomAddress(randomAddress))
         XCTAssert(hostController.queue.isEmpty)
+    }
+    
+    func testRemoteNameRequest() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [0419] Opcode: 0x0419 (OGF: 0x01    OCF: 0x19)
+         Parameter Length: 10 (0x0A)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Page Scan Repetition Mode: 0x01
+         Page Scan Mode: 0x00
+         Clock Offset: 0x1B5A
+         Aug 02 17:19:16.588  HCI Command 19 04 0a af d2 06 2d 70 b0 01 00 5a 1b
+        */
+        hostController.queue.append(
+            .command(LinkControlCommand.remoteNameRequest.opcode,
+                     [0x19, 0x04, 0x0a, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x5a, 0x1b])
+        )
+        
+        do {
+            /**
+             Aug 02 17:19:16.589  HCI Event        0x0000                     Command Status - Remote Name Request
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0419 (OGF: 0x01    OCF: 0x19) - [Link Control] Remote Name Request
+             Aug 02 17:19:16.589  HCI Event  0f 04 00 01 19 04
+            */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x19, 0x04]))
+        }
+        
+        do {
+            /**
+             Aug 02 17:19:16.595  HCI Event        0x0000  iPhone             Remote Name Request Complete - B0:70:2D:06:D2:AF - iPhone
+             Parameter Length: 255 (0xFF)
+             Status: 0x00 - Success
+             Bluetooth Device Address: B0:70:2D:06:D2:AF
+             Remote Name: iPhone
+             Aug 02 17:19:16.595  HCI Event 07 FF 00 AF D2 06 2D 70 B0 69 50 68 6F 6E 65 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00                                      .
+            */
+            let buffer: [UInt8] = [0x00, 0xAF, 0xD2, 0x06, 0x2D, 0x70, 0xB0, 0x69, 0x50, 0x68, 0x6F, 0x6E, 0x65, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+            
+            let eventHeader = HCIEventHeader(event: .remoteNameRequestComplete, parameterLength: 0xFF)
+            
+            hostController.queue.append(.event(eventHeader.data + buffer))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        let pscanRepMode = PageScanRepetitionMode(rawValue: 0x01)
+        
+        let clockOffset = HCIRemoteNameRequest.ClockOffset(rawValue: 0x1B5A)
+        
+        XCTAssertNoThrow(try hostController.remoteNameRequest(address: address,
+                                                              pscanRepMode: pscanRepMode,
+                                                              clockOffset: clockOffset))
+    }
+    
+    func testInquiry() {
+        
+        XCTAssertEqual(HCIInquiry.Duration.min.seconds, 1.28, "Range: 1.28 – 61.44 Sec")
+        XCTAssertEqual(HCIInquiry.Duration.max.seconds, 61.44, "Range: 1.28 – 61.44 Sec")
+        (0x01 ... 0x30).forEach { XCTAssertNotNil(HCIInquiry.Duration(rawValue: UInt8($0)), "Could not initialize") }
+        XCTAssertNil(HCIInquiry.Duration(rawValue: 0))
+        (UInt8(0x31) ..< .max).forEach { XCTAssertNil(HCIInquiry.Duration(rawValue: $0), "Should not initialize") }
+        
+        guard let lap = HCIInquiry.LAP(rawValue: UInt24(bytes: (0x33, 0x8b, 0x9e)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let duration = HCIInquiry.Duration(rawValue: 0x0A)
+            else { XCTFail("Unable to init variable"); return }
+        
+        let responses = HCIInquiry.Responses(rawValue: 0xFF)
+        
+        XCTAssertNotNil(HCIInquiry(lap: lap, duration: duration, responses: responses))
+        
+        let hostController = TestHostController()
+        
+        /**
+         [0401] Opcode: 0x0401 (OGF: 0x01    OCF: 0x01)
+         Parameter Length: 5 (0x05)
+         LAP: 0x9E8B00
+         Inquiry Length: 0x05
+         6.400000 seconds
+         Number of Responses: 0x20
+         Jul 26 15:27:21.774  HCI Command  01 04 05 00 8b 9e 05 20
+         */
+        hostController.queue.append(
+            .command(LinkControlCommand.inquiry.opcode, [0x01, 0x04, 0x05, 0x33, 0x8b, 0x9e, 0x0a, 0xff])
+        )
+        
+        do {
+            /**
+             Jul 26 15:27:21.774  HCI Event
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0401 (OGF: 0x01    OCF: 0x01) - [Link Control] HCI Inquiry
+             Jul 26 15:27:21.774  HCI Event  0f 04 00 01 01 04
+             */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x01, 0x04]))
+        }
+        
+        do {
+            /**
+             Parameter Length: 1 (0x01)
+             Status: 0x00 - Success
+             Jul 26 21:39:41.741  HCI Event 01 01 00                                  ...
+             */
+            let eventHeader = HCIEventHeader(event: .inquiryComplete, parameterLength: 0x01)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00]))
+        }
+        
+        XCTAssertNoThrow(try hostController.inquiry(lap: lap,
+                                                    duration: duration,
+                                                    responses: responses,
+                                                    timeout: 10000,
+                                                    foundDevice: { _ in }))
+    }
+    
+    func testInquiryResult() {
+        
+        do {
+            /**
+             Jul 26 21:39:43.265  HCI Event
+             RECV  0x0000  04:B1:67:1D:F4:ED  Inquiry Result - EIR  - 04:B1:67:1D:F4:ED - Phone : Phone - RSSI: -72 dBm
+             Parameter Length: 255 (0xFF)
+             Num Responses: 0x01
+             Bluetooth Device Address: 04:B1:67:1D:F4:ED
+             Page Scan Repetition Mode: 0x01
+             Reserved: 0x00
+             Class Of Device: 0x000000
+             Service Class: 0x0000
+             Major Class: 0x0000
+             Miscellaneous
+             Minor Class: 0x0000
+             Clock Offset: 0x1E52
+             RSSI: 0xB8 (-72 dBm)
+             */
+            
+            let data = Data([0x2F, 0xFF, 0x01, 0xED, 0xF4, 0x1D, 0x67, 0xB1, 0x04, 0x01, 0x00, 0x0C, 0x02, 0x5A, 0x52, 0x1E, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+            
+            guard let event = HCIInquiryResult(data: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssertEqual(event.reports[0].classOfDevice.majorDeviceClass, .miscellaneous)
+            XCTAssertEqual(event.reports[0].address, Address(rawValue: "04:B1:67:1D:F4:ED"))
+        }
+    }
+    
+    func testInquiryCancel() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [0402] Opcode: 0x0402 (OGF: 0x01    OCF: 0x02)
+         Parameter Length: 0 (0x00)
+         Jul 26 21:39:51.983  HCI Command   02 04 00s
+         */
+        hostController.queue.append(.command(LinkControlCommand.inquiryCancel.opcode, [0x02, 0x04, 0x00]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0402 (OGF: 0x01    OCF: 0x02) - [Link Control] HCI Inquiry Cancel
+             Jul 26 21:39:51.986  HCI Event  0e 04 01 02 04 00
+            */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x02, 0x04, 0x00]))
+        }
+        
+        XCTAssertNoThrow(try hostController.inquiryCancel())
+    }
+    
+    func testPeriodicInquiryModeAndCancel() {
+        
+        XCTAssertEqual(HCIPeriodicInquiryMode.Duration.min.seconds, 1.28, "Range: 1.28 – 61.44 Sec")
+        XCTAssertEqual(HCIPeriodicInquiryMode.Duration.max.seconds, 61.44, "Range: 1.28 – 61.44 Sec")
+        (0x01 ... 0x30).forEach { XCTAssertNotNil(HCIPeriodicInquiryMode.Duration(rawValue: UInt8($0)), "Could not initialize") }
+        XCTAssertNil(HCIPeriodicInquiryMode.Duration(rawValue: 0))
+        (UInt8(0x31) ..< .max).forEach { XCTAssertNil(HCIPeriodicInquiryMode.Duration(rawValue: $0), "Should not initialize") }
+        
+        XCTAssertEqual(HCIPeriodicInquiryMode.MaxDuration.min.seconds, 3.84)
+        XCTAssertEqual(HCIPeriodicInquiryMode.MaxDuration.max.seconds, 83884.8)
+        XCTAssertEqual(HCIPeriodicInquiryMode.MinDuration.min.seconds, 2.56)
+        XCTAssertEqual(HCIPeriodicInquiryMode.MinDuration.max.seconds, 83883.52)
+        XCTAssertEqual(HCIPeriodicInquiryMode.Responses.unlimited.rawValue, 0x00)
+        
+        let hostController = TestHostController()
+        
+        guard let maxDuration = HCIPeriodicInquiryMode.MaxDuration(rawValue: UInt16(bytes: (0x09, 0x00)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let minDuration = HCIPeriodicInquiryMode.MinDuration(rawValue: UInt16(bytes: (0x05, 0x00)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let lap = HCIPeriodicInquiryMode.LAP(rawValue: UInt24(bytes: (0x00, 0x8b, 0x9e)))
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let duration = HCIPeriodicInquiryMode.Duration(rawValue: 0x03)
+            else { XCTFail("Unable to init variable"); return }
+        
+        let responses = HCIPeriodicInquiryMode.Responses(rawValue: 0x20)
+        
+        /**
+         [0403] Opcode: 0x0403 (OGF: 0x01 OCF: 0x03)
+         Parameter Length: 9 (0x09)
+         Max Period Length: 0x09
+         Min Period Length: 0x05
+         LAP: 0x9E8B00
+         Inquiry Length: 0x03
+         Number of Responses: 0x20
+         Jul 27 10:46:57.461  HCI Command  00000000: 03 04 09 09 00 05 00 00 8b 9e 03 20
+         */
+        hostController.queue.append(.command(LinkControlCommand.periodicInquiry.opcode,
+                                             [0x03, 0x04, 0x09, 0x09, 0x00, 0x05, 0x00, 0x00, 0x8b, 0x9e, 0x03, 0x20]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0403 (OGF: 0x01    OCF: 0x03) - [Link Control] Periodic Inquiry Mode
+             Jul 27 10:46:57.462  HCI Event  0e 04 01 03 04 00
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x03, 0x04, 0x00]))
+        }
+        
+        XCTAssertNoThrow(try hostController.periodicInquiryMode(maxDuration: maxDuration,
+                                                                minDuration: minDuration,
+                                                                lap: lap,
+                                                                length: duration,
+                                                                responses: responses))
+    }
+    
+    func testExitPeriodicInquiryMode() {
+        
+        /**
+         [0404] Opcode: 0x0404 (OGF: 0x01    OCF: 0x04)
+         Parameter Length: 0 (0x00)
+         Jul 31 11:19:59.716  HCI Command  04 04 00 
+        */
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.exitPeriodicInquiry.opcode, [0x04, 0x04, 0x00]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0404 (OGF: 0x01    OCF: 0x04) - [Link Control] Exit Periodic Inquiry Mode
+             Jul 31 11:19:59.716  HCI Event 0e 04 01 04 04 00
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x04, 0x04, 0x00]))
+        }
+        
+        XCTAssertNoThrow(try hostController.exitPeriodicInquiry())
+    }
+    
+    func testCreateConnection() {
+        
+        typealias ClockOffset = HCICreateConnection.ClockOffset
+        typealias AllowRoleSwitch = HCICreateConnection.AllowRoleSwitch
+        /**
+         [0405] Opcode: 0x0405 (OGF: 0x01    OCF: 0x05)
+         Parameter Length: 13 (0x0D)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Packet Type: 0xCC18
+         Page Scan Repetition Mode: 0x01
+         Page Scan Mode: 0x00
+         Clock Offset: 0x0000
+         Allow Role Switch: 0x00
+         Jul 31 12:06:31.407  HCI Command  0504 0daf d206 2d70 b018 cc01 0000 0000
+        */
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.createConnection.opcode,
+                                             [0x05, 0x04, 0x0d, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x18, 0xcc, 0x01, 0x00, 0x00, 0x00, 0x00]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0405 (OGF: 0x01    OCF: 0x05) - [Link Control] Create Connection
+             Jul 31 12:06:31.408  HCI Event 0f04 0001 0504
+             */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x05, 0x04]))
+        }
+        
+        do {
+            /**
+             Parameter Length: 11 (0x0B)
+             Status: 0x00 - Success
+             Connection Handle: 0x000D
+             Bluetooth Device Address: B0:70:2D:06:D2:AF
+             Link Type: 0x01
+             Encryption Mode: 0x00
+             Jul 31 12:06:31.943  HCI Event 030b 000d 00af d206 2d70 b001 00
+            */
+            let eventHeader = HCIEventHeader(event: .connectionComplete, parameterLength: 0x0b)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: 0x01)
+        
+        guard let allowSwitchRole = AllowRoleSwitch(rawValue: 0x00)
+            else { XCTFail("Unable to init variable"); return }
+
+        XCTAssertNoThrow(try hostController.createConnection(address: address,
+                                                             packetType: 0xCC18,
+                                                             pageScanRepetitionMode: pageScanRepetitionMode,
+                                                             clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
+                                                             allowRoleSwitch: allowSwitchRole))
+    }
+    
+    func testCreateConnectionCancel() {
+        
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.createConnectionCancel.opcode,
+                                             [0x08, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0408 (OGF: 0x01    OCF: 0x03) - [Link Control] Create Connection
+             Aug 02 10:46:57.462  HCI Event  0e 04 01 08 04 00
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x08, 0x04, 0x00]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        XCTAssertNoThrow(try hostController.cancelConnection(address: address))
+    }
+    
+    func testConnectionComplete() {
+        
+        /**
+         Parameter Length: 11 (0x0B)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Link Type: 0x01
+         Encryption Mode: 0x00
+         Jul 31 12:06:31.943  HCI Event 030b 000d 00af d206 2d70 b001 00
+         */
+        let data = Data([0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00])
+        
+        guard let event = HCIConnectionComplete(data: data)
+            else { XCTFail("Could not parse"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF"))
+        XCTAssertEqual(event.status.rawValue, HCIStatus.success.rawValue)
+        XCTAssertEqual(event.linkType, HCIConnectionComplete.LinkType(rawValue: 0x01))
+        XCTAssertEqual(event.encryption, HCIConnectionComplete.Encryption(rawValue: 0x00))
+    }
+    
+    func testConnectionRequest() {
+        
+        
+    }
+    
+    func testAcceptConnectionRequest() {
+        
+        /**
+         [0409] Opcode: 0x0409 (OGF: 0x01    OCF: 0x09)
+         Parameter Length: 7 (0x07)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Role: 0x00
+         Aug 02 17:19:16.408  HCI Command  09 04 07 af d2 06 2d 70 b0 00
+        */
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.acceptConnection.opcode,
+                                             [0x09, 0x04, 0x07, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0409 (OGF: 0x01    OCF: 0x09) - [Link Control] Accept Connection Request
+             Aug 02 17:19:16.408  HCI Event  0f 04 00 01 09 04
+             */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x09, 0x04]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let role = HCIAcceptConnectionRequest.Role(rawValue: 0x00)
+        else { XCTFail("Unable to init Role"); return }
+        
+        XCTAssertNoThrow(try hostController.acceptConnection(address: address, role: role))
+    }
+    
+    func testDisconnect() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [0406] Opcode: 0x0406 (OGF: 0x01    OCF: 0x06)
+         Parameter Length: 3 (0x03)
+         Connection Handle: 0x000D
+         Reason: 0x13 - Remote User Terminated Connection
+         Jul 31 14:55:59.134  HCI Command  06 04 03 0d 00 13
+         */
+        
+        hostController.queue.append(.command(LinkControlCommand.disconnect.opcode,
+                                             [0x06, 0x04, 0x03, 0x0d, 0x00, 0x13]))
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x0406 (OGF: 0x01    OCF: 0x06) - [Link Control] Disconnect
+             Jul 31 14:55:59.134  HCI Event  0f 04 00 01 06 04
+             */
+            let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x06, 0x04]))
+        }
+        
+        do {
+            /**
+             Parameter Length: 4 (0x04)
+             Status: 0x00 - Success
+             Connection Handle: 0x000D
+             Reason:  0x16 - Connection Terminated by Local Host
+             Jul 31 14:55:59.296  HCI Event 05 04 00 0d 00 16
+            */
+            let eventHeader = HCIEventHeader(event: .disconnectionComplete, parameterLength: 0x04)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0x16]))
+        }
+        
+        XCTAssertNoThrow(try hostController.disconnect(connectionHandle: 0x000D, error: .remoteUserEndedConnection))
+    }
+    
+    func testLinkKeyRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [040B] Opcode: 0x040B (OGF: 0x01    OCF: 0x0B)
+         Parameter Length: 22 (0x16)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Link Key: 0x2E95A8135CA3F466C26D7C63A0FCF53B
+         Aug 02 17:19:16.713  HCI Command  0b 04 16 af d2 06 2d 70 b0 3b f5 fc a0 63 7c 6d c2 66 f4 a3 5c 13 a8 95 2e
+         */
+        hostController.queue.append(.command(LinkControlCommand.linkKeyReply.opcode,
+                                             [0x0b, 0x04, 0x16, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x3b, 0xf5, 0xfc, 0xa0,
+                                              0x63, 0x7c, 0x6d, 0xc2, 0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e]))
+        
+        do {
+            /**
+             Parameter Length: 10 (0x0A)
+             Status: 0x00 - Success
+             Num HCI Command Packets: 0x01
+             Opcode: 0x040B (OGF: 0x01    OCF: 0x0B) - [Link Control] Link Key Request Reply
+             Bluetooth Device Address: B0:70:2D:06:D2:AF
+             Aug 02 17:19:16.714  HCI Event  0e 0a 01 0b 04 00 af d2 06 2d 70 b0
+             */
+            let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x0a)
+            
+            hostController.queue.append(.event(eventHeader.data + [0x01, 0x0b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
+        }
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init variable"); return }
+        
+        let linkKey = UInt128(littleEndian: UInt128(bytes: (0x3b, 0xf5, 0xfc, 0xa0, 0x63, 0x7c, 0x6d, 0xc2,
+                                                            0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e)))
+        
+        XCTAssertNoThrow(try hostController.linkKeyRequestReply(address: address, linkKey: linkKey))
+    }
+    
+    func testLinkKeyRequest() {
+        
+        /**
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 02 17:19:16.713  HCI Event  17 06 af d2 06 2d 70 b0
+        */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
+        
+        guard let event = HCILinkKeyRequest(data: data)
+            else { XCTFail("Could not parse"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF"))
+    }
+    
+    func testReadDataBlockSize() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 10:44:06.657  HCI Command      0x0000                     [100A] Read Data Block Size
+         [100A] Opcode: 0x100A (OGF: 0x04    OCF: 0x0A)
+         Parameter Length: 0 (0x00)
+         Aug 06 10:44:06.657  HCI Command  0a 10 00
+        */
+        hostController.queue.append(.command(InformationalCommand.readDataBlockSize.opcode,
+                                             [0x0a, 0x10, 0x00]))
+        
+        /**
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x100A (OGF: 0x04    OCF: 0x0A) - [Informational] Read Data Block Size
+         Max ACL Data Packet Length: 4096 (0x1000)
+         Max ACL Data Block Length: 22 (0x16)
+         Total Number of Data Blocks: 64843 (0xFD4B)
+         Aug 06 10:44:06.657  HCI Event  0e 04 01 0a 10 01
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x00, 0x0a, 0x10, 0x01]))
+    }
+    
+    func testSetConnectionencryption() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 16:15:52.560  HCI Command      0x000D  00:00:00:00:00:00  [0413] Set Connection Encryption - 0x01 - Connection Handle: 0x000D
+         [0413] Opcode: 0x0413 (OGF: 0x01    OCF: 0x13)
+         Parameter Length: 3 (0x03)
+         Connection Handle: 0x000D
+         Encryption: 0x01
+         Aug 06 16:15:52.560  HCI Command  13 04 03 0d 00 01
+        */
+        hostController.queue.append(.command(LinkControlCommand.setConnectionEncryption.opcode,
+                                             [0x13, 0x04, 0x03, 0x0d, 0x00, 0x01]))
+        
+        /**
+         Aug 06 16:15:52.561  HCI Event  0x0000  Command Status - Set Connection Encryption
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0413 (OGF: 0x01    OCF: 0x13) - [Link Control] Set Connection Encryption
+         Aug 06 16:15:52.561  HCI Event  0f 04 00 01 13 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x13, 0x04]))
+        
+        /**
+         Aug 06 16:15:52.577  HCI Event  0x000D  00:00:00:00:00:00  Encryption Change Complete - Encryption Enabled
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Encryption Enable: 0x01
+         Aug 06 16:15:52.577  HCI Event  0x0000 08 04 00 0d 00 01
+        */
+        hostController.queue.append(.event([0x08, 0x04, 0x00, 0x0d, 0x00, 0x01]))
+        
+        XCTAssertNoThrow(try hostController.setConnectionEncryption(handle: 0x000D, encryption: .enable))
+    }
+    
+    func testReadRemoteSupportedFeatures() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:32.896  HCI Command      0x000D  Carlos Duclos’s M  [041B] Read Remote Supported Features - Connection Handle: 0x000D
+         [041B] Opcode: 0x041B (OGF: 0x01    OCF: 0x1B)
+         Parameter Length: 2 (0x02)
+         Connection Handle: 0x000D
+         Aug 06 19:30:32.896  HCI Command  1b 04 02 0d 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.readRemoteFeatures.opcode,
+                                             [0x1b, 0x04, 0x02, 0x0d, 0x00]))
+        
+        /**
+         Aug 06 19:30:32.896  HCI Event     0x0000    Command Status - Read Remote Supported Features
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x041B (OGF: 0x01    OCF: 0x1B) - [Link Control] Read Remote Supported Features
+         Aug 06 19:30:32.896  HCI Event   0f 04 00 01 1b 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x1b, 0x04]))
+        
+        /**
+         Aug 06 19:30:32.896  HCI Event        0x000D  Carlos Duclos’s M  Read Remote Supported Features Complete
+         Parameter Length: 11 (0x0B)
+         Status: 0x00 - Success
+         Connection Handle: 0x0D
+         LMP Features: BD 02 04 38 08 00 00 00
+         Aug 06 19:30:32.896  HCI Event        0x0000   0b 0b 00 0d 00 bd 02 04 38 08 00 00 00
+         */
+        hostController.queue.append(.event([0x0b, 0x0b, 0x00, 0x0d, 0x00, 0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00]))
+        
+        let data = Data([0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00])
+        let value = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
+        let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
+        
+        var lmpFeatures: BitMaskOptionSet<LMPFeature>?
+        XCTAssertNoThrow(lmpFeatures = try hostController.readRemoteSupportedFeatures(handle: 0x000D))
+        XCTAssertEqual(lmpFeatures, features)
+    }
+    
+    func testReadRemoteExtendedFeatures() {
+        
+        let hostController = TestHostController()
+        
+        hostController.queue.append(.command(LinkControlCommand.readRemoteExtendedFeatures.opcode,
+                                             [0x1c, 0x04, 0x03, 0x0d, 0x00, 0x01]))
+     
+        hostController.queue.append(.event([0x23, 0x0D, 0x00, 0x0c, 0x00, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.readRemoteExtendedFeatures(handle: 0x000D, pageNumber: 01))
+    }
+    
+    func testReadRemoteVersionInformation() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:32.895  HCI Command      0x000D  Carlos Duclos’s M  [041D] Read Remote Version Information - Connection Handle: 0x000D
+         [041D] Opcode: 0x041D (OGF: 0x01    OCF: 0x1D)
+         Parameter Length: 2 (0x02)
+         Connection Handle: 0x000D
+         Aug 06 19:30:32.895  HCI Command      0x0000  1d 04 02 0d 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.readRemoteVersion.opcode,
+                                             [0x1d, 0x04, 0x02, 0x0d, 0x00]))
+        
+        /**
+         Aug 06 19:30:32.895  HCI Event  0x0000   Command Status - Read Remote Version Information
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x041D (OGF: 0x01    OCF: 0x1D) - [Link Control] Read Remote Version Information
+         Aug 06 19:30:32.895  HCI Event   0x0000   0f 04 00 01 1d 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x1d, 0x04]))
+        
+        /**
+         Aug 06 19:30:32.895  HCI Event        0x000D  Carlos Duclos’s M  Read Remote Version Information Complete
+         Parameter Length: 8 (0x08)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         LMP Version: 0x03
+         Manufacturer Name: 0x004C (Undecoded)
+         LMP SubVersion: 0x031C
+         Aug 06 19:30:32.895  HCI Event   0x0000   0c 08 00 0d 00 03 4c 00 1c 03
+         */
+        hostController.queue.append(.event([0x0c, 0x08, 0x00, 0x0d, 0x00, 0x03, 0x4c, 0x00, 0x1c, 0x03]))
+        
+        var versionInformation: HCIReadRemoteVersionInformationComplete?
+        XCTAssertNoThrow(versionInformation = try hostController.readRemoteVersionInformation(handle: 0x000D))
+        XCTAssertEqual(versionInformation?.version, 0x03)
+        XCTAssertEqual(versionInformation?.companyId, 0x004c)
+        XCTAssertEqual(versionInformation?.subversion, 0x031c)
+    }
+    
+    func testAuthenticationRequested() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:33.031  HCI Command      0x000D  Carlos Duclos’s M  [0411] Authentication Requested - Connection Handle: 0x000D
+         [0411] Opcode: 0x0411 (OGF: 0x01    OCF: 0x11)
+         Parameter Length: 2 (0x02)
+         Connection Handle: 0x000D
+         Aug 06 19:30:33.031  HCI Command      0x0000     11 04 02 0d 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.authenticationRequested.opcode,
+                                             [0x11, 0x04, 0x02, 0x0d, 0x00]))
+        
+        /**
+         Aug 06 19:30:33.032  HCI Event        0x0000                     Command Status - Authentication Requested
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0411 (OGF: 0x01    OCF: 0x11) - [Link Control] Authentication Requested
+         Aug 06 19:30:33.032  HCI Event  0x0000  0f 04 00 01 11 04
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x11, 0x04]))
+        
+        /**
+         Aug 06 19:30:33.134  HCI Event        0x000D  Carlos Duclos’s M  Authentication Complete
+         Parameter Length: 3 (0x03)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Aug 06 19:30:33.134  HCI Event    0x0000   06 03 00 0d 00
+         */
+        hostController.queue.append(.event([0x06, 0x03, 0x00, 0x0d, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.authenticationRequested(handle: 0x000D))
+    }
+    
+    func testChangeConnectionPacketType() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 06 19:30:32.896  HCI Command      0x000D  Carlos Duclos’s M  [040F] Change Connection Packet Type - Connection Handle: 0x000D
+         [040F] Opcode: 0x040F (OGF: 0x01    OCF: 0x0F)
+         Parameter Length: 4 (0x04)
+         Connection Handle: 0x000D
+         Packet Type: 0xCC18
+         Aug 06 19:30:32.896  HCI Command    0x0000   0f 04 04 0d 00 18 cc                        .......
+        */
+        hostController.queue.append(.command(LinkControlCommand.authenticationRequested.opcode,
+                                             [0x0f, 0x04, 0x04, 0x0d, 0x00, 0x18, 0xcc]))
+        
+        /**
+         Aug 06 19:30:32.896  HCI Event        0x0000                     Command Status - Change Connection Packet Type
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x040F (OGF: 0x01    OCF: 0x0F) - [Link Control] Change Connection Packet Type
+         Aug 06 19:30:32.896  HCI Event    0x0000    0f 04 00 01 0f 04                           ......
+        */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x0f, 0x04]))
+        
+        let packetType: PacketType = .acl(BitMaskOptionSet<ACLPacketType>(rawValue: 0xcc18))
+        XCTAssertThrowsError(try hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType))
+    }
+    
+    func testLinkKeyRequestNegativeReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:43.298  HCI Command      0x0000  Carlos Duclos’s M  [040C] Link Key Request Negative Reply - 84:FC:FE:F3:F4:75
+         [040C] Opcode: 0x040C (OGF: 0x01    OCF: 0x0C)
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.298  HCI Command    0x0000    0c 04 06 75 f4 f3 fe fc 84
+         */
+        hostController.queue.append(.command(LinkControlCommand.linkKeyNegativeReply.opcode,
+                                             [0x0c, 0x04, 0x06, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
+        
+        /**
+         Aug 09 17:22:43.298  HCI Event        0x0000  Carlos Duclos’s M  Command Complete [040C] - Link Key Request Negative Reply - 84:FC:FE:F3:F4:75
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x040C (OGF: 0x01    OCF: 0x0C) - [Link Control] Link Key Request Negative Reply
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.298  HCI Event        0x0000   0e 0a 01 0c 04 00 75 f4 f3 fe fc 84
+         */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0c, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
+        
+        guard let address = Address(rawValue: "84:FC:FE:F3:F4:75")
+            else { XCTFail("Unable to init variable"); return }
+        
+        XCTAssertNoThrow(try hostController.linkKeyRequestNegativeReply(address: address))
+    }
+    
+    func testPINCodeRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:43.300  HCI Command      0x0000  Carlos Duclos’s M  [040D] PIN Code Request Reply - 84:FC:FE:F3:F4:75
+         [040D] Opcode: 0x040D (OGF: 0x01    OCF: 0x0D)
+         Parameter Length: 23 (0x17)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         PIN Code Length: 0x04
+         PIN Code: 0000 (0x30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 00)
+         Aug 09 17:22:43.300  HCI Command      0x0000  0d 04 17 75 f4 f3 fe fc 84 04 30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 00
+         */
+        hostController.queue.append(.command(LinkControlCommand.pinCodeReply.opcode,
+                                             [0x0d, 0x04, 0x17, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84, 0x04, 0x30, 0x30, 0x30,
+                                              0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+        
+        /**
+         Aug 09 17:22:43.302  HCI Event        0x0000  Carlos Duclos’s M  Command Complete [040D] - PIN Code Request Reply - 84:FC:FE:F3:F4:75
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x040D (OGF: 0x01    OCF: 0x0D) - [Link Control] PIN Code Request Reply
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.302  HCI Event        0x0000    0e 0a 01 0d 04 00 75 f4 f3 fe fc 84
+        */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0d, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
+        
+        guard let address = Address(rawValue: "84:FC:FE:F3:F4:75")
+            else { XCTFail("Unable to init variable"); return }
+        
+        guard let length = HCIPINCodeRequestReply.PINCodeLength(rawValue: 0x04)
+            else { XCTFail("Unable to init variable"); return }
+        
+        let data = Data([0x30, 0x30, 0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+        let pinCode = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
+                                                            data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])))
+        
+        XCTAssertNoThrow(try hostController.pinCodeRequestReply(address: address,
+                                                                pinCodeLength: length,
+                                                                pinCode: pinCode))
+    }
+    
+    func testPINCodeRequest() {
+        
+        /**
+         Aug 09 17:22:43.298  HCI Event        0x0000  Carlos Duclos’s M  PIN code request - 84:FC:FE:F3:F4:75
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Aug 09 17:22:43.298  HCI Event        0x0000  16 06 75 f4 f3 fe fc 84
+        */
+        let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84])
+        
+        guard let event = HCIPINCodeRequest(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "84:FC:FE:F3:F4:75")!)
+    }
+    
+    func testLinkKeyNotification() {
+        
+        /**
+         Aug 09 17:22:43.380  HCI Event        0x0000  Carlos Duclos’s M  Link Key Notification - 84:FC:FE:F3:F4:75
+         Parameter Length: 23 (0x17)
+         Bluetooth Device Address: 84:FC:FE:F3:F4:75
+         Link Key: 0xCCE5E51BF2FD53D43C149F83EC55300F
+         Key Type: 0x00
+         */
+        let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84, 0x0f, 0x30, 0x55, 0xec, 0x83, 0x9f, 0x14, 0x3c, 0xd4, 0x53, 0xfd, 0xf2, 0x1b, 0xe5, 0xe5, 0xcc, 0x00])
+        
+        guard let event = HCILinkKeyNotification(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "84:FC:FE:F3:F4:75")!)
+    }
+    
+    func testModeChange() {
+        
+        /**
+         Aug 09 17:22:45.417  HCI Event        0x000D  Carlos Duclos’s M  Mode Change - Sniff Mode - 0.011250 seconds -  - Handle: 0x000D
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Current Mode: Sniff - 2.880000 seconds (0x02)
+         Interval: 0x0000 (0 ms)
+         Aug 09 17:22:45.417  HCI Event        0x0000  14 06 00 0d 00 02 12 00
+         */
+        let data = Data([0x00, 0x0d, 0x00, 0x02, 0x12, 0x00])
+        
+        guard let event = HCIModeChange(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.status.rawValue, HCIStatus(rawValue: 0x00)?.rawValue)
+        XCTAssertEqual(event.handle, 0x000D)
+        XCTAssertEqual(event.currentMode, HCIModeChange.Mode(rawValue: 0x02)!)
+    }
+    
+    func testWriteLinkPolicySettings() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:43.293  HCI Command      0x000D  Carlos Duclos’s M  [080D] Write Link Policy Settings - Connection Handle: 0x000D
+         [080D] Opcode: 0x080D (OGF: 0x02    OCF: 0x0D)
+         Parameter Length: 4 (0x04)
+         Connection Handle: 0x000D
+         Link Policy Settings: 0x000F
+         Master/Slave Switch: Enabled
+         Hold Mode:           Enabled
+         Sniff Mode:          Enabled
+         Park Mode:           Enabled
+         Aug 09 17:22:43.293  HCI Command      0x0000  0d 08 04 0d 00 0f 00
+         */
+        hostController.queue.append(.command(LinkPolicyCommand.writeLinkPolicySettings.opcode,
+                                             [0x0d, 0x08, 0x04, 0x0d, 0x00, 0x0f, 0x00]))
+        /**
+         Aug 09 17:22:43.293  HCI Event        0x0000                     Command Complete [080D] - Write Link Policy Settings
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x080D (OGF: 0x02    OCF: 0x0D) - [Link Policy] Write Link Policy Settings
+         Connection Handle: 0x000D
+         Aug 09 17:22:43.293  HCI Event        0x0000   0e 06 01 0d 08 00 0d 00
+         */
+        hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x0d, 0x08, 0x00, 0x0d, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.writeLinkPolicySettings(
+            connectionHandle: 0x000D,
+            settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F)))
+    }
+    
+    func testQoSSetup() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:45.336  HCI Command      0x000D  Carlos Duclos’s M  [0807] QoS Setup - Connection Handle: 0x000D
+         [0807] Opcode: 0x0807 (OGF: 0x02    OCF: 0x07)
+         Parameter Length: 20 (0x14)
+         Connection Handle: 0x000D
+         Flags: 0x00
+         Service Type: 0x02
+         Token Rate: 0x00000000
+         Peak Bandwidth: 0x00000000
+         Latency: 0x00002BF2
+         Delay Variation: 0xFFFFFFFF
+         
+         */
+        hostController.queue.append(.command(LinkPolicyCommand.qosSetup.opcode,
+                                             [0x07, 0x08, 0x14, 0x0d, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                              0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]))
+        
+        /**
+         Aug 09 17:22:45.337  HCI Event        0x0000                     Command Status - QoS Setup
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0807 (OGF: 0x02    OCF: 0x07) - [Link Policy] QoS Setup
+         Aug 09 17:22:45.337  HCI Event        0x0000  0f 04 00 01 07 08
+         */
+        hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x07, 0x08]))
+        
+        /**
+         Aug 09 17:22:45.345  HCI Event        0x000D  Carlos Duclos’s M  QoS Setup Complete
+         Parameter Length: 21 (0x15)
+         Status: 0x00 - Success
+         Connection Handle: 0x000D
+         Flags: 0x00
+         Service Type: 0x02
+         Token Rate: 0x00000001
+         Peak Bandwidth: 0x00000000
+         Latency: 0x00002BF2
+         Delay Variation: 0xFFFFFFFFx
+        */
+        hostController.queue.append(.event([0x0d, 0x15, 0x00, 0x0d, 0x00, 0x00, 0x02, 0x01, 0x00, 0x00, 0x00,
+                                            0x00, 0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]))
+        
+        guard let serviceType = HCIQoSSetup.ServiceType(rawValue: 0x02)
+            else { XCTFail("Unable to parse service type"); return }
+        
+        XCTAssertNoThrow(try hostController.qosSetup(connectionHandle: 0x000D,
+                                                     serviceType: serviceType,
+                                                     tokenRate: 0x00000000,
+                                                     peakBandWidth: 0x00000000,
+                                                     latency: 0x00002BF2,
+                                                     delayVariation: 0xFFFFFFFF))
+    }
+    
+    func testReadPageTimeout() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         [0C17] Opcode: 0x0C17 (OGF: 0x03    OCF: 0x17)
+         Parameter Length: 0 (0x00)
+         Aug 09 17:22:36.898  HCI Command      0x0000    17 0c 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.readPageTimeout.opcode, [0x17, 0x0c, 0x00]))
+        
+        /**
+         Aug 09 17:22:36.899  HCI Event        0x0000  Command Complete [0C17] - Read Page Timeout - Page Timeout: 0x4000 (10.24 s)
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C17 (OGF: 0x03    OCF: 0x17) - [Host Controller] Read Page Timeout
+         Page Timeout: 0x4000 (10.24 s)
+         Aug 09 17:22:36.899  HCI Event        0x0000  0e 06 01 17 0c 00 00 40
+         */
+        hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x17, 0x0c, 0x00, 0x00, 0x40]))
+        
+        var readPageTimeout: HCIReadPageTimeoutReturn?
+        XCTAssertNoThrow(readPageTimeout = try hostController.readPageTimeout())
+        XCTAssertEqual(readPageTimeout?.pageTimeout.rawValue, 0x4000)
+        XCTAssertEqual(readPageTimeout?.pageTimeout.duration, 10.24)
+    }
+    
+    func testWriteLinkSupervisionTimeout() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 09 17:22:45.318  HCI Command      0x000D  Carlos Duclos’s M  [0C37] Write Link Supervision Timeout - Connection Handle: 0x000D
+         [0C37] Opcode: 0x0C37 (OGF: 0x03    OCF: 0x37)
+         Parameter Length: 4 (0x04)
+         Connection Handle: 0x000D
+         Link Supervision Timeout: 0x1F40
+         5000.000000 ms
+         Aug 09 17:22:45.318  HCI Command      0x0000   37 0c 04 0d 00 40 1f
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writeLinkSupervisionTimeout.opcode,
+                                             [0x37, 0x0c, 0x04, 0x0d, 0x00, 0x40, 0x1f]))
+        
+        /**
+         Aug 09 17:22:45.318  HCI Event        0x0000                     Command Complete [0C37] - Write Link Supervision Timeout - Connection Handle: 0x000D
+         Parameter Length: 6 (0x06)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C37 (OGF: 0x03    OCF: 0x37) - [Host Controller] Write Link Supervision Timeout
+         Connection Handle: 0x000D
+         Aug 09 17:22:45.318  HCI Event        0x0000   0e 06 01 37 0c 00 0d 00
+         */
+        hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x37, 0x0c, 0x00, 0x0d, 0x00]))
+        
+        let timeout = HCIWriteLinkSupervisionTimeout.LinkSupervisionTimeout(rawValue: 0x1F40)
+        
+        var writeTimeout: HCIWriteLinkSupervisionTimeoutReturn?
+        XCTAssertNoThrow(writeTimeout = try hostController.writeLinkSupervisionTimeout(handle: 0x000D,
+                                                                                       linkSupervisionTimeout: timeout))
+        XCTAssertEqual(writeTimeout?.handle, 0x000D)
+    }
+    
+    func testNumberOfCompletedPackets() {
+        
+        /**
+         Aug 09 17:22:45.343  HCI Event        0x000D  Carlos Duclos’s M  Number of Completed Packets - Handle: 0x000D - Packets: 0x0001
+         Parameter Length: 5 (0x05)
+         Number of Handles: 0x01
+         Connection Handle: 0x000D
+         Number of Packets: 0x0001
+         Aug 09 17:22:45.343  HCI Event        0x0000   13 05 01 0d 00 01 00
+         */
+        let data = Data([0x01, 0x0d, 0x00, 0x01, 0x00])
+        
+        guard let event = HCINumberOfCompletedPackets(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.numberOfHandles, 0x01)
+        XCTAssertEqual(event.connectionHandle, 0x000D)
+        XCTAssertEqual(event.numberOfCompletedPackets, 0x0001)
+    }
+    
+    func testReset() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:08.054  HCI Command      0x0000                     [0C03] Reset
+         [0C03] Opcode: 0x0C03 (OGF: 0x03    OCF: 0x03)
+         Parameter Length: 0 (0x00)
+         Aug 02 17:18:08.054  HCI Command      0x0000   03 0c 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.reset.opcode,
+                                             [0x03, 0x0c, 0x00]))
+        
+        /**
+         Aug 02 17:18:08.550  HCI Event        0x0000                     Command Complete [0C03] - Reset
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C03 (OGF: 0x03    OCF: 0x03) - [Host Controller] Reset
+         Aug 02 17:18:08.550  HCI Event        0x0000   0e 04 01 03 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x03, 0x0c, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.reset())
+    }
+    
+    func testReadStoredLinkKey() {
+    
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.102  HCI Command      0x0000                     [0C0D] Read Stored Link Key
+         [0C0D] Opcode: 0x0C0D (OGF: 0x03    OCF: 0x0D)
+         Parameter Length: 7 (0x07)
+         Bluetooth Device Address: (null)
+         Read All Flag: 0x01
+         Return link key for Device Address.
+         Aug 02 17:18:10.102  HCI Command      0x0000  0d 0c 07 7e 8a 94 90 85 8c 01
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.readStoredLinkKey.opcode,
+                                             [0x0d, 0x0c, 0x07, 0x7e, 0x8a, 0x94, 0x90, 0x85, 0x8c, 0x01]))
+        
+        /**
+         Aug 02 17:18:10.102  HCI Event        0x0000                     Command Complete [0C0D] - Read Stored Link Key - Num Keys Read: 0x0000
+         Parameter Length: 8 (0x08)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C0D (OGF: 0x03    OCF: 0x0D) - [Host Controller] Read Stored Link Key
+         Max Num Keys: 0x0007
+         Num Keys Read: 0x0000
+         Aug 02 17:18:10.102  HCI Event        0x0000   0e 08 01 0d 0c 00 07 00 00 00
+         */
+        hostController.queue.append(.event([0x0e, 0x08, 0x01, 0x0d, 0x0c, 0x00, 0x07, 0x00, 0x00, 0x00]))
+        
+        XCTAssertNoThrow(try hostController.readStoredLinkKey(address: Address(rawValue: "8C:85:90:94:8A:7E")!,
+                                                              readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!))
+    }
+    
+    func testReadLocalSupportedFeatures() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.101  HCI Command      0x0000                     [1003] Read Local Supported Features
+         [1003] Opcode: 0x1003 (OGF: 0x04    OCF: 0x03)
+         Parameter Length: 0 (0x00)
+         Aug 02 17:18:10.101  HCI Command      0x0000   03 10 00
+         */
+        hostController.queue.append(.command(InformationalCommand.readLocalSupportedFeatures.opcode,
+                                             [0x03, 0x10, 0x00]))
+        
+        /**
+         Aug 02 17:18:10.102  HCI Event        0x0000                     Command Complete [1003] - Read Local Supported Features
+         Parameter Length: 12 (0x0C)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x1003 (OGF: 0x04    OCF: 0x03) - [Informational] Read Local Supported Features
+         LMP Features:
+         0, BF 1 1 1 1 1 1 0 1
+         1, FE 0 1 1 1 1 1 1 1
+         2, CF 1 1 1 1 0 0 1 1
+         3, FE 0 1 1 1 1 1 1 1
+         4, DB 1 1 0 1 1 0 1 1
+         5, FF 1 1 1 1 1 1 1 1
+         6, 7B 1 1 0 1 1 1 1 0
+         7, 87 1 1 1 0 0 0 0 1
+         Aug 02 17:18:10.102  HCI Event        0x0000  0e 0c 01 03 10 00 bf fe cf fe db ff 7b 87
+         */
+        hostController.queue.append(.event([0x0e, 0x0c, 0x01, 0x03, 0x10, 0x00, 0xbf,
+                                            0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87]))
+        
+        let data = Data([0xbf, 0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87])
+        let value = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
+        let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
+
+        var lmpFeatures: BitMaskOptionSet<LMPFeature>?
+        XCTAssertNoThrow(lmpFeatures = try hostController.readLocalSupportedFeatures())
+        XCTAssertEqual(lmpFeatures, features)
+    }
+    
+    func testWriteClassOfDevice() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.112  HCI Command      0x0000                     [0C24] Write Class of Device
+         [0C24] Opcode: 0x0C24 (OGF: 0x03    OCF: 0x24)
+         Parameter Length: 3 (0x03)
+         Class of device: 0x38010C
+         Service Class: 0x01C0
+         Capturing
+         Object Transfer
+         Audio
+         Major Class: 0x0001
+         Computer
+         Minor Class: 0x0003
+         Laptop
+         Aug 02 17:18:10.112  HCI Command      0x0000   24 0c 03 0c 01 38
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writeClassOfDevice.opcode,
+                                             [0x24, 0x0c, 0x03, 0x0c, 0x01, 0x38]))
+        
+        /**
+         Aug 02 17:18:10.112  HCI Event        0x0000                     Command Complete [0C24] - Write Class of Device
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C24 (OGF: 0x03    OCF: 0x24) - [Host Controller] Write Class of Device
+         Aug 02 17:18:10.112  HCI Event        0x0000  0e 04 01 24 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x24, 0x0c, 0x00]))
+        
+        guard let classOfDevice = ClassOfDevice(data: Data([0x0C, 0x01, 0x38]))
+            else { XCTFail("Failed to init class of device"); return }
+        
+        XCTAssertNoThrow(try hostController.writeClassOfDevice(classOfDevice: classOfDevice))
+    }
+    
+    func testReadClassOfDevice() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.124  HCI Command      0x0000                     [0C23] Read Class of Device
+         [0C23] Opcode: 0x0C23 (OGF: 0x03    OCF: 0x23)
+         Parameter Length: 0 (0x00)
+         Aug 02 17:18:10.124  HCI Command      0x0000   23 0c 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.readClassOfDevice.opcode,
+                                             [0x23, 0x0c, 0x00]))
+        
+        /**
+         Aug 02 17:18:10.124  HCI Event        0x0000                     Command Complete [0C23] - Read Class of Device
+         Parameter Length: 7 (0x07)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C23 (OGF: 0x03    OCF: 0x23) - [Host Controller] Read Class of Device
+         Class of Device: 0x38010C
+         Service Class: 0x01C0
+         Capturing
+         Object Transfer
+         Audio
+         Major Class: 0x0001
+         Computer
+         Minor Class: 0x0003
+         Laptop
+         Aug 02 17:18:10.124  HCI Event        0x0000   0e 07 01 23 0c 00 0c 01 38
+         */
+        hostController.queue.append(.event([0x0e, 0x07, 0x01, 0x23, 0x0c, 0x00, 0x0c, 0x01, 0x38]))
+        
+        var readClassOfDevice: ClassOfDevice?
+        XCTAssertNoThrow(readClassOfDevice = try hostController.readClassOfDevice())
+        
+        guard let classOfDevice = readClassOfDevice
+            else { XCTFail("Failed to init class of device"); return }
+        
+        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.capturing))
+        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.objectTransfer))
+        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.audio))
+        
+        guard case let .computer(computer) = classOfDevice.majorDeviceClass
+            else { XCTFail("Incorrect major device class"); return }
+        
+        guard computer == .laptop
+            else { XCTFail("minor device class is wrong"); return }
+    }
+    
+    func testWriteScanEnable() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.227  HCI Command      0x0000                     [0C1A] Write Scan Enable - Requesting Scan State: 0x03
+         [0C1A] Opcode: 0x0C1A (OGF: 0x03    OCF: 0x1A)
+         Parameter Length: 1 (0x01)
+         Scan Enable: 0x03
+         Inquiry Scan Enabled, Page Scan Enabled
+         Aug 02 17:18:10.227  HCI Command      0x0000   1a 0c 01 03
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writeScanEnable.opcode,
+                                             [0x1a, 0x0c, 0x01, 0x03]))
+        
+        /**
+         Aug 02 17:18:10.227  HCI Event        0x0000                     Command Complete [0C1A] - Write Scan Enable
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C1A (OGF: 0x03    OCF: 0x1A) - [Host Controller] Write Scan Enable
+         Aug 02 17:18:10.227  HCI Event        0x0000  0e 04 01 1a 0c 00
+
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1a, 0x0c, 0x00]))
+        
+        let scanEnable = HCIWriteScanEnable.ScanEnable(rawValue: 0x03)
+        XCTAssertNoThrow(try hostController.writeScanEnable(scanEnable: scanEnable!))
+    }
+    
+    func testWritePageScanType() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.128  HCI Command      0x0000                     [0C47] Write Page Scan Type
+         [0C47] Opcode: 0x0C47 (OGF: 0x03    OCF: 0x47)
+         Parameter Length: 1 (0x01)
+         Page Scan Type: 0x01
+         Interlaced Page Scan Type. Optional
+         Aug 02 17:18:10.128  HCI Command      0x0000  47 0c 01 01
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writePageScanType.opcode,
+                                             [0x47, 0x0c, 0x01, 0x01]))
+        
+        /**
+         Aug 02 17:18:10.128  HCI Event        0x0000                     Command Complete [0C47] - Write Page Scan Type
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C47 (OGF: 0x03    OCF: 0x47) - [Host Controller] Write Page Scan Type
+         Aug 02 17:18:10.128  HCI Event        0x0000  0e 04 01 47 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x47, 0x0c, 0x00]))
+        
+        let pageScanType = HCIWritePageScanType.PageScanType(rawValue: 0x01)
+        XCTAssertNoThrow(try hostController.writePageScanType(pageScanType: pageScanType!))
+    }
+    
+    func testWritePageScanActivity() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 02 17:18:10.128  HCI Command      0x0000                     [0C1C] Write Page Scan Activity - 11.25/640 (ms)
+         [0C1C] Opcode: 0x0C1C (OGF: 0x03    OCF: 0x1C)
+         Parameter Length: 4 (0x04)
+         Page Scan Interval: 0x0400 (640 ms)
+         Page Scan Window: 0x0012 (11.25 ms)
+         Aug 02 17:18:10.128  HCI Command      0x0000   1c 0c 04 00 04 12 00
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writePageScanActivity.opcode,
+                                             [0x1c, 0x0c, 0x04, 0x00, 0x04, 0x12, 0x00]))
+        
+        /**
+         Aug 02 17:18:10.129  HCI Event        0x0000                     Command Complete [0C1C] - Write Page Scan Activity
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C1C (OGF: 0x03    OCF: 0x1C) - [Host Controller] Write Page Scan Activity
+         Aug 02 17:18:10.129  HCI Event        0x0000   0e 04 01 1c 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1c, 0x0c, 0x00]))
+        
+        let scanInterval = HCIWritePageScanActivity.PageScanInterval(rawValue: 0x0400)
+        let scanWindow = HCIWritePageScanActivity.PageScanWindow(rawValue: 0x0012)
+        
+        XCTAssertNoThrow(try hostController.writePageScanActivity(scanInterval: scanInterval!,
+                                                                  scanWindow: scanWindow!))
+    }
+    
+    func testIOCapabilityRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 16 17:57:32.832  HCI Command      0x0000  iPhone             [042B] IO Capability Request Reply - B0:70:2D:06:D2:AF
+         [042B] Opcode: 0x042B (OGF: 0x01    OCF: 0x2B)
+         Parameter Length: 9 (0x09)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         IO Capability: 0x01 (Display Yes No)
+         OOB Data Present: 0x00
+         Authentication Requirements: 0x02 (MITM protection not required and dedicated bonding required)
+         Aug 16 17:57:32.832  HCI Command      0x0000   2b 04 09 af d2 06 2d 70 b0 01 00 02
+         */
+        hostController.queue.append(.command(LinkControlCommand.ioCapabilityRequestReply.opcode,
+                                             [0x2b, 0x04, 0x09, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x02]))
+        
+        /**
+         Aug 16 17:57:32.832  HCI Event        0x0000                     Command Complete [042B] - IO Capability Request Reply
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x042B (OGF: 0x01    OCF: 0x2B) - [Link Control] IO Capability Request Reply
+         Aug 16 17:57:32.832  HCI Event        0x0000   0e 0a 01 2b 04 00 af d2 06 2d 70 b0
+         */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Cannot init address"); return }
+        
+        guard let ioCapability = HCIIOCapabilityRequestReply.IOCapability(rawValue: 0x01)
+            else { XCTFail("Cannot init ioCapability"); return }
+        
+        guard let dataPresent = HCIIOCapabilityRequestReply.OBBDataPresent(rawValue: 0x00)
+            else { XCTFail("Cannot init daatPresent"); return }
+        
+        guard let authenticationRequeriments = HCIIOCapabilityRequestReply.AuthenticationRequirements(rawValue: 0x02)
+            else { XCTFail("Cannot init daatPresent"); return }
+        
+        XCTAssertNoThrow(try hostController.ioCapabilityRequestReply(address: address,
+                                                                     ioCapability: ioCapability,
+                                                                     obbDataPresent: dataPresent,
+                                                                     authenticationRequirements: authenticationRequeriments))
+    }
+    
+    func testIOCapabilityRequest() {
+        
+        /**
+         Aug 16 17:57:32.829  HCI Event        0x0000  iPhone             IO Capability Request - B0:70:2D:06:D2:AF
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 16 17:57:32.829  HCI Event        0x0000  31 06 af d2 06 2d 70 b0
+         */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
+        
+        guard let event = HCIIOCapabilityRequest(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+    }
+    
+    func testIOCapabilityResponse() {
+        
+        /**
+         Aug 17 09:58:05.836  HCI Event        0x0000  iPhone             IO Capability Response - B0:70:2D:06:D2:AF
+         Parameter Length: 9 (0x09)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         IO Capability: 0x01 (Display Yes No)
+         OOB Data Present: 0x00
+         Authentication Requirements: 0x03 (MTIM prorection and dedicated bonding required)
+         Aug 17 09:58:05.836  HCI Event        0x0000                     00000000: 32 09 af d2 06 2d 70 b0 01 00 03
+         */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x03])
+        
+        guard let event = HCIIOCapabilityResponse(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+    }
+    
+    func testUserConfirmationRequestReply() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 17 09:58:05.937  HCI Command      0x0000  iPhone             [042C] User Confirmation Request Reply - B0:70:2D:06:D2:AF
+         [042C] Opcode: 0x042C (OGF: 0x01    OCF: 0x2C)
+         Parameter Length: 6 (0x06)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 17 09:58:05.937  HCI Command      0x0000                     00000000: 2c 04 06 af d2 06 2d 70 b0
+         */
+        hostController.queue.append(.command(LinkControlCommand.userConfirmationRequestReply.opcode,
+                                             [0x2c, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        /**
+         Aug 17 09:58:05.939  HCI Event        0x0000                     Command Complete [042C] - User Confirmation Request Reply
+         Parameter Length: 10 (0x0A)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x042C (OGF: 0x01    OCF: 0x2C) - [Link Control] User Confirmation Request Reply
+         Aug 17 09:58:05.939  HCI Event        0x0000                     00000000: 0e 0a 01 2c 04 00 af d2 06 2d 70 b0
+         */
+        hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2c, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+        
+        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+            else { XCTFail("Unable to init address"); return }
+        
+        XCTAssertNoThrow(try hostController.userConfirmationRequestReply(address: address))
+    }
+    
+    func testUserConfirmationRequest() {
+        
+        /**
+         Aug 17 09:58:05.935  HCI Event        0x0000  iPhone             User Confirmation Request - B0:70:2D:06:D2:AF
+         Parameter Length: 10 (0x0A)
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Numeric Value: 715438
+         Aug 17 09:58:05.935  HCI Event        0x0000   33 0a af d2 06 2d 70 b0 ae ea 0a 00
+         */
+        let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0xae, 0xea, 0x0a, 0x00])
+        
+        guard let event = HCIUserConfirmationRequest(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+    }
+    
+    func testConnectionPacketTypeChange() {
+        
+        /**
+         Aug 17 09:58:05.811  HCI Event        0x000B  iPhone             Connection Packet Type Changed
+         Parameter Length: 5 (0x05)
+         Status: 0x00 - Success
+         Connection Handle: 0x000B
+         Packet Type: 0xCC18
+         Aug 17 09:58:05.811  HCI Event        0x0000                     00000000: 1d 05 00 0b 00 18 cc
+         */
+        let data = Data([0x00, 0x0b, 0x00, 0x18, 0xcc])
+        
+        guard let event = HCIConnectionPacketTypeChange(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.status.rawValue, 0x00)
+        XCTAssertEqual(event.connectionHandle, 0x000B)
+        XCTAssertEqual(event.packetType, 0xCC18)
+    }
+    
+    func testMaxSlotsChange() {
+        
+        /**
+         Aug 17 09:58:05.806  HCI Event        0x000B  iPhone             Max slots change - Max slots: 0x05 -
+         Parameter Length: 3 (0x03)
+         Connection Handle: 0x000B
+         LMP Max Slots: 0x05
+         Aug 17 09:58:05.806  HCI Event        0x0000                     00000000: 1b 03 0b 00 05
+
+         */
+        let data = Data([0x0b, 0x00, 0x05])
+        
+        guard let event = HCIMaxSlotsChange(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.connectionHandle, 0x000B)
+        XCTAssertEqual(event.maxSlotsLMP, 0x05)
+    }
+    
+    func testWritePageTimeout() {
+        
+        let hostController = TestHostController()
+        
+        /**
+         Aug 17 09:58:04.840  HCI Command      0x0000                     [0C18] Write Page Timeout - 0x4000 (10.24 s)
+         [0C18] Opcode: 0x0C18 (OGF: 0x03    OCF: 0x18)
+         Parameter Length: 2 (0x02)
+         Page Timeout: 0x4000 (10240 ms)
+         Aug 17 09:58:04.840  HCI Command      0x0000                     00000000: 18 0c 02 00 40
+         */
+        hostController.queue.append(.command(HostControllerBasebandCommand.writePageTimeout.opcode,
+                                             [0x18, 0x0c, 0x02, 0x00, 0x40]))
+        
+        /**
+         Aug 17 09:58:04.840  HCI Event        0x0000                     Command Complete [0C18] - Write Page Timeout
+         Parameter Length: 4 (0x04)
+         Status: 0x00 - Success
+         Num HCI Command Packets: 0x01
+         Opcode: 0x0C18 (OGF: 0x03    OCF: 0x18) - [Host Controller] Write Page Timeout
+         Aug 17 09:58:04.840  HCI Event        0x0000                     00000000: 0e 04 01 18 0c 00
+         */
+        hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x18, 0x0c, 0x00]))
+        
+        guard let pageTimeout = HCIWritePageTimeout.PageTimeout(rawValue: 0x4000)
+            else { XCTFail("Unable to init pageTimeout"); return }
+        
+        XCTAssertNoThrow(try hostController.writePageTimeout(pageTimeout: pageTimeout))
+    }
+    
+    func testSimplePairingComplete() {
+        
+        /**
+         Aug 17 09:58:58.511  HCI Event        0x0000  iPhone             Simple Pairing Complete - B0:70:2D:06:D2:AF
+         Parameter Length: 7 (0x07)
+         Status: 0x00 - Success
+         Bluetooth Device Address: B0:70:2D:06:D2:AF
+         Aug 17 09:58:58.511  HCI Event        0x0000                     00000000: 36 07 00 af d2 06 2d 70 b0
+         */
+        let data = Data([0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
+        
+        guard let event = HCISimplePairingComplete(data: data)
+            else { XCTFail("Unable to parse event"); return }
+        
+        XCTAssertEqual(event.status.rawValue, 0x00)
+        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
     }
 }
 

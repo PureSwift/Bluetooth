@@ -1,0 +1,23 @@
+//
+//  HCIInquiryCancel.swift
+//  Bluetooth
+//
+//  Created by Carlos Duclos on 7/25/18.
+//  Copyright © 2018 PureSwift. All rights reserved.
+//
+
+import Foundation
+
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+    
+    /// Inquiry Cancel Command
+    ///
+    /// This command is used to start a test where the DUT receives test reference packets at a fixed interval.
+    /// The tester generates the test reference packets.
+    func inquiryCancel(timeout: HCICommandTimeout = .default) throws {
+        
+        try deviceRequest(LinkControlCommand.inquiryCancel, timeout: timeout)
+    }
+}

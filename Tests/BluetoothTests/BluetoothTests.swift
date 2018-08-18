@@ -25,7 +25,8 @@ final class BluetoothTests: XCTestCase {
         ("testLowEnergyFeature", testLowEnergyFeature),
         ("testLowEnergyEventMask", testLowEnergyEventMask),
         ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
-        ("testBitMaskOption", testBitMaskOption)
+        ("testBitMaskOption", testBitMaskOption),
+        ("testClassOfDevice", testClassOfDevice)
     ]
     
     func testAdvertisingInterval() {
@@ -308,4 +309,94 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(set == [.read, .write])
         }
     }
+    
+    func testClassOfDevice() {
+        
+        do {
+            let data = Data([0b00001101, 0b00000001, 0b11000010])
+            
+            guard let classOfDevice = ClassOfDevice(data: data)
+                else { XCTFail("Could not decode"); return }
+            
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.networking))
+            
+            guard case let .computer(computer) = classOfDevice.majorDeviceClass
+                else { XCTFail("majorDeviceClass is wrong"); return }
+            
+            guard computer == .laptop
+                else { XCTFail("majorDeviceClass is wrong"); return }
+            
+            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b01))
+            
+            guard let formatType = ClassOfDevice.FormatType(rawValue: 0b01)
+                else { XCTFail("Could not init formatType"); return }
+            
+            let majorServiceClass = BitMaskOptionSet<ClassOfDevice.MajorServiceClass>(rawValue: 0b11000010000)
+            let majorDeviceClass = ClassOfDevice.MajorDeviceClass.computer(.laptop)
+            let classOfDeviceManual = ClassOfDevice(formatType: formatType,
+                                                    majorServiceClass: majorServiceClass,
+                                                    majorDeviceClass: majorDeviceClass)
+            
+            XCTAssertEqual(classOfDevice.formatType, formatType)
+            XCTAssertEqual(classOfDevice.majorDeviceClass, majorDeviceClass)
+            XCTAssertEqual(classOfDevice, classOfDeviceManual)
+        }
+        
+        do {
+            let data = Data([0b00001101, 0b00100010, 0b11000000])
+
+            guard let classOfDevice = ClassOfDevice(data: data)
+                else { XCTFail("Could not decode"); return }
+
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.limitedDiscoverable))
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.telephony))
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.information))
+            XCTAssertFalse(classOfDevice.majorServiceClass.contains(.audio))
+            XCTAssertFalse(classOfDevice.majorServiceClass.contains(.objectTransfer))
+
+            guard case let .phone(phone) = classOfDevice.majorDeviceClass
+                else { XCTFail("majorDeviceClass is wrong"); return }
+
+            guard phone == .smartphone
+                else { XCTFail("majorDeviceClass is wrong"); return }
+
+            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b01))
+        }
+
+        do {
+            let data = Data([0b01000100, 0b00100101, 0b11100000])
+
+            guard let classOfDevice = ClassOfDevice(data: data)
+                else { XCTFail("Could not decode"); return }
+
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.audio))
+
+            guard case let .peripheral(peripheral, device) = classOfDevice.majorDeviceClass
+                else { XCTFail("majorDeviceClass is wrong"); return }
+
+            XCTAssertEqual(peripheral, .keyboard)
+            XCTAssertEqual(device, .joystick)
+            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b00))
+        }
+
+        do {
+            let data = Data([0b00000100, 0b00000111, 0b11100110])
+
+            guard let classOfDevice = ClassOfDevice(data: data)
+                else { XCTFail("Could not decode"); return }
+
+            XCTAssertTrue(classOfDevice.majorServiceClass.contains(.telephony))
+
+            guard case let .wearable(wearable) = classOfDevice.majorDeviceClass
+                else { XCTFail("majorDeviceClass is wrong"); return }
+
+            XCTAssertEqual(wearable, .wristwatch)
+            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b00))
+        }
+    }
 }
+

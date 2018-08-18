@@ -28,10 +28,11 @@ env:
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu14.04/usr/bin:"${PATH}" ; fi
   # Run Unit Tests
-  - swift test
+	- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then swift test ; fi
+	- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then swift build ; fi
   # Compile with Xcode
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-iOS ; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS ; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-iOS | xcpretty && exit ${PIPESTATUS[0]}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty && exit ${PIPESTATUS[0]}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty && exit ${PIPESTATUS[0]}; fi
