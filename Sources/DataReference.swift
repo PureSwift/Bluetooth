@@ -57,6 +57,11 @@ internal extension DataReference {
         return DataReference(data: data, offset: offset, count: range.count)
     }
     
+    func suffix(from index: Int) -> DataReference {
+        
+        return self[index ..< count]
+    }
+    
     subscript (index: Int) -> UInt8 {
         
         @inline(__always)
