@@ -42,7 +42,7 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (data[1], data[2])).littleEndian
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
         if data.count > minimumLength {
             
