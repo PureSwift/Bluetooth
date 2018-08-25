@@ -1057,7 +1057,7 @@ public final class GATTClient {
                 // write next part
                 let maxLength = Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length // 5
                 let endIndex = min(offset + maxLength, operation.data.count)
-                let attributeValuePart = operation.data.subdata(in: offset ..< endIndex)
+                let attributeValuePart = operation.data.subdataNoCopy(in: offset ..< endIndex)
                 
                 let pdu = ATTPrepareWriteRequest(handle: operation.lastRequest.handle,
                                                  offset: UInt16(offset),

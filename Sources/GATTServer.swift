@@ -884,6 +884,7 @@ internal extension GATTDatabase {
         let handleRange = handle.end < UInt16.max ? Range(handle.start ... handle.end) : Range(handle.start ..< handle.end)
         
         var data: [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] = []
+        data.reserveCapacity(attributeGroups.count)
         
         for group in attributeGroups {
             
@@ -893,7 +894,7 @@ internal extension GATTDatabase {
             
             guard groupRange.isSubset(handleRange) else { continue }
             
-            let serviceUUID = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(group.serviceAttribute.value))!)
+            let serviceUUID = BluetoothUUID(littleEndian: BluetoothUUID(data: group.serviceAttribute.value)!)
             
             data.append((group.startHandle, group.endHandle, serviceUUID))
         }
