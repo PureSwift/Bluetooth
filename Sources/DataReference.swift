@@ -55,12 +55,6 @@ internal extension DataReference {
         
         return self[index ..< count]
     }
-    
-    @inline(__always)
-    func withUnsafeBytes <ContentType, ResultType> (_ body: (UnsafePointer<ContentType>) throws -> ResultType) rethrows -> ResultType {
-        
-        return try data.withUnsafeBytes { try body($0.advanced(by: offset)) }
-    }
 }
 
 internal extension Data {

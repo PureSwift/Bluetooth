@@ -53,7 +53,8 @@ final class GAPTests: XCTestCase {
     func testDataType() {
         
         XCTAssertEqual(GAPDataType.flags.description, "Flags")
-        XCTAssertEqual(GAPDataType(rawValue: 0).description, "Data Type (0)")
+        XCTAssertEqual(GAPDataType.incompleteListOf16BitServiceClassUUIDs.description, "Incomplete List of 16-bit Service Class UUIDs")
+        XCTAssertEqual(GAPDataType(rawValue: 0).description, "GAP Data Type (0)")
     }
     
     func testBit16UUIDList() {

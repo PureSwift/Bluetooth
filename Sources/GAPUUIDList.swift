@@ -34,7 +34,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
             guard index + MemoryLayout<Element>.size <= data.count
                 else { return nil }
             
-            let value = data.withUnsafeBytes { Element(littleEndian: $0.pointee) }
+            let value = Element(littleEndian: Element(gapData: data[index ..< index + MemoryLayout<Element>.size])!)
             
             index += MemoryLayout<Element>.size
             
@@ -46,17 +46,50 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
     
     internal var data: Data {
         
-        var data = Data(capacity: MemoryLayout<UInt16>.size * uuids.count)
-        uuids.forEach { data += $0 }
+        var data = Data(capacity: MemoryLayout<Element>.size * uuids.count)
+        uuids.forEach { data += $0.littleEndian }
         return data
     }
 }
 
 internal protocol GAPUUIDElement: UnsafeDataConvertible {
     
+    init?(gapData: DataReference)
+    
     init(littleEndian: Self)
+    
+    var littleEndian: Self { get }
 }
 
-extension UInt16: GAPUUIDElement { }
-extension UInt32: GAPUUIDElement { }
-extension UInt128: GAPUUIDElement { }
+extension UInt16: GAPUUIDElement {
+    
+    init?(gapData: DataReference) {
+        
+        guard gapData.count == MemoryLayout<UInt16>.size
+            else { return nil }
+        
+        self.init(bytes: (gapData[0], gapData[1]))
+    }
+}
+
+extension UInt32: GAPUUIDElement {
+    
+    init?(gapData: DataReference) {
+        
+        guard gapData.count == MemoryLayout<UInt32>.size
+            else { return nil }
+        
+        self.init(bytes: (gapData[0], gapData[1], gapData[2], gapData[3]))
+    }
+}
+
+extension UInt128: GAPUUIDElement {
+    
+    init?(gapData: DataReference) {
+        
+        guard gapData.count == MemoryLayout<UInt128>.size
+            else { return nil }
+        
+        self.init(bytes: (gapData[0], gapData[1], gapData[2], gapData[3], gapData[4], gapData[5], gapData[6], gapData[7], gapData[8], gapData[9], gapData[10], gapData[11], gapData[12], gapData[13], gapData[14], gapData[15]))
+    }
+}
