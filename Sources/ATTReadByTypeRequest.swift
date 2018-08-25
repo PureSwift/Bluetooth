@@ -34,8 +34,6 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let data = DataReference(data)
-        
         guard let length = Length(rawValue: data.count)
             else { return nil }
         
@@ -58,7 +56,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
             
         case .uuid128:
             
-            self.attributeType = BluetoothUUID(littleEndian: BluetoothUUID(data: data[5 ..< 21])!)
+            self.attributeType = BluetoothUUID(littleEndian: BluetoothUUID(data: data.subdataNoCopy(in: 5 ..< 21))!)
         }
     }
     

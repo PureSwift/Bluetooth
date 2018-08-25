@@ -34,12 +34,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
         self.handles = handles
     }
     
-    public init?(data: Data) {
-        
-        self.init(data: DataReference(data))
-    }
-    
-    internal init?(data: DataReference) {
+   public init?(data: Data) {
         
         // this is not actually UInt16 UUID, but handles
         // since the binary format is the same we can reuse code

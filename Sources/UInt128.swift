@@ -104,12 +104,7 @@ public extension UInt128 {
     
     public static var length: Int { return 16 }
     
-    public init?(data: Data) {
-        
-        self.init(data: DataReference(data))
-    }
-    
-    internal init?(data: DataReference) {
+   public init?(data: Data) {
         
         guard data.count == UInt128.length
             else { return nil }

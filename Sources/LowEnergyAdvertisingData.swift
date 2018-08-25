@@ -192,12 +192,7 @@ extension LowEnergyAdvertisingData: ExpressibleByArrayLiteral {
 
 public extension LowEnergyAdvertisingData {
     
-    public init?(data: Data) {
-        
-        self.init(data: DataReference(data))
-    }
-    
-    internal init?(data: DataReference) {
+   public init?(data: Data) {
         
         let length = data.count
         

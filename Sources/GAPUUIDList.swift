@@ -20,11 +20,6 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
     
     internal init?(data: Data) {
         
-        self.init(data: DataReference(data))
-    }
-    
-    internal init?(data: DataReference) {
-        
         var uuids = [Element]()
         uuids.reserveCapacity(data.count / MemoryLayout<Element>.size)
         
@@ -34,7 +29,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
             guard index + MemoryLayout<Element>.size <= data.count
                 else { return nil }
             
-            let value = Element(littleEndian: Element(gapData: data[index ..< index + MemoryLayout<Element>.size])!)
+            let value = Element(littleEndian: Element(gapData: data.subdata(in: index ..< index + MemoryLayout<Element>.size))!)
             
             index += MemoryLayout<Element>.size
             
@@ -54,7 +49,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
 
 internal protocol GAPUUIDElement: UnsafeDataConvertible {
     
-    init?(gapData: DataReference)
+    init?(gapData: Data)
     
     init(littleEndian: Self)
     
@@ -63,7 +58,7 @@ internal protocol GAPUUIDElement: UnsafeDataConvertible {
 
 extension UInt16: GAPUUIDElement {
     
-    init?(gapData: DataReference) {
+    init?(gapData: Data) {
         
         guard gapData.count == MemoryLayout<UInt16>.size
             else { return nil }
@@ -74,7 +69,7 @@ extension UInt16: GAPUUIDElement {
 
 extension UInt32: GAPUUIDElement {
     
-    init?(gapData: DataReference) {
+    init?(gapData: Data) {
         
         guard gapData.count == MemoryLayout<UInt32>.size
             else { return nil }
@@ -85,7 +80,7 @@ extension UInt32: GAPUUIDElement {
 
 extension UInt128: GAPUUIDElement {
     
-    init?(gapData: DataReference) {
+    init?(gapData: Data) {
         
         guard gapData.count == MemoryLayout<UInt128>.size
             else { return nil }

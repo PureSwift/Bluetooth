@@ -78,7 +78,7 @@ public struct AppleBeacon {
         guard length == type(of: self).length
             else { return nil }
         
-        let uuid = UUID(UInt128(bigEndian: UInt128(data: DataReference(data)[2 ..< 18])!))
+        let uuid = UUID(UInt128(bigEndian: UInt128(data: data.subdataNoCopy(in: 2 ..< 18))!))
         
         let major = UInt16(bigEndian: UInt16(bytes: (data[18], data[19])))
         

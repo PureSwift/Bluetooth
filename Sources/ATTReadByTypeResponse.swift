@@ -49,8 +49,6 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let data = DataReference(data)
-        
         guard data.count >= ATTReadByTypeResponse.length
             else { return nil }
         
@@ -74,7 +72,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = 2 + (index * attributeDataLength)
             
-            let attributeBytes = data[byteIndex ..< byteIndex + attributeDataLength]
+            let attributeBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + attributeDataLength)
             
             guard let attribute = AttributeData(data: attributeBytes)
                 else { return nil }
@@ -123,7 +121,7 @@ public extension ATTReadByTypeResponse {
             self.value = value
         }
         
-        internal init?(data: DataReference) {
+        internal init?(data: Data) {
             
             guard data.count >= AttributeData.length
                 else { return nil }

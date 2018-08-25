@@ -146,12 +146,7 @@ extension BluetoothUUID: RawRepresentable {
 
 public extension BluetoothUUID {
     
-    public init?(data: Data) {
-        
-        self.init(data: DataReference(data))
-    }
-    
-    internal init?(data: DataReference) {
+   public init?(data: Data) {
         
         switch data.count {
             

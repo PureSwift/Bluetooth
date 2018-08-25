@@ -20,12 +20,7 @@ public struct GAPCompleteListOf128BitServiceClassUUIDs: GAPData {
         self.uuids = uuids
     }
     
-    public init?(data: Data) {
-        
-        self.init(data: DataReference(data))
-    }
-    
-    internal init?(data: DataReference) {
+   public init?(data: Data) {
         
         guard let list = GAPUUIDList<UInt128>(data: data)
             else { return nil }

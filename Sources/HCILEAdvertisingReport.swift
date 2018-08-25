@@ -76,8 +76,6 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         
         public init?(data: Data) {
             
-            let data = DataReference(data)
-            
             guard data.count >= Report.length
                 else { return nil }
             
@@ -103,7 +101,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
             guard data.count >= (9 + length)
                 else { return nil }
             
-            let responseData = data[9 ..< (9 + length)]
+            let responseData = data.subdataNoCopy(in: 9 ..< (9 + length))
             assert(responseData.count == length)
             
             guard let advertisingData = LowEnergyAdvertisingData(data: responseData)

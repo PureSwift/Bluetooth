@@ -31,8 +31,6 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let data = DataReference(data)
-        
         guard data.count >= type(of: self).length
             else { return nil }
         
@@ -58,7 +56,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = (index * handleLength) + 1
             
-            let handleBytes = data[byteIndex ..< byteIndex + handleLength]
+            let handleBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + handleLength)
             
             guard let handle = HandlesInformation(data: handleBytes)
                 else { return nil }
@@ -115,7 +113,7 @@ public extension ATTFindByTypeResponse {
             self.groupEnd = groupEnd
         }
         
-        internal init?(data: DataReference) {
+        internal init?(data: Data) {
             
             guard data.count == type(of: self).length
                 else { return nil }

@@ -47,8 +47,6 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let data = DataReference(data)
-        
         guard data.count >= type(of: self).length
             else { return nil }
         
@@ -73,7 +71,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = 2 + (index * length)
             
-            let attributeBytes = data[byteIndex ..< byteIndex + length]
+            let attributeBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + length)
             
             guard let attributeData = AttributeData(data: attributeBytes)
                 else { return nil }
@@ -126,7 +124,7 @@ public extension ATTReadByGroupTypeResponse {
             self.value = value
         }
         
-        internal init?(data: DataReference) {
+        internal init?(data: Data) {
             
             guard data.count >= type(of: self).length
                 else { return nil }

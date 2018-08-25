@@ -20,12 +20,7 @@ public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
         self.uuids = uuids
     }
     
-    public init?(data: Data) {
-        
-        self.init(data: DataReference(data))
-    }
-    
-    internal init?(data: DataReference) {
+   public init?(data: Data) {
         
         guard let list = GAPUUIDList<UInt32>(data: data)
             else { return nil }
