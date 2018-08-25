@@ -13,17 +13,28 @@ internal struct DataReference {
     
     // MARK: - Properties
     
-    fileprivate let data: Data
+    @_versioned
+    internal let data: Data?
     
-    fileprivate let offset: Int
+    @_versioned
+    internal let offset: Int
     
     public let count: Int
     
     // MARK: - Initialization
     
-    public init(data: Data) {
+    public init(_ data: Data) {
         
-        self.init(data: data, offset: 0, count: data.count)
+        self.data = data
+        self.offset = 0
+        self.count = data.count
+    }
+    
+    public init() {
+        
+        self.data = nil
+        self.offset = 0
+        self.count = 0
     }
     
     fileprivate init(data: Data, offset: Int, count: Int) {
@@ -38,6 +49,9 @@ internal extension DataReference {
     
     subscript (range: CountableRange<Int>) -> DataReference {
         
+        guard let data = self.data
+            else { fatalError("Empty data") }
+        
         let offset = self.offset + range.lowerBound
         
         return DataReference(data: data, offset: offset, count: range.count)
@@ -45,8 +59,15 @@ internal extension DataReference {
     
     subscript (index: Int) -> UInt8 {
         
-        let actualIndex = offset + index
+        @inline(__always)
+        get { return data![offset + index] }
+    }
+}
+
+internal extension Data {
+    
+    init(_ reference: DataReference) {
         
-        return data[actualIndex]
+        self = reference.data.subdata(in: reference.offset ..< reference.offset + reference.count)
     }
 }

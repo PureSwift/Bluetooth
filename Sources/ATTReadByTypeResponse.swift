@@ -49,6 +49,8 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
+        let data = DataReference(data: data)
+        
         guard data.count >= ATTReadByTypeResponse.length
             else { return nil }
         
@@ -72,7 +74,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = 2 + (index * attributeDataLength)
             
-            let attributeBytes = Data(data[byteIndex ..< byteIndex + attributeDataLength])
+            let attributeBytes = data[byteIndex ..< byteIndex + attributeDataLength]
             
             guard let attribute = AttributeData(data: attributeBytes)
                 else { return nil }
@@ -112,16 +114,21 @@ public extension ATTReadByTypeResponse {
         public var handle: UInt16
         
         /// Attribute Value
-        public var value: Data
-        
-        public init(handle: UInt16,
-                    value: Data) {
+        public var value: Data {
             
-            self.handle = handle
-            self.value = value
+            return Data(valueReference)
         }
         
-        public init?(data: Data) {
+        internal var valueReference: DataReference
+        
+        internal init(handle: UInt16,
+                      value: DataReference) {
+            
+            self.handle = handle
+            self.valueReference = value
+        }
+        
+        internal init?(data: DataReference) {
             
             guard data.count >= AttributeData.length
                 else { return nil }
@@ -130,13 +137,11 @@ public extension ATTReadByTypeResponse {
             
             if data.count > AttributeData.length {
                 
-                let startingIndex = AttributeData.length
-                
-                self.value = Data(data.suffix(from: startingIndex))
+                self.valueReference = data[2 ..< data.count]
                 
             } else {
                 
-                self.value = Data()
+                self.valueReference = DataReference()
             }
         }
         
@@ -144,7 +149,11 @@ public extension ATTReadByTypeResponse {
             
             let handleBytes = handle.littleEndian.bytes
             
-            return [handleBytes.0, handleBytes.1] + value
+            var data = Data([handleBytes.0, handleBytes.1])
+            
+            data += value
+            
+            return value
         }
     }
 }
