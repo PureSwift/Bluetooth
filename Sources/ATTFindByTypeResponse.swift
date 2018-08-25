@@ -69,22 +69,12 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     
     public var data: Data {
         
-        // complex algorithm for better performance
-        let handlesDataByteCount = handlesInformationList.count * HandlesInformation.length
-        
         // preallocate memory to avoid performance penalty by increasing buffer
-        var handlesData = Data(repeating: 0, count: handlesDataByteCount)
+        var data = Data(capacity: handlesInformationList.count * HandlesInformation.length)
+        data += type(of: self).attributeOpcode.rawValue
+        handlesInformationList.forEach { data += $0.data }
         
-        for (handleIndex, handle) in handlesInformationList.enumerated() {
-            
-            let startByteIndex = handleIndex * HandlesInformation.length
-            
-            let byteRange = startByteIndex ..< startByteIndex + HandlesInformation.length
-            
-            handlesData.replaceSubrange(byteRange, with: handle.data)
-        }
-        
-        return [type(of: self).attributeOpcode.rawValue] + handlesData
+        return data
     }
 }
 
