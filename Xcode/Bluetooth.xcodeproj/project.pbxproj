@@ -1437,6 +1437,10 @@
 		6E80C72F21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
 		6E80C73021310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
 		6E80C73121310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
+		6E80C73321312CED0071EB30 /* GAPUUIDList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C73221312CED0071EB30 /* GAPUUIDList.swift */; };
+		6E80C73421312CED0071EB30 /* GAPUUIDList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C73221312CED0071EB30 /* GAPUUIDList.swift */; };
+		6E80C73521312CED0071EB30 /* GAPUUIDList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C73221312CED0071EB30 /* GAPUUIDList.swift */; };
+		6E80C73621312CED0071EB30 /* GAPUUIDList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C73221312CED0071EB30 /* GAPUUIDList.swift */; };
 		6E9578C12092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */; };
 		6E9578C22092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */; };
 		6E9578C32092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */; };
@@ -2142,6 +2146,7 @@
 		6E7F4A4020928E2B00E877F1 /* GAPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPTests.swift; sourceTree = "<group>"; };
 		6E80C7282130F7AA0071EB30 /* DataReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataReference.swift; sourceTree = "<group>"; };
 		6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsafeDataConvertible.swift; sourceTree = "<group>"; };
+		6E80C73221312CED0071EB30 /* GAPUUIDList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPUUIDList.swift; sourceTree = "<group>"; };
 		6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyAdvertisingData.swift; sourceTree = "<group>"; };
 		6E97026420CE234C008AA9C6 /* GATTCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTCharacteristic.swift; sourceTree = "<group>"; };
 		6E97026620CE236D008AA9C6 /* GATTService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTService.swift; sourceTree = "<group>"; };
@@ -2279,6 +2284,7 @@
 			isa = PBXGroup;
 			children = (
 				3531BBD920CD013700EBB028 /* GAPData.swift */,
+				6E80C73221312CED0071EB30 /* GAPUUIDList.swift */,
 				6EFB3DD120D2DFF000364CA0 /* GAPDataType.swift */,
 				6E1F936B20C2183E0030367F /* GAPAppearance.swift */,
 				6E6AAD8F20D2194700DDE1CA /* GAP Data / EIR Data */,
@@ -3560,6 +3566,7 @@
 				6E781B0D20CE534300786867 /* SFloat.swift in Sources */,
 				6E1F937A20C241830030367F /* AdvertisingInterval.swift in Sources */,
 				35770A0220F6E61A00E1AC6F /* UInt48.swift in Sources */,
+				6E80C73621312CED0071EB30 /* GAPUUIDList.swift in Sources */,
 				6EAD977220BF796200673DB7 /* DefinedCompanies.swift in Sources */,
 				351829F220D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
 				35CA73DE20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */,
@@ -3992,6 +3999,7 @@
 				6E781B0C20CE534300786867 /* SFloat.swift in Sources */,
 				6E1F937920C241830030367F /* AdvertisingInterval.swift in Sources */,
 				35770A0120F6E61A00E1AC6F /* UInt48.swift in Sources */,
+				6E80C73521312CED0071EB30 /* GAPUUIDList.swift in Sources */,
 				6EAD977120BF796200673DB7 /* DefinedCompanies.swift in Sources */,
 				351829F120D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
 				35CA73DD20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */,
@@ -4220,6 +4228,7 @@
 				3518297220D22C400009F82D /* GAPTxPowerLevel.swift in Sources */,
 				356EB8D220D427730022A48D /* HCILEReadSupportedStates.swift in Sources */,
 				6EFB3D2B20D2D41D00364CA0 /* LowEnergyWhiteListDevice.swift in Sources */,
+				6E80C73321312CED0071EB30 /* GAPUUIDList.swift in Sources */,
 				6EBD96B9207A600B0037D253 /* ATTMaximumTransmissionUnit.swift in Sources */,
 				359E8AE820EFCF5500A6E24E /* GATTTimeAccuracy.swift in Sources */,
 				35B4ADB12125E04E00183DB1 /* HCIWritePageScanActivity.swift in Sources */,
@@ -4893,6 +4902,7 @@
 				6E781B0B20CE534300786867 /* SFloat.swift in Sources */,
 				6E1F937820C241830030367F /* AdvertisingInterval.swift in Sources */,
 				35770A0020F6E61A00E1AC6F /* UInt48.swift in Sources */,
+				6E80C73421312CED0071EB30 /* GAPUUIDList.swift in Sources */,
 				6EAD977020BF796200673DB7 /* DefinedCompanies.swift in Sources */,
 				351829F020D22E100009F82D /* GAPIndoorPositioning.swift in Sources */,
 				35CA73DC20D9735E000E49F7 /* GATTCentralAddressResolution.swift in Sources */,

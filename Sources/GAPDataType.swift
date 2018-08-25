@@ -21,6 +21,11 @@ public struct GAPDataType: RawRepresentable {
         
         self.rawValue = rawValue
     }
+}
+
+// MARK: - Defined Types
+
+public extension GAPDataType {
     
     /// Flags
     ///
@@ -158,6 +163,8 @@ public struct GAPDataType: RawRepresentable {
     
 }
 
+// MARK: - Equatable
+
 extension GAPDataType: Equatable {
     
     public static func == (lhs: GAPDataType, rhs: GAPDataType) -> Bool {
@@ -165,6 +172,8 @@ extension GAPDataType: Equatable {
         return lhs.rawValue == rhs.rawValue
     }
 }
+
+// MARK: - Hashable
 
 extension GAPDataType: Hashable {
     
@@ -174,6 +183,8 @@ extension GAPDataType: Hashable {
     }
 }
 
+// MARK: - ExpressibleByIntegerLiteral
+
 extension GAPDataType: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
@@ -181,6 +192,8 @@ extension GAPDataType: ExpressibleByIntegerLiteral {
         self.rawValue = value
     }
 }
+
+// MARK: - CustomStringConvertible
 
 extension GAPDataType: CustomStringConvertible {
     
@@ -191,7 +204,7 @@ extension GAPDataType: CustomStringConvertible {
     
     public var description: String {
         
-        return name ?? "Data Type (\(rawValue))"
+        return name ?? "GAP Data Type (\(rawValue))"
     }
 }
 

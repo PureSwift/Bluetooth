@@ -27,7 +27,7 @@ public struct GAPCompleteListOf16BitServiceClassUUIDs: GAPData {
     
     internal init?(data: DataReference) {
         
-        guard let list = Bit16UUIDList(data: data)
+        guard let list = GAPUUIDList<UInt16>(data: data)
             else { return nil }
         
         self.uuids = list.uuids
@@ -35,7 +35,7 @@ public struct GAPCompleteListOf16BitServiceClassUUIDs: GAPData {
     
     public var data: Data {
         
-        return Bit16UUIDList(uuids: uuids).data
+        return GAPUUIDList(uuids: uuids).data
     }
 }
 

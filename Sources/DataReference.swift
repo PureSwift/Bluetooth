@@ -14,7 +14,7 @@ internal struct DataReference {
     // MARK: - Properties
     
     @_versioned
-    internal let data: Data?
+    internal let data: Data
     
     @_versioned
     internal let offset: Int
@@ -23,18 +23,11 @@ internal struct DataReference {
     
     // MARK: - Initialization
     
-    public init(_ data: Data) {
+    public init(_ data: Data = Data()) {
         
         self.data = data
         self.offset = 0
         self.count = data.count
-    }
-    
-    public init() {
-        
-        self.data = nil
-        self.offset = 0
-        self.count = 0
     }
     
     fileprivate init(data: Data, offset: Int, count: Int) {
@@ -50,13 +43,10 @@ internal extension DataReference {
     subscript (index: Int) -> UInt8 {
         
         @inline(__always)
-        get { return data![offset + index] }
+        get { return data[offset + index] }
     }
     
     subscript (range: CountableRange<Int>) -> DataReference {
-        
-        guard let data = self.data
-            else { fatalError("Empty data") }
         
         return DataReference(data: data, offset: offset + range.lowerBound, count: range.count)
     }
@@ -66,9 +56,10 @@ internal extension DataReference {
         return self[index ..< count]
     }
     
+    @inline(__always)
     func withUnsafeBytes <ContentType, ResultType> (_ body: (UnsafePointer<ContentType>) throws -> ResultType) rethrows -> ResultType {
         
-        return try data!.withUnsafeBytes(body)
+        return try data.withUnsafeBytes { try body($0.advanced(by: offset)) }
     }
 }
 
@@ -76,22 +67,15 @@ internal extension Data {
     
     init(_ reference: DataReference) {
         
-        if let data = reference.data {
+        // reference is the same as the original data
+        if reference.offset == 0, reference.count == reference.data.count {
             
-            // reference is the same as the original data
-            if reference.offset == 0, reference.count == data.count {
-                
-                self = data // no need for copy
-                
-            } else {
-                
-                // return copy of slice
-                self = data.subdata(in: reference.offset ..< reference.offset + reference.count)
-            }
+            self = reference.data // no need for copy
             
         } else {
             
-            self = Data()
+            // return copy of slice
+            self = reference.data.subdata(in: reference.offset ..< reference.offset + reference.count)
         }
     }
 }
