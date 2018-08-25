@@ -49,7 +49,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard data.count >= ATTReadByTypeResponse.length
+        guard data.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -87,14 +87,12 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
         
         let valueLength = UInt8(2 + attributeData[0].value.count)
         
-        var bytes = Data([type(of: self).attributeOpcode.rawValue, valueLength])
+        var data = Data(capacity: 2 + (attributeData.count * Int(valueLength)))
+        data += type(of: self).attributeOpcode.rawValue
+        data += valueLength
+        attributeData.forEach { data += $0.data }
         
-        for attribute in attributeData {
-            
-            bytes += attribute.data
-        }
-        
-        return bytes
+        return data
     }
 }
 
