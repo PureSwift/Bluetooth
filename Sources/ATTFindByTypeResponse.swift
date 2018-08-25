@@ -24,14 +24,16 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     
     public init(handlesInformationList: [HandlesInformation]) {
         
-        assert(handlesInformationList.count >= 1, "Must have at least one HandlesInformation")
+        precondition(handlesInformationList.isEmpty == false, "Must have at least one HandlesInformation")
         
         self.handlesInformationList = handlesInformationList
     }
     
     public init?(data: Data) {
         
-        guard data.count >= ATTFindByTypeResponse.length
+        let data = DataReference(data: data)
+        
+        guard data.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -43,7 +45,8 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         
         let handleBytesCount = data.count - 1
         
-        guard handleBytesCount % handleLength == 0 else { return nil }
+        guard handleBytesCount % handleLength == 0
+            else { return nil }
         
         let handleCount = handleBytesCount / handleLength
         
@@ -55,7 +58,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = (index * handleLength) + 1
             
-            let handleBytes = Data(data[byteIndex ..< byteIndex + handleLength])
+            let handleBytes = data[byteIndex ..< byteIndex + handleLength]
             
             guard let handle = HandlesInformation(data: handleBytes)
                 else { return nil }
@@ -113,7 +116,12 @@ public extension ATTFindByTypeResponse {
         
         public init?(data: Data) {
             
-            guard data.count == HandlesInformation.length
+            self.init(data: DataReference(data: data))
+        }
+        
+        internal init?(data: DataReference) {
+            
+            guard data.count == type(of: self).length
                 else { return nil }
             
             self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))

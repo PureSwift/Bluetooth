@@ -48,7 +48,8 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length else { return nil }
+        guard data.count >= type(of: self).length
+            else { return nil }
         
         let attributeOpcodeByte = data[0]
         

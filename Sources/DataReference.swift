@@ -9,7 +9,7 @@
 import Foundation
 
 /// Immutable Data type, used only for data parsing.
-internal final class DataReference {
+internal struct DataReference {
     
     // MARK: - Properties
     
@@ -21,7 +21,7 @@ internal final class DataReference {
     
     // MARK: - Initialization
     
-    public convenience init(data: Data) {
+    public init(data: Data) {
         
         self.init(data: data, offset: 0, count: data.count)
     }
