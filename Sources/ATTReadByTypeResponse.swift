@@ -49,7 +49,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let data = DataReference(data: data)
+        let data = DataReference(data)
         
         guard data.count >= ATTReadByTypeResponse.length
             else { return nil }

@@ -29,7 +29,7 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let data = DataReference(data: data)
+        let data = DataReference(data)
         
         guard data.count >= type(of: self).length
             else { return nil }

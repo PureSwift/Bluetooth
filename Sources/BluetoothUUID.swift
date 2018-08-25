@@ -148,7 +148,7 @@ public extension BluetoothUUID {
     
     public init?(data: Data) {
         
-        self.init(data: DataReference(data: data))
+        self.init(data: DataReference(data))
     }
     
     internal init?(data: DataReference) {

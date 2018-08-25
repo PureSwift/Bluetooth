@@ -68,6 +68,22 @@ internal extension Data {
     
     init(_ reference: DataReference) {
         
-        self = reference.data.subdata(in: reference.offset ..< reference.offset + reference.count)
+        if let data = reference.data {
+            
+            // reference is the same as the original data
+            if reference.offset == 0, reference.count == data.count {
+                
+                self = data // no need for copy
+                
+            } else {
+                
+                // return copy of slice
+                self = data.subdata(in: reference.offset ..< reference.offset + reference.count)
+            }
+            
+        } else {
+            
+            self = Data()
+        }
     }
 }

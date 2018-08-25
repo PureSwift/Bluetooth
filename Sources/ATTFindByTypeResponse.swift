@@ -31,7 +31,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let data = DataReference(data: data)
+        let data = DataReference(data)
         
         guard data.count >= type(of: self).length
             else { return nil }
@@ -116,7 +116,7 @@ public extension ATTFindByTypeResponse {
         
         public init?(data: Data) {
             
-            self.init(data: DataReference(data: data))
+            self.init(data: DataReference(data))
         }
         
         internal init?(data: DataReference) {
