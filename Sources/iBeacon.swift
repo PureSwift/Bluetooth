@@ -115,6 +115,8 @@ public struct AppleBeacon {
     }
 }
 
+#if os(macOS) || os(Linux)
+
 internal extension LowEnergyAdvertisingData {
     
     init(beacon: AppleBeacon, flags: GAPFlags) {
@@ -144,8 +146,6 @@ internal extension AppleBeacon {
         return (beacon, flags)
     }
 }
-
-#if os(macOS) || os(Linux)
 
 public extension BluetoothHostControllerInterface {
     
