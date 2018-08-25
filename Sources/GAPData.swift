@@ -32,19 +32,63 @@ public protocol GAPData {
 }
 
 // MARK: - Internal
-
-/// Encodes / Decodes an array of 16 bit values. 
-internal struct Bit16UUIDList {
+/*
+internal struct GAPUUIDList <Element: GAPUUIDElement> {
     
-    public var uuids: [UInt16]
+    internal var uuids: [Element]
     
-    public init(uuids: [UInt16]) {
+    internal init(uuids: [Element]) {
         
         self.uuids = uuids
     }
     
-    public init?(data: Data) {
-                
+    internal init?(data: DataReference) {
+        
+        var uuids = [Element]()
+        uuids.reserveCapacity(data.count / MemoryLayout<Element>.size)
+        
+        var index = 0
+        while index < data.count {
+            
+            guard index + MemoryLayout<Element>.size <= data.count
+                else { return nil }
+            
+            let value = UInt16(littleEndian: UInt16(bytes: (data[index], data[index + 1])))
+            
+            index += 2
+            
+            uuids.append(value)
+        }
+        
+        self.uuids = uuids
+    }
+    
+    internal var data: Data {
+        
+        var data = Data(capacity: MemoryLayout<UInt16>.size * uuids.count)
+        uuids.forEach { data += $0 }
+        return data
+    }
+}
+*/
+internal protocol GAPUUIDElement: ByteSwap { }
+
+//extension UInt16: GAPUUIDElement { }
+//extension UInt32: GAPUUIDElement { }
+//extension UInt128: GAPUUIDElement { }
+
+/// Encodes / Decodes an array of 16 bit values. 
+internal struct Bit16UUIDList {
+    
+    var uuids: [UInt16]
+    
+    internal init(uuids: [UInt16]) {
+        
+        self.uuids = uuids
+    }
+    
+    internal init?(data: DataReference) {
+        
         var uuids = [UInt16]()
         uuids.reserveCapacity(data.count / 2)
         
@@ -64,23 +108,25 @@ internal struct Bit16UUIDList {
         self.uuids = uuids
     }
     
-    public var data: Data {
+    internal var data: Data {
         
-        return uuids.reduce(Data(), { $0.0 + [$0.1.littleEndian.bytes.0, $0.1.littleEndian.bytes.1] })
+        var data = Data(capacity: MemoryLayout<UInt16>.size * uuids.count)
+        uuids.forEach { data += $0 }
+        return data
     }
 }
 
 /// Encodes / Decodes an array of 32 bit values.
 internal struct Bit32UUIDList {
     
-    public var uuids: [UInt32]
+    internal var uuids: [UInt32]
     
-    public init(uuids: [UInt32]) {
+    internal init(uuids: [UInt32]) {
         
         self.uuids = uuids
     }
     
-    public init?(data: Data) {
+    internal init?(data: Data) {
         
         var uuids = [UInt32]()
         uuids.reserveCapacity(data.count / 4)
@@ -101,9 +147,11 @@ internal struct Bit32UUIDList {
         self.uuids = uuids
     }
     
-    public var data: Data {
+    internal var data: Data {
         
-        return uuids.reduce(Data(), { $0.0 + [$0.1.littleEndian.bytes.0, $0.1.littleEndian.bytes.1, $0.1.littleEndian.bytes.2, $0.1.littleEndian.bytes.3] })
+        var data = Data(capacity: MemoryLayout<UInt32>.size * uuids.count)
+        uuids.forEach { data += $0 }
+        return data
     }
 }
 

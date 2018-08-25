@@ -36,6 +36,11 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
     public init?(data: Data) {
         
+        self.init(data: DataReference(data))
+    }
+    
+    internal init?(data: DataReference) {
+        
         // this is not actually UInt16 UUID, but handles
         // since the binary format is the same we can reuse code
         guard let list = Bit16UUIDList(data: data)

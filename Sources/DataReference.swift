@@ -47,14 +47,18 @@ internal struct DataReference {
 
 internal extension DataReference {
     
+    subscript (index: Int) -> UInt8 {
+        
+        @inline(__always)
+        get { return data![offset + index] }
+    }
+    
     subscript (range: CountableRange<Int>) -> DataReference {
         
         guard let data = self.data
             else { fatalError("Empty data") }
         
-        let offset = self.offset + range.lowerBound
-        
-        return DataReference(data: data, offset: offset, count: range.count)
+        return DataReference(data: data, offset: offset + range.lowerBound, count: range.count)
     }
     
     func suffix(from index: Int) -> DataReference {
@@ -62,10 +66,9 @@ internal extension DataReference {
         return self[index ..< count]
     }
     
-    subscript (index: Int) -> UInt8 {
+    func withUnsafeBytes <ContentType, ResultType> (_ body: (UnsafePointer<ContentType>) throws -> ResultType) rethrows -> ResultType {
         
-        @inline(__always)
-        get { return data![offset + index] }
+        return try data!.withUnsafeBytes(body)
     }
 }
 

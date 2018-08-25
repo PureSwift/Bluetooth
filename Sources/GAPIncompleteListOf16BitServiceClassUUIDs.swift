@@ -22,6 +22,11 @@ public struct GAPIncompleteListOf16BitServiceClassUUIDs: GAPData {
     
     public init?(data: Data) {
         
+        self.init(data: DataReference(data))
+    }
+    
+    internal init?(data: DataReference) {
+        
         guard let list = Bit16UUIDList(data: data)
             else { return nil }
         
