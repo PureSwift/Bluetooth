@@ -39,14 +39,10 @@ final class GATTTests: XCTestCase {
         // server
         let serverSocket = TestL2CAPSocket()
         let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu, maximumPreparedWrites: .max)
-        server.log = { print("GATT Server: " + $0) }
-        server.connection.log = { print("Server ATT: " + $0) }
         
         // client
         let clientSocket = TestL2CAPSocket()
         let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: mtu)
-        client.log = { print("GATT Client: " + $0) }
-        client.connection.log = { print("Client ATT: " + $0) }
         
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
@@ -326,16 +322,12 @@ final class GATTTests: XCTestCase {
         // server
         let serverSocket = TestL2CAPSocket()
         let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu,  maximumPreparedWrites: .max)
-        server.log = { print("GATT Server: " + $0) }
-        server.connection.log = { print("Server ATT: " + $0) }
         server.database = GATTDatabase(services: ProximityProfile.services)
         //server.database.dump()
         
         // client
         let clientSocket = TestL2CAPSocket()
         let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: mtu)
-        client.log = { print("GATT Client: " + $0) }
-        client.connection.log = { print("Client ATT: " + $0) }
         
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
@@ -457,16 +449,12 @@ final class GATTTests: XCTestCase {
         // server
         let serverSocket = TestL2CAPSocket(name: "Server")
         let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: serverMTU,  maximumPreparedWrites: .max)
-        server.log = { print("GATT Server: " + $0) }
-        server.connection.log = { print("Server ATT: " + $0) }
         server.database = GATTDatabase(services: [service])
         //server.database.dump()
         
         // client
         let clientSocket = TestL2CAPSocket(name: "Client")
         let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: clientMTU)
-        client.log = { print("GATT Client: " + $0) }
-        client.connection.log = { print("Client ATT: " + $0) }
         
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
@@ -528,15 +516,11 @@ final class GATTTests: XCTestCase {
         // server
         let serverSocket = TestL2CAPSocket()
         let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
-        server.log = { print("GATT Server: " + $0) }
-        server.connection.log = { print("Server ATT: " + $0) }
         server.database = database
         
         // client
         let clientSocket = TestL2CAPSocket()
         let client = GATTClient(socket: clientSocket)
-        client.log = { print("GATT Client: " + $0) }
-        client.connection.log = { print("Client ATT: " + $0) }
         
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
@@ -773,15 +757,11 @@ final class GATTTests: XCTestCase {
         // server
         let serverSocket = TestL2CAPSocket()
         let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
-        server.log = { print("GATT Server: " + $0) }
-        server.connection.log = { print("Server ATT: " + $0) }
         server.database = database
         
         // client
         let clientSocket = TestL2CAPSocket()
         let client = GATTClient(socket: clientSocket)
-        client.log = { print("GATT Client: " + $0) }
-        client.connection.log = { print("Client ATT: " + $0) }
         
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
