@@ -115,7 +115,7 @@ extension Address: RawRepresentable {
             
         }) else { return nil }
         
-        guard let address = Address(data: Data(bytes))
+        guard let address = Address(data: bytes)
             else { fatalError("Could not initialize \(Address.self) from \(bytes)") }
         
         self.init(bigEndian: address)

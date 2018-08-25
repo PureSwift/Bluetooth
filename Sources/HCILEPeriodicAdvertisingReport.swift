@@ -52,10 +52,8 @@ public struct HCILEPeriodicAdvertisingReport: HCIEventParameter {
         let dataLength = Int(data[6])
         
         if dataLength > 0 {
-            
-            let bytes = data[7 ... (7 + dataLength)]
-            
-            self.data = Data(bytes)
+                        
+            self.data = Data(data[7 ... (7 + dataLength)])
             
         } else {
             
