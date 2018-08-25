@@ -144,9 +144,10 @@ public extension ATTReadByTypeResponse {
         
         internal var data: Data {
             
-            let handleBytes = handle.littleEndian.bytes
-            
-            return [handleBytes.0, handleBytes.1] + value
+            var data = Data(capacity: 2 + value.count)
+            data += handle.littleEndian
+            data += value
+            return data
         }
     }
 }

@@ -15,20 +15,16 @@ internal protocol UnsafeDataConvertible {
 
 extension UnsafeDataConvertible {
     public static func += (lhs: inout Data, rhs: Self) {
-        var value = self
+        var value = rhs
         lhs.append(UnsafeBufferPointer(start: &value, count: 1))
     }
 }
 
-extension UInt8  : UnsafeDataConvertible { }
-extension UInt16 : UnsafeDataConvertible { }
-extension UInt32 : UnsafeDataConvertible { }
-extension UInt64 : UnsafeDataConvertible { }
-extension UInt128 : UnsafeDataConvertible { }
-
-extension Int    : UnsafeDataConvertible { }
-extension Float  : UnsafeDataConvertible { }
-extension Double : UnsafeDataConvertible { }
+extension UInt8: UnsafeDataConvertible { }
+extension UInt16: UnsafeDataConvertible { }
+extension UInt32: UnsafeDataConvertible { }
+extension UInt64: UnsafeDataConvertible { }
+extension UInt128: UnsafeDataConvertible { }
 
 extension String: UnsafeDataConvertible {
     public static func += (lhs: inout Data, rhs: String) {
