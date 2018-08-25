@@ -52,6 +52,11 @@ public struct GATTDateTime: GATTCharacteristic {
     
     public init?(data: Data) {
         
+        self.init(data: DataReference(data))
+    }
+    
+    internal init?(data: DataReference) {
+        
         guard data.count == type(of: self).length
             else { return nil }
         

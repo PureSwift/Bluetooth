@@ -194,6 +194,11 @@ public extension LowEnergyAdvertisingData {
     
     public init?(data: Data) {
         
+        self.init(data: DataReference(data))
+    }
+    
+    internal init?(data: DataReference) {
+        
         let length = data.count
         
         guard length >= 0,

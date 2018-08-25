@@ -146,6 +146,8 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         guard data.count >= type(of: self).minimumLength
             else { return nil }
         
+        let data = DataReference(data)
+        
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
         massUnit = flags.contains(.measurementUnitSI) ? .kilogram : .pound
@@ -161,7 +163,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + GATTDateTime.length < data.count
                 else { return nil }
             
-            let timestampData = Data(data[index + 1 ... index + GATTDateTime.length])
+            let timestampData = data[index + 1 ..< index + 1 + GATTDateTime.length]
             
             guard let timestamp = GATTDateTime(data: timestampData)
                 else { return nil }

@@ -107,7 +107,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             guard index + GATTDateTime.length < data.count
                 else { return nil }
             
-            let timestampData = Data(data[index + 1 ... index + GATTDateTime.length])
+            let timestampData = data[index + 1 ... index + GATTDateTime.length]
             
             assert(timestampData.count == GATTDateTime.length)
             
