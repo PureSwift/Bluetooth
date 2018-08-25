@@ -482,7 +482,7 @@ internal extension GATTDatabase {
             
             let serviceHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[0], attribute.value[1])))
             let endGroupHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[2], attribute.value[3])))
-            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(attribute.value[4 ..< length.rawValue]))!)
+            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: attribute.value.subdataNoCopy(in: 4 ..< length.rawValue))!)
             
             self.serviceHandle = serviceHandle
             self.endGroupHandle = endGroupHandle
@@ -551,7 +551,7 @@ internal extension GATTDatabase {
             
             let properties = BitMaskOptionSet<GATT.Characteristic.Property>(rawValue: attribute.value[0])
             let valueHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[1], attribute.value[2])))
-            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(attribute.value[3 ..< length.rawValue]))!)
+            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: attribute.value.subdataNoCopy(in: 3 ..< length.rawValue))!)
             
             self.uuid = uuid
             self.properties = properties
