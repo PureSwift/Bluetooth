@@ -42,7 +42,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         var offset = 1
         for _ in 0 ..< reportCount {
             
-            let reportBytes = Data(data.suffix(from: offset))
+            let reportBytes = data.suffixNoCopy(from: offset)
             
             guard let report = Report(data: reportBytes)
                 else { return nil }
