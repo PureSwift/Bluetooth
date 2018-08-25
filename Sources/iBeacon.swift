@@ -145,6 +145,8 @@ internal extension AppleBeacon {
     }
 }
 
+#if os(macOS) || os(Linux)
+
 public extension BluetoothHostControllerInterface {
     
     /// Enable iBeacon functionality.
@@ -176,3 +178,5 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }
 }
+
+#endif
