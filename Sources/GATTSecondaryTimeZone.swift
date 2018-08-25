@@ -45,9 +45,9 @@ public struct GATTSecondaryTimeZone: GATTCharacteristic {
         guard let relativeInformation = RelativeInformation(rawValue: (data[0] >> 7))
             else { return nil }
         
-        let rangeLocalTime = Range<Int>(1 ..< GATTLocalTimeInformation.length + 1)
+        let rangeLocalTime = 1 ..< GATTLocalTimeInformation.length + 1
         
-        guard let localTimeInformation = GATTLocalTimeInformation(data: data.subdata(in: rangeLocalTime))
+        guard let localTimeInformation = GATTLocalTimeInformation(data: data.subdataNoCopy(in: rangeLocalTime))
             else { return nil }
         
         self.init(timeZone: timeZone,

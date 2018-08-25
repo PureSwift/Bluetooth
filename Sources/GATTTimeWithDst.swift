@@ -34,12 +34,10 @@ public struct GATTTimeWithDst: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let datetime = GATTDateTime(data: data.subdata(in: (0 ..< GATTDateTime.length)))
+        guard let datetime = GATTDateTime(data: data.subdataNoCopy(in: (0 ..< GATTDateTime.length)))
             else { return nil }
         
-        let range = Range<Int>(GATTDateTime.length ..< GATTDateTime.length + GATTDstOffset.length)
-        
-        guard let dstOffset = GATTDstOffset(data: data.subdata(in: range))
+        guard let dstOffset = GATTDstOffset(data: data.subdataNoCopy(in: GATTDateTime.length ..< GATTDateTime.length + GATTDstOffset.length))
             else { return nil }
         
         self.init(datetime: datetime, dstOffset: dstOffset)

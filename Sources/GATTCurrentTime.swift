@@ -34,7 +34,7 @@ public struct GATTCurrentTime: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let exactTime = GATTExactTime256(data: data.subdata(in: (0 ..< GATTExactTime256.length)))
+        guard let exactTime = GATTExactTime256(data: data.subdataNoCopy(in: (0 ..< GATTExactTime256.length)))
             else { return nil }
         
         let adjustReason = BitMaskOptionSet<Flag>(rawValue: data[GATTExactTime256.length])

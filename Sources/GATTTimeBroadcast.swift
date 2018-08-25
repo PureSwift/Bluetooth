@@ -40,17 +40,17 @@ public struct GATTTimeBroadcast: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let time = GATTExactTime256(data: data.subdata(in: (0 ..< GATTExactTime256.length)))
+        guard let time = GATTExactTime256(data: data.subdataNoCopy(in: (0 ..< GATTExactTime256.length)))
             else { return nil }
         
-        let rangeLocalTime = Range<Int>(GATTExactTime256.length ..< GATTExactTime256.length + GATTLocalTimeInformation.length)
+        let rangeLocalTime = GATTExactTime256.length ..< GATTExactTime256.length + GATTLocalTimeInformation.length
         
-        guard let localTime = GATTLocalTimeInformation(data: data.subdata(in: rangeLocalTime))
+        guard let localTime = GATTLocalTimeInformation(data: data.subdataNoCopy(in: rangeLocalTime))
             else { return nil }
         
-        let rangeReferenceTime = Range<Int>(GATTExactTime256.length + GATTLocalTimeInformation.length ..< data.count)
+        let rangeReferenceTime = GATTExactTime256.length + GATTLocalTimeInformation.length ..< data.count
         
-        guard let referenceTime = GATTReferenceTimeInformation(data: data.subdata(in: rangeReferenceTime))
+        guard let referenceTime = GATTReferenceTimeInformation(data: data.subdataNoCopy(in: rangeReferenceTime))
             else { return nil }
         
         self.init(time: time, localTime: localTime, referenceTime: referenceTime)

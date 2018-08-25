@@ -55,7 +55,7 @@ public struct GATTNewAlert: GATTCharacteristic {
             else { return nil }
         
         let numberOfNewAlerts = data[1]
-        let textStringInformationData = data.subdata(in: (2 ..< data.count))
+        let textStringInformationData = data.subdataNoCopy(in: (2 ..< data.count))
         
         guard let information = Information(data: textStringInformationData)
             else { return nil }

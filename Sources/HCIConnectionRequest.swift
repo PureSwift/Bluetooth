@@ -32,7 +32,7 @@ public struct HCIConnectionRequest: HCIEventParameter {
         
         let address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
         
-        guard let classOfDevice = ClassOfDevice(data: data.subdata(in: Range<Int>(6 ... 8)))
+        guard let classOfDevice = ClassOfDevice(data: data.subdataNoCopy(in: 6 ..< 9))
             else { return nil }
         
         guard let linkType = LinkType(rawValue: data[9])

@@ -43,10 +43,10 @@ public struct GATTReferenceTimeInformation: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let timeSource = GATTTimeSource(data: data.subdata(in: (0 ..< GATTTimeSource.length)))
+        guard let timeSource = GATTTimeSource(data: data.subdataNoCopy(in: (0 ..< GATTTimeSource.length)))
             else { return nil }
         
-        guard let timeAccuracy = GATTTimeAccuracy(data: data.subdata(in: (GATTTimeAccuracy.length ..< 2)))
+        guard let timeAccuracy = GATTTimeAccuracy(data: data.subdataNoCopy(in: (GATTTimeAccuracy.length ..< 2)))
             else { return nil }
         
         let daysSinceUpdate = Day(rawValue: data[2])

@@ -70,7 +70,7 @@ extension HCIInquiryResult {
             
             self.pageScanRepetitionMode = PageScanRepetitionMode(rawValue: data[6])
             
-            guard let classOfDevice = ClassOfDevice(data: data.subdata(in: Range<Int>(9 ... 11)))
+            guard let classOfDevice = ClassOfDevice(data: data.subdataNoCopy(in: 9 ..< 12))
                 else { return nil }
             
             let clockOffset = ClockOffset(rawValue: UInt16(littleEndian: UInt16(bytes: (data[12], data[13]))))

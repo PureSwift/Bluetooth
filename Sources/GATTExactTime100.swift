@@ -34,7 +34,7 @@ public struct GATTExactTime100: GATTCharacteristic {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let dayDateTime = GATTDayDateTime(data: data.subdata(in: (0 ..< GATTDayDateTime.length)))
+        guard let dayDateTime = GATTDayDateTime(data: data.subdataNoCopy(in: (0 ..< GATTDayDateTime.length)))
             else { return nil }
         
         guard let fraction100 = Second(rawValue: data[GATTDayDateTime.length])
