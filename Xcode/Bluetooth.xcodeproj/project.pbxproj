@@ -1433,6 +1433,10 @@
 		6E80C72A2130F7AA0071EB30 /* DataReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C7282130F7AA0071EB30 /* DataReference.swift */; };
 		6E80C72B2130F7AA0071EB30 /* DataReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C7282130F7AA0071EB30 /* DataReference.swift */; };
 		6E80C72C2130F7AA0071EB30 /* DataReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C7282130F7AA0071EB30 /* DataReference.swift */; };
+		6E80C72E21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
+		6E80C72F21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
+		6E80C73021310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
+		6E80C73121310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
 		6E9578C12092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */; };
 		6E9578C22092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */; };
 		6E9578C32092698400BAA133 /* LowEnergyAdvertisingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */; };
@@ -2137,6 +2141,7 @@
 		6E781B0920CE534300786867 /* SFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFloat.swift; sourceTree = "<group>"; };
 		6E7F4A4020928E2B00E877F1 /* GAPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPTests.swift; sourceTree = "<group>"; };
 		6E80C7282130F7AA0071EB30 /* DataReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataReference.swift; sourceTree = "<group>"; };
+		6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsafeDataConvertible.swift; sourceTree = "<group>"; };
 		6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyAdvertisingData.swift; sourceTree = "<group>"; };
 		6E97026420CE234C008AA9C6 /* GATTCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTCharacteristic.swift; sourceTree = "<group>"; };
 		6E97026620CE236D008AA9C6 /* GATTService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTService.swift; sourceTree = "<group>"; };
@@ -2838,6 +2843,7 @@
 				6EB98F1920BF803E00FCE78E /* CompanyIdentifierExtension.swift */,
 				6EFB3DC720D2DED100364CA0 /* ConnectionAcceptTimeout.swift */,
 				6E80C7282130F7AA0071EB30 /* DataReference.swift */,
+				6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */,
 				6EAD976E20BF796200673DB7 /* DefinedCompanies.swift */,
 				6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */,
 				6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */,
@@ -3602,6 +3608,7 @@
 				351829C520D22DAE0009F82D /* GAPAppearanceData.swift in Sources */,
 				6E781B0120CE40A700786867 /* GATTService.swift in Sources */,
 				6E6AAE3320D25A3800DDE1CA /* ATTPrepareWriteResponse.swift in Sources */,
+				6E80C73121310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
 				35403BD6211CAF02006A819A /* HCIAuthenticationRequested.swift in Sources */,
 				354FB03E20DC49BC0081B964 /* GATTSystemID.swift in Sources */,
 				6E60A2E52069564A00E42351 /* GATTDatabase.swift in Sources */,
@@ -4033,6 +4040,7 @@
 				351829C420D22DAE0009F82D /* GAPAppearanceData.swift in Sources */,
 				6E781B0020CE40A700786867 /* GATTService.swift in Sources */,
 				6E6AAE3220D25A3800DDE1CA /* ATTPrepareWriteResponse.swift in Sources */,
+				6E80C73021310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
 				35403BD5211CAF02006A819A /* HCIAuthenticationRequested.swift in Sources */,
 				354FB03D20DC49BC0081B964 /* GATTSystemID.swift in Sources */,
 				6E60A2E42069564A00E42351 /* GATTDatabase.swift in Sources */,
@@ -4258,6 +4266,7 @@
 				356EB8CD20D427620022A48D /* HCILETestEnd.swift in Sources */,
 				6EFB3DD720D2E05700364CA0 /* HCIReadLocalVersionInformation.swift in Sources */,
 				3518295420D22B8E0009F82D /* GAPIncompleteListOf32BitServiceClassUUIDs.swift in Sources */,
+				6E80C72E21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
 				3518295E20D22BC20009F82D /* GAPIncompleteListOf128BitServiceClassUUIDs.swift in Sources */,
 				6E704C8F1E95C45800484A22 /* Hexadecimal.swift in Sources */,
 				357FDA8620DC132D00DEE25C /* GATTPnPID.swift in Sources */,
@@ -4932,6 +4941,7 @@
 				351829C320D22DAE0009F82D /* GAPAppearanceData.swift in Sources */,
 				6E781AFF20CE40A600786867 /* GATTService.swift in Sources */,
 				6E6AAE3120D25A3800DDE1CA /* ATTPrepareWriteResponse.swift in Sources */,
+				6E80C72F21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
 				35403BD4211CAF02006A819A /* HCIAuthenticationRequested.swift in Sources */,
 				354FB03C20DC49BC0081B964 /* GATTSystemID.swift in Sources */,
 				6E60A2E32069564A00E42351 /* GATTDatabase.swift in Sources */,
