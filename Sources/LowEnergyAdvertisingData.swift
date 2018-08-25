@@ -192,7 +192,7 @@ extension LowEnergyAdvertisingData: ExpressibleByArrayLiteral {
 
 public extension LowEnergyAdvertisingData {
     
-    public init?(data: Data) {
+   public init?(data: Data) {
         
         let length = data.count
         

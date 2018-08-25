@@ -53,22 +53,23 @@ final class GAPTests: XCTestCase {
     func testDataType() {
         
         XCTAssertEqual(GAPDataType.flags.description, "Flags")
-        XCTAssertEqual(GAPDataType(rawValue: 0).description, "Data Type (0)")
+        XCTAssertEqual(GAPDataType.incompleteListOf16BitServiceClassUUIDs.description, "Incomplete List of 16-bit Service Class UUIDs")
+        XCTAssertEqual(GAPDataType(rawValue: 0).description, "GAP Data Type (0)")
     }
     
     func testBit16UUIDList() {
         
-        XCTAssertNil(Bit16UUIDList(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
+        XCTAssertNil(GAPUUIDList<UInt16>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
                      "Can only initialize from multiples of 2 bytes")
         
-        XCTAssertEqual(Bit16UUIDList(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
+        XCTAssertEqual(GAPUUIDList<UInt16>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
         
         do {
             
             // 16 bit UUIDs: 0X1803 0X1804 0X1802
             let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18])
             
-            guard let list = Bit16UUIDList(data: data)
+            guard let list = GAPUUIDList<UInt16>(data: data)
                 else { XCTFail("Could not parse from data"); return }
             
             XCTAssertEqual(list.data, data)
@@ -80,15 +81,15 @@ final class GAPTests: XCTestCase {
     
     func testBit32UUIDList() {
         
-        XCTAssertNil(Bit32UUIDList(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
+        XCTAssertNil(GAPUUIDList<UInt32>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
                      "Can only initialize from multiples of 4 bytes")
         
-        XCTAssertEqual(Bit32UUIDList(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
+        XCTAssertEqual(GAPUUIDList<UInt32>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
         
         // 32 bit UUIDs: 0x18041803 0x06041802
         let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06])
         
-        guard let list = Bit32UUIDList(data: data)
+        guard let list = GAPUUIDList<UInt32>(data: data)
             else { XCTFail("Could not parse from data"); return }
         
         XCTAssertEqual(list.data, data)
@@ -97,15 +98,15 @@ final class GAPTests: XCTestCase {
     
     func testBit128UUIDList() {
         
-        XCTAssertNil(Bit128UUIDList(data: Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06])),
+        XCTAssertNil(GAPUUIDList<UInt128>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06])),
                      "Can only initialize from multiples of 16 bytes")
         
-        XCTAssertEqual(Bit128UUIDList(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
+        XCTAssertEqual(GAPUUIDList<UInt128>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
         
         // 128 bit UUIDs: 0x18041803 0x06041802 0x18041803 0x18030602
         let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18])
         
-        guard let list = Bit128UUIDList(data: data)
+        guard let list = GAPUUIDList<UInt128>(data: data)
             else { XCTFail("Could not parse from data"); return }
         
         XCTAssertEqual(list.data, data)

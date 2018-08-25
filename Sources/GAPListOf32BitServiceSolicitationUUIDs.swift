@@ -20,9 +20,9 @@ public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
         self.uuids = uuids
     }
     
-    public init?(data: Data) {
+   public init?(data: Data) {
         
-        guard let list = Bit32UUIDList(data: data)
+        guard let list = GAPUUIDList<UInt32>(data: data)
             else { return nil }
         
         self.uuids = list.uuids
@@ -30,7 +30,7 @@ public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
     
     public var data: Data {
         
-        return Bit32UUIDList(uuids: uuids).data
+        return GAPUUIDList<UInt32>(uuids: uuids).data
     }
 }
 

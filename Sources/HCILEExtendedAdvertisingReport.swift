@@ -42,7 +42,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         var offset = 1
         for _ in 0 ..< reportCount {
             
-            let reportBytes = Data(data.suffix(from: offset))
+            let reportBytes = data.suffixNoCopy(from: offset)
             
             guard let report = Report(data: reportBytes)
                 else { return nil }
@@ -82,7 +82,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         public let responseData: Data //Data
         
-        public init?(data: Data) {
+        internal init?(data: Data) {
             
             guard data.count >= Report.length
                 else { return nil }
@@ -122,7 +122,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
             
             let dataLength = Int(data[23])
             
-            let data = Data(data[24 ..< (24 + dataLength)])
+            let responseData = Data(data[24 ..< (24 + dataLength)])
             assert(data.count == dataLength)
             
             self.eventType = eventType
@@ -136,7 +136,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
             self.periodicAdvertisingInterval = periodicAdvertisingInterval
             self.directAddressType = directAddressType
             self.directAddress = directAddress
-            self.responseData = data
+            self.responseData = responseData
         }
     }
     

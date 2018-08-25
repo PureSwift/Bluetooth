@@ -24,14 +24,14 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
     
     public init(handlesInformationList: [HandlesInformation]) {
         
-        assert(handlesInformationList.count >= 1, "Must have at least one HandlesInformation")
+        precondition(handlesInformationList.isEmpty == false, "Must have at least one HandlesInformation")
         
         self.handlesInformationList = handlesInformationList
     }
     
     public init?(data: Data) {
         
-        guard data.count >= ATTFindByTypeResponse.length
+        guard data.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -43,7 +43,8 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
         
         let handleBytesCount = data.count - 1
         
-        guard handleBytesCount % handleLength == 0 else { return nil }
+        guard handleBytesCount % handleLength == 0
+            else { return nil }
         
         let handleCount = handleBytesCount / handleLength
         
@@ -55,7 +56,7 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = (index * handleLength) + 1
             
-            let handleBytes = Data(data[byteIndex ..< byteIndex + handleLength])
+            let handleBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + handleLength)
             
             guard let handle = HandlesInformation(data: handleBytes)
                 else { return nil }
@@ -105,27 +106,28 @@ public extension ATTFindByTypeResponse {
         /// Group End Handle
         public var groupEnd: UInt16
         
-        public init(foundAttribute: UInt16, groupEnd: UInt16) {
+        public init(foundAttribute: UInt16,
+                    groupEnd: UInt16) {
             
             self.foundAttribute = foundAttribute
             self.groupEnd = groupEnd
         }
         
-        public init?(data: Data) {
+        internal init?(data: Data) {
             
-            guard data.count == HandlesInformation.length
+            guard data.count == type(of: self).length
                 else { return nil }
             
             self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
             self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
         }
         
-        public var data: Data {
+        internal var data: Data {
             
-            let foundAttributeBytes = foundAttribute.littleEndian.bytes
-            let groupEndBytes = groupEnd.littleEndian.bytes
-            
-            return Data([foundAttributeBytes.0, foundAttributeBytes.1, groupEndBytes.0, groupEndBytes.1])
+            var data = Data(capacity: type(of: self).length)
+            data += foundAttribute.littleEndian
+            data += groupEnd.littleEndian
+            return data
         }
     }
 }

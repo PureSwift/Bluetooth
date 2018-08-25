@@ -43,8 +43,6 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
     internal init(_ unsafe: [AttributeData]) {
         
         self.attributeData = unsafe
-        
-        assert(ATTReadByGroupTypeResponse(attributeData: unsafe) != nil)
     }
     
     public init?(data: Data) {
@@ -73,7 +71,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             
             let byteIndex = 2 + (index * length)
             
-            let attributeBytes = Data(data[byteIndex ..< byteIndex + length])
+            let attributeBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + length)
             
             guard let attributeData = AttributeData(data: attributeBytes)
                 else { return nil }
@@ -99,6 +97,9 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
         
         return Data([type(of: self).attributeOpcode.rawValue, length]) + attributeDataBytes
     }
+}
+
+public extension ATTReadByGroupTypeResponse {
     
     public struct AttributeData {
         
@@ -123,13 +124,13 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             self.value = value
         }
         
-        public init?(data: Data) {
+        internal init?(data: Data) {
             
-            guard data.count >= AttributeData.length
+            guard data.count >= type(of: self).length
                 else { return nil }
             
-            self.attributeHandle = UInt16(bytes: (data[0], data[1])).littleEndian
-            self.endGroupHandle = UInt16(bytes: (data[2], data[3])).littleEndian
+            self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+            self.endGroupHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
             
             if data.count > type(of: self).length {
                 
@@ -141,7 +142,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
             }
         }
         
-        public var data: Data {
+        internal var data: Data {
             
             let attributeHandleBytes = attributeHandle.littleEndian.bytes
             

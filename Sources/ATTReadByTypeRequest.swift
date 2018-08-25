@@ -42,9 +42,9 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.startHandle = UInt16(bytes: (data[1], data[2])).littleEndian
+        self.startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        self.endHandle = UInt16(bytes: (data[3], data[4])).littleEndian
+        self.endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         
         switch length {
             
@@ -56,7 +56,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
             
         case .uuid128:
             
-            self.attributeType = BluetoothUUID(littleEndian: BluetoothUUID(data: data.subdata(in: 5 ..< 21))!)
+            self.attributeType = BluetoothUUID(littleEndian: BluetoothUUID(data: data.subdataNoCopy(in: 5 ..< 21))!)
         }
     }
     
@@ -65,7 +65,11 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit {
         let startHandleBytes = startHandle.littleEndian.bytes
         let endHandleBytes = endHandle.littleEndian.bytes
         
-        return Data([type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1]) + attributeType.littleEndian.data
+        return Data([type(of: self).attributeOpcode.rawValue,
+                     startHandleBytes.0,
+                     startHandleBytes.1,
+                     endHandleBytes.0,
+                     endHandleBytes.1]) + attributeType.littleEndian.data
     }
 }
 
@@ -77,15 +81,5 @@ internal extension ATTReadByTypeRequest {
         
         case uuid16     = 7
         case uuid128    = 21
-        
-        init?(uuid: BluetoothUUID) {
-            
-            switch uuid {
-                
-            case .bit16: self = .uuid16
-            case .bit32: return nil
-            case .bit128: self = .uuid128
-            }
-        }
     }
 }

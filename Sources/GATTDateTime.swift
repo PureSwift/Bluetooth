@@ -50,7 +50,7 @@ public struct GATTDateTime: GATTCharacteristic {
         self.second = second
     }
     
-    public init?(data: Data) {
+   public init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }

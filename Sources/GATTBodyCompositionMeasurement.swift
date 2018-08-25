@@ -161,7 +161,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + GATTDateTime.length < data.count
                 else { return nil }
             
-            let timestampData = Data(data[index + 1 ... index + GATTDateTime.length])
+            let timestampData = data.subdataNoCopy(in: index + 1 ..< index + 1 + GATTDateTime.length)
             
             guard let timestamp = GATTDateTime(data: timestampData)
                 else { return nil }

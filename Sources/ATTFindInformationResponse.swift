@@ -29,12 +29,12 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard data.count >= ATTFindInformationResponse.length
+        guard data.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
         let formatByte = data[1]
-        let remainderData = Data(data.suffix(from: 2))
+        let remainderData = data.subdataNoCopy(in: 2 ..< data.count)
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
             let format = Format(rawValue: formatByte),
@@ -111,7 +111,7 @@ public extension ATTFindInformationResponse {
             }
         }
         
-        public init?(data: Data, format: Format) {
+        internal init?(data: Data, format: Format) {
             
             let pairLength = format.length
             
@@ -128,7 +128,7 @@ public extension ATTFindInformationResponse {
                 
                 let byteIndex = pairIndex * pairLength
                 
-                let pairBytes = Data(data[byteIndex ..< byteIndex + pairLength])
+                let pairBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + pairLength)
                 
                 let handle = UInt16(littleEndian: UInt16(bytes: (pairBytes[0], pairBytes[1])))
                 
@@ -142,7 +142,7 @@ public extension ATTFindInformationResponse {
                     
                 case .bit128:
                     
-                    let uuidBytes = Foundation.Data((pairBytes[2 ... 17]))
+                    let uuidBytes = pairBytes.subdataNoCopy(in: 2 ..< 18)
                     
                     assert(uuidBytes.count == UInt128.length)
                     
