@@ -640,15 +640,11 @@ final class GATTTests: XCTestCase {
             // server
             let serverSocket = TestL2CAPSocket()
             let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
-            server.log = { print("GATT Server: " + $0) }
-            server.connection.log = { print("Server ATT: " + $0) }
             server.database = database
             
             // client
             let clientSocket = TestL2CAPSocket()
             let client = GATTClient(socket: clientSocket)
-            client.log = { print("GATT Client: " + $0) }
-            client.connection.log = { print("Client ATT: " + $0) }
             
             clientSocket.target = serverSocket
             serverSocket.target = clientSocket // weak references
