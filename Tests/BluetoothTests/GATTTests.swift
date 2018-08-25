@@ -797,7 +797,7 @@ final class GATTTests: XCTestCase {
             client.discoverAllPrimaryServices {
                 
                 print("Discover All Primary Services")
-                dump($0)
+                //dump($0)
                 
                 switch $0 {
                 case let .error(error):
@@ -828,7 +828,7 @@ final class GATTTests: XCTestCase {
             client.discoverAllCharacteristics(of: service) {
                 
                 print("Discover All Characteristics of a Service")
-                dump($0)
+                //dump($0)
                 
                 switch $0 {
                 case let .error(error):
@@ -857,7 +857,7 @@ final class GATTTests: XCTestCase {
             client.discoverCharacteristics(of: service, by: uuid) {
                 
                 print("Discover Characteristics by UUID")
-                dump($0)
+                //dump($0)
                 
                 switch $0 {
                 case let .error(error):
@@ -897,7 +897,7 @@ final class GATTTests: XCTestCase {
                 client.readCharacteristic(characteristic) {
                     
                     print("Read Characteristic")
-                    dump($0)
+                    //dump($0)
                     
                     switch $0 {
                     case let .error(error):
@@ -922,7 +922,7 @@ final class GATTTests: XCTestCase {
                 client.writeCharacteristic(characteristic, data: data, reliableWrites: reliableWrites) {
                     
                     print("Write Characteristic")
-                    dump($0)
+                    //dump($0)
                     
                     switch $0 {
                     case let .error(error):
