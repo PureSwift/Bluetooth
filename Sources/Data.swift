@@ -26,13 +26,6 @@ internal extension Data {
 
 internal extension Data {
     
-    init(bytesNoCopy data: Data) {
-        
-        let pointer = data.withUnsafeBytes { UnsafeMutableRawPointer(mutating: $0) }
-        
-        self.init(bytesNoCopy: pointer, count: data.count, deallocator: .none)
-    }
-    
     func subdataNoCopy(in range: CountableRange<Int>) -> Data {
         
         let pointer = withUnsafeBytes { UnsafeMutableRawPointer(mutating: $0).advanced(by: range.lowerBound) }
