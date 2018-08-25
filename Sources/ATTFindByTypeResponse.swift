@@ -108,15 +108,11 @@ public extension ATTFindByTypeResponse {
         /// Group End Handle
         public var groupEnd: UInt16
         
-        public init(foundAttribute: UInt16, groupEnd: UInt16) {
+        public init(foundAttribute: UInt16,
+                    groupEnd: UInt16) {
             
             self.foundAttribute = foundAttribute
             self.groupEnd = groupEnd
-        }
-        
-        public init?(data: Data) {
-            
-            self.init(data: DataReference(data))
         }
         
         internal init?(data: DataReference) {
@@ -128,12 +124,12 @@ public extension ATTFindByTypeResponse {
             self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
         }
         
-        public var data: Data {
+        internal var data: Data {
             
-            let foundAttributeBytes = foundAttribute.littleEndian.bytes
-            let groupEndBytes = groupEnd.littleEndian.bytes
-            
-            return Data([foundAttributeBytes.0, foundAttributeBytes.1, groupEndBytes.0, groupEndBytes.1])
+            var data = Data(capacity: type(of: self).length)
+            data += foundAttribute.littleEndian
+            data += groupEnd.littleEndian
+            return data
         }
     }
 }

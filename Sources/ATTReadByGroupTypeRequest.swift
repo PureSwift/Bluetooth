@@ -27,7 +27,9 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
     /// 2 or 16 octet UUID
     public var type: BluetoothUUID
     
-    public init(startHandle: UInt16, endHandle: UInt16, type: BluetoothUUID) {
+    public init(startHandle: UInt16,
+                endHandle: UInt16,
+                type: BluetoothUUID) {
         
         self.startHandle = startHandle
         self.endHandle = endHandle
@@ -35,6 +37,8 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
     }
     
     public init?(data: Data) {
+        
+        let data = DataReference(data)
         
         guard let length = Length(rawValue: data.count)
             else { return nil }
@@ -58,8 +62,7 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
             
         case .uuid128:
             
-            self.type = BluetoothUUID(littleEndian:
-                BluetoothUUID(data: Data(data[5 ... 20]))!)
+            self.type = BluetoothUUID(littleEndian: BluetoothUUID(data: data[5 ..< 21])!)
         }
     }
     
@@ -75,15 +78,5 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
         
         case uuid16     = 7
         case uuid128    = 21
-        
-        init?(uuid: BluetoothUUID) {
-            
-            switch uuid {
-                
-            case .bit16: self = .uuid16
-            case .bit32: return nil
-            case .bit128: self = .uuid128
-            }
-        }
     }
 }
