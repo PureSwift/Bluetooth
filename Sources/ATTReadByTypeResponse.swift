@@ -88,13 +88,14 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
     public var data: Data {
         
         let valueLength = UInt8(2 + attributeData[0].value.count)
+        let expectedLength = 2 + Int(valueLength) * attributeData.count
         
-        var bytes = Data([type(of: self).attributeOpcode.rawValue, valueLength])
+        var bytes = Data(capacity: expectedLength)
+        bytes += type(of: self).attributeOpcode.rawValue
+        bytes += valueLength
+        attributeData.forEach { bytes += $0.data }
         
-        for attribute in attributeData {
-            
-            bytes += attribute.data
-        }
+        assert(bytes.count == expectedLength)
         
         return bytes
     }
@@ -114,18 +115,13 @@ public extension ATTReadByTypeResponse {
         public var handle: UInt16
         
         /// Attribute Value
-        public var value: Data {
-            
-            return Data(valueReference)
-        }
+        public var value: Data
         
-        internal var valueReference: DataReference
-        
-        internal init(handle: UInt16,
-                      value: DataReference) {
+        public init(handle: UInt16,
+                    value: Data) {
             
             self.handle = handle
-            self.valueReference = value
+            self.value = value
         }
         
         internal init?(data: DataReference) {
@@ -137,11 +133,11 @@ public extension ATTReadByTypeResponse {
             
             if data.count > AttributeData.length {
                 
-                self.valueReference = data[2 ..< data.count]
+                self.value = Data(data[2 ..< data.count])
                 
             } else {
                 
-                self.valueReference = DataReference()
+                self.value = Data()
             }
         }
         
