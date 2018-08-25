@@ -19,7 +19,7 @@ public struct GAPServiceData16BitUUID: GAPData {
     public static let dataType: GAPDataType = .serviceData16BitUUID
     
     public let uuid: UInt16
-    public private(set) var serviceData: Data
+    public let serviceData: Data
     
     public init(uuid: UInt16, serviceData: Data = Data()) {
         
@@ -33,17 +33,18 @@ public struct GAPServiceData16BitUUID: GAPData {
             else { return nil }
         
         let uuid = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        let serviceData = data.subdata(in: (type(of: self).uuidLength..<data.count))
+        let serviceData = data.subdata(in: (type(of: self).uuidLength ..< data.count))
         
         self.init(uuid: uuid, serviceData: serviceData)
     }
     
     public var data: Data {
         
-        let bytes = UInt16(littleEndian: uuid).bytes
-        let data = Data([bytes.0, bytes.1])
+        var data = Data(capacity: MemoryLayout<UInt16>.size + serviceData.count)
+        data += uuid.littleEndian
+        data += serviceData
         
-        return serviceData.reduce(data, { $0.0 + [$0.1] })
+        return data
     }
 }
 

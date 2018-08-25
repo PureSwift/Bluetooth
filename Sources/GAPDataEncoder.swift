@@ -24,8 +24,6 @@ public struct GAPDataElement {
         
         self.type = type(of: data).dataType
         self.value = data.data
-        
-        assert(value.count <= Int(UInt8.max))
     }
 }
 
@@ -64,6 +62,11 @@ public struct GAPDataDecoder {
     }
     
     public static func decode(_ data: Data) throws -> [GAPDataElement] {
+        
+        return try decode(data, copyBytes: true)
+    }
+    
+    internal static func decode(_ data: Data, copyBytes: Bool) throws -> [GAPDataElement] {
         
         guard data.isEmpty == false
             else { return [] }
@@ -106,7 +109,7 @@ public struct GAPDataDecoder {
                 guard index <= data.count
                     else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
                 
-                value = Data(data[dataRange])
+                value = copyBytes ? data.subdata(in: Range(dataRange)) : data.subdataNoCopy(in: dataRange)
                 
             } else {
                 
@@ -123,7 +126,7 @@ public struct GAPDataDecoder {
                               types: [GAPData.Type],
                               ignoreUnknownType: Bool = true) throws -> [GAPData] {
         
-        let elements = try decode(data)
+        let elements = try decode(data, copyBytes: false) // don't allocate copies for each element
         
         var decodables = [GAPData]()
         decodables.reserveCapacity(elements.count)

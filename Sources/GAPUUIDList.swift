@@ -29,7 +29,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
             guard index + MemoryLayout<Element>.size <= data.count
                 else { return nil }
             
-            let value = Element(littleEndian: Element(gapData: data.subdata(in: index ..< index + MemoryLayout<Element>.size))!)
+            let value = Element(littleEndian: Element(gapData: data.subdataNoCopy(in: index ..< index + MemoryLayout<Element>.size))!)
             
             index += MemoryLayout<Element>.size
             
