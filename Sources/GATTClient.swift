@@ -690,6 +690,9 @@ public final class GATTClient {
             guard lastEnd >= operation.start
                 else { operation.completion(.error(Error.invalidResponse(pdu))); return }
             
+            guard lastEnd < .max // End of database
+                else { operation.success(); return }
+            
             operation.start = lastEnd + 1
             
             if lastEnd < operation.end {
@@ -742,6 +745,9 @@ public final class GATTClient {
             
             // get more if possible
             let lastEnd = pdu.handlesInformationList.last?.groupEnd ?? 0x00
+            
+            guard lastEnd < .max // End of database
+                else { operation.success(); return }
             
             operation.start = lastEnd + 1
             
@@ -811,6 +817,9 @@ public final class GATTClient {
             // prevent infinite loop
             guard lastHandle >= operation.start
                 else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+            
+            guard lastHandle < .max // End of database
+                else { operation.success(); return }
             
             let start = lastHandle + 1
             
