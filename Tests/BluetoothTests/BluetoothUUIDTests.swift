@@ -202,6 +202,8 @@ final class BluetoothUUIDTests: XCTestCase {
     
     func test16BitBaseUUID() {
         
+        XCTAssertNil(UInt16(bluetooth: UUID()))
+        
         let uuids: [UInt16: UUID] = [
             0x1800: UUID(rawValue: "00001800-0000-1000-8000-00805F9B34FB")!,
             0x1801: UUID(rawValue: "00001801-0000-1000-8000-00805F9B34FB")!,
@@ -215,6 +217,8 @@ final class BluetoothUUIDTests: XCTestCase {
     }
     
     func test32BitBaseUUID() {
+        
+        XCTAssertNil(UInt32(bluetooth: UUID()))
         
         let uuids: [UInt32: UUID] = [
             0x00001800: UUID(rawValue: "00001800-0000-1000-8000-00805F9B34FB")!,
