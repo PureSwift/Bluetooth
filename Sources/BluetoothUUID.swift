@@ -283,6 +283,58 @@ public extension BluetoothUUID {
     }
 }
 
+internal extension UUID {
+    
+    @inline(__always)
+    internal func bluetoothPrefix() -> (UInt8, UInt8, UInt8, UInt8)? {
+        
+        // big endian
+        let baseUUID = BluetoothUUID.baseUUID.bytes
+        
+        guard bytes.4 == baseUUID.4,
+            bytes.5 == baseUUID.5,
+            bytes.6 == baseUUID.6,
+            bytes.7 == baseUUID.7,
+            bytes.8 == baseUUID.8,
+            bytes.9 == baseUUID.9,
+            bytes.10 == baseUUID.10,
+            bytes.11 == baseUUID.11,
+            bytes.12 == baseUUID.12,
+            bytes.13 == baseUUID.13,
+            bytes.14 == baseUUID.14,
+            bytes.15 == baseUUID.15
+            else { return nil }
+        
+        return (bytes.0, bytes.1, bytes.2, bytes.3)
+    }
+}
+
+public extension UInt16 {
+    
+    /// Attempt to extract Bluetooth 16-bit UUID from standard 128-bit UUID.
+    init?(bluetooth uuid: Foundation.UUID) {
+        
+        guard let prefixBytes = uuid.bluetoothPrefix(),
+            prefixBytes.0 == 0,
+            prefixBytes.1 == 0
+            else { return nil }
+        
+        self.init(bigEndian: UInt16(bytes: (prefixBytes.2, prefixBytes.3)))
+    }
+}
+
+public extension UInt32 {
+    
+    /// Attempt to extract Bluetooth 32-bit UUID from standard 128-bit UUID.
+    init?(bluetooth uuid: Foundation.UUID) {
+        
+        guard let prefixBytes = uuid.bluetoothPrefix()
+            else { return nil }
+        
+        self.init(bigEndian: UInt32(bytes: (prefixBytes.0, prefixBytes.1, prefixBytes.2, prefixBytes.3)))
+    }
+}
+
 // MARK: - NSUUID Conversion
 
 public extension BluetoothUUID {
@@ -320,15 +372,11 @@ public extension Foundation.UUID {
             
             // CBUUID is always big endian
             self.init(bigEndian: uuid)
-            
-            assert(self.rawValue == coreBluetooth.uuidString)
         }
         
         public func toCoreBluetooth() -> CBUUID {
             
             let coreBluetooth = CBUUID(data: self.bigEndian.data)
-            
-            assert(self.rawValue == coreBluetooth.uuidString)
             
             return coreBluetooth
         }
