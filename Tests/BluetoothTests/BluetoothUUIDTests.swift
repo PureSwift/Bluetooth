@@ -18,7 +18,9 @@ final class BluetoothUUIDTests: XCTestCase {
         ("testPrimaryServiceUUID", testPrimaryServiceUUID),
         ("test128BitUUID", test128BitUUID),
         ("testDefinedUUID", testDefinedUUID),
-        ("test32BitUUID", test32BitUUID)
+        ("test32BitUUID", test32BitUUID),
+        ("test16BitBaseUUID", test16BitBaseUUID),
+        ("test32BitBaseUUID", test32BitBaseUUID)
     ]
     
     func testMalformed() {
@@ -196,6 +198,36 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
         
         XCTAssertEqual(BluetoothUUID.bit16(1000).rawValue, "03E8")
+    }
+    
+    func test16BitBaseUUID() {
+        
+        let uuids: [UInt16: UUID] = [
+            0x1800: UUID(rawValue: "00001800-0000-1000-8000-00805F9B34FB")!,
+            0x1801: UUID(rawValue: "00001801-0000-1000-8000-00805F9B34FB")!,
+            0xFE59: UUID(rawValue: "0000FE59-0000-1000-8000-00805F9B34FB")!
+        ]
+        
+        uuids.forEach {
+            XCTAssertEqual($0.key, UInt16(bluetooth: $0.value))
+            XCTAssertEqual(UInt128(.bit16($0.key)), UInt128(uuid: $0.value))
+        }
+    }
+    
+    func test32BitBaseUUID() {
+        
+        let uuids: [UInt32: UUID] = [
+            0x00001800: UUID(rawValue: "00001800-0000-1000-8000-00805F9B34FB")!,
+            0x00001801: UUID(rawValue: "00001801-0000-1000-8000-00805F9B34FB")!,
+            0x0000FE59: UUID(rawValue: "0000FE59-0000-1000-8000-00805F9B34FB")!,
+            0x00000000: UUID(rawValue: "00000000-0000-1000-8000-00805F9B34FB")!,
+            0x12345678: UUID(rawValue: "12345678-0000-1000-8000-00805F9B34FB")!
+        ]
+        
+        uuids.forEach {
+            XCTAssertEqual($0.key, UInt32(bluetooth: $0.value))
+            XCTAssertEqual(UInt128(.bit32($0.key)), UInt128(uuid: $0.value))
+        }
     }
     
     func testPerformanceStringParse() {
