@@ -728,6 +728,7 @@ final class GATTTests: XCTestCase {
                                                 case .value:
                                                     
                                                     XCTAssertEqual(recievedNotifications, newData)
+                                                    XCTAssertEqual(recievedIndications, newData)
                                                 }
                                             }
                                         }
@@ -748,6 +749,8 @@ final class GATTTests: XCTestCase {
         test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
         
         test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
+        
+        test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 512)])
         
         //test(with: [TestProfile.Notify], newData: [Data("test1".utf8), Data("test2".utf8), Data("test3".utf8)])
     }
