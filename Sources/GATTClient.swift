@@ -304,33 +304,23 @@ public final class GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
-    
-    
-    public func clientCharacteristicConfiguration(_ notification: Notification?,
-                                                  _ indication: Notification?,
+    public func clientCharacteristicConfiguration(notification: Notification?,
+                                                  indication: Notification?,
                                                   for characteristic: Characteristic,
                                                   descriptors: [GATTClient.Descriptor],
-                                                  clientConfiguration: GATTClientCharacteristicConfiguration = GATTClientCharacteristicConfiguration(),
                                                   completion: @escaping (GATTClientResponse<()>) -> ()) {
         
         guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
             else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
         
-        let enableNotifications = notification != nil
-        let enableIndications = notification != nil
+        var clientConfiguration = GATTClientCharacteristicConfiguration()
         
-        var clientConfiguration = clientConfiguration
-        
-        if enableNotifications {
+        if notification != nil {
             clientConfiguration.configuration.insert(.notify)
-        } else {
-            clientConfiguration.configuration.remove(.notify)
         }
         
-        if enableIndications {
+        if indication != nil {
             clientConfiguration.configuration.insert(.indicate)
-        } else {
-            clientConfiguration.configuration.remove(.indicate)
         }
         
         writeDescriptor(descriptor, data: clientConfiguration.data) { [unowned self] (response) in

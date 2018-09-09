@@ -650,10 +650,16 @@ final class GATTTests: XCTestCase {
             serverSocket.target = clientSocket // weak references
             
             var recievedNotifications = [Data]()
+            var recievedIndications = [Data]()
             
             func notification(_ data: Data) {
                 
                 recievedNotifications.append(data)
+            }
+            
+            func indication(_ data: Data) {
+                
+                recievedIndications.append(data)
             }
             
             // discover service
@@ -699,7 +705,7 @@ final class GATTTests: XCTestCase {
                                     
                                     XCTAssert(descriptors.isEmpty == false, "No descriptors found")
                                     
-                                    client.registerNotification(notification, for: notificationCharacteristic, descriptors: descriptors) {
+                                    client.clientCharacteristicConfiguration(notification: notification, indication: indication, for: notificationCharacteristic, descriptors: descriptors) {
                                         
                                         switch $0 {
                                             
@@ -711,7 +717,7 @@ final class GATTTests: XCTestCase {
                                             
                                             newData.forEach { server.writeValue($0, forCharacteristic: notificationCharacteristic.uuid) }
                                             
-                                            client.registerNotification(nil, for: notificationCharacteristic, descriptors: descriptors) {
+                                            client.clientCharacteristicConfiguration(notification: nil, indication: nil, for: notificationCharacteristic, descriptors: descriptors) {
                                                 
                                                 switch $0 {
                                                     
