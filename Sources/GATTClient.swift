@@ -39,8 +39,11 @@ public final class GATTClient {
     /// Whether the client is currently writing a long value.
     internal private(set) var inLongWrite: Bool = false
     
-    ///
+    /// Notications
     internal private(set) var notifications = [UInt16: Notification]()
+    
+    /// Indications
+    internal private(set) var indications = [UInt16: Notification]()
     
     // MARK: - Initialization
     
@@ -301,16 +304,20 @@ public final class GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
-    public func registerNotification(_ notification: Notification?,
-                                     for characteristic: Characteristic,
-                                     descriptors: [GATTClient.Descriptor],
-                                     clientConfiguration: GATTClientCharacteristicConfiguration = GATTClientCharacteristicConfiguration(),
-                                     completion: @escaping (GATTClientResponse<()>) -> ()) {
+    
+    
+    public func clientCharacteristicConfiguration(_ notification: Notification?,
+                                                  _ indication: Notification?,
+                                                  for characteristic: Characteristic,
+                                                  descriptors: [GATTClient.Descriptor],
+                                                  clientConfiguration: GATTClientCharacteristicConfiguration = GATTClientCharacteristicConfiguration(),
+                                                  completion: @escaping (GATTClientResponse<()>) -> ()) {
         
         guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
             else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
         
         let enableNotifications = notification != nil
+        let enableIndications = notification != nil
         
         var clientConfiguration = clientConfiguration
         
@@ -318,6 +325,12 @@ public final class GATTClient {
             clientConfiguration.configuration.insert(.notify)
         } else {
             clientConfiguration.configuration.remove(.notify)
+        }
+        
+        if enableIndications {
+            clientConfiguration.configuration.insert(.indicate)
+        } else {
+            clientConfiguration.configuration.remove(.indicate)
         }
         
         writeDescriptor(descriptor, data: clientConfiguration.data) { [unowned self] (response) in
@@ -330,6 +343,7 @@ public final class GATTClient {
             case .value:
                 
                 self.notifications[characteristic.handle.value] = notification
+                self.indications[characteristic.handle.value] = indication
             }
             
             completion(response)
@@ -341,8 +355,9 @@ public final class GATTClient {
     @inline(__always)
     private func registerATTHandlers() {
         
-        // value confirmation
+        // value notifications / indications
         connection.register(notification)
+        connection.register(indication)
     }
     
     @inline(__always)
@@ -1113,10 +1128,18 @@ public final class GATTClient {
     
     private func notification(_ notification: ATTHandleValueNotification) {
         
-        guard let callback = self.notifications[notification.handle]
-            else { return }
+        notifications[notification.handle]?(notification.value)
+    }
+    
+    private func indication(_ indication: ATTHandleValueIndication) {
         
-        callback(Data(notification.value))
+        let confirmation = ATTHandleValueConfirmation()
+        
+        // send acknowledgement
+        guard let _ = connection.send(confirmation)
+            else { fatalError("Could not add PDU to queue: \(confirmation)") }
+        
+        indications[indication.handle]?(indication.value)
     }
 }
 
