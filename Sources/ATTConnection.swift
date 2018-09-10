@@ -360,7 +360,11 @@ public final class ATTConnection {
         // success!
         try sendOperation.handle(data: data)
         
-        writePending?()
+        // send the remaining indications
+        if indicationQueue.isEmpty == false {
+            
+            writePending?()
+        }
     }
     
     private func handle(request data: Data, opcode: ATT.Opcode) throws {
@@ -456,6 +460,9 @@ public final class ATTConnection {
         // If there is no pending indication, pick an operation from the indication queue.
         if pendingIndication == nil,
             let sendOpcode = indicationQueue.popFirst() {
+            
+            // can't send more indications until the last one is confirmed
+            pendingIndication = sendOpcode
             
             return sendOpcode
         }
