@@ -651,6 +651,24 @@ final class GATTTests: XCTestCase {
             clientSocket.target = serverSocket
             serverSocket.target = clientSocket // weak references
             
+            server.writePending = {
+                do {
+                    while try server.write() {
+                        try client.read()
+                    }
+                }
+                catch { XCTFail("Error: \(error)") }
+            }
+            
+            client.writePending = {
+                do {
+                    while try client.write() {
+                        try server.read()
+                    }
+                }
+                catch { XCTFail("Error: \(error)") }
+            }
+            
             var recievedNotifications = [Data]()
             var recievedIndications = [Data]()
             
@@ -755,15 +773,12 @@ final class GATTTests: XCTestCase {
                 }
             }
             
-            // run fake sockets
-            XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
-            
             //waitForExpectations(timeout: 3.0)
         }
         
         test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
         
-        //test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
+        test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
         
         test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
         
