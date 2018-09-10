@@ -72,6 +72,12 @@ public struct TestProfile {
                                               properties: [.read, .notify],
                                               descriptors: [GATTClientCharacteristicConfiguration().descriptor])
     
+    public static let Indicate = Characteristic(uuid: BluetoothUUID(rawValue: "7F799666-678C-41E7-9380-EEB713E532F7")!,
+                                              value: Data(),
+                                              permissions: [.read],
+                                              properties: [.read, .indicate],
+                                              descriptors: [GATTClientCharacteristicConfiguration().descriptor])
+    
     public static let TestDefinedService = Service(uuid: .savantSystems2,
                                                    primary: true,
                                                    characteristics: [

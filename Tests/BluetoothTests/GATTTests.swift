@@ -641,10 +641,12 @@ final class GATTTests: XCTestCase {
             let serverSocket = TestL2CAPSocket()
             let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
             server.database = database
+            server.log = { print("Server:", $0) }
             
             // client
             let clientSocket = TestL2CAPSocket()
             let client = GATTClient(socket: clientSocket)
+            client.log = { print("Client:", $0) }
             
             clientSocket.target = serverSocket
             serverSocket.target = clientSocket // weak references
@@ -662,6 +664,8 @@ final class GATTTests: XCTestCase {
                 recievedIndications.append(data)
             }
             
+            let expectation = self.expectation(description: "GATT Client callback")
+            
             // discover service
             client.discoverAllPrimaryServices() {
                 
@@ -678,7 +682,7 @@ final class GATTTests: XCTestCase {
                     
                     XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
                     XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-                    XCTAssertEqual(foundService.type.uuid, database.first!.uuid)
+                    XCTAssertEqual(foundService.type.uuid, database[0].uuid)
                     
                     client.discoverAllCharacteristics(of: foundService)  {
                         
@@ -690,7 +694,7 @@ final class GATTTests: XCTestCase {
                             
                         case let .value(characteristics):
                             
-                            guard let notificationCharacteristic = characteristics.first(where: { $0.properties.contains(.notify) })
+                            guard let notificationCharacteristic = characteristics.first(where: { $0.properties.contains(.notify) || $0.properties.contains(.indicate) })
                                 else { XCTFail("Characteristic not found"); return }
                             
                             client.discoverDescriptors(for: notificationCharacteristic, service: (foundService, characteristics)) {
@@ -705,7 +709,7 @@ final class GATTTests: XCTestCase {
                                     
                                     XCTAssert(descriptors.isEmpty == false, "No descriptors found")
                                     
-                                    client.clientCharacteristicConfiguration(notification: notification, indication: indication, for: notificationCharacteristic, descriptors: descriptors) {
+                                    client.clientCharacteristicConfiguration(notification: notificationCharacteristic.properties.contains(.notify) ? notification : nil, indication: notificationCharacteristic.properties.contains(.indicate) ? indication : nil, for: notificationCharacteristic, descriptors: descriptors) {
                                         
                                         switch $0 {
                                             
@@ -715,7 +719,9 @@ final class GATTTests: XCTestCase {
                                             
                                         case .value:
                                             
-                                            newData.forEach { server.writeValue($0, forCharacteristic: notificationCharacteristic.uuid) }
+                                            newData.forEach {
+                                                server.writeValue($0, forCharacteristic: notificationCharacteristic.uuid)
+                                            }
                                             
                                             client.clientCharacteristicConfiguration(notification: nil, indication: nil, for: notificationCharacteristic, descriptors: descriptors) {
                                                 
@@ -727,8 +733,17 @@ final class GATTTests: XCTestCase {
                                                     
                                                 case .value:
                                                     
-                                                    XCTAssertEqual(recievedNotifications, newData)
-                                                    XCTAssertEqual(recievedIndications, newData)
+                                                    //expectation.fulfill()
+                                                    
+                                                    if notificationCharacteristic.properties.contains(.notify) {
+                                                        
+                                                        XCTAssertEqual(recievedNotifications, newData)
+                                                    }
+                                                    
+                                                    if notificationCharacteristic.properties.contains(.indicate) {
+                                                        
+                                                        XCTAssertEqual(recievedIndications, newData)
+                                                    }
                                                 }
                                             }
                                         }
@@ -742,15 +757,19 @@ final class GATTTests: XCTestCase {
             
             // run fake sockets
             XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+            
+            //waitForExpectations(timeout: 3.0)
         }
         
         test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
+        
+        test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
         
         test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
         
         test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
         
-        test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 512)])
+        test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 20)])
         
         //test(with: [TestProfile.Notify], newData: [Data("test1".utf8), Data("test2".utf8), Data("test3".utf8)])
     }
@@ -996,7 +1015,7 @@ extension GATTTests {
                 didWrite = true
             }
             
-            while server.socket.receivedData.isEmpty == false {
+            while server.socket.input.isEmpty == false {
                 
                 try server.gatt.read()
             }
@@ -1006,7 +1025,7 @@ extension GATTTests {
                 didWrite = true
             }
             
-            while client.socket.receivedData.isEmpty == false {
+            while client.socket.input.isEmpty == false {
                 
                 try client.gatt.read()
             }

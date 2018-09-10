@@ -41,10 +41,7 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     /// Target socket.
     weak var target: TestL2CAPSocket?
     
-    fileprivate(set) var receivedData = Data() {
-        
-        didSet { if receivedData.isEmpty == false { log?("L2CAP Socket \(name) \([UInt8](receivedData))") } }
-    }
+    private(set) var input = [Data]()
     
     private(set) var cache = [Data]()
     
@@ -67,31 +64,17 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
         guard let target = self.target
             else { throw POSIXError(code: .ECONNRESET) }
         
-        target.receivedData.append(data)
+        target.input.append(data)
     }
     
     /// Reads from the socket.
     func recieve(_ bufferSize: Int) throws -> Data {
         
-        let data = Data(receivedData.prefix(bufferSize))
+        guard let sentData = self.input.popFirst()
+            else { throw POSIXError(code: .EBUSY) }
         
-        // slice buffer
-        if data.isEmpty == false {
-            
-            let suffixIndex = data.count
-            
-            if receivedData.count >= suffixIndex {
-                
-                receivedData = Data(receivedData.suffix(from: data.count))
-                
-            } else {
-                
-                receivedData = Data(receivedData.suffix(from: data.count))
-            }
-        }
+        let readData = Data(sentData.prefix(bufferSize))
         
-        cache.append(data)
-        
-        return data
+        return readData
     }
 }
