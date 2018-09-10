@@ -664,7 +664,7 @@ final class GATTTests: XCTestCase {
                 recievedIndications.append(data)
             }
             
-            let expectation = self.expectation(description: "GATT Client callback")
+            //let expectation = self.expectation(description: "GATT Client callback")
             
             // discover service
             client.discoverAllPrimaryServices() {
@@ -763,7 +763,7 @@ final class GATTTests: XCTestCase {
         
         test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
         
-        test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
+        //test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
         
         test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
         

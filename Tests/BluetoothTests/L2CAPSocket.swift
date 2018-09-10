@@ -75,6 +75,8 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
         
         let readData = Data(sentData.prefix(bufferSize))
         
+        cache.append(readData)
+        
         return readData
     }
 }
