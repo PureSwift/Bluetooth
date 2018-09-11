@@ -544,7 +544,7 @@ public enum ATTResponse <Value: ATTProtocolDataUnit> {
         
         // validate types
         assert(Value.self != ATTErrorResponse.self)
-        assert(Value.attributeOpcode.type == .response)
+        assert(Value.attributeOpcode.type == .response || Value.attributeOpcode.type == .confirmation)
         
         switch anyResponse {
         case let .error(error):
