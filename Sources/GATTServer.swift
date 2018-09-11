@@ -177,7 +177,7 @@ public final class GATTServer {
         
         let callback: (AnyATTResponse) -> () = { response(ATTResponse<ATTHandleValueConfirmation>($0)) }
         
-        guard let _ = connection.send(indication, response: (callback, ATTHandleValueIndication.self))
+        guard let _ = connection.send(indication, response: (callback, ATTHandleValueConfirmation.self))
             else { fatalError("Could not add PDU to queue: \(indication)") }
     }
     

@@ -22,19 +22,17 @@ public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let type = ATTHandleValueConfirmation.self
-        
-        guard data.count >= type.length
+        guard data.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
     }
     
     public var data: Data {
         
-        return Data([ATTHandleValueConfirmation.attributeOpcode.rawValue])
+        return Data([type(of: self).attributeOpcode.rawValue])
     }
 }

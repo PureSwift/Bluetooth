@@ -32,19 +32,17 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let type = ATTHandleValueIndication.self
-        
-        guard data.count >= type.length
+        guard data.count >= type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        if data.count > type.length {
+        if data.count > type(of: self).length {
             
             self.value = Data(data.suffix(from: 3))
             
