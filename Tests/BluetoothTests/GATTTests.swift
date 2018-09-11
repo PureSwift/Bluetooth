@@ -641,12 +641,10 @@ final class GATTTests: XCTestCase {
             let serverSocket = TestL2CAPSocket()
             let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
             server.database = database
-            server.log = { print("Server:", $0) }
             
             // client
             let clientSocket = TestL2CAPSocket()
             let client = GATTClient(socket: clientSocket)
-            client.log = { print("Client:", $0) }
             
             clientSocket.target = serverSocket
             serverSocket.target = clientSocket // weak references
@@ -681,8 +679,6 @@ final class GATTTests: XCTestCase {
                 
                 recievedIndications.append(data)
             }
-            
-            //let expectation = self.expectation(description: "GATT Client callback")
             
             // discover service
             client.discoverAllPrimaryServices() {
@@ -751,8 +747,6 @@ final class GATTTests: XCTestCase {
                                                     
                                                 case .value:
                                                     
-                                                    //expectation.fulfill()
-                                                    
                                                     if notificationCharacteristic.properties.contains(.notify) {
                                                         
                                                         XCTAssertEqual(recievedNotifications, newData)
@@ -772,8 +766,6 @@ final class GATTTests: XCTestCase {
                     }
                 }
             }
-            
-            //waitForExpectations(timeout: 3.0)
         }
         
         test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
@@ -785,8 +777,6 @@ final class GATTTests: XCTestCase {
         test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
         
         test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 20)])
-        
-        //test(with: [TestProfile.Notify], newData: [Data("test1".utf8), Data("test2".utf8), Data("test3".utf8)])
     }
     
     func testGATT() {
