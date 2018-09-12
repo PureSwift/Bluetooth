@@ -68,9 +68,9 @@ public final class GATTServer {
     // MARK: - Methods
     
     /// Performs the actual IO for sending data.
-    public func read() throws {
+    public func read() throws -> Bool {
         
-        try connection.read()
+        return try connection.read()
     }
     
     /// Performs the actual IO for recieving data.
