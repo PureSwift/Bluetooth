@@ -22,19 +22,21 @@ public final class GATTClient {
     
     public var writePending: (() -> ())? {
         
-        get { return connection.writePending }
+        get { return connection?.writePending }
         
-        set { connection.writePending = newValue }
+        set { connection?.writePending = writePending }
     }
     
-    public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
+    public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default {
         
-        return connection.maximumTransmissionUnit
+        didSet { connection?.maximumTransmissionUnit = maximumTransmissionUnit }
     }
+    
+    public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
     
     // Don't modify
     @_versioned
-    internal let connection: ATTConnection
+    internal private(set) var connection: ATTConnection?
     
     /// Whether the client is currently writing a long value.
     internal private(set) var inLongWrite: Bool = false
@@ -49,16 +51,19 @@ public final class GATTClient {
     
     deinit {
         
-        self.connection.unregisterAll()
+        self.connection?.unregisterAll()
+        self.connection = nil
     }
     
     public init(socket: L2CAPSocketProtocol,
                 maximumTransmissionUnit: ATT.MaximumTransmissionUnit = .default,
-                log: ((String) -> ())? = nil) {
+                log: ((String) -> ())? = nil,
+                writePending: (() -> ())? = nil) {
         
         self.connection = ATTConnection(socket: socket)
-        self.connection.maximumTransmissionUnit = maximumTransmissionUnit
+        self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
+        self.writePending = writePending
         
         // setup notifications and indications
         self.registerATTHandlers()
@@ -72,11 +77,17 @@ public final class GATTClient {
     /// Performs the actual IO for recieving data.
     public func read() throws -> Bool {
         
+        guard let connection = self.connection
+            else { throw POSIXError(code: .ECONNABORTED) }
+        
         return try connection.read()
     }
     
     /// Performs the actual IO for sending data.
     public func write() throws -> Bool {
+        
+        guard let connection = self.connection
+            else { throw POSIXError(code: .ECONNABORTED) }
         
         return try connection.write()
     }
@@ -346,16 +357,24 @@ public final class GATTClient {
     private func registerATTHandlers() {
         
         // value notifications / indications
-        connection.register { [weak self] in self?.notification($0) }
-        connection.register { [weak self] in self?.indication($0) }
+        connection?.register { [weak self] in self?.notification($0) }
+        connection?.register { [weak self] in self?.indication($0) }
     }
     
     @inline(__always)
     private func send <Request: ATTProtocolDataUnit, Response> (_ request: Request, response: @escaping (ATTResponse<Response>) -> ()) {
         
+        guard let connection = self.connection
+            else { return } // cannot queue after disconnection
+        
+        let log = self.log
+        
         log?("Request: \(request)")
         
-        let callback: (AnyATTResponse) -> () = { response(ATTResponse<Response>($0)) }
+        let callback: (AnyATTResponse) -> () = {
+            log?("Response: \($0.rawValue)")
+            response(ATTResponse<Response>($0))
+        }
         
         let responseType: ATTProtocolDataUnit.Type = Response.self
         
@@ -365,6 +384,9 @@ public final class GATTClient {
     
     @inline(__always)
     private func send <Request: ATTProtocolDataUnit> (_ request: Request) {
+        
+        guard let connection = self.connection
+            else { return } // cannot queue after disconnection
         
         log?("Request: \(request)")
         
@@ -404,7 +426,10 @@ public final class GATTClient {
     
     private func exchangeMTU() {
         
-        let clientMTU = self.connection.maximumTransmissionUnit
+        guard preferredMaximumTransmissionUnit > .default
+            else { return }
+        
+        let clientMTU = preferredMaximumTransmissionUnit
         
         let pdu = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
         
@@ -521,7 +546,7 @@ public final class GATTClient {
                                 completion: ((GATTClientResponse<()>) -> ())?) {
         
         // short value
-        if data.count <= Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
+        if data.count <= Int(maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
             
             if let completion = completion {
                 
@@ -548,7 +573,7 @@ public final class GATTClient {
     
     private func writeAttributeCommand(_ attribute: UInt16, data: Data) {
         
-        let data = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 3))
+        let data = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - 3))
         
         let pdu = ATTWriteCommand(handle: attribute, value: data)
         
@@ -560,7 +585,7 @@ public final class GATTClient {
                                      data: Data,
                                      completion: @escaping (GATTClientResponse<()>) -> ()) {
         
-        let data = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
+        let data = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
         
         let pdu = ATTWriteRequest(handle: attribute, value: data)
 
@@ -584,7 +609,7 @@ public final class GATTClient {
         guard inLongWrite == false
             else { completion(.error(GATTClientError.inLongWrite)); return }
         
-        let firstValuePart = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
+        let firstValuePart = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
         
         let pdu = ATTPrepareWriteRequest(handle: attribute,
                                          offset: 0x00,
@@ -623,7 +648,7 @@ public final class GATTClient {
         // Section 10.2 then, a Write Without Response as defined in Section 4.9.1 shall be used instead of
         // a Signed Write Without Response.
         
-        let data = Data(data.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 15))
+        let data = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - 15))
         
         // TODO: Sign Data
         
@@ -644,13 +669,13 @@ public final class GATTClient {
             
         case let .value(pdu):
             
-            let clientMTU = self.connection.maximumTransmissionUnit
+            let clientMTU = preferredMaximumTransmissionUnit
             
             let finalMTU = ATTMaximumTransmissionUnit(server: pdu.serverMTU, client: clientMTU.rawValue)
             
             log?("MTU Exchange (\(clientMTU) -> \(finalMTU))")
             
-            self.connection.maximumTransmissionUnit = finalMTU
+            self.connection?.maximumTransmissionUnit = finalMTU
         }
     }
     
@@ -939,7 +964,7 @@ public final class GATTClient {
             operation.data = pdu.attributeValue
             
             // short value
-            if pdu.attributeValue.count < (Int(connection.maximumTransmissionUnit.rawValue) - 1) {
+            if pdu.attributeValue.count < (Int(maximumTransmissionUnit.rawValue) - 1) {
                 
                 operation.success()
                 
@@ -967,7 +992,7 @@ public final class GATTClient {
             operation.data += pdu.partAttributeValue
             
             // short value
-            if pdu.partAttributeValue.count < (Int(connection.maximumTransmissionUnit.rawValue) - 1) {
+            if pdu.partAttributeValue.count < (Int(maximumTransmissionUnit.rawValue) - 1) {
                 
                 operation.success()
                 
@@ -1069,7 +1094,7 @@ public final class GATTClient {
             if offset < operation.data.count {
                 
                 // write next part
-                let maxLength = Int(connection.maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length // 5
+                let maxLength = Int(maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length // 5
                 let endIndex = min(offset + maxLength, operation.data.count)
                 let attributeValuePart = operation.data.subdataNoCopy(in: offset ..< endIndex)
                 
@@ -1126,8 +1151,7 @@ public final class GATTClient {
         let confirmation = ATTHandleValueConfirmation()
         
         // send acknowledgement
-        guard let _ = connection.send(confirmation)
-            else { fatalError("Could not add PDU to queue: \(confirmation)") }
+        send(confirmation)
         
         indications[indication.handle]?(indication.value)
     }

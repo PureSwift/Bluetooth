@@ -532,10 +532,18 @@ public extension ATTConnection {
     typealias AnyResponse = AnyATTResponse
 }
 
+/// Type-erased ATT Response
 public enum AnyATTResponse {
     
     case error(ATTErrorResponse)
     case value(ATTProtocolDataUnit)
+    
+    internal var rawValue: ATTProtocolDataUnit {
+        switch self {
+        case let .error(pdu): return pdu
+        case let .value(pdu): return pdu
+        }
+    }
 }
 
 public enum ATTResponse <Value: ATTProtocolDataUnit> {
