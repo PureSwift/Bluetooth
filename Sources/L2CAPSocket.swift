@@ -21,7 +21,7 @@ public protocol L2CAPSocketProtocol {
     var channelIdentifier: UInt16 { get }
     
     /// Reads from the socket.
-    func recieve(_ bufferSize: Int) throws -> Data
+    func recieve(_ bufferSize: Int) throws -> Data?
     
     /// Write to the socket.
     func send(_ data: Data) throws

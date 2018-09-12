@@ -64,13 +64,14 @@ public final class ATTConnection {
     // MARK: - Methods
     
     /// Performs the actual IO for recieving data.
-    public func read() throws {
+    public func read() throws -> Bool {
         
-        log?("Attempt read")
+        //log?("Attempt read")
         
-        let recievedData = try socket.recieve(Int(maximumTransmissionUnit.rawValue))
+        guard let recievedData = try socket.recieve(Int(maximumTransmissionUnit.rawValue))
+            else { return false } // no data availible to read
         
-        log?("Recieved data (\(recievedData.count) bytes)")
+        //log?("Recieved data (\(recievedData.count) bytes)")
         
         // valid PDU data length
         guard recievedData.count >= ATT.minimumPDULength
@@ -82,7 +83,7 @@ public final class ATTConnection {
         guard let opcode = ATT.Opcode(rawValue: opcodeByte)
             else { throw Error.garbageResponse(recievedData) }
         
-        log?("Recieved opcode \(opcode)")
+        //log?("Recieved opcode \(opcode)")
         
         // Act on the received PDU based on the opcode type
         switch opcode.type {
@@ -106,25 +107,27 @@ public final class ATTConnection {
             // For all other opcodes notify the upper layer of the PDU and let them act on it.
             try handle(notify: recievedData, opcode: opcode)
         }
+        
+        return true
     }
     
     /// Performs the actual IO for sending data.
     public func write() throws -> Bool {
         
-        log?("Attempt write")
+        //log?("Attempt write")
         
         guard let sendOperation = pickNextSendOpcode()
             else { return false }
         
         assert(sendOperation.data.count <= Int(maximumTransmissionUnit.rawValue), "Trying to send \(sendOperation.data.count) bytes when MTU is \(maximumTransmissionUnit)")
         
-        log?("Sending data... (\(sendOperation.data.count) bytes)")
+        //log?("Sending data... (\(sendOperation.data.count) bytes)")
         
         try socket.send(sendOperation.data)
         
         let opcode = sendOperation.opcode
         
-        log?("Did write \(opcode)")
+        //log?("Did write \(opcode)")
         
         /* Based on the operation type, set either the pending request or the
         * pending indication. If it came from the write queue, then there is

@@ -70,9 +70,9 @@ public final class GATTClient {
     // MARK: - Methods
     
     /// Performs the actual IO for recieving data.
-    public func read() throws {
+    public func read() throws -> Bool {
         
-        try connection.read()
+        return try connection.read()
     }
     
     /// Performs the actual IO for sending data.
@@ -346,8 +346,8 @@ public final class GATTClient {
     private func registerATTHandlers() {
         
         // value notifications / indications
-        connection.register(notification)
-        connection.register(indication)
+        connection.register { [weak self] in self?.notification($0) }
+        connection.register { [weak self] in self?.indication($0) }
     }
     
     @inline(__always)

@@ -652,7 +652,8 @@ final class GATTTests: XCTestCase {
             server.writePending = {
                 do {
                     while try server.write() {
-                        try client.read()
+                        let didRead = try client.read()
+                        XCTAssert(didRead)
                     }
                 }
                 catch { XCTFail("Error: \(error)") }
@@ -661,7 +662,8 @@ final class GATTTests: XCTestCase {
             client.writePending = {
                 do {
                     while try client.write() {
-                        try server.read()
+                        let didRead = try server.read()
+                        XCTAssert(didRead)
                     }
                 }
                 catch { XCTFail("Error: \(error)") }
@@ -1022,7 +1024,8 @@ extension GATTTests {
             
             while server.socket.input.isEmpty == false {
                 
-                try server.gatt.read()
+                let didRead = try server.gatt.read()
+                assert(didRead)
             }
             
             while try server.gatt.write() {
@@ -1032,7 +1035,8 @@ extension GATTTests {
             
             while client.socket.input.isEmpty == false {
                 
-                try client.gatt.read()
+                let didRead = try client.gatt.read()
+                assert(didRead)
             }
             
         } while didWrite
