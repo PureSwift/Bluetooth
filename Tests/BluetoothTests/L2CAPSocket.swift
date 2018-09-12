@@ -68,10 +68,11 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     }
     
     /// Reads from the socket.
-    func recieve(_ bufferSize: Int) throws -> Data {
+    @discardableResult
+    func recieve(_ bufferSize: Int) throws -> Data? {
         
         guard let sentData = self.input.popFirst()
-            else { throw POSIXError(code: .EBUSY) }
+            else { return nil }
         
         let readData = Data(sentData.prefix(bufferSize))
         
