@@ -102,40 +102,40 @@ public final class GATTServer {
     private func registerATTHandlers() {
         
         // Exchange MTU
-        connection.register(exchangeMTU)
+        connection.register { [weak self] in self?.exchangeMTU($0) }
         
         // Read By Group Type
-        connection.register(readByGroupType)
+        connection.register { [weak self] in self?.readByGroupType($0) }
         
         // Read By Type
-        connection.register(readByType)
+        connection.register { [weak self] in self?.readByType($0) }
         
         // Find Information
-        connection.register(findInformation)
+        connection.register { [weak self] in self?.findInformation($0) }
         
         // Find By Type Value
-        connection.register(findByTypeValue)
+        connection.register { [weak self] in self?.findByTypeValue($0) }
         
         // Write Request
-        connection.register(writeRequest)
+        connection.register { [weak self] in self?.writeRequest($0) }
         
         // Write Command
-        connection.register(writeCommand)
+        connection.register { [weak self] in self?.writeCommand($0) }
         
         // Read Request
-        connection.register(readRequest)
+        connection.register { [weak self] in self?.readRequest($0) }
         
         // Read Blob Request
-        connection.register(readBlobRequest)
+        connection.register { [weak self] in self?.readBlobRequest($0) }
         
         // Read Multiple Request
-        connection.register(readMultipleRequest)
+        connection.register { [weak self] in self?.readMultipleRequest($0) }
         
         // Prepare Write Request
-        connection.register(prepareWriteRequest)
+        connection.register { [weak self] in self?.prepareWriteRequest($0) }
         
         // Execute Write Request
-        connection.register(executeWriteRequest)
+        connection.register { [weak self] in self?.executeWriteRequest($0) }
     }
     
     @inline(__always)
@@ -408,7 +408,7 @@ public final class GATTServer {
     
     // MARK: Callbacks
     
-    private func exchangeMTU(pdu: ATTMaximumTransmissionUnitRequest) {
+    private func exchangeMTU(_ pdu: ATTMaximumTransmissionUnitRequest) {
         
         let serverMTU = connection.maximumTransmissionUnit.rawValue
         
@@ -423,7 +423,7 @@ public final class GATTServer {
         log?("MTU Exchange (\(pdu.clientMTU) -> \(finalMTU))")
     }
     
-    private func readByGroupType(pdu: ATTReadByGroupTypeRequest) {
+    private func readByGroupType(_ pdu: ATTReadByGroupTypeRequest) {
         
         typealias AttributeData = ATTReadByGroupTypeResponse.AttributeData
         
@@ -503,7 +503,7 @@ public final class GATTServer {
         respond(response)
     }
     
-    private func readByType(pdu: ATTReadByTypeRequest) {
+    private func readByType(_ pdu: ATTReadByTypeRequest) {
         
         typealias AttributeData = ATTReadByTypeResponse.AttributeData
         
@@ -573,7 +573,7 @@ public final class GATTServer {
         respond(response)
     }
     
-    private func findInformation(pdu: ATTFindInformationRequest) {
+    private func findInformation(_ pdu: ATTFindInformationRequest) {
         
         typealias AttributeData = ATTFindInformationResponse.AttributeData
         
@@ -644,7 +644,7 @@ public final class GATTServer {
         respond(response)
     }
     
-    private func findByTypeValue(pdu: ATTFindByTypeRequest) {
+    private func findByTypeValue(_ pdu: ATTFindByTypeRequest) {
         
         typealias Handle = ATTFindByTypeResponse.HandlesInformation
         
@@ -670,21 +670,21 @@ public final class GATTServer {
         respond(response)
     }
     
-    private func writeRequest(pdu: ATTWriteRequest) {
+    private func writeRequest(_ pdu: ATTWriteRequest) {
         
         let opcode = type(of: pdu).attributeOpcode
         
         handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: true)
     }
     
-    private func writeCommand(pdu: ATTWriteCommand) {
+    private func writeCommand(_ pdu: ATTWriteCommand) {
         
         let opcode = type(of: pdu).attributeOpcode
         
         handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: false)
     }
     
-    private func readRequest(pdu: ATTReadRequest) {
+    private func readRequest(_ pdu: ATTReadRequest) {
         
         let opcode = type(of: pdu).attributeOpcode
         
@@ -696,7 +696,7 @@ public final class GATTServer {
         }
     }
     
-    private func readBlobRequest(pdu: ATTReadBlobRequest) {
+    private func readBlobRequest(_ pdu: ATTReadBlobRequest) {
         
         let opcode = type(of: pdu).attributeOpcode
         
@@ -708,7 +708,7 @@ public final class GATTServer {
         }
     }
     
-    private func readMultipleRequest(pdu: ATTReadMultipleRequest) {
+    private func readMultipleRequest(_ pdu: ATTReadMultipleRequest) {
         
         let opcode = type(of: pdu).attributeOpcode
         
@@ -744,7 +744,7 @@ public final class GATTServer {
         respond(response)
     }
     
-    private func prepareWriteRequest(pdu: ATTPrepareWriteRequest) {
+    private func prepareWriteRequest(_ pdu: ATTPrepareWriteRequest) {
         
         let opcode = type(of: pdu).attributeOpcode
         
@@ -786,7 +786,7 @@ public final class GATTServer {
         respond(response)
     }
     
-    private func executeWriteRequest(pdu: ATTExecuteWriteRequest) {
+    private func executeWriteRequest(_ pdu: ATTExecuteWriteRequest) {
         
         let opcode = type(of: pdu).attributeOpcode
         
