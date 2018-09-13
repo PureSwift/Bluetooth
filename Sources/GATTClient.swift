@@ -24,11 +24,12 @@ public final class GATTClient {
         
         get { return connection?.writePending }
         
-        set { connection?.writePending = writePending }
+        set { connection?.writePending = newValue }
     }
     
     public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default {
         
+        // update connection with new value
         didSet { connection?.maximumTransmissionUnit = maximumTransmissionUnit }
     }
     
@@ -426,9 +427,6 @@ public final class GATTClient {
     
     private func exchangeMTU() {
         
-        guard preferredMaximumTransmissionUnit > .default
-            else { return }
-        
         let clientMTU = preferredMaximumTransmissionUnit
         
         let pdu = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
@@ -666,6 +664,7 @@ public final class GATTClient {
         case let .error(error):
             
             log?("Could not exchange MTU: \(error)")
+            self.connection = nil
             
         case let .value(pdu):
             
@@ -675,7 +674,7 @@ public final class GATTClient {
             
             log?("MTU Exchange (\(clientMTU) -> \(finalMTU))")
             
-            self.connection?.maximumTransmissionUnit = finalMTU
+            self.maximumTransmissionUnit = finalMTU
         }
     }
     
