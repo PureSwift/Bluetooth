@@ -22,22 +22,22 @@ public final class GATTClient {
     
     public var writePending: (() -> ())? {
         
-        get { return connection?.writePending }
+        get { return connection.writePending }
         
-        set { connection?.writePending = newValue }
+        set { connection.writePending = newValue }
     }
     
     public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default {
         
         // update connection with new value
-        didSet { connection?.maximumTransmissionUnit = maximumTransmissionUnit }
+        didSet { connection.maximumTransmissionUnit = maximumTransmissionUnit }
     }
     
     public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
     
     // Don't modify
     @_versioned
-    internal private(set) var connection: ATTConnection?
+    internal private(set) var connection: ATTConnection
     
     /// Whether the client is currently writing a long value.
     internal private(set) var inLongWrite: Bool = false
@@ -49,12 +49,6 @@ public final class GATTClient {
     internal private(set) var indications = [UInt16: Notification]()
     
     // MARK: - Initialization
-    
-    deinit {
-        
-        self.connection?.unregisterAll()
-        self.connection = nil
-    }
     
     public init(socket: L2CAPSocketProtocol,
                 maximumTransmissionUnit: ATT.MaximumTransmissionUnit = .default,
@@ -78,17 +72,11 @@ public final class GATTClient {
     /// Performs the actual IO for recieving data.
     public func read() throws -> Bool {
         
-        guard let connection = self.connection
-            else { throw POSIXError(code: .ECONNABORTED) }
-        
         return try connection.read()
     }
     
     /// Performs the actual IO for sending data.
     public func write() throws -> Bool {
-        
-        guard let connection = self.connection
-            else { throw POSIXError(code: .ECONNABORTED) }
         
         return try connection.write()
     }
@@ -358,15 +346,12 @@ public final class GATTClient {
     private func registerATTHandlers() {
         
         // value notifications / indications
-        connection?.register { [weak self] in self?.notification($0) }
-        connection?.register { [weak self] in self?.indication($0) }
+        connection.register { [weak self] in self?.notification($0) }
+        connection.register { [weak self] in self?.indication($0) }
     }
     
     @inline(__always)
     private func send <Request: ATTProtocolDataUnit, Response> (_ request: Request, response: @escaping (ATTResponse<Response>) -> ()) {
-        
-        guard let connection = self.connection
-            else { return } // cannot queue after disconnection
         
         let log = self.log
         
@@ -385,9 +370,6 @@ public final class GATTClient {
     
     @inline(__always)
     private func send <Request: ATTProtocolDataUnit> (_ request: Request) {
-        
-        guard let connection = self.connection
-            else { return } // cannot queue after disconnection
         
         log?("Request: \(request)")
         
@@ -664,7 +646,6 @@ public final class GATTClient {
         case let .error(error):
             
             log?("Could not exchange MTU: \(error)")
-            self.connection = nil
             
         case let .value(pdu):
             
