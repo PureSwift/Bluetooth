@@ -124,8 +124,6 @@ public final class ATTConnection {
         guard let sendOperation = pickNextSendOpcode()
             else { return false }
         
-        assert(sendOperation.data.count <= Int(maximumTransmissionUnit.rawValue), "Trying to send \(sendOperation.data.count) bytes when MTU is \(maximumTransmissionUnit)")
-        
         //log?("Sending data... (\(sendOperation.data.count) bytes)")
         
         try socket.send(sendOperation.data)
