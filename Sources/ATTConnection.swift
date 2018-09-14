@@ -56,6 +56,11 @@ public final class ATTConnection {
     
     // MARK: - Initialization
     
+    deinit {
+        
+        unregisterAll()
+    }
+    
     public init(socket: L2CAPSocketProtocol) {
         
         self.socket = socket
