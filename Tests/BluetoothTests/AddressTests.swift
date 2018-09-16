@@ -86,7 +86,8 @@ final class AddressTests: XCTestCase {
             "12C:BB:CC:DD:E",
             "FFFF::7D:DA:71:13",
             "00:1A:7D:DA:71:13a",
-            "0:1A:7D:DA:71:13"
+            "0:1A:7D:DA:71:13",
+            "00:1A:7D:DA:71;13"
         ]
         
         malformed.forEach { XCTAssertNil(Address(rawValue: $0), $0) }
