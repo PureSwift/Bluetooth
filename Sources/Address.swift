@@ -95,30 +95,22 @@ extension Address: RawRepresentable {
         
         var bytes: ByteValue = (0, 0, 0, 0, 0, 0)
         
-        // parse bytes
-        guard rawValue.withCString({ (cString) -> Bool in
+        let components = rawValue.components(separatedBy: ":")
+        
+        guard components.count == 6
+            else { return nil }
+        
+        for (index, string) in components.enumerated() {
             
-            // parse
-            var cString = cString
-            for index in (0 ..< 6) {
-                
-                let number = strtol(cString, nil, 16)
-                
-                guard let byte = UInt8(exactly: number)
-                    else { return false }
-                
-                withUnsafeMutablePointer(to: &bytes) {
-                    $0.withMemoryRebound(to: UInt8.self, capacity: 6) {
-                        $0.advanced(by: index).pointee = byte
-                    }
+            guard let byte = UInt8(string, radix: 16)
+                else { return nil }
+            
+            withUnsafeMutablePointer(to: &bytes) {
+                $0.withMemoryRebound(to: UInt8.self, capacity: 6) {
+                    $0.advanced(by: index).pointee = byte
                 }
-                
-                cString = cString.advanced(by: 3)
             }
-            
-            return true
-            
-        }) else { return nil }
+        }
         
         self.init(bigEndian: Address(bytes: bytes))
     }
