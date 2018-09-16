@@ -6,12 +6,6 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-#if os(Linux)
-    import Glibc
-#elseif os(OSX) || os(iOS)
-    import Darwin.C
-#endif
-
 import Foundation
 
 /// Bluetooth address.

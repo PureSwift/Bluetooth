@@ -8,12 +8,6 @@
 
 import Foundation
 
-#if os(Linux)
-    import Glibc
-#elseif os(OSX) || os(iOS)
-    import Darwin.C
-#endif
-
 /// HCI Event Opcode
 public protocol HCIEvent: RawRepresentable, Hashable, CustomStringConvertible {
     
