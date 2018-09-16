@@ -93,7 +93,7 @@ extension Address: RawRepresentable {
         guard rawValue.utf8.count == 17
             else { return nil }
         
-        var bytes = Data(repeating: 0, count: 6)
+        var bytes: ByteValue = (0, 0, 0, 0, 0, 0)
         
         // parse bytes
         guard rawValue.withCString({ (cString) -> Bool in
@@ -107,7 +107,12 @@ extension Address: RawRepresentable {
                 guard let byte = UInt8(exactly: number)
                     else { return false }
                 
-                bytes[index] = byte
+                withUnsafeMutablePointer(to: &bytes) {
+                    $0.withMemoryRebound(to: UInt8.self, capacity: 6) {
+                        $0.advanced(by: index).pointee = byte
+                    }
+                }
+                
                 cString = cString.advanced(by: 3)
             }
             
@@ -115,33 +120,14 @@ extension Address: RawRepresentable {
             
         }) else { return nil }
         
-        guard let address = Address(data: bytes)
-            else { fatalError("Could not initialize \(Address.self) from \(bytes)") }
-        
-        self.init(bigEndian: address)
+        self.init(bigEndian: Address(bytes: bytes))
     }
     
     public var rawValue: String {
         
         let bytes = self.bigEndian.bytes
         
-        let byteValue = [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5]
-        
-        var string = ""
-        
-        for (index, byte) in byteValue.enumerated() {
-            
-            string += byte.toHexadecimal()
-            
-            if index != byteValue.count - 1 {
-                
-                string += ":"
-            }
-        }
-        
-        assert(string.utf8.count == 17, "\"\(string)\" should be 17 characters")
-        
-        return string
+        return String(format: "%02X:%02X:%02X:%02X:%02X:%02X", bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5)
     }
 }
 
