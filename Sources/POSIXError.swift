@@ -40,6 +40,6 @@ extension POSIXError: CustomStringConvertible {
     
     public var description: String {
         
-        return String(cString: strerror(code.rawValue), encoding: .ascii) ?? "\(code)"
+        return String(cString: strerror(CInt(code.rawValue)), encoding: .ascii) ?? "\(code)"
     }
 }
