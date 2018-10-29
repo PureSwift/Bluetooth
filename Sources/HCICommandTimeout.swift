@@ -9,7 +9,7 @@
 import Foundation
 
 /// The duration of an HCI command.
-public struct HCICommandTimeout: RawRepresentable {
+public struct HCICommandTimeout: RawRepresentable, Equatable, Hashable {
     
     /// The duration of the timeout in miliseconds.
     public var rawValue: UInt
@@ -38,26 +38,6 @@ extension HCICommandTimeout: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: UInt) {
         
         self.init(rawValue: value)
-    }
-}
-
-// MARK: - Equatable
-
-extension HCICommandTimeout: Equatable {
-    
-    public static func == (lhs: HCICommandTimeout, rhs: HCICommandTimeout) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Hashable
-
-extension HCICommandTimeout: Hashable {
-    
-    public var hashValue: Int {
-        
-        return rawValue.hashValue
     }
 }
 

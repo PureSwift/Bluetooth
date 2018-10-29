@@ -9,7 +9,7 @@
 import Foundation
 
 /// Bluetooth UUID
-public enum BluetoothUUID {
+public enum BluetoothUUID: Equatable {
     
     case bit16(UInt16)
     case bit32(UInt32)
@@ -22,25 +22,6 @@ public extension BluetoothUUID {
     public init() {
         
         self.init(uuid: UUID())
-    }
-}
-
-// MARK: - Equatable
-
-extension BluetoothUUID: Equatable {
-    
-    public static func == (lhs: BluetoothUUID, rhs: BluetoothUUID) -> Bool {
-        
-        switch (lhs, rhs) {
-            
-        case let (.bit16(lhsValue), .bit16(rhsValue)): return lhsValue == rhsValue
-            
-        case let (.bit32(lhsValue), .bit32(rhsValue)): return lhsValue == rhsValue
-            
-        case let (.bit128(lhsValue), .bit128(rhsValue)): return lhsValue == rhsValue
-            
-        default: return false
-        }
     }
 }
 
@@ -359,7 +340,7 @@ public extension Foundation.UUID {
 
 // MARK: - CoreBluetooth Conversion
 
-#if os(macOS) || os(iOS) || os(tvOS) || (os(watchOS) && swift(>=3.2))
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
     
     import CoreBluetooth
     

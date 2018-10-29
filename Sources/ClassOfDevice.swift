@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ClassOfDevice {
+public struct ClassOfDevice: Equatable {
     
     internal static let length = 3
     
@@ -98,19 +98,9 @@ public struct ClassOfDevice {
     }
 }
 
-extension ClassOfDevice: Equatable {
-    
-    public static func == (lhs: ClassOfDevice, rhs: ClassOfDevice) -> Bool {
-        
-        return lhs.formatType == rhs.formatType
-            && lhs.majorServiceClass == rhs.majorServiceClass
-            && lhs.majorDeviceClass == rhs.majorDeviceClass
-    }
-}
-
 extension ClassOfDevice {
     
-    public struct FormatType: RawRepresentable {
+    public struct FormatType: RawRepresentable, Equatable, Hashable {
         
         public static let min = FormatType(0b00)
         
@@ -130,14 +120,6 @@ extension ClassOfDevice {
             
             self.rawValue = unsafe
         }
-    }
-}
-
-extension ClassOfDevice.FormatType: Equatable {
- 
-    public static func == (lhs: ClassOfDevice.FormatType, rhs: ClassOfDevice.FormatType) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -188,7 +170,7 @@ public extension ClassOfDevice {
 
 public extension ClassOfDevice {
     
-    public enum MajorDeviceClass {
+    public enum MajorDeviceClass: Equatable {
         
         /// Miscellaneous
         case miscellaneous
@@ -325,14 +307,6 @@ public extension ClassOfDevice {
 
         /// Uncategorized: device code not specified
         case uncategorized = 0b11111
-    }
-}
-
-extension ClassOfDevice.MajorDeviceClass: Equatable {
-    
-    public static func == (lhs: ClassOfDevice.MajorDeviceClass, rhs: ClassOfDevice.MajorDeviceClass) -> Bool {
-        
-        return lhs.type == rhs.type && lhs.minorClassValue == rhs.minorClassValue
     }
 }
 

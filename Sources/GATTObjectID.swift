@@ -13,7 +13,7 @@ import Foundation
  
  - SeeAlso: [Object ID](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.object_id.xml)
  */
-public struct GATTObjectID: RawRepresentable, GATTCharacteristic {
+public struct GATTObjectID: Equatable, RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt48>.size
     
@@ -49,14 +49,6 @@ public struct GATTObjectID: RawRepresentable, GATTCharacteristic {
         let bytes = rawValue.littleEndian.bytes
         
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
-    }
-}
-
-extension GATTObjectID: Equatable {
-    
-    public static func == (lhs: GATTObjectID, rhs: GATTObjectID) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct VendorCommand: HCICommand {
+public struct VendorCommand: HCICommand, Equatable, Hashable {
     
     public static let opcodeGroupField = HCIOpcodeGroupField.vendor
     
@@ -30,25 +30,5 @@ public extension VendorCommand {
     public var name: String {
         
         return type(of: self).names[self] ?? rawValue.toHexadecimal()
-    }
-}
-
-// MARK: - Equatable
-
-extension VendorCommand: Equatable {
-    
-    public static func == (lhs: VendorCommand, rhs: VendorCommand) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Hashable
-
-extension VendorCommand: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 /// GAP Flag
-public struct GAPFlags: GAPData {
+public struct GAPFlags: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .flags
     
@@ -57,22 +57,6 @@ public struct GAPFlags: GAPData {
     public var data: Data {
         
         return Data([flags.rawValue])
-    }
-}
-
-extension GAPFlags: Equatable {
-    
-    public static func == (lhs: GAPFlags, rhs: GAPFlags) -> Bool {
-        
-        return lhs.flags == rhs.flags
-    }
-}
-
-extension GAPFlags: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(flags.rawValue)
     }
 }
 

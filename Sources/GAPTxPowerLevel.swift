@@ -12,7 +12,7 @@ import Foundation
 /// The TX Power Level should be the radiated power level.
 ///
 /// Note: When the TX Power Level data type is not present, the TX power level of the packet is unknown.
-public struct GAPTxPowerLevel: GAPData {
+public struct GAPTxPowerLevel: GAPData, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt8>.size
     
@@ -55,14 +55,6 @@ public struct GAPTxPowerLevel: GAPData {
         return Data([byteValue])
     }
     
-}
-
-extension GAPTxPowerLevel: Equatable {
-    
-    public static func == (lhs: GAPTxPowerLevel, rhs: GAPTxPowerLevel) -> Bool {
-        
-        return lhs.powerLevel == rhs.powerLevel
-    }
 }
 
 extension GAPTxPowerLevel: CustomStringConvertible {

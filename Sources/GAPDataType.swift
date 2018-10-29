@@ -13,7 +13,7 @@
 ///
 /// - SeeAlso:
 /// [Generic Access Profile](https://www.bluetooth.com/specifications/assigned-numbers/generic-access-profile)
-public struct GAPDataType: RawRepresentable, Equatable {
+public struct GAPDataType: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt8
     
@@ -161,16 +161,6 @@ public extension GAPDataType {
     /// Manufacturer Specific Data
     public static let manufacturerSpecificData: GAPDataType = 0xFF
     
-}
-
-// MARK: - Hashable
-
-extension GAPDataType: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
 }
 
 // MARK: - ExpressibleByIntegerLiteral

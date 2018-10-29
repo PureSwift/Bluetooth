@@ -143,7 +143,6 @@ public extension BitMaskOptionSet {
 
 extension BitMaskOptionSet: Equatable {
     
-    @inline(__always)
     public static func == (lhs: BitMaskOptionSet, rhs: BitMaskOptionSet) -> Bool {
         
         return lhs.rawValue == rhs.rawValue

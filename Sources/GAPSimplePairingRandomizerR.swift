@@ -11,7 +11,7 @@ import Foundation
 /// Specifies the Simple Pairing Randomizer
 /// Size: 16 octets
 /// Format defined in [Vol. 2], Part H Section 7.2.2
-public struct GAPSimplePairingRandomizerR: GAPData {
+public struct GAPSimplePairingRandomizerR: GAPData, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UUID>.size
     
@@ -37,14 +37,6 @@ public struct GAPSimplePairingRandomizerR: GAPData {
     public var data: Data {
         
         return uuid.data
-    }
-}
-
-extension GAPSimplePairingRandomizerR: Equatable {
-    
-    public static func == (lhs: GAPSimplePairingRandomizerR, rhs: GAPSimplePairingRandomizerR) -> Bool {
-        
-        return lhs.uuid == rhs.uuid
     }
 }
 

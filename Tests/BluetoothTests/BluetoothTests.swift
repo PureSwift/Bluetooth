@@ -41,7 +41,6 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(value > .min)
         XCTAssertNotEqual(value, .max)
         XCTAssertNotEqual(value, .min)
-        XCTAssertEqual(value.hashValue, Int(value.rawValue))
         
         // Range: 0x0020 to 0x4000
         XCTAssertEqual(AdvertisingInterval.min.miliseconds, 20.0, "The `advInterval` shall be an integer multiple of 0.625 ms in the range of `20` ms to `10.24` s")
@@ -62,7 +61,6 @@ final class BluetoothTests: XCTestCase {
         let company: CompanyIdentifier = 76 // Apple, Inc.
         
         XCTAssertEqual(company.description, "Apple, Inc.")
-        XCTAssertEqual(company.hashValue, 76)
         XCTAssertNotEqual(company.hashValue, 0)
         XCTAssertNotEqual(company, 77)
     }
@@ -75,7 +73,6 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(timeout.duration, 1.0)
         XCTAssertEqual(timeout.rawValue, 1000)
         XCTAssertNotEqual(timeout, 2000)
-        XCTAssertEqual(timeout.hashValue, timeout.rawValue.hashValue)
         XCTAssertEqual(timeout.description, "1.0 seconds")
     }
     

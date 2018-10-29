@@ -8,34 +8,13 @@
 
 import Foundation
 
-public struct UnitIdentifier: RawRepresentable {
+public struct UnitIdentifier: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt16
     
     public init(rawValue: UInt16) {
         
         self.rawValue = rawValue
-    }
-}
-
-// MARK: - Equatable
-
-extension UnitIdentifier: Equatable {
-    
-    @inline(__always)
-    public static func == (lhs: UnitIdentifier, rhs: UnitIdentifier) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Hashable
-
-extension UnitIdentifier: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }
 

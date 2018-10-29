@@ -11,7 +11,7 @@ import Foundation
 /// Specifies the Simple Pairing Hash C
 /// Size: 16 octets
 /// Format defined in [Vol. 2], Part H Section 7.2.2
-public struct GAPSimplePairingHashC: GAPData {
+public struct GAPSimplePairingHashC: GAPData, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UUID>.size
     
@@ -37,14 +37,6 @@ public struct GAPSimplePairingHashC: GAPData {
     public var data: Data {
         
         return uuid.data
-    }
-}
-
-extension GAPSimplePairingHashC: Equatable {
-    
-    public static func == (lhs: GAPSimplePairingHashC, rhs: GAPSimplePairingHashC) -> Bool {
-        
-        return lhs.uuid == rhs.uuid
     }
 }
 

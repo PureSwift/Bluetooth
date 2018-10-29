@@ -119,7 +119,6 @@ final class AttributeProtocolTests: XCTestCase {
         do {
             
             XCTAssertEqual(ATTMaximumTransmissionUnit.default, .min, "Default MTU is the minimum MTU")
-            XCTAssertEqual(ATTMaximumTransmissionUnit.default.hashValue, Int(ATTMaximumTransmissionUnit.default.rawValue), "MTU hash is raw value")
             XCTAssertNotEqual(ATTMaximumTransmissionUnit.min, .max, "ATT MTU minimum value is less than maximum value")
             XCTAssertLessThan(ATTMaximumTransmissionUnit.min, .max, "ATT MTU maximum value is greater than minimum value")
             XCTAssertGreaterThan(ATTMaximumTransmissionUnit.max, .min, "ATT MTU maximum value is not equal to minimum value")
