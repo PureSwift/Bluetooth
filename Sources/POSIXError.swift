@@ -8,38 +8,27 @@
 
 import Foundation
 
-public extension POSIXError {
+internal extension POSIXError {
     
     /// Creates error from C ```errno```.
     static var fromErrno: POSIXError? {
         
-        guard let code = POSIXErrorCode(rawValue: errno)
+        guard let code = POSIXError.Code(rawValue: POSIXError.Code.RawValue(errno))
             else { return nil }
         
         return self.init(code: code)
     }
     
-    #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-    
     /// Creates `POSIXError` from error code.
-    init(code: POSIXErrorCode) {
+    init(code: POSIXError.Code) {
         
-        let nsError = NSError(domain: NSPOSIXErrorDomain,
-                              code: Int(code.rawValue),
-                              userInfo: nil)
+        let nsError = NSError(
+            domain: NSPOSIXErrorDomain,
+            code: Int(code.rawValue),
+            userInfo: [
+                NSLocalizedDescriptionKey: String(cString: strerror(CInt(code.rawValue)), encoding: .ascii)!
+            ])
         
         self.init(_nsError: nsError)
-    }
-    
-    #endif
-}
-
-// MARK: - CustomStringConvertible
-
-extension POSIXError: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return String(cString: strerror(CInt(code.rawValue)), encoding: .ascii) ?? "\(code)"
     }
 }

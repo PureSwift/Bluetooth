@@ -81,9 +81,9 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(POSIXError.fromErrno?.code.rawValue ?? 0, errno)
         
         #if os(macOS)
-        XCTAssertEqual("\(POSIXError(code: .EBUSY))", "Resource busy")
+        XCTAssertEqual(POSIXError(code: .EBUSY).localizedDescription, "Resource busy")
         #elseif os(Linux)
-        XCTAssertEqual("\(POSIXError(code: .EBUSY))", "Device or resource busy")
+        XCTAssertEqual("\(POSIXError(code: .EBUSY).localizedDescription)", "Device or resource busy")
         #endif
     }
     
