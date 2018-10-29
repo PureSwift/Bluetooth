@@ -250,11 +250,6 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
     /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
     public enum PrimaryAdvertisingChannelMap: UInt8, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
-        
         /// Channel 37 shall be used
         case channel37 = 0b1
         
@@ -307,11 +302,6 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
     /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
     /// and its basic properties.
     public enum AdvertisingEventProperties: UInt16, BitMaskOption {
-        
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
         
         /// Connectable advertising
         case connectableAdvertising                         = 0b1

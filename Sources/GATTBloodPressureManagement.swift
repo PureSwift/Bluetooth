@@ -240,11 +240,6 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     /// These flags define which data fields are present in the Characteristic value.
     internal enum Flag: UInt8, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
-        
         /// Blood pressure for Systolic, Diastolic and MAP in units of kPa
         case bloodPressureUnits = 0b01
         
@@ -308,11 +303,6 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     }
     
     public enum MeasurementStatus: UInt16, BitMaskOption {
-        
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
         
         case bodyMovement = 0b01
         

@@ -63,12 +63,8 @@ public struct HCIWriteLinkPolicySettings: HCICommandParameter {
 
 extension HCIWriteLinkPolicySettings {
     
+    /// Link Policy Settings
     public enum LinkPolicySettings: UInt16, BitMaskOption {
-        
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
         
         /// Enable Role Switch.
         case enableRoleSwitch = 0x0001

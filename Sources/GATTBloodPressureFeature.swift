@@ -50,11 +50,6 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
         
         internal static let length = MemoryLayout<UInt16>.size
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
-        
         /// Body Movement Detection Support
         case bodyMovement = 0b01
         

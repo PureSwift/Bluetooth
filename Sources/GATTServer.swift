@@ -663,7 +663,7 @@ public final class GATTServer {
         guard handles.isEmpty == false
             else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
         
-        let handlesInformation = handles.map { Handle(foundAttribute: $0.0, groupEnd: $0.1) }
+        let handlesInformation = handles.map { Handle(foundAttribute: $0, groupEnd: $1) }
         
         let response = ATTFindByTypeResponse(handlesInformationList: handlesInformation)
         

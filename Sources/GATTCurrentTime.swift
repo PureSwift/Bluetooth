@@ -52,11 +52,6 @@ extension GATTCurrentTime {
     
     public enum Flag: UInt8, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
-        
         /// Manual time update
         case manualTimeUpdate = 0b01
         

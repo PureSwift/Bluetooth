@@ -47,7 +47,7 @@ final class AttributeProtocolTests: XCTestCase {
         XCTAssertEqual(ATTError.invalidHandle.errorDescription, "The attribute handle given was not valid on this server.")
         XCTAssertEqual(ATTError.invalidHandle.description, ATTError.invalidHandle.name)
         
-        let errors = (1 ... .max).flatMap { ATTError(rawValue: $0) }
+        let errors = (1 ... .max).compactMap { ATTError(rawValue: $0) }
         XCTAssert(errors.count == 0x11)
         
         for error in errors {
@@ -132,10 +132,8 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: 20), "Invalid MTU value")
             
-            #if swift(>=3.1)
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue - 1), "Invalid MTU value")
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue + 1), "Invalid MTU value")
-            #endif
             
             XCTAssertEqual(ATTMaximumTransmissionUnit(server: 23, client: 512).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
             XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 23).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")

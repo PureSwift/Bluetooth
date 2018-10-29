@@ -77,7 +77,7 @@ public struct GAPPBADV: GAPData {
         let linkIDbytes = UInt32(littleEndian: linkID).bytes
         let data = Data([linkIDbytes.0, linkIDbytes.1, linkIDbytes.2, linkIDbytes.3, transactionNumber])
         
-        return genericProvisioningPDU.reduce(data, { $0.0 + [$0.1] })
+        return genericProvisioningPDU.reduce(data, { $0 + [$1] })
     }
     
 }

@@ -56,7 +56,7 @@ final class UInt24Tests: XCTestCase {
             (0xFFFFFF, "FFFFFF")
         ]
         
-        values.forEach { XCTAssertEqual($0.0.description, $0.1) }
+        values.forEach { XCTAssertEqual($0.description, $1) }
     }
     
     func testData() {

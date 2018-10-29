@@ -64,11 +64,6 @@ public extension GATTClientCharacteristicConfiguration {
     /// GATT Client Characteristic Configuration Options
     public enum Configuration: UInt16, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
-        
         /// Notifications enabled
         case notify = 0b01
         

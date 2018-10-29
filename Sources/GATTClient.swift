@@ -812,11 +812,11 @@ public final class GATTClient {
                 
             case let .bit16(values):
                 
-                foundData = values.map { Descriptor(uuid: .bit16($0.1), handle: $0.0) }
+                foundData = values.map { Descriptor(uuid: .bit16($1), handle: $0) }
                 
             case let .bit128(values):
                 
-                foundData = values.map { Descriptor(uuid: .bit128($0.1), handle: $0.0) }
+                foundData = values.map { Descriptor(uuid: .bit128($1), handle: $0) }
             }
             
             operation.foundDescriptors += foundData

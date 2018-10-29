@@ -65,11 +65,6 @@ public extension GATT {
     /// GATT Characteristic Properties Bitfield valuess
     public enum CharacteristicProperty: UInt8, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
-        
         case broadcast              = 0x01
         case read                   = 0x02
         case writeWithoutResponse   = 0x04

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GAPDataElement {
+public struct GAPDataElement: Equatable {
     
     public var type: GAPDataType
     
@@ -22,7 +22,7 @@ public struct GAPDataElement {
     
     public init(_ data: GAPData) {
         
-        self.type = type(of: data).dataType
+        self.type = Swift.type(of: data).dataType
         self.value = data.data
     }
 }

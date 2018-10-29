@@ -89,11 +89,6 @@ extension GAP3DInformation: CustomStringConvertible {
 
 public enum GAP3DInformationFlag: UInt8, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
-    
     case associationNotification = 0b01
     
     case batteryLevelReporting = 0b10

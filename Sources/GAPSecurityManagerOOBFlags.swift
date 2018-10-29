@@ -17,11 +17,6 @@ import Foundation
  */
 public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
-    
     /// OOB Flags Field
     ///
     /// 0 = OOB data not present, 1 = OOB data present

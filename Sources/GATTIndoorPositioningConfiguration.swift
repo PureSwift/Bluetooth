@@ -46,11 +46,6 @@ extension GATTIndoorPositioningConfiguration {
     
     public enum Configuration: UInt8, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
-        
         /// Presence of coordinates in advertising packets
         case coordinates = 0b01
         

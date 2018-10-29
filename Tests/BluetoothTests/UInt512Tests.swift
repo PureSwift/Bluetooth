@@ -40,7 +40,7 @@ final class UInt512Tests: XCTestCase {
             (0xDCBABEBAAFDE0001, "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000DCBABEBAAFDE0001")
         ]
         
-        values.forEach { XCTAssertEqual($0.0.description, $0.1) }
+        values.forEach { XCTAssertEqual($0.description, $1) }
         
         XCTAssertEqual(UInt512.zero, 0)
     }

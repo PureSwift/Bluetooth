@@ -104,12 +104,8 @@ public struct GAPIndoorPositioning: GAPData {
     
 }
 
+/// GAP Indoor Positioning Flag
 public enum GAPIndoorPositioningFlag: UInt8, BitMaskOption {
-    
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
     
     /// Presence of coordinates in advertising packets
     /// (0 = coordinates are not present, 1 = coordinates are present)

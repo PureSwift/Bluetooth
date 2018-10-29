@@ -11,11 +11,6 @@
 /// any preferred coding for transmitting on the LE Coded PHY.
 public enum LowEnergyPhyOptions: UInt16, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt16
-    #endif
-    
     /// The Host has no preferred coding when transmitting on the LE Coded PHY
     case host       = 0b01
     

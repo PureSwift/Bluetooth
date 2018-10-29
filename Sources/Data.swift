@@ -8,22 +8,6 @@
 
 import Foundation
 
-#if swift(>=3.1)
-#elseif swift(>=3.0)
-internal extension Data {
-    
-    static func += (data: inout Data, bytes: [UInt8]) {
-        
-        data.append(contentsOf: bytes)
-    }
-    
-    static func += (rhs: inout Data, lhs: Data) {
-        
-        rhs.append(lhs)
-    }
-}
-#endif
-
 internal extension Data {
     
     func subdataNoCopy(in range: CountableRange<Int>) -> Data {

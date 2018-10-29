@@ -112,11 +112,6 @@ extension GAPFlags: ExpressibleByIntegerLiteral {
 
 public enum GAPFlag: UInt8, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
-    
     /// LE Limited Discoverable Mode
     case lowEnergyLimitedDiscoverableMode = 0b01
     

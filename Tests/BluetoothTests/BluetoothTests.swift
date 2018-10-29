@@ -143,7 +143,7 @@ final class BluetoothTests: XCTestCase {
         var states = BitMaskOptionSet<LowEnergyState>.all
         XCTAssert(states.isEmpty == false)
         XCTAssertEqual(states.count, LowEnergyState.all.count)
-        XCTAssert(states.containsAll)
+        XCTAssert(Set(states) == LowEnergyState.all)
         states.forEach { XCTAssert(LowEnergyState.all.contains($0)) }
         
         states.removeAll()
@@ -185,19 +185,17 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(featureSet.rawValue != LowEnergyFeature.ping.rawValue)
         XCTAssert(LowEnergyFeature(rawValue: featureSet.rawValue) == nil)
         
-        #if swift(>=3.2)
         XCTAssert(LowEnergyFeature.RawValue.bitWidth == LowEnergyFeatureSet.RawValue.bitWidth)
         XCTAssert(LowEnergyFeature.RawValue.bitWidth == MemoryLayout<LowEnergyFeature.RawValue>.size * 8)
         XCTAssert(LowEnergyFeature.RawValue.bitWidth == 64)
-        #endif
         
         XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == MemoryLayout<LowEnergyFeature.RawValue>.size)
         XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == 8) // 64 bit
         
         featureSet = .all
-        XCTAssert(featureSet.isEmpty == false)
-        XCTAssert(featureSet.count == LowEnergyFeature.all.count)
-        XCTAssert(featureSet.containsAll)
+        XCTAssertFalse(featureSet.isEmpty)
+        XCTAssertEqual(featureSet.count, LowEnergyFeature.all.count)
+        XCTAssertEqual(Set(featureSet), LowEnergyFeature.all)
         
         typealias Bit64 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
         let bigEndianByteValue: Bit64 = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01)

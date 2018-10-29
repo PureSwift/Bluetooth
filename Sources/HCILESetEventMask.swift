@@ -79,11 +79,6 @@ public extension HCILESetEventMask {
     /// All bits not listed in this table are reserved for future use.
     public enum Event: UInt64, BitMaskOption, CustomStringConvertible {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt64
-        #endif
-        
         /// LE Connection Complete Event
         case connectionComplete                         = 0b00
         

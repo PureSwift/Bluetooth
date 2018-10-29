@@ -18,11 +18,6 @@
  */
 public enum LowEnergyFeature: UInt64, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt64
-    #endif
-    
     /// LE Encryption
     case encryption                                     = 0b0000000000000001
     

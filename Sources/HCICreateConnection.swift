@@ -107,11 +107,6 @@ extension HCICreateConnection {
     /// The Clock_Offset parameter is the difference between its own clock and the clock of the remote device with BD_ADDR. Only bits 2 through 16 of the difference are used, and they are mapped to this parameter as bits 0 through 14 respectively.
     public enum ClockOffset: UInt16, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
-        
         case valid = 0b10000000_00000000
         
         public static var all: Set<ClockOffset> = [.valid]

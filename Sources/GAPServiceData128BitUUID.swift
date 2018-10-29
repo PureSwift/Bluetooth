@@ -39,9 +39,9 @@ public struct GAPServiceData128BitUUID: GAPData {
     }
     
     public var data: Data {
-        let data = UInt128(uuid: uuid).littleEndian.data
         
-        return serviceData.reduce(data, { $0.0 + [$0.1] })
+        let data = UInt128(uuid: uuid).littleEndian.data
+        return serviceData.reduce(data, { $0 + [$1] })
     }
 }
 

@@ -17,11 +17,6 @@ public enum GAPBeaconType: UInt8 {
 
 public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt16
-    #endif
-    
     case other = 0b01
     
     case electronic = 0b10
@@ -185,11 +180,6 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol {
 }
 
 public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
-    
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
     
     case keyRefresh = 0b01
     

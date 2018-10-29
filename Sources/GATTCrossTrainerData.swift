@@ -639,11 +639,6 @@ public struct GATTCrossTrainerData {
     /// These flags define which data fields are present in the Characteristic value.
     internal enum Flag: UInt32, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt32 //we use 24
-        #endif
-        
         /// More Data
         case moreData = 0b01
         

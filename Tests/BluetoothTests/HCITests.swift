@@ -203,7 +203,7 @@ final class HCITests: XCTestCase {
         
         func testCommandNames <T: HCICommand> (_ command: T.Type, names: [String], skip: String = "Unknown") {
             
-            for (index, name) in names.enumerated().filter({ $0.1 != skip }) {
+            for (index, name) in names.enumerated().filter({ $1 != skip }) {
                 
                 XCTAssertEqual(T.init(rawValue: UInt16(index))?.name, name, "\(UInt8(index).toHexadecimal())")
             }
@@ -280,7 +280,7 @@ final class HCITests: XCTestCase {
         // HCI error
         XCTAssertTrue(HCIError.unknownCommand.description == "Unknown HCI Command")
         
-        let errors = (UInt8.min ... .max).flatMap({ HCIError(rawValue: $0) })
+        let errors = (UInt8.min ... .max).compactMap({ HCIError(rawValue: $0) })
         
         for error in errors {
             

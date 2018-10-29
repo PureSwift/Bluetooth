@@ -124,11 +124,6 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
     /// and its basic properties.
     public enum AdvertisingEventProperties: UInt16, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
-        
         /// Include TxPower in the extended header of the advertising PDU
         case includeTxPower = 0b100000
         
