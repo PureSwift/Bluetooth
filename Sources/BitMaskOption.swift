@@ -6,7 +6,6 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-
 /// Enum that represents a bit mask flag / option.
 ///
 /// Basically `Swift.OptionSet` for enums.

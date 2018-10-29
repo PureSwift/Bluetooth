@@ -96,8 +96,6 @@ public enum ACLPacketType: UInt16, BitMaskOption {
 
 /// HV and DV packets are used on the synchronous SCO logical transport. The HV packets do not include a CRC and shall not be retransmitted. DV packets include a CRC on the data section, but not on the synchronous data section. The data section of DV packets shall be retransmitted. SCO packets may be routed to the synchronous I/O port. Four packets are allowed on the SCO logical transport: HV1, HV2, HV3 and DV. These packets are typically used for 64kb/s speech transmission but may be used for transparent synchronous data.
 public enum SCOPacketType: UInt16, BitMaskOption {
-
-    
     
     /// HV1
     case hv1 = 0x0020

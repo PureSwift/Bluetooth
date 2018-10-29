@@ -10,7 +10,7 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
-#if os(macOS) && swift(>=3.2)
+#if os(macOS)
 
 import CoreBluetooth
 import IOKit
