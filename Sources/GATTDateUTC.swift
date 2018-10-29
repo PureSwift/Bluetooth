@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GATTDateUTC: GATTCharacteristic {
+public struct GATTDateUTC: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt24>.size
     
@@ -40,14 +40,6 @@ public struct GATTDateUTC: GATTCharacteristic {
     }
 }
 
-extension GATTDateUTC: Equatable {
-    
-    public static func == (lhs: GATTDateUTC, rhs: GATTDateUTC) -> Bool {
-        
-        return lhs.date == rhs.date
-    }
-}
-
 extension GATTDateUTC: CustomStringConvertible {
     
     public var description: String {
@@ -58,7 +50,7 @@ extension GATTDateUTC: CustomStringConvertible {
 
 extension GATTDateUTC {
 
-    public struct Day: BluetoothUnit {
+    public struct Day: BluetoothUnit, Equatable {
         
         public static var unitType: UnitIdentifier { return .day }
         
@@ -83,14 +75,6 @@ extension GATTDateUTC {
             
             self.rawValue = unsafe
         }
-    }
-}
-
-extension GATTDateUTC.Day: Equatable {
-    
-    public static func == (lhs: GATTDateUTC.Day, rhs: GATTDateUTC.Day) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 

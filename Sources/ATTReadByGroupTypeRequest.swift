@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The *Read By Group Type Request* is used to obtain the values of attributes where the attribute type is known,
 /// the type of a grouping attribute as defined by a higher layer specification, but the handle is not known.
-public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
+public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readByGroupTypeRequest
     

@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The read response is sent in reply to a received *Read Multiple Request* and
 /// contains the values of the attributes that have been read.
-public struct ATTReadMultipleResponse: ATTProtocolDataUnit {
+public struct ATTReadMultipleResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readMultipleResponse
     

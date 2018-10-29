@@ -11,7 +11,7 @@ import Foundation
 /// Handle Value Notification
 ///
 /// A server can send a notification of an attribute’s value at any time.
-public struct ATTHandleValueNotification: ATTProtocolDataUnit {
+public struct ATTHandleValueNotification: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.handleValueNotification
     

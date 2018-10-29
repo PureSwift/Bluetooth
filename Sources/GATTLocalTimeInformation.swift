@@ -13,7 +13,7 @@ import Foundation
  
  - SeeAlso: [Local Time Information](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.local_time_information.xml)
  */
-public struct GATTLocalTimeInformation: GATTCharacteristic {
+public struct GATTLocalTimeInformation: GATTCharacteristic, Equatable {
     
     internal static let length = GATTTimeZone.length + GATTDstOffset.length
     
@@ -46,13 +46,5 @@ public struct GATTLocalTimeInformation: GATTCharacteristic {
     public var data: Data {
         
         return timeZone.data + dstOffset.data
-    }
-}
-
-extension GATTLocalTimeInformation: Equatable {
-    
-    public static func == (lhs: GATTLocalTimeInformation, rhs: GATTLocalTimeInformation) -> Bool {
-        
-        return lhs.timeZone == rhs.timeZone && lhs.dstOffset == rhs.dstOffset
     }
 }

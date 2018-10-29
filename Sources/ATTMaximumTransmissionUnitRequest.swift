@@ -15,7 +15,7 @@ import Foundation
 ///
 /// - Note: This request shall only be sent once during a connection by the client.
 /// The *Client Rx MTU* parameter shall be set to the maximum size of the attribute protocol PDU that the client can receive.
-public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit {
+public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit, Equatable {
     
     /// 0x02 = Exchange MTU Request
     public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitRequest

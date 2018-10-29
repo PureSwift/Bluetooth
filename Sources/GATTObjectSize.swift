@@ -13,7 +13,7 @@ import Foundation
  
  - SeeAlso: [Object Size](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.object_size.xml)
  */
-public struct GATTObjectSize: GATTCharacteristic {
+public struct GATTObjectSize: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt32>.size * 2
     
@@ -58,18 +58,9 @@ public struct GATTObjectSize: GATTCharacteristic {
     }
 }
 
-extension GATTObjectSize: Equatable {
-    
-    public static func == (lhs: GATTObjectSize, rhs: GATTObjectSize) -> Bool {
-        
-        return lhs.currentSize == rhs.currentSize
-            && lhs.allocatedSize == rhs.allocatedSize
-    }
-}
-
 extension GATTObjectSize {
     
-    public struct Size: RawRepresentable {
+    public struct Size: RawRepresentable, Equatable, Hashable {
         
         public var rawValue: UInt32
         
@@ -77,13 +68,5 @@ extension GATTObjectSize {
             
             self.rawValue = rawValue
         }
-    }
-}
-
-extension GATTObjectSize.Size: Equatable {
-    
-    public static func == (lhs: GATTObjectSize.Size, rhs: GATTObjectSize.Size) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }

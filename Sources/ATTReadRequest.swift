@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The *Read Request* is used to request the server to read the value of an attribute
 /// and return its value in a *Read Response*.
-public struct ATTReadRequest: ATTProtocolDataUnit {
+public struct ATTReadRequest: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readRequest
     
@@ -28,21 +28,21 @@ public struct ATTReadRequest: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard data.count == ATTReadRequest.length
+        guard data.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
         
-        guard attributeOpcodeByte == ATTReadRequest.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        self.handle = UInt16(bytes: (data[1], data[2])).littleEndian
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
     }
     
     public var data: Data {
         
         let handleBytes = handle.littleEndian.bytes
         
-        return Data([ATTReadRequest.attributeOpcode.rawValue, handleBytes.0, handleBytes.1])
+        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1])
     }
 }

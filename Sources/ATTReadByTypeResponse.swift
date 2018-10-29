@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The *Read By Type Response* is sent in reply to a received *Read By Type Request*
 /// and contains the handles and values of the attributes that have been read.
-public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
+public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readByTypeResponse
     
@@ -101,7 +101,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit {
 public extension ATTReadByTypeResponse {
     
     /// Attribute handle and value pair.
-    public struct AttributeData {
+    public struct AttributeData: Equatable {
         
         /// Minimum length.
         internal static let length = 2

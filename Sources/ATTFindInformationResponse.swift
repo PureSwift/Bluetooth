@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The *Find Information Response* is sent in reply to a received *Find Information Request*
 /// and contains information about this server.
-public struct ATTFindInformationResponse: ATTProtocolDataUnit {
+public struct ATTFindInformationResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATTOpcode.findInformationResponse
     
@@ -72,7 +72,7 @@ public extension ATTFindInformationResponse {
             }
         }
         
-        public var length: Int {
+        internal var length: Int {
             
             switch self {
             case .bit16: return 2 + 2
@@ -84,14 +84,41 @@ public extension ATTFindInformationResponse {
 
 public extension ATTFindInformationResponse {
     
+    /// 16 Bit Attribute
+    public struct Attribute16Bit: Equatable {
+        
+        internal static var format: Format { return .bit16 }
+        
+        /// Attribute Handle
+        public let handle: UInt16
+        
+        /// Attribute UUID
+        public let uuid: UInt16
+    }
+    
+    /// 128 Bit Attribute
+    public struct Attribute128Bit: Equatable {
+        
+        internal static var format: Format { return .bit128 }
+        
+        /// Attribute Handle
+        public let handle: UInt16
+        
+        /// Attribute UUID
+        public let uuid: UInt128
+    }
+}
+
+public extension ATTFindInformationResponse {
+    
     /// Found Attribute Data.
-    public enum AttributeData {
+    public enum AttributeData: Equatable {
         
         /// Handle and 16-bit Bluetooth UUID
-        case bit16([(UInt16, UInt16)])
+        case bit16([Attribute16Bit])
         
         /// Handle and 128-bit UUIDs
-        case bit128([(UInt16, UInt128)])
+        case bit128([Attribute128Bit])
         
         /// The data's format.
         public var format: Format {
@@ -120,42 +147,33 @@ public extension ATTFindInformationResponse {
             
             let pairCount = data.count / pairLength
             
-            var bit16Pairs: [(UInt16, UInt16)] = []
+            var bit16Pairs: [Attribute16Bit] = []
+            var bit128Pairs: [Attribute128Bit] = []
             
-            var bit128Pairs: [(UInt16, UInt128)] = []
+            switch format {
+            case .bit16: bit16Pairs.reserveCapacity(pairCount)
+            case .bit128: bit128Pairs.reserveCapacity(pairCount)
+            }
             
             for pairIndex in 0 ..< pairCount {
                 
                 let byteIndex = pairIndex * pairLength
-                
                 let pairBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + pairLength)
-                
                 let handle = UInt16(littleEndian: UInt16(bytes: (pairBytes[0], pairBytes[1])))
                 
                 switch format {
-                    
                 case .bit16:
-                    
                     let uuid = UInt16(littleEndian: UInt16(bytes: (pairBytes[2], pairBytes[3])))
-                    
-                    bit16Pairs.append((handle, uuid))
-                    
+                    bit16Pairs.append(Attribute16Bit(handle: handle, uuid: uuid))
                 case .bit128:
-                    
                     let uuidBytes = pairBytes.subdataNoCopy(in: 2 ..< 18)
-                    
-                    assert(uuidBytes.count == UInt128.length)
-                    
                     let uuid = UInt128(littleEndian: UInt128(data: uuidBytes)!)
-                    
-                    bit128Pairs.append((handle, uuid))
+                    bit128Pairs.append(Attribute128Bit(handle: handle, uuid: uuid))
                 }
             }
             
             switch format {
-                
             case .bit16: self = .bit16(bit16Pairs)
-                
             case .bit128: self = .bit128(bit128Pairs)
             }
         }
@@ -165,26 +183,19 @@ public extension ATTFindInformationResponse {
             var data = Data()
             
             switch self {
-                
             case let .bit16(value):
-                
+                data.reserveCapacity(value.count * type(of: value).Element.format.length)
                 for pair in value {
-                    
-                    let handleBytes = pair.0.littleEndian.bytes
-                    
-                    let uuidBytes = pair.1.littleEndian.bytes
-                    
+                    let handleBytes = pair.handle.littleEndian.bytes
+                    let uuidBytes = pair.uuid.littleEndian.bytes
                     data += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1]
                 }
                 
             case let .bit128(value):
-                
+                data.reserveCapacity(value.count * type(of: value).Element.format.length)
                 for pair in value {
-                    
-                    let handleBytes = pair.0.littleEndian.bytes
-                    
-                    let uuidBytes = pair.1.littleEndian.bytes
-                    
+                    let handleBytes = pair.handle.littleEndian.bytes
+                    let uuidBytes = pair.uuid.littleEndian.bytes
                     data += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1, uuidBytes.2, uuidBytes.3, uuidBytes.4, uuidBytes.5, uuidBytes.6, uuidBytes.7, uuidBytes.8, uuidBytes.9, uuidBytes.10, uuidBytes.11, uuidBytes.12, uuidBytes.13, uuidBytes.14, uuidBytes.15]
                 }
             }

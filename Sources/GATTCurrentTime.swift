@@ -13,7 +13,7 @@ import Foundation
  
  - SeeAlso: [Current Time](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.current_time.xml)
  */
-public struct GATTCurrentTime: GATTCharacteristic {
+public struct GATTCurrentTime: GATTCharacteristic, Equatable {
     
     internal static let length = GATTExactTime256.length + MemoryLayout<UInt8>.size
     
@@ -72,13 +72,4 @@ extension GATTCurrentTime {
         ]
     }
     
-}
-
-extension GATTCurrentTime: Equatable {
-    
-    public static func == (lhs: GATTCurrentTime, rhs: GATTCurrentTime) -> Bool {
-        
-        return lhs.exactTime == rhs.exactTime &&
-            lhs.adjustReason == rhs.adjustReason
-    }
 }

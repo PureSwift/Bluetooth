@@ -569,7 +569,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTFindInformationResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            let foundData = ATTFindInformationResponse.AttributeData.bit16([(0x0017, 0x2902)])
+            let foundData = ATTFindInformationResponse.AttributeData.bit16([
+                ATTFindInformationResponse.Attribute16Bit(handle: 0x0017, uuid: 0x2902)
+                ])
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
             XCTAssertEqual(pdu.data, data)
@@ -607,8 +609,8 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Invalid data"); return }
             
             XCTAssertEqual(attributeData.count, 1)
-            XCTAssertEqual(attributeData[0].0, 0x0004)
-            XCTAssertEqual(BluetoothUUID.bit16(attributeData[0].1), .clientCharacteristicConfiguration)
+            XCTAssertEqual(attributeData[0].handle, 0x0004)
+            XCTAssertEqual(BluetoothUUID.bit16(attributeData[0].uuid), .clientCharacteristicConfiguration)
         }
     }
     

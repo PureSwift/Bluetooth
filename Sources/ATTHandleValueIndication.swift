@@ -11,7 +11,7 @@ import Foundation
 /// Handle Value Indication
 ///
 /// A server can send an indication of an attribute’s value.
-public struct ATTHandleValueIndication: ATTProtocolDataUnit {
+public struct ATTHandleValueIndication: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.handleValueIndication
     
@@ -54,10 +54,7 @@ public struct ATTHandleValueIndication: ATTProtocolDataUnit {
     
     public var data: Data {
         
-        let type = ATTHandleValueIndication.self
-        
         let handleBytes = handle.littleEndian.bytes
-        
-        return Data([type.attributeOpcode.rawValue, handleBytes.0, handleBytes.1]) + value
+        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1]) + value
     }
 }
