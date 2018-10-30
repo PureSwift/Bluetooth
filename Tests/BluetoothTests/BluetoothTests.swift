@@ -81,10 +81,10 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(POSIXError.fromErrno?.code.rawValue ?? 0, POSIXError.Code.RawValue(errno))
         
         #if os(macOS)
-        XCTAssertEqual(POSIXError(code: .EBUSY).localizedDescription, "Resource busy")
+        XCTAssertEqual(POSIXError(.EBUSY).localizedDescription, "The operation couldn’t be completed. Resource busy")
         #endif
         
-        XCTAssertFalse(POSIXError(code: .EBUSY).localizedDescription.isEmpty)
+        XCTAssertFalse(POSIXError(.EBUSY).localizedDescription.isEmpty)
     }
     
     func testHCIVersion() {

@@ -16,19 +16,6 @@ internal extension POSIXError {
         guard let code = POSIXError.Code(rawValue: POSIXError.Code.RawValue(errno))
             else { return nil }
         
-        return self.init(code: code)
-    }
-    
-    /// Creates `POSIXError` from error code.
-    init(code: POSIXError.Code) {
-        
-        let nsError = NSError(
-            domain: NSPOSIXErrorDomain,
-            code: Int(code.rawValue),
-            userInfo: [
-                NSLocalizedDescriptionKey: String(cString: strerror(CInt(code.rawValue)), encoding: .ascii)!
-            ])
-        
-        self.init(_nsError: nsError)
+        return self.init(code)
     }
 }

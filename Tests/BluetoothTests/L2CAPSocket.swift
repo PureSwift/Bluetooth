@@ -62,7 +62,7 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     func send(_ data: Data) throws {
         
         guard let target = self.target
-            else { throw POSIXError(code: .ECONNRESET) }
+            else { throw POSIXError(.ECONNRESET) }
         
         target.input.append(data)
     }

@@ -1970,6 +1970,7 @@
 		6E704C961E95C4B300484A22 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6E60A2EB20695AE000E42351 /* POSIXError.swift */,
 				6ECBCF20206FC3A200312117 /* Array.swift */,
 				6E443A2E2085D606005F4D5F /* Bool.swift */,
 				6E30AE2D20BEFEEC0072D101 /* Data.swift */,
@@ -2096,7 +2097,6 @@
 				6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */,
 				6E60A31F206979CF00E42351 /* iBeacon.swift */,
 				6E60A30E2069603700E42351 /* L2CAPSocket.swift */,
-				6E60A2EB20695AE000E42351 /* POSIXError.swift */,
 				6EE84DE41CAF828800A40C4D /* ProtocolServiceMultiplexer.swift */,
 				6E124BC6207E553E0060E2E9 /* RSSI.swift */,
 				6E60A3132069646100E42351 /* SecurityLevel.swift */,

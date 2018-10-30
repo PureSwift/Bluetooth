@@ -337,7 +337,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         }
         
         // throw timeout error
-        throw POSIXError(code: .ETIMEDOUT)
+        throw POSIXError(.ETIMEDOUT)
     }
 }
 
