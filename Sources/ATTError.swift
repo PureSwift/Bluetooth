@@ -198,7 +198,6 @@ public extension ATTError {
 
 // MARK: - CustomNSError
 
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 import Foundation
 
 extension ATTError: CustomNSError {
@@ -219,4 +218,3 @@ extension ATTError: CustomNSError {
         ]
     }
 }
-#endif
