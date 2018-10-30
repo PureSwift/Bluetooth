@@ -11,11 +11,6 @@
 /// the RX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
 public enum LowEnergyRxPhys: UInt8, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
-    
     /// The Host prefers to use the LE 1M receiver PHY (possibly among others)
     case hostUseLe1MReceiverPhy      = 0b001
     

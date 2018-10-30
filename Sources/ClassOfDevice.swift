@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ClassOfDevice {
+public struct ClassOfDevice: Equatable {
     
     internal static let length = 3
     
@@ -98,19 +98,9 @@ public struct ClassOfDevice {
     }
 }
 
-extension ClassOfDevice: Equatable {
-    
-    public static func == (lhs: ClassOfDevice, rhs: ClassOfDevice) -> Bool {
-        
-        return lhs.formatType == rhs.formatType
-            && lhs.majorServiceClass == rhs.majorServiceClass
-            && lhs.majorDeviceClass == rhs.majorDeviceClass
-    }
-}
-
 extension ClassOfDevice {
     
-    public struct FormatType: RawRepresentable {
+    public struct FormatType: RawRepresentable, Equatable, Hashable {
         
         public static let min = FormatType(0b00)
         
@@ -133,22 +123,9 @@ extension ClassOfDevice {
     }
 }
 
-extension ClassOfDevice.FormatType: Equatable {
- 
-    public static func == (lhs: ClassOfDevice.FormatType, rhs: ClassOfDevice.FormatType) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 public extension ClassOfDevice {
     
     public enum MajorServiceClass: UInt16, BitMaskOption {
-        
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
         
         /// Limited Discoverable Mode [Ref #1]
         case limitedDiscoverable = 0b01
@@ -193,7 +170,7 @@ public extension ClassOfDevice {
 
 public extension ClassOfDevice {
     
-    public enum MajorDeviceClass {
+    public enum MajorDeviceClass: Equatable {
         
         /// Miscellaneous
         case miscellaneous
@@ -330,14 +307,6 @@ public extension ClassOfDevice {
 
         /// Uncategorized: device code not specified
         case uncategorized = 0b11111
-    }
-}
-
-extension ClassOfDevice.MajorDeviceClass: Equatable {
-    
-    public static func == (lhs: ClassOfDevice.MajorDeviceClass, rhs: ClassOfDevice.MajorDeviceClass) -> Bool {
-        
-        return lhs.type == rhs.type && lhs.minorClassValue == rhs.minorClassValue
     }
 }
 
@@ -552,11 +521,6 @@ public extension ClassOfDevice.MinorDeviceClass {
 public extension ClassOfDevice.MinorDeviceClass {
 
     public enum Imaging: UInt8, BitMaskOption {
-        
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
         
         /// Uncategorized
         case uncategorized = 0b00

@@ -654,7 +654,6 @@
 		6E65DF8F20755CCD005BD2A0 /* ByteSwap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E65DF8B20755CCD005BD2A0 /* ByteSwap.swift */; };
 		6E65DF912075CD9F005BD2A0 /* UUIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E65DF902075CD9F005BD2A0 /* UUIDTests.swift */; };
 		6E65DF932075D29C005BD2A0 /* iBeaconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E65DF922075D29C005BD2A0 /* iBeaconTests.swift */; };
-		6E65DF952075D568005BD2A0 /* XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E65DF942075D568005BD2A0 /* XCTest.swift */; };
 		6E6AAD7020D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAD6F20D2161B00DDE1CA /* GATTBatteryLevel.swift */; };
 		6E6AAD7120D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAD6F20D2161B00DDE1CA /* GATTBatteryLevel.swift */; };
 		6E6AAD7220D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AAD6F20D2161B00DDE1CA /* GATTBatteryLevel.swift */; };
@@ -1327,7 +1326,6 @@
 		6E65DF8B20755CCD005BD2A0 /* ByteSwap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteSwap.swift; sourceTree = "<group>"; };
 		6E65DF902075CD9F005BD2A0 /* UUIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDTests.swift; sourceTree = "<group>"; };
 		6E65DF922075D29C005BD2A0 /* iBeaconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iBeaconTests.swift; sourceTree = "<group>"; };
-		6E65DF942075D568005BD2A0 /* XCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTest.swift; sourceTree = "<group>"; };
 		6E6AAD6F20D2161B00DDE1CA /* GATTBatteryLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTBatteryLevel.swift; sourceTree = "<group>"; };
 		6E6AAD7420D2164600DDE1CA /* GATTDateTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTDateTime.swift; sourceTree = "<group>"; };
 		6E6AAD7B20D2174600DDE1CA /* GATTAlertNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATTAlertNotificationService.swift; sourceTree = "<group>"; };
@@ -2028,7 +2026,6 @@
 		6EE611BD20D4718300DBC88E /* Supporting Types */ = {
 			isa = PBXGroup;
 			children = (
-				6E65DF942075D568005BD2A0 /* XCTest.swift */,
 				6E14247F206CFFC500BF72BC /* HostController.swift */,
 				6ECBCF0A206E683C00312117 /* L2CAPSocket.swift */,
 				6E443A082085D0EA005F4D5F /* TestProfile.swift */,
@@ -3314,7 +3311,6 @@
 				6E65DF932075D29C005BD2A0 /* iBeaconTests.swift in Sources */,
 				6E3AD30920BF951600EAC58A /* CompanyIdentifierTests.swift in Sources */,
 				6E443A0A2085D108005F4D5F /* TestProfile.swift in Sources */,
-				6E65DF952075D568005BD2A0 /* XCTest.swift in Sources */,
 				6E04273D20800B0700AD3C75 /* DefinedUUIDTests.swift in Sources */,
 				6E069B8120E507EA00669B76 /* UInt40Tests.swift in Sources */,
 				6E04273A208008A200AD3C75 /* BluetoothUUIDTests.swift in Sources */,

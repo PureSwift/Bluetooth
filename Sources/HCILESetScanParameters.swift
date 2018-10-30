@@ -38,8 +38,8 @@ public struct HCILESetScanParameters: HCICommandParameter { // HCI_LE_Set_Scan_P
     public let filterPolicy: FilterPolicy
     
     public init(type: ScanType = .passive,
-                interval: TimeInterval = TimeInterval(0x01E0),
-                window: TimeInterval = TimeInterval(0x0030),
+                interval: TimeInterval = TimeInterval(rawValue: 0x01E0)!,
+                window: TimeInterval = TimeInterval(rawValue: 0x0030)!,
                 addressType: LowEnergyAddressType = .public,
                 filterPolicy: FilterPolicy = .accept) {
         

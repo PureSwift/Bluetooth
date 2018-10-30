@@ -7,7 +7,7 @@
 //
 
 /// ATT Maximum Transmission Unit
-public struct ATTMaximumTransmissionUnit: RawRepresentable {
+public struct ATTMaximumTransmissionUnit: RawRepresentable, Equatable, Hashable {
     
     public let rawValue: UInt16
     
@@ -52,26 +52,6 @@ public extension ATTMaximumTransmissionUnit {
         self.init(mtu)
         
         assert(isValid)
-    }
-}
-
-// MARK: - Equatable
-
-extension ATTMaximumTransmissionUnit: Equatable {
-    
-    public static func == (lhs: ATTMaximumTransmissionUnit, rhs: ATTMaximumTransmissionUnit) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Hashable
-
-extension ATTMaximumTransmissionUnit: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }
 

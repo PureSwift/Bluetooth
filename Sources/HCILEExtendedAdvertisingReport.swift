@@ -237,11 +237,6 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
     /// Event Type
     public enum EventType: UInt16, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
-        
         /// Connectable advertising
         case connectableAdvertising         = 0b0000000000000001
         

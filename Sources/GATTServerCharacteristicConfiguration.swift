@@ -58,11 +58,6 @@ extension GATTServerCharacteristicConfiguration {
     /// GATT Server Characteristics Configuration Options
     public enum ServerConfiguration: UInt8, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
-        
         /// Broadcasts enabled
         case broadcasts = 0b01
         

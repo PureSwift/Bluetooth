@@ -22,7 +22,7 @@
  
  ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/AdvertisingInterval.png)
  */
-public struct AdvertisingInterval {
+public struct AdvertisingInterval: Equatable, Hashable {
     
     public let rawValue: UInt16
     
@@ -49,26 +49,6 @@ public struct AdvertisingInterval {
     public var miliseconds: Double {
         
         return Double(rawValue) * 0.625
-    }
-}
-
-// MARK: - Equatable
-
-extension AdvertisingInterval: Equatable {
-    
-    public static func == (lhs: AdvertisingInterval, rhs: AdvertisingInterval) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Hashable
-
-extension AdvertisingInterval: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }
 

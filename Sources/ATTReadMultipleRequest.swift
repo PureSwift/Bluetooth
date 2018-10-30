@@ -15,7 +15,7 @@ import Foundation
 ///
 /// Only values that have a known fixed size can be read, with the exception of the last value that can have a variable length.
 /// The knowledge of whether attributes have a known fixed size is defined in a higher layer specification.
-public struct ATTReadMultipleRequest: ATTProtocolDataUnit {
+public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readMultipleRequest
     

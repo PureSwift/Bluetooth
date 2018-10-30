@@ -40,7 +40,7 @@ final class UInt256Tests: XCTestCase {
             (0x000000000000000000000000000000000000000000000000DCBABEBAAFDE0001, "000000000000000000000000000000000000000000000000DCBABEBAAFDE0001")
         ]
         
-        values.forEach { XCTAssertEqual($0.0.description, $0.1) }
+        values.forEach { XCTAssertEqual($0.description, $1) }
         
         XCTAssertEqual(UInt256.zero, 0)
     }

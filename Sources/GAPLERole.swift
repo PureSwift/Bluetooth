@@ -31,11 +31,6 @@ public enum GAPLERole: UInt8, GAPData {
     /// Bluetooth LE Role (e.g. Central or peripheral).
     public enum Role: UInt8, BitMaskOption { // not part of BT spec
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
-        
         case central = 0b01
         case peripheral = 0b10
         

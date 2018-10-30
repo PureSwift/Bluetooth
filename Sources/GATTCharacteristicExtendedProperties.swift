@@ -59,11 +59,6 @@ public extension GATTCharacteristicExtendedProperties {
     /// GATT Characteristic Extended Properties Options
     public enum Property: UInt16, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
-        
         /// Reliable Write enabled
         case reliableWrite = 0b01
         

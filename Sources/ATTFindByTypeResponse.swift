@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The *Find By Type Value Response* is sent in reply to a received *Find By Type Value Request*
 /// and contains information about this server.
-public struct ATTFindByTypeResponse: ATTProtocolDataUnit {
+public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.findByTypeResponse
     
@@ -86,7 +86,7 @@ public extension ATTFindByTypeResponse {
     /// a *Handles Information* shall be returned.
     /// The *Found Attribute Handle* shall be set to the handle of the attribute that has the exact attribute type
     /// and attribute value from the *Find By Type Value Request*.
-    public struct HandlesInformation {
+    public struct HandlesInformation: Equatable {
         
         internal static let length = 2 + 2
         

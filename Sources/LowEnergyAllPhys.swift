@@ -11,11 +11,6 @@
 /// or whether it has specified particular PHYs that it prefers in the TX_PHYS or RX_PHYS parameter.
 public enum LowEnergyAllPhys: UInt8, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
-    
     /// The Host has no preference among the transmitter PHYs supported by the Controller
     case hostHasNoPreferenceAmongTheTransmitterPhy  = 0b01
     

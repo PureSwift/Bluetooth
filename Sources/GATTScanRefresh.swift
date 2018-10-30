@@ -38,14 +38,6 @@ public enum GATTScanRefresh: UInt8, GATTCharacteristic {
     
 }
 
-extension GATTScanRefresh: Equatable {
-    
-    public static func == (lhs: GATTScanRefresh, rhs: GATTScanRefresh) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 extension GATTScanRefresh: CustomStringConvertible {
     
     public var description: String {

@@ -14,7 +14,7 @@ import Foundation
 /// and contains the handles and values of the attributes that have been read.
 ///
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
-public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
+public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readByGroupTypeResponse
     
@@ -101,7 +101,7 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit {
 
 public extension ATTReadByGroupTypeResponse {
     
-    public struct AttributeData {
+    public struct AttributeData: Equatable {
         
         /// Minimum length
         internal static let length = 4

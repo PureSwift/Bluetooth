@@ -22,34 +22,13 @@
 /// unless it is otherwise indicated as withdrawn.
 ///
 /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
-public struct CompanyIdentifier: RawRepresentable {
+public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt16
     
     public init(rawValue: UInt16) {
         
         self.rawValue = rawValue
-    }
-}
-
-// MARK: - Equatable
-
-extension CompanyIdentifier: Equatable {
-    
-    @inline(__always)
-    public static func == (lhs: CompanyIdentifier, rhs: CompanyIdentifier) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Hashable
-
-extension CompanyIdentifier: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }
 

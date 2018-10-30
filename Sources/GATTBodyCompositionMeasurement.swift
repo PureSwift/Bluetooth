@@ -449,11 +449,6 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     /// These flags define which data fields are present in the Characteristic value.
     internal enum Flag: UInt16, BitMaskOption {
         
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt16
-        #endif
-        
         /// Measurement Units
         /// SI
         case measurementUnitSI = 0b00

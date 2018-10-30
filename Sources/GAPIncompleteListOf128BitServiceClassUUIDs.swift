@@ -9,7 +9,7 @@
 import Foundation
 
 /// GAP Incomplete List of 128-bit Service Class UUIDs
-public struct GAPIncompleteListOf128BitServiceClassUUIDs: GAPData {
+public struct GAPIncompleteListOf128BitServiceClassUUIDs: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .incompleteListOf128BitServiceClassUUIDs
     
@@ -39,14 +39,6 @@ extension GAPIncompleteListOf128BitServiceClassUUIDs: ExpressibleByArrayLiteral 
     public init(arrayLiteral elements: UUID...) {
         
         self.init(uuids: elements)
-    }
-}
-
-extension GAPIncompleteListOf128BitServiceClassUUIDs: Equatable {
-    
-    public static func == (lhs: GAPIncompleteListOf128BitServiceClassUUIDs, rhs: GAPIncompleteListOf128BitServiceClassUUIDs) -> Bool {
-        
-        return lhs.uuids == rhs.uuids
     }
 }
 

@@ -13,18 +13,17 @@ import Foundation
 /// The *Execute Write Request* is used to request the server to write or cancel the write
 /// of all the prepared values currently held in the prepare queue from this client.
 /// This request shall be handled by the server as an atomic operation.
-public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
+public enum ATTExecuteWriteRequest: UInt8, ATTProtocolDataUnit {
     
     public static let attributeOpcode = ATT.Opcode.executeWriteRequest
     
     internal static let length = 1 + 1
     
-    public var flag: Flag
+    /// Cancel all prepared writes.
+    case cancel = 0x00
     
-    public init(flag: Flag) {
-        
-        self.flag = flag
-    }
+    /// Immediately write all pending prepared values.
+    case write  = 0x01
     
     public init?(data: Data) {
         
@@ -35,25 +34,14 @@ public struct ATTExecuteWriteRequest: ATTProtocolDataUnit {
         let flagByte = data[1]
         
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
-            let flag = Flag(rawValue: flagByte)
+            let flag = ATTExecuteWriteRequest(rawValue: flagByte)
             else { return nil }
         
-        self.flag = flag
+        self = flag
     }
     
     public var data: Data {
         
-        let attributeOpcode = type(of: self).attributeOpcode
-        
-        return Data([attributeOpcode.rawValue, flag.rawValue])
-    }
-    
-    public enum Flag: UInt8 {
-        
-        /// Cancel all prepared writes.
-        case cancel = 0x00
-        
-        /// Immediately write all pending prepared values.
-        case write  = 0x01
+        return Data([type(of: self).attributeOpcode.rawValue, rawValue])
     }
 }

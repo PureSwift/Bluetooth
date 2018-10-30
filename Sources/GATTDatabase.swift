@@ -55,7 +55,7 @@ public struct GATTDatabase {
     /// Number of attributes in the database.
     public var count: Int {
         
-        return attributeGroups.reduce(0) { $0.0 + $0.1.attributes.count }
+        return attributeGroups.reduce(0) { $0 + $1.attributes.count }
     }
     
     /// Returns the last attribute in the database.
@@ -236,15 +236,6 @@ extension GATTDatabase: Collection {
 
 // MARK: - RandomAccessCollection
 
-#if swift(>=3.3)
-#elseif swift(>=3.0)
-public extension GATTDatabase {
-
-    public typealias Slice = Swift.RandomAccessSlice
-}
-#endif
-
-#if swift(>=3.1)
 extension GATTDatabase: RandomAccessCollection {
     
     public subscript(bounds: Range<Int>) -> Slice<GATTDatabase> {
@@ -256,7 +247,6 @@ extension GATTDatabase: RandomAccessCollection {
         return IndexingIterator(_elements: self)
     }
 }
-#endif
 
 // MARK: - Supporting Types
 

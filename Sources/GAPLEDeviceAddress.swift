@@ -37,7 +37,7 @@ public struct GAPLEDeviceAddress: GAPData {
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length,
+        guard data.count == Swift.type(of: self).length,
             let type = GAPLEDeviceAddressType(rawValue: data[6])
             else { return nil }
         

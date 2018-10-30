@@ -9,11 +9,6 @@
 /// Possible Low Energy States and roles.
 public enum LowEnergyState: Int, BitMaskOption {
     
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = Int
-    #endif
-    
     /// Scannable Advertising State
     case scannableAdvertising                   = 0b01 // 0x0001  // LE_STATE_SCAN_ADV
     

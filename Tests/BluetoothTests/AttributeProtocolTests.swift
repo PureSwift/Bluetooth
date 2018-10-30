@@ -47,7 +47,7 @@ final class AttributeProtocolTests: XCTestCase {
         XCTAssertEqual(ATTError.invalidHandle.errorDescription, "The attribute handle given was not valid on this server.")
         XCTAssertEqual(ATTError.invalidHandle.description, ATTError.invalidHandle.name)
         
-        let errors = (1 ... .max).flatMap { ATTError(rawValue: $0) }
+        let errors = (1 ... .max).compactMap { ATTError(rawValue: $0) }
         XCTAssert(errors.count == 0x11)
         
         for error in errors {
@@ -119,7 +119,6 @@ final class AttributeProtocolTests: XCTestCase {
         do {
             
             XCTAssertEqual(ATTMaximumTransmissionUnit.default, .min, "Default MTU is the minimum MTU")
-            XCTAssertEqual(ATTMaximumTransmissionUnit.default.hashValue, Int(ATTMaximumTransmissionUnit.default.rawValue), "MTU hash is raw value")
             XCTAssertNotEqual(ATTMaximumTransmissionUnit.min, .max, "ATT MTU minimum value is less than maximum value")
             XCTAssertLessThan(ATTMaximumTransmissionUnit.min, .max, "ATT MTU maximum value is greater than minimum value")
             XCTAssertGreaterThan(ATTMaximumTransmissionUnit.max, .min, "ATT MTU maximum value is not equal to minimum value")
@@ -132,10 +131,8 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: 20), "Invalid MTU value")
             
-            #if swift(>=3.1)
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.min.rawValue - 1), "Invalid MTU value")
             XCTAssertNil(ATTMaximumTransmissionUnit(rawValue: ATTMaximumTransmissionUnit.max.rawValue + 1), "Invalid MTU value")
-            #endif
             
             XCTAssertEqual(ATTMaximumTransmissionUnit(server: 23, client: 512).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
             XCTAssertEqual(ATTMaximumTransmissionUnit(server: 512, client: 23).rawValue, 23, "The server and client shall set ATT_MTU to the minimum of the Client Rx MTU and the Server Rx MTU.")
@@ -572,7 +569,9 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTFindInformationResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            let foundData = ATTFindInformationResponse.AttributeData.bit16([(0x0017, 0x2902)])
+            let foundData = ATTFindInformationResponse.AttributeData.bit16([
+                ATTFindInformationResponse.Attribute16Bit(handle: 0x0017, uuid: 0x2902)
+                ])
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
             XCTAssertEqual(pdu.data, data)
@@ -610,8 +609,8 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Invalid data"); return }
             
             XCTAssertEqual(attributeData.count, 1)
-            XCTAssertEqual(attributeData[0].0, 0x0004)
-            XCTAssertEqual(BluetoothUUID.bit16(attributeData[0].1), .clientCharacteristicConfiguration)
+            XCTAssertEqual(attributeData[0].handle, 0x0004)
+            XCTAssertEqual(BluetoothUUID.bit16(attributeData[0].uuid), .clientCharacteristicConfiguration)
         }
     }
     

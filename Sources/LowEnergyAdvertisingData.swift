@@ -268,15 +268,6 @@ extension LowEnergyAdvertisingData: Collection {
 
 // MARK: - RandomAccessCollection
 
-#if swift(>=3.3)
-#elseif swift(>=3.0)
-public extension LowEnergyAdvertisingData {
-
-    public typealias Slice = Swift.RandomAccessSlice
-}
-#endif
-
-#if swift(>=3.1)
 extension LowEnergyAdvertisingData: RandomAccessCollection {
     
     public subscript(bounds: Range<Int>) -> Slice<LowEnergyAdvertisingData> {
@@ -289,4 +280,3 @@ extension LowEnergyAdvertisingData: RandomAccessCollection {
         return IndexingIterator(_elements: self)
     }
 }
-#endif

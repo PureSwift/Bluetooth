@@ -9,7 +9,7 @@
 import Foundation
 
 /// GAP Flag
-public struct GAPFlags: GAPData {
+public struct GAPFlags: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .flags
     
@@ -60,22 +60,6 @@ public struct GAPFlags: GAPData {
     }
 }
 
-extension GAPFlags: Equatable {
-    
-    public static func == (lhs: GAPFlags, rhs: GAPFlags) -> Bool {
-        
-        return lhs.flags == rhs.flags
-    }
-}
-
-extension GAPFlags: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(flags.rawValue)
-    }
-}
-
 extension GAPFlags: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral rawValue: GAPFlag.RawValue) {
@@ -111,11 +95,6 @@ extension GAPFlags: ExpressibleByIntegerLiteral {
  */
 
 public enum GAPFlag: UInt8, BitMaskOption {
-    
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
     
     /// LE Limited Discoverable Mode
     case lowEnergyLimitedDiscoverableMode = 0b01

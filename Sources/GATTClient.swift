@@ -812,11 +812,11 @@ public final class GATTClient {
                 
             case let .bit16(values):
                 
-                foundData = values.map { Descriptor(uuid: .bit16($0.1), handle: $0.0) }
+                foundData = values.map { Descriptor(uuid: .bit16($0.uuid), handle: $0.handle) }
                 
             case let .bit128(values):
                 
-                foundData = values.map { Descriptor(uuid: .bit128($0.1), handle: $0.0) }
+                foundData = values.map { Descriptor(uuid: .bit128($0.uuid), handle: $0.handle) }
             }
             
             operation.foundDescriptors += foundData
@@ -1093,7 +1093,7 @@ public final class GATTClient {
                 assert(operation.receivedData == operation.sentData)
                 
                 // all data sent
-                let pdu = ATTExecuteWriteRequest(flag: .write)
+                let pdu = ATTExecuteWriteRequest.write
                 
                 send(pdu) { [unowned self] in self.executeWriteResponse($0, operation: operation) }
             }

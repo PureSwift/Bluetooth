@@ -18,21 +18,17 @@ public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        let type = ATTExecuteWriteResponse.self
-        
-        guard data.count == type.length
+        guard data.count == type(of: self).length
             else { return nil }
         
         let attributeOpcodeByte = data[0]
         
-        guard attributeOpcodeByte == type.attributeOpcode.rawValue
+        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
     }
     
     public var data: Data {
         
-        let attributeOpcode = type(of: self).attributeOpcode
-        
-        return Data([attributeOpcode.rawValue])
+        return Data([type(of: self).attributeOpcode.rawValue])
     }
 }

@@ -32,7 +32,7 @@ public struct GAPTransportDiscoveryBlock {
     public var data: Data {
         
         let data = Data([organizationID, flags.rawValue, dataLength])
-        return transportData.reduce(data, { $0.0 + [$0.1] })
+        return transportData.reduce(data, { $0 + [$1] })
     }
     
 }
@@ -109,7 +109,7 @@ public struct GAPTransportDiscoveryData: GAPData {
     
     public var data: Data {
         
-        return blocks.reduce(Data([code]), { $0.0 + $0.1.data })
+        return blocks.reduce(Data([code]), { $0 + $1.data })
     }
     
 }
@@ -131,11 +131,6 @@ extension GAPTransportDiscoveryData: CustomStringConvertible {
 }
 
 public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
-    
-    #if swift(>=3.2)
-    #elseif swift(>=3.0)
-    public typealias RawValue = UInt8
-    #endif
     
     /// Seeker
     case seeker = 0b01

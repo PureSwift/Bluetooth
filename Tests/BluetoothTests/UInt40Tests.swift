@@ -50,6 +50,6 @@ final class UInt40Tests: XCTestCase {
             (1099511627775, "FFFFFFFFFF")
         ]
         
-        values.forEach { XCTAssertEqual($0.0.description, $0.1) }
+        values.forEach { XCTAssertEqual($0.description, $1) }
     }
 }

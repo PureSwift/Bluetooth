@@ -122,12 +122,8 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
         public init() { self = .undirected }
     }
     
+    /// Channel Map
     public enum ChannelMap: UInt8, BitMaskOption {
-        
-        #if swift(>=3.2)
-        #elseif swift(>=3.0)
-        public typealias RawValue = UInt8
-        #endif
         
         /// Enable channel 37 use
         case channel37              = 0b00000001
@@ -141,6 +137,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
         public static let all: Set<ChannelMap> = [.channel37, .channel38, .channel39]
     }
     
+    /// Filter Policy
     public enum FilterPolicy: UInt8 {
         
         /// Allow Scan Request from Any,

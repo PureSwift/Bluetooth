@@ -41,7 +41,6 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(value > .min)
         XCTAssertNotEqual(value, .max)
         XCTAssertNotEqual(value, .min)
-        XCTAssertEqual(value.hashValue, Int(value.rawValue))
         
         // Range: 0x0020 to 0x4000
         XCTAssertEqual(AdvertisingInterval.min.miliseconds, 20.0, "The `advInterval` shall be an integer multiple of 0.625 ms in the range of `20` ms to `10.24` s")
@@ -62,7 +61,6 @@ final class BluetoothTests: XCTestCase {
         let company: CompanyIdentifier = 76 // Apple, Inc.
         
         XCTAssertEqual(company.description, "Apple, Inc.")
-        XCTAssertEqual(company.hashValue, 76)
         XCTAssertNotEqual(company.hashValue, 0)
         XCTAssertNotEqual(company, 77)
     }
@@ -75,19 +73,18 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(timeout.duration, 1.0)
         XCTAssertEqual(timeout.rawValue, 1000)
         XCTAssertNotEqual(timeout, 2000)
-        XCTAssertEqual(timeout.hashValue, timeout.rawValue.hashValue)
         XCTAssertEqual(timeout.description, "1.0 seconds")
     }
     
     func testPOSIXError() {
         
-        XCTAssertEqual(POSIXError.fromErrno?.code.rawValue ?? 0, errno)
+        XCTAssertEqual(POSIXError.fromErrno?.code.rawValue ?? 0, POSIXError.Code.RawValue(errno))
         
         #if os(macOS)
-        XCTAssertEqual("\(POSIXError(code: .EBUSY))", "Resource busy")
-        #elseif os(Linux)
-        XCTAssertEqual("\(POSIXError(code: .EBUSY))", "Device or resource busy")
+        XCTAssertEqual(POSIXError(code: .EBUSY).localizedDescription, "Resource busy")
         #endif
+        
+        XCTAssertFalse(POSIXError(code: .EBUSY).localizedDescription.isEmpty)
     }
     
     func testHCIVersion() {
@@ -143,7 +140,7 @@ final class BluetoothTests: XCTestCase {
         var states = BitMaskOptionSet<LowEnergyState>.all
         XCTAssert(states.isEmpty == false)
         XCTAssertEqual(states.count, LowEnergyState.all.count)
-        XCTAssert(states.containsAll)
+        XCTAssert(Set(states) == LowEnergyState.all)
         states.forEach { XCTAssert(LowEnergyState.all.contains($0)) }
         
         states.removeAll()
@@ -185,19 +182,17 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(featureSet.rawValue != LowEnergyFeature.ping.rawValue)
         XCTAssert(LowEnergyFeature(rawValue: featureSet.rawValue) == nil)
         
-        #if swift(>=3.2)
         XCTAssert(LowEnergyFeature.RawValue.bitWidth == LowEnergyFeatureSet.RawValue.bitWidth)
         XCTAssert(LowEnergyFeature.RawValue.bitWidth == MemoryLayout<LowEnergyFeature.RawValue>.size * 8)
         XCTAssert(LowEnergyFeature.RawValue.bitWidth == 64)
-        #endif
         
         XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == MemoryLayout<LowEnergyFeature.RawValue>.size)
         XCTAssert(MemoryLayout<LowEnergyFeatureSet>.size == 8) // 64 bit
         
         featureSet = .all
-        XCTAssert(featureSet.isEmpty == false)
-        XCTAssert(featureSet.count == LowEnergyFeature.all.count)
-        XCTAssert(featureSet.containsAll)
+        XCTAssertFalse(featureSet.isEmpty)
+        XCTAssertEqual(featureSet.count, LowEnergyFeature.all.count)
+        XCTAssertEqual(Set(featureSet), LowEnergyFeature.all)
         
         typealias Bit64 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
         let bigEndianByteValue: Bit64 = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01)

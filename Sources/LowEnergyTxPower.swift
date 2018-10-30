@@ -34,21 +34,9 @@ public struct LowEnergyTxPower: RawRepresentable, Equatable, Hashable, Comparabl
         self.rawValue = rawValue
     }
     
-    // Equatable
-    public static func == (lhs: LowEnergyTxPower, rhs: LowEnergyTxPower) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
     // Comparable
     public static func < (lhs: LowEnergyTxPower, rhs: LowEnergyTxPower) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
-    }
-    
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }

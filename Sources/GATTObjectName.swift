@@ -17,7 +17,7 @@ import Foundation
  
  - SeeAlso: [Object Name](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.object_name.xml)
  */
-public struct GATTObjectName: RawRepresentable, GATTCharacteristic {
+public struct GATTObjectName: Equatable, Hashable, RawRepresentable, GATTCharacteristic {
     
     internal static let length = 120
     
@@ -47,18 +47,10 @@ public struct GATTObjectName: RawRepresentable, GATTCharacteristic {
     }
 }
 
-extension GATTObjectName: Equatable {
-    
-    public static func == (lhs: GATTObjectName, rhs: GATTObjectName) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 extension GATTObjectName: CustomStringConvertible {
     
     public var description: String {
         
-        return rawValue.description
+        return rawValue
     }
 }

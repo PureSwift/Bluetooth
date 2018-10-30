@@ -597,9 +597,8 @@ public final class GATTServer {
         guard let format = Format(uuid: attributes[0].uuid)
             else { errorResponse(opcode, .unlikelyError, pdu.startHandle); return }
         
-        var bit16Pairs = [(UInt16, UInt16)]()
-        
-        var bit128Pairs = [(UInt16, UInt128)]()
+        var bit16Pairs = [ATTFindInformationResponse.Attribute16Bit]()
+        var bit128Pairs = [ATTFindInformationResponse.Attribute128Bit]()
         
         for (index, attribute) in attributes.enumerated() {
             
@@ -616,11 +615,11 @@ public final class GATTServer {
                 
             case let (.bit16(type), .bit16):
                 
-                bit16Pairs.append((attribute.handle, type))
+                bit16Pairs.append(ATTFindInformationResponse.Attribute16Bit(handle: attribute.handle, uuid: type))
                 
             case let (.bit128(type), .bit128):
                 
-                bit128Pairs.append((attribute.handle, type))
+                bit128Pairs.append(ATTFindInformationResponse.Attribute128Bit(handle: attribute.handle, uuid: type))
                 
             default:
                 
@@ -663,7 +662,7 @@ public final class GATTServer {
         guard handles.isEmpty == false
             else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
         
-        let handlesInformation = handles.map { Handle(foundAttribute: $0.0, groupEnd: $0.1) }
+        let handlesInformation = handles.map { Handle(foundAttribute: $0, groupEnd: $1) }
         
         let response = ATTFindByTypeResponse(handlesInformationList: handlesInformation)
         
@@ -790,14 +789,14 @@ public final class GATTServer {
         
         let opcode = type(of: pdu).attributeOpcode
         
-        log?("Execute Write Request (\(pdu.flag))")
+        log?("Execute Write Request (\(pdu))")
         
         let preparedWrites = self.preparedWrites
         self.preparedWrites = []
         
         var newValues = [UInt16: Data]()
         
-        switch pdu.flag {
+        switch pdu {
             
         case .cancel:
             

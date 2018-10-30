@@ -17,7 +17,7 @@ import Foundation
 /// The public device address is divided into the following two fields:
 /// company_assigned field is contained in the 24 least significant bits
 /// company_id field is contained in the 24 most significant bits
-public struct GAPPublicTargetAddress: GAPData {
+public struct GAPPublicTargetAddress: GAPData, Equatable {
     
     internal static let addressLength = MemoryLayout<UInt8>.size * 6
     
@@ -52,17 +52,9 @@ public struct GAPPublicTargetAddress: GAPData {
     
     public var data: Data {
         
-        return addresses.reduce(Data(), { $0.0 + $0.1.data })
+        return addresses.reduce(Data(), { $0 + $1.data })
     }
     
-}
-
-extension GAPPublicTargetAddress: Equatable {
-    
-    public static func == (lhs: GAPPublicTargetAddress, rhs: GAPPublicTargetAddress) -> Bool {
-        
-        return lhs.addresses == rhs.addresses
-    }
 }
 
 extension GAPPublicTargetAddress: CustomStringConvertible {

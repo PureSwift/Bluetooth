@@ -30,7 +30,7 @@ public struct GATTReportReference: GATTDescriptor {
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Swift.type(of: self).length
             else { return nil }
         
         guard let reportType = ReportType(rawValue: data[1])
@@ -46,7 +46,7 @@ public struct GATTReportReference: GATTDescriptor {
     
     public var descriptor: GATT.Descriptor {
         
-        return GATT.Descriptor(uuid: type(of: self).uuid,
+        return GATT.Descriptor(uuid: Swift.type(of: self).uuid,
                                value: data,
                                permissions: [.read])
     }

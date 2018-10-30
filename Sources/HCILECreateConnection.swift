@@ -120,8 +120,8 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
     /// and maximum length of the connection needed for this LE connection.
     public let connectionLength: LowEnergyConnectionLength
     
-    public init(scanInterval: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(10),
-                scanWindow: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(10),
+    public init(scanInterval: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(rawValue: 10)!,
+                scanWindow: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(rawValue: 10)!,
                 initiatorFilterPolicy: InitiatorFilterPolicy = .peerAddress,
                 peerAddressType: LowEnergyAddressType = .public,
                 peerAddress: Address,

@@ -6,72 +6,24 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-// MARK: - BitMaskOption
+/// Enum that represents a bit mask flag / option.
+///
+/// Basically `Swift.OptionSet` for enums.
+public protocol BitMaskOption: RawRepresentable, Hashable where RawValue: FixedWidthInteger {
+    
+    /// All the cases of the enum.
+    static var all: Set<Self> { get }
+}
 
-#if swift(>=4.0)
+public extension Sequence where Element: BitMaskOption {
     
-    /// Enum that represents a bit mask flag / option.
-    ///
-    /// Basically `Swift.OptionSet` for enums.
-    public protocol BitMaskOption: RawRepresentable, Hashable where RawValue: FixedWidthInteger {
-    
-        /// All the cases of the enum.
-        static var all: Set<Self> { get }
-    
-    }
-    
-#elseif swift(>=3.2)
-    
-    /// Enum that represents a bit mask flag / option.
-    ///
-    /// Basically `Swift.OptionSet` for enums.
-    public protocol BitMaskOption: RawRepresentable, Hashable where RawValue: Integer {
+    /// Convert Swift enums for bit mask options into their raw values OR'd.
+    var rawValue: Element.RawValue {
         
-        /// All the cases of the enum.
-        static var all: Set<Self> { get }
-        
+        @inline(__always)
+        get { return reduce(0, { $0 | $1.rawValue }) }
     }
-    
-#elseif swift(>=3.0.2)
-    
-    /// Enum that represents a bit mask flag / option.
-    ///
-    /// Basically `Swift.OptionSet` for enums.
-    public protocol BitMaskOption: RawRepresentable, Hashable {
-        
-        associatedtype RawValue: Integer
-        
-        /// All the cases of the enum.
-        static var all: Set<Self> { get }
-    }
-    
-#endif
-
-#if swift(>=4.0)
-    
-    public extension Sequence where Element: BitMaskOption {
-    
-        /// Convert Swift enums for bit mask options into their raw values OR'd.
-        var rawValue: Element.RawValue {
-    
-            @inline(__always)
-            get { return reduce(0, { $0 | $1.rawValue }) }
-        }
-    }
-    
-#elseif swift(>=3.0.2)
-    
-    public extension Sequence where Iterator.Element: BitMaskOption {
-        
-        /// Convert Swift enums for bit mask options into their raw values OR'd.
-        var rawValue: Iterator.Element.RawValue {
-            
-            @inline(__always)
-            get { return reduce(0, { $0 | $1.rawValue }) }
-        }
-    }
-    
-#endif
+}
 
 public extension BitMaskOption {
     
@@ -85,11 +37,7 @@ public extension BitMaskOption {
     @inline(__always)
     static func from(rawValue: RawValue) -> Set<Self> {
         
-        #if swift(>=4.0)
-            return Self.all.filter({ $0.isContained(in: rawValue) })
-        #elseif swift(>=3.0.2)
-            return Set(Array(Self.all).filter({ $0.isContained(in: rawValue) }))
-        #endif
+        return Set(Array(Self.all).filter({ $0.isContained(in: rawValue) }))
     }
 }
 
@@ -139,7 +87,7 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
     
     @inline(__always)
     public mutating func removeAll() {
-    
+        
         self.rawValue = 0
     }
     
@@ -160,14 +108,9 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
         return true
     }
     
-    public var containsAll: Bool {
-        
-        return self == .all
-    }
-    
     public var count: Int {
         
-        return Element.all.reduce(0, { $0.0 + ($0.1.isContained(in: rawValue) ? 1 : 0) })
+        return Element.all.reduce(0, { $0 + ($1.isContained(in: rawValue) ? 1 : 0) })
     }
     
     public var isEmpty: Bool {
@@ -200,7 +143,6 @@ public extension BitMaskOptionSet {
 
 extension BitMaskOptionSet: Equatable {
     
-    @inline(__always)
     public static func == (lhs: BitMaskOptionSet, rhs: BitMaskOptionSet) -> Bool {
         
         return lhs.rawValue == rhs.rawValue
@@ -213,7 +155,7 @@ extension BitMaskOptionSet: CustomStringConvertible {
     
     public var description: String {
         
-        get { return set.sorted(by: { $0.0.rawValue < $0.1.rawValue }).description }
+        get { return set.sorted(by: { $0.rawValue < $1.rawValue }).description }
     }
 }
 
@@ -239,10 +181,6 @@ extension BitMaskOptionSet: ExpressibleByArrayLiteral {
 
 // MARK: - ExpressibleByIntegerLiteral
 
-// Swift 3 works better than Swift 4 compiler
-
-#if swift(>=3.2)
-
 extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt64) {
@@ -250,18 +188,6 @@ extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
         self.init(rawValue: numericCast(value))
     }
 }
-
-#elseif swift(>=3.0)
-
-extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
-    
-    public init(integerLiteral value: RawValue) {
-        
-        self.init(rawValue: value)
-    }
-}
-
-#endif
 
 // MARK: - Collection
 

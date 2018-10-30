@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The *Read By Group Type Request* is used to obtain the values of attributes where the attribute type is known,
 /// the type of a grouping attribute as defined by a higher layer specification, but the handle is not known.
-public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
+public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readByGroupTypeRequest
     
@@ -43,7 +43,7 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
         
         let attributeOpcodeByte = data[0]
         
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard attributeOpcodeByte == Swift.type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
@@ -69,7 +69,7 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit {
         let startHandleBytes = startHandle.littleEndian.bytes
         let endHandleBytes = endHandle.littleEndian.bytes
         
-        return Data([type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1]) + type.littleEndian.data
+        return Data([Swift.type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1]) + type.littleEndian.data
     }
     
     private enum Length: Int {

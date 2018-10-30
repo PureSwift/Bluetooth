@@ -13,7 +13,7 @@ import Foundation
 /// The *Prepare Write Request* is used to request the server to prepare to write the value of an attribute.
 /// The server will respond to this request with a *Prepare Write Response*,
 /// so that the client can verify that the value was received correctly.
-public struct ATTPrepareWriteRequest: ATTProtocolDataUnit {
+public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.preparedWriteRequest
     

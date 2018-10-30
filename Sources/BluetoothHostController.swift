@@ -14,12 +14,6 @@ public protocol BluetoothHostControllerInterface {
     /// All controllers on the host.
     static var controllers: [Self] { get }
     
-    #if swift(>=3.2) // Swift 4 compiler crash
-    #elseif swift(>=3.0)
-    /// The default controller on the host.
-    static var `default`: Self? { get }
-    #endif
-    
     /// The Bluetooth Address of the controller.
     var address: Address { get }
     

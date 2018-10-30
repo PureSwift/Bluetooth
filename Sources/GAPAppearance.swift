@@ -14,7 +14,7 @@ public extension GAP {
 /// GAP Appearance
 ///
 /// - SeeAlso: [org.bluetooth.characteristic.gap.appearance.xml](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.gap.appearance.xml)
-public struct GAPAppearance: RawRepresentable {
+public struct GAPAppearance: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt16
     
@@ -49,25 +49,9 @@ extension GAPAppearance: ExpressibleByIntegerLiteral {
     }
 }
 
-extension GAPAppearance: Equatable {
-    
-    public static func == (lhs: GAPAppearance, rhs: GAPAppearance) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GAPAppearance: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
-}
-
 public extension GAPAppearance {
     
-    public struct Category: RawRepresentable {
+    public struct Category: RawRepresentable, Equatable, Hashable {
         
         public var rawValue: UInt16
         
@@ -75,22 +59,6 @@ public extension GAPAppearance {
             
             self.rawValue = rawValue
         }
-    }
-}
-
-extension GAPAppearance.Category: Equatable {
-    
-    public static func == (lhs: GAPAppearance.Category, rhs: GAPAppearance.Category) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GAPAppearance.Category: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }
 
@@ -104,7 +72,7 @@ extension GAPAppearance.Category: ExpressibleByIntegerLiteral {
 
 public extension GAPAppearance {
     
-    public struct Subcategory: RawRepresentable {
+    public struct Subcategory: RawRepresentable, Equatable, Hashable {
         
         public var rawValue: UInt16
         
@@ -112,22 +80,6 @@ public extension GAPAppearance {
             
             self.rawValue = rawValue
         }
-    }
-}
-
-extension GAPAppearance.Subcategory: Equatable {
-    
-    public static func == (lhs: GAPAppearance.Subcategory, rhs: GAPAppearance.Subcategory) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GAPAppearance.Subcategory: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }
 

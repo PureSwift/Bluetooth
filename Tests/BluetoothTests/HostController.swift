@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Bluetooth
+@testable import Bluetooth
 
 /// Test Bluetooth Host Controller
 internal final class TestHostController: BluetoothHostControllerInterface {

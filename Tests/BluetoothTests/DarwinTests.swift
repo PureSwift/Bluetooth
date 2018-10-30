@@ -10,7 +10,7 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
-#if os(macOS) && swift(>=3.2)
+#if os(macOS)
 
 import CoreBluetooth
 import IOKit
@@ -119,7 +119,7 @@ final class DarwinTests: XCTestCase {
     
     func testGenerateDefinedUUID() {
         
-        let uuids = definedUUIDs.sorted(by: { $0.0.key < $0.1.key })
+        let uuids = definedUUIDs.sorted(by: { $0.key < $1.key })
         
         var generatedCode = ""
         
@@ -245,7 +245,7 @@ final class DarwinTests: XCTestCase {
         ]
         
         let companies = companyIdentifiers
-            .sorted(by: { $0.0.key < $0.1.key })
+            .sorted(by: { $0.key < $1.key })
             .filter { blacklist.contains($0.key) == false }
         
         var generatedCode = ""
