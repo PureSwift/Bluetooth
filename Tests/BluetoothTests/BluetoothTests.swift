@@ -225,7 +225,7 @@ final class BluetoothTests: XCTestCase {
         
         XCTAssertEqual(featureSet.rawValue, 0)
         XCTAssertEqual(featureSet.count, 0)
-        XCTAssertEqual(featureSet.hashValue, 0)
+        XCTAssertEqual(featureSet.hashValue, featureSet.rawValue.hashValue)
     }
     
     func testLowEnergyEventMask() {

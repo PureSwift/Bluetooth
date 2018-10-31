@@ -40,14 +40,15 @@ final class UInt24Tests: XCTestCase {
     
     func testHashable() {
         
-        XCTAssertEqual(UInt24.zero.hashValue, 0)
+        XCTAssertEqual(UInt24.zero.hashValue, UInt32(UInt24.zero).hashValue)
+        XCTAssertEqual(UInt24.max.hashValue, UInt32(UInt24.max).hashValue)
         XCTAssertNotEqual(UInt24.max.hashValue, 0)
     }
     
     func testExpressibleByIntegerLiteral() {
         
         let values: [(UInt24, String)] = [
-            (UInt24.zero, "000000"),
+            (.zero, "000000"),
             (0x000000, "000000"),
             (0x000001, "000001"),
             (0x000020, "000020"),

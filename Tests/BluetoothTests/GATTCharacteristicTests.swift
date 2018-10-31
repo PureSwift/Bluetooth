@@ -883,7 +883,7 @@ final class GATTCharacteristicTests: XCTestCase {
             XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, organizationallyUniqueIdentifier)
             XCTAssertEqual(characteristic.description, "123456FFFE9ABCDE")
             XCTAssertEqual(characteristic.rawValue, 0x123456FFFE9ABCDE)
-            XCTAssertEqual(characteristic.hashValue, 0x123456FFFE9ABCDE)
+            XCTAssertEqual(characteristic.hashValue, 0x123456FFFE9ABCDE.hashValue)
             XCTAssertEqual(characteristic.data, data)
             XCTAssertEqual(characteristic, GATTSystemID(data: data))
             XCTAssertEqual(characteristic, GATTSystemID(address: address))
