@@ -36,10 +36,13 @@ public final class GATTServer {
     
     public let maximumPreparedWrites: Int
     
-    public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
+    public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default {
         
-        return connection.maximumTransmissionUnit
+        // update connection with new value
+        didSet { connection.maximumTransmissionUnit = maximumTransmissionUnit }
     }
+    
+    public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
     
     // Don't modify
     @_versioned
@@ -60,8 +63,8 @@ public final class GATTServer {
         
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
+        self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.connection = ATTConnection(socket: socket)
-        self.connection.maximumTransmissionUnit = maximumTransmissionUnit
         self.registerATTHandlers()
     }
     
@@ -410,7 +413,7 @@ public final class GATTServer {
     
     private func exchangeMTU(_ pdu: ATTMaximumTransmissionUnitRequest) {
         
-        let serverMTU = connection.maximumTransmissionUnit.rawValue
+        let serverMTU = preferredMaximumTransmissionUnit.rawValue
         
         let finalMTU = ATTMaximumTransmissionUnit(server: serverMTU, client: pdu.clientMTU)
         
