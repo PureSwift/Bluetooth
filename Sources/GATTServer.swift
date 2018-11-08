@@ -36,10 +36,11 @@ public final class GATTServer {
     
     public let maximumPreparedWrites: Int
     
-    public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default {
+    public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
         
-        // update connection with new value
-        didSet { connection.maximumTransmissionUnit = maximumTransmissionUnit }
+        get { return connection.maximumTransmissionUnit }
+        
+        set { connection.maximumTransmissionUnit = newValue }
     }
     
     public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
