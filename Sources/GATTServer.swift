@@ -420,8 +420,8 @@ public final class GATTServer {
         // Respond with the server MTU (not final MTU)
         connection.send(ATTMaximumTransmissionUnitResponse(serverMTU: serverMTU))
         
-        // Set MTU to minimum
-        connection.maximumTransmissionUnit = finalMTU
+        // Set MTU
+        maximumTransmissionUnit = finalMTU
         
         log?("MTU Exchange (\(pdu.clientMTU) -> \(finalMTU))")
     }

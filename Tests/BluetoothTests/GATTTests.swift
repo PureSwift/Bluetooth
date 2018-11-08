@@ -423,6 +423,8 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
         XCTAssertEqual(server.connection.maximumTransmissionUnit, mtu)
         XCTAssertEqual(client.connection.maximumTransmissionUnit, mtu)
+        XCTAssertEqual(server.maximumTransmissionUnit, mtu)
+        XCTAssertEqual(client.maximumTransmissionUnit, mtu)
         
         // validate GATT PDUs
         //let mockData = split(pdu: testPDUs.map { $1 })
