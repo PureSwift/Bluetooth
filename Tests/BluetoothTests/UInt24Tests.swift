@@ -28,6 +28,7 @@ final class UInt24Tests: XCTestCase {
     }
     
     func testComparable() {
+        
         XCTAssertEqual(UInt24.zero, 0)
         XCTAssertEqual(UInt24.min, 0)
         XCTAssertEqual(UInt24.max, 16777215)

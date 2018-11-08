@@ -63,8 +63,10 @@ public final class GATTClient {
         // setup notifications and indications
         self.registerATTHandlers()
         
-        // queue MTU exchange
-        self.exchangeMTU()
+        // queue MTU exchange if not default value
+        if maximumTransmissionUnit > .default {
+            self.exchangeMTU()
+        }
     }
     
     // MARK: - Methods
