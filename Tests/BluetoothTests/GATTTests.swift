@@ -69,45 +69,64 @@ final class GATTTests: XCTestCase {
         
         // If MTU is not negociated, then make sure all PDUs respect the MTU limit
         
-        // server
-        let serverSocket = TestL2CAPSocket()
-        let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: .max, maximumPreparedWrites: .max)
-        server.database = GATTDatabase(services: ProximityProfile.services)
+        let profiles: [[GATT.Service]] = [
+            ProximityProfile.services,
+            [
+                ProximityProfile.Apple1Service,
+                ProximityProfile.Apple2Service,
+                ProximityProfile.AppleNotificationService,
+                ProximityProfile.Apple4Service,
+                GATT.Service(uuid: BluetoothUUID(rawValue: "A6BEA019-D82A-46AA-B612-0304BB884423")!,
+                             primary: true,
+                             characteristics: []),
+                GATT.Service(uuid: BluetoothUUID(rawValue: "23627A36-4F81-49F9-9501-8B8A49FBA529")!,
+                             primary: true,
+                             characteristics: [])
+            ]
+        ]
         
-        // client
-        let clientSocket = TestL2CAPSocket()
-        let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: .default)
-        
-        clientSocket.target = serverSocket
-        serverSocket.target = clientSocket // weak references
-        
-        client.discoverAllPrimaryServices {
-            switch $0 {
-            case let .error(error):
-                XCTFail("\(error)")
-            case let .value(services):
-                XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
+        for profile in profiles {
+            
+            // server
+            let serverSocket = TestL2CAPSocket()
+            let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: .max, maximumPreparedWrites: .max)
+            server.database = GATTDatabase(services: profile)
+            
+            // client
+            let clientSocket = TestL2CAPSocket()
+            let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: .default)
+            
+            clientSocket.target = serverSocket
+            serverSocket.target = clientSocket // weak references
+            
+            client.discoverAllPrimaryServices {
+                switch $0 {
+                case let .error(error):
+                    XCTFail("\(error)")
+                case let .value(services):
+                    XCTAssertEqual(services.map { $0.uuid }, profile.map { $0.uuid })
+                }
             }
-        }
-        
-        // run fake sockets
-        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
-        catch { XCTFail("Error: \(error)") }
-        
-        XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
-        XCTAssertEqual(server.connection.maximumTransmissionUnit, .default)
-        XCTAssertEqual(client.connection.maximumTransmissionUnit, .default)
-        XCTAssertEqual(server.maximumTransmissionUnit, .default)
-        XCTAssertEqual(server.preferredMaximumTransmissionUnit, .max)
-        XCTAssertEqual(client.maximumTransmissionUnit, .default)
-        XCTAssertEqual(client.preferredMaximumTransmissionUnit, .default)
-        
-        // validate GATT MTU
-        (clientSocket.cache + serverSocket.cache).forEach {
-            XCTAssert($0.count <= Int(ATTMaximumTransmissionUnit.default.rawValue))
-            let opcode = ATTOpcode(rawValue: $0[0])!
-            XCTAssertNotEqual(opcode, .maximumTransmissionUnitRequest, "Never exchange MTU")
-            XCTAssertNotEqual(opcode, .maximumTransmissionUnitResponse, "Never exchange MTU")
+            
+            // run fake sockets
+            do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
+            catch { XCTFail("Error: \(error)") }
+            
+            XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
+            XCTAssertEqual(server.connection.maximumTransmissionUnit, .default)
+            XCTAssertEqual(client.connection.maximumTransmissionUnit, .default)
+            XCTAssertEqual(server.maximumTransmissionUnit, .default)
+            XCTAssertEqual(server.preferredMaximumTransmissionUnit, .max)
+            XCTAssertEqual(client.maximumTransmissionUnit, .default)
+            XCTAssertEqual(client.preferredMaximumTransmissionUnit, .default)
+            
+            // validate GATT MTU
+            (clientSocket.cache + serverSocket.cache).forEach {
+                XCTAssert($0.count <= Int(ATTMaximumTransmissionUnit.default.rawValue))
+                let opcode = ATTOpcode(rawValue: $0[0])!
+                XCTAssertNotEqual(opcode, .maximumTransmissionUnitRequest, "Never exchange MTU")
+                XCTAssertNotEqual(opcode, .maximumTransmissionUnitResponse, "Never exchange MTU")
+            }
         }
     }
     
