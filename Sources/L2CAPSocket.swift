@@ -9,7 +9,7 @@
 import Foundation
 
 /// L2CAP Socket protocol.
-public protocol L2CAPSocketProtocol {
+public protocol L2CAPSocketProtocol: class {
     
     /// Protocol/Service Multiplexer (PSM)
     var protocolServiceMultiplexer: UInt16 { get }
