@@ -9,7 +9,7 @@
 import Foundation
 
 /// Manages a Bluetooth connection using the ATT protocol.
-public final class ATTConnection {
+internal final class ATTConnection {
     
     // MARK: - Properties
     
@@ -187,9 +187,7 @@ public final class ATTConnection {
         
         guard let index = notifyList.index(where: { $0.identifier == identifier })
             else { return false }
-        
         notifyList.remove(at: index)
-        
         return true
     }
     
@@ -197,7 +195,6 @@ public final class ATTConnection {
     public func unregisterAll() {
         
         notifyList.removeAll()
-        
         disconnectList.removeAll()
     }
     
@@ -213,7 +210,7 @@ public final class ATTConnection {
     ///
     /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
     @discardableResult
-    public func send <PDU: ATTProtocolDataUnit> (_ pdu: PDU, response: (callback: (AnyResponse) -> (), ATTProtocolDataUnit.Type)? = nil) -> UInt? {
+    public func send <PDU: ATTProtocolDataUnit> (_ pdu: PDU, response: (callback: (AnyATTResponse) -> (), ATTProtocolDataUnit.Type)? = nil) -> UInt? {
         
         let attributeOpcode = PDU.attributeOpcode
         
@@ -516,10 +513,6 @@ public final class ATTConnection {
 
 // MARK: - Supporting Types
 
-public extension ATTConnection {
-    public typealias Error = ATTConnectionError
-}
-
 /// ATT Connection Error
 public enum ATTConnectionError: Error {
     
@@ -530,13 +523,12 @@ public enum ATTConnectionError: Error {
     case unexpectedResponse(Data)
 }
 
-public extension ATTConnection {
-    
-    typealias AnyResponse = AnyATTResponse
+internal extension ATTConnection {
+    typealias Error = ATTConnectionError
 }
 
 /// Type-erased ATT Response
-public enum AnyATTResponse {
+internal enum AnyATTResponse {
     
     case error(ATTErrorResponse)
     case value(ATTProtocolDataUnit)
@@ -549,7 +541,7 @@ public enum AnyATTResponse {
     }
 }
 
-public enum ATTResponse <Value: ATTProtocolDataUnit> {
+internal enum ATTResponse <Value: ATTProtocolDataUnit> {
     
     case error(ATTErrorResponse)
     case value(Value)
@@ -576,7 +568,7 @@ public enum ATTResponse <Value: ATTProtocolDataUnit> {
 
 fileprivate final class ATTSendOperation {
     
-    typealias Response = ATTConnection.AnyResponse
+    typealias Response = AnyATTResponse
     
     /// The operation identifier.
     let identifier: UInt

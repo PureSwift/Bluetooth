@@ -19,22 +19,12 @@ public final class GATTServer {
     
     public var log: ((String) -> ())?
     
-    public var database = GATTDatabase()
-    
-    public var willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATT.Error?)?
-    
-    public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATT.Error?)?
-    
-    public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
-    
     public var writePending: (() -> ())? {
         
         get { return connection.writePending }
         
         set { connection.writePending = newValue }
     }
-    
-    public let maximumPreparedWrites: Int
     
     public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
         
@@ -45,6 +35,16 @@ public final class GATTServer {
     
     public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
     
+    public let maximumPreparedWrites: Int
+    
+    public var database = GATTDatabase()
+    
+    public var willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATT.Error?)?
+    
+    public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATT.Error?)?
+    
+    public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
+    
     // Don't modify
     @_versioned
     internal let connection: ATTConnection
@@ -52,11 +52,6 @@ public final class GATTServer {
     private var preparedWrites = [PreparedWrite]()
     
     // MARK: - Initialization
-    
-    deinit {
-        
-        self.connection.unregisterAll()
-    }
     
     public init(socket: L2CAPSocketProtocol,
                 maximumTransmissionUnit: ATT.MaximumTransmissionUnit = .default,
