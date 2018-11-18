@@ -44,22 +44,25 @@ public extension BluetoothAddress {
     /// The maximum representable value in this type.
     public static var max: BluetoothAddress { return BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
     
+    /// A zero address.
     public static var zero: BluetoothAddress { return .min }
     
-    public static var any: BluetoothAddress { return .zero }
+    /// Wildcard address.
+    internal static var any: BluetoothAddress { return .zero }
     
-    public static var none: BluetoothAddress { return .max }
+    /// No address
+    internal static var none: BluetoothAddress { return .max }
 }
 
 // MARK: - Data
 
 public extension BluetoothAddress {
     
-    public static var length: Int { return 6 }
+    internal static var length: Int { return 6 }
     
     public init?(data: Data) {
         
-        guard data.count == BluetoothAddress.length
+        guard data.count == type(of: self).length
             else { return nil }
         
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
@@ -89,7 +92,7 @@ extension BluetoothAddress: RawRepresentable {
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public init?(rawValue: String) {
         
-        // verify string
+        // verify string length
         guard rawValue.utf8.count == 17
             else { return nil }
         
@@ -115,6 +118,7 @@ extension BluetoothAddress: RawRepresentable {
         self.init(bigEndian: BluetoothAddress(bytes: bytes))
     }
     
+    /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public var rawValue: String {
         
         let bytes = self.bigEndian.bytes
