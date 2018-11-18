@@ -29,11 +29,9 @@ public struct HCIRemoteNameRequestComplete: HCIEventParameter {
             else { return nil }
         
         self.status = status
-        self.address = BluetoothAddress(bytes: (data[1], data[2], data[3], data[4], data[5], data[6]))
+        self.address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[1], data[2], data[3], data[4], data[5], data[6])))
         
-        let nameBytes = Array(data[7 ..< type(of: self).length])
-        
-        guard let name = String(data: Data(bytes: nameBytes), encoding: .utf8)
+        guard let name = String(data: data.subdataNoCopy(in: 7 ..< type(of: self).length), encoding: .utf8)
             else { return nil }
         
         self.name = name

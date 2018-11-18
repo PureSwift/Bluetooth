@@ -41,7 +41,7 @@ public struct GAPPublicTargetAddress: GAPData, Equatable {
         
         while index < data.count {
             
-            let address = BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5]))
+            let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5])))
             addresses.append(address)
             
             index += type(of: self).addressLength
@@ -52,9 +52,8 @@ public struct GAPPublicTargetAddress: GAPData, Equatable {
     
     public var data: Data {
         
-        return addresses.reduce(Data(), { $0 + $1.data })
+        return addresses.reduce(Data(), { $0 + $1.littleEndian.data })
     }
-    
 }
 
 extension GAPPublicTargetAddress: CustomStringConvertible {

@@ -36,22 +36,28 @@ public struct GAPRandomTargetAddress: GAPData, Equatable {
         
         var index = 0
         var addresses = [BluetoothAddress]()
-        addresses.reserveCapacity(data.count / type(of: self).addressLength )
+        let count = data.count / type(of: self).addressLength
+        addresses.reserveCapacity(count)
         
         while index < data.count {
             
-            let address = BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5]))
+            let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index+1], data[index + 2], data[index + 3], data[index+4], data[index+5])))
             addresses.append(address)
             
             index += type(of: self).addressLength
         }
+        
+        assert(addresses.count == count)
         
         self.init(addresses: addresses)
     }
     
     public var data: Data {
         
-        return addresses.reduce(Data(), { $0 + $1.data })
+        var data = Data()
+        data.reserveCapacity(addresses.count + BluetoothAddress.length)
+        addresses.forEach { data.append($0.littleEndian.data) }
+        return data
     }
     
 }

@@ -39,7 +39,7 @@ public struct HCIConnectionComplete: HCIEventParameter {
         
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        let address = BluetoothAddress(bytes: (data[3], data[4], data[5], data[6], data[7], data[8]))
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[3], data[4], data[5], data[6], data[7], data[8])))
         
         guard let linkType = LinkType(rawValue: data[9])
             else { return nil }

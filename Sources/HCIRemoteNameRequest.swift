@@ -72,7 +72,7 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
         guard data.count == type(of: self).length
             else { return nil }
         
-        self.address = BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
+        self.address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         
         self.pscanRepMode = PageScanRepetitionMode(rawValue: data[6])
         
