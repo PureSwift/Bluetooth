@@ -355,7 +355,7 @@ final class HCITests: XCTestCase {
             .event([0x0E, 0x0A, 0x01, 0x09, 0x10, 0x00, 0x42, 0x67, 0xA6, 0x32, 0xBC, 0xAC])
         )
         
-        var address: Address = .zero
+        var address: BluetoothAddress = .zero
         XCTAssertNoThrow(address = try hostController.readDeviceAddress())
         XCTAssert(hostController.queue.isEmpty)
         XCTAssertNotEqual(address, .zero)
@@ -390,7 +390,7 @@ final class HCITests: XCTestCase {
             
             hostController.queue = [.command(opcode, commandData), .event(eventData)]
             
-            var returnedLocalName: String!
+            var returnedLocalName: String = ""
             XCTAssertNoThrow(returnedLocalName = try hostController.readLocalName())
             XCTAssert(hostController.queue.isEmpty)
             XCTAssert(localName == returnedLocalName, "\(localName) == \(returnedLocalName)")
@@ -554,13 +554,13 @@ final class HCITests: XCTestCase {
         guard reports.count == 2
             else { XCTFail(); return }
         
-        XCTAssertEqual(reports[0].address, Address(rawValue: "02:E4:72:17:FD:E2"))
+        XCTAssertEqual(reports[0].address, BluetoothAddress(rawValue: "02:E4:72:17:FD:E2"))
         XCTAssertEqual(reports[0].addressType, .random)
         XCTAssertEqual(reports[0].rssi.rawValue, -55)
         XCTAssertEqual(reports[0].event, .nonConnectable)
         XCTAssertEqual(reports[0].event.isConnectable, false)
         
-        XCTAssertEqual(reports[1].address, Address(rawValue: "C8:69:CD:46:0B:5D"))
+        XCTAssertEqual(reports[1].address, BluetoothAddress(rawValue: "C8:69:CD:46:0B:5D"))
         XCTAssertEqual(reports[1].addressType, .public)
         XCTAssertEqual(reports[1].rssi.rawValue, -54)
         XCTAssertEqual(reports[1].event, .undirected)
@@ -640,7 +640,7 @@ final class HCITests: XCTestCase {
             return advertisingReport.reports
         }
         
-        func parseAdvertisingReportAddress(_ readBytes: Int, _ data: [UInt8]) -> [Address] {
+        func parseAdvertisingReportAddress(_ readBytes: Int, _ data: [UInt8]) -> [BluetoothAddress] {
             
             return parseAdvertisingReport(readBytes, data).map { $0.address }
         }
@@ -650,7 +650,7 @@ final class HCITests: XCTestCase {
             let readBytes = 26
             let data: [UInt8] = [4, 62, 23, 2, 1, 0, 0, 66, 103, 166, 50, 188, 172, 11, 2, 1, 6, 7, 255, 76, 0, 16, 2, 11, 0, 186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [Address(rawValue: "AC:BC:32:A6:67:42")!])
+            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [BluetoothAddress(rawValue: "AC:BC:32:A6:67:42")!])
         }
         
         do {
@@ -658,7 +658,7 @@ final class HCITests: XCTestCase {
             let readBytes = 38
             let data: [UInt8] = [4, 62, 35, 2, 1, 0, 1, 53, 238, 129, 237, 128, 89, 23, 2, 1, 6, 19, 255, 76, 0, 12, 14, 8, 69, 6, 92, 128, 96, 83, 24, 163, 199, 32, 154, 91, 3, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [Address(rawValue: "59:80:ED:81:EE:35")!])
+            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [BluetoothAddress(rawValue: "59:80:ED:81:EE:35")!])
         }
         
         do {
@@ -688,7 +688,7 @@ final class HCITests: XCTestCase {
             guard let report = advertisingReports.first
                 else { XCTFail(); return }
             
-            XCTAssertEqual(report.address, Address(rawValue: "58:E2:8F:7C:0B:B3")!)
+            XCTAssertEqual(report.address, BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .undirected)
             XCTAssertEqual(report.event.isConnectable, true)
@@ -723,7 +723,7 @@ final class HCITests: XCTestCase {
             guard let report = advertisingReports.first
                 else { XCTFail(); return }
             
-            XCTAssertEqual(report.address, Address(rawValue: "58:E2:8F:7C:0B:B3")!)
+            XCTAssertEqual(report.address, BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.event.isConnectable, true)
@@ -756,7 +756,7 @@ final class HCITests: XCTestCase {
             guard let report = advertisingReports.first
                 else { XCTFail(); return }
             
-            XCTAssertEqual(report.address, Address(rawValue: "00:1A:AE:06:EF:9E")!)
+            XCTAssertEqual(report.address, BluetoothAddress(rawValue: "00:1A:AE:06:EF:9E")!)
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.event.isConnectable, true)
@@ -976,7 +976,7 @@ final class HCITests: XCTestCase {
         // RECV  Command Complete [2011] - LE Add Device To White List  0E 04 01 11 20 00
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x11, 0x20, 0x00]))
         
-        XCTAssertNoThrow(try hostController.lowEnergyAddDeviceToWhiteList(.public(Address(rawValue: "58:E2:8F:7C:0B:B3")!)))
+        XCTAssertNoThrow(try hostController.lowEnergyAddDeviceToWhiteList(.public(BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)))
         
         XCTAssert(hostController.queue.isEmpty)
     }
@@ -1008,7 +1008,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x12, 0x20, 0x00]))
         
-        XCTAssertNoThrow(try hostController.lowEnergyRemoveDeviceFromWhiteList(.public(Address(rawValue: "58:E2:8F:7C:0B:B3")!)))
+        XCTAssertNoThrow(try hostController.lowEnergyRemoveDeviceFromWhiteList(.public(BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)))
         
         XCTAssert(hostController.queue.isEmpty)
     }
@@ -1142,7 +1142,7 @@ final class HCITests: XCTestCase {
         
         let hostController = TestHostController()
         
-        let randomAddress = Address(rawValue: "68:60:B2:29:26:8D")!
+        let randomAddress = BluetoothAddress(rawValue: "68:60:B2:29:26:8D")!
         
         /**
          SEND  [2005] LE Set Random Address - 68:60:B2:29:26:8D  05 20 06 8D 26 29 B2 60 68
@@ -1218,7 +1218,7 @@ final class HCITests: XCTestCase {
             hostController.queue.append(.event(eventHeader.data + buffer))
         }
         
-        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Unable to init variable"); return }
         
         let pscanRepMode = PageScanRepetitionMode(rawValue: 0x01)
@@ -1321,7 +1321,7 @@ final class HCITests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(event.reports[0].classOfDevice.majorDeviceClass, .miscellaneous)
-            XCTAssertEqual(event.reports[0].address, Address(rawValue: "04:B1:67:1D:F4:ED"))
+            XCTAssertEqual(event.reports[0].address, BluetoothAddress(rawValue: "04:B1:67:1D:F4:ED"))
         }
     }
     
@@ -1490,7 +1490,7 @@ final class HCITests: XCTestCase {
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00]))
         }
         
-        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Unable to init variable"); return }
         
         let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: 0x01)
@@ -1525,7 +1525,7 @@ final class HCITests: XCTestCase {
             hostController.queue.append(.event(eventHeader.data + [0x01, 0x08, 0x04, 0x00]))
         }
         
-        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Unable to init variable"); return }
         
         XCTAssertNoThrow(try hostController.cancelConnection(address: address))
@@ -1547,7 +1547,7 @@ final class HCITests: XCTestCase {
         guard let event = HCIConnectionComplete(data: data)
             else { XCTFail("Could not parse"); return }
         
-        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF"))
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
         XCTAssertEqual(event.status.rawValue, HCIStatus.success.rawValue)
         XCTAssertEqual(event.linkType, HCIConnectionComplete.LinkType(rawValue: 0x01))
         XCTAssertEqual(event.encryption, HCIConnectionComplete.Encryption(rawValue: 0x00))
@@ -1585,7 +1585,7 @@ final class HCITests: XCTestCase {
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x09, 0x04]))
         }
         
-        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Unable to init variable"); return }
         
         guard let role = HCIAcceptConnectionRequest.Role(rawValue: 0x00)
@@ -1667,7 +1667,7 @@ final class HCITests: XCTestCase {
             hostController.queue.append(.event(eventHeader.data + [0x01, 0x0b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
         }
         
-        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Unable to init variable"); return }
         
         let linkKey = UInt128(littleEndian: UInt128(bytes: (0x3b, 0xf5, 0xfc, 0xa0, 0x63, 0x7c, 0x6d, 0xc2,
@@ -1688,7 +1688,7 @@ final class HCITests: XCTestCase {
         guard let event = HCILinkKeyRequest(data: data)
             else { XCTFail("Could not parse"); return }
         
-        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF"))
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
     }
     
     func testReadDataBlockSize() {
@@ -1943,7 +1943,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0c, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
         
-        guard let address = Address(rawValue: "84:FC:FE:F3:F4:75")
+        guard let address = BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")
             else { XCTFail("Unable to init variable"); return }
         
         XCTAssertNoThrow(try hostController.linkKeyRequestNegativeReply(address: address))
@@ -1977,7 +1977,7 @@ final class HCITests: XCTestCase {
         */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0d, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
         
-        guard let address = Address(rawValue: "84:FC:FE:F3:F4:75")
+        guard let address = BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")
             else { XCTFail("Unable to init variable"); return }
         
         guard let length = HCIPINCodeRequestReply.PINCodeLength(rawValue: 0x04)
@@ -2005,7 +2005,7 @@ final class HCITests: XCTestCase {
         guard let event = HCIPINCodeRequest(data: data)
             else { XCTFail("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, Address(rawValue: "84:FC:FE:F3:F4:75")!)
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
     }
     
     func testLinkKeyNotification() {
@@ -2022,7 +2022,7 @@ final class HCITests: XCTestCase {
         guard let event = HCILinkKeyNotification(data: data)
             else { XCTFail("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, Address(rawValue: "84:FC:FE:F3:F4:75")!)
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
     }
     
     func testModeChange() {
@@ -2274,7 +2274,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0e, 0x08, 0x01, 0x0d, 0x0c, 0x00, 0x07, 0x00, 0x00, 0x00]))
         
-        XCTAssertNoThrow(try hostController.readStoredLinkKey(address: Address(rawValue: "8C:85:90:94:8A:7E")!,
+        XCTAssertNoThrow(try hostController.readStoredLinkKey(address: BluetoothAddress(rawValue: "8C:85:90:94:8A:7E")!,
                                                               readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!))
     }
     
@@ -2525,7 +2525,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
         
-        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Cannot init address"); return }
         
         guard let ioCapability = HCIIOCapabilityRequestReply.IOCapability(rawValue: 0x01)
@@ -2556,7 +2556,7 @@ final class HCITests: XCTestCase {
         guard let event = HCIIOCapabilityRequest(data: data)
             else { XCTFail("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
     
     func testIOCapabilityResponse() {
@@ -2575,7 +2575,7 @@ final class HCITests: XCTestCase {
         guard let event = HCIIOCapabilityResponse(data: data)
             else { XCTFail("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
     
     func testUserConfirmationRequestReply() {
@@ -2602,7 +2602,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2c, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
         
-        guard let address = Address(rawValue: "B0:70:2D:06:D2:AF")
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Unable to init address"); return }
         
         XCTAssertNoThrow(try hostController.userConfirmationRequestReply(address: address))
@@ -2622,7 +2622,7 @@ final class HCITests: XCTestCase {
         guard let event = HCIUserConfirmationRequest(data: data)
             else { XCTFail("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
     
     func testConnectionPacketTypeChange() {
@@ -2709,7 +2709,7 @@ final class HCITests: XCTestCase {
             else { XCTFail("Unable to parse event"); return }
         
         XCTAssertEqual(event.status.rawValue, 0x00)
-        XCTAssertEqual(event.address, Address(rawValue: "B0:70:2D:06:D2:AF")!)
+        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
 }
 

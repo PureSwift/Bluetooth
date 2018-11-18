@@ -16,8 +16,8 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The Link_Key_Request_Reply command is used to reply to a Link Key Request event from the Controller, and specifies the Link Key stored on the Host to be used as the link key for the connection with the other BR/EDR Controller specified by BD_ADDR. The Link Key Request event will be generated when the BR/EDR Controller needs a Link Key for a connection.
     /// When the BR/EDR Controller generates a Link Key Request event in order for the local Link Manager to respond to the request from the remote Link Manager (as a result of a Create_Connection or Authentication_Requested com- mand from the remote Host), the local Host must respond with either a Link_Key_Request_Reply or Link_Key_Request_Negative_Reply command before the remote Link Manager detects LMP response timeout.
-    func linkKeyRequestNegativeReply(address: Address,
-                                     timeout: HCICommandTimeout = .default) throws -> Address {
+    func linkKeyRequestNegativeReply(address: BluetoothAddress,
+                                     timeout: HCICommandTimeout = .default) throws -> BluetoothAddress {
         
         let command = HCILinkKeyRequestNegativeReply(address: address)
         
@@ -34,9 +34,9 @@ public struct HCILinkKeyRequestNegativeReply: HCICommandParameter {
     
     public static let command = LinkControlCommand.linkKeyNegativeReply
     
-    public var address: Address
+    public var address: BluetoothAddress
     
-    public init(address: Address) {
+    public init(address: BluetoothAddress) {
         
         self.address = address
     }
@@ -62,14 +62,14 @@ public struct HCILinkKeyRequestNegativeReplyReturn: HCICommandReturnParameter {
     
     public static let length: Int = 6
     
-    public var address: Address
+    public var address: BluetoothAddress
     
     public init?(data: Data) {
         
         guard data.count == HCILinkKeyRequestNegativeReplyReturn.length
             else { return nil }
         
-        let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         
         self.address = address
     }

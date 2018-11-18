@@ -15,7 +15,7 @@ public struct HCIRemoteNameRequestComplete: HCIEventParameter {
     public static let length = 255
     
     public var status: HCIStatus
-    public var address: Address
+    public var address: BluetoothAddress
     public var name: String
     
     public init?(data: Data) {
@@ -29,7 +29,7 @@ public struct HCIRemoteNameRequestComplete: HCIEventParameter {
             else { return nil }
         
         self.status = status
-        self.address = Address(bytes: (data[1], data[2], data[3], data[4], data[5], data[6]))
+        self.address = BluetoothAddress(bytes: (data[1], data[2], data[3], data[4], data[5], data[6]))
         
         let nameBytes = Array(data[7 ..< type(of: self).length])
         

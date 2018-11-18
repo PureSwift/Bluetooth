@@ -28,7 +28,7 @@ public struct HCILEEnhancedConnectionComplete: HCIEventParameter {
     
     /// Public Device Address, or Random Device Address, Public Identity Address or
     /// Random (static) Identity Address of the device to be con- nected.
-    public let peerAddress: Address
+    public let peerAddress: BluetoothAddress
     
     /// Resolvable Private Address being used by the local device for this connection.
     /// This is only valid when the Own_Address_Type (from the HCI_LE_Create_Connection,
@@ -36,12 +36,12 @@ public struct HCILEEnhancedConnectionComplete: HCIEventParameter {
     /// HCI_LE_Extended_Create_Connection commands) is set to 0x02 or 0x03, and the Controller
     /// generated a resolvable private address for the local device using a non-zero local IRK.
     /// For other Own_Address_Type values, the Controller shall return all zeros.
-    public let localResolvablePrivateAddress: Address
+    public let localResolvablePrivateAddress: BluetoothAddress
     
     /// Resolvable Private Address being used by the peer device for this con- nection.
     /// This is only valid for Peer_Address_Type 0x02 and 0x03. For other Peer_Address_Type
     /// values, the Controller shall return all zeros.
-    public let peerResolvablePrivateAddress: Address
+    public let peerResolvablePrivateAddress: BluetoothAddress
     
     /// Connection interval used on this connection.
     ///
@@ -76,17 +76,17 @@ public struct HCILEEnhancedConnectionComplete: HCIEventParameter {
         guard let peerAddressType = LowEnergyAddressType(rawValue: data[4])
             else { return nil }
         
-        let peerAddress = Address(littleEndian: Address(bytes: (data[5],
+        let peerAddress = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[5],
                                                                 data[6], data[7],
                                                                 data[8], data[9],
                                                                 data[10])))
         
-        let localResolvableprivateAddress = Address(littleEndian: Address(bytes: (data[11],
+        let localResolvableprivateAddress = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[11],
                                                                                   data[12], data[13],
                                                                                   data[14], data[15],
                                                                                   data[16])))
         
-        let peerResolvablePrivateAddress = Address(littleEndian: Address(bytes: (data[17],
+        let peerResolvablePrivateAddress = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[17],
                                                                                  data[18], data[19],
                                                                                  data[20], data[21],
                                                                                  data[22])))

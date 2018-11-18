@@ -39,7 +39,7 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
     
     public let advertisingAddressType: AdvertisingAddressType
     
-    public let address: Address
+    public let address: BluetoothAddress
     
     /// The number of periodic advertising packets that can be skipped after
     /// a successful receive
@@ -54,7 +54,7 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
     public init(filterPolicy: FilterPolicy,
                 advertisingSid: UInt8,
                 advertisingAddressType: AdvertisingAddressType,
-                address: Address,
+                address: BluetoothAddress,
                 skip: UInt16,
                 syncTimeout: SyncTimeout,
                 unused: UInt8) {

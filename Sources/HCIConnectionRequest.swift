@@ -18,7 +18,7 @@ public struct HCIConnectionRequest: HCIEventParameter {
     public static let length: Int = 10
     
     /// BD_ADDR of the device that requests the connection.
-    public let address: Address
+    public let address: BluetoothAddress
     
     /// Class of Device for the device, which requests the connection.
     public let classOfDevice: ClassOfDevice
@@ -30,7 +30,7 @@ public struct HCIConnectionRequest: HCIEventParameter {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
+        let address = BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
         
         guard let classOfDevice = ClassOfDevice(data: data.subdataNoCopy(in: 6 ..< 9))
             else { return nil }

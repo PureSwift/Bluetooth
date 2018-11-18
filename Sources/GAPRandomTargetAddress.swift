@@ -22,9 +22,9 @@ public struct GAPRandomTargetAddress: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .randomTargetAddress
     
-    public let addresses: [Address]
+    public let addresses: [BluetoothAddress]
     
-    public init(addresses: [Address]) {
+    public init(addresses: [BluetoothAddress]) {
         
         self.addresses = addresses
     }
@@ -35,12 +35,12 @@ public struct GAPRandomTargetAddress: GAPData, Equatable {
             else { return nil }
         
         var index = 0
-        var addresses = [Address]()
+        var addresses = [BluetoothAddress]()
         addresses.reserveCapacity(data.count / type(of: self).addressLength )
         
         while index < data.count {
             
-            let address = Address(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5]))
+            let address = BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5]))
             addresses.append(address)
             
             index += type(of: self).addressLength

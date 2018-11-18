@@ -19,7 +19,7 @@ public struct HCILinkKeyNotification: HCIEventParameter {
     
     public static let length: Int = 23
     
-    public let address: Address
+    public let address: BluetoothAddress
     
     public var linkKey: UInt128
     
@@ -30,7 +30,7 @@ public struct HCILinkKeyNotification: HCIEventParameter {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         
         let linkKey = UInt128(littleEndian: UInt128(bytes: (data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13],
                                                             data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21])))

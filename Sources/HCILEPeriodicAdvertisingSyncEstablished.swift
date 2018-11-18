@@ -34,7 +34,7 @@ public struct HCILEPeriodicAdvertisingSyncEstablished: HCIEventParameter {
     
     public let advertiserAddressType: LowEnergyAddressType
     
-    public let advertiserAddress: Address
+    public let advertiserAddress: BluetoothAddress
     
     public let advertiserPHY: AdvertiserPhy
     
@@ -57,7 +57,7 @@ public struct HCILEPeriodicAdvertisingSyncEstablished: HCIEventParameter {
         guard let advertiserAddressType = LowEnergyAddressType(rawValue: data[4])
             else { return nil }
         
-        let advertiserAddress = Address(littleEndian: Address(bytes: (data[5], data[6], data[7], data[8], data[9], data[10])))
+        let advertiserAddress = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[5], data[6], data[7], data[8], data[9], data[10])))
         
         guard let advertiserPHY = AdvertiserPhy(rawValue: data[11])
             else { return nil }

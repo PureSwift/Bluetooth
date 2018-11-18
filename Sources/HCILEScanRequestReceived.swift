@@ -23,7 +23,7 @@ public struct HCILEScanRequestReceived: HCIEventParameter {
     
     public let scannerAddressType: LowEnergyAddressType
     
-    public let scannerAddress: Address
+    public let scannerAddress: BluetoothAddress
     
     public init?(data: Data) {
         
@@ -35,7 +35,7 @@ public struct HCILEScanRequestReceived: HCIEventParameter {
         guard let scannerAddressType = LowEnergyAddressType(rawValue: data[1])
             else { return nil }
         
-        let scannerAddress = Address(littleEndian: Address(bytes: (data[2], data[3], data[4], data[5], data[6], data[7])))
+        let scannerAddress = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[2], data[3], data[4], data[5], data[6], data[7])))
         
         self.advertisingHandle = advertisingHandle
         self.scannerAddressType = scannerAddressType

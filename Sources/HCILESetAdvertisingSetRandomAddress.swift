@@ -16,7 +16,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used by the Host to set the random device address specified by the Random_Address parameter.
     func setAdvertisingSetRandomAddress(advertisingHandle: UInt8,
-                                        advertisingRandomAddress: Address,
+                                        advertisingRandomAddress: BluetoothAddress,
                                         timeout: HCICommandTimeout = .default) throws {
         
         let parameters = HCILESetAdvertisingSetRandomAddress(advertisingHandle: advertisingHandle, advertisingRandomAddress: advertisingRandomAddress)
@@ -47,9 +47,9 @@ public struct HCILESetAdvertisingSetRandomAddress: HCICommandParameter { //HCI_L
     public let advertisingHandle: UInt8
     
     /// Random Device Address
-    public let advertisingRandomAddress: Address
+    public let advertisingRandomAddress: BluetoothAddress
     
-    public init(advertisingHandle: UInt8, advertisingRandomAddress: Address) {
+    public init(advertisingHandle: UInt8, advertisingRandomAddress: BluetoothAddress) {
         self.advertisingHandle = advertisingHandle
         self.advertisingRandomAddress = advertisingRandomAddress
     }

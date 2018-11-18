@@ -15,7 +15,7 @@ public struct HCIUserConfirmationRequest: HCIEventParameter {
     
     public static let length: Int = 10
     
-    public let address: Address
+    public let address: BluetoothAddress
     
     public let numericValue: NumericValue
     
@@ -24,7 +24,7 @@ public struct HCIUserConfirmationRequest: HCIEventParameter {
         guard data.count == type(of: self).length
             else { return nil }
         
-        let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         
         guard let numericValue = NumericValue(rawValue: UInt32(littleEndian: UInt32(bytes: (data[6], data[7], data[8], data[9]))))
             else { return nil }

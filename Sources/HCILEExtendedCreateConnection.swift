@@ -18,7 +18,7 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyExtendedCreateConnection(initialingFilterPolicy: HCILEExtendedCreateConnection.InitialingFilterPolicy,
                                            ownAddressType: HCILEExtendedCreateConnection.OwnAddressType,
                                            peerAddressType: LowEnergyPeerIdentifyAddressType,
-                                           peerAddress: Address,
+                                           peerAddress: BluetoothAddress,
                                            initialingPHY: HCILEExtendedCreateConnection.InitialingPHY,
                                            timeout: HCICommandTimeout = .default) throws -> HCILEEnhancedConnectionComplete {
         
@@ -56,13 +56,13 @@ public struct HCILEExtendedCreateConnection: HCICommandParameter {
     public let initialingFilterPolicy: InitialingFilterPolicy
     public let ownAddressType: OwnAddressType
     public let peerAddressType: LowEnergyPeerIdentifyAddressType
-    public let peerAddress: Address
+    public let peerAddress: BluetoothAddress
     public let initialingPHY: InitialingPHY
     
     public init(initialingFilterPolicy: InitialingFilterPolicy,
                 ownAddressType: OwnAddressType,
                 peerAddressType: LowEnergyPeerIdentifyAddressType,
-                peerAddress: Address,
+                peerAddress: BluetoothAddress,
                 initialingPHY: InitialingPHY) {
         self.initialingFilterPolicy = initialingFilterPolicy
         self.ownAddressType = ownAddressType

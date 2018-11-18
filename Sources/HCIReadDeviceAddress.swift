@@ -13,7 +13,7 @@ import Foundation
 public extension BluetoothHostControllerInterface {
     
     /// Read Device Address
-    func readDeviceAddress(timeout: HCICommandTimeout = .default) throws -> Address {
+    func readDeviceAddress(timeout: HCICommandTimeout = .default) throws -> BluetoothAddress {
         
         return try deviceRequest(HCIReadDeviceAddress.self, timeout: timeout).address
     }
@@ -36,13 +36,13 @@ public struct HCIReadDeviceAddress: HCICommandReturnParameter {
     public static let length = 6
     
     /// The Bluetooth address of the device.
-    public let address: Address
+    public let address: BluetoothAddress
     
     public init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
         
-        self.address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
+        self.address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
     }
 }

@@ -8,8 +8,11 @@
 
 import Foundation
 
+@available(*, deprecated, renamed: "BluetoothAddress")
+public typealias Address = BluetoothAddress
+
 /// Bluetooth address.
-public struct Address: ByteValue {
+public struct BluetoothAddress: ByteValue {
     
     // MARK: - ByteValueType
     
@@ -30,30 +33,30 @@ public struct Address: ByteValue {
     }
 }
 
-public extension Address {
+public extension BluetoothAddress {
     
     /// The minimum representable value in this type.
-    public static var min: Address { return Address(bytes: (.min, .min, .min, .min, .min, .min)) }
+    public static var min: BluetoothAddress { return BluetoothAddress(bytes: (.min, .min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    public static var max: Address { return Address(bytes: (.max, .max, .max, .max, .max, .max)) }
+    public static var max: BluetoothAddress { return BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
     
-    public static var zero: Address { return .min }
+    public static var zero: BluetoothAddress { return .min }
     
-    public static var any: Address { return .zero }
+    public static var any: BluetoothAddress { return .zero }
     
-    public static var none: Address { return .max }
+    public static var none: BluetoothAddress { return .max }
 }
 
 // MARK: - Data
 
-public extension Address {
+public extension BluetoothAddress {
     
     public static var length: Int { return 6 }
     
     public init?(data: Data) {
         
-        guard data.count == Address.length
+        guard data.count == BluetoothAddress.length
             else { return nil }
         
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
@@ -67,18 +70,18 @@ public extension Address {
 
 // MARK: - Byte Swap
 
-extension Address: ByteSwap {
+extension BluetoothAddress: ByteSwap {
     
     /// A representation of this address with the byte order swapped.
-    public var byteSwapped: Address {
+    public var byteSwapped: BluetoothAddress {
         
-        return Address(bytes: (bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
+        return BluetoothAddress(bytes: (bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
     }
 }
 
 // MARK: - RawRepresentable
 
-extension Address: RawRepresentable {
+extension BluetoothAddress: RawRepresentable {
     
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public init?(rawValue: String) {
@@ -106,7 +109,7 @@ extension Address: RawRepresentable {
             }
         }
         
-        self.init(bigEndian: Address(bytes: bytes))
+        self.init(bigEndian: BluetoothAddress(bytes: bytes))
     }
     
     public var rawValue: String {
@@ -119,9 +122,9 @@ extension Address: RawRepresentable {
 
 // MARK: - Equatable
 
-extension Address: Equatable {
+extension BluetoothAddress: Equatable {
     
-    public static func == (lhs: Address, rhs: Address) -> Bool {
+    public static func == (lhs: BluetoothAddress, rhs: BluetoothAddress) -> Bool {
         
         return lhs.bytes.0 == rhs.bytes.0
             && lhs.bytes.1 == rhs.bytes.1
@@ -134,7 +137,7 @@ extension Address: Equatable {
 
 // MARK: - Hashable
 
-extension Address: Hashable {
+extension BluetoothAddress: Hashable {
     
     public var hashValue: Int {
         
@@ -148,7 +151,7 @@ extension Address: Hashable {
 
 // MARK: - CustomStringConvertible
 
-extension Address: CustomStringConvertible {
+extension BluetoothAddress: CustomStringConvertible {
     
     public var description: String { return rawValue }
 }

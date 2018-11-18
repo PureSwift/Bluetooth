@@ -62,7 +62,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         public let addressType: AddressType
         
-        public let address: Address
+        public let address: BluetoothAddress
         
         public let primaryPHY: PrimaryPHY
         
@@ -78,7 +78,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         public let directAddressType: AddressType
         
-        public let directAddress: Address
+        public let directAddress: BluetoothAddress
         
         public let responseData: Data //Data
         
@@ -91,7 +91,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
                 let addressType = AddressType(rawValue: data[2])
                 else { return nil }
             
-            let address = Address(littleEndian: Address(bytes: (data[3], data[4],
+            let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[3], data[4],
                                                                 data[5], data[6],
                                                                 data[7], data[8])))
             
@@ -116,7 +116,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
             guard let directAddressType = AddressType(rawValue: data[16])
                 else { return nil }
             
-            let directAddress = Address(littleEndian: Address(bytes: (data[17], data[18],
+            let directAddress = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[17], data[18],
                                                                       data[19], data[20],
                                                                       data[21], data[22])))
             

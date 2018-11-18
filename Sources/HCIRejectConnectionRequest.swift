@@ -15,7 +15,7 @@ public extension BluetoothHostControllerInterface {
     /// Reject Connection Command
     ///
     /// The Reject_Connection_Request command is used to decline a new incoming connection request. The Reject_Connection_Request command shall only be called after a Connection Request event has occurred. The Connection Request event will return the BD_ADDR of the device that is requesting the connection. The Reason command parameter will be returned to the connecting device in the Status parameter of the Connection Complete event returned to the Host of the connection device, to indicate why the connection was declined.
-    func rejectConnection(address: Address,
+    func rejectConnection(address: BluetoothAddress,
                           error: HCIError,
                           timeout: HCICommandTimeout = .default) throws {
         
@@ -35,11 +35,11 @@ public struct HCIRejectConnectionRequest: HCICommandParameter {
     public static let command = LinkControlCommand.rejectConnection
     
     /// BD_ADDR of the Device to reject the connection from.
-    public var address: Address
+    public var address: BluetoothAddress
     
     public var error: HCIError
     
-    public init(address: Address, error: HCIError) {
+    public init(address: BluetoothAddress, error: HCIError) {
         
         self.address = address
         self.error = error

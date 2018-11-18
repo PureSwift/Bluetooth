@@ -14,8 +14,8 @@ public protocol BluetoothHostControllerInterface: class {
     /// All controllers on the host.
     static var controllers: [Self] { get }
     
-    /// The Bluetooth Address of the controller.
-    var address: Address { get }
+    /// The Address of the controller.
+    var address: BluetoothAddress { get }
     
     /// Send an HCI command to the controller.
     func deviceCommand <C: HCICommand> (_ command: C) throws

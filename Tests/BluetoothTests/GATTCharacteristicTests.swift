@@ -872,7 +872,7 @@ final class GATTCharacteristicTests: XCTestCase {
             
             let data = Data([0x12, 0x34, 0x56, 0xFF, 0xFE, 0x9A, 0xBC, 0xDE].reversed())
             
-            let address = Address(rawValue: "12:34:56:9A:BC:DE")!
+            let address = BluetoothAddress(rawValue: "12:34:56:9A:BC:DE")!
             let manufacturerIdentifier: UInt40 = 0xFFFE9ABCDE
             let organizationallyUniqueIdentifier: UInt24 = 0x123456
             

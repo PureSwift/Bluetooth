@@ -54,7 +54,7 @@ extension HCIInquiryResult {
         
         public static let length = 6 + 1 + 1 + 1 + 3 + 2
         
-        public let address: Address
+        public let address: BluetoothAddress
         
         public let pageScanRepetitionMode: PageScanRepetitionMode
         
@@ -64,7 +64,7 @@ extension HCIInquiryResult {
         
         public init?(data: Data) {
             
-            let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
+            let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
             
             self.address = address
             

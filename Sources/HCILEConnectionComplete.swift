@@ -56,7 +56,7 @@ public struct HCILEConnectionComplete: HCIEventParameter {
     public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
     
     /// Public Device Address or Random Device Address of the peer device.
-    public let peerAddress: Address
+    public let peerAddress: BluetoothAddress
     
     /// Connection interval used on this connection.
     ///
@@ -97,13 +97,13 @@ public struct HCILEConnectionComplete: HCIEventParameter {
         
         let peerAddressTypeByte = data[4]
         
-        let peerAddress = Address(littleEndian:
-            Address(bytes: (data[5],
-                            data[6],
-                            data[7],
-                            data[8],
-                            data[9],
-                            data[10])))
+        let peerAddress = BluetoothAddress(littleEndian:
+            BluetoothAddress(bytes: (data[5],
+                                     data[6],
+                                     data[7],
+                                     data[8],
+                                     data[9],
+                                     data[10])))
         
         let intervalRawValue = UInt16(littleEndian: UInt16(bytes: (data[11], data[12])))
         

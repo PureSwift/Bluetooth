@@ -15,14 +15,14 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     /// All controllers on the host.
     static var controllers: [TestHostController] { return [TestHostController()] }
     
-    init(address: Address = .any) {
+    init(address: BluetoothAddress = .any) {
         
         self.address = address
         self.log = { _ in } //{ print("TestHostController: ", $0) }
     }
     
     /// The Bluetooth Address of the controller.
-    let address: Address
+    let address: BluetoothAddress
     
     /// Send an HCI command to the controller.
     func deviceCommand <T: HCICommand> (_ command: T) throws {

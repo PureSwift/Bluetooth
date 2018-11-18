@@ -17,7 +17,7 @@ public extension BluetoothHostControllerInterface {
     /// The LE_Remove_Device_From_Periodic_Advertiser_List command is used to remove one device from the list of Periodic
     /// Advertisers stored in the Controller. Removals from the Periodic Advertisers List take effect immediately.
     func lowEnergyRemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                                       address: Address,
+                                                       address: BluetoothAddress,
                                                        advertisingSid: UInt8,
                                                        timeout: HCICommandTimeout = .default)  throws {
         
@@ -46,11 +46,11 @@ public struct HCILERemoveDeviceToPeriodicAdvertiserList: HCICommandParameter {
     public static let command = HCILowEnergyCommand.removeDeviceFromPeriodicAdvertiserList //0x0048
     
     public let advertiserAddressType: LowEnergyAdvertiserAddressType
-    public let address: Address
+    public let address: BluetoothAddress
     public let advertisingSid: UInt8
     
     public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                address: Address,
+                address: BluetoothAddress,
                 advertisingSid: UInt8) {
         
         self.advertiserAddressType = advertiserAddressType

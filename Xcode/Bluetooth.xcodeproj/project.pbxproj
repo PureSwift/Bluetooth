@@ -2483,7 +2483,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"/usr/local/bin:$PATH\"\ncd ../\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "export PATH=\"/usr/local/bin:$PATH\"\ncd ../\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		6E14247E206C49B200BF72BC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -62,7 +62,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         
         public let addressType: LowEnergyAddressType // Address_Type
         
-        public let address: Address // Address
+        public let address: BluetoothAddress // Address
         
         /// Advertising or scan response data
         public let responseData: LowEnergyAdvertisingData // Data
@@ -84,13 +84,13 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
                 let addressType = LowEnergyAddressType(rawValue: data[1])
                 else { return nil }
             
-            let address = Address(littleEndian:
-                Address(bytes: (data[2],
-                                data[3],
-                                data[4],
-                                data[5],
-                                data[6],
-                                data[7])))
+            let address = BluetoothAddress(littleEndian:
+                BluetoothAddress(bytes: (data[2],
+                                         data[3],
+                                         data[4],
+                                         data[5],
+                                         data[6],
+                                         data[7])))
             
             let length = Int(data[8])
             

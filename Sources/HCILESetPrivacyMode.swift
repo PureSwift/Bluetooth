@@ -16,7 +16,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to allow the Host to specify the privacy mode to be used for a given entry on the resolving list.
     func lowEnergySetPrivacyMode(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
-                                 peerIdentityAddress: Address,
+                                 peerIdentityAddress: BluetoothAddress,
                                  privacyMode: HCILESetPrivacyMode.PrivacyMode = HCILESetPrivacyMode.PrivacyMode.networkPrivacy,
                                  timeout: HCICommandTimeout = .default) throws {
         
@@ -38,11 +38,11 @@ public struct HCILESetPrivacyMode: HCICommandParameter {
     public static let command = HCILowEnergyCommand.setPrivacyMode // 0x004E
     
     public let peerIdentityAddressType: LowEnergyPeerIdentifyAddressType
-    public let peerIdentityAddress: Address
+    public let peerIdentityAddress: BluetoothAddress
     public let privacyMode: PrivacyMode
     
     public init(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
-                peerIdentityAddress: Address,
+                peerIdentityAddress: BluetoothAddress,
                 privacyMode: PrivacyMode = PrivacyMode.networkPrivacy) {
         
         self.peerIdentityAddressType = peerIdentityAddressType

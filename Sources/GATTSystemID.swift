@@ -61,7 +61,7 @@ public struct GATTSystemID: GATTCharacteristic, RawRepresentable {
     }
     
     /// Initialize a System ID based on a Bluetooth Device Address.
-    public init(address: Bluetooth.Address) {
+    public init(address: BluetoothAddress) {
         
         /**
          If System ID generated based on a Bluetooth Device Address, it is required to be done as follows. System ID and the Bluetooth Device Address have a very similar structure: a Bluetooth Device Address is 48 bits in length and consists of a 24 bit Company Assigned Identifier (manufacturer defined identifier) concatenated with a 24 bit Company Identifier (OUI). In order to encapsulate a Bluetooth Device Address as System ID, the Company Identifier is concatenated with 0xFFFE followed by the Company Assigned Identifier of the Bluetooth Address.

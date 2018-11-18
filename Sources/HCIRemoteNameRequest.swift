@@ -19,7 +19,7 @@ public extension BluetoothHostControllerInterface {
     /// When the Remote Supported Host Features Notification event is unmasked and when the Remote_Name_Request command initiates a connection, the Link Manager shall read the remote LMP features mask pages 0 and 1.
     ///
     /// -  Note: If no connection exists between the local device and the device corresponding to the BD_ADDR, a temporary link layer connection will be estab- lished to obtain the LMP features and name of the remote device.
-    func remoteNameRequest(address: Address,
+    func remoteNameRequest(address: BluetoothAddress,
                            pscanRepMode: PageScanRepetitionMode,
                            clockOffset: HCIRemoteNameRequest.ClockOffset,
                            timeout: HCICommandTimeout = .default) throws -> HCIRemoteNameRequestComplete {
@@ -48,7 +48,7 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
     internal static let length = 10
     
     /// BD_ADDR for the device whose name is requested.
-    public var address: Address
+    public var address: BluetoothAddress
     
     public var pscanRepMode: PageScanRepetitionMode
     
@@ -57,7 +57,7 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
     
     public var clockOffset: ClockOffset
     
-    public init(address: Address,
+    public init(address: BluetoothAddress,
                 pscanRepMode: PageScanRepetitionMode,
                 clockOffset: ClockOffset) {
         
@@ -72,7 +72,7 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
         guard data.count == type(of: self).length
             else { return nil }
         
-        self.address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
+        self.address = BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
         
         self.pscanRepMode = PageScanRepetitionMode(rawValue: data[6])
         

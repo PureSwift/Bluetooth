@@ -15,7 +15,7 @@ public extension BluetoothHostControllerInterface {
     /// Create Connection Command
     ///
     /// This command is used to request cancellation of the ongoing connection creation process, which was started by a Create_Connection command of the local BR/EDR Controller.
-    func cancelConnection(address: Address,
+    func cancelConnection(address: BluetoothAddress,
                           timeout: HCICommandTimeout = .default) throws {
         
         let createConnectionCancel = HCICreateConnectionCancel(address: address)
@@ -34,9 +34,9 @@ public struct HCICreateConnectionCancel: HCICommandParameter {
     public static let command = LinkControlCommand.createConnectionCancel
     
     /// BD_ADDR of the Create Connection command request that was issued before and is subject of this cancellation request
-    public var address: Address
+    public var address: BluetoothAddress
     
-    public init(address: Address) {
+    public init(address: BluetoothAddress) {
         
         self.address = address
     }
@@ -59,14 +59,14 @@ public struct HCICreateConnectionCancelReturn: HCICommandReturnParameter {
     
     public let status: HCIStatus
     
-    public var address: Address
+    public var address: BluetoothAddress
     
     public init?(data: Data) {
         
         guard let status = HCIStatus(rawValue: data[0])
             else { return nil }
         
-        let address = Address(littleEndian: Address(bytes: (data[1], data[2], data[3], data[4], data[5], data[6])))
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[1], data[2], data[3], data[4], data[5], data[6])))
         
         self.status = status
         self.address = address

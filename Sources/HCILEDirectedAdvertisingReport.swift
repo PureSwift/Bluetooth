@@ -62,12 +62,12 @@ public struct HCILEDirectedAdvertisingReport: HCIEventParameter {
         
         /// Public Device Address, Random Device Address, Public Identity Address or
         /// Random (static) Identity Address of the advertising device.
-        public let address: Address // Address
+        public let address: BluetoothAddress // Address
         
         public let directAddressType: UInt8
         
         /// Random Device Address
-        public let directAddress: Address // Direct_Address
+        public let directAddress: BluetoothAddress // Direct_Address
         
         /// RSSI
         ///
@@ -87,23 +87,23 @@ public struct HCILEDirectedAdvertisingReport: HCIEventParameter {
             guard let addressType = AddressType(rawValue: data[1])
                 else { return nil }
             
-            let address = Address(littleEndian:
-                Address(bytes: (data[2],
-                                data[3],
-                                data[4],
-                                data[5],
-                                data[6],
-                                data[7])))
+            let address = BluetoothAddress(littleEndian:
+                BluetoothAddress(bytes: (data[2],
+                                         data[3],
+                                         data[4],
+                                         data[5],
+                                         data[6],
+                                         data[7])))
             
             let directAddressType = data[8]
             
-            let directAddress = Address(littleEndian:
-                Address(bytes: (data[9],
-                                data[10],
-                                data[11],
-                                data[12],
-                                data[13],
-                                data[14])))
+            let directAddress = BluetoothAddress(littleEndian:
+                BluetoothAddress(bytes: (data[9],
+                                         data[10],
+                                         data[11],
+                                         data[12],
+                                         data[13],
+                                         data[14])))
             
             let rssiByte = Int8(bitPattern: data[15])
             

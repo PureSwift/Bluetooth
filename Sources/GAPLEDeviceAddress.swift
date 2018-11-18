@@ -25,11 +25,11 @@ public struct GAPLEDeviceAddress: GAPData {
     
     public static let dataType: GAPDataType = .lowEnergyDeviceAddress
     
-    public let address: Address
+    public let address: BluetoothAddress
     
     public let type: GAPLEDeviceAddressType
     
-    public init(address: Address, type: GAPLEDeviceAddressType) {
+    public init(address: BluetoothAddress, type: GAPLEDeviceAddressType) {
         
         self.address = address
         self.type = type
@@ -41,7 +41,7 @@ public struct GAPLEDeviceAddress: GAPData {
             let type = GAPLEDeviceAddressType(rawValue: data[6])
             else { return nil }
         
-        let address = Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
+        let address = BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
         
         self.init(address: address, type: type)
     }

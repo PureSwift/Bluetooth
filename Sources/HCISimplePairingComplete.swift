@@ -19,7 +19,7 @@ public struct HCISimplePairingComplete: HCIEventParameter {
     
     public var status: HCIStatus
     
-    public var address: Address
+    public var address: BluetoothAddress
     
     public init?(data: Data) {
         
@@ -29,7 +29,7 @@ public struct HCISimplePairingComplete: HCIEventParameter {
         guard let status = HCIStatus(rawValue: data[0])
             else { return nil }
         
-        let address = Address(littleEndian: Address(bytes: (data[1], data[2], data[3], data[4], data[5], data[6])))
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[1], data[2], data[3], data[4], data[5], data[6])))
         
         self.status = status
         self.address = address

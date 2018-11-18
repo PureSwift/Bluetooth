@@ -55,7 +55,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
     public var directAddresssType: LowEnergyAddressType // Direct_Address_Type
     
     /// Public Device Address or Random Device Address of the device to be connected.
-    public var directAddress: Address
+    public var directAddress: BluetoothAddress
     
     public var channelMap: BitMaskOptionSet<ChannelMap>
     
@@ -65,7 +65,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
                 advertisingType: AdvertisingType = AdvertisingType(),
                 ownAddressType: LowEnergyAddressType = .public,
                 directAddresssType: LowEnergyAddressType = .public,
-                directAddress: Address = .zero,
+                directAddress: BluetoothAddress = .zero,
                 channelMap: BitMaskOptionSet<ChannelMap> = .all,
                 filterPolicy: FilterPolicy = .any) {
         

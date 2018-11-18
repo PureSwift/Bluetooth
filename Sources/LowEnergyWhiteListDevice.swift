@@ -22,8 +22,8 @@ public enum LowEnergyWhiteListAddressType: UInt8 {
 /// LE White List Device Entry
 public enum LowEnergyWhiteListDevice {
     
-    case `public`(Address)
-    case random(Address)
+    case `public`(BluetoothAddress)
+    case random(BluetoothAddress)
     case anonymous
     
     public var addressType: LowEnergyWhiteListAddressType {
@@ -34,7 +34,7 @@ public enum LowEnergyWhiteListDevice {
         }
     }
     
-    public var address: Address {
+    public var address: BluetoothAddress {
         switch self {
         case let .public(address): return address
         case let .random(address): return address

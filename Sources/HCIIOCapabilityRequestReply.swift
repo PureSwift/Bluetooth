@@ -18,11 +18,11 @@ public extension BluetoothHostControllerInterface {
     /// The Authentication_Requirements parameter shall be set to man-in-the middle (MITM) Protection Required Single Profile, MITM Protection Required – Gen- eral Bonding, or MITM Protection Required – Dedicated Bonding if an authenti- cated link key is required by the Host. The Authentication_Requirements parameter may be set to MITM Protection Not Required - Single Profile, MITM Protection Not Required – General Bonding, or MITM Protection Not Required – Dedicated Bonding if an authenticated link key is not required. If one or both Hosts set the Authentication_Requirements parameter to MITM Protection Required - Single Profile, MITM Protection Required – General Bonding, or MITM Protection Required – Dedicated Bonding, the Link Managers shall use the IO_Capability parameter to determine the authentication procedure. A Host that sets the Authentication_Requirements parameter to MITM Protection Required - Single Profile, MITM Protection Required – General Bonding, or MITM Protection Required – All Profiles shall verify that the resulting Link Key type meets the security requirements.
     /// If both Hosts set the Authentication_Requirements parameter to MITM Protection Not Required - Single Profile, MITM Protection Not Required – General Bonding, or MITM Protection Not Required – Dedicated Bonding, the Link Managers shall use the numeric comparison authentication procedure and the Hosts shall use the Just Works Association Model.
     /// The OOB_Data_Present parameter shall be set to "OOB authentication data from remote device present" if the host has received OOB data from a device with the same BD_ADDR sent in the IO Capability Request event. Otherwise OOB_Data_Present shall be set to "OOB authentication data not present".
-    func ioCapabilityRequestReply(address: Address,
+    func ioCapabilityRequestReply(address: BluetoothAddress,
                                   ioCapability: HCIIOCapabilityRequestReply.IOCapability,
                                   obbDataPresent: HCIIOCapabilityRequestReply.OBBDataPresent,
                                   authenticationRequirements: HCIIOCapabilityRequestReply.AuthenticationRequirements,
-                                  timeout: HCICommandTimeout = .default) throws -> Address {
+                                  timeout: HCICommandTimeout = .default) throws -> BluetoothAddress {
         
         let command = HCIIOCapabilityRequestReply(address: address,
                                                   ioCapability: ioCapability,
@@ -45,7 +45,7 @@ public struct HCIIOCapabilityRequestReply: HCICommandParameter {
     
     public static let command = LinkControlCommand.ioCapabilityRequestReply
     
-    public var address: Address
+    public var address: BluetoothAddress
     
     public var ioCapability: IOCapability
     
@@ -53,7 +53,7 @@ public struct HCIIOCapabilityRequestReply: HCICommandParameter {
     
     public var authenticationRequirements: AuthenticationRequirements
     
-    public init(address: Address,
+    public init(address: BluetoothAddress,
                 ioCapability: IOCapability,
                 obbDataPresent: OBBDataPresent,
                 authenticationRequirements: AuthenticationRequirements) {
@@ -137,14 +137,14 @@ public struct HCIIOCapabilityRequestReplyReturn: HCICommandReturnParameter {
     
     public static let length: Int = 6
     
-    public let address: Address
+    public let address: BluetoothAddress
     
     public init?(data: Data) {
         
         guard data.count == HCIIOCapabilityRequestReplyReturn.length
             else { return nil }
         
-        let address = Address(littleEndian: Address(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         
         self.address = address
     }

@@ -67,7 +67,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
     
     public let peerAddressType: PeerAddressType //Peer_Address_Type
     
-    public let peerAddress: Address // Peer_Address
+    public let peerAddress: BluetoothAddress // Peer_Address
     
     public let advertisingFilterPolicy: AdvertisingFilterPolicy //Advertising_Filter_Policy
     
@@ -91,7 +91,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
                 primaryAdvertisingChannelMap: PrimaryAdvertisingChannelMap,
                 ownAddressType: OwnAddressType,
                 peerAddressType: PeerAddressType,
-                peerAddress: Address,
+                peerAddress: BluetoothAddress,
                 advertisingFilterPolicy: AdvertisingFilterPolicy,
                 advertisingTxPower: LowEnergyTxPower,
                 primaryAdvertisingPhy: PrimaryAdvertisingPhy,

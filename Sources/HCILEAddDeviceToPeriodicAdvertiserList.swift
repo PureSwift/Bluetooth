@@ -16,7 +16,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to add a single device to the Periodic Advertiser list stored in the Controller.
     func addDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                           address: Address,
+                                           address: BluetoothAddress,
                                            advertisingSid: UInt8,
                                            timeout: HCICommandTimeout = .default)  throws {
         
@@ -46,11 +46,11 @@ public struct HCILEAddDeviceToPeriodicAdvertiserList: HCICommandParameter {
     public static let command = HCILowEnergyCommand.addDeviceToPeriodicAdvertiserList //0x0047
     
     public let advertiserAddressType: LowEnergyAdvertiserAddressType
-    public let address: Address
+    public let address: BluetoothAddress
     public let advertisingSid: UInt8
     
     public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                address: Address,
+                address: BluetoothAddress,
                 advertisingSid: UInt8) {
         self.advertiserAddressType = advertiserAddressType
         self.address = address

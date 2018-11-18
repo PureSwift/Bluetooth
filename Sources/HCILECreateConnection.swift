@@ -12,7 +12,7 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    func lowEnergyCreateConnection(address peerAddress: Address,
+    func lowEnergyCreateConnection(address peerAddress: BluetoothAddress,
                                    type peerAddressType: LowEnergyAddressType = .public,
                                    ownAddressType: LowEnergyAddressType = .public,
                                    timeout: HCICommandTimeout = .default) throws -> UInt16 {
@@ -89,7 +89,7 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
     public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
     
     /// Public Device Address or Random Device Address of the device to be connected.
-    public let peerAddress: Address // Peer_Address
+    public let peerAddress: BluetoothAddress // Peer_Address
     
     /// The Link Layer shall set the address in the `CONNECT_REQ` packets
     /// to either the Public Device Address or the Random Device Addressed
@@ -124,7 +124,7 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
                 scanWindow: LowEnergyScanTimeInterval = LowEnergyScanTimeInterval(rawValue: 10)!,
                 initiatorFilterPolicy: InitiatorFilterPolicy = .peerAddress,
                 peerAddressType: LowEnergyAddressType = .public,
-                peerAddress: Address,
+                peerAddress: BluetoothAddress,
                 ownAddressType: LowEnergyAddressType = .public,
                 connectionInterval: LowEnergyConnectionIntervalRange = .full,
                 connectionLatency: LowEnergyConnectionLatency = .zero,

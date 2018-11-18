@@ -15,7 +15,7 @@ public extension BluetoothHostControllerInterface {
     /// Create Connection Command
     ///
     /// This command causes the Link Manager to create a connection to the remote device with the BD_ADDR specified by the command parameters. This command causes the local BR/EDR Controller to begin the Page process to create a link level connection. The Link Manager will determine how the new ACL connection is established. This ACL connection is determined by the current state of the device, its piconet, and the state of the device to be connected.
-    func createConnection(address: Address,
+    func createConnection(address: BluetoothAddress,
                           packetType: UInt16,
                           pageScanRepetitionMode: PageScanRepetitionMode,
                           clockOffset: BitMaskOptionSet<HCICreateConnection.ClockOffset>,
@@ -45,7 +45,7 @@ public struct HCICreateConnection: HCICommandParameter {
     public static let command = LinkControlCommand.createConnection
     
     /// BD_ADDR of the Device to be connected.
-    public var address: Address
+    public var address: BluetoothAddress
     
     /// The Packet_Type command parameter specifies which packet types the Link Manager shall use for the ACL connection. When sending HCI ACL Data Packets the Link Manager shall only use the packet type(s) specified by the Packet_Type command parameter or the always-allowed DM1 packet type. Multiple packet types may be specified for the Packet Type parameter by performing a bit-wise OR operation of the different packet types. The Link Manager may choose which packet type to be used from the list of acceptable packet types.
     public var packetType: UInt16
@@ -62,7 +62,7 @@ public struct HCICreateConnection: HCICommandParameter {
     /// The Allow_Role_Switch parameter specifies if the local device accepts or rejects the request of a master-slave role switch when the remote device requests it at the connection setup (in the Role parameter of the Accept_Connection_Request command) (before the local Controller returns a Connection Complete event).
     public var allowRoleSwitch: AllowRoleSwitch
     
-    public init(address: Address,
+    public init(address: BluetoothAddress,
                 packetType: UInt16,
                 pageScanRepetitionMode: PageScanRepetitionMode,
                 clockOffset: BitMaskOptionSet<ClockOffset>,
