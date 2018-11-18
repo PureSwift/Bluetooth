@@ -22,7 +22,7 @@ import Bluetooth
 
 let uuid128bit = BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")
 let uuid16bit = BluetoothUUID(rawValue: "FEA9")
-let address = Address(rawValue: "00:1A:7D:DA:71:13")
+let address = BluetoothAddress(rawValue: "00:1A:7D:DA:71:13")
 ```
 
 ## Installation
@@ -33,9 +33,21 @@ let address = Address(rawValue: "00:1A:7D:DA:71:13")
 import PackageDescription
 
 let package = Package(
+    name: "hcitool",
+    products: [
+        .executable(name: "hcitool", targets: ["hcitool"])
+    ],
     dependencies: [
-        .Package(url: "https://github.com/PureSwift/Bluetooth.git", majorVersion: 2)
-        ]
+        .package(url: "https://github.com/PureSwift/Bluetooth.git", .branch("master"))
+    ],
+    targets: [
+        .target(
+            name: "hcitool",
+            dependencies: [
+                "Bluetooth"
+            ]
+        )
+    ]
 )
 ```
 
@@ -55,12 +67,14 @@ For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/
 
 - [BluetoothLinux](https://github.com/PureSwift/BluetoothLinux) - Pure Swift Linux Bluetooth Stack
 - [BluetoothDarwin](https://github.com/PureSwift/BluetoothDarwin) - Low Level Swift Bluetooth library for the Darwin kernel
-- [BluetoothAndroid](https://github.com/PureSwift/BluetoothAndroid) - Swift Bluetooth stack for Android
+- [AndroidBluetooth](https://github.com/PureSwift/AndroidBluetooth) - Swift Bluetooth stack for Android
 - [GATT](https://github.com/PureSwift/GATT) - Bluetooth Generic Attribute Profile (GATT) for Swift
-- [SwiftFoundation](https://github.com/PureSwift/SwiftFoundation) - Cross-Platform, Protocol-Oriented Programming base library to complement the Swift Standard Library.
+- [Netlink](https://github.com/PureSwift/Netlink) - Swift library for communicating with Linux Kernel Netlink subsystem (Linux Only) 
+- [DBus](https://github.com/PureSwift/DBus) - Swift library for DBus (Linux Only)
 - [Cacao](https://github.com/PureSwift/Cacao) - Pure Swift Cross-platform UIKit
 - [Silica](https://github.com/PureSwift/Silica) - Pure Swift CoreGraphics (Quartz2D) implementation
 - [Predicate](https://github.com/PureSwift/Predicate) - Pure Swift Predicate implementation 
+- [TLVCoding](https://github.com/PureSwift/TLVCoding) - Swift TLV8 (Type-Length-Value) Encoding library
 
 License
 -------
@@ -69,7 +83,7 @@ License
 
 [swift-badge]: https://img.shields.io/badge/swift-4.1-orange.svg?style=flat
 [swift-url]: https://swift.org
-[platform-badge]: https://img.shields.io/badge/platform-osx%20%7C%20ios%20%7C%20watchos%20%7C%20tvos%20%7C%20linux-lightgrey.svg
+[platform-badge]: https://img.shields.io/badge/platform-osx%20%7C%20ios%20%7C%20watchos%20%7C%20tvos%20%7C%20linux%20%7C%20android-lightgrey.svg
 [platform-url]: https://swift.org
 [mit-badge]: https://img.shields.io/badge/License-MIT-blue.svg?style=flat
 [mit-url]: https://tldrlegal.com/license/mit-license
