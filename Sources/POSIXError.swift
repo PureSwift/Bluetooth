@@ -1,6 +1,6 @@
 //
 //  POSIXError.swift
-//  SwiftFoundation
+//  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 7/22/15.
 //  Copyright © 2015 PureSwift. All rights reserved.

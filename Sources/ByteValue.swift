@@ -1,6 +1,6 @@
 //
-//  ByteValueType.swift
-//  SwiftFoundation
+//  ByteValue.swift
+//  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 7/3/15.
 //  Copyright © 2015 PureSwift. All rights reserved.

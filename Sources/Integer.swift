@@ -1,6 +1,6 @@
 //
 //  Integer.swift
-//  SwiftFoundation
+//  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 8/24/15.
 //  Copyright © 2015 PureSwift. All rights reserved.
