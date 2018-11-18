@@ -1339,7 +1339,6 @@ final class GATTCharacteristicTests: XCTestCase {
                 else { XCTFail("Could not decode from bytes"); return }
             
             XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.description, "1")
         }
         
         XCTAssertEqual(GATTTimeUpdateControlPoint(data: Data([1])), .getReferenceUpdate)

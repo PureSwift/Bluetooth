@@ -13,7 +13,7 @@ import Foundation
  
  - SeeAlso: [Time Broadcast](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_broadcast.xml)
  */
-public struct GATTTimeBroadcast: GATTCharacteristic {
+public struct GATTTimeBroadcast: GATTCharacteristic, Equatable {
     
     internal static let length =
         GATTExactTime256.length + GATTLocalTimeInformation.length + GATTReferenceTimeInformation.length
@@ -59,15 +59,5 @@ public struct GATTTimeBroadcast: GATTCharacteristic {
     public var data: Data {
         
         return time.data + localTime.data + referenceTime.data
-    }
-}
-
-extension GATTTimeBroadcast: Equatable {
-    
-    public static func == (lhs: GATTTimeBroadcast, rhs: GATTTimeBroadcast) -> Bool {
-        
-        return lhs.time == rhs.time &&
-            lhs.localTime == rhs.localTime &&
-            lhs.referenceTime == rhs.referenceTime
     }
 }

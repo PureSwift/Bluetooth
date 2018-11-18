@@ -16,7 +16,7 @@ import Foundation
  
  - SeeAlso: [Time Zone](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_zone.xml)
  */
-public struct GATTTimeZone: RawRepresentable, GATTCharacteristic {
+public struct GATTTimeZone: RawRepresentable, GATTCharacteristic, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt8>.size
     
@@ -61,12 +61,4 @@ public struct GATTTimeZone: RawRepresentable, GATTCharacteristic {
         return Data([byteValue])
     }
     
-}
-
-extension GATTTimeZone: Equatable {
-    
-    public static func == (lhs: GATTTimeZone, rhs: GATTTimeZone) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
 }

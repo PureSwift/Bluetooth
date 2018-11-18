@@ -27,7 +27,7 @@ public protocol GATTCharacteristic {
 
 public enum GATTBeatsPerMinute {
     
-    public struct Byte: BluetoothUnit {
+    public struct Byte: BluetoothUnit, Equatable, Hashable {
         
         internal static let length = MemoryLayout<UInt8>.size
         
@@ -47,15 +47,6 @@ extension GATTBeatsPerMinute.Byte: CustomStringConvertible {
     public var description: String {
         
         return rawValue.description
-    }
-}
-
-extension GATTBeatsPerMinute.Byte: Equatable {
-    
-    public static func == (lhs: GATTBeatsPerMinute.Byte,
-                           rhs: GATTBeatsPerMinute.Byte) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 

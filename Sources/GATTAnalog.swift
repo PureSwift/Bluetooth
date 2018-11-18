@@ -15,7 +15,7 @@ import Foundation
  
  - SeeAlso: [Analog](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.analog.xml)
  */
-public struct GATTAnalog: GATTCharacteristic {
+public struct GATTAnalog: GATTCharacteristic, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt16>.size
     
@@ -40,14 +40,6 @@ public struct GATTAnalog: GATTCharacteristic {
         
         let bytes = analog.littleEndian.bytes
         return Data([bytes.0, bytes.1])
-    }
-}
-extension GATTAnalog: Equatable {
-    
-    public static func == (lhs: GATTAnalog,
-                           rhs: GATTAnalog) -> Bool {
-        
-        return lhs.analog == rhs.analog
     }
 }
 

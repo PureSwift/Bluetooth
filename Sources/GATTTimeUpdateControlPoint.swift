@@ -38,20 +38,3 @@ public enum GATTTimeUpdateControlPoint: UInt8, GATTCharacteristic {
         return Data([rawValue])
     }
 }
-
-extension GATTTimeUpdateControlPoint: Equatable {
-    
-    public static func == (lhs: GATTTimeUpdateControlPoint, rhs: GATTTimeUpdateControlPoint) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GATTTimeUpdateControlPoint: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return rawValue.description
-    }
-    
-}

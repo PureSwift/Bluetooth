@@ -15,7 +15,7 @@ import Foundation
  
  - SeeAlso: [Anaerobic Heart Rate Upper Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.anaerobic_heart_rate_upper_limit.xml)
  */
-public struct GATTAnaerobicHeartRateUpperLimit: GATTCharacteristic {
+public struct GATTAnaerobicHeartRateUpperLimit: GATTCharacteristic, Equatable, Hashable {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
     
@@ -45,15 +45,6 @@ public struct GATTAnaerobicHeartRateUpperLimit: GATTCharacteristic {
         return Data([beats.rawValue])
     }
     
-}
-
-extension GATTAnaerobicHeartRateUpperLimit: Equatable {
-    
-    public static func == (lhs: GATTAnaerobicHeartRateUpperLimit,
-                           rhs: GATTAnaerobicHeartRateUpperLimit) -> Bool {
-        
-        return lhs.beats == rhs.beats
-    }
 }
 
 extension GATTAnaerobicHeartRateUpperLimit: CustomStringConvertible {

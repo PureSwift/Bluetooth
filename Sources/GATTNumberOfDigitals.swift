@@ -12,7 +12,7 @@ import Foundation
 /// GATT Number of Digitals Descriptor
 ///
 /// The Characteristic Number of Digitals descriptor is used for defining the number of digitals in a characteristic.
-public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
+public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable, Equatable, Hashable {
     
     public static let uuid: BluetoothUUID = .numberOfDigitals
     
@@ -43,15 +43,6 @@ public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable {
         return GATT.Descriptor(uuid: type(of: self).uuid,
                                value: data,
                                permissions: [.read])
-    }
-}
-
-extension GATTNumberOfDigitals: Equatable {
-    
-    public static func == (lhs: GATTNumberOfDigitals,
-                           rhs: GATTNumberOfDigitals) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 

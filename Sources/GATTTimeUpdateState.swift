@@ -14,7 +14,7 @@ import Foundation
  - SeeAlso: [Time Update State](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_update_state.xml)
  */
 
-public struct GATTTimeUpdateState: GATTCharacteristic {
+public struct GATTTimeUpdateState: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt8>.size * 2
     
@@ -80,13 +80,5 @@ extension GATTTimeUpdateState {
         
         /// Update not attempted after reset
         case updateNotAttemptedAfterReset = 5
-    }
-}
-
-extension GATTTimeUpdateState: Equatable {
-    
-    public static func == (lhs: GATTTimeUpdateState, rhs: GATTTimeUpdateState) -> Bool {
-        
-        return lhs.currentState == rhs.currentState && lhs.result == rhs.result
     }
 }

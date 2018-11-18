@@ -49,19 +49,10 @@ public enum GATTDstOffset: UInt8, GATTCharacteristic {
     
 }
 
-extension GATTDstOffset: Equatable {
-    
-    public static func == (lhs: GATTDstOffset, rhs: GATTDstOffset) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 extension GATTDstOffset: CustomStringConvertible {
     
     public var description: String {
         
         return rawValue.description
     }
-    
 }

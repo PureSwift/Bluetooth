@@ -13,7 +13,7 @@
 /// and ignored upon receipt.
 ///
 /// If the Characteristic Value is less than an octet, it occupies an entire octet.
-public struct GATTCharacteristicFormatType: RawRepresentable {
+public struct GATTCharacteristicFormatType: RawRepresentable, Equatable, Hashable {
     
     public let length = 1
     
@@ -55,22 +55,6 @@ public struct GATTCharacteristicFormatType: RawRepresentable {
     public static let utf8s: GATTCharacteristicFormatType = 0x19
     public static let utf16s: GATTCharacteristicFormatType = 0x1A
     public static let `struct`: GATTCharacteristicFormatType = 0x1B
-}
-
-extension GATTCharacteristicFormatType: Equatable {
-    
-    public static func == (lhs: GATTCharacteristicFormatType, rhs: GATTCharacteristicFormatType) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GATTCharacteristicFormatType: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
 }
 
 extension GATTCharacteristicFormatType: ExpressibleByIntegerLiteral {

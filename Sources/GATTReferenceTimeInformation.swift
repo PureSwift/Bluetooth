@@ -13,7 +13,7 @@ import Foundation
  
  - SeeAlso: [Reference Time Information](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.reference_time_information.xml)
  */
-public struct GATTReferenceTimeInformation: GATTCharacteristic {
+public struct GATTReferenceTimeInformation: GATTCharacteristic, Equatable {
     
     internal static let length = GATTTimeSource.length + GATTTimeAccuracy.length + 1 + 1
     
@@ -69,40 +69,20 @@ public struct GATTReferenceTimeInformation: GATTCharacteristic {
     }
 }
 
-extension GATTReferenceTimeInformation: Equatable {
-    
-    public static func == (lhs: GATTReferenceTimeInformation, rhs: GATTReferenceTimeInformation) -> Bool {
-        
-        return lhs.timeSource == rhs.timeSource &&
-            lhs.timeAccuracy == rhs.timeAccuracy &&
-            lhs.daysSinceUpdate == rhs.daysSinceUpdate &&
-            lhs.hoursSinceUpdate == rhs.hoursSinceUpdate
-    }
-}
-
 extension GATTReferenceTimeInformation {
     
-    public struct Day: BluetoothUnit {
+    public struct Day: BluetoothUnit, Equatable, Hashable {
         
         public static var unitType: UnitIdentifier { return .day }
         
-        public static let moreDays: Day = 255
+        public static var more: Day { return 255 }
         
-        public let rawValue: UInt8
+        public var rawValue: UInt8
         
         public init(rawValue: UInt8) {
             
             self.rawValue = rawValue
         }
-    }
-    
-}
-
-extension GATTReferenceTimeInformation.Day: Equatable {
-    
-    public static func == (lhs: GATTReferenceTimeInformation.Day, rhs: GATTReferenceTimeInformation.Day) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -112,7 +92,6 @@ extension GATTReferenceTimeInformation.Day: CustomStringConvertible {
         
         return rawValue.description
     }
-    
 }
 
 extension GATTReferenceTimeInformation.Day: ExpressibleByIntegerLiteral {
@@ -121,12 +100,11 @@ extension GATTReferenceTimeInformation.Day: ExpressibleByIntegerLiteral {
         
         self.init(rawValue: value)
     }
-    
 }
 
 extension GATTReferenceTimeInformation {
     
-    public struct Hour: BluetoothUnit {
+    public struct Hour: BluetoothUnit, Equatable, Hashable {
         
         public static var unitType: UnitIdentifier { return .hour }
         
@@ -154,19 +132,10 @@ extension GATTReferenceTimeInformation {
     }
 }
 
-extension GATTReferenceTimeInformation.Hour: Equatable {
-    
-    public static func == (lhs: GATTReferenceTimeInformation.Hour, rhs: GATTReferenceTimeInformation.Hour) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 extension GATTReferenceTimeInformation.Hour: CustomStringConvertible {
     
     public var description: String {
         
         return rawValue.description
     }
-    
 }
