@@ -8,25 +8,6 @@
 
 import Foundation
 
-internal extension Int64 {
-    
-    func toInt() -> Int? {
-        
-        // Can't convert to Int if the stored value is larger than the max value of Int
-        guard self <= Int64(Int.max) else { return nil }
-        
-        return Int(self)
-    }
-}
-
-internal extension Int {
-    
-    func toInt64() -> Int64 {
-        
-        return Int64(self)
-    }
-}
-
 internal extension UInt16 {
     
     /// Initializes value from two bytes.
