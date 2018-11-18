@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Bluetooth address.
 @available(*, deprecated, renamed: "BluetoothAddress")
 public typealias Address = BluetoothAddress
 
@@ -23,10 +24,12 @@ public struct BluetoothAddress: ByteValue {
     
     // MARK: - Properties
     
+    /// Underlying address bytes (host endianess).
     public var bytes: ByteValue
     
     // MARK: - Initialization
     
+    /// Initialize with the specifed bytes (in host endianess).
     public init(bytes: ByteValue = (0, 0, 0, 0, 0, 0)) {
         
         self.bytes = bytes
