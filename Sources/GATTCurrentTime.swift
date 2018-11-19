@@ -64,7 +64,7 @@ extension GATTCurrentTime {
         /// Change of DST (daylight savings time)
         case dstChange = 0b1000
         
-        public static var all: Set<Flag> = [
+        public static let allCases: Set<Flag> = [
             .manualTimeUpdate,
             .externalReference,
             .timeZoneChange,

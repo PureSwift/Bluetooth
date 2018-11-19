@@ -77,9 +77,10 @@ extension HCIDisconnect {
         public static let pairingWithUnitKeyNotSupported: HCIError = .pairingWithUnitKeyNotSupported
         
         /// All the cases of the enum.
-        public static var all: Set<HCIError> = Set([Reason.authenticationFailure,
-                                                Reason.unsupportedRemoteFeature,
-                                                Reason.pairingWithUnitKeyNotSupported]
-                                                + Reason.otherEndTerminatedConnection)
+        public static let allCases: Set<HCIError> = Set([
+            Reason.authenticationFailure,
+            Reason.unsupportedRemoteFeature,
+            Reason.pairingWithUnitKeyNotSupported]
+            + Reason.otherEndTerminatedConnection)
     }
 }

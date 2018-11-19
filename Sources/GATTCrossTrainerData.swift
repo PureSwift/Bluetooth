@@ -687,7 +687,7 @@ public struct GATTCrossTrainerData {
         // Movement Direction
         case movementDirection = 0b1000000000000000
         
-        public static var all: Set<Flag> = [
+        public static let allCases: Set<Flag> = [
             .moreData,
             .averageSpeed,
             .totalDistance,

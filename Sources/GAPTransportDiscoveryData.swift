@@ -152,7 +152,7 @@ public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
         return Data([self.rawValue])
     }
     
-    public static let all: Set<GAPTransportDiscoveryDataFlag> = [
+    public static let allCases: Set<GAPTransportDiscoveryDataFlag> = [
         .seeker,
         .provider,
         .dataIncomplete,

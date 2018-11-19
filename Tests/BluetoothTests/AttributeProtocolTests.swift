@@ -345,7 +345,6 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssert(declaration.valueHandle == 42)
             XCTAssert(declaration.uuid == characteristic.uuid)
-            XCTAssert(declaration.properties.set == Set(characteristic.properties))
             XCTAssert(declaration.properties == characteristic.properties)
         }
     }

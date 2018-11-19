@@ -154,7 +154,7 @@ public extension ClassOfDevice {
         /// Information (WEB-server, WAP-server, ...)
         case information = 0b100_00000000
         
-        public static var all: Set<MajorServiceClass> = [
+        public static let allCases: Set<MajorServiceClass> = [
             .limitedDiscoverable,
             .positioning,
             .networking,
@@ -537,7 +537,7 @@ public extension ClassOfDevice.MinorDeviceClass {
         /// Printer
         case printer = 0b1000
         
-        public static var all: Set<ClassOfDevice.MinorDeviceClass.Imaging> = [
+        public static let allCases: Set<ClassOfDevice.MinorDeviceClass.Imaging> = [
             .uncategorized,
             .display,
             .camera,

@@ -34,7 +34,7 @@ public enum GAPLERole: UInt8, GAPData {
         case central = 0b01
         case peripheral = 0b10
         
-        public static var all: Set<Role> = [.central, .peripheral]
+        public static let allCases: Set<Role> = [.central, .peripheral]
     }
     
     public var supported: BitMaskOptionSet<Role> {

@@ -134,7 +134,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
         /// Enable channel 39 use
         case channel39              = 0b00000100
         
-        public static let all: Set<ChannelMap> = [.channel37, .channel38, .channel39]
+        public static let allCases: Set<ChannelMap> = [.channel37, .channel38, .channel39]
     }
     
     /// Filter Policy

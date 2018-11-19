@@ -213,14 +213,14 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
     case authorized                                 = 0x40
     case noAuthorization                            = 0x80
     
-    public static let all: Set<ATTAttributePermission> = [.read,
-                                                          .write,
-                                                          .readEncrypt,
-                                                          .writeEncrypt,
-                                                          .readAuthentication,
-                                                          .writeAuthentication,
-                                                          .authorized,
-                                                          .noAuthorization]
+    public static let allCases: Set<ATTAttributePermission> = [.read,
+                                                               .write,
+                                                               .readEncrypt,
+                                                               .writeEncrypt,
+                                                               .readAuthentication,
+                                                               .writeAuthentication,
+                                                               .authorized,
+                                                               .noAuthorization]
 }
 
 public extension ATTAttributePermission {

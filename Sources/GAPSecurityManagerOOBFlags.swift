@@ -37,7 +37,7 @@ public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
     /// 0 = Public Address, 1 = Random Address
     case addressType = 0b1000
     
-    public static let all: Set<GAPSecurityManagerOOBFlag> = [
+    public static let allCases: Set<GAPSecurityManagerOOBFlag> = [
         .oobFlagsField,
         .supportedLE,
         .simultaneousLEandBREDR,

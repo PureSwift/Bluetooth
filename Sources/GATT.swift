@@ -77,7 +77,7 @@ public extension GATT {
         
         case extendedProperties     = 0x80
         
-        public static let all: Set<GATT.CharacteristicProperty> = [.broadcast,
+        public static let allCases: Set<GATT.CharacteristicProperty> = [.broadcast,
                                                                    .read,
                                                                    .writeWithoutResponse,
                                                                    .write,

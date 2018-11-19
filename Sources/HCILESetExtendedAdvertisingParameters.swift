@@ -259,7 +259,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
         /// Channel 39 shall be used
         case channel39 = 0b100
         
-        public static var all: Set<PrimaryAdvertisingChannelMap> = [
+        public static let allCases: Set<PrimaryAdvertisingChannelMap> = [
             .channel37,
             .channel38,
             .channel39
@@ -324,7 +324,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
         /// Include TxPower in the extended header of the advertising PDU
         case includeTxPower                                 = 0b1000000
         
-        public static var all: Set<HCILESetExtendedAdvertisingParameters.AdvertisingEventProperties> = [
+        public static let allCases: Set<HCILESetExtendedAdvertisingParameters.AdvertisingEventProperties> = [
             .connectableAdvertising,
             .scannableAdvertising,
             .directedAdvertising,
