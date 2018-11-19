@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-/*
 #if swift(>=4.2)
 #else
 /// A type that provides a collection of all of its values.
@@ -24,4 +23,3 @@ public protocol CaseIterable {
     static var allCases: Self.AllCases { get }
 }
 #endif
-*/

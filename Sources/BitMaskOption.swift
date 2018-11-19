@@ -62,7 +62,7 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
     
     public static var all: BitMaskOptionSet<Element> {
         
-        return BitMaskOptionSet<Element>.init(Element.allCases)
+        return BitMaskOptionSet<Element>(rawValue: Element.allCases.rawValue)
     }
     
     @inline(__always)
