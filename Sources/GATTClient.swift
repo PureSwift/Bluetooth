@@ -36,8 +36,6 @@ public final class GATTClient {
     
     public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
     
-    // Don't modify
-    @usableFromInline
     internal private(set) var connection: ATTConnection
     
     /// Whether the client is currently writing a long value.

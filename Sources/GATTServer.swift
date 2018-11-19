@@ -46,7 +46,6 @@ public final class GATTServer {
     public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
     
     // Don't modify
-    @usableFromInline
     internal let connection: ATTConnection
     
     private var preparedWrites = [PreparedWrite]()
