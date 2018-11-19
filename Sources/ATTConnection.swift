@@ -564,9 +564,7 @@ internal enum ATTResponse <Value: ATTProtocolDataUnit> {
     }
 }
 
-// MARK: - Private Supporting Types
-
-fileprivate final class ATTSendOperation {
+private final class ATTSendOperation {
     
     typealias Response = AnyATTResponse
     
