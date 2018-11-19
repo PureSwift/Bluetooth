@@ -314,7 +314,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         
         case measurementPosition = 0b10000
         
-        public static let all: Set<MeasurementStatus> = [
+        public static let allCases: Set<MeasurementStatus> = [
             .bodyMovement,
             .cuffFit,
             .irregularPulse,

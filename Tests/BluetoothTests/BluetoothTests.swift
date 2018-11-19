@@ -139,9 +139,9 @@ final class BluetoothTests: XCTestCase {
         
         var states = BitMaskOptionSet<LowEnergyState>.all
         XCTAssert(states.isEmpty == false)
-        XCTAssertEqual(states.count, LowEnergyState.all.count)
-        XCTAssert(Set(states) == LowEnergyState.all)
-        states.forEach { XCTAssert(LowEnergyState.all.contains($0)) }
+        XCTAssertEqual(states.count, LowEnergyState.allCases.count)
+        XCTAssert(Set(states) == LowEnergyState.allCases)
+        states.forEach { XCTAssert(LowEnergyState.allCases.contains($0)) }
         
         states.removeAll()
         XCTAssert(states.count == 0)
@@ -191,8 +191,8 @@ final class BluetoothTests: XCTestCase {
         
         featureSet = .all
         XCTAssertFalse(featureSet.isEmpty)
-        XCTAssertEqual(featureSet.count, LowEnergyFeature.all.count)
-        XCTAssertEqual(Set(featureSet), LowEnergyFeature.all)
+        XCTAssertEqual(featureSet.count, LowEnergyFeature.allCases.count)
+        XCTAssertEqual(Set(featureSet), LowEnergyFeature.allCases)
         
         typealias Bit64 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
         let bigEndianByteValue: Bit64 = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01)
@@ -219,7 +219,7 @@ final class BluetoothTests: XCTestCase {
         XCTAssert(rawValue.bigEndian.bytes.7 == bigEndianByteValue.7)
         XCTAssert(UInt64(bigEndian: UInt64(bytes: bigEndianByteValue)) == rawValue)
         
-        featureSet.forEach { XCTAssert(LowEnergyFeature.all.contains($0)) }
+        featureSet.forEach { XCTAssert(LowEnergyFeature.allCases.contains($0)) }
         
         featureSet.removeAll()
         
@@ -257,17 +257,17 @@ final class BluetoothTests: XCTestCase {
         do {
             
             // set conversion
-            let all = BitMaskOptionSet(ATT.AttributePermission.all)
+            let all = BitMaskOptionSet(ATT.AttributePermission.allCases)
             
-            XCTAssert(all.contains(ATT.AttributePermission.all))
-            XCTAssert(all.count == ATT.AttributePermission.all.count)
+            XCTAssert(all.contains(ATT.AttributePermission.allCases))
+            XCTAssert(all.count == ATT.AttributePermission.allCases.count)
             XCTAssert(all.count == 8)
-            XCTAssert(Set(all) == ATT.AttributePermission.all)
+            XCTAssert(Set(all) == ATT.AttributePermission.allCases)
             XCTAssert(all == BitMaskOptionSet<ATT.AttributePermission>.all)
             XCTAssert(all.contains(ATT.AttributePermission.encrypt))
             XCTAssert(all.contains(ATT.AttributePermission.authentication))
             XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(.read) == false)
-            XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(ATT.AttributePermission.all) == false)
+            XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(ATT.AttributePermission.allCases) == false)
         }
         
         do {

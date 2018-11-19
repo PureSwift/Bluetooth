@@ -70,6 +70,6 @@ public extension GATTClientCharacteristicConfiguration {
         /// Indications enabled
         case indicate = 0b10
         
-        public static let all: Set<Configuration> = [.notify, .indicate]
+        public static let allCases: Set<Configuration> = [.notify, .indicate]
     }
 }

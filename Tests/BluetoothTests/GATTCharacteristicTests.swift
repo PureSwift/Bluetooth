@@ -430,7 +430,7 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssert(characteristic.states.contains(.ringer))
         XCTAssert(characteristic.states.contains(.displayAlert))
         XCTAssert(characteristic.states.contains(.vibrate))
-        XCTAssert(characteristic.states.contains(GATTAlertStatus.State.all))
+        XCTAssert(characteristic.states.contains(GATTAlertStatus.State.allCases))
         XCTAssertEqual(characteristic.description, "55")
         XCTAssertEqual(GATTAlertStatus.uuid, .alertStatus)
         XCTAssert(GATTAlertStatus(data: data) == GATTAlertStatus(data: data))

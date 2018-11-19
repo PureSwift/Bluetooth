@@ -97,7 +97,7 @@ public enum GAP3DInformationFlag: UInt8, BitMaskOption {
     
     case factoryTestMode = 0b10000000
     
-    public static let all: Set<GAP3DInformationFlag> = [
+    public static let allCases: Set<GAP3DInformationFlag> = [
         .associationNotification,
         .batteryLevelReporting,
         .sendBatteryLevelOnStartUp,

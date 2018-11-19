@@ -69,7 +69,7 @@ public enum LowEnergyFeature: UInt64, BitMaskOption {
     /// Minimum Number of Used Channels Procedure
     case minimumNumberofUsedChannelsProcedure           = 0b10000000000000000
     
-    public static let all: Set<LowEnergyFeature> = [.encryption,
+    public static let allCases: Set<LowEnergyFeature> = [.encryption,
                                                     .connectionParametersRequestProcedure,
                                                     .extendedRejectIndication,
                                                     .slaveInitiatedFeaturesExchange,

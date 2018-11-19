@@ -33,7 +33,7 @@ public enum LowEnergyState: Int, BitMaskOption {
     
     case connectionSlave                        = 0b1000000000 // LE_STATE_SLAVE_SLAVE 0x0200
     
-    public static let all: Set<LowEnergyState> = [.scannableAdvertising,
+    public static let allCases: Set<LowEnergyState> = [.scannableAdvertising,
                                                   .connectableAdvertising,
                                                   .nonConnectableAdvertising,
                                                   .highDutyCycleDirectedAdvertising,

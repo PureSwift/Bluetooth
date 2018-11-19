@@ -28,7 +28,7 @@ final class GATTDescriptorTests: XCTestCase {
     func testCharacteristicClientConfigurationDescriptor() {
         
         XCTAssertEqual(GATTClientCharacteristicConfiguration().configuration.rawValue, 0)
-        XCTAssertEqual(GATTClientCharacteristicConfiguration.Configuration.all.rawValue, 3)
+        XCTAssertEqual(GATTClientCharacteristicConfiguration.Configuration.allCases.rawValue, 3)
         
         XCTAssertNil(GATTClientCharacteristicConfiguration(data: Data()))
         XCTAssertNil(GATTClientCharacteristicConfiguration(data: Data([0x00])))
@@ -53,7 +53,7 @@ final class GATTDescriptorTests: XCTestCase {
     
     func testCharacteristicExtendedPropertiesDescriptor() {
         XCTAssertEqual(GATTCharacteristicExtendedProperties().properties.rawValue, 0)
-        XCTAssertEqual(GATTCharacteristicExtendedProperties.Property.all.rawValue,3)
+        XCTAssertEqual(GATTCharacteristicExtendedProperties.Property.allCases.rawValue,3)
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data()))
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data([0x00])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data([0x03])))
@@ -80,7 +80,7 @@ final class GATTDescriptorTests: XCTestCase {
     
     func testCharacteristicsServerConfigurationDescriptor() {
         XCTAssertEqual(GATTServerCharacteristicConfiguration().serverConfiguration.rawValue, 0)
-        XCTAssertEqual(GATTServerCharacteristicConfiguration.ServerConfiguration.all.rawValue, 1)
+        XCTAssertEqual(GATTServerCharacteristicConfiguration.ServerConfiguration.allCases.rawValue, 1)
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data()))
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data([0x00, 0x00])))
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data([0x00, 0x01])))

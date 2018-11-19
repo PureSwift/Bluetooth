@@ -135,7 +135,7 @@ public enum GAPIndoorPositioningFlag: UInt8, BitMaskOption {
     /// (0 = Location Name is not present, 1 = Location Name is present)
     case locationName = 0b1000000
     
-    public static let all: Set<GAPIndoorPositioningFlag> = [
+    public static let allCases: Set<GAPIndoorPositioningFlag> = [
         .coordinates,
         .coordinateSystemUsed,
         .txPower,
