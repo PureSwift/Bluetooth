@@ -259,11 +259,21 @@ final class BluetoothTests: XCTestCase {
             // set conversion
             let all = BitMaskOptionSet(ATT.AttributePermission.allCases)
             
+            let expected: Set<ATT.AttributePermission> = [.read,
+                                                          .write,
+                                                          .readEncrypt,
+                                                          .writeEncrypt,
+                                                          .readAuthentication,
+                                                          .writeAuthentication,
+                                                          .authorized,
+                                                          .noAuthorization]
+            
+            XCTAssertEqual(expected, Set(ATT.AttributePermission.allCases))
             XCTAssert(all.contains(ATT.AttributePermission.allCases))
-            XCTAssert(all.count == ATT.AttributePermission.allCases.count)
-            XCTAssert(all.count == 8)
-            XCTAssert(Set(all) == ATT.AttributePermission.allCases)
-            XCTAssert(all == BitMaskOptionSet<ATT.AttributePermission>.all)
+            XCTAssertEqual(all.count, ATT.AttributePermission.allCases.count)
+            XCTAssertEqual(all.count, 8)
+            XCTAssertEqual(Set(all), Set(ATT.AttributePermission.allCases))
+            XCTAssertEqual(all, BitMaskOptionSet<ATT.AttributePermission>.all)
             XCTAssert(all.contains(ATT.AttributePermission.encrypt))
             XCTAssert(all.contains(ATT.AttributePermission.authentication))
             XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(.read) == false)

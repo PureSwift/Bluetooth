@@ -109,7 +109,7 @@ public struct GAPDataDecoder {
                 guard index <= data.count
                     else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
                 
-                value = copyBytes ? data.subdata(in: Range(dataRange)) : data.subdataNoCopy(in: dataRange)
+                value = copyBytes ? data.subdata(in: dataRange) : data.subdataNoCopy(in: dataRange)
                 
             } else {
                 
