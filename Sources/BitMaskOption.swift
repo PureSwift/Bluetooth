@@ -46,7 +46,7 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
     
     public typealias RawValue = Element.RawValue
     
-    public fileprivate(set) var rawValue: RawValue
+    public private(set) var rawValue: RawValue
     
     @inline(__always)
     public init(rawValue: RawValue) {

@@ -17,7 +17,7 @@
 public protocol CaseIterable {
     
     /// A type that can represent a collection of all values of this type.
-    associatedtype AllCases : Collection where Self.AllCases.Element == Self
+    associatedtype AllCases: Collection where Self.AllCases.Element == Self
     
     /// A collection of all values of this type.
     static var allCases: Self.AllCases { get }
