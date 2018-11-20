@@ -125,58 +125,74 @@ extension BluetoothUUID: RawRepresentable {
 
 // MARK: - DataConvertible
 
+internal extension BluetoothUUID {
+    
+    /// Number of bytes to represent Bluetooth UUID.
+    enum Length: Int {
+        
+        case bit16 = 2
+        case bit32 = 4
+        case bit128 = 16
+    }
+    
+    private var length: Length {
+        
+        switch self {
+        case .bit16: return .bit16
+        case .bit32: return .bit32
+        case .bit128: return .bit128
+        }
+    }
+}
+
 public extension BluetoothUUID {
     
    public init?(data: Data) {
+    
+        guard let length = Length(rawValue: data.count)
+            else { return nil }
         
-        switch data.count {
+        switch length {
             
         // 16 bit
-        case 2:
+        case .bit16:
             
             let value = UInt16(bytes: (data[0], data[1]))
-            
             self = .bit16(value)
             
         // 32 bit
-        case 4:
+        case .bit32:
             
             let value = UInt32(bytes: (data[0], data[1], data[2], data[3]))
-            
             self = .bit32(value)
             
         // 128 bit
-        case 16:
+        case .bit128:
             
             let value = UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
-            
             self = .bit128(value)
-            
-        default:
-            
-            return nil
         }
     }
     
     public var data: Data {
         
-        switch self {
-            
-        case let .bit16(value):
-            
-            let bytes = value.bytes
-            
-            return Data(bytes: [bytes.0, bytes.1])
-            
-        case let .bit32(value):
-            
-            let bytes = value.bytes
-            
-            return Data(bytes: [bytes.0, bytes.1, bytes.2, bytes.3])
-            
-        case let .bit128(value):
-            
-            return value.data
+        return Data(self)
+    }
+}
+
+extension BluetoothUUID: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return length.rawValue
+    }
+    
+    static func += (data: inout Data, value: BluetoothUUID) {
+        
+        switch value {
+        case let .bit16(value): data += value
+        case let .bit32(value): data += value
+        case let .bit128(value): data += value
         }
     }
 }
@@ -189,18 +205,9 @@ extension BluetoothUUID: ByteSwap {
     public var byteSwapped: BluetoothUUID {
         
         switch self {
-            
-        case let .bit16(value):
-            
-            return .bit16(value.byteSwapped)
-            
-        case let .bit32(value):
-            
-            return .bit32(value.byteSwapped)
-            
-        case let .bit128(value):
-            
-            return .bit128(value.byteSwapped)
+        case let .bit16(value): return .bit16(value.byteSwapped)
+        case let .bit32(value): return .bit32(value.byteSwapped)
+        case let .bit128(value): return .bit128(value.byteSwapped)
         }
     }
 }
@@ -338,29 +345,29 @@ public extension Foundation.UUID {
     }
 }
 
-// MARK: - CoreBluetooth Conversion
+// MARK: - CoreBluetooth
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+#if canImport(CoreBluetooth)
+
+import CoreBluetooth
+
+public extension BluetoothUUID {
     
-    import CoreBluetooth
-    
-    public extension BluetoothUUID {
+    public init(coreBluetooth: CBUUID) {
         
-        public init(coreBluetooth: CBUUID) {
-                        
-            guard let uuid = BluetoothUUID(data: coreBluetooth.data)
-                else { fatalError("Could not create Bluetooth UUID from \(coreBluetooth)") }
-            
-            // CBUUID is always big endian
-            self.init(bigEndian: uuid)
-        }
+        guard let uuid = BluetoothUUID(data: coreBluetooth.data)
+            else { fatalError("Could not create Bluetooth UUID from \(coreBluetooth)") }
         
-        public func toCoreBluetooth() -> CBUUID {
-            
-            let coreBluetooth = CBUUID(data: self.bigEndian.data)
-            
-            return coreBluetooth
-        }
+        // CBUUID is always big endian
+        self.init(bigEndian: uuid)
     }
+    
+    public func toCoreBluetooth() -> CBUUID {
+        
+        let coreBluetooth = CBUUID(data: self.bigEndian.data)
+        
+        return coreBluetooth
+    }
+}
     
 #endif
