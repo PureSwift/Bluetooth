@@ -27,10 +27,15 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
     
     public init(startHandle: UInt16, endHandle: UInt16, attributeType: BluetoothUUID) {
         
+        assert(attributeType.length != .bit32, "32-bit UUID not supported")
+        
         self.startHandle = startHandle
         self.endHandle = endHandle
         self.attributeType = attributeType
     }
+}
+
+public extension ATTReadByTypeRequest {
     
     public init?(data: Data) {
         
@@ -43,7 +48,6 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
             else { return nil }
         
         self.startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
         self.endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         
         switch length {
@@ -51,7 +55,6 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
         case .uuid16:
             
             let value = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
-            
             self.attributeType = .bit16(value)
             
         case .uuid128:
@@ -62,14 +65,25 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
     
     public var data: Data {
         
-        let startHandleBytes = startHandle.littleEndian.bytes
-        let endHandleBytes = endHandle.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTReadByTypeRequest: DataConvertible {
+    
+    var dataLength: Int {
         
-        return Data([type(of: self).attributeOpcode.rawValue,
-                     startHandleBytes.0,
-                     startHandleBytes.1,
-                     endHandleBytes.0,
-                     endHandleBytes.1]) + attributeType.littleEndian.data
+        return length.rawValue
+    }
+    
+    static func += (data: inout Data, value: ATTReadByTypeRequest) {
+        
+        data += type(of: value).attributeOpcode.rawValue
+        data += value.startHandle.littleEndian
+        data += value.endHandle.littleEndian
+        data += value.attributeType.littleEndian
     }
 }
 
@@ -81,5 +95,14 @@ internal extension ATTReadByTypeRequest {
         
         case uuid16     = 7
         case uuid128    = 21
+    }
+    
+    private var length: Length {
+        
+        switch attributeType {
+        case .bit16: return .uuid16
+        case .bit128: return .uuid128
+        case .bit32: fatalError() // FIXME: Do not allow 32-bit UUID for Blueooth LE
+        }
     }
 }

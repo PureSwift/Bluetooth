@@ -135,7 +135,7 @@ internal extension BluetoothUUID {
         case bit128 = 16
     }
     
-    private var length: Length {
+    internal var length: Length {
         
         switch self {
         case .bit16: return .bit16

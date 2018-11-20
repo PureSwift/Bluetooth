@@ -28,11 +28,11 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit, Equatable {
 public extension ATTFindInformationResponse {
     
     /// Length ranges from 6, to the maximum MTU size.
-    internal static let length = 6
+    private static var minimumLength: Int { return 6 }
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         let attributeOpcodeByte = data[0]
