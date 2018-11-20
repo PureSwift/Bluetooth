@@ -27,11 +27,16 @@ extension Data {
 }
 
 /// Internal Data casting protocol
-internal protocol UnsafeDataConvertible { }
+internal protocol UnsafeDataConvertible: DataConvertible { }
 
 extension UnsafeDataConvertible {
+    
+    var dataLength: Int {
+        return MemoryLayout<Self>.size
+    }
+    
     /// Append data representation into buffer.
-    public static func += (lhs: inout Data, rhs: Self) {
+    static func += (lhs: inout Data, rhs: Self) {
         var value = rhs
         lhs.append(UnsafeBufferPointer(start: &value, count: 1))
     }

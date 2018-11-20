@@ -16,9 +16,6 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.findByTypeResponse
     
-    /// Minimum length.
-    internal static let length = 1 + HandlesInformation.length
-    
     /// A list of 1 or more Handle Informations.
     public var handles: [HandlesInformation]
     
@@ -35,10 +32,16 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
         assert(handles.isEmpty == false, "Must have at least one HandlesInformation")
         self.handles = handles
     }
+}
+
+public extension ATTFindByTypeResponse {
+    
+    /// Minimum length.
+    internal static var minimumLength: Int { return 1 + HandlesInformation.length }
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -55,41 +58,35 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
         
         let handleCount = handleBytesCount / handleLength
         
-        // preallocate handles for better performance
-        var handles = [HandlesInformation]()
-        handles.reserveCapacity(handleCount)
-        
-        for index in 0 ..< handleCount {
+        let handleIndices = (0 ..< handleCount)
+        let handles = handleIndices.map { (index: Int) -> HandlesInformation in
             
             let byteIndex = (index * handleLength) + 1
-            
-            let handleBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + handleLength)
-            
-            guard let handle = HandlesInformation(data: handleBytes)
-                else { return nil }
-            
-            handles.append(handle)
+            return HandlesInformation(data.subdataNoCopy(in: byteIndex ..< byteIndex + handleLength))
         }
         
         self.init(handles: handles)
     }
     
-    internal var dataLength: Int {
+    public var data: Data {
+        
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTFindByTypeResponse: DataConvertible {
+    
+    var dataLength: Int {
         
         return 1 + (handles.count * HandlesInformation.length)
     }
     
-    internal func encode(to data: inout Data) {
+    static func += (data: inout Data, value: ATTFindByTypeResponse) {
         
-        data += type(of: self).attributeOpcode.rawValue
-        handles.forEach { $0.encode(to: &data) }
-    }
-    
-    public var data: Data {
-        
-        var data = Data(capacity: dataLength)
-        encode(to: &data)
-        return data
+        data += type(of: value).attributeOpcode.rawValue
+        value.handles.forEach { data += $0 }
     }
 }
 
@@ -103,8 +100,6 @@ public extension ATTFindByTypeResponse {
     /// and attribute value from the *Find By Type Value Request*.
     public struct HandlesInformation: Equatable {
         
-        internal static let length = 2 + 2
-        
         /// Found Attribute Handle
         public var foundAttribute: UInt16
         
@@ -117,32 +112,38 @@ public extension ATTFindByTypeResponse {
             self.foundAttribute = foundAttribute
             self.groupEnd = groupEnd
         }
+    }
+}
+
+internal extension ATTFindByTypeResponse.HandlesInformation {
+    
+    internal static var length: Int { return 2 + 2 }
+    
+    internal init?(data: Data) {
         
-        internal init?(data: Data) {
-            
-            guard data.count == type(of: self).length
-                else { return nil }
-            
-            self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-            self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
-        }
+        guard data.count == type(of: self).length
+            else { return nil }
         
-        internal var dataLength: Int {
-            
-            return type(of: self).length
-        }
+        self.init(data)
+    }
+    
+    fileprivate init(_ data: Data) {
         
-        internal func encode(to data: inout Data) {
-            
-            data += foundAttribute.littleEndian
-            data += groupEnd.littleEndian
-        }
+        self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
+    }
+}
+
+extension ATTFindByTypeResponse.HandlesInformation: DataConvertible {
+    
+    var dataLength: Int {
         
-        internal var data: Data {
-            
-            var data = Data(capacity: dataLength)
-            encode(to: &data)
-            return data
-        }
+        return type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: ATTFindByTypeResponse.HandlesInformation) {
+        
+        data += value.foundAttribute.littleEndian
+        data += value.groupEnd.littleEndian
     }
 }
