@@ -18,8 +18,6 @@ public struct ATTMaximumTransmissionUnit: RawRepresentable, Equatable, Hashable 
             else { return nil }
         
         self.rawValue = rawValue
-        
-        assert(isValid)
     }
     
     fileprivate init(_ unsafe: UInt16) {

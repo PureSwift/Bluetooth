@@ -645,20 +645,20 @@ public final class GATTServer {
         
         typealias Handle = ATTFindByTypeResponse.HandlesInformation
         
-        let opcode = type(of: pdu).attributeOpcode
-        
         log?("Find By Type Value (\(pdu.startHandle) - \(pdu.endHandle)) (\(pdu.attributeType))")
         
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(opcode, .invalidHandle); return }
+            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(opcode, .invalidHandle, pdu.startHandle); return }
+            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
         
-        let handles = database.findByTypeValue(handle: (pdu.startHandle, pdu.endHandle), type: pdu.attributeType, value: pdu.attributeValue)
+        let handles = database.findByTypeValue(handle: (pdu.startHandle, pdu.endHandle),
+                                               type: pdu.attributeType,
+                                               value: pdu.attributeValue)
         
         guard handles.isEmpty == false
-            else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
+            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
         
         let response = ATTFindByTypeResponse(handles)
         
