@@ -16,21 +16,20 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATT.Opcode.readByTypeResponse
     
-    /// Minimum length
-    internal static let length = 1 + 1 + AttributeData.length
-    
     /// A list of Attribute Data.
     public let attributeData: [AttributeData]
     
     public init?(attributeData: [AttributeData]) {
         
         // must have at least one attribute data
-        guard attributeData.isEmpty == false else { return nil }
+        guard attributeData.isEmpty == false
+            else { return nil }
         
         let length = attributeData[0].value.count
         
         // length must be at least 3 bytes
-        guard length >= AttributeData.length else { return nil }
+        guard length >= AttributeData.minimumLength
+            else { return nil }
         
         // validate the length of each pair
         for pair in attributeData {
@@ -46,10 +45,16 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
         
         self.attributeData = unsafe
     }
+}
+
+public extension ATTReadByTypeResponse {
+    
+    /// Minimum length
+    private static let minimumLength = 1 + 1 + AttributeData.minimumLength
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -61,9 +66,13 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
         
         let attributeDataByteCount = data.count - 2
         
-        guard attributeDataByteCount % attributeDataLength == 0 else { return nil }
+        guard attributeDataByteCount % attributeDataLength == 0
+            else { return nil }
         
         let attributeDataCount = attributeDataByteCount / attributeDataLength
+        
+        guard attributeDataCount >= 1
+            else { return nil }
         
         var attributeData = [AttributeData]()
         attributeData.reserveCapacity(attributeDataCount)
@@ -85,14 +94,31 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public var data: Data {
         
-        let valueLength = UInt8(2 + attributeData[0].value.count)
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTReadByTypeResponse: DataConvertible {
+    
+    static func dataLength <T: Collection> (for attributes: T) -> Int where T.Element == AttributeData {
         
-        var data = Data(capacity: 2 + (attributeData.count * Int(valueLength)))
-        data += type(of: self).attributeOpcode.rawValue
-        data += valueLength
-        attributeData.forEach { data += $0.data }
+        assert(attributes.isEmpty == false)
         
-        return data
+        return attributes.reduce(2, { $0 + $1.dataLength })
+    }
+    
+    var dataLength: Int {
+        
+        return type(of: self).dataLength(for: attributeData)
+    }
+    
+    static func += (data: inout Data, value: ATTReadByTypeResponse) {
+        
+        data += type(of: value).attributeOpcode.rawValue
+        data += UInt8(value.attributeData[0].dataLength)
+        value.attributeData.forEach { data += $0 }
     }
 }
 
@@ -103,47 +129,50 @@ public extension ATTReadByTypeResponse {
     /// Attribute handle and value pair.
     public struct AttributeData: Equatable {
         
-        /// Minimum length.
-        internal static let length = 2
-        
         /// Attribute Handle
-        public var handle: UInt16
+        public let handle: UInt16
         
         /// Attribute Value
-        public var value: Data
+        public let value: Data
+    }
+}
+
+internal extension ATTReadByTypeResponse.AttributeData {
+    
+    /// Minimum length.
+    internal static var minimumLength: Int { return 2 }
+    
+    init?(data: Data) {
         
-        public init(handle: UInt16,
-                    value: Data) {
-            
-            self.handle = handle
-            self.value = value
-        }
+        guard data.count >= type(of: self).minimumLength
+            else { return nil }
         
-        internal init?(data: Data) {
-            
-            guard data.count >= AttributeData.length
-                else { return nil }
-            
-            self.handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-            
-            if data.count > AttributeData.length {
-                
-                let startingIndex = AttributeData.length
-                
-                self.value = Data(data.suffix(from: startingIndex))
-                
-            } else {
-                
-                self.value = Data()
-            }
-        }
+        self.init(data)
+    }
+    
+    fileprivate init(_ data: Data) {
         
-        internal var data: Data {
-            
-            var data = Data(capacity: 2 + value.count)
-            data += handle.littleEndian
-            data += value
-            return data
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        
+        if data.count > type(of: self).minimumLength {
+            let startingIndex = type(of: self).minimumLength
+            self.value = Data(data.suffix(from: startingIndex))
+        } else {
+            self.value = Data()
         }
+    }
+}
+
+extension ATTReadByTypeResponse.AttributeData: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return type(of: self).minimumLength + value.count
+    }
+    
+    static func += (data: inout Data, value: ATTReadByTypeResponse.AttributeData) {
+        
+        data += value.handle.littleEndian
+        data += value.value
     }
 }

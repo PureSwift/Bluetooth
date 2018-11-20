@@ -505,8 +505,6 @@ public final class GATTServer {
         
         typealias AttributeData = ATTReadByTypeResponse.AttributeData
         
-        let opcode = type(of: pdu).attributeOpcode
-        
         if let log = self.log {
             
             let typeText: String
@@ -524,49 +522,57 @@ public final class GATTServer {
         }
         
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(opcode, .invalidHandle); return }
+            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(opcode, .invalidHandle, pdu.startHandle); return }
+            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
         
-        let attributes = database.readByType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.attributeType)
+        let attributeData = database
+            .readByType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.attributeType)
+            .map { AttributeData(handle: $0.handle, value: $0.value) }
         
-        guard attributes.isEmpty == false
-            else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
+        guard let firstAttribute = attributeData.first
+            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
         
-        let attributeData = attributes.map { AttributeData(handle: $0.handle, value: $0.value) }
+        let mtu = Int(connection.maximumTransmissionUnit.rawValue)
         
-        var limitedAttributes = [attributeData[0]]
+        let response: ATTReadByTypeResponse
         
-        var response = ATTReadByTypeResponse(limitedAttributes)
-        
-        // limit for MTU if first handle is too large
-        if response.data.count > Int(connection.maximumTransmissionUnit.rawValue) {
+        // truncate data for MTU if first handle is too large
+        if ATTReadByTypeResponse([firstAttribute]).dataLength > mtu {
             
-            let maxLength = min(min(Int(connection.maximumTransmissionUnit.rawValue) - 4, 253), limitedAttributes[0].value.count)
+            let maxLength = min(min(mtu - 4, 253), firstAttribute.value.count)
             
-            limitedAttributes[0].value = Data(limitedAttributes[0].value.prefix(maxLength))
+            let truncatedAttribute = AttributeData(handle: firstAttribute.handle,
+                                                   value: Data(firstAttribute.value.prefix(maxLength)))
             
-            response = ATTReadByTypeResponse(limitedAttributes)
+            response = ATTReadByTypeResponse([truncatedAttribute])
             
         } else {
             
-            // limit for MTU for subsequential attribute handles
-            for data in attributeData[1 ..< attributeData.count] {
+            var count = 1
+            
+            // multiple items
+            if attributeData.count > 1 {
                 
-                limitedAttributes.append(data)
-                
-                guard let limitedResponse = ATTReadByTypeResponse(attributeData: limitedAttributes)
-                    else { fatalErrorResponse("Could not create ATTReadByTypeResponse. Attribute Data: \(attributeData)", opcode, pdu.startHandle) }
-                
-                guard limitedResponse.data.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
-                
-                response = limitedResponse
+                for index in 1 ..< attributeData.count {
+                    
+                    let newCount = index + 1
+                    
+                    guard ATTReadByTypeResponse.dataLength(for: attributeData.prefix(newCount)) <= mtu
+                        else { break }
+                    
+                    count = newCount
+                }
             }
+            
+            let limitedAttributes = Array(attributeData.prefix(count))
+            
+            response = ATTReadByTypeResponse(limitedAttributes)
         }
         
-        assert(response.data.count <= Int(connection.maximumTransmissionUnit.rawValue),
-               "Response \(response.data.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
+        assert(response.data.count <= mtu,
+               "Response \(response.data.count) bytes > MTU (\(mtu))")
         
         respond(response)
     }
