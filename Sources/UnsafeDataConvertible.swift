@@ -25,9 +25,3 @@ extension UInt16: UnsafeDataConvertible { }
 extension UInt32: UnsafeDataConvertible { }
 extension UInt64: UnsafeDataConvertible { }
 extension UInt128: UnsafeDataConvertible { }
-
-extension String: UnsafeDataConvertible {
-    public static func += (lhs: inout Data, rhs: String) {
-        lhs.append(contentsOf: rhs.utf8)
-    }
-}

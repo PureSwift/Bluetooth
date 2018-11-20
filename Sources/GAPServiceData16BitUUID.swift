@@ -12,13 +12,16 @@ import Foundation
 ///
 /// Size: 2 or more octets
 /// The first 2 octets contain the 16 bit Service UUID followed by additional service data
-public struct GAPServiceData16BitUUID: GAPData {
+public struct GAPServiceData16BitUUID: GAPData, Equatable {
     
     internal static let uuidLength = MemoryLayout<UInt16>.size
     
     public static let dataType: GAPDataType = .serviceData16BitUUID
     
+    /// UUID
     public let uuid: UInt16
+    
+    /// Service Data
     public let serviceData: Data
     
     public init(uuid: UInt16, serviceData: Data = Data()) {
@@ -45,14 +48,6 @@ public struct GAPServiceData16BitUUID: GAPData {
         data += serviceData
         
         return data
-    }
-}
-
-extension GAPServiceData16BitUUID: Equatable {
-    
-    public static func == (lhs: GAPServiceData16BitUUID, rhs: GAPServiceData16BitUUID) -> Bool {
-        
-        return lhs.uuid == rhs.uuid && lhs.serviceData == rhs.serviceData
     }
 }
 
