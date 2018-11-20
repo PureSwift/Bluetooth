@@ -16,9 +16,6 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit, Equatable {
     
     public static let attributeOpcode = ATTOpcode.findInformationResponse
     
-    /// Length ranges from 6, to the maximum MTU size.
-    internal static let length = 6
-    
     /// The information data whose format is determined by the Format field.
     public var attributeData: AttributeData
     
@@ -26,6 +23,12 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit, Equatable {
         
         self.attributeData = attributeData
     }
+}
+
+public extension ATTFindInformationResponse {
+    
+    /// Length ranges from 6, to the maximum MTU size.
+    internal static let length = 6
     
     public init?(data: Data) {
         
@@ -46,8 +49,24 @@ public struct ATTFindInformationResponse: ATTProtocolDataUnit, Equatable {
     
     public var data: Data {
         
-        // first 2 bytes are opcode and format
-        return Data([type(of: self).attributeOpcode.rawValue, attributeData.format.rawValue]) + attributeData.data
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTFindInformationResponse: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return 1 + 1 + attributeData.dataLength
+    }
+    
+    static func += (data: inout Data, value: ATTFindInformationResponse) {
+        
+        data += type(of: value).attributeOpcode.rawValue
+        data += value.attributeData.format.rawValue
+        data += value.attributeData
     }
 }
 
@@ -82,10 +101,31 @@ public extension ATTFindInformationResponse {
     }
 }
 
+internal protocol FindInformationResponseAttribute {
+    
+    associatedtype UUID
+    
+    /// Attribute Format
+    static var format: ATTFindInformationResponse.Format { get }
+    
+    /// Attribute Handle
+    var handle: UInt16 { get }
+    
+    /// Attribute UUID
+    var uuid: UUID { get }
+}
+
+extension FindInformationResponseAttribute where UUID: UnsafeDataConvertible {
+    
+    var dataLength: Int {
+        return Self.format.length
+    }
+}
+
 public extension ATTFindInformationResponse {
     
     /// 16 Bit Attribute
-    public struct Attribute16Bit: Equatable {
+    public struct Attribute16Bit: Equatable, Hashable, FindInformationResponseAttribute {
         
         internal static var format: Format { return .bit16 }
         
@@ -95,9 +135,21 @@ public extension ATTFindInformationResponse {
         /// Attribute UUID
         public let uuid: UInt16
     }
+}
+
+extension ATTFindInformationResponse.Attribute16Bit: DataConvertible {
+    
+    static func += (data: inout Data, value: ATTFindInformationResponse.Attribute16Bit) {
+        
+        data += value.handle.littleEndian
+        data += value.uuid.littleEndian
+    }
+}
+
+public extension ATTFindInformationResponse {
     
     /// 128 Bit Attribute
-    public struct Attribute128Bit: Equatable {
+    public struct Attribute128Bit: Equatable, Hashable, FindInformationResponseAttribute {
         
         internal static var format: Format { return .bit128 }
         
@@ -106,6 +158,15 @@ public extension ATTFindInformationResponse {
         
         /// Attribute UUID
         public let uuid: UInt128
+    }
+}
+
+extension ATTFindInformationResponse.Attribute128Bit: DataConvertible {
+    
+    static func += (data: inout Data, value: ATTFindInformationResponse.Attribute128Bit) {
+        
+        data += value.handle.littleEndian
+        data += value.uuid.littleEndian
     }
 }
 
@@ -177,30 +238,28 @@ public extension ATTFindInformationResponse {
             case .bit128: self = .bit128(bit128Pairs)
             }
         }
+    }
+}
+
+extension ATTFindInformationResponse.AttributeData: DataConvertible {
+    
+    var dataLength: Int {
         
-        public var data: Data {
-            
-            var data = Data()
-            
-            switch self {
-            case let .bit16(value):
-                data.reserveCapacity(value.count * type(of: value).Element.format.length)
-                for pair in value {
-                    let handleBytes = pair.handle.littleEndian.bytes
-                    let uuidBytes = pair.uuid.littleEndian.bytes
-                    data += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1]
-                }
-                
-            case let .bit128(value):
-                data.reserveCapacity(value.count * type(of: value).Element.format.length)
-                for pair in value {
-                    let handleBytes = pair.handle.littleEndian.bytes
-                    let uuidBytes = pair.uuid.littleEndian.bytes
-                    data += [handleBytes.0, handleBytes.1, uuidBytes.0, uuidBytes.1, uuidBytes.2, uuidBytes.3, uuidBytes.4, uuidBytes.5, uuidBytes.6, uuidBytes.7, uuidBytes.8, uuidBytes.9, uuidBytes.10, uuidBytes.11, uuidBytes.12, uuidBytes.13, uuidBytes.14, uuidBytes.15]
-                }
-            }
-            
-            return data
+        switch self {
+        case let .bit16(attributes):
+            return ATTFindInformationResponse.Format.bit16.length * attributes.count
+        case let .bit128(attributes):
+            return ATTFindInformationResponse.Format.bit128.length * attributes.count
+        }
+    }
+    
+    static func += (data: inout Data, value: ATTFindInformationResponse.AttributeData) {
+        
+        switch value {
+        case let .bit16(attributes):
+            attributes.forEach { data += $0 }
+        case let .bit128(attributes):
+            attributes.forEach { data += $0 }
         }
     }
 }

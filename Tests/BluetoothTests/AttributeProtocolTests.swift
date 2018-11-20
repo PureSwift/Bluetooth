@@ -574,7 +574,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
             XCTAssertEqual(pdu.data, data)
-            XCTAssertEqual(pdu.attributeData.data, foundData.data)
+            XCTAssertEqual(Data(pdu.attributeData), Data(foundData))
             XCTAssertEqual("\(pdu.attributeData)", "\(foundData)")
             XCTAssertEqual(pdu.attributeData.count, 1)
         }
