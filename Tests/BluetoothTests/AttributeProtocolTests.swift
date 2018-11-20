@@ -286,8 +286,8 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.data, data)
             
-            guard let foundHandle = pdu.handlesInformationList.first,
-                pdu.handlesInformationList.count == 1
+            guard let foundHandle = pdu.handles.first,
+                pdu.handles.count == 1
                 else { XCTFail("Invalid response"); return }
             
             XCTAssertEqual(foundHandle, ATTFindByTypeResponse.HandlesInformation(foundAttribute: 40, groupEnd: 48))

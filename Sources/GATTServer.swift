@@ -660,9 +660,7 @@ public final class GATTServer {
         guard handles.isEmpty == false
             else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
         
-        let handlesInformation = handles.map { Handle(foundAttribute: $0, groupEnd: $1) }
-        
-        let response = ATTFindByTypeResponse(handlesInformationList: handlesInformation)
+        let response = ATTFindByTypeResponse(handles)
         
         respond(response)
     }
@@ -913,11 +911,13 @@ internal extension GATTDatabase {
         return attributes.filter { range.contains($0.handle) }
     }
     
-    func findByTypeValue(handle: (start: UInt16, end: UInt16), type: UInt16, value: Data) -> [(UInt16, UInt16)] {
+    func findByTypeValue(handle: (start: UInt16, end: UInt16), type: UInt16, value: Data) -> [ATTFindByTypeResponse.HandlesInformation] {
+        
+        typealias HandleInformation = ATTFindByTypeResponse.HandlesInformation
         
         let range = handle.end < UInt16.max ? Range(handle.start ... handle.end) : handle.start ..< handle.end
         
-        var results = [(UInt16, UInt16)]()
+        var results = [HandleInformation]()
         
         for group in attributeGroups {
             
@@ -929,7 +929,7 @@ internal extension GATTDatabase {
                 
                 guard match else { continue }
                 
-                results.append((group.startHandle, group.endHandle))
+                results.append(HandleInformation(foundAttribute: group.startHandle, groupEnd: group.endHandle))
             }
         }
         

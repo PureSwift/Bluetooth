@@ -24,9 +24,15 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public init?(handles: [HandlesInformation]) {
         
-        guard handles.isEmpty
+        guard handles.isEmpty == false
             else { return nil }
         
+        self.handles = handles
+    }
+    
+    internal init(_ handles: [HandlesInformation]) {
+        
+        assert(handles.isEmpty == false, "Must have at least one HandlesInformation")
         self.handles = handles
     }
     
@@ -68,13 +74,21 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
         self.init(handles: handles)
     }
     
+    internal var dataLength: Int {
+        
+        return 1 + (handles.count * HandlesInformation.length)
+    }
+    
+    internal func encode(to data: inout Data) {
+        
+        data += type(of: self).attributeOpcode.rawValue
+        handles.forEach { $0.encode(to: &data) }
+    }
+    
     public var data: Data {
         
-        // preallocate memory to avoid performance penalty by increasing buffer
-        var data = Data(capacity: handles.count * HandlesInformation.length)
-        data += type(of: self).attributeOpcode.rawValue
-        handles.forEach { data += $0.data }
-        
+        var data = Data(capacity: dataLength)
+        encode(to: &data)
         return data
     }
 }
@@ -113,11 +127,21 @@ public extension ATTFindByTypeResponse {
             self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
         }
         
-        internal var data: Data {
+        internal var dataLength: Int {
             
-            var data = Data(capacity: type(of: self).length)
+            return type(of: self).length
+        }
+        
+        internal func encode(to data: inout Data) {
+            
             data += foundAttribute.littleEndian
             data += groupEnd.littleEndian
+        }
+        
+        internal var data: Data {
+            
+            var data = Data(capacity: dataLength)
+            encode(to: &data)
             return data
         }
     }

@@ -741,10 +741,10 @@ public final class GATTClient {
                 else { fatalError("Should have UUID specified") }
             
             // pre-allocate array
-            operation.foundData.reserveCapacity(operation.foundData.count + pdu.handlesInformationList.count)
+            operation.foundData.reserveCapacity(operation.foundData.count + pdu.handles.count)
             
             // store PDU values
-            for serviceData in pdu.handlesInformationList {
+            for serviceData in pdu.handles {
                 
                 let service = Service(uuid: serviceUUID,
                                       type: operation.type,
@@ -755,7 +755,7 @@ public final class GATTClient {
             }
             
             // get more if possible
-            let lastEnd = pdu.handlesInformationList.last?.groupEnd ?? 0x00
+            let lastEnd = pdu.handles.last?.groupEnd ?? 0x00
             
             guard lastEnd < .max // End of database
                 else { operation.success(); return }
