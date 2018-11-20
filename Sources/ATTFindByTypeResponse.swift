@@ -20,13 +20,14 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
     internal static let length = 1 + HandlesInformation.length
     
     /// A list of 1 or more Handle Informations.
-    public var handlesInformationList: [HandlesInformation]
+    public var handles: [HandlesInformation]
     
-    public init(handlesInformationList: [HandlesInformation]) {
+    public init?(handles: [HandlesInformation]) {
         
-        precondition(handlesInformationList.isEmpty == false, "Must have at least one HandlesInformation")
+        guard handles.isEmpty
+            else { return nil }
         
-        self.handlesInformationList = handlesInformationList
+        self.handles = handles
     }
     
     public init?(data: Data) {
@@ -64,15 +65,15 @@ public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
             handles.append(handle)
         }
         
-        self.handlesInformationList = handles
+        self.init(handles: handles)
     }
     
     public var data: Data {
         
         // preallocate memory to avoid performance penalty by increasing buffer
-        var data = Data(capacity: handlesInformationList.count * HandlesInformation.length)
+        var data = Data(capacity: handles.count * HandlesInformation.length)
         data += type(of: self).attributeOpcode.rawValue
-        handlesInformationList.forEach { data += $0.data }
+        handles.forEach { data += $0.data }
         
         return data
     }
