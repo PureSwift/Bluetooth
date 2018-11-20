@@ -14,8 +14,7 @@ import Foundation
 /// This allows a client to discover the list of attributes and their types on a server.
 public struct ATTFindInformationRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.findInformationRequest
-    internal static let length = 5
+    public static var attributeOpcode: ATT.Opcode { return .findInformationRequest }
     
     public var startHandle: UInt16
     
@@ -26,6 +25,11 @@ public struct ATTFindInformationRequest: ATTProtocolDataUnit, Equatable {
         self.startHandle = startHandle
         self.endHandle = endHandle
     }
+}
+
+public extension ATTFindInformationRequest {
+    
+    internal static var length: Int { return 5 }
     
     public init?(data: Data) {
         

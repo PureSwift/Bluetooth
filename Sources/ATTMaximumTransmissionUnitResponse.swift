@@ -14,9 +14,7 @@ import Foundation
 public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit, Equatable {
     
     /// 0x03 = Exchange MTU Response
-    public static let attributeOpcode = ATT.Opcode.maximumTransmissionUnitResponse
-    
-    internal static let length = 3
+    public static var attributeOpcode: ATT.Opcode { return .maximumTransmissionUnitResponse }
     
     /// Server Rx MTU
     ///
@@ -27,6 +25,11 @@ public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit, Equatable
         
         self.serverMTU = serverMTU
     }
+}
+
+public extension ATTMaximumTransmissionUnitResponse {
+    
+    internal static var length: Int { return 3 }
     
     public init?(data: Data) {
         

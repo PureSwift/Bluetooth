@@ -18,10 +18,7 @@ import Foundation
 /// - Note: Generic Attribute Profile defines grouping of attributes by attribute type.
 public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.findByTypeRequest
-    
-    /// Minimum length.
-    internal static let length = 1 + 2 + 2 + 2 + 0
+    public static var attributeOpcode: ATT.Opcode { return .findByTypeRequest }
     
     /// First requested handle number
     public var startHandle: UInt16
@@ -45,10 +42,16 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
         self.attributeType = attributeType
         self.attributeValue = attributeValue
     }
+}
+
+public extension ATTFindByTypeRequest {
+    
+    /// Minimum length.
+    internal static var minimumLength: Int { return 1 + 2 + 2 + 2 + 0 }
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -94,5 +97,24 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
                      endHandleBytes.1,
                      attributeTypeBytes.0,
                      attributeTypeBytes.1]) + attributeValue
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTFindByTypeRequest: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return type(of: self).minimumLength + attributeValue.count
+    }
+    
+    static func += (data: inout Data, value: ATTFindByTypeRequest) {
+        
+        data += type(of: value).attributeOpcode.rawValue
+        data += value.startHandle.littleEndian
+        data += value.endHandle.littleEndian
+        data += value.attributeType.littleEndian
+        data += value.attributeValue
     }
 }

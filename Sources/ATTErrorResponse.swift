@@ -14,9 +14,7 @@ import Foundation
 /// - Note: The Write Command does not generate an Error Response.
 public struct ATTErrorResponse: ATTProtocolDataUnit, Error, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.errorResponse
-    
-    internal static let length = 5
+    public static var attributeOpcode: ATT.Opcode { return .errorResponse }
     
     /// The request that generated this error response
     public var request: ATT.Opcode
@@ -35,6 +33,11 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error, Equatable {
         self.attributeHandle = attributeHandle
         self.error = error
     }
+}
+
+public extension ATTErrorResponse {
+    
+    internal static var length: Int { return 5 }
     
     public init?(data: Data) {
         

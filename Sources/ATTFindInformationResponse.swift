@@ -14,7 +14,7 @@ import Foundation
 /// and contains information about this server.
 public struct ATTFindInformationResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATTOpcode.findInformationResponse
+    public static var attributeOpcode: ATT.Opcode { return .findInformationResponse }
     
     /// The information data whose format is determined by the Format field.
     public var attributeData: AttributeData
