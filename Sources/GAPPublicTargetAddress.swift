@@ -52,9 +52,26 @@ public struct GAPPublicTargetAddress: GAPData, Equatable {
     
     public var data: Data {
         
-        return addresses.reduce(Data(), { $0 + $1.littleEndian.data })
+        return Data(self)
     }
 }
+
+// MARK: - DataConvertible
+
+extension GAPPublicTargetAddress: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return addresses.count * BluetoothAddress.length
+    }
+    
+    static func += (data: inout Data, value: GAPPublicTargetAddress) {
+        
+        value.addresses.forEach { data += $0.littleEndian }
+    }
+}
+
+// MARK: - CustomStringConvertible
 
 extension GAPPublicTargetAddress: CustomStringConvertible {
     

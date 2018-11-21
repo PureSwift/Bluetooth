@@ -28,6 +28,9 @@ public struct GAPRandomTargetAddress: GAPData, Equatable {
         
         self.addresses = addresses
     }
+}
+
+public extension GAPRandomTargetAddress {
     
     public init?(data: Data) {
         
@@ -54,13 +57,26 @@ public struct GAPRandomTargetAddress: GAPData, Equatable {
     
     public var data: Data {
         
-        var data = Data()
-        data.reserveCapacity(addresses.count + BluetoothAddress.length)
-        addresses.forEach { data.append($0.littleEndian.data) }
-        return data
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension GAPRandomTargetAddress: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return addresses.count * BluetoothAddress.length
     }
     
+    static func += (data: inout Data, value: GAPRandomTargetAddress) {
+        
+        value.addresses.forEach { data += $0.littleEndian }
+    }
 }
+
+// MARK: - CustomStringConvertible
 
 extension GAPRandomTargetAddress: CustomStringConvertible {
     

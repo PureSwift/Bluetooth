@@ -41,6 +41,7 @@ public struct HCILEReadChannelMap: HCICommandParameter { // HCI_LE_Read_Channel_
     public var connectionHandle: UInt16 //Connection_Handle
     
     public init(connectionHandle: UInt16) {
+        
         self.connectionHandle = connectionHandle
     }
     

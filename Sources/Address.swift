@@ -70,9 +70,11 @@ public extension BluetoothAddress {
     
     public var data: Data {
         
-        return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
+        return Data(self)
     }
 }
+
+extension BluetoothAddress: UnsafeDataConvertible { }
 
 // MARK: - Byte Swap
 

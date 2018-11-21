@@ -21,19 +21,23 @@ import Foundation
 /// Bits 1 to 7 in the most significant octet are reserved for future use.
 public struct GAPLEDeviceAddress: GAPData {
     
-    internal static let length = 7
-    
-    public static let dataType: GAPDataType = .lowEnergyDeviceAddress
+    public static var dataType: GAPDataType { return .lowEnergyDeviceAddress }
     
     public let address: BluetoothAddress
     
     public let type: GAPLEDeviceAddressType
     
-    public init(address: BluetoothAddress, type: GAPLEDeviceAddressType) {
+    public init(address: BluetoothAddress,
+                type: GAPLEDeviceAddressType = .public) {
         
         self.address = address
         self.type = type
     }
+}
+
+public extension GAPLEDeviceAddress {
+    
+    internal static var length: Int { return 7 }
     
     public init?(data: Data) {
         
@@ -48,9 +52,27 @@ public struct GAPLEDeviceAddress: GAPData {
     
     public var data: Data {
         
-        return address.littleEndian.data + Data([type.rawValue])
+        return Data(self)
     }
 }
+
+// MARK: - DataConvertible
+
+extension GAPLEDeviceAddress: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return Swift.type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: GAPLEDeviceAddress) {
+        
+        data += value.address.littleEndian
+        data += value.type.rawValue
+    }
+}
+
+// MARK: - Supporting Types
 
 /// GAP LE Device Address Type.
 public enum GAPLEDeviceAddressType: UInt8 {

@@ -29,8 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// Used by the Host to set the advertising parameters.
 public struct HCILESetAdvertisingParameters: HCICommandParameter {
     
-    public static let command = HCILowEnergyCommand.setAdvertisingParameters // 0x0006
-    public static let length = 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1
+    public static var command: HCILowEnergyCommand { return .setAdvertisingParameters } // 0x0006
     
     /// Interval for non-directed advertising.
     ///
@@ -81,29 +80,43 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
         self.channelMap = channelMap
         self.filterPolicy = filterPolicy
     }
+}
+
+public extension HCILESetAdvertisingParameters {
+    
+    public static var length: Int { return 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1 }
     
     public var data: Data {
         
-        let minimumIntervalBytes = interval.min.rawValue.littleEndian.bytes
-        let maximumIntervalBytes = interval.max.rawValue.littleEndian.bytes
-        let directAddressBytes = directAddress.littleEndian.bytes
-        
-        return Data([minimumIntervalBytes.0,
-                     minimumIntervalBytes.1,
-                     maximumIntervalBytes.0,
-                     maximumIntervalBytes.1,
-                     advertisingType.rawValue,
-                     ownAddressType.rawValue,
-                     directAddresssType.rawValue,
-                     directAddressBytes.0,
-                     directAddressBytes.1,
-                     directAddressBytes.2,
-                     directAddressBytes.3,
-                     directAddressBytes.4,
-                     directAddressBytes.5,
-                     channelMap.rawValue,
-                     filterPolicy.rawValue])
+        return Data(self)
     }
+}
+
+// MARK: - Data Convertible
+
+extension HCILESetAdvertisingParameters: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: HCILESetAdvertisingParameters) {
+        
+        data += value.interval.min.rawValue.littleEndian
+        data += value.interval.max.rawValue.littleEndian
+        data += value.advertisingType.rawValue
+        data += value.ownAddressType.rawValue
+        data += value.directAddresssType.rawValue
+        data += value.directAddress.littleEndian
+        data += value.channelMap.rawValue
+        data += value.filterPolicy.rawValue
+    }
+}
+
+// MARK: - Supporting Types
+
+public extension HCILESetAdvertisingParameters {
     
     public enum AdvertisingType: UInt8 {
         
