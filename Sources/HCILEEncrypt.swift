@@ -54,43 +54,19 @@ public struct HCILEEncrypt: HCICommandParameter { // HCI_LE_Encrypt
     
     public var data: Data {
         
-        let keyBytes = key.littleEndian.bytes
-        let dataBytes = plainText.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+extension HCILEEncrypt: DataConvertible {
+    
+    var dataLength: Int { return 32 }
+    
+    static func += (data: inout Data, value: HCILEEncrypt) {
         
-        return Data([
-            keyBytes.0,
-            keyBytes.1,
-            keyBytes.2,
-            keyBytes.3,
-            keyBytes.4,
-            keyBytes.5,
-            keyBytes.6,
-            keyBytes.7,
-            keyBytes.8,
-            keyBytes.9,
-            keyBytes.10,
-            keyBytes.11,
-            keyBytes.12,
-            keyBytes.13,
-            keyBytes.14,
-            keyBytes.15,
-            dataBytes.0,
-            dataBytes.1,
-            dataBytes.2,
-            dataBytes.3,
-            dataBytes.4,
-            dataBytes.5,
-            dataBytes.6,
-            dataBytes.7,
-            dataBytes.8,
-            dataBytes.9,
-            dataBytes.10,
-            dataBytes.11,
-            dataBytes.12,
-            dataBytes.13,
-            dataBytes.14,
-            dataBytes.15
-            ])
+         // no endianness because it does not represent a numerical value
+        data += value.key
+        data += value.plainText
     }
 }
 
@@ -100,12 +76,12 @@ public struct HCILEEncrypt: HCICommandParameter { // HCI_LE_Encrypt
 ///
 /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
 /// and returns the Encrypted_Data to the Host.
-/// The AES-128 bit block cypher is defined in NIST Publication FIPS-197 (http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+/// The AES-128 bit block cypher is defined in NIST Publication [FIPS-197](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
 public struct HCILEEncryptReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.encrypt //0x0017
     
-    public static let length: Int = 16
+    public static var length: Int { return UInt128.length }
     
     /// 128 bit encrypted data block.
     /// The most significant octet of the Encrypted_Data corresponds to out[0] using the notation specified in FIPS 197.
@@ -116,7 +92,7 @@ public struct HCILEEncryptReturn: HCICommandReturnParameter {
         guard data.count == type(of: self).length
             else { return nil }
         
-        guard let encryptedData = UInt128(data: Data(data))
+        guard let encryptedData = UInt128(data: data)
             else { return nil }
         
         self.encryptedData = encryptedData
