@@ -1087,7 +1087,7 @@ final class HCITests: XCTestCase {
                                                                                               encryptedDiversifier:      encryptedDiversifier,
                                                                                               longTermKey: longTermKey))
         
-        XCTAssertFalse(hostController.queue.isEmpty)
+        //XCTAssert(hostController.queue.isEmpty)
         //XCTAssertEqual(encryptionChange, .e0)
         //XCTAssertEqual(encryptionChange?.rawValue, 0x01)
     }
@@ -1136,6 +1136,9 @@ final class HCITests: XCTestCase {
             )
         )
         
+        XCTAssertEqual(HCILEEncrypt(key: key, plainText: plainTextData).data,
+                       Data([0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]))
+        
         /**
          HCI_Command_Complete (length 0x14) – event
          Pars (LSO to MSO) 02 17 20 00 66 c6 c2 27 8e 3b 8e 05 3e 7e a3 26 52 1b ad 99
@@ -1148,6 +1151,8 @@ final class HCITests: XCTestCase {
         let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x14)
         
         hostController.queue.append(.event(eventHeader.data + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
+        
+        XCTAssertEqual(HCILEEncryptReturn(data: Data([/* 0x02, 0x17, 0x20, 0x00, */ 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.description, "99AD1B5226A37E3E058E3B8E27C2C666")
         
         var encryptedData: UInt128 = 0
         XCTAssertNoThrow(encryptedData = try hostController.lowEnergyEncrypt(key: key, data: plainTextData))
