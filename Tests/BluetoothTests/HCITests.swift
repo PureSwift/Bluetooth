@@ -847,9 +847,7 @@ final class HCITests: XCTestCase {
     func testLEConnectionCreate() {
         
         typealias CommandParameter = HCILECreateConnection
-        
-        typealias SupervisionTimeout = HCILECreateConnection.SupervisionTimeout
-        
+                
         let hostController = TestHostController()
         
         let parameters = CommandParameter(scanInterval: LowEnergyScanTimeInterval(rawValue: 0x0060)!,
@@ -860,7 +858,7 @@ final class HCITests: XCTestCase {
                                           ownAddressType: .public,
                                           connectionInterval: LowEnergyConnectionIntervalRange(rawValue: 0x0006 ... 0x000C)!,
                                           connectionLatency: .zero,
-                                          supervisionTimeout: HCILECreateConnection.SupervisionTimeout(rawValue: 0x00C8)!,
+                                          supervisionTimeout: LowEnergySupervisionTimeout(rawValue: 0x00C8)!,
                                           connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
         
         XCTAssertEqual(parameters.data.count, 0x19)

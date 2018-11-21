@@ -62,10 +62,7 @@ public extension BluetoothHostControllerInterface {
 /// in the Controller; if this does occur the Controller shall return the Command Disallowed error code shall be used.
 public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connection
     
-    public static let command = HCILowEnergyCommand.createConnection // 0x000D
-    public static let length = 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2
-    
-    public typealias SupervisionTimeout = LowEnergySupervisionTimeout
+    public static var command: HCILowEnergyCommand { return .createConnection } // 0x000D
     
     /// Recommendation from the Host on how long the Controller should scan.
     ///
@@ -112,7 +109,7 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
     ///
     /// - Note: The `supervisionTimeout` in milliseconds shall be
     /// larger than the `connectionInterval.miliseconds.upperBound` in milliseconds.
-    public let supervisionTimeout: SupervisionTimeout
+    public let supervisionTimeout: LowEnergySupervisionTimeout
     
     /// Connection Length
     ///
@@ -128,7 +125,7 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
                 ownAddressType: LowEnergyAddressType = .public,
                 connectionInterval: LowEnergyConnectionIntervalRange = .full,
                 connectionLatency: LowEnergyConnectionLatency = .zero,
-                supervisionTimeout: SupervisionTimeout = .max,
+                supervisionTimeout: LowEnergySupervisionTimeout = .max,
                 connectionLength: LowEnergyConnectionLength = .full) {
         
         precondition(scanWindow <= scanInterval, "LE_Scan_Window shall be less than or equal to LE_Scan_Interval")
@@ -148,55 +145,54 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
     
     public var data: Data {
         
-        let scanIntervalBytes = scanInterval.rawValue.littleEndian.bytes
-        let scanWindowBytes = scanWindow.rawValue.littleEndian.bytes
-        let initiatorFilterPolicyByte = initiatorFilterPolicy.rawValue
-        let peerAddressTypeByte = peerAddressType.rawValue
-        let peerAddressBytes = peerAddress.littleEndian.bytes
-        let ownAddressTypeByte = ownAddressType.rawValue
-        let connectionIntervalMinBytes = connectionInterval.rawValue.lowerBound.littleEndian.bytes
-        let connectionIntervalMaxBytes = connectionInterval.rawValue.upperBound.littleEndian.bytes
-        let connectionLatencyBytes = connectionLatency.rawValue.littleEndian.bytes
-        let supervisionTimeoutBytes = supervisionTimeout.rawValue.littleEndian.bytes
-        let connectionLengthMinBytes = connectionLength.rawValue.lowerBound.littleEndian.bytes
-        let connectionLengthMaxBytes = connectionLength.rawValue.upperBound.littleEndian.bytes
-        
-        return Data([scanIntervalBytes.0,
-                     scanIntervalBytes.1,
-                     scanWindowBytes.0,
-                     scanWindowBytes.1,
-                     initiatorFilterPolicyByte,
-                     peerAddressTypeByte,
-                     peerAddressBytes.0,
-                     peerAddressBytes.1,
-                     peerAddressBytes.2,
-                     peerAddressBytes.3,
-                     peerAddressBytes.4,
-                     peerAddressBytes.5,
-                     ownAddressTypeByte,
-                     connectionIntervalMinBytes.0,
-                     connectionIntervalMinBytes.1,
-                     connectionIntervalMaxBytes.0,
-                     connectionIntervalMaxBytes.1,
-                     connectionLatencyBytes.0,
-                     connectionLatencyBytes.1,
-                     supervisionTimeoutBytes.0,
-                     supervisionTimeoutBytes.1,
-                     connectionLengthMinBytes.0,
-                     connectionLengthMinBytes.1,
-                     connectionLengthMaxBytes.0,
-                     connectionLengthMaxBytes.1])
+        return Data(self)
     }
+}
+
+public extension HCILECreateConnection {
+    
+    public static var length: Int { return 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2 }
+}
+
+// MARK: - DataConvertible
+
+extension HCILECreateConnection: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: HCILECreateConnection) {
+        
+        data += value.scanInterval.rawValue.littleEndian
+        data += value.scanWindow.rawValue.littleEndian
+        data += value.initiatorFilterPolicy.rawValue
+        data += value.peerAddressType.rawValue
+        data += value.peerAddress.littleEndian
+        data += value.ownAddressType.rawValue
+        data += value.connectionInterval.rawValue.lowerBound.littleEndian
+        data += value.connectionInterval.rawValue.upperBound.littleEndian
+        data += value.connectionLatency.rawValue.littleEndian
+        data += value.supervisionTimeout.rawValue.littleEndian
+        data += value.connectionLength.rawValue.lowerBound.littleEndian
+        data += value.connectionLength.rawValue.upperBound.littleEndian
+    }
+}
+
+// MARK: - Supporting Types
+
+public extension HCILECreateConnection {
     
     /// Used to determine whether the White List is used.
     public enum InitiatorFilterPolicy: UInt8 {
         
         /// White list is not used to determine which advertiser to connect to.
         /// `peerAddressType` and `peerAddress` shall be used.
-        case peerAddress
+        case peerAddress = 0x00
         
         /// White list is used to determine which advertiser to connect to.
         /// `peerAddressType` and `peerAddress` shall be ignored.
-        case whiteList
+        case whiteList = 0x01
     }
 }
