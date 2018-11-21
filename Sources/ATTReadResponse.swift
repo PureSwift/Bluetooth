@@ -16,10 +16,7 @@ import Foundation
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
 public struct ATTReadResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readResponse
-    
-    /// Minimum length
-    internal static let length = 1 + 0
+    public static var attributeOpcode: ATT.Opcode { return .readResponse }
     
     /// The value of the attribute with the handle given.
     public var attributeValue: Data
@@ -28,10 +25,13 @@ public struct ATTReadResponse: ATTProtocolDataUnit, Equatable {
         
         self.attributeValue = attributeValue
     }
+}
+
+public extension ATTReadResponse {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= 1
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -39,7 +39,7 @@ public struct ATTReadResponse: ATTProtocolDataUnit, Equatable {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        if data.count > type(of: self).length {
+        if data.count > 1 {
             
             self.attributeValue = Data(data.suffix(from: 1))
             
@@ -51,6 +51,22 @@ public struct ATTReadResponse: ATTProtocolDataUnit, Equatable {
     
     public var data: Data {
         
-        return Data([ATTReadResponse.attributeOpcode.rawValue]) + attributeValue
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTReadResponse: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return 1 + attributeValue.count
+    }
+    
+    static func += (data: inout Data, value: ATTReadResponse) {
+        
+        data += attributeOpcode.rawValue
+        data += value.attributeValue
     }
 }

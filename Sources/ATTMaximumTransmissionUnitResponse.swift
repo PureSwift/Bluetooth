@@ -60,3 +60,19 @@ public extension ATTMaximumTransmissionUnitResponse {
         return bytes
     }
 }
+
+// MARK: - DataConvertible
+
+extension ATTMaximumTransmissionUnitResponse: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: ATTMaximumTransmissionUnitResponse) {
+        
+        data += attributeOpcode.rawValue
+        data += value.serverMTU.littleEndian
+    }
+}

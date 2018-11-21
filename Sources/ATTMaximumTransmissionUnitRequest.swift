@@ -52,15 +52,22 @@ public extension ATTMaximumTransmissionUnitRequest {
     
     public var data: Data {
         
-        var bytes = Data(repeating: 0, count: type(of: self).length)
+       return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTMaximumTransmissionUnitRequest: DataConvertible {
+    
+    var dataLength: Int {
         
-        bytes[0] = type(of: self).attributeOpcode.rawValue
+        return type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: ATTMaximumTransmissionUnitRequest) {
         
-        let mtuBytes = self.clientMTU.littleEndian.bytes
-        
-        bytes[1] = mtuBytes.0
-        bytes[2] = mtuBytes.1
-        
-        return bytes
+        data += attributeOpcode.rawValue
+        data += value.clientMTU.littleEndian
     }
 }

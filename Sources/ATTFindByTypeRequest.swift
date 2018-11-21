@@ -111,7 +111,7 @@ extension ATTFindByTypeRequest: DataConvertible {
     
     static func += (data: inout Data, value: ATTFindByTypeRequest) {
         
-        data += self.attributeOpcode.rawValue
+        data += attributeOpcode.rawValue
         data += value.startHandle.littleEndian
         data += value.endHandle.littleEndian
         data += value.attributeType.littleEndian

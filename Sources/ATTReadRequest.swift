@@ -14,9 +14,7 @@ import Foundation
 /// and return its value in a *Read Response*.
 public struct ATTReadRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readRequest
-    
-    internal static let length = 1 + 2
+    public static var attributeOpcode: ATT.Opcode { return .readRequest }
     
     /// The handle of the attribute to read.
     public var handle: UInt16
@@ -25,6 +23,11 @@ public struct ATTReadRequest: ATTProtocolDataUnit, Equatable {
         
         self.handle = handle
     }
+}
+
+public extension ATTReadRequest {
+    
+    internal static var length: Int { return 1 + 2 }
     
     public init?(data: Data) {
         
@@ -41,8 +44,22 @@ public struct ATTReadRequest: ATTProtocolDataUnit, Equatable {
     
     public var data: Data {
         
-        let handleBytes = handle.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTReadRequest: DataConvertible {
+    
+    var dataLength: Int {
         
-        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1])
+        return type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: ATTReadRequest) {
+        
+        data += attributeOpcode.rawValue
+        data += value.handle
     }
 }

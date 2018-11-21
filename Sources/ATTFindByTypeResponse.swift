@@ -85,7 +85,7 @@ extension ATTFindByTypeResponse: DataConvertible {
     
     static func += (data: inout Data, value: ATTFindByTypeResponse) {
         
-        data += self.attributeOpcode.rawValue
+        data += attributeOpcode.rawValue
         value.handles.forEach { data += $0 }
     }
 }

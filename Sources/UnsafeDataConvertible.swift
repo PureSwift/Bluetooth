@@ -19,7 +19,9 @@ internal protocol DataConvertible {
 }
 
 extension Data {
-    /// Initialize data with contents of value. 
+    
+    /// Initialize data with contents of value.
+    @inline(__always)
     init <T: DataConvertible> (_ value: T) {
         self.init(capacity: value.dataLength)
         self += value

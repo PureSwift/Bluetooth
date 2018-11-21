@@ -64,7 +64,7 @@ extension ATTFindInformationResponse: DataConvertible {
     
     static func += (data: inout Data, value: ATTFindInformationResponse) {
         
-        data += self.attributeOpcode.rawValue
+        data += attributeOpcode.rawValue
         data += value.attributeData.format.rawValue
         data += value.attributeData
     }
