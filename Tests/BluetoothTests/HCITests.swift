@@ -847,7 +847,7 @@ final class HCITests: XCTestCase {
     func testLEConnectionCreate() {
         
         typealias CommandParameter = HCILECreateConnection
-                
+        
         let hostController = TestHostController()
         
         let parameters = CommandParameter(scanInterval: LowEnergyScanTimeInterval(rawValue: 0x0060)!,
@@ -1014,16 +1014,37 @@ final class HCITests: XCTestCase {
     func testLEStartEncryption() {
         
         let hostController = TestHostController()
-        
         let connectionHandle: UInt16 = 0x0041
-        
         let randomNumber: UInt64 = 0x0000000000000000
-        
         let encryptedDiversifier: UInt16 = 0x0000
-        
         let longTermKey = UInt128(bigEndian: UInt128(bytes: (0x23, 0x57, 0xEB, 0x0D, 0x0C, 0x24, 0xD8, 0x5A, 0x98, 0x57, 0x64, 0xEC, 0xCB, 0xEC, 0xEC, 0x05)))
-        
         XCTAssertEqual(longTermKey.description, "2357EB0D0C24D85A985764ECCBECEC05")
+        
+        do {
+            
+            let data = Data([0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23])
+            
+            let command = HCILEStartEncryption(connectionHandle: connectionHandle,
+                                               randomNumber: randomNumber,
+                                               encryptedDiversifier: encryptedDiversifier,
+                                               longTermKey: longTermKey)
+            
+            XCTAssertEqual(command.data, data)
+        }
+        
+        #if swift(>=4.2)
+        do {
+            
+            let data = Data([0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23])
+            
+            // random number
+            let command = HCILEStartEncryption(connectionHandle: connectionHandle,
+                                               encryptedDiversifier: encryptedDiversifier,
+                                               longTermKey: longTermKey)
+            
+            XCTAssertNotEqual(command.data, data)
+        }
+        #endif
         
         /**
          SEND  [2019] LE Start Encryption - Connection Handle: 0x0041  19 20 1C 41 00 00 00 00 00 00 00 00 00 00 00 05 EC EC CB EC 64 57 98 5A D8 24 0C 0D EB 57 23
@@ -1063,10 +1084,10 @@ final class HCITests: XCTestCase {
         //var encryptionChange: TestHostController.LowEnergyEncryptionChange?
         XCTAssertNoThrow(/* encryptionChange = */ try hostController.lowEnergyStartEncryption(connectionHandle: connectionHandle,
                                                                                               randomNumber: randomNumber,
-                                                                                              encryptedDiversifier: encryptedDiversifier,
+                                                                                              encryptedDiversifier:      encryptedDiversifier,
                                                                                               longTermKey: longTermKey))
         
-        //XCTAssert(hostController.queue.isEmpty)
+        XCTAssertFalse(hostController.queue.isEmpty)
         //XCTAssertEqual(encryptionChange, .e0)
         //XCTAssertEqual(encryptionChange?.rawValue, 0x01)
     }

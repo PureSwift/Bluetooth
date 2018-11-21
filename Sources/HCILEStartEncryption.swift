@@ -136,7 +136,7 @@ public struct HCILEStartEncryption: HCICommandParameter { // HCI_LE_Start_Encryp
                 encryptedDiversifier: UInt16,
                 longTermKey: UInt128) {
         
-        let randomNumber = UInt64.random(in: .min ... .max)
+        let randomNumber = UInt64.random(in: .min ..< .max)
         
         self.init(connectionHandle: connectionHandle,
                   randomNumber: randomNumber,
@@ -165,6 +165,6 @@ extension HCILEStartEncryption: DataConvertible {
         data += value.connectionHandle.littleEndian
         data += value.randomNumber.littleEndian
         data += value.encryptedDiversifier.littleEndian
-        data += value.longTermKey
+        data += value.longTermKey.littleEndian
     }
 }
