@@ -67,3 +67,21 @@ public extension ATTErrorResponse {
         return bytes
     }
 }
+
+// MARK: - DataConvertible
+
+extension ATTErrorResponse: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return type(of: self).length
+    }
+    
+    static func += (data: inout Data, value: ATTErrorResponse) {
+        
+        data += self.attributeOpcode.rawValue
+        data += value.request.rawValue
+        data += value.attributeHandle.littleEndian
+        data += value.error.rawValue
+    }
+}

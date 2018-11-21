@@ -116,7 +116,7 @@ extension ATTReadByTypeResponse: DataConvertible {
     
     static func += (data: inout Data, value: ATTReadByTypeResponse) {
         
-        data += type(of: value).attributeOpcode.rawValue
+        data += self.attributeOpcode.rawValue
         data += UInt8(value.attributeData[0].dataLength)
         value.attributeData.forEach { data += $0 }
     }
