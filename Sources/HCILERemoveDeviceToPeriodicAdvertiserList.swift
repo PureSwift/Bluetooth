@@ -18,12 +18,12 @@ public extension BluetoothHostControllerInterface {
     /// Advertisers stored in the Controller. Removals from the Periodic Advertisers List take effect immediately.
     func lowEnergyRemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
                                                        address: BluetoothAddress,
-                                                       advertisingSid: UInt8,
+                                                       advertisingSID: UInt8,
                                                        timeout: HCICommandTimeout = .default)  throws {
         
         let parameters = HCILERemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: advertiserAddressType,
                                                                    address: address,
-                                                                   advertisingSid: advertisingSid)
+                                                                   advertisingSID: advertisingSID)
         
         try deviceRequest(parameters, timeout: timeout)
     }
@@ -47,30 +47,33 @@ public struct HCILERemoveDeviceToPeriodicAdvertiserList: HCICommandParameter {
     
     public let advertiserAddressType: LowEnergyAdvertiserAddressType
     public let address: BluetoothAddress
-    public let advertisingSid: UInt8
+    public let advertisingSID: UInt8
     
     public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
                 address: BluetoothAddress,
-                advertisingSid: UInt8) {
+                advertisingSID: UInt8) {
         
         self.advertiserAddressType = advertiserAddressType
         self.address = address
-        self.advertisingSid = advertisingSid
+        self.advertisingSID = advertisingSID
     }
     
     public var data: Data {
         
-        let addressBytes = address.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension HCILERemoveDeviceToPeriodicAdvertiserList: DataConvertible {
+    
+    var dataLength: Int { return 1 + BluetoothAddress.length + 1 }
+    
+    static func += (data: inout Data, value: HCILERemoveDeviceToPeriodicAdvertiserList) {
         
-        return Data([
-            advertiserAddressType.rawValue,
-            addressBytes.0,
-            addressBytes.1,
-            addressBytes.2,
-            addressBytes.3,
-            addressBytes.4,
-            addressBytes.5,
-            advertisingSid
-            ])
+        data += value.advertiserAddressType.rawValue
+        data += value.address.littleEndian
+        data += value.advertisingSID
     }
 }
