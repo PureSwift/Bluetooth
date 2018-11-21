@@ -46,12 +46,6 @@ public extension BluetoothAddress {
     
     /// A zero address.
     public static var zero: BluetoothAddress { return .min }
-    
-    /// Wildcard address.
-    internal static var any: BluetoothAddress { return .zero }
-    
-    /// No address
-    internal static var none: BluetoothAddress { return .max }
 }
 
 // MARK: - Data
