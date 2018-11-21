@@ -16,7 +16,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
     /// and returns the Encrypted_Data to the Host.
-    func lowEnergyEncrypt(key: UInt128, data: UInt128, timeout: HCICommandTimeout = .default) throws -> UInt128 {
+    func lowEnergyEncrypt(key: UInt128,
+                          data: UInt128,
+                          timeout: HCICommandTimeout = .default) throws -> UInt128 {
         
         let parameters = HCILEEncrypt(key: key, plainText: data)
         
@@ -64,9 +66,8 @@ extension HCILEEncrypt: DataConvertible {
     
     static func += (data: inout Data, value: HCILEEncrypt) {
         
-         // no endianness because it does not represent a numerical value
-        data += value.key
-        data += value.plainText
+        data += value.key.littleEndian
+        data += value.plainText.littleEndian
     }
 }
 
@@ -95,6 +96,6 @@ public struct HCILEEncryptReturn: HCICommandReturnParameter {
         guard let encryptedData = UInt128(data: data)
             else { return nil }
         
-        self.encryptedData = encryptedData
+        self.encryptedData = UInt128(littleEndian: encryptedData)
     }
 }
