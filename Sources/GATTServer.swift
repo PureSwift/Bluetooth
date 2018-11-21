@@ -862,6 +862,44 @@ private extension GATTServer {
 
 // MARK: - GATTDatabase Extensions
 
+internal struct HandleRange {
+    
+    public let start: UInt16
+    
+    public let end: UInt16
+    
+    public init(start: UInt16, end: UInt16) {
+        assert(start <= end)
+        self.start = start
+        self.end = end
+    }
+}
+
+internal extension HandleRange {
+    
+    init(group: GATTDatabase.AttributeGroup) {
+        
+        self.init(start: group.startHandle, end: group.endHandle)
+    }
+}
+
+internal extension HandleRange {
+    
+    func isSubset(_ other: HandleRange) -> Bool {
+        
+        return self.start >= other.start
+            && self.start <= other.end
+            && self.end >= other.start
+            && self.end <= other.end
+    }
+    
+    func contains(_ element: UInt16) -> Bool {
+        
+        return start <= element
+            && element <= end
+    }
+}
+
 internal extension GATTDatabase {
     
     /// Find the enclosing Service attribute group for the specified handle
@@ -882,18 +920,18 @@ internal extension GATTDatabase {
     /// Used for Service discovery. Should return tuples with the Service start handle, end handle and UUID.
     func readByGroupType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] {
         
-        let handleRange = handle.end < UInt16.max ? Range(handle.start ... handle.end) : handle.start ..< handle.end
-        
         var data: [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] = []
         data.reserveCapacity(attributeGroups.count)
         
+        let handleRange = HandleRange(start: handle.start, end: handle.end)
+        
         for group in attributeGroups {
             
-            guard group.serviceAttribute.uuid == type else { continue }
+            let groupRange = HandleRange(group: group)
             
-            let groupRange = Range(group.startHandle ... group.endHandle)
-            
-            guard groupRange.isSubset(handleRange) else { continue }
+            guard group.serviceAttribute.uuid == type,
+                groupRange.isSubset(handleRange)
+                else { continue }
             
             let serviceUUID = BluetoothUUID(littleEndian: BluetoothUUID(data: group.serviceAttribute.value)!)
             
@@ -905,14 +943,14 @@ internal extension GATTDatabase {
     
     func readByType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [Attribute] {
         
-        let range = handle.end < UInt16.max ? Range(handle.start ... handle.end) : handle.start ..< handle.end
+        let range = HandleRange(start: handle.start, end: handle.end)
         
         return attributes.filter { range.contains($0.handle) && $0.uuid == type }
     }
     
     func findInformation(handle: (start: UInt16, end: UInt16)) -> [Attribute] {
         
-        let range = handle.end < UInt16.max ? Range(handle.start ... handle.end) : handle.start ..< handle.end
+        let range = HandleRange(start: handle.start, end: handle.end)
         
         return attributes.filter { range.contains($0.handle) }
     }
@@ -921,7 +959,7 @@ internal extension GATTDatabase {
         
         typealias HandleInformation = ATTFindByTypeResponse.HandlesInformation
         
-        let range = handle.end < UInt16.max ? Range(handle.start ... handle.end) : handle.start ..< handle.end
+        let range = HandleRange(start: handle.start, end: handle.end)
         
         var results = [HandleInformation]()
         
