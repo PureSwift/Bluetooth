@@ -33,12 +33,9 @@ public extension BluetoothHostControllerInterface {
                                       timeout: timeout)
         
         switch event.status {
-            
         case let .error(error):
             throw error
-            
         case .success:
-            
             return event
         }
     }

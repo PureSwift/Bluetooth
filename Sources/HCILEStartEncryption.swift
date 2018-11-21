@@ -37,7 +37,6 @@ public extension BluetoothHostControllerInterface {
         let commandStatus = try deviceRequest(command, HCICommandStatus.self, timeout: timeout)
         
         if let error = commandStatus.status.error {
-            
             throw error
         }
         
@@ -121,7 +120,10 @@ public struct HCILEStartEncryption: HCICommandParameter { // HCI_LE_Start_Encryp
     /// 128 bit long term key.
     public let longTermKey: UInt128 //Long_Term_Key
     
-    public init(connectionHandle: UInt16, randomNumber: UInt64, encryptedDiversifier: UInt16, longTermKey: UInt128) {
+    public init(connectionHandle: UInt16,
+                randomNumber: UInt64,
+                encryptedDiversifier: UInt16,
+                longTermKey: UInt128) {
         
         self.connectionHandle = connectionHandle
         self.randomNumber = randomNumber
@@ -129,42 +131,40 @@ public struct HCILEStartEncryption: HCICommandParameter { // HCI_LE_Start_Encryp
         self.longTermKey = longTermKey
     }
     
+    #if swift(>=4.2)
+    public init(connectionHandle: UInt16,
+                encryptedDiversifier: UInt16,
+                longTermKey: UInt128) {
+        
+        let randomNumber = UInt64.random(in: .min ... .max)
+        
+        self.init(connectionHandle: connectionHandle,
+                  randomNumber: randomNumber,
+                  encryptedDiversifier: encryptedDiversifier,
+                  longTermKey: longTermKey)
+    }
+    #endif
+    
     public var data: Data {
         
-        let connectionHandleBytes = connectionHandle.littleEndian.bytes
-        let randomNumberBytes = randomNumber.littleEndian.bytes
-        let encryptedDiversifierBytes = encryptedDiversifier.littleEndian.bytes
-        let longTermKeyBytes = longTermKey.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension HCILEStartEncryption: DataConvertible {
+    
+    var dataLength: Int {
         
-        return Data([
-            connectionHandleBytes.0,
-            connectionHandleBytes.1,
-            randomNumberBytes.0,
-            randomNumberBytes.1,
-            randomNumberBytes.2,
-            randomNumberBytes.3,
-            randomNumberBytes.4,
-            randomNumberBytes.5,
-            randomNumberBytes.6,
-            randomNumberBytes.7,
-            encryptedDiversifierBytes.0,
-            encryptedDiversifierBytes.1,
-            longTermKeyBytes.0,
-            longTermKeyBytes.1,
-            longTermKeyBytes.2,
-            longTermKeyBytes.3,
-            longTermKeyBytes.4,
-            longTermKeyBytes.5,
-            longTermKeyBytes.6,
-            longTermKeyBytes.7,
-            longTermKeyBytes.8,
-            longTermKeyBytes.9,
-            longTermKeyBytes.10,
-            longTermKeyBytes.11,
-            longTermKeyBytes.12,
-            longTermKeyBytes.13,
-            longTermKeyBytes.14,
-            longTermKeyBytes.15
-            ])
+        return 2 + 8 + 2 + 16
+    }
+    
+    static func += (data: inout Data, value: HCILEStartEncryption) {
+        
+        data += value.connectionHandle.littleEndian
+        data += value.randomNumber.littleEndian
+        data += value.encryptedDiversifier.littleEndian
+        data += value.longTermKey
     }
 }

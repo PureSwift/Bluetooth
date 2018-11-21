@@ -32,12 +32,10 @@ public struct HCILEConnectionComplete: HCIEventParameter {
     /// Time = N * 10 msec
     /// Time Range: 100 msec to 32 seconds
     public typealias SupervisionTimeout = LowEnergySupervisionTimeout
-    
-    public typealias Status = HCIStatus
-    
+        
     /// `0x00` if Connection successfully completed.
     /// `HCIError` value otherwise.
-    public let status: Status
+    public let status: HCIStatus
     
     /// Connection Handle
     ///
@@ -114,7 +112,7 @@ public struct HCILEConnectionComplete: HCIEventParameter {
         let masterClockAccuracyByte = data[17]
         
         // Parse enums and values ranges
-        guard let status = Status(rawValue: statusByte),
+        guard let status = HCIStatus(rawValue: statusByte),
             let role = LowEnergyRole(rawValue: roleByte),
             let peerAddressType = LowEnergyAddressType(rawValue: peerAddressTypeByte),
             let supervisionTimeout = SupervisionTimeout(rawValue: supervisionTimeoutRaw),
