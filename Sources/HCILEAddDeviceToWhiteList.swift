@@ -51,15 +51,22 @@ public struct HCILEAddDeviceToWhiteList: HCICommandParameter { //HCI_LE_Add_Devi
     
     public var data: Data {
         
-        let addressType = self.device.addressType.rawValue
-        let addressBytes = self.device.address.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension HCILEAddDeviceToWhiteList: DataConvertible {
+    
+    var dataLength: Int {
         
-        return Data([addressType,
-                     addressBytes.0,
-                     addressBytes.1,
-                     addressBytes.2,
-                     addressBytes.3,
-                     addressBytes.4,
-                     addressBytes.5])
+        return 1 + BluetoothAddress.length
+    }
+    
+    static func += (data: inout Data, value: HCILEAddDeviceToWhiteList) {
+        
+        data += value.device.addressType.rawValue
+        data += value.device.address?.littleEndian ?? .zero
     }
 }
