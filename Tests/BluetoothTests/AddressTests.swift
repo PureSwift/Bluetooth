@@ -30,8 +30,6 @@ final class AddressTests: XCTestCase {
         BluetoothAddress.max.data.forEach { XCTAssertEqual($0, .max) }
         BluetoothAddress.zero.data.forEach { XCTAssertEqual($0, 0) }
         XCTAssertEqual(BluetoothAddress.zero, BluetoothAddress.min)
-        XCTAssertEqual(BluetoothAddress.zero, BluetoothAddress.any)
-        XCTAssertEqual(BluetoothAddress.max, BluetoothAddress.none)
         
         guard let address = BluetoothAddress(rawValue: "00:1A:7D:DA:71:13")
             else { XCTFail("Could not parse"); return }

@@ -45,7 +45,7 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     
     private(set) var cache = [Data]()
     
-    init(address: BluetoothAddress = .any,
+    init(address: BluetoothAddress = .zero,
          name: String = "",
          protocolServiceMultiplexer: UInt16 = UInt16(ATT.PSM.rawValue),
          channelIdentifier: UInt16 = ATT.CID) {
