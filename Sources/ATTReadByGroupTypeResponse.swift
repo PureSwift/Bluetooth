@@ -16,10 +16,7 @@ import Foundation
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
 public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readByGroupTypeResponse
-    
-    /// Minimum length
-    internal static let length = 1 + 1 + 4
+    public static var attributeOpcode: ATT.Opcode { return .readByGroupTypeResponse }
     
     /// A list of Attribute Data
     public let attributeData: [AttributeData]
@@ -44,10 +41,16 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit, Equatable {
         
         self.attributeData = unsafe
     }
+}
+
+public extension ATTReadByGroupTypeResponse {
+    
+    /// Minimum length
+    private static var minimumLength: Int { return 1 + 1 + 4 }
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= type(of: self).minimumLength
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -81,30 +84,37 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit, Equatable {
         
         self.attributeData = attributeDataList
         
-        assert(length == (attributeData[0].data.count))
+        assert(length == attributeData[0].dataLength)
     }
     
     public var data: Data {
         
-        let length = UInt8(attributeData[0].value.count + 4)
-        
-        var attributeDataBytes = Data()
-        
-        for attribute in attributeData {
-            
-            attributeDataBytes += attribute.data
-        }
-        
-        return Data([type(of: self).attributeOpcode.rawValue, length]) + attributeDataBytes
+        return Data(self)
     }
 }
+
+// MARK: - DataConvertible
+
+extension ATTReadByGroupTypeResponse: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return 2 + attributeData.reduce(0, { $0 + $1.dataLength })
+    }
+    
+    static func += (data: inout Data, value: ATTReadByGroupTypeResponse) {
+        
+        data += attributeOpcode.rawValue
+        data += UInt8(value.attributeData[0].dataLength)
+        value.attributeData.forEach { data += $0 }
+    }
+}
+
+// MARK: - Supporting Types
 
 public extension ATTReadByGroupTypeResponse {
     
     public struct AttributeData: Equatable {
-        
-        /// Minimum length
-        internal static let length = 4
         
         /// Attribute Handle
         public var attributeHandle: UInt16
@@ -123,32 +133,41 @@ public extension ATTReadByGroupTypeResponse {
             self.endGroupHandle = endGroupHandle
             self.value = value
         }
+    }
+}
+
+internal extension ATTReadByGroupTypeResponse.AttributeData {
+    
+    internal init?(data: Data) {
         
-        internal init?(data: Data) {
-            
-            guard data.count >= type(of: self).length
-                else { return nil }
-            
-            self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-            self.endGroupHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
-            
-            if data.count > type(of: self).length {
-                
-                self.value = Data(data.suffix(from: type(of: self).length))
-                
-            } else {
-                
-                self.value = Data()
-            }
-        }
+        guard data.count >= 4
+            else { return nil }
         
-        internal var data: Data {
+        self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        self.endGroupHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
+        
+        if data.count > 4 {
             
-            let attributeHandleBytes = attributeHandle.littleEndian.bytes
+            self.value = Data(data.suffix(from: 4))
             
-            let endGroupHandleBytes = endGroupHandle.littleEndian.bytes
+        } else {
             
-            return Data([attributeHandleBytes.0, attributeHandleBytes.1, endGroupHandleBytes.0, endGroupHandleBytes.1]) + value
+            self.value = Data()
         }
+    }
+}
+
+extension ATTReadByGroupTypeResponse.AttributeData: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return 4 + value.count
+    }
+    
+    static func += (data: inout Data, value: ATTReadByGroupTypeResponse.AttributeData) {
+        
+        data += value.attributeHandle.littleEndian
+        data += value.endGroupHandle.littleEndian
+        data += value.value
     }
 }
