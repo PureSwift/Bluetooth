@@ -21,20 +21,12 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit, Equatable {
     /// A list of Attribute Data
     public let attributeData: [AttributeData]
     
-    public init?(attributeData attributeDataList: [AttributeData]) {
+    public init?(attributeData: [AttributeData]) {
         
-        // must have at least one item
-        guard let valueLength = attributeDataList.first?.value.count
+        guard type(of: self).validate(attributeData)
             else { return nil }
         
-        for attributeData in attributeDataList {
-            
-            // all items must have same length
-            guard attributeData.value.count == valueLength
-                else { return nil }
-        }
-        
-        self.attributeData = attributeDataList
+        self.attributeData = attributeData
     }
     
     internal init(_ unsafe: [AttributeData]) {
@@ -45,46 +37,12 @@ public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit, Equatable {
 
 public extension ATTReadByGroupTypeResponse {
     
-    /// Minimum length
-    private static var minimumLength: Int { return 1 + 1 + 4 }
-    
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard let attributeData = ATTReadByGroupTypeResponse.from(data: data)
             else { return nil }
         
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
-            else { return nil }
-        
-        let length = Int(data[1])
-        
-        let attributeDataBytesCount = data.count - 2
-        
-        let attributeCount = attributeDataBytesCount / length
-        
-        guard attributeDataBytesCount % length == 0
-            else { return nil }
-        
-        var attributeDataList = [AttributeData]()
-        attributeDataList.reserveCapacity(attributeCount)
-        
-        for index in 0 ..< attributeCount {
-            
-            let byteIndex = 2 + (index * length)
-            
-            let attributeBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + length)
-            
-            guard let attributeData = AttributeData(data: attributeBytes)
-                else { return nil }
-            
-            attributeDataList.append(attributeData)
-        }
-        
-        self.attributeData = attributeDataList
-        
-        assert(length == attributeData[0].dataLength)
+        self.attributeData = attributeData
     }
     
     public var data: Data {
@@ -93,16 +51,11 @@ public extension ATTReadByGroupTypeResponse {
     }
 }
 
+extension ATTReadByGroupTypeResponse: ATTAttributeDataList { }
+
 // MARK: - DataConvertible
 
 extension ATTReadByGroupTypeResponse: DataConvertible {
-    
-    static func dataLength <T: Collection> (for attributes: T) -> Int where T.Element == AttributeData {
-        
-        assert(attributes.isEmpty == false)
-        
-        return attributes.reduce(2, { $0 + $1.dataLength })
-    }
     
     var dataLength: Int {
         
@@ -111,9 +64,7 @@ extension ATTReadByGroupTypeResponse: DataConvertible {
     
     static func += (data: inout Data, value: ATTReadByGroupTypeResponse) {
         
-        data += attributeOpcode.rawValue
-        data += UInt8(value.attributeData[0].dataLength)
-        value.attributeData.forEach { data += $0 }
+        append(&data, value.attributeData)
     }
 }
 
@@ -143,9 +94,9 @@ public extension ATTReadByGroupTypeResponse {
     }
 }
 
-internal extension ATTReadByGroupTypeResponse.AttributeData {
+extension ATTReadByGroupTypeResponse.AttributeData: ATTAttributeData {
     
-    internal init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count > 4
             else { return nil }
