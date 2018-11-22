@@ -14,7 +14,7 @@ import Foundation
 /// the type of a grouping attribute as defined by a higher layer specification, but the handle is not known.
 public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readByGroupTypeRequest
+    public static var attributeOpcode: ATT.Opcode { return .readByGroupTypeRequest }
     
     /// First requested handle number.
     public var startHandle: UInt16
@@ -31,50 +31,74 @@ public struct ATTReadByGroupTypeRequest: ATTProtocolDataUnit, Equatable {
                 endHandle: UInt16,
                 type: BluetoothUUID) {
         
+        assert(type.length != .bit32)
+        
         self.startHandle = startHandle
         self.endHandle = endHandle
         self.type = type
     }
+}
+
+public extension ATTReadByGroupTypeRequest {
     
     public init?(data: Data) {
         
-        guard let length = Length(rawValue: data.count)
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == Swift.type(of: self).attributeOpcode.rawValue
+        guard let length = Length(rawValue: data.count),
+            data[0] == Swift.type(of: self).attributeOpcode.rawValue
             else { return nil }
         
         self.startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
         self.endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         
         switch length {
-            
         case .uuid16:
-            
             let value = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
-            
             self.type = .bit16(value)
-            
         case .uuid128:
-            
             self.type = BluetoothUUID(littleEndian: BluetoothUUID(data: data.subdataNoCopy(in: 5 ..< 21))!)
         }
     }
     
     public var data: Data {
         
-        let startHandleBytes = startHandle.littleEndian.bytes
-        let endHandleBytes = endHandle.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTReadByGroupTypeRequest: DataConvertible {
+    
+    var dataLength: Int {
         
-        return Data([Swift.type(of: self).attributeOpcode.rawValue, startHandleBytes.0, startHandleBytes.1, endHandleBytes.0, endHandleBytes.1]) + type.littleEndian.data
+        return length.rawValue
     }
     
-    private enum Length: Int {
+    static func += (data: inout Data, value: ATTReadByGroupTypeRequest) {
+        
+        data += attributeOpcode.rawValue
+        data += value.startHandle.littleEndian
+        data += value.endHandle.littleEndian
+        data += value.type.littleEndian
+    }
+}
+
+// MARK: - Supporting Types
+
+private extension ATTReadByGroupTypeRequest {
+    
+    enum Length: Int {
         
         case uuid16     = 7
         case uuid128    = 21
+    }
+    
+    var length: Length {
+        
+        switch type {
+        case .bit16: return .uuid16
+        case .bit128: return .uuid128
+        case .bit32: fatalError()
+        }
     }
 }
