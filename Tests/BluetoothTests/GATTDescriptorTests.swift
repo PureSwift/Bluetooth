@@ -142,16 +142,16 @@ final class GATTDescriptorTests: XCTestCase {
         XCTAssertNil(GATTFormatDescriptor(data: Data([0x1C, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00])))
         XCTAssertNil(GATTFormatDescriptor(data: Data([0xFF, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00])))
         
-        XCTAssertEqual(GATTFormatDescriptor(data: Data([0x00, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00]))?.format, GATTCharacteristicFormatType.rfu)
+        XCTAssertEqual(GATTFormatDescriptor(data: Data([0x00, 0x00, 0x00 , 0x00, 0x00, 0x00, 0x00]))?.format, .rfu)
         
-        XCTAssertEqual(GATTFormatDescriptor(data: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.format, GATTCharacteristicFormatType.float)
+        XCTAssertEqual(GATTFormatDescriptor(data: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.format, .float)
         XCTAssertEqual(GATTFormatDescriptor(data: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.exponent, 0x00)
         XCTAssertEqual(GATTFormatDescriptor(data: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.unit, 0x27AC)
         XCTAssertEqual(GATTFormatDescriptor(data: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.namespace, 0x01)
         XCTAssertEqual(GATTFormatDescriptor(data: Data([0x17, 0x00, 0xAC, 0x27, 0x01, 0x00, 0x00]))?.description, 0x0000)
         
-        let format = GATTFormatDescriptor(data: value)
-        XCTAssertEqual(format?.format, 0x17)
+        let formatDescriptor = GATTFormatDescriptor(data: value)
+        XCTAssertEqual(formatDescriptor?.format.rawValue, 0x17)
         
     }
     

@@ -13,57 +13,39 @@
 /// and ignored upon receipt.
 ///
 /// If the Characteristic Value is less than an octet, it occupies an entire octet.
-public struct GATTCharacteristicFormatType: RawRepresentable, Equatable, Hashable {
+public enum GATTCharacteristicFormatType: UInt8 {
     
-    public let length = 1
-    
-    public let rawValue: UInt8
-    
-    public init?(rawValue: UInt8) {
-        
-        guard rawValue <= 27
-            else { return nil }
-        
-        self.rawValue = rawValue
-    }
-    
-    public static let rfu: GATTCharacteristicFormatType = 0x00
-    public static let boolean: GATTCharacteristicFormatType = 0x01
-    public static let bit2: GATTCharacteristicFormatType = 0x02
-    public static let nibble: GATTCharacteristicFormatType = 0x03
-    public static let uint8: GATTCharacteristicFormatType = 0x04
-    public static let uint12: GATTCharacteristicFormatType = 0x05
-    public static let uint16: GATTCharacteristicFormatType = 0x06
-    public static let uint24: GATTCharacteristicFormatType = 0x07
-    public static let uint32: GATTCharacteristicFormatType = 0x08
-    public static let uint48: GATTCharacteristicFormatType = 0x09
-    public static let uint64: GATTCharacteristicFormatType = 0x0A
-    public static let uint128: GATTCharacteristicFormatType = 0x0B
-    public static let sint8: GATTCharacteristicFormatType = 0x0C
-    public static let sint12: GATTCharacteristicFormatType = 0x0D
-    public static let sint16: GATTCharacteristicFormatType = 0x0E
-    public static let sint24: GATTCharacteristicFormatType = 0x0F
-    public static let sint32: GATTCharacteristicFormatType = 0x10
-    public static let sint48: GATTCharacteristicFormatType = 0x11
-    public static let sint64: GATTCharacteristicFormatType = 0x12
-    public static let sint128: GATTCharacteristicFormatType = 0x13
-    public static let float32: GATTCharacteristicFormatType = 0x14
-    public static let float64: GATTCharacteristicFormatType = 0x15
-    public static let sfloat: GATTCharacteristicFormatType = 0x16
-    public static let float: GATTCharacteristicFormatType = 0x17
-    public static let duint16: GATTCharacteristicFormatType = 0x18
-    public static let utf8s: GATTCharacteristicFormatType = 0x19
-    public static let utf16s: GATTCharacteristicFormatType = 0x1A
-    public static let `struct`: GATTCharacteristicFormatType = 0x1B
+    case rfu = 0x00
+    case boolean = 0x01
+    case bit2 = 0x02
+    case nibble = 0x03
+    case uint8 = 0x04
+    case uint12 = 0x05
+    case uint16 = 0x06
+    case uint24 = 0x07
+    case uint32 = 0x08
+    case uint48 = 0x09
+    case uint64 = 0x0A
+    case uint128 = 0x0B
+    case sint8 = 0x0C
+    case sint12 = 0x0D
+    case sint16 = 0x0E
+    case sint24 = 0x0F
+    case sint32 = 0x10
+    case sint48 = 0x11
+    case sint64 = 0x12
+    case sint128 = 0x13
+    case float32 = 0x14
+    case float64 = 0x15
+    case sfloat = 0x16
+    case float = 0x17
+    case duint16 = 0x18
+    case utf8s = 0x19
+    case utf16s = 0x1A
+    case `struct` = 0x1B
 }
 
-extension GATTCharacteristicFormatType: ExpressibleByIntegerLiteral {
-    
-    public init(integerLiteral value: UInt8) {
-        
-        self.rawValue = value
-    }
-}
+// MARK: - CustomStringConvertible
 
 extension GATTCharacteristicFormatType: CustomStringConvertible {
     
