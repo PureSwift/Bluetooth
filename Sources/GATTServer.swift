@@ -425,78 +425,69 @@ public final class GATTServer {
         
         typealias AttributeData = ATTReadByGroupTypeResponse.AttributeData
         
-        let opcode = type(of: pdu).attributeOpcode
-        
         log?("Read by Group Type (\(pdu.startHandle) - \(pdu.endHandle))")
         
         // validate handles
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(opcode, .invalidHandle); return }
+            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(opcode, .invalidHandle, pdu.startHandle); return }
+            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
         
         // GATT defines that only the Primary Service and Secondary Service group types 
         // can be used for the "Read By Group Type" request. Return an error if any other group type is given.
-        guard pdu.type == GATT.UUID.primaryService.uuid || pdu.type == GATT.UUID.secondaryService.uuid
-            else { errorResponse(opcode, .unsupportedGroupType, pdu.startHandle); return }
+        guard pdu.type == GATT.UUID.primaryService.uuid
+            || pdu.type == GATT.UUID.secondaryService.uuid
+            else { errorResponse(type(of: pdu).attributeOpcode, .unsupportedGroupType, pdu.startHandle); return }
         
-        let data = database.readByGroupType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.type)
+        let attributeData = database.readByGroupType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.type)
         
-        guard data.isEmpty == false
-            else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
+        guard let firstAttribute = attributeData.first
+            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
         
-        var attributeData = [AttributeData]()
-        attributeData.reserveCapacity(data.count)
+        let mtu = Int(connection.maximumTransmissionUnit.rawValue)
         
-        for (index, attribute) in data.enumerated() {
+        let valueLength = firstAttribute.value.count
+        
+        let response: ATTReadByGroupTypeResponse
+        
+        // truncate for MTU if first handle is too large
+        if ATTReadByGroupTypeResponse([firstAttribute]).dataLength > mtu {
             
-            let value = attribute.uuid.littleEndian.data
+            let maxLength = min(min(mtu - 6, 251), valueLength)
             
-            if index > 0 {
-                
-                let lastAttribute = data[index - 1]
-                
-                guard value.count == lastAttribute.uuid.littleEndian.data.count
-                    else { break } // stop appending
-            }
+            let truncatedAttribute = AttributeData(attributeHandle: firstAttribute.attributeHandle,
+                                                   endGroupHandle: firstAttribute.endGroupHandle,
+                                                   value: Data(firstAttribute.value.prefix(maxLength)))
             
-            attributeData.append(AttributeData(attributeHandle: attribute.start,
-                                               endGroupHandle: attribute.end,
-                                               value: value))
-        }
-        
-        var limitedAttributes = [attributeData[0]]
-        
-        var response = ATTReadByGroupTypeResponse(limitedAttributes)
-        
-        // limit for MTU if first handle is too large
-        if response.data.count > Int(connection.maximumTransmissionUnit.rawValue) {
-            
-            let maxLength = min(min(Int(connection.maximumTransmissionUnit.rawValue) - 6, 251), limitedAttributes[0].value.count)
-            
-            limitedAttributes[0].value = Data(limitedAttributes[0].value.prefix(maxLength))
-            
-            response = ATTReadByGroupTypeResponse(limitedAttributes)
+            response = ATTReadByGroupTypeResponse([truncatedAttribute])
             
         } else {
             
-            // limit for MTU for subsequential attribute handles
-            for data in attributeData[1 ..< attributeData.count] {
+            var count = 1
+            
+            // respond with results that are the same length
+            if attributeData.count > 1 {
                 
-                limitedAttributes.append(data)
-                
-                guard let limitedResponse = ATTReadByGroupTypeResponse(attributeData: limitedAttributes)
-                    else { fatalErrorResponse("Could not create ATTReadByGroupTypeResponse. Attribute Data: \(attributeData)", opcode, pdu.startHandle) }
-                
-                guard limitedResponse.data.count <= Int(connection.maximumTransmissionUnit.rawValue) else { break }
-                
-                response = limitedResponse
+                for (index, attribute) in attributeData.suffix(from: 1).enumerated() {
+                    
+                    let newCount = index + 1
+                    
+                    guard attribute.value.count == valueLength,
+                        ATTReadByGroupTypeResponse.dataLength(for: attributeData.prefix(newCount)) <= mtu
+                        else { break }
+                    
+                    count = newCount
+                }
             }
+            
+            let limitedAttributes = Array(attributeData.prefix(count))
+            
+            response = ATTReadByGroupTypeResponse(limitedAttributes)
         }
         
-        assert(response.data.count <= Int(connection.maximumTransmissionUnit.rawValue),
-               "Response \(response.data.count) bytes > MTU (\(connection.maximumTransmissionUnit))")
+        assert(response.dataLength <= mtu,
+               "Response \(response.dataLength) bytes > MTU (\(mtu))")
         
         respond(response)
     }
@@ -536,6 +527,8 @@ public final class GATTServer {
         
         let mtu = Int(connection.maximumTransmissionUnit.rawValue)
         
+        let valueLength = firstAttribute.value.count
+        
         let response: ATTReadByTypeResponse
         
         // truncate data for MTU if first handle is too large
@@ -552,14 +545,15 @@ public final class GATTServer {
             
             var count = 1
             
-            // multiple items
+            // respond with results that are the same length
             if attributeData.count > 1 {
                 
-                for index in 1 ..< attributeData.count {
+                for (index, attribute) in attributeData.suffix(from: 1).enumerated() {
                     
                     let newCount = index + 1
                     
-                    guard ATTReadByTypeResponse.dataLength(for: attributeData.prefix(newCount)) <= mtu
+                    guard attribute.value.count == valueLength,
+                        ATTReadByTypeResponse.dataLength(for: attributeData.prefix(newCount)) <= mtu
                         else { break }
                     
                     count = newCount
@@ -571,8 +565,8 @@ public final class GATTServer {
             response = ATTReadByTypeResponse(limitedAttributes)
         }
         
-        assert(response.data.count <= mtu,
-               "Response \(response.data.count) bytes > MTU (\(mtu))")
+        assert(response.dataLength <= mtu,
+               "Response \(response.dataLength) bytes > MTU (\(mtu))")
         
         respond(response)
     }
@@ -917,10 +911,12 @@ internal extension GATTDatabase {
         fatalError("Invalid handle \(handle)")
     }
     
-    /// Used for Service discovery. Should return tuples with the Service start handle, end handle and UUID.
-    func readByGroupType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] {
+    /// Used for Service discovery.
+    func readByGroupType(handle: (start: UInt16, end: UInt16), type: BluetoothUUID) -> [ATTReadByGroupTypeResponse.AttributeData] {
         
-        var data: [(start: UInt16, end: UInt16, uuid: BluetoothUUID)] = []
+        typealias AttributeData = ATTReadByGroupTypeResponse.AttributeData
+        
+        var data = [AttributeData]()
         data.reserveCapacity(attributeGroups.count)
         
         let handleRange = HandleRange(start: handle.start, end: handle.end)
@@ -933,9 +929,9 @@ internal extension GATTDatabase {
                 groupRange.isSubset(handleRange)
                 else { continue }
             
-            let serviceUUID = BluetoothUUID(littleEndian: BluetoothUUID(data: group.serviceAttribute.value)!)
-            
-            data.append((group.startHandle, group.endHandle, serviceUUID))
+            data.append(AttributeData(attributeHandle: group.startHandle,
+                                      endGroupHandle: group.endHandle,
+                                      value: group.serviceAttribute.value))
         }
         
         return data

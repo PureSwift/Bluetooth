@@ -23,6 +23,7 @@ internal extension Data {
         return Data(bytesNoCopy: pointer, count: range.count, deallocator: .none)
     }
     
+    /// Returns a new copy of the data in a specified range.
     func subdata(in range: CountableRange<Int>) -> Data {
         return Data(self[range])
     }
