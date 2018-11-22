@@ -14,29 +14,15 @@ import Foundation
 /// and contains the handles and values of the attributes that have been read.
 public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readByTypeResponse
+    public static var attributeOpcode: ATT.Opcode { return .readByTypeResponse }
     
     /// A list of Attribute Data.
     public let attributeData: [AttributeData]
     
     public init?(attributeData: [AttributeData]) {
         
-        // must have at least one attribute data
-        guard attributeData.isEmpty == false
+        guard type(of: self).validate(attributeData)
             else { return nil }
-        
-        let length = attributeData[0].value.count
-        
-        // length must be at least 3 bytes
-        guard length >= AttributeData.minimumLength
-            else { return nil }
-        
-        // validate the length of each pair
-        for pair in attributeData {
-            
-            guard pair.value.count == length
-                else { return nil }
-        }
         
         self.attributeData = attributeData
     }
@@ -49,45 +35,10 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
 
 public extension ATTReadByTypeResponse {
     
-    /// Minimum length
-    private static let minimumLength = 1 + 1 + AttributeData.minimumLength
-    
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard let attributeData = ATTReadByTypeResponse.from(data: data)
             else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
-            else { return nil }
-        
-        let attributeDataLength = Int(data[1])
-        
-        let attributeDataByteCount = data.count - 2
-        
-        guard attributeDataByteCount % attributeDataLength == 0
-            else { return nil }
-        
-        let attributeDataCount = attributeDataByteCount / attributeDataLength
-        
-        guard attributeDataCount >= 1
-            else { return nil }
-        
-        var attributeData = [AttributeData]()
-        attributeData.reserveCapacity(attributeDataCount)
-        
-        for index in 0 ..< attributeDataCount {
-            
-            let byteIndex = 2 + (index * attributeDataLength)
-            
-            let attributeBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + attributeDataLength)
-            
-            guard let attribute = AttributeData(data: attributeBytes)
-                else { return nil }
-            
-            attributeData.append(attribute)
-        }
         
         self.attributeData = attributeData
     }
@@ -98,16 +49,11 @@ public extension ATTReadByTypeResponse {
     }
 }
 
+extension ATTReadByTypeResponse: ATTAttributeDataList { }
+
 // MARK: - DataConvertible
 
 extension ATTReadByTypeResponse: DataConvertible {
-    
-    static func dataLength <T: Collection> (for attributes: T) -> Int where T.Element == AttributeData {
-        
-        assert(attributes.isEmpty == false)
-        
-        return attributes.reduce(2, { $0 + $1.dataLength })
-    }
     
     var dataLength: Int {
         
@@ -116,9 +62,7 @@ extension ATTReadByTypeResponse: DataConvertible {
     
     static func += (data: inout Data, value: ATTReadByTypeResponse) {
         
-        data += attributeOpcode.rawValue
-        data += UInt8(value.attributeData[0].dataLength)
-        value.attributeData.forEach { data += $0 }
+        append(&data, value.attributeData)
     }
 }
 
@@ -137,29 +81,18 @@ public extension ATTReadByTypeResponse {
     }
 }
 
-internal extension ATTReadByTypeResponse.AttributeData {
+extension ATTReadByTypeResponse.AttributeData: ATTAttributeData {
     
     /// Minimum length.
     internal static var minimumLength: Int { return 2 }
     
     init?(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard data.count > type(of: self).minimumLength
             else { return nil }
         
-        self.init(data)
-    }
-    
-    fileprivate init(_ data: Data) {
-        
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
-        if data.count > type(of: self).minimumLength {
-            let startingIndex = type(of: self).minimumLength
-            self.value = Data(data.suffix(from: startingIndex))
-        } else {
-            self.value = Data()
-        }
+        self.value = Data(data.suffix(from: type(of: self).minimumLength))
     }
 }
 
