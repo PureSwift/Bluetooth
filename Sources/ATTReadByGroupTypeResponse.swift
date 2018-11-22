@@ -97,9 +97,16 @@ public extension ATTReadByGroupTypeResponse {
 
 extension ATTReadByGroupTypeResponse: DataConvertible {
     
+    static func dataLength <T: Collection> (for attributes: T) -> Int where T.Element == AttributeData {
+        
+        assert(attributes.isEmpty == false)
+        
+        return attributes.reduce(2, { $0 + $1.dataLength })
+    }
+    
     var dataLength: Int {
         
-        return 2 + attributeData.reduce(0, { $0 + $1.dataLength })
+        return type(of: self).dataLength(for: attributeData)
     }
     
     static func += (data: inout Data, value: ATTReadByGroupTypeResponse) {
