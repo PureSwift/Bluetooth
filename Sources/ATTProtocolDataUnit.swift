@@ -42,25 +42,6 @@ extension ATTAttributeDataList {
     static var headerLength: Int { return 2 }
 }
 
-extension ATTAttributeDataList where AttributeData: ATTFixedLengthAttributeData {
-    
-    static var headerLength: Int { return 1 }
-}
-
-internal protocol ATTFixedLengthAttributeData: ATTAttributeData {
-    
-    static var length: Int { get }
-}
-
-extension ATTAttributeDataList where AttributeData: ATTFixedLengthAttributeData, AttributeData: DataConvertible {
-    
-    static func append(_ data: inout Data, _ attributeData: [AttributeData]) {
-        
-        data += attributeOpcode.rawValue
-        attributeData.forEach { data += $0 }
-    }
-}
-
 internal extension ATTAttributeDataList where AttributeData: DataConvertible {
     
     static func validate(_ attributeData: [AttributeData]) -> Bool {
@@ -105,16 +86,7 @@ internal extension ATTAttributeDataList {
         guard attributeOpcodeByte == attributeOpcode.rawValue
             else { return nil }
         
-        let attributeDataLength: Int
-        
-        if let elementLength = (AttributeData.self as? ATTFixedLengthAttributeData.Type)?.length {
-            
-            attributeDataLength = elementLength
-            
-        } else {
-            
-            attributeDataLength = Int(data[1])
-        }
+        let attributeDataLength = Int(data[1])
         
         let attributeDataByteCount = data.count - headerLength
         

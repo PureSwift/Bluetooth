@@ -61,7 +61,7 @@ public extension ATTFindByTypeResponse {
         let handleIndices = (0 ..< handleCount)
         let handles = handleIndices.map { (index: Int) -> HandlesInformation in
             
-            let byteIndex = (index * handleLength) + 1
+            let byteIndex = 1 + (index * handleLength)
             return HandlesInformation(data.subdataNoCopy(in: byteIndex ..< byteIndex + handleLength))
         }
         
@@ -101,10 +101,10 @@ public extension ATTFindByTypeResponse {
     public struct HandlesInformation: Equatable {
         
         /// Found Attribute Handle
-        public var foundAttribute: UInt16
+        public let foundAttribute: UInt16
         
         /// Group End Handle
-        public var groupEnd: UInt16
+        public let groupEnd: UInt16
         
         public init(foundAttribute: UInt16,
                     groupEnd: UInt16) {
@@ -117,17 +117,9 @@ public extension ATTFindByTypeResponse {
 
 internal extension ATTFindByTypeResponse.HandlesInformation {
     
-    internal static var length: Int { return 2 + 2 }
+    static var length: Int { return 2 + 2 }
     
-    internal init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        self.init(data)
-    }
-    
-    fileprivate init(_ data: Data) {
+    init(_ data: Data) {
         
         self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
