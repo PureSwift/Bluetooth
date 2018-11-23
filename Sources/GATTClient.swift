@@ -590,7 +590,7 @@ public final class GATTClient {
         guard inLongWrite == false
             else { completion(.error(GATTClientError.inLongWrite)); return }
         
-        let firstValuePart = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length))
+        let firstValuePart = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - 5))
         
         let pdu = ATTPrepareWriteRequest(handle: attribute,
                                          offset: 0x00,
@@ -1075,7 +1075,7 @@ public final class GATTClient {
             if offset < operation.data.count {
                 
                 // write next part
-                let maxLength = Int(maximumTransmissionUnit.rawValue) - ATTPrepareWriteRequest.length // 5
+                let maxLength = Int(maximumTransmissionUnit.rawValue) - 5
                 let endIndex = min(offset + maxLength, operation.data.count)
                 let attributeValuePart = operation.data.subdataNoCopy(in: offset ..< endIndex)
                 

@@ -17,9 +17,6 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATT.Opcode { return .preparedWriteRequest }
     
-    /// Minimum length
-    internal static let length = 1 + 2 + 2 + 0
-    
     /// The handle of the attribute to be written.
     public var handle: UInt16
     
@@ -37,37 +34,41 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
         self.offset = offset
         self.partValue = partValue
     }
+}
+
+public extension ATTPrepareWriteRequest {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard data.count >= 5,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
         self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
-        
-        if data.count > type(of: self).length {
-            
-            self.partValue = Data(data.suffix(from: type(of: self).length))
-            
-        } else {
-            
-            self.partValue = Data()
-        }
+        self.partValue = data.suffixCheckingBounds(from: 5)
     }
     
     public var data: Data {
         
-        let handleBytes = handle.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTPrepareWriteRequest: DataConvertible {
+    
+    var dataLength: Int {
         
-        let offsetBytes = offset.littleEndian.bytes
+        return 5 + partValue.count
+    }
+    
+    static func += (data: inout Data, value: ATTPrepareWriteRequest) {
         
-        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1]) + partValue
+        data += attributeOpcode.rawValue
+        data += value.handle.littleEndian
+        data += value.offset.littleEndian
+        data += value.partValue
     }
 }
