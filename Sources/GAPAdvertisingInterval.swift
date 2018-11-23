@@ -13,25 +13,21 @@ import Foundation
 ///
 /// Size: 2 octets (UINT16)
 /// Units: 0.625 ms
-public struct GAPAdvertisingInterval: GAPData {
+public struct GAPAdvertisingInterval: GAPData, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt16>.size
-    
-    public static let units: Double = 0.0625
     
     public static let dataType: GAPDataType = .advertisingInterval
     
     public var interval: UInt16
     
-    public var miliseconds: Double {
-        
-        return Double(interval) * type(of: self).units
-    }
-    
     public init(interval: UInt16) {
         
         self.interval = interval
     }
+}
+
+public extension GAPAdvertisingInterval {
     
     public init?(data: Data) {
         
@@ -51,18 +47,32 @@ public struct GAPAdvertisingInterval: GAPData {
     }
 }
 
-extension GAPAdvertisingInterval: Equatable {
+public extension GAPAdvertisingInterval {
     
-    public static func == (lhs: GAPAdvertisingInterval, rhs: GAPAdvertisingInterval) -> Bool {
+    internal static var units: Double { return 0.0625 }
+    
+    public var miliseconds: Double {
         
-        return lhs.interval == rhs.interval
+        return Double(interval) * type(of: self).units
     }
 }
+
+// MARK: - CustomStringConvertible
 
 extension GAPAdvertisingInterval: CustomStringConvertible {
     
     public var description: String {
         
-        return interval.description
+        return miliseconds.description + "ms"
+    }
+}
+
+// MARK: - ExpressibleByIntegerLiteral
+
+extension GAPAdvertisingInterval: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(interval: value)
     }
 }

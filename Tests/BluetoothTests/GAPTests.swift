@@ -596,17 +596,19 @@ final class GAPTests: XCTestCase {
     
     func testGAPAdvertisingInterval() {
     
-        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x4f])))
-        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x4f, 0xf8, 0x30])))
+        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x00])))
+        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x00, 0x00, 0x00])))
         
-        do {
-            let data = Data([0xf8, 0x30])
-            let advertisingInterval = GAPAdvertisingInterval(data: data)!
-            
-            XCTAssertEqual(advertisingInterval.data, data)
-            XCTAssertEqual(advertisingInterval.data.count, GAPAdvertisingInterval.length)
-            XCTAssertEqual(MemoryLayout.size(ofValue: advertisingInterval), GAPAdvertisingInterval.length)
-        }
+        let data = Data([0x01, 0x00])
+        guard let advertisingInterval = GAPAdvertisingInterval(data: data)
+            else { XCTFail(); return }
+        
+        XCTAssertEqual(advertisingInterval.data, data)
+        XCTAssertEqual(advertisingInterval.data.count, GAPAdvertisingInterval.length)
+        XCTAssertEqual(MemoryLayout.size(ofValue: advertisingInterval), GAPAdvertisingInterval.length)
+        XCTAssertEqual(advertisingInterval, 1)
+        XCTAssertEqual(advertisingInterval.miliseconds, 0.0625)
+        XCTAssertEqual(advertisingInterval.description, "0.0625ms")
     }
     
     func testGAPLEDeviceAddress() {
