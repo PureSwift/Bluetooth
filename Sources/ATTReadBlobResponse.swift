@@ -14,10 +14,7 @@ import Foundation
 /// and contains part of the value of the attribute that has been read.
 public struct ATTReadBlobResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readBlobResponse
-    
-    /// Minimum length
-    internal static let length = 1 + 0
+    public static var attributeOpcode: ATT.Opcode { return .readBlobResponse }
     
     /// Part of the value of the attribute with the handle given.
     ///
@@ -30,10 +27,13 @@ public struct ATTReadBlobResponse: ATTProtocolDataUnit, Equatable {
         
         self.partAttributeValue = partAttributeValue
     }
+}
+
+public extension ATTReadBlobResponse {
     
     public init?(data: Data) {
         
-        guard data.count >= ATTReadBlobResponse.length
+        guard data.count >= 1
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -41,18 +41,27 @@ public struct ATTReadBlobResponse: ATTProtocolDataUnit, Equatable {
         guard attributeOpcodeByte == ATTReadBlobResponse.attributeOpcode.rawValue
             else { return nil }
         
-        if data.count > ATTReadBlobResponse.length {
-            
-            self.partAttributeValue = Data(data.suffix(from: 1))
-            
-        } else {
-            
-            self.partAttributeValue = Data()
-        }
+        self.partAttributeValue = data.suffixCheckingBounds(from: 1)
     }
     
     public var data: Data {
         
-        return Data([ATTReadBlobResponse.attributeOpcode.rawValue]) + partAttributeValue
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTReadBlobResponse: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return 1 + partAttributeValue.count
+    }
+    
+    static func += (data: inout Data, value: ATTReadBlobResponse) {
+        
+        data += attributeOpcode.rawValue
+        data += value.partAttributeValue
     }
 }
