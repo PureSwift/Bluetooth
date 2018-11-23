@@ -900,19 +900,26 @@ final class GAPTests: XCTestCase {
     
     func testGAP3DInformation() {
         
-        XCTAssertNil(GAP3DInformation(data: Data([0x4f])))
         XCTAssertNil(GAP3DInformation(data: Data([])))
+        XCTAssertNil(GAP3DInformation(data: Data([0x00])))
+        XCTAssertNil(GAP3DInformation(data: Data([0x00, 0x00, 0x01])))
         
         do {
-            let data = Data([0b01, 0x2e])
-            let information = GAP3DInformation(data: data)
-            XCTAssertEqual(information!.data, data)
+            let data = Data([0b00, 0x00])
+            guard let information = GAP3DInformation(data: data)
+                else { XCTFail(); return }
+            XCTAssertEqual(information.data, data)
+            XCTAssertEqual(information.flags, [])
+            XCTAssertEqual(information.pathLossThreshold, 0)
         }
         
         do {
-            let data = Data([0b100, 0x2e])
-            let information = GAP3DInformation(data: data)
-            XCTAssertEqual(information!.data, data)
+            let data = Data([0b11, 0x01])
+            guard let information = GAP3DInformation(data: data)
+                else { XCTFail(); return }
+            XCTAssertEqual(information.data, data)
+            XCTAssertEqual(information.flags, [.associationNotification, .batteryLevelReporting])
+            XCTAssertEqual(information.pathLossThreshold, 1)
         }
     }
 }

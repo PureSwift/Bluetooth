@@ -37,9 +37,7 @@ import Foundation
  
  - Note: Future versions of this EIR data may be extended to carry additional bytes in the Profile specific 3D Information data section. Therefore, 3DG compliant with this version of the Profile specification shall ignore any additional data beyond what is specified in Table 5.2, if present.
  */
-public struct GAP3DInformation: GAPData {
-    
-    internal static let minLength = 2
+public struct GAP3DInformation: GAPData, Equatable {
     
     public static var dataType: GAPDataType = .informationData3D
     
@@ -52,10 +50,13 @@ public struct GAP3DInformation: GAPData {
         self.flags = flags
         self.pathLossThreshold = pathLossThreshold
     }
+}
+
+public extension GAP3DInformation {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minLength
+        guard data.count == 2
             else { return nil }
         
         let flags = BitMaskOptionSet<GAP3DInformationFlag>(rawValue: data[0])
@@ -68,24 +69,9 @@ public struct GAP3DInformation: GAPData {
         
         return Data([flags.rawValue, pathLossThreshold])
     }
-    
 }
 
-extension GAP3DInformation: Equatable {
-    
-    public static func == (lhs: GAP3DInformation, rhs: GAP3DInformation) -> Bool {
-        
-        return lhs.flags == rhs.flags && lhs.pathLossThreshold == rhs.pathLossThreshold
-    }
-}
-
-extension GAP3DInformation: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return flags.description + pathLossThreshold.description
-    }
-}
+// MARK: - Supporting Types
 
 public enum GAP3DInformationFlag: UInt8, BitMaskOption {
     
@@ -103,5 +89,4 @@ public enum GAP3DInformationFlag: UInt8, BitMaskOption {
         .sendBatteryLevelOnStartUp,
         .factoryTestMode
     ]
-    
 }
