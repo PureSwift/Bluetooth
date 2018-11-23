@@ -921,8 +921,11 @@ final class GATTTests: XCTestCase {
         test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
         test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
         test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
+        test(with: [TestProfile.Indicate], newData: [Data("test".utf8)])
         test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 20)])
+        test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: 20)])
         test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
+        test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
     }
     
     func testGATT() {
