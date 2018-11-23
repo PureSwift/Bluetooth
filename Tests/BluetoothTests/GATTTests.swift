@@ -892,14 +892,18 @@ final class GATTTests: XCTestCase {
                                                     
                                                 case .value:
                                                     
+                                                    let maxLength = 20 //MTU-3
+                                                    
+                                                    let expectedNotificationValues = newData.map { Data($0.prefix(maxLength)) }
+                                                    
                                                     if notificationCharacteristic.properties.contains(.notify) {
                                                         
-                                                        XCTAssertEqual(recievedNotifications, newData)
+                                                        XCTAssertEqual(recievedNotifications, expectedNotificationValues)
                                                     }
                                                     
                                                     if notificationCharacteristic.properties.contains(.indicate) {
                                                         
-                                                        XCTAssertEqual(recievedIndications, newData)
+                                                        XCTAssertEqual(recievedIndications, expectedNotificationValues)
                                                     }
                                                 }
                                             }
@@ -914,14 +918,11 @@ final class GATTTests: XCTestCase {
         }
         
         test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
-        
         test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
-        
         test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
-        
         test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
-        
         test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 20)])
+        test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
     }
     
     func testGATT() {
