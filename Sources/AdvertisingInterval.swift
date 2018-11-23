@@ -26,12 +26,6 @@ public struct AdvertisingInterval: Equatable, Hashable {
     
     public let rawValue: UInt16
     
-    public static let min = AdvertisingInterval(0x0020)
-    
-    public static let max = AdvertisingInterval(0x4000)
-    
-    public static let `default` = AdvertisingInterval(0x0800)
-    
     public init?(rawValue: UInt16) {
         
         guard rawValue <= AdvertisingInterval.max.rawValue,
@@ -50,6 +44,15 @@ public struct AdvertisingInterval: Equatable, Hashable {
         
         return Double(rawValue) * 0.625
     }
+}
+
+public extension AdvertisingInterval {
+    
+    public static var min: AdvertisingInterval { return AdvertisingInterval(0x0020) }
+    
+    public static var max: AdvertisingInterval { return AdvertisingInterval(0x4000) }
+    
+    public static var `default`: AdvertisingInterval { return AdvertisingInterval(0x0800) }
 }
 
 // MARK: - Comparable

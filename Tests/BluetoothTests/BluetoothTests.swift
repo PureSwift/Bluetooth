@@ -46,6 +46,9 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(AdvertisingInterval.min.miliseconds, 20.0, "The `advInterval` shall be an integer multiple of 0.625 ms in the range of `20` ms to `10.24` s")
         XCTAssertEqual(AdvertisingInterval.max.miliseconds, 10.24 * 1000, "The `advInterval` shall be an integer multiple of 0.625 ms in the range of `20` ms to `10.24` s")
         XCTAssertEqual(AdvertisingInterval.default.miliseconds, 1.28 * 1000, "Default: N = 0x0800 (1.28 second)")
+        XCTAssertEqual("\(AdvertisingInterval.min)", "20.0ms")
+        XCTAssertEqual("\(AdvertisingInterval.max)", "10240.0ms")
+        XCTAssertEqual("\(AdvertisingInterval.default)", "1280.0ms")
     }
     
     func testSecurityLevel() {
