@@ -19,9 +19,6 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATT.Opcode { return .readMultipleRequest }
     
-    /// Minimum length
-    internal static let length = 1 + 4
-    
     /// The handles of the attributes to read.
     public var handles: [UInt16]
     
@@ -32,10 +29,13 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
         
         self.handles = handles
     }
+}
+
+public extension ATTReadMultipleRequest {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length,
+        guard data.count >= 5,
             type(of: self).validateOpcode(data)
             else { return nil }
         
@@ -57,24 +57,27 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
             handles.append(handle)
         }
         
-        self.handles = handles
+        self.init(handles: handles)
     }
     
     public var data: Data {
         
-        var handlesBytes = Data(repeating: 0, count: handles.count * 2)
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTReadMultipleRequest: DataConvertible {
+    
+    var dataLength: Int {
         
-        for handle in handles {
-            
-            let handleBytes = handle.littleEndian.bytes
-            
-            let handleByteIndex = handles.count * 2
-            
-            handlesBytes[handleByteIndex] = handleBytes.0
-            
-            handlesBytes[handleByteIndex + 1] = handleBytes.1
-        }
+        return 1 + (2 * handles.count)
+    }
+    
+    static func += (data: inout Data, value: ATTReadMultipleRequest) {
         
-        return Data([type(of: self).attributeOpcode.rawValue]) + handlesBytes
+        data += attributeOpcode.rawValue
+        value.handles.forEach { data += $0 }
     }
 }
