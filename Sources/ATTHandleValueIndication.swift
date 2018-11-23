@@ -46,6 +46,30 @@ public extension ATTHandleValueIndication {
     }
 }
 
+public extension ATTHandleValueIndication {
+    
+    public init(attribute: GATTDatabase.Attribute, maximumTransmissionUnit: ATTMaximumTransmissionUnit) {
+        
+        // If the attribue value is longer than (ATT_MTU-3) octets,
+        // then only the first (ATT_MTU-3) octets of this attribute value
+        // can be sent in a indication.
+        let dataSize = Int(maximumTransmissionUnit.rawValue) - 3
+        
+        let value: Data
+        
+        if attribute.value.count > dataSize {
+            
+            value = Data(attribute.value.prefix(dataSize))
+            
+        } else {
+            
+            value = attribute.value
+        }
+        
+        self.init(handle: attribute.handle, value: value)
+    }
+}
+
 // MARK: - DataConvertible
 
 extension ATTHandleValueIndication: DataConvertible {

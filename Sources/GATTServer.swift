@@ -274,6 +274,7 @@ public final class GATTServer {
     private func didWriteAttribute(_ attributeHandle: UInt16) {
         
         let (group, attribute) = database.attributeGroup(for: attributeHandle)
+        assert(attribute.handle == attributeHandle)
         
         guard let service = group.service,
             let characteristic = service.characteristics.first(where: { $0.uuid == attribute.uuid })
@@ -291,23 +292,7 @@ public final class GATTServer {
             // notify
             if descriptor.configuration.contains(.notify) {
                 
-                // If the attribue value is longer than (ATT_MTU-3) octets,
-                // then only the first (ATT_MTU-3) octets of this attribute value
-                // can be sent in a notification.
-                let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueNotification.length
-                
-                let value: Data
-                
-                if attribute.value.count > dataSize {
-                    
-                    value = Data(attribute.value.prefix(dataSize))
-                    
-                } else {
-                    
-                    value = attribute.value
-                }
-                
-                let notification = ATTHandleValueNotification(handle: attributeHandle, value: value)
+                let notification = ATTHandleValueNotification(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
                 
                 send(notification)
             }
@@ -315,23 +300,7 @@ public final class GATTServer {
             // indicate
             if descriptor.configuration.contains(.indicate) {
                 
-                /// If the attribue value is longer than (ATT_MTU-3) octets,
-                /// then only the first (ATT_MTU-3) octets of this attribute value
-                /// can be sent in a indication.
-                let dataSize = Int(connection.maximumTransmissionUnit.rawValue) - ATTHandleValueIndication.length
-                
-                let value: Data
-                
-                if attribute.value.count > dataSize {
-                    
-                    value = Data(attribute.value.prefix(dataSize))
-                    
-                } else {
-                    
-                    value = attribute.value
-                }
-                
-                let indication = ATTHandleValueIndication(handle: attributeHandle, value: value)
+                let indication = ATTHandleValueIndication(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
                 
                 send(indication) { [unowned self] (confirmation) in
                     
