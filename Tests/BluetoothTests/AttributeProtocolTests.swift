@@ -79,12 +79,12 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(errorResponse.data, data)
+            XCTAssertEqual(errorResponse.dataLength, data.count)
             XCTAssert(errorResponse.request == .readByGroupTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0001)
             XCTAssert(errorResponse.error == .attributeNotFound)
             XCTAssert(errorResponse.data == data)
-            
-            XCTAssertEqual(errorResponse.data, data)
         }
         
         do {
@@ -94,10 +94,11 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(errorResponse.data, data)
+            XCTAssertEqual(errorResponse.dataLength, data.count)
             XCTAssert(errorResponse.request == .readByTypeRequest)
             XCTAssert(errorResponse.attributeHandle == 0x0000)
             XCTAssert(errorResponse.error == .requestNotSupported)
-            XCTAssert(errorResponse.data == data)
         }
         
         do {
@@ -107,10 +108,11 @@ final class AttributeProtocolTests: XCTestCase {
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(errorResponse.data, data)
+            XCTAssertEqual(errorResponse.dataLength, data.count)
             XCTAssertEqual(errorResponse.request, .readByGroupTypeRequest)
             XCTAssertEqual(errorResponse.attributeHandle, 49)
             XCTAssertEqual(errorResponse.error, .attributeNotFound)
-            XCTAssertEqual(errorResponse.data, data)
         }
     }
     
@@ -150,6 +152,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.clientMTU, 23)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
         }
         
         do {
@@ -161,6 +164,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.serverMTU, 23)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
         }
     }
     
@@ -178,6 +182,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(pdu.type == .bit16(0x0028))
             XCTAssert(pdu.data == data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             
             // correct values
             //XCTAssert(pdu.type == GATT.UUID.PrimaryService.uuid, "\(pdu.type)")
@@ -211,7 +216,8 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(decoded.type == GATT.UUID.primaryService.uuid, "\(decoded.type)")
             XCTAssert(decoded.type == .bit16(0x2800))
             XCTAssert(decoded.type != .bit16(0x0028))
-            XCTAssert(decoded.data == pdu.data)
+            XCTAssertEqual(decoded.data, pdu.data)
+            XCTAssertEqual(decoded.dataLength, data.count)
         }
         
         do {
@@ -222,7 +228,8 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.attributeData.isEmpty == false)
-            XCTAssert(pdu.data == data)
+            XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
         }
         
         do {
@@ -235,6 +242,8 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTReadByGroupTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.attributeData.count, 1)
             XCTAssertEqual(pdu.attributeData.first?.attributeHandle, 40)
             XCTAssertEqual(pdu.attributeData.first?.endGroupHandle, 48)
@@ -243,7 +252,6 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.attributeData[0].value, BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
             XCTAssertEqual(BluetoothUUID(littleEndian:
                 BluetoothUUID(data: Data(pdu.attributeData[0].value))!).rawValue, uuidString)
-            XCTAssertEqual(pdu.data, data)
         }
     }
     
@@ -257,10 +265,11 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTFindByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian.data)
-            XCTAssert(pdu.data == data)
         }
         
         do {
@@ -271,10 +280,11 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTFindByTypeRequest(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
             XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian.data)
-            XCTAssert(pdu.data == data)
         }
         
         do {
@@ -285,12 +295,14 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             
             guard let foundHandle = pdu.handles.first,
                 pdu.handles.count == 1
                 else { XCTFail("Invalid response"); return }
             
             XCTAssertEqual(foundHandle, ATTFindByTypeResponse.HandlesInformation(foundAttribute: 40, groupEnd: 48))
+            XCTAssertEqual(Data(foundHandle), Data([40, 0, 48, 0]))
         }
     }
     
@@ -307,7 +319,8 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.data == data)
+            XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             
             guard let foundCharacteristicData = pdu.attributeData.first,
                 pdu.attributeData.count == 1
@@ -324,7 +337,8 @@ final class AttributeProtocolTests: XCTestCase {
             guard let pdu = ATTReadByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssert(pdu.data == data)
+            XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             
             guard let characteristicData = pdu.attributeData.first,
                 pdu.attributeData.count == 1
@@ -369,6 +383,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1d)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.handle, 0x0008)
             XCTAssertEqual(pdu.value, Data([0x0a, 0x00, 0xff, 0xff]))
             XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: Data([0x0a, 0x00, 0xff, 0xff])).data, data)
@@ -389,6 +404,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1D)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.handle, 0x0008)
             XCTAssertEqual(pdu.value, Data())
             XCTAssertEqual(ATTHandleValueIndication(handle: 0x0008, value: Data()).data, data)
@@ -435,6 +451,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.handle, 0x0016)
             XCTAssertEqual(pdu.value, Data([0x64]))
             
@@ -461,6 +478,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x0a)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.handle, 0x0016)
         }
         
@@ -482,6 +500,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x0b)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.attributeValue, Data([0x64]))
         }
     }
@@ -506,6 +525,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x12)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.handle, 0x0017)
             XCTAssertEqual(pdu.value, Data([0x01, 0x00]))
         }
@@ -547,6 +567,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x04)
             XCTAssertEqual(pdu.startHandle, 0x0017)
             XCTAssertEqual(pdu.endHandle, 0x0017)
@@ -574,6 +595,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(Data(pdu.attributeData), Data(foundData))
             XCTAssertEqual("\(pdu.attributeData)", "\(foundData)")
             XCTAssertEqual(pdu.attributeData.count, 1)
@@ -588,6 +610,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.startHandle, 0x04)
             XCTAssertEqual(pdu.endHandle, 0x04)
         }
@@ -604,6 +627,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             
             guard case let .bit16(attributeData) = pdu.attributeData
                 else { XCTFail("Invalid data"); return }
@@ -631,6 +655,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.clientMTU, 185)
         }
         
@@ -642,6 +667,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.serverMTU, 200)
         }
         
@@ -653,6 +679,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.handle, 0x04)
             XCTAssertEqual(pdu.value, Data([1, 0]))
             
@@ -687,6 +714,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.clientMTU, 185)
         }
         
@@ -698,6 +726,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.serverMTU, 200)
         }
         
@@ -710,6 +739,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.type, BluetoothUUID.primaryService)
             XCTAssertEqual(pdu.startHandle, 0x0001)
             XCTAssertEqual(pdu.endHandle, .max)
@@ -723,6 +753,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
                         
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.attributeData.count, 3)
             
             XCTAssertEqual(pdu.attributeData[0].attributeHandle, 1)
@@ -749,6 +780,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.type, BluetoothUUID.primaryService)
             XCTAssertEqual(pdu.startHandle, 19)
             XCTAssertEqual(pdu.endHandle, .max)
@@ -762,6 +794,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.error, .attributeNotFound)
             XCTAssertEqual(pdu.attributeHandle, 19)
             XCTAssertEqual(pdu.request, .readByGroupTypeRequest)
@@ -776,6 +809,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.startHandle, 1)
             XCTAssertEqual(pdu.endHandle, 6)
             XCTAssertEqual(pdu.attributeType, .characteristic)
@@ -789,6 +823,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.attributeData.count, 2)
             XCTAssertEqual(pdu.attributeData[0].handle, 2)
             XCTAssertEqual(pdu.attributeData[1].handle, 5)
@@ -835,6 +870,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.startHandle, 7)
             XCTAssertEqual(pdu.endHandle, 12)
             XCTAssertEqual(pdu.attributeType, .characteristic)
@@ -848,6 +884,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.attributeData.count, 2)
             XCTAssertEqual(pdu.attributeData[0].handle, 8)
             XCTAssertEqual(pdu.attributeData[1].handle, 11)
@@ -892,6 +929,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.startHandle, 13)
             XCTAssertEqual(pdu.endHandle, 18)
             XCTAssertEqual(pdu.attributeType, .characteristic)
@@ -905,6 +943,7 @@ final class AttributeProtocolTests: XCTestCase {
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
+            XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.attributeData.count, 2)
             XCTAssertEqual(pdu.attributeData[0].handle, 14)
             XCTAssertEqual(pdu.attributeData[1].handle, 17)
