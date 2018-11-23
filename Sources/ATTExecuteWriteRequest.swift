@@ -17,8 +17,6 @@ public enum ATTExecuteWriteRequest: UInt8, ATTProtocolDataUnit {
     
     public static var attributeOpcode: ATT.Opcode { return .executeWriteRequest }
     
-    internal static let length = 1 + 1
-    
     /// Cancel all prepared writes.
     case cancel = 0x00
     
@@ -27,17 +25,11 @@ public enum ATTExecuteWriteRequest: UInt8, ATTProtocolDataUnit {
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == 2,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
-        let attributeOpcodeByte = data[0]
-        let flagByte = data[1]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
-            let flag = ATTExecuteWriteRequest(rawValue: flagByte)
-            else { return nil }
-        
-        self = flag
+        self.init(rawValue: data[1])
     }
     
     public var data: Data {

@@ -12,18 +12,13 @@ import Foundation
 public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
     public static var attributeOpcode: ATT.Opcode { return .executeWriteResponse }
-    internal static let length = 1
     
     public init() { }
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard data.count == 1,
+            type(of: self).validateOpcode(data)
             else { return nil }
     }
     
