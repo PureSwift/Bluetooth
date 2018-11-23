@@ -527,7 +527,7 @@ public final class GATTClient {
                                 completion: ((GATTClientResponse<()>) -> ())?) {
         
         // short value
-        if data.count <= Int(maximumTransmissionUnit.rawValue) - ATTWriteRequest.length { // ATT_MTU - 3
+        if data.count <= Int(maximumTransmissionUnit.rawValue) - 3 { // ATT_MTU - 3
             
             if let completion = completion {
                 
@@ -566,7 +566,7 @@ public final class GATTClient {
                                      data: Data,
                                      completion: @escaping (GATTClientResponse<()>) -> ()) {
         
-        let data = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - ATTWriteRequest.length))
+        let data = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - 3))
         
         let pdu = ATTWriteRequest(handle: attribute, value: data)
 
