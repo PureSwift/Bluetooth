@@ -19,7 +19,8 @@ final class GATTTests: XCTestCase {
         ("testDiscoverPrimaryServicesApple", testDiscoverPrimaryServicesApple),
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
         ("testDescriptors", testDescriptors),
-        ("testNotification", testNotification)
+        ("testNotification", testNotification),
+        ("testDiscoverServiceByUUID", testDiscoverServiceByUUID)
     ]
     
     func testMTUExchange() {
@@ -552,6 +553,80 @@ final class GATTTests: XCTestCase {
         
         XCTAssertEqual(serverSocket.cache, mockData.server)
         XCTAssertEqual(clientSocket.cache, mockData.client)
+    }
+    
+    func testDiscoverServiceByUUID() {
+        
+        let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
+                                                 value: Data(),
+                                                 permissions: [.read],
+                                                 properties: [.read],
+                                                 descriptors: [])
+        
+        let services = (0 ..< 6).map {
+            GATT.Service(uuid: BluetoothUUID(),
+                         primary: $0 == 0 || $0 % 2 == 0, // true if even number or zero
+                         characteristics: [characteristic])
+        }
+        
+        let database = GATTDatabase(services: services)
+        
+        // server
+        let serverSocket = TestL2CAPSocket()
+        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
+        server.database = database
+        
+        // client
+        let clientSocket = TestL2CAPSocket()
+        let client = GATTClient(socket: clientSocket)
+        
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
+        
+        // discover service
+        client.discoverPrimaryServices(by: services[0].uuid) {
+            
+            switch $0 {
+                
+            case let .error(error):
+                
+                XCTFail("Error \(error)")
+                
+            case let .value(foundServices):
+                
+                guard foundServices.count == 1,
+                    let foundService = foundServices.first
+                    else { XCTFail("Service not found"); return }
+                
+                XCTAssertEqual(foundService.uuid, services[0].uuid)
+                XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
+                XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
+                XCTAssertEqual(foundService.type.uuid, database.first!.uuid)
+                
+                client.discoverAllCharacteristics(of: foundService)  {
+                    
+                    switch $0 {
+                        
+                    case let .error(error):
+                        
+                        XCTFail("Error \(error)")
+                        
+                    case let .value(characteristics):
+                        
+                        guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
+                            else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
+                        
+                        XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, BluetoothUUID.characteristic)
+                        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
+                        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
+                        XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
+                    }
+                }
+            }
+        }
+        
+        // run fake sockets
+        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
     }
     
     func testDescriptors() {
