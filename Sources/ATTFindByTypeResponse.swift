@@ -41,12 +41,8 @@ public extension ATTFindByTypeResponse {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard data.count >= type(of: self).minimumLength,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         let handleLength = HandlesInformation.length

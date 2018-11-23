@@ -42,7 +42,7 @@ public extension ATTErrorResponse {
     public init?(data: Data) {
         
         guard data.count == type(of: self).length,
-            data[0] == type(of: self).attributeOpcode.rawValue,
+            type(of: self).validateOpcode(data),
             let request = ATTOpcode(rawValue: data[1]),
             let error = ATTError(rawValue: data[4])
             else { return nil }

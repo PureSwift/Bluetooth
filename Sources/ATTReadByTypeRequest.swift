@@ -14,7 +14,7 @@ import Foundation
 /// attribute type is known but the handle is not known.
 public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readByTypeRequest
+    public static var attributeOpcode: ATT.Opcode { return .readByTypeRequest }
     
     /// First requested handle number
     public var startHandle: UInt16
@@ -25,7 +25,9 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
     /// 2 or 16 octet UUID
     public var attributeType: BluetoothUUID
     
-    public init(startHandle: UInt16, endHandle: UInt16, attributeType: BluetoothUUID) {
+    public init(startHandle: UInt16,
+                endHandle: UInt16,
+                attributeType: BluetoothUUID) {
         
         assert(attributeType.length != .bit32, "32-bit UUID not supported")
         
@@ -39,12 +41,8 @@ public extension ATTReadByTypeRequest {
     
     public init?(data: Data) {
         
-        guard let length = Length(rawValue: data.count)
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard let length = Length(rawValue: data.count),
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         self.startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))

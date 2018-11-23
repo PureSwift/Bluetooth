@@ -33,31 +33,16 @@ public extension ATTMaximumTransmissionUnitResponse {
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == type(of: self).length,
+            type(of: self).validateOpcode(data)
             else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
-            else { return nil }
-        
-        let serverMTU = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
-        self.serverMTU = serverMTU
+                
+        self.serverMTU = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
     }
     
     public var data: Data {
         
-        var bytes = Data(repeating: 0, count: type(of: self).length)
-        
-        bytes[0] = type(of: self).attributeOpcode.rawValue
-        
-        let mtuBytes = self.serverMTU.littleEndian.bytes
-        
-        bytes[1] = mtuBytes.0
-        bytes[2] = mtuBytes.1
-        
-        return bytes
+        return Data(self)
     }
 }
 

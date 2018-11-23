@@ -31,12 +31,8 @@ public extension ATTReadResponse {
     
     public init?(data: Data) {
         
-        guard data.count >= 1
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard data.count >= 1,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         self.attributeValue = data.suffixCheckingBounds(from: 1)

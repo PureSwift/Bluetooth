@@ -30,15 +30,14 @@ public struct ATTReadBlobRequest: ATTProtocolDataUnit, Equatable {
         self.handle = handle
         self.offset = offset
     }
+}
+
+public extension ATTReadBlobRequest {
     
     public init?(data: Data) {
         
-        guard data.count == ATTReadBlobRequest.length
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == ATTReadBlobRequest.attributeOpcode.rawValue
+        guard data.count == type(of: self).length,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
@@ -53,3 +52,7 @@ public struct ATTReadBlobRequest: ATTProtocolDataUnit, Equatable {
         return Data([ATTReadBlobRequest.attributeOpcode.rawValue, handleBytes.0, handleBytes.1, offsetBytes.0, offsetBytes.1])
     }
 }
+
+// MARK: - DataConvertible
+
+

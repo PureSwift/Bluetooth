@@ -32,15 +32,14 @@ public extension ATTFindInformationResponse {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard data.count >= type(of: self).minimumLength,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
-        let attributeOpcodeByte = data[0]
         let formatByte = data[1]
         let remainderData = data.subdataNoCopy(in: 2 ..< data.count)
         
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue,
-            let format = Format(rawValue: formatByte),
+        guard let format = Format(rawValue: formatByte),
             let attributeData = AttributeData(data: remainderData, format: format)
             else { return nil }
         

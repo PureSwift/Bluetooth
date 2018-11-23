@@ -23,6 +23,15 @@ public protocol ATTProtocolDataUnit {
     init?(data: Data)
 }
 
+internal extension ATTProtocolDataUnit {
+    
+    @inline(__always)
+    static func validateOpcode(_ data: Data) -> Bool {
+        
+        return data.first == attributeOpcode.rawValue
+    }
+}
+
 // MARK: - Supporting Types
 
 internal protocol ATTAttributeDataList: ATTProtocolDataUnit {
@@ -78,12 +87,8 @@ internal extension ATTAttributeDataList {
     
     static func from(data: Data) -> [AttributeData]? {
         
-        guard data.count > headerLength
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == attributeOpcode.rawValue
+        guard data.count > headerLength,
+            validateOpcode(data)
             else { return nil }
         
         let attributeDataLength = Int(data[1])

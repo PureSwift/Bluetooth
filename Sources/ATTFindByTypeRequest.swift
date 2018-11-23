@@ -48,12 +48,8 @@ public extension ATTFindByTypeRequest {
     
     public init?(data: Data) {
         
-        guard data.count >= 7
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard data.count >= 7,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         let startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
