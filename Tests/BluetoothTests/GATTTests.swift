@@ -41,10 +41,12 @@ final class GATTTests: XCTestCase {
         // server
         let serverSocket = TestL2CAPSocket()
         let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu, maximumPreparedWrites: .max)
+        server.log = { XCTAssertFalse($0.isEmpty) }
         
         // client
         let clientSocket = TestL2CAPSocket()
         let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: mtu)
+        client.log = { XCTAssertFalse($0.isEmpty) }
         
         clientSocket.target = serverSocket
         serverSocket.target = clientSocket // weak references
@@ -784,10 +786,12 @@ final class GATTTests: XCTestCase {
             let serverSocket = TestL2CAPSocket()
             let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
             server.database = database
+            server.log = { XCTAssertFalse($0.isEmpty) }
             
             // client
             let clientSocket = TestL2CAPSocket()
             let client = GATTClient(socket: clientSocket)
+            client.log = { XCTAssertFalse($0.isEmpty) }
             
             clientSocket.target = serverSocket
             serverSocket.target = clientSocket // weak references

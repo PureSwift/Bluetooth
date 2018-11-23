@@ -24,6 +24,7 @@ final class AttributeProtocolTests: XCTestCase {
         ("testHandleValueConfirmation", testHandleValueConfirmation),
         ("testHandleValueNotification", testHandleValueNotification),
         ("testRead", testRead),
+        ("testReadMultiple", testReadMultiple),
         ("testWrite", testWrite),
         ("testFindInformation", testFindInformation),
         ("testConfigureClientDescriptor", testConfigureClientDescriptor),
@@ -503,6 +504,20 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssertEqual(pdu.attributeValue, Data([0x64]))
         }
+    }
+    
+    func testReadMultiple() {
+        
+        guard let request = ATTReadMultipleRequest(handles: [0x01, 0x02])
+            else { XCTFail(); return }
+        
+        XCTAssertEqual(request.data, request.data)
+        XCTAssertEqual(request.dataLength, request.data.count)
+        XCTAssertEqual(ATTReadMultipleRequest(data: request.data), request)
+        
+        let response = ATTReadMultipleResponse(values: Data([0x00, 0x00]))
+        XCTAssertEqual(response.data, response.data)
+        XCTAssertEqual(ATTReadMultipleResponse(data: response.data), response)
     }
     
     func testWrite() {
