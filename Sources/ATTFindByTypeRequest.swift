@@ -46,12 +46,9 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
 
 public extension ATTFindByTypeRequest {
     
-    /// Minimum length.
-    internal static var minimumLength: Int { return 1 + 2 + 2 + 2 + 0 }
-    
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard data.count >= 7
             else { return nil }
         
         let attributeOpcodeByte = data[0]
@@ -62,19 +59,7 @@ public extension ATTFindByTypeRequest {
         let startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         let endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         let attributeType = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
-        
-        let attributeValue: Data
-        
-        /// if attributeValue is included
-        if data.count >= 7 {
-            
-            // rest of data is attribute
-            attributeValue = Data(data.suffix(from: 7))
-            
-        } else {
-            
-            attributeValue = Data()
-        }
+        let attributeValue = data.suffixCheckingBounds(from: 7)
         
         self.init(startHandle: startHandle,
                   endHandle: endHandle,
@@ -84,19 +69,7 @@ public extension ATTFindByTypeRequest {
     
     public var data: Data {
         
-        let startHandleBytes = self.startHandle.littleEndian.bytes
-        
-        let endHandleBytes = self.endHandle.littleEndian.bytes
-        
-        let attributeTypeBytes = self.attributeType.littleEndian.bytes
-        
-        return Data([type(of: self).attributeOpcode.rawValue,
-                     startHandleBytes.0,
-                     startHandleBytes.1,
-                     endHandleBytes.0,
-                     endHandleBytes.1,
-                     attributeTypeBytes.0,
-                     attributeTypeBytes.1]) + attributeValue
+        return Data(self)
     }
 }
 
@@ -106,7 +79,7 @@ extension ATTFindByTypeRequest: DataConvertible {
     
     var dataLength: Int {
         
-        return type(of: self).minimumLength + attributeValue.count
+        return 7 + attributeValue.count
     }
     
     static func += (data: inout Data, value: ATTFindByTypeRequest) {
