@@ -141,7 +141,9 @@ extension BitMaskOptionSet: CustomStringConvertible {
     
     public var description: String {
         
-        get { return Element.from(rawValue: rawValue).description }
+        return Element.from(rawValue: rawValue)
+            .sorted(by: { $0.rawValue < $1.rawValue })
+            .description
     }
 }
 

@@ -13,6 +13,7 @@ import Foundation
 final class GAPTests: XCTestCase {
     
     static let allTests = [
+        ("testFlags", testFlags),
         ("testBit16UUIDList", testBit16UUIDList),
         ("testBit32UUIDList", testBit32UUIDList),
         ("testBit128UUIDList", testBit128UUIDList),
@@ -55,6 +56,18 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPDataType.flags.description, "Flags")
         XCTAssertEqual(GAPDataType.incompleteListOf16BitServiceClassUUIDs.description, "Incomplete List of 16-bit Service Class UUIDs")
         XCTAssertEqual(GAPDataType(rawValue: 0).description, "GAP Data Type (0)")
+    }
+    
+    func testFlags() {
+        
+        let flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]
+        
+        XCTAssertEqual(flags, 0b00000110)
+        XCTAssertEqual(flags.flags, [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR])
+        XCTAssertEqual(flags.description, "[LE General Discoverable Mode, BR/EDR Not Supported]")
+        
+        let allFlags = Array(GAPFlag.allCases).sorted(by: { $0.rawValue < $1.rawValue })
+        allFlags.forEach { XCTAssertFalse($0.description.isEmpty) }
     }
     
     func testBit16UUIDList() {
