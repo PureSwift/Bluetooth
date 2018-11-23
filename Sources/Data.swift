@@ -33,4 +33,16 @@ internal extension Data {
         
         return subdataNoCopy(in: index ..< count)
     }
+    
+    func suffixCheckingBounds(from start: Int) -> Data {
+        
+        if count > start {
+            
+            return Data(suffix(from: start))
+            
+        } else {
+            
+            return Data()
+        }
+    }
 }

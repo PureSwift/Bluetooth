@@ -83,16 +83,13 @@ public extension ATTReadByTypeResponse {
 
 extension ATTReadByTypeResponse.AttributeData: ATTAttributeData {
     
-    /// Minimum length.
-    internal static var minimumLength: Int { return 2 }
-    
     init?(data: Data) {
         
-        guard data.count > type(of: self).minimumLength
+        guard data.count >= 2
             else { return nil }
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        self.value = Data(data.suffix(from: type(of: self).minimumLength))
+        self.value = data.suffixCheckingBounds(from: 2)
     }
 }
 
@@ -100,7 +97,7 @@ extension ATTReadByTypeResponse.AttributeData: DataConvertible {
     
     var dataLength: Int {
         
-        return type(of: self).minimumLength + value.count
+        return 2 + value.count
     }
     
     static func += (data: inout Data, value: ATTReadByTypeResponse.AttributeData) {

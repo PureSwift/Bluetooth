@@ -98,12 +98,12 @@ extension ATTReadByGroupTypeResponse.AttributeData: ATTAttributeData {
     
     init?(data: Data) {
         
-        guard data.count > 4
+        guard data.count >= 4
             else { return nil }
         
         self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.endGroupHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
-        self.value = Data(data.suffix(from: 4))
+        self.value = data.suffixCheckingBounds(from: 4)
     }
 }
 

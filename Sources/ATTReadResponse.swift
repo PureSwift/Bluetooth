@@ -39,14 +39,7 @@ public extension ATTReadResponse {
         guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
             else { return nil }
         
-        if data.count > 1 {
-            
-            self.attributeValue = Data(data.suffix(from: 1))
-            
-        } else {
-            
-            self.attributeValue = Data()
-        }
+        self.attributeValue = data.suffixCheckingBounds(from: 1)
     }
     
     public var data: Data {
