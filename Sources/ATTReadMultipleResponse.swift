@@ -16,9 +16,6 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATT.Opcode { return .readMultipleResponse }
     
-    /// Minimum length
-    internal static let length = 1 + 0
-    
     public var values: Data
     
     public init(values: Data) {
@@ -28,22 +25,10 @@ public struct ATTReadMultipleResponse: ATTProtocolDataUnit, Equatable {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard type(of: self).validateOpcode(data)
             else { return nil }
         
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
-            else { return nil }
-        
-        if data.count > 1 {
-            
-            self.values = Data(data.suffix(from: 1))
-            
-        } else {
-            
-            self.values = Data()
-        }
+        self.values = data.suffixCheckingBounds(from: 1)
     }
     
     public var data: Data {

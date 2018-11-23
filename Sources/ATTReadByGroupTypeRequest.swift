@@ -44,7 +44,7 @@ public extension ATTReadByGroupTypeRequest {
     public init?(data: Data) {
         
         guard let length = Length(rawValue: data.count),
-            data[0] == Swift.type(of: self).attributeOpcode.rawValue
+            Swift.type(of: self).validateOpcode(data)
             else { return nil }
         
         self.startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))

@@ -35,12 +35,8 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard data.count >= type(of: self).length,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         let handleCount = (data.count - 1) / 2
