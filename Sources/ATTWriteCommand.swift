@@ -15,9 +15,6 @@ public struct ATTWriteCommand: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATT.Opcode { return .writeCommand }
     
-    /// Minimum length
-    internal static let length = 3
-    
     /// The handle of the attribute to be set.
     public var handle: UInt16
     
@@ -33,30 +30,33 @@ public struct ATTWriteCommand: ATTProtocolDataUnit, Equatable {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= 3,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
-            else { return nil }
-        
-        self.handle = UInt16(bytes: (data[1], data[2])).littleEndian
-        
-        if data.count > type(of: self).length {
-            
-            self.value = Data(data.suffix(from: 3))
-            
-        } else {
-            
-            self.value = Data()
-        }
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
+        self.value = data.suffixCheckingBounds(from: 3)
     }
     
     public var data: Data {
         
-        let handleBytes = handle.littleEndian.bytes
+        return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension ATTWriteCommand: DataConvertible {
+    
+    var dataLength: Int {
         
-        return Data([type(of: self).attributeOpcode.rawValue, handleBytes.0, handleBytes.1]) + value
+        return 3 + value.count
+    }
+    
+    static func += (data: inout Data, value: ATTWriteCommand) {
+        
+        data += attributeOpcode.rawValue
+        data += value.handle.littleEndian
+        data += value.value
     }
 }
