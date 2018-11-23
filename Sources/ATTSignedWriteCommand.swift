@@ -16,7 +16,7 @@ public struct ATTSignedWriteCommand: ATTProtocolDataUnit {
     
     public typealias Signature = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    public static let attributeOpcode = ATT.Opcode.signedWriteCommand
+    public static var attributeOpcode: ATT.Opcode { return .signedWriteCommand }
     
     /// Minimum length
     internal static let length = 1 + 2 + 0 + 12

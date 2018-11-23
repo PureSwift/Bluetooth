@@ -14,7 +14,7 @@ import Foundation
 /// contains the values of the attributes that have been read.
 public struct ATTReadMultipleResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readMultipleResponse
+    public static var attributeOpcode: ATT.Opcode { return .readMultipleResponse }
     
     /// Minimum length
     internal static let length = 1 + 0

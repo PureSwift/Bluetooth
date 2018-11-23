@@ -15,7 +15,7 @@ import Foundation
 /// so that the client can verify that the value was received correctly.
 public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.preparedWriteRequest
+    public static var attributeOpcode: ATT.Opcode { return .preparedWriteRequest }
     
     /// Minimum length
     internal static let length = 1 + 2 + 2 + 0

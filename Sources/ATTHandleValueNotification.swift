@@ -13,7 +13,7 @@ import Foundation
 /// A server can send a notification of an attribute’s value at any time.
 public struct ATTHandleValueNotification: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.handleValueNotification
+    public static var attributeOpcode: ATT.Opcode { return .handleValueNotification }
     
     /// minimum length
     internal static let length = 1 + 2 + 0

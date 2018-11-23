@@ -13,7 +13,7 @@ import Foundation
 /// and acknowledges that the value has been successfully received and placed in the prepare write queue.
 public struct ATTPrepareWriteResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.preparedWriteResponse
+    public static var attributeOpcode: ATT.Opcode { return .preparedWriteResponse }
     
     /// Minimum length
     internal static let length = 1 + 2 + 2 + 0

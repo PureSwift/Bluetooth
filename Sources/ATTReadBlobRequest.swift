@@ -14,7 +14,7 @@ import Foundation
 /// at a given offset and return a specific part of the value in a *Read Blob Response*.
 public struct ATTReadBlobRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readBlobRequest
+    public static var attributeOpcode: ATT.Opcode { return .readBlobRequest }
     
     /// The handle of the attribute to be read.
     public var handle: UInt16

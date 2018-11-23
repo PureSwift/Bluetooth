@@ -14,20 +14,14 @@ import Foundation
 /// and confirms that the client has received an indication of the given attribute.
 public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.handleValueConfirmation
-    
-    internal static let length = 1
+    public static var attributeOpcode: ATT.Opcode { return .handleValueConfirmation }
     
     public init() { }
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == type(of: self).attributeOpcode.rawValue
+        guard data.count == 1,
+            type(of: self).validateOpcode(data)
             else { return nil }
     }
     

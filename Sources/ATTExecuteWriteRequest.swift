@@ -15,7 +15,7 @@ import Foundation
 /// This request shall be handled by the server as an atomic operation.
 public enum ATTExecuteWriteRequest: UInt8, ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.executeWriteRequest
+    public static var attributeOpcode: ATT.Opcode { return .executeWriteRequest }
     
     internal static let length = 1 + 1
     

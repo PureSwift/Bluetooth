@@ -14,7 +14,7 @@ import Foundation
 /// and acknowledges that the attribute has been successfully written.
 public struct ATTWriteResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.writeResponse
+    public static var attributeOpcode: ATT.Opcode { return .writeResponse }
     internal static let length = 1
     
     public init() { }

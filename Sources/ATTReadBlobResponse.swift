@@ -33,12 +33,8 @@ public extension ATTReadBlobResponse {
     
     public init?(data: Data) {
         
-        guard data.count >= 1
-            else { return nil }
-        
-        let attributeOpcodeByte = data[0]
-        
-        guard attributeOpcodeByte == ATTReadBlobResponse.attributeOpcode.rawValue
+        guard data.count >= 1,
+            type(of: self).validateOpcode(data)
             else { return nil }
         
         self.partAttributeValue = data.suffixCheckingBounds(from: 1)

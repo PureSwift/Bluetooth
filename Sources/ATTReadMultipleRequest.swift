@@ -17,7 +17,7 @@ import Foundation
 /// The knowledge of whether attributes have a known fixed size is defined in a higher layer specification.
 public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.readMultipleRequest
+    public static var attributeOpcode: ATT.Opcode { return .readMultipleRequest }
     
     /// Minimum length
     internal static let length = 1 + 4

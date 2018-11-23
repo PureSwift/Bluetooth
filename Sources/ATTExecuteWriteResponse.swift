@@ -11,7 +11,7 @@ import Foundation
 /// The *Execute Write Response* is sent in response to a received *Execute Write Request*.
 public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
-    public static let attributeOpcode = ATT.Opcode.executeWriteResponse
+    public static var attributeOpcode: ATT.Opcode { return .executeWriteResponse }
     internal static let length = 1
     
     public init() { }

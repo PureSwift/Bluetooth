@@ -14,7 +14,7 @@ import Foundation
 /// and contains information about this server.
 public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.findByTypeResponse
+    public static var attributeOpcode: ATT.Opcode { return .findByTypeResponse }
     
     /// A list of 1 or more Handle Informations.
     public var handles: [HandlesInformation]

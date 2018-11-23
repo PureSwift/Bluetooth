@@ -14,7 +14,7 @@ import Foundation
 /// and acknowledge that this has been achieved in a *Write Response*.
 public struct ATTWriteRequest: ATTProtocolDataUnit, Equatable {
     
-    public static let attributeOpcode = ATT.Opcode.writeRequest
+    public static var attributeOpcode: ATT.Opcode { return .writeRequest }
     
     /// Minimum length
     internal static let length = 3
