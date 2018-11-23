@@ -27,6 +27,9 @@ public struct ATTWriteCommand: ATTProtocolDataUnit, Equatable {
         self.handle = handle
         self.value = value
     }
+}
+
+public extension ATTWriteCommand {
     
     public init?(data: Data) {
         

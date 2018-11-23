@@ -1097,7 +1097,9 @@ final class GATTTests: XCTestCase {
                 }
             }
             
-            if testCharacteristic.properties.contains(.write), testCharacteristic.permissions.contains(.write) {
+            if testCharacteristic.permissions.contains(.write),
+                testCharacteristic.properties.contains(.write)
+                || testCharacteristic.properties.contains(.writeWithoutResponse) {
                 
                 guard characteristic.properties.contains(.write)
                     else { XCTFail("Cannot write to charactertistic \(characteristic.uuid)"); return }
@@ -1105,24 +1107,33 @@ final class GATTTests: XCTestCase {
                 guard let (data, reliableWrites) = TestProfile.WriteValues[testCharacteristic.uuid]
                     else { fatalError("missing test data") }
                 
-                client.writeCharacteristic(characteristic, data: data, reliableWrites: reliableWrites) {
+                if testCharacteristic.properties.contains(.writeWithoutResponse) {
                     
-                    print("Write Characteristic")
-                    //dump($0)
+                    client.writeCharacteristic(characteristic,
+                                               data: data,
+                                               reliableWrites: false,
+                                               completion: nil)
                     
-                    switch $0 {
-                    case let .error(error):
+                } else {
+                    
+                    client.writeCharacteristic(characteristic, data: data, reliableWrites: reliableWrites) {
                         
-                        XCTFail("\(error)")
+                        print("Write Characteristic")
+                        //dump($0)
                         
-                    case .value:
-                        
-                        guard let writtenValue = writtenValues[characteristic.handle.value]
-                            else { XCTFail("Did not write \(characteristic.uuid)"); return }
-                        
-                        XCTAssertEqual(writtenValue, data, "\(characteristic.uuid) \(Array(writtenValue)) == \(data)")
-                        
-                        XCTAssertEqual(writtenValue, writtenValuesConfirmed[characteristic.handle.value])
+                        switch $0 {
+                        case let .error(error):
+                            
+                            XCTFail("\(error)")
+                            
+                        case .value:
+                            
+                            guard let writtenValue = writtenValues[characteristic.handle.value]
+                                else { XCTFail("Did not write \(characteristic.uuid)"); return }
+                            
+                            XCTAssertEqual(writtenValue, data, "\(characteristic.uuid) \(Array(writtenValue)) == \(data)")
+                            XCTAssertEqual(writtenValue, writtenValuesConfirmed[characteristic.handle.value])
+                        }
                     }
                 }
             }
