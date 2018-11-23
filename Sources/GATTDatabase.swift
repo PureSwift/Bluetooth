@@ -162,7 +162,7 @@ public struct GATTDatabase {
     /// The attribute at the specified index.
     public subscript(index: Int) -> Attribute {
         
-        get { return attributes[index] }
+        return attributes[index]
     }
     
     /// The attribute with the specified handle.
@@ -212,6 +212,15 @@ public struct GATTDatabase {
     }
 }
 
+// MARK: - Sequence
+
+extension GATTDatabase: Sequence {
+    
+    public func makeIterator() -> IndexingIterator<GATTDatabase> {
+        return IndexingIterator(_elements: self)
+    }
+}
+
 // MARK: - Collection
 
 extension GATTDatabase: Collection {
@@ -239,10 +248,6 @@ extension GATTDatabase: RandomAccessCollection {
     public subscript(bounds: Range<Int>) -> Slice<GATTDatabase> {
         
         return Slice<GATTDatabase>(base: self, bounds: bounds)
-    }
-    
-    public func makeIterator() -> IndexingIterator<GATTDatabase> {
-        return IndexingIterator(_elements: self)
     }
 }
 
@@ -374,8 +379,6 @@ internal extension GATTDatabase {
     
     internal struct ServiceAttribute {
         
-        static let uuids: [BluetoothUUID] = [.primaryService, .secondaryService]
-        
         /// Attribute Handle
         var handle: UInt16
         
@@ -404,9 +407,9 @@ internal extension GATTDatabase {
             let isPrimary: Bool
             
             switch attribute.uuid {
-            case BluetoothUUID.primaryService:
+            case .primaryService:
                 isPrimary = true
-            case BluetoothUUID.secondaryService:
+            case .secondaryService:
                 isPrimary = false
             default:
                 return nil // invalid uuid
@@ -463,14 +466,14 @@ internal extension GATTDatabase {
         init?(attribute: Attribute) {
             
             guard attribute.uuid == type(of: self).uuid,
-                let length = Length(rawValue: attribute.value.count)
+                let _ = Length(rawValue: attribute.value.count)
                 else { return nil }
             
             assert(attribute.permissions == [.read], "Invalid attribute permissions")
             
             let serviceHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[0], attribute.value[1])))
             let endGroupHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[2], attribute.value[3])))
-            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: attribute.value.subdataNoCopy(in: 4 ..< length.rawValue))!)
+            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: attribute.value.suffixNoCopy(from: 4))!)
             
             self.serviceHandle = serviceHandle
             self.endGroupHandle = endGroupHandle
@@ -480,18 +483,14 @@ internal extension GATTDatabase {
         
         var attribute: Attribute {
             
-            let handleBytes = serviceHandle.littleEndian.bytes
-            
-            let endGroupBytes = endGroupHandle.littleEndian.bytes
-            
-            let value: Data = [handleBytes.0,
-                               handleBytes.1,
-                               endGroupBytes.0,
-                               endGroupBytes.1] + uuid.littleEndian.data
+            var data = Data(capacity: 4 + uuid.dataLength)
+            data += serviceHandle.littleEndian
+            data += endGroupHandle.littleEndian
+            data += uuid.littleEndian
             
             return Attribute(handle: handle,
                              uuid: type(of: self).uuid,
-                             value: value,
+                             value: data,
                              permissions: [.read])
         }
         
@@ -549,13 +548,14 @@ internal extension GATTDatabase {
         
         var attribute: Attribute {
             
-            let propertiesMask = properties.rawValue
-            let valueHandleBytes = valueHandle.littleEndian.bytes
-            let value: Data = [propertiesMask, valueHandleBytes.0, valueHandleBytes.1] + uuid.littleEndian.data
+            var data = Data(capacity: 3 + uuid.dataLength)
+            data += properties.rawValue
+            data += valueHandle.littleEndian
+            data += uuid.littleEndian
             
             return Attribute(handle: handle,
                              uuid: type(of: self).uuid,
-                             value: value,
+                             value: data,
                              permissions: [.read])
         }
         
