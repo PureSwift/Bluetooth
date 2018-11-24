@@ -18,7 +18,7 @@ import Foundation
 public enum GATT {
 
     /// GATT UUIDs
-    public enum UUID: UInt16 {
+    internal enum UUID: UInt16 {
         
         case primaryService         = 0x2800
         case secondaryService       = 0x2801
@@ -34,19 +34,10 @@ public enum GATT {
         /// Initializes from a Bluetooth UUID
         public init?(uuid: BluetoothUUID) {
             
-            switch uuid {
-                
-            case let .bit16(value):
-                
-                guard let gatt = GATT.UUID(rawValue: value)
-                    else { return nil }
-                
-                self = gatt
-                
-            default:
-                
-                return nil
-            }
+            guard case let .bit16(value) = uuid
+                else { return nil }
+            
+            self.init(rawValue: value)
         }
         
         /// Returns a Bluetooth UUID initialized with the `rawValue` of this GATT UUID.
@@ -55,7 +46,6 @@ public enum GATT {
             return .bit16(rawValue)
         }
     }
-    
 }
 
 // MARK: - Characteristic Property

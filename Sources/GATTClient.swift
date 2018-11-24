@@ -687,7 +687,7 @@ public final class GATTClient {
                 let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
                 
                 let service = Service(uuid: serviceUUID,
-                                      type: operation.type,
+                                      isPrimary: operation.type == .primaryService,
                                       handle: serviceData.attributeHandle,
                                       end: serviceData.endGroupHandle)
                 
@@ -747,7 +747,7 @@ public final class GATTClient {
             for serviceData in pdu.handles {
                 
                 let service = Service(uuid: serviceUUID,
-                                      type: operation.type,
+                                      isPrimary: operation.type == .primaryService,
                                       handle: serviceData.foundAttribute,
                                       end: serviceData.groupEnd)
                 
@@ -1240,11 +1240,17 @@ public extension GATTClient {
         
         public let uuid: BluetoothUUID
         
-        public let type: GATT.UUID
+        public let isPrimary: Bool
         
         public let handle: UInt16
         
         public let end: UInt16
+        
+        @available(*, deprecated, renamed: "isPrimary")
+        public var type: BluetoothUUID {
+            
+            return isPrimary ? .primaryService : .secondaryService
+        }
     }
     
     /// A discovered characteristic.

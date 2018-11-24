@@ -13,6 +13,7 @@ import Foundation
 final class GATTTests: XCTestCase {
     
     static let allTests = [
+        ("testUUID", testUUID),
         ("testGATT", testGATT),
         ("testMTUExchange", testMTUExchange),
         ("testDiscoverPrimaryServicesNoMTUExchange", testDiscoverPrimaryServicesNoMTUExchange),
@@ -22,6 +23,11 @@ final class GATTTests: XCTestCase {
         ("testNotification", testNotification),
         ("testDiscoverServiceByUUID", testDiscoverServiceByUUID)
     ]
+    
+    func testUUID() {
+        
+        
+    }
     
     func testMTUExchange() {
         
@@ -603,7 +609,7 @@ final class GATTTests: XCTestCase {
                 XCTAssertEqual(foundService.uuid, services[0].uuid)
                 XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
                 XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-                XCTAssertEqual(foundService.type.uuid, database.first!.uuid)
+                XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
                 
                 client.discoverAllCharacteristics(of: foundService)  {
                     
@@ -686,7 +692,7 @@ final class GATTTests: XCTestCase {
                 
                 XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
                 XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-                XCTAssertEqual(foundService.type.uuid, database.first!.uuid)
+                XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
                 
                 client.discoverAllCharacteristics(of: foundService)  {
                     
@@ -845,7 +851,7 @@ final class GATTTests: XCTestCase {
                     
                     XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
                     XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-                    XCTAssertEqual(foundService.type.uuid, database[0].uuid)
+                    XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
                     
                     client.discoverAllCharacteristics(of: foundService)  {
                         
