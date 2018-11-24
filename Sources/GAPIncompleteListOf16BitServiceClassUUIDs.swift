@@ -50,6 +50,6 @@ extension GAPIncompleteListOf16BitServiceClassUUIDs: CustomStringConvertible {
     
     public var description: String {
         
-        return uuids.description
+        return uuids.map { BluetoothUUID.bit16($0) }.description
     }
 }

@@ -90,7 +90,7 @@ public extension UInt40 {
     
     public var data: Data {
         
-        return Data(bytes: [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4])
+        return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4])
     }
 }
 

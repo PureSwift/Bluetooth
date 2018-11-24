@@ -137,6 +137,7 @@ final class GAPTests: XCTestCase {
         let name: GAPShortLocalName = "BlueZ 5.43"
         XCTAssertEqual(data.count, 0x0C)
         XCTAssertEqual(data.count, 12)
+        XCTAssertEqual(name.description, "BlueZ 5.43")
         
         var decoded = [GAPData]()
         XCTAssertNoThrow(decoded = try GAPDataDecoder.decode(data, types: [GAPShortLocalName.self], ignoreUnknownType: false))
@@ -162,6 +163,7 @@ final class GAPTests: XCTestCase {
         let name: GAPCompleteLocalName = "BlueZ 5.43"
         XCTAssertEqual(data.count, 0x0C)
         XCTAssertEqual(data.count, 12)
+        XCTAssertEqual(name.description, "BlueZ 5.43")
         
         var decoded = [GAPData]()
         XCTAssertNoThrow(decoded = try GAPDataDecoder.decode(data, types: [GAPCompleteLocalName.self], ignoreUnknownType: false))
@@ -224,6 +226,8 @@ final class GAPTests: XCTestCase {
         let flags: GAPFlags = 0x1A
         let uuidList: GAPIncompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
         let localName: GAPCompleteLocalName = "Proximity"
+        
+        XCTAssertEqual(uuidList.description, "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
         
         let expectedData: [GAPData] = [flags, uuidList, localName]
         let types = expectedData.map { type(of: $0) }

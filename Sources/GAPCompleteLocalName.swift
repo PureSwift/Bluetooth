@@ -23,10 +23,13 @@ public struct GAPCompleteLocalName: GAPData, Equatable, Hashable {
         
         self.name = name
     }
+}
+
+public extension GAPCompleteLocalName {
     
     public init?(data: Data) {
         
-        guard let name = String(bytes: data, encoding: .utf8)
+        guard let name = String(data: data, encoding: .utf8)
             else { return nil }
         
         self.init(name: name)
@@ -38,6 +41,8 @@ public struct GAPCompleteLocalName: GAPData, Equatable, Hashable {
     }
 }
 
+// MARK: - CustomStringConvertible
+
 extension GAPCompleteLocalName: CustomStringConvertible {
     
     public var description: String {
@@ -46,19 +51,11 @@ extension GAPCompleteLocalName: CustomStringConvertible {
     }
 }
 
+// MARK: - ExpressibleByStringLiteral
+
 extension GAPCompleteLocalName: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        
-        self.init(name: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(name: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
         
         self.init(name: value)
     }
