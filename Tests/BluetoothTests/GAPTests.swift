@@ -196,6 +196,8 @@ final class GAPTests: XCTestCase {
         let uuidList: GAPCompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
         let localName: GAPCompleteLocalName = "Proximity"
         
+        XCTAssertEqual(uuidList.description, "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
+        
         let expectedData: [GAPData] = [flags, uuidList, localName]
         let types = expectedData.map { type(of: $0) }
         
