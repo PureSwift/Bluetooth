@@ -31,15 +31,6 @@ public enum GATT {
             self = primaryService ? .primaryService : .secondaryService
         }
         
-        /// Initializes from a Bluetooth UUID
-        public init?(uuid: BluetoothUUID) {
-            
-            guard case let .bit16(value) = uuid
-                else { return nil }
-            
-            self.init(rawValue: value)
-        }
-        
         /// Returns a Bluetooth UUID initialized with the `rawValue` of this GATT UUID.
         public var uuid: BluetoothUUID {
             
@@ -78,30 +69,22 @@ public extension GATT {
     }
 }
 
-public extension GATT.CharacteristicProperty {
-    
-    var name: String {
-        
-        switch self {
-        case .broadcast: return "Broadcast"
-        case .read: return "Read"
-        case .write: return "Write"
-        case .writeWithoutResponse: return "Write without Response"
-        case .notify: return "Notify"
-        case .indicate: return "Indicate"
-        case .signedWrite: return "Signed Write"
-        case .extendedProperties: return "Extended Properties"
-        }
-    }
-}
-
 // MARK: CustomStringConvertible
 
 extension GATT.CharacteristicProperty: CustomStringConvertible {
     
     public var description: String {
         
-        return name
+        switch self {
+        case .broadcast:                return "Broadcast"
+        case .read:                     return "Read"
+        case .write:                    return "Write"
+        case .writeWithoutResponse:     return "Write without Response"
+        case .notify:                   return "Notify"
+        case .indicate:                 return "Indicate"
+        case .signedWrite:              return "Signed Write"
+        case .extendedProperties:       return "Extended Properties"
+        }
     }
 }
 

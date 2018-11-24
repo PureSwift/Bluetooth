@@ -322,6 +322,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.dataLength, data.count)
+            XCTAssertEqual(ATTReadByTypeResponse(attributeData: pdu.attributeData), pdu)
             
             guard let foundCharacteristicData = pdu.attributeData.first,
                 pdu.attributeData.count == 1
@@ -340,6 +341,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.dataLength, data.count)
+            XCTAssertEqual(ATTReadByTypeResponse(attributeData: pdu.attributeData), pdu)
             
             guard let characteristicData = pdu.attributeData.first,
                 pdu.attributeData.count == 1
@@ -358,9 +360,9 @@ final class AttributeProtocolTests: XCTestCase {
             
             let characteristic = TestProfile.Read
             
-            XCTAssert(declaration.valueHandle == 42)
-            XCTAssert(declaration.uuid == characteristic.uuid)
-            XCTAssert(declaration.properties == characteristic.properties)
+            XCTAssertEqual(declaration.valueHandle, 42)
+            XCTAssertEqual(declaration.uuid, characteristic.uuid)
+            XCTAssertEqual(declaration.properties, characteristic.properties)
         }
     }
     

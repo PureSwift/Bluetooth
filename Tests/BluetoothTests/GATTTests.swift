@@ -13,7 +13,7 @@ import Foundation
 final class GATTTests: XCTestCase {
     
     static let allTests = [
-        ("testUUID", testUUID),
+        ("testCharacteristicProperty", testCharacteristicProperty),
         ("testGATT", testGATT),
         ("testMTUExchange", testMTUExchange),
         ("testDiscoverPrimaryServicesNoMTUExchange", testDiscoverPrimaryServicesNoMTUExchange),
@@ -24,9 +24,9 @@ final class GATTTests: XCTestCase {
         ("testDiscoverServiceByUUID", testDiscoverServiceByUUID)
     ]
     
-    func testUUID() {
+    func testCharacteristicProperty() {
         
-        
+        GATT.CharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }
     }
     
     func testMTUExchange() {
