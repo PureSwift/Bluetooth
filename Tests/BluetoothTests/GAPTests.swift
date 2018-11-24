@@ -39,6 +39,7 @@ final class GAPTests: XCTestCase {
         ("testGAPLEDeviceAddress", testGAPLEDeviceAddress),
         ("testGAPLERole", testGAPLERole),
         ("testGAPURI", testGAPURI),
+        ("testIndoorPositioning", testIndoorPositioning),
         ("testGAPLESupportedFeatures", testGAPLESupportedFeatures),
         ("testGAPLESecureConnectionsConfirmation", testGAPLESecureConnectionsConfirmation),
         ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom),
@@ -690,6 +691,35 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(decoded[0] as! GAPURI, uri)
         XCTAssertEqual((decoded[0] as! GAPURI).description, uriString)
+    }
+    
+    func testIndoorPositioning() {
+        
+        let values: [GAPIndoorPositioning] = [
+            GAPIndoorPositioning(),
+            GAPIndoorPositioning(isLocationNamePresent: true),
+            GAPIndoorPositioning(
+                coordinates: .local(north: 200, east: 500),
+                floorNumber: 100
+            ),
+            GAPIndoorPositioning(
+                coordinates: .global(latitude: 1200, longitude: 600),
+                txPower: .max,
+                altitude: 1000,
+                uncertainty: .max,
+                isLocationNamePresent: true
+            )
+        ]
+        
+        for indoorPositioning in values {
+            
+            XCTAssertEqual(indoorPositioning.data.count, indoorPositioning.dataLength)
+            
+            guard let decoded = GAPIndoorPositioning(data: indoorPositioning.data)
+                else { XCTFail("Could not decode"); return }
+            
+            XCTAssertEqual(decoded, indoorPositioning)
+        }
     }
     
     func testGAPLESupportedFeatures() {

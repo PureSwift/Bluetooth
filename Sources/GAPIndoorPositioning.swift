@@ -8,140 +8,316 @@
 
 import Foundation
 
-/// The Indoor Positioning Service exposes location information to support mobile devices to position themselves in an environment where GNSS signals are not available, for example in indoor premises.
-/// The location information is mainly exposed via advertising and the GATT- based service is primarily intended for configuration.
-public struct GAPIndoorPositioning: GAPData {
+/**
+ The Indoor Positioning Service exposes location information to support mobile devices to position themselves in an environment where GNSS signals are not available, for example in indoor premises.
+
+ The location information is mainly exposed via advertising and the GATT-based service is primarily intended for configuration.
+ 
+ - SeeAlso: [Indoor Positioning Service Specification](https://www.bluetooth.org/docman/handlers/downloaddoc.ashx?doc_id=302114)
+ */
+public struct GAPIndoorPositioning: GAPData, Equatable {
     
-    internal static let length = 18
+    public static var dataType: GAPDataType { return .indoorPositioning }
     
-    public static let dataType: GAPDataType = .indoorPositioning
+    /// Global or Local Coordinates
+    public var coordinates: Coordinates?
     
-    public let flags: BitMaskOptionSet<GAPIndoorPositioningFlag>
+    /// Tx Power
+    public var txPower: UInt8?
     
-    public let globalCoordinatesLatitude: UInt32
+    /// Floor Number
+    public var floorNumber: UInt8?
     
-    public let globalCoordinatesLongitude: UInt32
+    /// Altitude
+    public var altitude: UInt16?
     
-    public let localCoordinatesNorth: UInt16
+    /// Uncertainty
+    public var uncertainty: UInt8?
     
-    public let localCoordinatesEast: UInt16
+    /// Whether the Location Name available in the GATT database.
+    public var isLocationNamePresent: Bool
     
-    public let txPower: UInt8
-    
-    public let floorNumber: UInt8
-    
-    public let altitude: UInt16
-    
-    public let uncertainty: UInt8
-    
-    public init(flags: BitMaskOptionSet<GAPIndoorPositioningFlag>,
-                globalCoordinatesLatitude: UInt32,
-                globalCoordinatesLongitude: UInt32,
-                localCoordinatesNorth: UInt16,
-                localCoordinatesEast: UInt16,
-                txPower: UInt8,
-                floorNumber: UInt8,
-                altitude: UInt16,
-                uncertainty: UInt8) {
+    public init(coordinates: Coordinates? = nil,
+                txPower: UInt8? = nil,
+                floorNumber: UInt8? = nil,
+                altitude: UInt16? = nil,
+                uncertainty: UInt8? = nil,
+                isLocationNamePresent: Bool = false) {
         
-        self.flags = flags
-        self.globalCoordinatesLatitude = globalCoordinatesLatitude
-        self.globalCoordinatesLongitude = globalCoordinatesLongitude
-        self.localCoordinatesNorth = localCoordinatesNorth
-        self.localCoordinatesEast = localCoordinatesEast
+        self.coordinates = coordinates
         self.txPower = txPower
         self.floorNumber = floorNumber
         self.altitude = altitude
         self.uncertainty = uncertainty
+        self.isLocationNamePresent = isLocationNamePresent
     }
+}
+
+internal extension GAPIndoorPositioning {
+    
+    var flags: BitMaskOptionSet<Flag> {
+        
+        var flags = BitMaskOptionSet<Flag>()
+        
+        if let coordinates = coordinates {
+            
+            flags.insert(.coordinates)
+            
+            switch coordinates {
+            case .local:
+                flags.insert(.coordinateSystemUsed)
+            case .global:
+                break
+            }
+        }
+        
+        if txPower != nil {
+            flags.insert(.txPower)
+        }
+        
+        if floorNumber != nil {
+            flags.insert(.floorNumber)
+        }
+        
+        if altitude != nil {
+            flags.insert(.altitude)
+        }
+        
+        if uncertainty != nil {
+            flags.insert(.uncertainty)
+        }
+        
+        if isLocationNamePresent {
+            flags.insert(.locationName)
+        }
+        
+        return flags
+    }
+}
+    
+public extension GAPIndoorPositioning {
     
     public init?(data: Data) {
         
-        guard data.count == type(of: self).length
-            else { return nil }
+        self.init() // empty data
         
-        let flags = BitMaskOptionSet<GAPIndoorPositioningFlag>(rawValue: data[0])
-        let globalCoordinatesLatitude = UInt32(littleEndian: UInt32(bytes: (data[1], data[2], data[3], data[4])))
-        let globalCoordinatesLongitude = UInt32(littleEndian: UInt32(bytes: (data[5], data[6], data[7], data[8])))
-        let localCoordinatesNorth = UInt16(littleEndian: UInt16(bytes: (data[9], data[10])))
-        let localCoordinatesEast = UInt16(littleEndian: UInt16(bytes: (data[11], data[12])))
-        let txPower = data[13]
-        let floorNumber = data[14]
-        let altitude = UInt16(littleEndian: UInt16(bytes: (data[15], data[16])))
-        let uncertainty = data[17]
+        guard data.isEmpty == false
+            else { return }
         
-        self.init(flags: flags, globalCoordinatesLatitude: globalCoordinatesLatitude, globalCoordinatesLongitude: globalCoordinatesLongitude, localCoordinatesNorth: localCoordinatesNorth, localCoordinatesEast: localCoordinatesEast, txPower: txPower, floorNumber: floorNumber, altitude: altitude, uncertainty: uncertainty)
+        let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
+        
+        var offset = 1
+        
+        if flags.contains(.coordinates) {
+            
+            guard data.count >= offset + 4
+                else { return nil }
+            
+            let latitude = UInt16(littleEndian: UInt16(bytes: (data[offset], data[offset + 1])))
+            let longitude = UInt16(littleEndian: UInt16(bytes: (data[offset + 2], data[offset + 3])))
+            
+            offset += 4
+            
+            if flags.contains(.coordinateSystemUsed) {
+                
+                self.coordinates = .local(north: latitude, east: longitude)
+                
+            } else {
+                
+                self.coordinates = .global(latitude: latitude, longitude: longitude)
+            }
+        }
+        
+        if flags.contains(.txPower) {
+            
+            guard data.count >= offset + 1
+                else { return nil }
+            
+            self.txPower = data[offset]
+            offset += 1
+        }
+        
+        if flags.contains(.floorNumber) {
+            
+            guard data.count >= offset + 1
+                else { return nil }
+            
+            self.floorNumber = data[offset]
+            offset += 1
+        }
+        
+        if flags.contains(.altitude) {
+            
+            guard data.count >= offset + 2
+                else { return nil }
+            
+            self.altitude = UInt16(littleEndian: UInt16(bytes: (data[offset], data[offset + 1])))
+            offset += 2
+        }
+        
+        if flags.contains(.uncertainty) {
+            
+            guard data.count >= offset + 1
+                else { return nil }
+            
+            self.uncertainty = data[offset]
+            offset += 1
+        }
+        
+        if flags.contains(.locationName) {
+            
+            self.isLocationNamePresent = true
+        }
     }
     
     public var data: Data {
         
-        var data = Data([flags.rawValue])
-        data.reserveCapacity(GAPIndoorPositioning.length)
-        
-        let latitude = globalCoordinatesLatitude.littleEndian.bytes
-        data += [latitude.0, latitude.1, latitude.2, latitude.3]
-        
-        let longitude = globalCoordinatesLongitude.littleEndian.bytes
-        data += [longitude.0, longitude.1, longitude.2, longitude.3]
-        
-        let north = localCoordinatesNorth.littleEndian.bytes
-        data += [north.0, north.1]
-        
-        let east = localCoordinatesEast.littleEndian.bytes
-        data += [east.0, east.1]
-        
-        data.append(txPower)
-        
-        data.append(floorNumber)
-        
-        let altitude = self.altitude.littleEndian.bytes
-        data += [altitude.0, altitude.1]
-        
-        data.append(uncertainty)
-        
-        return data
+        return Data(self)
     }
-    
 }
 
-/// GAP Indoor Positioning Flag
-public enum GAPIndoorPositioningFlag: UInt8, BitMaskOption {
+// MARK: - DataConvertible
+
+extension GAPIndoorPositioning: DataConvertible {
     
-    /// Presence of coordinates in advertising packets
-    /// (0 = coordinates are not present, 1 = coordinates are present)
-    case coordinates = 0b01
+    var dataLength: Int {
+        
+        // If all flag values are set to zero,
+        // the Server shall omit the Flags field from the advertisement packet.
+        guard flags.isEmpty == false
+            else { return 0 }
+        
+        var length = 1
+        
+        if coordinates != nil {
+            length += 4
+        }
+        
+        if txPower != nil {
+            length += 1
+        }
+        
+        if floorNumber != nil {
+            length += 1
+        }
+        
+        if altitude != nil {
+            length += 2
+        }
+        
+        if uncertainty != nil {
+            length += 1
+        }
+        
+        return length
+    }
     
-    /// Coordinate system used in advertising packets
-    /// (0 = WGS84 coordinate system, 1 = Local coordinate system)
-    case coordinateSystemUsed = 0b10
+    static func += (data: inout Data, value: GAPIndoorPositioning) {
+        
+        // If all flag values are set to zero,
+        // the Server shall omit the Flags field from the advertisement packet.
+        
+        guard value.flags.isEmpty == false else { return } // empty data
+        
+        data += value.flags.rawValue
+        
+        if let coordinates = value.coordinates {
+            data += coordinates
+        }
+        
+        if let txPower = value.txPower {
+            data += txPower
+        }
+        
+        if let floorNumber = value.floorNumber {
+            data += floorNumber
+        }
+        
+        if let altitude = value.altitude {
+            data += altitude
+        }
+        
+        if let uncertainty = value.uncertainty {
+            data += uncertainty
+        }
+    }
+}
+
+// MARK: - Supporting Types
+
+public extension GAPIndoorPositioning {
     
-    /// Presence of Tx Power field in advertising packets
-    /// (0 = Tx Power is not present, 1 = Tx Power is present)
-    case txPower = 0b100
+    public enum Coordinates: Equatable {
+        
+        /// WGS84 coordinate system
+        case global(latitude: UInt16, longitude: UInt16)
+        
+        /// Local coordinate system
+        case local(north: UInt16, east: UInt16)
+    }
+}
+
+extension GAPIndoorPositioning.Coordinates: DataConvertible {
     
-    /// Presence of Altitude field in advertising packets
-    /// (0 = Altitude is not present, 1 = Altitude is present)
-    case altitudePresence = 0b1000
+    var dataLength: Int {
+        
+        return 4
+    }
     
-    /// Presence of Floor Number in advertising packets
-    /// (0 = Floor Number is not present, 1 = Floor Number is present)
-    case floorNumber = 0b10000
+    static func += (data: inout Data, value: GAPIndoorPositioning.Coordinates) {
+        
+        switch value {
+        case let .global(latitude, longitude):
+            data += latitude.littleEndian
+            data += longitude.littleEndian
+        case let .local(north, east):
+            data += north.littleEndian
+            data += east.littleEndian
+        }
+    }
+}
+
+internal extension GAPIndoorPositioning {
     
-    /// Presence of Uncertainty in advertising packets
-    /// (0 = Uncertainty is not present, 1 = Uncertainty is present)
-    case uncertainty = 0b100000
-    
-    /// Location Name available in the GATT database.
-    /// (0 = Location Name is not present, 1 = Location Name is present)
-    case locationName = 0b1000000
-    
-    public static let allCases: Set<GAPIndoorPositioningFlag> = [
-        .coordinates,
-        .coordinateSystemUsed,
-        .txPower,
-        .altitudePresence,
-        .floorNumber,
-        .uncertainty,
-        .locationName
-    ]
+    /// GAP Indoor Positioning Flag
+    enum Flag: UInt8, BitMaskOption {
+        
+        /// Presence of coordinates in advertising packets
+        /// (0 = coordinates are not present, 1 = coordinates are present)
+        case coordinates                = 0b00000001
+        
+        /// Coordinate system used in advertising packets
+        /// (0 = WGS84 coordinate system, 1 = Local coordinate system)
+        case coordinateSystemUsed       = 0b00000010
+        
+        /// Presence of Tx Power field in advertising packets
+        /// (0 = Tx Power is not present, 1 = Tx Power is present)
+        case txPower                    = 0b00000100
+        
+        /// Presence of Altitude field in advertising packets
+        /// (0 = Altitude is not present, 1 = Altitude is present)
+        case altitude                   = 0b00001000
+        
+        /// Presence of Floor Number in advertising packets
+        /// (0 = Floor Number is not present, 1 = Floor Number is present)
+        case floorNumber                = 0b00010000
+        
+        /// Presence of Uncertainty in advertising packets
+        /// (0 = Uncertainty is not present, 1 = Uncertainty is present)
+        case uncertainty                = 0b00100000
+        
+        /// Location Name available in the GATT database.
+        /// (0 = Location Name is not present, 1 = Location Name is present)
+        case locationName               = 0b01000000
+        
+        public static let allCases: Set<Flag> = [
+            .coordinates,
+            .coordinateSystemUsed,
+            .txPower,
+            .altitude,
+            .floorNumber,
+            .uncertainty,
+            .locationName
+        ]
+    }
 }
