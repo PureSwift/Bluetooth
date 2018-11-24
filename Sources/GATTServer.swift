@@ -405,8 +405,8 @@ public final class GATTServer {
         
         // GATT defines that only the Primary Service and Secondary Service group types 
         // can be used for the "Read By Group Type" request. Return an error if any other group type is given.
-        guard pdu.type == GATT.UUID.primaryService.uuid
-            || pdu.type == GATT.UUID.secondaryService.uuid
+        guard pdu.type == .primaryService
+            || pdu.type == .secondaryService
             else { errorResponse(type(of: pdu).attributeOpcode, .unsupportedGroupType, pdu.startHandle); return }
         
         let attributeData = database.readByGroupType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.type)
@@ -465,21 +465,7 @@ public final class GATTServer {
         
         typealias AttributeData = ATTReadByTypeResponse.AttributeData
         
-        if let log = self.log {
-            
-            let typeText: String
-            
-            if let gatt = GATT.UUID(uuid: pdu.attributeType) {
-                
-                typeText = "\(gatt)"
-                
-            } else {
-                
-                typeText = "\(pdu.attributeType)"
-            }
-            
-            log("Read by Type (\(typeText)) (\(pdu.startHandle) - \(pdu.endHandle))")
-        }
+        log?("Read by Type (\(pdu.attributeType)) (\(pdu.startHandle) - \(pdu.endHandle))")
         
         guard pdu.startHandle != 0 && pdu.endHandle != 0
             else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }

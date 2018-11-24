@@ -697,6 +697,8 @@ final class GAPTests: XCTestCase {
     
     func testIndoorPositioning() {
         
+        XCTAssertEqual(GAPIndoorPositioning.dataType.rawValue, 0x25)
+        
         let values: [GAPIndoorPositioning] = [
             GAPIndoorPositioning(),
             GAPIndoorPositioning(isLocationNamePresent: true),
@@ -710,6 +712,14 @@ final class GAPTests: XCTestCase {
                 altitude: 1000,
                 uncertainty: .max,
                 isLocationNamePresent: true
+            ),
+            GAPIndoorPositioning(
+                coordinates: .global(latitude: 1000, longitude: 200),
+                txPower: .min
+            ),
+            GAPIndoorPositioning(
+                txPower: .min,
+                altitude: 1000
             )
         ]
         
@@ -721,6 +731,10 @@ final class GAPTests: XCTestCase {
                 else { XCTFail("Could not decode"); return }
             
             XCTAssertEqual(decoded, indoorPositioning)
+            
+            if let coordinate = indoorPositioning.coordinates {
+                XCTAssertEqual(coordinate.dataLength, 4)
+            }
         }
     }
     
