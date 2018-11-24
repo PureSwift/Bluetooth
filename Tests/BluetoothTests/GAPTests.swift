@@ -18,38 +18,38 @@ final class GAPTests: XCTestCase {
         ("testBit32UUIDList", testBit32UUIDList),
         ("testBit128UUIDList", testBit128UUIDList),
         ("testDataType", testDataType),
-        ("testGAPShortLocalName", testGAPShortLocalName),
-        ("testGAPCompleteLocalName", testGAPCompleteLocalName),
-        ("testGAPCompleteListOf16BitServiceClassUUIDs", testGAPCompleteListOf16BitServiceClassUUIDs),
-        ("testGAPCompleteListOf32BitServiceClassUUIDs", testGAPCompleteListOf32BitServiceClassUUIDs),
-        ("testGAPCompleteListOf128BitServiceClassUUIDs", testGAPCompleteListOf128BitServiceClassUUIDs),
-        ("testGAPIncompleteListOf16BitServiceClassUUIDs", testGAPIncompleteListOf16BitServiceClassUUIDs),
-        ("testGAPIncompleteListOf32BitServiceClassUUIDs", testGAPIncompleteListOf32BitServiceClassUUIDs),
-        ("testGAPIncompleteListOf128BitServiceClassUUIDs", testGAPIncompleteListOf128BitServiceClassUUIDs),
-        ("testGAPTxPowerLevel", testGAPTxPowerLevel),
-        ("testGAPClassOfDevice", testGAPClassOfDevice),
-        ("testGAPSlaveConnectionIntervalRange", testGAPSlaveConnectionIntervalRange),
-        ("testGAPServiceData16BitUUID", testGAPServiceData16BitUUID),
-        ("testGAPServiceData32BitUUID", testGAPServiceData32BitUUID),
-        ("testGAPServiceData128BitUUID", testGAPServiceData128BitUUID),
-        ("testGAPPublicTargetAddress", testGAPPublicTargetAddress),
-        ("testGAPRandomTargetAddress", testGAPRandomTargetAddress),
-        ("testGAPAppearance", testGAPAppearance),
-        ("testGAPAdvertisingInterval", testGAPAdvertisingInterval),
-        ("testGAPLEDeviceAddress", testGAPLEDeviceAddress),
-        ("testGAPLERole", testGAPLERole),
-        ("testGAPURI", testGAPURI),
+        ("testShortLocalName", testShortLocalName),
+        ("testCompleteLocalName", testCompleteLocalName),
+        ("testCompleteListOf16BitServiceClassUUIDs", testCompleteListOf16BitServiceClassUUIDs),
+        ("testCompleteListOf32BitServiceClassUUIDs", testCompleteListOf32BitServiceClassUUIDs),
+        ("testCompleteListOf128BitServiceClassUUIDs", testCompleteListOf128BitServiceClassUUIDs),
+        ("testIncompleteListOf16BitServiceClassUUIDs", testIncompleteListOf16BitServiceClassUUIDs),
+        ("testIncompleteListOf32BitServiceClassUUIDs", testIncompleteListOf32BitServiceClassUUIDs),
+        ("testIncompleteListOf128BitServiceClassUUIDs", testIncompleteListOf128BitServiceClassUUIDs),
+        ("testTxPowerLevel", testTxPowerLevel),
+        ("testClassOfDevice", testClassOfDevice),
+        ("testSlaveConnectionIntervalRange", testSlaveConnectionIntervalRange),
+        ("testServiceData16BitUUID", testServiceData16BitUUID),
+        ("testServiceData32BitUUID", testServiceData32BitUUID),
+        ("testServiceData128BitUUID", testServiceData128BitUUID),
+        ("testPublicTargetAddress", testPublicTargetAddress),
+        ("testRandomTargetAddress", testRandomTargetAddress),
+        ("testAppearance", testAppearance),
+        ("testAdvertisingInterval", testAdvertisingInterval),
+        ("testLEDeviceAddress", testLEDeviceAddress),
+        ("testLERole", testLERole),
+        ("testURI", testURI),
         ("testIndoorPositioning", testIndoorPositioning),
-        ("testGAPLESupportedFeatures", testGAPLESupportedFeatures),
-        ("testGAPLESecureConnectionsConfirmation", testGAPLESecureConnectionsConfirmation),
-        ("testGAPLESecureConnectionsRandom", testGAPLESecureConnectionsRandom),
-        ("testGAPChannelMapUpdateIndication", testGAPChannelMapUpdateIndication),
-        ("testGAPTransportDiscoveryData", testGAPTransportDiscoveryData),
-        ("testGAPMeshMessage", testGAPMeshMessage),
-        ("testGAPMeshBeacon", testGAPMeshBeacon),
-        ("testGAPManufacturerSpecificData", testGAPManufacturerSpecificData),
-        ("testGAPPBADV", testGAPPBADV),
-        ("testGAP3DInformation", testGAP3DInformation)
+        ("testLESupportedFeatures", testLESupportedFeatures),
+        ("testLESecureConnectionsConfirmation", testLESecureConnectionsConfirmation),
+        ("testLESecureConnectionsRandom", testLESecureConnectionsRandom),
+        ("testChannelMapUpdateIndication", testChannelMapUpdateIndication),
+        ("testTransportDiscoveryData", testTransportDiscoveryData),
+        ("testMeshMessage", testMeshMessage),
+        ("testMeshBeacon", testMeshBeacon),
+        ("testManufacturerSpecificData", testManufacturerSpecificData),
+        ("testPBADV", testPBADV),
+        ("test3DInformation", test3DInformation)
     ]
     
     func testDataType() {
@@ -127,7 +127,7 @@ final class GAPTests: XCTestCase {
         //XCTAssertEqual(list.uuids.map { $0.description }, [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))])
     }
     
-    func testGAPShortLocalName() {
+    func testShortLocalName() {
         
         /**
          Length Data: 0X0C
@@ -153,7 +153,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPDataEncoder.encode([name]), data)
     }
     
-    func testGAPCompleteLocalName() {
+    func testCompleteLocalName() {
         
         /**
          Length Data: 0X0C
@@ -179,7 +179,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPDataEncoder.encode([name]), data)
     }
     
-    func testGAPCompleteListOf16BitServiceClassUUIDs() {
+    func testCompleteListOf16BitServiceClassUUIDs() {
         
         /**
          Length Data: 0X16
@@ -213,7 +213,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
-    func testGAPIncompleteListOf16BitServiceClassUUIDs() {
+    func testIncompleteListOf16BitServiceClassUUIDs() {
         
         /**
          Length Data: 0X16
@@ -247,7 +247,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
-    func testGAPCompleteListOf32BitServiceClassUUIDs() {
+    func testCompleteListOf32BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x2E
@@ -279,7 +279,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
-    func testGAPIncompleteListOf32BitServiceClassUUIDs() {
+    func testIncompleteListOf32BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x2E
@@ -311,7 +311,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
-    func testGAPCompleteListOf128BitServiceClassUUIDs() {
+    func testCompleteListOf128BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x23
@@ -343,7 +343,7 @@ final class GAPTests: XCTestCase {
         //            XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
-    func testGAPIncompleteListOf128BitServiceClassUUIDs() {
+    func testIncompleteListOf128BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x23
@@ -370,7 +370,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded.count, 3)
     }
     
-    func testGAPTxPowerLevel() {
+    func testTxPowerLevel() {
         
         let data = Data([0x02, 0x0A, 0x7F])
         
@@ -390,7 +390,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[0] as! GAPTxPowerLevel, txPowerLevel)
     }
     
-    func testGAPClassOfDevice() {
+    func testClassOfDevice() {
         
         let data = Data([0x04, 0x0d, 0x18, 0xf3, 0xff])
         XCTAssertEqual(data.count, 0x05)
@@ -409,7 +409,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[0] as! GAPClassOfDevice, device)
     }
     
-    func testGAPSlaveConnectionIntervalRange() {
+    func testSlaveConnectionIntervalRange() {
         
         let data = Data([0x05, 0x12, 0x06, 0x00, 0x80, 0x0c])
         
@@ -434,7 +434,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[0] as? GAPSlaveConnectionIntervalRange, intervalRange)
     }
     
-    func testGAPServiceData16BitUUID() {
+    func testServiceData16BitUUID() {
         
         XCTAssertNil(GAPServiceData16BitUUID(data: Data([0x4f])))
         
@@ -460,7 +460,7 @@ final class GAPTests: XCTestCase {
                        GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])))
     }
     
-    func testGAPServiceData32BitUUID() {
+    func testServiceData32BitUUID() {
         
         XCTAssertNil(GAPServiceData32BitUUID(data: Data([0x4f])))
         
@@ -486,7 +486,7 @@ final class GAPTests: XCTestCase {
                        GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
     }
     
-    func testGAPServiceData128BitUUID() {
+    func testServiceData128BitUUID() {
         
         XCTAssertNil(GAPServiceData128BitUUID(data: Data([0x4f])))
 
@@ -512,7 +512,7 @@ final class GAPTests: XCTestCase {
                        GAPServiceData128BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])))
     }
     
-    func testGAPAppearance() {
+    func testAppearance() {
         
         XCTAssertNil(GAPAppearanceData(data: Data([])))
         XCTAssertNil(GAPAppearanceData(data: Data([0x00])))
@@ -570,7 +570,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAP.Appearance.Watch.sports.subcategory, 1)
     }
     
-    func testGAPPublicTargetAddress() {
+    func testPublicTargetAddress() {
         
         XCTAssertNil(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])))
         XCTAssertNil(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])))
@@ -586,7 +586,7 @@ final class GAPTests: XCTestCase {
         
     }
     
-    func testGAPRandomTargetAddress() {
+    func testRandomTargetAddress() {
         
         XCTAssertNil(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])))
         XCTAssertNil(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])))
@@ -601,7 +601,7 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    func testGAPAdvertisingInterval() {
+    func testAdvertisingInterval() {
     
         XCTAssertNil(GAPAdvertisingInterval(data: Data([0x00])))
         XCTAssertNil(GAPAdvertisingInterval(data: Data([0x00, 0x00, 0x00])))
@@ -618,7 +618,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(advertisingInterval.description, "0.0625ms")
     }
     
-    func testGAPLEDeviceAddress() {
+    func testLEDeviceAddress() {
         
         XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x30, 0xff])))
         XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0xf8, 0x30])))
@@ -648,7 +648,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPLEDeviceAddress(address: .zero, type: .random).data.count, GAPLEDeviceAddress.length)
     }
     
-    func testGAPLERole() {
+    func testLERole() {
         
         XCTAssertNil(GAPLERole(data: Data([])))
         XCTAssertNil(GAPLERole(data: Data([0x4f])))
@@ -676,7 +676,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.preferred, .central)
     }
     
-    func testGAPURI() {
+    func testURI() {
         
         let uriString = "/my/uri/string"
         let data = Data([15, 0x24, 47, 109, 121, 47, 117, 114, 105, 47, 115, 116, 114, 105, 110, 103])
@@ -724,7 +724,7 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    func testGAPLESupportedFeatures() {
+    func testLESupportedFeatures() {
         
         do {
             let supportedFeatures = GAPLESupportedFeatures(supportedFeatures: Data([0x00, 0x00, 0x4d, 0x00, 0x00]))
@@ -751,7 +751,7 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    func testGAPLESecureConnectionsConfirmation() {
+    func testLESecureConnectionsConfirmation() {
         
         XCTAssertNil(GAPLESecureConnectionsConfirmation(data: Data([0x4f])))
         XCTAssertNil(GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0x4f, 0x4f])))
@@ -768,7 +768,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPLESecureConnectionsConfirmation(confirmation: 0xf5).data.count, GAPLESecureConnectionsConfirmation.length)
     }
     
-    func testGAPLESecureConnectionsRandom() {
+    func testLESecureConnectionsRandom() {
         
         XCTAssertNil(GAPLESecureConnectionsRandom(data: Data([0x4f])))
         XCTAssertNil(GAPLESecureConnectionsRandom(data: Data([0x4f, 0x4f, 0x4f])))
@@ -785,7 +785,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPLESecureConnectionsRandom(random: 0xf5).data.count, GAPLESecureConnectionsRandom.length)
     }
     
-    func testGAPChannelMapUpdateIndication() {
+    func testChannelMapUpdateIndication() {
         
         do {
             let data = Data([0x4d, 0x3e, 0x12, 0x3a, 0x18, 0x4d, 0x3e])
@@ -795,7 +795,7 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    func testGAPTransportDiscoveryData() {
+    func testTransportDiscoveryData() {
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
@@ -839,7 +839,7 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    func testGAPMeshMessage() {
+    func testMeshMessage() {
         
         XCTAssertNil(GAPMeshMessage(data: Data([])))
         XCTAssertNil(GAPMeshMessage(data: Data([0x4f])))
@@ -855,7 +855,7 @@ final class GAPTests: XCTestCase {
         }
     }
     
-    func testGAPMeshBeacon() {
+    func testMeshBeacon() {
         
         XCTAssertNil(GAPMeshBeacon(data: Data([])))
         XCTAssertNil(GAPMeshBeacon(data: Data([0x02, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])))
@@ -883,7 +883,7 @@ final class GAPTests: XCTestCase {
         
     }
     
-    func testGAPManufacturerSpecificData() {
+    func testManufacturerSpecificData() {
         
         XCTAssertNil(GAPManufacturerSpecificData(data: Data([0x4f])))
         
@@ -908,7 +908,7 @@ final class GAPTests: XCTestCase {
                        GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])))
     }
     
-    func testGAPPBADV() {
+    func testPBADV() {
         
         XCTAssertNil(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x12])))
         XCTAssertNil(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
@@ -934,7 +934,7 @@ final class GAPTests: XCTestCase {
                        GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])))
     }
     
-    func testGAP3DInformation() {
+    func test3DInformation() {
         
         XCTAssertNil(GAP3DInformation(data: Data([])))
         XCTAssertNil(GAP3DInformation(data: Data([0x00])))
