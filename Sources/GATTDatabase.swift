@@ -212,6 +212,16 @@ public struct GATTDatabase {
     }
 }
 
+// MARK: - ExpressibleByArrayLiteral
+
+extension GATTDatabase: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: GATT.Service...) {
+        
+        self.init(services: elements)
+    }
+}
+
 // MARK: - Sequence
 
 extension GATTDatabase: Sequence {
