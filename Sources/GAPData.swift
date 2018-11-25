@@ -24,9 +24,25 @@ public enum GAP {
 /// Generic Access Profile Data
 public protocol GAPData {
     
+    /// Generic Access Profile data type.
     static var dataType: GAPDataType { get }
     
+    /// Initialize from `Data`.
     init?(data: Data)
     
-    var data: Data { get }
+    /// Append data representation into buffer.
+    func append(to data: inout Data)
+    
+    /// Length of value when encoded into data.
+    var dataLength: Int { get }
+}
+
+public extension GAPData {
+    
+    var data: Data {
+        
+        var data = Data(capacity: dataLength)
+        append(to: &data)
+        return data
+    }
 }

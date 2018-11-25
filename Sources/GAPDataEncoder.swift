@@ -46,9 +46,20 @@ public struct GAPDataEncoder {
     
     public static func encode(_ encodables: [GAPData]) -> Data {
         
-        let elements = encodables.map { GAPDataElement($0) }
+        let dataLengths = encodables.map { $0.dataLength }
+        let length = dataLengths.reduce(0, { $0 + $1 + 2 })
+        var data = Data(capacity: length)
         
-        return encode(elements)
+        for (index, encodable) in encodables.enumerated() {
+            
+             let dataLength = dataLengths[index]
+            
+            data += UInt8(dataLength + 1)
+            data += type(of: encodable).dataType.rawValue
+            encodable.append(to: &data)
+        }
+        
+        return data
     }
 }
 
