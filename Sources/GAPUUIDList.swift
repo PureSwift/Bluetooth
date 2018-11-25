@@ -41,11 +41,61 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
     
     internal var data: Data {
         
-        var data = Data(capacity: MemoryLayout<Element>.size * uuids.count)
-        uuids.forEach { data += $0.littleEndian }
-        return data
+        return Data(self)
     }
 }
+
+// MARK: - DataConvertible
+
+extension GAPUUIDList: DataConvertible {
+    
+    var dataLength: Int {
+        
+        return MemoryLayout<Element>.size * uuids.count
+    }
+    
+    static func += (data: inout Data, value: GAPUUIDList<Element>) {
+        
+        value.forEach { data += $0 }
+    }
+}
+
+// MARK: - Sequence
+
+extension GAPUUIDList: Sequence {
+    
+    public func makeIterator() -> IndexingIterator<GAPUUIDList<Element>> {
+        
+        return IndexingIterator(_elements: self)
+    }
+}
+
+// MARK: - Collection
+
+extension GAPUUIDList: Collection {
+    
+    subscript(index: Int) -> Element {
+        
+        return uuids[index]
+    }
+    
+    func index(after index: Int) -> Int {
+        
+        return index + 1
+    }
+    
+    var startIndex: Int {
+        
+        return 0
+    }
+    
+    var endIndex: Int {
+        
+        return uuids.count
+    }
+}
+
+// MARK: - Supporting Types
 
 internal protocol GAPUUIDElement: UnsafeDataConvertible {
     
