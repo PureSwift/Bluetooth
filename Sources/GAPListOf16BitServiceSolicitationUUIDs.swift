@@ -13,7 +13,7 @@ import Foundation
 /// Note: Central and Peripheral are GAP roles as defined in Vol.3, Part C, Section 2.2.2.
 
 /// GAP List of 16 bit Service Solicitation UUIDs
-public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData {
+public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .listOf16BitServiceSolicitationUUIDs
     
@@ -38,6 +38,8 @@ public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData {
     }
 }
 
+// MARK: - ExpressibleByArrayLiteral
+
 extension GAPListOf16BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
     
     public init(arrayLiteral elements: UInt16...) {
@@ -46,18 +48,12 @@ extension GAPListOf16BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
     }
 }
 
-extension GAPListOf16BitServiceSolicitationUUIDs: Equatable {
-    
-    public static func == (lhs: GAPListOf16BitServiceSolicitationUUIDs, rhs: GAPListOf16BitServiceSolicitationUUIDs) -> Bool {
-        
-        return lhs.uuids == rhs.uuids
-    }
-}
+// MARK: - CustomStringConvertible
 
 extension GAPListOf16BitServiceSolicitationUUIDs: CustomStringConvertible {
     
     public var description: String {
         
-        return uuids.description
+        return uuids.map { BluetoothUUID.bit16($0) }.description
     }
 }

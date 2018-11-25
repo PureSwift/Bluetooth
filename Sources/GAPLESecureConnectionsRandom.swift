@@ -11,7 +11,7 @@ import Foundation
 /// Specifies the LE Secure Connections Random Value
 /// Size: 16 octets
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
-public struct GAPLESecureConnectionsRandom: GAPData {
+public struct GAPLESecureConnectionsRandom: GAPData, Equatable {
     
     internal static let length = MemoryLayout<UInt16>.size
     
@@ -38,14 +38,6 @@ public struct GAPLESecureConnectionsRandom: GAPData {
         
         let value = random.littleEndian
         return Data(bytes: [value.bytes.0, value.bytes.1])
-    }
-}
-
-extension GAPLESecureConnectionsRandom: Equatable {
-    
-    public static func == (lhs: GAPLESecureConnectionsRandom, rhs: GAPLESecureConnectionsRandom) -> Bool {
-        
-        return lhs.random == rhs.random
     }
 }
 

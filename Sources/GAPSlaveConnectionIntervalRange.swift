@@ -79,11 +79,3 @@ extension GAPSlaveConnectionIntervalRange: Equatable {
         return lhs.intervalRange == rhs.intervalRange
     }
 }
-
-extension GAPSlaveConnectionIntervalRange: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return "\(intervalRange.0, intervalRange.1)"
-    }
-}

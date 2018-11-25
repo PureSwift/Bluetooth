@@ -11,7 +11,7 @@ import Foundation
 /// Specifies the LE Secure Connections Confirmation Value
 /// Size: 16 octets
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
-public struct GAPLESecureConnectionsConfirmation: GAPData {
+public struct GAPLESecureConnectionsConfirmation: GAPData, Equatable {
     
     internal static let length = MemoryLayout<UInt16>.size
     
@@ -38,14 +38,6 @@ public struct GAPLESecureConnectionsConfirmation: GAPData {
         
         let value = confirmation.littleEndian
         return Data(bytes: [value.bytes.0, value.bytes.1])
-    }
-}
-
-extension GAPLESecureConnectionsConfirmation: Equatable {
-    
-    public static func == (lhs: GAPLESecureConnectionsConfirmation, rhs: GAPLESecureConnectionsConfirmation) -> Bool {
-        
-        return lhs.confirmation == rhs.confirmation
     }
 }
 

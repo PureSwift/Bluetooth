@@ -14,12 +14,13 @@ import Foundation
 /// The LE Supported Features data type size is zero or more octets long.
 /// This allows the LE Supported Features to be represented while using
 /// the minimum number of octets within the data packet.
-public struct GAPLESupportedFeatures: GAPData {
+public struct GAPLESupportedFeatures: GAPData, Equatable {
     
     internal static let omittedValue: UInt8 = 0x00
     
     public static let dataType: GAPDataType = .lowEnergySupportedFeatures
-    
+
+    // FIXME: 
     public let supportedFeatures: Data
     
     public init(supportedFeatures: Data) {
@@ -67,21 +68,5 @@ public struct GAPLESupportedFeatures: GAPData {
         }
         
         return supportedData
-    }
-}
-
-extension GAPLESupportedFeatures: Equatable {
-    
-    public static func == (lhs: GAPLESupportedFeatures, rhs: GAPLESupportedFeatures) -> Bool {
-        
-        return lhs.supportedFeatures == rhs.supportedFeatures
-    }
-}
-
-extension GAPLESupportedFeatures: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return supportedFeatures.description
     }
 }

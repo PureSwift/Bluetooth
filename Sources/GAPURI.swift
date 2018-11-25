@@ -15,11 +15,11 @@ import Foundation
  
  A shortened name shall only contain contiguous characters from the beginning of the full name. For example, if the device name is ‘BT_Device_Name’ then the shortened name could be ‘BT_Device’ or ‘BT_Dev’.
  */
-public struct GAPURI: GAPData {
+public struct GAPURI: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .uri
     
-    public let uri: URL
+    public var uri: URL
     
     public init(uri: URL) {
         
@@ -44,13 +44,7 @@ public struct GAPURI: GAPData {
     }
 }
 
-extension GAPURI: Equatable {
-    
-    public static func == (lhs: GAPURI, rhs: GAPURI) -> Bool {
-        
-        return lhs.uri == rhs.uri
-    }
-}
+// MARK: - CustomStringConvertible
 
 extension GAPURI: CustomStringConvertible {
     

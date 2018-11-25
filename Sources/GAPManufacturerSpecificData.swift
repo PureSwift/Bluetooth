@@ -60,21 +60,4 @@ public struct GAPManufacturerSpecificData: GAPData {
         
         return Data([identifierBytes.0, identifierBytes.1]) + additionalData
     }
-    
-}
-
-extension GAPManufacturerSpecificData: Equatable {
-    
-    public static func == (lhs: GAPManufacturerSpecificData, rhs: GAPManufacturerSpecificData) -> Bool {
-        
-        return lhs.companyIdentifier == rhs.companyIdentifier && lhs.additionalData == rhs.additionalData
-    }
-}
-
-extension GAPManufacturerSpecificData: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return companyIdentifier.description + additionalData.map { String($0) }.description
-    }
 }

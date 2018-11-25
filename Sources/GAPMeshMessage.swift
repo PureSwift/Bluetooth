@@ -17,7 +17,7 @@ import Foundation
 /// in the advertising packets, thereby enabling two additional octets to be allocated to the Network PDU.
 /// To lower the probability of packet collisions on all advertising channels,
 /// it is recommended to randomize the gap between consecutive packets within an Advertising Event.
-public struct GAPMeshMessage: GAPData {
+public struct GAPMeshMessage: GAPData, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt16>.size
     
@@ -45,14 +45,6 @@ public struct GAPMeshMessage: GAPData {
         let value = message.littleEndian
         
         return Data([value.bytes.0, value.bytes.1])
-    }
-}
-
-extension GAPMeshMessage: Equatable {
-    
-    public static func == (lhs: GAPMeshMessage, rhs: GAPMeshMessage) -> Bool {
-        
-        return lhs.message == rhs.message
     }
 }
 

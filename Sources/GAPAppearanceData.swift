@@ -10,7 +10,7 @@ import Foundation
 
 /// The Appearance data type defines the external appearance of the device.
 /// This value shall be the same as the Appearance characteristic, as defined in Vol. 3, Part C, Section 12.2.
-public struct GAPAppearanceData: GAPData {
+public struct GAPAppearanceData: GAPData, Equatable {
     
     internal static let length = MemoryLayout<UInt16>.size
     
@@ -38,13 +38,5 @@ public struct GAPAppearanceData: GAPData {
         let bytes = appearance.rawValue.littleEndian.bytes
         
         return Data(bytes: [bytes.0, bytes.1])
-    }
-}
-
-extension GAPAppearanceData: Equatable {
-    
-    public static func == (lhs: GAPAppearanceData, rhs: GAPAppearanceData) -> Bool {
-        
-        return lhs.appearance == rhs.appearance
     }
 }

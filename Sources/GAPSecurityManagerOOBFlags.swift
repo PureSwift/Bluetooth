@@ -45,7 +45,7 @@ public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
     ]
 }
 
-public struct GAPSecurityManagerOOBFlags: GAPData {
+public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt8>.size
     
@@ -69,22 +69,6 @@ public struct GAPSecurityManagerOOBFlags: GAPData {
     public var data: Data {
         
         return Data([flags.rawValue])
-    }
-}
-
-extension GAPSecurityManagerOOBFlags: Equatable {
-    
-    public static func == (lhs: GAPSecurityManagerOOBFlags, rhs: GAPSecurityManagerOOBFlags) -> Bool {
-        
-        return lhs.flags == rhs.flags
-    }
-}
-
-extension GAPSecurityManagerOOBFlags: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(flags.rawValue)
     }
 }
 

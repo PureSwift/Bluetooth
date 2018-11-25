@@ -9,7 +9,7 @@
 import Foundation
 
 /// GAP List of 32 bit Service Solicitation UUIDs
-public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
+public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .listOf32BitServiceSolicitationUUIDs
     
@@ -34,6 +34,8 @@ public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData {
     }
 }
 
+// MARK: - ExpressibleByArrayLiteral
+
 extension GAPListOf32BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
     
     public init(arrayLiteral elements: UInt32...) {
@@ -42,13 +44,7 @@ extension GAPListOf32BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
     }
 }
 
-extension GAPListOf32BitServiceSolicitationUUIDs: Equatable {
-    
-    public static func == (lhs: GAPListOf32BitServiceSolicitationUUIDs, rhs: GAPListOf32BitServiceSolicitationUUIDs) -> Bool {
-        
-        return lhs.uuids == rhs.uuids
-    }
-}
+// MARK: - CustomStringConvertible
 
 extension GAPListOf32BitServiceSolicitationUUIDs: CustomStringConvertible {
     

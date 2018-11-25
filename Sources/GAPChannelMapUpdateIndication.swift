@@ -40,21 +40,4 @@ public struct GAPChannelMapUpdateIndication: GAPData {
         
         return Data([channelMap.0, channelMap.1, channelMap.2, channelMap.3, channelMap.4, instant.0, instant.1                                      ])
     }
-    
-}
-
-extension GAPChannelMapUpdateIndication: Equatable {
-    
-    public static func == (lhs: GAPChannelMapUpdateIndication, rhs: GAPChannelMapUpdateIndication) -> Bool {
-        
-        return lhs.channelMap == rhs.channelMap && lhs.instant == rhs.instant
-    }
-}
-
-extension GAPChannelMapUpdateIndication: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return "\(channelMap.0) \(channelMap.1) \(channelMap.2) \(channelMap.3) \(channelMap.4) \(instant.0) \(instant.1)"
-    }
 }

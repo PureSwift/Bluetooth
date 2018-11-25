@@ -12,7 +12,7 @@ import Foundation
 ///
 /// Size: 16 or more octets
 /// The first 16 octets contain the 128 bit Service UUID followed by additional service data
-public struct GAPServiceData128BitUUID: GAPData {
+public struct GAPServiceData128BitUUID: GAPData, Equatable {
     
     internal static let uuidLength = MemoryLayout<UInt128>.size
     
@@ -40,23 +40,6 @@ public struct GAPServiceData128BitUUID: GAPData {
     
     public var data: Data {
         
-        let data = UInt128(uuid: uuid).littleEndian.data
-        return serviceData.reduce(data, { $0 + [$1] })
-    }
-}
-
-extension GAPServiceData128BitUUID: Equatable {
-    
-    public static func == (lhs: GAPServiceData128BitUUID, rhs: GAPServiceData128BitUUID) -> Bool {
-        
-        return lhs.uuid == rhs.uuid && lhs.serviceData == rhs.serviceData
-    }
-}
-
-extension GAPServiceData128BitUUID: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return uuid.description + serviceData.map { String($0) }.description
+        return UInt128(uuid: uuid).littleEndian.data + serviceData
     }
 }
