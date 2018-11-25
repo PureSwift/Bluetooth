@@ -16,11 +16,9 @@ import Foundation
  Size: 2 or more octets
  The first 2 octets contain the Company Identifier Code followed by additional manufacturer specific data
  */
-public struct GAPManufacturerSpecificData: GAPData {
+public struct GAPManufacturerSpecificData: GAPData, Equatable {
     
-    internal static let minimumLength = MemoryLayout<UInt16>.size
-    
-    public static let dataType: GAPDataType = .manufacturerSpecificData
+    public static var dataType: GAPDataType { return .manufacturerSpecificData }
     
     public var companyIdentifier: CompanyIdentifier
     
@@ -32,32 +30,37 @@ public struct GAPManufacturerSpecificData: GAPData {
         self.companyIdentifier = companyIdentifier
         self.additionalData = additionalData
     }
+}
+
+public extension GAPManufacturerSpecificData {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard data.count >= 2
             else { return nil }
         
-        let companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
-        
-        var additionalData = Data()
-        
-        if data.count > type(of: self).minimumLength {
-            
-            additionalData = Data(data.suffix(from: 2))
-            
-        } else {
-            
-            additionalData = Data()
-        }
-        
-        self.init(companyIdentifier: companyIdentifier, additionalData: additionalData)
+        self.companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        self.additionalData = data.suffixCheckingBounds(from: 2)
     }
     
     public var data: Data {
         
-        let identifierBytes = companyIdentifier.rawValue.littleEndian.bytes
+       return Data(self)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension GAPManufacturerSpecificData: DataConvertible {
+    
+    var dataLength: Int {
         
-        return Data([identifierBytes.0, identifierBytes.1]) + additionalData
+        return 2 + additionalData.count
+    }
+    
+    static func += (data: inout Data, value: GAPManufacturerSpecificData) {
+        
+        data += value.companyIdentifier.rawValue.littleEndian
+        data += value.additionalData
     }
 }
