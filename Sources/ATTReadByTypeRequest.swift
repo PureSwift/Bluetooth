@@ -49,15 +49,11 @@ public extension ATTReadByTypeRequest {
         self.endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         
         switch length {
-            
         case .uuid16:
-            
             let value = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
             self.attributeType = .bit16(value)
-            
         case .uuid128:
-            
-            self.attributeType = BluetoothUUID(littleEndian: BluetoothUUID(data: data.subdataNoCopy(in: 5 ..< 21))!)
+            self.attributeType = BluetoothUUID(littleEndian: BluetoothUUID(data: data.suffixNoCopy(from: 5))!)
         }
     }
     

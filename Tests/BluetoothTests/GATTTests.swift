@@ -21,7 +21,8 @@ final class GATTTests: XCTestCase {
         ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
         ("testDescriptors", testDescriptors),
         ("testNotification", testNotification),
-        ("testDiscoverServiceByUUID", testDiscoverServiceByUUID)
+        ("testDiscoverServiceByUUID", testDiscoverServiceByUUID),
+        ("testDiscoverCharacteristicByUUID", testDiscoverCharacteristicByUUID)
     ]
     
     func testCharacteristicProperty() {
@@ -628,6 +629,76 @@ final class GATTTests: XCTestCase {
                         XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
                         XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
                         XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
+                    }
+                }
+            }
+        }
+        
+        // run fake sockets
+        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+    }
+    
+    func testDiscoverCharacteristicByUUID() {
+        
+        let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
+                                                 value: Data(),
+                                                 permissions: [.read],
+                                                 properties: [.read],
+                                                 descriptors: [])
+        
+        let service = GATT.Service(uuid: BluetoothUUID(),
+                                   primary: true,
+                                   characteristics: [characteristic])
+        
+        // server
+        let serverSocket = TestL2CAPSocket()
+        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
+        server.database = [service]
+        
+        // client
+        let clientSocket = TestL2CAPSocket()
+        let client = GATTClient(socket: clientSocket)
+        
+        clientSocket.target = serverSocket
+        serverSocket.target = clientSocket // weak references
+        
+        // discover service
+        client.discoverPrimaryServices(by: service.uuid) {
+            
+            switch $0 {
+                
+            case let .error(error):
+                
+                XCTFail("Error \(error)")
+                
+            case let .value(foundServices):
+                
+                guard foundServices.count == 1,
+                    let foundService = foundServices.first
+                    else { XCTFail("Service not found"); return }
+                
+                XCTAssertEqual(foundService.uuid, service.uuid)
+                XCTAssertEqual(foundService.handle, server.database.serviceHandles(at: 0).start)
+                XCTAssertEqual(foundService.end, server.database.serviceHandles(at: 0).end)
+                XCTAssertEqual(foundService.isPrimary, server.database.first!.uuid == .primaryService)
+                
+                client.discoverCharacteristics(of: foundService, by: characteristic.uuid) {
+                    
+                    switch $0 {
+                        
+                    case let .error(error):
+                        
+                        XCTFail("Error \(error)")
+                        
+                    case let .value(foundCharacteristics):
+                        
+                        guard foundCharacteristics.count == 1,
+                            let foundCharacteristic = foundCharacteristics.first
+                            else { XCTFail("Characteristic not found"); return }
+                        
+                        XCTAssertEqual(server.database[handle: foundCharacteristic.handle.declaration].uuid, .characteristic)
+                        XCTAssertEqual(server.database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
+                        XCTAssertEqual(server.database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
                     }
                 }
             }
