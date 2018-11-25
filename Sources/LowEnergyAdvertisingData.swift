@@ -44,6 +44,113 @@ public struct LowEnergyAdvertisingData {
     }
 }
 
+public extension LowEnergyAdvertisingData {
+    
+    mutating func append(_ byte: UInt8) {
+        
+        assert(count < 31)
+        self[count] = byte
+        self.length += 1
+    }
+    
+    static func += (data: inout LowEnergyAdvertisingData, byte: UInt8) {
+        
+        data.append(byte)
+    }
+    
+    mutating func append <C: Collection> (contentsOf bytes: C) where C.Element == UInt8 {
+        
+        assert(count + bytes.count < 31)
+        
+        for (index, byte) in bytes.enumerated() {
+            
+            self[count + index] = byte
+        }
+        
+        self.length += UInt8(bytes.count)
+    }
+    
+    static func += <C: Collection> (data: inout LowEnergyAdvertisingData, bytes: C) where C.Element == UInt8 {
+        
+        data.append(contentsOf: bytes)
+    }
+}
+
+private struct PrimitiveCollection <T>: Collection {
+    
+    let pointer: UnsafePointer<T>
+    
+    init(_ pointer: UnsafePointer<T>) {
+        self.pointer = pointer
+    }
+    
+    func makeIterator() -> IndexingIterator<PrimitiveCollection<T>> {
+        return IndexingIterator(_elements: self)
+    }
+    
+    subscript (index: Int) -> UInt8 {
+        return pointer.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<T>.size) {
+            $0.advanced(by: index).pointee
+        }
+    }
+    
+    var count: Int {
+        return MemoryLayout<T>.size
+    }
+    
+    func index(after index: Int) -> Int {
+        return index + 1
+    }
+    
+    var startIndex: Int {
+        return 0
+    }
+    
+    var endIndex: Int {
+        return count
+    }
+}
+
+public extension UInt16 {
+    
+    static func += (data: inout LowEnergyAdvertisingData, value: UInt16) {
+        
+        withUnsafePointer(to: value) {
+            data += PrimitiveCollection($0)
+        }
+    }
+}
+
+public extension UInt32 {
+    
+    static func += (data: inout LowEnergyAdvertisingData, value: UInt32) {
+        
+        withUnsafePointer(to: value) {
+            data += PrimitiveCollection($0)
+        }
+    }
+}
+
+public extension UInt64 {
+    
+    static func += (data: inout LowEnergyAdvertisingData, value: UInt64) {
+        
+        withUnsafePointer(to: value) {
+            data += PrimitiveCollection($0)
+        }
+    }
+}
+
+public extension UInt128 {
+    
+    static func += (data: inout LowEnergyAdvertisingData, value: UInt128) {
+        
+        withUnsafePointer(to: value.bytes) {
+            data += PrimitiveCollection($0)
+        }
+    }
+}
+
 // MARK: - Equatable
 
 extension LowEnergyAdvertisingData: Equatable {
@@ -131,7 +238,7 @@ extension LowEnergyAdvertisingData: ExpressibleByArrayLiteral {
     }
 }
 
-// MARK: - Data Convertible
+// MARK: - Data
 
 public extension LowEnergyAdvertisingData {
     
@@ -168,9 +275,7 @@ extension LowEnergyAdvertisingData: DataConvertible {
     
     internal static func += (data: inout Data, value: LowEnergyAdvertisingData) {
         
-        value.forEach {
-            data += $0
-        }
+        data.append(contentsOf: value)
     }
 }
 
