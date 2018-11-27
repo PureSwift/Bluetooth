@@ -39,8 +39,16 @@ extension UnsafeDataConvertible {
     
     /// Append data representation into buffer.
     static func += (lhs: inout Data, rhs: Self) {
+        #if swift(>=4.2)
+        withUnsafePointer(to: rhs) {
+            $0.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<Self>.size) {
+                lhs.append($0, count: MemoryLayout<Self>.size)
+            }
+        }
+        #else
         var value = rhs
         lhs.append(UnsafeBufferPointer(start: &value, count: 1))
+        #endif
     }
 }
 
