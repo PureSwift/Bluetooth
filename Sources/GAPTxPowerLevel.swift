@@ -14,12 +14,6 @@ import Foundation
 /// Note: When the TX Power Level data type is not present, the TX power level of the packet is unknown.
 public struct GAPTxPowerLevel: GAPData, Equatable, Hashable {
     
-    internal static let length = MemoryLayout<UInt8>.size
-    
-    internal static let min: GAPTxPowerLevel = -127
-    
-    internal static let max: GAPTxPowerLevel = 127
-    
     public static let dataType: GAPDataType = .txPowerLevel
     
     public let powerLevel: Int8
@@ -33,29 +27,38 @@ public struct GAPTxPowerLevel: GAPData, Equatable, Hashable {
         self.powerLevel = powerLevel
     }
     
-    fileprivate init(unsafe value: Int8) {
+    fileprivate init(_ unsafe: Int8) {
         
-        self.powerLevel = value
+        self.powerLevel = unsafe
     }
+}
+
+public extension GAPTxPowerLevel {
     
-    public init?(data: Data) {
+    internal static var min: GAPTxPowerLevel { return GAPTxPowerLevel(-127) }
+    
+    internal static var max: GAPTxPowerLevel { return GAPTxPowerLevel(127) }
+}
+
+public extension GAPTxPowerLevel {
+    
+    public init?(data: Slice<LowEnergyAdvertisingData>) {
         
-        guard data.count == type(of: self).length
+        guard data.count == 1
             else { return nil }
         
-        let level = Int8(bitPattern: data[0])
+        let level = Int8(bitPattern: data[data.startIndex])
         
         self.init(powerLevel: level)
     }
     
-    public var data: Data {
+    public func append(to data: inout LowEnergyAdvertisingData) {
         
-        let byteValue = UInt8(bitPattern: powerLevel)
-        
-        return Data([byteValue])
+        data += UInt8(bitPattern: powerLevel)
     }
-    
 }
+
+// MARK: - CustomStringConvertible
 
 extension GAPTxPowerLevel: CustomStringConvertible {
     
@@ -63,13 +66,4 @@ extension GAPTxPowerLevel: CustomStringConvertible {
         
         return powerLevel.description
     }
-}
-
-extension GAPTxPowerLevel: ExpressibleByIntegerLiteral {
-    
-    public init(integerLiteral value: Int8) {
-        
-        self.init(unsafe: value)
-    }
-    
 }

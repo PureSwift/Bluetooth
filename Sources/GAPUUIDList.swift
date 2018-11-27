@@ -43,7 +43,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
     
     func append(to data: inout LowEnergyAdvertisingData) {
         
-        self.forEach { data += $0 }
+        self.forEach { data += $0.littleEndian }
     }
 }
 

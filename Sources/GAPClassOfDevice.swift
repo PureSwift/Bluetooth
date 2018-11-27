@@ -14,8 +14,6 @@ public struct GAPClassOfDevice: GAPData {
     
     public typealias Identifier = (UInt8, UInt8, UInt8)
     
-    internal static let length = MemoryLayout<Identifier>.size
-    
     public static let dataType: GAPDataType = .classOfDevice
     
     public let device: Identifier
@@ -24,35 +22,36 @@ public struct GAPClassOfDevice: GAPData {
         
         self.device = device
     }
+}
+
+public extension GAPClassOfDevice {
     
-    public init?(data: Data) {
+    init?(data: Slice<LowEnergyAdvertisingData>) {
         
-        guard data.count == type(of: self).length
+        guard data.count == MemoryLayout<Identifier>.size
             else { return nil }
         
-        let device = (data[0], data[1], data[2])
+        let device = (data[data.startIndex + 0],
+                      data[data.startIndex + 1],
+                      data[data.startIndex + 2])
         
         self.init(device: device)
     }
     
-    public var data: Data {
+    func append(to data: inout LowEnergyAdvertisingData) {
         
-        return Data([device.0, device.1, device.2])
+        data += device.0
+        data += device.1
+        data += device.2
     }
 }
+
+// MARK: - Equatable
 
 extension GAPClassOfDevice: Equatable {
     
     public static func == (lhs: GAPClassOfDevice, rhs: GAPClassOfDevice) -> Bool {
         
         return lhs.device == rhs.device
-    }
-}
-
-extension GAPClassOfDevice: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return "\(device.0) \(device.1) \(device.2)"
     }
 }

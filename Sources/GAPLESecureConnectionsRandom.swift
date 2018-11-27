@@ -11,9 +11,7 @@ import Foundation
 /// Specifies the LE Secure Connections Random Value
 /// Size: 16 octets
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
-public struct GAPLESecureConnectionsRandom: GAPData, Equatable {
-    
-    internal static let length = MemoryLayout<UInt16>.size
+public struct GAPLESecureConnectionsRandom: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .lowEnergySecureConnectionsRandom
     
@@ -23,23 +21,38 @@ public struct GAPLESecureConnectionsRandom: GAPData, Equatable {
         
         self.random = random
     }
+}
+
+public extension GAPLESecureConnectionsRandom {
     
-    public init?(data: Data) {
+    init?(data: Slice<LowEnergyAdvertisingData>) {
         
-        guard data.count == type(of: self).length
+        guard data.count == 2
             else { return nil }
         
-        let random = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        let value = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 0],
+                                                        data[data.startIndex + 1])))
         
-        self.init(random: random)
+        self.init(random: value)
     }
     
-    public var data: Data {
+    func append(to data: inout LowEnergyAdvertisingData) {
         
-        let value = random.littleEndian
-        return Data(bytes: [value.bytes.0, value.bytes.1])
+        data += random.littleEndian
     }
 }
+
+// MARK: - ExpressibleByIntegerLiteral
+
+extension GAPLESecureConnectionsRandom: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(random: value)
+    }
+}
+
+// MARK: - CustomStringConvertible
 
 extension GAPLESecureConnectionsRandom: CustomStringConvertible {
     
