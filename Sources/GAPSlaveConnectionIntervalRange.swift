@@ -28,54 +28,62 @@ import Foundation
  Values not defined above are reserved for future use.
  
  */
-
 public struct GAPSlaveConnectionIntervalRange: GAPData {
     
-    internal static let length = 4
+    public static let dataType: GAPDataType = .slaveConnectionIntervalRange
+    
+    public let range: (min: UInt16, max: UInt16)
+    
+    public init?(range: (min: UInt16, max: UInt16)) {
+        
+        let intervalRange = range
+        
+        guard (GAPSlaveConnectionIntervalRange.min <= intervalRange.0 && GAPSlaveConnectionIntervalRange.max >= intervalRange.0) || intervalRange.0 == GAPSlaveConnectionIntervalRange.undefined,
+            (GAPSlaveConnectionIntervalRange.min <= intervalRange.1 && GAPSlaveConnectionIntervalRange.max >= intervalRange.1) || intervalRange.1 == GAPSlaveConnectionIntervalRange.undefined
+            else { return nil }
+        
+        self.range = intervalRange
+    }
+}
+
+public extension GAPSlaveConnectionIntervalRange {
     
     public static let min: UInt16 = 0x0006
     
     public static let max: UInt16 = 0x0C80
     
     public static let undefined: UInt16 = 0xFFFF
-    
-    public static let dataType: GAPDataType = .slaveConnectionIntervalRange
-    
-    public let intervalRange: (UInt16, UInt16)
-    
-    public init?(intervalRange: (UInt16, UInt16)) {
-        
-        guard (GAPSlaveConnectionIntervalRange.min <= intervalRange.0 && GAPSlaveConnectionIntervalRange.max >= intervalRange.0) || intervalRange.0 == GAPSlaveConnectionIntervalRange.undefined,
-            (GAPSlaveConnectionIntervalRange.min <= intervalRange.1 && GAPSlaveConnectionIntervalRange.max >= intervalRange.1) || intervalRange.1 == GAPSlaveConnectionIntervalRange.undefined
-            else { return nil }
-        
-        self.intervalRange = intervalRange
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        let min = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        let max = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
-        
-        self.init(intervalRange: (min, max))
-    }
-    
-    public var data: Data {
-        
-        let range = (min: intervalRange.0.littleEndian.bytes, max: intervalRange.1.littleEndian.bytes)
-        
-        return Data([range.min.0, range.min.1, range.max.0, range.max.1])
-    }
-    
 }
+
+public extension GAPSlaveConnectionIntervalRange {
+    
+    init?(data: Slice<LowEnergyAdvertisingData>) {
+        
+        guard data.count == 4
+            else { return nil }
+        
+        let min = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 0],
+                                                      data[data.startIndex + 1])))
+        
+        let max = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 2],
+                                                      data[data.startIndex + 3])))
+        
+        self.init(range: (min: min, max: max))
+    }
+    
+    func append(to data: inout LowEnergyAdvertisingData) {
+        
+        data += range.min.littleEndian
+        data += range.max.littleEndian
+    }
+}
+
+// MARK: - Equatable
 
 extension GAPSlaveConnectionIntervalRange: Equatable {
     
     public static func == (lhs: GAPSlaveConnectionIntervalRange, rhs: GAPSlaveConnectionIntervalRange) -> Bool {
         
-        return lhs.intervalRange == rhs.intervalRange
+        return lhs.range == rhs.range
     }
 }

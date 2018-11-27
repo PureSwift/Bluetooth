@@ -12,9 +12,7 @@ import Foundation
 ///
 /// Size: 2 or more octets
 /// The first 2 octets contain the 16 bit Service UUID followed by additional service data
-public struct GAPServiceData16BitUUID: GAPData, Equatable {
-    
-    internal static let uuidLength = MemoryLayout<UInt16>.size
+public struct GAPServiceData16BitUUID: GAPData {
     
     public static let dataType: GAPDataType = .serviceData16BitUUID
     
@@ -22,39 +20,45 @@ public struct GAPServiceData16BitUUID: GAPData, Equatable {
     public let uuid: UInt16
     
     /// Service Data
-    public let serviceData: Data
+    public let serviceData: LowEnergyAdvertisingData
     
-    public init(uuid: UInt16, serviceData: Data = Data()) {
+    public init(uuid: UInt16,
+                serviceData: LowEnergyAdvertisingData) {
         
         self.uuid = uuid
         self.serviceData = serviceData
     }
+}
+
+public extension GAPServiceData16BitUUID {
     
-    public init?(data: Data) {
+    init?(data: Slice<LowEnergyAdvertisingData>) {
         
-        guard data.count >= type(of: self).uuidLength
+        guard data.count >= 2
             else { return nil }
         
-        let uuid = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        let serviceData = data.subdata(in: (type(of: self).uuidLength ..< data.count))
+        let uuid = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 0],
+                                                       data[data.startIndex + 1])))
+        
+        let serviceData = LowEnergyAdvertisingData(data[data.startIndex + 2 ..< data.startIndex + data.count])
         
         self.init(uuid: uuid, serviceData: serviceData)
     }
     
-    public var data: Data {
+    func append(to data: inout LowEnergyAdvertisingData) {
         
-        var data = Data(capacity: MemoryLayout<UInt16>.size + serviceData.count)
         data += uuid.littleEndian
         data += serviceData
-        
-        return data
     }
 }
 
-extension GAPServiceData16BitUUID: CustomStringConvertible {
+// MARK: - Equatable
+
+extension GAPServiceData16BitUUID: Equatable {
     
-    public var description: String {
+    public static func == (lhs: GAPServiceData16BitUUID, rhs: GAPServiceData16BitUUID) -> Bool {
         
-        return uuid.description + serviceData.map { String($0) }.description
+        return lhs.uuid == rhs.uuid
+            && LowEnergyAdvertisingData(lhs.serviceData) == LowEnergyAdvertisingData(rhs.serviceData)
     }
 }

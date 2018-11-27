@@ -46,6 +46,30 @@ public struct LowEnergyAdvertisingData {
 
 public extension LowEnergyAdvertisingData {
     
+    init(_ slice: Slice<LowEnergyAdvertisingData>) {
+        
+        self.init()
+        self.length = UInt8(slice.count)
+        slice.enumerated().forEach {
+            self[$0.offset] = $0.element
+        }
+    }
+    
+    init? <C: Collection> (_ collection: C) where C.Element == UInt8 {
+        
+        guard collection.count <= 31
+            else { return nil }
+        
+        self.init()
+        self.length = UInt8(collection.count)
+        collection.enumerated().forEach {
+            self[$0.offset] = $0.element
+        }
+    }
+}
+
+public extension LowEnergyAdvertisingData {
+    
     mutating func append(_ byte: UInt8) {
         
         assert(count < 31)
@@ -272,16 +296,7 @@ public extension LowEnergyAdvertisingData {
     
     public init?(data: Data) {
         
-        let length = data.count
-        
-        guard length <= 31
-            else { return nil }
-        
-        self.init()
-        self.length = UInt8(length)
-        data.enumerated().forEach {
-            self[$0.offset] = $0.element
-        }
+        self.init(data)
     }
     
     public var data: Data {

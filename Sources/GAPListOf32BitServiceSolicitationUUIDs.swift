@@ -19,18 +19,21 @@ public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData, Equatable {
         
         self.uuids = uuids
     }
+}
+
+public extension GAPListOf32BitServiceSolicitationUUIDs {
     
-   public init?(data: Data) {
+    public init?(data: Slice<LowEnergyAdvertisingData>) {
         
-        guard let list = GAPUUIDList<UInt32>(data: data)
+        guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
         
         self.uuids = list.uuids
     }
     
-    public var data: Data {
+    func append(to data: inout LowEnergyAdvertisingData) {
         
-        return GAPUUIDList<UInt32>(uuids: uuids).data
+        GAPUUIDList(uuids: uuids).append(to: &data)
     }
 }
 
