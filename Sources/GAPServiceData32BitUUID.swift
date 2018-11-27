@@ -12,37 +12,47 @@ import Foundation
 ///
 /// Size: 4 or more octets
 /// The first 4 octets contain the 32 bit Service UUID followed by additional service data
-public struct GAPServiceData32BitUUID: GAPData, Equatable {
-    
-    internal static let uuidLength = MemoryLayout<UInt32>.size
+public struct GAPServiceData32BitUUID: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .serviceData32BitUUID
     
+    /// UUID
     public let uuid: UInt32
-    public private(set) var serviceData: Data
     
-    public init(uuid: UInt32, serviceData: Data = Data()) {
+    /// Service Data
+    public let serviceData: LowEnergyAdvertisingData
+    
+    
+    public init(uuid: UInt32,
+                serviceData: LowEnergyAdvertisingData) {
+        
+        assert(serviceData.count <= 31 - 4)
         
         self.uuid = uuid
         self.serviceData = serviceData
     }
+}
+
+public extension GAPServiceData32BitUUID {
     
-    public init?(data: Data) {
+    init?(data: Slice<LowEnergyAdvertisingData>) {
         
-        guard data.count >= type(of: self).uuidLength
+        guard data.count >= 2
             else { return nil }
         
-        let uuid = UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))
-        let serviceData = data.subdata(in: (type(of: self).uuidLength..<data.count))
+        let uuid = UInt32(littleEndian: UInt32(bytes: (data[data.startIndex + 0],
+                                                       data[data.startIndex + 1],
+                                                       data[data.startIndex + 2],
+                                                       data[data.startIndex + 3])))
+        
+        let serviceData = LowEnergyAdvertisingData(data[data.startIndex + 4 ..< data.startIndex + data.count])
         
         self.init(uuid: uuid, serviceData: serviceData)
     }
     
-    public var data: Data {
+    func append(to data: inout LowEnergyAdvertisingData) {
         
-        let bytes = uuid.littleEndian.bytes
-        let data = Data([bytes.0, bytes.1, bytes.2, bytes.3])
-        
-        return data + serviceData
+        data += uuid.littleEndian
+        data += serviceData
     }
 }
