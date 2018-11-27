@@ -115,9 +115,16 @@ public extension UInt16 {
     
     static func += (data: inout LowEnergyAdvertisingData, value: UInt16) {
         
+        #if swift(>=4.2)
         withUnsafePointer(to: value) {
             data += PrimitiveCollection($0)
         }
+        #else
+        var value = value
+        withUnsafePointer(to: &value) {
+            data += PrimitiveCollection($0)
+        }
+        #endif
     }
 }
 
@@ -125,9 +132,16 @@ public extension UInt32 {
     
     static func += (data: inout LowEnergyAdvertisingData, value: UInt32) {
         
+        #if swift(>=4.2)
         withUnsafePointer(to: value) {
             data += PrimitiveCollection($0)
         }
+        #else
+        var value = value
+        withUnsafePointer(to: &value) {
+            data += PrimitiveCollection($0)
+        }
+        #endif
     }
 }
 
@@ -135,9 +149,16 @@ public extension UInt64 {
     
     static func += (data: inout LowEnergyAdvertisingData, value: UInt64) {
         
+        #if swift(>=4.2)
         withUnsafePointer(to: value) {
             data += PrimitiveCollection($0)
         }
+        #else
+        var value = value
+        withUnsafePointer(to: &value) {
+            data += PrimitiveCollection($0)
+        }
+        #endif
     }
 }
 
@@ -145,9 +166,16 @@ public extension UInt128 {
     
     static func += (data: inout LowEnergyAdvertisingData, value: UInt128) {
         
-        withUnsafePointer(to: value.bytes) {
+        #if swift(>=4.2)
+        withUnsafePointer(to: value) {
             data += PrimitiveCollection($0)
         }
+        #else
+        var value = value
+        withUnsafePointer(to: &value) {
+            data += PrimitiveCollection($0)
+        }
+        #endif
     }
 }
 
