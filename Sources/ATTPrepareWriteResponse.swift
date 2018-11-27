@@ -62,7 +62,7 @@ extension ATTPrepareWriteResponse: DataConvertible {
         return 5 + partValue.count
     }
     
-    static func += (data: inout Data, value: ATTPrepareWriteResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTPrepareWriteResponse) {
         
         data += attributeOpcode.rawValue
         data += value.handle.littleEndian

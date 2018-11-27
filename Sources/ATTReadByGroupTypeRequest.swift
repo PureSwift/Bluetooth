@@ -74,7 +74,7 @@ extension ATTReadByGroupTypeRequest: DataConvertible {
         return length.rawValue
     }
     
-    static func += (data: inout Data, value: ATTReadByGroupTypeRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadByGroupTypeRequest) {
         
         data += attributeOpcode.rawValue
         data += value.startHandle.littleEndian

@@ -65,7 +65,7 @@ extension GAPLEDeviceAddress: DataConvertible {
         return Swift.type(of: self).length
     }
     
-    static func += (data: inout Data, value: GAPLEDeviceAddress) {
+    static func += <T: DataContainer> (data: inout T, value: GAPLEDeviceAddress) {
         
         data += value.address.littleEndian
         data += value.type.rawValue

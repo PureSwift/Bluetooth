@@ -187,7 +187,7 @@ extension BluetoothUUID: DataConvertible {
         return length.rawValue
     }
     
-    static func += (data: inout Data, value: BluetoothUUID) {
+    static func += <T: DataContainer> (data: inout T, value: BluetoothUUID) {
         
         switch value {
         case let .bit16(value): data += value

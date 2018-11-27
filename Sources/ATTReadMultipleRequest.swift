@@ -75,7 +75,7 @@ extension ATTReadMultipleRequest: DataConvertible {
         return 1 + (2 * handles.count)
     }
     
-    static func += (data: inout Data, value: ATTReadMultipleRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadMultipleRequest) {
         
         data += attributeOpcode.rawValue
         value.handles.forEach { data += $0 }

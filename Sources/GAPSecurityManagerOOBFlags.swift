@@ -27,7 +27,7 @@ public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
 
 public extension GAPSecurityManagerOOBFlags {
     
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count == 1
             else { return nil }
@@ -35,7 +35,7 @@ public extension GAPSecurityManagerOOBFlags {
         self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[data.startIndex])
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += flags.rawValue
     }

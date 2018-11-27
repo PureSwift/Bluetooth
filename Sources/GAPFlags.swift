@@ -23,7 +23,7 @@ public struct GAPFlags: GAPData, Equatable, Hashable {
 
 public extension GAPFlags {
     
-    public init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count == 1
             else { return nil }
@@ -31,9 +31,14 @@ public extension GAPFlags {
         self.flags = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    func append <T: DataContainer > (to data: inout T) {
         
         data += flags.rawValue
+    }
+    
+    var dataLength: Int {
+        
+        return 1
     }
 }
 

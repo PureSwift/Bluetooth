@@ -160,7 +160,7 @@ extension HCILEStartEncryption: DataConvertible {
         return 2 + 8 + 2 + 16
     }
     
-    static func += (data: inout Data, value: HCILEStartEncryption) {
+    static func += <T: DataContainer> (data: inout T, value: HCILEStartEncryption) {
         
         data += value.connectionHandle.littleEndian
         data += value.randomNumber.littleEndian

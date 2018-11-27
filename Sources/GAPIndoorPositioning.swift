@@ -212,7 +212,7 @@ extension GAPIndoorPositioning: DataConvertible {
         return length
     }
     
-    static func += (data: inout Data, value: GAPIndoorPositioning) {
+    static func += <T: DataContainer> (data: inout T, value: GAPIndoorPositioning) {
         
         // If all flag values are set to zero,
         // the Server shall omit the Flags field from the advertisement packet.
@@ -264,7 +264,7 @@ extension GAPIndoorPositioning.Coordinates: DataConvertible {
         return 4
     }
     
-    static func += (data: inout Data, value: GAPIndoorPositioning.Coordinates) {
+    static func += <T: DataContainer> (data: inout T, value: GAPIndoorPositioning.Coordinates) {
         
         switch value {
         case let .global(latitude, longitude):

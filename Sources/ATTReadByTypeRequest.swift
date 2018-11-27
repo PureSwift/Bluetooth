@@ -72,7 +72,7 @@ extension ATTReadByTypeRequest: DataConvertible {
         return length.rawValue
     }
     
-    static func += (data: inout Data, value: ATTReadByTypeRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadByTypeRequest) {
         
         data += attributeOpcode.rawValue
         data += value.startHandle.littleEndian

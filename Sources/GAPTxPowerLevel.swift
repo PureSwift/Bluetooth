@@ -42,7 +42,7 @@ public extension GAPTxPowerLevel {
 
 public extension GAPTxPowerLevel {
     
-    public init?(data: Slice<LowEnergyAdvertisingData>) {
+    public init? <T: DataContainer> (data: T) {
         
         guard data.count == 1
             else { return nil }
@@ -52,9 +52,9 @@ public extension GAPTxPowerLevel {
         self.init(powerLevel: level)
     }
     
-    public func append(to data: inout LowEnergyAdvertisingData) {
+    public static func += <T: DataContainer> (data: inout T, value: GAPTxPowerLevel) {
         
-        data += UInt8(bitPattern: powerLevel)
+        data += UInt8(bitPattern: value.powerLevel)
     }
 }
 

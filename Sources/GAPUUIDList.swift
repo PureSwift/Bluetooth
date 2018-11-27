@@ -8,8 +8,69 @@
 
 import Foundation
 
+public protocol GAPUUIDList: GAPData, RandomAccessCollection, ExpressibleByArrayLiteral, CustomStringConvertible where Element: GAPUUIDElement {
+    
+    var uuids: [Element] { get set }
+    
+    init(uuids: [Element])
+}
+
+public extension GAPUUIDList {
+    
+    init? <T: DataContainer> (data: T) {
+        
+        var uuids = [Element]()
+        uuids.reserveCapacity(data.count / Element.length)
+        
+        var index = 0
+        while index < data.count {
+            
+            guard index + Element.length <= data.count
+                else { return nil }
+            
+            let value = Element(littleEndian: Element(gapData: data[data.startIndex + index ..< data.startIndex + index + Element.length])!)
+            
+            index += Element.length
+            
+            uuids.append(value)
+        }
+        
+        self.uuids = uuids
+    }
+    
+    func append <T: DataContainer > (to data: inout T) {
+        
+        uuids.forEach { data += $0.littleEndian }
+    }
+    
+    var dataLength: Int {
+        
+        return MemoryLayout<ArrayLiteralElement>.size * uuids.count
+    }
+}
+
+// MARK: - ExpressibleByArrayLiteral
+
+extension GAPUUIDList: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: UInt16...) {
+        
+        self.init(uuids: elements)
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension GAPUUIDList: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return uuids.map { BluetoothUUID.bit16($0) }.description
+    }
+}
+
 /// GAP UUID List
-internal struct GAPUUIDList <Element: GAPUUIDElement> {
+internal struct _GAPUUIDList <Element: GAPUUIDElement> {
     
     internal var uuids: [Element]
     
@@ -18,7 +79,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
         self.uuids = uuids
     }
     
-    internal init?(data: Slice<LowEnergyAdvertisingData>) {
+    internal init? <T: DataContainer> (data: T) {
         
         let elementSize = MemoryLayout<Element>.size
         
@@ -41,15 +102,15 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
         self.uuids = uuids
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: GAPUUIDList) {
         
-        self.forEach { data += $0.littleEndian }
+        value.forEach { data += $0.littleEndian }
     }
 }
 
 // MARK: - Sequence
 
-extension GAPUUIDList: Sequence {
+extension GAPUUIDList {
     
     public func makeIterator() -> IndexingIterator<GAPUUIDList<Element>> {
         
@@ -59,7 +120,7 @@ extension GAPUUIDList: Sequence {
 
 // MARK: - Collection
 
-extension GAPUUIDList: Collection {
+extension GAPUUIDList {
     
     subscript(index: Int) -> Element {
         
@@ -84,26 +145,40 @@ extension GAPUUIDList: Collection {
 
 // MARK: - Supporting Types
 
-internal protocol GAPUUIDElement: UnsafeDataConvertible {
+public protocol GAPUUIDElement {
     
-    init?(gapData: Slice<LowEnergyAdvertisingData>)
+    static var length: Int { get }
     
     init(littleEndian: Self)
     
     var littleEndian: Self { get }
     
-    static func += (data: inout LowEnergyAdvertisingData, value: Self)
+    init? <T: DataContainer> (data: T)
+    
+    static func += <T: DataContainer> (data: inout T, value: Self)
+}
+
+public extension GAPUUIDElement {
+    
+    static var length: Int {
+        return MemoryLayout<Self>.size
+    }
 }
 
 extension UInt16: GAPUUIDElement {
     
-    init?(gapData: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard gapData.count == MemoryLayout<UInt16>.size
             else { return nil }
         
         self.init(bytes: (gapData[gapData.startIndex + 0],
                           gapData[gapData.startIndex + 1]))
+    }
+    
+    init?(gapData: Slice<LowEnergyAdvertisingData>) {
+        
+        
     }
 }
 
@@ -121,7 +196,12 @@ extension UInt32: GAPUUIDElement {
     }
 }
 
-extension UInt128: GAPUUIDElement {
+extension UUID: GAPUUIDElement {
+    
+    public init?<T>(gapData: T) where T : DataContainer {
+        <#code#>
+    }
+    
     
     init?(gapData: Slice<LowEnergyAdvertisingData>) {
         

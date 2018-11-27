@@ -58,7 +58,7 @@ extension GAPManufacturerSpecificData: DataConvertible {
         return 2 + additionalData.count
     }
     
-    static func += (data: inout Data, value: GAPManufacturerSpecificData) {
+    static func += <T: DataContainer> (data: inout T, value: GAPManufacturerSpecificData) {
         
         data += value.companyIdentifier.rawValue.littleEndian
         data += value.additionalData

@@ -79,7 +79,7 @@ extension ATTHandleValueIndication: DataConvertible {
         return 3 + value.count
     }
     
-    static func += (data: inout Data, value: ATTHandleValueIndication) {
+    static func += <T: DataContainer> (data: inout T, value: ATTHandleValueIndication) {
         
         data += attributeOpcode.rawValue
         data += value.handle.littleEndian

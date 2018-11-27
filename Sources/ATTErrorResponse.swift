@@ -67,7 +67,7 @@ extension ATTErrorResponse: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: ATTErrorResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTErrorResponse) {
         
         data += attributeOpcode.rawValue
         data += value.request.rawValue

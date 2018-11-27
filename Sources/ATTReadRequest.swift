@@ -53,7 +53,7 @@ extension ATTReadRequest: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: ATTReadRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadRequest) {
         
         data += attributeOpcode.rawValue
         data += value.handle

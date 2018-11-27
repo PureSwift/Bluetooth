@@ -23,7 +23,7 @@ public struct GAPListOf128BitServiceSolicitationUUIDs: GAPData, Equatable {
 
 public extension GAPListOf128BitServiceSolicitationUUIDs {
     
-    public init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard let list = GAPUUIDList<UInt128>(data: data)
             else { return nil }
@@ -31,7 +31,7 @@ public extension GAPListOf128BitServiceSolicitationUUIDs {
         self.uuids = list.uuids.map(UUID.init)
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: GAPListOf128BitServiceSolicitationUUIDs) {
         
         GAPUUIDList(uuids: uuids.map(UInt128.init)).append(to: &data)
     }

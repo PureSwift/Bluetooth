@@ -57,7 +57,7 @@ public extension GAPSlaveConnectionIntervalRange {
 
 public extension GAPSlaveConnectionIntervalRange {
     
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count == 4
             else { return nil }
@@ -71,7 +71,7 @@ public extension GAPSlaveConnectionIntervalRange {
         self.init(range: (min: min, max: max))
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += range.min.littleEndian
         data += range.max.littleEndian

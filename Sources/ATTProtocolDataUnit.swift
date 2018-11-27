@@ -75,7 +75,7 @@ internal extension ATTAttributeDataList where AttributeData: DataConvertible {
         return attributes.reduce(headerLength, { $0 + $1.dataLength })
     }
     
-    static func append(_ data: inout Data, _ attributeData: [AttributeData]) {
+    static func append <T: DataContainer> (_ data: inout T, _ attributeData: [AttributeData]) {
         
         data += attributeOpcode.rawValue
         data += UInt8(attributeData[0].dataLength)

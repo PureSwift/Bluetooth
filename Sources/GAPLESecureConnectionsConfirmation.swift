@@ -25,7 +25,7 @@ public struct GAPLESecureConnectionsConfirmation: GAPData, Equatable, Hashable {
 
 public extension GAPLESecureConnectionsConfirmation {
     
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count == 2
             else { return nil }
@@ -36,7 +36,7 @@ public extension GAPLESecureConnectionsConfirmation {
         self.init(confirmation: confirmation)
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += confirmation.littleEndian
     }

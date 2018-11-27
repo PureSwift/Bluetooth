@@ -26,7 +26,7 @@ public struct GAPClassOfDevice: GAPData {
 
 public extension GAPClassOfDevice {
     
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count == MemoryLayout<Identifier>.size
             else { return nil }
@@ -38,7 +38,7 @@ public extension GAPClassOfDevice {
         self.init(device: device)
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += device.0
         data += device.1

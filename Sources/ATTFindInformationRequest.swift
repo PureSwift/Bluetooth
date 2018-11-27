@@ -57,7 +57,7 @@ extension ATTFindInformationRequest: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: ATTFindInformationRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindInformationRequest) {
         
         data += attributeOpcode.rawValue
         data += value.startHandle.littleEndian

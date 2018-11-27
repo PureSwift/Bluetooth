@@ -29,8 +29,11 @@ public protocol GAPData {
     static var dataType: GAPDataType { get }
     
     /// Initialize from bytes.
-    init?(data: Slice<LowEnergyAdvertisingData>)
+    init? <T: DataContainer> (data: T)
     
-    /// Append data representation into advertising data.
-    func append(to data: inout LowEnergyAdvertisingData)
+    /// Append data representation into buffer.
+    func append <T: DataContainer> (to data: inout T)
+    
+    /// Length of value when encoded into data.
+    var dataLength: Int { get }
 }

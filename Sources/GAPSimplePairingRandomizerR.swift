@@ -25,7 +25,7 @@ public struct GAPSimplePairingRandomizerR: GAPData, Equatable, Hashable {
 
 public extension GAPSimplePairingRandomizerR {
     
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count == UInt128.length
             else { return nil }
@@ -50,7 +50,7 @@ public extension GAPSimplePairingRandomizerR {
         self.init(uuid: uuid)
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += UInt128(uuid: uuid).littleEndian
     }

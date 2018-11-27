@@ -28,7 +28,7 @@ public struct GAPCompleteLocalName: GAPData, Equatable, Hashable {
 public extension GAPCompleteLocalName {
     
     /// Initialize from bytes.
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard let rawValue = String(bytes: data, encoding: .utf8)
             else { return nil }
@@ -37,7 +37,7 @@ public extension GAPCompleteLocalName {
     }
     
     /// Append data representation into advertising data.
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += name.utf8
     }

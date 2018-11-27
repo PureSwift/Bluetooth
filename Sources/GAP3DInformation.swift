@@ -54,7 +54,7 @@ public struct GAP3DInformation: GAPData, Equatable {
 
 public extension GAP3DInformation {
     
-    public init?(data: Slice<LowEnergyAdvertisingData>) {
+    public init? <T: DataContainer> (data: T) {
         
         guard data.count == 2
             else { return nil }
@@ -65,10 +65,10 @@ public extension GAP3DInformation {
         self.init(flags: flags, pathLossThreshold: pathLossThreshold)
     }
     
-    public func append(to data: inout LowEnergyAdvertisingData) {
+    public static func += <T: DataContainer> (data: inout T, value: GAP3DInformation) {
         
-        data += flags.rawValue
-        data += pathLossThreshold
+        data += value.flags.rawValue
+        data += value.pathLossThreshold
     }
 }
 

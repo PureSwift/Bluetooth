@@ -761,10 +761,10 @@
 		6E781B0C20CE534300786867 /* SFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E781B0920CE534300786867 /* SFloat.swift */; };
 		6E781B0D20CE534300786867 /* SFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E781B0920CE534300786867 /* SFloat.swift */; };
 		6E7F4A4120928E2B00E877F1 /* GAPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7F4A4020928E2B00E877F1 /* GAPTests.swift */; };
-		6E80C72E21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
-		6E80C72F21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
-		6E80C73021310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
-		6E80C73121310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */; };
+		6E80C72E21310ADC0071EB30 /* DataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* DataConvertible.swift */; };
+		6E80C72F21310ADC0071EB30 /* DataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* DataConvertible.swift */; };
+		6E80C73021310ADC0071EB30 /* DataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* DataConvertible.swift */; };
+		6E80C73121310ADC0071EB30 /* DataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C72D21310ADC0071EB30 /* DataConvertible.swift */; };
 		6E80C73321312CED0071EB30 /* GAPUUIDList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C73221312CED0071EB30 /* GAPUUIDList.swift */; };
 		6E80C73821314FA40071EB30 /* GAPDataEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C73721314FA40071EB30 /* GAPDataEncoder.swift */; };
 		6E80C739213150500071EB30 /* GAPUUIDList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80C73221312CED0071EB30 /* GAPUUIDList.swift */; };
@@ -1385,7 +1385,7 @@
 		6E740C5E206586D3006589F6 /* AttributeProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeProtocolTests.swift; sourceTree = "<group>"; };
 		6E781B0920CE534300786867 /* SFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFloat.swift; sourceTree = "<group>"; };
 		6E7F4A4020928E2B00E877F1 /* GAPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPTests.swift; sourceTree = "<group>"; };
-		6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsafeDataConvertible.swift; sourceTree = "<group>"; };
+		6E80C72D21310ADC0071EB30 /* DataConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConvertible.swift; sourceTree = "<group>"; };
 		6E80C73221312CED0071EB30 /* GAPUUIDList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPUUIDList.swift; sourceTree = "<group>"; };
 		6E80C73721314FA40071EB30 /* GAPDataEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GAPDataEncoder.swift; sourceTree = "<group>"; };
 		6E9578C02092698400BAA133 /* LowEnergyAdvertisingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowEnergyAdvertisingData.swift; sourceTree = "<group>"; };
@@ -2091,7 +2091,7 @@
 				6E3229131FCDD40C0035605D /* CompanyIdentifier.swift */,
 				6EB98F1920BF803E00FCE78E /* CompanyIdentifierExtension.swift */,
 				6EFB3DC720D2DED100364CA0 /* ConnectionAcceptTimeout.swift */,
-				6E80C72D21310ADC0071EB30 /* UnsafeDataConvertible.swift */,
+				6E80C72D21310ADC0071EB30 /* DataConvertible.swift */,
 				6EAD976E20BF796200673DB7 /* DefinedCompanies.swift */,
 				6EB45EEF2001398100AE5A42 /* DefinedUUID.swift */,
 				6E35CB24207FFB030039619C /* DefinedUUIDExtension.swift */,
@@ -2645,7 +2645,7 @@
 				6E781AFE20CE40A400786867 /* GATTCharacteristic.swift in Sources */,
 				351E941020F3B4300069E88A /* GATTCrossTrainerData.swift in Sources */,
 				6E781B0120CE40A700786867 /* GATTService.swift in Sources */,
-				6E80C73121310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
+				6E80C73121310ADC0071EB30 /* DataConvertible.swift in Sources */,
 				354FB03E20DC49BC0081B964 /* GATTSystemID.swift in Sources */,
 				357709FD20F5358800E1AC6F /* GATTCurrentTime.swift in Sources */,
 				353AE90720EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift in Sources */,
@@ -2826,7 +2826,7 @@
 				6E781AFD20CE40A300786867 /* GATTCharacteristic.swift in Sources */,
 				351E940F20F3B4300069E88A /* GATTCrossTrainerData.swift in Sources */,
 				6E781B0020CE40A700786867 /* GATTService.swift in Sources */,
-				6E80C73021310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
+				6E80C73021310ADC0071EB30 /* DataConvertible.swift in Sources */,
 				354FB03D20DC49BC0081B964 /* GATTSystemID.swift in Sources */,
 				357709FC20F5358800E1AC6F /* GATTCurrentTime.swift in Sources */,
 				353AE90620EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift in Sources */,
@@ -3012,7 +3012,7 @@
 				356EB8CD20D427620022A48D /* HCILETestEnd.swift in Sources */,
 				6EFB3DD720D2E05700364CA0 /* HCIReadLocalVersionInformation.swift in Sources */,
 				3518295420D22B8E0009F82D /* GAPIncompleteListOf32BitServiceClassUUIDs.swift in Sources */,
-				6E80C72E21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
+				6E80C72E21310ADC0071EB30 /* DataConvertible.swift in Sources */,
 				3518295E20D22BC20009F82D /* GAPIncompleteListOf128BitServiceClassUUIDs.swift in Sources */,
 				6E704C8F1E95C45800484A22 /* Hexadecimal.swift in Sources */,
 				357FDA8620DC132D00DEE25C /* GATTPnPID.swift in Sources */,
@@ -3476,7 +3476,7 @@
 				6E781AFC20CE40A300786867 /* GATTCharacteristic.swift in Sources */,
 				351E940E20F3B4300069E88A /* GATTCrossTrainerData.swift in Sources */,
 				6E781AFF20CE40A600786867 /* GATTService.swift in Sources */,
-				6E80C72F21310ADC0071EB30 /* UnsafeDataConvertible.swift in Sources */,
+				6E80C72F21310ADC0071EB30 /* DataConvertible.swift in Sources */,
 				354FB03C20DC49BC0081B964 /* GATTSystemID.swift in Sources */,
 				357709FB20F5358800E1AC6F /* GATTCurrentTime.swift in Sources */,
 				353AE90520EAB67600DF6577 /* GATTIndoorPositioningConfiguration.swift in Sources */,

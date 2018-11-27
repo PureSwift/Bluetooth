@@ -65,7 +65,7 @@ extension GAPPublicTargetAddress: DataConvertible {
         return addresses.count * BluetoothAddress.length
     }
     
-    static func += (data: inout Data, value: GAPPublicTargetAddress) {
+    static func += <T: DataContainer> (data: inout T, value: GAPPublicTargetAddress) {
         
         value.addresses.forEach { data += $0.littleEndian }
     }

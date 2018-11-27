@@ -54,7 +54,7 @@ extension ATTWriteRequest: DataConvertible {
         return 3 + value.count
     }
     
-    static func += (data: inout Data, value: ATTWriteRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTWriteRequest) {
         
         data += attributeOpcode.rawValue
         data += value.handle.littleEndian

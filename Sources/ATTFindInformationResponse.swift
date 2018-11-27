@@ -61,7 +61,7 @@ extension ATTFindInformationResponse: DataConvertible {
         return 1 + 1 + attributeData.dataLength
     }
     
-    static func += (data: inout Data, value: ATTFindInformationResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindInformationResponse) {
         
         data += attributeOpcode.rawValue
         data += value.attributeData.format.rawValue
@@ -138,7 +138,7 @@ public extension ATTFindInformationResponse {
 
 extension ATTFindInformationResponse.Attribute16Bit: DataConvertible {
     
-    static func += (data: inout Data, value: ATTFindInformationResponse.Attribute16Bit) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindInformationResponse.Attribute16Bit) {
         
         data += value.handle.littleEndian
         data += value.uuid.littleEndian
@@ -162,7 +162,7 @@ public extension ATTFindInformationResponse {
 
 extension ATTFindInformationResponse.Attribute128Bit: DataConvertible {
     
-    static func += (data: inout Data, value: ATTFindInformationResponse.Attribute128Bit) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindInformationResponse.Attribute128Bit) {
         
         data += value.handle.littleEndian
         data += value.uuid.littleEndian
@@ -252,7 +252,7 @@ extension ATTFindInformationResponse.AttributeData: DataConvertible {
         }
     }
     
-    static func += (data: inout Data, value: ATTFindInformationResponse.AttributeData) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindInformationResponse.AttributeData) {
         
         switch value {
         case let .bit16(attributes):

@@ -35,7 +35,7 @@ public struct GAPServiceData32BitUUID: GAPData, Equatable, Hashable {
 
 public extension GAPServiceData32BitUUID {
     
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count >= 2
             else { return nil }
@@ -50,7 +50,7 @@ public extension GAPServiceData32BitUUID {
         self.init(uuid: uuid, serviceData: serviceData)
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += uuid.littleEndian
         data += serviceData

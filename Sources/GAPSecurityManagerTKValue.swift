@@ -25,7 +25,7 @@ public struct GAPSecurityManagerTKValue: GAPData, Equatable, Hashable {
 
 public extension GAPSecurityManagerTKValue {
     
-    init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
         guard data.count == UInt128.length
             else { return nil }
@@ -50,7 +50,7 @@ public extension GAPSecurityManagerTKValue {
         self.init(uuid: uuid)
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         
         data += UInt128(uuid: uuid).littleEndian
     }

@@ -53,7 +53,7 @@ extension ATTReadResponse: DataConvertible {
         return 1 + attributeValue.count
     }
     
-    static func += (data: inout Data, value: ATTReadResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadResponse) {
         
         data += attributeOpcode.rawValue
         data += value.attributeValue

@@ -70,7 +70,7 @@ extension GAPRandomTargetAddress: DataConvertible {
         return addresses.count * BluetoothAddress.length
     }
     
-    static func += (data: inout Data, value: GAPRandomTargetAddress) {
+    static func += <T: DataContainer> (data: inout T, value: GAPRandomTargetAddress) {
         
         value.addresses.forEach { data += $0.littleEndian }
     }

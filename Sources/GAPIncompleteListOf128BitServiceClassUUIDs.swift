@@ -23,17 +23,22 @@ public struct GAPIncompleteListOf128BitServiceClassUUIDs: GAPData, Equatable {
 
 public extension GAPIncompleteListOf128BitServiceClassUUIDs {
     
-    public init?(data: Slice<LowEnergyAdvertisingData>) {
+    init? <T: DataContainer> (data: T) {
         
-        guard let list = GAPUUIDList<UInt128>(data: data)
+        guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
         
-        self.uuids = list.uuids.map(UUID.init)
+        self.uuids = list.uuids
     }
     
-    func append(to data: inout LowEnergyAdvertisingData) {
+    func append <T: DataContainer > (to data: inout T) {
         
-        GAPUUIDList(uuids: uuids.map(UInt128.init)).append(to: &data)
+        data += GAPUUIDList(uuids: uuids)
+    }
+    
+    var dataLength: Int {
+        
+        return MemoryLayout<ArrayLiteralElement>.size * uuids.count
     }
 }
 

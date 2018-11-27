@@ -160,7 +160,7 @@ extension HCILECreateConnection: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: HCILECreateConnection) {
+    static func += <T: DataContainer> (data: inout T, value: HCILECreateConnection) {
         
         data += value.scanInterval.rawValue.littleEndian
         data += value.scanWindow.rawValue.littleEndian
