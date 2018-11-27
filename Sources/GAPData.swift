@@ -16,6 +16,7 @@ import Foundation
  */
 public enum GAP {
     
+    /// Generic Access Profile Data
     public typealias DataType = GAPDataType
 }
 
@@ -27,22 +28,9 @@ public protocol GAPData {
     /// Generic Access Profile data type.
     static var dataType: GAPDataType { get }
     
-    /// Initialize from `Data`.
-    init?(data: Data)
+    /// Initialize from bytes.
+    init?(data: Slice<LowEnergyAdvertisingData>)
     
-    /// Append data representation into buffer.
-    func append(to data: inout Data)
-    
-    /// Length of value when encoded into data.
-    var dataLength: Int { get }
-}
-
-public extension GAPData {
-    
-    var data: Data {
-        
-        var data = Data(capacity: dataLength)
-        append(to: &data)
-        return data
-    }
+    /// Append data representation into advertising data.
+    func append(to data: inout LowEnergyAdvertisingData)
 }

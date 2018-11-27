@@ -54,20 +54,21 @@ public struct GAP3DInformation: GAPData, Equatable {
 
 public extension GAP3DInformation {
     
-    public init?(data: Data) {
+    public init?(data: Slice<LowEnergyAdvertisingData>) {
         
         guard data.count == 2
             else { return nil }
         
-        let flags = BitMaskOptionSet<GAP3DInformationFlag>(rawValue: data[0])
-        let pathLossThreshold = data[1]
+        let flags = BitMaskOptionSet<GAP3DInformationFlag>(rawValue: data[data.startIndex])
+        let pathLossThreshold = data[data.startIndex + 1]
         
         self.init(flags: flags, pathLossThreshold: pathLossThreshold)
     }
     
-    public var data: Data {
+    public func append(to data: inout LowEnergyAdvertisingData) {
         
-        return Data([flags.rawValue, pathLossThreshold])
+        data += flags.rawValue
+        data += pathLossThreshold
     }
 }
 

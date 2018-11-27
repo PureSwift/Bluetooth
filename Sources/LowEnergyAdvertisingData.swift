@@ -89,7 +89,7 @@ private struct PrimitiveCollection <T>: Collection {
     }
     
     subscript (index: Int) -> UInt8 {
-        return pointer.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<T>.size) {
+        return pointer.withMemoryRebound(to: UInt8.self, capacity: count) {
             $0.advanced(by: index).pointee
         }
     }

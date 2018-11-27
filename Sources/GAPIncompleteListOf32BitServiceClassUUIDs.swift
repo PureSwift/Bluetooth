@@ -19,8 +19,11 @@ public struct GAPIncompleteListOf32BitServiceClassUUIDs: GAPData, Equatable {
         
         self.uuids = uuids
     }
+}
+
+public extension GAPIncompleteListOf32BitServiceClassUUIDs {
     
-   public init?(data: Data) {
+    public init?(data: Data) {
         
         guard let list = GAPUUIDList<UInt32>(data: data)
             else { return nil }
@@ -28,11 +31,18 @@ public struct GAPIncompleteListOf32BitServiceClassUUIDs: GAPData, Equatable {
         self.uuids = list.uuids
     }
     
-    public var data: Data {
+    public var dataLength: Int {
         
-        return GAPUUIDList<UInt32>(uuids: uuids).data
+        return uuids.count * 4
+    }
+    
+    public func append(to data: inout Data) {
+        
+        data += GAPUUIDList<UInt32>(uuids: uuids)
     }
 }
+
+// MARK: - ExpressibleByArrayLiteral
 
 extension GAPIncompleteListOf32BitServiceClassUUIDs: ExpressibleByArrayLiteral {
     

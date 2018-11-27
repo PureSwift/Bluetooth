@@ -18,20 +18,22 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
         self.uuids = uuids
     }
     
-    internal init?(data: Data) {
+    internal init?(data: Slice<LowEnergyAdvertisingData>) {
+        
+        let elementSize = MemoryLayout<Element>.size
         
         var uuids = [Element]()
-        uuids.reserveCapacity(data.count / MemoryLayout<Element>.size)
+        uuids.reserveCapacity(data.count / elementSize)
         
         var index = 0
         while index < data.count {
             
-            guard index + MemoryLayout<Element>.size <= data.count
+            guard index + elementSize <= data.count
                 else { return nil }
             
-            let value = Element(littleEndian: Element(gapData: data.subdataNoCopy(in: index ..< index + MemoryLayout<Element>.size))!)
+            let value = Element(littleEndian: Element(gapData: data[data.startIndex + index ..< data.startIndex + index + elementSize])!)
             
-            index += MemoryLayout<Element>.size
+            index += elementSize
             
             uuids.append(value)
         }
@@ -39,24 +41,9 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
         self.uuids = uuids
     }
     
-    internal var data: Data {
+    func append(to data: inout LowEnergyAdvertisingData) {
         
-        return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension GAPUUIDList: DataConvertible {
-    
-    var dataLength: Int {
-        
-        return MemoryLayout<Element>.size * uuids.count
-    }
-    
-    static func += (data: inout Data, value: GAPUUIDList<Element>) {
-        
-        value.forEach { data += $0 }
+        self.forEach { data += $0 }
     }
 }
 
@@ -99,42 +86,63 @@ extension GAPUUIDList: Collection {
 
 internal protocol GAPUUIDElement: UnsafeDataConvertible {
     
-    init?(gapData: Data)
+    init?(gapData: Slice<LowEnergyAdvertisingData>)
     
     init(littleEndian: Self)
     
     var littleEndian: Self { get }
+    
+    static func += (data: inout LowEnergyAdvertisingData, value: Self)
 }
 
 extension UInt16: GAPUUIDElement {
     
-    init?(gapData: Data) {
+    init?(gapData: Slice<LowEnergyAdvertisingData>) {
         
         guard gapData.count == MemoryLayout<UInt16>.size
             else { return nil }
         
-        self.init(bytes: (gapData[0], gapData[1]))
+        self.init(bytes: (gapData[gapData.startIndex + 0],
+                          gapData[gapData.startIndex + 1]))
     }
 }
 
 extension UInt32: GAPUUIDElement {
     
-    init?(gapData: Data) {
+    init?(gapData: Slice<LowEnergyAdvertisingData>) {
         
         guard gapData.count == MemoryLayout<UInt32>.size
             else { return nil }
         
-        self.init(bytes: (gapData[0], gapData[1], gapData[2], gapData[3]))
+        self.init(bytes: (gapData[gapData.startIndex + 0],
+                          gapData[gapData.startIndex + 1],
+                          gapData[gapData.startIndex + 2],
+                          gapData[gapData.startIndex + 3]))
     }
 }
 
 extension UInt128: GAPUUIDElement {
     
-    init?(gapData: Data) {
+    init?(gapData: Slice<LowEnergyAdvertisingData>) {
         
         guard gapData.count == MemoryLayout<UInt128>.size
             else { return nil }
         
-        self.init(bytes: (gapData[0], gapData[1], gapData[2], gapData[3], gapData[4], gapData[5], gapData[6], gapData[7], gapData[8], gapData[9], gapData[10], gapData[11], gapData[12], gapData[13], gapData[14], gapData[15]))
+        self.init(bytes: (gapData[gapData.startIndex + 0],
+                          gapData[gapData.startIndex + 1],
+                          gapData[gapData.startIndex + 2],
+                          gapData[gapData.startIndex + 3],
+                          gapData[gapData.startIndex + 4],
+                          gapData[gapData.startIndex + 5],
+                          gapData[gapData.startIndex + 6],
+                          gapData[gapData.startIndex + 7],
+                          gapData[gapData.startIndex + 8],
+                          gapData[gapData.startIndex + 9],
+                          gapData[gapData.startIndex + 10],
+                          gapData[gapData.startIndex + 11],
+                          gapData[gapData.startIndex + 12],
+                          gapData[gapData.startIndex + 13],
+                          gapData[gapData.startIndex + 14],
+                          gapData[gapData.startIndex + 15]))
     }
 }
