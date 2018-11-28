@@ -55,7 +55,7 @@ internal extension LowEnergyAdvertisingData {
         
         var value = self
         return try withUnsafePointer(to: &value.bytes) {
-            try $0.withMemoryRebound(to: UInt8.self, capacity: count) {
+            try $0.withMemoryRebound(to: UInt8.self, capacity: LowEnergyAdvertisingData.capacity) {
                 try block(Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0),
                                count: count,
                                deallocator: .none))
@@ -181,7 +181,7 @@ extension LowEnergyAdvertisingData: Hashable {
     public func hash(into hasher: inout Hasher) {
         
         length.hash(into: &hasher)
-        (0 ... 31).forEach {
+        (0 ..< LowEnergyAdvertisingData.capacity).forEach {
             self[$0].hash(into: &hasher)
         }
     }
