@@ -28,7 +28,27 @@ import Foundation
  When a Provisioning PDU that does not fit in a single PB-ADV PDU is segmented, all segments are sent using the same Transaction Number field value.
  When a Provisioning PDU is retransmitted, the Transaction Number field is not changed.
  */
-public struct GAPPBADV: GAPData {
+public struct GAPPBADV: GAPData, Equatable {
+    
+    public static var dataType: GAPDataType { return .pbAdv }
+    
+    public var linkID: UInt32
+    
+    public var transactionNumber: UInt8
+    
+    public var genericProvisioningPDU: Data
+    
+    public init(linkID: UInt32,
+                transactionNumber: UInt8,
+                genericProvisioningPDU: Data) {
+        
+        self.linkID = linkID
+        self.transactionNumber = transactionNumber
+        self.genericProvisioningPDU = genericProvisioningPDU
+    }
+}
+
+public extension GAPPBADV {
     
     internal static let provisioningMaxLength = 24
     
@@ -38,24 +58,10 @@ public struct GAPPBADV: GAPData {
     
     internal static let minLength = MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMinLength
     
-    public static var dataType: GAPDataType = .pbAdv
-    
-    public let linkID: UInt32
-    
-    public let transactionNumber: UInt8
-    
-    public let genericProvisioningPDU: Data
-    
-    public init(linkID: UInt32, transactionNumber: UInt8, genericProvisioningPDU: Data) {
+    init?(data: Data) {
         
-        self.linkID = linkID
-        self.transactionNumber = transactionNumber
-        self.genericProvisioningPDU = genericProvisioningPDU
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count >= type(of: self).minLength, data.count <= type(of: self).maxLength
+        guard data.count >= type(of: self).minLength,
+            data.count <= type(of: self).maxLength
             else { return nil }
         
         let linkID = UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))
@@ -72,30 +78,15 @@ public struct GAPPBADV: GAPData {
         self.init(linkID: linkID, transactionNumber: transactionNumber, genericProvisioningPDU: genericProvisioningPDU)
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        let linkIDbytes = UInt32(littleEndian: linkID).bytes
-        let data = Data([linkIDbytes.0, linkIDbytes.1, linkIDbytes.2, linkIDbytes.3, transactionNumber])
-        
-        return genericProvisioningPDU.reduce(data, { $0 + [$1] })
+        data += linkID.littleEndian
+        data += transactionNumber
+        data += genericProvisioningPDU
     }
     
-}
-
-extension GAPPBADV: Equatable {
-    
-    public static func == (lhs: GAPPBADV, rhs: GAPPBADV) -> Bool {
+    var dataLength: Int {
         
-        return lhs.linkID == rhs.linkID &&
-            lhs.transactionNumber == rhs.transactionNumber &&
-            lhs.genericProvisioningPDU == rhs.genericProvisioningPDU
-    }
-}
-
-extension GAPPBADV: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return linkID.description + transactionNumber.description + genericProvisioningPDU.description
+        return MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + genericProvisioningPDU.count
     }
 }
