@@ -148,6 +148,32 @@ public struct GAPDataDecoder {
     }
 }
 
+// MARK: - Deprecated
+
+public extension GAPDataEncoder {
+    
+    @available(*, deprecated)
+    public static func encode(_ encodables: [GAPData]) -> Data {
+        
+        let encoder = GAPDataEncoder()
+        return encoder.encode(encodables)
+    }
+}
+
+public extension GAPDataDecoder {
+    
+    @available(*, deprecated)
+    public static func decode(_ data: Data,
+                              types: [GAPData.Type],
+                              ignoreUnknownType: Bool = true) throws -> [GAPData] {
+        
+        var decoder = GAPDataDecoder()
+        decoder.types = types
+        decoder.ignoreUnknownType = ignoreUnknownType
+        return try decoder.decode(data)
+    }
+}
+
 internal let gapDataTypes: [GAPData.Type] = [
     GAP3DInformation.self,
     GAPAdvertisingInterval.self,
@@ -167,7 +193,7 @@ internal let gapDataTypes: [GAPData.Type] = [
     GAPLERole.self,
     GAPLESecureConnectionsConfirmation.self,
     GAPLESecureConnectionsRandom.self,
-    GAPLESupportedFeatures.self,
+    //GAPLESupportedFeatures.self,
     GAPListOf16BitServiceSolicitationUUIDs.self,
     GAPListOf32BitServiceSolicitationUUIDs.self,
     GAPListOf128BitServiceSolicitationUUIDs.self,

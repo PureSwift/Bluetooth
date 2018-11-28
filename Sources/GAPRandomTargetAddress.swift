@@ -68,7 +68,7 @@ extension GAPRandomTargetAddress: CustomStringConvertible {
 
 // MARK: - ExpressibleByArrayLiteral
 
-extension GAPPublicTargetAddress: ExpressibleByArrayLiteral {
+extension GAPRandomTargetAddress: ExpressibleByArrayLiteral {
     
     public init(arrayLiteral elements: BluetoothAddress...) {
         
