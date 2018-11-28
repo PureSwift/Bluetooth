@@ -29,10 +29,10 @@ public protocol GAPData {
     static var dataType: GAPDataType { get }
     
     /// Initialize from bytes.
-    init? <T: DataContainer> (data: T)
+    init?(data: Data)
     
     /// Append data representation into buffer.
-    func append <T: DataContainer> (to data: inout T)
+    func append(to data: inout Data)
     
     /// Length of value when encoded into data.
     var dataLength: Int { get }

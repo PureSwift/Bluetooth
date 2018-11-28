@@ -42,7 +42,7 @@ public extension GAPTxPowerLevel {
 
 public extension GAPTxPowerLevel {
     
-    public init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard data.count == 1
             else { return nil }
@@ -52,9 +52,14 @@ public extension GAPTxPowerLevel {
         self.init(powerLevel: level)
     }
     
-    public static func += <T: DataContainer> (data: inout T, value: GAPTxPowerLevel) {
+    func append(to data: inout Data) {
         
-        data += UInt8(bitPattern: value.powerLevel)
+        data += UInt8(bitPattern: powerLevel)
+    }
+    
+    var dataLength: Int {
+        
+        return 1
     }
 }
 

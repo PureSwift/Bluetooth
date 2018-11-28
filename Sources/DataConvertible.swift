@@ -9,9 +9,11 @@
 import Foundation
 
 /// Data container type.
-public protocol DataContainer: RandomAccessCollection where Self.Index == Int {
+internal protocol DataContainer: RandomAccessCollection where Self.Index == Int {
     
     subscript(index: Int) -> UInt8 { get }
+    
+    subscript(range: Range<Int>) -> Slice<Self> { get }
     
     mutating func append(_ newElement: UInt8)
     
@@ -35,7 +37,7 @@ extension Data: DataContainer { }
 extension LowEnergyAdvertisingData: DataContainer { }
 
 /// Can be converted into data.
-public protocol DataConvertible {
+internal protocol DataConvertible {
     
     /// Append data representation into buffer.
     static func += <T: DataContainer> (data: inout T, value: Self)
@@ -66,12 +68,12 @@ internal protocol UnsafeDataConvertible: DataConvertible { }
 
 extension UnsafeDataConvertible {
     
-    public var dataLength: Int {
+    var dataLength: Int {
         return MemoryLayout<Self>.size
     }
     
     /// Append data representation into buffer.
-    public static func += <T: DataContainer> (data: inout T, value: Self) {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         #if swift(>=4.2)
         withUnsafePointer(to: value) {
             $0.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<Self>.size) {

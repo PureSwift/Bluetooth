@@ -27,19 +27,22 @@ public struct GAPCompleteLocalName: GAPData, Equatable, Hashable {
 
 public extension GAPCompleteLocalName {
     
-    /// Initialize from bytes.
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
-        guard let rawValue = String(bytes: data, encoding: .utf8)
+        guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
         
         self.init(name: rawValue)
     }
     
-    /// Append data representation into advertising data.
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    func append(to data: inout Data) {
         
         data += name.utf8
+    }
+    
+    var dataLength: Int {
+        
+        return name.utf8.count
     }
 }
 

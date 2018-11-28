@@ -23,7 +23,7 @@ public struct GAPCompleteListOf16BitServiceClassUUIDs: GAPData, Equatable {
 
 public extension GAPCompleteListOf16BitServiceClassUUIDs {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
@@ -31,7 +31,7 @@ public extension GAPCompleteListOf16BitServiceClassUUIDs {
         self.uuids = list.uuids
     }
     
-    func append <T: DataContainer > (to data: inout T) {
+    func append(to data: inout Data) {
         
         data += GAPUUIDList(uuids: uuids)
     }

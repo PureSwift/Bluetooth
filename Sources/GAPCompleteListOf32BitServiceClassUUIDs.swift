@@ -23,7 +23,7 @@ public struct GAPCompleteListOf32BitServiceClassUUIDs: GAPData, Equatable {
 
 public extension GAPCompleteListOf32BitServiceClassUUIDs {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
@@ -31,7 +31,7 @@ public extension GAPCompleteListOf32BitServiceClassUUIDs {
         self.uuids = list.uuids
     }
     
-    func append <T: DataContainer > (to data: inout T) {
+    func append(to data: inout Data) {
         
         data += GAPUUIDList(uuids: uuids)
     }
@@ -58,6 +58,6 @@ extension GAPCompleteListOf32BitServiceClassUUIDs: CustomStringConvertible {
     
     public var description: String {
         
-        return uuids.description
+        return uuids.map { BluetoothUUID.bit32($0) }.description
     }
 }
