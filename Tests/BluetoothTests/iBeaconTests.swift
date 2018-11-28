@@ -29,7 +29,7 @@ final class iBeaconTests: XCTestCase {
         
         let advertisingData = LowEnergyAdvertisingData(beacon: beacon, flags: flags)
         
-        let testData: LowEnergyAdvertisingData = [
+        let testData = LowEnergyAdvertisingData(length: 30, bytes: (
             0x02, //    Data length – 2 bytes    constant preamble
             0x01, //    Data type – flags    constant preamble
             0x1a, //    LE and BR/EDR flag    constant preamble
@@ -59,7 +59,8 @@ final class iBeaconTests: XCTestCase {
             0xAA, //    Major 2nd byte    set major value
             0x00, //    Minor 1st byte    set minor value
             0xBB, //    Minor 2nd byte    set minor value
-            0xb3] //   Signal power (calibrated RSSI@1m)    signal power value
+            0xb3 , //   Signal power (calibrated RSSI@1m)    signal power value
+            0x00))
         
         XCTAssertEqual(advertisingData, testData)
         XCTAssertEqual(advertisingData.description, "02011A1AFF4C000215F7826DA64FA24E988024BC5B71E0893E00AA00BBB3")
