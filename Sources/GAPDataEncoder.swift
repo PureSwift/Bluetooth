@@ -10,17 +10,29 @@ import Foundation
 
 public extension GAP {
     
+    /// GAP Data Decoder
     public typealias DataEncoder = GAPDataEncoder
+    
+    /// GAP Data Decoder
+    public typealias DataDecoder = GAPDataDecoder
 }
 
+/// GAP Data Decoder
 public struct GAPDataEncoder {
     
+    /// GAP Data Decoder Error
     public enum Error: Swift.Error {
         
+        /// Invalid data size.
         case invalidSize(Int)
     }
     
+    // MARK: - Initialization
+    
+    /// Initialize encoder.
     public init() { }
+    
+    // MARK: - Methods
     
     public func encode(_ encodables: GAPData...) -> Data {
         
@@ -56,8 +68,10 @@ public struct GAPDataEncoder {
     }
 }
 
+/// GAP Data Decoder
 public struct GAPDataDecoder {
     
+    /// GAP Data Decoder Error
     public enum Error: Swift.Error {
         
         case insufficientBytes(expected: Int, actual: Int)
@@ -65,11 +79,30 @@ public struct GAPDataDecoder {
         case unknownType(GAPDataType)
     }
     
-    public init() { }
+    // MARK: - Initialization
+    
+    /// Initialize with default data types.
+    public init() {
+        
+        /// initialize with default precomputed values
+        self.types = GAPDataDecoder.defaultTypes
+        self.dataTypes = GAPDataDecoder.defaultDataTypes
+    }
+    
+    // MARK: - Properties
     
     public var ignoreUnknownType: Bool = false
     
-    public var types: [GAPData.Type] = gapDataTypes
+    public var types = [GAPData.Type]() {
+        didSet {
+            dataTypes = [GAPDataType: GAPData.Type](minimumCapacity: types.count)
+            types.forEach { dataTypes[$0.dataType] = $0 }
+        }
+    }
+    
+    internal private(set) var dataTypes: [GAPDataType: GAPData.Type] = [:]
+    
+    // MARK: - Methods
     
     public func decode(_ data: LowEnergyAdvertisingData) throws -> [GAPData] {
         
@@ -127,7 +160,7 @@ public struct GAPDataDecoder {
                 value = Data()
             }
             
-            if let gapType = types.first(where: { $0.dataType == type }) {
+            if let gapType = dataTypes[type] {
                 
                 guard let decodable = gapType.init(data: value)
                     else { throw Error.cannotDecode(type, index: index) }
@@ -146,6 +179,59 @@ public struct GAPDataDecoder {
         
         return elements
     }
+}
+
+internal extension GAPDataDecoder {
+    
+    internal static let defaultDataTypes: [GAPDataType: GAPData.Type] = {
+        //let types = [GAPDataType: GAPData.Type].init(grouping: defaultTypes, by: { $0.dataType })
+        var types = [GAPDataType: GAPData.Type](minimumCapacity: defaultTypes.count)
+        defaultTypes.forEach { types[$0.dataType] = $0 }
+        return types
+    }()
+    
+    internal static let defaultTypes: [GAPData.Type] = [
+        GAP3DInformation.self,
+        GAPAdvertisingInterval.self,
+        GAPAppearanceData.self,
+        GAPChannelMapUpdateIndication.self,
+        GAPClassOfDevice.self,
+        GAPCompleteListOf16BitServiceClassUUIDs.self,
+        GAPCompleteListOf32BitServiceClassUUIDs.self,
+        GAPCompleteListOf128BitServiceClassUUIDs.self,
+        GAPCompleteLocalName.self,
+        GAPFlags.self,
+        GAPIncompleteListOf16BitServiceClassUUIDs.self,
+        GAPIncompleteListOf32BitServiceClassUUIDs.self,
+        GAPIncompleteListOf128BitServiceClassUUIDs.self,
+        GAPIndoorPositioning.self,
+        GAPLEDeviceAddress.self,
+        GAPLERole.self,
+        GAPLESecureConnectionsConfirmation.self,
+        GAPLESecureConnectionsRandom.self,
+        //GAPLESupportedFeatures.self,
+        GAPListOf16BitServiceSolicitationUUIDs.self,
+        GAPListOf32BitServiceSolicitationUUIDs.self,
+        GAPListOf128BitServiceSolicitationUUIDs.self,
+        GAPManufacturerSpecificData.self,
+        GAPMeshBeacon.self,
+        GAPMeshMessage.self,
+        GAPPBADV.self,
+        GAPPublicTargetAddress.self,
+        GAPRandomTargetAddress.self,
+        GAPSecurityManagerOOBFlags.self,
+        GAPSecurityManagerTKValue.self,
+        GAPServiceData16BitUUID.self,
+        GAPServiceData32BitUUID.self,
+        GAPServiceData128BitUUID.self,
+        GAPShortLocalName.self,
+        GAPSimplePairingHashC.self,
+        GAPSimplePairingRandomizerR.self,
+        GAPSlaveConnectionIntervalRange.self,
+        GAPTransportDiscoveryData.self,
+        GAPTxPowerLevel.self,
+        GAPURI.self
+    ]
 }
 
 // MARK: - Deprecated
@@ -173,46 +259,3 @@ public extension GAPDataDecoder {
         return try decoder.decode(data)
     }
 }
-
-internal let gapDataTypes: [GAPData.Type] = [
-    GAP3DInformation.self,
-    GAPAdvertisingInterval.self,
-    GAPAppearanceData.self,
-    GAPChannelMapUpdateIndication.self,
-    GAPClassOfDevice.self,
-    GAPCompleteListOf16BitServiceClassUUIDs.self,
-    GAPCompleteListOf32BitServiceClassUUIDs.self,
-    GAPCompleteListOf128BitServiceClassUUIDs.self,
-    GAPCompleteLocalName.self,
-    GAPFlags.self,
-    GAPIncompleteListOf16BitServiceClassUUIDs.self,
-    GAPIncompleteListOf32BitServiceClassUUIDs.self,
-    GAPIncompleteListOf128BitServiceClassUUIDs.self,
-    GAPIndoorPositioning.self,
-    GAPLEDeviceAddress.self,
-    GAPLERole.self,
-    GAPLESecureConnectionsConfirmation.self,
-    GAPLESecureConnectionsRandom.self,
-    //GAPLESupportedFeatures.self,
-    GAPListOf16BitServiceSolicitationUUIDs.self,
-    GAPListOf32BitServiceSolicitationUUIDs.self,
-    GAPListOf128BitServiceSolicitationUUIDs.self,
-    GAPManufacturerSpecificData.self,
-    GAPMeshBeacon.self,
-    GAPMeshMessage.self,
-    GAPPBADV.self,
-    GAPPublicTargetAddress.self,
-    GAPRandomTargetAddress.self,
-    GAPSecurityManagerOOBFlags.self,
-    GAPSecurityManagerTKValue.self,
-    GAPServiceData16BitUUID.self,
-    GAPServiceData32BitUUID.self,
-    GAPServiceData128BitUUID.self,
-    GAPShortLocalName.self,
-    GAPSimplePairingHashC.self,
-    GAPSimplePairingRandomizerR.self,
-    GAPSlaveConnectionIntervalRange.self,
-    GAPTransportDiscoveryData.self,
-    GAPTxPowerLevel.self,
-    GAPURI.self
-]
