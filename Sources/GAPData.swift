@@ -37,3 +37,16 @@ public protocol GAPData {
     /// Length of value when encoded into data.
     var dataLength: Int { get }
 }
+
+// MARK: - Deprecated API
+
+public extension GAPData {
+    
+    @available(*, deprecated, message: "Use GAPDataEncoder instead")
+    var data: Data {
+        
+        var data = Data(capacity: dataLength)
+        append(to: &data)
+        return data
+    }
+}
