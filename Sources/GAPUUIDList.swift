@@ -112,8 +112,8 @@ extension UInt16: GAPUUIDElement {
         guard data.count == MemoryLayout<UInt16>.size
             else { return nil }
         
-        self.init(bytes: (data[data.startIndex + 0],
-                          data[data.startIndex + 1]))
+        self.init(bytes: (data[0],
+                          data[1]))
     }
 }
 
@@ -124,10 +124,10 @@ extension UInt32: GAPUUIDElement {
         guard data.count == MemoryLayout<UInt32>.size
             else { return nil }
         
-        self.init(bytes: (data[data.startIndex + 0],
-                          data[data.startIndex + 1],
-                          data[data.startIndex + 2],
-                          data[data.startIndex + 3]))
+        self.init(bytes: (data[0],
+                          data[1],
+                          data[2],
+                          data[3]))
     }
 }
 
@@ -138,21 +138,21 @@ extension UInt128: GAPUUIDElement {
         guard data.count == MemoryLayout<UInt128>.size
             else { return nil }
         
-        self.init(bytes: (data[data.startIndex + 0],
-                          data[data.startIndex + 1],
-                          data[data.startIndex + 2],
-                          data[data.startIndex + 3],
-                          data[data.startIndex + 4],
-                          data[data.startIndex + 5],
-                          data[data.startIndex + 6],
-                          data[data.startIndex + 7],
-                          data[data.startIndex + 8],
-                          data[data.startIndex + 9],
-                          data[data.startIndex + 10],
-                          data[data.startIndex + 11],
-                          data[data.startIndex + 12],
-                          data[data.startIndex + 13],
-                          data[data.startIndex + 14],
-                          data[data.startIndex + 15]))
+        self.init(bytes: (data[0],
+                          data[1],
+                          data[2],
+                          data[3],
+                          data[4],
+                          data[5],
+                          data[6],
+                          data[7],
+                          data[8],
+                          data[9],
+                          data[10],
+                          data[11],
+                          data[12],
+                          data[13],
+                          data[14],
+                          data[15]))
     }
 }

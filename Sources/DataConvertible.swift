@@ -8,34 +8,6 @@
 
 import Foundation
 
-/// Data container type.
-internal protocol DataContainer: RandomAccessCollection where Self.Index == Int {
-    
-    subscript(index: Int) -> UInt8 { get }
-    
-    subscript(range: Range<Int>) -> Slice<Self> { get }
-    
-    mutating func append(_ newElement: UInt8)
-    
-    static func += (lhs: inout Self, rhs: UInt8)
-    
-    mutating func append(_ pointer: UnsafePointer<UInt8>, count: Int)
-    
-    mutating func append <C: Collection> (contentsOf bytes: C) where C.Element == UInt8
-    
-    static func += <C: Collection> (lhs: inout Self, rhs: C) where C.Element == UInt8
-}
-
-extension DataContainer {
-    public static func += (lhs: inout Self, rhs: UInt8) {
-        lhs.append(rhs)
-    }
-}
-
-extension Data: DataContainer { }
-
-extension LowEnergyAdvertisingData: DataContainer { }
-
 /// Can be converted into data.
 internal protocol DataConvertible {
     
@@ -44,13 +16,6 @@ internal protocol DataConvertible {
     
     /// Length of value when encoded into data.
     var dataLength: Int { get }
-}
-
-extension DataContainer {
-    
-    mutating func append <T: DataConvertible> (_ value: T) {
-        self += value
-    }
 }
 
 extension Data {
@@ -62,6 +27,8 @@ extension Data {
         self += value
     }
 }
+
+// MARK: - UnsafeDataConvertible
 
 /// Internal Data casting protocol
 internal protocol UnsafeDataConvertible: DataConvertible { }
@@ -95,3 +62,38 @@ extension UInt16: UnsafeDataConvertible { }
 extension UInt32: UnsafeDataConvertible { }
 extension UInt64: UnsafeDataConvertible { }
 extension UInt128: UnsafeDataConvertible { }
+
+// MARK: - DataContainer
+
+/// Data container type.
+internal protocol DataContainer: RandomAccessCollection where Self.Index == Int {
+    
+    subscript(index: Int) -> UInt8 { get }
+    
+    subscript(range: Range<Int>) -> Slice<Self> { get }
+    
+    mutating func append(_ newElement: UInt8)
+    
+    static func += (lhs: inout Self, rhs: UInt8)
+    
+    mutating func append(_ pointer: UnsafePointer<UInt8>, count: Int)
+    
+    mutating func append <C: Collection> (contentsOf bytes: C) where C.Element == UInt8
+    
+    static func += <C: Collection> (lhs: inout Self, rhs: C) where C.Element == UInt8
+}
+
+extension DataContainer {
+    
+    static func += (lhs: inout Self, rhs: UInt8) {
+        lhs.append(rhs)
+    }
+    
+    mutating func append <T: DataConvertible> (_ value: T) {
+        self += value
+    }
+}
+
+extension Data: DataContainer { }
+
+extension LowEnergyAdvertisingData: DataContainer { }

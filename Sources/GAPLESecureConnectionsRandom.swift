@@ -25,20 +25,25 @@ public struct GAPLESecureConnectionsRandom: GAPData, Equatable, Hashable {
 
 public extension GAPLESecureConnectionsRandom {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard data.count == 2
             else { return nil }
         
-        let value = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 0],
-                                                        data[data.startIndex + 1])))
+        let random = UInt16(littleEndian: UInt16(bytes: (data[0],
+                                                         data[1])))
         
-        self.init(random: value)
+        self.init(random: random)
     }
     
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    func append(to data: inout Data) {
         
         data += random.littleEndian
+    }
+    
+    var dataLength: Int {
+        
+        return 2
     }
 }
 

@@ -20,12 +20,10 @@ public struct GAPServiceData16BitUUID: GAPData, Equatable, Hashable {
     public let uuid: UInt16
     
     /// Service Data
-    public let serviceData: LowEnergyAdvertisingData
+    public let serviceData: Data
     
     public init(uuid: UInt16,
-                serviceData: LowEnergyAdvertisingData) {
-        
-        assert(serviceData.count <= 31 - 2)
+                serviceData: Data) {
         
         self.uuid = uuid
         self.serviceData = serviceData
@@ -34,22 +32,27 @@ public struct GAPServiceData16BitUUID: GAPData, Equatable, Hashable {
 
 public extension GAPServiceData16BitUUID {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard data.count >= 2
             else { return nil }
         
-        let uuid = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 0],
-                                                       data[data.startIndex + 1])))
+        let uuid = UInt16(littleEndian: UInt16(bytes: (data[0],
+                                                       data[1])))
         
-        let serviceData = LowEnergyAdvertisingData(data[data.startIndex + 2 ..< data.startIndex + data.count])
+        let serviceData = data.subdata(in: 2 ..< data.startIndex + data.count)
         
         self.init(uuid: uuid, serviceData: serviceData)
     }
     
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    func append(to data: inout Data) {
         
         data += uuid.littleEndian
         data += serviceData
+    }
+    
+    var dataLength: Int {
+        
+        return MemoryLayout<UInt16>.size + serviceData.count
     }
 }

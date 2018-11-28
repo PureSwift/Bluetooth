@@ -8,54 +8,85 @@
 
 import Foundation
 
-public enum GAPBeaconType: UInt8 {
+/**
+ Mesh beacons are packets advertised periodically by nodes and unprovisioned devices.
+ Mesh beacons are contained in a «Mesh Beacon» AD Type. The first octet of the Mesh Beacon advertising data payload (Beacon Type field) determines the type of beacon.
+ Mesh beacons are forwarded to other bearers using the Proxy protocol (see Section 6).
+ */
+public enum GAPMeshBeacon: GAPData, Equatable {
     
-    case unprovisionedDevice = 0x00
+    public static var dataType: GAPDataType { return .meshBeacon }
     
-    case secureNetwork = 0x01
+    /// Unprovisioned Device
+    case unprovisionedDevice(GAPUnprovisionedDeviceBeacon)
+    
+    /// Secure Network
+    case secureNetwork(GAPSecureNetworkBeacon)
 }
 
-public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
+public extension GAPMeshBeacon {
     
-    case other = 0b01
+    internal static let minimumLength = 2
     
-    case electronic = 0b10
+    init?(data: Data) {
+        
+        guard data.count >= type(of: self).minimumLength
+            else { return nil }
+        
+        guard let type = GAPBeaconType(rawValue: data[0])
+            else { return nil }
+        
+        switch type {
+            
+        case .unprovisionedDevice:
+            
+            guard let beacon = GAPUnprovisionedDeviceBeacon(data: data)
+                else { return nil }
+            
+            self = .unprovisionedDevice(beacon)
+            
+        case .secureNetwork:
+            
+            guard let beacon = GAPSecureNetworkBeacon(data: data)
+                else { return nil }
+            
+            self = .secureNetwork(beacon)
+            
+        }
+    }
     
-    case machineReadableCode = 0b100
+    func append(to data: inout Data) {
+        
+        switch self {
+        case let .unprovisionedDevice(beacon):
+            data += beacon.data
+        case let .secureNetwork(beacon):
+            data += beacon.data
+        }
+    }
     
-    case barCode = 0b1000
+    var dataLength: Int {
+        
+        // FIXME: Improve performance
+        switch self {
+        case let .unprovisionedDevice(beacon):
+            return beacon.data.count
+        case let .secureNetwork(beacon):
+            return beacon.data.count
+        }
+    }
+}
+
+// MARK: - Supporting Types
+
+/// The protocol for GAP Mesh Beacon types.
+public protocol GAPMeshBeaconProtocol {
     
-    case nearFieldCommunication = 0b10000
+    static var beaconType: GAPBeaconType { get }
     
-    case number = 0b100000
+    init?(data: Data)
     
-    case string = 0b1000000
-    
-    case onBox = 0b100000000000
-    
-    case insideBox = 0b1000000000000
-    
-    case onPieceOfPaper = 0b10000000000000
-    
-    case insideManual = 0b100000000000000
-    
-    case onDevice = 0b1000000000000000
-    
-    public static let allCases: Set<GAPOOBInformationFlag> = [
-        .other,
-        .electronic,
-        .machineReadableCode,
-        .barCode,
-        .nearFieldCommunication,
-        .number,
-        .string,
-        .onBox,
-        .insideBox,
-        .onPieceOfPaper,
-        .insideManual,
-        .onDevice
-    ]
-    
+    var data: Data { get }
 }
 
 /**
@@ -66,10 +97,10 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
  • OOB Information: Size is 2 octets
  • URI Hash: Hash of the associated URI advertised with the URI AD Type (optional field). Size is 4 octets
  */
-public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol {
+public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
     
     /// Unprovisioned Device beacon type (0x00).
-    public static let beaconType: GAPBeaconType = .unprovisionedDevice
+    public static var beaconType: GAPBeaconType = .unprovisionedDevice
     
     /// Device UUID uniquely identifying this device.
     public let deviceUUID: UUID
@@ -81,7 +112,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol {
     public let uriHash: UInt32?
     
     public init(deviceUUID: UUID,
-                oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>,
+                oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag> = 0,
                 uriHash: UInt32? = nil) {
         
         self.deviceUUID = deviceUUID
@@ -179,6 +210,56 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol {
     }
 }
 
+public enum GAPBeaconType: UInt8 {
+    
+    case unprovisionedDevice = 0x00
+    
+    case secureNetwork = 0x01
+}
+
+public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
+    
+    case other = 0b01
+    
+    case electronic = 0b10
+    
+    case machineReadableCode = 0b100
+    
+    case barCode = 0b1000
+    
+    case nearFieldCommunication = 0b10000
+    
+    case number = 0b100000
+    
+    case string = 0b1000000
+    
+    case onBox = 0b100000000000
+    
+    case insideBox = 0b1000000000000
+    
+    case onPieceOfPaper = 0b10000000000000
+    
+    case insideManual = 0b100000000000000
+    
+    case onDevice = 0b1000000000000000
+    
+    public static let allCases: Set<GAPOOBInformationFlag> = [
+        .other,
+        .electronic,
+        .machineReadableCode,
+        .barCode,
+        .nearFieldCommunication,
+        .number,
+        .string,
+        .onBox,
+        .insideBox,
+        .onPieceOfPaper,
+        .insideManual,
+        .onDevice
+    ]
+    
+}
+
 public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
     
     case keyRefresh = 0b01
@@ -205,7 +286,7 @@ public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
  The Authentication Value field is computed as defined below:
  Authentication Value = AES-CMACBeaconKey (Flags || Network ID || IV Index) [0–7]
  */
-public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol {
+public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
     
     internal static let length = 22
     
@@ -272,72 +353,4 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol {
         
         return data
     }
-}
-
-/**
- Mesh beacons are packets advertised periodically by nodes and unprovisioned devices.
- Mesh beacons are contained in a «Mesh Beacon» AD Type. The first octet of the Mesh Beacon advertising data payload (Beacon Type field) determines the type of beacon.
- Mesh beacons are forwarded to other bearers using the Proxy protocol (see Section 6).
- */
-public enum GAPMeshBeacon: GAPData {
-    
-    internal static let minimumLength = 2
-    
-    public static let dataType: GAPDataType = .meshBeacon
-    
-    case unprovisionedDevice(GAPUnprovisionedDeviceBeacon)
-    
-    case secureNetwork(GAPSecureNetworkBeacon)
-    
-    public init?(data: Data) {
-        
-        guard data.count >= type(of: self).minimumLength
-            else { return nil }
-        
-        guard let type = GAPBeaconType(rawValue: data[0])
-            else { return nil }
-        
-        switch type {
-            
-        case .unprovisionedDevice:
-            
-            guard let beacon = GAPUnprovisionedDeviceBeacon(data: data)
-                else { return nil }
-            
-            self = .unprovisionedDevice(beacon)
-            
-        case .secureNetwork:
-            
-            guard let beacon = GAPSecureNetworkBeacon(data: data)
-                else { return nil }
-            
-            self = .secureNetwork(beacon)
-            
-        }
-    }
-    
-    public var data: Data {
-        
-        switch self {
-            
-        case let .unprovisionedDevice(beacon):
-            
-            return beacon.data
-            
-        case let .secureNetwork(beacon):
-            
-            return beacon.data
-            
-        }
-    }
-}
-
-/// The protocol for GAP Mesh Beacon types.
-public protocol GAPMeshBeaconProtocol {
-    
-    static var beaconType: GAPBeaconType { get }
-    
-    init?(data: Data)
-    
-    var data: Data { get }
 }

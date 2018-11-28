@@ -25,20 +25,25 @@ public struct GAPLESecureConnectionsConfirmation: GAPData, Equatable, Hashable {
 
 public extension GAPLESecureConnectionsConfirmation {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard data.count == 2
             else { return nil }
         
-        let confirmation = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 0],
-                                                               data[data.startIndex + 1])))
+        let confirmation = UInt16(littleEndian: UInt16(bytes: (data[0],
+                                                               data[1])))
         
         self.init(confirmation: confirmation)
     }
     
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    func append(to data: inout Data) {
         
         data += confirmation.littleEndian
+    }
+    
+    var dataLength: Int {
+        
+        return 2
     }
 }
 

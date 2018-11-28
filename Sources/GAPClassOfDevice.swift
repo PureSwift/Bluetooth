@@ -31,9 +31,9 @@ public extension GAPClassOfDevice {
         guard data.count == MemoryLayout<Identifier>.size
             else { return nil }
         
-        let device = (data[data.startIndex + 0],
-                      data[data.startIndex + 1],
-                      data[data.startIndex + 2])
+        let device = (data[0],
+                      data[1],
+                      data[2])
         
         self.init(device: device)
     }

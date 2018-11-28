@@ -97,7 +97,7 @@ internal extension GAPIndoorPositioning {
     
 public extension GAPIndoorPositioning {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         self.init() // empty data
         
@@ -170,16 +170,6 @@ public extension GAPIndoorPositioning {
         }
     }
     
-    public var data: Data {
-        
-        return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension GAPIndoorPositioning: DataConvertible {
-    
     var dataLength: Int {
         
         // If all flag values are set to zero,
@@ -212,32 +202,32 @@ extension GAPIndoorPositioning: DataConvertible {
         return length
     }
     
-    static func += <T: DataContainer> (data: inout T, value: GAPIndoorPositioning) {
+    func append(to data: inout Data) {
         
         // If all flag values are set to zero,
         // the Server shall omit the Flags field from the advertisement packet.
         
-        guard value.flags.isEmpty == false else { return } // empty data
+        guard flags.isEmpty == false else { return } // empty data
         
-        data += value.flags.rawValue
+        data += flags.rawValue
         
-        if let coordinates = value.coordinates {
+        if let coordinates = coordinates {
             data += coordinates
         }
         
-        if let txPower = value.txPower {
+        if let txPower = txPower {
             data += txPower
         }
         
-        if let floorNumber = value.floorNumber {
+        if let floorNumber = floorNumber {
             data += floorNumber
         }
         
-        if let altitude = value.altitude {
+        if let altitude = altitude {
             data += altitude
         }
         
-        if let uncertainty = value.uncertainty {
+        if let uncertainty = uncertainty {
             data += uncertainty
         }
     }

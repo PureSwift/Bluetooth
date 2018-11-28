@@ -54,13 +54,13 @@ public struct GAP3DInformation: GAPData, Equatable {
 
 public extension GAP3DInformation {
     
-    public init? <T: DataContainer> (data: T) {
+    public init?(data: Data) {
         
         guard data.count == 2
             else { return nil }
         
         let flags = BitMaskOptionSet<GAP3DInformationFlag>(rawValue: data[data.startIndex])
-        let pathLossThreshold = data[data.startIndex + 1]
+        let pathLossThreshold = data[1]
         
         self.init(flags: flags, pathLossThreshold: pathLossThreshold)
     }

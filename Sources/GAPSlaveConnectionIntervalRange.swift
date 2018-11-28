@@ -57,24 +57,29 @@ public extension GAPSlaveConnectionIntervalRange {
 
 public extension GAPSlaveConnectionIntervalRange {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard data.count == 4
             else { return nil }
         
-        let min = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 0],
-                                                      data[data.startIndex + 1])))
+        let min = UInt16(littleEndian: UInt16(bytes: (data[0],
+                                                      data[1])))
         
-        let max = UInt16(littleEndian: UInt16(bytes: (data[data.startIndex + 2],
-                                                      data[data.startIndex + 3])))
+        let max = UInt16(littleEndian: UInt16(bytes: (data[2],
+                                                      data[3])))
         
         self.init(range: (min: min, max: max))
     }
     
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    func append(to data: inout Data) {
         
         data += range.min.littleEndian
         data += range.max.littleEndian
+    }
+    
+    var dataLength: Int {
+        
+        return 4
     }
 }
 

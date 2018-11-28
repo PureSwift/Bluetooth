@@ -20,20 +20,20 @@ import Foundation
 public struct AppleBeacon {
     
     /// The company that created this specification.
-    public static let companyIdentifier: CompanyIdentifier = .apple
+    public static var companyIdentifier: CompanyIdentifier { return .apple }
     
     /// Apple iBeacon data type.
-    internal static let appleDataType: UInt8 = 0x02 // iBeacon
+    internal static var appleDataType: UInt8 { return 0x02 } // iBeacon
     
     /// The length of the TLV encoded data.
-    internal static let length: UInt8 = 0x15 // length: 21 = 16 byte UUID + 2 bytes major + 2 bytes minor + 1 byte RSSI
+    internal static var length: UInt8 { return 0x15 } // length: 21 = 16 byte UUID + 2 bytes major + 2 bytes minor + 1 byte RSSI
     
-    internal static let additionalDataLength = Int(length) + 2
+    internal static var additionalDataLength: Int { return Int(length) + 2 }
     
     /// The unique ID of the beacons being targeted.
     ///
     /// Application developers should define a UUID specific to their app and deployment use case.
-    public var uuid: Foundation.UUID
+    public var uuid: UUID
     
     /// The value identifying a group of beacons.
     ///

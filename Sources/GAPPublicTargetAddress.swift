@@ -19,8 +19,6 @@ import Foundation
 /// company_id field is contained in the 24 most significant bits
 public struct GAPPublicTargetAddress: GAPData, Equatable {
     
-    internal static let addressLength = MemoryLayout<UInt8>.size * 6
-    
     public static let dataType: GAPDataType = .publicTargetAddress
     
     public let addresses: [BluetoothAddress]
@@ -29,45 +27,33 @@ public struct GAPPublicTargetAddress: GAPData, Equatable {
         
         self.addresses = addresses
     }
+}
+
+public extension GAPPublicTargetAddress {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
-        guard data.count % type(of: self).addressLength == 0
+        guard data.count % BluetoothAddress.length == 0
             else { return nil }
         
-        var index = 0
-        var addresses = [BluetoothAddress]()
-        addresses.reserveCapacity(data.count / type(of: self).addressLength )
+        let count = data.count / BluetoothAddress.length
         
-        while index < data.count {
-            
-            let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5])))
-            addresses.append(address)
-            
-            index += type(of: self).addressLength
+        let addresses: [BluetoothAddress] = (0 ..< count).map {
+            let index = $0 * BluetoothAddress.length
+            return BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5])))
         }
         
         self.init(addresses: addresses)
     }
-    
-    public var data: Data {
-        
-        return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension GAPPublicTargetAddress: DataConvertible {
     
     var dataLength: Int {
         
         return addresses.count * BluetoothAddress.length
     }
     
-    static func += <T: DataContainer> (data: inout T, value: GAPPublicTargetAddress) {
+    func append(to data: inout Data) {
         
-        value.addresses.forEach { data += $0.littleEndian }
+        addresses.forEach { data += $0.littleEndian }
     }
 }
 
@@ -78,5 +64,15 @@ extension GAPPublicTargetAddress: CustomStringConvertible {
     public var description: String {
         
         return addresses.description
+    }
+}
+
+// MARK: - ExpressibleByArrayLiteral
+
+extension GAPPublicTargetAddress: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: BluetoothAddress...) {
+        
+        self.init(addresses: elements)
     }
 }

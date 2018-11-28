@@ -27,17 +27,22 @@ public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
 
 public extension GAPSecurityManagerOOBFlags {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard data.count == 1
             else { return nil }
         
-        self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[data.startIndex])
+        self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[0])
     }
     
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    func append(to data: inout Data) {
         
         data += flags.rawValue
+    }
+    
+    var dataLength: Int {
+        
+        return 1
     }
 }
 

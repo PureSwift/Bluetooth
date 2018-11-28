@@ -50,25 +50,15 @@ public extension GAPLEDeviceAddress {
         self.init(address: address, type: type)
     }
     
-    public var data: Data {
-        
-        return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension GAPLEDeviceAddress: DataConvertible {
-    
     var dataLength: Int {
         
         return Swift.type(of: self).length
     }
     
-    static func += <T: DataContainer> (data: inout T, value: GAPLEDeviceAddress) {
+    func append(to data: inout Data) {
         
-        data += value.address.littleEndian
-        data += value.type.rawValue
+        data += address.littleEndian
+        data += type.rawValue
     }
 }
 

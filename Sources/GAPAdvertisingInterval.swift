@@ -15,8 +15,6 @@ import Foundation
 /// Units: 0.625 ms
 public struct GAPAdvertisingInterval: GAPData, Equatable, Hashable {
     
-    internal static let length = MemoryLayout<UInt16>.size
-    
     public static let dataType: GAPDataType = .advertisingInterval
     
     public var interval: UInt16
@@ -29,9 +27,19 @@ public struct GAPAdvertisingInterval: GAPData, Equatable, Hashable {
 
 public extension GAPAdvertisingInterval {
     
-    public init?(data: Data) {
+    internal static var units: Double { return 0.0625 }
+    
+    public var miliseconds: Double {
         
-        guard data.count == type(of: self).length
+        return Double(interval) * type(of: self).units
+    }
+}
+
+public extension GAPAdvertisingInterval {
+    
+    init?(data: Data) {
+        
+        guard data.count == MemoryLayout<UInt16>.size
             else { return nil }
         
         let interval = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
@@ -39,21 +47,14 @@ public extension GAPAdvertisingInterval {
         self.init(interval: interval)
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        let value = interval.littleEndian
-        
-        return Data([value.bytes.0, value.bytes.1])
+        data += interval.littleEndian
     }
-}
-
-public extension GAPAdvertisingInterval {
     
-    internal static var units: Double { return 0.0625 }
-    
-    public var miliseconds: Double {
+    var dataLength: Int {
         
-        return Double(interval) * type(of: self).units
+        return MemoryLayout<UInt16>.size
     }
 }
 

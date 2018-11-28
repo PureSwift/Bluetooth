@@ -19,9 +19,7 @@ import Foundation
 /// it is recommended to randomize the gap between consecutive packets within an Advertising Event.
 public struct GAPMeshMessage: GAPData, Equatable, Hashable {
     
-    internal static let length = MemoryLayout<UInt16>.size
-    
-    public static let dataType: GAPDataType = .meshMessage
+    public static var dataType: GAPDataType { return .meshMessage }
     
     public var message: UInt16
     
@@ -29,10 +27,13 @@ public struct GAPMeshMessage: GAPData, Equatable, Hashable {
         
         self.message = message
     }
+}
+
+public extension GAPMeshMessage {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == MemoryLayout<UInt16>.size
             else { return nil }
         
         let message = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
@@ -40,13 +41,18 @@ public struct GAPMeshMessage: GAPData, Equatable, Hashable {
         self.init(message: message)
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        let value = message.littleEndian
+        data += message.littleEndian
+    }
+    
+    var dataLength: Int {
         
-        return Data([value.bytes.0, value.bytes.1])
+        return MemoryLayout<UInt16>.size
     }
 }
+
+// MARK: - CustomStringConvertible
 
 extension GAPMeshMessage: CustomStringConvertible {
     
