@@ -1008,8 +1008,8 @@ internal extension GAPDataEncoder {
 internal extension GAPDataDecoder {
     
     static func decode(_ data: Data,
-                              types: [GAPData.Type],
-                              ignoreUnknownType: Bool = true) throws -> [GAPData] {
+                        types: [GAPData.Type],
+                        ignoreUnknownType: Bool = true) throws -> [GAPData] {
         
         var decoder = GAPDataDecoder()
         decoder.types = types

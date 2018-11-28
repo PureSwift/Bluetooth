@@ -55,7 +55,7 @@ internal extension LowEnergyAdvertisingData {
         
         var value = self
         return try withUnsafePointer(to: &value.bytes) {
-            try $0.withMemoryRebound(to: UInt8.self, capacity: LowEnergyAdvertisingData.capacity) {
+            try $0.withMemoryRebound(to: UInt8.self, capacity: count) {
                 try block(Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0),
                                count: count,
                                deallocator: .none))
@@ -230,24 +230,9 @@ public extension LowEnergyAdvertisingData {
     
     public var data: Data {
         
-        var data = Data(capacity: dataLength)
+        var data = Data(capacity: count)
         data += self
         return data
-    }
-}
-
-// MARK: - DataConvertible
-
-extension LowEnergyAdvertisingData: DataConvertible {
-    
-    internal var dataLength: Int {
-        
-        return count
-    }
-    
-    internal static func += <T: DataContainer> (data: inout T, value: LowEnergyAdvertisingData) {
-        
-        data.append(contentsOf: value)
     }
 }
 

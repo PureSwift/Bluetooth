@@ -64,6 +64,8 @@ final class iBeaconTests: XCTestCase {
         
         XCTAssertEqual(advertisingData, testData)
         
+        advertisingData.withUnsafeData { XCTAssertEqual($0, Data(testData)) }
+        
         guard let decoded = AppleBeacon.from(advertisingData: testData)
             else { XCTFail(); return }
         

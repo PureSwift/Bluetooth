@@ -91,26 +91,8 @@ public struct AppleBeacon {
     
     public var manufactererData: GAPManufacturerSpecificData {
         
-        return manufactererData(copy: true)
-    }
-    
-    internal func manufactererData(copy: Bool) -> GAPManufacturerSpecificData {
-        
-        let additionalData: Data
-        
-        if copy {
-            
-            var data = Data(capacity: type(of: self).additionalDataLength)
-            appendAdditionalManufactererData(to: &data)
-            additionalData = data
-            
-        } else {
-            
-            var stackData = LowEnergyAdvertisingData()
-            appendAdditionalManufactererData(to: &stackData)
-            additionalData = stackData.withUnsafeData { $0 } // unsafe, only for internal use
-        }
-        
+        var additionalData = Data(capacity: type(of: self).additionalDataLength)
+        appendAdditionalManufactererData(to: &additionalData)
         assert(additionalData.count == type(of: self).additionalDataLength)
         
         let manufactererData = GAPManufacturerSpecificData(companyIdentifier: type(of: self).companyIdentifier,
@@ -139,7 +121,7 @@ internal extension LowEnergyAdvertisingData {
         
         let encoder = GAPDataEncoder()
         // swiftlint:disable force_try
-        self = try! encoder.encodeAdvertisingData(flags, beacon.manufactererData(copy: false))
+        self = try! encoder.encodeAdvertisingData(flags, beacon.manufactererData)
         // swiftlint:enable force_try
     }
 }
