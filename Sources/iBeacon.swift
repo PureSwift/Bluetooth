@@ -91,20 +91,25 @@ public struct AppleBeacon {
     
     public var manufactererData: GAPManufacturerSpecificData {
         
-        let tlvPrefix = Data([type(of: self).appleDataType, type(of: self).length])
+        return manufactererData(copy: true)
+    }
+    
+    internal func manufactererData(copy: Bool) -> GAPManufacturerSpecificData {
         
-        let uuidBytes = BluetoothUUID(uuid: uuid).bigEndian.data
+        let additionalData: Data
         
-        let majorBytes = major.bigEndian.bytes
-        
-        let minorBytes = minor.bigEndian.bytes
-        
-        let rssiByte = UInt8(bitPattern: rssi)
-        
-        // TLV coding
-        let additionalData = tlvPrefix
-            + uuidBytes
-            + Data([majorBytes.0, majorBytes.1, minorBytes.0, minorBytes.1, rssiByte])
+        if copy {
+            
+            var data = Data(capacity: type(of: self).additionalDataLength)
+            appendAdditionalManufactererData(to: &data)
+            additionalData = data
+            
+        } else {
+            
+            var stackData = LowEnergyAdvertisingData()
+            appendAdditionalManufactererData(to: &stackData)
+            additionalData = stackData.withUnsafeData { $0 } // unsafe, only for internal use
+        }
         
         assert(additionalData.count == type(of: self).additionalDataLength)
         
@@ -113,16 +118,29 @@ public struct AppleBeacon {
         
         return manufactererData
     }
+    
+    internal func appendAdditionalManufactererData <T: DataContainer> (to data: inout T) {
+        
+        data += type(of: self).appleDataType // tlvPrefix
+        data += type(of: self).length
+        data += BluetoothUUID(uuid: uuid).bigEndian // uuidBytes
+        data += major.bigEndian
+        data += minor.bigEndian
+        data += UInt8(bitPattern: rssi)
+    }
 }
 
 #if os(macOS) || os(Linux)
 
 internal extension LowEnergyAdvertisingData {
     
-    init(beacon: AppleBeacon, flags: GAPFlags) {
+    init(beacon: AppleBeacon,
+         flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]) {
         
         let encoder = GAPDataEncoder()
-        self = try! encoder.encodeAdvertisingData(flags, beacon.manufactererData)
+        // swiftlint:disable force_try
+        self = try! encoder.encodeAdvertisingData(flags, beacon.manufactererData(copy: false))
+        // swiftlint:enable force_try
     }
 }
 
@@ -168,8 +186,7 @@ public extension BluetoothHostControllerInterface {
         catch HCIError.commandDisallowed { /* ignore, means already turned on */ }
         
         // set iBeacon data
-        let advertisingData = LowEnergyAdvertisingData(beacon: beacon, flags: flags)
-        let advertisingDataCommand = SetAdvertisingData(advertisingData: advertisingData)
+        let advertisingDataCommand = SetAdvertisingData(advertisingData: LowEnergyAdvertisingData(beacon: beacon, flags: flags))
         
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }
