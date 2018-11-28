@@ -14,21 +14,25 @@ import Foundation
 /// The Channel Map Update Indication data type shall only be present in the extended header of the packet containing the AUX_SYNC_IND PDU.
 public struct GAPChannelMapUpdateIndication: GAPData {
     
-    internal static let length = 7
-    
     public static let dataType: GAPDataType = .channelMapUpdateIndication
     
     public var channelMap: (UInt8, UInt8, UInt8, UInt8, UInt8)
     
     public var instant: (UInt8, UInt8)
     
-    public init(channelMap: (UInt8, UInt8, UInt8, UInt8, UInt8), instant: (UInt8, UInt8)) {
+    public init(channelMap: (UInt8, UInt8, UInt8, UInt8, UInt8),
+                instant: (UInt8, UInt8)) {
         
         self.channelMap = channelMap
         self.instant = instant
     }
+}
+
+public extension GAPChannelMapUpdateIndication {
     
-    public init?(data: Data) {
+    internal static let length = 7
+    
+    init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
@@ -36,8 +40,13 @@ public struct GAPChannelMapUpdateIndication: GAPData {
         self.init(channelMap: (data[0], data[1], data[2], data[3], data[4]), instant: (data[5], data[6]))
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        return Data([channelMap.0, channelMap.1, channelMap.2, channelMap.3, channelMap.4, instant.0, instant.1                                      ])
+        data += [channelMap.0, channelMap.1, channelMap.2, channelMap.3, channelMap.4, instant.0, instant.1]
+    }
+    
+    var dataLength: Int {
+        
+        return type(of: self).length
     }
 }

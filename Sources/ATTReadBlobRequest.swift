@@ -59,7 +59,7 @@ extension ATTReadBlobRequest: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: ATTReadBlobRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadBlobRequest) {
         
         data += attributeOpcode.rawValue
         data += value.handle.littleEndian

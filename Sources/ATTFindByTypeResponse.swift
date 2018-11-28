@@ -79,7 +79,7 @@ extension ATTFindByTypeResponse: DataConvertible {
         return 1 + (handles.count * HandlesInformation.length)
     }
     
-    static func += (data: inout Data, value: ATTFindByTypeResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindByTypeResponse) {
         
         data += attributeOpcode.rawValue
         value.handles.forEach { data += $0 }
@@ -129,7 +129,7 @@ extension ATTFindByTypeResponse.HandlesInformation: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: ATTFindByTypeResponse.HandlesInformation) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindByTypeResponse.HandlesInformation) {
         
         data += value.foundAttribute.littleEndian
         data += value.groupEnd.littleEndian

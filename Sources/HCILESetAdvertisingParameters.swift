@@ -101,7 +101,7 @@ extension HCILESetAdvertisingParameters: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: HCILESetAdvertisingParameters) {
+    static func += <T: DataContainer> (data: inout T, value: HCILESetAdvertisingParameters) {
         
         data += value.interval.min.rawValue.littleEndian
         data += value.interval.max.rawValue.littleEndian

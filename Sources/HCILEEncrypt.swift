@@ -64,7 +64,7 @@ extension HCILEEncrypt: DataConvertible {
     
     var dataLength: Int { return 32 }
     
-    static func += (data: inout Data, value: HCILEEncrypt) {
+    static func += <T: DataContainer> (data: inout T, value: HCILEEncrypt) {
         
         data += value.key.littleEndian
         data += value.plainText.littleEndian

@@ -62,7 +62,7 @@ extension ATTReadByGroupTypeResponse: DataConvertible {
         return type(of: self).dataLength(for: attributeData)
     }
     
-    static func += (data: inout Data, value: ATTReadByGroupTypeResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadByGroupTypeResponse) {
         
         append(&data, value.attributeData)
     }
@@ -114,7 +114,7 @@ extension ATTReadByGroupTypeResponse.AttributeData: DataConvertible {
         return 4 + value.count
     }
     
-    static func += (data: inout Data, value: ATTReadByGroupTypeResponse.AttributeData) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadByGroupTypeResponse.AttributeData) {
         
         data += value.attributeHandle.littleEndian
         data += value.endGroupHandle.littleEndian

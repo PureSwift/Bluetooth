@@ -25,8 +25,11 @@ public struct GAPShortLocalName: GAPData, Equatable, Hashable {
         
         self.name = name
     }
+}
+
+public extension GAPShortLocalName {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard let rawValue = String(data: data, encoding: .utf8)
             else { return nil }
@@ -34,11 +37,18 @@ public struct GAPShortLocalName: GAPData, Equatable, Hashable {
         self.init(name: rawValue)
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        return Data(name.utf8)
+        data += name.utf8
+    }
+    
+    var dataLength: Int {
+        
+        return name.utf8.count
     }
 }
+
+// MARK: - CustomStringConvertible
 
 extension GAPShortLocalName: CustomStringConvertible {
     
@@ -48,19 +58,11 @@ extension GAPShortLocalName: CustomStringConvertible {
     }
 }
 
+// MARK: - ExpressibleByStringLiteral
+
 extension GAPShortLocalName: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        
-        self.init(name: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(name: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
         
         self.init(name: value)
     }

@@ -46,6 +46,50 @@ public struct LowEnergyAdvertisingData {
 
 public extension LowEnergyAdvertisingData {
     
+    static var capacity: Int { return 31 }
+}
+
+internal extension LowEnergyAdvertisingData {
+    
+    func withUnsafeData <Result> (_ block: (Data) throws -> Result) rethrows -> Result {
+        
+        var value = self
+        return try withUnsafePointer(to: &value.bytes) {
+            try $0.withMemoryRebound(to: UInt8.self, capacity: LowEnergyAdvertisingData.capacity) {
+                try block(Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0),
+                               count: count,
+                               deallocator: .none))
+            }
+        }
+    }
+}
+
+public extension LowEnergyAdvertisingData {
+    
+    init(_ slice: Slice<LowEnergyAdvertisingData>) {
+        
+        self.init()
+        self.length = UInt8(slice.count)
+        slice.enumerated().forEach {
+            self[$0.offset] = $0.element
+        }
+    }
+    
+    init? <C: Collection> (_ collection: C) where C.Element == UInt8 {
+        
+        guard collection.count <= 31
+            else { return nil }
+        
+        self.init()
+        self.length = UInt8(collection.count)
+        collection.enumerated().forEach {
+            self[$0.offset] = $0.element
+        }
+    }
+}
+
+public extension LowEnergyAdvertisingData {
+    
     mutating func append(_ byte: UInt8) {
         
         assert(count < 31)
@@ -74,108 +118,17 @@ public extension LowEnergyAdvertisingData {
         
         data.append(contentsOf: bytes)
     }
-}
-
-private struct PrimitiveCollection <T>: Collection {
     
-    let pointer: UnsafePointer<T>
-    
-    init(_ pointer: UnsafePointer<T>) {
-        self.pointer = pointer
-    }
-    
-    func makeIterator() -> IndexingIterator<PrimitiveCollection<T>> {
-        return IndexingIterator(_elements: self)
-    }
-    
-    subscript (index: Int) -> UInt8 {
-        return pointer.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<T>.size) {
-            $0.advanced(by: index).pointee
-        }
-    }
-    
-    var count: Int {
-        return MemoryLayout<T>.size
-    }
-    
-    func index(after index: Int) -> Int {
-        return index + 1
-    }
-    
-    var startIndex: Int {
-        return 0
-    }
-    
-    var endIndex: Int {
-        return count
-    }
-}
-
-public extension UInt16 {
-    
-    static func += (data: inout LowEnergyAdvertisingData, value: UInt16) {
+    mutating func append(_ pointer: UnsafePointer<UInt8>, count: Int) {
         
-        #if swift(>=4.2)
-        withUnsafePointer(to: value) {
-            data += PrimitiveCollection($0)
-        }
-        #else
-        var value = value
-        withUnsafePointer(to: &value) {
-            data += PrimitiveCollection($0)
-        }
-        #endif
-    }
-}
-
-public extension UInt32 {
-    
-    static func += (data: inout LowEnergyAdvertisingData, value: UInt32) {
+        assert(self.count + count < 31)
         
-        #if swift(>=4.2)
-        withUnsafePointer(to: value) {
-            data += PrimitiveCollection($0)
+        for index in 0 ..< count {
+            
+            self[self.count + index] = pointer.advanced(by: index).pointee
         }
-        #else
-        var value = value
-        withUnsafePointer(to: &value) {
-            data += PrimitiveCollection($0)
-        }
-        #endif
-    }
-}
-
-public extension UInt64 {
-    
-    static func += (data: inout LowEnergyAdvertisingData, value: UInt64) {
         
-        #if swift(>=4.2)
-        withUnsafePointer(to: value) {
-            data += PrimitiveCollection($0)
-        }
-        #else
-        var value = value
-        withUnsafePointer(to: &value) {
-            data += PrimitiveCollection($0)
-        }
-        #endif
-    }
-}
-
-public extension UInt128 {
-    
-    static func += (data: inout LowEnergyAdvertisingData, value: UInt128) {
-        
-        #if swift(>=4.2)
-        withUnsafePointer(to: value) {
-            data += PrimitiveCollection($0)
-        }
-        #else
-        var value = value
-        withUnsafePointer(to: &value) {
-            data += PrimitiveCollection($0)
-        }
-        #endif
+        self.length += UInt8(count)
     }
 }
 
@@ -228,7 +181,7 @@ extension LowEnergyAdvertisingData: Hashable {
     public func hash(into hasher: inout Hasher) {
         
         length.hash(into: &hasher)
-        (0 ... 31).forEach {
+        (0 ..< LowEnergyAdvertisingData.capacity).forEach {
             self[$0].hash(into: &hasher)
         }
     }
@@ -272,38 +225,14 @@ public extension LowEnergyAdvertisingData {
     
     public init?(data: Data) {
         
-        let length = data.count
-        
-        guard length <= 31
-            else { return nil }
-        
-        self.init()
-        self.length = UInt8(length)
-        data.enumerated().forEach {
-            self[$0.offset] = $0.element
-        }
+        self.init(data)
     }
     
     public var data: Data {
         
-        var data = Data(capacity: dataLength)
+        var data = Data(capacity: count)
         data += self
         return data
-    }
-}
-
-// MARK: - DataConvertible
-
-extension LowEnergyAdvertisingData: DataConvertible {
-    
-    internal var dataLength: Int {
-        
-        return count
-    }
-    
-    internal static func += (data: inout Data, value: LowEnergyAdvertisingData) {
-        
-        data.append(contentsOf: value)
     }
 }
 

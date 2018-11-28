@@ -34,7 +34,7 @@ public struct GAPManufacturerSpecificData: GAPData, Equatable {
 
 public extension GAPManufacturerSpecificData {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= 2
             else { return nil }
@@ -43,24 +43,14 @@ public extension GAPManufacturerSpecificData {
         self.additionalData = data.suffixCheckingBounds(from: 2)
     }
     
-    public var data: Data {
-        
-       return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension GAPManufacturerSpecificData: DataConvertible {
-    
     var dataLength: Int {
         
         return 2 + additionalData.count
     }
     
-    static func += (data: inout Data, value: GAPManufacturerSpecificData) {
+    func append(to data: inout Data) {
         
-        data += value.companyIdentifier.rawValue.littleEndian
-        data += value.additionalData
+        data += companyIdentifier.rawValue.littleEndian
+        data += additionalData
     }
 }

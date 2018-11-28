@@ -11,7 +11,7 @@ import Foundation
 /// GAP Incomplete List of 16-bit Service Class UUIDs
 public struct GAPIncompleteListOf16BitServiceClassUUIDs: GAPData, Equatable {
     
-    public static let dataType: GAPDataType = .incompleteListOf16BitServiceClassUUIDs
+    public static var dataType: GAPDataType { return .incompleteListOf16BitServiceClassUUIDs }
     
     public var uuids: [UInt16]
     
@@ -19,18 +19,26 @@ public struct GAPIncompleteListOf16BitServiceClassUUIDs: GAPData, Equatable {
         
         self.uuids = uuids
     }
+}
+
+public extension GAPIncompleteListOf16BitServiceClassUUIDs {
     
-   public init?(data: Data) {
+    init?(data: Data) {
         
-        guard let list = GAPUUIDList<UInt16>(data: data)
+        guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
         
         self.uuids = list.uuids
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        return GAPUUIDList<UInt16>(uuids: uuids).data
+        data += GAPUUIDList(uuids: uuids)
+    }
+    
+    var dataLength: Int {
+        
+        return MemoryLayout<ArrayLiteralElement>.size * uuids.count
     }
 }
 

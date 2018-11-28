@@ -61,7 +61,7 @@ extension HCILERemoveDeviceFromWhiteList: DataConvertible {
         return 1 + BluetoothAddress.length
     }
     
-    static func += (data: inout Data, value: HCILERemoveDeviceFromWhiteList) {
+    static func += <T: DataContainer> (data: inout T, value: HCILERemoveDeviceFromWhiteList) {
         
         data += value.device.addressType.rawValue
         data += value.device.address?.littleEndian ?? .zero

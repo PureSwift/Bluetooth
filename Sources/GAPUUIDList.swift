@@ -20,43 +20,40 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
     
     internal init?(data: Data) {
         
+        let elementSize = MemoryLayout<Element>.size
+        
         var uuids = [Element]()
-        uuids.reserveCapacity(data.count / MemoryLayout<Element>.size)
+        uuids.reserveCapacity(data.count / elementSize)
         
         var index = 0
         while index < data.count {
             
-            guard index + MemoryLayout<Element>.size <= data.count
+            guard index + elementSize <= data.count
                 else { return nil }
             
-            let value = Element(littleEndian: Element(gapData: data.subdataNoCopy(in: index ..< index + MemoryLayout<Element>.size))!)
+            let valueData = data.subdataNoCopy(in: data.startIndex + index ..< data.startIndex + index + elementSize)
             
-            index += MemoryLayout<Element>.size
+            let value = Element(littleEndian: Element(data: valueData)!)
+            
+            index += elementSize
             
             uuids.append(value)
         }
         
         self.uuids = uuids
     }
-    
-    internal var data: Data {
-        
-        return Data(self)
-    }
 }
 
-// MARK: - DataConvertible
-
 extension GAPUUIDList: DataConvertible {
+    
+    static func += <T: DataContainer> (data: inout T, value: GAPUUIDList) {
+        
+        value.forEach { data += $0.littleEndian }
+    }
     
     var dataLength: Int {
         
         return MemoryLayout<Element>.size * uuids.count
-    }
-    
-    static func += (data: inout Data, value: GAPUUIDList<Element>) {
-        
-        value.forEach { data += $0 }
     }
 }
 
@@ -99,42 +96,63 @@ extension GAPUUIDList: Collection {
 
 internal protocol GAPUUIDElement: UnsafeDataConvertible {
     
-    init?(gapData: Data)
+    init? <T: DataContainer> (data: T)
     
     init(littleEndian: Self)
     
     var littleEndian: Self { get }
+    
+    static func += (data: inout LowEnergyAdvertisingData, value: Self)
 }
 
 extension UInt16: GAPUUIDElement {
     
-    init?(gapData: Data) {
+    init? <T: DataContainer> (data: T) {
         
-        guard gapData.count == MemoryLayout<UInt16>.size
+        guard data.count == MemoryLayout<UInt16>.size
             else { return nil }
         
-        self.init(bytes: (gapData[0], gapData[1]))
+        self.init(bytes: (data[0],
+                          data[1]))
     }
 }
 
 extension UInt32: GAPUUIDElement {
     
-    init?(gapData: Data) {
+    init? <T: DataContainer> (data: T) {
         
-        guard gapData.count == MemoryLayout<UInt32>.size
+        guard data.count == MemoryLayout<UInt32>.size
             else { return nil }
         
-        self.init(bytes: (gapData[0], gapData[1], gapData[2], gapData[3]))
+        self.init(bytes: (data[0],
+                          data[1],
+                          data[2],
+                          data[3]))
     }
 }
 
 extension UInt128: GAPUUIDElement {
     
-    init?(gapData: Data) {
+    init? <T: DataContainer> (data: T) {
         
-        guard gapData.count == MemoryLayout<UInt128>.size
+        guard data.count == MemoryLayout<UInt128>.size
             else { return nil }
         
-        self.init(bytes: (gapData[0], gapData[1], gapData[2], gapData[3], gapData[4], gapData[5], gapData[6], gapData[7], gapData[8], gapData[9], gapData[10], gapData[11], gapData[12], gapData[13], gapData[14], gapData[15]))
+        self.init(bytes: (data[0],
+                          data[1],
+                          data[2],
+                          data[3],
+                          data[4],
+                          data[5],
+                          data[6],
+                          data[7],
+                          data[8],
+                          data[9],
+                          data[10],
+                          data[11],
+                          data[12],
+                          data[13],
+                          data[14],
+                          data[15]))
     }
 }

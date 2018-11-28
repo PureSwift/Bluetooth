@@ -46,7 +46,7 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
     public var data: Data {
         
-        return (GAPUUIDList<UInt16>(uuids: handles)).data
+        return Data(GAPUUIDList<UInt16>(uuids: handles))
     }
     
     public var descriptor: GATT.Descriptor {

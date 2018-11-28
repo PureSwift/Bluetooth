@@ -11,9 +11,7 @@ import Foundation
 /// Specifies the LE Secure Connections Confirmation Value
 /// Size: 16 octets
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
-public struct GAPLESecureConnectionsConfirmation: GAPData, Equatable {
-    
-    internal static let length = MemoryLayout<UInt16>.size
+public struct GAPLESecureConnectionsConfirmation: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .lowEnergySecureConnectionsConfirmation
     
@@ -23,23 +21,43 @@ public struct GAPLESecureConnectionsConfirmation: GAPData, Equatable {
         
         self.confirmation = confirmation
     }
+}
+
+public extension GAPLESecureConnectionsConfirmation {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == 2
             else { return nil }
         
-        let confirmation = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        let confirmation = UInt16(littleEndian: UInt16(bytes: (data[0],
+                                                               data[1])))
         
         self.init(confirmation: confirmation)
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        let value = confirmation.littleEndian
-        return Data(bytes: [value.bytes.0, value.bytes.1])
+        data += confirmation.littleEndian
+    }
+    
+    var dataLength: Int {
+        
+        return 2
     }
 }
+
+// MARK: - ExpressibleByIntegerLiteral
+
+extension GAPLESecureConnectionsConfirmation: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: UInt16) {
+        
+        self.init(confirmation: value)
+    }
+}
+
+// MARK: - CustomStringConvertible
 
 extension GAPLESecureConnectionsConfirmation: CustomStringConvertible {
     

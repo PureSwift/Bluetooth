@@ -55,7 +55,7 @@ extension ATTReadBlobResponse: DataConvertible {
         return 1 + partAttributeValue.count
     }
     
-    static func += (data: inout Data, value: ATTReadBlobResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadBlobResponse) {
         
         data += attributeOpcode.rawValue
         data += value.partAttributeValue

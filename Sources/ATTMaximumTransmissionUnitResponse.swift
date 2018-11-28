@@ -55,7 +55,7 @@ extension ATTMaximumTransmissionUnitResponse: DataConvertible {
         return type(of: self).length
     }
     
-    static func += (data: inout Data, value: ATTMaximumTransmissionUnitResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTMaximumTransmissionUnitResponse) {
         
         data += attributeOpcode.rawValue
         data += value.serverMTU.littleEndian

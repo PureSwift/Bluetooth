@@ -70,7 +70,7 @@ extension HCILERemoveDeviceToPeriodicAdvertiserList: DataConvertible {
     
     var dataLength: Int { return 1 + BluetoothAddress.length + 1 }
     
-    static func += (data: inout Data, value: HCILERemoveDeviceToPeriodicAdvertiserList) {
+    static func += <T: DataContainer> (data: inout T, value: HCILERemoveDeviceToPeriodicAdvertiserList) {
         
         data += value.advertiserAddressType.rawValue
         data += value.address.littleEndian

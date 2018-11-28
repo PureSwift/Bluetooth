@@ -60,7 +60,7 @@ extension ATTReadByTypeResponse: DataConvertible {
         return type(of: self).dataLength(for: attributeData)
     }
     
-    static func += (data: inout Data, value: ATTReadByTypeResponse) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadByTypeResponse) {
         
         append(&data, value.attributeData)
     }
@@ -100,7 +100,7 @@ extension ATTReadByTypeResponse.AttributeData: DataConvertible {
         return 2 + value.count
     }
     
-    static func += (data: inout Data, value: ATTReadByTypeResponse.AttributeData) {
+    static func += <T: DataContainer> (data: inout T, value: ATTReadByTypeResponse.AttributeData) {
         
         data += value.handle.littleEndian
         data += value.value

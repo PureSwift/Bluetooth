@@ -8,47 +8,51 @@
 
 import Foundation
 
-public struct GAPDataElement: Equatable {
+public extension GAP {
     
-    public var type: GAPDataType
-    
-    public var value: Data
-    
-    public init(type: GAPDataType, value: Data) {
-        
-        self.type = type
-        self.value = value
-    }
-    
-    public init(_ data: GAPData) {
-        
-        self.type = Swift.type(of: data).dataType
-        self.value = data.data
-    }
+    public typealias DataEncoder = GAPDataEncoder
 }
 
 public struct GAPDataEncoder {
     
-    private static func encode(_ element: GAPDataElement) -> Data {
+    public enum Error: Swift.Error {
         
-        return Data([UInt8(element.value.count + 1), element.type.rawValue]) + element.value
+        case invalidSize(Int)
     }
     
-    public static func encode(_ elements: [GAPDataElement]) -> Data {
+    public init() { }
+    
+    public func encode(_ encodables: GAPData...) -> Data {
         
-        var data = Data()
-        data.reserveCapacity(elements.count * 3)
+        return encode(encodables)
+    }
+    
+    public func encodeAdvertisingData(_ encodables: GAPData...) throws -> LowEnergyAdvertisingData {
         
-        elements.forEach { data.append(encode($0)) }
+        let encodedData = encode(encodables)
+        
+        guard let advertisingData = LowEnergyAdvertisingData(data: encodedData)
+            else { throw Error.invalidSize(encodedData.count) }
+        
+        return advertisingData
+    }
+    
+    public func encode(_ encodables: [GAPData]) -> Data {
+        
+        let dataLengths = encodables.map { $0.dataLength }
+        let length = dataLengths.reduce(0, { $0 + $1 + 2 })
+        var data = Data(capacity: length)
+        
+        for (index, encodable) in encodables.enumerated() {
+            
+            let dataLength = dataLengths[index]
+            
+            data += UInt8(dataLength + 1)
+            data += type(of: encodable).dataType.rawValue
+            encodable.append(to: &data)
+        }
         
         return data
-    }
-    
-    public static func encode(_ encodables: [GAPData]) -> Data {
-        
-        let elements = encodables.map { GAPDataElement($0) }
-        
-        return encode(elements)
     }
 }
 
@@ -57,21 +61,28 @@ public struct GAPDataDecoder {
     public enum Error: Swift.Error {
         
         case insufficientBytes(expected: Int, actual: Int)
-        case cannotDecode(GAPData.Type, GAPDataElement)
+        case cannotDecode(GAPDataType, index: Int)
         case unknownType(GAPDataType)
     }
     
-    public static func decode(_ data: Data) throws -> [GAPDataElement] {
+    public init() { }
+    
+    public var ignoreUnknownType: Bool = false
+    
+    public var types: [GAPData.Type] = gapDataTypes
+    
+    public func decode(_ data: LowEnergyAdvertisingData) throws -> [GAPData] {
         
-        return try decode(data, copyBytes: true)
+        return try data.withUnsafeData { try decode($0) }
     }
     
-    internal static func decode(_ data: Data, copyBytes: Bool) throws -> [GAPDataElement] {
+    public func decode(_ data: Data) throws -> [GAPData] {
         
         guard data.isEmpty == false
             else { return [] }
         
-        var elements = [GAPDataElement]()
+        var elements = [GAPData]()
+        elements.reserveCapacity(1)
         
         var index = 0
         
@@ -109,36 +120,19 @@ public struct GAPDataDecoder {
                 guard index <= data.count
                     else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
                 
-                value = copyBytes ? data.subdata(in: dataRange) : data.subdataNoCopy(in: dataRange)
+                value = data.subdataNoCopy(in: dataRange)
                 
             } else {
                 
                 value = Data()
             }
             
-            elements.append(GAPDataElement(type: type, value: value))
-        }
-        
-        return elements
-    }
-    
-    public static func decode(_ data: Data,
-                              types: [GAPData.Type],
-                              ignoreUnknownType: Bool = true) throws -> [GAPData] {
-        
-        let elements = try decode(data, copyBytes: false) // don't allocate copies for each element
-        
-        var decodables = [GAPData]()
-        decodables.reserveCapacity(elements.count)
-        
-        for element in elements {
-            
-            if let type = types.first(where: { $0.dataType == element.type }) {
+            if let gapType = types.first(where: { $0.dataType == type }) {
                 
-                guard let decodable = type.init(data: element.value)
-                    else { throw Error.cannotDecode(type, element) }
+                guard let decodable = gapType.init(data: value)
+                    else { throw Error.cannotDecode(type, index: index) }
                 
-                decodables.append(decodable)
+                elements.append(decodable)
                 
             } else if ignoreUnknownType {
                 
@@ -146,10 +140,79 @@ public struct GAPDataDecoder {
                 
             } else {
                 
-                throw Error.unknownType(element.type)
+                throw Error.unknownType(type)
             }
         }
         
-        return decodables
+        return elements
     }
 }
+
+// MARK: - Deprecated
+
+public extension GAPDataEncoder {
+    
+    @available(*, deprecated)
+    public static func encode(_ encodables: [GAPData]) -> Data {
+        
+        let encoder = GAPDataEncoder()
+        return encoder.encode(encodables)
+    }
+}
+
+public extension GAPDataDecoder {
+    
+    @available(*, deprecated)
+    public static func decode(_ data: Data,
+                              types: [GAPData.Type],
+                              ignoreUnknownType: Bool = true) throws -> [GAPData] {
+        
+        var decoder = GAPDataDecoder()
+        decoder.types = types
+        decoder.ignoreUnknownType = ignoreUnknownType
+        return try decoder.decode(data)
+    }
+}
+
+internal let gapDataTypes: [GAPData.Type] = [
+    GAP3DInformation.self,
+    GAPAdvertisingInterval.self,
+    GAPAppearanceData.self,
+    GAPChannelMapUpdateIndication.self,
+    GAPClassOfDevice.self,
+    GAPCompleteListOf16BitServiceClassUUIDs.self,
+    GAPCompleteListOf32BitServiceClassUUIDs.self,
+    GAPCompleteListOf128BitServiceClassUUIDs.self,
+    GAPCompleteLocalName.self,
+    GAPFlags.self,
+    GAPIncompleteListOf16BitServiceClassUUIDs.self,
+    GAPIncompleteListOf32BitServiceClassUUIDs.self,
+    GAPIncompleteListOf128BitServiceClassUUIDs.self,
+    GAPIndoorPositioning.self,
+    GAPLEDeviceAddress.self,
+    GAPLERole.self,
+    GAPLESecureConnectionsConfirmation.self,
+    GAPLESecureConnectionsRandom.self,
+    //GAPLESupportedFeatures.self,
+    GAPListOf16BitServiceSolicitationUUIDs.self,
+    GAPListOf32BitServiceSolicitationUUIDs.self,
+    GAPListOf128BitServiceSolicitationUUIDs.self,
+    GAPManufacturerSpecificData.self,
+    GAPMeshBeacon.self,
+    GAPMeshMessage.self,
+    GAPPBADV.self,
+    GAPPublicTargetAddress.self,
+    GAPRandomTargetAddress.self,
+    GAPSecurityManagerOOBFlags.self,
+    GAPSecurityManagerTKValue.self,
+    GAPServiceData16BitUUID.self,
+    GAPServiceData32BitUUID.self,
+    GAPServiceData128BitUUID.self,
+    GAPShortLocalName.self,
+    GAPSimplePairingHashC.self,
+    GAPSimplePairingRandomizerR.self,
+    GAPSlaveConnectionIntervalRange.self,
+    GAPTransportDiscoveryData.self,
+    GAPTxPowerLevel.self,
+    GAPURI.self
+]

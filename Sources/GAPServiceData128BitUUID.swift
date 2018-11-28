@@ -14,32 +14,59 @@ import Foundation
 /// The first 16 octets contain the 128 bit Service UUID followed by additional service data
 public struct GAPServiceData128BitUUID: GAPData, Equatable {
     
-    internal static let uuidLength = MemoryLayout<UInt128>.size
-    
     public static let dataType: GAPDataType = .serviceData128BitUUID
     
+    /// UUID
     public let uuid: UUID
-    public private(set) var serviceData: Data
     
-    public init(uuid: UUID, serviceData: Data = Data()) {
+    /// Service Data
+    public let serviceData: Data
+    
+    public init(uuid: UUID,
+                serviceData: Data = Data()) {
         
         self.uuid = uuid
         self.serviceData = serviceData
     }
+}
+
+public extension GAPServiceData128BitUUID {
     
     public init?(data: Data) {
         
-        guard data.count >= type(of: self).uuidLength
+        guard data.count >= UInt128.length
             else { return nil }
         
-        let uuid = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])))
-        let serviceData = data.subdata(in: (type(of: self).uuidLength ..< data.count))
+        let uuid = UInt128(littleEndian: UInt128(bytes: (data[0],
+                                                         data[1],
+                                                         data[2],
+                                                         data[3],
+                                                         data[4],
+                                                         data[5],
+                                                         data[6],
+                                                         data[7],
+                                                         data[8],
+                                                         data[9],
+                                                         data[10],
+                                                         data[11],
+                                                         data[12],
+                                                         data[13],
+                                                         data[14],
+                                                         data[15])))
+        
+        let serviceData = data.subdata(in: UInt128.length ..< data.count)
         
         self.init(uuid: UUID(uuid), serviceData: serviceData)
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        return UInt128(uuid: uuid).littleEndian.data + serviceData
+        data += UInt128(uuid: uuid).littleEndian
+        data += serviceData
+    }
+    
+    var dataLength: Int {
+        
+        return UInt128.length + serviceData.count
     }
 }

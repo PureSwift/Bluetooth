@@ -12,8 +12,6 @@ import Foundation
 /// This value shall be the same as the Appearance characteristic, as defined in Vol. 3, Part C, Section 12.2.
 public struct GAPAppearanceData: GAPData, Equatable {
     
-    internal static let length = MemoryLayout<UInt16>.size
-    
     public static let dataType: GAPDataType = .appearance
     
     public let appearance: GAPAppearance
@@ -22,10 +20,13 @@ public struct GAPAppearanceData: GAPData, Equatable {
         
         self.appearance = appearance
     }
+}
+
+public extension GAPAppearanceData {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == 2
             else { return nil }
         
         let appearance = GAPAppearance(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
@@ -33,10 +34,13 @@ public struct GAPAppearanceData: GAPData, Equatable {
         self.init(appearance: appearance)
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        let bytes = appearance.rawValue.littleEndian.bytes
+        data += appearance.rawValue.littleEndian
+    }
+    
+    var dataLength: Int {
         
-        return Data(bytes: [bytes.0, bytes.1])
+        return 2
     }
 }

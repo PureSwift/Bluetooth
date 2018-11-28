@@ -78,7 +78,7 @@ extension ATTFindByTypeRequest: DataConvertible {
         return 7 + attributeValue.count
     }
     
-    static func += (data: inout Data, value: ATTFindByTypeRequest) {
+    static func += <T: DataContainer> (data: inout T, value: ATTFindByTypeRequest) {
         
         data += attributeOpcode.rawValue
         data += value.startHandle.littleEndian

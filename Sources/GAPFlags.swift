@@ -11,7 +11,7 @@ import Foundation
 /// GAP Flag
 public struct GAPFlags: GAPData, Equatable, Hashable {
     
-    public static let dataType: GAPDataType = .flags
+    public static var dataType: GAPDataType { return .flags }
     
     public var flags: BitMaskOptionSet<GAPFlag>
     
@@ -19,32 +19,26 @@ public struct GAPFlags: GAPData, Equatable, Hashable {
         
         self.flags = flags
     }
+}
+
+public extension GAPFlags {
     
-    public init?(data bytes: Data) {
+    init?(data: Data) {
         
-        typealias RawValue = GAPFlag.RawValue
+        guard data.count == 1
+            else { return nil }
         
-        let rawValue: RawValue
-        
-        switch bytes.count {
-        case 1:
-            rawValue = bytes[0]
-        case 2:
-            rawValue = RawValue(UInt16(littleEndian: UInt16(bytes: (bytes[0], bytes[1]))))
-        case 4:
-            rawValue = RawValue(UInt32(littleEndian: UInt32(bytes: (bytes[0], bytes[1], bytes[2], bytes[3]))))
-        case 8:
-            rawValue = RawValue(UInt64(littleEndian: UInt64(bytes: (bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7]))))
-        default:
-            return nil
-        }
-        
-        self.flags = BitMaskOptionSet<GAPFlag>(rawValue: rawValue)
+        self.flags = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
     }
     
-    public var data: Data {
+    func append(to data: inout Data) {
         
-        return Data([flags.rawValue])
+        data += flags.rawValue
+    }
+    
+    var dataLength: Int {
+        
+        return 1
     }
 }
 

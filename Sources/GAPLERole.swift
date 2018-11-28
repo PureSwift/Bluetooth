@@ -12,9 +12,7 @@ import Foundation
 /// The LE Role data type size is 1 octet.
 public enum GAPLERole: UInt8, GAPData {
     
-    internal static let length = MemoryLayout<UInt8>.size
-    
-    public static let dataType: GAPDataType = .lowEnergyRole
+    public static var dataType: GAPDataType { return .lowEnergyRole }
     
     /// Only Peripheral Role supported.
     case onlyPeripheralRoleSupported = 0x00
@@ -27,6 +25,32 @@ public enum GAPLERole: UInt8, GAPData {
     
     /// Peripheral and Central Role supported, Central Role preferred for connection establishment.
     case bothSupportedCentralPreferred = 0x03
+}
+
+public extension GAPLERole {
+    
+    init?(data: Data) {
+        
+        guard data.count == 1
+            else { return nil }
+        
+        self.init(rawValue: data[0])
+    }
+    
+    func append(to data: inout Data) {
+        
+        data += rawValue
+    }
+    
+    var dataLength: Int {
+        
+        return 1
+    }
+}
+
+// MARK: - Supporting Types
+
+public extension GAPLERole {
     
     /// Bluetooth LE Role (e.g. Central or peripheral).
     public enum Role: UInt8, BitMaskOption { // not part of BT spec
@@ -36,8 +60,11 @@ public enum GAPLERole: UInt8, GAPData {
         
         public static let allCases: Set<Role> = [.central, .peripheral]
     }
+}
+
+public extension GAPLERole {
     
-    public var supported: BitMaskOptionSet<Role> {
+    var supported: BitMaskOptionSet<Role> {
         
         switch self {
         case .onlyPeripheralRoleSupported:
@@ -50,7 +77,7 @@ public enum GAPLERole: UInt8, GAPData {
         }
     }
     
-    public var preferred: Role {
+    var preferred: Role {
         
         switch self {
         case .onlyPeripheralRoleSupported,
@@ -60,18 +87,5 @@ public enum GAPLERole: UInt8, GAPData {
              .bothSupportedCentralPreferred:
             return .central
         }
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        self.init(rawValue: data[0])
-    }
-    
-    public var data: Data {
-        
-        return Data([rawValue])
     }
 }

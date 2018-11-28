@@ -9,8 +9,66 @@
 import Foundation
 
 /**
- GAPSecurityManagerOOBFlag
+ The Security Manager Out of Band data type allows an out of band mechanism to be used by the Security Manager to communicate discovery information as well as other information related to the pairing process.
  
+ The Security Manager Out of Band data type size is 1 octet.
+ */
+public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
+    
+    public static let dataType: GAPDataType = .securityManagerOutOfBandFlags
+    
+    public let flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>
+    
+    public init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag> = 0) {
+        
+        self.flags = flags
+    }
+}
+
+public extension GAPSecurityManagerOOBFlags {
+    
+    init?(data: Data) {
+        
+        guard data.count == 1
+            else { return nil }
+        
+        self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[0])
+    }
+    
+    func append(to data: inout Data) {
+        
+        data += flags.rawValue
+    }
+    
+    var dataLength: Int {
+        
+        return 1
+    }
+}
+
+// MARK: - ExpressibleByArrayLiteral
+
+extension GAPSecurityManagerOOBFlags: ExpressibleByArrayLiteral {
+    
+    public init(arrayLiteral elements: GAPSecurityManagerOOBFlag...) {
+        
+        self.init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>(elements))
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension GAPSecurityManagerOOBFlags: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return flags.description
+    }
+}
+
+// MARK: - Supporting Types
+
+/**
  The Security Manager Out of Band data type allows an out of band mechanism to be used by the Security Manager to communicate discovery information as well as other information related to the pairing process.
  
  The Security Manager Out of Band data type size is 1 octet.
@@ -43,39 +101,4 @@ public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
         .simultaneousLEandBREDR,
         .addressType
     ]
-}
-
-public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
-    
-    internal static let length = MemoryLayout<UInt8>.size
-    
-    public static let dataType: GAPDataType = .securityManagerOutOfBandFlags
-    
-    public let flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>
-    
-    public init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag> = 0) {
-        
-        self.flags = flags
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[0])
-    }
-    
-    public var data: Data {
-        
-        return Data([flags.rawValue])
-    }
-}
-
-extension GAPSecurityManagerOOBFlags: ExpressibleByIntegerLiteral {
-    
-    public init(integerLiteral rawValue: GAPSecurityManagerOOBFlag.RawValue) {
-        
-        self.init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: rawValue))
-    }
 }
