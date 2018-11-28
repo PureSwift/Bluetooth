@@ -42,10 +42,18 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
         
         self.uuids = uuids
     }
+}
+
+extension GAPUUIDList: DataConvertible {
     
     static func += <T: DataContainer> (data: inout T, value: GAPUUIDList) {
         
         value.forEach { data += $0.littleEndian }
+    }
+    
+    var dataLength: Int {
+        
+        return MemoryLayout<Element>.size * uuids.count
     }
 }
 

@@ -25,7 +25,7 @@ public struct GAPSimplePairingHashC: GAPData, Equatable, Hashable {
 
 public extension GAPSimplePairingHashC {
     
-    init? <T: DataContainer> (data: T) {
+    init?(data: Data) {
         
         guard data.count == UInt128.length
             else { return nil }
@@ -50,7 +50,7 @@ public extension GAPSimplePairingHashC {
         self.init(uuid: uuid)
     }
     
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    func append(to data: inout Data) {
         
         data += UInt128(uuid: uuid).littleEndian
     }

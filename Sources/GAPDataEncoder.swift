@@ -24,31 +24,24 @@ public struct GAPDataEncoder {
     
     public func encode(_ encodables: GAPData...) -> Data {
         
-        let dataLengths = encodables.map { $0.dataLength }
-        let length = dataLengths.reduce(0, { $0 + $1 + 2 })
-        var data = Data(capacity: length)
-        
-        for (index, encodable) in encodables.enumerated() {
-            
-             let dataLength = dataLengths[index]
-            
-            data += UInt8(dataLength + 1)
-            data += type(of: encodable).dataType.rawValue
-            encodable.append(to: &data)
-        }
-        
-        return data
+        return encode(encodables)
     }
     
     public func encodeAdvertisingData(_ encodables: GAPData...) throws -> LowEnergyAdvertisingData {
         
+        let encodedData = encode(encodables)
+        
+        guard let advertisingData = LowEnergyAdvertisingData(data: encodedData)
+            else { throw Error.invalidSize(encodedData.count) }
+        
+        return advertisingData
+    }
+    
+    public func encode(_ encodables: [GAPData]) -> Data {
+        
         let dataLengths = encodables.map { $0.dataLength }
         let length = dataLengths.reduce(0, { $0 + $1 + 2 })
-        
-        guard length <= LowEnergyAdvertisingData.capacity
-            else { throw Error.invalidSize(length) }
-        
-        var data = LowEnergyAdvertisingData()
+        var data = Data(capacity: length)
         
         for (index, encodable) in encodables.enumerated() {
             
@@ -80,7 +73,7 @@ public struct GAPDataDecoder {
     
     public func decode(_ data: LowEnergyAdvertisingData) throws -> [GAPData] {
         
-        
+        return try data.withUnsafeData { try decode($0) }
     }
     
     public func decode(_ data: Data) throws -> [GAPData] {

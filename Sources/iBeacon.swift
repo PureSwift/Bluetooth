@@ -121,12 +121,8 @@ internal extension LowEnergyAdvertisingData {
     
     init(beacon: AppleBeacon, flags: GAPFlags) {
         
-        let data = GAPDataEncoder.encode([flags, beacon.manufactererData])
-        
-        guard let advertisingData = LowEnergyAdvertisingData(data: data)
-            else { fatalError("Data too large to fit in advertisment (\(data.count) bytes)") }
-        
-        self = advertisingData
+        let encoder = GAPDataEncoder()
+        self = try! encoder.encodeAdvertisingData(flags, beacon.manufactererData)
     }
 }
 
@@ -134,9 +130,9 @@ internal extension AppleBeacon {
     
     static func from(advertisingData: LowEnergyAdvertisingData) -> (beacon: AppleBeacon, flags: GAPFlags)? {
         
-        let types: [GAPData.Type] = [GAPFlags.self, GAPManufacturerSpecificData.self]
+        let decoder = GAPDataDecoder()
         
-        guard let decodedGapData = try? GAPDataDecoder.decode(advertisingData.data, types: types),
+        guard let decodedGapData = try? decoder.decode(advertisingData),
             decodedGapData.count == 2,
             let flags = decodedGapData[0] as? GAPFlags,
             let manufactererData = decodedGapData[1] as? GAPManufacturerSpecificData,
