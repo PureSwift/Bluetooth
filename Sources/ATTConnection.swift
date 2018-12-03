@@ -79,7 +79,7 @@ internal final class ATTConnection {
         //log?("Recieved data (\(recievedData.count) bytes)")
         
         // valid PDU data length
-        guard recievedData.count >= ATT.minimumPDULength
+        guard recievedData.count >= 1 // at least 1 byte for ATT opcode
             else { throw Error.garbageResponse(recievedData) }
         
         let opcodeByte = recievedData[0]

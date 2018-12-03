@@ -11,15 +11,6 @@ import Foundation
 /// L2CAP Socket protocol.
 public protocol L2CAPSocketProtocol: class {
     
-    /// Protocol/Service Multiplexer (PSM)
-    var protocolServiceMultiplexer: UInt16 { get }
-    
-    /// Channel Identifier (CID)
-    ///
-    /// L2CAP channel endpoints are identified to their clients by a Channel Identifier (CID).
-    /// This is assigned by L2CAP, and each L2CAP channel endpoint on any device has a different CID.
-    var channelIdentifier: UInt16 { get }
-    
     /// Reads from the socket.
     func recieve(_ bufferSize: Int) throws -> Data?
     

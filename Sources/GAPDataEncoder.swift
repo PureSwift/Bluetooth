@@ -64,6 +64,8 @@ public struct GAPDataEncoder {
             encodable.append(to: &data)
         }
         
+        assert(data.count == length, "Invalid data length")
+        
         return data
     }
 }

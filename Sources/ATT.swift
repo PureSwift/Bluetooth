@@ -13,31 +13,36 @@ import Foundation
 /// Bluetooth ATT protocol
 public enum ATT {
     
-    public static let PSM: ProtocolServiceMultiplexer   = .att
-    
-    public static let CID: UInt16                       = 4
-    
-    public static let minimumPDULength                  = 1  /* At least 1 byte for the opcode. */
-    
-    /// ATT Timeout, in miliseconds
-    public static let timeout: Int                      = 30_000 /* 30 seconds / 30,000 ms */
-    
-    /// Length of signature in write signed packet.
-    public static let signatureLength                   = 12
-    
-    public static let maximumValueLength                = 512
-    
-    // Namespace Typealiases
-        
+    /// ATT Error
     public typealias Error                              = ATTError
     
+    /// ATT protocol opcodes.
     public typealias Opcode                             = ATTOpcode
     
+    /// ATT protocol opcode categories.
     public typealias OpcodeType                         = ATTOpcodeType
     
+    /// ATT Attribute Permission
     public typealias AttributePermission                = ATTAttributePermission
     
+    /// ATT Maximum Transmission Unit
     public typealias MaximumTransmissionUnit            = ATTMaximumTransmissionUnit
+}
+
+// Deprecated API
+public extension ATT {
+    
+    @available(*, deprecated)
+    static var CID: UInt16 {
+        
+        return ChannelIdentifier.att.rawValue
+    }
+    
+    @available(*, deprecated)
+    static var PSM: ProtocolServiceMultiplexer {
+        
+        return .att
+    }
 }
 
 /// ATT protocol opcodes.
@@ -47,7 +52,11 @@ public enum ATTOpcode: UInt8 {
     case errorResponse                              = 0x01
     
     // Exchange MTU
+    
+    /// Maximum Transmission Unit Request
     case maximumTransmissionUnitRequest             = 0x02
+    
+    /// Maximum Transmission Unit Response
     case maximumTransmissionUnitResponse            = 0x03
     
     // Find Information

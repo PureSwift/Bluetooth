@@ -16,6 +16,7 @@ final class BluetoothTests: XCTestCase {
         ("testAdvertisingInterval", testAdvertisingInterval),
         ("testSecurityLevel", testSecurityLevel),
         ("testCompanyIdentifier", testCompanyIdentifier),
+        ("testChannelIdentifier", testChannelIdentifier),
         ("testHCICommandTimeout", testHCICommandTimeout),
         ("testPOSIXError", testPOSIXError),
         ("testHCIVersion", testHCIVersion),
@@ -66,6 +67,12 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(company.description, "Apple, Inc.")
         XCTAssertNotEqual(company.hashValue, 0)
         XCTAssertNotEqual(company, 77)
+    }
+    
+    func testChannelIdentifier() {
+        
+        XCTAssertEqual(ChannelIdentifier.att, 4)
+        XCTAssertEqual(ChannelIdentifier.att.description, "4")
     }
     
     func testHCICommandTimeout() {
