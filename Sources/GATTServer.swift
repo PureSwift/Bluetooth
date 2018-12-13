@@ -387,7 +387,7 @@ public final class GATTServer {
         // Set MTU
         maximumTransmissionUnit = finalMTU
         
-        log?("MTU Exchange (\(pdu.clientMTU) -> \(finalMTU))")
+        log?("MTU Exchange (\(pdu.clientMTU) -> \(serverMTU))")
     }
     
     private func readByGroupType(_ pdu: ATTReadByGroupTypeRequest) {
