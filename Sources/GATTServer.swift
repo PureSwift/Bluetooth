@@ -82,7 +82,7 @@ public final class GATTServer {
         
         database.write(value, forAttribute: handle)
         
-        didWriteAttribute(handle)
+        didWriteAttribute(handle, isLocalWrite: true)
     }
     
     /// Update the value of a characteristic attribute.
@@ -271,7 +271,7 @@ public final class GATTServer {
         didWriteAttribute(handle)
     }
     
-    private func didWriteAttribute(_ attributeHandle: UInt16) {
+    private func didWriteAttribute(_ attributeHandle: UInt16, isLocalWrite: Bool = false) {
         
         let (group, attribute) = database.attributeGroup(for: attributeHandle)
         assert(attribute.handle == attributeHandle)
@@ -281,7 +281,9 @@ public final class GATTServer {
             else { return }
         
         // inform delegate
-        didWrite?(attribute.uuid, attribute.handle, attribute.value)
+        if isLocalWrite == false {
+            didWrite?(attribute.uuid, attribute.handle, attribute.value)
+        }
         
         // Client configuration
         if let clientConfigurationDescriptor = characteristic.descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
