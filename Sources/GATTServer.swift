@@ -280,35 +280,39 @@ public final class GATTServer {
             let characteristic = service.characteristics.first(where: { $0.uuid == attribute.uuid })
             else { return }
         
-        // inform delegate
-        if isLocalWrite == false {
-            didWrite?(attribute.uuid, attribute.handle, attribute.value)
-        }
-        
-        // Client configuration
-        if let clientConfigurationDescriptor = characteristic.descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
+        // notify connected client if write is from server and not client write request
+        if isLocalWrite {
             
-            guard let descriptor = GATTClientCharacteristicConfiguration(data: clientConfigurationDescriptor.value)
-                else { return }
-            
-            // notify
-            if descriptor.configuration.contains(.notify) {
+            // Client configuration
+            if let clientConfigurationDescriptor = characteristic.descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
                 
-                let notification = ATTHandleValueNotification(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
+                guard let descriptor = GATTClientCharacteristicConfiguration(data: clientConfigurationDescriptor.value)
+                    else { return }
                 
-                send(notification)
-            }
-            
-            // indicate
-            if descriptor.configuration.contains(.indicate) {
-                
-                let indication = ATTHandleValueIndication(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
-                
-                send(indication) { [unowned self] (confirmation) in
+                // notify
+                if descriptor.configuration.contains(.notify) {
                     
-                    self.log?("Confirmation: \(confirmation)")
+                    let notification = ATTHandleValueNotification(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
+                    
+                    send(notification)
+                }
+                
+                // indicate
+                if descriptor.configuration.contains(.indicate) {
+                    
+                    let indication = ATTHandleValueIndication(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
+                    
+                    send(indication) { [unowned self] (confirmation) in
+                        
+                        self.log?("Confirmation: \(confirmation)")
+                    }
                 }
             }
+            
+        } else {
+            
+            // writes from central should not notify clients (at least not this connected central)
+            didWrite?(attribute.uuid, attribute.handle, attribute.value)
         }
     }
     
