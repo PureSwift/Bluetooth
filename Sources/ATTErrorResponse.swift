@@ -39,7 +39,7 @@ public extension ATTErrorResponse {
     
     internal static var length: Int { return 5 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == type(of: self).length,
             type(of: self).validateOpcode(data),
@@ -52,7 +52,7 @@ public extension ATTErrorResponse {
         self.init(request: request, attributeHandle: attributeHandle, error: error)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

@@ -32,7 +32,7 @@ public extension ATTFindInformationRequest {
     
     internal static var length: Int { return 5 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == type(of: self).length,
             type(of: self).validateOpcode(data)

@@ -33,7 +33,7 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
 
 public extension ATTReadMultipleRequest {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= 5,
             type(of: self).validateOpcode(data)
@@ -60,7 +60,7 @@ public extension ATTReadMultipleRequest {
         self.init(handles: handles)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

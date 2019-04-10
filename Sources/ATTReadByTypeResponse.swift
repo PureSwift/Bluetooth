@@ -35,7 +35,7 @@ public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
 
 public extension ATTReadByTypeResponse {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard let attributeData = ATTReadByTypeResponse.from(data: data)
             else { return nil }

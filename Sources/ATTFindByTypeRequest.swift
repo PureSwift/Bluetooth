@@ -46,7 +46,7 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
 
 public extension ATTFindByTypeRequest {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= 7,
             type(of: self).validateOpcode(data)
@@ -63,7 +63,7 @@ public extension ATTFindByTypeRequest {
                   attributeValue: attributeValue)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

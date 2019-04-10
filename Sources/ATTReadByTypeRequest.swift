@@ -39,7 +39,7 @@ public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
 
 public extension ATTReadByTypeRequest {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard let length = Length(rawValue: data.count),
             type(of: self).validateOpcode(data)

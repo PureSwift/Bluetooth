@@ -39,7 +39,7 @@ public extension ATTFindByTypeResponse {
     /// Minimum length.
     internal static var minimumLength: Int { return 1 + HandlesInformation.length }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= type(of: self).minimumLength,
             type(of: self).validateOpcode(data)
@@ -64,7 +64,7 @@ public extension ATTFindByTypeResponse {
         self.init(handles: handles)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

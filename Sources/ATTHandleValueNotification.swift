@@ -30,7 +30,7 @@ public struct ATTHandleValueNotification: ATTProtocolDataUnit, Equatable {
 
 public extension ATTHandleValueNotification {
         
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= 3,
             type(of: self).validateOpcode(data)

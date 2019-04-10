@@ -30,7 +30,7 @@ public extension ATTFindInformationResponse {
     /// Length ranges from 6, to the maximum MTU size.
     private static var minimumLength: Int { return 6 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= type(of: self).minimumLength,
             type(of: self).validateOpcode(data)
