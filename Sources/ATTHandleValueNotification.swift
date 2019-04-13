@@ -40,7 +40,7 @@ public extension ATTHandleValueNotification {
         self.value = data.suffixCheckingBounds(from: 3)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }
@@ -48,7 +48,7 @@ public extension ATTHandleValueNotification {
 
 public extension ATTHandleValueNotification {
     
-    public init(attribute: GATTDatabase.Attribute, maximumTransmissionUnit: ATTMaximumTransmissionUnit) {
+    init(attribute: GATTDatabase.Attribute, maximumTransmissionUnit: ATTMaximumTransmissionUnit) {
         
         // If the attribue value is longer than (ATT_MTU-3) octets,
         // then only the first (ATT_MTU-3) octets of this attribute value

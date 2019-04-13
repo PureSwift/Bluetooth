@@ -10,9 +10,9 @@ import Foundation
 
 public extension UUID {
     
-    public static var length: Int { return 16 }
-    public static var stringLength: Int { return 36 }
-    public static var unformattedStringLength: Int { return 32 }
+    static var length: Int { return 16 }
+    static var stringLength: Int { return 36 }
+    static var unformattedStringLength: Int { return 32 }
 }
 
 extension UUID: ByteValue {
@@ -51,14 +51,14 @@ extension UUID: RawRepresentable {
 
 public extension UUID {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == UUID.length else { return nil }
         
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(bytes: [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15])
     }

@@ -125,7 +125,7 @@ extension ClassOfDevice {
 
 public extension ClassOfDevice {
     
-    public enum MajorServiceClass: UInt16, BitMaskOption {
+    enum MajorServiceClass: UInt16, BitMaskOption {
         
         /// Limited Discoverable Mode [Ref #1]
         case limitedDiscoverable = 0b01
@@ -170,7 +170,7 @@ public extension ClassOfDevice {
 
 public extension ClassOfDevice {
     
-    public enum MajorDeviceClass: Equatable {
+    enum MajorDeviceClass: Equatable {
         
         /// Miscellaneous
         case miscellaneous
@@ -273,7 +273,7 @@ public extension ClassOfDevice {
         }
     }
     
-    public enum MajorDeviceClassType: UInt8 {
+    enum MajorDeviceClassType: UInt8 {
         
         /// Miscellaneous
         case miscellaneous = 0b00
@@ -323,12 +323,12 @@ public extension ClassOfDevice {
     typealias Toy = MinorDeviceClass.Toy
     typealias Health = MinorDeviceClass.Health
     
-    public enum MinorDeviceClass {}
+    enum MinorDeviceClass {}
 }
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    public enum Computer: UInt8 {
+    enum Computer: UInt8 {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -358,7 +358,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
 
-    public enum Phone: UInt8 {
+    enum Phone: UInt8 {
         
         /// Uncategorized, code for device not assigned
         case uncategorized = 0b00
@@ -382,7 +382,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    public enum NetworkAccessPoint: UInt8 {
+    enum NetworkAccessPoint: UInt8 {
         
         /// Fully available
         case fullyAvailable = 0b00
@@ -412,7 +412,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    public enum AudioVideo: UInt8 {
+    enum AudioVideo: UInt8 {
 
         /// Uncategorized, code not assigned
         case uncategorized = 0b00
@@ -469,7 +469,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    public enum PeripheralKeyboardPointing: UInt8 {
+    enum PeripheralKeyboardPointing: UInt8 {
         
         /// Not Keyboard / Not Pointing Device
         case notKeyboard = 0b00
@@ -484,7 +484,7 @@ public extension ClassOfDevice.MinorDeviceClass {
         case comboKeyboardPointingDevice = 0b11
     }
     
-    public enum PeripheralDevice: UInt8 {
+    enum PeripheralDevice: UInt8 {
         
         /// Uncategorized device
         case uncategorized = 0b00
@@ -520,7 +520,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
 
-    public enum Imaging: UInt8, BitMaskOption {
+    enum Imaging: UInt8, BitMaskOption {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -549,7 +549,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    public enum Wearable: UInt8 {
+    enum Wearable: UInt8 {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -573,7 +573,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    public enum Toy: UInt8 {
+    enum Toy: UInt8 {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -597,7 +597,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    public enum Health: UInt8 {
+    enum Health: UInt8 {
         
         /// Uncategorized
         case uncategorized = 0b00

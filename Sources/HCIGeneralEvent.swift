@@ -209,7 +209,7 @@ public enum HCIGeneralEvent: UInt8, HCIEvent {
 
 public extension HCIGeneralEvent {
     
-    public var name: String {
+    var name: String {
         
         return type(of: self).names[Int(rawValue)]
     }

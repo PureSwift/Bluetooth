@@ -237,7 +237,7 @@ public extension GAPIndoorPositioning {
 
 public extension GAPIndoorPositioning {
     
-    public enum Coordinates: Equatable {
+    enum Coordinates: Equatable {
         
         /// WGS84 coordinate system
         case global(latitude: UInt16, longitude: UInt16)

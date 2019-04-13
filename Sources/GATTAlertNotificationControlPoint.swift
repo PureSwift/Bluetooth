@@ -77,7 +77,7 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
 
 public extension GATTAlertNotificationControlPoint {
     
-    public enum Command: UInt8 {
+    enum Command: UInt8 {
         
         /// Enable New Incoming Alert Notification
         case enableNewIncomingAlertNotification

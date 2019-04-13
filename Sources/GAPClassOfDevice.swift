@@ -60,3 +60,22 @@ extension GAPClassOfDevice: Equatable {
         return lhs.device == rhs.device
     }
 }
+
+// MARK: - Hashable
+
+extension GAPClassOfDevice: Hashable {
+    
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        
+        device.0.hash(into: &hasher)
+        device.1.hash(into: &hasher)
+        device.2.hash(into: &hasher)
+    }
+    #else
+    public var hashValue: Int {
+        
+        return unsafeBitCast((UInt8(0), device.0, device.1, device.2), to: UInt32.self).hashValue
+    }
+    #endif
+}

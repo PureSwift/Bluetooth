@@ -35,10 +35,4 @@ public struct LowEnergyConnectionLength: RawRepresentable, Equatable {
         
         return min ... max
     }
-    
-    // Equatable
-    public static func == (lhs: LowEnergyConnectionLength, rhs: LowEnergyConnectionLength) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
 }

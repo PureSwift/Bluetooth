@@ -22,7 +22,7 @@ import Foundation
  
  The value `0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64` are interpreted that the server has 4 new email messages and the last message was sent by “Richard”.
  */
-public struct GATTNewAlert: GATTCharacteristic {
+public struct GATTNewAlert: GATTCharacteristic, Equatable {
     
     internal static let minLength = 2
     
@@ -80,21 +80,10 @@ public struct GATTNewAlert: GATTCharacteristic {
     }
 }
 
-extension GATTNewAlert: Equatable {
-    
-    public static func == (lhs: GATTNewAlert,
-                           rhs: GATTNewAlert) -> Bool {
-        
-        return lhs.category == rhs.category &&
-            lhs.newAlertsCount == rhs.newAlertsCount &&
-            lhs.information == rhs.information
-    }
-}
-
 public extension GATTNewAlert {
     
     /// Alert textual information.
-    public struct Information: RawRepresentable {
+    struct Information: RawRepresentable, Equatable, Hashable {
         
         /// The minimum length of “UTF-8 string” is 0 octets and maximum length of “UTF-8 string” is 18 octets.
         internal static let length = (min: 0, max: 18)
@@ -132,21 +121,5 @@ public extension GATTNewAlert {
             
             return data
         }
-    }
-}
-
-extension GATTNewAlert.Information: Equatable {
-    
-    public static func == (lhs: GATTNewAlert.Information, rhs: GATTNewAlert.Information) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension GATTNewAlert.Information: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return rawValue
     }
 }

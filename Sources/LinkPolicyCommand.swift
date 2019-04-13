@@ -87,7 +87,7 @@ public enum LinkPolicyCommand: UInt16, HCICommand {
 
 public extension LinkPolicyCommand {
     
-    public var name: String {
+    var name: String {
         
         return type(of: self).names[Int(rawValue)]
     }

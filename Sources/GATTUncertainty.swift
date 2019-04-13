@@ -57,7 +57,7 @@ public struct GATTUncertainty: GATTCharacteristic {
 
 public extension GATTUncertainty {
     
-    public enum Stationary: UInt8 {
+    enum Stationary: UInt8 {
         
         /// Stationary
         case stationary = 0x00
@@ -66,7 +66,7 @@ public extension GATTUncertainty {
         case mobile = 0x01
     }
     
-    public enum UpdateTime: UInt8 {
+    enum UpdateTime: UInt8 {
         
         /// Upto 3s
         case upTo3s = 0x00
@@ -93,7 +93,7 @@ public extension GATTUncertainty {
         case upTo3541s = 0x07
     }
     
-    public enum Precision: UInt8 {
+    enum Precision: UInt8 {
         
         /// Less than 0.1m
         case lessThan10cm = 0x00

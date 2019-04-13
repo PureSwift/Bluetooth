@@ -119,7 +119,7 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
 
 public extension BitMaskOptionSet {
     
-    public init<S: Sequence>(_ sequence: S) where S.Iterator.Element == Element {
+    init<S: Sequence>(_ sequence: S) where S.Iterator.Element == Element {
         
         self.rawValue = sequence.rawValue
     }
@@ -151,10 +151,17 @@ extension BitMaskOptionSet: CustomStringConvertible {
 
 extension BitMaskOptionSet: Hashable {
     
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        
+        rawValue.hash(into: &hasher)
+    }
+    #else
     public var hashValue: Int {
         
         return rawValue.hashValue
     }
+    #endif
 }
 
 // MARK: - ExpressibleByArrayLiteral

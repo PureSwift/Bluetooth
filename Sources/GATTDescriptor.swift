@@ -13,7 +13,7 @@ import Foundation
 public extension GATT {
     
     /// GATT Characteristic Descriptors
-    public enum CharacteristicDescriptor {
+    enum CharacteristicDescriptor {
         
         /// GATT Characteristic Descriptors
         public enum UUID {
@@ -54,14 +54,14 @@ public protocol GATTDescriptor {
 
 public extension GATT.CharacteristicDescriptor {
     
-    public typealias ClientConfiguration = GATTClientCharacteristicConfiguration
-    public typealias ExtendedProperties = GATTCharacteristicExtendedProperties
-    public typealias ServerConfiguration = GATTServerCharacteristicConfiguration
-    public typealias AggegateFormat = GATTAggregateFormatDescriptor
-    public typealias Format = GATTFormatDescriptor
-    public typealias UserDescription = GATTUserDescription
-    public typealias ReportReference = GATTReportReference
-    public typealias TimeTriggerSetting = GATTTimeTriggerSetting
-    public typealias ExternalReportReference = GATTExternalReportReference
-    public typealias NumberOfDigitals = GATTNumberOfDigitals
+    typealias ClientConfiguration = GATTClientCharacteristicConfiguration
+    typealias ExtendedProperties = GATTCharacteristicExtendedProperties
+    typealias ServerConfiguration = GATTServerCharacteristicConfiguration
+    typealias AggegateFormat = GATTAggregateFormatDescriptor
+    typealias Format = GATTFormatDescriptor
+    typealias UserDescription = GATTUserDescription
+    typealias ReportReference = GATTReportReference
+    typealias TimeTriggerSetting = GATTTimeTriggerSetting
+    typealias ExternalReportReference = GATTExternalReportReference
+    typealias NumberOfDigitals = GATTNumberOfDigitals
 }

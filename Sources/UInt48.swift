@@ -25,13 +25,13 @@ public struct UInt48: ByteValue {
 public extension UInt48 {
     
     /// The minimum representable value in this type.
-    public static var min: UInt48 { return UInt48(bytes: (.min, .min, .min, .min, .min, .min)) }
+    static var min: UInt48 { return UInt48(bytes: (.min, .min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    public static var max: UInt48 { return UInt48(bytes: (.max, .max, .max, .max, .max, .max)) }
+    static var max: UInt48 { return UInt48(bytes: (.max, .max, .max, .max, .max, .max)) }
     
     /// The value with all bits set to zero.
-    public static var zero: UInt48 { return .min }
+    static var zero: UInt48 { return .min }
 }
 
 // MARK: - Comparable
@@ -69,10 +69,15 @@ extension UInt48: Comparable {
 
 extension UInt48: Hashable {
     
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        UInt64(self).hash(into: &hasher)
+    }
+    #else
     public var hashValue: Int {
-        
         return UInt64(self).hashValue
     }
+    #endif
 }
 
 // MARK: - CustomStringConvertible
@@ -96,16 +101,16 @@ extension UInt48: CustomStringConvertible {
 
 public extension UInt48 {
     
-    public static var length: Int { return 6 }
+    static var length: Int { return 6 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == UInt48.length else { return nil }
         
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(bytes: [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
     }

@@ -233,7 +233,7 @@ public enum LMPFeature: UInt64, BitMaskOption {
 
 public extension LMPFeature {
     
-    public var name: String {
+    var name: String {
         
         switch self {
         case .slotPackets3: return "3 slot packets"

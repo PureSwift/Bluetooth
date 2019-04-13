@@ -74,7 +74,7 @@ public extension HCIHoldMode {
      
      Mandatory Range: 0x0014 to 0x8000
      */
-    public struct Interval: RawRepresentable, Equatable {
+    struct Interval: RawRepresentable, Equatable {
         
         public static let length = MemoryLayout<UInt16>.size + MemoryLayout<UInt16>.size
         

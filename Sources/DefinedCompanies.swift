@@ -13,7 +13,7 @@ public extension CompanyIdentifier {
     /// Bluetooth Company name.
     ///
     /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
-    public var name: String? {
+    var name: String? {
         
         return companyIdentifiers[rawValue]
     }

@@ -266,7 +266,7 @@ extension GATTDatabase: RandomAccessCollection {
 public extension GATTDatabase {
     
     /// ATT Attribute
-    public struct Attribute {
+    struct Attribute {
         
         public let handle: UInt16
         
@@ -297,7 +297,7 @@ internal extension GATTDatabase {
     /// Internal Representation of a GATT Service. 
     ///
     ///- Note: For use with `GATTDatabase` only.
-    internal struct AttributeGroup {
+    struct AttributeGroup {
         
         var attributes: [Attribute]
         
@@ -387,7 +387,7 @@ internal extension GATTDatabase {
         }
     }
     
-    internal struct ServiceAttribute {
+    struct ServiceAttribute {
         
         /// Attribute Handle
         var handle: UInt16
@@ -441,7 +441,7 @@ internal extension GATTDatabase {
         }
     }
     
-    internal struct IncludedServiceAttribute {
+    struct IncludedServiceAttribute {
         
         static let uuid: BluetoothUUID = .include
         
@@ -511,7 +511,7 @@ internal extension GATTDatabase {
         }
     }
     
-    internal struct CharacteristicDeclarationAttribute {
+    struct CharacteristicDeclarationAttribute {
         
         static let uuid: BluetoothUUID = .characteristic
         
@@ -576,7 +576,7 @@ internal extension GATTDatabase {
         }
     }
     
-    internal struct CharacteristicValueAttribute {
+    struct CharacteristicValueAttribute {
         
         /// Characteristic UUID
         var uuid: BluetoothUUID
@@ -618,7 +618,7 @@ internal extension GATTDatabase {
         }
     }
     
-    internal struct CharacteristicDescriptorAttribute {
+    struct CharacteristicDescriptorAttribute {
         
         /// Attribute Handle
         var handle: UInt16
@@ -662,5 +662,5 @@ internal extension GATTDatabase {
 
 public extension GATT {
     
-    public typealias Database = GATTDatabase
+    typealias Database = GATTDatabase
 }

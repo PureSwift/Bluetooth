@@ -32,21 +32,9 @@ public struct LowEnergyRxChannel: RawRepresentable, Equatable, Hashable, Compara
         self.rawValue = rawValue
     }
     
-    // Equatable
-    public static func == (lhs: LowEnergyRxChannel, rhs: LowEnergyRxChannel) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
     // Comparable
     public static func < (lhs: LowEnergyRxChannel, rhs: LowEnergyRxChannel) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
-    }
-    
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }

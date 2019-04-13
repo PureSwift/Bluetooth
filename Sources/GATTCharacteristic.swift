@@ -58,7 +58,7 @@ extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
     }
 }
 
-public struct GATTBatteryPercentage: BluetoothUnit {
+public struct GATTBatteryPercentage: BluetoothUnit, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt8>.size
     
@@ -85,14 +85,6 @@ public struct GATTBatteryPercentage: BluetoothUnit {
     }
 }
 
-extension GATTBatteryPercentage: Equatable {
-    
-    public static func == (lhs: GATTBatteryPercentage, rhs: GATTBatteryPercentage) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 extension GATTBatteryPercentage: CustomStringConvertible {
     
     public var description: String {
@@ -101,7 +93,7 @@ extension GATTBatteryPercentage: CustomStringConvertible {
     }
 }
 
-public struct GATTE2ecrc: RawRepresentable {
+public struct GATTE2ecrc: RawRepresentable, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt16>.size
     
@@ -110,14 +102,6 @@ public struct GATTE2ecrc: RawRepresentable {
     public init(rawValue: UInt16) {
         
         self.rawValue = rawValue
-    }
-}
-
-extension GATTE2ecrc: Equatable {
-    
-    public static func == (lhs: GATTE2ecrc, rhs: GATTE2ecrc) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 

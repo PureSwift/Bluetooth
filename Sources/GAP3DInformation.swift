@@ -90,7 +90,7 @@ public extension GAP3DInformation {
 public extension GAP3DInformation {
     
     /// GAP 3D Information Flag
-    public enum Flag: UInt8, BitMaskOption {
+    enum Flag: UInt8, BitMaskOption {
         
         /// Association Notification
         case associationNotification = 0b01

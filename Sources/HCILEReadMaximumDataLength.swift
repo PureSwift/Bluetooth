@@ -103,22 +103,10 @@ public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_R
             self.rawValue = rawValue
         }
         
-        // Equatable
-        public static func == (lhs: SupportedMaxRxTime, rhs: SupportedMaxRxTime) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
-        }
-        
         // Comparable
         public static func < (lhs: SupportedMaxRxTime, rhs: SupportedMaxRxTime) -> Bool {
             
             return lhs.rawValue < rhs.rawValue
-        }
-        
-        // Hashable
-        public var hashValue: Int {
-            
-            return Int(rawValue)
         }
     }
     
@@ -149,22 +137,10 @@ public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_R
             self.rawValue = rawValue
         }
         
-        // Equatable
-        public static func == (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
-        }
-        
         // Comparable
         public static func < (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
             
             return lhs.rawValue < rhs.rawValue
-        }
-        
-        // Hashable
-        public var hashValue: Int {
-            
-            return Int(rawValue)
         }
     }
 }

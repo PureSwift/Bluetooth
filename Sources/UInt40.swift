@@ -26,13 +26,13 @@ public struct UInt40: ByteValue {
 public extension UInt40 {
     
     /// The minimum representable value in this type.
-    public static var min: UInt40 { return UInt40(bytes: (.min, .min, .min, .min, .min)) }
+    static var min: UInt40 { return UInt40(bytes: (.min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    public static var max: UInt40 { return UInt40(bytes: (.max, .max, .max, .max, .max)) }
+    static var max: UInt40 { return UInt40(bytes: (.max, .max, .max, .max, .max)) }
     
     /// The value with all bits set to zero.
-    public static var zero: UInt40 { return .min }
+    static var zero: UInt40 { return .min }
 }
 
 // MARK: - Equatable
@@ -53,10 +53,15 @@ extension UInt40: Equatable {
 
 extension UInt40: Hashable {
     
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        UInt64(self).hash(into: &hasher)
+    }
+    #else
     public var hashValue: Int {
-        
         return UInt64(self).hashValue
     }
+    #endif
 }
 
 // MARK: - CustomStringConvertible
@@ -79,16 +84,16 @@ extension UInt40: CustomStringConvertible {
 
 public extension UInt40 {
     
-    public static var length: Int { return 5 }
+    static var length: Int { return 5 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == UInt40.length else { return nil }
         
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4]))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4])
     }

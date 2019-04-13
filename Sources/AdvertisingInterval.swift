@@ -48,11 +48,11 @@ public struct AdvertisingInterval: Equatable, Hashable {
 
 public extension AdvertisingInterval {
     
-    public static var min: AdvertisingInterval { return AdvertisingInterval(0x0020) }
+    static var min: AdvertisingInterval { return AdvertisingInterval(0x0020) }
     
-    public static var max: AdvertisingInterval { return AdvertisingInterval(0x4000) }
+    static var max: AdvertisingInterval { return AdvertisingInterval(0x4000) }
     
-    public static var `default`: AdvertisingInterval { return AdvertisingInterval(0x0800) }
+    static var `default`: AdvertisingInterval { return AdvertisingInterval(0x0800) }
 }
 
 // MARK: - Comparable

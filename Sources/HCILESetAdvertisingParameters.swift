@@ -84,9 +84,9 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
 
 public extension HCILESetAdvertisingParameters {
     
-    public static var length: Int { return 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1 }
+    static var length: Int { return 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1 }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }
@@ -118,7 +118,7 @@ extension HCILESetAdvertisingParameters: DataConvertible {
 
 public extension HCILESetAdvertisingParameters {
     
-    public enum AdvertisingType: UInt8 {
+    enum AdvertisingType: UInt8 {
         
         /// Connectable undirected advertising event
         case undirected         = 0x00
@@ -136,7 +136,7 @@ public extension HCILESetAdvertisingParameters {
     }
     
     /// Channel Map
-    public enum ChannelMap: UInt8, BitMaskOption {
+    enum ChannelMap: UInt8, BitMaskOption {
         
         /// Enable channel 37 use
         case channel37              = 0b00000001
@@ -151,7 +151,7 @@ public extension HCILESetAdvertisingParameters {
     }
     
     /// Filter Policy
-    public enum FilterPolicy: UInt8 {
+    enum FilterPolicy: UInt8 {
         
         /// Allow Scan Request from Any,
         /// Allow Connect Request from Any (default).

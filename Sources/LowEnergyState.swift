@@ -47,7 +47,7 @@ public enum LowEnergyState: Int, BitMaskOption {
 
 public extension LowEnergyState {
     
-    public var name: String {
+    var name: String {
         
         guard let name = lowEnergyStateNames[self]
             else { fatalError("No name for \(self)") }
@@ -115,7 +115,7 @@ public enum LowEnergyStateSet: UInt64 {
 
 public extension LowEnergyStateSet {
     
-    public var states: BitMaskOptionSet<LowEnergyState> {
+    var states: BitMaskOptionSet<LowEnergyState> {
         
         guard let states = lowEnergyStates[self]
             else { fatalError("Invalid state \(self)") }

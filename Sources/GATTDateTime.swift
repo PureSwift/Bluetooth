@@ -87,13 +87,13 @@ public extension GATTDateTime {
     }
     
     /// Initialize with the current date.
-    public init() {
+    init() {
         
         self.init(date: Date())
     }
     
     /// Initialize with the specified date.
-    public init(date: Date) {
+    init(date: Date) {
         
         let calendar = type(of: self).calendar
         
@@ -175,7 +175,7 @@ public extension GATTDateTime {
     /// Year as defined by the Gregorian calendar.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    public struct Year: BluetoothUnit {
+    struct Year: BluetoothUnit {
         
         public static var unitType: UnitIdentifier { return .year }
         
@@ -225,7 +225,7 @@ public extension GATTDateTime {
     /// Month of the year as defined by the Gregorian calendar.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    public enum Month: UInt8, BluetoothUnit {
+    enum Month: UInt8, BluetoothUnit {
         
         public static var unitType: UnitIdentifier { return .month }
         
@@ -270,7 +270,7 @@ public extension GATTDateTime {
     /// Day of the month as defined by the Gregorian calendar.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    public struct Day: BluetoothUnit {
+    struct Day: BluetoothUnit {
         
         public static var unitType: UnitIdentifier { return .day }
         
@@ -322,7 +322,7 @@ public extension GATTDateTime {
     /// Number of hours past midnight.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    public struct Hour: BluetoothUnit {
+    struct Hour: BluetoothUnit {
         
         public static var unitType: UnitIdentifier { return .hour }
         
@@ -372,7 +372,7 @@ public extension GATTDateTime {
     /// Number of minutes since the start of the hour.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    public struct Minute: BluetoothUnit {
+    struct Minute: BluetoothUnit {
         
         public static var unitType: UnitIdentifier { return .minute }
         
@@ -421,7 +421,7 @@ public extension GATTDateTime {
     /// Number of seconds since the start of the minute.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    public struct Second: BluetoothUnit {
+    struct Second: BluetoothUnit {
         
         public static var unitType: UnitIdentifier { return .second }
         

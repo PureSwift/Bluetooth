@@ -46,21 +46,9 @@ public struct LowEnergySupervisionTimeout: RawRepresentable, Equatable, Hashable
         self.rawValue = rawValue
     }
     
-    // Equatable
-    public static func == (lhs: LowEnergySupervisionTimeout, rhs: LowEnergySupervisionTimeout) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
     // Comparable
     public static func < (lhs: LowEnergySupervisionTimeout, rhs: LowEnergySupervisionTimeout) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
-    }
-    
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }

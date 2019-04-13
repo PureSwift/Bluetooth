@@ -20,7 +20,7 @@ import Foundation
  
  - SeeAlso: [Alert Category ID Bit Mask](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_category_id_bit_mask.xml)
  */
-public struct GATTAlertCategoryBitMask: GATTCharacteristic {
+public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable {
     
     public static var uuid: BluetoothUUID { return .alertCategoryIdBitMask }
     
@@ -43,7 +43,7 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic {
 
 public extension GATTAlertCategoryBitMask {
     
-    public enum Category: UInt64, BitMaskOption {
+    enum Category: UInt64, BitMaskOption {
         
         // 1st byte
         
@@ -81,14 +81,5 @@ public extension GATTAlertCategoryBitMask {
             .highPrioritized,
             .instantMessage
         ]
-    }
-}
-
-extension GATTAlertCategoryBitMask: Equatable {
-    
-    public static func == (lhs: GATTAlertCategoryBitMask,
-                           rhs: GATTAlertCategoryBitMask) -> Bool {
-        
-        return lhs.categories == rhs.categories
     }
 }

@@ -26,13 +26,13 @@ public struct UInt256: ByteValue {
 public extension UInt256 {
     
     /// The minimum representable value in this type.
-    public static var min: UInt256 { return UInt256(bytes: (.min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min)) }
+    static var min: UInt256 { return UInt256(bytes: (.min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    public static var max: UInt256 { return UInt256(bytes: (.max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max)) }
+    static var max: UInt256 { return UInt256(bytes: (.max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max)) }
     
     /// The value with all bits set to zero.
-    public static var zero: UInt256 { return .min }
+    static var zero: UInt256 { return .min }
 }
 
 // MARK: - Equatable
@@ -80,10 +80,15 @@ extension UInt256: Equatable {
 
 extension UInt256: Hashable {
     
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        data.hash(into: &hasher)
+    }
+    #else
     public var hashValue: Int {
-        
         return data.hashValue
     }
+    #endif
 }
 
 // MARK: - CustomStringConvertible
@@ -133,16 +138,16 @@ extension UInt256: CustomStringConvertible {
 
 public extension UInt256 {
     
-    public static var length: Int { return 32 }
+    static var length: Int { return 32 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == UInt128.length else { return nil }
         
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23], data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31]))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(bytes: [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15, bytes.16, bytes.17, bytes.18, bytes.19, bytes.20, bytes.21, bytes.22, bytes.23, bytes.24, bytes.25, bytes.26, bytes.27, bytes.28, bytes.29, bytes.30, bytes.31])
     }

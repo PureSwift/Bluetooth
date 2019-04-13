@@ -60,7 +60,7 @@ public struct HCILEReadChannelMap: HCICommandParameter { // HCI_LE_Read_Channel_
 
 public extension HCILEReadChannelMap {
     
-    public typealias ReturnParameter = HCILEReadChannelMapReturnParameter
+    typealias ReturnParameter = HCILEReadChannelMapReturnParameter
 }
 
 /// LE Read Channel Map Command

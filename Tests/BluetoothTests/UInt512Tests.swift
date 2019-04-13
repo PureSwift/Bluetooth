@@ -26,7 +26,6 @@ final class UInt512Tests: XCTestCase {
     
     func testHashable() {
         
-        XCTAssertEqual(UInt512.zero.hashValue, 0)
         XCTAssertNotEqual(UInt512.max.hashValue, 0)
     }
     

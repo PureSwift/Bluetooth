@@ -42,7 +42,7 @@ public extension ATTFindInformationRequest {
         self.endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

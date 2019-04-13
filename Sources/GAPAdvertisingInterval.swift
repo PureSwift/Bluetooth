@@ -29,7 +29,7 @@ public extension GAPAdvertisingInterval {
     
     internal static var units: Double { return 0.0625 }
     
-    public var miliseconds: Double {
+    var miliseconds: Double {
         
         return Double(interval) * type(of: self).units
     }

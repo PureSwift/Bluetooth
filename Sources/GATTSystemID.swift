@@ -15,7 +15,7 @@ import Foundation
  
  [System ID](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.system_id.xml)
  */
-public struct GATTSystemID: GATTCharacteristic, RawRepresentable {
+public struct GATTSystemID: GATTCharacteristic, RawRepresentable, Equatable, Hashable {
     
     public static var uuid: BluetoothUUID { return .systemId }
     
@@ -108,26 +108,6 @@ public struct GATTSystemID: GATTCharacteristic, RawRepresentable {
             bytes.6,
             bytes.7
             ])
-    }
-}
-
-// MARK: - Equatable
-
-extension GATTSystemID: Equatable {
-    
-    public static func == (lhs: GATTSystemID, rhs: GATTSystemID) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Hashable
-
-extension GATTSystemID: Hashable {
-    
-    public var hashValue: Int {
-        
-        return rawValue.hashValue
     }
 }
 

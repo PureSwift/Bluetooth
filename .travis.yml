@@ -14,6 +14,9 @@ matrix:
       # Test Xcode 10 / Swift 4.2
        - os: osx
          osx_image: xcode10
+      # Test Xcode 10.2 / Swift 5
+       - os: osx
+         osx_image: xcode10.2
 addons:
   apt:
     packages:
@@ -29,13 +32,14 @@ install:
 env:
   - SWIFT_VERSION=swift-4.1.2-RELEASE
 script:
+  # Setup Environment
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gem install xcpretty-travis-formatter ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu14.04/usr/bin:"${PATH}" ; fi
   # Run Unit Tests
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then swift test ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then swift build ; fi
+  - swift test
   # Compile with Xcode
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-iOS | xcpretty && exit ${PIPESTATUS[0]}; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty && exit ${PIPESTATUS[0]}; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty && exit ${PIPESTATUS[0]}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-iOS | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}; fi

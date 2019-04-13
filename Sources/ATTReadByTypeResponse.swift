@@ -43,7 +43,7 @@ public extension ATTReadByTypeResponse {
         self.attributeData = attributeData
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }
@@ -71,7 +71,7 @@ extension ATTReadByTypeResponse: DataConvertible {
 public extension ATTReadByTypeResponse {
     
     /// Attribute handle and value pair.
-    public struct AttributeData: Equatable {
+    struct AttributeData: Equatable {
         
         /// Attribute Handle
         public let handle: UInt16

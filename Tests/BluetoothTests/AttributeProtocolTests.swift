@@ -292,9 +292,12 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([7, 40, 0, 48, 0])
             
+            let handle = ATTFindByTypeResponse.HandlesInformation(foundAttribute: 40, groupEnd: 48)
+            
             guard let pdu = ATTFindByTypeResponse(data: data)
                 else { XCTFail("Could not parse"); return }
             
+            XCTAssertEqual(pdu, ATTFindByTypeResponse(handles: [handle]))
             XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.dataLength, data.count)
             
@@ -302,7 +305,7 @@ final class AttributeProtocolTests: XCTestCase {
                 pdu.handles.count == 1
                 else { XCTFail("Invalid response"); return }
             
-            XCTAssertEqual(foundHandle, ATTFindByTypeResponse.HandlesInformation(foundAttribute: 40, groupEnd: 48))
+            XCTAssertEqual(foundHandle, handle)
             XCTAssertEqual(Data(foundHandle), Data([40, 0, 48, 0]))
         }
     }

@@ -150,7 +150,7 @@ public enum LinkControlCommand: UInt16, HCICommand {
 
 public extension LinkControlCommand {
     
-    public var name: String {
+    var name: String {
         
         return type(of: self).names[Int(rawValue)]
     }

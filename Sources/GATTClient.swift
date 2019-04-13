@@ -10,7 +10,7 @@ import Foundation
 
 public extension GATT {
     
-    public typealias Client = GATTClient
+    typealias Client = GATTClient
 }
 
 /// GATT Client
@@ -1142,11 +1142,11 @@ public final class GATTClient {
 
 public extension GATTClient {
     
-    public typealias Error = GATTClientError
+    typealias Error = GATTClientError
     
-    public typealias Response<Value> = GATTClientResponse<Value>
+    typealias Response<Value> = GATTClientResponse<Value>
     
-    public typealias Notification = (Data) -> ()
+    typealias Notification = (Data) -> ()
 }
 
 public enum GATTClientError: Error {
@@ -1236,7 +1236,7 @@ public enum GATTClientResponse <Value> {
 public extension GATTClient {
     
     /// A discovered service.
-    public struct Service {
+    struct Service {
         
         public let uuid: BluetoothUUID
         
@@ -1254,7 +1254,7 @@ public extension GATTClient {
     }
     
     /// A discovered characteristic.
-    public struct Characteristic {
+    struct Characteristic {
         
         public typealias Property = GATT.CharacteristicProperty
         
@@ -1266,7 +1266,7 @@ public extension GATTClient {
     }
     
     /// A discovered descriptor
-    public struct Descriptor {
+    struct Descriptor {
         
         public let uuid: BluetoothUUID
         
