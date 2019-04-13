@@ -80,10 +80,15 @@ extension UInt256: Equatable {
 
 extension UInt256: Hashable {
     
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        data.hash(into: &hasher)
+    }
+    #else
     public var hashValue: Int {
-        
         return data.hashValue
     }
+    #endif
 }
 
 // MARK: - CustomStringConvertible

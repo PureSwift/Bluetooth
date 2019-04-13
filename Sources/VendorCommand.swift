@@ -25,9 +25,9 @@ public struct VendorCommand: HCICommand, Equatable, Hashable {
 public extension VendorCommand {
     
     /// The names of the registered vendor commands.
-    public static var names = [VendorCommand: String]()
+    static var names = [VendorCommand: String]()
     
-    public var name: String {
+    var name: String {
         
         return type(of: self).names[self] ?? rawValue.toHexadecimal()
     }

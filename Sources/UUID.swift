@@ -10,9 +10,9 @@ import Foundation
 
 public extension UUID {
     
-    public static var length: Int { return 16 }
-    public static var stringLength: Int { return 36 }
-    public static var unformattedStringLength: Int { return 32 }
+    static var length: Int { return 16 }
+    static var stringLength: Int { return 36 }
+    static var unformattedStringLength: Int { return 32 }
 }
 
 extension UUID: ByteValue {
