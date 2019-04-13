@@ -13,7 +13,7 @@ import Foundation
 /// The current charge level of a battery. 100% represents fully charged while 0% represents fully discharged.
 ///
 /// - SeeAlso: [Battery Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_level.xml)
-public struct GATTBatteryLevel: GATTCharacteristic {
+public struct GATTBatteryLevel: GATTCharacteristic, Equatable, Hashable {
     
     public typealias Percentage = GATTBatteryPercentage
     
@@ -27,8 +27,11 @@ public struct GATTBatteryLevel: GATTCharacteristic {
         
         self.level = level
     }
+}
+
+public extension GATTBatteryLevel {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
@@ -39,32 +42,18 @@ public struct GATTBatteryLevel: GATTCharacteristic {
         self.init(level: level)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data([level.rawValue])
     }
 }
 
-extension GATTBatteryLevel: Equatable {
-    
-    public static func == (lhs: GATTBatteryLevel, rhs: GATTBatteryLevel) -> Bool {
-        
-        return lhs.level == rhs.level
-    }
-}
+// MARK: - CustomStringConvertible
 
 extension GATTBatteryLevel: CustomStringConvertible {
     
     public var description: String {
         
         return level.description
-    }
-}
-
-extension GATTBatteryLevel: Hashable {
-    
-    public var hashValue: Int {
-        
-        return Int(level.rawValue)
     }
 }
