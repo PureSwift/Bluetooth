@@ -359,7 +359,7 @@ import CoreBluetooth
 
 public extension BluetoothUUID {
     
-    init(coreBluetooth: CBUUID) {
+    init(_ coreBluetooth: CBUUID) {
         
         guard let uuid = BluetoothUUID(data: coreBluetooth.data)
             else { fatalError("Could not create Bluetooth UUID from \(coreBluetooth)") }
@@ -367,7 +367,24 @@ public extension BluetoothUUID {
         // CBUUID is always big endian
         self.init(bigEndian: uuid)
     }
+}
+
+public extension CBUUID {
     
+    convenience init(_ bluetoothUUID: BluetoothUUID) {
+        self.init(data: bluetoothUUID.bigEndian.data)
+    }
+}
+
+public extension BluetoothUUID {
+    
+    @available(*, deprecated, message: "Use BluetoothUUID.init() instead")
+    init(coreBluetooth: CBUUID) {
+        
+        self.init(coreBluetooth)
+    }
+    
+    @available(*, deprecated, message: "Use CBUUID.init() instead")
     func toCoreBluetooth() -> CBUUID {
         return CBUUID(data: self.bigEndian.data)
     }
