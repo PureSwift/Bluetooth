@@ -26,7 +26,6 @@ final class UInt256Tests: XCTestCase {
     
     func testHashable() {
         
-        XCTAssertEqual(UInt256.zero.hashValue, 0)
         XCTAssertNotEqual(UInt256.max.hashValue, 0)
     }
     

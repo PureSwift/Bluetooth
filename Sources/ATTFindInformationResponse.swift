@@ -46,7 +46,7 @@ public extension ATTFindInformationResponse {
         self.attributeData = attributeData
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }
