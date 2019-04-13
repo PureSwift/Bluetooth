@@ -35,17 +35,9 @@ public struct LowEnergyRfTxPathCompensationValue: RawRepresentable, Equatable, H
         self.rawValue = rawValue
     }
     
-    // Equatable
-    public static func == (lhs: LowEnergyRfTxPathCompensationValue, rhs: LowEnergyRfTxPathCompensationValue) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
     // Comparable
     public static func < (lhs: LowEnergyRfTxPathCompensationValue, rhs: LowEnergyRfTxPathCompensationValue) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
     }
-    
-    
 }
