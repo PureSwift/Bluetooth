@@ -50,9 +50,5 @@ public struct LowEnergyScanInterval: RawRepresentable, Equatable, Comparable, Ha
         return lhs.rawValue < rhs.rawValue
     }
     
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
+    
 }

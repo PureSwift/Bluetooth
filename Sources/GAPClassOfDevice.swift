@@ -60,3 +60,4 @@ extension GAPClassOfDevice: Equatable {
         return lhs.device == rhs.device
     }
 }
+

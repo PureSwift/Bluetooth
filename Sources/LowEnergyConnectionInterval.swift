@@ -37,21 +37,9 @@ public struct LowEnergyConnectionInterval: RawRepresentable, Equatable, Hashable
         self.rawValue = rawValue
     }
     
-    // Equatable
-    public static func == (lhs: LowEnergyConnectionInterval, rhs: LowEnergyConnectionInterval) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
     // Comparable
     public static func < (lhs: LowEnergyConnectionInterval, rhs: LowEnergyConnectionInterval) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
-    }
-    
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }

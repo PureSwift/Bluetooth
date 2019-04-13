@@ -127,22 +127,10 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
             return Double(rawValue) * 10
         }
         
-        // Equatable
-        public static func == (lhs: Duration, rhs: Duration) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
-        }
-        
         // Comparable
         public static func < (lhs: Duration, rhs: Duration) -> Bool {
             
             return lhs.rawValue < rhs.rawValue
-        }
-        
-        // Hashable
-        public var hashValue: Int {
-            
-            return Int(rawValue)
         }
     }
     
@@ -181,22 +169,10 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
             return Double(rawValue) * 1.28
         }
         
-        // Equatable
-        public static func == (lhs: Period, rhs: Period) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
-        }
-        
         // Comparable
         public static func < (lhs: Period, rhs: Period) -> Bool {
             
             return lhs.rawValue < rhs.rawValue
-        }
-        
-        // Hashable
-        public var hashValue: Int {
-            
-            return Int(rawValue)
         }
     }
 }

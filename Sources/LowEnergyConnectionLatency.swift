@@ -28,18 +28,6 @@ public struct LowEnergyConnectionLatency: RawRepresentable, Equatable, Hashable,
         self.rawValue = rawValue
     }
     
-    // Equatable
-    public static func == (lhs: LowEnergyConnectionLatency, rhs: LowEnergyConnectionLatency) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
-    // HashableUInt12
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
-    
     // Comparable
     public static func < (lhs: LowEnergyConnectionLatency, rhs: LowEnergyConnectionLatency) -> Bool {
         

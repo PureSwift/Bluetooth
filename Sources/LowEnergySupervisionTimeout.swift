@@ -58,9 +58,5 @@ public struct LowEnergySupervisionTimeout: RawRepresentable, Equatable, Hashable
         return lhs.rawValue < rhs.rawValue
     }
     
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
+    
 }

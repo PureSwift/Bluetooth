@@ -47,9 +47,5 @@ public struct LowEnergyRfTxPathCompensationValue: RawRepresentable, Equatable, H
         return lhs.rawValue < rhs.rawValue
     }
     
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
+    
 }

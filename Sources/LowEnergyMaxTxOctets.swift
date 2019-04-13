@@ -34,21 +34,9 @@ public struct LowEnergyMaxTxOctets: RawRepresentable, Equatable, Hashable, Compa
         self.rawValue = rawValue
     }
     
-    // Equatable
-    public static func == (lhs: LowEnergyMaxTxOctets, rhs: LowEnergyMaxTxOctets) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
     // Comparable
     public static func < (lhs: LowEnergyMaxTxOctets, rhs: LowEnergyMaxTxOctets) -> Bool {
         
         return lhs.rawValue < rhs.rawValue
-    }
-    
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
     }
 }

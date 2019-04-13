@@ -44,9 +44,5 @@ public struct LowEnergyRxChannel: RawRepresentable, Equatable, Hashable, Compara
         return lhs.rawValue < rhs.rawValue
     }
     
-    // Hashable
-    public var hashValue: Int {
-        
-        return Int(rawValue)
-    }
+    
 }

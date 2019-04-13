@@ -76,22 +76,10 @@ public struct HCILEReadAdvertisingChannelTxPower: HCICommandReturnParameter { //
             self.rawValue = rawValue
         }
         
-        // Equatable
-        public static func == (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
-        }
-        
         // Comparable
         public static func < (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
             
             return lhs.rawValue < rhs.rawValue
-        }
-        
-        // Hashable
-        public var hashValue: Int {
-            
-            return Int(rawValue)
         }
     }
 }
