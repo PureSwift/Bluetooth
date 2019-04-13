@@ -8,7 +8,7 @@
 
 public extension GAP {
     
-    public typealias Appearance = GAPAppearance
+    typealias Appearance = GAPAppearance
 }
 
 /// GAP Appearance
@@ -51,7 +51,7 @@ extension GAPAppearance: ExpressibleByIntegerLiteral {
 
 public extension GAPAppearance {
     
-    public struct Category: RawRepresentable, Equatable, Hashable {
+    struct Category: RawRepresentable, Equatable, Hashable {
         
         public var rawValue: UInt16
         

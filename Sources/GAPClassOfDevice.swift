@@ -61,7 +61,6 @@ extension GAPClassOfDevice: Equatable {
     }
 }
 
-
 // MARK: - Hashable
 
 extension GAPClassOfDevice: Hashable {

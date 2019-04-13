@@ -26,13 +26,13 @@ public struct UInt24: ByteValue {
 public extension UInt24 {
     
     /// The minimum representable value in this type.
-    public static var min: UInt24 { return UInt24(bytes: (.min, .min, .min)) }
+    static var min: UInt24 { return UInt24(bytes: (.min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    public static var max: UInt24 { return UInt24(bytes: (.max, .max, .max)) }
+    static var max: UInt24 { return UInt24(bytes: (.max, .max, .max)) }
     
     /// The value with all bits set to zero.
-    public static var zero: UInt24 { return .min }
+    static var zero: UInt24 { return .min }
 }
 
 // MARK: - Comparable
@@ -96,16 +96,16 @@ extension UInt24: CustomStringConvertible {
 
 public extension UInt24 {
     
-    public static var length: Int { return 3 }
+    static var length: Int { return 3 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == UInt24.length else { return nil }
         
         self.init(bytes: (data[0], data[1], data[2]))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(bytes: [bytes.0, bytes.1, bytes.2])
     }

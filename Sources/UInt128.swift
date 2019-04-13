@@ -27,13 +27,13 @@ public struct UInt128: ByteValue {
 public extension UInt128 {
     
     /// The minimum representable value in this type.
-    public static var min: UInt128 { return UInt128(bytes: (.min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min)) }
+    static var min: UInt128 { return UInt128(bytes: (.min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    public static var max: UInt128 { return UInt128(bytes: (.max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max)) }
+    static var max: UInt128 { return UInt128(bytes: (.max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max, .max)) }
     
     /// The value with all bits set to zero.
-    public static var zero: UInt128 { return .min }
+    static var zero: UInt128 { return .min }
 }
 
 // MARK: - Equatable
@@ -107,9 +107,9 @@ extension UInt128: CustomStringConvertible {
 
 public extension UInt128 {
     
-    public static var length: Int { return 16 }
+    static var length: Int { return 16 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == UInt128.length
             else { return nil }
@@ -117,7 +117,7 @@ public extension UInt128 {
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15])
     }

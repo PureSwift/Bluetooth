@@ -53,7 +53,7 @@ public extension GAPLERole {
 public extension GAPLERole {
     
     /// Bluetooth LE Role (e.g. Central or peripheral).
-    public enum Role: UInt8, BitMaskOption { // not part of BT spec
+    enum Role: UInt8, BitMaskOption { // not part of BT spec
         
         case central = 0b01
         case peripheral = 0b10

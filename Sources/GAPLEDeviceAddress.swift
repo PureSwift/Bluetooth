@@ -39,7 +39,7 @@ public extension GAPLEDeviceAddress {
     
     internal static var length: Int { return 7 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == Swift.type(of: self).length,
             let type = GAPLEDeviceAddressType(rawValue: data[6])

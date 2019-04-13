@@ -10,10 +10,10 @@ import Foundation
 
 public extension GATT {
     
-    public typealias Permission = ATT.AttributePermission
+    typealias Permission = ATT.AttributePermission
     
     /// GATT Service
-    public struct Service {
+    struct Service {
         
         public var uuid: BluetoothUUID
         
@@ -36,7 +36,7 @@ public extension GATT {
     }
     
     /// GATT Include Declaration
-    public struct Include {
+    struct Include {
         
         /// Included service handle
         public var serviceHandle: UInt16
@@ -58,7 +58,7 @@ public extension GATT {
     }
     
     /// GATT Characteristic
-    public struct Characteristic {
+    struct Characteristic {
         
         public typealias Descriptor = GATT.Descriptor
         public typealias Property = GATT.CharacteristicProperty
@@ -88,7 +88,7 @@ public extension GATT {
     }
     
     /// GATT Characteristic Descriptor
-    public struct Descriptor {
+    struct Descriptor {
         
         public var uuid: BluetoothUUID
         

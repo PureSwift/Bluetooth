@@ -11,10 +11,10 @@ import Foundation
 public extension GAP {
     
     /// GAP Data Decoder
-    public typealias DataEncoder = GAPDataEncoder
+    typealias DataEncoder = GAPDataEncoder
     
     /// GAP Data Decoder
-    public typealias DataDecoder = GAPDataDecoder
+    typealias DataDecoder = GAPDataDecoder
 }
 
 /// GAP Data Decoder
@@ -185,14 +185,14 @@ public struct GAPDataDecoder {
 
 internal extension GAPDataDecoder {
     
-    internal static let defaultDataTypes: [GAPDataType: GAPData.Type] = {
+    static let defaultDataTypes: [GAPDataType: GAPData.Type] = {
         //let types = [GAPDataType: GAPData.Type].init(grouping: defaultTypes, by: { $0.dataType })
         var types = [GAPDataType: GAPData.Type](minimumCapacity: defaultTypes.count)
         defaultTypes.forEach { types[$0.dataType] = $0 }
         return types
     }()
     
-    internal static let defaultTypes: [GAPData.Type] = [
+    static let defaultTypes: [GAPData.Type] = [
         GAP3DInformation.self,
         GAPAdvertisingInterval.self,
         GAPAppearanceData.self,
@@ -241,7 +241,7 @@ internal extension GAPDataDecoder {
 public extension GAPDataEncoder {
     
     @available(*, deprecated)
-    public static func encode(_ encodables: [GAPData]) -> Data {
+    static func encode(_ encodables: [GAPData]) -> Data {
         
         let encoder = GAPDataEncoder()
         return encoder.encode(encodables)
@@ -251,9 +251,9 @@ public extension GAPDataEncoder {
 public extension GAPDataDecoder {
     
     @available(*, deprecated)
-    public static func decode(_ data: Data,
-                              types: [GAPData.Type],
-                              ignoreUnknownType: Bool = true) throws -> [GAPData] {
+    static func decode(_ data: Data,
+                       types: [GAPData.Type],
+                       ignoreUnknownType: Bool = true) throws -> [GAPData] {
         
         var decoder = GAPDataDecoder()
         decoder.types = types

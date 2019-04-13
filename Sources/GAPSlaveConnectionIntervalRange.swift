@@ -48,11 +48,11 @@ public struct GAPSlaveConnectionIntervalRange: GAPData {
 
 public extension GAPSlaveConnectionIntervalRange {
     
-    public static let min: UInt16 = 0x0006
+    static let min: UInt16 = 0x0006
     
-    public static let max: UInt16 = 0x0C80
+    static let max: UInt16 = 0x0C80
     
-    public static let undefined: UInt16 = 0xFFFF
+    static let undefined: UInt16 = 0xFFFF
 }
 
 public extension GAPSlaveConnectionIntervalRange {
