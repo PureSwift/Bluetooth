@@ -66,7 +66,7 @@ public extension GATTUncertainty {
         case mobile = 0x01
     }
     
-    public enum UpdateTime: UInt8 {
+    enum UpdateTime: UInt8 {
         
         /// Upto 3s
         case upTo3s = 0x00

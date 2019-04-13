@@ -57,7 +57,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
 public extension GATTCharacteristicExtendedProperties {
     
     /// GATT Characteristic Extended Properties Options
-    public enum Property: UInt16, BitMaskOption {
+    enum Property: UInt16, BitMaskOption {
         
         /// Reliable Write enabled
         case reliableWrite = 0b01

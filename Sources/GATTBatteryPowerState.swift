@@ -71,7 +71,7 @@ public struct GATTBatteryPowerState: GATTCharacteristic {
 public extension GATTBatteryPowerState {
     
     /// State indicating whether the battery is present.
-    public enum BatteryPresentState: UInt8 {
+    enum BatteryPresentState: UInt8 {
         
         /// Unknown
         case unknown = 0x00
@@ -87,7 +87,7 @@ public extension GATTBatteryPowerState {
     }
     
     /// Battery discharging state.
-    public enum BatteryDischargeState: UInt8 {
+    enum BatteryDischargeState: UInt8 {
         
         /// Unknown
         case unknown = 0x00
@@ -103,7 +103,7 @@ public extension GATTBatteryPowerState {
     }
     
     /// Battery charging state.
-    public enum BatteryChargeState: UInt8 {
+    enum BatteryChargeState: UInt8 {
         
         /// Unknown
         case unknown = 0x00
@@ -123,7 +123,7 @@ public extension GATTBatteryPowerState {
     }
     
     /// Battery charging state.
-    public enum BatteryLevelState: UInt8 {
+    enum BatteryLevelState: UInt8 {
         
         /// Unknown
         case unknown = 0x00

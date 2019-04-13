@@ -10,7 +10,7 @@ import Foundation
 
 public extension GATT {
     
-    public typealias Server = GATTServer
+    typealias Server = GATTServer
 }
 
 public final class GATTServer {

@@ -70,7 +70,7 @@ public struct HCIAcceptConnectionRequest: HCICommandParameter {
 
 public extension HCIAcceptConnectionRequest {
     
-    public enum Role: UInt8 {
+    enum Role: UInt8 {
         
         /// Become the Master for this connection. The LM will perform the role switch.
         case master = 0x00

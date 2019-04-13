@@ -55,7 +55,7 @@ public struct GATTReportReference: GATTDescriptor {
 public extension GATTReportReference {
     
     /// GATT Report Type
-    public enum ReportType: UInt8 {
+    enum ReportType: UInt8 {
         
         /// Input Report
         case input = 0x01
@@ -70,7 +70,7 @@ public extension GATTReportReference {
 
 public extension GATTReportReference {
     
-    public struct Identifier: RawRepresentable {
+    struct Identifier: RawRepresentable {
         
         public var rawValue: UInt8
         

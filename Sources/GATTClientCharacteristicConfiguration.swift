@@ -62,7 +62,7 @@ public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
 public extension GATTClientCharacteristicConfiguration {
     
     /// GATT Client Characteristic Configuration Options
-    public enum Configuration: UInt16, BitMaskOption {
+    enum Configuration: UInt16, BitMaskOption {
         
         /// Notifications enabled
         case notify = 0b01

@@ -65,7 +65,7 @@ public enum StatusParametersCommand: UInt16, HCICommand {
 
 public extension StatusParametersCommand {
     
-    public var name: String {
+    var name: String {
         
         return type(of: self).names[Int(rawValue)]
     }
