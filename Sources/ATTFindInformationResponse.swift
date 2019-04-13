@@ -73,7 +73,7 @@ extension ATTFindInformationResponse: DataConvertible {
 
 public extension ATTFindInformationResponse {
 
-    public enum Format: UInt8 {
+    enum Format: UInt8 {
         
         /// A list of 1 or more handles with their 16-bit Bluetooth UUIDs.
         case bit16      = 0x01
@@ -124,7 +124,7 @@ extension FindInformationResponseAttribute where UUID: UnsafeDataConvertible {
 public extension ATTFindInformationResponse {
     
     /// 16 Bit Attribute
-    public struct Attribute16Bit: Equatable, Hashable, FindInformationResponseAttribute {
+    struct Attribute16Bit: Equatable, Hashable, FindInformationResponseAttribute {
         
         internal static var format: Format { return .bit16 }
         
@@ -148,7 +148,7 @@ extension ATTFindInformationResponse.Attribute16Bit: DataConvertible {
 public extension ATTFindInformationResponse {
     
     /// 128 Bit Attribute
-    public struct Attribute128Bit: Equatable, Hashable, FindInformationResponseAttribute {
+    struct Attribute128Bit: Equatable, Hashable, FindInformationResponseAttribute {
         
         internal static var format: Format { return .bit128 }
         
@@ -172,7 +172,7 @@ extension ATTFindInformationResponse.Attribute128Bit: DataConvertible {
 public extension ATTFindInformationResponse {
     
     /// Found Attribute Data.
-    public enum AttributeData: Equatable {
+    enum AttributeData: Equatable {
         
         /// Handle and 16-bit Bluetooth UUID
         case bit16([Attribute16Bit])

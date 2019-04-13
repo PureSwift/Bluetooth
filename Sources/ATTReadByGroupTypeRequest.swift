@@ -59,7 +59,7 @@ public extension ATTReadByGroupTypeRequest {
         }
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

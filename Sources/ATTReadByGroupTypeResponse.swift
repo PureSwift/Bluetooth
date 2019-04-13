@@ -45,7 +45,7 @@ public extension ATTReadByGroupTypeResponse {
         self.attributeData = attributeData
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }
@@ -72,7 +72,7 @@ extension ATTReadByGroupTypeResponse: DataConvertible {
 
 public extension ATTReadByGroupTypeResponse {
     
-    public struct AttributeData: Equatable {
+    struct AttributeData: Equatable {
         
         /// Attribute Handle
         public var attributeHandle: UInt16

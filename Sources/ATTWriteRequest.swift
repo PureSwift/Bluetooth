@@ -31,7 +31,7 @@ public struct ATTWriteRequest: ATTProtocolDataUnit, Equatable {
 
 public extension ATTWriteRequest {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= 3,
             type(of: self).validateOpcode(data)
@@ -41,7 +41,7 @@ public extension ATTWriteRequest {
         self.value = data.suffixCheckingBounds(from: 3)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

@@ -39,13 +39,13 @@ public struct BluetoothAddress: ByteValue {
 public extension BluetoothAddress {
     
     /// The minimum representable value in this type.
-    public static var min: BluetoothAddress { return BluetoothAddress(bytes: (.min, .min, .min, .min, .min, .min)) }
+    static var min: BluetoothAddress { return BluetoothAddress(bytes: (.min, .min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    public static var max: BluetoothAddress { return BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
+    static var max: BluetoothAddress { return BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
     
     /// A zero address.
-    public static var zero: BluetoothAddress { return .min }
+    static var zero: BluetoothAddress { return .min }
 }
 
 // MARK: - Data
@@ -54,7 +54,7 @@ public extension BluetoothAddress {
     
     internal static var length: Int { return 6 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
@@ -62,7 +62,7 @@ public extension BluetoothAddress {
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

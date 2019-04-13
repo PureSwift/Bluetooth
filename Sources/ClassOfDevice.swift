@@ -125,7 +125,7 @@ extension ClassOfDevice {
 
 public extension ClassOfDevice {
     
-    public enum MajorServiceClass: UInt16, BitMaskOption {
+    enum MajorServiceClass: UInt16, BitMaskOption {
         
         /// Limited Discoverable Mode [Ref #1]
         case limitedDiscoverable = 0b01

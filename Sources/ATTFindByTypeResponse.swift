@@ -94,7 +94,7 @@ public extension ATTFindByTypeResponse {
     /// a *Handles Information* shall be returned.
     /// The *Found Attribute Handle* shall be set to the handle of the attribute that has the exact attribute type
     /// and attribute value from the *Find By Type Value Request*.
-    public struct HandlesInformation: Equatable {
+    struct HandlesInformation: Equatable {
         
         /// Found Attribute Handle
         public let foundAttribute: UInt16

@@ -46,7 +46,7 @@ public extension ATTMaximumTransmissionUnitRequest {
         self.clientMTU = clientMTU
     }
     
-    public var data: Data {
+    var data: Data {
         
        return Data(self)
     }

@@ -44,7 +44,7 @@ public extension ATTReadBlobRequest {
         self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

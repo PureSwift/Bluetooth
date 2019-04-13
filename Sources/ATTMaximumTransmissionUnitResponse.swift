@@ -40,7 +40,7 @@ public extension ATTMaximumTransmissionUnitResponse {
         self.serverMTU = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

@@ -29,7 +29,7 @@ public struct ATTReadResponse: ATTProtocolDataUnit, Equatable {
 
 public extension ATTReadResponse {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= 1,
             type(of: self).validateOpcode(data)
@@ -38,7 +38,7 @@ public extension ATTReadResponse {
         self.attributeValue = data.suffixCheckingBounds(from: 1)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }

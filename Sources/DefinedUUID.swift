@@ -15,7 +15,7 @@ public extension BluetoothUUID {
     ///
     /// [16-bit UUID Assigned Numbers](https://www.bluetooth.com/specifications/assigned-numbers/16-bit-uuids-for-members)
     /// [16 Bit UUIDs For SDOs](https://www.bluetooth.com/specifications/assigned-numbers/16-bit-uuids-for-sdos)
-    public var name: String? {
+    var name: String? {
         
         switch self {
         case let .bit16(value): return definedUUIDs[value]

@@ -20,7 +20,7 @@ public extension ByteSwap {
     ///
     /// - Parameter value: A value to use as the little-endian representation of
     ///   the new instance.
-    public init(littleEndian value: Self) {
+    init(littleEndian value: Self) {
         #if _endian(little)
         self = value
         #else
@@ -33,7 +33,7 @@ public extension ByteSwap {
     ///
     /// - Parameter value: A value to use as the big-endian representation of the
     ///   new instance.
-    public init(bigEndian value: Self) {
+    init(bigEndian value: Self) {
         #if _endian(big)
         self = value
         #else
@@ -46,7 +46,7 @@ public extension ByteSwap {
     /// If necessary, the byte order of this value is reversed from the typical
     /// byte order of this address. On a little-endian platform, for any
     /// address `x`, `x == x.littleEndian`.
-    public var littleEndian: Self {
+    var littleEndian: Self {
         #if _endian(little)
         return self
         #else
@@ -59,7 +59,7 @@ public extension ByteSwap {
     /// If necessary, the byte order of this value is reversed from the typical
     /// byte order of this address. On a big-endian platform, for any
     /// address `x`, `x == x.bigEndian`.
-    public var bigEndian: Self {
+    var bigEndian: Self {
         #if _endian(big)
         return self
         #else

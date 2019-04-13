@@ -44,7 +44,7 @@ public enum GATT {
 public extension GATT {
 
     /// GATT Characteristic Properties Bitfield valuess
-    public enum CharacteristicProperty: UInt8, BitMaskOption {
+    enum CharacteristicProperty: UInt8, BitMaskOption {
         
         case broadcast              = 0x01
         case read                   = 0x02
@@ -97,7 +97,7 @@ public extension GATT {
     /// The Characteristic Extended Properties bit field describes additional 
     /// properties on how the Characteristic Value can be used, or how the characteristic 
     /// descriptors can be accessed.
-    public enum CharacteristicExtendedProperty: UInt8 {
+    enum CharacteristicExtendedProperty: UInt8 {
         
         /// If set, permits reliable writes of the Characteristic Value.
         case reliableWrite          = 0x01

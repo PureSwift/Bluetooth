@@ -49,7 +49,7 @@ public extension ATTPrepareWriteRequest {
         self.partValue = data.suffixCheckingBounds(from: 5)
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data(self)
     }
