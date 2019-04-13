@@ -46,7 +46,7 @@ final class DarwinTests: XCTestCase {
             
             let uuid = BluetoothUUID.bit16(0xFEA9)
             
-            let coreBluetoothUUID = uuid.toCoreBluetooth()
+            let coreBluetoothUUID = CBUUID(uuid)
             
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
             
@@ -57,7 +57,7 @@ final class DarwinTests: XCTestCase {
             
             let uuid = BluetoothUUID() // 128 bit
             
-            let coreBluetoothUUID = uuid.toCoreBluetooth()
+            let coreBluetoothUUID = CBUUID(uuid)
             
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
             
@@ -68,7 +68,7 @@ final class DarwinTests: XCTestCase {
             
             let coreBluetoothUUID = CBUUID(string: "FEA9")
             
-            let uuid = BluetoothUUID(coreBluetooth: coreBluetoothUUID)
+            let uuid = BluetoothUUID(coreBluetoothUUID)
             
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
             
@@ -79,7 +79,7 @@ final class DarwinTests: XCTestCase {
             
             let coreBluetoothUUID = CBUUID(string: "68753A44-4D6F-1226-9C60-0050E4C00067")
             
-            let uuid = BluetoothUUID(coreBluetooth: coreBluetoothUUID)
+            let uuid = BluetoothUUID(coreBluetoothUUID)
             
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
             
