@@ -32,7 +32,7 @@ public struct GAPServiceData128BitUUID: GAPData, Equatable {
 
 public extension GAPServiceData128BitUUID {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= UInt128.length
             else { return nil }

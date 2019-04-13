@@ -142,14 +142,25 @@ extension BluetoothAddress: Equatable {
 
 extension BluetoothAddress: Hashable {
     
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        
+        bytes.0.hash(into: &hasher)
+        bytes.1.hash(into: &hasher)
+        bytes.2.hash(into: &hasher)
+        bytes.3.hash(into: &hasher)
+        bytes.4.hash(into: &hasher)
+        bytes.5.hash(into: &hasher)
+    }
+    #else
     public var hashValue: Int {
         
-        let int64Bytes = (bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, UInt8(0), UInt8(0)) // 2 bytes for padding
-        
+        // 2 bytes for padding
+        let int64Bytes = (bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, UInt8(0), UInt8(0))
         let int64Value = unsafeBitCast(int64Bytes, to: Int64.self)
-        
         return int64Value.hashValue
     }
+    #endif
 }
 
 // MARK: - CustomStringConvertible

@@ -151,10 +151,17 @@ extension BitMaskOptionSet: CustomStringConvertible {
 
 extension BitMaskOptionSet: Hashable {
     
+    #if swift(>=4.2)
+    public func hash(into hasher: inout Hasher) {
+        
+        rawValue.hash(into: &hasher)
+    }
+    #else
     public var hashValue: Int {
         
         return rawValue.hashValue
     }
+    #endif
 }
 
 // MARK: - ExpressibleByArrayLiteral
