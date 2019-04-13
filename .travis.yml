@@ -36,8 +36,7 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gem install xcpretty-travis-formatter ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu14.04/usr/bin:"${PATH}" ; fi
   # Run Unit Tests
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then swift test ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then swift test | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]} ; fi
+  - swift test
   # Compile with Xcode
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}; fi
