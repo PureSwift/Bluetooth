@@ -65,7 +65,7 @@ public enum InformationalCommand: UInt16, HCICommand {
 
 public extension InformationalCommand {
     
-    public var name: String {
+    var name: String {
         
         switch self {
         case .readLocalVersionInformation: return "Read Local Version Information"

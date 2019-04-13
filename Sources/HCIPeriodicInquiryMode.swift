@@ -104,7 +104,7 @@ public struct HCIPeriodicInquiryMode: HCICommandParameter {
 public extension HCIPeriodicInquiryMode {
     
     /// This is the LAP from which the inquiry access code should be derived when the inquiry procedure is made
-    public struct LAP: RawRepresentable {
+    struct LAP: RawRepresentable {
         
         public static let min = LAP(0x9E8B00)
         
@@ -132,7 +132,7 @@ public extension HCIPeriodicInquiryMode {
     
     /// Minimum amount of time specified between consecutive inquiries. Size: 2 octets
     /// Range: 0x02 – 0xFFFE
-    public struct MinDuration: RawRepresentable {
+    struct MinDuration: RawRepresentable {
         
         public static let min = MinDuration(0x0002)
         
@@ -166,7 +166,7 @@ public extension HCIPeriodicInquiryMode {
     
     /// Maximum amount of time specified between consecutive inquiries. Size: 2 octets
     /// Range: 0x03 – 0xFFFF
-    public struct MaxDuration: RawRepresentable {
+    struct MaxDuration: RawRepresentable {
         
         public static let min = MaxDuration(0x0003)
         
@@ -203,7 +203,7 @@ public extension HCIPeriodicInquiryMode {
     /// Range: 0x01 – 0x30
     /// Time = N * 1.28 sec
     /// Range: 1.28 – 61.44 Sec
-    public struct Duration: RawRepresentable {
+    struct Duration: RawRepresentable {
         
         public static let min = Duration(0x01)
         
@@ -238,7 +238,7 @@ public extension HCIPeriodicInquiryMode {
     
     /// Maximum number of responses from the Inquiry before the Inquiry is halted.
     /// Range: 0x01 – 0xFF
-    public struct Responses: RawRepresentable {
+    struct Responses: RawRepresentable {
         
         public static let min = Responses(0x01)
         

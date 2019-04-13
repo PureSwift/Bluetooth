@@ -153,7 +153,7 @@ extension UInt128: ByteSwap {
 
 public extension UInt128 {
     
-    public init(uuid: Foundation.UUID) {
+    init(uuid: Foundation.UUID) {
         
         /// UUID is always big endian
         let bigEndian = UInt128(bytes: uuid.uuid)
@@ -164,7 +164,7 @@ public extension UInt128 {
 
 public extension Foundation.UUID {
     
-    public init(_ value: UInt128) {
+    init(_ value: UInt128) {
         
         // UUID is always stored in big endian bytes
         let bytes = value.bigEndian.bytes

@@ -77,7 +77,7 @@ public extension HCILESetEventMask {
     /// The default is for bits 0 to 4 inclusive (the value `0x0000 0000 0000 001F`) to be set.
     ///
     /// All bits not listed in this table are reserved for future use.
-    public enum Event: UInt64, BitMaskOption, CustomStringConvertible {
+    enum Event: UInt64, BitMaskOption, CustomStringConvertible {
         
         /// LE Connection Complete Event
         case connectionComplete                         = 0b00

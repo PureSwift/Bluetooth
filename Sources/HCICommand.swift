@@ -24,7 +24,7 @@ public protocol HCICommand: RawRepresentable, Hashable, CustomStringConvertible 
 
 public extension HCICommand {
     
-    public var description: String {
+    var description: String {
         
         return name
     }
@@ -33,7 +33,7 @@ public extension HCICommand {
 public extension HCICommand {
     
     /// The packed HCI command opcode.
-    public var opcode: UInt16 {
+    var opcode: UInt16 {
         
         let commandField = self.rawValue
         let groupField = Self.opcodeGroupField.rawValue

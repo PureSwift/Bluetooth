@@ -437,7 +437,7 @@ public enum HostControllerBasebandCommand: UInt16, HCICommand {
 
 public extension HostControllerBasebandCommand {
     
-    public var name: String {
+    var name: String {
         
         return type(of: self).names[Int(rawValue)]
     }

@@ -86,7 +86,7 @@ public struct HCIInquiry: HCICommandParameter {
 public extension HCIInquiry {
     
     /// This is the LAP from which the inquiry access code should be derived when the inquiry procedure is made
-    public struct LAP: RawRepresentable {
+    struct LAP: RawRepresentable {
         
         public static let min = LAP(0x9E8B00)
         
@@ -114,7 +114,7 @@ public extension HCIInquiry {
     
     /// Maximum amount of time specified before the Inquiry is halted. Size: 1 octet
     /// Range: 0x01 – 0x30
-    public struct Duration: RawRepresentable {
+    struct Duration: RawRepresentable {
         
         public static let min = Duration(0x01)
         
@@ -149,7 +149,7 @@ public extension HCIInquiry {
     
     /// Maximum number of responses from the Inquiry before the Inquiry is halted.
     /// Range: 0x01 – 0xFF
-    public struct Responses: RawRepresentable {
+    struct Responses: RawRepresentable {
 
         public static let min = Responses(rawValue: 0x01)
         

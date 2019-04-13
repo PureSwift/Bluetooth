@@ -148,7 +148,7 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
 
 public extension HCILECreateConnection {
     
-    public static var length: Int { return 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2 }
+    static var length: Int { return 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2 }
 }
 
 // MARK: - DataConvertible
@@ -182,7 +182,7 @@ extension HCILECreateConnection: DataConvertible {
 public extension HCILECreateConnection {
     
     /// Used to determine whether the White List is used.
-    public enum InitiatorFilterPolicy: UInt8 {
+    enum InitiatorFilterPolicy: UInt8 {
         
         /// White list is not used to determine which advertiser to connect to.
         /// `peerAddressType` and `peerAddress` shall be used.

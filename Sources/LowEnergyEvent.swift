@@ -74,7 +74,7 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
 
 public extension LowEnergyEvent {
     
-    public var name: String {
+    var name: String {
         
         switch self {
         case .connectionComplete: return "LE Connection Complete"

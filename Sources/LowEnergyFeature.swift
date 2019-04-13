@@ -116,13 +116,13 @@ public extension LowEnergyFeature {
     }
     
     /// Whether the feaure is valid from Controller to Controller.
-    public var isValidControllerToController: Bool {
+    var isValidControllerToController: Bool {
         
         return values.isValid
     }
     
     /// Name of LE feature.
-    public var name: String {
+    var name: String {
         
         return values.name
     }

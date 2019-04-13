@@ -247,7 +247,7 @@ public enum HCILowEnergyCommand: UInt16, HCICommand {
 
 public extension HCILowEnergyCommand {
     
-    public var name: String {
+    var name: String {
         
         switch self {
             
