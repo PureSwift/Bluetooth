@@ -49,7 +49,9 @@ internal extension POSIXError {
 #if os(Linux) || os(Android)
 
 /// Enumeration describing POSIX error codes.
-public enum POSIXErrorCode : Int32 {
+// See https://bugs.swift.org/browse/SR-10485
+public enum POSIXErrorCode: Int32 {
+    
     /// Operation not permitted.
     case EPERM           = 1
     /// No such file or directory.
