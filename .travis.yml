@@ -53,6 +53,6 @@ script:
   # Compile with Xcode
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-iOS; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-watchOS; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean build -scheme Bluetooth-tvOS; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-iOS | xcpretty; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty; fi
