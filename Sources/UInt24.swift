@@ -107,7 +107,7 @@ public extension UInt24 {
     
     var data: Data {
         
-        return Data(bytes: [bytes.0, bytes.1, bytes.2])
+        return Data([bytes.0, bytes.1, bytes.2])
     }
 }
 

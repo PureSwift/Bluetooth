@@ -185,7 +185,7 @@ internal final class ATTConnection {
     @discardableResult
     public func unregister(_ identifier: UInt) -> Bool {
         
-        guard let index = notifyList.index(where: { $0.identifier == identifier })
+        guard let index = notifyList.firstIndex(where: { $0.identifier == identifier })
             else { return false }
         notifyList.remove(at: index)
         return true

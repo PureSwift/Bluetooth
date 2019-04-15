@@ -385,7 +385,7 @@ public final class GATTClient {
         
         let end: UInt16
         
-        guard let index = service.characteristics.index(where: { $0.handle.declaration == characteristic.handle.declaration })
+        guard let index = service.characteristics.firstIndex(where: { $0.handle.declaration == characteristic.handle.declaration })
             else { fatalError("Invalid characteristics \(service.characteristics.map { $0.uuid })") }
         
         let nextIndex = index + 1

@@ -137,7 +137,7 @@ public struct GATTDatabase {
     /// Remove the Service at the specified index.
     public mutating func remove(service handle: UInt16) {
         
-        guard let serviceIndex = attributeGroups.index(where: { $0.serviceAttribute.handle == handle })
+        guard let serviceIndex = attributeGroups.firstIndex(where: { $0.serviceAttribute.handle == handle })
             else { fatalError("Service with handle \(handle) doesnt exist") }
         
         attributeGroups.remove(at: serviceIndex)
