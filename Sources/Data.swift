@@ -69,7 +69,7 @@ private extension Data {
         
         // Keep up to date
         // https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/Data.swift#L621
-        #if arch(x86_64) || arch(arm64) || arch(s390x) || arch(powerpc64) || arch(powerpc64le)
+        #if arch(x86_64) || arch(arm64) || arch(arm64_32) || arch(s390x) || arch(powerpc64) || arch(powerpc64le)
         typealias Buffer = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
             UInt8, UInt8, UInt8, UInt8, UInt8, UInt8) //len  //enum
         #elseif arch(i386) || arch(arm)
