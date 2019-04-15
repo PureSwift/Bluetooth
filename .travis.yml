@@ -42,7 +42,6 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir $SWIFT_DIR ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl $SWIFT_URL -s | tar xz -C $SWIFT_DIR &> /dev/null ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$SWIFT_PATH:"${PATH}" ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH="${SWIFT_PATH}:"${PATH}" ; fi
   # Run Unit Tests
   - swift test
   # Compile with Xcode
