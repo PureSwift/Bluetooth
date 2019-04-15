@@ -15,7 +15,7 @@ matrix:
          sudo: required
          env:
            - SWIFT_VERSION=swift-5.0-RELEASE
-           - SWIFT_URL=https://swift.org/builds/swift-5.0-release/ubuntu1804/swift-5.0-RELEASE/swift-5.0-RELEASE-ubuntu16.04.tar.gz
+           - SWIFT_URL=https://swift.org/builds/swift-5.0-release/ubuntu1604/swift-5.0-RELEASE/swift-5.0-RELEASE-ubuntu16.04.tar.gz
            - SWIFT_PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu16.04/usr/bin
       # Test Xcode 9.3 / Swift 4.1.0
        - os: osx
@@ -42,6 +42,7 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir $SWIFT_DIR ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl $SWIFT_URL -s | tar xz -C $SWIFT_DIR &> /dev/null ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$SWIFT_PATH:"${PATH}" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH="${SWIFT_PATH}:"${PATH}" ; fi
   # Run Unit Tests
   - swift test
   # Compile with Xcode
