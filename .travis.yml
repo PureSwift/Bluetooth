@@ -8,7 +8,6 @@ matrix:
          env:
            - SWIFT_VERSION=swift-4.1.2-RELEASE
            - SWIFT_URL=https://swift.org/builds/swift-4.1.2-release/ubuntu1404/swift-4.1.2-RELEASE/swift-4.1.2-RELEASE-ubuntu14.04.tar.gz
-           - SWIFT_PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu14.04/usr/bin
          install:
            - export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu14.04/usr/bin:"${PATH}"
       # Test Ubuntu Linux 16.04 / Swift 5
@@ -18,7 +17,6 @@ matrix:
          env:
            - SWIFT_VERSION=swift-5.0-RELEASE
            - SWIFT_URL=https://swift.org/builds/swift-5.0-release/ubuntu1604/swift-5.0-RELEASE/swift-5.0-RELEASE-ubuntu16.04.tar.gz
-           - SWIFT_PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu16.04/usr/bin
          install:
            - export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu16.04/usr/bin:"${PATH}"
       # Test Xcode 9.3 / Swift 4.1.0
@@ -49,7 +47,7 @@ script:
   - swift test
   # Compile with Xcode
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES | xcpretty; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-iOS | xcpretty; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty; fi
