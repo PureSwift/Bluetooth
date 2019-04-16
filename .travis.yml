@@ -37,6 +37,8 @@ addons:
     - clang
     - pkg-config
 script:
+  # Setup macOS environment
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gem install xcpretty-travis-formatter ; fi
   # Setup Linux environment
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install clang ; fi
@@ -47,7 +49,7 @@ script:
   - swift test
   # Compile with Xcode
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES | xcpretty; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-iOS | xcpretty; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES | xcpretty -f `xcpretty-travis-formatter`; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-iOS | xcpretty -f `xcpretty-travis-formatter`; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty -f `xcpretty-travis-formatter`; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-tvOS | xcpretty -f `xcpretty-travis-formatter`; fi
