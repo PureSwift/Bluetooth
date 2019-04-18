@@ -38,7 +38,7 @@ public struct TestProfile {
                                             properties: [.read])
     
     public static let ReadBlob = Characteristic(uuid: BluetoothUUID(rawValue: "0615FF6C-0E37-11E6-9E58-75D7DC50F6B1")!,
-                                                value: Data(bytes: [UInt8](repeating: UInt8.max, count: 512)),
+                                                value: Data([UInt8](repeating: UInt8.max, count: 512)),
                                                 permissions: [.read],
                                                 properties: [.read])
     

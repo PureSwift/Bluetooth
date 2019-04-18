@@ -10,14 +10,14 @@ import Foundation
 
 internal extension Data {
     
-    #if swift(>=4.2)
+    #if swift(>=5.0) || XCODE
     func subdataNoCopy(in range: Range<Int>) -> Data {
         
         // stored in heap, can reuse buffer
         if count > Data.inlineBufferSize {
-            
-             return withUnsafeBytes {
-                Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0.advanced(by: range.lowerBound)),
+
+            return withUnsafeBytes { (buffer: UnsafeRawBufferPointer) in
+                Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: buffer.baseAddress!.advanced(by: range.lowerBound)),
                      count: range.count,
                      deallocator: .none)
             }
@@ -28,7 +28,16 @@ internal extension Data {
             return subdata(in: range)
         }
     }
-    #else
+    #elseif swift(>=4.2)
+    func subdataNoCopy(in range: Range<Int>) -> Data {
+        
+        return withUnsafeBytes {
+            Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0.advanced(by: range.lowerBound)),
+                 count: range.count,
+                 deallocator: .none)
+        }
+    }
+    #elseif swift(>=4.0)
     func subdataNoCopy(in range: CountableRange<Int>) -> Data {
         
         let pointer = withUnsafeBytes { UnsafeMutableRawPointer(mutating: $0).advanced(by: range.lowerBound) }
@@ -59,7 +68,7 @@ internal extension Data {
     }
 }
 
-#if swift(>=5.0) || swift(>=4.2)
+#if swift(>=5.0) || XCODE
 private extension Data {
     
     /// Size of the inline buffer for `Foundation.Data` used in Swift 5.
