@@ -628,10 +628,6 @@
 		6E60A2BF2068928400E42351 /* BluetoothHostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2BE2068928400E42351 /* BluetoothHostController.swift */; };
 		6E60A2E22069564A00E42351 /* GATTDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2E12069564A00E42351 /* GATTDatabase.swift */; };
 		6E60A2E72069582600E42351 /* LowEnergyAdvertising.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2E62069582500E42351 /* LowEnergyAdvertising.swift */; };
-		6E60A2EC20695AE100E42351 /* POSIXError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2EB20695AE000E42351 /* POSIXError.swift */; };
-		6E60A2ED20695AE100E42351 /* POSIXError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2EB20695AE000E42351 /* POSIXError.swift */; };
-		6E60A2EE20695AE100E42351 /* POSIXError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2EB20695AE000E42351 /* POSIXError.swift */; };
-		6E60A2EF20695AE100E42351 /* POSIXError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2EB20695AE000E42351 /* POSIXError.swift */; };
 		6E60A2F620695B6500E42351 /* LowEnergyConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2F520695B6500E42351 /* LowEnergyConnection.swift */; };
 		6E60A2FB20695BC300E42351 /* LowEnergyWhiteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2FA20695BC300E42351 /* LowEnergyWhiteList.swift */; };
 		6E60A30120695CC600E42351 /* GATTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60A2FF20695CC500E42351 /* GATTClient.swift */; };
@@ -1320,7 +1316,6 @@
 		6E60A2BE2068928400E42351 /* BluetoothHostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothHostController.swift; sourceTree = "<group>"; };
 		6E60A2E12069564A00E42351 /* GATTDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTDatabase.swift; sourceTree = "<group>"; };
 		6E60A2E62069582500E42351 /* LowEnergyAdvertising.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyAdvertising.swift; sourceTree = "<group>"; };
-		6E60A2EB20695AE000E42351 /* POSIXError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POSIXError.swift; sourceTree = "<group>"; };
 		6E60A2F520695B6500E42351 /* LowEnergyConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyConnection.swift; sourceTree = "<group>"; };
 		6E60A2FA20695BC300E42351 /* LowEnergyWhiteList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowEnergyWhiteList.swift; sourceTree = "<group>"; };
 		6E60A2FF20695CC500E42351 /* GATTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTClient.swift; sourceTree = "<group>"; };
@@ -1980,7 +1975,6 @@
 		6E704C961E95C4B300484A22 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				6E60A2EB20695AE000E42351 /* POSIXError.swift */,
 				6ECBCF20206FC3A200312117 /* Array.swift */,
 				6E443A2E2085D606005F4D5F /* Bool.swift */,
 				6E30AE2D20BEFEEC0072D101 /* Data.swift */,
@@ -2573,7 +2567,6 @@
 				6E49B24820532D45002EA5DC /* Hexadecimal.swift in Sources */,
 				6EFB3D4D20D2D54B00364CA0 /* LowEnergyMaxTxTime.swift in Sources */,
 				35182A0120D22E500009F82D /* GAPMeshBeacon.swift in Sources */,
-				6E60A2EF20695AE100E42351 /* POSIXError.swift in Sources */,
 				6E6AAD7320D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
 				357FDA8920DC132D00DEE25C /* GATTPnPID.swift in Sources */,
 				35386B5720EC17600016D662 /* GATTLocalNorthCoordinate.swift in Sources */,
@@ -2756,7 +2749,6 @@
 				6E704C911E95C45800484A22 /* Hexadecimal.swift in Sources */,
 				6EFB3D4C20D2D54B00364CA0 /* LowEnergyMaxTxTime.swift in Sources */,
 				35182A0020D22E500009F82D /* GAPMeshBeacon.swift in Sources */,
-				6E60A2EE20695AE100E42351 /* POSIXError.swift in Sources */,
 				6E6AAD7220D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
 				357FDA8820DC132D00DEE25C /* GATTPnPID.swift in Sources */,
 				35386B5620EC17600016D662 /* GATTLocalNorthCoordinate.swift in Sources */,
@@ -3035,7 +3027,6 @@
 				357FDA8620DC132D00DEE25C /* GATTPnPID.swift in Sources */,
 				359E8AD920EFC69700A6E24E /* GATTDstOffset.swift in Sources */,
 				35403BCE211CA5CB006A819A /* HCIReadLMPHandle.swift in Sources */,
-				6E60A2EC20695AE100E42351 /* POSIXError.swift in Sources */,
 				351829E020D22DE90009F82D /* GAPURI.swift in Sources */,
 				351829C220D22DAE0009F82D /* GAPAppearanceData.swift in Sources */,
 				358506042124A5610045C0CD /* HCIReadClassOfDevice.swift in Sources */,
@@ -3410,7 +3401,6 @@
 				6E704C901E95C45800484A22 /* Hexadecimal.swift in Sources */,
 				6EFB3D4B20D2D54B00364CA0 /* LowEnergyMaxTxTime.swift in Sources */,
 				351829FF20D22E500009F82D /* GAPMeshBeacon.swift in Sources */,
-				6E60A2ED20695AE100E42351 /* POSIXError.swift in Sources */,
 				6E6AAD7120D2161B00DDE1CA /* GATTBatteryLevel.swift in Sources */,
 				357FDA8720DC132D00DEE25C /* GATTPnPID.swift in Sources */,
 				35386B5520EC17600016D662 /* GATTLocalNorthCoordinate.swift in Sources */,

@@ -18,7 +18,6 @@ final class BluetoothTests: XCTestCase {
         ("testCompanyIdentifier", testCompanyIdentifier),
         ("testChannelIdentifier", testChannelIdentifier),
         ("testHCICommandTimeout", testHCICommandTimeout),
-        ("testPOSIXError", testPOSIXError),
         ("testHCIVersion", testHCIVersion),
         ("testLowEnergyAdvertisingData", testLowEnergyAdvertisingData),
         ("testLowEnergyAddressType", testLowEnergyAddressType),
@@ -84,17 +83,6 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(timeout.rawValue, 1000)
         XCTAssertNotEqual(timeout, 2000)
         XCTAssertEqual(timeout.description, "1.0 seconds")
-    }
-    
-    func testPOSIXError() {
-        
-        XCTAssertEqual(POSIXError.fromErrno?.errorCode ?? 0, Int(errno))
-        
-        #if os(macOS)
-        XCTAssert(POSIXError(.EBUSY).localizedDescription.contains("Resource busy"))
-        #endif
-        
-        XCTAssertFalse(POSIXError(.EBUSY).localizedDescription.isEmpty)
     }
     
     func testHCIVersion() {
