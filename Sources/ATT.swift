@@ -29,22 +29,6 @@ public enum ATT {
     public typealias MaximumTransmissionUnit            = ATTMaximumTransmissionUnit
 }
 
-// Deprecated API
-public extension ATT {
-    
-    @available(*, deprecated)
-    static var CID: UInt16 {
-        
-        return ChannelIdentifier.att.rawValue
-    }
-    
-    @available(*, deprecated)
-    static var PSM: ProtocolServiceMultiplexer {
-        
-        return .att
-    }
-}
-
 /// ATT protocol opcodes.
 public enum ATTOpcode: UInt8 {
     

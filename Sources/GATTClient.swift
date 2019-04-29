@@ -1245,12 +1245,6 @@ public extension GATTClient {
         public let handle: UInt16
         
         public let end: UInt16
-        
-        @available(*, deprecated, renamed: "isPrimary")
-        public var type: BluetoothUUID {
-            
-            return isPrimary ? .primaryService : .secondaryService
-        }
     }
     
     /// A discovered characteristic.

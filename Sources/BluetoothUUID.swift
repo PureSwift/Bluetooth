@@ -376,18 +376,4 @@ public extension CBUUID {
     }
 }
 
-public extension BluetoothUUID {
-    
-    @available(*, deprecated, message: "Use BluetoothUUID.init() instead")
-    init(coreBluetooth: CBUUID) {
-        
-        self.init(coreBluetooth)
-    }
-    
-    @available(*, deprecated, message: "Use CBUUID.init() instead")
-    func toCoreBluetooth() -> CBUUID {
-        return CBUUID(data: self.bigEndian.data)
-    }
-}
-    
 #endif

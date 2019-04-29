@@ -9,10 +9,6 @@
 import Foundation
 
 /// Bluetooth address.
-@available(*, deprecated, renamed: "BluetoothAddress")
-public typealias Address = BluetoothAddress
-
-/// Bluetooth address.
 public struct BluetoothAddress: ByteValue {
     
     // MARK: - ByteValueType

@@ -235,29 +235,3 @@ internal extension GAPDataDecoder {
         GAPURI.self
     ]
 }
-
-// MARK: - Deprecated
-
-public extension GAPDataEncoder {
-    
-    @available(*, deprecated)
-    static func encode(_ encodables: [GAPData]) -> Data {
-        
-        let encoder = GAPDataEncoder()
-        return encoder.encode(encodables)
-    }
-}
-
-public extension GAPDataDecoder {
-    
-    @available(*, deprecated)
-    static func decode(_ data: Data,
-                       types: [GAPData.Type],
-                       ignoreUnknownType: Bool = true) throws -> [GAPData] {
-        
-        var decoder = GAPDataDecoder()
-        decoder.types = types
-        decoder.ignoreUnknownType = ignoreUnknownType
-        return try decoder.decode(data)
-    }
-}
