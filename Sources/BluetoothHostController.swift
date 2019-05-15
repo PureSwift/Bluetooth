@@ -14,9 +14,6 @@ public protocol BluetoothHostControllerInterface: class {
     /// All controllers on the host.
     static var controllers: [Self] { get }
     
-    /// The Address of the controller.
-    var address: BluetoothAddress { get }
-    
     /// Send an HCI command to the controller.
     func deviceCommand <C: HCICommand> (_ command: C) throws
     
@@ -69,5 +66,17 @@ public extension BluetoothHostControllerInterface {
     static var `default`: Self? {
         
         return controllers.first
+    }
+}
+
+public extension BluetoothHostControllerInterface {
+    
+    @available(*, deprecated, message: "Use readDeviceAddress() instead")
+    var address: BluetoothAddress {
+        
+        guard let address = try? self.readDeviceAddress()
+            else { return .zero }
+        
+        return address
     }
 }
