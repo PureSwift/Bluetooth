@@ -147,7 +147,7 @@ public extension BluetoothHostControllerInterface {
     
     /// Enable iBeacon functionality.
     func iBeacon(_ beacon: AppleBeacon,
-                 flags: GAPFlags,
+                 flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR],
                  interval: AdvertisingInterval = .default,
                  timeout: HCICommandTimeout = .default) throws {
         
