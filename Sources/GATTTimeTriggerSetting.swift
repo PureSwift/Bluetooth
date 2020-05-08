@@ -72,17 +72,17 @@ public enum GATTTimeTriggerSetting: GATTDescriptor {
         
         switch self {
             
-        case .valueC1(let byte):
+        case let .valueC1(byte):
             
             let conditionByte = GATTTimeTriggerSettingCondition.none.rawValue
             return Data([conditionByte, byte])
             
-        case .valueC2(let byte):
+        case let .valueC2(byte0, byte1, byte2):
             
             let conditionByte = GATTTimeTriggerSettingCondition.timeInterval.rawValue
-            return Data([conditionByte, byte.0, byte.1, byte.2])
+            return Data([conditionByte, byte0, byte1, byte2])
             
-        case .valueC3(let byte):
+        case let .valueC3(byte):
             
             let conditionByte = GATTTimeTriggerSettingCondition.count.rawValue
             let bytes = byte.bytes
