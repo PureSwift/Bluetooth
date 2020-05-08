@@ -81,7 +81,7 @@ License
 
 **Bluetooth** is released under the MIT license. See LICENSE for details.
 
-[swift-badge]: https://img.shields.io/badge/swift-4.1-orange.svg?style=flat
+[swift-badge]: https://img.shields.io/badge/swift-5-orange.svg?style=flat
 [swift-url]: https://swift.org
 [platform-badge]: https://img.shields.io/badge/platform-osx%20%7C%20ios%20%7C%20watchos%20%7C%20tvos%20%7C%20linux%20%7C%20android-lightgrey.svg
 [platform-url]: https://swift.org
@@ -91,7 +91,7 @@ License
 [build-status-url]: https://travis-ci.org/PureSwift/Bluetooth
 [release-badge]: https://img.shields.io/github/release/PureSwift/Bluetooth.svg
 [release-url]: https://github.com/PureSwift/Bluetooth/releases
-[spm-badge]: https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat
+[spm-badge]: https://img.shields.io/badge/SwiftPM-compatible-4BC51D.svg?style=flat
 [spm-url]: https://github.com/apple/swift-package-manager
 [carthage-badge]: https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat
 [carthage-url]: https://github.com/Carthage/Carthage
