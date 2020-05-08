@@ -10,25 +10,16 @@ import Foundation
 
 internal extension Data {
     
-    #if swift(>=5.0) || (swift(>=4.2) && XCODE)
     func subdataNoCopy(in range: Range<Int>) -> Data {
         
         // stored in heap, can reuse buffer
         if count > Data.inlineBufferSize {
             
-            #if swift(>=5.0)
             return withUnsafeBytes { (buffer: UnsafeRawBufferPointer) in
                 Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: buffer.baseAddress!.advanced(by: range.lowerBound)),
                      count: range.count,
                      deallocator: .none)
             }
-            #else
-            return withUnsafeBytes {
-                Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0.advanced(by: range.lowerBound)),
-                     count: range.count,
-                     deallocator: .none)
-            }
-            #endif
             
         } else {
             
@@ -36,48 +27,22 @@ internal extension Data {
             return subdata(in: range)
         }
     }
-    #elseif swift(>=4.2)
-    func subdataNoCopy(in range: Range<Int>) -> Data {
-        
-        return withUnsafeBytes {
-            Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0.advanced(by: range.lowerBound)),
-                 count: range.count,
-                 deallocator: .none)
-        }
-    }
-    #elseif swift(>=4.0)
-    func subdataNoCopy(in range: CountableRange<Int>) -> Data {
-        
-        let pointer = withUnsafeBytes { UnsafeMutableRawPointer(mutating: $0).advanced(by: range.lowerBound) }
-        return Data(bytesNoCopy: pointer, count: range.count, deallocator: .none)
-    }
-    
-    /// Returns a new copy of the data in a specified range.
-    func subdata(in range: CountableRange<Int>) -> Data {
-        return Data(self[range])
-    }
-    #endif
     
     func suffixNoCopy(from index: Int) -> Data {
-        
         return subdataNoCopy(in: index ..< count)
     }
     
     func suffixCheckingBounds(from start: Int) -> Data {
         
         if count > start {
-            
             return Data(suffix(from: start))
-            
         } else {
-            
             return Data()
         }
     }
 }
 
-#if swift(>=5.0) || (swift(>=4.2) && XCODE)
-private extension Data {
+internal extension Data {
     
     /// Size of the inline buffer for `Foundation.Data` used in Swift 5.
     ///
@@ -97,4 +62,3 @@ private extension Data {
         return MemoryLayout<Buffer>.size
     }
 }
-#endif
