@@ -857,7 +857,7 @@ final class GATTTests: XCTestCase {
                                             primary: true,
                                             characteristics: characteristics)
             
-            var database = GATTDatabase(services: [service])
+            let database = GATTDatabase(services: [service])
             
             // server
             let serverSocket = TestL2CAPSocket()

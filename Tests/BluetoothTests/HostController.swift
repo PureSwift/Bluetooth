@@ -197,18 +197,18 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         
         // get message in queue
         guard let firstMessage = queue.popFirst(),
-            case let .command(testCommand) = firstMessage
+            case let .command(testCommandOpcode, testCommandData) = firstMessage
             else { throw Error.invalidCommand }
         
         // validate command
-        guard testCommand.0 == opcode,
-            testCommand.1 == [UInt8](commandData) else {
+        guard testCommandOpcode == opcode,
+            testCommandData == [UInt8](commandData) else {
                 
                 print("Provided command \(opcode)")
                 print(commandData)
                 
-                print("Expected command \(testCommand.0)")
-                print(testCommand.1)
+                print("Expected command \(testCommandOpcode)")
+                print(testCommandData)
                 
                 throw Error.invalidCommand
         }
