@@ -53,8 +53,7 @@ internal extension LowEnergyAdvertisingData {
     
     func withUnsafeData <Result> (_ block: (Data) throws -> Result) rethrows -> Result {
         
-        var value = self
-        return try withUnsafePointer(to: &value.bytes) {
+        return try withUnsafePointer(to: bytes) {
             try $0.withMemoryRebound(to: UInt8.self, capacity: LowEnergyAdvertisingData.capacity) {
                 try block(Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0),
                                count: count,
