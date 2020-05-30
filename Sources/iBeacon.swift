@@ -112,6 +112,8 @@ public struct AppleBeacon {
     }
 }
 
+#if os(macOS) || os(Linux)
+
 internal extension LowEnergyAdvertisingData {
     
     init(beacon: AppleBeacon,
@@ -171,3 +173,5 @@ public extension BluetoothHostControllerInterface {
         try deviceRequest(advertisingDataCommand, timeout: timeout)
     }
 }
+
+#endif
