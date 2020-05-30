@@ -534,7 +534,7 @@ extension HCIError: CustomStringConvertible {
 
 // MARK: - CustomNSError
 
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+#if canImport(Darwin)
 
 import Foundation
 

@@ -177,20 +177,11 @@ extension LowEnergyAdvertisingData: Equatable {
 
 extension LowEnergyAdvertisingData: Hashable {
     
-    #if swift(>=4.2)
     public func hash(into hasher: inout Hasher) {
         
         length.hash(into: &hasher)
-        (0 ..< LowEnergyAdvertisingData.capacity).forEach {
-            self[$0].hash(into: &hasher)
-        }
+        withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
     }
-    #else
-    public var hashValue: Int {
-    
-        return data.hashValue
-    }
-    #endif
 }
 
 // MARK: - CustomStringConvertible
@@ -198,7 +189,6 @@ extension LowEnergyAdvertisingData: Hashable {
 extension LowEnergyAdvertisingData: CustomStringConvertible {
     
     public var description: String {
-        
         return reduce("", { $0 + $1.toHexadecimal() })
     }
 }
@@ -209,7 +199,7 @@ extension LowEnergyAdvertisingData: ExpressibleByArrayLiteral {
     
     public init(arrayLiteral elements: UInt8...) {
         
-        assert(elements.count <= 31)
+        precondition(elements.count <= 31)
         
         self.init()
         self.length = UInt8(elements.count)

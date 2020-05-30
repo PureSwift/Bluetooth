@@ -52,15 +52,9 @@ extension SFloat: Equatable {
 
 extension SFloat: Hashable {
     
-    #if swift(>=4.2)
     public func hash(into hasher: inout Hasher) {
         builtin.hash(into: &hasher)
     }
-    #else
-    public var hashValue: Int {
-        return builtin.hashValue
-    }
-    #endif
 }
 
 // MARK: - CustomStringConvertible

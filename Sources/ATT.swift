@@ -205,18 +205,6 @@ public enum ATTAttributePermission: UInt8, BitMaskOption {
     // Authorization
     case authorized                                 = 0x40
     case noAuthorization                            = 0x80
-    
-    #if swift(>=4.2)
-    #else
-    public static let allCases: Set<ATTAttributePermission> = [.read,
-                                                               .write,
-                                                               .readEncrypt,
-                                                               .writeEncrypt,
-                                                               .readAuthentication,
-                                                               .writeAuthentication,
-                                                               .authorized,
-                                                               .noAuthorization]
-    #endif
 }
 
 public extension ATTAttributePermission {

@@ -56,7 +56,6 @@ public extension GAPClassOfDevice {
 extension GAPClassOfDevice: Equatable {
     
     public static func == (lhs: GAPClassOfDevice, rhs: GAPClassOfDevice) -> Bool {
-        
         return lhs.device == rhs.device
     }
 }
@@ -65,17 +64,7 @@ extension GAPClassOfDevice: Equatable {
 
 extension GAPClassOfDevice: Hashable {
     
-    #if swift(>=4.2)
     public func hash(into hasher: inout Hasher) {
-        
-        device.0.hash(into: &hasher)
-        device.1.hash(into: &hasher)
-        device.2.hash(into: &hasher)
+        withUnsafeBytes(of: device) { hasher.combine(bytes: $0) }
     }
-    #else
-    public var hashValue: Int {
-        
-        return unsafeBitCast((UInt8(0), device.0, device.1, device.2), to: UInt32.self).hashValue
-    }
-    #endif
 }

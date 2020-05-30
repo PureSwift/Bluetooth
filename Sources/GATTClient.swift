@@ -1166,9 +1166,7 @@ public enum GATTClientError: Error {
 
 // MARK: CustomNSError
 
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-
-import Foundation
+#if canImport(Darwin)
 
 extension GATTClientError: CustomNSError {
     

@@ -1032,7 +1032,6 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(command.data, data)
         }
         
-        #if swift(>=4.2)
         do {
             
             let data = Data([0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23])
@@ -1044,7 +1043,6 @@ final class HCITests: XCTestCase {
             
             XCTAssertNotEqual(command.data, data)
         }
-        #endif
         
         /**
          SEND  [2019] LE Start Encryption - Connection Handle: 0x0041  19 20 1C 41 00 00 00 00 00 00 00 00 00 00 00 05 EC EC CB EC 64 57 98 5A D8 24 0C 0D EB 57 23

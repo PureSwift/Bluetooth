@@ -121,7 +121,7 @@ public struct HCILEStartEncryption: HCICommandParameter { // HCI_LE_Start_Encryp
     public let longTermKey: UInt128 //Long_Term_Key
     
     public init(connectionHandle: UInt16,
-                randomNumber: UInt64,
+                randomNumber: UInt64 = .random(in: .min ..< .max),
                 encryptedDiversifier: UInt16,
                 longTermKey: UInt128) {
         
@@ -131,22 +131,7 @@ public struct HCILEStartEncryption: HCICommandParameter { // HCI_LE_Start_Encryp
         self.longTermKey = longTermKey
     }
     
-    #if swift(>=4.2)
-    public init(connectionHandle: UInt16,
-                encryptedDiversifier: UInt16,
-                longTermKey: UInt128) {
-        
-        let randomNumber = UInt64.random(in: .min ..< .max)
-        
-        self.init(connectionHandle: connectionHandle,
-                  randomNumber: randomNumber,
-                  encryptedDiversifier: encryptedDiversifier,
-                  longTermKey: longTermKey)
-    }
-    #endif
-    
     public var data: Data {
-        
         return Data(self)
     }
 }

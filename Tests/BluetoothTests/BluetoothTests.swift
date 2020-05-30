@@ -107,9 +107,7 @@ final class BluetoothTests: XCTestCase {
             // zeroed data
             XCTAssertEqual(LowEnergyAdvertisingData(data: Data())?.data, Data())
             XCTAssertEqual(LowEnergyAdvertisingData().data, Data())
-            #if swift(>=4.2)
             XCTAssertNotEqual(LowEnergyAdvertisingData().hashValue, 0)
-            #endif
         }
         
         do {

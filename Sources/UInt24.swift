@@ -67,15 +67,9 @@ extension UInt24: Comparable {
 
 extension UInt24: Hashable {
     
-    #if swift(>=4.2)
     public func hash(into hasher: inout Hasher) {
         UInt32(self).hash(into: &hasher)
     }
-    #else
-    public var hashValue: Int {
-        return UInt32(self).hashValue
-    }
-    #endif
 }
 
 // MARK: - CustomStringConvertible
