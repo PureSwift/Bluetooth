@@ -107,7 +107,6 @@ public struct GAPDataDecoder {
     // MARK: - Methods
     
     public func decode(_ data: LowEnergyAdvertisingData) throws -> [GAPData] {
-        
         return try data.withUnsafeData { try decode($0) }
     }
     
@@ -127,13 +126,9 @@ public struct GAPDataDecoder {
             let length = Int(data[index]) // 0
             index += 1
             guard index < data.count else {
-                
                 if length == 0 {
-                    
                     break // EOF
-                    
                 } else {
-                    
                     throw Error.insufficientBytes(expected: index + 1, actual: data.count)
                 }
             }
