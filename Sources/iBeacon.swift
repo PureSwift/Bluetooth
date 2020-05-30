@@ -154,7 +154,7 @@ public extension BluetoothHostControllerInterface {
         
         // stop advertising
         do { try enableLowEnergyAdvertising(false, timeout: timeout) }
-        catch HCIError.commandDisallowed { /* ignore, means already turned on */ }
+        catch HCIError.commandDisallowed { /* ignore, means already turned off */ }
         
         // set advertising parameters
         let advertisingParameters = AdvertisingParameters(interval: (min: interval, max: interval))
