@@ -41,20 +41,11 @@ extension UnsafeDataConvertible {
     
     /// Append data representation into buffer.
     static func += <T: DataContainer> (data: inout T, value: Self) {
-        #if swift(>=4.2)
         withUnsafePointer(to: value) {
             $0.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<Self>.size) {
                 data.append($0, count: MemoryLayout<Self>.size)
             }
         }
-        #else
-        var value = value
-        withUnsafePointer(to: &value) {
-            $0.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<Self>.size) {
-                data.append($0, count: MemoryLayout<Self>.size)
-            }
-        }
-        #endif
     }
 }
 
@@ -78,24 +69,11 @@ internal protocol DataContainer: RandomAccessCollection where Self.Index == Int 
     
     mutating func append <C: Collection> (contentsOf bytes: C) where C.Element == UInt8
     
-    #if swift(>=4.2)
     static func += (lhs: inout Self, rhs: UInt8)
     static func += <C: Collection> (lhs: inout Self, rhs: C) where C.Element == UInt8
-    #endif
 }
 
 extension DataContainer {
-    
-    #if swift(>=4.2)
-    #else
-    static func += (lhs: inout Self, rhs: UInt8) {
-        lhs.append(rhs)
-    }
-    
-    static func += <C: Collection> (lhs: inout Self, rhs: C) where C.Element == UInt8 {
-        lhs.append(contentsOf: rhs)
-    }
-    #endif
     
     mutating func append <T: DataConvertible> (_ value: T) {
         self += value
@@ -104,11 +82,9 @@ extension DataContainer {
 
 extension Data: DataContainer {
     
-    #if swift(>=4.2)
     static func += (lhs: inout Data, rhs: UInt8) {
         lhs.append(rhs)
     }
-    #endif
 }
 
 extension LowEnergyAdvertisingData: DataContainer { }
