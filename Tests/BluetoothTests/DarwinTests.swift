@@ -499,7 +499,6 @@ final class DarwinTests: XCTestCase {
         var memberNameCache = [UInt16: String]()
         
         func 🖨(_ text: String) {
-            
             generatedCode += text + "\n"
         }
         
@@ -519,7 +518,7 @@ final class DarwinTests: XCTestCase {
         🖨("public extension UnitIdentifier {")
         🖨("")
         
-        for (identifier, unit) in units {
+        for (identifier, unit) in units.sorted(by: { $0.key < $1.key }) {
             
             var memberName = unitsMethodNames[identifier]!
             
@@ -576,7 +575,7 @@ final class DarwinTests: XCTestCase {
         
         // generate test methods
         
-        for (identifier, unit) in units {
+        for (identifier, unit) in units.sorted(by: { $0.key < $1.key }) {
             
             guard let memberName = memberNameCache[identifier]
                 else { XCTFail("No extension generated for \(identifier)"); return }
