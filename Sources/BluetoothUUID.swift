@@ -116,6 +116,10 @@ extension BluetoothUUID: RawRepresentable {
     }
 }
 
+// MARK: - Codable
+
+extension BluetoothUUID: Codable { }
+
 // MARK: - DataConvertible
 
 internal extension BluetoothUUID {
