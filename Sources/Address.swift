@@ -149,3 +149,7 @@ extension BluetoothAddress: CustomStringConvertible {
     
     public var description: String { return rawValue }
 }
+
+// MARK: - Codable
+
+extension BluetoothAddress: Codable { }
