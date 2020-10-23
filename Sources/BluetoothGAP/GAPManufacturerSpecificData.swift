@@ -152,7 +152,7 @@ internal extension GAPManufacturerSpecificData.Storage {
     
     @usableFromInline
     init(data: Data) {
-        assert(data.count > 2)
+        assert(data.count >= 2)
         self = .data(data)
     }
     
