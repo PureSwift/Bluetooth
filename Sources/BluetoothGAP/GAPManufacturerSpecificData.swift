@@ -20,9 +20,11 @@ public struct GAPManufacturerSpecificData: GAPData {
     
     public static var dataType: GAPDataType { return .manufacturerSpecificData }
     
+    /// Internal Storage
     @usableFromInline
     internal private(set) var storage: Storage
     
+    /// Company Identifier
     public var companyIdentifier: CompanyIdentifier {
         get {
             switch storage {
@@ -33,13 +35,24 @@ public struct GAPManufacturerSpecificData: GAPData {
             }
         }
         set {
-            self.storage = .init(
-                companyIdentifier: newValue,
-                additionalData: additionalData
-            )
+            switch storage {
+            case var .data(data):
+                // mutate data buffer
+                assert(data.count >= 2)
+                let bytes = newValue.rawValue.littleEndian.bytes
+                data[0] = bytes.0
+                data[1] = bytes.1
+                self.storage = .data(data)
+            case let .inline(value):
+                self.storage = .init(
+                    companyIdentifier: newValue,
+                    additionalData: value.additionalData
+                )
+            }
         }
     }
     
+    /// Additional Data.
     public var additionalData: Data {
         get {
             switch storage {
@@ -58,6 +71,7 @@ public struct GAPManufacturerSpecificData: GAPData {
         }
     }
     
+    /// Initialize with company identifier and additional data.
     public init(companyIdentifier: CompanyIdentifier,
                 additionalData: Data = Data()) {
         
@@ -67,12 +81,19 @@ public struct GAPManufacturerSpecificData: GAPData {
         )
     }
     
+    /// Initialize from data.
     public init?(data: Data) {
         
         guard data.count >= 2
             else { return nil }
         
-        self.storage = .init(data: data)
+        // keep data buffer unless on stack
+        if data.count > Data.inlineBufferSize {
+            self.storage = .init(data: data)
+        } else {
+            // parse data and discard trivial data buffer on stack
+            self.storage = .inline(Inline(data: data)!)
+        }
     }
     
     public var dataLength: Int {
