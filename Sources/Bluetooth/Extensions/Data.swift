@@ -28,6 +28,13 @@ internal extension Data {
         }
     }
     
+    func withUnsafeBytes <Result> (in range: Range<Int>, _ block: ((UnsafeRawBufferPointer) throws -> Result)) rethrows -> Result {
+        
+        return try withUnsafeBytes {
+            return try block(UnsafeRawBufferPointer(rebasing: $0[range]))
+        }
+    }
+    
     func suffixNoCopy(from index: Int) -> Data {
         return subdataNoCopy(in: index ..< count)
     }
