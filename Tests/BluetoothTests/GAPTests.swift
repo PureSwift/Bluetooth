@@ -950,6 +950,7 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(manufacturerData.additionalData, inline.additionalData)
             XCTAssertEqual(manufacturerData.storage, .inline(inline))
             XCTAssertEqual(manufacturerData, GAPManufacturerSpecificData(data: data))
+            XCTAssertEqual(dataValue, GAPManufacturerSpecificData(data: data))
             XCTAssertEqual(manufacturerData, dataValue)
             XCTAssertNotEqual(manufacturerData.storage, dataValue.storage)
             XCTAssertEqual(manufacturerData, beacon.manufactererData)
@@ -961,14 +962,54 @@ final class GAPTests: XCTestCase {
             newManufacturerData.additionalData = Data()
             XCTAssertNotEqual(manufacturerData, newManufacturerData)
             XCTAssertNotEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
+            newManufacturerData = GAPManufacturerSpecificData(data: data)!
+            XCTAssertEqual(newManufacturerData.storage, .data(data))
+            XCTAssertEqual(manufacturerData, newManufacturerData)
+            XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
+            XCTAssertNotEqual(manufacturerData.storage, newManufacturerData.storage)
+            XCTAssertEqual(newManufacturerData.storage, dataValue.storage)
             newManufacturerData.companyIdentifier = .apple
+            XCTAssertEqual(newManufacturerData.storage, dataValue.storage)
+            XCTAssertNotEqual(newManufacturerData.storage, manufacturerData.storage)
+            XCTAssertNotEqual(newManufacturerData.storage, .inline(inline))
             newManufacturerData.additionalData = inline.additionalData
             XCTAssertEqual(manufacturerData, newManufacturerData)
             XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
             XCTAssertEqual(manufacturerData.storage, newManufacturerData.storage)
-            XCTAssertNotEqual(manufacturerData.storage, dataValue.storage, "Different storage used")
-            XCTAssertEqual(GAPManufacturerSpecificData(companyIdentifier: .apple), GAPManufacturerSpecificData(data: Data([0x4c, 0x00])))
-            XCTAssertEqual(GAPManufacturerSpecificData(companyIdentifier: .apple).hashValue, GAPManufacturerSpecificData(data: Data([0x4c, 0x00]))?.hashValue)
+            XCTAssertNotEqual(newManufacturerData.storage, dataValue.storage, "Different storage used")
+            XCTAssertEqual(newManufacturerData.storage, .inline(inline))
+        }
+        
+        // storage for small data
+        do {
+            let data = Data([0x4c, 0x00])
+            let manufacturerData = GAPManufacturerSpecificData(
+                companyIdentifier: .apple,
+                additionalData: Data()
+            )
+            guard let dataValue = GAPManufacturerSpecificData(data: data)
+                else {  XCTFail(); return }
+            XCTAssertEqual(manufacturerData, dataValue)
+            XCTAssertEqual(manufacturerData, GAPManufacturerSpecificData(data: data))
+            XCTAssertEqual(dataValue, GAPManufacturerSpecificData(data: data))
+            XCTAssertEqual(manufacturerData.hashValue, dataValue.hashValue)
+            XCTAssertEqual(manufacturerData.storage, dataValue.storage, "Always use inline storage for small values")
+            XCTAssertEqual(manufacturerData.companyIdentifier, .apple)
+            XCTAssertEqual(manufacturerData.additionalData, Data())
+            XCTAssertNotEqual(manufacturerData.storage, .data(data))
+            var newManufacturerData = manufacturerData
+            newManufacturerData.companyIdentifier = .savantSystems
+            XCTAssertNotEqual(manufacturerData, newManufacturerData)
+            XCTAssertNotEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
+            newManufacturerData.additionalData = Data()
+            XCTAssertNotEqual(manufacturerData, newManufacturerData)
+            XCTAssertNotEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
+            newManufacturerData.companyIdentifier = .apple
+            newManufacturerData.additionalData = Data()
+            XCTAssertEqual(manufacturerData, newManufacturerData)
+            XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
+            XCTAssertEqual(manufacturerData.storage, newManufacturerData.storage)
+            newManufacturerData.companyIdentifier = .apple
         }
     }
     
