@@ -10,6 +10,7 @@ import Foundation
 
 internal extension Data {
     
+    @usableFromInline
     func subdataNoCopy(in range: Range<Int>) -> Data {
         
         // stored in heap, can reuse buffer
@@ -28,6 +29,7 @@ internal extension Data {
         }
     }
     
+    @usableFromInline
     func withUnsafeBytes <Result> (in range: Range<Int>, _ block: ((UnsafeRawBufferPointer) throws -> Result)) rethrows -> Result {
         
         return try withUnsafeBytes {
@@ -35,10 +37,12 @@ internal extension Data {
         }
     }
     
+    @usableFromInline
     func suffixNoCopy(from index: Int) -> Data {
         return subdataNoCopy(in: index ..< count)
     }
     
+    @usableFromInline
     func suffixCheckingBounds(from start: Int) -> Data {
         
         if count > start {
@@ -54,6 +58,7 @@ internal extension Data {
     /// Size of the inline buffer for `Foundation.Data` used in Swift 5.
     ///
     /// Used to determine wheather data is stored on stack or in heap.
+    @usableFromInline
     static var inlineBufferSize: Int {
         
         // Keep up to date
