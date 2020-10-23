@@ -905,6 +905,7 @@ final class GAPTests: XCTestCase {
     
     func testManufacturerSpecificData() {
         
+        XCTAssertNil(GAPManufacturerSpecificData(data: Data()))
         XCTAssertNil(GAPManufacturerSpecificData(data: Data([0x4f])))
         
         do {
@@ -978,6 +979,13 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(manufacturerData.storage, newManufacturerData.storage)
             XCTAssertNotEqual(newManufacturerData.storage, dataValue.storage, "Different storage used")
             XCTAssertEqual(newManufacturerData.storage, .inline(inline))
+            
+            let encoder = GAPDataEncoder()
+            XCTAssertEqual(
+                encoder.encode(dataValue),
+                encoder.encode(beacon.manufactererData)
+            )
+            
         }
         
         // storage for small data
@@ -1009,7 +1017,12 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(manufacturerData, newManufacturerData)
             XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
             XCTAssertEqual(manufacturerData.storage, newManufacturerData.storage)
-            newManufacturerData.companyIdentifier = .apple
+            
+            let encoder = GAPDataEncoder()
+            XCTAssertEqual(
+                encoder.encode(dataValue),
+                encoder.encode(manufacturerData)
+            )
         }
     }
     
