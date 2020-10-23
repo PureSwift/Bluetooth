@@ -10,7 +10,8 @@ import Foundation
 
 import XCTest
 import Foundation
-@testable import Bluetooth
+import Bluetooth
+@testable import BluetoothHCI
 
 final class HCITests: XCTestCase {
     

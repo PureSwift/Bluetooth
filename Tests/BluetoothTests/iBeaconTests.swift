@@ -8,7 +8,9 @@
 
 import XCTest
 import Foundation
-@testable import Bluetooth
+import Bluetooth
+@testable import BluetoothGAP
+import BluetoothHCI
 
 final class iBeaconTests: XCTestCase {
     
@@ -108,7 +110,7 @@ final class iBeaconTests: XCTestCase {
     
     func testCommand() {
         
-        let uuid = UUID(rawValue: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!
+        let uuid = UUID(uuidString: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!
         
         let beacon = AppleBeacon(uuid: uuid, major: 1, minor: 1, rssi: -29)
         

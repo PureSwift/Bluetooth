@@ -15,8 +15,7 @@ final class UUIDTests: XCTestCase {
     static let allTests = [
         ("testLength", testLength),
         ("testByteValue", testByteValue),
-        ("testData", testData),
-        ("testRawRepresentable", testRawRepresentable)
+        ("testData", testData)
     ]
     
     func testLength() {
@@ -62,13 +61,5 @@ final class UUIDTests: XCTestCase {
         
         XCTAssertEqual(uuid.data.count, UUID.length)
         XCTAssertEqual(UUID(data: uuid.data), uuid)
-    }
-    
-    func testRawRepresentable() {
-        
-        let uuid = UUID()
-        
-        XCTAssertEqual(uuid.rawValue, uuid.uuidString)
-        XCTAssertEqual(UUID(rawValue: uuid.rawValue), uuid)
     }
 }

@@ -8,7 +8,8 @@
 
 import XCTest
 import Foundation
-@testable import Bluetooth
+import Bluetooth
+@testable import BluetoothGATT
 
 final class GATTCharacteristicTests: XCTestCase {
     
@@ -1452,8 +1453,8 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.scanInterval, LowEnergyScanTimeInterval(16384))
-        XCTAssertEqual(characteristics.scanWindow, LowEnergyScanTimeInterval(16384))
+        XCTAssertEqual(characteristics.scanInterval, LowEnergyScanTimeInterval(rawValue: 16384))
+        XCTAssertEqual(characteristics.scanWindow, LowEnergyScanTimeInterval(rawValue: 16384))
         XCTAssertEqual(GATTScanIntervalWindow.uuid, .scanIntervalWindow)
         XCTAssertEqual(GATTScanIntervalWindow(data: data), GATTScanIntervalWindow(data: data))
     }

@@ -9,6 +9,7 @@
 import XCTest
 import Foundation
 @testable import Bluetooth
+@testable import BluetoothGATT
 
 final class AttributeProtocolTests: XCTestCase {
     
@@ -186,7 +187,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.dataLength, data.count)
             
             // correct values
-            //XCTAssert(pdu.type == GATT.UUID.PrimaryService.uuid, "\(pdu.type)")
+            //XCTAssert(pdu.type == GATTUUID.PrimaryService.uuid, "\(pdu.type)")
             //XCTAssert(pdu.type == .bit16(0x2800))
         }
         
@@ -195,9 +196,9 @@ final class AttributeProtocolTests: XCTestCase {
             // discover all primary services
             let pdu = ATTReadByGroupTypeRequest(startHandle: 0x0001,
                                                 endHandle: 0xFFFF,
-                                                type: GATT.UUID.primaryService.uuid)
+                                                type: GATTUUID.primaryService.uuid)
             
-            XCTAssert(pdu.type == GATT.UUID.primaryService.uuid, "\(pdu.type)")
+            XCTAssert(pdu.type == GATTUUID.primaryService.uuid, "\(pdu.type)")
             XCTAssert(pdu.type == .bit16(0x2800))
             XCTAssert(pdu.type != .bit16(0x0028))
             
@@ -214,7 +215,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(decoded.type == pdu.type)
             XCTAssert(decoded.type.data == pdu.type.data)
             XCTAssert(decoded.type.littleEndian == pdu.type.littleEndian)
-            XCTAssert(decoded.type == GATT.UUID.primaryService.uuid, "\(decoded.type)")
+            XCTAssert(decoded.type == GATTUUID.primaryService.uuid, "\(decoded.type)")
             XCTAssert(decoded.type == .bit16(0x2800))
             XCTAssert(decoded.type != .bit16(0x0028))
             XCTAssertEqual(decoded.data, pdu.data)

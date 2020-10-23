@@ -27,7 +27,7 @@ final class UInt128Tests: XCTestCase {
     
     func testUUID() {
         
-        let uuid = UUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!
+        let uuid = UUID(uuidString: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!
         let value = UInt128(uuid: uuid)
         
         XCTAssertEqual(UUID(value), uuid)

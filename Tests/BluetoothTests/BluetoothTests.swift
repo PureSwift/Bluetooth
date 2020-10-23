@@ -9,6 +9,8 @@
 import XCTest
 import Foundation
 @testable import Bluetooth
+import BluetoothHCI
+import BluetoothGATT
 
 final class BluetoothTests: XCTestCase {
     
@@ -256,9 +258,9 @@ final class BluetoothTests: XCTestCase {
         do {
             
             // set conversion
-            let all = BitMaskOptionSet(ATT.AttributePermission.allCases)
+            let all = BitMaskOptionSet(ATTAttributePermission.allCases)
             
-            let expected: Set<ATT.AttributePermission> = [.read,
+            let expected: Set<ATTAttributePermission> = [.read,
                                                           .write,
                                                           .readEncrypt,
                                                           .writeEncrypt,
@@ -267,44 +269,44 @@ final class BluetoothTests: XCTestCase {
                                                           .authorized,
                                                           .noAuthorization]
             
-            XCTAssertEqual(expected, Set(ATT.AttributePermission.allCases))
-            XCTAssert(all.contains(ATT.AttributePermission.allCases))
-            XCTAssertEqual(all.count, ATT.AttributePermission.allCases.count)
+            XCTAssertEqual(expected, Set(ATTAttributePermission.allCases))
+            XCTAssert(all.contains(ATTAttributePermission.allCases))
+            XCTAssertEqual(all.count, ATTAttributePermission.allCases.count)
             XCTAssertEqual(all.count, 8)
-            XCTAssertEqual(Set(all), Set(ATT.AttributePermission.allCases))
-            XCTAssertEqual(all, BitMaskOptionSet<ATT.AttributePermission>.all)
-            XCTAssert(all.contains(ATT.AttributePermission.encrypt))
-            XCTAssert(all.contains(ATT.AttributePermission.authentication))
-            XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(.read) == false)
-            XCTAssert(BitMaskOptionSet<ATT.AttributePermission>().contains(ATT.AttributePermission.allCases) == false)
+            XCTAssertEqual(Set(all), Set(ATTAttributePermission.allCases))
+            XCTAssertEqual(all, BitMaskOptionSet<ATTAttributePermission>.all)
+            XCTAssert(all.contains(ATTAttributePermission.encrypt))
+            XCTAssert(all.contains(ATTAttributePermission.authentication))
+            XCTAssert(BitMaskOptionSet<ATTAttributePermission>().contains(.read) == false)
+            XCTAssert(BitMaskOptionSet<ATTAttributePermission>().contains(ATTAttributePermission.allCases) == false)
         }
         
         do {
             
             // Sets are as large as a single element
-            XCTAssert(MemoryLayout<BitMaskOptionSet<GATT.CharacteristicProperty>>.size == MemoryLayout<GATT.CharacteristicProperty>.size)
+            XCTAssert(MemoryLayout<BitMaskOptionSet<GATTCharacteristicProperty>>.size == MemoryLayout<GATTCharacteristicProperty>.size)
             
             // create empty set
-            var set = BitMaskOptionSet<GATT.CharacteristicProperty>()
+            var set = BitMaskOptionSet<GATTCharacteristicProperty>()
             XCTAssert(set.count == 0)
             XCTAssert(set.isEmpty)
             XCTAssert(set.rawValue == 0)
             
             // insert value
             set.insert(.read)
-            XCTAssert(set.rawValue == GATT.CharacteristicProperty.read.rawValue)
+            XCTAssert(set.rawValue == GATTCharacteristicProperty.read.rawValue)
             XCTAssert(set.count == 1)
             XCTAssert(set.isEmpty == false)
             
             // cant store duplicates
             set.insert(.read)
-            XCTAssert(set.rawValue == GATT.CharacteristicProperty.read.rawValue)
+            XCTAssert(set.rawValue == GATTCharacteristicProperty.read.rawValue)
             XCTAssert(set.count == 1)
             XCTAssert(set.isEmpty == false)
             
             // can store different values
             set.insert(.write)
-            XCTAssert(set.rawValue == (GATT.CharacteristicProperty.read.rawValue | GATT.CharacteristicProperty.write.rawValue))
+            XCTAssert(set.rawValue == (GATTCharacteristicProperty.read.rawValue | GATTCharacteristicProperty.write.rawValue))
             XCTAssert(set.count == 2)
             XCTAssert(set.isEmpty == false)
             
