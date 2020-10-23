@@ -42,8 +42,10 @@ public extension AppleBeacon {
         appendAdditionalManufactererData(to: &additionalData)
         assert(additionalData.count == type(of: self).additionalDataLength)
         
-        let manufactererData = GAPManufacturerSpecificData(companyIdentifier: type(of: self).companyIdentifier,
-                                                           additionalData: additionalData)
+        let manufactererData = GAPManufacturerSpecificData(
+            companyIdentifier: type(of: self).companyIdentifier,
+            additionalData: additionalData
+        )
         
         return manufactererData
     }

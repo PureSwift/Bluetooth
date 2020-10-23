@@ -141,7 +141,7 @@ extension GAPManufacturerSpecificData: Hashable {
 internal extension GAPManufacturerSpecificData {
     
     @usableFromInline
-    enum Storage {
+    enum Storage: Equatable {
         case inline(Inline)
         case data(Data)
         //case advertisingData(LowEnergyAdvertisingData)
