@@ -9,6 +9,7 @@
 import XCTest
 import Foundation
 @testable import Bluetooth
+import BluetoothGAP
 
 #if os(macOS)
 

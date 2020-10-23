@@ -29,8 +29,3 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl $SWIFT_URL -s | tar xz -C $SWIFT_DIR &> /dev/null ; fi
   # Run Unit Tests
   - swift test
-  # Compile with Xcode
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd Xcode ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean test -scheme Bluetooth-macOS -sdk macosx -enableCodeCoverage YES | xcpretty -f `xcpretty-travis-formatter`; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-iOS SUPPORTS_MACCATALYST=NO | xcpretty -f `xcpretty-travis-formatter`; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then set -o pipefail && xcodebuild clean build -scheme Bluetooth-watchOS | xcpretty -f `xcpretty-travis-formatter`; fi

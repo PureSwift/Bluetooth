@@ -8,7 +8,8 @@
 
 import XCTest
 import Foundation
-@testable import Bluetooth
+import Bluetooth
+@testable import BluetoothGATT
 
 final class GATTTests: XCTestCase {
     
@@ -27,7 +28,7 @@ final class GATTTests: XCTestCase {
     
     func testCharacteristicProperty() {
         
-        GATT.CharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }
+        GATTCharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }
     }
     
     func testMTUExchange() {
@@ -79,17 +80,17 @@ final class GATTTests: XCTestCase {
         
         // If MTU is not negociated, then make sure all PDUs respect the MTU limit
         
-        let profiles: [[GATT.Service]] = [
+        let profiles: [[GATTAttribute.Service]] = [
             ProximityProfile.services,
             [
                 ProximityProfile.Apple1Service,
                 ProximityProfile.Apple2Service,
                 ProximityProfile.AppleNotificationService,
                 ProximityProfile.Apple4Service,
-                GATT.Service(uuid: BluetoothUUID(rawValue: "A6BEA019-D82A-46AA-B612-0304BB884423")!,
+                GATTAttribute.Service(uuid: BluetoothUUID(rawValue: "A6BEA019-D82A-46AA-B612-0304BB884423")!,
                              primary: true,
                              characteristics: []),
-                GATT.Service(uuid: BluetoothUUID(rawValue: "23627A36-4F81-49F9-9501-8B8A49FBA529")!,
+                GATTAttribute.Service(uuid: BluetoothUUID(rawValue: "23627A36-4F81-49F9-9501-8B8A49FBA529")!,
                              primary: true,
                              characteristics: [])
             ]
@@ -178,7 +179,7 @@ final class GATTTests: XCTestCase {
              
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 01 00 FF FF 00 28 ]
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x01, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            (ATTReadByGroupTypeRequest(startHandle: 0x01, endHandle: .max, type: GATTUUID.primaryService.uuid),
              [0x10, 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             
             /**
@@ -215,7 +216,7 @@ final class GATTTests: XCTestCase {
              
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 0A 00 FF FF 00 28 ]
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x000a, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            (ATTReadByGroupTypeRequest(startHandle: 0x000a, endHandle: .max, type: GATTUUID.primaryService.uuid),
             [0x10, 0x0A, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             
             /**
@@ -252,7 +253,7 @@ final class GATTTests: XCTestCase {
              
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 14 00 FF FF 00 28 ]
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x0014, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            (ATTReadByGroupTypeRequest(startHandle: 0x0014, endHandle: .max, type: GATTUUID.primaryService.uuid),
             [0x10, 0x14, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             
             /**
@@ -295,7 +296,7 @@ final class GATTTests: XCTestCase {
              
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 23 00 FF FF 00 28 ]
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x0023, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            (ATTReadByGroupTypeRequest(startHandle: 0x0023, endHandle: .max, type: GATTUUID.primaryService.uuid),
              [0x10, 0x23, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             
             /**
@@ -332,7 +333,7 @@ final class GATTTests: XCTestCase {
              
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 39 00 FF FF 00 28 ]
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x0039, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            (ATTReadByGroupTypeRequest(startHandle: 0x0039, endHandle: .max, type: GATTUUID.primaryService.uuid),
              [0x10, 0x39, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             
             /**
@@ -375,7 +376,7 @@ final class GATTTests: XCTestCase {
              
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 43 00 FF FF 00 28 ]
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x0043, endHandle: .max, type: GATT.UUID.primaryService.uuid),
+            (ATTReadByGroupTypeRequest(startHandle: 0x0043, endHandle: .max, type: GATTUUID.primaryService.uuid),
              [0x10, 0x43, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             
             /**
@@ -513,14 +514,14 @@ final class GATTTests: XCTestCase {
         let batteryLevel = GATTBatteryLevel(level: .min)
         
         let characteristics = [
-            GATT.Characteristic(uuid: type(of: batteryLevel).uuid,
+            GATTAttribute.Characteristic(uuid: type(of: batteryLevel).uuid,
                                 value: batteryLevel.data,
                                 permissions: [.read],
                                 properties: [.read, .notify],
                                 descriptors: [GATTClientCharacteristicConfiguration().descriptor])
         ]
         
-        let service = GATT.Service(uuid: .batteryService,
+        let service = GATTAttribute.Service(uuid: .batteryService,
                                    primary: true,
                                    characteristics: characteristics)
         
@@ -566,14 +567,14 @@ final class GATTTests: XCTestCase {
     
     func testDiscoverServiceByUUID() {
         
-        let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
+        let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                  value: Data(),
                                                  permissions: [.read],
                                                  properties: [.read],
                                                  descriptors: [])
         
         let services = (0 ..< 6).map {
-            GATT.Service(uuid: BluetoothUUID(),
+            GATTAttribute.Service(uuid: BluetoothUUID(),
                          primary: $0 == 0 || $0 % 2 == 0, // true if even number or zero
                          characteristics: [characteristic])
         }
@@ -640,13 +641,13 @@ final class GATTTests: XCTestCase {
     
     func testDiscoverCharacteristicByUUID() {
         
-        let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
+        let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                  value: Data(),
                                                  permissions: [.read],
                                                  properties: [.read],
                                                  descriptors: [])
         
-        let service = GATT.Service(uuid: BluetoothUUID(),
+        let service = GATTAttribute.Service(uuid: BluetoothUUID(),
                                    primary: true,
                                    characteristics: [characteristic])
         
@@ -712,24 +713,24 @@ final class GATTTests: XCTestCase {
         
         let descriptors = [
             GATTClientCharacteristicConfiguration().descriptor,
-            GATT.Descriptor(uuid: BluetoothUUID(),
-                            value: Data("UInt128 Descriptor".utf8),
-                            permissions: [.read, .write]),
-            GATT.Descriptor(uuid: .savantSystems,
-                            value: Data("Savant".utf8),
-                            permissions: [.read]),
-            GATT.Descriptor(uuid: .savantSystems2,
-                            value: Data("Savant2".utf8),
-                            permissions: [.write])
+            GATTAttribute.Descriptor(uuid: BluetoothUUID(),
+                                     value: Data("UInt128 Descriptor".utf8),
+                                     permissions: [.read, .write]),
+            GATTAttribute.Descriptor(uuid: .savantSystems,
+                                         value: Data("Savant".utf8),
+                                         permissions: [.read]),
+            GATTAttribute.Descriptor(uuid: .savantSystems2,
+                                         value: Data("Savant2".utf8),
+                                         permissions: [.write])
         ]
         
-        let characteristic = GATT.Characteristic(uuid: BluetoothUUID(),
+        let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                  value: Data(),
                                                  permissions: [.read],
                                                  properties: [.read],
                                                  descriptors: descriptors)
         
-        let service = GATT.Service.init(uuid: BluetoothUUID(),
+        let service = GATTAttribute.Service.init(uuid: BluetoothUUID(),
                                         primary: true,
                                         characteristics: [characteristic])
         
@@ -851,9 +852,9 @@ final class GATTTests: XCTestCase {
     
     func testNotification() {
         
-        func test(with characteristics: [GATT.Characteristic], newData: [Data]) {
+        func test(with characteristics: [GATTAttribute.Characteristic], newData: [Data]) {
             
-            let service = GATT.Service.init(uuid: BluetoothUUID(),
+            let service = GATTAttribute.Service.init(uuid: BluetoothUUID(),
                                             primary: true,
                                             characteristics: characteristics)
             
@@ -1027,7 +1028,7 @@ final class GATTTests: XCTestCase {
         
         var writtenValues = [UInt16: Data]()
         
-        func clientWillWriteServer(uuid: BluetoothUUID, handle: UInt16, value: Data, newValue: Data) -> ATT.Error? {
+        func clientWillWriteServer(uuid: BluetoothUUID, handle: UInt16, value: Data, newValue: Data) -> ATTError? {
             
             print("\(#function) \(uuid) (\(handle))")
             
@@ -1339,7 +1340,7 @@ fileprivate extension ATTOpcodeType {
 
 struct ProximityProfile {
     
-    static let services: [GATT.Service] = [
+    static let services: [GATTAttribute.Service] = [
         
         GenericAccessService,
         GenericAttributeService,
@@ -1359,37 +1360,37 @@ struct ProximityProfile {
         ImmediateAlertService
     ]
     
-    static let GenericAccessService = GATT.Service(uuid: .bit16(0x1800),
+    static let GenericAccessService = GATTAttribute.Service(uuid: .bit16(0x1800),
                                                    primary: true,
                                                    characteristics: [
                                                     
         ]
     )
     
-    static let GenericAttributeService = GATT.Service(uuid: .bit16(0x1801),
+    static let GenericAttributeService = GATTAttribute.Service(uuid: .bit16(0x1801),
                                                       primary: true,
                                                       characteristics: [
-                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATT.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
@@ -1397,61 +1398,61 @@ struct ProximityProfile {
         ]
     )
     
-    static let BatteryService = GATT.Service(uuid: .bit16(0x180F),
+    static let BatteryService = GATTAttribute.Service(uuid: .bit16(0x180F),
                                              primary: true,
                                              characteristics: [
         ]
     )
     
-    static let CurrentTimeService = GATT.Service(uuid: .bit16(0x1805),
+    static let CurrentTimeService = GATTAttribute.Service(uuid: .bit16(0x1805),
                                                  primary: true,
                                                  characteristics: [
         ]
     )
     
-    static let DeviceInformationService = GATT.Service(uuid: .bit16(0x180A),
+    static let DeviceInformationService = GATTAttribute.Service(uuid: .bit16(0x180A),
                                                        primary: true,
                                                        characteristics: [
         ]
     )
     
-    static let LinkLossService = GATT.Service(uuid: .bit16(0x1803),
+    static let LinkLossService = GATTAttribute.Service(uuid: .bit16(0x1803),
                                               primary: true,
                                               characteristics: [
         ]
     )
     
-    static let TXPowerService = GATT.Service(uuid: .bit16(0x1804),
+    static let TXPowerService = GATTAttribute.Service(uuid: .bit16(0x1804),
                                              primary: true,
                                              characteristics: [
         ]
     )
     
-    static let ImmediateAlertService = GATT.Service(uuid: .bit16(0x1802),
+    static let ImmediateAlertService = GATTAttribute.Service(uuid: .bit16(0x1802),
                                                     primary: true,
                                                     characteristics: [
         ]
     )
     
-    static let Apple1Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!),
+    static let Apple1Service = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!),
                                             primary: true,
                                             characteristics: [
         ]
     )
     
-    static let Apple2Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!),
+    static let Apple2Service = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!),
                                             primary: true,
                                             characteristics: [
         ]
     )
     
-    static let AppleNotificationService = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
+    static let AppleNotificationService = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
                                                        primary: true,
                                                        characteristics: [
         ]
     )
     
-    static let Apple4Service = GATT.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!),
+    static let Apple4Service = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!),
                                             primary: true,
                                             characteristics: [
         ]

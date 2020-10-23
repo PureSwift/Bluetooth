@@ -8,7 +8,8 @@
 
 import XCTest
 import Foundation
-@testable import Bluetooth
+import Bluetooth
+@testable import BluetoothGATT
 
 final class GATTCharacteristicTests: XCTestCase {
     
@@ -297,9 +298,9 @@ final class GATTCharacteristicTests: XCTestCase {
         
         let characteristic = GATTBloodPressureMeasurement(compoundValue:
             CompoundValue(unit: .kPa,
-                          systolic: SFloat(builtin: 0xAA),
-                          diastolic: SFloat(builtin: 0xBB),
-                          meanArterialPressure: SFloat(builtin: 0xCC)),
+                          systolic: SFloat(bitPattern: 0xAA),
+                          diastolic: SFloat(bitPattern: 0xBB),
+                          meanArterialPressure: SFloat(bitPattern: 0xCC)),
             userIdentifier: 0x1B,
             measurementStatus: .all
         )
@@ -1452,8 +1453,8 @@ final class GATTCharacteristicTests: XCTestCase {
             else { XCTFail("Could not decode from bytes"); return }
         
         XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.scanInterval, LowEnergyScanTimeInterval(16384))
-        XCTAssertEqual(characteristics.scanWindow, LowEnergyScanTimeInterval(16384))
+        XCTAssertEqual(characteristics.scanInterval, LowEnergyScanTimeInterval(rawValue: 16384))
+        XCTAssertEqual(characteristics.scanWindow, LowEnergyScanTimeInterval(rawValue: 16384))
         XCTAssertEqual(GATTScanIntervalWindow.uuid, .scanIntervalWindow)
         XCTAssertEqual(GATTScanIntervalWindow(data: data), GATTScanIntervalWindow(data: data))
     }

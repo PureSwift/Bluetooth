@@ -8,7 +8,8 @@
 
 import XCTest
 import Foundation
-@testable import Bluetooth
+import Bluetooth
+@testable import BluetoothGATT
 
 final class GATTDatabaseTests: XCTestCase {
     

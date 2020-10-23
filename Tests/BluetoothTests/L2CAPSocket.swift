@@ -8,6 +8,7 @@
 
 import Foundation
 @testable import Bluetooth
+@testable import BluetoothGATT
 
 /// Test L2CAP socket
 internal final class TestL2CAPSocket: L2CAPSocketProtocol {

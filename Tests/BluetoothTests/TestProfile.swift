@@ -8,12 +8,13 @@
 
 import Foundation
 import Bluetooth
+import BluetoothGATT
 
 /// Test GATT Profile
 public struct TestProfile {
     
-    public typealias Service = GATT.Service
-    public typealias Characteristic = GATT.Characteristic
+    public typealias Service = GATTAttribute.Service
+    public typealias Characteristic = GATTAttribute.Characteristic
     
     public static let services: [Service] = [
         TestService,

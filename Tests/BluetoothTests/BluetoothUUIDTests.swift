@@ -8,7 +8,8 @@
 
 import XCTest
 import Foundation
-@testable import Bluetooth
+import Bluetooth
+@testable import BluetoothGATT
 
 final class BluetoothUUIDTests: XCTestCase {
     
@@ -105,7 +106,7 @@ final class BluetoothUUIDTests: XCTestCase {
     func testPrimaryServiceUUID() {
         
         let uuidString = "2800" // big endian representation
-        let uuidValue = GATT.UUID.primaryService.rawValue // 0x2800
+        let uuidValue = GATTUUID.primaryService.rawValue // 0x2800
         let uuid = BluetoothUUID.bit16(uuidValue)
         
         XCTAssert(uuid.rawValue == uuidString)
@@ -202,9 +203,9 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssertNil(UInt16(bluetooth: UUID()))
         
         let uuids: [UInt16: UUID] = [
-            0x1800: UUID(rawValue: "00001800-0000-1000-8000-00805F9B34FB")!,
-            0x1801: UUID(rawValue: "00001801-0000-1000-8000-00805F9B34FB")!,
-            0xFE59: UUID(rawValue: "0000FE59-0000-1000-8000-00805F9B34FB")!
+            0x1800: UUID(uuidString: "00001800-0000-1000-8000-00805F9B34FB")!,
+            0x1801: UUID(uuidString: "00001801-0000-1000-8000-00805F9B34FB")!,
+            0xFE59: UUID(uuidString: "0000FE59-0000-1000-8000-00805F9B34FB")!
         ]
         
         uuids.forEach {
@@ -218,11 +219,11 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssertNil(UInt32(bluetooth: UUID()))
         
         let uuids: [UInt32: UUID] = [
-            0x00001800: UUID(rawValue: "00001800-0000-1000-8000-00805F9B34FB")!,
-            0x00001801: UUID(rawValue: "00001801-0000-1000-8000-00805F9B34FB")!,
-            0x0000FE59: UUID(rawValue: "0000FE59-0000-1000-8000-00805F9B34FB")!,
-            0x00000000: UUID(rawValue: "00000000-0000-1000-8000-00805F9B34FB")!,
-            0x12345678: UUID(rawValue: "12345678-0000-1000-8000-00805F9B34FB")!
+            0x00001800: UUID(uuidString: "00001800-0000-1000-8000-00805F9B34FB")!,
+            0x00001801: UUID(uuidString: "00001801-0000-1000-8000-00805F9B34FB")!,
+            0x0000FE59: UUID(uuidString: "0000FE59-0000-1000-8000-00805F9B34FB")!,
+            0x00000000: UUID(uuidString: "00000000-0000-1000-8000-00805F9B34FB")!,
+            0x12345678: UUID(uuidString: "12345678-0000-1000-8000-00805F9B34FB")!
         ]
         
         uuids.forEach {
