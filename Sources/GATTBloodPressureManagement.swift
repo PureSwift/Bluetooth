@@ -92,11 +92,11 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         
         let unit: Unit = flags.contains(.bloodPressureUnits) ? .kPa : .mmHg
         
-        let systolic = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
+        let systolic = SFloat(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
         
-        let diastolic = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[3], data[4]))))
+        let diastolic = SFloat(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[3], data[4]))))
         
-        let meanArterialPressure = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
+        let meanArterialPressure = SFloat(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
         
         self.compoundValue = CompoundValue(unit: unit, systolic: systolic, diastolic: diastolic, meanArterialPressure: meanArterialPressure)
         
@@ -128,7 +128,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<UInt16>.size < data.count
                 else { return nil }
             
-            self.pulseRate = SFloat(builtin: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.pulseRate = SFloat(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
             
             index += MemoryLayout<UInt16>.size
             
@@ -192,9 +192,9 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             totalBytes += MemoryLayout<MeasurementStatus.RawValue>.size // 2
         }
         
-        let systolicBytes = compoundValue.systolic.littleEndian.builtin.bytes
-        let distolicBytes = compoundValue.diastolic.littleEndian.builtin.bytes
-        let meanArterialPressureBytes = compoundValue.meanArterialPressure.builtin.bytes
+        let systolicBytes = compoundValue.systolic.littleEndian.bitPattern.bytes
+        let distolicBytes = compoundValue.diastolic.littleEndian.bitPattern.bytes
+        let meanArterialPressureBytes = compoundValue.meanArterialPressure.bitPattern.bytes
         
         var data = Data([
             flags.rawValue,
@@ -215,7 +215,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         
         if let pulseRate = self.pulseRate {
             
-            let bytes = pulseRate.littleEndian.builtin.bytes
+            let bytes = pulseRate.littleEndian.bitPattern.bytes
             
             data += [bytes.0, bytes.1]
         }
