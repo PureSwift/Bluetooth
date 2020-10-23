@@ -967,7 +967,8 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
             XCTAssertEqual(manufacturerData.storage, newManufacturerData.storage)
             XCTAssertNotEqual(manufacturerData.storage, dataValue.storage, "Different storage used")
-            
+            XCTAssertEqual(GAPManufacturerSpecificData(companyIdentifier: .apple), GAPManufacturerSpecificData(data: Data([0x4c, 0x00])))
+            XCTAssertEqual(GAPManufacturerSpecificData(companyIdentifier: .apple).hashValue, GAPManufacturerSpecificData(data: Data([0x4c, 0x00]))?.hashValue)
         }
     }
     
