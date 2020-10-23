@@ -8,52 +8,78 @@
 
 import Foundation
 
+#if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+@available(iOS 14.0, watchOS 7.0, tvOS 14.0, *)
+@available(macOS, unavailable)
+@available(macCatalyst, unavailable)
+public extension SFloat {
+    
+    init(_ float: Float16) {
+        self.init(bitPattern: float.bitPattern)
+    }
+}
+@available(iOS 14.0, watchOS 7.0, tvOS 14.0, *)
+@available(macOS, unavailable)
+@available(macCatalyst, unavailable)
+public extension Float16 {
+    init(_ float: SFloat) {
+        self.init(bitPattern: float.bitPattern)
+    }
+}
+#endif
+
 /// IEEE-11073 16-bit SFLOAT
-public struct SFloat {
+public struct SFloat: Equatable, Hashable, Codable {
     
-    internal private(set) var builtin: UInt16
+    /// The bit pattern of the value’s encoding.
+    public private(set) var bitPattern: UInt16
     
-    internal init(builtin: UInt16) {
-        
-        self.builtin = builtin
+    /// Creates a new value with the given bit pattern.
+    public init(bitPattern: UInt16) {
+        self.bitPattern = bitPattern
     }
     
     /// Creates a value initialized to zero.
     public init() {
-        
-        fatalError()
+        self.bitPattern = 0
     }
     
     public init(_ value: Float) {
-        
-        fatalError()
+        #if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+        if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
+            self.init(Float16(value))
+        } else {
+            self = Self.fromFloat(value)
+        }
+        #else
+        self = Self.fromFloat(value)
+        #endif
     }
 }
 
 public extension Float {
     
     init(_ value: SFloat) {
-        
-        fatalError()
+        #if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+        if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
+            self.init(Float16(value))
+        } else {
+            self = value.toFloat()
+        }
+        #else
+        self = value.toFloat()
+        #endif
     }
 }
 
-// MARK: - Equatable
-
-extension SFloat: Equatable {
+internal extension SFloat {
     
-    public static func == (lhs: SFloat, rhs: SFloat) -> Bool {
-        
-        return lhs.builtin == rhs.builtin
+    static func fromFloat(_ value: Float) -> SFloat {
+        fatalError(#function)
     }
-}
-
-// MARK: - Hashable
-
-extension SFloat: Hashable {
     
-    public func hash(into hasher: inout Hasher) {
-        builtin.hash(into: &hasher)
+    func toFloat() -> Float {
+        fatalError(#function)
     }
 }
 
@@ -62,18 +88,19 @@ extension SFloat: Hashable {
 extension SFloat: CustomStringConvertible {
     
     public var description: String {
-        
-        return Float(self).description
+        #if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+        if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
+            return Float16(self).description
+        } else {
+            return _description
+        }
+        #else
+        return _description
+        #endif
     }
-}
-
-// MARK: - ExpressibleByIntegerLiteral
-
-extension SFloat: ExpressibleByIntegerLiteral {
     
-    public init(integerLiteral value: Float) {
-        
-        self.init(value)
+    private var _description: String {
+        return toFloat().description
     }
 }
 
@@ -83,7 +110,6 @@ extension SFloat: ByteSwap {
     
     /// A representation of this float with the byte order swapped.
     public var byteSwapped: SFloat {
-        
-        return SFloat(builtin: builtin.byteSwapped)
+        return SFloat(bitPattern: bitPattern.byteSwapped)
     }
 }
