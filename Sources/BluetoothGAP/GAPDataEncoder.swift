@@ -26,21 +26,20 @@ public struct GAPDataEncoder {
     // MARK: - Methods
     
     public func encode(_ encodables: [GAPData]) -> Data {
-        do { return try encode(encodables, to: Data.self) }
+        do { return try _encode(encodables) }
         catch { fatalError("Unable to encode GAP Data: \(error)") }
     }
     
     public func encode(_ encodables: GAPData...) -> Data {
-        do { return try encode(encodables, to: Data.self) }
-        catch { fatalError("Unable to encode GAP Data: \(error)") }
+        return encode(encodables)
     }
-        
+    
     public func encodeAdvertisingData(_ encodables: GAPData...) throws -> LowEnergyAdvertisingData {
-        return try encode(encodables, to: LowEnergyAdvertisingData.self)
+        return try _encode(encodables)
     }
-        
+    
     @inline(__always)
-    internal func encode<S, DataType>(_ encodables: S, to dataType: DataType.Type) throws -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
+    internal func _encode<S, DataType>(_ encodables: S) throws -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
         
         let dataLengths = encodables.map { $0.dataLength }
         let length = dataLengths.reduce(0, { $0 + $1 + 2 })

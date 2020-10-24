@@ -32,12 +32,10 @@ public extension GAPFlags {
     }
     
     func append(to data: inout Data) {
-        
         data += flags.rawValue
     }
     
     var dataLength: Int {
-        
         return 1
     }
 }

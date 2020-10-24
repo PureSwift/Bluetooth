@@ -47,7 +47,7 @@ public extension GAPData {
     }
     
     func append(to data: inout LowEnergyAdvertisingData) {
-        data.append(contentsOf: Data(self))
+        data += Data(self)
     }
 }
 
