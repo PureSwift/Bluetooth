@@ -26,7 +26,7 @@ public struct GAPDataEncoder {
     // MARK: - Methods
     
     public func encode(_ encodables: [GAPData]) -> Data {
-        do { return try _encode(encodables) }
+        do { return try Self.encode(encodables) }
         catch { fatalError("Unable to encode GAP Data: \(error)") }
     }
     
@@ -34,12 +34,12 @@ public struct GAPDataEncoder {
         return encode(encodables)
     }
     
-    public func encodeAdvertisingData(_ encodables: GAPData...) throws -> LowEnergyAdvertisingData {
-        return try _encode(encodables)
+    public func encodeAdvertisingData(_ encodables: [GAPData]) throws -> LowEnergyAdvertisingData {
+        return try Self.encode(encodables)
     }
     
     @inline(__always)
-    internal func _encode<S, DataType>(_ encodables: S) throws -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
+    internal static func encode<S, DataType>(_ encodables: S) throws -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
         
         let dataLengths = encodables.map { $0.dataLength }
         let length = dataLengths.reduce(0, { $0 + $1 + 2 })
@@ -48,12 +48,51 @@ public struct GAPDataEncoder {
         }
         var data = DataType(capacity: length)
         for (index, encodable) in encodables.enumerated() {
-            let dataLength = dataLengths[index]
-            data += UInt8(dataLength + 1)
-            data += type(of: encodable).dataType.rawValue
-            data.append(encodable)
+            let length = dataLengths[index]
+            encode(encodable, length: length, to: &data)
         }
         assert(data.count == length, "Invalid data length")
+        return data
+    }
+    
+    internal static func encode<T: GAPData>(_ value: T, to data: inout LowEnergyAdvertisingData) throws {
+        let length = value.dataLength
+        data += UInt8(length + 1)
+        data += T.dataType.rawValue
+        value.append(to: &data)
+        guard data.count <= LowEnergyAdvertisingData.maxCapacity else {
+            throw Error.invalidSize(data.count)
+        }
+    }
+    
+    internal static func encode<D: GAPDataContainer>(_ value: GAPData, length: Int, to data: inout D) {
+        data += UInt8(length + 1)
+        data += type(of: value).dataType.rawValue
+        data.append(value)
+    }
+}
+
+/// Generic specializations
+public extension GAPDataEncoder {
+    
+    func encodeAdvertisingData<T: GAPData>(_ value: T) throws -> LowEnergyAdvertisingData {
+        var data = LowEnergyAdvertisingData()
+        try Self.encode(value, to: &data)
+        return data
+    }
+    
+    func encodeAdvertisingData<T0: GAPData, T1: GAPData>(_ value0: T0, _ value1: T1) throws -> LowEnergyAdvertisingData {
+        var data = LowEnergyAdvertisingData()
+        try Self.encode(value0, to: &data)
+        try Self.encode(value1, to: &data)
+        return data
+    }
+    
+    func encodeAdvertisingData<T0: GAPData, T1: GAPData, T2: GAPData>(_ value0: T0, _ value1: T1, _ value2: T2) throws -> LowEnergyAdvertisingData {
+        var data = LowEnergyAdvertisingData()
+        try Self.encode(value0, to: &data)
+        try Self.encode(value1, to: &data)
+        try Self.encode(value2, to: &data)
         return data
     }
 }
