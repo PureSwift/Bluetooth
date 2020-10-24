@@ -246,13 +246,13 @@ public extension GAPDataDecoder {
         return value
     }
     
-    static func decodeFirst<T: GAPData>(_ type: T.Type, _ data: LowEnergyAdvertisingData) throws -> T? {
+    static func decodeFirst<T: GAPData>(_ type: T.Type, from data: LowEnergyAdvertisingData) throws -> T? {
         
         var offset = 0
         return try decodeFirst(type, &offset, data)
     }
     
-    static func decodeFirst<T: GAPData>(_ type: T.Type, _ data: Data) throws -> T? {
+    static func decodeFirst<T: GAPData>(_ type: T.Type, from data: Data) throws -> T? {
         
         var offset = 0
         return try decodeFirst(type, &offset, data)
