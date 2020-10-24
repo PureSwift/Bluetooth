@@ -24,6 +24,7 @@ final class iBeaconTests: XCTestCase {
     func testInvalid() {
         
         XCTAssertNil(AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x1a, 0x4c, 0x00]))
+        XCTAssertNil(AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x03, 0xff]))
         do {
             let data: LowEnergyAdvertisingData = [0x02, 0x01, 0x1a, 0x03, 0xff, 0x4c, 0x00]
             let decoder = GAPDataDecoder()
