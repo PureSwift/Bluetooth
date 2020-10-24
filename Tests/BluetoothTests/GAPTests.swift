@@ -80,7 +80,6 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPUUIDList<UInt16>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
         
         do {
-            
             // 16 bit UUIDs: 0X1803 0X1804 0X1802
             let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18])
             
@@ -90,7 +89,6 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(list.data, data)
             XCTAssertEqual(list.uuids, [0x1803, 0x1804, 0x1802])
             XCTAssertEqual(list.uuids.map { BluetoothUUID.bit16($0) }, [.linkLoss, .txPower, .immediateAlert])
-
         }
     }
     
@@ -927,103 +925,6 @@ final class GAPTests: XCTestCase {
         
         XCTAssertEqual(GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])),
                        GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])))
-        
-        do {
-            // storage tests
-            let data = Data([0x4c, 0x00, 0x02, 0x15, 0xb9, 0x40, 0x7f, 0x30, 0xf5, 0xf8, 0x46, 0x6e, 0xaf, 0xf9, 0x25, 0x55, 0x6b, 0x57, 0xfe, 0x6d, 0x29, 0x4c, 0x90, 0x39, 0x74])
-            let beacon = AppleBeacon(
-                uuid: UUID(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")!,
-                major: 0x294c,
-                minor: 0x9039,
-                rssi: 116
-            )
-            let inline = GAPManufacturerSpecificData.Inline(
-                companyIdentifier: .apple,
-                additionalData: Data([0x02, 0x15, 0xb9, 0x40, 0x7f, 0x30, 0xf5, 0xf8, 0x46, 0x6e, 0xaf, 0xf9, 0x25, 0x55, 0x6b, 0x57, 0xfe, 0x6d, 0x29, 0x4c, 0x90, 0x39, 0x74])
-            )
-            let manufacturerData = GAPManufacturerSpecificData(
-                companyIdentifier: inline.companyIdentifier,
-                additionalData: inline.additionalData
-            )
-            guard let dataValue = GAPManufacturerSpecificData(data: data)
-                else {  XCTFail(); return }
-            XCTAssertEqual(manufacturerData.companyIdentifier, .apple)
-            XCTAssertEqual(manufacturerData.additionalData, inline.additionalData)
-            XCTAssertEqual(manufacturerData.storage, .inline(inline))
-            XCTAssertEqual(manufacturerData, GAPManufacturerSpecificData(data: data))
-            XCTAssertEqual(dataValue, GAPManufacturerSpecificData(data: data))
-            XCTAssertEqual(manufacturerData, dataValue)
-            XCTAssertNotEqual(manufacturerData.storage, dataValue.storage)
-            XCTAssertEqual(manufacturerData, beacon.manufactererData)
-            XCTAssertEqual(manufacturerData.hashValue, dataValue.hashValue)
-            var newManufacturerData = manufacturerData
-            newManufacturerData.companyIdentifier = .savantSystems
-            XCTAssertNotEqual(manufacturerData, newManufacturerData)
-            XCTAssertNotEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
-            newManufacturerData.additionalData = Data()
-            XCTAssertNotEqual(manufacturerData, newManufacturerData)
-            XCTAssertNotEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
-            newManufacturerData = GAPManufacturerSpecificData(data: data)!
-            XCTAssertEqual(newManufacturerData.storage, .data(data))
-            XCTAssertEqual(manufacturerData, newManufacturerData)
-            XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
-            XCTAssertNotEqual(manufacturerData.storage, newManufacturerData.storage)
-            XCTAssertEqual(newManufacturerData.storage, dataValue.storage)
-            newManufacturerData.companyIdentifier = .apple
-            XCTAssertEqual(newManufacturerData.storage, dataValue.storage)
-            XCTAssertNotEqual(newManufacturerData.storage, manufacturerData.storage)
-            XCTAssertNotEqual(newManufacturerData.storage, .inline(inline))
-            newManufacturerData.additionalData = inline.additionalData
-            XCTAssertEqual(manufacturerData, newManufacturerData)
-            XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
-            XCTAssertEqual(manufacturerData.storage, newManufacturerData.storage)
-            XCTAssertNotEqual(newManufacturerData.storage, dataValue.storage, "Different storage used")
-            XCTAssertEqual(newManufacturerData.storage, .inline(inline))
-            
-            let encoder = GAPDataEncoder()
-            XCTAssertEqual(
-                encoder.encode(dataValue),
-                encoder.encode(beacon.manufactererData)
-            )
-            
-        }
-        
-        // storage for small data
-        do {
-            let data = Data([0x4c, 0x00])
-            let manufacturerData = GAPManufacturerSpecificData(
-                companyIdentifier: .apple,
-                additionalData: Data()
-            )
-            guard let dataValue = GAPManufacturerSpecificData(data: data)
-                else {  XCTFail(); return }
-            XCTAssertEqual(manufacturerData, dataValue)
-            XCTAssertEqual(manufacturerData, GAPManufacturerSpecificData(data: data))
-            XCTAssertEqual(dataValue, GAPManufacturerSpecificData(data: data))
-            XCTAssertEqual(manufacturerData.hashValue, dataValue.hashValue)
-            XCTAssertEqual(manufacturerData.storage, dataValue.storage, "Always use inline storage for small values")
-            XCTAssertEqual(manufacturerData.companyIdentifier, .apple)
-            XCTAssertEqual(manufacturerData.additionalData, Data())
-            XCTAssertNotEqual(manufacturerData.storage, .data(data))
-            var newManufacturerData = manufacturerData
-            newManufacturerData.companyIdentifier = .savantSystems
-            XCTAssertNotEqual(manufacturerData, newManufacturerData)
-            XCTAssertNotEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
-            newManufacturerData.additionalData = Data()
-            XCTAssertNotEqual(manufacturerData, newManufacturerData)
-            XCTAssertNotEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
-            newManufacturerData.companyIdentifier = .apple
-            newManufacturerData.additionalData = Data()
-            XCTAssertEqual(manufacturerData, newManufacturerData)
-            XCTAssertEqual(manufacturerData.hashValue, newManufacturerData.hashValue)
-            XCTAssertEqual(manufacturerData.storage, newManufacturerData.storage)
-            
-            let encoder = GAPDataEncoder()
-            XCTAssertEqual(
-                encoder.encode(dataValue),
-                encoder.encode(manufacturerData)
-            )
-        }
     }
     
     func testPBADV() {
