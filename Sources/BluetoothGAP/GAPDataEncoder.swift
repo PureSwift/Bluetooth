@@ -25,28 +25,28 @@ public struct GAPDataEncoder {
     
     // MARK: - Methods
     
-    public func encode(_ encodables: GAPData...) -> Data {
-        return encode(encodables)
-    }
-    
-    public func encodeAdvertisingData(_ encodables: GAPData...) throws -> LowEnergyAdvertisingData {
-        
-        let encodedData = encode(encodables)
-        
-        guard let advertisingData = LowEnergyAdvertisingData(data: encodedData)
-            else { throw Error.invalidSize(encodedData.count) }
-        
-        return advertisingData
-    }
-    
     public func encode(_ encodables: [GAPData]) -> Data {
-        encode(encodables, to: Data.self)
+        do { return try encode(encodables, to: Data.self) }
+        catch { fatalError("Unable to encode GAP Data: \(error)") }
     }
     
-    internal func encode<S, DataType>(_ encodables: S, to dataType: DataType.Type) -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
+    public func encode(_ encodables: GAPData...) -> Data {
+        do { return try encode(encodables, to: Data.self) }
+        catch { fatalError("Unable to encode GAP Data: \(error)") }
+    }
+        
+    public func encodeAdvertisingData(_ encodables: GAPData...) throws -> LowEnergyAdvertisingData {
+        return try encode(encodables, to: LowEnergyAdvertisingData.self)
+    }
+        
+    @inline(__always)
+    internal func encode<S, DataType>(_ encodables: S, to dataType: DataType.Type) throws -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
         
         let dataLengths = encodables.map { $0.dataLength }
         let length = dataLengths.reduce(0, { $0 + $1 + 2 })
+        guard length <= DataType.maxCapacity else {
+            throw Error.invalidSize(length)
+        }
         var data = DataType(capacity: length)
         for (index, encodable) in encodables.enumerated() {
             let dataLength = dataLengths[index]

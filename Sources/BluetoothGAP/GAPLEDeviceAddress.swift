@@ -51,12 +51,10 @@ public extension GAPLEDeviceAddress {
     }
     
     var dataLength: Int {
-        
         return Swift.type(of: self).length
     }
     
     func append(to data: inout Data) {
-        
         data += address.littleEndian
         data += type.rawValue
     }
