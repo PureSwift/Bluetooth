@@ -20,7 +20,7 @@ public struct LowEnergyAdvertisingData {
     
     // MARK: - Properties
     
-    public internal(set) var length: UInt8 {
+    public var length: UInt8 {
         didSet { precondition(length <= 31, "LE Advertising Data can only less than or equal to 31 octets") }
     }
     
