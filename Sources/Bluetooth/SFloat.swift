@@ -49,10 +49,10 @@ public struct SFloat: Equatable, Hashable, Codable {
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
             self.init(Float16(value))
         } else {
-            self = Self.fromFloat(value)
+            self.init(BuiltinFloat16(value))
         }
         #else
-        self = Self.fromFloat(value)
+        self.init(BuiltinFloat16(value))
         #endif
     }
 }
@@ -64,21 +64,70 @@ public extension Float {
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
             self.init(Float16(value))
         } else {
-            self = value.toFloat()
+            self.init(value.builtin)
         }
         #else
-        self = value.toFloat()
+        self.init(value.builtin)
         #endif
+    }
+}
+
+/// Builtin Float16
+@usableFromInline
+internal struct BuiltinFloat16: Equatable, Hashable {
+    
+    /// The bit pattern of the value’s encoding.
+    @usableFromInline
+    let bitPattern: UInt16
+    
+    /// Creates a new value with the given bit pattern.
+    @usableFromInline
+    init(bitPattern: UInt16) {
+        self.bitPattern = bitPattern
+    }
+    
+    /// Creates a value initialized to zero.
+    @usableFromInline
+    init() {
+        self.bitPattern = 0
+    }
+    
+    @usableFromInline
+    init(_ value: Float) {
+        fatalError(#function)
+    }
+}
+
+internal extension BuiltinFloat16 {
+    
+    init(_ value: SFloat) {
+        self.init(bitPattern: value.bitPattern)
     }
 }
 
 internal extension SFloat {
     
-    static func fromFloat(_ value: Float) -> SFloat {
-        fatalError(#function)
+    init(_ builtin: BuiltinFloat16) {
+        self.init(bitPattern: builtin.bitPattern)
     }
     
-    func toFloat() -> Float {
+    var builtin: BuiltinFloat16 {
+        return BuiltinFloat16(bitPattern: self.bitPattern)
+    }
+}
+
+extension BuiltinFloat16: CustomStringConvertible {
+    
+    @usableFromInline
+    var description: String {
+        return Float(self).description
+    }
+}
+
+internal extension Float {
+    
+    @usableFromInline
+    init(_ value: BuiltinFloat16) {
         fatalError(#function)
     }
 }
@@ -92,15 +141,11 @@ extension SFloat: CustomStringConvertible {
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
             return Float16(self).description
         } else {
-            return _description
+            return BuiltinFloat16(self).description
         }
         #else
-        return _description
+        return BuiltinFloat16(self).description
         #endif
-    }
-    
-    private var _description: String {
-        return toFloat().description
     }
 }
 
