@@ -20,7 +20,7 @@ public struct LowEnergyAdvertisingData {
     
     // MARK: - Properties
     
-    public var length: UInt8 {
+    public internal(set) var length: UInt8 {
         didSet { precondition(length <= 31, "LE Advertising Data can only less than or equal to 31 octets") }
     }
     
@@ -50,6 +50,7 @@ public extension LowEnergyAdvertisingData {
 
 public extension LowEnergyAdvertisingData {
     
+    /// Unsafe data access.
     func withUnsafeData <Result> (_ block: (Data) throws -> Result) rethrows -> Result {
         
         return try withUnsafePointer(to: bytes) {
@@ -187,7 +188,7 @@ extension LowEnergyAdvertisingData: Hashable {
 extension LowEnergyAdvertisingData: CustomStringConvertible {
     
     public var description: String {
-        return reduce("", { $0 + $1.toHexadecimal() })
+        return toHexadecimal()
     }
 }
 
@@ -212,12 +213,10 @@ extension LowEnergyAdvertisingData: ExpressibleByArrayLiteral {
 public extension LowEnergyAdvertisingData {
     
     init?(data: Data) {
-        
         self.init(data)
     }
     
     var data: Data {
-        
         var data = Data(capacity: count)
         data += self
         return data
@@ -229,7 +228,6 @@ public extension LowEnergyAdvertisingData {
 extension LowEnergyAdvertisingData: Sequence {
     
     public func makeIterator() -> IndexingIterator<LowEnergyAdvertisingData> {
-        
         return IndexingIterator(_elements: self)
     }
 }
@@ -239,22 +237,18 @@ extension LowEnergyAdvertisingData: Sequence {
 extension LowEnergyAdvertisingData: MutableCollection {
     
     public var count: Int {
-        
         return Int(length)
     }
     
     public func index(after index: Int) -> Int {
-        
         return index + 1
     }
     
     public var startIndex: Int {
-        
         return 0
     }
     
     public var endIndex: Int {
-        
         return count
     }
     
@@ -344,7 +338,6 @@ extension LowEnergyAdvertisingData: MutableCollection {
 extension LowEnergyAdvertisingData: RandomAccessCollection {
     
     public subscript(bounds: Range<Int>) -> Slice<LowEnergyAdvertisingData> {
-        
         return Slice<LowEnergyAdvertisingData>(base: self, bounds: bounds)
     }
 }

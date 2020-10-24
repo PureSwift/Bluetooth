@@ -160,7 +160,6 @@ public extension GAPDataType {
     
     /// Manufacturer Specific Data
     static let manufacturerSpecificData: GAPDataType = 0xFF
-    
 }
 
 // MARK: - ExpressibleByIntegerLiteral
@@ -168,7 +167,6 @@ public extension GAPDataType {
 extension GAPDataType: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
-        
         self.rawValue = value
     }
 }
@@ -178,12 +176,10 @@ extension GAPDataType: ExpressibleByIntegerLiteral {
 extension GAPDataType: CustomStringConvertible {
     
     public var name: String? {
-        
         return gapDataTypeNames[self]
     }
     
     public var description: String {
-        
         return name ?? "GAP Data Type (\(rawValue))"
     }
 }

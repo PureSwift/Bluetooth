@@ -15,10 +15,29 @@ import BluetoothHCI
 final class iBeaconTests: XCTestCase {
     
     static let allTests = [
+        ("testInvalid", testInvalid),
         ("testData", testData),
         ("testCommand", testCommand),
         ("testEstimoteBeacon", testEstimoteBeacon)
     ]
+    
+    func testInvalid() {
+        
+        XCTAssertNil(AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x1a, 0x4c, 0x00]))
+        XCTAssertNil(AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x03, 0xff]))
+        do {
+            let data: LowEnergyAdvertisingData = [0x02, 0x01, 0x1a, 0x03, 0xff, 0x4c, 0x00]
+            let decoder = GAPDataDecoder()
+            let manufacturerData = GAPManufacturerSpecificData(companyIdentifier: .apple)
+            var decoded = [GAPData]()
+            XCTAssertNoThrow(decoded = try decoder.decode(data))
+            guard decoded.count == 2
+                else { XCTFail(); return }
+            XCTAssertEqual(decoded[0] as? GAPFlags, 0x1a)
+            XCTAssertEqual(decoded[1] as? GAPManufacturerSpecificData, manufacturerData)
+            XCTAssertNil(AppleBeacon.from(advertisingData: data))
+        }
+    }
     
     func testData() {
         

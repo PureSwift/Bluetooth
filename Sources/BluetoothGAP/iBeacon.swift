@@ -39,11 +39,13 @@ public extension AppleBeacon {
     var manufactererData: GAPManufacturerSpecificData {
         
         var additionalData = Data(capacity: type(of: self).additionalDataLength)
-        appendAdditionalManufactererData(to: &additionalData)
+        appendAdditionalManufacturerData(to: &additionalData)
         assert(additionalData.count == type(of: self).additionalDataLength)
         
-        let manufactererData = GAPManufacturerSpecificData(companyIdentifier: type(of: self).companyIdentifier,
-                                                           additionalData: additionalData)
+        let manufactererData = GAPManufacturerSpecificData(
+            companyIdentifier: type(of: self).companyIdentifier,
+            additionalData: additionalData
+        )
         
         return manufactererData
     }
@@ -61,19 +63,13 @@ internal extension AppleBeacon {
     
     static func from(advertisingData: LowEnergyAdvertisingData) -> (beacon: AppleBeacon, flags: GAPFlags)? {
         
-        let decoder = GAPDataDecoder()
-        
-        guard let decodedGapData = try? decoder.decode(advertisingData),
-            decodedGapData.count == 2,
-            let flags = decodedGapData[0] as? GAPFlags,
-            let manufactererData = decodedGapData[1] as? GAPManufacturerSpecificData,
-            let beacon = AppleBeacon(manufactererData: manufactererData)
+        guard let (flags, manufactererData) = try? GAPDataDecoder.decode(GAPFlags.self, AppleBeacon.ManufacturerData.self, from: advertisingData)
             else { return nil }
         
-        return (beacon, flags)
+        return (manufactererData.beacon, flags)
     }
     
-    func appendAdditionalManufactererData <T: DataContainer> (to data: inout T) {
+    func appendAdditionalManufacturerData <T: DataContainer> (to data: inout T) {
         
         data += type(of: self).appleDataType // tlvPrefix
         data += type(of: self).length
@@ -90,8 +86,62 @@ public extension LowEnergyAdvertisingData {
          flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]) {
         
         let encoder = GAPDataEncoder()
-        // swiftlint:disable force_try
-        self = try! encoder.encodeAdvertisingData(flags, beacon.manufactererData)
-        // swiftlint:enable force_try
+        let manufacturerData = AppleBeacon.ManufacturerData(beacon) // storage on stack
+        do { self = try encoder.encodeAdvertisingData(flags, manufacturerData) }
+        catch { fatalError("Unable to encode iBeacon advertisement: \(error)") }
+    }
+}
+
+internal extension AppleBeacon {
+    
+    struct ManufacturerData: GAPData {
+        
+        static var dataType: GAPDataType { return .manufacturerSpecificData }
+        
+        internal let beacon: AppleBeacon
+        
+        init(_ beacon: AppleBeacon) {
+            self.beacon = beacon
+        }
+        
+        init?(data: Data) {
+            
+            guard let manufacturerData = GAPManufacturerSpecificData(data: data),
+                let beacon = AppleBeacon(manufactererData: manufacturerData)
+                else { return nil }
+            
+            self.init(beacon)
+        }
+        
+        init?(data slice: Slice<LowEnergyAdvertisingData>) {
+            
+            guard let manufacturerData = GAPManufacturerSpecificData(data: slice),
+                let beacon = AppleBeacon(manufactererData: manufacturerData)
+                else { return nil }
+            
+            self.init(beacon)
+        }
+        
+        var dataLength: Int { return 2 + AppleBeacon.additionalDataLength }
+        
+        /// Append data representation into buffer.
+        func append(to data: inout Data) {
+            data += self
+        }
+        
+        /// Append data representation into buffer.
+        func append(to data: inout LowEnergyAdvertisingData) {
+            data += self
+        }
+    }
+}
+
+extension AppleBeacon.ManufacturerData: DataConvertible {
+    
+    @usableFromInline
+    static func += <T>(data: inout T, value: AppleBeacon.ManufacturerData) where T : DataContainer {
+        
+        data += GAPManufacturerSpecificData(companyIdentifier: AppleBeacon.companyIdentifier)
+        value.beacon.appendAdditionalManufacturerData(to: &data)
     }
 }

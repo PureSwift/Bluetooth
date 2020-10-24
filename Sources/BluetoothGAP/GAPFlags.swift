@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /// GAP Flag
 public struct GAPFlags: GAPData, Equatable, Hashable {
@@ -16,7 +17,6 @@ public struct GAPFlags: GAPData, Equatable, Hashable {
     public var flags: BitMaskOptionSet<GAPFlag>
     
     public init(flags: BitMaskOptionSet<GAPFlag> = 0) {
-        
         self.flags = flags
     }
 }
@@ -32,13 +32,24 @@ public extension GAPFlags {
     }
     
     func append(to data: inout Data) {
-        
-        data += flags.rawValue
+        data += self
+    }
+    
+    func append(to data: inout LowEnergyAdvertisingData) {
+        data += self
     }
     
     var dataLength: Int {
-        
         return 1
+    }
+}
+
+// MARK: - DataConvertible
+
+extension GAPFlags: DataConvertible {
+    
+    static func += <T: DataContainer> (data: inout T, value: GAPFlags) {
+        data += value.flags.rawValue
     }
 }
 

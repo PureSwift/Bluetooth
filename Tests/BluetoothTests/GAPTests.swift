@@ -80,7 +80,6 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPUUIDList<UInt16>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
         
         do {
-            
             // 16 bit UUIDs: 0X1803 0X1804 0X1802
             let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18])
             
@@ -90,7 +89,6 @@ final class GAPTests: XCTestCase {
             XCTAssertEqual(list.data, data)
             XCTAssertEqual(list.uuids, [0x1803, 0x1804, 0x1802])
             XCTAssertEqual(list.uuids.map { BluetoothUUID.bit16($0) }, [.linkLoss, .txPower, .immediateAlert])
-
         }
     }
     
@@ -905,6 +903,7 @@ final class GAPTests: XCTestCase {
     
     func testManufacturerSpecificData() {
         
+        XCTAssertNil(GAPManufacturerSpecificData(data: Data()))
         XCTAssertNil(GAPManufacturerSpecificData(data: Data([0x4f])))
         
         do {

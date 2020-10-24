@@ -97,17 +97,11 @@ extension BluetoothUUID: RawRepresentable {
     public var rawValue: String {
         
         switch self {
-            
         case let .bit16(value):
-            
             return value.toHexadecimal()
-            
         case let .bit32(value):
-            
             return value.toHexadecimal()
-            
         case let .bit128(value):
-            
             return UUID(value).uuidString
         }
     }
