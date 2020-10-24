@@ -63,12 +63,7 @@ internal extension AppleBeacon {
     
     static func from(advertisingData: LowEnergyAdvertisingData) -> (beacon: AppleBeacon, flags: GAPFlags)? {
         
-        let decoder = GAPDataDecoder()
-        
-        guard let decodedGapData = try? decoder.decode(advertisingData),
-            decodedGapData.count == 2,
-            let flags = decodedGapData[0] as? GAPFlags,
-            let manufactererData = decodedGapData[1] as? GAPManufacturerSpecificData,
+        guard let (flags, manufactererData) = try? GAPDataDecoder.decode(GAPFlags.self, GAPManufacturerSpecificData.self, from: advertisingData),
             let beacon = AppleBeacon(manufactererData: manufactererData)
             else { return nil }
         
@@ -92,8 +87,7 @@ public extension LowEnergyAdvertisingData {
          flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]) {
         
         let encoder = GAPDataEncoder()
-        // swiftlint:disable force_try
-        self = try! encoder.encodeAdvertisingData(flags, beacon.manufactererData)
-        // swiftlint:enable force_try
+        do { self = try encoder.encodeAdvertisingData(flags, beacon.manufactererData) }
+        catch { fatalError("Unable to encode iBeacon advertisement: \(error)") }
     }
 }

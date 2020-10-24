@@ -104,8 +104,9 @@ public struct GAPDataDecoder {
     public enum Error: Swift.Error {
         
         case insufficientBytes(expected: Int, actual: Int)
-        case cannotDecode(GAPDataType, index: Int)
-        case unknownType(GAPDataType)
+        case cannotDecode(GAPDataType, offset: Int)
+        case unknownType(GAPDataType, offset: Int)
+        case notFound(GAPDataType)
     }
     
     // MARK: - Initialization
@@ -142,31 +143,67 @@ public struct GAPDataDecoder {
     }
     
     @usableFromInline
-    internal func decode<T: GAPDataContainer>(data: T) throws -> [GAPData] {
+    internal func decode<T: GAPDataContainer>(data: T, reserveCapacity capacity: Int = 3) throws -> [GAPData] {
         
         guard data.isEmpty == false
             else { return [] }
         
         var elements = [GAPData]()
-        elements.reserveCapacity(1)
+        elements.reserveCapacity(capacity)
         
-        var index = 0
+        var offset = 0
+        try Self.decode(data: data, offset: &offset) { (type, slice, offset) in
+            if let gapType = dataTypes[type] {
+                guard let decodable = slice._decode(gapType)
+                    else { throw Error.cannotDecode(type, offset: offset) }
+                elements.append(decodable)
+                return true
+            } else if ignoreUnknownType {
+                return true
+            } else {
+                throw Error.unknownType(type, offset: offset)
+            }
+        }
         
-        while index < data.count {
+        return elements
+    }
+    
+    @usableFromInline
+    internal static func decode<T: GAPDataContainer>(data: T, reserveCapacity capacity: Int = 3) throws -> [(GAPDataType, T.SliceContainer)] {
+        
+        guard data.isEmpty == false
+            else { return [] }
+        
+        var elements = [(GAPDataType, T.SliceContainer)]()
+        elements.reserveCapacity(capacity)
+        
+        var offset = 0
+        try decode(data: data, offset: &offset) { (type, data, offset) in
+            elements.append((type, data))
+            return true
+        }
+        
+        return elements
+    }
+    
+    @usableFromInline
+    internal static func decode<T: GAPDataContainer>(data: T, offset: inout Int, _ block: (GAPDataType, T.SliceContainer, Int) throws -> (Bool)) throws {
+        
+        while offset < data.count {
             
             // get length
-            let length = Int(data[index]) // 0
-            index += 1
-            guard index < data.count else {
+            let length = Int(data[offset]) // 0
+            offset += 1
+            guard offset < data.count else {
                 if length == 0 {
                     break // EOF
                 } else {
-                    throw Error.insufficientBytes(expected: index + 1, actual: data.count)
+                    throw Error.insufficientBytes(expected: offset + 1, actual: data.count)
                 }
             }
             
             // get type
-            let type = GAPDataType(rawValue: data[index]) // 1
+            let type = GAPDataType(rawValue: data[offset]) // 1
             
             // ignore zeroed bytes
             guard (type.rawValue == 0 && length == 0) == false
@@ -176,28 +213,88 @@ public struct GAPDataDecoder {
             let slice: T.SliceContainer
             
             if length > 0 {
-                let dataRange = index + 1 ..< index + length // 2 ..< 2 + length
-                index = dataRange.upperBound
-                guard index <= data.count
-                    else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
+                let dataRange = offset + 1 ..< offset + length // 2 ..< 2 + length
+                offset = dataRange.upperBound
+                guard offset <= data.count
+                    else { throw Error.insufficientBytes(expected: offset + 1, actual: data.count) }
                 
                 slice = data.subdataNoCopy(in: dataRange)
             } else {
                 slice = T.SliceContainer()
             }
             
-            if let gapType = dataTypes[type] {
-                guard let decodable = slice.decode(gapType)
-                    else { throw Error.cannotDecode(type, index: index) }
-                elements.append(decodable)
-            } else if ignoreUnknownType {
-                continue
-            } else {
-                throw Error.unknownType(type)
-            }
+            // process and continue
+            guard try block(type, slice, offset) else { return }
         }
+    }
+}
+
+public extension GAPDataDecoder {
+    
+    internal static func decodeFirst<T: GAPData, DataType: GAPDataContainer>(_ type: T.Type, _ offset: inout Int, _ data: DataType) throws -> T? {
         
-        return elements
+        var offset = 0
+        var value: T?
+        try Self.decode(data: data, offset: &offset) { (dataType, slice, offset) in
+            guard dataType == T.dataType else { return true }
+            value = slice.decode(type)
+            guard value != nil else {
+                throw Error.cannotDecode(dataType, offset: offset)
+            }
+            return false
+        }
+        return value
+    }
+    
+    static func decodeFirst<T: GAPData>(_ type: T.Type, _ data: LowEnergyAdvertisingData) throws -> T? {
+        
+        var offset = 0
+        return try decodeFirst(type, &offset, data)
+    }
+    
+    static func decodeFirst<T: GAPData>(_ type: T.Type, _ data: Data) throws -> T? {
+        
+        var offset = 0
+        return try decodeFirst(type, &offset, data)
+    }
+}
+
+public extension GAPDataDecoder {
+    
+    static func decode<T: GAPData>(_ type: T.Type, from data: LowEnergyAdvertisingData) throws -> T {
+        
+        var offset = 0
+        guard let value = try decodeFirst(type, &offset, data) else {
+            throw Error.notFound(T.dataType)
+        }
+        return value
+    }
+    
+    static func decode<T0: GAPData, T1: GAPData>(_ type0: T0.Type, _ type1: T1.Type, from data: LowEnergyAdvertisingData) throws -> (T0, T1) {
+        
+        var offset = 0
+        guard let value0 = try decodeFirst(type0, &offset, data) else {
+            throw Error.notFound(T0.dataType)
+        }
+        guard let value1 = try decodeFirst(type1, &offset, data) else {
+            throw Error.notFound(T1.dataType)
+        }
+        return (value0, value1)
+    }
+    
+    static func decode<T0: GAPData, T1: GAPData, T2: GAPData>(_ type0: T0.Type, _ type1: T1.Type, _ type2: T2.Type, from data: LowEnergyAdvertisingData) throws -> (T0, T1, T2) {
+        
+        var offset = 0
+        guard let value0 = try decodeFirst(type0, &offset, data) else {
+            throw Error.notFound(T0.dataType)
+        }
+        guard let value1 = try decodeFirst(type1, &offset, data) else {
+            throw Error.notFound(T1.dataType)
+        }
+        guard let value2 = try decodeFirst(type2, &offset, data) else {
+            throw Error.notFound(T2.dataType)
+        }
+        return (value0, value1, value2)
     }
 }
 
@@ -280,7 +377,9 @@ internal protocol GAPSliceContainer {
     init()
     
     /// Initialize GAP Data type
-    func decode(_ type: GAPData.Type) -> GAPData?
+    func _decode(_ type: GAPData.Type) -> GAPData?
+    
+    func decode<T: GAPData>(_ type: T.Type) -> T?
 }
 
 extension Data: GAPDataContainer {
@@ -297,8 +396,13 @@ extension Data: GAPDataContainer {
 extension Data: GAPSliceContainer {
     
     @usableFromInline
-    func decode(_ type: GAPData.Type) -> GAPData? {
+    func _decode(_ type: GAPData.Type) -> GAPData? {
         return type.init(data: self)
+    }
+    
+    @usableFromInline
+    func decode<T: GAPData>(_ type: T.Type) -> T? {
+        return T.init(data: self)
     }
 }
 
@@ -332,7 +436,12 @@ extension Slice: GAPSliceContainer where Base == LowEnergyAdvertisingData {
     }
     
     @usableFromInline
-    func decode(_ type: GAPData.Type) -> GAPData? {
+    func _decode(_ type: GAPData.Type) -> GAPData? {
         return type.init(data: self)
+    }
+    
+    @usableFromInline
+    func decode<T: GAPData>(_ type: T.Type) -> T? {
+        return T.init(data: self)
     }
 }
