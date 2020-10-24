@@ -18,7 +18,6 @@ public struct GAPSimplePairingHashC: GAPData, Equatable, Hashable {
     public let uuid: UUID
     
     public init(uuid: UUID) {
-        
         self.uuid = uuid
     }
 }
@@ -51,12 +50,10 @@ public extension GAPSimplePairingHashC {
     }
     
     func append(to data: inout Data) {
-        
         data += UInt128(uuid: uuid).littleEndian
     }
     
     var dataLength: Int {
-        
         return UInt128.length
     }
 }
@@ -66,7 +63,6 @@ public extension GAPSimplePairingHashC {
 extension GAPSimplePairingHashC: CustomStringConvertible {
     
     public var description: String {
-        
         return uuid.description
     }
 }
