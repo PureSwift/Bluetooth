@@ -21,10 +21,11 @@ internal protocol DataConvertible {
 extension Data {
     
     /// Initialize data with contents of value.
-    @inline(__always)
     init <T: DataConvertible> (_ value: T) {
-        self.init(capacity: value.dataLength)
+        let length = value.dataLength
+        self.init(capacity: length)
         self += value
+        assert(self.count == length)
     }
 }
 
@@ -90,6 +91,7 @@ extension BluetoothAddress: UnsafeDataConvertible { }
 // MARK: - DataContainer
 
 /// Data container type.
+@usableFromInline
 internal protocol DataContainer: RandomAccessCollection where Self.Index == Int {
     
     subscript(index: Int) -> UInt8 { get }
@@ -115,6 +117,7 @@ extension DataContainer {
 
 extension Data: DataContainer {
     
+    @usableFromInline
     static func += (lhs: inout Data, rhs: UInt8) {
         lhs.append(rhs)
     }

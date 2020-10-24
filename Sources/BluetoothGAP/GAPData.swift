@@ -22,12 +22,41 @@ public protocol GAPData {
     /// Generic Access Profile data type.
     static var dataType: GAPDataType { get }
     
+    /// Initialize from LE advertisement data.
+    init?(data: Slice<LowEnergyAdvertisingData>)
+    
     /// Initialize from bytes.
     init?(data: Data)
     
     /// Append data representation into buffer.
     func append(to data: inout Data)
     
+    /// Append data representation into buffer.
+    func append(to data: inout LowEnergyAdvertisingData)
+    
     /// Length of value when encoded into data.
     var dataLength: Int { get }
+}
+
+public extension GAPData {
+    
+    init?(data slice: Slice<LowEnergyAdvertisingData>) {
+        let range = slice.startIndex ..< slice.endIndex
+        let data = slice.base.withUnsafeData { $0.subdataNoCopy(in: range) }
+        self.init(data: data)
+    }
+    
+    func append(to data: inout LowEnergyAdvertisingData) {
+        data.append(contentsOf: Data(self))
+    }
+}
+
+public extension Data {
+    
+    /// Initialize from GAP Data type.
+    init<T: GAPData>(_ value: T) {
+        self.init(capacity: value.dataLength)
+        value.append(to: &self)
+        assert(self.count == value.dataLength)
+    }
 }

@@ -40,22 +40,21 @@ public struct GAPDataEncoder {
     }
     
     public func encode(_ encodables: [GAPData]) -> Data {
+        encode(encodables, to: Data.self)
+    }
+    
+    internal func encode<S, DataType>(_ encodables: S, to dataType: DataType.Type) -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
         
         let dataLengths = encodables.map { $0.dataLength }
         let length = dataLengths.reduce(0, { $0 + $1 + 2 })
-        var data = Data(capacity: length)
-        
+        var data = DataType(capacity: length)
         for (index, encodable) in encodables.enumerated() {
-            
             let dataLength = dataLengths[index]
-            
             data += UInt8(dataLength + 1)
             data += type(of: encodable).dataType.rawValue
-            encodable.append(to: &data)
+            data.append(encodable)
         }
-        
         assert(data.count == length, "Invalid data length")
-        
         return data
     }
 }
@@ -97,10 +96,15 @@ public struct GAPDataDecoder {
     // MARK: - Methods
     
     public func decode(_ data: LowEnergyAdvertisingData) throws -> [GAPData] {
-        return try data.withUnsafeData { try decode($0) }
+        return try decode(data: data)
     }
     
     public func decode(_ data: Data) throws -> [GAPData] {
+        return try decode(data: data)
+    }
+    
+    @usableFromInline
+    internal func decode<T: GAPDataContainer>(data: T) throws -> [GAPData] {
         
         guard data.isEmpty == false
             else { return [] }
@@ -131,35 +135,26 @@ public struct GAPDataDecoder {
                 else { break }
             
             // get value
-            let value: Data
+            let slice: T.SliceContainer
             
             if length > 0 {
-                
                 let dataRange = index + 1 ..< index + length // 2 ..< 2 + length
                 index = dataRange.upperBound
                 guard index <= data.count
                     else { throw Error.insufficientBytes(expected: index + 1, actual: data.count) }
                 
-                value = data.subdataNoCopy(in: dataRange)
-                
+                slice = data.subdataNoCopy(in: dataRange)
             } else {
-                
-                value = Data()
+                slice = T.SliceContainer()
             }
             
             if let gapType = dataTypes[type] {
-                
-                guard let decodable = gapType.init(data: value)
+                guard let decodable = slice.decode(gapType)
                     else { throw Error.cannotDecode(type, index: index) }
-                
                 elements.append(decodable)
-                
             } else if ignoreUnknownType {
-                
                 continue
-                
             } else {
-                
                 throw Error.unknownType(type)
             }
         }
@@ -171,7 +166,6 @@ public struct GAPDataDecoder {
 internal extension GAPDataDecoder {
     
     static let defaultDataTypes: [GAPDataType: GAPData.Type] = {
-        //let types = [GAPDataType: GAPData.Type].init(grouping: defaultTypes, by: { $0.dataType })
         var types = [GAPDataType: GAPData.Type](minimumCapacity: defaultTypes.count)
         defaultTypes.forEach { types[$0.dataType] = $0 }
         return types
@@ -219,4 +213,89 @@ internal extension GAPDataDecoder {
         GAPTxPowerLevel.self,
         GAPURI.self
     ]
+}
+
+// MARK: - Supporting Types
+
+@usableFromInline
+internal protocol GAPDataContainer: DataContainer {
+    
+    associatedtype Element = UInt8
+    
+    associatedtype SliceContainer: GAPSliceContainer
+    
+    init(capacity: Int)
+    
+    static var maxCapacity: Int { get }
+    
+    subscript (index: Int) -> UInt8 { get set }
+    
+    func subdataNoCopy(in range: Range<Int>) -> SliceContainer
+    
+    mutating func append(_ value: GAPData)
+}
+
+@usableFromInline
+internal protocol GAPSliceContainer {
+    
+    /// Initialize empty container
+    init()
+    
+    /// Initialize GAP Data type
+    //func decode<T: GAPData>(_ type: T.Type) -> T?
+    func decode(_ type: GAPData.Type) -> GAPData?
+}
+
+extension Data: GAPDataContainer {
+    
+    @usableFromInline
+    static var maxCapacity: Int { return 512 }
+    
+    @usableFromInline
+    mutating func append(_ value: GAPData) {
+        value.append(to: &self)
+    }
+}
+
+extension Data: GAPSliceContainer {
+    
+    @usableFromInline
+    func decode(_ type: GAPData.Type) -> GAPData? {
+        return type.init(data: self)
+    }
+}
+
+extension LowEnergyAdvertisingData: GAPDataContainer {
+    
+    @usableFromInline
+    mutating func append(_ value: GAPData) {
+        value.append(to: &self)
+    }
+    
+    @usableFromInline
+    init(capacity: Int) {
+        assert(capacity <= LowEnergyAdvertisingData.maxCapacity)
+        self.init()
+    }
+    
+    @usableFromInline
+    static var maxCapacity: Int { return capacity }
+    
+    @usableFromInline
+    func subdataNoCopy(in range: Range<Int>) -> Slice<LowEnergyAdvertisingData> {
+        return self[range]
+    }
+}
+
+extension Slice: GAPSliceContainer where Base == LowEnergyAdvertisingData {
+    
+    @usableFromInline
+    init() {
+        self.init(base: LowEnergyAdvertisingData(), bounds: 0 ..< 1)
+    }
+    
+    @usableFromInline
+    func decode(_ type: GAPData.Type) -> GAPData? {
+        return type.init(data: self)
+    }
 }
