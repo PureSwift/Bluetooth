@@ -21,7 +21,7 @@ internal extension FixedWidthInteger {
 internal extension Collection where Element: FixedWidthInteger {
     
     func toHexadecimal() -> String {
-        let length = count * MemoryLayout<Self>.size * 2
+        let length = count * MemoryLayout<Element>.size * 2
         var string = ""
         string.reserveCapacity(length)
         string = reduce(into: string) { $0 += $1.toHexadecimal() }
