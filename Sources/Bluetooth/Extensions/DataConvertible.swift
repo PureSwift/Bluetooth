@@ -48,10 +48,12 @@ extension BluetoothUUID: DataConvertible {
         }
     }
     
+    @usableFromInline
     var dataLength: Int {
         return length.rawValue
     }
     
+    @usableFromInline
     static func += <T: DataContainer> (data: inout T, value: BluetoothUUID) {
         switch value {
         case let .bit16(value): data += value
@@ -68,6 +70,7 @@ internal protocol UnsafeDataConvertible: DataConvertible { }
 
 extension UnsafeDataConvertible {
     
+    @usableFromInline
     var dataLength: Int {
         return MemoryLayout<Self>.size
     }

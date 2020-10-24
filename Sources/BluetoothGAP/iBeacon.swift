@@ -126,14 +126,22 @@ internal extension AppleBeacon {
         
         /// Append data representation into buffer.
         func append(to data: inout Data) {
-            data += GAPManufacturerSpecificData(companyIdentifier: AppleBeacon.companyIdentifier)
-            beacon.appendAdditionalManufacturerData(to: &data)
+            data += self
         }
         
         /// Append data representation into buffer.
         func append(to data: inout LowEnergyAdvertisingData) {
-            data += GAPManufacturerSpecificData(companyIdentifier: AppleBeacon.companyIdentifier)
-            beacon.appendAdditionalManufacturerData(to: &data)
+            data += self
         }
+    }
+}
+
+extension AppleBeacon.ManufacturerData: DataConvertible {
+    
+    @usableFromInline
+    static func += <T>(data: inout T, value: AppleBeacon.ManufacturerData) where T : DataContainer {
+        
+        data += GAPManufacturerSpecificData(companyIdentifier: AppleBeacon.companyIdentifier)
+        value.beacon.appendAdditionalManufacturerData(to: &data)
     }
 }
