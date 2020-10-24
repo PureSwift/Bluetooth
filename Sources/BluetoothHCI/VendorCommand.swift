@@ -15,7 +15,6 @@ public struct VendorCommand: HCICommand, Equatable, Hashable {
     public let rawValue: HCIOpcodeCommandField
     
     public init(rawValue: HCIOpcodeCommandField) {
-        
         self.rawValue = rawValue
     }
 }
@@ -28,7 +27,6 @@ public extension VendorCommand {
     static var names = [VendorCommand: String]()
     
     var name: String {
-        
         return type(of: self).names[self] ?? rawValue.toHexadecimal()
     }
 }
