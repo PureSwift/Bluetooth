@@ -106,7 +106,7 @@ internal extension AppleBeacon {
         
         init?(data: Data) {
             
-            guard let manufacturerData = GAPManufacturerSpecificData(data: data, copy: false),
+            guard let manufacturerData = GAPManufacturerSpecificData(data: data),
                 let beacon = AppleBeacon(manufactererData: manufacturerData)
                 else { return nil }
             
@@ -115,7 +115,7 @@ internal extension AppleBeacon {
         
         init?(data slice: Slice<LowEnergyAdvertisingData>) {
             
-            guard let manufacturerData = GAPManufacturerSpecificData(data: slice, copy: false),
+            guard let manufacturerData = GAPManufacturerSpecificData(data: slice),
                 let beacon = AppleBeacon(manufactererData: manufacturerData)
                 else { return nil }
             
