@@ -17,3 +17,15 @@ internal extension FixedWidthInteger {
         return string.uppercased()
     }
 }
+
+internal extension Collection where Element: FixedWidthInteger {
+    
+    func toHexadecimal() -> String {
+        let length = count * MemoryLayout<Self>.size * 2
+        var string = ""
+        string.reserveCapacity(length)
+        string = reduce(into: string) { $0 += $1.toHexadecimal() }
+        assert(string.count == length)
+        return string
+    }
+}

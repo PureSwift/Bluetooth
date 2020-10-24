@@ -188,7 +188,7 @@ extension LowEnergyAdvertisingData: Hashable {
 extension LowEnergyAdvertisingData: CustomStringConvertible {
     
     public var description: String {
-        return reduce("", { $0 + $1.toHexadecimal() })
+        return toHexadecimal()
     }
 }
 

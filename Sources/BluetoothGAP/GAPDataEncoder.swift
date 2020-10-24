@@ -241,7 +241,6 @@ internal protocol GAPSliceContainer {
     init()
     
     /// Initialize GAP Data type
-    //func decode<T: GAPData>(_ type: T.Type) -> T?
     func decode(_ type: GAPData.Type) -> GAPData?
 }
 
