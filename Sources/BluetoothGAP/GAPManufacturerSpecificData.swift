@@ -7,6 +7,7 @@
 //
 
 import Foundation
+@_exported import Bluetooth
 
 /**
  The Manufacturer Specific data type is used for manufacturer specific data.
@@ -16,227 +17,26 @@ import Foundation
  Size: 2 or more octets
  The first 2 octets contain the Company Identifier Code followed by additional manufacturer specific data
  */
-public struct GAPManufacturerSpecificData: GAPData {
+public struct GAPManufacturerSpecificData: GAPData, Equatable, Hashable {
     
+    /// GAP Data Type
     public static var dataType: GAPDataType { return .manufacturerSpecificData }
     
-    /// Internal Storage
-    @usableFromInline
-    internal private(set) var storage: Storage
-    
     /// Company Identifier
-    public var companyIdentifier: CompanyIdentifier {
-        get {
-            switch storage {
-            case let .data(data):
-                return CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
-            case let .inline(value):
-                return value.companyIdentifier
-            }
-        }
-        set {
-            switch storage {
-            case var .data(data):
-                // mutate data buffer
-                assert(data.count >= 2)
-                let bytes = newValue.rawValue.littleEndian.bytes
-                data[0] = bytes.0
-                data[1] = bytes.1
-                self.storage = .data(data)
-            case let .inline(value):
-                self.storage = .init(
-                    companyIdentifier: newValue,
-                    additionalData: value.additionalData
-                )
-            }
-        }
-    }
+    public var companyIdentifier: CompanyIdentifier
     
     /// Additional Data.
-    public var additionalData: Data {
-        get {
-            switch storage {
-            case let .data(data):
-                // will have to copy each time.
-                return data.suffixCheckingBounds(from: 2)
-            case let .inline(value):
-                return value.additionalData
-            }
-        }
-        set {
-            self.storage = .init(
-                companyIdentifier: companyIdentifier,
-                additionalData: newValue
-            )
-        }
-    }
+    public var additionalData: Data
     
     /// Initialize with company identifier and additional data.
     public init(companyIdentifier: CompanyIdentifier,
                 additionalData: Data = Data()) {
         
-        self.storage = .init(
-            companyIdentifier: companyIdentifier,
-            additionalData: additionalData
-        )
+        self.companyIdentifier = companyIdentifier
+        self.additionalData = additionalData
     }
     
-    /// Initialize from data.
     public init?(data: Data) {
-        
-        guard data.count >= 2
-            else { return nil }
-        
-        // keep data buffer unless on stack
-        if data.count > Data.inlineBufferSize {
-            self.storage = .init(data: data)
-        } else {
-            // parse data and discard trivial data buffer on stack
-            self.storage = .inline(Inline(data: data)!)
-        }
-    }
-    
-    public var dataLength: Int {
-        return storage.dataLength
-    }
-    
-    public func append(to data: inout Data) {
-        storage.append(to: &data)
-    }
-}
-
-// MARK: - Equatable
-
-extension GAPManufacturerSpecificData: Equatable {
-    
-    public static func == (lhs: GAPManufacturerSpecificData, rhs: GAPManufacturerSpecificData) -> Bool {
-        
-        switch (lhs.storage, rhs.storage) {
-        case let (.inline(lhsValue), .inline(rhsValue)):
-            // fast path
-            return lhsValue == rhsValue
-        case let (.data(lhsData), .data(rhsData)):
-            // fast comparison
-            return lhsData == rhsData
-        default:
-            // slow path
-            return lhs.companyIdentifier == rhs.companyIdentifier
-                && lhs.storage.withUnsafeAdditionalData { (lhsAdditionalData) in
-                    rhs.storage.withUnsafeAdditionalData { $0 == lhsAdditionalData }
-                }
-        }
-    }
-}
-
-// MARK: - Hashable
-
-extension GAPManufacturerSpecificData: Hashable {
-    
-    public func hash(into hasher: inout Hasher) {
-        
-        /*
-        hasher.combine(companyIdentifier)
-        storage.withUnsafeAdditionalData {
-            $0?.withUnsafeBytes { hasher.combine(bytes: $0) }
-        }*/
-        
-        switch storage {
-        case let .inline(value):
-            hasher.combine(value.companyIdentifier)
-            value.additionalData.withUnsafeBytes { hasher.combine(bytes: $0) }
-        case let .data(data):
-            hasher.combine(companyIdentifier)
-            if data.count > 2 {
-                data.withUnsafeBytes(in: 2 ..< data.count) {
-                    hasher.combine(bytes: $0)
-                }
-            } else {
-                Data().withUnsafeBytes { hasher.combine(bytes: $0) }
-            }
-        }
-    }
-}
-
-// MARK: - Supporting Types
-
-internal extension GAPManufacturerSpecificData {
-    
-    @usableFromInline
-    enum Storage: Equatable {
-        case inline(Inline)
-        case data(Data)
-        //case advertisingData(LowEnergyAdvertisingData)
-    }
-}
-
-internal extension GAPManufacturerSpecificData.Storage {
-    
-    @usableFromInline
-    init(data: Data) {
-        assert(data.count >= 2)
-        self = .data(data)
-    }
-    
-    @usableFromInline
-    init(companyIdentifier: CompanyIdentifier,
-         additionalData: Data) {
-        
-        let value = GAPManufacturerSpecificData.Inline(
-            companyIdentifier: companyIdentifier,
-            additionalData: additionalData
-        )
-        self = .inline(value)
-    }
-    
-    @usableFromInline
-    var dataLength: Int {
-        switch self {
-        case let .inline(value):
-            return value.dataLength
-        case let .data(data):
-            return data.count
-        }
-    }
-    
-    @usableFromInline
-    func append(to output: inout Data) {
-        switch self {
-        case let .inline(value):
-            return value.append(to: &output)
-        case let .data(data):
-            return output.append(data)
-        }
-    }
-    
-    /// Direct access to memory
-    @usableFromInline
-    func withUnsafeAdditionalData <Result> (_ block: (Data?) throws -> Result) rethrows -> Result {
-        
-        switch self {
-        case let .inline(value):
-            return try block(value.additionalData)
-        case let .data(data):
-            if data.count > 2 {
-                return try block(data.subdataNoCopy(in: 2 ..< data.count))
-            } else {
-                return try block(Data())
-            }
-        }
-    }
-}
-
-internal extension GAPManufacturerSpecificData {
-    
-    @usableFromInline
-    struct Inline: Equatable {
-        public var companyIdentifier: CompanyIdentifier
-        public var additionalData: Data
-    }
-}
-
-internal extension GAPManufacturerSpecificData.Inline {
-    
-    init?(data: Data) {
         
         guard data.count >= 2
             else { return nil }
@@ -245,12 +45,34 @@ internal extension GAPManufacturerSpecificData.Inline {
         self.additionalData = data.suffixCheckingBounds(from: 2)
     }
     
-    var dataLength: Int {
+    public var dataLength: Int {
         return 2 + additionalData.count
     }
     
-    func append(to data: inout Data) {
-        data += companyIdentifier.rawValue.littleEndian
-        data += additionalData
+    public func append(to data: inout Data) {
+        data += self
+    }
+    
+    public func append(to data: inout LowEnergyAdvertisingData) {
+        data += self
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension GAPManufacturerSpecificData: CustomStringConvertible {
+    
+    public var description: String {
+        return "(\(companyIdentifier)) \(additionalData.toHexadecimal()))"
+    }
+}
+
+// MARK: - DataConvertible
+
+extension GAPManufacturerSpecificData: DataConvertible {
+    
+    static func += <T: DataContainer> (data: inout T, value: GAPManufacturerSpecificData) {
+        data += value.companyIdentifier.rawValue.littleEndian
+        data += value.additionalData
     }
 }
