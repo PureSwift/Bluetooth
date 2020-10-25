@@ -10,7 +10,6 @@
 [![Docs][docs-badge]][docs-url]
 
 [![SPM compatible][spm-badge]][spm-url]
-[![Carthage compatible][carthage-badge]][carthage-url]
 
 Pure Swift Bluetooth Definitions.
 
@@ -93,8 +92,6 @@ License
 [release-url]: https://github.com/PureSwift/Bluetooth/releases
 [spm-badge]: https://img.shields.io/badge/SwiftPM-compatible-4BC51D.svg?style=flat
 [spm-url]: https://github.com/apple/swift-package-manager
-[carthage-badge]: https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat
-[carthage-url]: https://github.com/Carthage/Carthage
 [codebeat-badge]: https://codebeat.co/badges/3eaf4fc3-6514-4f2d-83d5-ffd879f319d2
 [codebeat-url]: https://codebeat.co/projects/github-com-pureswift-bluetooth-master
 [docs-badge]: http://pureswift.github.io/Bluetooth/docs/badge.svg
