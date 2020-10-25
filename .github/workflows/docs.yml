@@ -1,0 +1,31 @@
+name: Documentation
+
+on: 
+  pull_request:
+      types: [opened, closed]
+  workflow_dispatch:
+  release:
+
+jobs:
+
+    bluetooth-docs:
+        name: Bluetooth Documentation
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Xcode Version
+          run: |
+            sudo xcode-select -s /Applications/Xcode_11.3.1.app
+            xcodebuild -version
+            swift --version
+        - name: Swift Version
+          run: swift --version
+        - name: Generate documentation
+          uses: sersoft-gmbh/swifty-docs-action@v1
+        - name: Upload docs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: docs
+            path: docs
