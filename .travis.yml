@@ -1,7 +1,6 @@
 ---
 addons:
   apt:
-    update: true
     packages:
       - clang
       - curl
@@ -15,6 +14,9 @@ addons:
       - libz3-dev
       - pkg-config
       - tzdata
+    update: true
+install:
+  - "travis_wait 30 mvn install"
 language: generic
 matrix:
   include:
@@ -48,4 +50,5 @@ matrix:
 script:
   - "uname -a"
   - "swift --version"
-  - "swift test"
+  - "if [[ \"$TRAVIS_OS_NAME\" == \"osx\" ]]; then swift test ; fi"
+  - "swift build -c release"
