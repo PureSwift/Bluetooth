@@ -19,6 +19,20 @@ jobs:
             swift --version
         - name: Swift Version
           run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing 
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
 
 
     macOS-swift-52:
@@ -36,6 +50,20 @@ jobs:
             swift --version
         - name: Swift Version
           run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
 
 
     linux-swift-51:
@@ -49,6 +77,20 @@ jobs:
           run: mkdir logs
         - name: Swift Version
           run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing 
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
 
 
     linux-swift-52:
@@ -62,6 +104,20 @@ jobs:
           run: mkdir logs
         - name: Swift Version
           run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
 
 
     xcode-swift-51:
@@ -96,6 +152,26 @@ jobs:
             SCHEME="Bluetooth-iOS"
             fi
             echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (iOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-debug.log | xcpretty
+        - name: Build (iOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-release.log | xcpretty
+        - name: Test (iOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=iPhone 11" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO  | tee logs/xcodebuild-iOS-test-debug.log | xcpretty
+        - name: Test (iOS Release)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=iPhone 11" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES | tee logs/xcodebuild-iOS-test-release.log | xcpretty
         - name: Detect Workspace & Scheme (tvOS)
           run: |
             WORKSPACE="Bluetooth.xcworkspace"
@@ -113,6 +189,26 @@ jobs:
             SCHEME="Bluetooth-tvOS"
             fi
             echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (tvOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-debug.log | xcpretty
+        - name: Build (tvOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-release.log | xcpretty
+        - name: Test (tvOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=Apple TV" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO  | tee logs/xcodebuild-tvOS-test-debug.log | xcpretty
+        - name: Test (tvOS Release)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=Apple TV" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES | tee logs/xcodebuild-tvOS-test-release.log | xcpretty
         - name: Detect Workspace & Scheme (watchOS)
           run: |
             WORKSPACE="Bluetooth.xcworkspace"
@@ -130,6 +226,22 @@ jobs:
             SCHEME="Bluetooth-watchOS"
             fi
             echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (watchOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-debug.log | xcpretty
+        - name: Build (watchOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-release.log | xcpretty
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
 
 
     xcode-swift-52:
@@ -164,6 +276,26 @@ jobs:
             SCHEME="Bluetooth-iOS"
             fi
             echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (iOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-debug.log | xcpretty
+        - name: Build (iOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-release.log | xcpretty
+        - name: Test (iOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=iPhone 11" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO  | tee logs/xcodebuild-iOS-test-debug.log | xcpretty
+        - name: Test (iOS Release)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=iPhone 11" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES | tee logs/xcodebuild-iOS-test-release.log | xcpretty
         - name: Detect Workspace & Scheme (tvOS)
           run: |
             WORKSPACE="Bluetooth.xcworkspace"
@@ -181,6 +313,26 @@ jobs:
             SCHEME="Bluetooth-tvOS"
             fi
             echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (tvOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-debug.log | xcpretty
+        - name: Build (tvOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-release.log | xcpretty
+        - name: Test (tvOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=Apple TV" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO  | tee logs/xcodebuild-tvOS-test-debug.log | xcpretty
+        - name: Test (tvOS Release)
+          run: |
+            source "setup.sh"
+            echo "Testing workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "name=Apple TV" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES | tee logs/xcodebuild-tvOS-test-release.log | xcpretty
         - name: Detect Workspace & Scheme (watchOS)
           run: |
             WORKSPACE="Bluetooth.xcworkspace"
@@ -198,4 +350,20 @@ jobs:
             SCHEME="Bluetooth-watchOS"
             fi
             echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (watchOS Debug)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-debug.log | xcpretty
+        - name: Build (watchOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-release.log | xcpretty
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
 
