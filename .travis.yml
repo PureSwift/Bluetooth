@@ -4,18 +4,20 @@ addons:
     packages: 
       - clang
       - pkg-config
-arch: 
-  - amd64
-  - arm64
+      - git
+      - curl
 before_install: 
   - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get update -y ; fi"
-  - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get install clang ; fi"
+  - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get install clang git curl ; fi"
 language: generic
 matrix: 
   include: 
     - 
       os: osx
       osx_image: xcode11.4
+    - 
+      os: osx
+      osx_image: xcode12
     - 
       arch: amd64
       dist: xenial
@@ -36,8 +38,5 @@ matrix:
         - "sudo apt install -y swiftlang"
       os: linux
       sudo: required
-os: 
-  - osx
-  - linux
 script: 
   - "swift test"
