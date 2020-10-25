@@ -41,12 +41,15 @@ public protocol GAPData {
 public extension GAPData {
     
     init?(data slice: Slice<LowEnergyAdvertisingData>) {
-        // FIXME: Optimize
-        self.init(data: Data(slice))
+        let range = slice.startIndex ..< slice.endIndex
+        guard let value = slice.base.withUnsafeData({
+            Self.init(data: $0.subdataNoCopy(in: range))
+        }) else { return nil }
+        self = value
     }
     
     func append(to data: inout LowEnergyAdvertisingData) {
-        data += Data(self)
+        data += Data(self) // will be serialized on stack if small
     }
 }
 
