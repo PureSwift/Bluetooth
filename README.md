@@ -9,8 +9,6 @@
 [![CodeBeat][codebeat-badge]][codebeat-url]
 [![Docs][docs-badge]][docs-url]
 
-[![SPM compatible][spm-badge]][spm-url]
-
 Pure Swift Bluetooth Definitions.
 
 
@@ -50,12 +48,6 @@ let package = Package(
 )
 ```
 
-### Carthage
-
-```
-github "PureSwift/Bluetooth"
-```
-
 ## Documentation
 
 Read the documentation [here](http://pureswift.github.io/Bluetooth/docs/).
@@ -93,4 +85,3 @@ License
 [codebeat-url]: https://codebeat.co/projects/github-com-pureswift-bluetooth-master
 [docs-badge]: http://pureswift.github.io/Bluetooth/docs/badge.svg
 [docs-url]: http://pureswift.github.io/Bluetooth/docs/
-[xcov-url]: http://pureswift.github.io/Bluetooth/xcov
