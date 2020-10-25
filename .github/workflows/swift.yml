@@ -1,19 +1,191 @@
 name: Swift
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push]
 
 jobs:
-  build:
 
-    runs-on: macos-latest
+    macOS-swift-51:
+        name: macOS (Swift 5.1)
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Xcode Version
+          run: |
+            sudo xcode-select -s /Applications/Xcode_11.3.1.app
+            xcodebuild -version
+            swift --version
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing 
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+
+    macOS-swift-52:
+        name: macOS (Swift 5.2)
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Xcode Version
+          run: |
+            sudo xcode-select -s /Applications/Xcode_11.4.app
+            xcodebuild -version
+            swift --version
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
+
+
+    macOS-swift-53:
+        name: macOS (Swift 5.3 Nightly)
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Install Toolchain
+          run: |
+            branch="swift-5.3-branch"
+            wget --quiet https://swift.org/builds/$branch/xcode/latest-build.yml
+            grep "download:" < latest-build.yml > filtered.yml
+            sed -e 's/-osx.pkg//g' filtered.yml > stripped.yml
+            sed -e 's/:[^:\/\/]/YML="/g;s/$/"/g;s/ *=/=/g' stripped.yml > snapshot.sh
+            source snapshot.sh
+            echo "Installing Toolchain: $downloadYML"
+            wget --quiet https://swift.org/builds/$branch/xcode/$downloadYML/$downloadYML-osx.pkg
+            sudo installer -pkg $downloadYML-osx.pkg -target /
+            ln -s "/Library/Developer/Toolchains/$downloadYML.xctoolchain/usr/bin" swift-latest
+            export PATH="swift-latest:$PATH"
+        - name: Xcode Version
+          run: |
+            xcodebuild -version
+            swift --version
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: export PATH="swift-latest:$PATH"; swift build -c debug
+        - name: Build (Release)
+          run: export PATH="swift-latest:$PATH"; swift build -c release
+        - name: Test (Debug)
+          run: export PATH="swift-latest:$PATH"; swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: export PATH="swift-latest:$PATH"; swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
+
+
+    linux-swift-51:
+        name: Linux (Swift 5.1)
+        runs-on: ubuntu-18.04
+        container: swift:5.1
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing 
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
+
+
+    linux-swift-52:
+        name: Linux (Swift 5.2)
+        runs-on: ubuntu-18.04
+        container: swift:5.2.3-bionic
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
+
+
+    linux-swift-53:
+        name: Linux (Swift 5.3 Nightly)
+        runs-on: ubuntu-18.04
+        container: swiftlang/swift:nightly-5.3-bionic
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
+

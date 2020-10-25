@@ -27,5 +27,7 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then SWIFT_DIR=tests ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir $SWIFT_DIR ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl $SWIFT_URL -s | tar xz -C $SWIFT_DIR &> /dev/null ; fi
-  # Run Unit Tests
-  - swift test
+  # Build on Linux
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then swift build ; fi
+  # Run Unit Tests on macOS
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then swift test ; fi
