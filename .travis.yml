@@ -1,20 +1,29 @@
 ---
 addons:
   apt:
+    update: true
     packages:
       - clang
-      - pkg-config
-      - git
       - curl
-before_install:
-  - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get update -y ; fi"
-  - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get install -y clang git curl ; fi"
+      - binutils
+      - git
+      - libc6-dev
+      - libcurl4
+      - libedit2
+      - libpython2.7
+      - libxml2
+      - libz3-dev
+      - pkg-config
+      - tzdata
 language: generic
 matrix:
   include:
     -
       os: osx
-      osx_image: xcode11.4
+      osx_image: xcode11.3
+    -
+      os: osx
+      osx_image: xcode11.6
     -
       os: osx
       osx_image: xcode12
