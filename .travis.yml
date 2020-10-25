@@ -1,31 +1,49 @@
 language: generic
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -y ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install clang ; fi
+# Setup Arm64 Linux
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_CPU_ARCH" == "arm64" ]]; then curl -s https://packagecloud.io/install/repositories/swift-arm/release/script.deb.sh | sudo bash ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_CPU_ARCH" == "arm64" ]]; then sudo apt install -y swiftlang ; fi
+arch:
+  - amd64
+  - arm64
+os:
+  - osx
+  - linux
 matrix:
    include:
-       # Test Ubuntu Linux 16.04 / Swift 5.2
+# Test Xcode 10.3 / Swift 5.1.3
+       - os: osx
+         osx_image: xcode10.3
+# Test Xcode 11.4 / Swift 5.2.2
+       - os: osx
+         osx_image: xcode11.4
+# Test Ubuntu 16.04 / Swift 5.2
        - os: linux
          dist: xenial
+         arch: amd64
          sudo: required
          env:
            - SWIFT_VERSION=swift-5.2.2-RELEASE
            - SWIFT_URL=https://swift.org/builds/swift-5.2.2-release/ubuntu1604/swift-5.2.2-RELEASE/swift-5.2.2-RELEASE-ubuntu16.04.tar.gz
+           - SWIFT_DIR=tests
          install:
+           - SWIFT_DIR=tests
+           - mkdir $SWIFT_DIR
+           - curl $SWIFT_URL -s | tar xz -C $SWIFT_DIR &> /dev/null
            - export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu16.04/usr/bin:"${PATH}"
-      # Test Xcode 11.4 / Swift 5.2.2
-       - os: osx
-         osx_image: xcode11.4
+# Test Debian 10 Linux 16.04 / Swift 5.3
+        - os: linux
+          dist: buster
+          arch: arm64
+          sudo: required
+          install:
+           - sudo apt install -y swiftlang
 addons:
   apt:
     packages:
     - clang
     - pkg-config
 script:
-  # Setup macOS environment
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then gem install xcpretty-travis-formatter ; fi
-  # Setup Linux environment
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install clang ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then SWIFT_DIR=tests ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir $SWIFT_DIR ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl $SWIFT_URL -s | tar xz -C $SWIFT_DIR &> /dev/null ; fi
-  # Run Unit Tests
   - swift test
