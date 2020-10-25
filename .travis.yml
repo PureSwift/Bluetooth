@@ -40,7 +40,7 @@ matrix:
       os: linux
     -
       arch: arm64
-      dist: buster
+      dist: focal
       install:
         - "curl -s https://packagecloud.io/install/repositories/swift-arm/release/script.deb.sh | sudo bash"
         - "sudo apt install -y swiftlang"
