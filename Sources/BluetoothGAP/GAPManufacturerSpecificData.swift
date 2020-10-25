@@ -48,21 +48,11 @@ public struct GAPManufacturerSpecificData: GAPData, Equatable, Hashable {
         let companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         let additionalData: Data
         if data.count > 2 {
-            additionalData = copy ? Data(data.suffixNoCopy(from: 2)) : data.suffixNoCopy(from: 2)
+            additionalData = copy ? Data(data.suffix(from: 2)) : data.suffixNoCopy(from: 2)
         } else {
             additionalData = Data()
         }
         self.init(companyIdentifier: companyIdentifier, additionalData: additionalData)
-    }
-    
-    public init?(data slice: Slice<LowEnergyAdvertisingData>) {
-        self.init(data: slice, copy: true)
-    }
-    
-    internal init?(data slice: Slice<LowEnergyAdvertisingData>, copy: Bool) {
-        let range = slice.startIndex ..< slice.endIndex
-        let data = slice.base.withUnsafeData { $0.subdataNoCopy(in: range) }
-        self.init(data: data, copy: copy)
     }
         
     public var dataLength: Int {
