@@ -1,27 +1,27 @@
---- 
-addons: 
-  apt: 
-    packages: 
+---
+addons:
+  apt:
+    packages:
       - clang
       - pkg-config
       - git
       - curl
-before_install: 
+before_install:
   - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get update -y ; fi"
   - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get install clang git curl ; fi"
 language: generic
-matrix: 
-  include: 
-    - 
+matrix:
+  include:
+    -
       os: osx
       osx_image: xcode11.4
-    - 
+    -
       os: osx
       osx_image: xcode12
-    - 
+    -
       arch: amd64
       dist: xenial
-      install: 
+      install:
         - SWIFT_VERSION=swift-5.2.2-RELEASE
         - "SWIFT_URL=https://swift.org/builds/swift-5.2.2-release/ubuntu1604/swift-5.2.2-RELEASE/swift-5.2.2-RELEASE-ubuntu16.04.tar.gz"
         - SWIFT_DIR=tests
@@ -30,13 +30,15 @@ matrix:
         - "export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu16.04/usr/bin:\"${PATH}\""
       os: linux
       sudo: required
-    - 
+    -
       arch: arm64
       dist: buster
-      install: 
+      install:
         - "curl -s https://packagecloud.io/install/repositories/swift-arm/release/script.deb.sh | sudo bash"
         - "sudo apt install -y swiftlang"
       os: linux
       sudo: required
-script: 
+script:
+  - "uname -a"
+  - "swift --version"
   - "swift test"
