@@ -1,6 +1,10 @@
 name: Documentation
 
-on: [push]
+on: 
+  pull_request:
+      types: [opened, closed]
+  workflow_dispatch:
+  release:
 
 jobs:
 
