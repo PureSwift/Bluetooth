@@ -10,8 +10,6 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
         - name: Xcode Version
           run: |
             sudo xcode-select -s /Applications/Xcode_11.3.1.app
@@ -26,14 +24,7 @@ jobs:
         - name: Test (Debug)
           run: swift test --configuration debug  --enable-test-discovery
         - name: Test (Release)
-          run: swift test --configuration release -Xswiftc -enable-testing 
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
-          with:
-            name: logs
-            path: logs
-
+          run: swift test --configuration release -Xswiftc -enable-testing
 
     macOS-swift-52:
         name: macOS (Swift 5.2)
@@ -41,8 +32,6 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
         - name: Xcode Version
           run: |
             sudo xcode-select -s /Applications/Xcode_11.4.app
@@ -58,12 +47,6 @@ jobs:
           run: swift test --configuration debug  --enable-test-discovery
         - name: Test (Release)
           run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
-          with:
-            name: logs
-            path: logs
 
 
     macOS-swift-53:
@@ -72,8 +55,6 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
         - name: Xcode Version
           run: |
             sudo xcode-select -s /Applications/Xcode_12.app
@@ -89,12 +70,6 @@ jobs:
           run: swift test --configuration debug  --enable-test-discovery
         - name: Test (Release)
           run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
-          with:
-            name: logs
-            path: logs
 
 
     linux-swift-51:
@@ -104,8 +79,6 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
         - name: Swift Version
           run: swift --version
         - name: Build (Debug)
@@ -115,13 +88,7 @@ jobs:
         - name: Test (Debug)
           run: swift test --configuration debug  --enable-test-discovery
         - name: Test (Release)
-          run: swift test --configuration release -Xswiftc -enable-testing 
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
-          with:
-            name: logs
-            path: logs
+          run: swift test --configuration release -Xswiftc -enable-testing
 
 
     linux-swift-52:
@@ -131,8 +98,6 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
         - name: Swift Version
           run: swift --version
         - name: Build (Debug)
@@ -143,13 +108,6 @@ jobs:
           run: swift test --configuration debug  --enable-test-discovery
         - name: Test (Release)
           run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
-          with:
-            name: logs
-            path: logs
-
 
     linux-swift-53:
         name: Linux x86_64 (Swift 5.3)
@@ -158,8 +116,6 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
         - name: Swift Version
           run: swift --version
         - name: Build (Debug)
@@ -170,34 +126,3 @@ jobs:
           run: swift test --configuration debug  --enable-test-discovery
         - name: Test (Release)
           run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
-          with:
-            name: logs
-            path: logs
-    
-    linux-swift-armv7:
-        name: Linux ARMv7
-        runs-on: [self-hosted, linux, arm]
-        steps:
-        - name: Checkout
-          uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
-        - name: Swift Version
-          run: swift --version
-        - name: Build (Debug)
-          run: swift build -j 1 -c debug
-        - name: Build (Release)
-          run: swift build -j 1 -c release
-        - name: Test (Debug)
-          run: swift test -j 1 --configuration debug
-        - name: Test (Release)
-          run: swift test -j 1 --configuration release -Xswiftc -enable-testing
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
-          with:
-            name: logs
-            path: logs

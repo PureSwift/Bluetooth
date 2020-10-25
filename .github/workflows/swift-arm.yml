@@ -1,0 +1,24 @@
+name: Swift ARM
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+    linux-swift-armv7:
+        name: Linux ARMv7
+        runs-on: [self-hosted, linux, arm]
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery

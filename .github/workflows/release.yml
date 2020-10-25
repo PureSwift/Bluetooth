@@ -3,7 +3,6 @@ name: Release
 on:
   push:
     tags:
-  workflow_dispatch:
   release:
 
 jobs:
@@ -28,27 +27,12 @@ jobs:
         run: mint install unsignedapps/swift-create-xcframework
       - name: Build XCFramework
         run: swift-create-xcframework
-
-# Build .so on Linux
-  linux-swift-x86_64:
-    name: Linux x86_64
-    runs-on: ubuntu-20.04
-    container: swift:5.3-focal
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Make Logs Directory
-      run: mkdir logs
-    - name: Swift Version
-      run: swift --version
-    - name: Build (Release)
-      run: swift build -c release
-    - name: Upload Logs
-      uses: actions/upload-artifact@v1
-      if: always()
-      with:
-        name: logs
-        path: logs
+      # Upload build artifacts
+      - name: Upload xcframework
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcframework
+          path: "./*.xcframework"
 
   linux-swift-armv7:
         name: Linux ARMv7
@@ -56,15 +40,13 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v1
-        - name: Make Logs Directory
-          run: mkdir logs
         - name: Swift Version
           run: swift --version
         - name: Build (Release)
           run: swift build -c release -j 1
-        - name: Upload Logs
-          uses: actions/upload-artifact@v1
-          if: always()
+        # Upload build artifacts
+        - name: Upload build artifacts
+          uses: actions/upload-artifact@v2
           with:
-            name: logs
-            path: logs
+            name: build-linux-armv7
+            path: "./.build/armv7*/release/*.so"
