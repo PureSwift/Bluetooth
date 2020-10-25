@@ -1,0 +1,116 @@
+name: Xcode
+
+on: [push]
+
+jobs:
+
+    xcode:
+        name: Xcode
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
+        - name: Make Logs Directory
+          run: mkdir logs
+        - name: Xcode Version
+          run: |
+            sudo xcode-select -s /Applications/Xcode_12.app
+            xcodebuild -version
+            swift --version
+        - name: XC Pretty
+          run: sudo gem install xcpretty-travis-formatter
+        - name: Detect Workspace & Scheme (macOS)
+          run: |
+            WORKSPACE="Bluetooth.xcworkspace"
+            if [[ ! -e "$WORKSPACE" ]]
+            then
+            WORKSPACE="."
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep Bluetooth-Package || true))
+            if [[ $GOTPACKAGE != "" ]]
+            then
+            SCHEME="Bluetooth-Package"
+            else
+            SCHEME="Bluetooth"
+            fi
+            else
+            SCHEME="Bluetooth-macOS"
+            fi
+            echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (macOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-macOS-xcode-build-release.log | xcpretty
+        - name: Detect Workspace & Scheme (iOS)
+          run: |
+            WORKSPACE="Bluetooth.xcworkspace"
+            if [[ ! -e "$WORKSPACE" ]]
+            then
+            WORKSPACE="."
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep Bluetooth-Package || true))
+            if [[ $GOTPACKAGE != "" ]]
+            then
+            SCHEME="Bluetooth-Package"
+            else
+            SCHEME="Bluetooth"
+            fi
+            else
+            SCHEME="Bluetooth-iOS"
+            fi
+            echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (iOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-release.log | xcpretty
+        - name: Detect Workspace & Scheme (tvOS)
+          run: |
+            WORKSPACE="Bluetooth.xcworkspace"
+            if [[ ! -e "$WORKSPACE" ]]
+            then
+            WORKSPACE="."
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep Bluetooth-Package || true))
+            if [[ $GOTPACKAGE != "" ]]
+            then
+            SCHEME="Bluetooth-Package"
+            else
+            SCHEME="Bluetooth"
+            fi
+            else
+            SCHEME="Bluetooth-tvOS"
+            fi
+            echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (tvOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-release.log | xcpretty
+        - name: Detect Workspace & Scheme (watchOS)
+          run: |
+            WORKSPACE="Bluetooth.xcworkspace"
+            if [[ ! -e "$WORKSPACE" ]]
+            then
+            WORKSPACE="."
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep Bluetooth-Package || true))
+            if [[ $GOTPACKAGE != "" ]]
+            then
+            SCHEME="Bluetooth-Package"
+            else
+            SCHEME="Bluetooth"
+            fi
+            else
+            SCHEME="Bluetooth-watchOS"
+            fi
+            echo "set -o pipefail; export PATH='swift-latest:$PATH'; WORKSPACE='$WORKSPACE'; SCHEME='$SCHEME'" > setup.sh
+        - name: Build (watchOS Release)
+          run: |
+            source "setup.sh"
+            echo "Building workspace $WORKSPACE scheme $SCHEME."
+            xcodebuild clean build -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-release.log | xcpretty
+        - name: Upload Logs
+          uses: actions/upload-artifact@v1
+          if: always()
+          with:
+            name: logs
+            path: logs
+
