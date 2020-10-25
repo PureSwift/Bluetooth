@@ -8,7 +8,7 @@ addons:
       - curl
 before_install:
   - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get update -y ; fi"
-  - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get install clang git curl ; fi"
+  - "if [[ \"$TRAVIS_OS_NAME\" == \"linux\" ]]; then sudo apt-get install -y clang git curl ; fi"
 language: generic
 matrix:
   include:
@@ -20,16 +20,15 @@ matrix:
       osx_image: xcode12
     -
       arch: amd64
-      dist: xenial
+      dist: focal
       install:
-        - SWIFT_VERSION=swift-5.2.2-RELEASE
-        - "SWIFT_URL=https://swift.org/builds/swift-5.2.2-release/ubuntu1604/swift-5.2.2-RELEASE/swift-5.2.2-RELEASE-ubuntu16.04.tar.gz"
+        - SWIFT_VERSION=swift-5.3-RELEASE
+        - "SWIFT_URL=https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz"
         - SWIFT_DIR=tests
         - "mkdir $SWIFT_DIR"
         - "curl $SWIFT_URL -s | tar xz -C $SWIFT_DIR &> /dev/null"
-        - "export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu16.04/usr/bin:\"${PATH}\""
+        - "export PATH=$(pwd)/tests/$SWIFT_VERSION-ubuntu20.04/usr/bin:\"${PATH}\""
       os: linux
-      sudo: required
     -
       arch: arm64
       dist: buster
@@ -37,7 +36,6 @@ matrix:
         - "curl -s https://packagecloud.io/install/repositories/swift-arm/release/script.deb.sh | sudo bash"
         - "sudo apt install -y swiftlang"
       os: linux
-      sudo: required
 script:
   - "uname -a"
   - "swift --version"
