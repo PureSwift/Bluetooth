@@ -17,8 +17,8 @@ jobs:
             swift --version
         - name: Swift Version
           run: swift --version
-        - name: Jazzy
-          run: jazzy
+        - name: Generate documentation
+          uses: sersoft-gmbh/swifty-docs-action@v1
         - name: Upload docs
           uses: actions/upload-artifact@v1
           if: always()
