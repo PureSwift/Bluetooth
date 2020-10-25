@@ -1,8 +1,6 @@
 name: Release
 
 on:
-  push:
-    tags:
   release:
 
 jobs:
@@ -43,7 +41,7 @@ jobs:
         - name: Swift Version
           run: swift --version
         - name: Build (Release)
-          run: swift build -c release -j 1
+          run: swift build -j 1 -c release
         # Upload build artifacts
         - name: Upload build artifacts
           uses: actions/upload-artifact@v2

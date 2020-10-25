@@ -1,15 +1,13 @@
 name: Documentation
 
 on:
-  push:
-    tags:
   workflow_dispatch:
   release:
 
 jobs:
 # Create documentation
-    bluetooth-docs:
-        name: Bluetooth Documentation
+    docs:
+        name: Documentation
         runs-on: macOS-latest
         steps:
         - name: Checkout

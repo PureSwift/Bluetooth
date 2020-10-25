@@ -15,10 +15,17 @@ jobs:
         - name: Swift Version
           run: swift --version
         - name: Build (Debug)
-          run: swift build -c debug
-        - name: Build (Release)
-          run: swift build -c release
+          run: swift build -j 1 -c debug
         - name: Test (Debug)
-          run: swift test --configuration debug --enable-test-discovery
+          run: swift test -j 1 --configuration debug --enable-test-discovery
         - name: Test (Release)
-          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+          run: swift test -j 1 --configuration release -Xswiftc -enable-testing --enable-test-discovery
+        - name: Clean
+          run: rm -rf .build
+        - name: Build (Release)
+          run: swift build -j 1 -c release
+        - name: Upload build artifacts
+          uses: actions/upload-artifact@v2
+          with:
+            name: build-linux-armv7
+            path: "./.build/armv7*/release/*.so"
