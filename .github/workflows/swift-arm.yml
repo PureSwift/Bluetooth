@@ -17,9 +17,9 @@ jobs:
         - name: Build (Debug)
           run: swift build -j 1 -c debug
         - name: Test (Debug)
-          run: swift test -j 1 --configuration debug --enable-test-discovery
+          run: swift test -j 1 --configuration debug
         - name: Test (Release)
-          run: swift test -j 1 --configuration release -Xswiftc -enable-testing --enable-test-discovery
+          run: swift test -j 1 --configuration release -Xswiftc -enable-testing
         - name: Clean
           run: rm -rf .build
         - name: Build (Release)
