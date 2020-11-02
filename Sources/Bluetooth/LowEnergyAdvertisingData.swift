@@ -31,7 +31,6 @@ public struct LowEnergyAdvertisingData {
     public init(length: UInt8, bytes: ByteValue) {
         
         precondition(length <= 31, "LE Advertising Data can only less than or equal to 31 octets")
-        
         self.bytes = bytes
         self.length = length
     }
@@ -97,19 +96,15 @@ public extension LowEnergyAdvertisingData {
     }
     
     static func += (data: inout LowEnergyAdvertisingData, byte: UInt8) {
-        
         data.append(byte)
     }
     
     mutating func append <C: Collection> (contentsOf bytes: C) where C.Element == UInt8 {
         
-        assert(count + bytes.count < 31)
-        
+        assert(count + bytes.count <= LowEnergyAdvertisingData.capacity)
         for (index, byte) in bytes.enumerated() {
-            
             self[count + index] = byte
         }
-        
         self.length += UInt8(bytes.count)
     }
     
