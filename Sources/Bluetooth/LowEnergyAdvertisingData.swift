@@ -115,13 +115,10 @@ public extension LowEnergyAdvertisingData {
     
     mutating func append(_ pointer: UnsafePointer<UInt8>, count: Int) {
         
-        assert(self.count + count < 31)
-        
+        assert(self.count + count <= LowEnergyAdvertisingData.capacity)
         for index in 0 ..< count {
-            
             self[self.count + index] = pointer.advanced(by: index).pointee
         }
-        
         self.length += UInt8(count)
     }
 }
