@@ -52,4 +52,4 @@ jobs:
           uses: actions/upload-artifact@v2
           with:
             name: build-linux-arm64
-            path: "./.build/release/*.so"
+            path: "./.build/aarch64*/release/*.so"
