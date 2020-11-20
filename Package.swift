@@ -7,7 +7,7 @@ let libraryType: PackageDescription.Product.Library.LibraryType = .dynamic
 let libraryType: PackageDescription.Product.Library.LibraryType = .static
 #endif
 
-let package = Package(
+var package = Package(
     name: "Bluetooth",
     products: [
         .library(
@@ -65,3 +65,19 @@ let package = Package(
         )
     ]
 )
+
+// Fix for Armv7
+#if os(Linux) && arch(arm) && !swift(>=5.3)
+package.products = [
+    .library(
+        name: "Bluetooth",
+        type: .dynamic,
+        targets: [
+            "Bluetooth",
+            "BluetoothGAP",
+            "BluetoothGATT",
+            "BluetoothHCI"
+        ]
+    )
+]
+#endif
