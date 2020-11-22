@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 import PackageDescription
 
 #if os(Linux)
@@ -13,12 +13,22 @@ let package = Package(
         .library(
             name: "Bluetooth",
             type: libraryType,
-            targets: [
-                "Bluetooth",
-                "BluetoothGAP",
-                "BluetoothGATT",
-                "BluetoothHCI"
-            ]
+            targets: ["Bluetooth"]
+        ),
+        .library(
+            name: "BluetoothGAP",
+            type: libraryType,
+            targets: ["BluetoothGAP"]
+        ),
+        .library(
+            name: "BluetoothGATT",
+            type: libraryType,
+            targets: ["BluetoothGATT"]
+        ),
+        .library(
+            name: "BluetoothHCI",
+            type: libraryType,
+            targets: ["BluetoothHCI"]
         )
     ],
     targets: [
