@@ -488,14 +488,15 @@ final class HCITests: XCTestCase {
     func testLowEnergyScan() {
         
         typealias Report = HCILEAdvertisingReport.Report
-        
         typealias ScanParameters = HCILESetScanParameters
         
-        let scanParameters = ScanParameters(type: .active,
-                                            interval: LowEnergyScanTimeInterval(rawValue: 0x01E0)!,
-                                            window: LowEnergyScanTimeInterval(rawValue: 0x0030)!,
-                                            addressType: .public,
-                                            filterPolicy: .accept)
+        let scanParameters = ScanParameters(
+            type: .active,
+            interval: LowEnergyScanTimeInterval(rawValue: 0x01E0)!,
+            window: LowEnergyScanTimeInterval(rawValue: 0x0030)!,
+            addressType: .public,
+            filterPolicy: .accept
+        )
         
         let hostController = TestHostController()
         
@@ -557,13 +558,13 @@ final class HCITests: XCTestCase {
         
         XCTAssertEqual(reports[0].address, BluetoothAddress(rawValue: "02:E4:72:17:FD:E2"))
         XCTAssertEqual(reports[0].addressType, .random)
-        XCTAssertEqual(reports[0].rssi.rawValue, -55)
+        XCTAssertEqual(reports[0].rssi?.rawValue, -55)
         XCTAssertEqual(reports[0].event, .nonConnectable)
         XCTAssertEqual(reports[0].event.isConnectable, false)
         
         XCTAssertEqual(reports[1].address, BluetoothAddress(rawValue: "C8:69:CD:46:0B:5D"))
         XCTAssertEqual(reports[1].addressType, .public)
-        XCTAssertEqual(reports[1].rssi.rawValue, -54)
+        XCTAssertEqual(reports[1].rssi?.rawValue, -54)
         XCTAssertEqual(reports[1].event, .undirected)
         XCTAssertEqual(reports[1].event.isConnectable, true)
     }
@@ -693,7 +694,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .undirected)
             XCTAssertEqual(report.event.isConnectable, true)
-            XCTAssertEqual(report.rssi.rawValue, -45)
+            XCTAssertEqual(report.rssi?.rawValue, -45)
             XCTAssertEqual(report.responseData.count, 0x16)
             
             let advertisingData: LowEnergyAdvertisingData = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
@@ -728,7 +729,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.event.isConnectable, true)
-            XCTAssertEqual(report.rssi.rawValue, -44)
+            XCTAssertEqual(report.rssi?.rawValue, -44)
             XCTAssertEqual(report.responseData.data, Data())
         }
         
@@ -761,13 +762,29 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.addressType, .public)
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.event.isConnectable, true)
-            XCTAssertEqual(report.rssi.rawValue, -70)
+            XCTAssertEqual(report.rssi?.rawValue, -70)
             XCTAssertEqual(report.responseData.count, 0x0C)
             XCTAssertEqual(report.responseData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
-            
         }
         
-        
+        do {
+            let testData = [
+                Data([0x01, 0x00, 0x01, 0x8a, 0x03, 0x6b, 0xa1, 0x00, 0x7a, 0x0e, 0x02, 0x01, 0x06, 0x0a, 0xff, 0x4c, 0x00, 0x10, 0x05, 0x01, 0x18, 0x81, 0x42, 0x89, 0x80])
+            ]
+            
+            var reports = [HCILEAdvertisingReport]()
+            reports.reserveCapacity(reports.count)
+            
+            for data in testData {
+                guard let report = HCILEAdvertisingReport(data: data) else {
+                    XCTFail("Unable to parse")
+                    return
+                }
+                reports.append(report)
+            }
+            
+            XCTAssertEqual(reports[0].reports[0].address.rawValue, "7A:00:A1:6B:03:8A")
+        }
     }
     
     func testCommandStatusEvent() {
