@@ -72,7 +72,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         /// Size: 1 Octet (signed integer)
         /// Range: -127 ≤ N ≤ +20
         /// Units: dBm
-        public let rssi: RSSI // RSSI
+        public let rssi: RSSI? // RSSI
         
         public init?(data: Data) {
             
@@ -113,13 +113,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
             guard data.count == (Report.length + length)
                 else { return nil }
             
-            // last byte
-            let rssiByte = Int8(bitPattern: data[9 + length])
-            
-            guard let rssi = RSSI(rawValue: rssiByte)
-                else { return nil }
-            
-            self.rssi = rssi
+            self.rssi = RSSI(rawValue: Int8(bitPattern: data[9 + length]))
         }
         
         /// Low Energy Advertising Event
