@@ -11,6 +11,7 @@ import Foundation
 /// LE Advertising Set Terminated Event
 ///
 /// The event indicates that the Controller has terminated advertising in the advertising sets specified by the Advertising_Handle parameter.
+@frozen
 public struct HCILEAdvertisingSetTerminated: HCIEventParameter {
     
     public static let event = LowEnergyEvent.advertisingSetTerminated // 0x12

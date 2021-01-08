@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Fragment Preference
+@frozen
 public enum LowEnergyFragmentPreference: UInt8 { //Fragment_Preference
     
     /// The Controller may fragment all Host advertising data

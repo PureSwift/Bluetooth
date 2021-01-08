@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Packet Payload format
+@frozen
 public enum LowEnergyPacketPayload: UInt8 { // Packet_Payload
     
     case prb29Sequence       = 0x00

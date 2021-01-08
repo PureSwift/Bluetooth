@@ -18,6 +18,7 @@ import Foundation
 ///
 /// If an LE_Set_PHY command was sent and the Controller determines that neither PHY will
 /// change as a result, it issues this event immediately.
+@frozen
 public struct HCILEPhyUpdateComplete: HCIEventParameter {
     
     public static let event = LowEnergyEvent.phyUpdateComplete // 0x0C

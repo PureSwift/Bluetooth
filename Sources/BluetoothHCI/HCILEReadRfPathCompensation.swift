@@ -26,6 +26,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read RF Path Compensation Command
 ///
 /// The command is used to read the RF Path Compensation Values parameter used in the Tx Power Level and RSSI calculation.
+@frozen
 public struct HCILEReadRfPathCompensation: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readRFPathCompensation //0x004C

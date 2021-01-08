@@ -39,6 +39,7 @@ public extension BluetoothHostControllerInterface {
 /// - Note: The Link Manager may terminate the connection if it would be low on resources if the role switch fails. The decision to accept a connection must be completed before the connection accept timeout expires on the local Bluetooth Module.
 ///
 /// - Note: When accepting synchronous connection request, the Role parameter is not used and will be ignored by the BR/EDR Controller.
+@frozen
 public struct HCIAcceptConnectionRequest: HCICommandParameter {
     
     public static let command = LinkControlCommand.acceptConnection

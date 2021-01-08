@@ -33,6 +33,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// This command writes the Link Policy setting for the specified Connection_Handle. The Connection_Handle shall be a Connection_Handle for an ACL connection.
 /// The default value is the value set by the Write Default Link Policy Settings Command.
+@frozen
 public struct HCIWriteLinkPolicySettings: HCICommandParameter {
     
     public static let command = LinkPolicyCommand.writeLinkPolicySettings

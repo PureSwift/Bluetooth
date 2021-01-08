@@ -14,6 +14,7 @@ import Foundation
 /// a change in the connection parameters. The Host replies either with the HCI LE Remote Connection
 /// Parameter Request Reply command or the HCI LE Remote Connection Parameter Request Negative
 /// Reply command.
+@frozen
 public struct HCILERemoteConnectionParameterRequest: HCIEventParameter {
     
     public static let event = LowEnergyEvent.remoteConnectionParameterRequest // 0x06

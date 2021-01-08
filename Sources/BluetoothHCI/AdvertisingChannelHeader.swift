@@ -11,6 +11,7 @@
 /// - Note: The actual value is 4 bits.
 /// 
 /// - SeeAlso: BLUETOOTH SPECIFICATION Version 4.0 [Vol 6] p39
+@frozen
 public enum AdvertisingChannelHeader: UInt8 {
     
     /// Connectable undirected advertising event

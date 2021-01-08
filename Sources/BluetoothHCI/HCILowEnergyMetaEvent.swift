@@ -9,6 +9,7 @@
 import Foundation
 
 /// HCI Low Energy Meta Event
+@frozen
 public struct HCILowEnergyMetaEvent: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.lowEnergyMeta

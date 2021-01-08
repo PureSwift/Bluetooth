@@ -37,6 +37,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Scan Response Data Command
 ///
 /// This command is used to provide data used in Scanning Packets that have a data field.
+@frozen
 public struct HCILESetScanResponseData: HCICommandParameter { // HCI_LE_Set_Scan_Response_ Data
     
     public static let command = HCILowEnergyCommand.setScanResponseData // 0x0009

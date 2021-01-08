@@ -10,6 +10,7 @@
 ///
 /// Units: dBm
 /// 127 Host has no preference
+@frozen
 public struct LowEnergyTxPower: RawRepresentable, Equatable, Hashable, Comparable {
     
     public static let min = LowEnergyTxPower(-127)

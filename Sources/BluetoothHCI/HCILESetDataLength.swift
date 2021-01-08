@@ -37,6 +37,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// This command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
 /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+@frozen
 public struct HCILESetDataLength: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setDataLengthCommand //0x0022
@@ -77,6 +78,7 @@ public struct HCILESetDataLength: HCICommandParameter {
 
 /// The LE_Set_Data_Length command allows the Host to suggest maximum transmission packet size and maximum packet transmission time
 /// to be used for a given connection. The Controller may use smaller or larger values based on local information.
+@frozen
 public struct HCILESetDataLengthReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.setDataLengthCommand //0x0022

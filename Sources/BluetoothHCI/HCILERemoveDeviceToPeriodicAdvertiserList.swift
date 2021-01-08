@@ -41,6 +41,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// When a Controller cannot remove a device from the Periodic Advertiser list because it is not found,
 /// the Controller shall return the error code Unknown Advertising Identifier (0x42).
+@frozen
 public struct HCILERemoveDeviceToPeriodicAdvertiserList: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.removeDeviceFromPeriodicAdvertiserList //0x0048

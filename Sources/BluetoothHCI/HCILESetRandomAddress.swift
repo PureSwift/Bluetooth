@@ -37,6 +37,7 @@ public extension BluetoothHostControllerInterface {
 /// The addresses used for advertising are set by the LE Set Advertising Set Random Address command.
 ///
 /// If the Host issues this command when scanning or legacy advertising is enabled, the Controller shall return the error code Command Disallowed (`0x0C`).
+@frozen
 public struct HCILESetRandomAddress: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setRandomAddress // 0x0005

@@ -17,6 +17,7 @@ import Foundation
 ///
 /// This event indicates to the Host which issued an LE_Periodic_Advertising_Create_Sync command and received a
 /// Command Status event if the periodic advertising reception failed or was successful.
+@frozen
 public struct HCILEPeriodicAdvertisingSyncEstablished: HCIEventParameter {
     
     public static let event = LowEnergyEvent.periodicAdvertisingSyncEstablished // 0x0E

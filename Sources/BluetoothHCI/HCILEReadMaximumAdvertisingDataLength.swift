@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command is used to read the maximum length of data supported by the Controller for use
 /// as advertisement data or scan response data in an advertising event or as periodic advertisement data.
+@frozen
 public struct HCILEReadMaximumAdvertisingDataLength: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readMaximumAdvertisingDataLength //0x003A

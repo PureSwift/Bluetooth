@@ -26,6 +26,7 @@ public extension BluetoothHostControllerInterface {
 /// Read Page Timeout Command
 ///
 /// This command reads the value for the Page_Timeout configuration parameter.
+@frozen
 public struct HCIReadPageTimeoutReturn: HCICommandReturnParameter {
     
     public static let command = HostControllerBasebandCommand.readPageTimeout

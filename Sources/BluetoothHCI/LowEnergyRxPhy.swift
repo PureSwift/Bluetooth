@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Rx Phy
+@frozen
 public enum LowEnergyRxPhy: UInt8 { //RX_PHY
     
     /// The receiver PHY for the connection is LE 1M

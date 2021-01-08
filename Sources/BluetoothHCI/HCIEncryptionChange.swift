@@ -15,6 +15,7 @@ import Foundation
 /// This event will occur on both devices to notify the Hosts when Encryption has changed for all connections between the two devices.
 ///
 /// Note: This event shall not be generated if encryption is paused or resumed; during a role switch, for example.
+@frozen
 public struct HCIEncryptionChange: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.encryptionChange

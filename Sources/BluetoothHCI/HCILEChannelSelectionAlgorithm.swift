@@ -11,6 +11,7 @@ import Foundation
 /// LE Channel Selection Algorithm Event
 ///
 /// The LE Channel Selection Algorithm Event indicates which channel selection algorithm is used on a data channel connection.
+@frozen
 public struct HCILEChannelSelectionAlgorithm: HCIEventParameter {
     
     public static let event = LowEnergyEvent.channelSelectionAlgorithm // 0x14

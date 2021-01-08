@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Rx Channel
+@frozen
 public struct LowEnergyRxChannel: RawRepresentable, Equatable, Hashable, Comparable {
     
     /// 100 msec

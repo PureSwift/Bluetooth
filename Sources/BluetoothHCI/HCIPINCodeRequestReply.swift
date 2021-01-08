@@ -36,6 +36,7 @@ public extension BluetoothHostControllerInterface {
 /// The PIN_Code_Request_Reply command is used to reply to a PIN Code request event from the BR/EDR Controller, and specifies the PIN code to use for a connection. The PIN Code Request event will be generated when a con- nection with remote initiating device has requested pairing.
 ///
 /// When the BR/EDR Controller generates a PIN Code Request event in order for the local Link Manager to respond to the request from the remote Link Man- ager (as a result of a Create_Connection or Authentication_Requested com- mand from the remote Host), the local Host must respond with either a PIN_Code_Request_Reply or PIN_Code_Request_Negative_Reply com- mand before the remote Link Manager detects LMP response timeout
+@frozen
 public struct HCIPINCodeRequestReply: HCICommandParameter {
     
     public static let command = LinkControlCommand.pinCodeReply
@@ -116,6 +117,7 @@ extension HCIPINCodeRequestReply {
 
 // MARK: - Return Parameter
 
+@frozen
 public struct HCIPINCodeRequestReplyReturn: HCICommandReturnParameter {
     
     public static let command = LinkControlCommand.pinCodeReply

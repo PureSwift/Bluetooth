@@ -33,6 +33,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command allows the Host to specify its suggested values for the Controller's maximum transmission number
 /// of payload octets and maximum packet transmission time to be used for new connections.
+@frozen
 public struct HCILEWriteSuggestedDefaultDataLength: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.writeSuggestedDefaultDataLengthCommand //0x0024

@@ -39,6 +39,7 @@ public extension BluetoothHostControllerInterface {
 /// If this command is used to change the address, the new random address shall take effect for advertising no later than
 /// the next successful LE Extended Set Advertising Enable Command and for periodic advertising no later than
 /// the next successful LE Periodic Advertising Enable Command.
+@frozen
 public struct HCILESetAdvertisingSetRandomAddress: HCICommandParameter { //HCI_LE_Set_Advertising_Set_Ran- dom_Address
     
     public static let command = HCILowEnergyCommand.setAdvertisingSetRandomAddress //0x0035

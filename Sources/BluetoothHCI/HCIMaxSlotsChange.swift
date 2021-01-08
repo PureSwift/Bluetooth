@@ -11,6 +11,7 @@ import Foundation
 /// Max Slots Change Event
 ///
 /// This event is used to notify the Host about the LMP_Max_Slots parameter when the value of this parameter changes. It shall be sent each time the maximum allowed length, in number of slots, for baseband packets transmitted by the local device, changes. The Connection_Handle will be a Connection_Handle for an ACL connection.
+@frozen
 public struct HCIMaxSlotsChange: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.maxSlotsChange

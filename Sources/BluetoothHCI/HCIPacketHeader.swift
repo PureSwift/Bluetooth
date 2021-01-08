@@ -22,6 +22,7 @@ public protocol HCIPacketHeader {
 // MARK: - Command Header
 
 /// HCI Command Packet Header
+@frozen
 public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
     
     public static let length = 3
@@ -75,6 +76,7 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
 // MARK: - Event Header
 
 /// HCI Event Packet Header
+@frozen
 public struct HCIEventHeader: HCIPacketHeader {
     
     public static let length = 2

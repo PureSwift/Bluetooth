@@ -36,6 +36,7 @@ public extension BluetoothHostControllerInterface {
 /// and returns the Encrypted Data to the Host.
 ///
 /// - Note: The AES-128 bit block cypher is defined in NIST Publication [FIPS-197](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+@frozen
 public struct HCILEEncrypt: HCICommandParameter { // HCI_LE_Encrypt
     
     public static let command = HCILowEnergyCommand.encrypt //0x0017
@@ -78,6 +79,7 @@ extension HCILEEncrypt: DataConvertible {
 /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
 /// and returns the Encrypted_Data to the Host.
 /// The AES-128 bit block cypher is defined in NIST Publication [FIPS-197](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
+@frozen
 public struct HCILEEncryptReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.encrypt //0x0017

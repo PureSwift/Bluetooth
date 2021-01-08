@@ -10,6 +10,7 @@
 /// packet on this connection.
 ///
 /// - Note: Range 0x0148-0x4290
+@frozen
 public struct LowEnergyMaxTxTime: RawRepresentable, Equatable, Hashable, Comparable {
     
     public static let min = LowEnergyMaxTxTime(0x0148)

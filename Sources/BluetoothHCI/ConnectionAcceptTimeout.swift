@@ -13,6 +13,7 @@
 /// Range for N: 0x0001 – 0xB540
 ///
 /// Time Range: 0.625 ms - 29 s
+@frozen
 public struct ConnectionAcceptTimeout: RawRepresentable, Equatable, Hashable {
     
     public static let length = MemoryLayout<UInt16>.size

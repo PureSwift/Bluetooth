@@ -9,6 +9,7 @@
 /// The TX_PHYS parameter is a bit field that indicates the transmitter PHYs that the Host prefers
 /// the Controller to use. If the ALL_PHYS parameter specifies that the Host has no preference,
 //// the TX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
+@frozen
 public enum LowEnergyTxPhys: UInt8, BitMaskOption {
     
     /// The Host prefers to use the LE 1M transmitter PHY (possibly among others)

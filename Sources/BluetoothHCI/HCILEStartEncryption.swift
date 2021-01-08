@@ -104,6 +104,7 @@ public extension BluetoothHostControllerInterface {
 /// by the Link Layer. If this command succeeds, then the connection shall be encrypted.
 ///
 /// This command shall only be used when the local device’s role is Master.
+@frozen
 public struct HCILEStartEncryption: HCICommandParameter { // HCI_LE_Start_Encryption
     
     public static let command = HCILowEnergyCommand.startEncryption //0x0019

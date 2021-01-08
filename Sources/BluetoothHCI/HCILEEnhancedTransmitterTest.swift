@@ -35,6 +35,7 @@ public extension BluetoothHostControllerInterface {
 /// Packet_Payload values 0x00, 0x01 and 0x02. An LE Controller supporting the LE Coded PHY
 /// shall also support Packet_Payload value 0x04. An LE Controller may support other values
 /// of Packet_Payload.
+@frozen
 public struct HCILEEnhancedTransmitterTest: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.enhancedTransmitterTest //0x0034

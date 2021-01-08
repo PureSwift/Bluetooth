@@ -15,6 +15,7 @@ import Foundation
 /// All packet types with a payload shall use GFSK modulation unless specified otherwise in the following sections.
 ///
 /// ACL logical transports Enhanced Data Rate packet types are explicitly selected via LMP using the packet_type_table (ptt) parameter. eSCO Enhanced Data Rate packet types are selected when the eSCO logical transport is established.
+@frozen
 public enum PacketType {
     
     /// ACL packets are used on the asynchronous logical transport. The information carried may be user data or control data.
@@ -40,6 +41,7 @@ public enum PacketType {
 /// ACL packets are used on the asynchronous logical transport. The information carried may be user data or control data.
 ///
 /// Seven packet types are defined for Basic Rate operation: DM1, DH1, DM3, DH3, DM5, DH5 and AUX1. Six additional packets are defined for Enhanced Data Rate operation: 2-DH1, 3-DH1, 2-DH3, 3-DH3, 2-DH5 and 3-DH5.
+@frozen
 public enum ACLPacketType: UInt16, BitMaskOption {
         
     /// 2-DH1 may not be used
@@ -95,6 +97,7 @@ public enum ACLPacketType: UInt16, BitMaskOption {
 }
 
 /// HV and DV packets are used on the synchronous SCO logical transport. The HV packets do not include a CRC and shall not be retransmitted. DV packets include a CRC on the data section, but not on the synchronous data section. The data section of DV packets shall be retransmitted. SCO packets may be routed to the synchronous I/O port. Four packets are allowed on the SCO logical transport: HV1, HV2, HV3 and DV. These packets are typically used for 64kb/s speech transmission but may be used for transparent synchronous data.
+@frozen
 public enum SCOPacketType: UInt16, BitMaskOption {
     
     /// HV1

@@ -33,6 +33,7 @@ public extension BluetoothHostControllerInterface {
 /// then the Controller shall return the error code Unknown Advertising Identifier (0x42).
 /// If advertising on the advertising set is enabled, then the Controller shall return the error code
 /// Command Disallowed (0x0C).
+@frozen
 public struct HCILERemoveAdvertisingSet: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.removeAdvertisingSet //0x003C

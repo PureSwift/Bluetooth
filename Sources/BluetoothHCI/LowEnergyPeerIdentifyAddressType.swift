@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Peer Identify Address Type
+@frozen
 public enum LowEnergyPeerIdentifyAddressType: UInt8 { //Peer_Identity_Address_Type
     
     case `public` = 0x00

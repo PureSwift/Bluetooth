@@ -49,6 +49,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Extended Create Connection Command
 ///
 /// The command is used to create a Link Layer connection to a connectable advertiser.
+@frozen
 public struct HCILEExtendedCreateConnection: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.extendedCreateConnection // 0x0043

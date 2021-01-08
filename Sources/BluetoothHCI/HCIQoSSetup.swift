@@ -42,6 +42,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The QoS_Setup command is used to specify Quality of Service parameters for a Connection_Handle. The Connection_Handle must be a Connection_Handle for an ACL connection. These QoS parameter are the same parameters as L2CAP QoS.
 /// This allows the Link Manager to have all of the information about what the Host is requesting for each connection. The LM will determine if the QoS parameters can be met. BR/EDR Controllers that are both slaves and masters can use this command. When a device is a slave, this com- mand will trigger an LMP request to the master to provide the slave with the specified QoS as determined by the LM. When a device is a master, this com- mand is used to request a slave device to accept the specified QoS as deter- mined by the LM of the master. The Connection_Handle command parameter is used to identify for which connection the QoS request is requested.
+@frozen
 public struct HCIQoSSetup: HCICommandParameter {
     
     public static let command = LinkPolicyCommand.qosSetup

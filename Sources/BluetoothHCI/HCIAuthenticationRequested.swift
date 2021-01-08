@@ -35,6 +35,7 @@ public extension BluetoothHostControllerInterface {
 /// The Authentication_Requested command is used to try to authenticate the remote device associated with the specified Connection_Handle. On an authentication failure, the BR/EDR Controller or Link Manager shall not auto- matically detach the link. The Host is responsible for issuing a Disconnect com- mand to terminate the link if the action is appropriate.
 ///
 /// - Note: The Connection_Handle command parameter is used to identify the other BR/EDR Controller, which forms the connection. The Connection_Handle should be a Connection_Handle for an ACL connection.
+@frozen
 public struct HCIAuthenticationRequested: HCICommandParameter {
     
     public static let command = LinkControlCommand.authenticationRequested

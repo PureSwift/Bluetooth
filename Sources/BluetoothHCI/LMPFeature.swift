@@ -9,6 +9,7 @@
 import Foundation
 
 /// Bluetooth LMP Feature
+@frozen
 public enum LMPFeature: UInt64, BitMaskOption {
     
     /// 3 slot packets

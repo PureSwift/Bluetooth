@@ -27,6 +27,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Advertising Parameters Command
 ///
 /// Used by the Host to set the advertising parameters.
+@frozen
 public struct HCILESetAdvertisingParameters: HCICommandParameter {
     
     public static var command: HCILowEnergyCommand { return .setAdvertisingParameters } // 0x0006

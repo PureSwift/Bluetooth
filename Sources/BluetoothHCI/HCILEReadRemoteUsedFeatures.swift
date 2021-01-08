@@ -49,6 +49,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// Note: If a connection already exists between the two devices and the features have already been fetched on that connection,
 //// the Controller may use a cached copy of the features.
+@frozen
 public struct HCILEReadRemoteUsedFeatures: HCICommandParameter { //HCI_LE_Read_Remote_Features
     
     public static let command = HCILowEnergyCommand.readRemoteUsedFeatures //0x0016

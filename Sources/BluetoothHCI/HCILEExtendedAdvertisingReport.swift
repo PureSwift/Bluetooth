@@ -15,6 +15,7 @@ import Foundation
 /// The Controller may coalesce multiple advertising reports from the same or different advertisers
 /// into a single LE Extended Advertising Report event, provided all the parameters from all the advertising reports
 /// fit in a single HCI event.
+@frozen
 public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
     
     public static let event = LowEnergyEvent.extendedAdvertisingReport // 0x0D

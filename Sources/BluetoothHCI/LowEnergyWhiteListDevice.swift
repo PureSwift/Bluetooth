@@ -7,6 +7,7 @@
 //
 
 /// LE White List Address Type
+@frozen
 public enum LowEnergyWhiteListAddressType: UInt8 {
     
     /// Public Device Address
@@ -20,6 +21,7 @@ public enum LowEnergyWhiteListAddressType: UInt8 {
 }
 
 /// LE White List Device Entry
+@frozen
 public enum LowEnergyWhiteListDevice {
     
     case `public`(BluetoothAddress)

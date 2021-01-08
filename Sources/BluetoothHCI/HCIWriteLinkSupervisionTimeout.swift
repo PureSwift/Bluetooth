@@ -37,6 +37,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The Handle used for this command shall be the ACL connection to the appro- priate device. This command will set the Link_Supervision_
 /// Timeout values for other Synchronous Handles to that device.
+@frozen
 public struct HCIWriteLinkSupervisionTimeout: HCICommandParameter {
     
     public static let command = HostControllerBasebandCommand.writeLinkSupervisionTimeout
@@ -98,6 +99,7 @@ extension HCIWriteLinkSupervisionTimeout {
 
 // MARK: - Return Parameter
 
+@frozen
 public struct HCIWriteLinkSupervisionTimeoutReturn: HCICommandReturnParameter {
     
     public static let command = HostControllerBasebandCommand.writeLinkSupervisionTimeout

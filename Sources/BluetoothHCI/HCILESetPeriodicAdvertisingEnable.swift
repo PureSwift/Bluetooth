@@ -32,6 +32,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The  command is used to request the Controller to enable or disable the periodic advertising
 /// for the advertising set specified by the Advertising_Handle parameter (ordinary advertising is not affected).
+@frozen
 public struct HCILESetPeriodicAdvertisingEnable: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setPeriodicAdvertisingEnable //0x0040

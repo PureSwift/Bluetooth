@@ -14,6 +14,7 @@
 /// Time Range: 100 msec to 32 seconds
 ///
 /// - SeeAlso: [Vol 6] Part B, Section 4.5.2
+@frozen
 public struct LowEnergySupervisionTimeout: RawRepresentable, Equatable, Hashable, Comparable {
     
     /// 100 msec

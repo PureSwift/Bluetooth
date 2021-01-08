@@ -9,6 +9,7 @@
 /// Slave latency for the connection in number of connection events.
 ///
 /// Range: 0x0000 to 0x01F3
+@frozen
 public struct LowEnergyConnectionLatency: RawRepresentable, Equatable, Hashable, Comparable {
     
     public static var zero: LowEnergyConnectionLatency { return LowEnergyConnectionLatency() }

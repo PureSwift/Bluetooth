@@ -34,6 +34,7 @@ public extension BluetoothHostControllerInterface {
 /// command allows the Host to specify its preferred values for
 /// the transmitter PHY and receiver PHY to be used for all subsequent
 ///connections over the LE transport.
+@frozen
 public struct HCILESetDefaultPhy: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.readPhy //0x0031

@@ -16,6 +16,7 @@
 
  The bit positions for each Link Layer Feature shall be as shown in Table 4.4. This table also shows if these bits are valid between Controllers. If a bit is shown as not valid, using ‘N’, then this bit shall be ignored upon receipt by the peer Controller.
  */
+@frozen
 public enum LowEnergyFeature: UInt64, BitMaskOption {
     
     /// LE Encryption

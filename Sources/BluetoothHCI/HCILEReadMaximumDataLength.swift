@@ -32,6 +32,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command allows the Host to read the Controller’s maximum supported payload octets
 /// and packet duration times for transmission and reception.
+@frozen
 public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_Read_Maximum_Data_ Length 1323
     
     public static let command = HCILowEnergyCommand.readMaximumDataLength //0x002F

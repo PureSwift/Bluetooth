@@ -13,6 +13,7 @@ import Foundation
 /// The event indicates that directed advertisements have been received where the advertiser
 /// is using a resolvable private address for the TargetA field of the advertising PDU which
 /// the Controller is unable to resolve and the Scanning_Filter_Policy is equal to 0x02 or 0x03.
+@frozen
 public struct HCILEDirectedAdvertisingReport: HCIEventParameter {
     
     public static let event = LowEnergyEvent.directedAdvertisingReport // 0x0B

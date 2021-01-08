@@ -33,6 +33,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Privacy Mode Command
 ///
 /// The command is used to allow the Host to specify the privacy mode to be used for a given entry on the resolving list.
+@frozen
 public struct HCILESetPrivacyMode: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setPrivacyMode // 0x004E

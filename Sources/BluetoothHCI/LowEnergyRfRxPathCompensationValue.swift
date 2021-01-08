@@ -11,6 +11,7 @@
 /// Size: 2 Octets (signed integer)
 /// Range: -128.0 dB (0xFB00) ≤ N ≤ 128.0 dB (0x0500)
 /// Units: 0.1 dB
+@frozen
 public struct LowEnergyRfRxPathCompensationValue: RawRepresentable, Equatable, Hashable, Comparable {
     
     public static let min = LowEnergyRfRxPathCompensationValue(-128)

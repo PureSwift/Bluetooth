@@ -40,6 +40,7 @@ public extension BluetoothHostControllerInterface {
 /// - Note: Max_Period_Duration > Min_Period_Duration > Inquiry_Duration
 ///
 /// A device which responds during an inquiry or inquiry period should always be reported to the Host in an Inquiry Result event if the device has not been reported earlier during the current inquiry or inquiry period and the device has not been filtered out using the command Set_Event_Filter. If the device has been reported earlier during the current inquiry or inquiry period, it may or may not be reported depending on the implementation (depending on if earlier results have been saved in the BR/EDR Controller and in that case how many responses that have been saved). It is recommended that the BR/EDR Con- troller tries to report a particular device only once during an inquiry or inquiry period.
+@frozen
 public struct HCIPeriodicInquiryMode: HCICommandParameter {
     
     public static let command = LinkControlCommand.periodicInquiry

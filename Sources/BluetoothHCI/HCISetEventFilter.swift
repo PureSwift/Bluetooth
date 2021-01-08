@@ -43,6 +43,7 @@ import Foundation
  
  If there is a contradiction between event filters, the latest set event filter will override older ones. An example is an incoming connection attempt where more than one Connection Setup filter matches the incoming connection attempt, but the Auto-Accept_Flag has different values in the different filters.
  */
+@frozen
 public struct HCISetEventFilter: HCICommandParameter {
     
     public static let command = HostControllerBasebandCommand.setEventFilter

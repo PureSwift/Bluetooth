@@ -7,6 +7,7 @@
 //
 
 /// Possible Low Energy States and roles.
+@frozen
 public enum LowEnergyState: Int, BitMaskOption {
     
     /// Scannable Advertising State
@@ -65,6 +66,7 @@ extension LowEnergyState: CustomStringConvertible {
 }
 
 /// The states and state combinations that the link layer supports.
+@frozen
 public enum LowEnergyStateSet: UInt64 {
     
     case state0  = 0b01

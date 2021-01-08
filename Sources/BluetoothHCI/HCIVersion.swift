@@ -9,6 +9,7 @@
 // swiftlint:disable identifier_name
 
 /// Bluetooth Host Controller Interface version.
+@frozen
 public enum HCIVersion: UInt8, Equatable, Hashable {
     
     case v1_0b      = 0x00

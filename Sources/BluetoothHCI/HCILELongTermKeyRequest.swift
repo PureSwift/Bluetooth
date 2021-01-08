@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The LE Long Term Key Request event indicates that the master device is attempting
 /// to encrypt or re-encrypt the link and is requesting the Long Term Key from the Host.
+@frozen
 public struct HCILELongTermKeyRequest: HCIEventParameter {
     
     public static let event = LowEnergyEvent.longTermKeyRequest // 0x05

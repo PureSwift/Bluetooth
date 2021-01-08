@@ -9,6 +9,7 @@
 import Foundation
 
 /// The Page_Scan_Repetition_Mode parameter specifies the page scan repetition mode supported by the remote device with the BD_ADDR. This is the information that was acquired during the inquiry process.
+@frozen
 public struct PageScanRepetitionMode: RawRepresentable {
     
     public static let r1 = PageScanRepetitionMode(0x00)

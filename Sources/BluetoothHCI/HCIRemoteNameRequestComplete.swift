@@ -9,6 +9,7 @@
 import Foundation
 
 /// HCI Remote Name Request Complete Event
+@frozen
 public struct HCIRemoteNameRequestComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.remoteNameRequestComplete

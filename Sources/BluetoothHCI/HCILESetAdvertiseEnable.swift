@@ -42,6 +42,7 @@ public extension BluetoothHostControllerInterface {
  
  - Note: Enabling advertising when it is already enabled can cause the random address to change. Disabling advertising when it is already disabled has no effect.
  */
+@frozen
 public struct HCILESetAdvertiseEnable: HCICommandParameter { // HCI_LE_Set_Advertising_Enable
     
     public static let command = HCILowEnergyCommand.setAdvertiseEnable // 0x000A

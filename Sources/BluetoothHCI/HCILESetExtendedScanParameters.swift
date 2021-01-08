@@ -33,6 +33,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Extended Scan Parameters Command
 ///
 /// Used to set the extended scan parameters to be used on the advertising channels.
+@frozen
 public struct HCILESetExtendedScanParameters: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setExtendedScanParameters // 0x0041

@@ -28,6 +28,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// This command allows the Host to read the Host's suggested values (SuggestedMaxTxOctets and SuggestedMaxTxTime)
 /// for the Controller's maximum transmitted number of payload octets and maximum packet transmission time to be used for new connections.
+@frozen
 public struct HCILEReadSuggestedDefaultDataLength: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readSuggestedDefaultDataLengthCommand //0x0023

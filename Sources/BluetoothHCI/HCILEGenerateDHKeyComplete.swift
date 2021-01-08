@@ -11,6 +11,7 @@ import Foundation
 /// LE Generate DHKey Complete Event
 ///
 /// This event indicates that LE Diffie Hellman key generation has been completed by the Controller.
+@frozen
 public struct HCILEGenerateDHKeyComplete: HCIEventParameter {
     
     public static let event = LowEnergyEvent.generateDHKeyComplete // 0x09

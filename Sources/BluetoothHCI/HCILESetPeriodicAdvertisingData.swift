@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Periodic Advertising Data Command
 ///
 /// The command is used to set the data used in periodic advertising PDUs.
+@frozen
 public struct HCILESetPeriodicAdvertisingData: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setPeriodicAdvertisingData //0x003F

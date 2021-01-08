@@ -28,6 +28,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read White List Size
 ///
 /// The command is used to read the total number of white list entries that can be stored in the Controller.
+@frozen
 public struct HCILEReadWhiteListSize: HCICommandReturnParameter { // HCI_LE_Read_White_List_Size
     
     public static let command = HCILowEnergyCommand.readWhiteListSize //0x000F

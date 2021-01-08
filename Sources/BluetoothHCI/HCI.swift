@@ -9,6 +9,7 @@
 @_exported import Bluetooth
 
 /// Bluetooth HCI
+@frozen
 public enum HCI {
     
     // MARK: - Constants
@@ -29,6 +30,7 @@ public enum HCI {
 }
 
 /// HCI Opcode Group Field
+@frozen
 public enum HCIOpcodeGroupField: UInt16 {
     
     /// Link Control
@@ -57,6 +59,7 @@ public enum HCIOpcodeGroupField: UInt16 {
 }
 
 /// HCI Status Code
+@frozen
 public enum HCIStatus: RawRepresentable, CustomStringConvertible {
     
     case success

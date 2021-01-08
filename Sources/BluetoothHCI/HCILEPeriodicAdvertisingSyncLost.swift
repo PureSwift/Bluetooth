@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The event indicates that the Controller has not received a Periodic Advertising packet identified
 /// by Sync_Handle within the timeout period.
+@frozen
 public struct HCILEPeriodicAdvertisingSyncLost: HCIEventParameter {
     
     public static let event = LowEnergyEvent.periodicAdvertisingSyncLost // 0x10

@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth Low Energy HCI Events
+@frozen
 public enum LowEnergyEvent: UInt8, HCIEvent {
     
     /// LE Connection Complete

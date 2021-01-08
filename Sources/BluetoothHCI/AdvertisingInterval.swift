@@ -22,6 +22,7 @@
  
  ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/AdvertisingInterval.png)
  */
+@frozen
 public struct AdvertisingInterval: Equatable, Hashable {
     
     public let rawValue: UInt16

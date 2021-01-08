@@ -34,6 +34,7 @@ public extension BluetoothHostControllerInterface {
 /// The command returns the current Channel_Map for the specified Connection_Handle. The returned value indicates the state
 /// of the Channel_Map specified by the last transmitted or received Channel_Map (in a CONNECT_IND or LL_CHANNEL_MAP_IND message)
 /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
+@frozen
 public struct HCILEReadChannelMap: HCICommandParameter { // HCI_LE_Read_Channel_Map
     
     public static let command = HCILowEnergyCommand.readChannelMap //0x0015
@@ -68,6 +69,7 @@ public extension HCILEReadChannelMap {
 /// The command returns the current Channel_Map for the specified Connection_Handle. The returned value indicates the state
 /// of the Channel_Map specified by the last transmitted or received Channel_Map (in a CONNECT_IND or LL_CHANNEL_MAP_IND message)
 /// for the specified Connection_Handle, regardless of whether the Master has received an acknowledgment.
+@frozen
 public struct HCILEReadChannelMapReturnParameter: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readChannelMap //0x0015

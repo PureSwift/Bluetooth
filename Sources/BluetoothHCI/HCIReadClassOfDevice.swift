@@ -26,6 +26,7 @@ public extension BluetoothHostControllerInterface {
 /// Read Class of Device Command
 ///
 /// This command writes the value for the Class_of_Device parameter.
+@frozen
 public struct HCIReadClassOfDeviceReturn: HCICommandReturnParameter {
     
     public static let command = HostControllerBasebandCommand.readClassOfDevice

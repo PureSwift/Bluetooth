@@ -9,6 +9,7 @@
 import Foundation
 
 /// The duration of an HCI command.
+@frozen
 public struct HCICommandTimeout: RawRepresentable, Equatable, Hashable {
     
     /// The duration of the timeout in miliseconds.

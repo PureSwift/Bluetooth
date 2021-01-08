@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth HCI Events (not categorized)
+@frozen
 public enum HCIGeneralEvent: UInt8, HCIEvent {
     
     /// Inquiry Complete

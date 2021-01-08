@@ -36,6 +36,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// For LE events to be generated, the LE Meta Event bit in the Event Mask shall also be set.
 /// If that bit is not set, then LE events shall not be generated, regardless of how the LE Event Mask is set.
+@frozen
 public struct HCILESetEventMask: HCICommandParameter {
     
     public typealias EventMask = BitMaskOptionSet<Event>

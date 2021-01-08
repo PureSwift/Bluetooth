@@ -9,6 +9,7 @@
 /// The PHY_options parameter is a bit field that allows the Host to specify options for PHYs.
 /// The default value for a new connection shall be all zero bits. The Controller may override
 /// any preferred coding for transmitting on the LE Coded PHY.
+@frozen
 public enum LowEnergyPhyOptions: UInt16, BitMaskOption {
     
     /// The Host has no preferred coding when transmitting on the LE Coded PHY

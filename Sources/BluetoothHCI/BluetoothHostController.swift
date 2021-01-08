@@ -45,6 +45,7 @@ public protocol BluetoothHostControllerInterface: class {
 }
 
 /// Bluetooth HCI errors
+@frozen
 public enum BluetoothHostControllerError: Error {
     
     /// The specified adapter could not be found.

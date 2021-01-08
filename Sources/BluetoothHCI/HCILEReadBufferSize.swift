@@ -28,6 +28,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read Buffer Size Command
 ///
 /// The command is used to read the maximum size of the data portion of HCI LE ACL Data Packets sent from the Host to the Controller.
+@frozen
 public struct HCILEReadBufferSize: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readBufferSize //0x0002

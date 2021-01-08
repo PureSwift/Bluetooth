@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// Create Connection Command
 ///
 /// This command is used to request cancellation of the ongoing connection creation process, which was started by a Create_Connection command of the local BR/EDR Controller.
+@frozen
 public struct HCICreateConnectionCancel: HCICommandParameter {
     
     public static let command = LinkControlCommand.createConnectionCancel
@@ -51,6 +52,7 @@ public struct HCICreateConnectionCancel: HCICommandParameter {
 
 // MARK: - Return parameter
 
+@frozen
 public struct HCICreateConnectionCancelReturn: HCICommandReturnParameter {
     
     public static let command = LinkControlCommand.createConnectionCancel

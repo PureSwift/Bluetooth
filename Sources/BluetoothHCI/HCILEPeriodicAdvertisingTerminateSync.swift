@@ -35,6 +35,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// If the periodic advertising corresponding to the Sync_Handle parameter does not exist,
 /// then the Controller shall return the error code Unknown Advertising Identifier (0x42).
+@frozen
 public struct HCILEPeriodicAdvertisingTerminateSync: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.periodicAdvertisingTerminateSync //0x0046

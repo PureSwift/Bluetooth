@@ -33,6 +33,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command is used to reply to an LE Long Term Key Request event from the Controller,
 /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
+@frozen
 public struct HCILELongTermKeyRequestReply: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.longTermKeyReply //0x001A
@@ -83,6 +84,7 @@ public struct HCILELongTermKeyRequestReply: HCICommandParameter {
 ///
 /// The command is used to reply to an LE Long Term Key Request event from the Controller,
 /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
+@frozen
 public struct HCILELongTermKeyRequestReplyReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.longTermKeyReply //0x001A
