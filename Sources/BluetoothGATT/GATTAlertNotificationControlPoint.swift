@@ -23,6 +23,7 @@ import Foundation
  
  - SeeAlso: [Alert Notification Control Point](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_notification_control_point.xml)
  */
+@frozen
 public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
     
     internal static let length = 2

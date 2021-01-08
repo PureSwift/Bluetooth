@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Location Name](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.location_name.xml)
  */
+@frozen
 public struct GATTLocationName: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .locationName }

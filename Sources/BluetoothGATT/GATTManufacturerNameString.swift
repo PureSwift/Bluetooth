@@ -15,6 +15,7 @@ import Foundation
  
  [Manufacturer Name String](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.manufacturer_name_string.xml)
  */
+@frozen
 public struct GATTManufacturerNameString: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .manufacturerNameString }

@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The Signed Write Command is used to request the server to write the value of an attribute with an authentication signature,
 /// typically into a control-point attribute.
+@frozen
 public struct ATTSignedWriteCommand: ATTProtocolDataUnit {
     
     public typealias Signature = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)

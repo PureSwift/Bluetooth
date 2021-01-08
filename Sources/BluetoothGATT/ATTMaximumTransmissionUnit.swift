@@ -7,6 +7,7 @@
 //
 
 /// ATT Maximum Transmission Unit
+@frozen
 public struct ATTMaximumTransmissionUnit: RawRepresentable, Equatable, Hashable {
     
     public let rawValue: UInt16

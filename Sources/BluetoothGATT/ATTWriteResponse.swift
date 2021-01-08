@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Write Response* is sent in reply to a valid *Write Request*
 /// and acknowledges that the attribute has been successfully written.
+@frozen
 public struct ATTWriteResponse: ATTProtocolDataUnit {
     
     public static var attributeOpcode: ATTOpcode { return .writeResponse }

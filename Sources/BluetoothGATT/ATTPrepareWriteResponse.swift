@@ -11,6 +11,7 @@ import Foundation
 /// Prepare Write Response
 /// The *Prepare Write Response* is sent in response to a received *Prepare Write Request*
 /// and acknowledges that the value has been successfully received and placed in the prepare write queue.
+@frozen
 public struct ATTPrepareWriteResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .preparedWriteResponse }

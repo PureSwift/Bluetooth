@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [ Age](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.age.xml)
  */
+@frozen
 public struct GATTAge: GATTCharacteristic, Equatable {
     
     internal static var length: Int { return MemoryLayout<UInt8>.size }

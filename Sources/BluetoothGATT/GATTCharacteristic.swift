@@ -25,6 +25,7 @@ public protocol GATTCharacteristic {
 
 // MARK: - Supporting Types
 
+@frozen
 public enum GATTBeatsPerMinute {
     
     public struct Byte: BluetoothUnit, Equatable, Hashable {
@@ -58,6 +59,7 @@ extension GATTBeatsPerMinute.Byte: ExpressibleByIntegerLiteral {
     }
 }
 
+@frozen
 public struct GATTBatteryPercentage: BluetoothUnit, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt8>.size
@@ -93,6 +95,7 @@ extension GATTBatteryPercentage: CustomStringConvertible {
     }
 }
 
+@frozen
 public struct GATTE2ecrc: RawRepresentable, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt16>.size
@@ -121,6 +124,7 @@ extension GATTE2ecrc: ExpressibleByIntegerLiteral {
     }
 }
 
+@frozen
 public enum GATTKilogramCalorie {
     
     public struct Byte: BluetoothUnit {

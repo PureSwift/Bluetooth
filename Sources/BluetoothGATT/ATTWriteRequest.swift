@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Write Request* is used to request the server to write the value of an attribute
 /// and acknowledge that this has been achieved in a *Write Response*.
+@frozen
 public struct ATTWriteRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .writeRequest }

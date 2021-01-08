@@ -11,6 +11,7 @@ import Foundation
 /// Handle Value Indication
 ///
 /// A server can send an indication of an attribute’s value.
+@frozen
 public struct ATTHandleValueIndication: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .handleValueIndication }

@@ -15,6 +15,7 @@ import Foundation
  
  The value of this characteristic is a variable-length UTF-8 string representing the serial number for a particular instance of the device.
  */
+@frozen
 public struct GATTSerialNumberString: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .serialNumberString }

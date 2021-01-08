@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Find Information Response* is sent in reply to a received *Find Information Request*
 /// and contains information about this server.
+@frozen
 public struct ATTFindInformationResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .findInformationResponse }

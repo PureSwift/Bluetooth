@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Day Date Time](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.day_date_time.xml)
  */
+@frozen
 public struct GATTDayDateTime: GATTCharacteristic {
     
     internal static let length = GATTDateTime.length + GATTDayOfWeek.length

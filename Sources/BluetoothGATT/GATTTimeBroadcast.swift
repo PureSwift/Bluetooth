@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Time Broadcast](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_broadcast.xml)
  */
+@frozen
 public struct GATTTimeBroadcast: GATTCharacteristic, Equatable {
     
     internal static let length =

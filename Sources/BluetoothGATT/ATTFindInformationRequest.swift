@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Find Information Request* is used to obtain the mapping of attribute handles with their associated types.
 /// This allows a client to discover the list of attributes and their types on a server.
+@frozen
 public struct ATTFindInformationRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .findInformationRequest }

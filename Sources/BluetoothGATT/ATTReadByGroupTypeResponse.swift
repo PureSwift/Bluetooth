@@ -14,6 +14,7 @@ import Foundation
 /// and contains the handles and values of the attributes that have been read.
 ///
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
+@frozen
 public struct ATTReadByGroupTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readByGroupTypeResponse }

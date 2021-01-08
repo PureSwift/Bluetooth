@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Reference Time Information](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.reference_time_information.xml)
  */
+@frozen
 public struct GATTReferenceTimeInformation: GATTCharacteristic, Equatable {
     
     internal static let length = GATTTimeSource.length + GATTTimeAccuracy.length + 1 + 1

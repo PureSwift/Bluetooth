@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Read By Type Request* is used to obtain the values of attributes where the
 /// attribute type is known but the handle is not known.
+@frozen
 public struct ATTReadByTypeRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readByTypeRequest }

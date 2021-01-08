@@ -14,6 +14,7 @@ import Foundation
  
  - SeeAlso: [Cross Trainer Data](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.cross_trainer_data.xml)
  */
+@frozen
 public struct GATTCrossTrainerData {
     
     internal static let minimumLength = MemoryLayout<UInt24>.size

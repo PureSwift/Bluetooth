@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Read Request* is used to request the server to read the value of an attribute
 /// and return its value in a *Read Response*.
+@frozen
 public struct ATTReadRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readRequest }

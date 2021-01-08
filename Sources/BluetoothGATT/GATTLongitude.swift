@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Longitude](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.longitude.xml)
  */
+@frozen
 public struct GATTLongitude: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<Int32>.size

@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Day of Week](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.day_of_week.xml)
  */
+@frozen
 public struct GATTDayOfWeek: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .dayOfWeek }

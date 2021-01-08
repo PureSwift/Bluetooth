@@ -21,6 +21,7 @@ import Foundation
  
     The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet
  */
+@frozen
 public struct GATTPnPID: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .pnpId }

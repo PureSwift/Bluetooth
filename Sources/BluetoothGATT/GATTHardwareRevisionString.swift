@@ -15,6 +15,7 @@ import Foundation
  
  The value of this characteristic is a UTF-8 string representing the hardware revision for the hardware within the device.
  */
+@frozen
 public struct GATTHardwareRevisionString: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .hardwareRevisionString }

@@ -20,6 +20,7 @@
  - Count of new alerts.
  - Count of unread alert items.
  */
+@frozen
 public struct GATTAlertNotificationService: GATTService {
     
     public static var uuid: BluetoothUUID { return .alertNotificationService }

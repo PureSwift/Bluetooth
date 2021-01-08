@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Time Accuracy](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_accuracy.xml)
  */
+@frozen
 public struct GATTTimeAccuracy: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

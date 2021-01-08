@@ -13,6 +13,7 @@
 /// and ignored upon receipt.
 ///
 /// If the Characteristic Value is less than an octet, it occupies an entire octet.
+@frozen
 public enum GATTCharacteristicFormatType: UInt8 {
     
     case rfu = 0x00

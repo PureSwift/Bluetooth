@@ -9,6 +9,7 @@
 import Foundation
 
 /// GATT Time Trigger Setting Condition
+@frozen
 public enum GATTTimeTriggerSettingCondition: UInt8 {
     
     case none = 0x00
@@ -22,6 +23,7 @@ public enum GATTTimeTriggerSettingCondition: UInt8 {
 ///
 /// The value of the descriptor has two parts.
 /// Part one is a condition field and occupies one octet, and part two is the comparison value (trigger point) that the characteristic value is checked against.
+@frozen
 public enum GATTTimeTriggerSetting: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .timeTriggerSetting

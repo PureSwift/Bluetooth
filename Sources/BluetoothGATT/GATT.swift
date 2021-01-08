@@ -37,6 +37,7 @@ internal enum GATTUUID: UInt16 {
 // MARK: - Characteristic Property
 
 /// GATT Characteristic Properties Bitfield valuess
+@frozen
 public enum GATTCharacteristicProperty: UInt8, BitMaskOption {
     
     case broadcast              = 0x01
@@ -78,6 +79,7 @@ extension GATTCharacteristicProperty: CustomStringConvertible {
 /// The Characteristic Extended Properties bit field describes additional
 /// properties on how the Characteristic Value can be used, or how the characteristic
 /// descriptors can be accessed.
+@frozen
 public enum GATTCharacteristicExtendedProperty: UInt8 {
     
     /// If set, permits reliable writes of the Characteristic Value.

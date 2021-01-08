@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.blood_pressure_feature.xml]()
  */
+@frozen
 public struct GATTBloodPressureFeature: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .bloodPressureFeature }

@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Exact Time 256](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.exact_time_256.xml)
  */
+@frozen
 public struct GATTExactTime256: GATTCharacteristic {
     
     internal static let length = GATTDayDateTime.length + MemoryLayout<UInt8>.size

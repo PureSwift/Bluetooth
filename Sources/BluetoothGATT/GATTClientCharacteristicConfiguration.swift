@@ -19,6 +19,7 @@ import Foundation
 /// Authentication and authorization may be required by the server to write this descriptor.
 /// The default value for the Client Characteristic Configuration descriptor is `0x00`.
 /// Upon connection of non-binded clients, this descriptor is set to the default value.
+@frozen
 public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .clientCharacteristicConfiguration

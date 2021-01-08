@@ -17,6 +17,7 @@ import Foundation
  
  - SeeAlso: [Scan Interval Window](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.scan_interval_window.xml)
  */
+@frozen
 public struct GATTScanIntervalWindow: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt16>.size * 2

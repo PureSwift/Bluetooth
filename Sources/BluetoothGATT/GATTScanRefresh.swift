@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Scan Refresh](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.scan_refresh.xml)
  */
+@frozen
 public enum GATTScanRefresh: UInt8, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

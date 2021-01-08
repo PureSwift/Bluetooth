@@ -22,6 +22,7 @@ import Foundation
  
  The value `0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64` are interpreted that the server has 4 new email messages and the last message was sent by “Richard”.
  */
+@frozen
 public struct GATTNewAlert: GATTCharacteristic, Equatable {
     
     internal static let minLength = 2

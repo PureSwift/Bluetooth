@@ -13,6 +13,7 @@ import Foundation
 /// The current charge level of a battery. 100% represents fully charged while 0% represents fully discharged.
 ///
 /// - SeeAlso: [Battery Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_level.xml)
+@frozen
 public struct GATTBatteryLevel: GATTCharacteristic, Equatable, Hashable {
     
     public typealias Percentage = GATTBatteryPercentage

@@ -16,6 +16,7 @@ import Foundation
 /// If the Characteristic Extended Properties bit of the Characteristic Properties is set, then this descriptor exists.
 /// The Characteristic Extended Properties descriptor is a bit field defining Reliable Write and Writeable Auxiliaries are enabled for the Characteristic.
 /// This descriptor is readable without authentication and authorization being required.
+@frozen
 public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicExtendedProperties

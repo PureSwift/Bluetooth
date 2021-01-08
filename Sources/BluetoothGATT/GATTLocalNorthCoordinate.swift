@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Local North Coordinate](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.local_north_coordinate.xml)
  */
+@frozen
 public struct GATTLocalNorthCoordinate: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<Int16>.size

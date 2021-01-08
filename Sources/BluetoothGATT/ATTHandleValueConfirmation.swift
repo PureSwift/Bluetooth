@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Handle Value Confirmation* is sent in response to a received *Handle Value Indication*
 /// and confirms that the client has received an indication of the given attribute.
+@frozen
 public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
     
     public static var attributeOpcode: ATTOpcode { return .handleValueConfirmation }

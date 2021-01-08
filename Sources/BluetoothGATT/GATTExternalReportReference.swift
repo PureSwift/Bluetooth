@@ -12,6 +12,7 @@ import Foundation
 /// GATT External Report Reference Descriptor
 ///
 /// The External Report Reference characteristic descriptor allows a HID Host to map information from the Report Map characteristic value for Input Report, Output Report or Feature Report data to the Characteristic UUID of external service characteristics used to transfer the associated data.
+@frozen
 public struct GATTExternalReportReference: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .externalReportReference

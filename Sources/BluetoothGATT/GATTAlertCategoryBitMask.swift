@@ -20,6 +20,7 @@ import Foundation
  
  - SeeAlso: [Alert Category ID Bit Mask](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_category_id_bit_mask.xml)
  */
+@frozen
 public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable {
     
     public static var uuid: BluetoothUUID { return .alertCategoryIdBitMask }

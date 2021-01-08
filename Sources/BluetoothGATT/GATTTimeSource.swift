@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Time Source](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_source.xml)
  */
+@frozen
 public enum GATTTimeSource: UInt8, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

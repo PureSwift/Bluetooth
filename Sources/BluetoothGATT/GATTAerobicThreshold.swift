@@ -15,7 +15,7 @@ import Foundation
  
  - SeeAlso: [Aerobic Threshold](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_threshold.xml)
  */
-
+@frozen
 public struct GATTAerobicThreshold: GATTCharacteristic {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte

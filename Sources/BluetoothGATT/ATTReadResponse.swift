@@ -14,6 +14,7 @@ import Foundation
 /// the value of the attribute that has been read.
 ///
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
+@frozen
 public struct ATTReadResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readResponse }

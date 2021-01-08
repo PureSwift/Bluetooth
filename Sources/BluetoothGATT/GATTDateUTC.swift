@@ -8,6 +8,7 @@
 
 import Foundation
 
+@frozen
 public struct GATTDateUTC: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt24>.size

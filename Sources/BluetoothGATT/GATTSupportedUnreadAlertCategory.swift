@@ -20,6 +20,7 @@ import Foundation
  
  - SeeAlso: [Supported Unread Alert Category](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.supported_unread_alert_category.xml)
  */
+@frozen
 public struct GATTSupportedUnreadAlertCategory: GATTCharacteristic {
     
     public typealias Category = GATTAlertCategoryBitMask.Category
