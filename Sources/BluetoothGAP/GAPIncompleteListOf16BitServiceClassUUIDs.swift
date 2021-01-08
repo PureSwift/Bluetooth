@@ -9,6 +9,7 @@
 import Foundation
 
 /// GAP Incomplete List of 16-bit Service Class UUIDs
+@frozen
 public struct GAPIncompleteListOf16BitServiceClassUUIDs: GAPData, Equatable {
     
     public static var dataType: GAPDataType { return .incompleteListOf16BitServiceClassUUIDs }

@@ -13,6 +13,7 @@ import Foundation
 ///
 /// Size: 2 octets (UINT16)
 /// Units: 0.625 ms
+@frozen
 public struct GAPAdvertisingInterval: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .advertisingInterval

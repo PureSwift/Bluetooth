@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Indoor Positioning Service Specification](https://www.bluetooth.org/docman/handlers/downloaddoc.ashx?doc_id=302114)
  */
+@frozen
 public struct GAPIndoorPositioning: GAPData, Equatable {
     
     public static var dataType: GAPDataType { return .indoorPositioning }

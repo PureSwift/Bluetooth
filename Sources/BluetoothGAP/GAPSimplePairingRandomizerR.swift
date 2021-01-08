@@ -11,6 +11,7 @@ import Foundation
 /// Specifies the Simple Pairing Randomizer
 /// Size: 16 octets
 /// Format defined in [Vol. 2], Part H Section 7.2.2
+@frozen
 public struct GAPSimplePairingRandomizerR: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .simplePairingRandomizerR

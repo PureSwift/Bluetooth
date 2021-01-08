@@ -12,6 +12,7 @@ import Foundation
 /// The TX Power Level should be the radiated power level.
 ///
 /// Note: When the TX Power Level data type is not present, the TX power level of the packet is unknown.
+@frozen
 public struct GAPTxPowerLevel: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .txPowerLevel

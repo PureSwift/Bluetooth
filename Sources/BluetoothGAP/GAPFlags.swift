@@ -10,6 +10,7 @@ import Foundation
 import Bluetooth
 
 /// GAP Flag
+@frozen
 public struct GAPFlags: GAPData, Equatable, Hashable {
     
     public static var dataType: GAPDataType { return .flags }

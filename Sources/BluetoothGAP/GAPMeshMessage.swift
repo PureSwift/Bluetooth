@@ -17,6 +17,7 @@ import Foundation
 /// in the advertising packets, thereby enabling two additional octets to be allocated to the Network PDU.
 /// To lower the probability of packet collisions on all advertising channels,
 /// it is recommended to randomize the gap between consecutive packets within an Advertising Event.
+@frozen
 public struct GAPMeshMessage: GAPData, Equatable, Hashable {
     
     public static var dataType: GAPDataType { return .meshMessage }

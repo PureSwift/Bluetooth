@@ -11,6 +11,7 @@ import Foundation
 /**
  GAP URI
  */
+@frozen
 public struct GAPURI: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .uri

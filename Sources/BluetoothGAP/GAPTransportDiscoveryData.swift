@@ -12,6 +12,7 @@ import Foundation
 /// EIR and Advertising Packets may be of different sizes and may contain different information within the Transport Discovery Data AD Type.
 ///
 /// Note 1: Typically 0-26 (inclusive of the Flags AD Type), however larger values may be supported in future updates of the Core Specification.
+@frozen
 public struct GAPTransportDiscoveryData: GAPData, Equatable {
     
     internal static let minBlocks = 1
@@ -83,6 +84,7 @@ public extension GAPTransportDiscoveryData {
 /// The structure may repeat as long as there is space available. These Transport Blocks may be from the same organization or from different organizations.
 /// Where multiple Transport Blocks are used, the advertising device should list these in order of descending priority or preference.
 /// For example, if the blocks represent more than one supported service, the order represents preferred support (e.g., perhaps a printer is capable of printing using a faster technology from one organization, but also a slower technology from another organization). If the blocks represent more than one required service, the order represents preferred service order (e.g., perhaps a device requires an immediate service, but also another service that is of lower priority).
+@frozen
 public struct GAPTransportDiscoveryBlock: Equatable {
     
     internal static let minLength = 2
@@ -113,6 +115,7 @@ extension GAPTransportDiscoveryBlock: DataConvertible {
 }
 
 /// GAP Transport Discovery Data Flag
+@frozen
 public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
     
     /// Seeker

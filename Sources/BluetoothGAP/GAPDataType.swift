@@ -13,6 +13,7 @@
 ///
 /// - SeeAlso:
 /// [Generic Access Profile](https://www.bluetooth.com/specifications/assigned-numbers/generic-access-profile)
+@frozen
 public struct GAPDataType: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt8

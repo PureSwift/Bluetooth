@@ -9,6 +9,7 @@
 import Foundation
 
 /// GAP Data Decoder
+@frozen
 public struct GAPDataEncoder {
     
     /// GAP Data Decoder Error
@@ -98,6 +99,7 @@ public extension GAPDataEncoder {
 }
 
 /// GAP Data Decoder
+@frozen
 public struct GAPDataDecoder {
     
     /// GAP Data Decoder Error
