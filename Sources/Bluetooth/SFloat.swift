@@ -29,6 +29,7 @@ public extension Float16 {
 #endif
 
 /// IEEE-11073 16-bit SFLOAT
+@frozen
 public struct SFloat: Equatable, Hashable, Codable {
     
     /// The bit pattern of the value’s encoding.

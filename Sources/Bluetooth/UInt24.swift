@@ -9,6 +9,7 @@
 import Foundation
 
 /// A 24 bit number stored according to host endianness.
+@frozen
 public struct UInt24: ByteValue {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)

@@ -11,6 +11,7 @@
 /// Size: 1 Octet (signed integer)
 /// Range: -127 ≤ N ≤ +20
 /// Units: dBm
+@frozen
 public struct RSSI: RawRepresentable, Equatable, Hashable {
     
     /// Units: dBm

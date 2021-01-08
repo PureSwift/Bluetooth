@@ -11,6 +11,7 @@ import Foundation
 /// Bluetooth Low Energy Advertising Data.
 ///
 /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/LowEnergyAdvertisingDataExample1.png)
+@frozen
 public struct LowEnergyAdvertisingData {
     
     // MARK: - ByteValue
