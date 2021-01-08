@@ -23,7 +23,6 @@ public enum SecurityLevel: UInt8 {
 extension SecurityLevel: Comparable {
     
     public static func < (lhs: SecurityLevel, rhs: SecurityLevel) -> Bool {
-        
         return lhs.rawValue < rhs.rawValue
     }
 }

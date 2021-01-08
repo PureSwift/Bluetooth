@@ -9,6 +9,7 @@
 import Foundation
 
 /// Bluetooth UUID
+@frozen
 public enum BluetoothUUID: Equatable {
     
     case bit16(UInt16)
