@@ -26,12 +26,20 @@ public struct RSSI: RawRepresentable, Equatable, Hashable {
     }
 }
 
+// MARK: - CustomStringConvertible
+
+extension RSSI: CustomStringConvertible {
+    
+    public var description: String {
+        return "\(rawValue) dBm"
+    }
+}
+
 // MARK: - Comparable
 
 extension RSSI: Comparable {
     
     public static func < (lhs: RSSI, rhs: RSSI) -> Bool {
-        
         return lhs.rawValue < rhs.rawValue
     }
 }
