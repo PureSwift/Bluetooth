@@ -30,6 +30,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The Read Local Name command provides the ability to read the stored user-friendly name
 /// for the BR/EDR Controller.
+@frozen
 public struct HCIReadLocalName: HCICommandReturnParameter {
     
     public static let command = HostControllerBasebandCommand.readLocalName

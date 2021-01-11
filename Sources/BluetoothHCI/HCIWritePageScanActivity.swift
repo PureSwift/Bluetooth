@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 /// Write Page Scan Activity Command
 ///
 /// This command writes the values for the Page_Scan_Interval and Page_Scan_Window configuration parameters. The Page_Scan_Window shall be less than or equal to the Page_Scan_Interval.
+@frozen
 public struct HCIWritePageScanActivity: HCICommandParameter {
     
     public static let command = HostControllerBasebandCommand.writePageScanActivity

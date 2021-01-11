@@ -13,6 +13,7 @@
  
  This service has no dependencies on other GATT-based services.
  */
+@frozen
 public struct GATTBatteryService: GATTService {
     
     public static var uuid: BluetoothUUID { return .batteryService }

@@ -57,6 +57,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// - Warning: The Host shall not issue this command when another `LE Create Connection Command` is pending
 /// in the Controller; if this does occur the Controller shall return the Command Disallowed error code shall be used.
+@frozen
 public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connection
     
     public static var command: HCILowEnergyCommand { return .createConnection } // 0x000D

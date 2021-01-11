@@ -15,6 +15,7 @@ import Foundation
 ///
 /// If the Writable Auxiliary bit of the Characteristics Properties is set then this descriptor is written.
 /// Only one User Description descriptor exists in a characteristic definition.
+@frozen
 public struct GATTUserDescription: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicUserDescription

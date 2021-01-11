@@ -16,6 +16,7 @@ import Bluetooth
  
  - SeeAlso: [Blood Pressure Measurement](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.blood_pressure_measurement.xml)
  */
+@frozen
 public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .bloodPressureMeasurement }

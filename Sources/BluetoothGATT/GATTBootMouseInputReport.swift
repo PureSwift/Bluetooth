@@ -15,6 +15,7 @@ import Foundation
  
  The Boot Mouse Input Report characteristic is used to transfer fixed format and length Input Report data between a HID Host operating in Boot Protocol Mode and a HID Service corresponding to a boot mouse.
  */
+@frozen
 public struct GATTBootMouseInputReport: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

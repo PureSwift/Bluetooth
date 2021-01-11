@@ -13,6 +13,7 @@ import Foundation
 /// Read Connection Accept Timeout Command
 ///
 /// This command reads the value for the Connection Accept Timeout configuration parameter.
+@frozen
 public struct HCIReadConnectionAcceptTimeout: HCICommandReturnParameter {
     
     public static let command = HostControllerBasebandCommand.readConnectionAcceptTimeout

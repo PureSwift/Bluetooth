@@ -9,6 +9,7 @@
 import Foundation
 
 /// HCI Command Complete
+@frozen
 public struct HCICommandComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.commandComplete

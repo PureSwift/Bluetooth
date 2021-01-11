@@ -39,6 +39,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Remote Connection Parameter Request event. This indicates that the Host
 /// has rejected the remote device’s request to change connection parameters.
 /// The reason for the rejection is given in the Reason parameter.
+@frozen
 public struct HCILERemoteConnectionParameterRequestNegativeReply: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021
@@ -74,6 +75,7 @@ public struct HCILERemoteConnectionParameterRequestNegativeReply: HCICommandPara
 /// LE Remote Connection Parameter Request event. This indicates that the Host
 /// has rejected the remote device’s request to change connection parameters.
 /// The reason for the rejection is given in the Reason parameter.
+@frozen
 public struct HCILERemoteConnectionParameterRequestNegativeReplyReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.remoteConnectionParameterRequestNegativeReply //0x0021

@@ -24,6 +24,7 @@ public protocol GATTDescriptor {
 // MARK: - Characteristic Descriptor
 
 /// GATT Characteristic Descriptors
+@frozen
 public enum GATTCharacteristicDescriptor {
     
     /// Characteristic Extended Properties

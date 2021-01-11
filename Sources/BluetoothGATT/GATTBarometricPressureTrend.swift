@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Barometric Pressure Trend](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.barometric_pressure_trend.xml)
  */
+@frozen
 public enum GATTBarometricPressureTrend: UInt8, GATTCharacteristic, BluetoothUnit {
     
     internal static let length = MemoryLayout<UInt8>.size

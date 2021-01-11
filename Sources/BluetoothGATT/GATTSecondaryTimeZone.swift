@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Secondary Time Zone](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.secondary_time_zone.xml)
  */
+@frozen
 public struct GATTSecondaryTimeZone: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt8>.size + GATTLocalTimeInformation.length

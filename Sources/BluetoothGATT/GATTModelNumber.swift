@@ -15,6 +15,7 @@ import Foundation
  
  The value of this characteristic is a UTF-8 string representing the model number assigned by the device vendor.
  */
+@frozen
 public struct GATTModelNumber: RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .modelNumberString }

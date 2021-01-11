@@ -150,6 +150,7 @@ public enum ATTOpcode: UInt8 {
 }
 
 /// ATT protocol opcode categories.
+@frozen
 public enum ATTOpcodeType {
     
     case request
@@ -165,6 +166,7 @@ public enum ATTOpcodeType {
 /// ATT attribute permission bitfield values. Permissions are grouped as
 /// "Access", "Encryption", "Authentication", and "Authorization". A bitmask of
 /// permissions is a byte that encodes a combination of these.
+@frozen
 public enum ATTAttributePermission: UInt8, BitMaskOption {
     
     // Access

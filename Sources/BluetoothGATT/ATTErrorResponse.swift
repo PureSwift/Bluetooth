@@ -12,6 +12,7 @@ import Foundation
 /// and to provide the reason.
 ///
 /// - Note: The Write Command does not generate an Error Response.
+@frozen
 public struct ATTErrorResponse: ATTProtocolDataUnit, Error, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .errorResponse }

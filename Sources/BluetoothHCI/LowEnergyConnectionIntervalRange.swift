@@ -11,6 +11,7 @@
 /// Range: 0x0006 to 0x0C80
 /// Time = N * 1.25 msec
 /// Time Range: 7.5 msec to 4 seconds.
+@frozen
 public struct LowEnergyConnectionIntervalRange: RawRepresentable, Equatable {
     
     public typealias RawValue = CountableClosedRange<UInt16>

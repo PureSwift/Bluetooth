@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Uncertainty](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.uncertainty.xml)
  */
+@frozen
 public struct GATTUncertainty: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

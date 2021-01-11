@@ -9,6 +9,7 @@
 import Foundation
 
 /// GAP Complete List of 32-bit Service Class UUIDs
+@frozen
 public struct GAPCompleteListOf32BitServiceClassUUIDs: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .completeListOf32BitServiceClassUUIDs

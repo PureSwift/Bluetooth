@@ -17,6 +17,7 @@ import Foundation
 /// A client may write this configuration descriptor to control the configuration of the characteristic on the server for all clients.
 /// There is a single instantiation of this descriptor for all clients.
 /// Authentication and authorization may be required by the server to write this descriptor.
+@frozen
 public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .serverCharacteristicConfiguration

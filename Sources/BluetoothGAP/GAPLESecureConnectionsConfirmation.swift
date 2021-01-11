@@ -11,6 +11,7 @@ import Foundation
 /// Specifies the LE Secure Connections Confirmation Value
 /// Size: 16 octets
 /// Format defined in [Vol 3], Part H, Section 2.3.5.6.4
+@frozen
 public struct GAPLESecureConnectionsConfirmation: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .lowEnergySecureConnectionsConfirmation

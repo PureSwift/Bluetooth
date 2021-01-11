@@ -9,6 +9,7 @@
 import Foundation
 
 /// The User Confirmation Request event is used to indicate that user confirmation of a numeric value is required. The Host shall reply with either the User_Confirmation_Request_Reply or the User_Confirmation_Request_Negative_Reply command. If the Host has output capability (DisplayYesNo or KeyboardOnly), it shall display the Numeric_Value until the Simple Pairing Complete event is received. It shall reply based on the yes/no response from the user. If the Host has no input and no output it shall reply with the User Confirmation Request Reply command. When the Controller generates a User Confirmation Request event, in order for the local Link Manager to respond to the request from the remote Link Manager, the local Host must respond with either a User_Confirmation_Request_Reply or a User_Confirmation_Request_Negative_Reply command before the remote Link Manager detects LMP response timeout.
+@frozen
 public struct HCIUserConfirmationRequest: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.userConfirmationRequest

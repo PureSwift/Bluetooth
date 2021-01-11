@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// Write Scan Enable Command
 ///
 /// This command writes the value for the Scan_Enable configuration parameter.
+@frozen
 public struct HCIWriteScanEnable: HCICommandParameter {
     
     public static let command = HostControllerBasebandCommand.writeScanEnable

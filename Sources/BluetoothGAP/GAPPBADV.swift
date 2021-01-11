@@ -28,6 +28,7 @@ import Foundation
  When a Provisioning PDU that does not fit in a single PB-ADV PDU is segmented, all segments are sent using the same Transaction Number field value.
  When a Provisioning PDU is retransmitted, the Transaction Number field is not changed.
  */
+@frozen
 public struct GAPPBADV: GAPData, Equatable {
     
     public static var dataType: GAPDataType { return .pbAdv }

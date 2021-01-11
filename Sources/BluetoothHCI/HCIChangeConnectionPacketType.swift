@@ -36,6 +36,7 @@ public extension BluetoothHostControllerInterface {
 /// - Note: The Host should enable as many packet types as possible for the Link Manager to perform efficiently. However, the Host must not enable packet types that the local device does not support.
 ///
 /// - Note: To change an eSCO connection, use the Setup Synchronous Connection command.
+@frozen
 public struct HCIChangeConnectionPacketType: HCICommandParameter {
     
     public static let command = LinkControlCommand.setConnectionPacketType

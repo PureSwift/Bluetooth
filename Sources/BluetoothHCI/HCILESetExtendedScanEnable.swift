@@ -35,6 +35,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Extended Scan Enable Command
 ///
 /// The command is used to enable or disable scanning.
+@frozen
 public struct HCILESetExtendedScanEnable: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setExtendedScanEnable //0x0042

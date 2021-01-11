@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /**
  The Write Local Name command provides the ability to modify the user-friendly name for the BR/EDR Controller.
  */
+@frozen
 public struct HCIWriteLocalName: HCICommandParameter {
     
     public static let command = HostControllerBasebandCommand.writeLocalName

@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Object ID](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.object_id.xml)
  */
+@frozen
 public struct GATTObjectID: Equatable, RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt48>.size

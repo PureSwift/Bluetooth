@@ -11,6 +11,7 @@ import Foundation
 /// LE Connection Update Complete Event
 ///
 /// The event is used to indicate that the Controller process to update the connection has completed.
+@frozen
 public struct HCILEConnectionUpdateComplete: HCIEventParameter {
     
     public static let event = LowEnergyEvent.connectionUpdateComplete // 0x03

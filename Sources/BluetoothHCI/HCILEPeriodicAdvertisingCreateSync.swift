@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command is used to synchronize with periodic advertising from an advertiser
 /// and begin receiving periodic advertising packets.
+@frozen
 public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.periodicAdvertisingCreateSync //0x0044

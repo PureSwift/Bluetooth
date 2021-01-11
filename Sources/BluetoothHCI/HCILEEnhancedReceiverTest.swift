@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// This command is used to start a test where the DUT receives test reference packets at a
 /// fixed interval. The tester generates the test reference packets.
+@frozen
 public struct HCILEEnhancedReceiverTest: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.enhancedReceiverTest //0x0033

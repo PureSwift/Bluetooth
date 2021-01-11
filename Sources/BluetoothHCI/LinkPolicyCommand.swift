@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+@frozen
 public enum LinkPolicyCommand: UInt16, HCICommand {
     
     public static let opcodeGroupField = HCIOpcodeGroupField.linkPolicy

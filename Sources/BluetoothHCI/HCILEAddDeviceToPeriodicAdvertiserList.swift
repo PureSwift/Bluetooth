@@ -41,6 +41,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// When a Controller cannot add a device to the Periodic Advertiser list because the list is full,
 /// the Controller shall return the error code Memory Capacity Exceeded (0x07).
+@frozen
 public struct HCILEAddDeviceToPeriodicAdvertiserList: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.addDeviceToPeriodicAdvertiserList //0x0047

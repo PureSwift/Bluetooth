@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Floor Number](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.floor_number.xml)
  */
+@frozen
 public struct GATTFloorNumber: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

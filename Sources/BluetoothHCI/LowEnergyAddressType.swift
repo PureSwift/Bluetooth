@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth Low Energy Address type
+@frozen
 public enum LowEnergyAddressType: UInt8 {
     
     /// Public Device Address

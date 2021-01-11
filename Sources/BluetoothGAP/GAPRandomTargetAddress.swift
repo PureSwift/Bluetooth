@@ -14,6 +14,7 @@ import Foundation
 /// Size: Multiples of 6 octets
 /// The format of each 6 octet address is the same as the Random Device Address defined in Vol. 6, Part B, Section 1.3.
 /// The Random Target Address value shall be the enumerated value as defined by Bluetooth Assigned Numbers.
+@frozen
 public struct GAPRandomTargetAddress: GAPData, Equatable {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)

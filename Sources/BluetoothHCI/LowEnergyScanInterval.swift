@@ -8,6 +8,7 @@
 
 /// Time interval from when the Controller started its last scan until it begins
 /// the subsequent scan on the primary advertising channel.
+@frozen
 public struct LowEnergyScanInterval: RawRepresentable, Equatable, Comparable, Hashable {
     
     /// 2.5 msec

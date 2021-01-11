@@ -17,6 +17,7 @@ import Foundation
  
  - SeeAlso: [Getting Started with iBeacon](https://developer.apple.com/ibeacon/Getting-Started-with-iBeacon.pdf).
  */
+@frozen
 public struct AppleBeacon: Equatable, Hashable {
     
     /// The company that created this specification.

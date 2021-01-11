@@ -17,6 +17,7 @@ import Foundation
 /// The public device address is divided into the following two fields:
 /// company_assigned field is contained in the 24 least significant bits
 /// company_id field is contained in the 24 most significant bits
+@frozen
 public struct GAPPublicTargetAddress: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .publicTargetAddress

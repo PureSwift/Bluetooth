@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// If this Controller does not have a Public Device Address, the value 0x000000000000 shall be returned.
 ///
 /// - Note: On a BR/EDR/LE Controller, the public address shall be the same as the `BD_ADDR`.
+@frozen
 public struct HCIReadDeviceAddress: HCICommandReturnParameter {
     
     public static let command = InformationalCommand.readDeviceAddress

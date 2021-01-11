@@ -11,6 +11,7 @@ import Foundation
 /// QoS Setup Complete Event
 ///
 /// The QoS Setup Complete event is used to indicate the completion of the process of the Link Manager setting up QoS with the remote BR/EDR Control- ler specified by the Connection_Handle event parameter. The Connection_Handle will be a Connection_Handle for an ACL connection.
+@frozen
 public struct HCIQoSSetupComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.qosSetupComplete

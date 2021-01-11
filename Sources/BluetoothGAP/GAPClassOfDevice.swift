@@ -10,6 +10,7 @@ import Foundation
 
 /// Specifies the class of the device
 /// Size: 3 octets
+@frozen
 public struct GAPClassOfDevice: GAPData {
     
     public typealias Identifier = (UInt8, UInt8, UInt8)

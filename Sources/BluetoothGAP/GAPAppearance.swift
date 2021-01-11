@@ -9,6 +9,7 @@
 /// GAP Appearance
 ///
 /// - SeeAlso: [org.bluetooth.characteristic.gap.appearance.xml](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.gap.appearance.xml)
+@frozen
 public struct GAPAppearance: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt16

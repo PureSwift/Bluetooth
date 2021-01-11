@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Read Blob Response* is sent in reply to a received *Read Blob Request*
 /// and contains part of the value of the attribute that has been read.
+@frozen
 public struct ATTReadBlobResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readBlobResponse }

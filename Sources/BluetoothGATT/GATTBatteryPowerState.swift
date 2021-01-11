@@ -13,6 +13,7 @@ import Foundation
  
  [Battery Power State](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_power_state.xml)
  */
+@frozen
 public struct GATTBatteryPowerState: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

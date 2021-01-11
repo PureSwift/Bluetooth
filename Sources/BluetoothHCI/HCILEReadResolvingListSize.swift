@@ -34,6 +34,7 @@ public extension BluetoothHostControllerInterface {
 /// Note: The number of entries that can be stored is not fixed and
 /// the Controller can change it at any time (e.g. because the memory
 /// used to store the list can also be used for other purposes).
+@frozen
 public struct HCILEReadResolvingListSize: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readResolvedListSize //0x002A

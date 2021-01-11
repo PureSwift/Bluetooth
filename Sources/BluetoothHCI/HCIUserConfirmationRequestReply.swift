@@ -27,6 +27,7 @@ public extension BluetoothHostControllerInterface {
 /// User Confirmation Request Reply Command
 ///
 /// The User_Confirmation_Request_Reply command is used to reply to a User Confirmation Request event and indicates that the user selected "yes". It is also used when the host has no input and no output capabilities.
+@frozen
 public struct HCIUserConfirmationRequestReply: HCICommandParameter {
     
     public static let command = LinkControlCommand.userConfirmationRequestReply
@@ -54,6 +55,7 @@ public struct HCIUserConfirmationRequestReply: HCICommandParameter {
 
 // MARK: - Return Parameter
 
+@frozen
 public struct HCIUserConfirmationRequestReplyReturn: HCICommandReturnParameter {
     
     public static let command = LinkControlCommand.userConfirmationRequestReply

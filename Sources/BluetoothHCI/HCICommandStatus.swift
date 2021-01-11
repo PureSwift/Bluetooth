@@ -9,6 +9,7 @@
 import Foundation
 
 /// HCI Command Status Event
+@frozen
 public struct HCICommandStatus: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.commandStatus

@@ -13,6 +13,7 @@ import Foundation
  Mesh beacons are contained in a «Mesh Beacon» AD Type. The first octet of the Mesh Beacon advertising data payload (Beacon Type field) determines the type of beacon.
  Mesh beacons are forwarded to other bearers using the Proxy protocol (see Section 6).
  */
+@frozen
 public enum GAPMeshBeacon: GAPData, Equatable {
     
     public static var dataType: GAPDataType { return .meshBeacon }
@@ -97,6 +98,7 @@ public protocol GAPMeshBeaconProtocol {
  • OOB Information: Size is 2 octets
  • URI Hash: Hash of the associated URI advertised with the URI AD Type (optional field). Size is 4 octets
  */
+@frozen
 public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
     
     /// Unprovisioned Device beacon type (0x00).
@@ -210,6 +212,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
     }
 }
 
+@frozen
 public enum GAPBeaconType: UInt8 {
     
     case unprovisionedDevice = 0x00
@@ -217,6 +220,7 @@ public enum GAPBeaconType: UInt8 {
     case secureNetwork = 0x01
 }
 
+@frozen
 public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
     
     case other = 0b01
@@ -260,6 +264,7 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
     
 }
 
+@frozen
 public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
     
     case keyRefresh = 0b01
@@ -286,6 +291,7 @@ public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
  The Authentication Value field is computed as defined below:
  Authentication Value = AES-CMACBeaconKey (Flags || Network ID || IV Index) [0–7]
  */
+@frozen
 public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
     
     internal static let length = 22

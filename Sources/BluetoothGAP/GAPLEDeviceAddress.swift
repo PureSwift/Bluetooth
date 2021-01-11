@@ -19,6 +19,7 @@ import Foundation
 /// - Note:
 /// LSB = 1 Then Random Device Address. LSB = 0 Then Public Device Address.
 /// Bits 1 to 7 in the most significant octet are reserved for future use.
+@frozen
 public struct GAPLEDeviceAddress: GAPData {
     
     public static var dataType: GAPDataType { return .lowEnergyDeviceAddress }

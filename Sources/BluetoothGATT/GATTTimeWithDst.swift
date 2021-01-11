@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Time with DST](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_with_dst.xml)
  */
+@frozen
 public struct GATTTimeWithDst: GATTCharacteristic, Equatable {
     
     internal static let length = GATTDateTime.length + GATTDstOffset.length

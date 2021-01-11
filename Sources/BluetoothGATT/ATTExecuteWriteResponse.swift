@@ -9,6 +9,7 @@
 import Foundation
 
 /// The *Execute Write Response* is sent in response to a received *Execute Write Request*.
+@frozen
 public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
     
     public static var attributeOpcode: ATTOpcode { return .executeWriteResponse }

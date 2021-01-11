@@ -11,6 +11,7 @@ import Foundation
 /// The Security Manager TK Value data type allows an out of band mechanism to be used by the Security Manager to communicate the TK value.
 /// Size: 16 octets
 /// Value as used in pairing over LE Physical channel. Format defined in [Vol. 3], Part H Section 2.3
+@frozen
 public struct GAPSecurityManagerTKValue: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .securityManagerTKValue

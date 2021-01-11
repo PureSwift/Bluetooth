@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Read By Type Response* is sent in reply to a received *Read By Type Request*
 /// and contains the handles and values of the attributes that have been read.
+@frozen
 public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readByTypeResponse }

@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 /// This command is used to stop any test which is in progress. The Number_Of_Packets
 /// for a transmitter test shall be reported as 0x0000. The Number_Of_Packets is an unsigned number
 /// and contains the number of received packets.
+@frozen
 public struct HCILETestEnd: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.testEnd //0x001F

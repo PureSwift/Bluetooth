@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The event is used to indicate the completion of the process of the Controller
 /// obtaining the features used on the connection and the features supported by the remote Blu
+@frozen
 public struct HCILEReadRemoteUsedFeaturesComplete: HCIEventParameter {
     
     public static let event = LowEnergyEvent.readRemoteUsedFeaturesComplete // 0x04

@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Time Update Control Point](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_update_control_point.xml)
  */
+@frozen
 public enum GATTTimeUpdateControlPoint: UInt8, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

@@ -20,6 +20,7 @@ import Foundation
  
  - SeeAlso: [New Alert](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.new_alert.xml)
  */
+@frozen
 public enum GATTAlertCategory: UInt8, GATTCharacteristic {
     
     internal static let length = 1

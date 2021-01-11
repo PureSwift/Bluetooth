@@ -12,6 +12,7 @@ import Foundation
 ///
 /// Size: 16 or more octets
 /// The first 16 octets contain the 128 bit Service UUID followed by additional service data
+@frozen
 public struct GAPServiceData128BitUUID: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .serviceData128BitUUID

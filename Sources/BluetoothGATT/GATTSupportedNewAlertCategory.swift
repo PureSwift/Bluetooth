@@ -21,6 +21,7 @@ import Foundation
  
  - SeeAlso: [Supported New Alert Category](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.supported_new_alert_category.xml)
  */
+@frozen
 public struct GATTSupportedNewAlertCategory: GATTCharacteristic {
     
     public typealias Category = GATTAlertCategoryBitMask.Category

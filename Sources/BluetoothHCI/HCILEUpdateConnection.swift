@@ -52,6 +52,7 @@ public extension BluetoothHostControllerInterface {
 ///  of the connection events. The Minimum_CE_Length shall be less than or equal to the Maximum_CE_Length.
 ///
 ///  The actual parameter values selected by the Link Layer may be different from the parameter values provided by the Host through this command.
+@frozen
 public struct HCILEUpdateConnection: HCICommandParameter { // HCI_LE_Connection_Update
     
     public typealias SupervisionTimeout = LowEnergySupervisionTimeout

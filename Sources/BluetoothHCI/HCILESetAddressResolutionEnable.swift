@@ -39,6 +39,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// Note: enabling address resolution when it is already enabled,
 /// or disabling it when it is already disabled, has no effect.
+@frozen
 public struct HCILESetAddressResolutionEnable: HCICommandParameter { //HCI_LE_Set_Address_Resolution_ Enable
     
     public static let command = HCILowEnergyCommand.setAddressResolutionEnable //0x002D

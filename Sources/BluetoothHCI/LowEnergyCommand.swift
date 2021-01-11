@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth Low Energy Command opcode
+@frozen
 public enum HCILowEnergyCommand: UInt16, HCICommand {
     
     public static let opcodeGroupField = HCIOpcodeGroupField.lowEnergy

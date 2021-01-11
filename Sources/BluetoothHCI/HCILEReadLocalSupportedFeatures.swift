@@ -28,6 +28,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read Local Supported Features Command
 ///
 /// This command requests the list of the supported LE features for the Controller.
+@frozen
 public struct HCILEReadLocalSupportedFeatures: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readLocalSupportedFeatures // 0x0003

@@ -8,6 +8,7 @@
 
 import Foundation
 
+@frozen
 public struct VendorCommand: HCICommand, Equatable, Hashable {
     
     public static let opcodeGroupField = HCIOpcodeGroupField.vendor

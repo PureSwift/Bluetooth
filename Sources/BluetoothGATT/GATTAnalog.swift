@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Analog](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.analog.xml)
  */
+@frozen
 public struct GATTAnalog: GATTCharacteristic, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt16>.size

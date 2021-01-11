@@ -8,6 +8,7 @@
 
 import Foundation
 
+@frozen
 public enum InformationalCommand: UInt16, HCICommand {
     
      public static let opcodeGroupField = HCIOpcodeGroupField.informational

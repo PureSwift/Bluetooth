@@ -43,6 +43,7 @@ public extension BluetoothHostControllerInterface {
 /// Both the master Host and the slave Host use this command to reply to the HCI
 /// LE Remote Connection Parameter Request event. This indicates that the Host
 /// has accepted the remote device’s request to change connection parameters.
+@frozen
 public struct HCILERemoteConnectionParameterRequestReply: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.remoteConnectionParameterRequestReply //0x0020
@@ -106,6 +107,7 @@ public struct HCILERemoteConnectionParameterRequestReply: HCICommandParameter {
 /// Both the master Host and the slave Host use this command to reply to the HCI
 /// LE Remote Connection Parameter Request event. This indicates that the Host
 /// has accepted the remote device’s request to change connection parameters.
+@frozen
 public struct HCILERemoteConnectionParameterRequestReplyReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.remoteConnectionParameterRequestReply //0x0020

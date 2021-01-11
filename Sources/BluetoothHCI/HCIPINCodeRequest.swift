@@ -12,6 +12,7 @@ import Foundation
 ///
 /// - Note: If the PIN Code Request event is masked away, then the BR/EDR Controller will assume that the Host has no PIN Code.
 /// When the BR/EDR Controller generates a PIN Code Request event in order for the local Link Manager to respond to the request from the remote Link Manager (as a result of a Create_Connection or Authentication_Requested com- mand from the remote Host), the local Host must respond with either a PIN_Code_Request_Reply or PIN_Code_Request_Negative_Reply com- mand before the remote Link Manager detects LMP response timeout
+@frozen
 public struct HCIPINCodeRequest: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.pinCodeRequest

@@ -14,6 +14,7 @@ import Foundation
 /// in either direction. The values reported are the maximum that will actually be used on the connection following the change,
 /// except that on the LE Coded PHY a packet taking up to 2704 μs to transmit may be sent even though the corresponding
 /// parameter has a lower value.
+@frozen
 public struct HCILEDataLengthChange: HCIEventParameter {
     
     public static let event = LowEnergyEvent.dataLengthChange // 0x07

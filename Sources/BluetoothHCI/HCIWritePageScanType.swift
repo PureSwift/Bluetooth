@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// Write Page Scan Type Command
 ///
 /// This command writes the Page Scan Type configuration parameter of the local BR/EDR Controller.
+@frozen
 public struct HCIWritePageScanType: HCICommandParameter {
     
     public static let command = HostControllerBasebandCommand.writePageScanType

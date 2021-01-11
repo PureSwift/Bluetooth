@@ -22,6 +22,7 @@ import Foundation
 /// If the Encryption Key Refresh Complete event was generated due to an encryption pause and
 /// resume operation embedded within a role switch procedure,
 /// the Encryption Key Refresh Complete event shall be sent prior to the Role Change event.
+@frozen
 public struct HCIEncryptionKeyRefreshComplete: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.encryptionKeyRefreshComplete // 0x30

@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth Channel Identifier
+@frozen
 public struct ChannelIdentifier: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt16

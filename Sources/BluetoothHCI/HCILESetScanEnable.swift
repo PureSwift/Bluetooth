@@ -86,6 +86,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The `LE Set Scan Enable Command` command is used to start scanning.
 /// Scanning is used to discover advertising devices nearby.
+@frozen
 public struct HCILESetScanEnable: HCICommandParameter { // HCI_LE_Set_Scan_Enable
     
     public static let command = HCILowEnergyCommand.setScanEnable // 0x000C

@@ -30,6 +30,7 @@ public extension BluetoothHostControllerInterface {
 /// Disconnect Command
 ///
 /// The Disconnection command is used to terminate an existing connection. All synchronous connections on a physical link should be disconnected before the ACL connection on the same physical connection is disconnected.
+@frozen
 public struct HCIDisconnect: HCICommandParameter {
     
     public static let command = LinkControlCommand.disconnect

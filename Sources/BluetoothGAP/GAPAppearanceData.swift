@@ -10,6 +10,7 @@ import Foundation
 
 /// The Appearance data type defines the external appearance of the device.
 /// This value shall be the same as the Appearance characteristic, as defined in Vol. 3, Part C, Section 12.2.
+@frozen
 public struct GAPAppearanceData: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .appearance

@@ -13,6 +13,7 @@ import Foundation
  
  [Body Sensor Location](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.body_sensor_location.xml)
  */
+@frozen
 public enum GATTBodySensorLocation: UInt8, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .bodySensorLocation }

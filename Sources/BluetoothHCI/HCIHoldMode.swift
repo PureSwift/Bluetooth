@@ -20,6 +20,7 @@ import Foundation
  
  The Hold_Mode_Max_Interval shall be less than the Link Supervision Timeout configuration parameter.
  */
+@frozen
 public struct HCIHoldMode: HCICommandParameter {
     
     public static let command = LinkPolicyCommand.holdMode

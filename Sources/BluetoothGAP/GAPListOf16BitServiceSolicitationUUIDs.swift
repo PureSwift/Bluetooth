@@ -13,6 +13,7 @@ import Foundation
 /// Note: Central and Peripheral are GAP roles as defined in Vol.3, Part C, Section 2.2.2.
 
 /// GAP List of 16 bit Service Solicitation UUIDs
+@frozen
 public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData, Equatable {
     
     public static let dataType: GAPDataType = .listOf16BitServiceSolicitationUUIDs

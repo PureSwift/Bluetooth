@@ -15,6 +15,7 @@ import Foundation
  
  [Boot Keyboard Input Report](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.boot_keyboard_input_report.xml)
  */
+@frozen
 public struct GATTBootKeyboardInputReport: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

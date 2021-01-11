@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Body Composition Measurement](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.body_composition_measurement.xml)
  */
+@frozen
 public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     
     internal static let minimumLength = MemoryLayout<UInt32>.size
@@ -584,6 +585,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
 }
 
 // MARK: - BluetoothUnits -
+@frozen
 public struct GATTBodyPercentage: BluetoothUnit {
     
     internal static let length = MemoryLayout<UInt16>.size

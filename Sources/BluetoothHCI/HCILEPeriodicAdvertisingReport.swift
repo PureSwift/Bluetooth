@@ -11,6 +11,7 @@ import Foundation
 /// LE Periodic Advertising Report Event
 ///
 /// The event indicates that the Controller has received a Periodic Advertising packet.
+@frozen
 public struct HCILEPeriodicAdvertisingReport: HCIEventParameter {
     
     public static let event = LowEnergyEvent.periodicAdvertisingReport // 0x0F

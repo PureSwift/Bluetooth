@@ -6,6 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+@frozen
 public enum LinkControlCommand: UInt16, HCICommand {
     
     public static let opcodeGroupField = HCIOpcodeGroupField.linkControl

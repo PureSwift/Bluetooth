@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 /// Read LMP Handle Command
 ///
 /// This command reads the current LMP Handle associated with the Connection_Handle. The Connection_Handle shall be a SCO or eSCO Han dle. If the Connection_Handle is a SCO Connection_Handle, then this command shall read the LMP SCO Handle for this connection. If the Connection_Handle is an eSCO Connection_Handle, then this command shall read the LMP eSCO Handle for this connection.
+@frozen
 public struct HCIReadLMPHandle: HCICommandParameter {
     
     public static let command = LinkControlCommand.readLMPHandle
@@ -54,6 +55,7 @@ public struct HCIReadLMPHandle: HCICommandParameter {
 
 // MARK: - Return Parameter
 
+@frozen
 public struct HCIReadLMPHandleReturn: HCICommandReturnParameter {
 
     public static let command = LinkControlCommand.readLMPHandle

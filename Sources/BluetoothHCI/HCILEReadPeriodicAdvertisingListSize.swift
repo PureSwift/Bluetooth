@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read Periodic Advertiser List Size Command
 ///
 /// The command is used to read the total number of Periodic Advertiser list entries that can be stored in the Controller.
+@frozen
 public struct HCILEReadPeriodicAdvertisingListSize: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readPeriodicAdvertiserListSize //0x004A

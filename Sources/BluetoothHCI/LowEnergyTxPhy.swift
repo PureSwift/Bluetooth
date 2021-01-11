@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Tx Phy
+@frozen
 public enum LowEnergyTxPhy: UInt8 { //TX_PHY
     
     /// The transmitter PHY for the connection is LE 1M

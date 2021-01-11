@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Connection role
+@frozen
 public enum LowEnergyRole: UInt8 {
     
     /// Connection is master.

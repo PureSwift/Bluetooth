@@ -35,6 +35,7 @@ public extension BluetoothHostControllerInterface {
 /// the advertising Controller at the same time. Note: The number of advertising sets that
 /// can be supported is not fixed and the Controller can change it at any time because the memory
 /// used to store advertising sets can also be used for other purposes.
+@frozen
 public struct HCILEReadNumberOfSupportedAdvertisingSets: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readNumberOfSupportedAdvertisingSets //0x003B

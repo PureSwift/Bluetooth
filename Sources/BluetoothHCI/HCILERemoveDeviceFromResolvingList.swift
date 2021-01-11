@@ -47,6 +47,7 @@ public extension BluetoothHostControllerInterface {
 /// When a Controller cannot remove a device from the resolving
 /// list because it is not found, it shall return the error code
 /// Unknown Connection Identifier (0x02).
+@frozen
 public struct HCILERemoveDeviceFromResolvingList: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.removeDeviceFromResolvedList //0x0028

@@ -514,6 +514,7 @@ internal final class ATTConnection {
 // MARK: - Supporting Types
 
 /// ATT Connection Error
+@frozen
 public enum ATTConnectionError: Error {
     
     /// The recieved data could not be parsed correctly.

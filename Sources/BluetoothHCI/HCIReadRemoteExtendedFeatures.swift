@@ -32,6 +32,7 @@ public extension BluetoothHostControllerInterface {
 /// Read Remote Extended Features Command
 ///
 /// The Read_Remote_Extended_Features command returns the requested page of the extended LMP features for the remote device identified by the specified Connection_Handle. The Connection_Handle must be the Connection_Handle for an ACL connection. This command is only available if the extended features feature is implemented by the remote device. The Read Remote Extended Features Complete event will return the requested information.
+@frozen
 public struct HCIReadRemoteExtendedFeatures: HCICommandParameter {
     
     public static let command = LinkControlCommand.readRemoteExtendedFeatures

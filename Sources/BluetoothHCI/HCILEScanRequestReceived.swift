@@ -13,6 +13,7 @@ import Foundation
 /// The vent indicates that a SCAN_REQ PDU or an AUX_SCAN_REQ PDU has been received by the advertiser.
 /// The request contains a device address from a scanner that is allowed by the advertising filter policy.
 /// The advertising set is identified by Advertising_Handle.
+@frozen
 public struct HCILEScanRequestReceived: HCIEventParameter {
     
     public static let event = LowEnergyEvent.scanRequestReceived // 0x13

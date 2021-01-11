@@ -38,6 +38,7 @@ public extension BluetoothHostControllerInterface {
 /// issued at any time after the advertising set identified by the Advertising_Handle parameter has been
 /// created using the LE Set Extended Advertising Parameters Command (see Section 7.8.53) regardless of
 /// whether advertising in that set is enabled or disabled.
+@frozen
 public struct HCILESetExtendedScanResponseData: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setExtendedScanResponseData //0x0038

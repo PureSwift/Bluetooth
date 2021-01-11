@@ -53,6 +53,7 @@ public extension BluetoothHostControllerInterface {
 /// If the Advertising_Handle does not identify an advertising set that is already configured for periodic
 /// advertising and the Controller is unable to support more periodic advertising at present, the Controller
 /// shall return the error code Memory Capacity Exceeded (0x07).
+@frozen
 public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setPeriodicAdvertisingParameters //0x003E

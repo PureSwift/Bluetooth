@@ -9,6 +9,7 @@
 import Foundation
 
 /// GATT Attribute
+@frozen
 public enum GATTAttribute {
     
     /// GATT Service

@@ -17,6 +17,7 @@ import Foundation
  Size: 2 or more octets
  The first 2 octets contain the Company Identifier Code followed by additional manufacturer specific data
  */
+@frozen
 public struct GAPManufacturerSpecificData: GAPData, Equatable, Hashable {
     
     /// GAP Data Type

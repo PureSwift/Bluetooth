@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Clock Accuracy
+@frozen
 public enum LowEnergyClockAccuracy: UInt8 {
     
     case ppm500     = 0x00

@@ -54,6 +54,7 @@ public extension BluetoothHostControllerInterface {
 /// the Connection_Handle. The Controller might not be able to make the change
 /// (e.g. because the peer does not support the requested PHY) or may decide that
 /// the current PHY is preferable.
+@frozen
 public struct HCILESetPhy: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setPhy //0x0032

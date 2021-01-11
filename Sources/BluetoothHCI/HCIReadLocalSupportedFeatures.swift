@@ -28,6 +28,7 @@ public extension BluetoothHostControllerInterface {
 /// Read Local Supported Features Command
 ///
 /// This command requests a list of the supported features for the local BR/EDR Controller. This command will return a list of the LMP features.
+@frozen
 public struct HCIReadLocalSupportedFeaturesReturn: HCICommandReturnParameter {
     
     public static let command = InformationalCommand.readLocalSupportedFeatures

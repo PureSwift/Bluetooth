@@ -40,6 +40,7 @@ public extension BitMaskOption {
 /// Integer-backed array type for `BitMaskOption`.
 ///
 /// The elements are packed in the integer with bitwise math and stored on the stack.
+@frozen
 public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
     
     public typealias RawValue = Element.RawValue

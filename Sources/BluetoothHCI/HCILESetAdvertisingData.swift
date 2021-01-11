@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 /// Used to set the data used in advertising packets that have a data field.
 ///
 /// - Note: Only the significant part of the Advertising Data is transmitted in the advertising packets.
+@frozen
 public struct HCILESetAdvertisingData: HCICommandParameter { // HCI_LE_Set_Advertising_Data
     
     public static let command = HCILowEnergyCommand.setAdvertisingData // 0x0008

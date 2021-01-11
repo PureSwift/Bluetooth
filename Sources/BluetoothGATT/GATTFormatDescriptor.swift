@@ -27,6 +27,7 @@ import Foundation
 /// When encoding a Bluetooth address (BD_ADDR), the uint48 Format type is used.
 /// For a Characteristic Value of 23 and an Exponent of 2, the actual value is 2300
 /// For a Characteristic Value of 3892 and an Exponent of -3, the actual value is 3.892
+@frozen
 public struct GATTFormatDescriptor: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicFormat

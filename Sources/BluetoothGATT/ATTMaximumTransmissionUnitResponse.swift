@@ -11,6 +11,7 @@ import Foundation
 ///  Exchange MTU Response
 ///
 /// The *Exchange MTU Response* is sent in reply to a received *Exchange MTU Request*.
+@frozen
 public struct ATTMaximumTransmissionUnitResponse: ATTProtocolDataUnit, Equatable {
     
     /// 0x03 = Exchange MTU Response

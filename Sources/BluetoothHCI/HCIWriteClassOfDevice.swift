@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// Write Class of Device Command
 ///
 /// This command writes the value for the Class_of_Device parameter.
+@frozen
 public struct HCIWriteClassOfDevice: HCICommandParameter {
     
     public static let command = HostControllerBasebandCommand.writeClassOfDevice

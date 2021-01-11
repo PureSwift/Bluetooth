@@ -19,6 +19,7 @@ import Foundation
  
  - SeeAlso: [Alert Status](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_status.xml)
  */
+@frozen
 public struct GATTAlertStatus: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size

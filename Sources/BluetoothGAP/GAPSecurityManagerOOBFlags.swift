@@ -13,6 +13,7 @@ import Foundation
  
  The Security Manager Out of Band data type size is 1 octet.
  */
+@frozen
 public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .securityManagerOutOfBandFlags
@@ -73,6 +74,7 @@ extension GAPSecurityManagerOOBFlags: CustomStringConvertible {
  
  The Security Manager Out of Band data type size is 1 octet.
  */
+@frozen
 public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
     
     /// OOB Flags Field

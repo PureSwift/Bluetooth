@@ -31,6 +31,7 @@ public extension BluetoothHostControllerInterface {
 /// Read Remote Version Information Command
 ///
 /// This command will obtain the values for the version information for the remote device identified by the Connection_Handle parameter. The Connection_Handle must be a Connection_Handle for an ACL or LE connection.
+@frozen
 public struct HCIReadRemoteVersionInformation: HCICommandParameter {
     
     public static let command = LinkControlCommand.readRemoteVersion

@@ -13,6 +13,7 @@ import Foundation
 /// The *Execute Write Request* is used to request the server to write or cancel the write
 /// of all the prepared values currently held in the prepare queue from this client.
 /// This request shall be handled by the server as an atomic operation.
+@frozen
 public enum ATTExecuteWriteRequest: UInt8, ATTProtocolDataUnit {
     
     public static var attributeOpcode: ATTOpcode { return .executeWriteRequest }

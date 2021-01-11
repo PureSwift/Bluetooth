@@ -32,6 +32,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command is used to read the current transmitter PHY and receiver PHY
 /// on the connection identified by the Connection_Handle.
+@frozen
 public struct HCILEReadPHY: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.readPhy //0x0030
@@ -61,6 +62,7 @@ public struct HCILEReadPHY: HCICommandParameter {
 ///
 /// The command is used to read the current transmitter PHY and receiver PHY
 /// on the connection identified by the Connection_Handle.
+@frozen
 public struct HCILEReadPHYReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readPhy //0x0030

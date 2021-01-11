@@ -21,6 +21,7 @@ import Foundation
 ///
 /// The `masterClockAccuracy` parameter is only valid for a slave.
 /// On a master, this parameter shall be set to 0x00.
+@frozen
 public struct HCILEConnectionComplete: HCIEventParameter {
     
     public static let event = LowEnergyEvent.connectionComplete // 0x01

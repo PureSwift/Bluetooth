@@ -26,6 +26,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read Transmit Power Command
 ///
 /// The command is used to read the minimum and maximum transmit powers supported by the Controller.
+@frozen
 public struct HCILEReadTransmitPower: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readTransmitPower //0x004B

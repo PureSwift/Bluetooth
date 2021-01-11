@@ -17,6 +17,7 @@ import Foundation
  
  - SeeAlso: [Object Name](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.object_name.xml)
  */
+@frozen
 public struct GATTObjectName: Equatable, Hashable, RawRepresentable, GATTCharacteristic {
     
     internal static let length = 120

@@ -40,6 +40,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// - Note:
 /// The Host should enable as many packet types as possible for the Link Manager to perform efficiently. However, the Host must not enable packet types that the local device does not support.
+@frozen
 public struct HCICreateConnection: HCICommandParameter {
     
     public static let command = LinkControlCommand.createConnection

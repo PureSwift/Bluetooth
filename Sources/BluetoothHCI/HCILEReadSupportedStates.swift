@@ -28,6 +28,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read Supported States
 ///
 /// The LE_Read_Supported_States command reads the states and state combinations that the link layer supports.
+@frozen
 public struct HCILEReadSupportedStates: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readSupportedStates //0x001C

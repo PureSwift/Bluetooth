@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Read Advertising Channel Tx Power Command
 ///
 /// The command is used by the Host to read the transmit power level used for LE advertising channel packets.
+@frozen
 public struct HCILEReadAdvertisingChannelTxPower: HCICommandReturnParameter { //HCI_LE_Read_Advertising_ Channel_Tx_Power
     
     public static let command = HCILowEnergyCommand.readAdvertisingChannelTXPower // 0x0007

@@ -10,6 +10,7 @@ import Foundation
 /// A 128 bit number stored according to host endianness.
 ///
 /// Unlike `NSUUID` which is always stored in big endian.
+@frozen
 public struct UInt128: ByteValue {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)

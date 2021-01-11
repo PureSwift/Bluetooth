@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Read Blob Request* is used to request the server to read part of the value of an attribute
 /// at a given offset and return a specific part of the value in a *Read Blob Response*.
+@frozen
 public struct ATTReadBlobRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readBlobRequest }

@@ -30,6 +30,7 @@ public extension BluetoothHostControllerInterface {
  
  The HCI Revision and LMP/PAL Subversion are implementation dependent.
  */
+@frozen
 public struct HCILocalVersionInformation: HCICommandReturnParameter {
     
     public static let command = InformationalCommand.readLocalVersionInformation

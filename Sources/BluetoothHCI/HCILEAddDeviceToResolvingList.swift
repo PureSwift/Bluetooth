@@ -46,6 +46,7 @@ public extension BluetoothHostControllerInterface {
 /// When a Controller cannot add a device to the list because
 /// there is no space available, it shall return the error code
 /// Memory Capacity Exceeded (0x07).
+@frozen
 public struct HCILEAddDeviceToResolvingList: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.addDeviceToResolvedList //0x0027

@@ -19,6 +19,7 @@
 /// but there is insufficient information to determine how the command would normally be processed.
 /// In this case, two events can be used to indicate this to the Host, the Command Complete event 
 /// and Command Status events. Which of the two events is used is implementation-dependent.
+@frozen
 public enum HCIError: UInt8, Error {
     
     /// Unknown HCI Command

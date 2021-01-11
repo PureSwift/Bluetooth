@@ -29,6 +29,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Extended Advertising Parameters Command
 ///
 /// The command is used by the Host to set the advertising parameters.
+@frozen
 public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI_LE_Set_ Extended_ Advertising_ Parameters
     
     public static let command = HCILowEnergyCommand.setAdvertisingSetRandomAddress //0x0036
@@ -341,6 +342,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
 /// LE Set Extended Advertising Parameters Command
 ///
 /// The command is used by the Host to set the advertising parameters.
+@frozen
 public struct HCILESetExtendedAdvertisingParametersReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.setExtendedAdvertisingParameters //0x0036

@@ -11,6 +11,7 @@ import Foundation
 /// Write Command
 ///
 /// The *Write Command* is used to request the server to write the value of an attribute, typically into a control-point attribute.
+@frozen
 public struct ATTWriteCommand: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .writeCommand }

@@ -16,6 +16,7 @@ import Foundation
 /// If the Host uses the Link_Key_Request_Negative_Reply command when the requested service requires an authenticated Link Key and the current Link Key is unauthenticated, the Host should set the Authentication_Requirements parameter one of the MITM Protection Required options.
 ///
 /// When the Controller generates a Link Key Request event in order for the local Link Manager to respond to the request from the remote Link Manager (as a result of a Create_Connection or Authentication_Requested command from the remote Host), the local Host must respond with either a Link_Key_Request_Reply or Link_Key_Request_Negative_Reply command before the remote Link Manager detects LMP response timeout.
+@frozen
 public struct HCILinkKeyRequest: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.linkKeyRequest

@@ -20,6 +20,7 @@ import Foundation
  
  - SeeAlso: [Unread Alert Status](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.unread_alert_status.xml)
  */
+@frozen
 public struct GATTUnreadAlertStatus: GATTCharacteristic {
     
     internal static let length = 2

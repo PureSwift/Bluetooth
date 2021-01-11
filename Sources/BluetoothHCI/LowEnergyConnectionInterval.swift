@@ -11,6 +11,7 @@
 /// Range: 0x0006 to 0x0C80
 /// Time = N * 1.25 msec
 /// Time Range: 7.5 msec to 4000 msec.
+@frozen
 public struct LowEnergyConnectionInterval: RawRepresentable, Equatable, Hashable, Comparable {
     
     /// 7.5 msec

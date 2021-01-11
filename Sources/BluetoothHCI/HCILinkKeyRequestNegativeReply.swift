@@ -30,6 +30,7 @@ public extension BluetoothHostControllerInterface {
 /// The Link_Key_Request_Negative_Reply command is used to reply to a Link Key Request event from the BR/EDR Controller if the Host does not have a stored Link Key for the connection with the other BR/EDR Controller specified by BD_ADDR. The Link Key Request event will be generated when the BR/ EDR Controller needs a Link Key for a connection.
 ///
 ///When the Controller generates a Link Key Request event in order for the local Link Manager to respond to the request from the remote Link Manager (as a result of a Create_Connection or Authentication_Requested command from the remote Host), the local Host must respond with either a Link_Key_Request_Reply or Link_Key_Request_Negative_Reply command before the remote Link Manager detects LMP response timeout.
+@frozen
 public struct HCILinkKeyRequestNegativeReply: HCICommandParameter {
     
     public static let command = LinkControlCommand.linkKeyNegativeReply
@@ -56,6 +57,7 @@ public struct HCILinkKeyRequestNegativeReply: HCICommandParameter {
 
 // MARK: - Return Parameter
 
+@frozen
 public struct HCILinkKeyRequestNegativeReplyReturn: HCICommandReturnParameter {
     
     public static let command = LinkControlCommand.linkKeyNegativeReply

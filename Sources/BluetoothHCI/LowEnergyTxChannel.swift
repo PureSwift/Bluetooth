@@ -7,6 +7,7 @@
 //
 
 /// Bluetooth LE Tx Power Channel
+@frozen
 public struct LowEnergyTxChannel: RawRepresentable, Equatable, Hashable, Comparable {
     
     /// 100 msec

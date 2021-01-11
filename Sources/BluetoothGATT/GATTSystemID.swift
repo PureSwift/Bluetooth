@@ -15,6 +15,7 @@ import Foundation
  
  [System ID](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.system_id.xml)
  */
+@frozen
 public struct GATTSystemID: GATTCharacteristic, RawRepresentable, Equatable, Hashable {
     
     public static var uuid: BluetoothUUID { return .systemId }

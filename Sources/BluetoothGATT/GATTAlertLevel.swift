@@ -27,6 +27,7 @@ import Foundation
  
  - SeeAlso: [Alert Level](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.alert_level.xml)
  */
+@frozen
 public enum GATTAlertLevel: UInt8, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .alertLevel }

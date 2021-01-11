@@ -37,6 +37,7 @@ public extension BluetoothHostControllerInterface {
 /// it shall return the error code Memory Capacity Exceeded (0x07).
 ///
 /// Address is ignored when Address Type is set to 0xFF.
+@frozen
 public struct HCILEAddDeviceToWhiteList: HCICommandParameter { //HCI_LE_Add_Device_To_White_List
     
     public static let command = HCILowEnergyCommand.addDeviceToWhiteList //0x0011

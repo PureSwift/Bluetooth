@@ -16,6 +16,7 @@ import Foundation
 /// the attribute type determines the grouping of a set of attributes.
 ///
 /// - Note: Generic Attribute Profile defines grouping of attributes by attribute type.
+@frozen
 public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .findByTypeRequest }

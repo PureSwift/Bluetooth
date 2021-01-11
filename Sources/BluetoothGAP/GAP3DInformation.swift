@@ -13,6 +13,7 @@ import Foundation
  
  - Note: Future versions of this EIR data may be extended to carry additional bytes in the Profile specific 3D Information data section. Therefore, 3DG compliant with this version of the Profile specification shall ignore any additional data beyond what is specified in Table 5.2, if present.
  */
+@frozen
 public struct GAP3DInformation: GAPData, Equatable {
     
     public static var dataType: GAPDataType { return .informationData3D }

@@ -9,6 +9,7 @@
 import Foundation
 
 /// The IO Capability Request event is used to indicate that the IO capabilities of the Host are required for a simple pairing process. The Host shall respond with an IO_Capability_Request_Reply command. This event shall only be generated if simple pairing has been enabled with the Write_Simple_Pairing_Mode command.
+@frozen
 public struct HCIIOCapabilityRequest: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.ioCapabilityRequest

@@ -28,6 +28,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Rand Command
 ///
 /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
+@frozen
 public struct HCILERandom: HCICommandReturnParameter { // HCI_LE_Rand
     
     public static let command = HCILowEnergyCommand.random //0x0018

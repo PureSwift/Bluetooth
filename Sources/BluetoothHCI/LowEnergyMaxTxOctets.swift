@@ -10,6 +10,7 @@
 /// a single Link Layer packet on this connection.
 ///
 /// - Note: Range 0x001B-0x00FB
+@frozen
 public struct LowEnergyMaxTxOctets: RawRepresentable, Equatable, Hashable, Comparable {
     
     public static let min = LowEnergyMaxTxOctets(0x001B)

@@ -11,6 +11,7 @@ import Foundation
 /// Mode Change Event
 ///
 /// The Mode Change event is used to indicate when the device associated with the Connection_Handle changes between Active mode, Hold mode, and Sniff mode, and Park state. The Connection_Handle will be a Connection_Handle for an ACL connection. The Connection_Handle event parameter is used to indicate which connection the Mode Change event is for. The Current_Mode event parameter is used to indicate which state the connection is currently in. The Interval parameter is used to specify a time amount specific to each state. Each Controller that is associated with the Connection_Handle which has changed Modes shall send the Mode Change event to its Host.
+@frozen
 public struct HCIModeChange: HCIEventParameter {
     
     public static let event = HCIGeneralEvent.modeChangeEvent

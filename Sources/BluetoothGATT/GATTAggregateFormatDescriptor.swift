@@ -22,6 +22,7 @@ import Foundation
 /// Example:
 /// If 3 Characteristic Presentation Format declarations exist at Attribute Handles 0x40, 0x50 and 0x60,
 /// the Characteris Aggregate Format Value is 0x405060.
+@frozen
 public struct GATTAggregateFormatDescriptor: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .characteristicAggregateFormat

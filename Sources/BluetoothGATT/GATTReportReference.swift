@@ -12,6 +12,7 @@ import Foundation
 /// GATT Report Reference Descriptor
 ///
 /// Mapping information in the form of a Report ID and Report Type which maps the current parent characteristic to the Report ID(s) and Report Type (s) defined within the Report Map characteristic.
+@frozen
 public struct GATTReportReference: GATTDescriptor {
     
     public static let uuid: BluetoothUUID = .reportReference

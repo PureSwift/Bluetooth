@@ -13,6 +13,7 @@ import Foundation
  
  The Local Name data type shall be the same as, or a shortened version of, the local name assigned to the device. The Local Name data type value indicates if the name is complete or shortened. If the name is shortened, the complete name can be read using the remote name request procedure over BR/EDR or by reading the device name characteristic after the connection has been established using GATT.
  */
+@frozen
 public struct GAPCompleteLocalName: GAPData, Equatable, Hashable {
     
     public static let dataType: GAPDataType = .completeLocalName

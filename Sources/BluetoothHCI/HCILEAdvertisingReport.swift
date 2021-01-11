@@ -15,6 +15,7 @@ import Foundation
 /// or received some information during a passive scan.
 /// The Controller may queue these advertising reports and send
 /// information from multiple devices in one LE Advertising Report event.
+@frozen
 public struct HCILEAdvertisingReport: HCIEventParameter {
     
     public static let event = LowEnergyEvent.advertisingReport // 0x02

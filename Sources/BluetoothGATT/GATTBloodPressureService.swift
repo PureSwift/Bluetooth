@@ -11,6 +11,7 @@
  
  This service exposes blood pressure and other data from a blood pressure monitor for use in consumer and professional healthcare applications.
  */
+@frozen
 public struct GATTBloodPressureService: GATTService {
     
     public static var uuid: BluetoothUUID { return .bloodPressure }

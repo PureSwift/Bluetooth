@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Indoor Positioning Configuration](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.indoor_positioning_configuration.xml)
  */
+@frozen
 public struct GATTIndoorPositioningConfiguration: GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .indoorPositioningConfiguration }

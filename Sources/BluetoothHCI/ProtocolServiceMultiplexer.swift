@@ -7,6 +7,7 @@
 //
 
 /// Protocol/Service Multiplexer (PSM).
+@frozen
 public enum ProtocolServiceMultiplexer: UInt8 {
     
     case sdp        = 0x0001

@@ -15,6 +15,7 @@ import Foundation
  
  - SeeAlso: [Altitude](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.altitude.xml)
  */
+@frozen
 public struct GATTAltitude: RawRepresentable, GATTCharacteristic, Equatable, Hashable {
     
     internal static let length = MemoryLayout<UInt16>.size

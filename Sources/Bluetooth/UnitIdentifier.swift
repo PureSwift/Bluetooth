@@ -8,6 +8,7 @@
 
 import Foundation
 
+@frozen
 public struct UnitIdentifier: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: UInt16

@@ -28,6 +28,7 @@ import Foundation
  Values not defined above are reserved for future use.
  
  */
+@frozen
 public struct GAPSlaveConnectionIntervalRange: GAPData {
     
     public static let dataType: GAPDataType = .slaveConnectionIntervalRange

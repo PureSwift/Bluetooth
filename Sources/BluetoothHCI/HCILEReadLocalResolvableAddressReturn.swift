@@ -42,6 +42,7 @@ public extension BluetoothHostControllerInterface {
 /// When a Controller cannot find a Resolvable Private Address associated
 /// with the Peer Identity Address, it shall return the error code
 /// Unknown Connection Identifier (0x02).
+@frozen
 public struct HCILEReadLocalResolvableAddress: HCICommandParameter { //HCI_LE_Read_Local_ Resolvable_Address
     
     public static let command = HCILowEnergyCommand.readLocalResolvableAddress //0x002C
@@ -88,6 +89,7 @@ public struct HCILEReadLocalResolvableAddress: HCICommandParameter { //HCI_LE_Re
 /// When a Controller cannot find a Resolvable Private Address associated
 /// with the Peer Identity Address, it shall return the error code
 /// Unknown Connection Identifier (0x02).
+@frozen
 public struct HCILEReadLocalResolvableAddressReturn: HCICommandReturnParameter {
     
     public static let command = HCILowEnergyCommand.readLocalResolvableAddress //0x002C

@@ -13,7 +13,7 @@ import Foundation
  
  - SeeAlso: [Time Update State](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_update_state.xml)
  */
-
+@frozen
 public struct GATTTimeUpdateState: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt8>.size * 2

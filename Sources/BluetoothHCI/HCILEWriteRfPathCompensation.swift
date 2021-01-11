@@ -44,6 +44,7 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The RF Rx Path Compensation Value parameter shall be used by the Controller to calculate
 /// the RSSI value reported to the Host.
+@frozen
 public struct HCILEWriteRfPathCompensation: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.writeRFPathCompensation // 0x004D

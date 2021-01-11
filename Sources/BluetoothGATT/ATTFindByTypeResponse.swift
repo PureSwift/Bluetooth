@@ -12,6 +12,7 @@ import Foundation
 ///
 /// The *Find By Type Value Response* is sent in reply to a received *Find By Type Value Request*
 /// and contains information about this server.
+@frozen
 public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .findByTypeResponse }

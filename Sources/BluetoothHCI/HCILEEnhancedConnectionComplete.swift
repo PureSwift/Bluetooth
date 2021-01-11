@@ -11,6 +11,7 @@ import Foundation
 /// LE Enhanced Connection Complete Event
 ///
 /// The event indicates to both of the Hosts forming the connection that a new connection has been created.
+@frozen
 public struct HCILEEnhancedConnectionComplete: HCIEventParameter {
     
     public static let event = LowEnergyEvent.enhancedConnectionComplete // 0x0A

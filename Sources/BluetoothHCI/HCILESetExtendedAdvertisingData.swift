@@ -32,6 +32,7 @@ public extension BluetoothHostControllerInterface {
 /// LE Set Extended Advertising Data Command
 ///
 /// The command is used to set the data used in advertising PDUs that have a data field.
+@frozen
 public struct HCILESetExtendedAdvertisingData: HCICommandParameter {
     
     public static let command = HCILowEnergyCommand.setExtendedAdvertisingData //0x0037

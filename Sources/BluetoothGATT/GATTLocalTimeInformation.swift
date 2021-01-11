@@ -13,6 +13,7 @@ import Foundation
  
  - SeeAlso: [Local Time Information](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.local_time_information.xml)
  */
+@frozen
 public struct GATTLocalTimeInformation: GATTCharacteristic, Equatable {
     
     internal static let length = GATTTimeZone.length + GATTDstOffset.length
