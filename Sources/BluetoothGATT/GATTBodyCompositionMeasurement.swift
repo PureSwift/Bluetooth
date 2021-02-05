@@ -149,9 +149,9 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
-        massUnit = flags.contains(.measurementUnitSI) ? .kilogram : .pound
+        massUnit = flags.contains(.measurementUnitImperial) ? .pound : .kilogram
         
-        lengthUnit = flags.contains(.measurementUnitSI) ? .metre : .inch
+        lengthUnit = flags.contains(.measurementUnitImperial) ? .inch : .metre
         
         self.bodyFatPercentage = GATTBodyPercentage(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))))
         
