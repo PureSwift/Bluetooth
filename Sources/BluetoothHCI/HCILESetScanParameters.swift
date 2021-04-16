@@ -35,6 +35,7 @@ public struct HCILESetScanParameters: HCICommandParameter { // HCI_LE_Set_Scan_P
     /// Determines the address used (Public or Random Device Address) when performing active scan.
     public let addressType: LowEnergyAddressType // Own_Address_Type
     
+    /// Scanning filter policy.
     public let filterPolicy: FilterPolicy
     
     public init(type: ScanType = .passive,
@@ -62,22 +63,34 @@ public struct HCILESetScanParameters: HCICommandParameter { // HCI_LE_Set_Scan_P
         
         return Data([scanType, scanInterval.0, scanInterval.1, scanWindow.0, scanWindow.1, ownAddressType, filter])
     }
+}
+
+// MARK: - Supporting Types
+
+public extension HCILESetScanParameters {
     
     /// Controls the type of scan to perform
-    public enum ScanType: UInt8 {
+    enum ScanType: UInt8 {
         
-        /// Passive Scanning. No `SCAN_REQ` packets shall be sent.
+        /// Passive scanning.
+        ///
+        /// No scanning PDUs shall be sent.
         case passive = 0x0
         
-        /// Active scanning. `SCAN_REQ` packets may be sent.
+        /// Active scanning.
+        ///
+        /// Scanning PDUs may be sent.
         case active = 0x1
         
-        public init() { self = .passive }
+        /// Initialize with default value (Passive scanning).
+        public init() {
+            self = .passive
+        }
     }
     
-    public enum FilterPolicy: UInt8 { // Scanning_Filter_Policy
+    enum FilterPolicy: UInt8 { // Scanning_Filter_Policy
         
-        /// Accept all advertisement packets (default).
+        /// Accept all advertisement packets.
         ///
         /// Directed advertising packets which are not addressed for this device shall be ignored.
         case accept = 0x0
@@ -86,5 +99,17 @@ public struct HCILESetScanParameters: HCICommandParameter { // HCI_LE_Set_Scan_P
         ///
         /// Directed advertising packets which are not addressed for this device shall be ignored.
         case ignore = 0x1
+        
+        /// Accept all advertising packets except:
+        /// • advertising packets where the advertiser's identity address is not in the White List; and
+        /// • directed advertising packets where the initiator's identity address does not address this device
+        ///
+        /// - Note: Directed advertising packets where the initiator's address is a resolvable private address that cannot be resolved are also accepted.
+        case directed = 0x02
+        
+        /// Initialize with default value (Accept all advertisement packets).
+        public init() {
+            self = .accept
+        }
     }
 }
