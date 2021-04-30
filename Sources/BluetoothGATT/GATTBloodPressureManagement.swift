@@ -253,7 +253,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         /// Measurement Status present
         case measurementStatus = 0b10000
         
-        public static let allCases: Set<Flag> = [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus]
+        public static let allCases: [Flag] = [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus]
     }
     
     /// Unit of measurement
@@ -312,7 +312,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         
         case measurementPosition = 0b10000
         
-        public static let allCases: Set<MeasurementStatus> = [
+        public static let allCases: [MeasurementStatus] = [
             .bodyMovement,
             .cuffFit,
             .irregularPulse,

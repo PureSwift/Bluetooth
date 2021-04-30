@@ -70,23 +70,25 @@ public enum LowEnergyFeature: UInt64, BitMaskOption {
     /// Minimum Number of Used Channels Procedure
     case minimumNumberofUsedChannelsProcedure           = 0b10000000000000000
     
-    public static let allCases: Set<LowEnergyFeature> = [.encryption,
-                                                    .connectionParametersRequestProcedure,
-                                                    .extendedRejectIndication,
-                                                    .slaveInitiatedFeaturesExchange,
-                                                    .ping,
-                                                    .dataPacketLengthExtension,
-                                                    .privacy,
-                                                    .extendedScannerFilterPolicies,
-                                                    .le2mPhy,
-                                                    .stableModulationIndexTransmitter,
-                                                    .stableModulationIndexReceiver,
-                                                    .codedPhy,
-                                                    .extendedAdvertising,
-                                                    .periodicAdvertising,
-                                                    .channelSelectionAlgorithm2,
-                                                    .powerClass1,
-                                                    .minimumNumberofUsedChannelsProcedure]
+    public static let allCases: [LowEnergyFeature] = [
+        .encryption,
+        .connectionParametersRequestProcedure,
+        .extendedRejectIndication,
+        .slaveInitiatedFeaturesExchange,
+        .ping,
+        .dataPacketLengthExtension,
+        .privacy,
+        .extendedScannerFilterPolicies,
+        .le2mPhy,
+        .stableModulationIndexTransmitter,
+        .stableModulationIndexReceiver,
+        .codedPhy,
+        .extendedAdvertising,
+        .periodicAdvertising,
+        .channelSelectionAlgorithm2,
+        .powerClass1,
+        .minimumNumberofUsedChannelsProcedure
+    ]
 }
 
 // MARK: - CustomStringConvertible

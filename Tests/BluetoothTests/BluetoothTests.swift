@@ -141,7 +141,7 @@ final class BluetoothTests: XCTestCase {
         var states = BitMaskOptionSet<LowEnergyState>.all
         XCTAssert(states.isEmpty == false)
         XCTAssertEqual(states.count, LowEnergyState.allCases.count)
-        XCTAssert(Set(states) == LowEnergyState.allCases)
+        XCTAssert(Array(states) == LowEnergyState.allCases)
         states.forEach { XCTAssert(LowEnergyState.allCases.contains($0)) }
         
         states.removeAll()
@@ -193,7 +193,7 @@ final class BluetoothTests: XCTestCase {
         featureSet = .all
         XCTAssertFalse(featureSet.isEmpty)
         XCTAssertEqual(featureSet.count, LowEnergyFeature.allCases.count)
-        XCTAssertEqual(Set(featureSet), LowEnergyFeature.allCases)
+        XCTAssertEqual(Array(featureSet), LowEnergyFeature.allCases)
         
         typealias Bit64 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
         let bigEndianByteValue: Bit64 = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01)

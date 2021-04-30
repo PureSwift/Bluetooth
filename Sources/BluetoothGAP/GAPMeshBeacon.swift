@@ -247,7 +247,7 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
     
     case onDevice = 0b1000000000000000
     
-    public static let allCases: Set<GAPOOBInformationFlag> = [
+    public static let allCases: [GAPOOBInformationFlag] = [
         .other,
         .electronic,
         .machineReadableCode,
@@ -271,7 +271,7 @@ public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
     
     case ivUpdate = 0b10
     
-    public static let allCases: Set<GAPSecureNetworkFlag> = [
+    public static let allCases: [GAPSecureNetworkFlag] = [
         .keyRefresh,
         .ivUpdate
     ]

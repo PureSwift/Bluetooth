@@ -141,7 +141,7 @@ public enum GAPFlag: UInt8, BitMaskOption {
     /// Bit 66 of LMP Feature Mask Definitions (Page 1)
     case simultaneousHost                   = 0b00010000
     
-    public static let allCases: Set<GAPFlag> = [
+    public static let allCases: [GAPFlag] = [
         .lowEnergyLimitedDiscoverableMode,
         .lowEnergyGeneralDiscoverableMode,
         .notSupportedBREDR,

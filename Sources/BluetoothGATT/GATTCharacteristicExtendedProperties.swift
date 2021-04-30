@@ -66,6 +66,6 @@ public extension GATTCharacteristicExtendedProperties {
         /// Writable Auxiliaries enabled
         case writableAuxiliaries = 0b10
         
-        public static let allCases: Set<Property> = [.reliableWrite, .writableAuxiliaries]
+        public static let allCases: [Property] = [.reliableWrite, .writableAuxiliaries]
     }
 }

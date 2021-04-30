@@ -62,6 +62,6 @@ extension GATTServerCharacteristicConfiguration {
         /// Broadcasts enabled
         case broadcasts = 0b01
         
-        public static let allCases: Set<ServerConfiguration> = [.broadcasts]
+        public static let allCases: [ServerConfiguration] = [.broadcasts]
     }
 }

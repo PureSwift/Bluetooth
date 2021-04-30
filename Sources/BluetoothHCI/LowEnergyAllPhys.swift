@@ -18,6 +18,8 @@ public enum LowEnergyAllPhys: UInt8, BitMaskOption {
     /// The Host has no preference among the receiver PHYs supported by the Controller
     case hostHasNoPreferenceAmongTheReceiverPhy     = 0b10
     
-    public static let allCases: Set<LowEnergyAllPhys> = [.hostHasNoPreferenceAmongTheTransmitterPhy,
-                                                    .hostHasNoPreferenceAmongTheReceiverPhy]
+    public static let allCases: [LowEnergyAllPhys] = [
+        .hostHasNoPreferenceAmongTheTransmitterPhy,
+        .hostHasNoPreferenceAmongTheReceiverPhy
+    ]
 }
