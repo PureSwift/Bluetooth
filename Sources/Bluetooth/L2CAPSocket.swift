@@ -9,7 +9,7 @@
 import Foundation
 
 /// L2CAP Socket protocol.
-public protocol L2CAPSocketProtocol: class {
+public protocol L2CAPSocketProtocol: AnyObject {
     
     /// Reads from the socket.
     func recieve(_ bufferSize: Int) throws -> Data?

@@ -9,7 +9,7 @@
 import Foundation
 
 /// Bluetooth HCI controller.
-public protocol BluetoothHostControllerInterface: class {
+public protocol BluetoothHostControllerInterface: AnyObject {
     
     /// All controllers on the host.
     static var controllers: [Self] { get }

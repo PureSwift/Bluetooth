@@ -105,7 +105,7 @@ public extension GAP3DInformation {
         /// Factory Test Mode
         case factoryTestMode = 0b10000000
         
-        public static let allCases: Set<Flag> = [
+        public static let allCases: [Flag] = [
             .associationNotification,
             .batteryLevelReporting,
             .sendBatteryLevelOnStartUp,

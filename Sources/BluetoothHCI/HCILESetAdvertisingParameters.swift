@@ -148,7 +148,7 @@ public extension HCILESetAdvertisingParameters {
         /// Enable channel 39 use
         case channel39              = 0b00000100
         
-        public static let allCases: Set<ChannelMap> = [.channel37, .channel38, .channel39]
+        public static let allCases: [ChannelMap] = [.channel37, .channel38, .channel39]
     }
     
     /// Filter Policy

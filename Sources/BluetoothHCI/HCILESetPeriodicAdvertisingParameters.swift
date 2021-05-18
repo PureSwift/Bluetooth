@@ -128,7 +128,7 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
         /// Include TxPower in the extended header of the advertising PDU
         case includeTxPower = 0b100000
         
-        public static let allCases: Set<HCILESetPeriodicAdvertisingParameters.AdvertisingEventProperties> = [
+        public static let allCases: [HCILESetPeriodicAdvertisingParameters.AdvertisingEventProperties] = [
             .includeTxPower
         ]
     }
