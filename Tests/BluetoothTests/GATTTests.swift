@@ -112,9 +112,9 @@ final class GATTTests: XCTestCase {
             
             client.discoverAllPrimaryServices {
                 switch $0 {
-                case let .error(error):
+                case let .failure(error):
                     XCTFail("\(error)")
-                case let .value(services):
+                case let .success(services):
                     XCTAssertEqual(services.map { $0.uuid }, profile.map { $0.uuid })
                 }
             }
@@ -417,10 +417,10 @@ final class GATTTests: XCTestCase {
             
             switch $0 {
                 
-            case let .error(error):
+            case let .failure(error):
                 XCTFail("\(error)")
                 
-            case let .value(services):
+            case let .success(services):
                 
                 XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
             }
@@ -542,10 +542,10 @@ final class GATTTests: XCTestCase {
             
             switch $0 {
                 
-            case let .error(error):
+            case let .failure(error):
                 XCTFail("\(error)")
                 
-            case let .value(services):
+            case let .success(services):
                 
                 XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
             }
@@ -598,11 +598,11 @@ final class GATTTests: XCTestCase {
             
             switch $0 {
                 
-            case let .error(error):
+            case let .failure(error):
                 
                 XCTFail("Error \(error)")
                 
-            case let .value(foundServices):
+            case let .success(foundServices):
                 
                 guard foundServices.count == 1,
                     let foundService = foundServices.first
@@ -617,11 +617,11 @@ final class GATTTests: XCTestCase {
                     
                     switch $0 {
                         
-                    case let .error(error):
+                    case let .failure(error):
                         
                         XCTFail("Error \(error)")
                         
-                    case let .value(characteristics):
+                    case let .success(characteristics):
                         
                         guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
                             else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
@@ -668,11 +668,11 @@ final class GATTTests: XCTestCase {
             
             switch $0 {
                 
-            case let .error(error):
+            case let .failure(error):
                 
                 XCTFail("Error \(error)")
                 
-            case let .value(foundServices):
+            case let .success(foundServices):
                 
                 guard foundServices.count == 1,
                     let foundService = foundServices.first
@@ -687,11 +687,11 @@ final class GATTTests: XCTestCase {
                     
                     switch $0 {
                         
-                    case let .error(error):
+                    case let .failure(error):
                         
                         XCTFail("Error \(error)")
                         
-                    case let .value(foundCharacteristics):
+                    case let .success(foundCharacteristics):
                         
                         guard foundCharacteristics.count == 1,
                             let foundCharacteristic = foundCharacteristics.first
@@ -753,11 +753,11 @@ final class GATTTests: XCTestCase {
             
             switch $0 {
                 
-            case let .error(error):
+            case let .failure(error):
                 
                 XCTFail("Error \(error)")
                 
-            case let .value(services):
+            case let .success(services):
                 
                 guard let foundService = services.first(where: { $0.uuid == service.uuid })
                     else { XCTFail("Service \(service.uuid) not found"); return }
@@ -770,11 +770,11 @@ final class GATTTests: XCTestCase {
                     
                     switch $0 {
                         
-                    case let .error(error):
+                    case let .failure(error):
                         
                         XCTFail("Error \(error)")
                         
-                    case let .value(characteristics):
+                    case let .success(characteristics):
                         
                         guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
                             else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
@@ -788,11 +788,11 @@ final class GATTTests: XCTestCase {
                             
                             switch $0 {
                                 
-                            case let .error(error):
+                            case let .failure(error):
                                 
                                 XCTFail("Error \(error)")
                                 
-                            case let .value(foundDescriptors):
+                            case let .success(foundDescriptors):
                                 
                                 XCTAssert(foundDescriptors.isEmpty == false, "No descriptors found")
                                 XCTAssertEqual(foundDescriptors.count, descriptors.count)
@@ -809,11 +809,11 @@ final class GATTTests: XCTestCase {
                                             
                                             switch $0 {
                                                 
-                                            case let .error(error):
+                                            case let .failure(error):
                                                 
                                                 XCTFail("Error \(error)")
                                                 
-                                            case let .value(readValue):
+                                            case let .success(readValue):
                                                 
                                                 XCTAssertEqual(readValue, expectedValue)
                                             }
@@ -828,11 +828,11 @@ final class GATTTests: XCTestCase {
                                             
                                             switch $0 {
                                                 
-                                            case let .error(error):
+                                            case let .failure(error):
                                                 
                                                 XCTFail("Error \(error)")
                                                 
-                                            case .value:
+                                            case .success:
                                                 
                                                 XCTAssertEqual(newValue, server.database[handle: descriptor.handle].value)
                                             }
@@ -912,11 +912,11 @@ final class GATTTests: XCTestCase {
                 
                 switch $0 {
                     
-                case let .error(error):
+                case let .failure(error):
                     
                     XCTFail("Error \(error)")
                     
-                case let .value(services):
+                case let .success(services):
                     
                     guard let foundService = services.first(where: { $0.uuid == service.uuid })
                         else { XCTFail("Service \(service.uuid) not found"); return }
@@ -929,11 +929,11 @@ final class GATTTests: XCTestCase {
                         
                         switch $0 {
                             
-                        case let .error(error):
+                        case let .failure(error):
                             
                             XCTFail("Error \(error)")
                             
-                        case let .value(characteristics):
+                        case let .success(characteristics):
                             
                             guard let notificationCharacteristic = characteristics.first(where: { $0.properties.contains(.notify) || $0.properties.contains(.indicate) })
                                 else { XCTFail("Characteristic not found"); return }
@@ -942,11 +942,11 @@ final class GATTTests: XCTestCase {
                                 
                                 switch $0 {
                                     
-                                case let .error(error):
+                                case let .failure(error):
                                     
                                     XCTFail("Error \(error)")
                                     
-                                case let .value(descriptors):
+                                case let .success(descriptors):
                                     
                                     XCTAssert(descriptors.isEmpty == false, "No descriptors found")
                                     
@@ -954,11 +954,11 @@ final class GATTTests: XCTestCase {
                                         
                                         switch $0 {
                                             
-                                        case let .error(error):
+                                        case let .failure(error):
                                             
                                             XCTFail("Error \(error)")
                                             
-                                        case .value:
+                                        case .success:
                                             
                                             newData.forEach {
                                                 server.writeValue($0, forCharacteristic: notificationCharacteristic.uuid)
@@ -968,11 +968,11 @@ final class GATTTests: XCTestCase {
                                                 
                                                 switch $0 {
                                                     
-                                                case let .error(error):
+                                                case let .failure(error):
                                                     
                                                     XCTFail("Error \(error)")
                                                     
-                                                case .value:
+                                                case .success:
                                                     
                                                     let maxLength = 20 //MTU-3
                                                     
@@ -1064,11 +1064,11 @@ final class GATTTests: XCTestCase {
                 //dump($0)
                 
                 switch $0 {
-                case let .error(error):
+                case let .failure(error):
                     
                     XCTFail("\(error)")
                     
-                case let .value(services):
+                case let .success(services):
                     
                     XCTAssert(services.map({ $0.uuid }) == TestProfile.services.map { $0.uuid })
                     
@@ -1095,11 +1095,11 @@ final class GATTTests: XCTestCase {
                 //dump($0)
                 
                 switch $0 {
-                case let .error(error):
+                case let .failure(error):
                     
                     XCTFail("\(error)")
                     
-                case let .value(characteristics):
+                case let .success(characteristics):
                     
                     XCTAssert(characteristics.map({ $0.uuid }) == testService.characteristics.map { $0.uuid })
                     
@@ -1124,14 +1124,14 @@ final class GATTTests: XCTestCase {
                 //dump($0)
                 
                 switch $0 {
-                case let .error(error):
+                case let .failure(error):
                     
                     XCTFail("\(error)")
                     
-                case .value: break
+                case .success: break
                     
                     /*
-                     case let .value(characteristics):
+                     case let .success(characteristics):
                      
                      // TODO: Investigate Discover Characteristics by UUID
                      //XCTAssert(value.count == 1, "\(uuid) \(value.map { $0.uuid })")
@@ -1164,11 +1164,11 @@ final class GATTTests: XCTestCase {
                     //dump($0)
                     
                     switch $0 {
-                    case let .error(error):
+                    case let .failure(error):
                         
                         XCTFail("\(error)")
                         
-                    case let .value(value):
+                    case let .success(value):
                         
                         XCTAssert(value == testCharacteristic.value)
                     }
@@ -1200,11 +1200,11 @@ final class GATTTests: XCTestCase {
                         //dump($0)
                         
                         switch $0 {
-                        case let .error(error):
+                        case let .failure(error):
                             
                             XCTFail("\(error)")
                             
-                        case .value:
+                        case .success:
                             
                             guard let writtenValue = writtenValues[characteristic.handle.value]
                                 else { XCTFail("Did not write \(characteristic.uuid)"); return }

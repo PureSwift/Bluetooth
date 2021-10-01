@@ -531,21 +531,21 @@ internal extension ATTConnection {
 /// Type-erased ATT Response
 internal enum AnyATTResponse {
     
-    case error(ATTErrorResponse)
-    case value(ATTProtocolDataUnit)
+    case failure(ATTErrorResponse)
+    case success(ATTProtocolDataUnit)
     
     internal var rawValue: ATTProtocolDataUnit {
         switch self {
-        case let .error(pdu): return pdu
-        case let .value(pdu): return pdu
+        case let .failure(pdu): return pdu
+        case let .success(pdu): return pdu
         }
     }
 }
 
 internal enum ATTResponse <Value: ATTProtocolDataUnit> {
     
-    case error(ATTErrorResponse)
-    case value(Value)
+    case failure(ATTErrorResponse)
+    case success(Value)
     
     internal init(_ anyResponse: AnyATTResponse) {
         
@@ -554,13 +554,13 @@ internal enum ATTResponse <Value: ATTProtocolDataUnit> {
         assert(Value.attributeOpcode.type == .response || Value.attributeOpcode.type == .confirmation)
         
         switch anyResponse {
-        case let .error(error):
-            self = .error(error)
-        case let .value(value):
+        case let .failure(error):
+            self = .failure(error)
+        case let .success(value):
             // swiftlint:disable force_cast
             let specializedValue = value as! Value
             // swiftlint:enable all
-            self = .value(specializedValue)
+            self = .success(specializedValue)
         }
     }
 }
@@ -605,14 +605,14 @@ private final class ATTSendOperation {
             guard let errorResponse = ATTErrorResponse(data: data)
                 else { throw ATTConnectionError.garbageResponse(data) }
             
-            responseInfo.callback(.error(errorResponse))
+            responseInfo.callback(.failure(errorResponse))
             
         } else {
             
             guard let response = responseInfo.responseType.init(data: data)
                 else { throw ATTConnectionError.garbageResponse(data) }
             
-            responseInfo.callback(.value(response))
+            responseInfo.callback(.success(response))
         }
     }
 }

@@ -17,16 +17,12 @@ public final class GATTClient {
     public var log: ((String) -> ())?
     
     public var writePending: (() -> ())? {
-        
         get { return connection.writePending }
-        
         set { connection.writePending = newValue }
     }
     
     public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
-        
         get { return connection.maximumTransmissionUnit }
-        
         set { connection.maximumTransmissionUnit = newValue }
     }
     
@@ -308,7 +304,7 @@ public final class GATTClient {
                                                   completion: @escaping (GATTClientResponse<()>) -> ()) {
         
         guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
-            else { completion(.error(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
+            else { completion(.failure(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
         
         var clientConfiguration = GATTClientCharacteristicConfiguration()
         
@@ -324,10 +320,10 @@ public final class GATTClient {
             
             switch response {
                 
-            case .error:
+            case .failure:
                 break
                 
-            case .value:
+            case .success:
                 
                 self.notifications[characteristic.handle.value] = notification
                 self.indications[characteristic.handle.value] = indication
@@ -584,7 +580,7 @@ public final class GATTClient {
         // after which an Executive Write Request is used to write the complete value.
         
         guard inLongWrite == false
-            else { completion(.error(GATTClientError.inLongWrite)); return }
+            else { completion(.failure(GATTClientError.inLongWrite)); return }
         
         let firstValuePart = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - 5))
         
@@ -640,11 +636,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(error):
+        case let .failure(error):
             
             log?("Could not exchange MTU: \(error)")
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             let clientMTU = preferredMaximumTransmissionUnit
             
@@ -668,17 +664,17 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(errorResponse):
+        case let .failure(errorResponse):
             
-            operation.error(errorResponse)
+            operation.failure(errorResponse)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             // store PDU values
             for serviceData in pdu.attributeData {
                 
                 guard let littleEndianServiceUUID = BluetoothUUID(data: serviceData.value)
-                    else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                    else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
                 
                 let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
                 
@@ -695,7 +691,7 @@ public final class GATTClient {
             
             // prevent infinite loop
             guard lastEnd >= operation.start
-                else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
             
             guard lastEnd < .max // End of database
                 else { operation.success(); return }
@@ -727,11 +723,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(errorResponse):
+        case let .failure(errorResponse):
             
-            operation.error(errorResponse)
+            operation.failure(errorResponse)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             guard let serviceUUID = operation.uuid
                 else { fatalError("Should have UUID specified") }
@@ -794,11 +790,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(errorResponse):
+        case let .failure(errorResponse):
             
-            operation.error(errorResponse)
+            operation.failure(errorResponse)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             // pre-allocate array
             operation.foundDescriptors.reserveCapacity(operation.foundDescriptors.count + pdu.data.count)
@@ -823,7 +819,7 @@ public final class GATTClient {
             
             // prevent infinite loop
             guard lastHandle >= operation.start
-                else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
             
             guard lastHandle < .max // End of database
                 else { operation.success(); return }
@@ -860,11 +856,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(errorResponse):
+        case let .failure(errorResponse):
             
-            operation.error(errorResponse)
+            operation.failure(errorResponse)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             // pre-allocate array
             operation.foundData.reserveCapacity(operation.foundData.count + pdu.data.count)
@@ -880,7 +876,7 @@ public final class GATTClient {
                                           permissions: [.read])
                 
                 guard let declaration = DeclarationAttribute(attribute: attribute)
-                    else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                    else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
                 
                 let characteristic = Characteristic(uuid: declaration.uuid,
                                                     properties: declaration.properties,
@@ -902,7 +898,7 @@ public final class GATTClient {
             
             // prevent infinite loop
             guard lastEnd >= operation.start
-                else { operation.completion(.error(Error.invalidResponse(pdu))); return }
+                else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
             
             operation.start = lastEnd + 1
             
@@ -932,11 +928,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(error):
+        case let .failure(error):
             
-            operation.error(error)
+            operation.failure(error)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             operation.data = pdu.attributeValue
             
@@ -960,11 +956,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(error):
+        case let .failure(error):
             
-            operation.error(error)
+            operation.failure(error)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             operation.data += pdu.partAttributeValue
             
@@ -985,11 +981,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(error):
+        case let .failure(error):
             
-            operation.error(error)
+            operation.failure(error)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             operation.success(pdu.values)
         }
@@ -1002,11 +998,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(error):
+        case let .failure(error):
             
-            operation.error(error)
+            operation.failure(error)
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             operation.success(pdu.attributeData)
         }
@@ -1022,14 +1018,10 @@ public final class GATTClient {
     private func writeResponse(_ response: ATTResponse<ATTWriteResponse>, completion: (GATTClientResponse<()>) -> ()) {
         
         switch response {
-            
-        case let .error(error):
-            
-            completion(.error(error))
-            
-        case .value: // PDU contains no data
-            
-            completion(.value(()))
+        case let .failure(error):
+            completion(.failure(.errorResponse(error)))
+        case .success: // PDU contains no data
+            completion(.success(()))
         }
     }
     
@@ -1049,11 +1041,11 @@ public final class GATTClient {
         
         switch response {
             
-        case let .error(error):
+        case let .failure(error):
             
-            complete { $0.error(error) }
+            complete { $0.failure(error) }
             
-        case let .value(pdu):
+        case let .success(pdu):
             
             operation.receivedData += pdu.partValue
             
@@ -1063,7 +1055,7 @@ public final class GATTClient {
                 guard pdu.handle == operation.lastRequest.handle,
                     pdu.offset == operation.lastRequest.offset,
                     pdu.partValue == operation.lastRequest.partValue
-                    else { complete { $0.completion(.error(GATTClientError.invalidResponse(pdu))) }; return }
+                    else { complete { $0.completion(.failure(GATTClientError.invalidResponse(pdu))) }; return }
             }
             
             let offset = Int(operation.lastRequest.offset) + operation.lastRequest.partValue.count
@@ -1107,13 +1099,9 @@ public final class GATTClient {
         }
         
         switch response {
-            
-        case let .error(error):
-            
-            complete { $0.error(error) }
-            
-        case .value:
-            
+        case let .failure(error):
+            complete { $0.failure(error) }
+        case .success:
             complete { $0.success() }
         }
     }
@@ -1221,11 +1209,7 @@ extension GATTClientError: CustomNSError {
 
 #endif
 
-public enum GATTClientResponse <Value> {
-    
-    case error(Swift.Error)
-    case value(Value)
-}
+public typealias GATTClientResponse <Value> = Result<Value, GATTClientError>
 
 public extension GATTClient {
     
@@ -1297,11 +1281,11 @@ fileprivate final class DiscoveryOperation <T> {
     @inline(__always)
     func success() {
         
-        completion(.value(foundData))
+        completion(.success(foundData))
     }
     
     @inline(__always)
-    func error(_ responseError: ATTErrorResponse) {
+    func failure(_ responseError: ATTErrorResponse) {
         
         if responseError.error == .attributeNotFound {
             
@@ -1309,7 +1293,7 @@ fileprivate final class DiscoveryOperation <T> {
             
         } else {
             
-            completion(.error(GATTClientError.errorResponse(responseError)))
+            completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
 }
@@ -1341,11 +1325,11 @@ private extension GATTClient {
         @inline(__always)
         func success() {
             
-            completion(.value(foundDescriptors))
+            completion(.success(foundDescriptors))
         }
         
         @inline(__always)
-        func error(_ responseError: ATTErrorResponse) {
+        func failure(_ responseError: ATTErrorResponse) {
             
             if responseError.error == .attributeNotFound {
                 
@@ -1353,7 +1337,7 @@ private extension GATTClient {
                 
             } else {
                 
-                completion(.error(GATTClientError.errorResponse(responseError)))
+                completion(.failure(GATTClientError.errorResponse(responseError)))
             }
         }
     }
@@ -1382,11 +1366,11 @@ private extension GATTClient {
         @inline(__always)
         func success() {
             
-            completion(.value(data))
+            completion(.success(data))
         }
         
         @inline(__always)
-        func error(_ responseError: ATTErrorResponse) {
+        func failure(_ responseError: ATTErrorResponse) {
             
             if responseError.error == .invalidOffset,
                 data.isEmpty == false {
@@ -1395,7 +1379,7 @@ private extension GATTClient {
                 
             } else {
                 
-                completion(.error(GATTClientError.errorResponse(responseError)))
+                completion(.failure(GATTClientError.errorResponse(responseError)))
             }
         }
     }
@@ -1416,13 +1400,13 @@ private extension GATTClient {
         @inline(__always)
         func success(_ values: Data) {
             
-            completion(.value(values))
+            completion(.success(values))
         }
         
         @inline(__always)
-        func error(_ responseError: ATTErrorResponse) {
+        func failure(_ responseError: ATTErrorResponse) {
             
-            completion(.error(GATTClientError.errorResponse(responseError)))
+            completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
     
@@ -1449,13 +1433,13 @@ private extension GATTClient {
                 data[attribute.handle] = Data(attribute.value)
             }
             
-            completion(.value(data))
+            completion(.success(data))
         }
         
         @inline(__always)
-        func error(_ responseError: ATTErrorResponse) {
+        func failure(_ responseError: ATTErrorResponse) {
             
-            completion(.error(GATTClientError.errorResponse(responseError)))
+            completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
     
@@ -1496,14 +1480,12 @@ private extension GATTClient {
         
         @inline(__always)
         func success() {
-            
-            completion(.value(()))
+            completion(.success(()))
         }
         
         @inline(__always)
-        func error(_ responseError: ATTErrorResponse) {
-            
-            completion(.error(GATTClientError.errorResponse(responseError)))
+        func failure(_ responseError: ATTErrorResponse) {
+            completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
 }
