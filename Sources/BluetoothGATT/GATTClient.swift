@@ -41,7 +41,7 @@ public final class GATTClient {
     
     // MARK: - Initialization
     
-    public init(socket: L2CAPSocketProtocol,
+    public init(socket: L2CAPSocket,
                 maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
                 log: ((String) -> ())? = nil,
                 writePending: (() -> ())? = nil) {
@@ -63,15 +63,13 @@ public final class GATTClient {
     // MARK: - Methods
     
     /// Performs the actual IO for recieving data.
-    public func read() throws -> Bool {
-        
-        return try connection.read()
+    public func read() async throws {
+        return try await connection.read()
     }
     
     /// Performs the actual IO for sending data.
-    public func write() throws -> Bool {
-        
-        return try connection.write()
+    public func write() async throws -> Bool {
+        return try await connection.write()
     }
     
     // MARK: Requests

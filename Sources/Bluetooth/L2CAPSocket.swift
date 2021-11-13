@@ -9,17 +9,24 @@
 import Foundation
 
 /// L2CAP Socket protocol.
-public protocol L2CAPSocketProtocol: AnyObject {
-    
-    /// Reads from the socket.
-    func recieve(_ bufferSize: Int) throws -> Data?
+public protocol L2CAPSocket {
     
     /// Write to the socket.
-    func send(_ data: Data) throws
+    func send(_ data: Data) async throws
     
-    /// The socket's security level.
-    var securityLevel: SecurityLevel { get }
+    /// Reads from the socket.
+    func recieve(_ bufferSize: Int) async throws -> Data
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws
+    
+    /// Get security level
+    func securityLevel() throws -> SecurityLevel
+    
+    /// Attempt to accept an incomping connection.
+    func accept(sleep: UInt64) async throws -> Self
+    
+    func canWrite() throws -> Bool
+    
+    func canRead() throws -> Bool
 }

@@ -44,7 +44,7 @@ public final class GATTServer {
     
     // MARK: - Initialization
     
-    public init(socket: L2CAPSocketProtocol,
+    public init(socket: L2CAPSocket,
                 maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
                 maximumPreparedWrites: Int = 50) {
         
@@ -58,13 +58,13 @@ public final class GATTServer {
     // MARK: - Methods
     
     /// Performs the actual IO for sending data.
-    public func read() throws -> Bool {
-        return try connection.read()
+    public func read() async throws {
+        return try await connection.read()
     }
     
     /// Performs the actual IO for recieving data.
-    public func write() throws -> Bool {
-        return try connection.write()
+    public func write() async throws -> Bool {
+        return try await connection.write()
     }
     
     /// Update the value of a characteristic attribute.
@@ -134,15 +134,13 @@ public final class GATTServer {
             else { fatalError("Could not add error PDU to queue: \(opcode) \(error) \(handle)") }
     }
     
-    @inline(__always)
-    private func fatalErrorResponse(_ message: String, _ opcode: ATTOpcode, _ handle: UInt16 = 0, line: UInt = #line) -> Never {
+    private func fatalErrorResponse(_ message: String, _ opcode: ATTOpcode, _ handle: UInt16 = 0, line: UInt = #line) async -> Never {
         
         errorResponse(opcode, .unlikelyError, handle)
-        
-        do { let _ = try connection.write() }
-        
+        do { let _ = try await connection.write() }
         catch { log?("Could not send .unlikelyError to client. (\(error))") }
         
+        // crash
         fatalError(message, line: line)
     }
     
@@ -184,20 +182,22 @@ public final class GATTServer {
         guard attribute.permissions != permissions else { return nil }
         
         // check permissions
-        
         if permissions.contains(.read) && !attribute.permissions.contains(.read) {
-            
             return .readNotPermitted
         }
         
         if permissions.contains(.write) && !attribute.permissions.contains(.write) {
-            
             return .writeNotPermitted
         }
         
         // check security
         
-        let security = connection.socket.securityLevel
+        let security: SecurityLevel
+        do { security = try connection.socket.securityLevel() }
+        catch {
+            log?("Unable to get security level. \(error)")
+            security = .sdp
+        }
         
         if attribute.permissions.contains(.readAuthentication)
             || attribute.permissions.contains(.writeAuthentication)

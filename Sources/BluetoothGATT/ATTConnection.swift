@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /// Manages a Bluetooth connection using the ATT protocol.
 internal final class ATTConnection {
@@ -16,7 +17,7 @@ internal final class ATTConnection {
     /// Actual number of bytes for PDU ATT exchange.
     public var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default
     
-    public let socket: L2CAPSocketProtocol
+    public let socket: L2CAPSocket
     
     public var log: ((String) -> ())?
     
@@ -57,24 +58,22 @@ internal final class ATTConnection {
     // MARK: - Initialization
     
     deinit {
-        
         unregisterAll()
     }
     
-    public init(socket: L2CAPSocketProtocol) {
-        
+    public init(socket: L2CAPSocket) {
         self.socket = socket
     }
     
     // MARK: - Methods
     
     /// Performs the actual IO for recieving data.
-    public func read() throws -> Bool {
+    public func read() async throws {
         
         //log?("Attempt read")
         
-        guard let recievedData = try socket.recieve(Int(maximumTransmissionUnit.rawValue))
-            else { return false } // no data availible to read
+        let bytesToRead = Int(self.maximumTransmissionUnit.rawValue)
+        let recievedData = try await socket.recieve(bytesToRead)
         
         //log?("Recieved data (\(recievedData.count) bytes)")
         
@@ -112,12 +111,10 @@ internal final class ATTConnection {
             // For all other opcodes notify the upper layer of the PDU and let them act on it.
             try handle(notify: recievedData, opcode: opcode)
         }
-        
-        return true
     }
     
     /// Performs the actual IO for sending data.
-    public func write() throws -> Bool {
+    public func write() async throws -> Bool {
         
         //log?("Attempt write")
         
@@ -126,7 +123,7 @@ internal final class ATTConnection {
         
         //log?("Sending data... (\(sendOperation.data.count) bytes)")
         
-        try socket.send(sendOperation.data)
+        try await socket.send(sendOperation.data)
         
         let opcode = sendOperation.opcode
         
@@ -137,24 +134,16 @@ internal final class ATTConnection {
         * no need to keep it around.
         */
         switch opcode.type {
-            
         case .request:
-            
             pendingRequest = sendOperation
-            
         case .indication:
-            
             pendingRequest = sendOperation
-            
         case .response:
-            
             // Set `incomingRequest` to false to indicate that no request is pending
             incomingRequest = false
-            
         case .command,
              .notification,
              .confirmation:
-            
             break
         }
         
@@ -476,26 +465,31 @@ internal final class ATTConnection {
     /// Attempts to change security level based on an error response.
     private func changeSecurity(for error: ATTError) -> Bool {
         
+        let securityLevel: Bluetooth.SecurityLevel
+        do { securityLevel = try self.socket.securityLevel() }
+        catch {
+            log?("Unable to get security level. \(error)")
+            return false
+        }
+        
         // only change if security is Auto
-        guard self.socket.securityLevel == .sdp
+        guard securityLevel == .sdp
             else { return false }
         
         // get security from IO
-        var security = self.socket.securityLevel
+        var newSecurityLevel: Bluetooth.SecurityLevel
         
         if error == .insufficientEncryption,
-            security < .medium {
-            
-            security = .medium
-            
+           securityLevel < .medium {
+            newSecurityLevel = .medium
         } else if error == .insufficientAuthentication {
             
-            if (security < .medium) {
-                security = .medium
-            } else if (security < .high) {
-                security = .high
-            } else if (security < .fips) {
-                security = .fips
+            if (securityLevel < .medium) {
+                newSecurityLevel = .medium
+            } else if (securityLevel < .high) {
+                newSecurityLevel = .high
+            } else if (securityLevel < .fips) {
+                newSecurityLevel = .fips
             } else {
                 return false
             }
@@ -504,8 +498,11 @@ internal final class ATTConnection {
         }
         
         // attempt to change security level on Socket IO
-        do { try self.socket.setSecurityLevel(security) }
-        catch { return false }
+        do { try self.socket.setSecurityLevel(newSecurityLevel) }
+        catch {
+            log?("Unable to set security level. \(error)")
+            return false
+        }
         
         return true
     }
