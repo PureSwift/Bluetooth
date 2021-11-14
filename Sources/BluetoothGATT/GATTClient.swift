@@ -36,7 +36,7 @@ public actor GATTClient {
     internal private(set) var indications = [UInt16: Notification]()
     
     internal let connection: ATTConnection
-    
+     
     internal var backgroundTask: Task<(), Swift.Error>?
     
     // MARK: - Initialization
@@ -62,17 +62,19 @@ public actor GATTClient {
         if maximumTransmissionUnit > .default {
             await self.exchangeMTU()
         }
-        // read in background
-        backgroundTask = Task.detached(priority: .userInitiated) {
-            
-        }
-        // write in background
-        await self.connection.setWritePending {
-            
-        }
     }
     
     // MARK: - Methods
+    
+    /// Performs the actual IO for sending data.
+    public func read() async throws {
+        return try await connection.read()
+    }
+    
+    /// Performs the actual IO for recieving data.
+    public func write() async throws -> Bool {
+        return try await connection.write()
+    }
     
     // MARK: Requests
     
@@ -346,13 +348,13 @@ public actor GATTClient {
     private func send <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
         _ request: Request,
         response: Response.Type
-    ) async throws -> ATTResponse<Response> {
+    ) async -> ATTResponse<Response> {
         assert(Response.attributeOpcode != .errorResponse)
         assert(Response.attributeOpcode.type == .response)
         assert(Request.attributeOpcode.type != .response)
         let log = self.log
         log?("Request: \(request)")
-        return try await withCheckedThrowingContinuation { [weak self] continuation in
+        return await withCheckedContinuation { [weak self] continuation in
             guard let self = self else { return }
             Task {
                 let responseType: ATTProtocolDataUnit.Type = response
@@ -363,32 +365,15 @@ public actor GATTClient {
                 }
                 guard let _ = await self.connection.queue(request, response: (callback, responseType))
                     else { fatalError("Could not add PDU to queue: \(request)") }
-                // do I/O
-                do {
-                    // write pending
-                    let didWrite = try await self.connection.write()
-                    assert(didWrite, "Expected queued write operation")
-                    try await self.connection.read()
-                    // FIXME: Handle notifications
-                }
-                catch {
-                    // I/O error
-                    assert(type(of: error) != ATTErrorResponse.self)
-                    continuation.resume(throwing: error)
-                }
             }
         }
     }
     
-    @inline(__always)
-    private func send<Request: ATTProtocolDataUnit>(_ request: Request) async throws {
+    private func send<Request: ATTProtocolDataUnit>(_ request: Request) async {
         log?("Request: \(request)")
         assert(Request.attributeOpcode.type != .response)
         guard let _ = await connection.queue(request)
             else { fatalError("Could not add PDU to queue: \(request)") }
-        // write pending PDU
-        let didWrite = try await self.connection.write()
-        assert(didWrite, "Expected queued write operation")
     }
     
     private func endHandle(
@@ -425,7 +410,7 @@ public actor GATTClient {
         let clientMTU = preferredMaximumTransmissionUnit
         let request = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
         do {
-            let response = try await send(request, response: ATTMaximumTransmissionUnitResponse.self)
+            let response = await send(request, response: ATTMaximumTransmissionUnitResponse.self)
             await exchangeMTUResponse(response)
         } catch {
             // I/O error
