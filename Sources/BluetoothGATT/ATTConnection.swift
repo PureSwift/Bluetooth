@@ -58,14 +58,24 @@ internal actor ATTConnection {
         unregisterAll()
     }
     
-    public init(socket: L2CAPSocket) {
+    public init(
+        socket: L2CAPSocket,
+        log: ((String) -> ())? = nil,
+        writePending: (() -> ())? = nil
+    ) {
         self.socket = socket
+        self.log = log
+        self.writePending = writePending
     }
     
     // MARK: - Methods
     
     public func setMaximumTransmissionUnit(_ newValue: ATTMaximumTransmissionUnit) {
         self.maximumTransmissionUnit = newValue
+    }
+    
+    public func setWritePending(_ newValue: (() -> ())?) {
+        self.writePending = newValue
     }
     
     /// Performs the actual IO for recieving data.
@@ -179,23 +189,14 @@ internal actor ATTConnection {
         notifyList.removeAll()
     }
     
-    /// Sends an error.
-    public func send(
-        error: ATTError,
-        opcode: ATTOpcode,
-        handle: UInt16 = 0,
-        response: ((ATTErrorResponse) -> ())? = nil
-    ) -> UInt? {
-        
-        let error = ATTErrorResponse(request: opcode, attributeHandle: handle, error: error)
-        return self.send(error) // no callback for responses
-    }
-    
     /// Adds a PDU to the queue to send.
     ///
     /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
     @discardableResult
-    public func send <T: ATTProtocolDataUnit> (_ pdu: T, response: (callback: (ATTProtocolDataUnit) -> (), ATTProtocolDataUnit.Type)? = nil) -> UInt? {
+    public func queue <T: ATTProtocolDataUnit> (
+        _ pdu: T,
+        response: (callback: (ATTProtocolDataUnit) -> (), ATTProtocolDataUnit.Type)? = nil
+    ) -> UInt? {
         
         let attributeOpcode = T.attributeOpcode
         let type = attributeOpcode.type
@@ -389,10 +390,8 @@ internal actor ATTConnection {
         
         // If this was a request and no handler was registered for it, respond with "Not Supported"
         if foundPDU == nil && opcode.type == .request {
-            
             let errorResponse = ATTErrorResponse(request: opcode, attributeHandle: 0x00, error: .requestNotSupported)
-            
-            let _ = send(errorResponse)
+            let _ = queue(errorResponse)
         }
         
     }

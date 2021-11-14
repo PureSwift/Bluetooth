@@ -37,14 +37,23 @@ public actor GATTClient {
     
     internal let connection: ATTConnection
     
+    internal var backgroundTask: Task<(), Swift.Error>?
+    
     // MARK: - Initialization
+    
+    deinit {
+        backgroundTask?.cancel()
+    }
     
     public init(
         socket: L2CAPSocket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         log: ((String) -> ())? = nil
     ) async {
-        self.connection = ATTConnection(socket: socket)
+        self.connection = ATTConnection(
+            socket: socket,
+            log: log
+        )
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
         // setup notifications and indications
@@ -52,6 +61,14 @@ public actor GATTClient {
         // queue MTU exchange if not default value
         if maximumTransmissionUnit > .default {
             await self.exchangeMTU()
+        }
+        // read in background
+        backgroundTask = Task.detached(priority: .userInitiated) {
+            
+        }
+        // write in background
+        await self.connection.setWritePending {
+            
         }
     }
     
@@ -344,7 +361,7 @@ public actor GATTClient {
                     log?("Response: \($0)")
                     continuation.resume(returning: ATTResponse<Response>($0))
                 }
-                guard let _ = await self.connection.send(request, response: (callback, responseType))
+                guard let _ = await self.connection.queue(request, response: (callback, responseType))
                     else { fatalError("Could not add PDU to queue: \(request)") }
                 // do I/O
                 do {
@@ -367,7 +384,7 @@ public actor GATTClient {
     private func send<Request: ATTProtocolDataUnit>(_ request: Request) async throws {
         log?("Request: \(request)")
         assert(Request.attributeOpcode.type != .response)
-        guard let _ = await connection.send(request)
+        guard let _ = await connection.queue(request)
             else { fatalError("Could not add PDU to queue: \(request)") }
         // write pending PDU
         let didWrite = try await self.connection.write()
