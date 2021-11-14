@@ -165,28 +165,22 @@ public actor GATTClient {
         handleRange: (start: UInt16, end: UInt16) = (.min, .max)
     ) async throws -> [UInt16: Data] {
         precondition(handleRange.start < handleRange.end)
-        return try await withCheckedThrowingContinuation() { continuation in
-            Task {
-                // The Attribute Protocol Read By Type Request is used to perform the sub-procedure.
-                // The Attribute Type is set to the known characteristic UUID and the Starting Handle and Ending Handle parameters
-                // shall be set to the range over which this read is to be performed. This is typically the handle range for the service in which the characteristic belongs.
-                do {
-                    let request = ATTReadByTypeRequest(
-                        startHandle: handleRange.start,
-                        endHandle: handleRange.end,
-                        attributeType: uuid
-                    )
-                    let operation = ReadUsingUUIDOperation(uuid: uuid) { result in
-                        continuation.resume(with: result)
-                    }
-                    let response = try await send(request, response: ATTReadByTypeResponse.self)
-                    readByTypeResponse(response, operation: operation)
-                } catch {
-                    assert(error as? ATTErrorResponse == nil)
-                    continuation.resume(throwing: error)
-                }
-            }
+        // The Attribute Protocol Read By Type Request is used to perform the sub-procedure.
+        // The Attribute Type is set to the known characteristic UUID and the Starting Handle and Ending Handle parameters
+        // shall be set to the range over which this read is to be performed. This is typically the handle range for the service in which the characteristic belongs.
+        
+        let request = ATTReadByTypeRequest(
+            startHandle: handleRange.start,
+            endHandle: handleRange.end,
+            attributeType: uuid
+        )
+        let response = try await send(request, response: ATTReadByTypeResponse.self).get()
+        // parse response
+        var attributeData = [UInt16: Data](minimumCapacity: response.attributeData.count)
+        for attribute in response.attributeData {
+            attributeData[attribute.handle] = attribute.value
         }
+        return attributeData
     }
     
     /// Read Multiple Characteristic Values
@@ -206,23 +200,10 @@ public actor GATTClient {
         // The Read Multiple Response returns the Characteristic Values in the Set Of Values parameter.
         let handles = characteristics.map { $0.handle.value }
         assert(handles.count > 1)
-        return try await withCheckedThrowingContinuation() { continuation in
-            Task {
-                do {
-                    guard let request = ATTReadMultipleRequest(handles: handles)
-                        else { fatalError("Must provide at least 2 characteristics") }
-                    let operation = ReadMultipleOperation(characteristics: characteristics) { result in
-                        continuation.resume(with: result)
-                    }
-                    let response = try await send(request, response: ATTReadMultipleResponse.self)
-                    readMultipleResponse(response, operation: operation)
-                }
-                catch {
-                    assert(error as? ATTErrorResponse == nil)
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+        guard let request = ATTReadMultipleRequest(handles: handles)
+            else { fatalError("Must provide at least 2 characteristics") }
+        let response = try await send(request, response: ATTReadMultipleResponse.self).get()
+        return response.values
     }
     
     /**
@@ -233,13 +214,12 @@ public actor GATTClient {
     public func writeCharacteristic(
         _ characteristic: Characteristic,
         data: Data,
-        reliableWrites: Bool = true
+        withResponse: Bool = true
     ) async throws {
         try await writeAttribute(
             characteristic.handle.value,
             data: data,
-            reliableWrites: reliableWrites,
-            completion: completion
+            withResponse: withResponse
         )
     }
     
@@ -251,7 +231,7 @@ public actor GATTClient {
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
      */
     public func discoverDescriptors(
-        for characteristic: Characteristic,
+        of characteristic: Characteristic,
         service: (declaration: Service, characteristics: [Characteristic])
     ) async throws -> [Descriptor] {
         
@@ -262,14 +242,12 @@ public actor GATTClient {
          */
         let start = characteristic.handle.value + 1
         let end = endHandle(for: characteristic, service: service)
-        return try await withCheckedThrowingContinuation() {
-            Task {
-                do {
-                    let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
-                    try await discoverDescriptors(operation: operation)
-                }
-            }
-        }
+        var operation = DescriptorDiscoveryOperation(
+            start: start,
+            end: end
+        )
+        try await discoverDescriptors(&operation)
+        return operation.foundDescriptors
     }
     
     /// Read Characteristic Descriptor
@@ -295,15 +273,16 @@ public actor GATTClient {
      
      Uses the appropriate procecedure to write the characteristic descriptor value.
      */
-    public func writeDescriptor(_ descriptor: Descriptor,
-                                data: Data,
-                                reliableWrites: Bool = true,
-                                completion: ((GATTClientResponse<()>) -> ())?) {
-        
-        writeAttribute(descriptor.handle,
-                       data: data,
-                       reliableWrites: reliableWrites,
-                       completion: completion)
+    public func writeDescriptor(
+        _ descriptor: Descriptor,
+        data: Data,
+        withResponse: Bool = true
+    ) async throws {
+        try await writeAttribute(
+            descriptor.handle,
+            data: data,
+            withResponse: withResponse
+        )
     }
     
     /**
@@ -314,40 +293,29 @@ public actor GATTClient {
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
     public func clientCharacteristicConfiguration(
+        _ characteristic: Characteristic,
         notification: Notification?,
         indication: Notification?,
-        for characteristic: Characteristic,
-        descriptors: [GATTClient.Descriptor]
+        descriptors: [Descriptor]
     ) async throws {
         
         guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
-            else { completion(.failure(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
+            else { throw GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic) }
         
         var clientConfiguration = GATTClientCharacteristicConfiguration()
-        
         if notification != nil {
             clientConfiguration.configuration.insert(.notify)
         }
-        
         if indication != nil {
             clientConfiguration.configuration.insert(.indicate)
         }
         
-        writeDescriptor(descriptor, data: clientConfiguration.data) { [unowned self] (response) in
-            
-            switch response {
-                
-            case .failure:
-                break
-                
-            case .success:
-                
-                self.notifications[characteristic.handle.value] = notification
-                self.indications[characteristic.handle.value] = indication
-            }
-            
-            completion(response)
-        }
+        // write client configuration descriptor
+        try await writeDescriptor(descriptor, data: clientConfiguration.data)
+        
+        // store callbacks
+        self.notifications[characteristic.handle.value] = notification
+        self.indications[characteristic.handle.value] = indication
     }
     
     // MARK: - Private Methods
@@ -407,7 +375,7 @@ public actor GATTClient {
         assert(didWrite, "Expected queued write operation")
     }
     
-    internal func endHandle(
+    private func endHandle(
         for characteristic: Characteristic,
         service: (declaration: Service, characteristics: [Characteristic])
     ) -> UInt16 {
@@ -436,7 +404,7 @@ public actor GATTClient {
     // MARK: Requests
     
     /// Exchange MTU (should only be called once if not using default MTU)
-    internal func exchangeMTU() async {
+    private func exchangeMTU() async {
         assert(didExchangeMTU == false)
         let clientMTU = preferredMaximumTransmissionUnit
         let request = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
@@ -450,7 +418,7 @@ public actor GATTClient {
         }
     }
     
-    internal func discoverServices(
+    private func discoverServices(
         uuid: BluetoothUUID? = nil,
         start: UInt16 = 0x0001,
         end: UInt16 = 0xffff,
@@ -484,7 +452,7 @@ public actor GATTClient {
         return operation.foundData
     }
     
-    internal func discoverCharacteristics(
+    private func discoverCharacteristics(
         uuid: BluetoothUUID? = nil,
         service: Service
     ) async throws -> [Characteristic] {
@@ -505,7 +473,7 @@ public actor GATTClient {
         return operation.foundData
     }
     
-    private func discoverDescriptors(_ operation: inout DiscoveryOperation) async throws {
+    private func discoverDescriptors(_ operation: inout DescriptorDiscoveryOperation) async throws {
         assert(operation.start <= operation.end, "Invalid range")
         let request = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
         let response = try await send(request, response: ATTFindInformationResponse.self)
@@ -522,17 +490,12 @@ public actor GATTClient {
         // The Attribute Protocol Read Request is used with the
         // Attribute Handle parameter set to the Characteristic Value Handle.
         // The Read Response returns the Characteristic Value in the Attribute Value parameter.
-        return try await withCheckedThrowingContinuation() { continuation in
-            Task {
-                // read value and try to read blob if too big
-                let operation = ReadOperation(handle: handle) { result in
-                    continuation.resume(with: result)
-                }
-                let request = ATTReadRequest(handle: handle)
-                let response = try await send(request, response: ATTReadResponse.self)
-                try await readResponse(response, operation: operation)
-            }
-        }
+        // read value and try to read blob if too big
+        var operation = ReadOperation(handle: handle)
+        let request = ATTReadRequest(handle: handle)
+        let response = try await send(request, response: ATTReadResponse.self)
+        try await readResponse(response, &operation)
+        return operation.data
     }
     
     /// Read Long Characteristic Value
@@ -543,7 +506,7 @@ public actor GATTClient {
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadLongCharacteristicValues.png)
     @inline(__always)
-    private func readLongAttributeValue(_ operation: ReadOperation) async throws {
+    private func readLongAttributeValue(_ operation: inout ReadOperation) async throws {
         
         // The Attribute Protocol Read Blob Request is used to perform this sub-procedure.
         // The Attribute Handle shall be set to the Characteristic Value Handle of the Characteristic Value to be read.
@@ -556,9 +519,8 @@ public actor GATTClient {
             handle: operation.handle,
             offset: operation.offset
         )
-        
         let response = try await send(request, response: ATTReadBlobResponse.self)
-        try await readBlobResponse(response, operation: operation)
+        try await readBlobResponse(response, &operation)
     }
     
     private func writeAttribute(
@@ -578,7 +540,7 @@ public actor GATTClient {
             try await writeLongAttributeValue(
                 handle,
                 data: data,
-                reliableWrites: reliableWrites
+                reliableWrites: withResponse
             )
         }
     }
@@ -599,7 +561,14 @@ public actor GATTClient {
         let data = Data(data.prefix(length))
         let request = ATTWriteRequest(handle: attribute, value: data)
         let response = try await send(request, response: ATTWriteResponse.self)
-        writeResponse(response)
+        /**
+         Write Response
+         
+         A Write Response shall be sent by the server if the write of the Characteristic Value succeeded.
+         
+         An Error Response shall be sent by the server in response to the Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Characteristic Value that is written is the wrong size, or has an invalid value as defined by the profile, then the value shall not be written and an Error Response shall be sent with the Error Code set to Application Error by the server.
+         */
+        let _ = try response.get()
     }
     
     private func writeLongAttributeValue(
@@ -618,7 +587,7 @@ public actor GATTClient {
         // after which an Executive Write Request is used to write the complete value.
         
         guard inLongWrite == false
-            else { completion(.failure(GATTClientError.inLongWrite)); return }
+            else { throw GATTClientError.inLongWrite }
         
         let partLength = await Int(maximumTransmissionUnit.rawValue) - 5
         let firstValuePart = Data(data.prefix(partLength))
@@ -629,16 +598,15 @@ public actor GATTClient {
             partValue: firstValuePart
         )
         
-        let operation = WriteOperation(
+        var operation = WriteOperation(
             handle: attribute,
             data: data,
             reliableWrites: reliableWrites,
-            lastRequest: request,
-            completion: completion
+            lastRequest: request
         )
         
         let response = try await send(request, response: ATTPrepareWriteResponse.self)
-        try await prepareWriteResponse(response, operation: operation)
+        try await prepareWriteResponse(response, &operation)
     }
     
     /**
@@ -947,7 +915,7 @@ public actor GATTClient {
     /// Read Characteristic (or Descriptor) Value Response
     private func readResponse(
         _ response: ATTResponse<ATTReadResponse>,
-        operation: ReadOperation
+        _ operation: inout ReadOperation
     ) async throws {
         
         // The Read Response only contains a Characteristic Value that is less than or equal to (ATT_MTU – 1) octets in length.
@@ -955,80 +923,50 @@ public actor GATTClient {
         // may be used if the rest of the Characteristic Value is required.
         
         switch response {
-        case let .failure(error):
-            operation.failure(error)
-        case let .success(pdu):
-            operation.data = pdu.attributeValue
+        case let .failure(responseError):
+            guard responseError.error != .invalidOffset || operation.data.isEmpty else {
+                assert(responseError.error == .invalidOffset && operation.data.isEmpty == false)
+                return
+            }
+            throw GATTClientError.errorResponse(responseError)
+        case let .success(response):
+            operation.data = response.attributeValue
             // short value
             let expectedLength = await Int(maximumTransmissionUnit.rawValue) - 1
-            if pdu.attributeValue.count < expectedLength {
-                operation.success()
-            } else {
-                // read blob
-                try await readLongAttributeValue(operation)
+            guard response.attributeValue.count >= expectedLength else {
+                assert(response.attributeValue.count < expectedLength)
+                return
             }
+            // read blob
+            try await readLongAttributeValue(&operation)
         }
     }
     
     /// Read Blob Response
     private func readBlobResponse(
         _ response: ATTResponse<ATTReadBlobResponse>,
-        operation: ReadOperation
+        _ operation: inout ReadOperation
     ) async throws {
         
         // For each Read Blob Request a Read Blob Response is received with a portion of the Characteristic Value contained in the Part Attribute Value parameter.
         switch response {
-        case let .failure(error):
-            operation.failure(error)
-        case let .success(pdu):
-            operation.data += pdu.partAttributeValue
-            // short value
-            let expectedLength = await Int(maximumTransmissionUnit.rawValue) - 1
-            if pdu.partAttributeValue.count < expectedLength {
-                operation.success()
-            } else {
-                // read blob
-                try await readLongAttributeValue(operation)
+        case let .failure(responseError):
+            guard responseError.error != .invalidOffset || operation.data.isEmpty else {
+                assert(responseError.error == .invalidOffset && operation.data.isEmpty == false)
+                return
             }
-        }
-    }
-    
-    private func readMultipleResponse(_ response: ATTResponse<ATTReadMultipleResponse>, operation: ReadMultipleOperation) {
-        switch response {
-        case let .failure(error):
-            operation.failure(error)
-        case let .success(pdu):
-            operation.success(pdu.values)
-        }
-    }
-    
-    private func readByTypeResponse(_ response: ATTResponse<ATTReadByTypeResponse>, operation: ReadUsingUUIDOperation) {
-        
-        // Read By Type Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the characteristics
-        // contained in the handle range provided.
-        
-        switch response {
-        case let .failure(error):
-            operation.failure(error)
-        case let .success(pdu):
-            operation.success(pdu.attributeData)
-        }
-    }
-    
-    /**
-     Write Response
-     
-     A Write Response shall be sent by the server if the write of the Characteristic Value succeeded.
-     
-     An Error Response shall be sent by the server in response to the Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Characteristic Value that is written is the wrong size, or has an invalid value as defined by the profile, then the value shall not be written and an Error Response shall be sent with the Error Code set to Application Error by the server.
-     */
-    private func writeResponse(_ response: ATTResponse<ATTWriteResponse>, completion: (GATTClientResponse<()>) -> ()) {
-        
-        switch response {
-        case let .failure(error):
-            completion(.failure(.errorResponse(error)))
-        case .success: // PDU contains no data
-            completion(.success(()))
+            throw GATTClientError.errorResponse(responseError)
+        case let .success(response):
+            operation.data += response.partAttributeValue
+            // keep on reading long value
+            let expectedLength = await Int(maximumTransmissionUnit.rawValue) - 1
+            guard response.partAttributeValue.count >= expectedLength else {
+                // no more value
+                assert(response.partAttributeValue.count < expectedLength)
+                return
+            }
+            // read blob
+            try await readLongAttributeValue(&operation)
         }
     }
     
@@ -1037,18 +975,17 @@ public actor GATTClient {
      
      An Error Response shall be sent by the server in response to the Prepare Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Attribute Value that is written is the wrong size, or has an invalid value as defined by the profile, then the write shall not succeed and an Error Response shall be sent with the Error Code set to Application Error by the server.
      */
-    private func prepareWriteResponse(_ response: ATTResponse<ATTPrepareWriteResponse>, operation: WriteOperation) async throws {
-        
-        @inline(__always)
-        func complete(_ completion: (WriteOperation) -> ()) {
-            inLongWrite = false
-            completion(operation)
-        }
+    private func prepareWriteResponse(
+        _ response: ATTResponse<ATTPrepareWriteResponse>,
+        _ operation: inout WriteOperation
+    ) async throws {
         
         switch response {
-        case let .failure(error):
-            complete { $0.failure(error) }
+        case let .failure(errorResponse):
+            inLongWrite = false
+            throw GATTClientError.errorResponse(errorResponse)
         case let .success(pdu):
+            // append recieved data
             operation.receivedData += pdu.partValue
             
             // verify data sent
@@ -1056,12 +993,15 @@ public actor GATTClient {
                 
                 guard pdu.handle == operation.lastRequest.handle,
                     pdu.offset == operation.lastRequest.offset,
-                    pdu.partValue == operation.lastRequest.partValue
-                    else { complete { $0.completion(.failure(GATTClientError.invalidResponse(pdu))) }; return }
+                    pdu.partValue == operation.lastRequest.partValue else {
+                        inLongWrite = false
+                        throw GATTClientError.invalidResponse(pdu)
+                    }
             }
             
             let offset = Int(operation.lastRequest.offset) + operation.lastRequest.partValue.count
             
+            // prepare write responses
             if offset < operation.data.count {
                 
                 // write next part
@@ -1079,7 +1019,7 @@ public actor GATTClient {
                 operation.sentData += attributeValuePart
                 
                 let response = try await send(request, response: ATTPrepareWriteResponse.self)
-                try await self.prepareWriteResponse(response, operation: operation)
+                try await prepareWriteResponse(response, &operation)
                 
             } else {
                 
@@ -1089,23 +1029,22 @@ public actor GATTClient {
                 // all data sent
                 let request = ATTExecuteWriteRequest.write
                 let response = try await send(request, response: ATTExecuteWriteResponse.self)
-                self.executeWriteResponse(response, operation: operation)
+                try executeWriteResponse(response, &operation)
             }
         }
     }
     
-    private func executeWriteResponse(_ response: ATTResponse<ATTExecuteWriteResponse>, operation: WriteOperation) {
+    private func executeWriteResponse(
+        _ response: ATTResponse<ATTExecuteWriteResponse>,
+        _ operation: inout WriteOperation
+    ) throws {
         
-        func complete(_ completion: (WriteOperation) -> ()) {
-            inLongWrite = false
-            completion(operation)
-        }
-        
+        inLongWrite = false
         switch response {
-        case let .failure(error):
-            complete { $0.failure(error) }
+        case let .failure(errorResponse):
+            throw GATTClientError.errorResponse(errorResponse)
         case .success:
-            complete { $0.success() }
+            return
         }
     }
     
@@ -1286,49 +1225,6 @@ internal extension GATTClient {
         init(handle: UInt16) {
             self.handle = handle
         }
-        /*
-        @inline(__always)
-        func failure(_ responseError: ATTErrorResponse) {
-            
-            if responseError.error == .invalidOffset,
-                data.isEmpty == false {
-                
-                success()
-                
-            } else {
-                
-                completion(.failure(GATTClientError.errorResponse(responseError)))
-            }
-        }*/
-    }
-    
-    struct ReadMultipleOperation {
-        
-        let characteristics: [Characteristic]
-                
-        init(characteristics: [Characteristic]) {
-            self.characteristics = characteristics
-        }
-    }
-    
-    struct ReadUsingUUIDOperation {
-        
-        let uuid: BluetoothUUID
-        
-        init(uuid: BluetoothUUID) {
-            self.uuid = uuid
-        }
-        /*
-        func success(_ attributes: [ATTReadByTypeResponse.AttributeData]) {
-            
-            var data = [UInt16: Data](minimumCapacity: attributes.count)
-            
-            for attribute in attributes {
-                data[attribute.handle] = Data(attribute.value)
-            }
-            
-            completion(.success(data))
-        }*/
     }
     
     struct WriteOperation {
