@@ -128,7 +128,6 @@ internal actor ATTConnection {
         //log?("Sending data... (\(sendOperation.data.count) bytes)")
         
         try await socket.send(sendOperation.data)
-        
         let opcode = sendOperation.opcode
         
         //log?("Did write \(opcode)")
@@ -321,7 +320,6 @@ internal actor ATTConnection {
         
         /// Verify the recieved response belongs to the pending request
         guard sendOperation.opcode == requestOpcode else {
-            
             throw Error.unexpectedResponse(data)
         }
         

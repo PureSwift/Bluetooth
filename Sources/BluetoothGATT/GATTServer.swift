@@ -46,12 +46,10 @@ public actor GATTServer {
         maximumPreparedWrites: Int = 50,
         log: ((String) -> ())? = nil
     ) async {
-        
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.connection = ATTConnection(socket: socket, log: log)
-        
         // async register handlers
         await self.registerATTHandlers()
     }
@@ -347,15 +345,10 @@ public actor GATTServer {
         
         // Guard against invalid access if offset equals to value length
         if offset == UInt16(attribute.value.count) {
-            
             value = Data()
-            
         } else if offset > 0 {
-            
             value = Data(attribute.value.suffix(from: Int(offset)))
-            
         } else {
-            
             value = attribute.value
         }
         
