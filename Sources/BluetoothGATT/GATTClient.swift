@@ -43,19 +43,15 @@ public actor GATTClient {
         socket: L2CAPSocket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         log: ((String) -> ())? = nil
-    ) {
+    ) async {
         self.connection = ATTConnection(socket: socket)
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
-        
-        // async setup tasks
-        Task { [weak self] in
-            // setup notifications and indications
-            await self?.registerATTHandlers()
-            // queue MTU exchange if not default value
-            if maximumTransmissionUnit > .default {
-                await self?.exchangeMTU()
-            }
+        // setup notifications and indications
+        await self.registerATTHandlers()
+        // queue MTU exchange if not default value
+        if maximumTransmissionUnit > .default {
+            await self.exchangeMTU()
         }
     }
     
@@ -425,7 +421,7 @@ public actor GATTClient {
         primary: Bool = true
     ) async throws -> [Service] {
         let attributeType = GATTUUID(primaryService: primary)
-        var operation = DiscoveryOperation<Service>(
+        var operation = ServiceDiscoveryOperation(
             uuid: uuid,
             start: start,
             end: end,
@@ -449,7 +445,7 @@ public actor GATTClient {
             let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
             try await readByGroupTypeResponse(response, &operation)
         }
-        return operation.foundData
+        return operation.foundServices
     }
     
     private func discoverCharacteristics(
@@ -457,7 +453,7 @@ public actor GATTClient {
         service: Service
     ) async throws -> [Characteristic] {
         let attributeType = GATTUUID.characteristic
-        var operation = DiscoveryOperation<Characteristic>(
+        var operation = CharacteristicDiscoveryOperation(
             uuid: uuid,
             start: service.handle,
             end: service.end,
@@ -470,7 +466,7 @@ public actor GATTClient {
         )
         let response = try await send(request, response: ATTReadByTypeResponse.self)
         try await readByTypeResponse(response, &operation)
-        return operation.foundData
+        return operation.foundCharacteristics
     }
     
     private func discoverDescriptors(_ operation: inout DescriptorDiscoveryOperation) async throws {
@@ -663,7 +659,7 @@ public actor GATTClient {
     
     private func readByGroupTypeResponse(
         _ response: ATTResponse<ATTReadByGroupTypeResponse>,
-        _ operation: inout DiscoveryOperation<Service>
+        _ operation: inout ServiceDiscoveryOperation
     ) async throws {
         
         // Read By Group Type Response returns a list of Attribute Handle, End Group Handle, and Attribute Value tuples
@@ -692,7 +688,7 @@ public actor GATTClient {
                     handle: serviceData.attributeHandle,
                     end: serviceData.endGroupHandle
                 )
-                operation.foundData.append(service)
+                operation.foundServices.append(service)
             }
             
             // get more if possible
@@ -722,7 +718,7 @@ public actor GATTClient {
     
     private func findByTypeResponse(
         _ response: ATTResponse<ATTFindByTypeResponse>,
-        _ operation: inout DiscoveryOperation<Service>
+        _ operation: inout ServiceDiscoveryOperation
     ) async throws {
         // Find By Type Value Response returns a list of Attribute Handle ranges.
         // The Attribute Handle range is the starting handle and the ending handle of the service definition.
@@ -740,7 +736,7 @@ public actor GATTClient {
                 else { fatalError("Should have UUID specified") }
             
             // pre-allocate array
-            operation.foundData.reserveCapacity(operation.foundData.count + response.handles.count)
+            operation.foundServices.reserveCapacity(operation.foundServices.count + response.handles.count)
             
             // store PDU values
             for serviceData in response.handles {
@@ -750,7 +746,7 @@ public actor GATTClient {
                     handle: serviceData.foundAttribute,
                     end: serviceData.groupEnd
                 )
-                operation.foundData.append(service)
+                operation.foundServices.append(service)
             }
             
             // get more if possible
@@ -803,7 +799,7 @@ public actor GATTClient {
         case let .success(pdu):
             
             // pre-allocate array
-            operation.foundDescriptors.reserveCapacity(operation.foundDescriptors.count + pdu.data.count)
+            //operation.foundDescriptors.reserveCapacity(operation.foundDescriptors.count + pdu.data.count)
             
             let foundData: [Descriptor]
             
@@ -838,7 +834,7 @@ public actor GATTClient {
     
     private func readByTypeResponse(
         _ response: ATTResponse<ATTReadByTypeResponse>,
-        _ operation: inout DiscoveryOperation<Characteristic>
+        _ operation: inout CharacteristicDiscoveryOperation
     ) async throws {
         
         typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
@@ -859,7 +855,7 @@ public actor GATTClient {
         case let .success(pdu):
             
             // pre-allocate array
-            operation.foundData.reserveCapacity(operation.foundData.count + pdu.data.count)
+            //operation.foundCharacteristics.reserveCapacity(operation.foundCharacteristics.count + pdu.data.count)
             
             // parse pdu data
             for characteristicData in pdu.attributeData {
@@ -880,7 +876,7 @@ public actor GATTClient {
                                                     properties: declaration.properties,
                                                     handle: (handle, declaration.valueHandle))
                 
-                operation.foundData.append(characteristic)
+                operation.foundCharacteristics.append(characteristic)
                 
                 // if we specified a UUID to be searched,
                 // then call completion if it matches
@@ -1186,7 +1182,7 @@ public extension GATTClient {
 
 internal extension GATTClient {
     
-    struct DiscoveryOperation <T> {
+    struct ServiceDiscoveryOperation {
         
         let uuid: BluetoothUUID?
         
@@ -1198,7 +1194,22 @@ internal extension GATTClient {
         
         let type: GATTUUID
         
-        var foundData = [T]()
+        var foundServices = [Service]()
+    }
+    
+    struct CharacteristicDiscoveryOperation {
+        
+        let uuid: BluetoothUUID?
+        
+        var start: UInt16 {
+            didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
+        }
+        
+        let end: UInt16
+        
+        let type: GATTUUID
+        
+        var foundCharacteristics = [Characteristic]()
     }
 
     struct DescriptorDiscoveryOperation {
