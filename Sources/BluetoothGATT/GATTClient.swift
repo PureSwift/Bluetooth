@@ -363,14 +363,13 @@ public actor GATTClient {
         _ request: Request,
         response: Response.Type
     ) async throws -> ATTResponse<Response> {
-        
+        assert(Response.attributeOpcode != .errorResponse)
         let log = self.log
         log?("Request: \(request)")
-        
         return try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self = self else { return }
             Task {
-                let responseType: ATTProtocolDataUnit.Type = Response.self
+                let responseType: ATTProtocolDataUnit.Type = response
                 // callback if no I/O errors or disconnect
                 let callback: (ATTProtocolDataUnit) -> () = {
                     log?("Response: \($0)")
@@ -384,6 +383,7 @@ public actor GATTClient {
                     let didWrite = try await self.connection.write()
                     assert(didWrite, "Expected queued write operation")
                     try await self.connection.read()
+                    // FIXME: Handle notifications
                 }
                 catch {
                     // I/O error
@@ -456,72 +456,60 @@ public actor GATTClient {
         end: UInt16 = 0xffff,
         primary: Bool = true
     ) async throws -> [Service] {
-        let serviceType = GATTUUID(primaryService: primary)
-        var operation = GATTClientDiscoveryOperation<Service>(
+        let attributeType = GATTUUID(primaryService: primary)
+        var operation = DiscoveryOperation<Service>(
             uuid: uuid,
             start: start,
             end: end,
-            type: serviceType
+            type: attributeType
         )
         if let uuid = uuid {
             let request = ATTFindByTypeRequest(
                 startHandle: start,
                 endHandle: end,
-                attributeType: serviceType.rawValue,
+                attributeType: attributeType.rawValue,
                 attributeValue: uuid.littleEndian.data
             )
-            // perform I/O
             let response = try await send(request, response: ATTFindByTypeResponse.self)
-            try await findByTypeResponse(response, operation: &operation)
+            try await findByTypeResponse(response, &operation)
         } else {
             let request = ATTReadByGroupTypeRequest(
                 startHandle: start,
                 endHandle: end,
-                type: serviceType.uuid
+                type: attributeType.uuid
             )
             let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
-            try await readByGroupTypeResponse(response, operation: &operation)
+            try await readByGroupTypeResponse(response, &operation)
         }
         return operation.foundData
     }
     
-    private func discoverCharacteristics(
+    internal func discoverCharacteristics(
         uuid: BluetoothUUID? = nil,
         service: Service
     ) async throws -> [Characteristic] {
-        return try await withCheckedThrowingContinuation() { continuation in
-            Task {
-                do {
-                    let attributeType = GATTUUID.characteristic
-                    let operation = DiscoveryOperation<Characteristic>(
-                        uuid: uuid,
-                        start: service.handle,
-                        end: service.end,
-                        type: attributeType
-                    ) { result in
-                        continuation.resume(with: result)
-                    }
-                    let request = ATTReadByTypeRequest(
-                        startHandle: service.handle,
-                        endHandle: service.end,
-                        attributeType: attributeType.uuid
-                    )
-                    let response = try await send(request, response: ATTReadByTypeResponse.self)
-                    try await readByTypeResponse(response, operation: operation)
-                }
-                catch {
-                    assert(error as? ATTErrorResponse == nil)
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+        let attributeType = GATTUUID.characteristic
+        var operation = DiscoveryOperation<Characteristic>(
+            uuid: uuid,
+            start: service.handle,
+            end: service.end,
+            type: attributeType
+        )
+        let request = ATTReadByTypeRequest(
+            startHandle: service.handle,
+            endHandle: service.end,
+            attributeType: attributeType.uuid
+        )
+        let response = try await send(request, response: ATTReadByTypeResponse.self)
+        try await readByTypeResponse(response, &operation)
+        return operation.foundData
     }
     
-    private func discoverDescriptors(operation: DescriptorDiscoveryOperation) async throws {
+    private func discoverDescriptors(_ operation: inout DiscoveryOperation) async throws {
         assert(operation.start <= operation.end, "Invalid range")
         let request = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
         let response = try await send(request, response: ATTFindInformationResponse.self)
-        try await findInformationResponse(response, operation: operation)
+        try await findInformationResponse(response, &operation)
     }
     
     /// Read Characteristic Value
@@ -707,7 +695,7 @@ public actor GATTClient {
     
     private func readByGroupTypeResponse(
         _ response: ATTResponse<ATTReadByGroupTypeResponse>,
-        operation: inout GATTClientDiscoveryOperation<Service>
+        _ operation: inout DiscoveryOperation<Service>
     ) async throws {
         
         // Read By Group Type Response returns a list of Attribute Handle, End Group Handle, and Attribute Value tuples
@@ -759,14 +747,14 @@ public actor GATTClient {
                     type: operation.type.uuid
                 )
                 let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
-                try await readByGroupTypeResponse(response, operation: &operation)
+                try await readByGroupTypeResponse(response, &operation)
             }
         }
     }
     
     private func findByTypeResponse(
         _ response: ATTResponse<ATTFindByTypeResponse>,
-        operation: inout GATTClientDiscoveryOperation<Service>
+        _ operation: inout DiscoveryOperation<Service>
     ) async throws {
         // Find By Type Value Response returns a list of Attribute Handle ranges.
         // The Attribute Handle range is the starting handle and the ending handle of the service definition.
@@ -814,14 +802,14 @@ public actor GATTClient {
                     attributeValue: serviceUUID.littleEndian.data
                 )
                 let response = try await send(request, response: ATTFindByTypeResponse.self)
-                try await findByTypeResponse(response, operation: &operation)
+                try await findByTypeResponse(response, &operation)
             }
         }
     }
     
     private func findInformationResponse(
         _ response: ATTResponse<ATTFindInformationResponse>,
-        operation: DescriptorDiscoveryOperation
+        _ operation: inout DescriptorDiscoveryOperation
     ) async throws {
         
         /**
@@ -840,7 +828,10 @@ public actor GATTClient {
         
         switch response {
         case let .failure(errorResponse):
-            operation.failure(errorResponse)
+            guard errorResponse.error != .attributeNotFound else {
+                return
+            }
+            throw GATTClientError.errorResponse(errorResponse)
         case let .success(pdu):
             
             // pre-allocate array
@@ -849,13 +840,9 @@ public actor GATTClient {
             let foundData: [Descriptor]
             
             switch pdu.attributeData {
-                
             case let .bit16(values):
-                
                 foundData = values.map { Descriptor(uuid: .bit16($0.uuid), handle: $0.handle) }
-                
             case let .bit128(values):
-                
                 foundData = values.map { Descriptor(uuid: .bit128($0.uuid), handle: $0.handle) }
             }
             
@@ -866,28 +853,26 @@ public actor GATTClient {
             
             // prevent infinite loop
             guard lastHandle >= operation.start
-                else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
+                else { throw Error.invalidResponse(pdu) }
             
             guard lastHandle < .max // End of database
-                else { operation.success(); return }
+                else { return }
             
             let start = lastHandle + 1
             
             // need to continue discovery
             if lastHandle != 0, start < operation.end {
                 operation.start = start
-                try await discoverDescriptors(operation: operation)
-            } else {
-                // end of service
-                operation.success()
+                try await discoverDescriptors(&operation)
             }
         }
     }
     
     private func readByTypeResponse(
         _ response: ATTResponse<ATTReadByTypeResponse>,
-        operation: DiscoveryOperation<Characteristic>
+        _ operation: inout DiscoveryOperation<Characteristic>
     ) async throws {
+        
         typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
         typealias Attribute = GATTDatabase.Attribute
         
@@ -899,7 +884,10 @@ public actor GATTClient {
         
         switch response {
         case let .failure(errorResponse):
-            operation.failure(errorResponse)
+            guard errorResponse.error != .attributeNotFound else {
+                return
+            }
+            throw GATTClientError.errorResponse(errorResponse)
         case let .success(pdu):
             
             // pre-allocate array
@@ -910,13 +898,15 @@ public actor GATTClient {
                 
                 let handle = characteristicData.handle
                 
-                let attribute = Attribute(handle: handle,
-                                          uuid: .characteristic,
-                                          value: Data(characteristicData.value),
-                                          permissions: [.read])
+                let attribute = Attribute(
+                    handle: handle,
+                    uuid: .characteristic,
+                    value: Data(characteristicData.value),
+                    permissions: [.read]
+                )
                 
                 guard let declaration = DeclarationAttribute(attribute: attribute)
-                    else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
+                    else { throw Error.invalidResponse(pdu) }
                 
                 let characteristic = Characteristic(uuid: declaration.uuid,
                                                     properties: declaration.properties,
@@ -927,9 +917,8 @@ public actor GATTClient {
                 // if we specified a UUID to be searched,
                 // then call completion if it matches
                 if let operationUUID = operation.uuid {
-                    
                     guard characteristic.uuid != operationUUID
-                        else { operation.success(); return }
+                        else { return }
                 }
             }
             
@@ -938,7 +927,7 @@ public actor GATTClient {
             
             // prevent infinite loop
             guard lastEnd >= operation.start
-                else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
+                else { throw Error.invalidResponse(pdu) }
             
             operation.start = lastEnd + 1
             
@@ -950,10 +939,7 @@ public actor GATTClient {
                     attributeType: operation.type.uuid
                 )
                 let response = try await send(request, response: ATTReadByTypeResponse.self)
-                try await readByTypeResponse(response, operation: operation)
-            } else {
-                // end of service
-                operation.success()
+                try await readByTypeResponse(response, &operation)
             }
         }
     }
@@ -1258,71 +1244,12 @@ public extension GATTClient {
     }
 }
 
-// MARK: - Private Supporting Types
 
-internal struct GATTClientDiscoveryOperation <T> {
+internal extension GATTClient {
     
-    let uuid: BluetoothUUID?
-    
-    var start: UInt16 {
-        didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
-    }
-    
-    let end: UInt16
-    
-    let type: GATTUUID
-    
-    var foundData = [T]()
-}
-
-fileprivate final class DiscoveryOperation <T> {
-    
-    let uuid: BluetoothUUID?
-    
-    var start: UInt16 {
+    struct DiscoveryOperation <T> {
         
-        didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
-    }
-    
-    let end: UInt16
-    
-    let type: GATTUUID
-    
-    var foundData = [T]()
-    
-    let completion: (GATTClientResponse<[T]>) -> ()
-    
-    init(uuid: BluetoothUUID?,
-         start: UInt16,
-         end: UInt16,
-         type: GATTUUID,
-         completion: @escaping (GATTClientResponse<[T]>) -> ()) {
-        
-        self.uuid = uuid
-        self.start = start
-        self.end = end
-        self.type = type
-        self.completion = completion
-    }
-    
-    @inline(__always)
-    func success() {
-        completion(.success(foundData))
-    }
-    
-    @inline(__always)
-    func failure(_ responseError: ATTErrorResponse) {
-        if responseError.error == .attributeNotFound {
-            success()
-        } else {
-            completion(.failure(GATTClientError.errorResponse(responseError)))
-        }
-    }
-}
-
-private extension GATTClient {
-    
-    final class DescriptorDiscoveryOperation {
+        let uuid: BluetoothUUID?
         
         var start: UInt16 {
             didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
@@ -1330,61 +1257,36 @@ private extension GATTClient {
         
         let end: UInt16
         
-        var foundDescriptors = [Descriptor]()
+        let type: GATTUUID
         
-        let completion: (GATTClientResponse<[Descriptor]>) -> ()
+        var foundData = [T]()
+    }
+
+    struct DescriptorDiscoveryOperation {
         
-        init(start: UInt16,
-             end: UInt16,
-             completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
-            
-            self.start = start
-            self.end = end
-            self.completion = completion
+        var start: UInt16 {
+            didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
         }
         
-        @inline(__always)
-        func success() {
-            completion(.success(foundDescriptors))
-        }
+        let end: UInt16
         
-        @inline(__always)
-        func failure(_ responseError: ATTErrorResponse) {
-            if responseError.error == .attributeNotFound {
-                success()
-            } else {
-                completion(.failure(.errorResponse(responseError)))
-            }
-        }
+        var foundDescriptors = [GATTClient.Descriptor]()
     }
     
-    final class ReadOperation {
+    struct ReadOperation {
         
         let handle: UInt16
         
         var data = Data()
-        
-        let completion: (GATTClientResponse<Data>) -> ()
-        
+                
         var offset: UInt16 {
-            
-            @inline(__always)
-            get { return UInt16(data.count) }
+            return UInt16(data.count)
         }
         
-        init(handle: UInt16,
-             completion: @escaping (GATTClientResponse<Data>) -> ()) {
-            
+        init(handle: UInt16) {
             self.handle = handle
-            self.completion = completion
         }
-        
-        @inline(__always)
-        func success() {
-            
-            completion(.success(data))
-        }
-        
+        /*
         @inline(__always)
         func failure(_ responseError: ATTErrorResponse) {
             
@@ -1397,46 +1299,26 @@ private extension GATTClient {
                 
                 completion(.failure(GATTClientError.errorResponse(responseError)))
             }
-        }
+        }*/
     }
     
-    final class ReadMultipleOperation {
+    struct ReadMultipleOperation {
         
         let characteristics: [Characteristic]
-        
-        let completion: (GATTClientResponse<Data>) -> ()
-        
-        init(characteristics: [Characteristic],
-             completion: @escaping (GATTClientResponse<Data>) -> ()) {
-            
+                
+        init(characteristics: [Characteristic]) {
             self.characteristics = characteristics
-            self.completion = completion
-        }
-        
-        @inline(__always)
-        func success(_ values: Data) {
-            completion(.success(values))
-        }
-        
-        @inline(__always)
-        func failure(_ responseError: ATTErrorResponse) {
-            completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
     
-    final class ReadUsingUUIDOperation {
+    struct ReadUsingUUIDOperation {
         
         let uuid: BluetoothUUID
         
-        let completion: (GATTClientResponse<[UInt16: Data]>) -> ()
-        
-        init(uuid: BluetoothUUID,
-             completion: @escaping (GATTClientResponse<[UInt16: Data]>) -> ()) {
-            
+        init(uuid: BluetoothUUID) {
             self.uuid = uuid
-            self.completion = completion
         }
-        
+        /*
         func success(_ attributes: [ATTReadByTypeResponse.AttributeData]) {
             
             var data = [UInt16: Data](minimumCapacity: attributes.count)
@@ -1446,22 +1328,13 @@ private extension GATTClient {
             }
             
             completion(.success(data))
-        }
-        
-        func failure(_ responseError: ATTErrorResponse) {
-            
-            completion(.failure(GATTClientError.errorResponse(responseError)))
-        }
+        }*/
     }
     
-    final class WriteOperation {
-        
-        typealias Completion = (GATTClientResponse<Void>) -> ()
-        
+    struct WriteOperation {
+                
         let handle: UInt16
-        
-        let completion: Completion
-        
+                
         let reliableWrites: Bool
         
         let data: Data
@@ -1475,28 +1348,16 @@ private extension GATTClient {
         init(handle: UInt16,
              data: Data,
              reliableWrites: Bool,
-             lastRequest: ATTPrepareWriteRequest,
-             completion: @escaping Completion) {
+             lastRequest: ATTPrepareWriteRequest) {
             
             precondition(data.isEmpty == false)
             
             self.handle = handle
-            self.completion = completion
             self.data = data
             self.reliableWrites = reliableWrites
             self.lastRequest = lastRequest
             self.sentData = lastRequest.partValue
             self.receivedData = Data()
-        }
-        
-        @inline(__always)
-        func success() {
-            completion(.success(()))
-        }
-        
-        @inline(__always)
-        func failure(_ responseError: ATTErrorResponse) {
-            completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
 }

@@ -92,7 +92,6 @@ internal actor ATTConnection {
         
         // Act on the received PDU based on the opcode type
         switch opcode.type {
-            
         case .response:
             try await handle(response: recievedData, opcode: opcode)
         case .confirmation:
@@ -102,7 +101,6 @@ internal actor ATTConnection {
         case .command,
              .notification,
              .indication:
-            
             // For all other opcodes notify the upper layer of the PDU and let them act on it.
             try await handle(notify: recievedData, opcode: opcode)
         }
@@ -285,7 +283,6 @@ internal actor ATTConnection {
         
         // If no request is pending, then the response is unexpected. Disconnect the bearer.
         guard let sendOperation = self.pendingRequest else {
-            
             throw Error.unexpectedResponse(data)
         }
         
