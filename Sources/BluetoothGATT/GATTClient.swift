@@ -10,25 +10,23 @@ import Foundation
 import Bluetooth
 
 /// GATT Client
-public final class GATTClient {
+public actor GATTClient {
     
     // MARK: - Properties
     
     public var log: ((String) -> ())?
     
-    public var writePending: (() -> ())? {
-        get { return connection.writePending }
-        set { connection.writePending = newValue }
-    }
-    
-    public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
-        get { return connection.maximumTransmissionUnit }
-        set { connection.maximumTransmissionUnit = newValue }
+    public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
+        get async {
+            return await self.connection.maximumTransmissionUnit
+        }
     }
     
     public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
     
-    internal private(set) var connection: ATTConnection
+    internal private(set) var didExchangeMTU = false
+    
+    internal let connection: ATTConnection
     
     /// Whether the client is currently writing a long value.
     internal private(set) var inLongWrite: Bool = false
@@ -41,36 +39,27 @@ public final class GATTClient {
     
     // MARK: - Initialization
     
-    public init(socket: L2CAPSocket,
-                maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
-                log: ((String) -> ())? = nil,
-                writePending: (() -> ())? = nil) {
-        
+    public init(
+        socket: L2CAPSocket,
+        maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
+        log: ((String) -> ())? = nil
+    ) {
         self.connection = ATTConnection(socket: socket)
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
-        self.writePending = writePending
         
-        // setup notifications and indications
-        self.registerATTHandlers()
-        
-        // queue MTU exchange if not default value
-        if maximumTransmissionUnit > .default {
-            self.exchangeMTU()
+        // async setup tasks
+        Task { [weak self] in
+            // setup notifications and indications
+            await self?.registerATTHandlers()
+            // queue MTU exchange if not default value
+            if maximumTransmissionUnit > .default {
+                await self?.exchangeMTU()
+            }
         }
     }
     
     // MARK: - Methods
-    
-    /// Performs the actual IO for recieving data.
-    public func read() async throws {
-        return try await connection.read()
-    }
-    
-    /// Performs the actual IO for sending data.
-    public func write() async throws -> Bool {
-        return try await connection.write()
-    }
     
     // MARK: Requests
     
@@ -80,12 +69,16 @@ public final class GATTClient {
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllPrimaryServices.png)
     ///
     /// - Parameter completion: The completion closure.
-    public func discoverAllPrimaryServices(completion: @escaping (GATTClientResponse<[Service]>) -> ()) {
+    public func discoverAllPrimaryServices() async throws -> [Service] {
         
         /// The Attribute Protocol Read By Group Type Request shall be used with 
         /// the Attribute Type parameter set to the UUID for «Primary Service». 
         /// The Starting Handle shall be set to 0x0001 and the Ending Handle shall be set to 0xFFFF.
-        discoverServices(start: 0x0001, end: 0xFFFF, primary: true, completion: completion)
+        try await discoverServices(
+            start: 0x0001,
+            end: 0xFFFF,
+            primary: true
+        )
     }
     
     /// Discover Primary Service by Service UUID
@@ -97,14 +90,20 @@ public final class GATTClient {
     ///
     /// - Parameter uuid: The UUID of the service to find.
     /// - Parameter completion: The completion closure.
-    public func discoverPrimaryServices(by uuid: BluetoothUUID,
-                                        completion: @escaping (GATTClientResponse<[Service]>) -> ()) {
+    public func discoverPrimaryServices(
+        by uuid: BluetoothUUID
+    ) async throws -> [Service]{
         
         // The Attribute Protocol Find By Type Value Request shall be used with the Attribute Type
         // parameter set to the UUID for «Primary Service» and the Attribute Value set to the 16-bit
         // Bluetooth UUID or 128-bit UUID for the specific primary service. 
         // The Starting Handle shall be set to 0x0001 and the Ending Handle shall be set to 0xFFFF.
-        discoverServices(uuid: uuid, start: 0x0001, end: 0xFFFF, primary: true, completion: completion)
+        return try await discoverServices(
+            uuid: uuid,
+            start: 0x0001,
+            end: 0xFFFF,
+            primary: true
+        )
     }
     
     /// Discover All Characteristics of a Service
@@ -116,15 +115,14 @@ public final class GATTClient {
     ///
     /// - Parameter service: The service.
     /// - Parameter completion: The completion closure.
-    public func discoverAllCharacteristics(of service: Service,
-                                           completion: @escaping (GATTClientResponse<[Characteristic]>) -> ()) {
+    public func discoverAllCharacteristics(of service: Service) async throws -> [Characteristic] {
         
         // The Attribute Protocol Read By Type Request shall be used with the Attribute Type
         // parameter set to the UUID for «Characteristic» The Starting Handle shall be set to 
         // starting handle of the specified service and the Ending Handle shall be set to the 
         // ending handle of the specified service.
         
-        discoverCharacteristics(service: service, completion: completion)
+        return try await discoverCharacteristics(service: service)
     }
     
     /// Discover Characteristics by UUID
@@ -138,15 +136,15 @@ public final class GATTClient {
     /// - Parameter service: The service of the characteristics to find.
     /// - Parameter uuid: The UUID of the characteristics to find.
     /// - Parameter completion: The completion closure.
-    public func discoverCharacteristics(of service: Service,
-                                        by uuid: BluetoothUUID,
-                                        completion: @escaping (GATTClientResponse<[Characteristic]>) -> ()) {
+    public func discoverCharacteristics(
+        of service: Service,
+        by uuid: BluetoothUUID
+    ) async throws -> [Characteristic] {
         
         // The Attribute Protocol Read By Type Request is used to perform the beginning of the sub-procedure.
         // The Attribute Type is set to the UUID for «Characteristic» and the Starting Handle and Ending Handle
         // parameters shall be set to the service handle range.
-        
-        discoverCharacteristics(uuid: uuid, service: service, completion: completion)
+        return try await discoverCharacteristics(uuid: uuid, service: service)
     }
     
     /// Read Characteristic Value
@@ -155,8 +153,7 @@ public final class GATTClient {
     /// the Characteristic Value Handle.
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadCharacteristicValue.png)
-    public func readCharacteristic(_ characteristic: Characteristic,
-                                   completion: @escaping (GATTClientResponse<Data>) -> ()) {
+    public func readCharacteristic(_ characteristic: Characteristic) async throws -> Data {
         
         // read value and try to read blob if too big
         readAttributeValue(characteristic.handle.value, completion: completion)
@@ -168,9 +165,11 @@ public final class GATTClient {
     /// only knows the characteristic UUID and does not know the handle of the characteristic.
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadUsingCharacteristicUUID.png)
-    public func readCharacteristics(using uuid: BluetoothUUID,
-                                    handleRange: (start: UInt16, end: UInt16) = (.min, .max),
-                                    completion: @escaping (GATTClientResponse<[UInt16: Data]>) -> ()) {
+    public func readCharacteristics(
+        using uuid: BluetoothUUID,
+        handleRange: (start: UInt16, end: UInt16) = (.min, .max),
+        completion: @escaping (GATTClientResponse<[UInt16: Data]>) -> ()
+    ) {
         
         precondition(handleRange.start < handleRange.end)
         
@@ -178,13 +177,17 @@ public final class GATTClient {
         // The Attribute Type is set to the known characteristic UUID and the Starting Handle and Ending Handle parameters
         // shall be set to the range over which this read is to be performed. This is typically the handle range for the service in which the characteristic belongs.
         
-        let pdu = ATTReadByTypeRequest(startHandle: handleRange.start,
-                                       endHandle: handleRange.end,
-                                       attributeType: uuid)
+        let pdu = ATTReadByTypeRequest(
+            startHandle: handleRange.start,
+            endHandle: handleRange.end,
+            attributeType: uuid
+        )
         
         let operation = ReadUsingUUIDOperation(uuid: uuid, completion: completion)
         
-        send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
+        send(pdu) { [unowned self] in
+            self.readByTypeResponse($0, operation: operation)
+        }
     }
     
     /// Read Multiple Characteristic Values
@@ -208,7 +211,9 @@ public final class GATTClient {
         
         let operation = ReadMultipleOperation(characteristics: characteristics, completion: completion)
         
-        send(pdu) { [unowned self] in self.readMultipleResponse($0, operation: operation) }
+        send(pdu) { [unowned self] in
+            self.readMultipleResponse($0, operation: operation)
+        }
     }
     
     /**
@@ -295,11 +300,12 @@ public final class GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/Notifications.png)
      */
-    public func clientCharacteristicConfiguration(notification: Notification?,
-                                                  indication: Notification?,
-                                                  for characteristic: Characteristic,
-                                                  descriptors: [GATTClient.Descriptor],
-                                                  completion: @escaping (GATTClientResponse<()>) -> ()) {
+    public func clientCharacteristicConfiguration(
+        notification: Notification?,
+        indication: Notification?,
+        for characteristic: Characteristic,
+        descriptors: [GATTClient.Descriptor]
+    ) async throws {
         
         guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
             else { completion(.failure(GATTClientError.clientCharacteristicConfigurationNotAllowed(characteristic))); return }
@@ -333,46 +339,67 @@ public final class GATTClient {
     
     // MARK: - Private Methods
     
-    @inline(__always)
-    private func registerATTHandlers() {
+    private func registerATTHandlers() async  {
         
         // value notifications / indications
-        connection.register { [weak self] in self?.notification($0) }
-        connection.register { [weak self] in self?.indication($0) }
+        await connection.register { [weak self] in await self?.notification($0) }
+        await connection.register { [weak self] in await self?.indication($0) }
     }
     
-    @inline(__always)
-    private func send <Request: ATTProtocolDataUnit, Response> (_ request: Request, response: @escaping (ATTResponse<Response>) -> ()) {
+    private func send <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
+        _ request: Request,
+        response: Response.Type
+    ) async throws -> ATTResponse<Response> {
         
         let log = self.log
-        
         log?("Request: \(request)")
         
-        let callback: (AnyATTResponse) -> () = {
-            log?("Response: \($0.rawValue)")
-            response(ATTResponse<Response>($0))
+        return try await withCheckedThrowingContinuation { [weak self] continuation in
+            guard let self = self else { return }
+            Task {
+                let responseType: ATTProtocolDataUnit.Type = Response.self
+                // callback if no I/O errors or disconnect
+                let callback: (ATTProtocolDataUnit) -> () = {
+                    log?("Response: \($0)")
+                    continuation.resume(returning: ATTResponse<Response>($0))
+                }
+                guard let _ = await self.connection.send(request, response: (callback, responseType))
+                    else { fatalError("Could not add PDU to queue: \(request)") }
+                // do I/O
+                do {
+                    // write pending
+                    let didWrite = try await self.connection.write()
+                    assert(didWrite, "Expected queued write operation")
+                    try await self.connection.read()
+                }
+                catch {
+                    // not ATTError
+                    assert(type(of: error) != ATTError.self)
+                    continuation.resume(throwing: error)
+                }
+            }
         }
-        
-        let responseType: ATTProtocolDataUnit.Type = Response.self
-        
-        guard let _ = connection.send(request, response: (callback, responseType))
-            else { fatalError("Could not add PDU to queue: \(request)") }
     }
     
     @inline(__always)
-    private func send <Request: ATTProtocolDataUnit> (_ request: Request) {
+    private func send<Request: ATTProtocolDataUnit>(_ request: Request) async throws {
         
         log?("Request: \(request)")
         
-        guard let _ = connection.send(request)
+        guard let _ = await connection.send(request)
             else { fatalError("Could not add PDU to queue: \(request)") }
+        
+        // write pending
+        let didWrite = try await self.connection.write()
+        assert(didWrite, "Expected queued write operation")
     }
     
-    internal func endHandle(for characteristic: Characteristic,
-                            service: (declaration: Service, characteristics: [Characteristic])) -> UInt16 {
+    internal func endHandle(
+        for characteristic: Characteristic,
+        service: (declaration: Service, characteristics: [Characteristic])
+    ) -> UInt16 {
         
         // calculate ending handle of characteristic
-        
         let end: UInt16
         
         guard let index = service.characteristics.firstIndex(where: { $0.handle.declaration == characteristic.handle.declaration })
@@ -382,61 +409,86 @@ public final class GATTClient {
         
         // get start handle of next characteristic
         if nextIndex < service.characteristics.count {
-            
             let nextCharacteristic = service.characteristics[nextIndex]
-            
             end = nextCharacteristic.handle.declaration - 1
-            
         } else {
-            
             // use service end handle
             end = service.declaration.end
         }
+        // FIXME: Handle descriptors
         
         return end
     }
     
     // MARK: Requests
     
-    private func exchangeMTU() {
-        
+    /// Exchange MTU (should only be called once if not using default MTU)
+    internal func exchangeMTU() async {
+        assert(didExchangeMTU == false)
         let clientMTU = preferredMaximumTransmissionUnit
-        
-        let pdu = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
-        
-        send(pdu) { [unowned self] in self.exchangeMTUResponse($0) }
+        let request = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
+        do {
+            let response = try await send(request, response: ATTMaximumTransmissionUnitResponse.self).get()
+            await exchangeMTUResponse(response)
+        } catch {
+            log?("Could not exchange MTU: \(error)")
+        }
     }
     
-    private func discoverServices(uuid: BluetoothUUID? = nil,
-                                  start: UInt16 = 0x0001,
-                                  end: UInt16 = 0xffff,
-                                  primary: Bool = true,
-                                  completion: @escaping (GATTClientResponse<[Service]>) -> ()) {
-        
-        let serviceType = GATTUUID(primaryService: primary)
-        
-        let operation = DiscoveryOperation<Service>(uuid: uuid,
-                                                  start: start,
-                                                  end: end,
-                                                  type: serviceType,
-                                                  completion: completion)
-        
-        if let uuid = uuid {
-            
-            let pdu = ATTFindByTypeRequest(startHandle: start,
-                                           endHandle: end,
-                                           attributeType: serviceType.rawValue,
-                                           attributeValue: uuid.littleEndian.data)
-            
-            send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
-            
-        } else {
-            
-            let pdu = ATTReadByGroupTypeRequest(startHandle: start,
-                                                endHandle: end,
-                                                type: serviceType.uuid)
-            
-            send(pdu) { [unowned self] in self.readByGroupTypeResponse($0, operation: operation) }
+    internal func discoverServices(
+        uuid: BluetoothUUID? = nil,
+        start: UInt16 = 0x0001,
+        end: UInt16 = 0xffff,
+        primary: Bool = true
+    ) async throws -> [Service] {
+        return try await withCheckedThrowingContinuation() { continuation in
+            Task { [weak self] in
+                guard let self = self else { return }
+                let serviceType = GATTUUID(primaryService: primary)
+                let operation = DiscoveryOperation<Service>(
+                    uuid: uuid,
+                    start: start,
+                    end: end,
+                    type: serviceType
+                ) { result in
+                    continuation.resume(with: result)
+                }
+                
+                do {
+                    if let uuid = uuid {
+                        let request = ATTFindByTypeRequest(
+                            startHandle: start,
+                            endHandle: end,
+                            attributeType: serviceType.rawValue,
+                            attributeValue: uuid.littleEndian.data
+                        )
+                        // perform I/O
+                        let response = try await self.send(request, response: ATTFindByTypeResponse.self)
+                        switch response {
+                        case let .success(response):
+                            try await self.findByTypeResponse(response, operation: operation)
+                        case let .failure(error):
+                            operation.failure(error)
+                        }
+                    } else {
+                        let request = ATTReadByGroupTypeRequest(
+                            startHandle: start,
+                            endHandle: end,
+                            type: serviceType.uuid
+                        )
+                        let response = try await self.send(request, response: ATTReadByGroupTypeResponse.self)
+                        switch response {
+                        case let .success(response):
+                            try await self.readByGroupTypeResponse(response, operation: operation)
+                        case let .failure(error):
+                            operation.failure(error)
+                        }
+                    }
+                } catch {
+                    assert(error as? ATTErrorResponse == nil)
+                    continuation.resume(throwing: error)
+                }
+            }
         }
     }
     
@@ -481,8 +533,7 @@ public final class GATTClient {
         // The Read Response returns the Characteristic Value in the Attribute Value parameter.
         
         // read value and try to read blob if too big
-        let pdu = ATTReadRequest(handle: handle)
-        
+        let request = ATTReadRequest(handle: handle)
         let operation = ReadOperation(handle: handle, completion: completion)
         
         send(pdu) { [unowned self] in self.readResponse($0, operation: operation) }
@@ -606,7 +657,10 @@ public final class GATTClient {
      
      - Note: On BR/EDR, the ATT Bearer is always encrypted, due to the use of Security Mode 4, therefore this sub-procedure shall not be used.
      */
-    private func writeSignedCharacteristicCommand(_ characteristic: Characteristic, data: Data) {
+    private func writeSignedCharacteristicCommand(
+        _ characteristic: Characteristic,
+        data: Data
+    ) async throws {
         
         // This sub-procedure only writes the first (ATT_MTU – 15) octets of an Attribute Value.
         // This sub-procedure cannot be used to write a long Attribute.
@@ -619,39 +673,35 @@ public final class GATTClient {
         // Section 10.2 then, a Write Without Response as defined in Section 4.9.1 shall be used instead of
         // a Signed Write Without Response.
         
-        let data = Data(data.prefix(Int(maximumTransmissionUnit.rawValue) - 15))
+        let dataLength = await Int(maximumTransmissionUnit.rawValue) - 15
+        let data = Data(data.prefix(dataLength))
         
         // TODO: Sign Data
         
         let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
-        
-        send(pdu)
+        try await send(pdu)
     }
     
     // MARK: - Callbacks
     
-    private func exchangeMTUResponse(_ response: ATTResponse<ATTMaximumTransmissionUnitResponse>) {
-        
-        switch response {
-            
-        case let .failure(error):
-            
-            log?("Could not exchange MTU: \(error)")
-            
-        case let .success(pdu):
-            
-            let clientMTU = preferredMaximumTransmissionUnit
-            
-            let finalMTU = ATTMaximumTransmissionUnit(server: pdu.serverMTU, client: clientMTU.rawValue)
-            
-            log?("MTU Exchange (\(clientMTU) -> \(finalMTU))")
-            
-            self.maximumTransmissionUnit = finalMTU
-        }
+    private func exchangeMTUResponse(
+        _ response:  ATTMaximumTransmissionUnitResponse
+    ) async {
+        assert(didExchangeMTU == false)
+        let clientMTU = preferredMaximumTransmissionUnit
+        let finalMTU = ATTMaximumTransmissionUnit(
+            server: response.serverMTU,
+            client: clientMTU.rawValue
+        )
+        log?("MTU Exchange (\(clientMTU) -> \(finalMTU))")
+        await self.connection.setMaximumTransmissionUnit(finalMTU)
+        self.didExchangeMTU = true
     }
     
-    private func readByGroupTypeResponse(_ response: ATTResponse<ATTReadByGroupTypeResponse>,
-                                         operation: DiscoveryOperation<Service>) {
+    private func readByGroupTypeResponse(
+        _ response: ATTReadByGroupTypeResponse,
+        operation: DiscoveryOperation<Service>
+    ) async throws {
         
         // Read By Group Type Response returns a list of Attribute Handle, End Group Handle, and Attribute Value tuples
         // corresponding to the services supported by the server. Each Attribute Value contained in the response is the 
@@ -660,58 +710,56 @@ public final class GATTClient {
         // The Read By Group Type Request shall be called again with the Starting Handle set to one greater than the 
         // last End Group Handle in the Read By Group Type Response.
         
-        switch response {
+        // store PDU values
+        for serviceData in response.attributeData {
             
-        case let .failure(errorResponse):
-            
-            operation.failure(errorResponse)
-            
-        case let .success(pdu):
-            
-            // store PDU values
-            for serviceData in pdu.attributeData {
-                
-                guard let littleEndianServiceUUID = BluetoothUUID(data: serviceData.value)
-                    else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
-                
-                let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
-                
-                let service = Service(uuid: serviceUUID,
-                                      isPrimary: operation.type == .primaryService,
-                                      handle: serviceData.attributeHandle,
-                                      end: serviceData.endGroupHandle)
-                
-                operation.foundData.append(service)
+            guard let littleEndianServiceUUID = BluetoothUUID(data: serviceData.value) else {
+                operation.completion(.failure(Error.invalidResponse(response)))
+                return
             }
             
-            // get more if possible
-            let lastEnd = pdu.attributeData.last?.endGroupHandle ?? 0x00
+            let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
+            let service = Service(
+                uuid: serviceUUID,
+                isPrimary: operation.type == .primaryService,
+                handle: serviceData.attributeHandle,
+                end: serviceData.endGroupHandle
+            )
             
-            // prevent infinite loop
-            guard lastEnd >= operation.start
-                else { operation.completion(.failure(Error.invalidResponse(pdu))); return }
-            
-            guard lastEnd < .max // End of database
-                else { operation.success(); return }
-            
-            operation.start = lastEnd + 1
-            
-            if lastEnd < operation.end {
-                
-                let pdu = ATTReadByGroupTypeRequest(startHandle: operation.start,
-                                                    endHandle: operation.end,
-                                                    type: operation.type.uuid)
-                
-                send(pdu) { [unowned self] in self.readByGroupTypeResponse($0, operation: operation) }
-                
-            } else {
-                
-                operation.success()
-            }
+            operation.foundData.append(service)
+        }
+        
+        // get more if possible
+        let lastEnd = response.attributeData.last?.endGroupHandle ?? 0x00
+        
+        // prevent infinite loop
+        guard lastEnd >= operation.start else {
+            operation.completion(.failure(Error.invalidResponse(response)))
+            return
+        }
+        
+        guard lastEnd < .max // End of database
+            else { operation.success(); return }
+        
+        operation.start = lastEnd + 1
+        
+        if lastEnd < operation.end {
+            let request = ATTReadByGroupTypeRequest(
+                startHandle: operation.start,
+                endHandle: operation.end,
+                type: operation.type.uuid
+            )
+            let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
+            try await readByGroupTypeResponse(response, operation: operation)
+        } else {
+            operation.success()
         }
     }
     
-    private func findByTypeResponse(_ response: ATTResponse<ATTFindByTypeResponse>, operation: DiscoveryOperation<Service>) {
+    private func findByTypeResponse(
+        _ response: ATTFindByTypeResponse,
+        operation: DiscoveryOperation<Service>
+    ) async throws {
         
         // Find By Type Value Response returns a list of Attribute Handle ranges. 
         // The Attribute Handle range is the starting handle and the ending handle of the service definition.
@@ -719,53 +767,48 @@ public final class GATTClient {
         // is not 0xFFFF, the Find By Type Value Request may be called again with the Starting Handle set to one 
         // greater than the last Attribute Handle range in the Find By Type Value Response.
         
-        switch response {
+        guard let serviceUUID = operation.uuid
+            else { fatalError("Should have UUID specified") }
+        
+        // pre-allocate array
+        operation.foundData.reserveCapacity(operation.foundData.count + response.handles.count)
+        
+        // store PDU values
+        for serviceData in response.handles {
             
-        case let .failure(errorResponse):
+            let service = Service(
+                uuid: serviceUUID,
+                isPrimary: operation.type == .primaryService,
+                handle: serviceData.foundAttribute,
+                end: serviceData.groupEnd
+            )
             
-            operation.failure(errorResponse)
+            operation.foundData.append(service)
+        }
+        
+        // get more if possible
+        let lastEnd = response.handles.last?.groupEnd ?? 0x00
+        
+        guard lastEnd < .max // End of database
+            else { operation.success(); return }
+        
+        operation.start = lastEnd + 1
+        
+        // need to continue scanning
+        if lastEnd < operation.end {
             
-        case let .success(pdu):
+            let request = ATTFindByTypeRequest(
+                startHandle: operation.start,
+                endHandle: operation.end,
+                attributeType: operation.type.rawValue,
+                attributeValue: serviceUUID.littleEndian.data
+            )
+            let response = try await send(request, response: ATTFindByTypeResponse.self)
+            try await findByTypeResponse(response, operation: operation)
             
-            guard let serviceUUID = operation.uuid
-                else { fatalError("Should have UUID specified") }
+        } else {
             
-            // pre-allocate array
-            operation.foundData.reserveCapacity(operation.foundData.count + pdu.handles.count)
-            
-            // store PDU values
-            for serviceData in pdu.handles {
-                
-                let service = Service(uuid: serviceUUID,
-                                      isPrimary: operation.type == .primaryService,
-                                      handle: serviceData.foundAttribute,
-                                      end: serviceData.groupEnd)
-                
-                operation.foundData.append(service)
-            }
-            
-            // get more if possible
-            let lastEnd = pdu.handles.last?.groupEnd ?? 0x00
-            
-            guard lastEnd < .max // End of database
-                else { operation.success(); return }
-            
-            operation.start = lastEnd + 1
-            
-            // need to continue scanning
-            if lastEnd < operation.end {
-                
-                let pdu = ATTFindByTypeRequest(startHandle: operation.start,
-                                               endHandle: operation.end,
-                                               attributeType: operation.type.rawValue,
-                                               attributeValue: serviceUUID.littleEndian.data)
-                
-                send(pdu) { [unowned self] in self.findByTypeResponse($0, operation: operation) }
-                
-            } else {
-                
-                operation.success()
-            }
+            operation.success()
         }
     }
     
@@ -1105,17 +1148,14 @@ public final class GATTClient {
     }
     
     private func notification(_ notification: ATTHandleValueNotification) {
-        
         notifications[notification.handle]?(notification.value)
     }
     
-    private func indication(_ indication: ATTHandleValueIndication) {
-        
+    private func indication(_ indication: ATTHandleValueIndication) async {
         let confirmation = ATTHandleValueConfirmation()
-        
         // send acknowledgement
-        send(confirmation)
-        
+        do { try await send(confirmation) }
+        catch { log?("Unable to send indication confirmation. \(error)") }
         indications[indication.handle]?(indication.value)
     }
 }
@@ -1125,9 +1165,7 @@ public final class GATTClient {
 public extension GATTClient {
     
     typealias Error = GATTClientError
-    
-    typealias Response<Value> = GATTClientResponse<Value>
-    
+        
     typealias Notification = (Data) -> ()
 }
 
@@ -1207,7 +1245,7 @@ extension GATTClientError: CustomNSError {
 
 #endif
 
-public typealias GATTClientResponse <Value> = Result<Value, GATTClientError>
+internal typealias GATTClientResponse <Value> = Result<Value, GATTClientError>
 
 public extension GATTClient {
     
@@ -1278,19 +1316,14 @@ fileprivate final class DiscoveryOperation <T> {
     
     @inline(__always)
     func success() {
-        
         completion(.success(foundData))
     }
     
     @inline(__always)
     func failure(_ responseError: ATTErrorResponse) {
-        
         if responseError.error == .attributeNotFound {
-            
             success()
-            
         } else {
-            
             completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
@@ -1421,20 +1454,17 @@ private extension GATTClient {
             self.completion = completion
         }
         
-        @inline(__always)
         func success(_ attributes: [ATTReadByTypeResponse.AttributeData]) {
             
             var data = [UInt16: Data](minimumCapacity: attributes.count)
             
             for attribute in attributes {
-                
                 data[attribute.handle] = Data(attribute.value)
             }
             
             completion(.success(data))
         }
         
-        @inline(__always)
         func failure(_ responseError: ATTErrorResponse) {
             
             completion(.failure(GATTClientError.errorResponse(responseError)))
