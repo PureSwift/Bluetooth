@@ -15,14 +15,10 @@ public actor GATTServer {
     
     public var log: ((String) -> ())?
     
-    public var writePending: (() -> ())? {
-        get { return connection.writePending }
-        set { connection.writePending = newValue }
-    }
-    
-    public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
-        get { return connection.maximumTransmissionUnit }
-        set { connection.maximumTransmissionUnit = newValue }
+    public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
+        get async {
+            return await self.connection.maximumTransmissionUnit
+        }
     }
     
     public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
@@ -44,19 +40,20 @@ public actor GATTServer {
     
     // MARK: - Initialization
     
-    public init(socket: L2CAPSocket,
-                maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
-                maximumPreparedWrites: Int = 50) {
+    public init(
+        socket: L2CAPSocket,
+        maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
+        maximumPreparedWrites: Int = 50,
+        log: ((String) -> ())? = nil
+    ) async {
         
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
-        self.connection = ATTConnection(socket: socket)
+        self.connection = ATTConnection(socket: socket, log: log)
         
         // async register handlers
-        Task {
-            await self.registerATTHandlers()
-        }
+        await self.registerATTHandlers()
     }
     
     // MARK: - Methods
@@ -72,24 +69,20 @@ public actor GATTServer {
     }
     
     /// Update the value of a characteristic attribute.
-    public func writeValue(_ value: Data, forCharacteristic handle: UInt16) {
-        
+    public func writeValue(_ value: Data, forCharacteristic handle: UInt16) async {
         database.write(value, forAttribute: handle)
-        didWriteAttribute(handle, isLocalWrite: true)
+        await didWriteAttribute(handle, isLocalWrite: true)
     }
     
     /// Update the value of a characteristic attribute.
-    public func writeValue(_ value: Data, forCharacteristic uuid: BluetoothUUID) {
-        
+    public func writeValue(_ value: Data, forCharacteristic uuid: BluetoothUUID) async {
         guard let attribute = database.first(where: { $0.uuid == uuid })
             else { fatalError("Invalid uuid \(uuid)") }
-        
-        writeValue(value, forCharacteristic: attribute.handle)
+        await writeValue(value, forCharacteristic: attribute.handle)
     }
     
     // MARK: - Private Methods
     
-    @inline(__always)
     private func registerATTHandlers() async {
         
         // Exchange MTU
@@ -129,54 +122,51 @@ public actor GATTServer {
         await connection.register { [weak self] in await self?.executeWriteRequest($0) }
     }
     
-    @inline(__always)
-    private func errorResponse(_ opcode: ATTOpcode, _ error: ATTError, _ handle: UInt16 = 0) {
-        
+    private func errorResponse(_ opcode: ATTOpcode, _ error: ATTError, _ handle: UInt16 = 0) async {
         log?("Error \(error) - \(opcode) (\(handle))")
-        
-        guard let _ = connection.send(error: error, opcode: opcode, handle: handle)
+        let response = ATTErrorResponse(request: opcode, attributeHandle: handle, error: error)
+        guard let _ = await connection.queue(response)
             else { fatalError("Could not add error PDU to queue: \(opcode) \(error) \(handle)") }
     }
     
     private func fatalErrorResponse(_ message: String, _ opcode: ATTOpcode, _ handle: UInt16 = 0, line: UInt = #line) async -> Never {
         
-        errorResponse(opcode, .unlikelyError, handle)
+        await errorResponse(opcode, .unlikelyError, handle)
         do { let _ = try await connection.write() }
-        catch { log?("Could not send .unlikelyError to client. (\(error))") }
+        catch { log?("Could not send .unlikelyError to client. \(error)") }
         
         // crash
         fatalError(message, line: line)
     }
     
     /// Respond to a client-initiated PDU message.
-    @inline(__always)
-    private func respond <T: ATTProtocolDataUnit> (_ response: T) {
-        
+    private func respond <T: ATTProtocolDataUnit> (_ response: T) async {
         log?("Response: \(response)")
-        
-        guard let _ = connection.send(response)
+        guard let _ = await connection.queue(response)
             else { fatalError("Could not add PDU to queue: \(response)") }
     }
     
     /// Send a server-initiated PDU message.
-    @inline(__always)
-    private func send (_ indication: ATTHandleValueIndication, response: @escaping (ATTResponse<ATTHandleValueConfirmation>) -> ()) {
-        
+    private func send(_ indication: ATTHandleValueIndication) async -> ATTResponse<ATTHandleValueConfirmation> {
         log?("Indication: \(indication)")
-        
-        let callback: (AnyATTResponse) -> () = { response(ATTResponse<ATTHandleValueConfirmation>($0)) }
-        
-        guard let _ = connection.send(indication, response: (callback, ATTHandleValueConfirmation.self))
-            else { fatalError("Could not add PDU to queue: \(indication)") }
+        return await withCheckedContinuation { [weak self] continuation in
+            guard let self = self else { return }
+            Task {
+                let responseType: ATTProtocolDataUnit.Type = ATTHandleValueConfirmation.self
+                // callback if no I/O errors or disconnect
+                let callback: (ATTProtocolDataUnit) -> () = {
+                    continuation.resume(returning: ATTResponse<ATTHandleValueConfirmation>($0))
+                }
+                guard let _ = await self.connection.queue(indication, response: (callback, responseType))
+                    else { fatalError("Could not add PDU to queue: \(indication)") }
+            }
+        }
     }
     
     /// Send a server-initiated PDU message.
-    @inline(__always)
-    private func send (_ notification: ATTHandleValueNotification) {
-        
+    private func send(_ notification: ATTHandleValueNotification) async {
         log?("Notification: \(notification)")
-        
-        guard let _ = connection.send(notification)
+        guard let _ = await connection.queue(notification)
             else { fatalError("Could not add PDU to queue: \(notification)") }
     }
     
@@ -221,50 +211,50 @@ public actor GATTServer {
     }
     
     /// Handler for Write Request and Command
-    private func handleWriteRequest(opcode: ATTOpcode, handle: UInt16, value: Data, shouldRespond: Bool) {
+    private func handleWriteRequest(opcode: ATTOpcode, handle: UInt16, value: Data, shouldRespond: Bool) async {
         
         /// Conditionally respond
-        @inline(__always)
-        func doResponse( _ block: @autoclosure() -> ()) {
-            
-            if shouldRespond { block() }
+        func doResponse( _ block: @autoclosure () async -> ()) async {
+            if shouldRespond {
+                await block()
+            }
         }
         
         log?("Write \(shouldRespond ? "Request" : "Command") (\(handle)) \(value)")
         
         // no attributes, impossible to write
-        guard database.attributes.isEmpty == false
-            else { doResponse(errorResponse(opcode, .invalidHandle, handle)); return }
+        guard database.attributes.isEmpty == false else {
+            await doResponse(await errorResponse(opcode, .invalidHandle, handle))
+            return
+        }
         
         // validate handle
-        guard database.contains(handle: handle)
-            else { errorResponse(opcode, .invalidHandle, handle); return }
+        guard database.contains(handle: handle) else {
+            await errorResponse(opcode, .invalidHandle, handle)
+            return
+        }
         
         // get attribute
         let attribute = database[handle: handle]
         
         // validate permissions
         if let error = await checkPermissions([.write, .writeAuthentication, .writeEncrypt], attribute) {
-            
-            doResponse(errorResponse(opcode, error, handle))
+            await doResponse(await errorResponse(opcode, error, handle))
             return
         }
         
         // validate application errors with write callback
         if let error = willWrite?(attribute.uuid, handle, attribute.value, value) {
-            
-            doResponse(errorResponse(opcode, error, handle))
+            await doResponse(await errorResponse(opcode, error, handle))
             return
         }
         
         database.write(value, forAttribute: handle)
-        
-        doResponse(respond(ATTWriteResponse()))
-        
-        didWriteAttribute(handle)
+        await doResponse(await respond(ATTWriteResponse()))
+        await didWriteAttribute(handle)
     }
     
-    private func didWriteAttribute(_ attributeHandle: UInt16, isLocalWrite: Bool = false) {
+    private func didWriteAttribute(_ attributeHandle: UInt16, isLocalWrite: Bool = false) async {
         
         let (group, attribute) = database.attributeGroup(for: attributeHandle)
         assert(attribute.handle == attributeHandle)
@@ -284,21 +274,21 @@ public actor GATTServer {
                 
                 // notify
                 if descriptor.configuration.contains(.notify) {
-                    
-                    let notification = ATTHandleValueNotification(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
-                    
-                    send(notification)
+                    let notification = ATTHandleValueNotification(
+                        attribute: attribute,
+                        maximumTransmissionUnit: await connection.maximumTransmissionUnit
+                    )
+                    await send(notification)
                 }
                 
                 // indicate
                 if descriptor.configuration.contains(.indicate) {
-                    
-                    let indication = ATTHandleValueIndication(attribute: attribute, maximumTransmissionUnit: connection.maximumTransmissionUnit)
-                    
-                    send(indication) { [unowned self] (confirmation) in
-                        
-                        self.log?("Confirmation: \(confirmation)")
-                    }
+                    let indication = ATTHandleValueIndication(
+                        attribute: attribute,
+                        maximumTransmissionUnit: await connection.maximumTransmissionUnit
+                    )
+                    let confirmation = await send(indication)
+                    self.log?("Confirmation: \(confirmation)")
                 }
             }
             
@@ -309,26 +299,33 @@ public actor GATTServer {
         }
     }
     
-    private func handleReadRequest(opcode: ATTOpcode,
-                                   handle: UInt16,
-                                   offset: UInt16 = 0,
-                                   isBlob: Bool = false) -> Data? {
+    private func handleReadRequest(
+        opcode: ATTOpcode,
+        handle: UInt16,
+        offset: UInt16 = 0,
+        isBlob: Bool = false
+    ) async -> Data? {
+        
+        let maximumTransmissionUnit = await self.connection.maximumTransmissionUnit
         
         // no attributes
-        guard database.attributes.isEmpty == false
-            else { errorResponse(opcode, .invalidHandle, handle); return nil }
+        guard database.attributes.isEmpty == false else {
+            await errorResponse(opcode, .invalidHandle, handle)
+            return nil
+        }
         
         // validate handle
-        guard database.contains(handle: handle)
-            else { errorResponse(opcode, .invalidHandle, handle); return nil }
+        guard database.contains(handle: handle) else {
+            await errorResponse(opcode, .invalidHandle, handle)
+            return nil
+        }
         
         // get attribute
         let attribute = database[handle: handle]
         
         // validate permissions
-        if let error = checkPermissions([.read, .readAuthentication, .readEncrypt], attribute) {
-            
-            errorResponse(opcode, error, handle)
+        if let error = await checkPermissions([.read, .readAuthentication, .readEncrypt], attribute) {
+            await errorResponse(opcode, error, handle)
             return nil
         }
         
@@ -336,12 +333,15 @@ public actor GATTServer {
         //
         // If the Characteristic Value is not longer than (ATT_MTU – 1) an Error Response with
         // the Error Code set to Attribute Not Long shall be received on the first Read Blob Request.
-        guard isBlob == false || attribute.value.count > (Int(connection.maximumTransmissionUnit.rawValue) - 1)
-            else { errorResponse(opcode, .attributeNotLong, handle); return nil }
+        guard isBlob == false || attribute.value.count > (Int(maximumTransmissionUnit.rawValue) - 1) else { await errorResponse(opcode, .attributeNotLong, handle)
+            return nil
+        }
         
         // check boundary
-        guard offset <= UInt16(attribute.value.count)
-            else { errorResponse(opcode, .invalidOffset, handle); return nil }
+        guard offset <= UInt16(attribute.value.count) else {
+            await errorResponse(opcode, .invalidOffset, handle)
+            return nil
+        }
         
         var value: Data
         
@@ -360,12 +360,11 @@ public actor GATTServer {
         }
         
         // adjust value for MTU
-        value = Data(value.prefix(Int(connection.maximumTransmissionUnit.rawValue) - 1))
+        value = Data(value.prefix(Int(maximumTransmissionUnit.rawValue) - 1))
         
         // validate application errors with read callback
         if let error = willRead?(attribute.uuid, handle, value, Int(offset)) {
-            
-            errorResponse(opcode, error, handle)
+            await errorResponse(opcode, error, handle)
             return nil
         }
         
@@ -374,112 +373,93 @@ public actor GATTServer {
     
     // MARK: Callbacks
     
-    private func exchangeMTU(_ pdu: ATTMaximumTransmissionUnitRequest) {
-        
+    private func exchangeMTU(_ pdu: ATTMaximumTransmissionUnitRequest) async {
         let serverMTU = preferredMaximumTransmissionUnit.rawValue
-        
         let finalMTU = ATTMaximumTransmissionUnit(server: serverMTU, client: pdu.clientMTU)
-        
         // Respond with the server MTU (not final MTU)
-        connection.send(ATTMaximumTransmissionUnitResponse(serverMTU: serverMTU))
-        
+        await connection.queue(ATTMaximumTransmissionUnitResponse(serverMTU: serverMTU))
         // Set MTU
-        maximumTransmissionUnit = finalMTU
-        
+        await connection.setMaximumTransmissionUnit(finalMTU)
         log?("MTU Exchange (\(pdu.clientMTU) -> \(serverMTU))")
     }
     
-    private func readByGroupType(_ pdu: ATTReadByGroupTypeRequest) {
-        
+    private func readByGroupType(_ pdu: ATTReadByGroupTypeRequest) async {
         typealias AttributeData = ATTReadByGroupTypeResponse.AttributeData
-        
         log?("Read by Group Type (\(pdu.startHandle) - \(pdu.endHandle))")
-        
         // validate handles
-        guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
-        
-        guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
-        
-        // GATT defines that only the Primary Service and Secondary Service group types 
+        guard pdu.startHandle != 0 && pdu.endHandle != 0 else {
+            await errorResponse(type(of: pdu).attributeOpcode, .invalidHandle)
+            return
+        }
+        guard pdu.startHandle <= pdu.endHandle else {
+            await errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle)
+            return
+        }
+        // GATT defines that only the Primary Service and Secondary Service group types
         // can be used for the "Read By Group Type" request. Return an error if any other group type is given.
-        guard pdu.type == .primaryService
-            || pdu.type == .secondaryService
-            else { errorResponse(type(of: pdu).attributeOpcode, .unsupportedGroupType, pdu.startHandle); return }
-        
+        guard pdu.type == .primaryService || pdu.type == .secondaryService else {
+            await errorResponse(type(of: pdu).attributeOpcode, .unsupportedGroupType, pdu.startHandle)
+            return
+        }
         let attributeData = database.readByGroupType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.type)
+        guard let firstAttribute = attributeData.first else {
+            await errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle)
+            return
+        }
         
-        guard let firstAttribute = attributeData.first
-            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
-        
-        let mtu = Int(connection.maximumTransmissionUnit.rawValue)
-        
+        let mtu = Int(await connection.maximumTransmissionUnit.rawValue)
         let valueLength = firstAttribute.value.count
-        
         let response: ATTReadByGroupTypeResponse
         
         // truncate for MTU if first handle is too large
         if ATTReadByGroupTypeResponse([firstAttribute]).dataLength > mtu {
-            
             let maxLength = min(min(mtu - 6, 251), valueLength)
-            
-            let truncatedAttribute = AttributeData(attributeHandle: firstAttribute.attributeHandle,
-                                                   endGroupHandle: firstAttribute.endGroupHandle,
-                                                   value: Data(firstAttribute.value.prefix(maxLength)))
-            
+            let truncatedAttribute = AttributeData(
+                attributeHandle: firstAttribute.attributeHandle,
+                endGroupHandle: firstAttribute.endGroupHandle,
+                value: Data(firstAttribute.value.prefix(maxLength))
+            )
             response = ATTReadByGroupTypeResponse([truncatedAttribute])
-            
         } else {
-            
             var count = 1
-            
             // respond with results that are the same length
             if attributeData.count > 1 {
-                
                 for (index, attribute) in attributeData.suffix(from: 1).enumerated() {
-                    
                     let newCount = index + 1
-                    
                     guard attribute.value.count == valueLength,
                         ATTReadByGroupTypeResponse.dataLength(for: attributeData.prefix(newCount)) <= mtu
                         else { break }
-                    
                     count = newCount
                 }
             }
             
             let limitedAttributes = Array(attributeData.prefix(count))
-            
             response = ATTReadByGroupTypeResponse(limitedAttributes)
         }
         
         assert(response.dataLength <= mtu,
                "Response \(response.dataLength) bytes > MTU (\(mtu))")
         
-        respond(response)
+        await respond(response)
     }
     
-    private func readByType(_ pdu: ATTReadByTypeRequest) {
-        
+    private func readByType(_ pdu: ATTReadByTypeRequest) async {
         typealias AttributeData = ATTReadByTypeResponse.AttributeData
-        
         log?("Read by Type (\(pdu.attributeType)) (\(pdu.startHandle) - \(pdu.endHandle))")
-        
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
+            else { await errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
+            else { await errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
         
         let attributeData = database
             .readByType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.attributeType)
             .map { AttributeData(handle: $0.handle, value: $0.value) }
         
         guard let firstAttribute = attributeData.first
-            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
+            else { await errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
         
-        let mtu = Int(connection.maximumTransmissionUnit.rawValue)
+        let mtu = Int(await connection.maximumTransmissionUnit.rawValue)
         
         let valueLength = firstAttribute.value.count
         
@@ -522,10 +502,10 @@ public actor GATTServer {
         assert(response.dataLength <= mtu,
                "Response \(response.dataLength) bytes > MTU (\(mtu))")
         
-        respond(response)
+        await respond(response)
     }
     
-    private func findInformation(_ pdu: ATTFindInformationRequest) {
+    private func findInformation(_ pdu: ATTFindInformationRequest) async {
         
         typealias AttributeData = ATTFindInformationResponse.AttributeData
         
@@ -536,18 +516,18 @@ public actor GATTServer {
         log?("Find Information (\(pdu.startHandle) - \(pdu.endHandle))")
         
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(opcode, .invalidHandle); return }
+            else { await errorResponse(opcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(opcode, .invalidHandle, pdu.startHandle); return }
+            else { await errorResponse(opcode, .invalidHandle, pdu.startHandle); return }
         
         let attributes = database.findInformation(handle: (pdu.startHandle, pdu.endHandle))
         
         guard attributes.isEmpty == false
-            else { errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
+            else { await errorResponse(opcode, .attributeNotFound, pdu.startHandle); return }
         
         guard let format = Format(uuid: attributes[0].uuid)
-            else { errorResponse(opcode, .unlikelyError, pdu.startHandle); return }
+            else { await errorResponse(opcode, .unlikelyError, pdu.startHandle); return }
         
         var bit16Pairs = [ATTFindInformationResponse.Attribute16Bit]()
         var bit128Pairs = [ATTFindInformationResponse.Attribute128Bit]()
@@ -557,24 +537,18 @@ public actor GATTServer {
             // truncate if bigger than MTU
             let encodedLength = 2 + ((index + 1) * format.length)
             
-            guard encodedLength <= Int(connection.maximumTransmissionUnit.rawValue)
+            guard encodedLength <= Int(await connection.maximumTransmissionUnit.rawValue)
                 else { break }
             
             var mismatchedType = false
             
             // encode attribute
             switch (attribute.uuid, format) {
-                
             case let (.bit16(type), .bit16):
-                
                 bit16Pairs.append(ATTFindInformationResponse.Attribute16Bit(handle: attribute.handle, uuid: type))
-                
             case let (.bit128(type), .bit128):
-                
                 bit128Pairs.append(ATTFindInformationResponse.Attribute128Bit(handle: attribute.handle, uuid: type))
-                
             default:
-                
                 mismatchedType = true // mismatching types
             }
             
@@ -591,81 +565,65 @@ public actor GATTServer {
         }
         
         let response = ATTFindInformationResponse(attributeData: attributeData)
-        
-        respond(response)
+        await respond(response)
     }
     
-    private func findByTypeValue(_ pdu: ATTFindByTypeRequest) {
+    private func findByTypeValue(_ pdu: ATTFindByTypeRequest) async {
         
         typealias Handle = ATTFindByTypeResponse.HandlesInformation
         
         log?("Find By Type Value (\(pdu.startHandle) - \(pdu.endHandle)) (\(pdu.attributeType))")
         
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
+            else { await errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
+            else { await errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
         
         let handles = database.findByTypeValue(handle: (pdu.startHandle, pdu.endHandle),
                                                type: pdu.attributeType,
                                                value: pdu.attributeValue)
         
         guard handles.isEmpty == false
-            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
+            else { await errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
         
         let response = ATTFindByTypeResponse(handles)
-        
-        respond(response)
+        await respond(response)
     }
     
-    private func writeRequest(_ pdu: ATTWriteRequest) {
-        
+    private func writeRequest(_ pdu: ATTWriteRequest) async {
         let opcode = type(of: pdu).attributeOpcode
-        
-        handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: true)
+        await handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: true)
     }
     
-    private func writeCommand(_ pdu: ATTWriteCommand) {
-        
+    private func writeCommand(_ pdu: ATTWriteCommand) async {
         let opcode = type(of: pdu).attributeOpcode
-        
-        handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: false)
+        await handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: false)
     }
     
-    private func readRequest(_ pdu: ATTReadRequest) {
-        
+    private func readRequest(_ pdu: ATTReadRequest) async {
         let opcode = type(of: pdu).attributeOpcode
-        
         log?("Read (\(pdu.handle))")
-        
-        if let value = handleReadRequest(opcode: opcode, handle: pdu.handle) {
-            
-            respond(ATTReadResponse(attributeValue: value))
+        if let value = await handleReadRequest(opcode: opcode, handle: pdu.handle) {
+            await respond(ATTReadResponse(attributeValue: value))
         }
     }
     
-    private func readBlobRequest(_ pdu: ATTReadBlobRequest) {
-        
+    private func readBlobRequest(_ pdu: ATTReadBlobRequest) async {
         let opcode = type(of: pdu).attributeOpcode
-        
         log?("Read Blob (\(pdu.handle))")
-        
-        if let value = handleReadRequest(opcode: opcode, handle: pdu.handle, offset: pdu.offset, isBlob: true) {
-            
-            respond(ATTReadBlobResponse(partAttributeValue: value))
+        if let value = await handleReadRequest(opcode: opcode, handle: pdu.handle, offset: pdu.offset, isBlob: true) {
+            await respond(ATTReadBlobResponse(partAttributeValue: value))
         }
     }
     
-    private func readMultipleRequest(_ pdu: ATTReadMultipleRequest) {
-        
+    private func readMultipleRequest(_ pdu: ATTReadMultipleRequest) async {
         let opcode = type(of: pdu).attributeOpcode
-        
         log?("Read Multiple Request \(pdu.handles)")
         
         // no attributes, impossible to read
         guard database.attributes.isEmpty == false
-            else { errorResponse(opcode, .invalidHandle, pdu.handles[0]); return }
+            else { await errorResponse(opcode, .invalidHandle, pdu.handles[0]); return }
         
         var values = Data()
         
@@ -673,15 +631,14 @@ public actor GATTServer {
             
             // validate handle
             guard database.contains(handle: handle)
-                else { errorResponse(opcode, .invalidHandle, handle); return }
+                else { await errorResponse(opcode, .invalidHandle, handle); return }
             
             // get attribute
             let attribute = database[handle: handle]
             
             // validate application errors with read callback
             if let error = willRead?(attribute.uuid, handle, attribute.value, 0) {
-                
-                errorResponse(opcode, error, handle)
+                await errorResponse(opcode, error, handle)
                 return
             }
             
@@ -689,11 +646,10 @@ public actor GATTServer {
         }
         
         let response = ATTReadMultipleResponse(values: values)
-        
-        respond(response)
+        await respond(response)
     }
     
-    private func prepareWriteRequest(_ pdu: ATTPrepareWriteRequest) {
+    private func prepareWriteRequest(_ pdu: ATTPrepareWriteRequest) async {
         
         let opcode = type(of: pdu).attributeOpcode
         
@@ -701,23 +657,22 @@ public actor GATTServer {
         
         // no attributes, impossible to write
         guard database.attributes.isEmpty == false
-            else { errorResponse(opcode, .invalidHandle, pdu.handle); return }
+            else { await errorResponse(opcode, .invalidHandle, pdu.handle); return }
         
         // validate handle
         guard database.contains(handle: pdu.handle)
-            else { errorResponse(opcode, .invalidHandle, pdu.handle); return }
+            else { await errorResponse(opcode, .invalidHandle, pdu.handle); return }
         
         // validate that the prepared writes queue is not full
         guard preparedWrites.count <= maximumPreparedWrites
-            else { errorResponse(opcode, .prepareQueueFull); return }
+            else { await errorResponse(opcode, .prepareQueueFull); return }
         
         // get attribute
         let attribute = database[handle: pdu.handle]
         
         // validate permissions
-        if let error = checkPermissions([.write, .writeAuthentication, .writeEncrypt], attribute) {
-            
-            errorResponse(opcode, error, pdu.handle)
+        if let error = await checkPermissions([.write, .writeAuthentication, .writeEncrypt], attribute) {
+            await errorResponse(opcode, error, pdu.handle)
             return
         }
         
@@ -727,76 +682,53 @@ public actor GATTServer {
         
         // add queued write
         let preparedWrite = PreparedWrite(handle: pdu.handle, value: pdu.partValue, offset: pdu.offset)
-        
         preparedWrites.append(preparedWrite)
-        
         let response = ATTPrepareWriteResponse(handle: pdu.handle, offset: pdu.offset, partValue: pdu.partValue)
-        
-        respond(response)
+        await respond(response)
     }
     
-    private func executeWriteRequest(_ pdu: ATTExecuteWriteRequest) {
-        
+    private func executeWriteRequest(_ pdu: ATTExecuteWriteRequest) async {
         let opcode = type(of: pdu).attributeOpcode
-        
         log?("Execute Write Request (\(pdu))")
-        
         let preparedWrites = self.preparedWrites
         self.preparedWrites = []
-        
         var newValues = [UInt16: Data]()
-        
         switch pdu {
-            
         case .cancel:
-            
             break // queue always cleared
-            
         case .write:
-            
             // validate
             for write in preparedWrites {
-                
                 let previousValue = newValues[write.handle] ?? Data()
-                
                 let newValue = previousValue + write.value
-                
                 // validate offset?
                 newValues[write.handle] = newValue
             }
-            
             // validate new values
             for (handle, newValue) in newValues {
-                
                 let attribute = database[handle: handle]
-                
                 // validate application errors with write callback
                 if let error = willWrite?(attribute.uuid, handle, attribute.value, newValue) {
-                    
-                    errorResponse(opcode, error, handle)
+                    await errorResponse(opcode, error, handle)
                     return
                 }
             }
-            
             // write new values
             for (handle, newValue) in newValues {
-                
                 database.write(newValue, forAttribute: handle)
             }
         }
         
-        respond(ATTExecuteWriteResponse())
-        
+        await respond(ATTExecuteWriteResponse())
         for handle in newValues.keys {
-            
-            didWriteAttribute(handle)
+            await didWriteAttribute(handle)
         }
     }
 }
 
 // MARK: - Supporting Types
 
-private extension GATTServer {
+internal extension GATTServer {
     
     struct PreparedWrite {
         
@@ -807,8 +739,6 @@ private extension GATTServer {
         let offset: UInt16
     }
 }
-
-// MARK: - GATTDatabase Extensions
 
 internal struct HandleRange {
     
