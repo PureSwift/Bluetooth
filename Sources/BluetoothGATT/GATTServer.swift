@@ -9,7 +9,7 @@
 import Foundation
 import Bluetooth
 
-public final class GATTServer {
+public actor GATTServer {
     
     // MARK: - Properties
     
@@ -52,7 +52,11 @@ public final class GATTServer {
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.connection = ATTConnection(socket: socket)
-        self.registerATTHandlers()
+        
+        // async register handlers
+        Task {
+            await self.registerATTHandlers()
+        }
     }
     
     // MARK: - Methods
@@ -86,43 +90,43 @@ public final class GATTServer {
     // MARK: - Private Methods
     
     @inline(__always)
-    private func registerATTHandlers() {
+    private func registerATTHandlers() async {
         
         // Exchange MTU
-        connection.register { [weak self] in self?.exchangeMTU($0) }
+        await connection.register { [weak self] in await self?.exchangeMTU($0) }
         
         // Read By Group Type
-        connection.register { [weak self] in self?.readByGroupType($0) }
+        await connection.register { [weak self] in await self?.readByGroupType($0) }
         
         // Read By Type
-        connection.register { [weak self] in self?.readByType($0) }
+        await connection.register { [weak self] in await self?.readByType($0) }
         
         // Find Information
-        connection.register { [weak self] in self?.findInformation($0) }
+        await connection.register { [weak self] in await self?.findInformation($0) }
         
         // Find By Type Value
-        connection.register { [weak self] in self?.findByTypeValue($0) }
+        await connection.register { [weak self] in await self?.findByTypeValue($0) }
         
         // Write Request
-        connection.register { [weak self] in self?.writeRequest($0) }
+        await connection.register { [weak self] in await self?.writeRequest($0) }
         
         // Write Command
-        connection.register { [weak self] in self?.writeCommand($0) }
+        await connection.register { [weak self] in await self?.writeCommand($0) }
         
         // Read Request
-        connection.register { [weak self] in self?.readRequest($0) }
+        await connection.register { [weak self] in await self?.readRequest($0) }
         
         // Read Blob Request
-        connection.register { [weak self] in self?.readBlobRequest($0) }
+        await connection.register { [weak self] in await self?.readBlobRequest($0) }
         
         // Read Multiple Request
-        connection.register { [weak self] in self?.readMultipleRequest($0) }
+        await connection.register { [weak self] in await self?.readMultipleRequest($0) }
         
         // Prepare Write Request
-        connection.register { [weak self] in self?.prepareWriteRequest($0) }
+        await connection.register { [weak self] in await self?.prepareWriteRequest($0) }
         
         // Execute Write Request
-        connection.register { [weak self] in self?.executeWriteRequest($0) }
+        await connection.register { [weak self] in await self?.executeWriteRequest($0) }
     }
     
     @inline(__always)
@@ -177,7 +181,7 @@ public final class GATTServer {
     }
     
     private func checkPermissions(_ permissions: BitMaskOptionSet<ATTAttributePermission>,
-                                  _ attribute: GATTDatabase.Attribute) -> ATTError? {
+                                  _ attribute: GATTDatabase.Attribute) async -> ATTError? {
         
         guard attribute.permissions != permissions else { return nil }
         
@@ -193,7 +197,7 @@ public final class GATTServer {
         // check security
         
         let security: SecurityLevel
-        do { security = try connection.socket.securityLevel() }
+        do { security = try await connection.socket.securityLevel() }
         catch {
             log?("Unable to get security level. \(error)")
             security = .sdp
@@ -240,7 +244,7 @@ public final class GATTServer {
         let attribute = database[handle: handle]
         
         // validate permissions
-        if let error = checkPermissions([.write, .writeAuthentication, .writeEncrypt], attribute) {
+        if let error = await checkPermissions([.write, .writeAuthentication, .writeEncrypt], attribute) {
             
             doResponse(errorResponse(opcode, error, handle))
             return

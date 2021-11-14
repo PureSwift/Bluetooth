@@ -18,15 +18,15 @@ public protocol L2CAPSocket {
     func recieve(_ bufferSize: Int) async throws -> Data
     
     /// Attempts to change the socket's security level.
-    func setSecurityLevel(_ securityLevel: SecurityLevel) throws
+    func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
     
     /// Get security level
-    func securityLevel() throws -> SecurityLevel
+    func securityLevel() async throws -> SecurityLevel
     
-    /// Attempt to accept an incomping connection.
+    /// Attempt to accept an incoming connection.
     func accept(sleep: UInt64) async throws -> Self
     
-    func canWrite() throws -> Bool
+    //func canWrite() throws -> Bool
     
-    func canRead() throws -> Bool
+    //func canRead() throws -> Bool
 }
