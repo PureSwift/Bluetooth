@@ -70,8 +70,7 @@ public actor GATTClient {
     ///
     /// - Parameter completion: The completion closure.
     public func discoverAllPrimaryServices() async throws -> [Service] {
-        
-        /// The Attribute Protocol Read By Group Type Request shall be used with 
+        /// The Attribute Protocol Read By Group Type Request shall be used with
         /// the Attribute Type parameter set to the UUID for «Primary Service». 
         /// The Starting Handle shall be set to 0x0001 and the Ending Handle shall be set to 0xFFFF.
         try await discoverServices(
@@ -93,7 +92,6 @@ public actor GATTClient {
     public func discoverPrimaryServices(
         by uuid: BluetoothUUID
     ) async throws -> [Service]{
-        
         // The Attribute Protocol Find By Type Value Request shall be used with the Attribute Type
         // parameter set to the UUID for «Primary Service» and the Attribute Value set to the 16-bit
         // Bluetooth UUID or 128-bit UUID for the specific primary service. 
@@ -116,12 +114,10 @@ public actor GATTClient {
     /// - Parameter service: The service.
     /// - Parameter completion: The completion closure.
     public func discoverAllCharacteristics(of service: Service) async throws -> [Characteristic] {
-        
         // The Attribute Protocol Read By Type Request shall be used with the Attribute Type
         // parameter set to the UUID for «Characteristic» The Starting Handle shall be set to 
         // starting handle of the specified service and the Ending Handle shall be set to the 
         // ending handle of the specified service.
-        
         return try await discoverCharacteristics(service: service)
     }
     
@@ -266,8 +262,14 @@ public actor GATTClient {
          */
         let start = characteristic.handle.value + 1
         let end = endHandle(for: characteristic, service: service)
-        let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
-        try await discoverDescriptors(operation: operation)
+        return try await withCheckedThrowingContinuation() {
+            Task {
+                do {
+                    let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
+                    try await discoverDescriptors(operation: operation)
+                }
+            }
+        }
     }
     
     /// Read Characteristic Descriptor
@@ -276,8 +278,7 @@ public actor GATTClient {
     /// the characteristic descriptor declaration’s Attribute handle.
     ///
     /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/ReadCharacteristicValue.png)
-    public func readDescriptor(_ descriptor: Descriptor,
-                               completion: @escaping (GATTClientResponse<Data>) -> ()) {
+    public func readDescriptor(_ descriptor: Descriptor) async throws -> Data {
         
         /**
          The Attribute Protocol Read Request is used for this sub-procedure. The Read Request is used with the Attribute Handle parameter set to the characteristic descriptor handle. The Read Response returns the characteristic descriptor value in the Attribute Value parameter.
@@ -286,7 +287,7 @@ public actor GATTClient {
          */
         
         // read value and try to read blob if too big
-        readAttributeValue(descriptor.handle, completion: completion)
+        return try await readAttributeValue(descriptor.handle)
     }
     
     /**
@@ -455,45 +456,33 @@ public actor GATTClient {
         end: UInt16 = 0xffff,
         primary: Bool = true
     ) async throws -> [Service] {
-        return try await withCheckedThrowingContinuation() { continuation in
-            Task { [weak self] in
-                guard let self = self else { return }
-                let serviceType = GATTUUID(primaryService: primary)
-                let operation = DiscoveryOperation<Service>(
-                    uuid: uuid,
-                    start: start,
-                    end: end,
-                    type: serviceType
-                ) { result in
-                    continuation.resume(with: result)
-                }
-                
-                do {
-                    if let uuid = uuid {
-                        let request = ATTFindByTypeRequest(
-                            startHandle: start,
-                            endHandle: end,
-                            attributeType: serviceType.rawValue,
-                            attributeValue: uuid.littleEndian.data
-                        )
-                        // perform I/O
-                        let response = try await self.send(request, response: ATTFindByTypeResponse.self)
-                        try await self.findByTypeResponse(response, operation: operation)
-                    } else {
-                        let request = ATTReadByGroupTypeRequest(
-                            startHandle: start,
-                            endHandle: end,
-                            type: serviceType.uuid
-                        )
-                        let response = try await self.send(request, response: ATTReadByGroupTypeResponse.self)
-                        try await self.readByGroupTypeResponse(response, operation: operation)
-                    }
-                } catch {
-                    assert(error as? ATTErrorResponse == nil)
-                    continuation.resume(throwing: error)
-                }
-            }
+        let serviceType = GATTUUID(primaryService: primary)
+        var operation = GATTClientDiscoveryOperation<Service>(
+            uuid: uuid,
+            start: start,
+            end: end,
+            type: serviceType
+        )
+        if let uuid = uuid {
+            let request = ATTFindByTypeRequest(
+                startHandle: start,
+                endHandle: end,
+                attributeType: serviceType.rawValue,
+                attributeValue: uuid.littleEndian.data
+            )
+            // perform I/O
+            let response = try await send(request, response: ATTFindByTypeResponse.self)
+            try await findByTypeResponse(response, operation: &operation)
+        } else {
+            let request = ATTReadByGroupTypeRequest(
+                startHandle: start,
+                endHandle: end,
+                type: serviceType.uuid
+            )
+            let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
+            try await readByGroupTypeResponse(response, operation: &operation)
         }
+        return operation.foundData
     }
     
     private func discoverCharacteristics(
@@ -531,18 +520,8 @@ public actor GATTClient {
     private func discoverDescriptors(operation: DescriptorDiscoveryOperation) async throws {
         assert(operation.start <= operation.end, "Invalid range")
         let request = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
-        return try await withCheckedThrowingContinuation() { continuation in
-            Task {
-                do {
-                    let response = try await send(request, response: ATTFindInformationResponse.self)
-                    try await findInformationResponse(response, operation: operation)
-                }
-                catch {
-                    assert(error as? ATTErrorResponse == nil)
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+        let response = try await send(request, response: ATTFindInformationResponse.self)
+        try await findInformationResponse(response, operation: operation)
     }
     
     /// Read Characteristic Value
@@ -597,29 +576,21 @@ public actor GATTClient {
     private func writeAttribute(
         _ handle: UInt16,
         data: Data,
-        reliableWrites: Bool,
-        completion: ((GATTClientResponse<()>) -> ())?
+        withResponse: Bool
     ) async throws {
-        
         // short value
         let shortValueLength = await Int(maximumTransmissionUnit.rawValue) - 3 // ATT_MTU - 3
         if data.count <= shortValueLength {
-            if let completion = completion {
-                try await writeAttributeValue(
-                    handle,
-                    data: data,
-                    completion: completion
-                )
+            if withResponse {
+                try await writeAttributeValue(handle, data: data)
             } else {
                 try await writeAttributeCommand(handle, data: data)
             }
         } else {
-            let completion = completion ?? { _ in }
             try await writeLongAttributeValue(
                 handle,
                 data: data,
-                reliableWrites: reliableWrites,
-                completion: completion
+                reliableWrites: reliableWrites
             )
         }
     }
@@ -634,21 +605,19 @@ public actor GATTClient {
     /// Write attribute request.
     private func writeAttributeValue(
         _ attribute: UInt16,
-        data: Data,
-        completion: @escaping (GATTClientResponse<()>) -> ()
+        data: Data
     ) async throws {
         let length = await Int(maximumTransmissionUnit.rawValue) - 3
         let data = Data(data.prefix(length))
         let request = ATTWriteRequest(handle: attribute, value: data)
         let response = try await send(request, response: ATTWriteResponse.self)
-        writeResponse(response, completion: completion)
+        writeResponse(response)
     }
     
     private func writeLongAttributeValue(
         _ attribute: UInt16,
         data: Data,
-        reliableWrites: Bool = false,
-        completion: @escaping (GATTClientResponse<()>) -> ()
+        reliableWrites: Bool = false
     ) async throws {
         
         // The Attribute Protocol Prepare Write Request and Execute Write Request are used to perform this sub-procedure.
@@ -738,7 +707,7 @@ public actor GATTClient {
     
     private func readByGroupTypeResponse(
         _ response: ATTResponse<ATTReadByGroupTypeResponse>,
-        operation: DiscoveryOperation<Service>
+        operation: inout GATTClientDiscoveryOperation<Service>
     ) async throws {
         
         // Read By Group Type Response returns a list of Attribute Handle, End Group Handle, and Attribute Value tuples
@@ -750,16 +719,16 @@ public actor GATTClient {
         
         switch response {
         case let .failure(errorResponse):
-            operation.failure(errorResponse)
+            guard errorResponse.error != .attributeNotFound else {
+                return
+            }
+            throw Error.errorResponse(errorResponse)
         case let .success(response):
             // store PDU values
             for serviceData in response.attributeData {
-                
                 guard let littleEndianServiceUUID = BluetoothUUID(data: serviceData.value) else {
-                    operation.completion(.failure(Error.invalidResponse(response)))
-                    return
+                    throw Error.invalidResponse(response)
                 }
-                
                 let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
                 let service = Service(
                     uuid: serviceUUID,
@@ -767,7 +736,6 @@ public actor GATTClient {
                     handle: serviceData.attributeHandle,
                     end: serviceData.endGroupHandle
                 )
-                
                 operation.foundData.append(service)
             }
             
@@ -776,12 +744,11 @@ public actor GATTClient {
             
             // prevent infinite loop
             guard lastEnd >= operation.start else {
-                operation.completion(.failure(Error.invalidResponse(response)))
-                return
+                throw Error.invalidResponse(response)
             }
             
             guard lastEnd < .max // End of database
-                else { operation.success(); return }
+                else { return }
             
             operation.start = lastEnd + 1
             
@@ -792,27 +759,26 @@ public actor GATTClient {
                     type: operation.type.uuid
                 )
                 let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
-                try await readByGroupTypeResponse(response, operation: operation)
-            } else {
-                operation.success()
+                try await readByGroupTypeResponse(response, operation: &operation)
             }
         }
     }
     
     private func findByTypeResponse(
         _ response: ATTResponse<ATTFindByTypeResponse>,
-        operation: DiscoveryOperation<Service>
+        operation: inout GATTClientDiscoveryOperation<Service>
     ) async throws {
-        
-        // Find By Type Value Response returns a list of Attribute Handle ranges. 
+        // Find By Type Value Response returns a list of Attribute Handle ranges.
         // The Attribute Handle range is the starting handle and the ending handle of the service definition.
         // If the Attribute Handle range for the Service UUID being searched is returned and the End Found Handle 
         // is not 0xFFFF, the Find By Type Value Request may be called again with the Starting Handle set to one 
         // greater than the last Attribute Handle range in the Find By Type Value Response.
-        
         switch response {
         case let .failure(errorResponse):
-            operation.failure(errorResponse)
+            guard errorResponse.error != .attributeNotFound else {
+                return
+            }
+            throw GATTClientError.errorResponse(errorResponse)
         case let .success(response):
             guard let serviceUUID = operation.uuid
                 else { fatalError("Should have UUID specified") }
@@ -835,13 +801,12 @@ public actor GATTClient {
             let lastEnd = response.handles.last?.groupEnd ?? 0x00
             
             guard lastEnd < .max // End of database
-                else { operation.success(); return }
+                else { return }
             
             operation.start = lastEnd + 1
             
             // need to continue scanning
             if lastEnd < operation.end {
-                
                 let request = ATTFindByTypeRequest(
                     startHandle: operation.start,
                     endHandle: operation.end,
@@ -849,9 +814,7 @@ public actor GATTClient {
                     attributeValue: serviceUUID.littleEndian.data
                 )
                 let response = try await send(request, response: ATTFindByTypeResponse.self)
-                try await findByTypeResponse(response, operation: operation)
-            } else {
-                operation.success()
+                try await findByTypeResponse(response, operation: &operation)
             }
         }
     }
@@ -1296,6 +1259,21 @@ public extension GATTClient {
 }
 
 // MARK: - Private Supporting Types
+
+internal struct GATTClientDiscoveryOperation <T> {
+    
+    let uuid: BluetoothUUID?
+    
+    var start: UInt16 {
+        didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
+    }
+    
+    let end: UInt16
+    
+    let type: GATTUUID
+    
+    var foundData = [T]()
+}
 
 fileprivate final class DiscoveryOperation <T> {
     
