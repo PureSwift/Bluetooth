@@ -25,9 +25,7 @@ public actor GATTClient {
     public let preferredMaximumTransmissionUnit: ATTMaximumTransmissionUnit
     
     internal private(set) var didExchangeMTU = false
-    
-    internal let connection: ATTConnection
-    
+        
     /// Whether the client is currently writing a long value.
     internal private(set) var inLongWrite: Bool = false
     
@@ -36,6 +34,8 @@ public actor GATTClient {
     
     /// Indications
     internal private(set) var indications = [UInt16: Notification]()
+    
+    internal let connection: ATTConnection
     
     // MARK: - Initialization
     
@@ -164,13 +164,14 @@ public actor GATTClient {
         // The Attribute Protocol Read By Type Request is used to perform the sub-procedure.
         // The Attribute Type is set to the known characteristic UUID and the Starting Handle and Ending Handle parameters
         // shall be set to the range over which this read is to be performed. This is typically the handle range for the service in which the characteristic belongs.
-        
         let request = ATTReadByTypeRequest(
             startHandle: handleRange.start,
             endHandle: handleRange.end,
             attributeType: uuid
         )
-        let response = try await send(request, response: ATTReadByTypeResponse.self).get()
+        let response = try await send(request, response: ATTReadByTypeResponse.self)
+            .mapError({ GATTClientError.errorResponse($0) })
+            .get()
         // parse response
         var attributeData = [UInt16: Data](minimumCapacity: response.attributeData.count)
         for attribute in response.attributeData {
@@ -198,7 +199,9 @@ public actor GATTClient {
         assert(handles.count > 1)
         guard let request = ATTReadMultipleRequest(handles: handles)
             else { fatalError("Must provide at least 2 characteristics") }
-        let response = try await send(request, response: ATTReadMultipleResponse.self).get()
+        let response = try await send(request, response: ATTReadMultipleResponse.self)
+            .mapError({ GATTClientError.errorResponse($0) })
+            .get()
         return response.values
     }
     
@@ -328,6 +331,8 @@ public actor GATTClient {
         response: Response.Type
     ) async throws -> ATTResponse<Response> {
         assert(Response.attributeOpcode != .errorResponse)
+        assert(Response.attributeOpcode.type == .response)
+        assert(Request.attributeOpcode.type != .response)
         let log = self.log
         log?("Request: \(request)")
         return try await withCheckedThrowingContinuation { [weak self] continuation in
@@ -360,12 +365,10 @@ public actor GATTClient {
     
     @inline(__always)
     private func send<Request: ATTProtocolDataUnit>(_ request: Request) async throws {
-        
         log?("Request: \(request)")
-        
+        assert(Request.attributeOpcode.type != .response)
         guard let _ = await connection.send(request)
             else { fatalError("Could not add PDU to queue: \(request)") }
-        
         // write pending PDU
         let didWrite = try await self.connection.write()
         assert(didWrite, "Expected queued write operation")
@@ -564,7 +567,9 @@ public actor GATTClient {
          
          An Error Response shall be sent by the server in response to the Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Characteristic Value that is written is the wrong size, or has an invalid value as defined by the profile, then the value shall not be written and an Error Response shall be sent with the Error Code set to Application Error by the server.
          */
-        let _ = try response.get()
+        let _ = try response
+            .mapError({ GATTClientError.errorResponse($0) })
+            .get()
     }
     
     private func writeLongAttributeValue(
@@ -1025,14 +1030,13 @@ public actor GATTClient {
                 // all data sent
                 let request = ATTExecuteWriteRequest.write
                 let response = try await send(request, response: ATTExecuteWriteResponse.self)
-                try executeWriteResponse(response, &operation)
+                try executeWriteResponse(response)
             }
         }
     }
     
     private func executeWriteResponse(
-        _ response: ATTResponse<ATTExecuteWriteResponse>,
-        _ operation: inout WriteOperation
+        _ response: ATTResponse<ATTExecuteWriteResponse>
     ) throws {
         
         inLongWrite = false
@@ -1045,7 +1049,12 @@ public actor GATTClient {
     }
     
     private func notification(_ notification: ATTHandleValueNotification) {
-        notifications[notification.handle]?(notification.value)
+        guard let handler = notifications[notification.handle] else {
+            log?("Recieved notification for unregistered handle \(notification.handle)")
+            return
+        }
+        // callback
+        handler(notification.value)
     }
     
     private func indication(_ indication: ATTHandleValueIndication) async {
@@ -1053,7 +1062,12 @@ public actor GATTClient {
         // send acknowledgement
         do { try await send(confirmation) }
         catch { log?("Unable to send indication confirmation. \(error)") }
-        indications[indication.handle]?(indication.value)
+        // callback
+        guard let handler = indications[indication.handle] else {
+            log?("Recieved indication for unregistered handle \(indication.handle)")
+            return
+        }
+        handler(indication.value)
     }
 }
 
