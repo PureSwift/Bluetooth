@@ -373,8 +373,8 @@ public actor GATTClient {
                     try await self.connection.read()
                 }
                 catch {
-                    // not ATTError
-                    assert(type(of: error) != ATTError.self)
+                    // I/O error
+                    assert(type(of: error) != ATTErrorResponse.self)
                     continuation.resume(throwing: error)
                 }
             }
@@ -389,7 +389,7 @@ public actor GATTClient {
         guard let _ = await connection.send(request)
             else { fatalError("Could not add PDU to queue: \(request)") }
         
-        // write pending
+        // write pending PDU
         let didWrite = try await self.connection.write()
         assert(didWrite, "Expected queued write operation")
     }
@@ -428,9 +428,11 @@ public actor GATTClient {
         let clientMTU = preferredMaximumTransmissionUnit
         let request = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
         do {
-            let response = try await send(request, response: ATTMaximumTransmissionUnitResponse.self).get()
+            let response = try await send(request, response: ATTMaximumTransmissionUnitResponse.self)
             await exchangeMTUResponse(response)
         } catch {
+            // I/O error
+            assert(error as? ATTErrorResponse == nil)
             log?("Could not exchange MTU: \(error)")
         }
     }
@@ -464,12 +466,7 @@ public actor GATTClient {
                         )
                         // perform I/O
                         let response = try await self.send(request, response: ATTFindByTypeResponse.self)
-                        switch response {
-                        case let .success(response):
-                            try await self.findByTypeResponse(response, operation: operation)
-                        case let .failure(error):
-                            operation.failure(error)
-                        }
+                        try await self.findByTypeResponse(response, operation: operation)
                     } else {
                         let request = ATTReadByGroupTypeRequest(
                             startHandle: start,
@@ -477,12 +474,7 @@ public actor GATTClient {
                             type: serviceType.uuid
                         )
                         let response = try await self.send(request, response: ATTReadByGroupTypeResponse.self)
-                        switch response {
-                        case let .success(response):
-                            try await self.readByGroupTypeResponse(response, operation: operation)
-                        case let .failure(error):
-                            operation.failure(error)
-                        }
+                        try await self.readByGroupTypeResponse(response, operation: operation)
                     }
                 } catch {
                     assert(error as? ATTErrorResponse == nil)
@@ -684,22 +676,22 @@ public actor GATTClient {
     
     // MARK: - Callbacks
     
-    private func exchangeMTUResponse(
-        _ response:  ATTMaximumTransmissionUnitResponse
-    ) async {
+    private func exchangeMTUResponse(_ response: ATTResponse<ATTMaximumTransmissionUnitResponse>) async {
         assert(didExchangeMTU == false)
-        let clientMTU = preferredMaximumTransmissionUnit
-        let finalMTU = ATTMaximumTransmissionUnit(
-            server: response.serverMTU,
-            client: clientMTU.rawValue
-        )
-        log?("MTU Exchange (\(clientMTU) -> \(finalMTU))")
-        await self.connection.setMaximumTransmissionUnit(finalMTU)
-        self.didExchangeMTU = true
+        switch response {
+        case let .failure(errorResponse):
+            log?("Could not exchange MTU: \(errorResponse)")
+        case let .success(pdu):
+            let clientMTU = preferredMaximumTransmissionUnit
+            let finalMTU = ATTMaximumTransmissionUnit(server: pdu.serverMTU, client: clientMTU.rawValue)
+            log?("MTU Exchange (\(clientMTU) -> \(finalMTU))")
+            await self.connection.setMaximumTransmissionUnit(finalMTU)
+            self.didExchangeMTU = true
+        }
     }
     
     private func readByGroupTypeResponse(
-        _ response: ATTReadByGroupTypeResponse,
+        _ response: ATTResponse<ATTReadByGroupTypeResponse>,
         operation: DiscoveryOperation<Service>
     ) async throws {
         
@@ -710,54 +702,59 @@ public actor GATTClient {
         // The Read By Group Type Request shall be called again with the Starting Handle set to one greater than the 
         // last End Group Handle in the Read By Group Type Response.
         
-        // store PDU values
-        for serviceData in response.attributeData {
+        switch response {
+        case let .failure(errorResponse):
+            operation.failure(errorResponse)
+        case let .success(response):
+            // store PDU values
+            for serviceData in response.attributeData {
+                
+                guard let littleEndianServiceUUID = BluetoothUUID(data: serviceData.value) else {
+                    operation.completion(.failure(Error.invalidResponse(response)))
+                    return
+                }
+                
+                let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
+                let service = Service(
+                    uuid: serviceUUID,
+                    isPrimary: operation.type == .primaryService,
+                    handle: serviceData.attributeHandle,
+                    end: serviceData.endGroupHandle
+                )
+                
+                operation.foundData.append(service)
+            }
             
-            guard let littleEndianServiceUUID = BluetoothUUID(data: serviceData.value) else {
+            // get more if possible
+            let lastEnd = response.attributeData.last?.endGroupHandle ?? 0x00
+            
+            // prevent infinite loop
+            guard lastEnd >= operation.start else {
                 operation.completion(.failure(Error.invalidResponse(response)))
                 return
             }
             
-            let serviceUUID = BluetoothUUID(littleEndian: littleEndianServiceUUID)
-            let service = Service(
-                uuid: serviceUUID,
-                isPrimary: operation.type == .primaryService,
-                handle: serviceData.attributeHandle,
-                end: serviceData.endGroupHandle
-            )
+            guard lastEnd < .max // End of database
+                else { operation.success(); return }
             
-            operation.foundData.append(service)
-        }
-        
-        // get more if possible
-        let lastEnd = response.attributeData.last?.endGroupHandle ?? 0x00
-        
-        // prevent infinite loop
-        guard lastEnd >= operation.start else {
-            operation.completion(.failure(Error.invalidResponse(response)))
-            return
-        }
-        
-        guard lastEnd < .max // End of database
-            else { operation.success(); return }
-        
-        operation.start = lastEnd + 1
-        
-        if lastEnd < operation.end {
-            let request = ATTReadByGroupTypeRequest(
-                startHandle: operation.start,
-                endHandle: operation.end,
-                type: operation.type.uuid
-            )
-            let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
-            try await readByGroupTypeResponse(response, operation: operation)
-        } else {
-            operation.success()
+            operation.start = lastEnd + 1
+            
+            if lastEnd < operation.end {
+                let request = ATTReadByGroupTypeRequest(
+                    startHandle: operation.start,
+                    endHandle: operation.end,
+                    type: operation.type.uuid
+                )
+                let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
+                try await readByGroupTypeResponse(response, operation: operation)
+            } else {
+                operation.success()
+            }
         }
     }
     
     private func findByTypeResponse(
-        _ response: ATTFindByTypeResponse,
+        _ response: ATTResponse<ATTFindByTypeResponse>,
         operation: DiscoveryOperation<Service>
     ) async throws {
         
@@ -767,48 +764,49 @@ public actor GATTClient {
         // is not 0xFFFF, the Find By Type Value Request may be called again with the Starting Handle set to one 
         // greater than the last Attribute Handle range in the Find By Type Value Response.
         
-        guard let serviceUUID = operation.uuid
-            else { fatalError("Should have UUID specified") }
-        
-        // pre-allocate array
-        operation.foundData.reserveCapacity(operation.foundData.count + response.handles.count)
-        
-        // store PDU values
-        for serviceData in response.handles {
+        switch response {
+        case let .failure(errorResponse):
+            operation.failure(errorResponse)
+        case let .success(response):
+            guard let serviceUUID = operation.uuid
+                else { fatalError("Should have UUID specified") }
             
-            let service = Service(
-                uuid: serviceUUID,
-                isPrimary: operation.type == .primaryService,
-                handle: serviceData.foundAttribute,
-                end: serviceData.groupEnd
-            )
+            // pre-allocate array
+            operation.foundData.reserveCapacity(operation.foundData.count + response.handles.count)
             
-            operation.foundData.append(service)
-        }
-        
-        // get more if possible
-        let lastEnd = response.handles.last?.groupEnd ?? 0x00
-        
-        guard lastEnd < .max // End of database
-            else { operation.success(); return }
-        
-        operation.start = lastEnd + 1
-        
-        // need to continue scanning
-        if lastEnd < operation.end {
+            // store PDU values
+            for serviceData in response.handles {
+                let service = Service(
+                    uuid: serviceUUID,
+                    isPrimary: operation.type == .primaryService,
+                    handle: serviceData.foundAttribute,
+                    end: serviceData.groupEnd
+                )
+                operation.foundData.append(service)
+            }
             
-            let request = ATTFindByTypeRequest(
-                startHandle: operation.start,
-                endHandle: operation.end,
-                attributeType: operation.type.rawValue,
-                attributeValue: serviceUUID.littleEndian.data
-            )
-            let response = try await send(request, response: ATTFindByTypeResponse.self)
-            try await findByTypeResponse(response, operation: operation)
+            // get more if possible
+            let lastEnd = response.handles.last?.groupEnd ?? 0x00
             
-        } else {
+            guard lastEnd < .max // End of database
+                else { operation.success(); return }
             
-            operation.success()
+            operation.start = lastEnd + 1
+            
+            // need to continue scanning
+            if lastEnd < operation.end {
+                
+                let request = ATTFindByTypeRequest(
+                    startHandle: operation.start,
+                    endHandle: operation.end,
+                    attributeType: operation.type.rawValue,
+                    attributeValue: serviceUUID.littleEndian.data
+                )
+                let response = try await send(request, response: ATTFindByTypeResponse.self)
+                try await findByTypeResponse(response, operation: operation)
+            } else {
+                operation.success()
+            }
         }
     }
     
@@ -830,11 +828,8 @@ public actor GATTClient {
          */
         
         switch response {
-            
         case let .failure(errorResponse):
-            
             operation.failure(errorResponse)
-            
         case let .success(pdu):
             
             // pre-allocate array
@@ -882,11 +877,11 @@ public actor GATTClient {
         }
     }
     
-    private func readByTypeResponse(_ response: ATTResponse<ATTReadByTypeResponse>,
-                                    operation: DiscoveryOperation<Characteristic>) {
-        
+    private func readByTypeResponse(
+        _ response: ATTResponse<ATTReadByTypeResponse>,
+        operation: DiscoveryOperation<Characteristic>
+    ) async throws {
         typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
-        
         typealias Attribute = GATTDatabase.Attribute
         
         // Read By Type Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the
@@ -896,11 +891,8 @@ public actor GATTClient {
         // Attribute Handle in the Read By Type Response.
         
         switch response {
-            
         case let .failure(errorResponse):
-            
             operation.failure(errorResponse)
-            
         case let .success(pdu):
             
             // pre-allocate array
@@ -945,15 +937,14 @@ public actor GATTClient {
             
             // need to continue discovery
             if lastEnd != 0, operation.start < operation.end {
-                
-                let pdu = ATTReadByTypeRequest(startHandle: operation.start,
-                                               endHandle: operation.end,
-                                               attributeType: operation.type.uuid)
-                
-                send(pdu) { [unowned self] in self.readByTypeResponse($0, operation: operation) }
-                
+                let request = ATTReadByTypeRequest(
+                    startHandle: operation.start,
+                    endHandle: operation.end,
+                    attributeType: operation.type.uuid
+                )
+                let response = try await send(request, response: ATTReadByTypeResponse.self)
+                try await readByTypeResponse(response, operation: operation)
             } else {
-                
                 // end of service
                 operation.success()
             }
@@ -961,29 +952,25 @@ public actor GATTClient {
     }
     
     /// Read Characteristic (or Descriptor) Value Response
-    private func readResponse(_ response: ATTResponse<ATTReadResponse>, operation: ReadOperation) {
+    private func readResponse(
+        _ response: ATTResponse<ATTReadResponse>,
+        operation: ReadOperation
+    ) async {
         
         // The Read Response only contains a Characteristic Value that is less than or equal to (ATT_MTU – 1) octets in length.
         // If the Characteristic Value is greater than (ATT_MTU – 1) octets in length, the Read Long Characteristic Value procedure
         // may be used if the rest of the Characteristic Value is required.
         
         switch response {
-            
         case let .failure(error):
-            
             operation.failure(error)
-            
         case let .success(pdu):
-            
             operation.data = pdu.attributeValue
-            
             // short value
-            if pdu.attributeValue.count < (Int(maximumTransmissionUnit.rawValue) - 1) {
-                
+            let expectedLength = await Int(maximumTransmissionUnit.rawValue) - 1
+            if pdu.attributeValue.count < expectedLength {
                 operation.success()
-                
             } else {
-                
                 // read blob
                 readLongAttributeValue(operation)
             }
@@ -991,27 +978,22 @@ public actor GATTClient {
     }
     
     /// Read Blob Response
-    private func readBlobResponse(_ response: ATTResponse<ATTReadBlobResponse>, operation: ReadOperation) {
+    private func readBlobResponse(
+        _ response: ATTResponse<ATTReadBlobResponse>,
+        operation: ReadOperation
+    ) async {
         
         // For each Read Blob Request a Read Blob Response is received with a portion of the Characteristic Value contained in the Part Attribute Value parameter.
-        
         switch response {
-            
         case let .failure(error):
-            
             operation.failure(error)
-            
         case let .success(pdu):
-            
             operation.data += pdu.partAttributeValue
-            
             // short value
-            if pdu.partAttributeValue.count < (Int(maximumTransmissionUnit.rawValue) - 1) {
-                
+            let expectedLength = await Int(maximumTransmissionUnit.rawValue) - 1
+            if pdu.partAttributeValue.count < expectedLength {
                 operation.success()
-                
             } else {
-                
                 // read blob
                 readLongAttributeValue(operation)
             }
@@ -1019,15 +1001,10 @@ public actor GATTClient {
     }
     
     private func readMultipleResponse(_ response: ATTResponse<ATTReadMultipleResponse>, operation: ReadMultipleOperation) {
-        
         switch response {
-            
         case let .failure(error):
-            
             operation.failure(error)
-            
         case let .success(pdu):
-            
             operation.success(pdu.values)
         }
     }
@@ -1038,13 +1015,9 @@ public actor GATTClient {
         // contained in the handle range provided.
         
         switch response {
-            
         case let .failure(error):
-            
             operation.failure(error)
-            
         case let .success(pdu):
-            
             operation.success(pdu.attributeData)
         }
     }
@@ -1071,23 +1044,18 @@ public actor GATTClient {
      
      An Error Response shall be sent by the server in response to the Prepare Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Attribute Value that is written is the wrong size, or has an invalid value as defined by the profile, then the write shall not succeed and an Error Response shall be sent with the Error Code set to Application Error by the server.
      */
-    private func prepareWriteResponse(_ response: ATTResponse<ATTPrepareWriteResponse>, operation: WriteOperation) {
+    private func prepareWriteResponse(_ response: ATTResponse<ATTPrepareWriteResponse>, operation: WriteOperation) async throws {
         
         @inline(__always)
         func complete(_ completion: (WriteOperation) -> ()) {
-            
             inLongWrite = false
             completion(operation)
         }
         
         switch response {
-            
         case let .failure(error):
-            
             complete { $0.failure(error) }
-            
         case let .success(pdu):
-            
             operation.receivedData += pdu.partValue
             
             // verify data sent
@@ -1104,18 +1072,21 @@ public actor GATTClient {
             if offset < operation.data.count {
                 
                 // write next part
-                let maxLength = Int(maximumTransmissionUnit.rawValue) - 5
+                let maxLength = await Int(maximumTransmissionUnit.rawValue) - 5
                 let endIndex = min(offset + maxLength, operation.data.count)
                 let attributeValuePart = operation.data.subdataNoCopy(in: offset ..< endIndex)
                 
-                let pdu = ATTPrepareWriteRequest(handle: operation.lastRequest.handle,
-                                                 offset: UInt16(offset),
-                                                 partValue: attributeValuePart)
+                let request = ATTPrepareWriteRequest(
+                    handle: operation.lastRequest.handle,
+                    offset: UInt16(offset),
+                    partValue: attributeValuePart
+                )
                 
-                operation.lastRequest = pdu
+                operation.lastRequest = request
                 operation.sentData += attributeValuePart
                 
-                send(pdu) { [unowned self] in self.prepareWriteResponse($0, operation: operation) }
+                let response = try await send(request, response: ATTPrepareWriteResponse.self)
+                try await self.prepareWriteResponse(response, operation: operation)
                 
             } else {
                 
@@ -1123,18 +1094,16 @@ public actor GATTClient {
                 assert(operation.receivedData == operation.sentData)
                 
                 // all data sent
-                let pdu = ATTExecuteWriteRequest.write
-                
-                send(pdu) { [unowned self] in self.executeWriteResponse($0, operation: operation) }
+                let request = ATTExecuteWriteRequest.write
+                let response = try await send(request, response: ATTExecuteWriteResponse.self)
+                self.executeWriteResponse(response, operation: operation)
             }
         }
     }
     
     private func executeWriteResponse(_ response: ATTResponse<ATTExecuteWriteResponse>, operation: WriteOperation) {
         
-        @inline(__always)
         func complete(_ completion: (WriteOperation) -> ()) {
-            
             inLongWrite = false
             completion(operation)
         }
@@ -1430,13 +1399,11 @@ private extension GATTClient {
         
         @inline(__always)
         func success(_ values: Data) {
-            
             completion(.success(values))
         }
         
         @inline(__always)
         func failure(_ responseError: ATTErrorResponse) {
-            
             completion(.failure(GATTClientError.errorResponse(responseError)))
         }
     }
