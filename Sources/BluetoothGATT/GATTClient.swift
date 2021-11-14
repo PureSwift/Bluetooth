@@ -174,16 +174,21 @@ public actor GATTClient {
                 // The Attribute Protocol Read By Type Request is used to perform the sub-procedure.
                 // The Attribute Type is set to the known characteristic UUID and the Starting Handle and Ending Handle parameters
                 // shall be set to the range over which this read is to be performed. This is typically the handle range for the service in which the characteristic belongs.
-                let request = ATTReadByTypeRequest(
-                    startHandle: handleRange.start,
-                    endHandle: handleRange.end,
-                    attributeType: uuid
-                )
-                let operation = ReadUsingUUIDOperation(uuid: uuid) { result in
-                    continuation.resume(with: result)
+                do {
+                    let request = ATTReadByTypeRequest(
+                        startHandle: handleRange.start,
+                        endHandle: handleRange.end,
+                        attributeType: uuid
+                    )
+                    let operation = ReadUsingUUIDOperation(uuid: uuid) { result in
+                        continuation.resume(with: result)
+                    }
+                    let response = try await send(request, response: ATTReadByTypeResponse.self)
+                    readByTypeResponse(response, operation: operation)
+                } catch {
+                    assert(error as? ATTErrorResponse == nil)
+                    continuation.resume(throwing: error)
                 }
-                let response = try await send(request, response: ATTReadByTypeResponse.self)
-                readByTypeResponse(response, operation: operation)
             }
         }
     }
@@ -197,20 +202,30 @@ public actor GATTClient {
     ///
     /// - Note: A client should not use this request for attributes when the Set Of Values parameter could be `(ATT_MTU–1)`
     /// as it will not be possible to determine if the last attribute value is complete, or if it overflowed.
-    public func readCharacteristics(_ characteristics: [Characteristic], completion: @escaping (GATTClientResponse<Data>) -> ()) {
+    public func readCharacteristics(
+        _ characteristics: [Characteristic]
+    ) async throws -> Data {
         
         // The Attribute Protocol Read Multiple Request is used with the Set Of Handles parameter set to the Characteristic Value Handles.
         // The Read Multiple Response returns the Characteristic Values in the Set Of Values parameter.
-        
         let handles = characteristics.map { $0.handle.value }
-        
-        guard let pdu = ATTReadMultipleRequest(handles: handles)
-            else { fatalError("Must provide at least 2 characteristics") }
-        
-        let operation = ReadMultipleOperation(characteristics: characteristics, completion: completion)
-        
-        send(pdu) { [unowned self] in
-            self.readMultipleResponse($0, operation: operation)
+        assert(handles.count > 1)
+        return try await withCheckedThrowingContinuation() { continuation in
+            Task {
+                do {
+                    guard let request = ATTReadMultipleRequest(handles: handles)
+                        else { fatalError("Must provide at least 2 characteristics") }
+                    let operation = ReadMultipleOperation(characteristics: characteristics) { result in
+                        continuation.resume(with: result)
+                    }
+                    let response = try await send(request, response: ATTReadMultipleResponse.self)
+                    readMultipleResponse(response, operation: operation)
+                }
+                catch {
+                    assert(error as? ATTErrorResponse == nil)
+                    continuation.resume(throwing: error)
+                }
+            }
         }
     }
     
@@ -219,15 +234,17 @@ public actor GATTClient {
      
      Uses the appropriate procecedure to write the characteristic value.
      */
-    public func writeCharacteristic(_ characteristic: Characteristic,
-                                    data: Data,
-                                    reliableWrites: Bool = true,
-                                    completion: ((GATTClientResponse<()>) -> ())?) {
-        
-        writeAttribute(characteristic.handle.value,
-                       data: data,
-                       reliableWrites: reliableWrites,
-                       completion: completion)
+    public func writeCharacteristic(
+        _ characteristic: Characteristic,
+        data: Data,
+        reliableWrites: Bool = true
+    ) async throws {
+        try await writeAttribute(
+            characteristic.handle.value,
+            data: data,
+            reliableWrites: reliableWrites,
+            completion: completion
+        )
     }
     
     /**
@@ -237,23 +254,20 @@ public actor GATTClient {
      
      ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/DiscoverAllCharacteristicDescriptors.png)
      */
-    public func discoverDescriptors(for characteristic: Characteristic,
-                                    service: (declaration: Service, characteristics: [Characteristic]),
-                                    completion: @escaping (GATTClientResponse<[Descriptor]>) -> ()) {
+    public func discoverDescriptors(
+        for characteristic: Characteristic,
+        service: (declaration: Service, characteristics: [Characteristic])
+    ) async throws -> [Descriptor] {
         
         /**
          The Attribute Protocol Find Information Request shall be used with the Starting Handle set
          to the handle of the specified characteristic value + 1 and the Ending Handle set to the
          ending handle of the specified characteristic.
          */
-        
         let start = characteristic.handle.value + 1
-        
         let end = endHandle(for: characteristic, service: service)
-        
         let operation = DescriptorDiscoveryOperation(start: start, end: end, completion: completion)
-        
-        discoverDescriptors(operation: operation)
+        try await discoverDescriptors(operation: operation)
     }
     
     /// Read Characteristic Descriptor
@@ -517,8 +531,18 @@ public actor GATTClient {
     private func discoverDescriptors(operation: DescriptorDiscoveryOperation) async throws {
         assert(operation.start <= operation.end, "Invalid range")
         let request = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
-        let response = try await send(request, response: ATTFindInformationResponse.self)
-        try await findInformationResponse(response, operation: operation)
+        return try await withCheckedThrowingContinuation() { continuation in
+            Task {
+                do {
+                    let response = try await send(request, response: ATTFindInformationResponse.self)
+                    try await findInformationResponse(response, operation: operation)
+                }
+                catch {
+                    assert(error as? ATTErrorResponse == nil)
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
     
     /// Read Characteristic Value
@@ -1323,7 +1347,6 @@ private extension GATTClient {
     final class DescriptorDiscoveryOperation {
         
         var start: UInt16 {
-            
             didSet { assert(start <= end, "Start Handle should always be less than or equal to End handle") }
         }
         
@@ -1344,20 +1367,15 @@ private extension GATTClient {
         
         @inline(__always)
         func success() {
-            
             completion(.success(foundDescriptors))
         }
         
         @inline(__always)
         func failure(_ responseError: ATTErrorResponse) {
-            
             if responseError.error == .attributeNotFound {
-                
                 success()
-                
             } else {
-                
-                completion(.failure(GATTClientError.errorResponse(responseError)))
+                completion(.failure(.errorResponse(responseError)))
             }
         }
     }
