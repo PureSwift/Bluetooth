@@ -409,14 +409,8 @@ public actor GATTClient {
         assert(didExchangeMTU == false)
         let clientMTU = preferredMaximumTransmissionUnit
         let request = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)
-        do {
-            let response = await send(request, response: ATTMaximumTransmissionUnitResponse.self)
-            await exchangeMTUResponse(response)
-        } catch {
-            // I/O error
-            assert(error as? ATTErrorResponse == nil)
-            log?("Could not exchange MTU: \(error)")
-        }
+        let response = await send(request, response: ATTMaximumTransmissionUnitResponse.self)
+        await exchangeMTUResponse(response)
     }
     
     private func discoverServices(
@@ -439,7 +433,7 @@ public actor GATTClient {
                 attributeType: attributeType.rawValue,
                 attributeValue: uuid.littleEndian.data
             )
-            let response = try await send(request, response: ATTFindByTypeResponse.self)
+            let response = await send(request, response: ATTFindByTypeResponse.self)
             try await findByTypeResponse(response, &operation)
         } else {
             let request = ATTReadByGroupTypeRequest(
@@ -447,7 +441,7 @@ public actor GATTClient {
                 endHandle: end,
                 type: attributeType.uuid
             )
-            let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
+            let response = await send(request, response: ATTReadByGroupTypeResponse.self)
             try await readByGroupTypeResponse(response, &operation)
         }
         return operation.foundServices
@@ -469,7 +463,7 @@ public actor GATTClient {
             endHandle: service.end,
             attributeType: attributeType.uuid
         )
-        let response = try await send(request, response: ATTReadByTypeResponse.self)
+        let response = await send(request, response: ATTReadByTypeResponse.self)
         try await readByTypeResponse(response, &operation)
         return operation.foundCharacteristics
     }
@@ -477,7 +471,7 @@ public actor GATTClient {
     private func discoverDescriptors(_ operation: inout DescriptorDiscoveryOperation) async throws {
         assert(operation.start <= operation.end, "Invalid range")
         let request = ATTFindInformationRequest(startHandle: operation.start, endHandle: operation.end)
-        let response = try await send(request, response: ATTFindInformationResponse.self)
+        let response = await send(request, response: ATTFindInformationResponse.self)
         try await findInformationResponse(response, &operation)
     }
     
@@ -494,7 +488,7 @@ public actor GATTClient {
         // read value and try to read blob if too big
         var operation = ReadOperation(handle: handle)
         let request = ATTReadRequest(handle: handle)
-        let response = try await send(request, response: ATTReadResponse.self)
+        let response = await send(request, response: ATTReadResponse.self)
         try await readResponse(response, &operation)
         return operation.data
     }
@@ -520,7 +514,7 @@ public actor GATTClient {
             handle: operation.handle,
             offset: operation.offset
         )
-        let response = try await send(request, response: ATTReadBlobResponse.self)
+        let response = await send(request, response: ATTReadBlobResponse.self)
         try await readBlobResponse(response, &operation)
     }
     
@@ -550,7 +544,7 @@ public actor GATTClient {
         let length = await Int(maximumTransmissionUnit.rawValue) - 3
         let data = Data(data.prefix(length))
         let command = ATTWriteCommand(handle: attribute, value: data)
-        try await send(command)
+        await send(command)
     }
     
     /// Write attribute request.
@@ -561,7 +555,7 @@ public actor GATTClient {
         let length = await Int(maximumTransmissionUnit.rawValue) - 3
         let data = Data(data.prefix(length))
         let request = ATTWriteRequest(handle: attribute, value: data)
-        let response = try await send(request, response: ATTWriteResponse.self)
+        let response = await send(request, response: ATTWriteResponse.self)
         /**
          Write Response
          
@@ -608,7 +602,7 @@ public actor GATTClient {
             lastRequest: request
         )
         
-        let response = try await send(request, response: ATTPrepareWriteResponse.self)
+        let response = await send(request, response: ATTPrepareWriteResponse.self)
         try await prepareWriteResponse(response, &operation)
     }
     
@@ -645,7 +639,7 @@ public actor GATTClient {
         // TODO: Sign Data
         
         let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
-        try await send(pdu)
+        await send(pdu)
     }
     
     // MARK: - Callbacks
@@ -717,7 +711,7 @@ public actor GATTClient {
                     endHandle: operation.end,
                     type: operation.type.uuid
                 )
-                let response = try await send(request, response: ATTReadByGroupTypeResponse.self)
+                let response = await send(request, response: ATTReadByGroupTypeResponse.self)
                 try await readByGroupTypeResponse(response, &operation)
             }
         }
@@ -772,7 +766,7 @@ public actor GATTClient {
                     attributeType: operation.type.rawValue,
                     attributeValue: serviceUUID.littleEndian.data
                 )
-                let response = try await send(request, response: ATTFindByTypeResponse.self)
+                let response = await send(request, response: ATTFindByTypeResponse.self)
                 try await findByTypeResponse(response, &operation)
             }
         }
@@ -909,7 +903,7 @@ public actor GATTClient {
                     endHandle: operation.end,
                     attributeType: operation.type.uuid
                 )
-                let response = try await send(request, response: ATTReadByTypeResponse.self)
+                let response = await send(request, response: ATTReadByTypeResponse.self)
                 try await readByTypeResponse(response, &operation)
             }
         }
@@ -1021,7 +1015,7 @@ public actor GATTClient {
                 operation.lastRequest = request
                 operation.sentData += attributeValuePart
                 
-                let response = try await send(request, response: ATTPrepareWriteResponse.self)
+                let response = await send(request, response: ATTPrepareWriteResponse.self)
                 try await prepareWriteResponse(response, &operation)
                 
             } else {
@@ -1031,7 +1025,7 @@ public actor GATTClient {
                 
                 // all data sent
                 let request = ATTExecuteWriteRequest.write
-                let response = try await send(request, response: ATTExecuteWriteResponse.self)
+                let response = await send(request, response: ATTExecuteWriteResponse.self)
                 try executeWriteResponse(response)
             }
         }
@@ -1062,8 +1056,7 @@ public actor GATTClient {
     private func indication(_ indication: ATTHandleValueIndication) async {
         let confirmation = ATTHandleValueConfirmation()
         // send acknowledgement
-        do { try await send(confirmation) }
-        catch { log?("Unable to send indication confirmation. \(error)") }
+        await send(confirmation)
         // callback
         guard let handler = indications[indication.handle] else {
             log?("Recieved indication for unregistered handle \(indication.handle)")
