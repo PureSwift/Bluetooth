@@ -111,14 +111,14 @@ final class iBeaconTests: XCTestCase {
         
         let beacon = AppleBeacon(uuid: uuid, major: major, minor: minor, rssi: rssi)
         
-        guard let manufactererData = GAPManufacturerSpecificData(data: expectedData)
+        guard let manufacturerData = GAPManufacturerSpecificData(data: expectedData)
             else { XCTFail(); return }
         
-        XCTAssertEqual(beacon.manufactererData, manufactererData)
+        XCTAssertEqual(beacon.manufacturerData, manufacturerData)
 
-        XCTAssertEqual(manufactererData.companyIdentifier, .apple)
+        XCTAssertEqual(manufacturerData.companyIdentifier, .apple)
         
-        guard let decodedBeacon = AppleBeacon(manufactererData: manufactererData)
+        guard let decodedBeacon = AppleBeacon(manufacturerData: manufacturerData)
             else { XCTFail(); return }
         
         XCTAssertEqual(decodedBeacon.uuid, uuid)
