@@ -11,7 +11,7 @@ import Bluetooth
 import BluetoothHCI
 
 /// Test Bluetooth Host Controller
-internal final class TestHostController: BluetoothHostControllerInterface {
+internal final class TestHostController /*: BluetoothHostControllerInterface */ {
     
     /// All controllers on the host.
     static var controllers: [TestHostController] { return [TestHostController()] }
