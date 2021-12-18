@@ -23,7 +23,7 @@ public extension BluetoothHostControllerInterface {
                   peakBandWidth: UInt32,
                   latency: UInt32,
                   delayVariation: UInt32,
-                  timeout: HCICommandTimeout = .default) throws -> HCIQoSSetupComplete {
+                  timeout: HCICommandTimeout = .default) async throws -> HCIQoSSetupComplete {
         
         let command = HCIQoSSetup(connectionHandle: connectionHandle,
                                   serviceType: serviceType,
@@ -32,7 +32,7 @@ public extension BluetoothHostControllerInterface {
                                   latency: latency,
                                   delayVariation: delayVariation)
         
-        return try deviceRequest(command, HCIQoSSetupComplete.self, timeout: timeout)
+        return try await deviceRequest(command, HCIQoSSetupComplete.self, timeout: timeout)
     }
 }
 

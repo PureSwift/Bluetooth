@@ -15,11 +15,11 @@ public extension BluetoothHostControllerInterface {
     /// LE Remove Advertising Set Command
     ///
     /// The command is used to remove an advertising set from the Controller.
-    func setLowEnergyRemoveAdvertisingSet(advertisingHandle: UInt8, timeout: HCICommandTimeout = .default) throws {
+    func setLowEnergyRemoveAdvertisingSet(advertisingHandle: UInt8, timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILERemoveAdvertisingSet(advertisingHandle: advertisingHandle)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

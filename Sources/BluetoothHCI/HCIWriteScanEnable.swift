@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command writes the value for the Scan_Enable configuration parameter.
     func writeScanEnable(scanEnable: HCIWriteScanEnable.ScanEnable,
-                         timeout: HCICommandTimeout = .default) throws {
+                         timeout: HCICommandTimeout = .default) async throws {
         
         let command = HCIWriteScanEnable(scanEnable: scanEnable)
         
-        return try deviceRequest(command, timeout: timeout)
+        return try await deviceRequest(command, timeout: timeout)
     }
 }
 

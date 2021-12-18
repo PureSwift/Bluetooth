@@ -18,13 +18,13 @@ public extension BluetoothHostControllerInterface {
     func lowEnergySetPrivacyMode(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
                                  peerIdentityAddress: BluetoothAddress,
                                  privacyMode: HCILESetPrivacyMode.PrivacyMode = HCILESetPrivacyMode.PrivacyMode.networkPrivacy,
-                                 timeout: HCICommandTimeout = .default) throws {
+                                 timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetPrivacyMode(peerIdentityAddressType: peerIdentityAddressType,
                                              peerIdentityAddress: peerIdentityAddress,
                                              privacyMode: privacyMode)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// LE Read RF Path Compensation Command
     ///
     /// The command is used to read the RF Path Compensation Values parameter used in the Tx Power Level and RSSI calculation.
-    func lowEnergyReadRfPathCompensation(timeout: HCICommandTimeout = .default) throws -> HCILEReadRfPathCompensation {
+    func lowEnergyReadRfPathCompensation(timeout: HCICommandTimeout = .default) async throws -> HCILEReadRfPathCompensation {
         
-        return try deviceRequest(HCILEReadRfPathCompensation.self, timeout: timeout)
+        return try await deviceRequest(HCILEReadRfPathCompensation.self, timeout: timeout)
     }
 }
 

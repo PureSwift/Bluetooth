@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command will obtain the values for the version information for the remote device identified by the Connection_Handle parameter. The Connection_Handle must be a Connection_Handle for an ACL or LE connection.
     func readRemoteVersionInformation(handle: UInt16,
-                                      timeout: HCICommandTimeout = .default) throws -> HCIReadRemoteVersionInformationComplete {
+                                      timeout: HCICommandTimeout = .default) async throws -> HCIReadRemoteVersionInformationComplete {
         
         let readRemoteVersionInformation = HCIReadRemoteVersionInformation(handle: handle)
         
-        return try deviceRequest(readRemoteVersionInformation,
+        return try await deviceRequest(readRemoteVersionInformation,
                                  HCIReadRemoteVersionInformationComplete.self,
                                  timeout: timeout)
     }

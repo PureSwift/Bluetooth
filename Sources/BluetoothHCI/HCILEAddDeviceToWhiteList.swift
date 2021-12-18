@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// LE Add Device To White List Command
     ///
     /// Used to add a single device to the White List stored in the Controller.
-    func lowEnergyAddDeviceToWhiteList(_ whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyAddDeviceToWhiteList(_ whiteListDevice: LowEnergyWhiteListDevice, timeout: HCICommandTimeout = .default) async throws {
         
-        try deviceRequest(HCILEAddDeviceToWhiteList(device: whiteListDevice), timeout: timeout)
+        try await deviceRequest(HCILEAddDeviceToWhiteList(device: whiteListDevice), timeout: timeout)
     }
     
 }

@@ -20,12 +20,12 @@ public extension BluetoothHostControllerInterface {
     /// The reason for the rejection is given in the Reason parameter.
     func lowEnergyRemoteConnectionParameterRequestNegativeReply(connectionHandle: UInt16,
                                                                 reason: UInt8,
-                                                                timeout: HCICommandTimeout = .default) throws -> UInt16 {
+                                                                timeout: HCICommandTimeout = .default) async throws -> UInt16 {
         
         let parameters = HCILERemoteConnectionParameterRequestNegativeReply(connectionHandle: connectionHandle,
                                                                                                 reason: reason)
         
-        let returnParameters = try deviceRequest(parameters, HCILERemoteConnectionParameterRequestNegativeReplyReturn.self, timeout: timeout)
+        let returnParameters = try await deviceRequest(parameters, HCILERemoteConnectionParameterRequestNegativeReplyReturn.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }

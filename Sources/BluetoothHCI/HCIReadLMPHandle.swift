@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command reads the current LMP Handle associated with the Connection_Handle. The Connection_Handle shall be a SCO or eSCO Handle. If the Connection_Handle is a SCO Connection_Handle, then this command shall read the LMP SCO Handle for this connection. If the Connection_Handle is an eSCO Connection_Handle, then this command shall read the LMP eSCO Handle for this connection.
     func readLMPHandle(handle: UInt16,
-                       timeout: HCICommandTimeout = .default) throws -> UInt8 {
+                       timeout: HCICommandTimeout = .default) async throws -> UInt8 {
         
         let lmpHandle = HCIReadLMPHandle(handle: handle)
         
-        return try deviceRequest(lmpHandle,
+        return try await deviceRequest(lmpHandle,
                                  HCIReadLMPHandleReturn.self,
                                  timeout: timeout).lmpHandle
     }

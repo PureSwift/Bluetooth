@@ -19,13 +19,13 @@ public extension BluetoothHostControllerInterface {
     func lowEnergySetDataLength(connectionHandle: UInt16,
                                 txOctets: LowEnergyMaxTxOctets,
                                 txTime: LowEnergyMaxTxTime,
-                                timeout: HCICommandTimeout = .default) throws -> UInt16 {
+                                timeout: HCICommandTimeout = .default) async throws -> UInt16 {
         
         let parameters = HCILESetDataLength(connectionHandle: connectionHandle,
                                                                 txOctets: txOctets,
                                                                 txTime: txTime)
         
-        let returnParameters = try deviceRequest(parameters, HCILESetDataLengthReturn.self, timeout: timeout)
+        let returnParameters = try await deviceRequest(parameters, HCILESetDataLengthReturn.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }

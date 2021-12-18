@@ -15,11 +15,11 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Resolvable Private Address Timeout Command
     ///
     /// The command set the length of time the Controller uses a Resolvable Private Address before a new resolvable private address is generated and starts being used.
-    func lowEnergySetResolvablePrivateAddressTimeout(rpaTimeout: HCILESetResolvablePrivateAddressTimeout.RPATimeout, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergySetResolvablePrivateAddressTimeout(rpaTimeout: HCILESetResolvablePrivateAddressTimeout.RPATimeout, timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetResolvablePrivateAddressTimeout(rpaTimeout: rpaTimeout)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

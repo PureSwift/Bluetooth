@@ -18,12 +18,12 @@ public extension BluetoothHostControllerInterface {
     /// The default value is the value set by the Write Default Link Policy Settings Command.
     func writeLinkPolicySettings(connectionHandle: UInt16,
                                  settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>,
-                                 timeout: HCICommandTimeout = .default) throws -> HCIWriteLinkPolicySettingsReturn {
+                                 timeout: HCICommandTimeout = .default) async throws -> HCIWriteLinkPolicySettingsReturn {
         
         let command = HCIWriteLinkPolicySettings(connectionHandle: connectionHandle,
                                                           settings: settings)
         
-        return try deviceRequest(command, HCIWriteLinkPolicySettingsReturn.self, timeout: timeout)
+        return try await deviceRequest(command, HCIWriteLinkPolicySettingsReturn.self, timeout: timeout)
     }
 }
 

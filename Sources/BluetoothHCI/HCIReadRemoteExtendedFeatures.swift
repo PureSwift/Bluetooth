@@ -17,11 +17,11 @@ public extension BluetoothHostControllerInterface {
     /// The Read_Remote_Extended_Features command returns the requested page of the extended LMP features for the remote device identified by the specified Connection_Handle. The Connection_Handle must be the Connection_Handle for an ACL connection. This command is only available if the extended features feature is implemented by the remote device. The Read Remote Extended Features Complete event will return the requested information.
     func readRemoteExtendedFeatures(handle: UInt16,
                                     pageNumber: UInt8,
-                                    timeout: HCICommandTimeout = .default) throws -> BitMaskOptionSet<LMPFeature> {
+                                    timeout: HCICommandTimeout = .default) async throws -> BitMaskOptionSet<LMPFeature> {
         
         let readRemoteExtendedFeatures = HCIReadRemoteExtendedFeatures(handle: handle, pageNumber: pageNumber)
         
-        return try deviceRequest(readRemoteExtendedFeatures,
+        return try await deviceRequest(readRemoteExtendedFeatures,
                                  HCIReadRemoteExtendedFeaturesComplete.self,
                                  timeout: timeout).features
     }

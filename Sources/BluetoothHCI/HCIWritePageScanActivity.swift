@@ -17,12 +17,12 @@ public extension BluetoothHostControllerInterface {
     /// This command writes the values for the Page_Scan_Interval and Page_Scan_Window configuration parameters. The Page_Scan_Window shall be less than or equal to the Page_Scan_Interval.
     func writePageScanActivity(scanInterval: HCIWritePageScanActivity.PageScanInterval,
                                scanWindow: HCIWritePageScanActivity.PageScanWindow,
-                               timeout: HCICommandTimeout = .default) throws {
+                               timeout: HCICommandTimeout = .default) async throws {
         
         let command = HCIWritePageScanActivity(scanInterval: scanInterval,
                                                scanWindow: scanWindow)
         
-        return try deviceRequest(command, timeout: timeout)
+        return try await deviceRequest(command, timeout: timeout)
     }
 }
 

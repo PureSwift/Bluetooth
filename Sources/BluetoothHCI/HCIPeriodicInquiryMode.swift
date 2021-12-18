@@ -20,7 +20,7 @@ public extension BluetoothHostControllerInterface {
                              lap: HCIPeriodicInquiryMode.LAP,
                              length: HCIPeriodicInquiryMode.Duration,
                              responses: HCIPeriodicInquiryMode.Responses,
-                             timeout: HCICommandTimeout = .default) throws {
+                             timeout: HCICommandTimeout = .default) async throws {
         
         let periodicInquiryMode = HCIPeriodicInquiryMode(maxDuration: maxDuration,
                                                          minDuration: minDuration,
@@ -28,7 +28,7 @@ public extension BluetoothHostControllerInterface {
                                                          length: length,
                                                          responses: responses)
         
-        try deviceRequest(periodicInquiryMode, timeout: timeout)
+        try await deviceRequest(periodicInquiryMode, timeout: timeout)
     }
 }
 

@@ -19,11 +19,10 @@ public extension BluetoothHostControllerInterface {
                  duration: HCIInquiry.Duration = .max,
                  responses: HCIInquiry.Responses,
                  timeout: HCICommandTimeout = .default,
-                 foundDevice: (HCIInquiryResult.Report) -> ()) throws {
+                 foundDevice: (HCIInquiryResult.Report) -> ()) async throws {
         
         let inquiry = HCIInquiry(lap: lap, duration: duration, responses: responses)
-        
-        let commandStatus = try deviceRequest(inquiry, HCICommandStatus.self, timeout: timeout)
+        let commandStatus = try await deviceRequest(inquiry, HCICommandStatus.self, timeout: timeout)
         
         switch commandStatus.status {
         case let .error(error):

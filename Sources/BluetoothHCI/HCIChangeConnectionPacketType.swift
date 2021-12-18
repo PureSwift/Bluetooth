@@ -17,11 +17,11 @@ public extension BluetoothHostControllerInterface {
     /// The Change_Connection_Packet_Type command is used to change which packet types can be used for a connection that is currently established. This allows current connections to be dynamically modified to support different types of user data. The Packet_Type command parameter specifies which packet types the Link Manager can use for the connection. When sending HCI ACL Data Packets the Link Manager shall only use the packet type(s) specified by the Packet_Type command parameter or the always-allowed DM1 packet type. The interpretation of the value for the Packet_Type command parameter will depend on the Link_Type command parameter returned in the Connection Complete event at the connection setup. Multiple packet types may be speci- fied for the Packet_Type command parameter by bitwise OR operation of the different packet types. For a definition of the different packet types see the Part B, Baseband Specification on page 59.
     func changeConnectionPacketType(handle: UInt16,
                                     packetType: PacketType,
-                                    timeout: HCICommandTimeout = .default) throws -> HCIStatus {
+                                    timeout: HCICommandTimeout = .default) async throws -> HCIStatus {
         
         let command = HCIChangeConnectionPacketType(handle: handle, packetType: packetType)
         
-        return try deviceRequest(command,
+        return try await deviceRequest(command,
                                  HCIAuthenticationComplete.self,
                                  timeout: timeout).status
     }

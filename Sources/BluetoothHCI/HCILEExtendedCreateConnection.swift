@@ -20,7 +20,7 @@ public extension BluetoothHostControllerInterface {
                                            peerAddressType: LowEnergyPeerIdentifyAddressType,
                                            peerAddress: BluetoothAddress,
                                            initialingPHY: HCILEExtendedCreateConnection.InitialingPHY,
-                                           timeout: HCICommandTimeout = .default) throws -> HCILEEnhancedConnectionComplete {
+                                           timeout: HCICommandTimeout = .default) async throws -> HCILEEnhancedConnectionComplete {
         
         let parameters = HCILEExtendedCreateConnection(initialingFilterPolicy: initialingFilterPolicy,
                                                                            ownAddressType: ownAddressType,
@@ -28,7 +28,7 @@ public extension BluetoothHostControllerInterface {
                                                                            peerAddress: peerAddress,
                                                                            initialingPHY: initialingPHY)
         
-        let event =  try deviceRequest(parameters,
+        let event =  try await deviceRequest(parameters,
                                        HCILEEnhancedConnectionComplete.self,
                                        timeout: timeout)
         

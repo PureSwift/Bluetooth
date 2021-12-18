@@ -22,14 +22,14 @@ public extension BluetoothHostControllerInterface {
                                   ioCapability: HCIIOCapabilityRequestReply.IOCapability,
                                   obbDataPresent: HCIIOCapabilityRequestReply.OBBDataPresent,
                                   authenticationRequirements: HCIIOCapabilityRequestReply.AuthenticationRequirements,
-                                  timeout: HCICommandTimeout = .default) throws -> BluetoothAddress {
+                                  timeout: HCICommandTimeout = .default) async throws -> BluetoothAddress {
         
         let command = HCIIOCapabilityRequestReply(address: address,
                                                   ioCapability: ioCapability,
                                                   obbDataPresent: obbDataPresent,
                                                   authenticationRequirements: authenticationRequirements)
         
-        return try deviceRequest(command, HCIIOCapabilityRequestReplyReturn.self, timeout: timeout).address
+        return try await deviceRequest(command, HCIIOCapabilityRequestReplyReturn.self, timeout: timeout).address
     }
 }
 

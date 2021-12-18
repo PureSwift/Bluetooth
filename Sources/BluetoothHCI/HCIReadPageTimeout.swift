@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// Read Page Timeout Command
     ///
     /// This command reads the value for the Page_Timeout configuration parameter.
-    func readPageTimeout(timeout: HCICommandTimeout = .default) throws -> HCIReadPageTimeoutReturn {
+    func readPageTimeout(timeout: HCICommandTimeout = .default) async throws -> HCIReadPageTimeoutReturn {
         
-        return try deviceRequest(HCIReadPageTimeoutReturn.self, timeout: timeout)
+        return try await deviceRequest(HCIReadPageTimeoutReturn.self, timeout: timeout)
     }
 }
 

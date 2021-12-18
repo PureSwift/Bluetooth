@@ -16,9 +16,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used by the Host to set the advertising parameters.
     func setExtendedAdvertisingParameters(_ parameters: HCILESetExtendedAdvertisingParameters,
-                                          timeout: HCICommandTimeout = .default) throws -> LowEnergyTxPower {
+                                          timeout: HCICommandTimeout = .default) async throws -> LowEnergyTxPower {
         
-        let returnParameter = try deviceRequest(parameters, HCILESetExtendedAdvertisingParametersReturn.self, timeout: timeout)
+        let returnParameter = try await deviceRequest(parameters, HCILESetExtendedAdvertisingParametersReturn.self, timeout: timeout)
         
         return returnParameter.selectedTxPower
     }

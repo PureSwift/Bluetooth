@@ -17,9 +17,9 @@ public extension BluetoothHostControllerInterface {
     /// The command is used to synchronize with periodic advertising from an advertiser
     /// and begin receiving periodic advertising packets.
     func setPeriodicAdvertisingCreateSyncParameters(_ parameters: HCILEPeriodicAdvertisingCreateSync,
-                                                    timeout: HCICommandTimeout = .default)  throws {
+                                                    timeout: HCICommandTimeout = .default) async throws {
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

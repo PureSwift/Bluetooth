@@ -18,13 +18,13 @@ public extension BluetoothHostControllerInterface {
     func setLowEnergyExtendedScanParameters(ownAddressType: LowEnergyAddressType,
                                             scanningFilterPolicy: HCILESetExtendedScanParameters.ScanningFilterPolicy,
                                             scanningPHY: HCILESetExtendedScanParameters.ScanningPHY,
-                                            timeout: HCICommandTimeout = .default)  throws {
+                                            timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetExtendedScanParameters(ownAddressType: ownAddressType,
                                                                             scanningFilterPolicy: scanningFilterPolicy,
                                                                             scanningPHY: scanningPHY)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

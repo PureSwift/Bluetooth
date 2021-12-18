@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command writes the value for the Class_of_Device parameter.
     func writeClassOfDevice(classOfDevice: ClassOfDevice,
-                            timeout: HCICommandTimeout = .default) throws {
+                            timeout: HCICommandTimeout = .default) async throws {
         
         let command = HCIWriteClassOfDevice(classOfDevice: classOfDevice)
         
-        return try deviceRequest(command, timeout: timeout)
+        return try await deviceRequest(command, timeout: timeout)
     }
 }
 

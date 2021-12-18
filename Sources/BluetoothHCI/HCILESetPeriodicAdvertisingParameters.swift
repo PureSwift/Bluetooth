@@ -18,11 +18,11 @@ public extension BluetoothHostControllerInterface {
     func setSetPeriodicAdvertisingParameters(advertisingHandle: UInt8,
                                              periodicAdvertisingInterval: HCILESetPeriodicAdvertisingParameters.PeriodicAdvertisingInterval,
                                              advertisingEventProperties: HCILESetPeriodicAdvertisingParameters.AdvertisingEventProperties,
-                                             timeout: HCICommandTimeout = .default)  throws {
+                                             timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetPeriodicAdvertisingParameters(advertisingHandle: advertisingHandle, periodicAdvertisingInterval: periodicAdvertisingInterval, advertisingEventProperties: advertisingEventProperties)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

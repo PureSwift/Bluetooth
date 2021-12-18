@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command writes the value for the Page_Timeout configuration parameter. The Page_Timeout configuration parameter defines the maximum time the local Link Manager shall wait for a baseband page response from the remote device at a locally initiated connection attempt. If this time expires and the remote device has not responded to the page at baseband level, the connec- tion attempt will be considered to have failed.
     func writePageTimeout(pageTimeout: HCIWritePageTimeout.PageTimeout,
-                          timeout: HCICommandTimeout = .default) throws {
+                          timeout: HCICommandTimeout = .default) async throws {
         
         let command = HCIWritePageTimeout(pageTimeout: pageTimeout)
         
-        return try deviceRequest(command, timeout: timeout)
+        return try await deviceRequest(command, timeout: timeout)
     }
 }
 

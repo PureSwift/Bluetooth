@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// Both the System Clock and the clock offset to a remote device are used to determine what hopping frequency is used by a remote device for page scan. This command allows the Host to read clock offset to remote devices. The clock offset can be used to speed up the paging procedure when the local device tries to establish a connection to a remote device, for example, when the local Host has issued Create_Connection or Remote_Name_Request. The Connection_Handle must be a Connection_Handle for an ACL connection.
     func readClockOffset(handle: UInt16,
-                         timeout: HCICommandTimeout = .default) throws -> HCIReadClockOffsetComplete.ClockOffset {
+                         timeout: HCICommandTimeout = .default) async throws -> HCIReadClockOffsetComplete.ClockOffset {
         
         let completeEvent = HCIReadClockOffset(handle: handle)
         
-        return try deviceRequest(completeEvent,
+        return try await deviceRequest(completeEvent,
                                  HCIReadClockOffsetComplete.self,
                                  timeout: timeout).clockOffset
     }

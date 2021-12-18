@@ -18,11 +18,11 @@ public extension BluetoothHostControllerInterface {
     /// Resolvable Private Addresses in the Controller.
     func lowEnergyRemoveDeviceFromResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
                                                 peerIdentifyAddress: UInt64,
-                                                timeout: HCICommandTimeout = .default) throws {
+                                                timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILERemoveDeviceFromResolvingList(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

@@ -18,11 +18,11 @@ public extension BluetoothHostControllerInterface {
     /// and returns the Encrypted_Data to the Host.
     func lowEnergyEncrypt(key: UInt128,
                           data: UInt128,
-                          timeout: HCICommandTimeout = .default) throws -> UInt128 {
+                          timeout: HCICommandTimeout = .default) async throws -> UInt128 {
         
         let parameters = HCILEEncrypt(key: key, plainText: data)
         
-        let returnParameters = try deviceRequest(parameters, HCILEEncryptReturn.self, timeout: timeout)
+        let returnParameters = try await deviceRequest(parameters, HCILEEncryptReturn.self, timeout: timeout)
         
         return returnParameters.encryptedData
     }

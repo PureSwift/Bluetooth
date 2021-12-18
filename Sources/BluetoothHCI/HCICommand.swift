@@ -25,7 +25,6 @@ public protocol HCICommand: RawRepresentable, Hashable, CustomStringConvertible 
 public extension HCICommand {
     
     var description: String {
-        
         return name
     }
 }
@@ -46,9 +45,9 @@ public typealias HCIOpcodeCommandField = UInt16
 /// HCI Command Parameter.
 public protocol HCICommandParameter {
     
-    associatedtype HCICommandType: HCICommand
+    associatedtype Command: HCICommand
     
-    static var command: HCICommandType { get }
+    static var command: Command { get }
     
     /// Converts command parameter to raw bytes.
     var data: Data { get }
@@ -57,9 +56,9 @@ public protocol HCICommandParameter {
 /// The return value (not event) returned by an HCI command. 
 public protocol HCICommandReturnParameter {
     
-    associatedtype HCICommandType: HCICommand
+    associatedtype Command: HCICommand
     
-    static var command: HCICommandType { get }
+    static var command: Command { get }
     
     /// Length of the command return parameter when encoded to data.
     static var length: Int { get }

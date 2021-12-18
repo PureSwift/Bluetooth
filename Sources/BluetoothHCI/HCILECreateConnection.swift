@@ -15,20 +15,22 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyCreateConnection(address peerAddress: BluetoothAddress,
                                    type peerAddressType: LowEnergyAddressType = .public,
                                    ownAddressType: LowEnergyAddressType = .public,
-                                   timeout: HCICommandTimeout = .default) throws -> UInt16 {
+                                   timeout: HCICommandTimeout = .default) async throws -> UInt16 {
         
-        let parameters = HCILECreateConnection(peerAddressType: peerAddressType,
-                                               peerAddress: peerAddress,
-                                               ownAddressType: ownAddressType)
+        let parameters = HCILECreateConnection(
+            peerAddressType: peerAddressType,
+            peerAddress: peerAddress,
+            ownAddressType: ownAddressType
+        )
         
-        return try lowEnergyCreateConnection(parameters: parameters, timeout: timeout).handle
+        return try await lowEnergyCreateConnection(parameters: parameters, timeout: timeout).handle
     }
     
     func lowEnergyCreateConnection(parameters: HCILECreateConnection,
-                                   timeout: HCICommandTimeout = .default) throws -> HCILEConnectionComplete {
+                                   timeout: HCICommandTimeout = .default) async throws -> HCILEConnectionComplete {
         
         // connect with specified parameters
-        let event = try deviceRequest(parameters,
+        let event = try await deviceRequest(parameters,
                                       HCILEConnectionComplete.self,
                                       timeout: timeout)
         

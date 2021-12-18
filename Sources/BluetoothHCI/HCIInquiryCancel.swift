@@ -16,8 +16,8 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to start a test where the DUT receives test reference packets at a fixed interval.
     /// The tester generates the test reference packets.
-    func inquiryCancel(timeout: HCICommandTimeout = .default) throws {
+    func inquiryCancel(timeout: HCICommandTimeout = .default) async throws {
         
-        try deviceRequest(LinkControlCommand.inquiryCancel, timeout: timeout)
+        try await deviceRequest(LinkControlCommand.inquiryCancel, timeout: timeout)
     }
 }

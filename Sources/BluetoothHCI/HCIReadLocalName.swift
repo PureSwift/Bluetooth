@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// Write Local Name Command
     ///
     /// Provides the ability to modify the user- friendly name for the BR/EDR Controller.
-    func readLocalName(timeout: HCICommandTimeout = .default) throws -> String {
+    func readLocalName(timeout: HCICommandTimeout = .default) async throws -> String {
         
-        let value = try deviceRequest(HCIReadLocalName.self,
+        let value = try await deviceRequest(HCIReadLocalName.self,
                                       timeout: timeout)
         
         return value.localName

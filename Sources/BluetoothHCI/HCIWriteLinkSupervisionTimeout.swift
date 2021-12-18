@@ -20,12 +20,12 @@ public extension BluetoothHostControllerInterface {
     /// Timeout values for other Synchronous Handles to that device.
     func writeLinkSupervisionTimeout(handle: UInt16,
                                      linkSupervisionTimeout: HCIWriteLinkSupervisionTimeout.LinkSupervisionTimeout,
-                                     timeout: HCICommandTimeout = .default) throws -> HCIWriteLinkSupervisionTimeoutReturn {
+                                     timeout: HCICommandTimeout = .default) async throws -> HCIWriteLinkSupervisionTimeoutReturn {
         
         let command = HCIWriteLinkSupervisionTimeout(handle: handle,
                                                      linkSupervisionTimeout: linkSupervisionTimeout)
         
-        return try deviceRequest(command, HCIWriteLinkSupervisionTimeoutReturn.self, timeout: timeout)
+        return try await deviceRequest(command, HCIWriteLinkSupervisionTimeoutReturn.self, timeout: timeout)
     }
 }
 

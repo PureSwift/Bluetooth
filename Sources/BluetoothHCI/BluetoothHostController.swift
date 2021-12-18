@@ -15,33 +15,35 @@ public protocol BluetoothHostControllerInterface: AnyObject {
     static var controllers: [Self] { get }
     
     /// Send an HCI command to the controller.
-    func deviceCommand <C: HCICommand> (_ command: C) throws
+    func deviceCommand <C: HCICommand> (_ command: C) async throws
     
     /// Send an HCI command with parameters to the controller.
-    func deviceCommand <CP: HCICommandParameter> (_ commandParameter: CP) throws
+    func deviceCommand <CP: HCICommandParameter> (_ commandParameter: CP) async throws
     
     /// Send a command to the controller and wait for response.
-    func deviceRequest<C: HCICommand>(_ command: C, timeout: HCICommandTimeout) throws
+    func deviceRequest<C: HCICommand>(_ command: C, timeout: HCICommandTimeout) async throws
     
     /// Send a command to the controller and wait for response.
-    func deviceRequest<C: HCICommand, EP: HCIEventParameter>(_ command: C, _ eventParameterType: EP.Type, timeout: HCICommandTimeout) throws -> EP
+    func deviceRequest<C: HCICommand, EP: HCIEventParameter>(_ command: C, _ eventParameterType: EP.Type, timeout: HCICommandTimeout) async throws -> EP
     
     /// Send a command to the controller and wait for response.
-    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: HCICommandTimeout) throws
+    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: HCICommandTimeout) async throws
     
     /// Sends a command to the device and waits for a response.
-    func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (_ commandParameter: CP, _ eventParameterType: EP.Type, timeout: HCICommandTimeout) throws -> EP
+    func deviceRequest <CP: HCICommandParameter, EP: HCIEventParameter> (_ commandParameter: CP, _ eventParameterType: EP.Type, timeout: HCICommandTimeout) async throws -> EP
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType: Return.Type, timeout: HCICommandTimeout) throws -> Return
+    func deviceRequest <Return: HCICommandReturnParameter> (_ commandReturnType: Return.Type, timeout: HCICommandTimeout) async throws -> Return
     
     /// Sends a command to the device and waits for a response with return parameter values.
-    func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout) throws -> Return
+    func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout) async throws -> Return
     
     /// Polls and waits for events.
-    func pollEvent <EP: HCIEventParameter> (_ eventParameterType: EP.Type,
-                                            shouldContinue: () -> (Bool),
-                                            event: (EP) throws -> ()) throws
+    func pollEvent <EP: HCIEventParameter> (
+        _ eventParameterType: EP.Type,
+        shouldContinue: () -> (Bool),
+        event: (EP) async throws -> ()
+    ) async throws
 }
 
 /// Bluetooth HCI errors
@@ -65,19 +67,6 @@ public enum BluetoothHostControllerError: Error {
 public extension BluetoothHostControllerInterface {
     
     static var `default`: Self? {
-        
         return controllers.first
-    }
-}
-
-public extension BluetoothHostControllerInterface {
-    
-    @available(*, deprecated, message: "Use readDeviceAddress() instead")
-    var address: BluetoothAddress {
-        
-        guard let address = try? self.readDeviceAddress()
-            else { return .zero }
-        
-        return address
     }
 }

@@ -20,7 +20,7 @@ public extension BluetoothHostControllerInterface {
                                   randomNumber: UInt64,
                                   encryptedDiversifier: UInt16,
                                   longTermKey: UInt128,
-                                  timeout: HCICommandTimeout = .default) throws {
+                                  timeout: HCICommandTimeout = .default) async throws {
         
         /**
          When the Controller receives the LE_Start_Encryption command it shall send the Command Status event to the Host. If the connection is not encrypted when this command is issued, an Encryption Change event shall occur when encryption has been started for the connection. If the connection is encrypted when this command is issued, an Encryption Key Refresh Complete event shall occur when encryption has been resumed.
@@ -34,7 +34,7 @@ public extension BluetoothHostControllerInterface {
                                            longTermKey: longTermKey)
         
         /// expect Command Status - LE Start Encryption
-        let commandStatus = try deviceRequest(command, HCICommandStatus.self, timeout: timeout)
+        let commandStatus = try await deviceRequest(command, HCICommandStatus.self, timeout: timeout)
         
         if let error = commandStatus.status.error {
             throw error

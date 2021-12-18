@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to request cancellation of the ongoing connection creation process, which was started by a Create_Connection command of the local BR/EDR Controller.
     func cancelConnection(address: BluetoothAddress,
-                          timeout: HCICommandTimeout = .default) throws {
+                          timeout: HCICommandTimeout = .default) async throws {
         
         let createConnectionCancel = HCICreateConnectionCancel(address: address)
         
-        try deviceRequest(createConnectionCancel, timeout: timeout)
+        try await deviceRequest(createConnectionCancel, timeout: timeout)
     }
 }
 
