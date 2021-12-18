@@ -17,16 +17,29 @@ public protocol L2CAPSocket {
     /// Reads from the socket.
     func recieve(_ bufferSize: Int) async throws -> Data
     
+    /// Attempt to accept an incoming connection.
+    func accept(sleep: UInt64) async throws -> Self
+    
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
     
     /// Get security level
     func securityLevel() async throws -> SecurityLevel
     
-    /// Attempt to accept an incoming connection.
-    func accept(sleep: UInt64) async throws -> Self
+    /// 
+    func hasPendingEvents() async throws -> (canWrite: Bool, canRead: Bool)
     
-    //func canWrite() throws -> Bool
+    /// Creates a new socket connected to the remote address specified.
+    static func lowEnergyClient(
+        address: BluetoothAddress,
+        destination: BluetoothAddress,
+        isRandom: Bool
+    ) async throws -> Self
     
-    //func canRead() throws -> Bool
+    /// Creates a new server,
+    static func lowEnergyServer(
+        address: BluetoothAddress,
+        isRandom: Bool,
+        backlog: Int
+    ) throws -> Self
 }

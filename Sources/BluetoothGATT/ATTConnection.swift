@@ -17,11 +17,15 @@ internal actor ATTConnection {
     /// Actual number of bytes for PDU ATT exchange.
     public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default
     
-    public let socket: L2CAPSocket
+    internal private(set) var socket: L2CAPSocket?
     
     public private(set) var log: ((String) -> ())?
     
-    public private(set) var writePending: (() -> ())?
+    public var isConnected: Bool {
+        get async {
+            return socket != nil
+        }
+    }
     
     // MARK: - Private Properties
     
@@ -56,26 +60,55 @@ internal actor ATTConnection {
     
     deinit {
         unregisterAll()
+        disconnect()
     }
     
     public init(
         socket: L2CAPSocket,
-        log: ((String) -> ())? = nil,
-        writePending: (() -> ())? = nil
-    ) {
+        log: ((String) -> ())? = nil
+    ) async {
         self.socket = socket
         self.log = log
-        self.writePending = writePending
+        run()
     }
     
     // MARK: - Methods
     
-    public func setMaximumTransmissionUnit(_ newValue: ATTMaximumTransmissionUnit) {
-        self.maximumTransmissionUnit = newValue
+    public func disconnect(_ error: Swift.Error? = nil) {
+        guard socket != nil else {
+            return
+        }
+        // log error
+        if let error = error {
+            log?("Disconnected (\(error.localizedDescription))")
+        } else {
+            log?("Disconnected")
+        }
+        // close file descriptor
+        socket = nil
+        
     }
     
-    public func setWritePending(_ newValue: (() -> ())?) {
-        self.writePending = newValue
+    private func run() {
+        Task.detached { [weak self] in
+            // read and write socket
+            do {
+                while await self?.socket != nil {
+                    var didWrite = false
+                    repeat {
+                        didWrite = try await self?.write() ?? false
+                    } while didWrite
+                    try await self?.read()
+                }
+            }
+            catch {
+                await self?.disconnect(error)
+            }
+        }
+    }
+    
+    public func setMaximumTransmissionUnit(_ newValue: ATTMaximumTransmissionUnit) {
+        self.maximumTransmissionUnit = newValue
     }
     
     /// Performs the actual IO for recieving data.
@@ -84,6 +117,9 @@ internal actor ATTConnection {
         //log?("Attempt read")
         
         let bytesToRead = Int(self.maximumTransmissionUnit.rawValue)
+        guard let socket = self.socket else {
+            throw ATTConnectionError.disconnected
+        }
         let recievedData = try await socket.recieve(bytesToRead)
         
         //log?("Recieved data (\(recievedData.count) bytes)")
@@ -127,6 +163,9 @@ internal actor ATTConnection {
         
         //log?("Sending data... (\(sendOperation.data.count) bytes)")
         
+        guard let socket = self.socket else {
+            throw ATTConnectionError.disconnected
+        }
         try await socket.send(sendOperation.data)
         let opcode = sendOperation.opcode
         
@@ -157,10 +196,10 @@ internal actor ATTConnection {
     @discardableResult
     public func register <T: ATTProtocolDataUnit> (_ callback: @escaping (T) async -> ()) -> UInt {
         
-        let identifier = nextRegisterID
+        let id = nextRegisterID
         
         // create notification
-        let notify = ATTNotify(identifier: identifier, notify: callback)
+        let notify = ATTNotify(id: id, notify: callback)
         
         // increment ID
         nextRegisterID += 1
@@ -168,16 +207,16 @@ internal actor ATTConnection {
         // add to queue
         notifyList.append(notify)
         
-        return identifier
+        return id
     }
     
     /// Unregisters the callback associated with the specified identifier.
     ///
     /// - Returns: Whether the callback was unregistered.
     @discardableResult
-    public func unregister(_ identifier: UInt) -> Bool {
+    public func unregister(_ id: UInt) -> Bool {
         
-        guard let index = notifyList.firstIndex(where: { $0.identifier == identifier })
+        guard let index = notifyList.firstIndex(where: { $0.id == id })
             else { return false }
         notifyList.remove(at: index)
         return true
@@ -246,7 +285,6 @@ internal actor ATTConnection {
             writeQueue.append(sendOpcode)
         }
         
-        writePending?()
         return sendOpcode.id
     }
     
@@ -301,7 +339,7 @@ internal actor ATTConnection {
             
             requestOpcode = errorRequestOpcode
             
-            writePending?()
+            //writePending?()
             
             /// Return if error response caused a retry
             guard didRetry == false
@@ -326,7 +364,7 @@ internal actor ATTConnection {
         // success!
         try sendOperation.handle(data: data)
         
-        writePending?()
+        //writePending?()
     }
     
     private func handle(confirmation data: Data, opcode: ATTOpcode) throws {
@@ -342,7 +380,7 @@ internal actor ATTConnection {
         
         // send the remaining indications
         if indicationQueue.isEmpty == false {
-            writePending?()
+            //writePending?()
         }
     }
     
@@ -447,8 +485,12 @@ internal actor ATTConnection {
     /// Attempts to change security level based on an error response.
     private func changeSecurity(for error: ATTError) async -> Bool {
         
+        guard let socket = self.socket else {
+            return false
+        }
+        
         let securityLevel: Bluetooth.SecurityLevel
-        do { securityLevel = try await self.socket.securityLevel() }
+        do { securityLevel = try await socket.securityLevel() }
         catch {
             log?("Unable to get security level. \(error)")
             return false
@@ -480,7 +522,7 @@ internal actor ATTConnection {
         }
         
         // attempt to change security level on Socket IO
-        do { try await self.socket.setSecurityLevel(newSecurityLevel) }
+        do { try await socket.setSecurityLevel(newSecurityLevel) }
         catch {
             log?("Unable to set security level. \(error)")
             return false
@@ -501,6 +543,8 @@ public enum ATTConnectionError: Error {
     
     /// Response is unexpected.
     case unexpectedResponse(Data)
+    
+    case disconnected
 }
 
 internal extension ATTConnection {
@@ -591,7 +635,7 @@ internal protocol ATTNotifyType {
     
     static var PDUType: ATTProtocolDataUnit.Type { get }
     
-    var identifier: UInt { get }
+    var id: UInt { get }
     
     var callback: (ATTProtocolDataUnit) async -> () { get }
 }
@@ -600,15 +644,15 @@ internal struct ATTNotify<PDU: ATTProtocolDataUnit>: ATTNotifyType {
     
     static var PDUType: ATTProtocolDataUnit.Type { return PDU.self }
     
-    let identifier: UInt
+    let id: UInt
     
     let notify: (PDU) async -> ()
     
     var callback: (ATTProtocolDataUnit) async -> () { return { await self.notify($0 as! PDU) } }
     
-    init(identifier: UInt, notify: @escaping (PDU) async -> ()) {
+    init(id: UInt, notify: @escaping (PDU) async -> ()) {
         
-        self.identifier = identifier
+        self.id = id
         self.notify = notify
     }
 }

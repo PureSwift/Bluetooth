@@ -9,6 +9,7 @@
 import Foundation
 import Bluetooth
 
+/// GATT Server
 public actor GATTServer {
     
     // MARK: - Properties
@@ -49,7 +50,7 @@ public actor GATTServer {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
-        self.connection = ATTConnection(socket: socket, log: log)
+        self.connection = await ATTConnection(socket: socket, log: log)
         // async register handlers
         await self.registerATTHandlers()
     }
@@ -183,9 +184,8 @@ public actor GATTServer {
         }
         
         // check security
-        
         let security: SecurityLevel
-        do { security = try await connection.socket.securityLevel() }
+        do { security = try await connection.socket?.securityLevel() ?? .sdp }
         catch {
             log?("Unable to get security level. \(error)")
             security = .sdp

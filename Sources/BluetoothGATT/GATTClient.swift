@@ -46,7 +46,7 @@ public actor GATTClient {
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         log: ((String) -> ())? = nil
     ) async {
-        self.connection = ATTConnection(
+        self.connection = await ATTConnection(
             socket: socket,
             log: log
         )
@@ -108,7 +108,7 @@ public actor GATTClient {
     /// - Parameter completion: The completion closure.
     public func discoverPrimaryServices(
         by uuid: BluetoothUUID
-    ) async throws -> [Service]{
+    ) async throws -> [Service] {
         // The Attribute Protocol Find By Type Value Request shall be used with the Attribute Type
         // parameter set to the UUID for «Primary Service» and the Attribute Value set to the 16-bit
         // Bluetooth UUID or 128-bit UUID for the specific primary service. 
