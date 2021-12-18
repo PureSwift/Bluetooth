@@ -10,11 +10,11 @@ import Bluetooth
 
 public extension AppleBeacon {
     
-    init?(manufactererData: GAPManufacturerSpecificData) {
+    init?(manufacturerData: GAPManufacturerSpecificData) {
         
-        let data = manufactererData.additionalData
+        let data = manufacturerData.additionalData
         
-        guard manufactererData.companyIdentifier == type(of: self).companyIdentifier,
+        guard manufacturerData.companyIdentifier == type(of: self).companyIdentifier,
             data.count == type(of: self).additionalDataLength
             else { return nil }
         
@@ -36,18 +36,18 @@ public extension AppleBeacon {
         self.init(uuid: uuid, major: major, minor: minor, rssi: rssi)
     }
     
-    var manufactererData: GAPManufacturerSpecificData {
+    var manufacturerData: GAPManufacturerSpecificData {
         
         var additionalData = Data(capacity: type(of: self).additionalDataLength)
         appendAdditionalManufacturerData(to: &additionalData)
         assert(additionalData.count == type(of: self).additionalDataLength)
         
-        let manufactererData = GAPManufacturerSpecificData(
+        let manufacturerData = GAPManufacturerSpecificData(
             companyIdentifier: type(of: self).companyIdentifier,
             additionalData: additionalData
         )
         
-        return manufactererData
+        return manufacturerData
     }
 }
 
@@ -63,10 +63,10 @@ internal extension AppleBeacon {
     
     static func from(advertisingData: LowEnergyAdvertisingData) -> (beacon: AppleBeacon, flags: GAPFlags)? {
         
-        guard let (flags, manufactererData) = try? GAPDataDecoder.decode(GAPFlags.self, AppleBeacon.ManufacturerData.self, from: advertisingData)
+        guard let (flags, manufacturerData) = try? GAPDataDecoder.decode(GAPFlags.self, AppleBeacon.ManufacturerData.self, from: advertisingData)
             else { return nil }
         
-        return (manufactererData.beacon, flags)
+        return (manufacturerData.beacon, flags)
     }
     
     func appendAdditionalManufacturerData <T: DataContainer> (to data: inout T) {
@@ -107,7 +107,7 @@ internal extension AppleBeacon {
         init?(data: Data) {
             
             guard let manufacturerData = GAPManufacturerSpecificData(data: data),
-                let beacon = AppleBeacon(manufactererData: manufacturerData)
+                let beacon = AppleBeacon(manufacturerData: manufacturerData)
                 else { return nil }
             
             self.init(beacon)
@@ -116,7 +116,7 @@ internal extension AppleBeacon {
         init?(data slice: Slice<LowEnergyAdvertisingData>) {
             
             guard let manufacturerData = GAPManufacturerSpecificData(data: slice),
-                let beacon = AppleBeacon(manufactererData: manufacturerData)
+                let beacon = AppleBeacon(manufacturerData: manufacturerData)
                 else { return nil }
             
             self.init(beacon)
