@@ -56,6 +56,10 @@ extension CompanyIdentifier: ExpressibleByIntegerLiteral {
 extension CompanyIdentifier: CustomStringConvertible {
     
     public var description: String {
+        #if os(WASI)
+        return rawValue.description
+        #else
         return name ?? rawValue.description
+        #endif
     }
 }
