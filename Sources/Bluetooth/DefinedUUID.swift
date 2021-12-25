@@ -13,8 +13,7 @@ public extension BluetoothUUID {
     /// a custom GATT-based service defined by the member, as well as a 16-bit Universally Unique Identifier (UUID)
     /// assignment for Standards Development Organizations (SDOs).
     ///
-    /// [16-bit UUID Assigned Numbers](https://www.bluetooth.com/specifications/assigned-numbers/16-bit-uuids-for-members)
-    /// [16 Bit UUIDs For SDOs](https://www.bluetooth.com/specifications/assigned-numbers/16-bit-uuids-for-sdos)
+    /// [16-bit UUID Assigned Numbers](https://www.bluetooth.com/specifications/assigned-numbers/)
     var name: String? {
         
         switch self {
@@ -22,9 +21,12 @@ public extension BluetoothUUID {
         case .bit32, .bit128: return nil
         }
     }
+    
+    /// 16-bit UUID [Assigned Numbers](https://www.bluetooth.com/specifications/assigned-numbers/)
+    static let assignedNumbers = Set<BluetoothUUID>(definedUUIDs.keys.lazy.map({ .bit16($0) }))
 }
 
-/// https://www.bluetooth.com/specifications/assigned-numbers/16-bit-uuids-for-members
+/// https://www.bluetooth.com/specifications/assigned-numbers/
 internal let definedUUIDs: [UInt16: String] = [
     
     0x0001: "SDP",
