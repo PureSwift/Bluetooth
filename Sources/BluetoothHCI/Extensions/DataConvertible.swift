@@ -98,9 +98,7 @@ extension BluetoothAddress: UnsafeDataConvertible { }
 internal protocol DataContainer: RandomAccessCollection where Self.Index == Int {
     
     subscript(index: Int) -> UInt8 { get }
-    
-    subscript(range: Range<Int>) -> Slice<Self> { get }
-    
+        
     mutating func append(_ newElement: UInt8)
     
     mutating func append(_ pointer: UnsafePointer<UInt8>, count: Int)
