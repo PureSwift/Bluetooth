@@ -18,16 +18,13 @@ public protocol L2CAPSocket {
     func recieve(_ bufferSize: Int) async throws -> Data
     
     /// Attempt to accept an incoming connection.
-    func accept(sleep: UInt64) async throws -> Self
+    func accept() async throws -> Self
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
     
     /// Get security level
     func securityLevel() async throws -> SecurityLevel
-    
-    /// 
-    func hasPendingEvents() async throws -> (canWrite: Bool, canRead: Bool)
     
     /// Creates a new socket connected to the remote address specified.
     static func lowEnergyClient(
