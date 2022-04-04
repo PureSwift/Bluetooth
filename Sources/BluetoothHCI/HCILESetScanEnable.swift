@@ -12,76 +12,148 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    /// Scan LE devices for the specified time period.
-    func lowEnergyScan(duration: TimeInterval,
-                       filterDuplicates: Bool = true,
-                       parameters: HCILESetScanParameters = .init(),
-                       timeout: HCICommandTimeout = .default) async throws -> [HCILEAdvertisingReport.Report] {
+    /// Scan LE devices.
+    func lowEnergyScan(
+        filterDuplicates: Bool = true,
+        parameters: HCILESetScanParameters = .init(),
+        timeout: HCICommandTimeout = .default
+    ) -> AsyncLowEnergyScanStream {
+        return AsyncLowEnergyScanStream { [weak self] continuation in
+            guard let self = self else { return }
+            // macro for enabling / disabling scan
+            func enableScan(_ isEnabled: Bool = true) async throws {
+                
+                let scanEnableCommand = HCILESetScanEnable(
+                    isEnabled: isEnabled,
+                    filterDuplicates: filterDuplicates
+                )
+                
+                do { try await self.deviceRequest(scanEnableCommand, timeout: timeout) }
+                catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
+            }
+            
+            do {
+                
+                // disable scanning first
+                try await enableScan(false)
+                
+                // set parameters
+                try await self.deviceRequest(parameters, timeout: timeout)
+                
+                // enable scanning
+                try await enableScan()
+                
+                // poll for scanned devices
+                while Task.isCancelled == false {
+                    
+                    let metaEvent = try await self.recieve(HCILowEnergyMetaEvent.self)
+                    
+                    // only want advertising report
+                    guard metaEvent.subevent == .advertisingReport
+                        else { continue }
+                    
+                    // parse LE advertising report
+                    guard let advertisingReport = HCILEAdvertisingReport(data: metaEvent.eventData)
+                        else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.eventData)) }
+                    
+                    // call closure on each device found
+                    for report in advertisingReport.reports {
+                        continuation.yield(report)
+                    }
+                }
+                
+                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+            }
+            catch _ as CancellationError {
+                // disable scanning
+                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+            }
+            catch {
+                // disable scanning
+                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+                continuation.finish(throwing: error)
+            }
+        }
+    }
+}
+
+/// Bluetooth LE Scan Stream
+public final class AsyncLowEnergyScanStream: AsyncSequence {
         
-        let startDate = Date()
-        let endDate = startDate + duration
-        
-        var foundDevices: [HCILEAdvertisingReport.Report] = []
-        foundDevices.reserveCapacity(1)
-        
-        try await lowEnergyScan(
-            filterDuplicates: filterDuplicates,
-            parameters: parameters,
-            timeout: timeout,
-            shouldContinue: { Date() < endDate },
-            foundDevice: { foundDevices.append($0) }
-        )
-        
-        return foundDevices
+    public typealias Element = HCILEAdvertisingReport.Report
+    
+    public typealias AsyncIterator = AsyncThrowingStream<Element, Error>.Iterator
+    
+    internal typealias StreamContinuation = AsyncThrowingStream<Element, Error>.Continuation
+    
+    internal var stream: AsyncThrowingStream<Element, Error>!
+    
+    internal var continuation: StreamContinuation!
+    
+    private let lock = NSLock()
+    
+    private var _isScanning = true
+    
+    private var task: Task<(), Never>!
+    
+    internal init(_ build: @escaping (Continuation) async -> ()) {
+        let stream = AsyncThrowingStream(Element.self, bufferingPolicy: .bufferingNewest(100)) { [weak self] (streamContinuation) in
+            guard let self = self else { return }
+            self.continuation = streamContinuation
+            let continuation = Continuation(self)
+            self.task = Task(priority: .userInitiated) {
+                await build(continuation)
+            }
+        }
+        self.stream = stream
     }
     
-    /// Scan LE devices.
-    func lowEnergyScan(filterDuplicates: Bool = true,
-                       parameters: HCILESetScanParameters = .init(),
-                       timeout: HCICommandTimeout = .default,
-                       shouldContinue: () -> (Bool),
-                       foundDevice: (HCILEAdvertisingReport.Report) -> ()) async throws {
+    public func makeAsyncIterator() -> AsyncThrowingStream<Element, Error>.Iterator {
+        stream.makeAsyncIterator()
+    }
         
-        // macro for enabling / disabling scan
-        func enableScan(_ isEnabled: Bool = true) async throws {
-            
-            let scanEnableCommand = HCILESetScanEnable(isEnabled: isEnabled,
-                                                       filterDuplicates: filterDuplicates)
-            
-            do { try await deviceRequest(scanEnableCommand, timeout: timeout) }
-            catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
+    public var isScanning: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return _isScanning
+    }
+    
+    public func stop() {
+        lock.lock()
+        assert(_isScanning)
+        _isScanning = false
+        lock.unlock()
+        task?.cancel()
+        continuation.finish()
+    }
+    
+    internal func yield(_ value: Element) {
+        continuation.yield(value)
+    }
+    
+    internal func finish(throwing error: Error) {
+        lock.lock()
+        assert(_isScanning)
+        _isScanning = false
+        lock.unlock()
+        continuation.finish(throwing: error)
+    }
+    
+    internal struct Continuation {
+        
+        private unowned let stream: AsyncLowEnergyScanStream
+        
+        init(_ stream: AsyncLowEnergyScanStream) {
+            self.stream = stream
         }
         
-        // disable scanning first
-        try await enableScan(false)
-        
-        // set parameters
-        try await deviceRequest(parameters, timeout: timeout)
-        
-        // enable scanning
-        try await enableScan()
-        
-        // poll for scanned devices
-        do {
-            try await pollEvent(HCILowEnergyMetaEvent.self, shouldContinue: shouldContinue) { (metaEvent) in
-                
-                // only want advertising report
-                guard metaEvent.subevent == .advertisingReport
-                    else { return }
-                
-                // parse LE advertising report
-                guard let advertisingReport = HCILEAdvertisingReport(data: metaEvent.eventData)
-                    else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.eventData)) }
-                
-                // call closure on each device found
-                advertisingReport.reports.forEach { foundDevice($0) }
-            }
-        } catch {
-            // disable scanning
-            do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
-            throw error
+        func yield(_ value: Element) {
+            stream.yield(value)
         }
-        do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+        
+        func finish(throwing error: Error) {
+            stream.finish(throwing: error)
+        }
     }
 }
 

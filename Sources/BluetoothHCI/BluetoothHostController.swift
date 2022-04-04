@@ -37,13 +37,9 @@ public protocol BluetoothHostControllerInterface: AnyObject {
     
     /// Sends a command to the device and waits for a response with return parameter values.
     func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout) async throws -> Return
-    
+        
     /// Polls and waits for events.
-    func pollEvent <EP: HCIEventParameter> (
-        _ eventParameterType: EP.Type,
-        shouldContinue: () -> (Bool),
-        event: (EP) async throws -> ()
-    ) async throws
+    func recieve<Event>(_ eventType: Event.Type) async throws -> Event where Event: HCIEventParameter, Event.HCIEventType == HCIGeneralEvent
 }
 
 /// Bluetooth HCI errors
