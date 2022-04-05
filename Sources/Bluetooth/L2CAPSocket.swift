@@ -11,6 +11,9 @@ import Foundation
 /// L2CAP Socket protocol.
 public protocol L2CAPSocket {
     
+    /// Socket address
+    var address: BluetoothAddress { get }
+    
     /// Write to the socket.
     func send(_ data: Data) async throws
     
