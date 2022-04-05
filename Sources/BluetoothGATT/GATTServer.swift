@@ -13,9 +13,7 @@ import Bluetooth
 public actor GATTServer {
     
     // MARK: - Properties
-    
-    public var log: ((String) -> ())?
-    
+        
     public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
         get async {
             return await self.connection.maximumTransmissionUnit
@@ -28,16 +26,18 @@ public actor GATTServer {
     
     public var database = GATTDatabase()
     
-    public var willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATTError?)?
+    internal let log: ((String) -> ())?
     
-    public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATTError?)?
+    internal let willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATTError?)?
     
-    public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
+    internal let willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATTError?)?
+    
+    internal let didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
     
     // Don't modify
     internal let connection: ATTConnection
     
-    private var preparedWrites = [PreparedWrite]()
+    internal private(set) var preparedWrites = [PreparedWrite]()
     
     // MARK: - Initialization
     
@@ -45,12 +45,19 @@ public actor GATTServer {
         socket: L2CAPSocket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         maximumPreparedWrites: Int = 50,
-        log: ((String) -> ())? = nil
+        log: ((String) -> ())? = nil,
+        willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATTError?)? = nil,
+        willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATTError?)? = nil,
+        didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)? = nil
     ) async {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.connection = await ATTConnection(socket: socket, log: log)
+        self.log = log
+        self.willRead = willRead
+        self.willWrite = willWrite
+        self.didWrite = didWrite
         // async register handlers
         await self.registerATTHandlers()
     }
