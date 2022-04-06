@@ -734,6 +734,8 @@ public extension GATTServer {
         public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) async -> ATTError?)?
         
         public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) async -> Void)?
+        
+        public init() { }
     }
 }
 
