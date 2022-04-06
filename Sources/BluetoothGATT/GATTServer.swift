@@ -28,13 +28,12 @@ public actor GATTServer {
     
     internal let log: ((String) -> ())?
     
-    internal let willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATTError?)?
+    internal let willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) async -> ATTError?)?
     
-    internal let willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATTError?)?
+    internal let willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) async -> ATTError?)?
     
-    internal let didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
+    internal let didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) async -> Void)?
     
-    // Don't modify
     internal let connection: ATTConnection
     
     internal private(set) var preparedWrites = [PreparedWrite]()
@@ -46,9 +45,9 @@ public actor GATTServer {
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         maximumPreparedWrites: Int = 50,
         log: ((String) -> ())? = nil,
-        willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) -> ATTError?)? = nil,
-        willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATTError?)? = nil,
-        didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)? = nil
+        willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) async -> ATTError?)? = nil,
+        willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) async -> ATTError?)? = nil,
+        didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) async -> Void)? = nil
     ) async {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
@@ -249,7 +248,7 @@ public actor GATTServer {
         }
         
         // validate application errors with write callback
-        if let error = willWrite?(attribute.uuid, handle, attribute.value, value) {
+        if let error = await willWrite?(attribute.uuid, handle, attribute.value, value) {
             await doResponse(await errorResponse(opcode, error, handle))
             return
         }
@@ -300,7 +299,7 @@ public actor GATTServer {
         } else {
             
             // writes from central should not notify clients (at least not this connected central)
-            didWrite?(attribute.uuid, attribute.handle, attribute.value)
+            await didWrite?(attribute.uuid, attribute.handle, attribute.value)
         }
     }
     
@@ -363,7 +362,7 @@ public actor GATTServer {
         value = Data(value.prefix(Int(maximumTransmissionUnit.rawValue) - 1))
         
         // validate application errors with read callback
-        if let error = willRead?(attribute.uuid, handle, value, Int(offset)) {
+        if let error = await willRead?(attribute.uuid, handle, value, Int(offset)) {
             await errorResponse(opcode, error, handle)
             return nil
         }
@@ -637,7 +636,7 @@ public actor GATTServer {
             let attribute = database[handle: handle]
             
             // validate application errors with read callback
-            if let error = willRead?(attribute.uuid, handle, attribute.value, 0) {
+            if let error = await willRead?(attribute.uuid, handle, attribute.value, 0) {
                 await errorResponse(opcode, error, handle)
                 return
             }
@@ -708,7 +707,7 @@ public actor GATTServer {
             for (handle, newValue) in newValues {
                 let attribute = database[handle: handle]
                 // validate application errors with write callback
-                if let error = willWrite?(attribute.uuid, handle, attribute.value, newValue) {
+                if let error = await willWrite?(attribute.uuid, handle, attribute.value, newValue) {
                     await errorResponse(opcode, error, handle)
                     return
                 }
