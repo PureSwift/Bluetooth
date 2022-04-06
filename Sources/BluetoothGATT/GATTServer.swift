@@ -28,11 +28,7 @@ public actor GATTServer {
     
     internal let log: ((String) -> ())?
     
-    internal let willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) async -> ATTError?)?
-    
-    internal let willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) async -> ATTError?)?
-    
-    internal let didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) async -> Void)?
+    internal var callback = Callback()
     
     internal let connection: ATTConnection
     
@@ -44,24 +40,26 @@ public actor GATTServer {
         socket: L2CAPSocket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         maximumPreparedWrites: Int = 50,
-        log: ((String) -> ())? = nil,
-        willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) async -> ATTError?)? = nil,
-        willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) async -> ATTError?)? = nil,
-        didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) async -> Void)? = nil
+        log: ((String) -> ())?
     ) async {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.connection = await ATTConnection(socket: socket, log: log)
         self.log = log
-        self.willRead = willRead
-        self.willWrite = willWrite
-        self.didWrite = didWrite
         // async register handlers
         await self.registerATTHandlers()
     }
     
     // MARK: - Methods
+    
+    public func setCallbacks(_ callback: Callback) {
+        self.callback = callback
+    }
+    
+    public func updateDatabase(_ database: (inout GATTDatabase) -> ()) {
+        database(&self.database)
+    }
     
     /// Performs the actual IO for sending data.
     public func read() async throws {
@@ -248,7 +246,7 @@ public actor GATTServer {
         }
         
         // validate application errors with write callback
-        if let error = await willWrite?(attribute.uuid, handle, attribute.value, value) {
+        if let error = await callback.willWrite?(attribute.uuid, handle, attribute.value, value) {
             await doResponse(await errorResponse(opcode, error, handle))
             return
         }
@@ -299,7 +297,7 @@ public actor GATTServer {
         } else {
             
             // writes from central should not notify clients (at least not this connected central)
-            await didWrite?(attribute.uuid, attribute.handle, attribute.value)
+            await callback.didWrite?(attribute.uuid, attribute.handle, attribute.value)
         }
     }
     
@@ -362,7 +360,7 @@ public actor GATTServer {
         value = Data(value.prefix(Int(maximumTransmissionUnit.rawValue) - 1))
         
         // validate application errors with read callback
-        if let error = await willRead?(attribute.uuid, handle, value, Int(offset)) {
+        if let error = await callback.willRead?(attribute.uuid, handle, value, Int(offset)) {
             await errorResponse(opcode, error, handle)
             return nil
         }
@@ -636,7 +634,7 @@ public actor GATTServer {
             let attribute = database[handle: handle]
             
             // validate application errors with read callback
-            if let error = await willRead?(attribute.uuid, handle, attribute.value, 0) {
+            if let error = await callback.willRead?(attribute.uuid, handle, attribute.value, 0) {
                 await errorResponse(opcode, error, handle)
                 return
             }
@@ -707,7 +705,7 @@ public actor GATTServer {
             for (handle, newValue) in newValues {
                 let attribute = database[handle: handle]
                 // validate application errors with write callback
-                if let error = await willWrite?(attribute.uuid, handle, attribute.value, newValue) {
+                if let error = await callback.willWrite?(attribute.uuid, handle, attribute.value, newValue) {
                     await errorResponse(opcode, error, handle)
                     return
                 }
@@ -726,6 +724,18 @@ public actor GATTServer {
 }
 
 // MARK: - Supporting Types
+
+public extension GATTServer {
+    
+    struct Callback {
+                
+        public var willRead: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ offset: Int) async -> ATTError?)?
+        
+        public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) async -> ATTError?)?
+        
+        public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) async -> Void)?
+    }
+}
 
 internal extension GATTServer {
     

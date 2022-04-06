@@ -19,7 +19,7 @@ internal actor ATTConnection {
     
     internal private(set) var socket: L2CAPSocket?
     
-    public private(set) var log: ((String) -> ())?
+    public let log: ((String) -> ())?
     
     public var isConnected: Bool {
         get async {
