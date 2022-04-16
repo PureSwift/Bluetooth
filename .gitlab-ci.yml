@@ -2,14 +2,14 @@ stages:
     - build
     - test
 
-build-osx-swift5:
+build-macos:
     stage: build
     script: swift build
     tags:
         - osx
         - swift5
 
-test-osx-swift5:
+test-macos:
     stage: test
     script: swift test
     tags:
