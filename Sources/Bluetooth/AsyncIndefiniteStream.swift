@@ -5,7 +5,7 @@
 //  Created by Alsey Coleman Miller on 4/12/22.
 //
 
-/// Async Stream that will produce values until `stop()` is called.
+/// Async Stream that will produce values until `stop()` is called or task is cancelled.
 public struct AsyncIndefiniteStream <Element>: AsyncSequence {
     
     let storage: Storage
@@ -14,20 +14,32 @@ public struct AsyncIndefiniteStream <Element>: AsyncSequence {
         bufferSize: Int = 100,
         unfolding produce: @escaping () async throws -> Element
     ) {
+        self.init(bufferSize: bufferSize) { continuation in
+            while Task.isCancelled == false {
+                let value = try await produce()
+                continuation.yield(value)
+            }
+        }
+    }
+    
+    public init(
+        bufferSize: Int = 100,
+        _ build: @escaping (Continuation) async throws -> ()
+    ) {
         let storage = Storage()
         let stream = AsyncThrowingStream<Element, Error>(Element.self, bufferingPolicy: .bufferingNewest(bufferSize)) { continuation in
             let task = Task {
                 do {
-                    while Task.isCancelled == false {
-                        let value = try await produce()
-                        continuation.yield(value)
-                    }
+                    try await build(Continuation(continuation: continuation))
                 }
                 catch _ as CancellationError { } // end
                 catch {
                     continuation.finish(throwing: error)
                 }
                 continuation.finish()
+            }
+            continuation.onTermination = { _ in
+                task.cancel()
             }
             storage.task = task
         }
@@ -41,6 +53,10 @@ public struct AsyncIndefiniteStream <Element>: AsyncSequence {
     
     public func stop() {
         storage.stop()
+    }
+    
+    public var didStop: Bool {
+        storage.task.isCancelled
     }
 }
 
@@ -68,10 +84,6 @@ public extension AsyncIndefiniteStream {
         
         public func yield(_ value: Element) {
             continuation.yield(value)
-        }
-        
-        public func finish(throwing error: Error) {
-            continuation.finish(throwing: error)
         }
     }
 }

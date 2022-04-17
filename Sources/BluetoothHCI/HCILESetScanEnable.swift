@@ -20,20 +20,14 @@ public extension BluetoothHostControllerInterface {
     ) -> AsyncLowEnergyScanStream {
         return AsyncLowEnergyScanStream { [weak self] continuation in
             guard let self = self else { return }
+            
             // macro for enabling / disabling scan
             func enableScan(_ isEnabled: Bool = true) async throws {
-                
-                let scanEnableCommand = HCILESetScanEnable(
-                    isEnabled: isEnabled,
-                    filterDuplicates: filterDuplicates
-                )
-                
-                do { try await self.deviceRequest(scanEnableCommand, timeout: timeout) }
+                do { try await self.enableLowEnergyScan(isEnabled, filterDuplicates: filterDuplicates, timeout: timeout) }
                 catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
             }
             
             do {
-                
                 // disable scanning first
                 try await enableScan(false)
                 
@@ -64,16 +58,26 @@ public extension BluetoothHostControllerInterface {
                 
                 do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
             }
-            catch _ as CancellationError {
-                // disable scanning
-                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
-            }
             catch {
                 // disable scanning
                 do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
-                continuation.finish(throwing: error)
+                throw error
             }
         }
+    }
+    
+    private func enableLowEnergyScan(
+        _ isEnabled: Bool = true,
+        filterDuplicates: Bool = true,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+        
+        let scanEnableCommand = HCILESetScanEnable(
+            isEnabled: isEnabled,
+            filterDuplicates: filterDuplicates
+        )
+        
+        try await self.deviceRequest(scanEnableCommand, timeout: timeout)
     }
 }
 
@@ -82,78 +86,24 @@ public final class AsyncLowEnergyScanStream: AsyncSequence {
         
     public typealias Element = HCILEAdvertisingReport.Report
     
-    public typealias AsyncIterator = AsyncThrowingStream<Element, Error>.Iterator
+    public typealias AsyncIterator = AsyncIndefiniteStream<Element>.AsyncIterator
     
-    internal typealias StreamContinuation = AsyncThrowingStream<Element, Error>.Continuation
+    let stream: AsyncIndefiniteStream<Element>
     
-    internal var stream: AsyncThrowingStream<Element, Error>!
-    
-    internal var continuation: StreamContinuation!
-    
-    private let lock = NSLock()
-    
-    private var _isScanning = true
-    
-    private var task: Task<(), Never>!
-    
-    internal init(_ build: @escaping (Continuation) async -> ()) {
-        let stream = AsyncThrowingStream(Element.self, bufferingPolicy: .bufferingNewest(100)) { [weak self] (streamContinuation) in
-            guard let self = self else { return }
-            self.continuation = streamContinuation
-            let continuation = Continuation(self)
-            self.task = Task(priority: .userInitiated) {
-                await build(continuation)
-            }
-        }
-        self.stream = stream
+    internal init(_ build: @escaping (AsyncIndefiniteStream<Element>.Continuation) async throws -> ()) {
+        self.stream = .init(bufferSize: 100, build)
     }
     
-    public func makeAsyncIterator() -> AsyncThrowingStream<Element, Error>.Iterator {
+    public func makeAsyncIterator() -> AsyncIndefiniteStream<Element>.AsyncIterator {
         stream.makeAsyncIterator()
     }
-        
+    
     public var isScanning: Bool {
-        lock.lock()
-        defer { lock.unlock() }
-        return _isScanning
+        stream.didStop == false
     }
     
     public func stop() {
-        lock.lock()
-        assert(_isScanning)
-        _isScanning = false
-        lock.unlock()
-        task?.cancel()
-        continuation.finish()
-    }
-    
-    internal func yield(_ value: Element) {
-        continuation.yield(value)
-    }
-    
-    internal func finish(throwing error: Error) {
-        lock.lock()
-        assert(_isScanning)
-        _isScanning = false
-        lock.unlock()
-        continuation.finish(throwing: error)
-    }
-    
-    internal struct Continuation {
-        
-        private unowned let stream: AsyncLowEnergyScanStream
-        
-        init(_ stream: AsyncLowEnergyScanStream) {
-            self.stream = stream
-        }
-        
-        func yield(_ value: Element) {
-            stream.yield(value)
-        }
-        
-        func finish(throwing error: Error) {
-            stream.finish(throwing: error)
-        }
+        stream.stop()
     }
 }
 
