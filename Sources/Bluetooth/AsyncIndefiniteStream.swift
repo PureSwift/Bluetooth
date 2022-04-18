@@ -27,6 +27,7 @@ public struct AsyncIndefiniteStream <Element>: AsyncSequence {
                     continuation.finish(throwing: error)
                 }
             }
+            storage.continuation = continuation
             continuation.onTermination = { [weak storage] in
                 switch $0 {
                 case .cancelled:
@@ -52,6 +53,7 @@ public struct AsyncIndefiniteStream <Element>: AsyncSequence {
         let storage = Storage()
         storage.onTermination = onTermination
         let stream = AsyncThrowingStream<Element, Error>(Element.self, bufferingPolicy: .bufferingNewest(bufferSize)) { continuation in
+            storage.continuation = continuation
             continuation.onTermination = { [weak storage] in
                 switch $0 {
                 case .cancelled:
@@ -60,7 +62,6 @@ public struct AsyncIndefiniteStream <Element>: AsyncSequence {
                     break
                 }
             }
-            storage.continuation = continuation
             build(Continuation(continuation))
         }
         storage.stream = stream
