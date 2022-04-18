@@ -16,8 +16,10 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyScan(
         filterDuplicates: Bool = true,
         parameters: HCILESetScanParameters = .init(),
+        bufferSize: Int = 100,
         timeout: HCICommandTimeout = .default
     ) -> AsyncLowEnergyScanStream {
+        assert(bufferSize >= 1)
         return AsyncLowEnergyScanStream { [weak self] continuation in
             guard let self = self else { return }
             
@@ -52,7 +54,7 @@ public extension BluetoothHostControllerInterface {
                     
                     // call closure on each device found
                     for report in advertisingReport.reports {
-                        continuation.yield(report)
+                        continuation(report)
                     }
                 }
                 
@@ -90,8 +92,8 @@ public final class AsyncLowEnergyScanStream: AsyncSequence {
     
     let stream: AsyncIndefiniteStream<Element>
     
-    internal init(_ build: @escaping (AsyncIndefiniteStream<Element>.Continuation) async throws -> ()) {
-        self.stream = .init(bufferSize: 100, build)
+    internal init(bufferSize: Int = 100, _ build: @escaping ((Element) -> ()) async throws -> ()) {
+        self.stream = .init(bufferSize: bufferSize, build)
     }
     
     public func makeAsyncIterator() -> AsyncIndefiniteStream<Element>.AsyncIterator {
@@ -99,7 +101,7 @@ public final class AsyncLowEnergyScanStream: AsyncSequence {
     }
     
     public var isScanning: Bool {
-        stream.didStop == false
+        stream.isExecuting
     }
     
     public func stop() {
