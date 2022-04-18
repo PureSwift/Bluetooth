@@ -18,26 +18,27 @@ public extension BluetoothHostControllerInterface {
         parameters: HCILESetScanParameters = .init(),
         bufferSize: Int = 100,
         timeout: HCICommandTimeout = .default
-    ) -> AsyncLowEnergyScanStream {
+    ) async throws -> AsyncLowEnergyScanStream {
         assert(bufferSize >= 1)
+        
+        // macro for enabling / disabling scan
+        func enableScan(_ isEnabled: Bool = true) async throws {
+            do { try await self.enableLowEnergyScan(isEnabled, filterDuplicates: filterDuplicates, timeout: timeout) }
+            catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
+        }
+        
+        // disable scanning first
+        try await enableScan(false)
+        
+        // set parameters
+        try await self.deviceRequest(parameters, timeout: timeout)
+        
+        // enable scanning
+        try await enableScan()
+        
         return AsyncLowEnergyScanStream { [weak self] continuation in
             guard let self = self else { return }
-            
-            // macro for enabling / disabling scan
-            func enableScan(_ isEnabled: Bool = true) async throws {
-                do { try await self.enableLowEnergyScan(isEnabled, filterDuplicates: filterDuplicates, timeout: timeout) }
-                catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
-            }
-            
             do {
-                // disable scanning first
-                try await enableScan(false)
-                
-                // set parameters
-                try await self.deviceRequest(parameters, timeout: timeout)
-                
-                // enable scanning
-                try await enableScan()
                 
                 // poll for scanned devices
                 while Task.isCancelled == false {
