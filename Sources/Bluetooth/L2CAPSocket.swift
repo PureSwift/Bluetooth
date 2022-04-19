@@ -41,5 +41,5 @@ public protocol L2CAPSocket {
         address: BluetoothAddress,
         isRandom: Bool,
         backlog: Int
-    ) throws -> Self
+    ) async throws -> Self
 }
