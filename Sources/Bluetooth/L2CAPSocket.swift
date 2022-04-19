@@ -27,7 +27,7 @@ public protocol L2CAPSocket {
     func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
     
     /// Get security level
-    func securityLevel() async throws -> SecurityLevel
+    var securityLevel: SecurityLevel { get async throws }
     
     /// Creates a new socket connected to the remote address specified.
     static func lowEnergyClient(

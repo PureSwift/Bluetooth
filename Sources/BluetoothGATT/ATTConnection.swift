@@ -490,7 +490,7 @@ internal actor ATTConnection {
         }
         
         let securityLevel: Bluetooth.SecurityLevel
-        do { securityLevel = try await socket.securityLevel() }
+        do { securityLevel = try await socket.securityLevel }
         catch {
             log?("Unable to get security level. \(error)")
             return false

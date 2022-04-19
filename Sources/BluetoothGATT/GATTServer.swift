@@ -189,7 +189,7 @@ public actor GATTServer {
         
         // check security
         let security: SecurityLevel
-        do { security = try await connection.socket?.securityLevel() ?? .sdp }
+        do { security = try await connection.socket?.securityLevel ?? .sdp }
         catch {
             log?("Unable to get security level. \(error)")
             security = .sdp
