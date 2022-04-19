@@ -12,7 +12,7 @@ import Foundation
 public protocol BluetoothHostControllerInterface: AnyObject {
     
     /// All controllers on the host.
-    static var controllers: [Self] { get }
+    static var controllers: [Self] { get async }
     
     /// Send an HCI command to the controller.
     func deviceCommand <C: HCICommand> (_ command: C) async throws
@@ -63,6 +63,8 @@ public enum BluetoothHostControllerError: Error {
 public extension BluetoothHostControllerInterface {
     
     static var `default`: Self? {
-        return controllers.first
+        get async {
+            return await controllers.first
+        }
     }
 }
