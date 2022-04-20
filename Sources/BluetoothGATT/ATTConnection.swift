@@ -140,7 +140,7 @@ internal actor ATTConnection {
         case .response:
             try await handle(response: recievedData, opcode: opcode)
         case .confirmation:
-            try await handle(confirmation: recievedData, opcode: opcode)
+            try handle(confirmation: recievedData, opcode: opcode)
         case .request:
             try await handle(request: recievedData, opcode: opcode)
         case .command,
@@ -284,19 +284,10 @@ internal actor ATTConnection {
             writeQueue.append(sendOpcode)
         }
         
+        writePending()
+        
         return sendOpcode.id
     }
-    
-    /*
-    public func cancel(_ identifier: UInt) {
-        
-        writePending?()
-    }
-    
-    public func cancelAll() {
-        
-        writePending?()
-    }*/
     
     // MARK: - Private Methods
     
@@ -338,7 +329,7 @@ internal actor ATTConnection {
             
             requestOpcode = errorRequestOpcode
             
-            try await writePending()
+            writePending()
             
             /// Return if error response caused a retry
             guard didRetry == false
@@ -363,10 +354,10 @@ internal actor ATTConnection {
         // success!
         try sendOperation.handle(data: data)
         
-        try await writePending()
+        writePending()
     }
     
-    private func handle(confirmation data: Data, opcode: ATTOpcode) async throws {
+    private func handle(confirmation data: Data, opcode: ATTOpcode) throws {
         
         // Disconnect the bearer if the confirmation is unexpected or the PDU is invalid.
         guard let sendOperation = pendingIndication
@@ -379,7 +370,7 @@ internal actor ATTConnection {
         
         // send the remaining indications
         if indicationQueue.isEmpty == false {
-            try await writePending()
+            writePending()
         }
     }
     
@@ -531,11 +522,20 @@ internal actor ATTConnection {
     }
     
     // write all pending PDUs
-    private func writePending() async throws {
-        var didWrite = false
-        repeat {
-            didWrite = try await write()
-        } while didWrite
+    private func writePending() {
+        Task(priority: .high) { [weak self] in
+            // write socket
+            do {
+                var didWrite = false
+                repeat {
+                    didWrite = try await write()
+                } while didWrite
+            }
+            catch _ as CancellationError { } // ignore
+            catch {
+                await self?.disconnect(error)
+            }
+        }
     }
 }
 
