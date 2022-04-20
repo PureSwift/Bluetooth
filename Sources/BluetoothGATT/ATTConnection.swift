@@ -56,6 +56,8 @@ internal actor ATTConnection {
     /// List of registered callbacks.
     private var notifyList = [ATTNotifyType]()
     
+    private var readTask: Task<(), Never>?
+    
     // MARK: - Initialization
     
     deinit {
@@ -86,21 +88,18 @@ internal actor ATTConnection {
         }
         // close file descriptor
         socket = nil
-        
+        readTask?.cancel()
     }
     
     private func run() {
-        Task.detached { [weak self] in
+        readTask = Task.detached(priority: .high) { [weak self] in
             // read and write socket
             do {
                 while await self?.socket != nil {
-                    var didWrite = false
-                    repeat {
-                        didWrite = try await self?.write() ?? false
-                    } while didWrite
                     try await self?.read()
                 }
             }
+            catch _ as CancellationError { } // ignore
             catch {
                 await self?.disconnect(error)
             }
@@ -141,7 +140,7 @@ internal actor ATTConnection {
         case .response:
             try await handle(response: recievedData, opcode: opcode)
         case .confirmation:
-            try handle(confirmation: recievedData, opcode: opcode)
+            try await handle(confirmation: recievedData, opcode: opcode)
         case .request:
             try await handle(request: recievedData, opcode: opcode)
         case .command,
@@ -339,7 +338,7 @@ internal actor ATTConnection {
             
             requestOpcode = errorRequestOpcode
             
-            //writePending?()
+            try await writePending()
             
             /// Return if error response caused a retry
             guard didRetry == false
@@ -364,10 +363,10 @@ internal actor ATTConnection {
         // success!
         try sendOperation.handle(data: data)
         
-        //writePending?()
+        try await writePending()
     }
     
-    private func handle(confirmation data: Data, opcode: ATTOpcode) throws {
+    private func handle(confirmation data: Data, opcode: ATTOpcode) async throws {
         
         // Disconnect the bearer if the confirmation is unexpected or the PDU is invalid.
         guard let sendOperation = pendingIndication
@@ -380,7 +379,7 @@ internal actor ATTConnection {
         
         // send the remaining indications
         if indicationQueue.isEmpty == false {
-            //writePending?()
+            try await writePending()
         }
     }
     
@@ -529,6 +528,14 @@ internal actor ATTConnection {
         }
         
         return true
+    }
+    
+    // write all pending PDUs
+    private func writePending() async throws {
+        var didWrite = false
+        repeat {
+            didWrite = try await write()
+        } while didWrite
     }
 }
 
