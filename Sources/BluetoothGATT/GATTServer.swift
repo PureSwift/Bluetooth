@@ -154,9 +154,10 @@ public actor GATTServer {
     /// Send a server-initiated PDU message.
     private func send(_ indication: ATTHandleValueIndication) async -> ATTResponse<ATTHandleValueConfirmation> {
         log?("Indication: \(indication)")
+        let priority = Task.currentPriority
         return await withCheckedContinuation { [weak self] continuation in
             guard let self = self else { return }
-            Task {
+            Task(priority: priority) {
                 let responseType: ATTProtocolDataUnit.Type = ATTHandleValueConfirmation.self
                 // callback if no I/O errors or disconnect
                 let callback: (ATTProtocolDataUnit) -> () = {
