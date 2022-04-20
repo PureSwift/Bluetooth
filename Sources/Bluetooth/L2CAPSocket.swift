@@ -9,7 +9,7 @@
 import Foundation
 
 /// L2CAP Socket protocol.
-public protocol L2CAPSocket {
+public protocol L2CAPSocket: AnyObject {
     
     /// Socket address
     var address: BluetoothAddress { get }
