@@ -24,7 +24,7 @@ public actor GATTServer {
     
     public let maximumPreparedWrites: Int
     
-    public var database = GATTDatabase()
+    public var database: GATTDatabase
     
     internal let log: ((String) -> ())?
     
@@ -40,11 +40,13 @@ public actor GATTServer {
         socket: L2CAPSocket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         maximumPreparedWrites: Int = 50,
+        database: GATTDatabase = GATTDatabase(),
         log: ((String) -> ())?
     ) async {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
+        self.database = database
         self.connection = await ATTConnection(socket: socket, log: log)
         self.log = log
         // async register handlers
