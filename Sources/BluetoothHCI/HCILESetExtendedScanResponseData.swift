@@ -22,11 +22,11 @@ public extension BluetoothHostControllerInterface {
                                               operation: HCILESetExtendedScanResponseData.Operation,
                                               fragmentPreference: LowEnergyFragmentPreference,
                                               scanResponseData: [UInt8],
-                                              timeout: HCICommandTimeout = .default)  throws {
+                                              timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetExtendedScanResponseData(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, scanResponseData: scanResponseData)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

@@ -19,11 +19,11 @@ public extension BluetoothHostControllerInterface {
     func lowEnergySetDefaultPhy(allPhys: LowEnergyAllPhys,
                                 txPhys: LowEnergyTxPhys,
                                 rxPhys: LowEnergyRxPhys,
-                                timeout: HCICommandTimeout = .default) throws {
+                                timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetDefaultPhy(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

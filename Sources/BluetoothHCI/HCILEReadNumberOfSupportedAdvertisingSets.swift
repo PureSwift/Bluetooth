@@ -18,9 +18,9 @@ public extension BluetoothHostControllerInterface {
     /// the advertising Controller at the same time. Note: The number of advertising sets that
     /// can be supported is not fixed and the Controller can change it at any time because the memory
     /// used to store advertising sets can also be used for other purposes.
-    func readNumberOfSupportedAdvertisingSets(timeout: HCICommandTimeout = .default) throws -> UInt8 {
+    func readNumberOfSupportedAdvertisingSets(timeout: HCICommandTimeout = .default) async throws -> UInt8 {
         
-        let value = try deviceRequest(HCILEReadNumberOfSupportedAdvertisingSets.self,
+        let value = try await deviceRequest(HCILEReadNumberOfSupportedAdvertisingSets.self,
                                       timeout: timeout)
         
         return value.numSupportedAdvertisingSets

@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// Read Class of Device Command
     ///
     /// This command writes the value for the Class_of_Device parameter.
-    func readClassOfDevice(timeout: HCICommandTimeout = .default) throws -> ClassOfDevice {
+    func readClassOfDevice(timeout: HCICommandTimeout = .default) async throws -> ClassOfDevice {
         
-        return try deviceRequest(HCIReadClassOfDeviceReturn.self, timeout: timeout).classOfDevice
+        return try await deviceRequest(HCIReadClassOfDeviceReturn.self, timeout: timeout).classOfDevice
     }
 }
 

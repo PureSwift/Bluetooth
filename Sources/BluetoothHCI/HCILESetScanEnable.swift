@@ -12,72 +12,102 @@ import Foundation
 
 public extension BluetoothHostControllerInterface {
     
-    /// Scan LE devices for the specified time period.
-    func lowEnergyScan(duration: TimeInterval,
-                       filterDuplicates: Bool = true,
-                       parameters: HCILESetScanParameters = .init(),
-                       timeout: HCICommandTimeout = .default) throws -> [HCILEAdvertisingReport.Report] {
-        
-        let startDate = Date()
-        let endDate = startDate + duration
-        
-        var foundDevices: [HCILEAdvertisingReport.Report] = []
-        foundDevices.reserveCapacity(1)
-        
-        try lowEnergyScan(filterDuplicates: filterDuplicates,
-                          parameters: parameters,
-                          timeout: timeout,
-                          shouldContinue: { Date() < endDate },
-                          foundDevice: { foundDevices.append($0) })
-        
-        return foundDevices
-    }
-    
     /// Scan LE devices.
-    func lowEnergyScan(filterDuplicates: Bool = true,
-                       parameters: HCILESetScanParameters = .init(),
-                       timeout: HCICommandTimeout = .default,
-                       shouldContinue: () -> (Bool),
-                       foundDevice: (HCILEAdvertisingReport.Report) -> ()) throws {
+    func lowEnergyScan(
+        filterDuplicates: Bool = true,
+        parameters: HCILESetScanParameters = .init(),
+        bufferSize: Int = 100,
+        timeout: HCICommandTimeout = .default
+    ) async throws -> AsyncLowEnergyScanStream {
+        assert(bufferSize >= 1)
         
         // macro for enabling / disabling scan
-        func enableScan(_ isEnabled: Bool = true) throws {
-            
-            let scanEnableCommand = HCILESetScanEnable(isEnabled: isEnabled,
-                                                       filterDuplicates: filterDuplicates)
-            
-            do { try deviceRequest(scanEnableCommand, timeout: timeout) }
+        func enableScan(_ isEnabled: Bool = true) async throws {
+            do { try await self.enableLowEnergyScan(isEnabled, filterDuplicates: filterDuplicates, timeout: timeout) }
             catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
         }
         
         // disable scanning first
-        try enableScan(false)
+        try await enableScan(false)
         
         // set parameters
-        try deviceRequest(parameters, timeout: timeout)
+        try await self.deviceRequest(parameters, timeout: timeout)
         
         // enable scanning
-        try enableScan()
+        try await enableScan()
         
-        // disable scanning after completion
-        defer { do { try enableScan(false) } catch { /* ignore all errors disabling scanning */ } }
-        
-        // poll for scanned devices
-        try pollEvent(HCILowEnergyMetaEvent.self, shouldContinue: shouldContinue) { (metaEvent) in
-            
-            // only want advertising report
-            guard metaEvent.subevent == .advertisingReport
-                else { return }
-            
-            // parse LE advertising report
-            guard let advertisingReport = HCILEAdvertisingReport(data: metaEvent.eventData)
-                else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.eventData)) }
-            
-            // call closure on each device found
-            advertisingReport.reports.forEach { foundDevice($0) }
+        return AsyncLowEnergyScanStream { [weak self] continuation in
+            guard let self = self else { return }
+            do {
+                
+                // poll for scanned devices
+                while Task.isCancelled == false {
+                    
+                    let metaEvent = try await self.recieve(HCILowEnergyMetaEvent.self)
+                    
+                    // only want advertising report
+                    guard metaEvent.subevent == .advertisingReport
+                        else { continue }
+                    
+                    // parse LE advertising report
+                    guard let advertisingReport = HCILEAdvertisingReport(data: metaEvent.eventData)
+                        else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.eventData)) }
+                    
+                    // call closure on each device found
+                    for report in advertisingReport.reports {
+                        continuation(report)
+                    }
+                }
+                
+                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+            }
+            catch {
+                // disable scanning
+                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+                throw error
+            }
         }
     }
     
+    private func enableLowEnergyScan(
+        _ isEnabled: Bool = true,
+        filterDuplicates: Bool = true,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+        
+        let scanEnableCommand = HCILESetScanEnable(
+            isEnabled: isEnabled,
+            filterDuplicates: filterDuplicates
+        )
+        
+        try await self.deviceRequest(scanEnableCommand, timeout: timeout)
+    }
+}
+
+/// Bluetooth LE Scan Stream
+public final class AsyncLowEnergyScanStream: AsyncSequence {
+        
+    public typealias Element = HCILEAdvertisingReport.Report
+    
+    public typealias AsyncIterator = AsyncIndefiniteStream<Element>.AsyncIterator
+    
+    let stream: AsyncIndefiniteStream<Element>
+    
+    internal init(bufferSize: Int = 100, _ build: @escaping ((Element) -> ()) async throws -> ()) {
+        self.stream = .init(bufferSize: bufferSize, build)
+    }
+    
+    public func makeAsyncIterator() -> AsyncIndefiniteStream<Element>.AsyncIterator {
+        stream.makeAsyncIterator()
+    }
+    
+    public var isScanning: Bool {
+        stream.isExecuting
+    }
+    
+    public func stop() {
+        stream.stop()
+    }
 }
 
 // MARK: - Command

@@ -17,11 +17,11 @@ public extension BluetoothHostControllerInterface {
     /// The Read_Stored_Link_Key command provides the ability to read whether one or more link keys are stored in the BR/EDR Controller. The BR/EDR Controller can store a limited number of link keys for other BR/EDR Controllers. Link keys are shared between two BR/EDR Controllers, and are used for all security transactions between the two devices. The read link key command shall not return the link keys value. A Host device may have additional storage capabilities, which can be used to save additional link keys to be reloaded to the BR/ EDR Controller when needed. The Read_All_Flag parameter is used to indicate if all of the stored Link Keys should be returned. If Read_All_Flag indicates that all Link Keys are to be returned, then the BD_ADDR command parameter must be ignored. The BD_ADDR command parameter is used to identify which link key to read. The stored Link Keys are returned by one or more Return Link Keys events.
     func readStoredLinkKey(address: BluetoothAddress,
                            readFlag: HCIReadStoredLinkKey.ReadFlag,
-                           timeout: HCICommandTimeout = .default) throws -> HCIReadStoredLinkKeyReturn {
+                           timeout: HCICommandTimeout = .default) async throws -> HCIReadStoredLinkKeyReturn {
         
         let command = HCIReadStoredLinkKey(address: address, readFlag: readFlag)
         
-        return try deviceRequest(command, HCIReadStoredLinkKeyReturn.self, timeout: timeout)
+        return try await deviceRequest(command, HCIReadStoredLinkKeyReturn.self, timeout: timeout)
     }
 }
 

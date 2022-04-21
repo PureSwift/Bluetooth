@@ -11,7 +11,7 @@ import Foundation
 @testable import BluetoothGATT
 
 /// Test L2CAP socket
-internal final class TestL2CAPSocket: L2CAPSocketProtocol {
+internal final class TestL2CAPSocket { //}: L2CAPSocket {
     
     // MARK: - Properties
     
@@ -22,12 +22,15 @@ internal final class TestL2CAPSocket: L2CAPSocketProtocol {
     let address: BluetoothAddress
     
     /// The socket's security level.
-    private(set) var securityLevel: SecurityLevel = .sdp
+    private var _securityLevel: SecurityLevel = .sdp
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws {
-        
-        self.securityLevel = securityLevel
+        _securityLevel = securityLevel
+    }
+    
+    func securityLevel() throws -> SecurityLevel {
+        return _securityLevel
     }
     
     /// Target socket.

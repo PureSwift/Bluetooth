@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// LE Read Periodic Advertiser List Size Command
     ///
     /// The command is used to read the total number of Periodic Advertiser list entries that can be stored in the Controller.
-    func lowEnergyReadPeriodicAdvertisingListSize(timeout: HCICommandTimeout = .default) throws -> UInt8 {
+    func lowEnergyReadPeriodicAdvertisingListSize(timeout: HCICommandTimeout = .default) async throws -> UInt8 {
         
-        let value = try deviceRequest(HCILEReadPeriodicAdvertisingListSize.self,
+        let value = try await deviceRequest(HCILEReadPeriodicAdvertisingListSize.self,
                                       timeout: timeout)
         
         return value.periodicAdvertiserListSize

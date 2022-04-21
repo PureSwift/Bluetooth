@@ -15,9 +15,9 @@ public extension BluetoothHostControllerInterface {
     /// LE Read Transmit Power Command
     ///
     /// The command is used to read the minimum and maximum transmit powers supported by the Controller.ReadTransmitPowerReturnParameter
-    func lowEnergyReadTransmitPower(timeout: HCICommandTimeout = .default) throws -> HCILEReadTransmitPower {
+    func lowEnergyReadTransmitPower(timeout: HCICommandTimeout = .default) async throws -> HCILEReadTransmitPower {
         
-        return try deviceRequest(HCILEReadTransmitPower.self, timeout: timeout)
+        return try await deviceRequest(HCILEReadTransmitPower.self, timeout: timeout)
     }
 }
 

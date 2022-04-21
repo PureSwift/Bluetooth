@@ -16,9 +16,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The ommand is used to read the maximum length of data supported by the Controller for use
     /// as advertisement data or scan response data in an advertising event or as periodic advertisement data.
-    func setReadMaximumAdvertisingDataLength(timeout: HCICommandTimeout = .default) throws -> UInt16 {
+    func setReadMaximumAdvertisingDataLength(timeout: HCICommandTimeout = .default) async throws -> UInt16 {
         
-        let value = try deviceRequest(HCILEReadMaximumAdvertisingDataLength.self,
+        let value = try await deviceRequest(HCILEReadMaximumAdvertisingDataLength.self,
                                       timeout: timeout)
         
         return value.maximumAdvertisingDataLength

@@ -9,17 +9,37 @@
 import Foundation
 
 /// L2CAP Socket protocol.
-public protocol L2CAPSocketProtocol: AnyObject {
+public protocol L2CAPSocket: AnyObject {
     
-    /// Reads from the socket.
-    func recieve(_ bufferSize: Int) throws -> Data?
+    /// Socket address
+    var address: BluetoothAddress { get }
     
     /// Write to the socket.
-    func send(_ data: Data) throws
+    func send(_ data: Data) async throws
     
-    /// The socket's security level.
-    var securityLevel: SecurityLevel { get }
+    /// Reads from the socket.
+    func recieve(_ bufferSize: Int) async throws -> Data
+    
+    /// Attempt to accept an incoming connection.
+    func accept() async throws -> Self
     
     /// Attempts to change the socket's security level.
-    func setSecurityLevel(_ securityLevel: SecurityLevel) throws
+    func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
+    
+    /// Get security level
+    var securityLevel: SecurityLevel { get async throws }
+    
+    /// Creates a new socket connected to the remote address specified.
+    static func lowEnergyClient(
+        address: BluetoothAddress,
+        destination: BluetoothAddress,
+        isRandom: Bool
+    ) async throws -> Self
+    
+    /// Creates a new server,
+    static func lowEnergyServer(
+        address: BluetoothAddress,
+        isRandom: Bool,
+        backlog: Int
+    ) async throws -> Self
 }

@@ -12,9 +12,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to remove all devices from the list of address translations
     /// used to resolve Resolvable Private Addresses in the Controller.
-    func lowEnergyClearResolvingList(timeout: HCICommandTimeout = .default) throws {
-        
-        try deviceRequest(HCILowEnergyCommand.clearResolvedList, timeout: timeout)
+    func lowEnergyClearResolvingList(timeout: HCICommandTimeout = .default) async throws {
+        try await deviceRequest(HCILowEnergyCommand.clearResolvedList, timeout: timeout)
     }
-
 }

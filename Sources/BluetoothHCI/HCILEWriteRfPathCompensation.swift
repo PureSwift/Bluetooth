@@ -18,12 +18,12 @@ public extension BluetoothHostControllerInterface {
     /// the antenna contributed by intermediate components.
     func lowEnergyWriteRfPathCompensation(rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
                                           rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
-                                          timeout: HCICommandTimeout = .default) throws {
+                                          timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILEWriteRfPathCompensation(rfTxPathCompensationValue: rfTxPathCompensationValue,
                                                       rfRxPathCompensationValue: rfRxPathCompensationValue)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

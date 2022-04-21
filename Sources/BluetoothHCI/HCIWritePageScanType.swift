@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command writes the Page Scan Type configuration parameter of the local BR/EDR Controller.
     func writePageScanType(pageScanType: HCIWritePageScanType.PageScanType,
-                           timeout: HCICommandTimeout = .default) throws {
+                           timeout: HCICommandTimeout = .default) async throws {
         
         let command = HCIWritePageScanType(pageScanType: pageScanType)
         
-        return try deviceRequest(command, timeout: timeout)
+        return try await deviceRequest(command, timeout: timeout)
     }
 }
 

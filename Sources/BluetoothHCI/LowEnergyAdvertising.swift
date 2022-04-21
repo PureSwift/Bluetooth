@@ -20,9 +20,9 @@ public extension BluetoothHostControllerInterface {
     /// then the Controller shall return the error code Command Disallowed (0x0C).
     ///
     /// Note: All advertising sets are cleared on HCI reset.
-    func lowEnergyClearAdvertisingSets(timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyClearAdvertisingSets(timeout: HCICommandTimeout = .default) async throws {
         
-        try deviceRequest(HCILowEnergyCommand.clearAdvertisingSets, timeout: timeout)
+        try await deviceRequest(HCILowEnergyCommand.clearAdvertisingSets, timeout: timeout)
     }
     
     /// LE Periodic Advertising Create Sync Cancel Command
@@ -31,9 +31,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// If the Host issues this command while no LE_Periodic_Advertising_Create_Sync command is pending,
     /// the Controller shall return the error code Command Disallowed (0x0C).
-    func lowEnergyPeriodicAdvertisingCreateSyncCancel(timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyPeriodicAdvertisingCreateSyncCancel(timeout: HCICommandTimeout = .default) async throws {
         
-        try deviceRequest(HCILowEnergyCommand.periodicAdvertisingCreateSyncCancel, timeout: timeout)
+        try await deviceRequest(HCILowEnergyCommand.periodicAdvertisingCreateSyncCancel, timeout: timeout)
     }
     
     /// LE Clear Periodic Advertiser List Command
@@ -43,9 +43,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// If this command is used when an LE_Periodic_Advertising_Create_Sync command is pending,
     /// the Controller shall return the error code Command Disallowed (0x0C).
-    func lowEnergyClearPeriodicAdvertiserList(timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyClearPeriodicAdvertiserList(timeout: HCICommandTimeout = .default) async throws {
         
-        try deviceRequest(HCILowEnergyCommand.clearPeriodicAdvertiserList, timeout: timeout) //0x0049
+        try await deviceRequest(HCILowEnergyCommand.clearPeriodicAdvertiserList, timeout: timeout) //0x0049
     }
     
 }

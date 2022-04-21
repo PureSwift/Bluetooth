@@ -17,11 +17,11 @@ public extension BluetoothHostControllerInterface {
     /// The command is used to get the current peer Resolvable Private Address being
     /// used for the corresponding peer Public and Random (static) Identity Address.
     /// The peer’s resolvable address being used may change after the command is called.
-    func lowEnergyReadPeerResolvableAddress(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, timeout: HCICommandTimeout = .default) throws -> UInt64 {
+    func lowEnergyReadPeerResolvableAddress(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, timeout: HCICommandTimeout = .default) async throws -> UInt64 {
         
         let parameters = HCILEReadPeerResolvableAddress(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
         
-        let returnParameters = try deviceRequest(parameters, HCILEReadPeerResolvableAddressReturn.self, timeout: timeout)
+        let returnParameters = try await deviceRequest(parameters, HCILEReadPeerResolvableAddressReturn.self, timeout: timeout)
         
         return returnParameters.peerResolvableAddress
     }

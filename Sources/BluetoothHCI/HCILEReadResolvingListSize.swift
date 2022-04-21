@@ -16,9 +16,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to read the total number of address translation
     /// entries in the resolving list that can be stored in the Controller.
-    func lowEnergyReadResolvingListSize(timeout: HCICommandTimeout = .default) throws -> UInt8 {
+    func lowEnergyReadResolvingListSize(timeout: HCICommandTimeout = .default) async throws -> UInt8 {
         
-        let value = try deviceRequest(HCILEReadResolvingListSize.self,
+        let value = try await deviceRequest(HCILEReadResolvingListSize.self,
                                       timeout: timeout)
         
         return value.resolvingListSize

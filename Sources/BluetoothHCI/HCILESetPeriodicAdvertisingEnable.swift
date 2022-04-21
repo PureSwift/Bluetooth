@@ -18,11 +18,11 @@ public extension BluetoothHostControllerInterface {
     /// for the advertising set specified by the Advertising_Handle parameter (ordinary advertising is not affected).
     func setPeriodicAdvertisingEnable(enable: HCILESetPeriodicAdvertisingEnable.Enable,
                                       advertisingHandle: UInt8,
-                                      timeout: HCICommandTimeout = .default)  throws {
+                                      timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetPeriodicAdvertisingEnable(enable: enable, advertisingHandle: advertisingHandle)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

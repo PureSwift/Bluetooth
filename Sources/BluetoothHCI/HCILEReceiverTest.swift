@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to start a test where the DUT receives test reference packets at a fixed interval.
     /// The tester generates the test reference packets.
-    func lowEnergyReceiverTest(rxChannel: LowEnergyRxChannel, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergyReceiverTest(rxChannel: LowEnergyRxChannel, timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILEReceiverTest(rxChannel: rxChannel)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

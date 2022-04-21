@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command requests a list of the supported features for the remote device identified by the Connection_Handle parameter. The Connection_Handle must be a Connection_Handle for an ACL connection. The Read Remote Supported Features Complete event will return a list of the LMP features.
     func readRemoteSupportedFeatures(handle: UInt16,
-                                     timeout: HCICommandTimeout = .default) throws -> BitMaskOptionSet<LMPFeature> {
+                                     timeout: HCICommandTimeout = .default) async throws -> BitMaskOptionSet<LMPFeature> {
         
         let readRemoteSupportedFeatures = HCIReadRemoteSupportedFeatures(handle: handle)
         
-        return try deviceRequest(readRemoteSupportedFeatures,
+        return try await deviceRequest(readRemoteSupportedFeatures,
                                  HCIReadRemoteSupportedFeaturesComplete.self,
                                  timeout: timeout).features
     }

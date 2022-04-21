@@ -19,11 +19,11 @@ public extension BluetoothHostControllerInterface {
                                     operation: HCILESetExtendedAdvertisingData.Operation,
                                     fragmentPreference: LowEnergyFragmentPreference,
                                     advertisingData: [UInt8],
-                                    timeout: HCICommandTimeout = .default)  throws {
+                                    timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetExtendedAdvertisingData(advertisingHandle: advertisingHandle, operation: operation, fragmentPreference: fragmentPreference, advertisingData: advertisingData)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

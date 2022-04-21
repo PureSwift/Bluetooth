@@ -22,13 +22,13 @@ public extension BluetoothHostControllerInterface {
     func remoteNameRequest(address: BluetoothAddress,
                            pscanRepMode: PageScanRepetitionMode,
                            clockOffset: HCIRemoteNameRequest.ClockOffset,
-                           timeout: HCICommandTimeout = .default) throws -> HCIRemoteNameRequestComplete {
+                           timeout: HCICommandTimeout = .default) async throws -> HCIRemoteNameRequestComplete {
         
         let remoteNameRequest = HCIRemoteNameRequest(address: address,
                                                      pscanRepMode: pscanRepMode,
                                                      clockOffset: clockOffset)
         
-        return try deviceRequest(remoteNameRequest, HCIRemoteNameRequestComplete.self, timeout: timeout)
+        return try await deviceRequest(remoteNameRequest, HCIRemoteNameRequestComplete.self, timeout: timeout)
     }
 }
 

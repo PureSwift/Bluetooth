@@ -23,12 +23,12 @@ public extension BluetoothHostControllerInterface {
     ///
     /// - Precondition: The provided length must be less than or equal to 31.
     func setLowEnergyScanResponse(_ data: LowEnergyAdvertisingData,
-                                  timeout: HCICommandTimeout = .default) throws {
+                                  timeout: HCICommandTimeout = .default) async throws {
         
         // set scan response parameters
         let command = HCILESetScanResponseData(advertisingData: data)
         
-        try deviceRequest(command, timeout: timeout)
+        try await deviceRequest(command, timeout: timeout)
     }
 }
 

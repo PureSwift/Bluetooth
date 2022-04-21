@@ -13,9 +13,9 @@ import Foundation
 public extension BluetoothHostControllerInterface {
     
     /// This command reads the values for the version information for the local Controller.
-    func readLocalVersionInformation(timeout: HCICommandTimeout = .default) throws -> HCILocalVersionInformation {
+    func readLocalVersionInformation(timeout: HCICommandTimeout = .default) async throws -> HCILocalVersionInformation {
         
-        return try deviceRequest(HCILocalVersionInformation.self, timeout: timeout)
+        return try await deviceRequest(HCILocalVersionInformation.self, timeout: timeout)
     }
 }
 

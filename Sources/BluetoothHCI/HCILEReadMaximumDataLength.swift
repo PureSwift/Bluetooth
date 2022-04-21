@@ -18,9 +18,9 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This ommand allows the Host to read the Controller’s maximum supported payload octets
     /// and packet duration times for transmission and reception
-    func lowEnergyReadMaximumDataLengthReturn(timeout: HCICommandTimeout = .default) throws -> HCILEReadMaximumDataLength {
+    func lowEnergyReadMaximumDataLengthReturn(timeout: HCICommandTimeout = .default) async throws -> HCILEReadMaximumDataLength {
         
-        let value = try deviceRequest(HCILEReadMaximumDataLength.self, timeout: timeout)
+        let value = try await deviceRequest(HCILEReadMaximumDataLength.self, timeout: timeout)
         
         return value
     }

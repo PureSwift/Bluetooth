@@ -19,13 +19,13 @@ public extension BluetoothHostControllerInterface {
     func pinCodeRequestReply(address: BluetoothAddress,
                              pinCodeLength: HCIPINCodeRequestReply.PINCodeLength,
                              pinCode: UInt128,
-                             timeout: HCICommandTimeout = .default) throws -> BluetoothAddress {
+                             timeout: HCICommandTimeout = .default) async throws -> BluetoothAddress {
         
         let command = HCIPINCodeRequestReply(address: address,
                                              pinCodeLength: pinCodeLength,
                                              pinCode: pinCode)
         
-        return try deviceRequest(command, HCIPINCodeRequestReplyReturn.self, timeout: timeout).address
+        return try await deviceRequest(command, HCIPINCodeRequestReplyReturn.self, timeout: timeout).address
     }
 }
 

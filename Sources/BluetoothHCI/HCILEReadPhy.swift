@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This ommand is used to read the current transmitter PHY and receiver PHY
     /// on the connection identified by the Connection_Handle.
-    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) throws -> HCILEReadPHYReturn {
+    func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) async throws -> HCILEReadPHYReturn {
         
         let parameters = HCILEReadPHY(connectionHandle: connectionHandle)
         
-        let value = try deviceRequest(parameters, HCILEReadPHYReturn.self, timeout: timeout)
+        let value = try await deviceRequest(parameters, HCILEReadPHYReturn.self, timeout: timeout)
         
         return value
     }

@@ -15,11 +15,11 @@ public extension BluetoothHostControllerInterface {
     /// LE Set Address Resolution Enable Command
     ///
     /// The command is used to enable resolution of Resolvable Private Addresses in the Controller.
-    func lowEnergySetAddressResolutionEnable(addressResolutionEnable: HCILESetAddressResolutionEnable.AddressResolutionEnable, timeout: HCICommandTimeout = .default) throws {
+    func lowEnergySetAddressResolutionEnable(addressResolutionEnable: HCILESetAddressResolutionEnable.AddressResolutionEnable, timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetAddressResolutionEnable(addressResolutionEnable: addressResolutionEnable)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

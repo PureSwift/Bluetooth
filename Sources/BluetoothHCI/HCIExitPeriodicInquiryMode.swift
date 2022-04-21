@@ -15,8 +15,8 @@ public extension BluetoothHostControllerInterface {
     /// Exit Periodic Inquiry Mode Command
     ///
     /// The Exit_Periodic_Inquiry_Mode command is used to end the Periodic Inquiry mode when the local device is in Periodic Inquiry Mode. If the BR/EDR Control- ler is currently in an Inquiry process, the Inquiry process shall be stopped directly and the BR/EDR Controller shall no longer perform periodic inquiries until the Periodic Inquiry Mode command is reissued.
-    func exitPeriodicInquiry(timeout: HCICommandTimeout = .default) throws {
+    func exitPeriodicInquiry(timeout: HCICommandTimeout = .default) async throws {
         
-        try deviceRequest(LinkControlCommand.exitPeriodicInquiry, timeout: timeout)
+        try await deviceRequest(LinkControlCommand.exitPeriodicInquiry, timeout: timeout)
     }
 }

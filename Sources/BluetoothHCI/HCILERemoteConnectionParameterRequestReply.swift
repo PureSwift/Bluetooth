@@ -22,7 +22,7 @@ public extension BluetoothHostControllerInterface {
                                                         latency: LowEnergyConnectionLatency,
                                                         timeOut: LowEnergySupervisionTimeout,
                                                         length: LowEnergyConnectionLength,
-                                                        timeout: HCICommandTimeout = .default) throws -> UInt16 {
+                                                        timeout: HCICommandTimeout = .default) async throws -> UInt16 {
         
         let parameters = HCILERemoteConnectionParameterRequestReply(connectionHandle: connectionHandle,
                                                                     interval: interval,
@@ -30,7 +30,7 @@ public extension BluetoothHostControllerInterface {
                                                                     timeOut: timeOut,
                                                                     length: length)
         
-        let returnParameters = try deviceRequest(parameters, HCILERemoteConnectionParameterRequestReplyReturn.self, timeout: timeout)
+        let returnParameters = try await deviceRequest(parameters, HCILERemoteConnectionParameterRequestReplyReturn.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }

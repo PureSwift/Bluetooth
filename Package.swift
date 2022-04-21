@@ -1,20 +1,36 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 import PackageDescription
 
 let libraryType: PackageDescription.Product.Library.LibraryType = .static
 
 let package = Package(
     name: "Bluetooth",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .watchOS(.v6),
+        .tvOS(.v13),
+    ],
     products: [
         .library(
             name: "Bluetooth",
             type: libraryType,
-            targets: [
-                "Bluetooth",
-                "BluetoothGAP",
-                "BluetoothGATT",
-                "BluetoothHCI"
-            ]
+            targets: ["Bluetooth"]
+        ),
+        .library(
+            name: "BluetoothGAP",
+            type: libraryType,
+            targets: ["BluetoothGAP"]
+        ),
+        .library(
+            name: "BluetoothGATT",
+            type: libraryType,
+            targets: ["BluetoothGATT"]
+        ),
+        .library(
+            name: "BluetoothHCI",
+            type: libraryType,
+            targets: ["BluetoothHCI"]
         )
     ],
     targets: [

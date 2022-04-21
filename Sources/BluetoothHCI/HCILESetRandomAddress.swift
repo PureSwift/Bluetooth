@@ -13,12 +13,10 @@ import Foundation
 public extension BluetoothHostControllerInterface {
     
     /// Used by the Host to set the LE Random Device Address in the Controller.
-    func lowEnergySetRandomAddress(_ address: BluetoothAddress, timeout: HCICommandTimeout = .default) throws {
-        
+    func lowEnergySetRandomAddress(_ address: BluetoothAddress, timeout: HCICommandTimeout = .default) async throws {
         // When the LE_Set_Random_Address command has completed, a Command Complete event shall be generated.
         let commandParameter = HCILESetRandomAddress(address: address)
-        
-        try self.deviceRequest(commandParameter, timeout: timeout)
+        try await deviceRequest(commandParameter, timeout: timeout)
     }
 }
 

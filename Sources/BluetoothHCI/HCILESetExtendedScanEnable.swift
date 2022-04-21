@@ -19,14 +19,14 @@ public extension BluetoothHostControllerInterface {
                                         filterDuplicates: HCILESetExtendedScanEnable.FilterDuplicates,
                                         duration: HCILESetExtendedScanEnable.Duration,
                                         period: HCILESetExtendedScanEnable.Period,
-                                        timeout: HCICommandTimeout = .default)  throws {
+                                        timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILESetExtendedScanEnable(enable: enable,
                                                     filterDuplicates: filterDuplicates,
                                                     duration: duration,
                                                     period: period)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

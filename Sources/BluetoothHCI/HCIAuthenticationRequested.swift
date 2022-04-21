@@ -18,11 +18,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// - Note: The Connection_Handle command parameter is used to identify the other BR/EDR Controller, which forms the connection. The Connection_Handle should be a Connection_Handle for an ACL connection.
     func authenticationRequested(handle: UInt16,
-                                 timeout: HCICommandTimeout = .default) throws -> HCIStatus {
+                                 timeout: HCICommandTimeout = .default) async throws -> HCIStatus {
         
         let command = HCIAuthenticationRequested(handle: handle)
         
-        return try deviceRequest(command,
+        return try await deviceRequest(command,
                                  HCIAuthenticationComplete.self,
                                  timeout: timeout).status
     }

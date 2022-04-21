@@ -13,9 +13,9 @@ import Foundation
 public extension BluetoothHostControllerInterface {
     
     /// Read Device Address
-    func readDeviceAddress(timeout: HCICommandTimeout = .default) throws -> BluetoothAddress {
+    func readDeviceAddress(timeout: HCICommandTimeout = .default) async throws -> BluetoothAddress {
         
-        return try deviceRequest(HCIReadDeviceAddress.self, timeout: timeout).address
+        return try await deviceRequest(HCIReadDeviceAddress.self, timeout: timeout).address
     }
 }
 

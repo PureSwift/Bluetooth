@@ -12,7 +12,7 @@ import XCTest
 import Foundation
 import Bluetooth
 @testable import BluetoothHCI
-
+/*
 final class HCITests: XCTestCase {
     
     static let allTests = [
@@ -2858,3 +2858,4 @@ fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ ev
     
     return event
 }
+*/

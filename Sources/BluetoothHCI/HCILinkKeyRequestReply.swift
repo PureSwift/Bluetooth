@@ -18,11 +18,11 @@ public extension BluetoothHostControllerInterface {
     /// When the BR/EDR Controller generates a Link Key Request event in order for the local Link Manager to respond to the request from the remote Link Manager (as a result of a Create_Connection or Authentication_Requested com- mand from the remote Host), the local Host must respond with either a Link_Key_Request_Reply or Link_Key_Request_Negative_Reply command before the remote Link Manager detects LMP response timeout.
     func linkKeyRequestReply(address: BluetoothAddress,
                              linkKey: UInt128,
-                             timeout: HCICommandTimeout = .default) throws {
+                             timeout: HCICommandTimeout = .default) async throws {
         
         let linkKeyRequestReply = HCILinkKeyRequestReply(address: address, linkKey: linkKey)
         
-        try deviceRequest(linkKeyRequestReply, timeout: timeout)
+        try await deviceRequest(linkKeyRequestReply, timeout: timeout)
     }
 }
 

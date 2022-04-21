@@ -21,7 +21,7 @@ public extension BluetoothHostControllerInterface {
                                    connectionLatency: LowEnergyConnectionLatency = .zero,
                                    supervisionTimeout: LowEnergySupervisionTimeout = .max,
                                    connectionLength: LowEnergyConnectionLength = .full,
-                                   timeout: HCICommandTimeout = .default) throws {
+                                   timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILEUpdateConnection(connectionHandle: handle,
                                                connectionInterval: connectionInterval,
@@ -29,7 +29,7 @@ public extension BluetoothHostControllerInterface {
                                                supervisionTimeout: supervisionTimeout,
                                                connectionLength: connectionLength)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
     
 }

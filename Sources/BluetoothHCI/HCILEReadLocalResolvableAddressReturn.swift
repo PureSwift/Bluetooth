@@ -19,11 +19,11 @@ public extension BluetoothHostControllerInterface {
     /// being used may change after the command is called.
     func lowEnergyReadLocalResolvableAddress(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
                                              peerIdentifyAddress: UInt64,
-                                             timeout: HCICommandTimeout = .default) throws -> UInt64 {
+                                             timeout: HCICommandTimeout = .default) async throws -> UInt64 {
         
         let parameters = HCILEReadLocalResolvableAddress(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
         
-        let returnParameters = try deviceRequest(parameters, HCILEReadLocalResolvableAddressReturn.self, timeout: timeout)
+        let returnParameters = try await deviceRequest(parameters, HCILEReadLocalResolvableAddressReturn.self, timeout: timeout)
         
         return returnParameters.localResolvableAddress
     }

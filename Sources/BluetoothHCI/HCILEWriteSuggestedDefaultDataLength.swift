@@ -18,12 +18,12 @@ public extension BluetoothHostControllerInterface {
     /// of payload octets and maximum packet transmission time to be used for new connections.
     func lowEnergyWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: LowEnergyMaxTxOctets,
                                                   suggestedMaxTxTime: LowEnergyMaxTxTime,
-                                                  timeout: HCICommandTimeout = .default) throws {
+                                                  timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILEWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: suggestedMaxTxOctets,
                                                                                   suggestedMaxTxTime: suggestedMaxTxTime)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

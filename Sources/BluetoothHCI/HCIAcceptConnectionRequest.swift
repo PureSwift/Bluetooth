@@ -15,11 +15,11 @@ public extension BluetoothHostControllerInterface {
     /// The Accept_Connection_Request command is used to accept a new incoming connection request. The Accept_Connection_Request command shall only be issued after a Connection Request event has occurred. The Connection Request event will return the BD_ADDR of the device which is requesting the connection. This command will cause the Link Manager to create a connection to the BR/EDR Controller, with the BD_ADDR specified by the command parameters. The Link Manager will determine how the new connection will be established. This will be determined by the current state of the device, its piconet, and the state of the device to be connected. The Role command parameter allows the Host to specify if the Link Manager shall request a role switch and become the Master for this connection. This is a preference and not a requirement. If the Role Switch fails then the connection will still be accepted, and the Role Discovery Command will reflect the current role.
     func acceptConnection(address: BluetoothAddress,
                           role: HCIAcceptConnectionRequest.Role,
-                          timeout: HCICommandTimeout = .default) throws {
+                          timeout: HCICommandTimeout = .default) async throws {
         
         let acceptConnection = HCIAcceptConnectionRequest(address: address, role: role)
         
-        let commandStatus = try deviceRequest(acceptConnection, HCICommandStatus.self, timeout: timeout)
+        let commandStatus = try await deviceRequest(acceptConnection, HCICommandStatus.self, timeout: timeout)
         
         switch commandStatus.status {
         case let .error(error):

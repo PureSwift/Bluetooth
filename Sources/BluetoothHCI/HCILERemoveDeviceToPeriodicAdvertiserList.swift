@@ -19,13 +19,13 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyRemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
                                                        address: BluetoothAddress,
                                                        advertisingSID: UInt8,
-                                                       timeout: HCICommandTimeout = .default)  throws {
+                                                       timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILERemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: advertiserAddressType,
                                                                    address: address,
                                                                    advertisingSID: advertisingSID)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to stop reception of the periodic advertising identified by the Sync_Handle parameter.
     func setPeriodicAdvertisingTerminateSync(syncHandle: UInt16,
-                                             timeout: HCICommandTimeout = .default)  throws {
+                                             timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILEPeriodicAdvertisingTerminateSync(syncHandle: syncHandle)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

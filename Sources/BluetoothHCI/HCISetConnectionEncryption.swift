@@ -17,11 +17,11 @@ public extension BluetoothHostControllerInterface {
     /// The Set_Connection_Encryption command is used to enable and disable the link level encryption. Note: the Connection_Handle command parameter is used to identify the other BR/EDR Controller which forms the connection. The Connection_Handle should be a Connection_Handle for an ACL connection. While the encryption is being changed, all ACL traffic must be turned off for all Connection_Handles associated with the remote device.
     func setConnectionEncryption(handle: UInt16,
                                  encryption: HCISetConnectionEncryption.Encryption,
-                                 timeout: HCICommandTimeout = .default) throws -> HCIEncryptionChange {
+                                 timeout: HCICommandTimeout = .default) async throws -> HCIEncryptionChange {
         
         let connectionEncryption = HCISetConnectionEncryption(handle: handle, encryption: encryption)
         
-        return try deviceRequest(connectionEncryption, HCIEncryptionChange.self, timeout: timeout)
+        return try await deviceRequest(connectionEncryption, HCIEncryptionChange.self, timeout: timeout)
     }
 }
 

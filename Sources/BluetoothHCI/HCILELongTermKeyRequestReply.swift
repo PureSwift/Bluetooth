@@ -17,11 +17,11 @@ public extension BluetoothHostControllerInterface {
     /// The LE_Long_Term_Key_Request Reply command is used to reply to an LE Long Term Key Request event
     /// from the Controller, and specifies the Long_Term_Key parameter that shall be used for
     /// this Connection_Handle.
-    func lowEnergyLongTermKeyRequestReply(handle: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) throws -> UInt16 {
+    func lowEnergyLongTermKeyRequestReply(handle: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) async throws -> UInt16 {
         
         let parameters = HCILELongTermKeyRequestReply(connectionHandle: handle, longTermKey: longTermKey)
         
-        let returnParameters = try deviceRequest(parameters, HCILELongTermKeyRequestReplyReturn.self, timeout: timeout)
+        let returnParameters = try await deviceRequest(parameters, HCILELongTermKeyRequestReplyReturn.self, timeout: timeout)
         
         return returnParameters.connectionHandle
     }

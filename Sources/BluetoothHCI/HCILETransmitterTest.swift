@@ -19,11 +19,11 @@ public extension BluetoothHostControllerInterface {
     func lowEnergyTransmitterTest(txChannel: LowEnergyTxChannel,
                                   lengthOfTestData: UInt8,
                                   packetPayload: LowEnergyPacketPayload,
-                                  timeout: HCICommandTimeout = .default) throws {
+                                  timeout: HCICommandTimeout = .default) async throws {
         
         let parameters = HCILETransmitterTest(txChannel: txChannel, lengthOfTestData: lengthOfTestData, packetPayload: packetPayload)
         
-        try deviceRequest(parameters, timeout: timeout)
+        try await deviceRequest(parameters, timeout: timeout)
     }
 }
 

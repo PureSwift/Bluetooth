@@ -16,11 +16,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// Used to set the data used in advertising packets that have a data field.
     func setLowEnergyAdvertisingData(_ data: LowEnergyAdvertisingData,
-                                     timeout: HCICommandTimeout = .default) throws {
+                                     timeout: HCICommandTimeout = .default) async throws {
         
         let parameter = HCILESetAdvertisingData(advertisingData: data)
         
-        try deviceRequest(parameter, timeout: timeout)
+        try await deviceRequest(parameter, timeout: timeout)
     }
 }
 
