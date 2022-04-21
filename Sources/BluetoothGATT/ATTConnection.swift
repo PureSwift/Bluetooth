@@ -56,7 +56,7 @@ internal actor ATTConnection {
     /// List of registered callbacks.
     private var notifyList = [ATTNotifyType]()
     
-    private var readTask: Task<(), Never>?
+    private var task: Task<(), Never>?
     
     // MARK: - Initialization
     
@@ -88,14 +88,18 @@ internal actor ATTConnection {
         }
         // close file descriptor
         socket = nil
-        readTask?.cancel()
+        task?.cancel()
     }
     
     private func run() {
-        readTask = Task.detached(priority: .high) { [weak self] in
+        task = Task.detached(priority: .high) { [weak self] in
             // read and write socket
             do {
                 while await self?.socket != nil {
+                    var didWrite = false
+                    repeat {
+                        didWrite = try await self?.write() ?? false
+                    } while didWrite
                     try await self?.read()
                 }
             }
