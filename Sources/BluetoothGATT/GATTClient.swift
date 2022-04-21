@@ -65,12 +65,9 @@ public actor GATTClient {
         await self.registerATTHandlers()
         // queue MTU exchange if not default value
         if maximumTransmissionUnit > .default {
-            // run in background, actor isolation will make sure its sequential
-            Task {
-                do { try await self.exchangeMTU() }
-                catch {
-                    log?("Could not exchange MTU: \(error)")
-                }
+            do { try await self.exchangeMTU() }
+            catch {
+                log?("Could not exchange MTU: \(error)")
             }
         }
     }
