@@ -39,7 +39,16 @@ public actor GATTClient {
     
     private var sendContinuations = [UInt: (Swift.Error) -> ()]()
     
+    private var sendID: UInt = 0
+    
     // MARK: - Initialization
+    
+    deinit {
+        sendContinuations.values.forEach { continuation in
+            continuation(CancellationError())
+        }
+        sendContinuations.removeAll()
+    }
     
     public init(
         socket: L2CAPSocket,
@@ -341,8 +350,12 @@ public actor GATTClient {
     private func registerATTHandlers() async  {
         
         // value notifications / indications
-        await connection.register { [weak self] in await self?.notification($0) }
-        await connection.register { [weak self] in await self?.indication($0) }
+        await connection.register { [unowned self] in
+            self.notification($0)
+        }
+        await connection.register { [unowned self] in
+            await self.indication($0)
+        }
     }
     
     private func send <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
@@ -352,19 +365,24 @@ public actor GATTClient {
         assert(Response.attributeOpcode != .errorResponse)
         assert(Response.attributeOpcode.type == .response)
         assert(Request.attributeOpcode.type != .response)
-        let log = self.log
         log?("Request: \(request)")
-        return try await withCheckedThrowingContinuation { [weak self] continuation in
-            guard let self = self else { return }
+        sendID += 1
+        let id = sendID
+        return try await withCheckedThrowingContinuation { [unowned self] continuation in
             Task {
                 let responseType: ATTProtocolDataUnit.Type = response
                 // callback if no I/O errors or disconnect
                 let callback: (ATTProtocolDataUnit) -> () = {
-                    log?("Response: \($0)")
+                    self.log?("Response: \($0)")
+                    self.sendContinuations[id] = nil
                     continuation.resume(returning: ATTResponse<Response>($0))
                 }
                 guard let _ = await self.connection.queue(request, response: (callback, responseType))
                     else { fatalError("Could not add PDU to queue: \(request)") }
+                // store continuation in case it doesnt get called
+                self.sendContinuations[id] = { error in
+                    continuation.resume(throwing: error)
+                }
             }
         }
     }
