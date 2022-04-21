@@ -41,6 +41,8 @@ public actor GATTClient {
     
     private var sendID: UInt = 0
     
+    private var task: Task<(), Never>?
+    
     // MARK: - Initialization
     
     deinit {
@@ -66,13 +68,15 @@ public actor GATTClient {
         // queue MTU exchange if not default value
         if maximumTransmissionUnit > .default {
             // run in background, actor isolation will make sure its sequential
-            Task {
+            Task(priority: .high) {
                 do { try await self.exchangeMTU() }
                 catch {
                     log?("Could not exchange MTU: \(error)")
                 }
             }
         }
+        // start reading
+        run()
     }
     
     // MARK: - Methods
@@ -355,6 +359,25 @@ public actor GATTClient {
         }
         await connection.register { [unowned self] in
             await self.indication($0)
+        }
+    }
+    
+    private func run() {
+        task = Task.detached(priority: .high) { [weak self] in
+            // read and write socket
+            do {
+                while self != nil, await self?.connection.isConnected ?? false {
+                    var didWrite = false
+                    repeat {
+                        didWrite = try await self?.write() ?? false
+                    } while didWrite
+                    try await self?.read()
+                }
+            }
+            catch _ as CancellationError { } // ignore
+            catch {
+                await self?.connection.disconnect(error)
+            }
         }
     }
     
