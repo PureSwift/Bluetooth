@@ -56,6 +56,8 @@ internal actor ATTConnection {
     /// List of registered callbacks.
     private var notifyList = [ATTNotifyType]()
     
+    private var task: Task<(), Never>?
+    
     // MARK: - Initialization
     
     deinit {
@@ -69,6 +71,7 @@ internal actor ATTConnection {
     ) async {
         self.socket = socket
         self.log = log
+        run()
     }
     
     // MARK: - Methods
@@ -85,6 +88,26 @@ internal actor ATTConnection {
         }
         // close file descriptor
         socket = nil
+        task?.cancel()
+    }
+    
+    private func run() {
+        task = Task.detached(priority: .high) { [weak self] in
+            // read and write socket
+            do {
+                while await self?.socket != nil {
+                    var didWrite = false
+                    repeat {
+                        didWrite = try await self?.write() ?? false
+                    } while didWrite
+                    try await self?.read()
+                }
+            }
+            catch _ as CancellationError { } // ignore
+            catch {
+                await self?.disconnect(error)
+            }
+        }
     }
     
     public func setMaximumTransmissionUnit(_ newValue: ATTMaximumTransmissionUnit) {

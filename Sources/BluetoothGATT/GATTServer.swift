@@ -34,8 +34,6 @@ public actor GATTServer {
     
     internal private(set) var preparedWrites = [PreparedWrite]()
     
-    private var task: Task<(), Never>?
-    
     // MARK: - Initialization
     
     public init(
@@ -53,8 +51,6 @@ public actor GATTServer {
         self.log = log
         // async register handlers
         await self.registerATTHandlers()
-        // start writing
-        run()
     }
     
     // MARK: - Methods
@@ -129,25 +125,6 @@ public actor GATTServer {
         
         // Execute Write Request
         await connection.register { [weak self] in await self?.executeWriteRequest($0) }
-    }
-    
-    private func run() {
-        task = Task.detached(priority: .high) { [weak self] in
-            // read and write socket
-            do {
-                while self != nil, await self?.connection.isConnected ?? false {
-                    var didWrite = false
-                    repeat {
-                        didWrite = try await self?.write() ?? false
-                    } while didWrite
-                    try await self?.read()
-                }
-            }
-            catch _ as CancellationError { } // ignore
-            catch {
-                await self?.connection.disconnect(error)
-            }
-        }
     }
     
     private func errorResponse(_ opcode: ATTOpcode, _ error: ATTError, _ handle: UInt16 = 0) async {
