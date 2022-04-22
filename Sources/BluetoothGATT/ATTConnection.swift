@@ -23,7 +23,7 @@ internal actor ATTConnection {
     
     internal let log: ((String) -> ())?
     
-    internal let didDisconnect: ((Error?) -> ())?
+    internal let didDisconnect: ((Error?) async -> ())?
     
     // MARK: - Private Properties
     
@@ -63,7 +63,7 @@ internal actor ATTConnection {
     public init(
         socket: L2CAPSocket,
         log: ((String) -> ())? = nil,
-        didDisconnect: ((Error?) -> ())? = nil
+        didDisconnect: ((Error?) async -> ())? = nil
     ) async {
         self.socket = socket
         self.log = log
@@ -170,7 +170,7 @@ internal actor ATTConnection {
             catch { log?("Unable to write. \(error)") }
         case let .close(error):
             isConnected = false
-            didDisconnect?(error)
+            await didDisconnect?(error)
         }
     }
     
