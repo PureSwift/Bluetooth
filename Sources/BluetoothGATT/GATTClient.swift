@@ -53,35 +53,18 @@ public actor GATTClient {
     public init(
         socket: L2CAPSocket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
-        log: ((String) -> ())? = nil
+        log: ((String) -> ())? = nil,
+        didDisconnect: ((Swift.Error?) -> ())? = nil
     ) async {
         self.connection = await ATTConnection(
             socket: socket,
-            log: log
+            log: log,
+            didDisconnect: didDisconnect
         )
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.log = log
         // setup notifications and indications
         await self.registerATTHandlers()
-        // queue MTU exchange if not default value
-        if maximumTransmissionUnit > .default {
-            do { try await self.exchangeMTU() }
-            catch {
-                log?("Could not exchange MTU: \(error)")
-            }
-        }
-    }
-    
-    // MARK: - Methods
-    
-    /// Performs the actual IO for sending data.
-    internal func read() async throws {
-        return try await connection.read()
-    }
-    
-    /// Performs the actual IO for recieving data.
-    internal func write() async throws -> Bool {
-        return try await connection.write()
     }
     
     // MARK: Requests
@@ -362,6 +345,7 @@ public actor GATTClient {
         assert(Response.attributeOpcode != .errorResponse)
         assert(Response.attributeOpcode.type == .response)
         assert(Request.attributeOpcode.type != .response)
+        // queue request
         log?("Request: \(request)")
         sendID += 1
         let id = sendID
@@ -434,6 +418,11 @@ public actor GATTClient {
         end: UInt16 = 0xffff,
         primary: Bool = true
     ) async throws -> [Service] {
+        // queue MTU exchange if not default value
+        if didExchangeMTU == false, preferredMaximumTransmissionUnit > .default {
+            try await self.exchangeMTU()
+        }
+        // request services
         let attributeType = GATTUUID(primaryService: primary)
         var operation = ServiceDiscoveryOperation(
             uuid: uuid,

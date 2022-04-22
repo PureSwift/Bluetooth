@@ -24,7 +24,7 @@ public protocol L2CAPSocket: AnyObject {
     func accept() async throws -> Self
     
     /// Set an event handler for the socket.
-    func setEvent(_ event: ((L2CAPSocketEvent) -> ())) async
+    func setEvent(_ event: ((L2CAPSocketEvent) async -> ())) async
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) async throws

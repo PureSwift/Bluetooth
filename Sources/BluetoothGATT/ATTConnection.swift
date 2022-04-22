@@ -17,15 +17,13 @@ internal actor ATTConnection {
     /// Actual number of bytes for PDU ATT exchange.
     public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default
     
-    internal private(set) var socket: L2CAPSocket?
+    public private(set) var isConnected = true
     
-    public let log: ((String) -> ())?
+    internal let socket: L2CAPSocket
     
-    public var isConnected: Bool {
-        get async {
-            return socket != nil
-        }
-    }
+    internal let log: ((String) -> ())?
+    
+    internal let didDisconnect: ((Error?) -> ())?
     
     // MARK: - Private Properties
     
@@ -55,87 +53,52 @@ internal actor ATTConnection {
     
     /// List of registered callbacks.
     private var notifyList = [ATTNotifyType]()
-    
-    private var task: Task<(), Never>?
-    
+        
     // MARK: - Initialization
     
     deinit {
         unregisterAll()
-        disconnect()
     }
     
     public init(
         socket: L2CAPSocket,
-        log: ((String) -> ())? = nil
+        log: ((String) -> ())? = nil,
+        didDisconnect: ((Error?) -> ())? = nil
     ) async {
         self.socket = socket
         self.log = log
-        run()
+        self.didDisconnect = didDisconnect
+        await socket.setEvent { [weak self] in
+            await self?.socketEvent($0)
+        }
     }
     
     // MARK: - Methods
-    
-    public func disconnect(_ error: Swift.Error? = nil) {
-        guard socket != nil else {
-            return
-        }
-        // log error
-        if let error = error {
-            log?("Disconnected (\(error.localizedDescription))")
-        } else {
-            log?("Disconnected")
-        }
-        // close file descriptor
-        socket = nil
-        task?.cancel()
-    }
-    
-    private func run() {
-        task = Task.detached(priority: .high) { [weak self] in
-            // read and write socket
-            do {
-                while await self?.socket != nil {
-                    var didWrite = false
-                    repeat {
-                        didWrite = try await self?.write() ?? false
-                    } while didWrite
-                    try await self?.read()
-                }
-            }
-            catch _ as CancellationError { } // ignore
-            catch {
-                await self?.disconnect(error)
-            }
-        }
-    }
     
     public func setMaximumTransmissionUnit(_ newValue: ATTMaximumTransmissionUnit) {
         self.maximumTransmissionUnit = newValue
     }
     
     /// Performs the actual IO for recieving data.
-    public func read() async throws {
+    internal func read() async throws {
         
         //log?("Attempt read")
         
         let bytesToRead = Int(self.maximumTransmissionUnit.rawValue)
-        guard let socket = self.socket else {
-            throw ATTConnectionError.disconnected
-        }
+        
         let recievedData = try await socket.recieve(bytesToRead)
         
         //log?("Recieved data (\(recievedData.count) bytes)")
         
         // valid PDU data length
         guard recievedData.count >= 1 // at least 1 byte for ATT opcode
-            else { throw Error.garbageResponse(recievedData) }
+            else { throw ATTConnectionError.garbageResponse(recievedData) }
         
         let opcodeByte = recievedData[0]
         
         // valid opcode
         guard let opcode = ATTOpcode(rawValue: opcodeByte)
-            else { throw Error.garbageResponse(recievedData) }
+            else { throw ATTConnectionError.garbageResponse(recievedData) }
         
         //log?("Recieved opcode \(opcode)")
         
@@ -157,7 +120,7 @@ internal actor ATTConnection {
     
     /// Performs the actual IO for sending data.
     @discardableResult
-    public func write() async throws -> Bool {
+    internal func write() async throws -> Bool {
         
         //log?("Attempt write")
         
@@ -166,9 +129,6 @@ internal actor ATTConnection {
         
         //log?("Sending data... (\(sendOperation.data.count) bytes)")
         
-        guard let socket = self.socket else {
-            throw ATTConnectionError.disconnected
-        }
         try await socket.send(sendOperation.data)
         let opcode = sendOperation.opcode
         
@@ -193,6 +153,33 @@ internal actor ATTConnection {
         }
         
         return true
+    }
+    
+    private func socketEvent(_ event: L2CAPSocketEvent) async {
+        switch event {
+        case .pendingRead:
+            guard isConnected else { return }
+            do { try await read() }
+            catch { log?("Unable to read. \(error)") }
+        case .read:
+            break
+        case .write:
+            guard isConnected else { return }
+            // try to write again
+            do { try await write() }
+            catch { log?("Unable to write. \(error)") }
+        case let .close(error):
+            isConnected = false
+            didDisconnect?(error)
+        }
+    }
+    
+    // write all pending PDUs
+    private func writePending() {
+        Task(priority: .high) { [weak self] in
+            do { try await self?.write() } // event will call write again
+            catch { log?("Unable to read. \(error)") }
+        }
     }
     
     /// Registers a callback for an opcode and returns the ID associated with that callback.
@@ -315,7 +302,7 @@ internal actor ATTConnection {
         
         // If no request is pending, then the response is unexpected. Disconnect the bearer.
         guard let sendOperation = self.pendingRequest else {
-            throw Error.unexpectedResponse(data)
+            throw ATTConnectionError.unexpectedResponse(data)
         }
         
         // If the received response doesn't match the pending request, or if the request is malformed, 
@@ -327,7 +314,7 @@ internal actor ATTConnection {
         if opcode == .errorResponse {
             
             guard let errorResponse = ATTErrorResponse(data: data)
-                else { throw Error.garbageResponse(data) }
+                else { throw ATTConnectionError.garbageResponse(data) }
             
             let (errorRequestOpcode, didRetry) = await handle(errorResponse: errorResponse)
             
@@ -342,7 +329,7 @@ internal actor ATTConnection {
         } else {
             
             guard let mappedRequestOpcode = opcode.request
-                else { throw Error.unexpectedResponse(data) }
+                else { throw ATTConnectionError.unexpectedResponse(data) }
             
             requestOpcode = mappedRequestOpcode
         }
@@ -352,7 +339,7 @@ internal actor ATTConnection {
         
         /// Verify the recieved response belongs to the pending request
         guard sendOperation.opcode == requestOpcode else {
-            throw Error.unexpectedResponse(data)
+            throw ATTConnectionError.unexpectedResponse(data)
         }
         
         // success!
@@ -365,7 +352,7 @@ internal actor ATTConnection {
         
         // Disconnect the bearer if the confirmation is unexpected or the PDU is invalid.
         guard let sendOperation = pendingIndication
-            else { throw Error.unexpectedResponse(data) }
+            else { throw ATTConnectionError.unexpectedResponse(data) }
         
         self.pendingIndication = nil
         
@@ -388,7 +375,7 @@ internal actor ATTConnection {
         
         // Received request while another is pending.
         guard incomingRequest == false
-            else { throw Error.unexpectedResponse(data) }
+            else { throw ATTConnectionError.unexpectedResponse(data) }
         
         incomingRequest = true
         
@@ -408,7 +395,7 @@ internal actor ATTConnection {
             
             // attempt to deserialize
             guard let PDU = foundPDU ?? type(of: notify).PDUType.init(data: data)
-                else { throw Error.garbageResponse(data) }
+                else { throw ATTConnectionError.garbageResponse(data) }
             
             foundPDU = PDU
             
@@ -479,10 +466,6 @@ internal actor ATTConnection {
     /// Attempts to change security level based on an error response.
     private func changeSecurity(for error: ATTError) async -> Bool {
         
-        guard let socket = self.socket else {
-            return false
-        }
-        
         let securityLevel: Bluetooth.SecurityLevel
         do { securityLevel = try await socket.securityLevel }
         catch {
@@ -524,29 +507,11 @@ internal actor ATTConnection {
         
         return true
     }
-    
-    // write all pending PDUs
-    private func writePending() {
-        Task(priority: .high) { [weak self] in
-            // write socket
-            do {
-                var didWrite = false
-                repeat {
-                    didWrite = try await write()
-                } while didWrite
-            }
-            catch _ as CancellationError { } // ignore
-            catch {
-                await self?.disconnect(error)
-            }
-        }
-    }
 }
 
 // MARK: - Supporting Types
 
 /// ATT Connection Error
-@frozen
 public enum ATTConnectionError: Error {
     
     /// The recieved data could not be parsed correctly.
@@ -554,12 +519,6 @@ public enum ATTConnectionError: Error {
     
     /// Response is unexpected.
     case unexpectedResponse(Data)
-    
-    case disconnected
-}
-
-internal extension ATTConnection {
-    typealias Error = ATTConnectionError
 }
 
 internal typealias AnyATTResponse = Result<ATTProtocolDataUnit, ATTErrorResponse>

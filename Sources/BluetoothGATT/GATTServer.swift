@@ -41,13 +41,18 @@ public actor GATTServer {
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         maximumPreparedWrites: Int = 50,
         database: GATTDatabase = GATTDatabase(),
-        log: ((String) -> ())?
+        log: ((String) -> ())?,
+        didDisconnect: ((Swift.Error?) -> ())? = nil
     ) async {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.database = database
-        self.connection = await ATTConnection(socket: socket, log: log)
+        self.connection = await ATTConnection(
+            socket: socket,
+            log: log,
+            didDisconnect: didDisconnect
+        )
         self.log = log
         // async register handlers
         await self.registerATTHandlers()
@@ -61,16 +66,6 @@ public actor GATTServer {
     
     public func updateDatabase(_ database: (inout GATTDatabase) -> ()) {
         database(&self.database)
-    }
-    
-    /// Performs the actual IO for sending data.
-    public func read() async throws {
-        return try await connection.read()
-    }
-    
-    /// Performs the actual IO for recieving data.
-    public func write() async throws -> Bool {
-        return try await connection.write()
     }
     
     /// Update the value of a characteristic attribute.
@@ -192,7 +187,7 @@ public actor GATTServer {
         
         // check security
         let security: SecurityLevel
-        do { security = try await connection.socket?.securityLevel ?? .sdp }
+        do { security = try await connection.socket.securityLevel }
         catch {
             log?("Unable to get security level. \(error)")
             security = .sdp
