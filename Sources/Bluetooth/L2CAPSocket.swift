@@ -23,6 +23,9 @@ public protocol L2CAPSocket: AnyObject {
     /// Attempt to accept an incoming connection.
     func accept() async throws -> Self
     
+    /// Set an event handler for the socket.
+    func setEvent(_ event: ((L2CAPSocketEvent) -> ())) async
+    
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
     
@@ -42,4 +45,13 @@ public protocol L2CAPSocket: AnyObject {
         isRandom: Bool,
         backlog: Int
     ) async throws -> Self
+}
+
+/// Bluetooth L2CAP Socket Event
+public enum L2CAPSocketEvent {
+    
+    case pendingRead
+    case read(Int)
+    case write(Int)
+    case close(Error?)
 }
