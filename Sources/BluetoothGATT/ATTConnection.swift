@@ -177,8 +177,9 @@ internal actor ATTConnection {
     // write all pending PDUs
     private func writePending() {
         Task(priority: .high) { [weak self] in
-            do { try await self?.write() } // event will call write again
-            catch { log?("Unable to read. \(error)") }
+            guard let self = self, await self.isConnected else { return }
+            do { try await self.write() } // event will call write again
+            catch { log?("Unable to write. \(error)") }
         }
     }
     
