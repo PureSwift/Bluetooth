@@ -164,8 +164,8 @@ final class GATTTests: XCTestCase {
             }*/
         }
     }
-    /*
-    func testDiscoverPrimaryServicesApple() {
+    
+    func testDiscoverPrimaryServicesApple() async throws {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 104)
             else { XCTFail(); return }
@@ -421,53 +421,58 @@ final class GATTTests: XCTestCase {
         test(testPDUs)
         
         // server
-        let serverSocket = TestL2CAPSocket()
-        let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu,  maximumPreparedWrites: .max)
-        server.database = GATTDatabase(services: ProximityProfile.services)
-        //server.database.dump()
-        
-        // client
-        let clientSocket = TestL2CAPSocket()
-        let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: mtu)
-        
-        clientSocket.target = serverSocket
-        serverSocket.target = clientSocket // weak references
-        
-        // run fake sockets
-        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
-        catch { XCTFail("Error: \(error)") }
-        
-        client.discoverAllPrimaryServices {
-            
-            switch $0 {
-                
-            case let .failure(error):
-                XCTFail("\(error)")
-                
-            case let .success(services):
-                
-                XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
-            }
+        let serverAddress = BluetoothAddress.min
+        let clientAddress = BluetoothAddress.max
+        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            address: serverAddress,
+            isRandom: false,
+            backlog: 1
+        )
+        let serverAcceptTask = Task<GATTServer, Error> {
+            let newConnection = try await serverSocket.accept()
+            print("GATTServer: New connection")
+            return await GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: mtu,
+                maximumPreparedWrites: .max,
+                database: GATTDatabase(services: ProximityProfile.services),
+                log: { print("GATTServer:", $0) }
+            )
         }
         
-        // run fake sockets
-        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
-        catch { XCTFail("Error: \(error)") }
+        // client
+        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            address: clientAddress,
+            destination: serverAddress,
+            isRandom: false
+        )
+        let client = await GATTClient(
+            socket: clientSocket,
+            maximumTransmissionUnit: mtu,
+            log: { print("GATTClient:", $0) }
+        )
+        let server = try await serverAcceptTask.value
         
-        // MTU
-        XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
-        XCTAssertEqual(server.connection.maximumTransmissionUnit, mtu)
-        XCTAssertEqual(client.connection.maximumTransmissionUnit, mtu)
-        XCTAssertEqual(server.maximumTransmissionUnit, mtu)
-        XCTAssertEqual(client.maximumTransmissionUnit, mtu)
+        // request
+        let services = try await client.discoverAllPrimaryServices()
+        XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
+        
+        // validate MTU
+        let serverMTU = await server.maximumTransmissionUnit
+        let clientMTU = await client.maximumTransmissionUnit
+        XCTAssertEqual(serverMTU, clientMTU)
+        XCTAssertEqual(serverMTU, mtu)
+        XCTAssertEqual(clientMTU, mtu)
         
         // validate GATT PDUs
-        //let mockData = split(pdu: testPDUs.map { $1 })
-        
-        //XCTAssertEqual(serverSocket.cache, mockData.server)
-        //XCTAssertEqual(clientSocket.cache, mockData.client)
+        /*
+        let mockData = split(pdu: testPDUs.map { $1 })
+        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
+        let clientCache = await clientSocket.cache
+        XCTAssertEqual(serverCache, mockData.server)
+        XCTAssertEqual(clientCache, mockData.client)*/
     }
-    
+    /*
     func testDiscoverPrimaryServices() {
         
         let clientMTU = ATTMaximumTransmissionUnit(rawValue: 104)! // 0x0068
