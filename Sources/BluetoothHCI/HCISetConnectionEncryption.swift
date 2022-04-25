@@ -20,7 +20,6 @@ public extension BluetoothHostControllerInterface {
                                  timeout: HCICommandTimeout = .default) async throws -> HCIEncryptionChange {
         
         let connectionEncryption = HCISetConnectionEncryption(handle: handle, encryption: encryption)
-        
         return try await deviceRequest(connectionEncryption, HCIEncryptionChange.self, timeout: timeout)
     }
 }

@@ -16,6 +16,7 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The User_Confirmation_Request_Reply command is used to reply to a User Confirmation Request event and indicates that the user selected "yes".
     /// It is also used when the host has no input and no output capabilities.
+    @discardableResult
     func userConfirmationRequestReply(
         address: BluetoothAddress,
         timeout: HCICommandTimeout = .default
