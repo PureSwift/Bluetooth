@@ -13,19 +13,6 @@ import Bluetooth
 /*
 final class GATTTests: XCTestCase {
     
-    static let allTests = [
-        ("testCharacteristicProperty", testCharacteristicProperty),
-        ("testGATT", testGATT),
-        ("testMTUExchange", testMTUExchange),
-        ("testDiscoverPrimaryServicesNoMTUExchange", testDiscoverPrimaryServicesNoMTUExchange),
-        ("testDiscoverPrimaryServicesApple", testDiscoverPrimaryServicesApple),
-        ("testDiscoverPrimaryServices", testDiscoverPrimaryServices),
-        ("testDescriptors", testDescriptors),
-        ("testNotification", testNotification),
-        ("testDiscoverServiceByUUID", testDiscoverServiceByUUID),
-        ("testDiscoverCharacteristicByUUID", testDiscoverCharacteristicByUUID)
-    ]
-    
     func testCharacteristicProperty() {
         
         GATTCharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }

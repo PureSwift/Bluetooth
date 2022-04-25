@@ -13,25 +13,6 @@ import Foundation
 
 final class AttributeProtocolTests: XCTestCase {
     
-    static let allTests = [
-        ("testATTOpcode", testATTOpcode),
-        ("testATTError", testATTError),
-        ("testErrorResponse", testErrorResponse),
-        ("testMTU", testMTU),
-        ("testReadByGroupType", testReadByGroupType),
-        ("testFindByType", testFindByType),
-        ("testReadByType", testReadByType),
-        ("testHandleValueIndication", testHandleValueIndication),
-        ("testHandleValueConfirmation", testHandleValueConfirmation),
-        ("testHandleValueNotification", testHandleValueNotification),
-        ("testRead", testRead),
-        ("testReadMultiple", testReadMultiple),
-        ("testWrite", testWrite),
-        ("testFindInformation", testFindInformation),
-        ("testConfigureClientDescriptor", testConfigureClientDescriptor),
-        ("testDiscovery", testDiscovery)
-    ]
-    
     func testATTOpcode() {
         
         XCTAssert(ATTOpcode.maximumTransmissionUnitRequest.request == nil)

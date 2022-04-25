@@ -12,10 +12,6 @@ import Foundation
 // swiftlint:disable type_body_length
 final class UnitIdentifierTests: XCTestCase {
 
-    static let allTests = [
-        ("testUnits", testUnits)
-    ]
-
     func testUnits() {
 
         /// unitless

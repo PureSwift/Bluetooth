@@ -12,11 +12,6 @@ import Foundation
 // swiftlint:disable type_body_length
 final class CompanyIdentifierTests: XCTestCase {
 
-    static let allTests = [
-        ("testInvalid", testInvalid),
-        ("testCompanies", testCompanies)
-    ]
-
     func testInvalid() {
 
         XCTAssertEqual(CompanyIdentifier(rawValue: .max - 1).description, "65534")

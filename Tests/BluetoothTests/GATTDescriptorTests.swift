@@ -13,19 +13,6 @@ import BluetoothGATT
 
 final class GATTDescriptorTests: XCTestCase {
     
-    static let allTests = [
-        ("testCharacteristicClientConfigurationDescriptor", testCharacteristicClientConfigurationDescriptor),
-        ("testCharacteristicExtendedPropertiesDescriptor", testCharacteristicExtendedPropertiesDescriptor),
-        ("testCharacteristicServerConfigurationDescriptor", testCharacteristicsServerConfigurationDescriptor),
-        ("testCharacteristicsAggregateFormatDescriptor",testCharacteristicsAggregateFormatDescriptor),
-        ("testCharacteristicsFormatDescriptor",testCharacteristicsFormatDescriptor),
-        ("testCharacteristicsUserDescriptionDescriptor",testCharacteristicsUserDescriptionDescriptor),
-        ("testCharacteristicsReportReferenceDescriptor", testCharacteristicReportReferenceDescriptor),
-        ("testTimeTriggerSettingDescriptor", testTimeTriggerSettingDescriptor),
-        ("testExternalReportReference", testExternalReportReferenceDescriptor),
-        ("testNumberOfDigitalsDescriptor",testNumberOfDigitalsDescritor)
-    ]
-    
     func testCharacteristicClientConfigurationDescriptor() {
         
         XCTAssertEqual(GATTClientCharacteristicConfiguration().configuration.rawValue, 0)

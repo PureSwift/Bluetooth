@@ -11,11 +11,7 @@ import Foundation
 
 // swiftlint:disable type_body_length
 final class DefinedUUIDTests: XCTestCase {
-
-    static let allTests = [
-        ("testDefinedUUID", testDefinedUUID)
-    ]
-
+    
     func testDefinedUUID() {
 
         /// SDP

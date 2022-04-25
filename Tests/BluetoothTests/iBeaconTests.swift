@@ -14,13 +14,6 @@ import BluetoothHCI
 
 final class iBeaconTests: XCTestCase {
     
-    static let allTests = [
-        ("testInvalid", testInvalid),
-        ("testData", testData),
-        //("testCommand", testCommand),
-        //("testEstimoteBeacon", testEstimoteBeacon)
-    ]
-    
     func testInvalid() {
         
         XCTAssertNil(AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x1a, 0x4c, 0x00]))

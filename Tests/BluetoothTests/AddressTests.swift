@@ -12,15 +12,6 @@ import Foundation
 
 final class AddressTests: XCTestCase {
     
-    static let allTests = [
-        ("testBytes", testBytes),
-        ("testProperties", testProperties),
-        ("testMalformedString", testMalformedString),
-        ("testString", testString),
-        ("testData", testData),
-        ("testMalformedData", testMalformedData)
-    ]
-    
     func testProperties() {
         
         XCTAssertEqual(BluetoothAddress.bitWidth, MemoryLayout<BluetoothAddress.ByteValue>.size * 8)

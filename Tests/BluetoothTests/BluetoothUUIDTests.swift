@@ -12,18 +12,7 @@ import Bluetooth
 @testable import BluetoothGATT
 
 final class BluetoothUUIDTests: XCTestCase {
-    
-    static let allTests = [
-        ("testMalformed", testMalformed),
-        ("testFoundation", testFoundation),
-        ("testPrimaryServiceUUID", testPrimaryServiceUUID),
-        ("test128BitUUID", test128BitUUID),
-        ("testDefinedUUID", testDefinedUUID),
-        ("test32BitUUID", test32BitUUID),
-        ("test16BitBaseUUID", test16BitBaseUUID),
-        ("test32BitBaseUUID", test32BitBaseUUID)
-    ]
-    
+
     func testMalformed() {
         
         let malformed = [
@@ -79,25 +68,16 @@ final class BluetoothUUIDTests: XCTestCase {
         ]
         
         for test in testData {
-            
             let foundationUUID = UUID(bluetooth: test.bluetooth)
-            
             XCTAssertEqual(foundationUUID, test.foundation)
             XCTAssertEqual(foundationUUID.uuidString, test.bluetooth.bit128.rawValue)
             XCTAssertEqual(UInt128(bigEndian: UInt128(bytes: test.bytes)), UInt128(uuid: test.foundation))
-            
             switch test.bluetooth {
-                
             case .bit16:
-                
                 XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 4)
-                
             case .bit32:
-                
                 XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 8)
-                
             case .bit128:
-                
                 XCTAssertEqual(test.bluetooth.rawValue.utf8.count, UUID.stringLength)
             }
         }

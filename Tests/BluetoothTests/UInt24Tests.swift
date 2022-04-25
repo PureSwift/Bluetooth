@@ -13,14 +13,6 @@ import Foundation
 
 final class UInt24Tests: XCTestCase {
     
-    static let allTests = [
-        ("testBitWidth", testBitWidth),
-        ("testComparable", testComparable),
-        ("testHashable", testHashable),
-        ("testExpressibleByIntegerLiteral", testExpressibleByIntegerLiteral),
-        ("testData", testData)
-    ]
-    
     func testBitWidth() {
         
         XCTAssertEqual(UInt24.bitWidth, MemoryLayout<UInt24.ByteValue>.size * 8)

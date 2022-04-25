@@ -12,11 +12,7 @@ import Bluetooth
 @testable import BluetoothGATT
 
 final class GATTDatabaseTests: XCTestCase {
-    
-    static let allTests = [
-        ("testTestProfile", testTestProfile)
-    ]
-    
+   
     func testTestProfile() {
         
         var database = GATTDatabase(services: TestProfile.services)

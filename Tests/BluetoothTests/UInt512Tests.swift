@@ -12,12 +12,6 @@ import Foundation
 
 final class UInt512Tests: XCTestCase {
     
-    static let allTests = [
-        ("testBitWidth", testBitWidth),
-        ("testHashable", testHashable),
-        ("testExpressibleByIntegerLiteral", testExpressibleByIntegerLiteral)
-    ]
-    
     func testBitWidth() {
         
         XCTAssertEqual(UInt512.bitWidth, MemoryLayout<UInt512.ByteValue>.size * 8)

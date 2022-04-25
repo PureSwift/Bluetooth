@@ -14,23 +14,6 @@ import BluetoothGATT
 
 final class BluetoothTests: XCTestCase {
     
-    static let allTests = [
-        ("testAdvertisingInterval", testAdvertisingInterval),
-        ("testSecurityLevel", testSecurityLevel),
-        ("testCompanyIdentifier", testCompanyIdentifier),
-        ("testChannelIdentifier", testChannelIdentifier),
-        ("testHCICommandTimeout", testHCICommandTimeout),
-        ("testHCIVersion", testHCIVersion),
-        ("testLowEnergyAdvertisingData", testLowEnergyAdvertisingData),
-        ("testLowEnergyAddressType", testLowEnergyAddressType),
-        ("testLowEnergyAdvertisingFilterPolicy", testLowEnergyAdvertisingFilterPolicy),
-        ("testLowEnergyFeature", testLowEnergyFeature),
-        ("testLowEnergyEventMask", testLowEnergyEventMask),
-        ("testAdvertisingChannelHeader", testAdvertisingChannelHeader),
-        ("testBitMaskOption", testBitMaskOption),
-        ("testClassOfDevice", testClassOfDevice)
-    ]
-    
     func testAdvertisingInterval() {
         
         let value = AdvertisingInterval.default

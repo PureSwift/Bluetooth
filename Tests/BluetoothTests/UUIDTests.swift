@@ -12,12 +12,6 @@ import Foundation
 
 final class UUIDTests: XCTestCase {
     
-    static let allTests = [
-        ("testLength", testLength),
-        ("testByteValue", testByteValue),
-        ("testData", testData)
-    ]
-    
     func testLength() {
         
         let uuid = UUID()

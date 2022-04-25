@@ -13,46 +13,6 @@ import Bluetooth
 
 final class GAPTests: XCTestCase {
     
-    static let allTests = [
-        ("testFlags", testFlags),
-        ("testBit16UUIDList", testBit16UUIDList),
-        ("testBit32UUIDList", testBit32UUIDList),
-        ("testBit128UUIDList", testBit128UUIDList),
-        ("testDataType", testDataType),
-        ("testShortLocalName", testShortLocalName),
-        ("testCompleteLocalName", testCompleteLocalName),
-        ("testCompleteListOf16BitServiceClassUUIDs", testCompleteListOf16BitServiceClassUUIDs),
-        ("testCompleteListOf32BitServiceClassUUIDs", testCompleteListOf32BitServiceClassUUIDs),
-        ("testCompleteListOf128BitServiceClassUUIDs", testCompleteListOf128BitServiceClassUUIDs),
-        ("testIncompleteListOf16BitServiceClassUUIDs", testIncompleteListOf16BitServiceClassUUIDs),
-        ("testIncompleteListOf32BitServiceClassUUIDs", testIncompleteListOf32BitServiceClassUUIDs),
-        ("testIncompleteListOf128BitServiceClassUUIDs", testIncompleteListOf128BitServiceClassUUIDs),
-        ("testTxPowerLevel", testTxPowerLevel),
-        ("testClassOfDevice", testClassOfDevice),
-        ("testSlaveConnectionIntervalRange", testSlaveConnectionIntervalRange),
-        ("testServiceData16BitUUID", testServiceData16BitUUID),
-        ("testServiceData32BitUUID", testServiceData32BitUUID),
-        ("testServiceData128BitUUID", testServiceData128BitUUID),
-        ("testPublicTargetAddress", testPublicTargetAddress),
-        ("testRandomTargetAddress", testRandomTargetAddress),
-        ("testAppearance", testAppearance),
-        ("testAdvertisingInterval", testAdvertisingInterval),
-        ("testLEDeviceAddress", testLEDeviceAddress),
-        ("testLERole", testLERole),
-        ("testURI", testURI),
-        ("testIndoorPositioning", testIndoorPositioning),
-        //("testLESupportedFeatures", testLESupportedFeatures),
-        ("testLESecureConnectionsConfirmation", testLESecureConnectionsConfirmation),
-        ("testLESecureConnectionsRandom", testLESecureConnectionsRandom),
-        ("testChannelMapUpdateIndication", testChannelMapUpdateIndication),
-        ("testTransportDiscoveryData", testTransportDiscoveryData),
-        ("testMeshMessage", testMeshMessage),
-        ("testMeshBeacon", testMeshBeacon),
-        ("testManufacturerSpecificData", testManufacturerSpecificData),
-        ("testPBADV", testPBADV),
-        ("test3DInformation", test3DInformation)
-    ]
-    
     func testDataType() {
         
         XCTAssertEqual(GAPDataType.flags.description, "Flags")

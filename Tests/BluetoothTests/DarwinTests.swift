@@ -12,7 +12,6 @@ import Foundation
 import BluetoothGAP
 
 #if os(macOS)
-
 import CoreBluetooth
 import IOKit
 import Darwin

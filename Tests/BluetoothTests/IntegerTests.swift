@@ -13,10 +13,6 @@ import Foundation
 
 final class IntegerTests: XCTestCase {
     
-    static let allTests = [
-        ("test2Bit", test2Bit)
-        ]
-    
     func test2Bit() {
         
         let bit2Range = UInt8(0) ... UInt8(3)
