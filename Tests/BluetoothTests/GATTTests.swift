@@ -605,8 +605,8 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)
     }
-    /*
-    func testDiscoverServiceByUUID() {
+    
+    func testDiscoverServiceByUUID() async throws {
         
         let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
                                                  value: Data(),
@@ -623,63 +623,59 @@ final class GATTTests: XCTestCase {
         let database = GATTDatabase(services: services)
         
         // server
-        let serverSocket = TestL2CAPSocket()
-        let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
-        server.database = database
-        
-        // client
-        let clientSocket = TestL2CAPSocket()
-        let client = GATTClient(socket: clientSocket)
-        
-        clientSocket.target = serverSocket
-        serverSocket.target = clientSocket // weak references
-        
-        // discover service
-        client.discoverPrimaryServices(by: services[0].uuid) {
-            
-            switch $0 {
-                
-            case let .failure(error):
-                
-                XCTFail("Error \(error)")
-                
-            case let .success(foundServices):
-                
-                guard foundServices.count == 1,
-                    let foundService = foundServices.first
-                    else { XCTFail("Service not found"); return }
-                
-                XCTAssertEqual(foundService.uuid, services[0].uuid)
-                XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
-                XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-                XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
-                
-                client.discoverAllCharacteristics(of: foundService)  {
-                    
-                    switch $0 {
-                        
-                    case let .failure(error):
-                        
-                        XCTFail("Error \(error)")
-                        
-                    case let .success(characteristics):
-                        
-                        guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
-                            else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
-                        
-                        XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, BluetoothUUID.characteristic)
-                        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
-                        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
-                        XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
-                    }
-                }
-            }
+        let serverAddress = BluetoothAddress.min
+        let clientAddress = BluetoothAddress.max
+        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            address: serverAddress,
+            isRandom: false,
+            backlog: 1
+        )
+        let serverAcceptTask = Task<GATTServer, Error> {
+            let newConnection = try await serverSocket.accept()
+            print("GATTServer: New connection")
+            return await GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: .default,
+                maximumPreparedWrites: .max,
+                database: GATTDatabase(services: services),
+                log: { print("GATTServer:", $0) }
+            )
         }
         
-        // run fake sockets
+        // client
+        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            address: clientAddress,
+            destination: serverAddress,
+            isRandom: false
+        )
+        let client = await GATTClient(
+            socket: clientSocket,
+            maximumTransmissionUnit: .default,
+            log: { print("GATTClient:", $0) }
+        )
+        let server = try await serverAcceptTask.value
         
+        // discover service
+        let foundServices = try await client.discoverPrimaryServices(by: services[0].uuid)
+        guard foundServices.count == 1,
+            let foundService = foundServices.first
+            else { XCTFail("Service not found"); return }
+        
+        XCTAssertEqual(foundService.uuid, services[0].uuid)
+        XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
+        XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
+        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
+        
+        let characteristics = try await client.discoverAllCharacteristics(of: foundService)
+        guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
+            else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
+        
+        XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, BluetoothUUID.characteristic)
+        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
+        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
+        //XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
     }
-    
+    /*
     func testDiscoverCharacteristicByUUID() {
         
         let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
