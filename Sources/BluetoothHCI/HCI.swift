@@ -60,7 +60,7 @@ public enum HCIOpcodeGroupField: UInt16 {
 
 /// HCI Status Code
 @frozen
-public enum HCIStatus: RawRepresentable, CustomStringConvertible {
+public enum HCIStatus: RawRepresentable, CustomStringConvertible, Equatable, Hashable {
     
     case success
     case error(HCIError)
