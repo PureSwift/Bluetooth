@@ -473,8 +473,8 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)*/
     }
-    /*
-    func testDiscoverPrimaryServices() {
+    
+    func testDiscoverPrimaryServices() async throws {
         
         let clientMTU = ATTMaximumTransmissionUnit(rawValue: 104)! // 0x0068
         let serverMTU = ATTMaximumTransmissionUnit.default // 23
@@ -556,45 +556,56 @@ final class GATTTests: XCTestCase {
                                    characteristics: characteristics)
         
         // server
-        let serverSocket = TestL2CAPSocket(name: "Server")
-        let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: serverMTU,  maximumPreparedWrites: .max)
-        server.database = GATTDatabase(services: [service])
-        //server.database.dump()
-        
-        // client
-        let clientSocket = TestL2CAPSocket(name: "Client")
-        let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: clientMTU)
-        
-        clientSocket.target = serverSocket
-        serverSocket.target = clientSocket // weak references
-        
-        client.discoverAllPrimaryServices {
-            
-            switch $0 {
-                
-            case let .failure(error):
-                XCTFail("\(error)")
-                
-            case let .success(services):
-                
-                XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
-            }
+        let serverAddress = BluetoothAddress.min
+        let clientAddress = BluetoothAddress.max
+        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            address: serverAddress,
+            isRandom: false,
+            backlog: 1
+        )
+        let serverAcceptTask = Task<GATTServer, Error> {
+            let newConnection = try await serverSocket.accept()
+            print("GATTServer: New connection")
+            return await GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: serverMTU,
+                maximumPreparedWrites: .max,
+                database: GATTDatabase(services: [service]),
+                log: { print("GATTServer:", $0) }
+            )
         }
         
-        // run fake sockets
-        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
-        catch { XCTFail("Error: \(error)") }
+        // client
+        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            address: clientAddress,
+            destination: serverAddress,
+            isRandom: false
+        )
+        let client = await GATTClient(
+            socket: clientSocket,
+            maximumTransmissionUnit: clientMTU,
+            log: { print("GATTClient:", $0) }
+        )
+        let server = try await serverAcceptTask.value
         
-        XCTAssertEqual(client.maximumTransmissionUnit, finalMTU)
-        XCTAssertEqual(server.maximumTransmissionUnit, finalMTU)
+        // request
+        let services = try await client.discoverAllPrimaryServices()
+        XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
+        
+        // validate MTU
+        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalClientMTU = await client.maximumTransmissionUnit
+        XCTAssertEqual(finalServerMTU, finalMTU)
+        XCTAssertEqual(finalClientMTU, finalMTU)
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        
-        XCTAssertEqual(serverSocket.cache, mockData.server)
-        XCTAssertEqual(clientSocket.cache, mockData.client)
+        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
+        let clientCache = await clientSocket.cache
+        XCTAssertEqual(serverCache, mockData.server)
+        XCTAssertEqual(clientCache, mockData.client)
     }
-    
+    /*
     func testDiscoverServiceByUUID() {
         
         let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
