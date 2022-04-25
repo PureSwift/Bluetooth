@@ -77,7 +77,5 @@ License
 [build-status-url]: https://github.com/PureSwift/Bluetooth/actions
 [release-badge]: https://img.shields.io/github/release/PureSwift/Bluetooth.svg
 [release-url]: https://github.com/PureSwift/Bluetooth/releases
-[codebeat-badge]: https://codebeat.co/badges/3eaf4fc3-6514-4f2d-83d5-ffd879f319d2
-[codebeat-url]: https://codebeat.co/projects/github-com-pureswift-bluetooth-master
 [docs-badge]: http://pureswift.github.io/Bluetooth/docs/badge.svg
-[docs-url]: http://pureswift.github.io/Bluetooth/docs/
+[docs-url]: http://pureswift.github.io/Bluetooth/documentation/bluetooth/
