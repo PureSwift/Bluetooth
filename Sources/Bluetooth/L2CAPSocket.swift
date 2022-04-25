@@ -14,6 +14,9 @@ public protocol L2CAPSocket: AnyObject {
     /// Socket address
     var address: BluetoothAddress { get }
     
+    /// Event stream
+    var event: L2CAPSocketEventStream { get }
+    
     /// Write to the socket.
     func send(_ data: Data) async throws
     
@@ -22,9 +25,6 @@ public protocol L2CAPSocket: AnyObject {
     
     /// Attempt to accept an incoming connection.
     func accept() async throws -> Self
-    
-    /// Set an event handler for the socket.
-    func setEvent(_ event: @escaping ((L2CAPSocketEvent) async -> ())) async
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
@@ -55,3 +55,5 @@ public enum L2CAPSocketEvent {
     case write(Int)
     case close(Error?)
 }
+
+public typealias L2CAPSocketEventStream = AsyncStream<L2CAPSocketEvent>

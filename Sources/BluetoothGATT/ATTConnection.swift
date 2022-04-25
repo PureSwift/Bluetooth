@@ -68,15 +68,23 @@ internal actor ATTConnection {
         self.socket = socket
         self.log = log
         self.didDisconnect = didDisconnect
-        await socket.setEvent { [weak self] in
-            await self?.socketEvent($0)
-        }
+        run()
     }
     
     // MARK: - Methods
     
     public func setMaximumTransmissionUnit(_ newValue: ATTMaximumTransmissionUnit) {
         self.maximumTransmissionUnit = newValue
+    }
+    
+    private func run() {
+        Task.detached(priority: .high) { [weak self] in
+            guard let stream = self?.socket.event else { return }
+            for await event in stream {
+                await self?.socketEvent(event)
+            }
+            // socket closed
+        }
     }
     
     /// Performs the actual IO for recieving data.
@@ -158,17 +166,26 @@ internal actor ATTConnection {
     private func socketEvent(_ event: L2CAPSocketEvent) async {
         switch event {
         case .pendingRead:
-            guard isConnected else { return }
+            #if DEBUG
+            log?("Pending read")
+            #endif
             do { try await read() }
             catch { log?("Unable to read. \(error)") }
-        case .read:
-            break
-        case .write:
-            guard isConnected else { return }
+        case let .read(byteCount):
+            #if DEBUG
+            log?("Did read \(byteCount) bytes")
+            #endif
+        case let .write(byteCount):
+            #if DEBUG
+            log?("Did write \(byteCount) bytes")
+            #endif
             // try to write again
             do { try await write() }
             catch { log?("Unable to write. \(error)") }
         case let .close(error):
+            #if DEBUG
+            log?("Did close. \(error?.localizedDescription ?? "")")
+            #endif
             isConnected = false
             await didDisconnect?(error)
         }
