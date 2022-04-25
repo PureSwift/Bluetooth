@@ -142,8 +142,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             try await Task.sleep(nanoseconds: 100_000_000)
         }
         
-        while let message = queue.first {
-            queue.removeFirst()
+        while let message = queue.popFirst() {
             guard case let .event(eventBuffer) = message else {
                 continue
             }
@@ -347,11 +346,8 @@ internal extension TestHostController {
 extension Array {
     
     mutating func popFirst() -> Element? {
-        
         guard let first = self.first else { return nil }
-        
         self.removeFirst()
-        
         return first
     }
 }
