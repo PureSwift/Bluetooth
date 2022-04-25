@@ -46,19 +46,14 @@ let package = Package(
 
 ## Documentation
 
-Read the documentation [here](http://pureswift.github.io/Bluetooth/docs/).
-Documentation can be generated with [Jazzy](https://github.com/realm/jazzy).
-For more information, see the [gh-pages](https://github.com/PureSwift/Bluetooth/tree/gh-pages) branch.
+Read the documentation [here](http://pureswift.github.io/Bluetooth/documentation/bluetooth/).
+Documentation can be generated with [DocC](https://github.com/apple/swift-docc).
 
 ## See Also
 
 - [BluetoothLinux](https://github.com/PureSwift/BluetoothLinux) - Pure Swift Linux Bluetooth Stack
-- [BluetoothDarwin](https://github.com/PureSwift/BluetoothDarwin) - Low Level Swift Bluetooth library for the Darwin kernel
-- [AndroidBluetooth](https://github.com/PureSwift/AndroidBluetooth) - Swift Bluetooth stack for Android
 - [GATT](https://github.com/PureSwift/GATT) - Bluetooth Generic Attribute Profile (GATT) for Swift
 - [Netlink](https://github.com/PureSwift/Netlink) - Swift library for communicating with Linux Kernel Netlink subsystem (Linux Only) 
-- [DBus](https://github.com/PureSwift/DBus) - Swift library for DBus (Linux Only)
-- [Silica](https://github.com/PureSwift/Silica) - Pure Swift CoreGraphics (Quartz2D) implementation
 - [Predicate](https://github.com/PureSwift/Predicate) - Pure Swift Predicate implementation 
 - [TLVCoding](https://github.com/PureSwift/TLVCoding) - Swift TLV8 (Type-Length-Value) Encoding library
 
@@ -77,5 +72,4 @@ License
 [build-status-url]: https://github.com/PureSwift/Bluetooth/actions
 [release-badge]: https://img.shields.io/github/release/PureSwift/Bluetooth.svg
 [release-url]: https://github.com/PureSwift/Bluetooth/releases
-[docs-badge]: http://pureswift.github.io/Bluetooth/docs/badge.svg
 [docs-url]: http://pureswift.github.io/Bluetooth/documentation/bluetooth/
