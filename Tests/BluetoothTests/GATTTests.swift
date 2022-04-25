@@ -869,167 +869,125 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
     }
-    /*
-    func testNotification() {
+    
+    func testNotification() async throws {
         
-        func test(with characteristics: [GATTAttribute.Characteristic], newData: [Data]) {
+        func test(with characteristics: [GATTAttribute.Characteristic], newData: [Data]) async throws {
             
-            let service = GATTAttribute.Service.init(uuid: BluetoothUUID(),
-                                            primary: true,
-                                            characteristics: characteristics)
+            let service = GATTAttribute.Service(
+                uuid: BluetoothUUID(),
+                primary: true,
+                characteristics: characteristics
+            )
             
             let database = GATTDatabase(services: [service])
             
             // server
-            let serverSocket = TestL2CAPSocket()
-            let server = GATTServer(socket: serverSocket, maximumPreparedWrites: .max)
-            server.database = database
-            server.log = { XCTAssertFalse($0.isEmpty) }
+            let serverAddress = BluetoothAddress.min
+            let clientAddress = BluetoothAddress.max
+            let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+                address: serverAddress,
+                isRandom: false,
+                backlog: 1
+            )
+            let serverAcceptTask = Task<GATTServer, Error> {
+                let newConnection = try await serverSocket.accept()
+                print("GATTServer: New connection")
+                return await GATTServer(
+                    socket: newConnection,
+                    maximumTransmissionUnit: .default,
+                    maximumPreparedWrites: .max,
+                    database: database,
+                    log: { print("GATTServer:", $0) }
+                )
+            }
             
             // client
-            let clientSocket = TestL2CAPSocket()
-            let client = GATTClient(socket: clientSocket)
-            client.log = { XCTAssertFalse($0.isEmpty) }
+            let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+                address: clientAddress,
+                destination: serverAddress,
+                isRandom: false
+            )
+            let client = await GATTClient(
+                socket: clientSocket,
+                maximumTransmissionUnit: .default,
+                log: { print("GATTClient:", $0) }
+            )
+            let server = try await serverAcceptTask.value
             
-            clientSocket.target = serverSocket
-            serverSocket.target = clientSocket // weak references
+            // discover service
+            let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
+            guard foundServices.count == 1,
+                let foundService = foundServices.first
+                else { XCTFail("Service not found"); return }
             
-            server.writePending = {
-                do {
-                    while try server.write() {
-                        let didRead = try client.read()
-                        XCTAssert(didRead)
-                    }
-                }
-                catch { XCTFail("Error: \(error)") }
-            }
+            XCTAssertEqual(foundService.uuid, service.uuid)
+            XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
+            XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
+            XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
             
-            client.writePending = {
-                do {
-                    while try client.write() {
-                        let didRead = try server.read()
-                        XCTAssert(didRead)
-                    }
-                }
-                catch { XCTFail("Error: \(error)") }
-            }
+            let characteristics = try await client.discoverAllCharacteristics(of: foundService)
             
+            guard let notificationCharacteristic = characteristics.first(where: { $0.properties.contains(.notify) || $0.properties.contains(.indicate) })
+                else { XCTFail("Characteristic not found"); return }
+            
+            let descriptors = try await client.discoverDescriptors(of: notificationCharacteristic, service: (foundService, characteristics))
+            XCTAssert(descriptors.isEmpty == false, "No descriptors found")
+            
+            // notifications
             var recievedNotifications = [Data]()
             var recievedIndications = [Data]()
             
             func notification(_ data: Data) {
-                
                 recievedNotifications.append(data)
             }
             
             func indication(_ data: Data) {
-                
                 recievedIndications.append(data)
             }
             
-            // discover service
-            client.discoverAllPrimaryServices() {
-                
-                switch $0 {
-                    
-                case let .failure(error):
-                    
-                    XCTFail("Error \(error)")
-                    
-                case let .success(services):
-                    
-                    guard let foundService = services.first(where: { $0.uuid == service.uuid })
-                        else { XCTFail("Service \(service.uuid) not found"); return }
-                    
-                    XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
-                    XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-                    XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
-                    
-                    client.discoverAllCharacteristics(of: foundService)  {
-                        
-                        switch $0 {
-                            
-                        case let .failure(error):
-                            
-                            XCTFail("Error \(error)")
-                            
-                        case let .success(characteristics):
-                            
-                            guard let notificationCharacteristic = characteristics.first(where: { $0.properties.contains(.notify) || $0.properties.contains(.indicate) })
-                                else { XCTFail("Characteristic not found"); return }
-                            
-                            client.discoverDescriptors(for: notificationCharacteristic, service: (foundService, characteristics)) {
-                                
-                                switch $0 {
-                                    
-                                case let .failure(error):
-                                    
-                                    XCTFail("Error \(error)")
-                                    
-                                case let .success(descriptors):
-                                    
-                                    XCTAssert(descriptors.isEmpty == false, "No descriptors found")
-                                    
-                                    client.clientCharacteristicConfiguration(notification: notificationCharacteristic.properties.contains(.notify) ? notification : nil, indication: notificationCharacteristic.properties.contains(.indicate) ? indication : nil, for: notificationCharacteristic, descriptors: descriptors) {
-                                        
-                                        switch $0 {
-                                            
-                                        case let .failure(error):
-                                            
-                                            XCTFail("Error \(error)")
-                                            
-                                        case .success:
-                                            
-                                            newData.forEach {
-                                                server.writeValue($0, forCharacteristic: notificationCharacteristic.uuid)
-                                            }
-                                            
-                                            client.clientCharacteristicConfiguration(notification: nil, indication: nil, for: notificationCharacteristic, descriptors: descriptors) {
-                                                
-                                                switch $0 {
-                                                    
-                                                case let .failure(error):
-                                                    
-                                                    XCTFail("Error \(error)")
-                                                    
-                                                case .success:
-                                                    
-                                                    let maxLength = 20 //MTU-3
-                                                    
-                                                    let expectedNotificationValues = newData.map { Data($0.prefix(maxLength)) }
-                                                    
-                                                    if notificationCharacteristic.properties.contains(.notify) {
-                                                        
-                                                        XCTAssertEqual(recievedNotifications, expectedNotificationValues)
-                                                    }
-                                                    
-                                                    if notificationCharacteristic.properties.contains(.indicate) {
-                                                        
-                                                        XCTAssertEqual(recievedIndications, expectedNotificationValues)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            try await client.clientCharacteristicConfiguration(
+                notificationCharacteristic,
+                notification: notificationCharacteristic.properties.contains(.notify) ? notification : nil,
+                indication: notificationCharacteristic.properties.contains(.indicate) ? indication : nil,
+                descriptors: descriptors
+            )
+            
+            for data in newData {
+                await server.writeValue(data, forCharacteristic: notificationCharacteristic.uuid)
+            }
+            
+            try await Task.sleep(nanoseconds: 1_000_000_000)
+            
+            // stop notifications
+            try await client.clientCharacteristicConfiguration(
+                notificationCharacteristic,
+                notification: nil,
+                indication: nil,
+                descriptors: descriptors
+            )
+            
+            let maxLength = 20 //MTU-3
+            let expectedNotificationValues = newData.map { Data($0.prefix(maxLength)) }
+            if notificationCharacteristic.properties.contains(.notify) {
+                XCTAssertEqual(recievedNotifications, expectedNotificationValues)
+            }
+            if notificationCharacteristic.properties.contains(.indicate) {
+                XCTAssertEqual(recievedIndications, expectedNotificationValues)
             }
         }
         
-        test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
-        test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
-        test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
-        test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
-        test(with: [TestProfile.Indicate], newData: [Data("test".utf8)])
-        test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 20)])
-        test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: 20)])
-        test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
-        test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
+        try await test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Notify], newData: [Data("test".utf8)])
+        //try await test(with: [TestProfile.Read, TestProfile.Write, TestProfile.Indicate], newData: [Data("test".utf8)])
+        //try await test(with: [TestProfile.Notify, TestProfile.Read, TestProfile.Write], newData: [Data("test".utf8)])
+        //try await test(with: [TestProfile.Notify], newData: [Data("test".utf8)])
+        //try await test(with: [TestProfile.Indicate], newData: [Data("test".utf8)])
+        //try await test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: 20)])
+        //try await test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: 20)])
+        //try await test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
+        //try await test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
     }
-    
+    /*
     func testGATT() {
         
         let database = GATTDatabase(services: TestProfile.services)
