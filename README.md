@@ -2,7 +2,6 @@
 
 [![Swift][swift-badge]][swift-url]
 [![Platform][platform-badge]][platform-url]
-[![Docs][docs-badge]][docs-url]
 [![Release][release-badge]][release-url]
 [![License][mit-badge]][mit-url]
 
