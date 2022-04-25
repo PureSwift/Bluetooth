@@ -2,12 +2,9 @@
 
 [![Swift][swift-badge]][swift-url]
 [![Platform][platform-badge]][platform-url]
+[![Docs][docs-badge]][docs-url]
 [![Release][release-badge]][release-url]
 [![License][mit-badge]][mit-url]
-
-[![Build Status][build-status-badge]][build-status-url]
-[![CodeBeat][codebeat-badge]][codebeat-url]
-[![Docs][docs-badge]][docs-url]
 
 Pure Swift Bluetooth Definitions.
 
