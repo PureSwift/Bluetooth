@@ -160,7 +160,8 @@ internal final class TestHostController: BluetoothHostControllerInterface {
             return eventParameter
         }
         
-        throw BluetoothHostControllerError.garbageResponse(Data())
+        try await Task.sleep(nanoseconds: 5 * 1_000_000_000)
+        throw CancellationError()
     }
     
     // MARK: - Properties

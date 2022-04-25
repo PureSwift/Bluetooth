@@ -424,7 +424,7 @@ final class HCITests: XCTestCase {
         }
     }
     
-    func _testLowEnergyScan() async throws {
+    func testLowEnergyScan() async throws {
         
         typealias Report = HCILEAdvertisingReport.Report
         typealias ScanParameters = HCILESetScanParameters
@@ -2827,7 +2827,6 @@ final class HCITests: XCTestCase {
     }
 }
 
-@inline(__always)
 @_silgen_name("swift_bluetooth_parse_event")
 fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> T? {
     
@@ -2844,4 +2843,3 @@ fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ ev
     
     return event
 }
-
