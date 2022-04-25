@@ -77,13 +77,13 @@ final class GATTTests: XCTestCase {
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache 
+        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
         let clientCache = await clientSocket.cache
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)
     }
-    /*
-    func testDiscoverPrimaryServicesNoMTUExchange() {
+    
+    func testDiscoverPrimaryServicesNoMTUExchange() async throws {
         
         // If MTU is not negociated, then make sure all PDUs respect the MTU limit
         
@@ -103,51 +103,68 @@ final class GATTTests: XCTestCase {
             ]
         ]
         
-        for profile in profiles {
+        for profile in profiles.prefix(1) {
             
             // server
-            let serverSocket = TestL2CAPSocket()
-            let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: .max, maximumPreparedWrites: .max)
-            server.database = GATTDatabase(services: profile)
-            
-            // client
-            let clientSocket = TestL2CAPSocket()
-            let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: .default)
-            
-            clientSocket.target = serverSocket
-            serverSocket.target = clientSocket // weak references
-            
-            client.discoverAllPrimaryServices {
-                switch $0 {
-                case let .failure(error):
-                    XCTFail("\(error)")
-                case let .success(services):
-                    XCTAssertEqual(services.map { $0.uuid }, profile.map { $0.uuid })
-                }
+            let serverAddress = BluetoothAddress.min
+            let clientAddress = BluetoothAddress.max
+            let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+                address: serverAddress,
+                isRandom: false,
+                backlog: 1
+            )
+            let serverAcceptTask = Task<GATTServer, Error> {
+                let newConnection = try await serverSocket.accept()
+                print("GATTServer: New connection")
+                return await GATTServer(
+                    socket: newConnection,
+                    maximumTransmissionUnit: .max,
+                    maximumPreparedWrites: .max,
+                    database: GATTDatabase(services: profile),
+                    log: { print("GATTServer:", $0) }
+                )
             }
             
-            // run fake sockets
-            do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
-            catch { XCTFail("Error: \(error)") }
+            // client
+            let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+                address: clientAddress,
+                destination: serverAddress,
+                isRandom: false
+            )
+            let client = await GATTClient(
+                socket: clientSocket,
+                maximumTransmissionUnit: .default,
+                log: { print("GATTClient:", $0) }
+            )
+            let server = try await serverAcceptTask.value
             
-            XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
-            XCTAssertEqual(server.connection.maximumTransmissionUnit, .default)
-            XCTAssertEqual(client.connection.maximumTransmissionUnit, .default)
-            XCTAssertEqual(server.maximumTransmissionUnit, .default)
-            XCTAssertEqual(server.preferredMaximumTransmissionUnit, .max)
-            XCTAssertEqual(client.maximumTransmissionUnit, .default)
-            XCTAssertEqual(client.preferredMaximumTransmissionUnit, .default)
+            // request
+            let services = try await client.discoverAllPrimaryServices()
+            XCTAssertEqual(services.map { $0.uuid }, profile.map { $0.uuid })
             
+            // validate MTU
+            let serverMTU = await server.maximumTransmissionUnit
+            let serverPreferredMTU = await server.preferredMaximumTransmissionUnit
+            let clientMTU = await client.maximumTransmissionUnit
+            let clientPreferredMTU = await client.preferredMaximumTransmissionUnit
+            XCTAssertEqual(serverMTU, clientMTU)
+            XCTAssertEqual(serverMTU, .default)
+            XCTAssertEqual(clientMTU, .default)
+            XCTAssertEqual(serverPreferredMTU, .max)
+            XCTAssertEqual(clientPreferredMTU, .default)
+            /*
             // validate GATT MTU
-            (clientSocket.cache + serverSocket.cache).forEach {
+            let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
+            let clientCache = await clientSocket.cache
+            (serverCache + clientCache).forEach {
                 XCTAssert($0.count <= Int(ATTMaximumTransmissionUnit.default.rawValue))
                 let opcode = ATTOpcode(rawValue: $0[0])!
                 XCTAssertNotEqual(opcode, .maximumTransmissionUnitRequest, "Never exchange MTU")
                 XCTAssertNotEqual(opcode, .maximumTransmissionUnitResponse, "Never exchange MTU")
-            }
+            }*/
         }
     }
-    
+    /*
     func testDiscoverPrimaryServicesApple() {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 104)
@@ -1235,17 +1252,23 @@ final class GATTTests: XCTestCase {
 
 private extension GATTTests {
     
-    func test(_ testPDUs: [(ATTProtocolDataUnit, [UInt8])]) {
+    func test(
+        _ testPDUs: [(ATTProtocolDataUnit, [UInt8])],
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
         
         // decode and compare
         for (testPDU, testData) in testPDUs {
             
-            guard let decodedPDU = type(of: testPDU).init(data: Data(testData))
-                else { XCTFail("Could not decode \(type(of: testPDU))"); return }
+            guard let decodedPDU = type(of: testPDU).init(data: Data(testData)) else {
+                XCTFail("Could not decode \(type(of: testPDU))", file: file, line: line)
+                return
+            }
             
             //dump(decodedPDU)
             
-            XCTAssertEqual(decodedPDU.data, Data(testData))
+            XCTAssertEqual(decodedPDU.data, Data(testData), file: file, line: line)
             
             var decodedDump = ""
             dump(decodedPDU, to: &decodedDump)
