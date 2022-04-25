@@ -3,13 +3,34 @@ name: Swift
 on: [push]
 
 jobs:
+
+    macOS-swift:
+        name: macOS
+        runs-on: macOS-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Xcode Version
+          run: |
+            xcodebuild -version
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug
+        - name: Build (Release)
+          run: swift build -c release
+        - name: Test (Debug)
+          run: swift test --configuration debug  --enable-test-discovery
+        - name: Test (Release)
+          run: swift test --configuration release -Xswiftc -enable-testing --enable-test-discovery
+
     linux-swift:
-        name: Linux x86_64
+        name: Linux
         runs-on: ubuntu-20.04
         container: swift:5.6.1-focal
         steps:
         - name: Checkout
-          uses: actions/checkout@v1
+          uses: actions/checkout@v2
         - name: Swift Version
           run: swift --version
         - name: Build (Debug)
