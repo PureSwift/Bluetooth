@@ -155,7 +155,7 @@ internal actor TestL2CAPSocket: L2CAPSocket {
         eventContinuation.yield(.pendingRead)
     }
     
-    fileprivate func connect(to socket: TestL2CAPSocket) {
+    internal func connect(to socket: TestL2CAPSocket) {
         self.target = socket
     }
 }

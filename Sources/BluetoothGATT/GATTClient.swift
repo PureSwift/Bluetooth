@@ -405,7 +405,7 @@ public actor GATTClient {
     // MARK: Requests
     
     /// Exchange MTU (should only be called once if not using default MTU)
-    private func exchangeMTU() async throws {
+    internal func exchangeMTU() async throws {
         assert(didExchangeMTU == false)
         let clientMTU = preferredMaximumTransmissionUnit
         let request = ATTMaximumTransmissionUnitRequest(clientMTU: clientMTU.rawValue)

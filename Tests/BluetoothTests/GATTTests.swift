@@ -10,15 +10,14 @@ import XCTest
 import Foundation
 import Bluetooth
 @testable import BluetoothGATT
-/*
+
 final class GATTTests: XCTestCase {
     
     func testCharacteristicProperty() {
-        
         GATTCharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }
     }
     
-    func testMTUExchange() {
+    func testMTUExchange() async throws {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 512)
             else { XCTFail(); return }
@@ -34,35 +33,56 @@ final class GATTTests: XCTestCase {
         test(testPDUs)
         
         // server
-        let serverSocket = TestL2CAPSocket()
-        let server = GATTServer(socket: serverSocket, maximumTransmissionUnit: mtu, maximumPreparedWrites: .max)
-        server.log = { XCTAssertFalse($0.isEmpty) }
+        let serverAddress = BluetoothAddress.min
+        let clientAddress = BluetoothAddress.max
+        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            address: serverAddress,
+            isRandom: false,
+            backlog: 1
+        )
+        let serverAcceptTask = Task<GATTServer, Error> {
+            let newConnection = try await serverSocket.accept()
+            print("GATTServer: New connection")
+            return await GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: mtu,
+                maximumPreparedWrites: .max,
+                log: { print("GATTServer:", $0) }
+            )
+        }
         
         // client
-        let clientSocket = TestL2CAPSocket()
-        let client = GATTClient(socket: clientSocket, maximumTransmissionUnit: mtu)
-        client.log = { XCTAssertFalse($0.isEmpty) }
+        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            address: clientAddress,
+            destination: serverAddress,
+            isRandom: false
+        )
+        let client = await GATTClient(
+            socket: clientSocket,
+            maximumTransmissionUnit: mtu,
+            log: { print("GATTClient:", $0) }
+        )
+        let server = try await serverAcceptTask.value
         
-        clientSocket.target = serverSocket
-        serverSocket.target = clientSocket // weak references
+        // request
+        try await client.exchangeMTU() // force MTU exchange
         
-        // run fake sockets
-        do { try run(server: (server, serverSocket), client: (client, clientSocket)) }
-        catch { XCTFail("Error: \(error)") }
-        
-        XCTAssertEqual(server.connection.maximumTransmissionUnit, client.connection.maximumTransmissionUnit)
-        XCTAssertEqual(server.connection.maximumTransmissionUnit, mtu)
-        XCTAssertNotEqual(server.connection.maximumTransmissionUnit, .default)
-        XCTAssertEqual(client.connection.maximumTransmissionUnit, mtu)
-        XCTAssertNotEqual(client.connection.maximumTransmissionUnit, .default)
+        let serverMTU = await server.maximumTransmissionUnit
+        let clientMTU = await client.maximumTransmissionUnit
+        XCTAssertEqual(serverMTU, clientMTU)
+        XCTAssertEqual(serverMTU, mtu)
+        XCTAssertNotEqual(serverMTU, .default)
+        XCTAssertEqual(clientMTU, mtu)
+        XCTAssertNotEqual(clientMTU, .default)
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        
-        XCTAssertEqual(serverSocket.cache, mockData.server)
-        XCTAssertEqual(clientSocket.cache, mockData.client)
+        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache 
+        let clientCache = await clientSocket.cache
+        XCTAssertEqual(serverCache, mockData.server)
+        XCTAssertEqual(clientCache, mockData.client)
     }
-    
+    /*
     func testDiscoverPrimaryServicesNoMTUExchange() {
         
         // If MTU is not negociated, then make sure all PDUs respect the MTU limit
@@ -623,7 +643,7 @@ final class GATTTests: XCTestCase {
         }
         
         // run fake sockets
-        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+        
     }
     
     func testDiscoverCharacteristicByUUID() {
@@ -693,7 +713,7 @@ final class GATTTests: XCTestCase {
         }
         
         // run fake sockets
-        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+        
     }
     
     func testDescriptors() {
@@ -834,7 +854,7 @@ final class GATTTests: XCTestCase {
         }
         
         // run fake sockets
-        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+        
     }
     
     func testNotification() {
@@ -1208,11 +1228,12 @@ final class GATTTests: XCTestCase {
         discoverAllPrimaryServices()
         
         // run fake sockets
-        XCTAssertNoThrow(try run(server: (server, serverSocket), client: (client, clientSocket)))
+        
     }
+     */
 }
 
-extension GATTTests {
+private extension GATTTests {
     
     func test(_ testPDUs: [(ATTProtocolDataUnit, [UInt8])]) {
         
@@ -1235,38 +1256,6 @@ extension GATTTests {
             // Data has different pointers, so dumps will always be different
             //XCTAssertEqual(decodedDump, testDump)
         }
-    }
-    
-    func run(server: (gatt: GATTServer, socket: TestL2CAPSocket), client: (gatt: GATTClient, socket: TestL2CAPSocket)) throws {
-        
-        var didWrite = false
-        repeat {
-            
-            didWrite = false
-            
-            while try client.gatt.write() {
-                
-                didWrite = true
-            }
-            
-            while server.socket.input.isEmpty == false {
-                
-                let didRead = try server.gatt.read()
-                assert(didRead)
-            }
-            
-            while try server.gatt.write() {
-                
-                didWrite = true
-            }
-            
-            while client.socket.input.isEmpty == false {
-                
-                let didRead = try client.gatt.read()
-                assert(didRead)
-            }
-            
-        } while didWrite
     }
     
     func split(pdu data: [[UInt8]]) -> (server: [Data], client: [Data]) {
@@ -1445,4 +1434,3 @@ struct ProximityProfile {
         ]
     )
 }
-*/
