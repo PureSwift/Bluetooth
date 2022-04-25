@@ -423,8 +423,8 @@ final class HCITests: XCTestCase {
             XCTAssert(hostController.queue.isEmpty)
         }
     }
-    /*
-    func testLowEnergyScan() async throws {
+    
+    func _testLowEnergyScan() async throws {
         
         typealias Report = HCILEAdvertisingReport.Report
         typealias ScanParameters = HCILESetScanParameters
@@ -514,7 +514,7 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(reports[1].event, .undirected)
         XCTAssertEqual(reports[1].event.isConnectable, true)
     }
-    */
+    
     func testLEReadRemoteUsedFeatures() async throws {
         
         let connectionHandle: UInt16 = 0x0041
@@ -1305,9 +1305,13 @@ final class HCITests: XCTestCase {
         
         let clockOffset = HCIRemoteNameRequest.ClockOffset(rawValue: 0x1B5A)
         
-        (try await hostController.remoteNameRequest(address: address,
-                                                              pscanRepMode: pscanRepMode,
-                                                              clockOffset: clockOffset))
+        let completionEvent = try await hostController.remoteNameRequest(
+            address: address,
+            pscanRepMode: pscanRepMode,
+            clockOffset: clockOffset
+        )
+        XCTAssertEqual(completionEvent.address, address)
+        XCTAssertEqual(completionEvent.status, .success)
     }
     
     func testInquiry() async throws {
@@ -1578,11 +1582,14 @@ final class HCITests: XCTestCase {
         guard let allowSwitchRole = AllowRoleSwitch(rawValue: 0x00)
             else { XCTFail("Unable to init variable"); return }
 
-        (try await hostController.createConnection(address: address,
+        let event = try await hostController.createConnection(address: address,
                                                              packetType: 0xCC18,
                                                              pageScanRepetitionMode: pageScanRepetitionMode,
                                                              clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
-                                                             allowRoleSwitch: allowSwitchRole))
+                                                             allowRoleSwitch: allowSwitchRole)
+        
+        XCTAssertEqual(event.address, address)
+        XCTAssertEqual(event.status, .success)
     }
     
     func testCreateConnectionCancel() async throws {
@@ -1715,7 +1722,10 @@ final class HCITests: XCTestCase {
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0x16]))
         }
         
-        (try await hostController.disconnect(connectionHandle: 0x000D, error: .remoteUserEndedConnection))
+        let event = try await hostController.disconnect(connectionHandle: 0x000D, error: .remoteUserEndedConnection)
+        XCTAssertEqual(event.handle, 0x000D)
+        XCTAssertEqual(event.error, .connectionTerminated)
+        XCTAssertEqual(event.status, .success)
     }
     
     func testLinkKeyRequestReply() async throws {
@@ -1832,7 +1842,10 @@ final class HCITests: XCTestCase {
         */
         hostController.queue.append(.event([0x08, 0x04, 0x00, 0x0d, 0x00, 0x01]))
         
-        (try await hostController.setConnectionEncryption(handle: 0x000D, encryption: .enable))
+        let event = try await hostController.setConnectionEncryption(handle: 0x000D, encryption: .enable)
+        XCTAssertEqual(event.status, .success)
+        XCTAssertEqual(event.handle, 0x000D)
+        XCTAssertEqual(event.encryptionEnabled, .e0)
     }
     
     func testReadRemoteSupportedFeatures() async throws {
@@ -1887,7 +1900,8 @@ final class HCITests: XCTestCase {
      
         hostController.queue.append(.event([0x23, 0x0D, 0x00, 0x0c, 0x00, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
         
-        (try await hostController.readRemoteExtendedFeatures(handle: 0x000D, pageNumber: 01))
+        let features = try await hostController.readRemoteExtendedFeatures(handle: 0x000D, pageNumber: 01)
+        XCTAssert(features.isEmpty)
     }
     
     func testReadRemoteVersionInformation() async throws {
@@ -1966,7 +1980,9 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x06, 0x03, 0x00, 0x0d, 0x00]))
         
-        (try await hostController.authenticationRequested(handle: 0x000D))
+        let event = try await hostController.authenticationRequested(handle: 0x000D)
+        XCTAssertEqual(event.status, .success)
+        XCTAssertEqual(event.handle, 0x000D)
     }
     
     func testChangeConnectionPacketType() async throws {
@@ -1996,7 +2012,7 @@ final class HCITests: XCTestCase {
         
         let packetType: PacketType = .acl(BitMaskOptionSet<ACLPacketType>(rawValue: 0xcc18))
         var caughtError: Error?
-        do { try await hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType) }
+        do { let _ = try await hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType) }
         catch { caughtError = error }
         XCTAssertNotNil(caughtError)
     }
@@ -2029,7 +2045,8 @@ final class HCITests: XCTestCase {
         guard let address = BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")
             else { XCTFail("Unable to init variable"); return }
         
-        (try await hostController.linkKeyRequestNegativeReply(address: address))
+        let eventAddress = try await hostController.linkKeyRequestNegativeReply(address: address)
+        XCTAssertEqual(eventAddress, address)
     }
     
     func testPINCodeRequestReply() async throws {
@@ -2070,9 +2087,12 @@ final class HCITests: XCTestCase {
         let pinCode = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
                                                             data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])))
         
-        (try await hostController.pinCodeRequestReply(address: address,
-                                                                pinCodeLength: length,
-                                                                pinCode: pinCode))
+        let eventAddress = try await hostController.pinCodeRequestReply(
+            address: address,
+            pinCodeLength: length,
+            pinCode: pinCode
+        )
+        XCTAssertEqual(eventAddress, address)
     }
     
     func testPINCodeRequest() async throws {
@@ -2158,9 +2178,10 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x0d, 0x08, 0x00, 0x0d, 0x00]))
         
-        (try await hostController.writeLinkPolicySettings(
+        let event = try await hostController.writeLinkPolicySettings(
             connectionHandle: 0x000D,
-            settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F)))
+            settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F))
+        XCTAssertEqual(event.connectionHandle, 0x000D)
     }
     
     func testQoSSetup() async throws {
@@ -2212,12 +2233,14 @@ final class HCITests: XCTestCase {
         guard let serviceType = HCIQoSSetup.ServiceType(rawValue: 0x02)
             else { XCTFail("Unable to parse service type"); return }
         
-        (try await hostController.qosSetup(connectionHandle: 0x000D,
+        let event = try await hostController.qosSetup(connectionHandle: 0x000D,
                                                      serviceType: serviceType,
                                                      tokenRate: 0x00000000,
                                                      peakBandWidth: 0x00000000,
                                                      latency: 0x00002BF2,
-                                                     delayVariation: 0xFFFFFFFF))
+                                                     delayVariation: 0xFFFFFFFF)
+        XCTAssertEqual(event.connectionHandle, 0x000D)
+        XCTAssertEqual(event.serviceType, serviceType)
     }
     
     func testReadPageTimeout() async throws {
@@ -2357,8 +2380,12 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0e, 0x08, 0x01, 0x0d, 0x0c, 0x00, 0x07, 0x00, 0x00, 0x00]))
         
-        (try await hostController.readStoredLinkKey(address: BluetoothAddress(rawValue: "8C:85:90:94:8A:7E")!,
-                                                              readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!))
+        let event = try await hostController.readStoredLinkKey(
+            address: BluetoothAddress(rawValue: "8C:85:90:94:8A:7E")!,
+            readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!
+        )
+        XCTAssertEqual(event.maxNumberKeys, 7)
+        XCTAssertEqual(event.numberKeysRead, 0)
     }
     
     func testReadLocalSupportedFeatures() async throws {
@@ -2620,10 +2647,13 @@ final class HCITests: XCTestCase {
         guard let authenticationRequeriments = HCIIOCapabilityRequestReply.AuthenticationRequirements(rawValue: 0x02)
             else { XCTFail("Cannot init daatPresent"); return }
         
-        (try await hostController.ioCapabilityRequestReply(address: address,
-                                                                     ioCapability: ioCapability,
-                                                                     obbDataPresent: dataPresent,
-                                                                     authenticationRequirements: authenticationRequeriments))
+        let eventAddress = try await hostController.ioCapabilityRequestReply(
+            address: address,
+            ioCapability: ioCapability,
+            obbDataPresent: dataPresent,
+            authenticationRequirements: authenticationRequeriments
+        )
+        XCTAssertEqual(eventAddress, address)
     }
     
     func testIOCapabilityRequest() async throws {
@@ -2688,7 +2718,8 @@ final class HCITests: XCTestCase {
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
             else { XCTFail("Unable to init address"); return }
         
-        (try await hostController.userConfirmationRequestReply(address: address))
+        let eventAddress = try await hostController.userConfirmationRequestReply(address: address)
+        XCTAssertEqual(eventAddress, address)
     }
     
     func testUserConfirmationRequest() async throws {
