@@ -67,3 +67,6 @@ fastlane/test_output
 
 # Jazzy
 docs
+
+# VS Code
+.vscode
