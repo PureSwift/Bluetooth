@@ -1,0 +1,16 @@
+name: Swift ARM
+
+on: [push]
+
+jobs:
+
+    linux-swift-arm64-debian:
+        name: Linux ARM64 Debian
+        runs-on: [self-hosted, linux, ARM64, swift, debian11]
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Swift Version
+          run: swift --version
+        - name: Build (Debug)
+          run: swift build -c debug -j 1
