@@ -28,31 +28,44 @@ public struct AdvertisingInterval: Equatable, Hashable {
     public let rawValue: UInt16
     
     public init?(rawValue: UInt16) {
-        
         guard rawValue <= AdvertisingInterval.max.rawValue,
             rawValue >= AdvertisingInterval.min.rawValue
             else { return nil }
-        
         self.rawValue = rawValue
     }
     
     private init(_ unsafe: UInt16) {
-        
         self.rawValue = unsafe
-    }
-    
-    public var miliseconds: Double {
-        
-        return Double(rawValue) * 0.625
     }
 }
 
+// MARK: - Conversion
+
 public extension AdvertisingInterval {
     
+    /// Initialize with the specified time in miliseconds.
+    init?(miliseconds: Int) {
+        let rawValue = UInt16(Double(miliseconds) / 0.625)
+        self.init(rawValue: rawValue)
+    }
+    
+    /// Value converted to miliseconds.
+    var miliseconds: Int {
+        return Int(Double(rawValue) * 0.625)
+    }
+}
+
+// MARK: - Definitions
+
+public extension AdvertisingInterval {
+    
+    /// Minimum value.
     static var min: AdvertisingInterval { return AdvertisingInterval(0x0020) }
     
+    /// Maximum value.
     static var max: AdvertisingInterval { return AdvertisingInterval(0x4000) }
     
+    /// Default value.
     static var `default`: AdvertisingInterval { return AdvertisingInterval(0x0800) }
 }
 
@@ -61,7 +74,6 @@ public extension AdvertisingInterval {
 extension AdvertisingInterval: Comparable {
     
     public static func < (lhs: AdvertisingInterval, rhs: AdvertisingInterval) -> Bool {
-        
         return lhs.rawValue < rhs.rawValue
     }
 }
@@ -71,7 +83,6 @@ extension AdvertisingInterval: Comparable {
 extension AdvertisingInterval: CustomStringConvertible {
     
     public var description: String {
-        
         return "\(miliseconds)ms"
     }
 }
