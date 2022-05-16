@@ -1,0 +1,31 @@
+name: Buildroot
+
+on: [push]
+
+jobs:
+
+    buildroot-armv7:
+        name: Buildroot Armv7
+        runs-on: ubuntu-20.04
+        container: swift:5.6.1-focal
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Swift Version
+          run: swift --version
+        - name: Install dependencies
+          run: |
+            apt-get update
+            apt-get install -y llvm-12-dev wget build-essential bash bc binutils build-essential bzip2 cpio g++ gcc git gzip libncurses5-dev make mercurial whois patch perl python rsync sed tar unzip
+            cp /usr/lib/llvm-12/include/llvm/Config/llvm-config.h /usr/lib/llvm-12/include/llvm/Config/config.h
+        - name: Fetch scripts
+          run: |
+            wget https://github.com/MillerTechnologyPeru/swift-cross-compile-action/archive/refs/heads/master.zip
+            unzip master.zip
+            mv swift-cross-compile-action-master swift-cross-compile-action
+        - name: Build
+          run: |
+            cd swift-cross-compile-action
+            export SWIFT_ARCH=armv7
+            export SWIFT_PACKAGE_PATH=$GITHUB_WORKSPACE 
+            ./build.sh
