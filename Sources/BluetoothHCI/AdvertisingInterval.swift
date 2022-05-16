@@ -45,8 +45,11 @@ public extension AdvertisingInterval {
     
     /// Initialize with the specified time in miliseconds.
     init?(miliseconds: Int) {
-        let rawValue = UInt16(Double(miliseconds) / 0.625)
-        self.init(rawValue: rawValue)
+        let rawValue = Double(miliseconds) / 0.625
+        guard rawValue <= Double(AdvertisingInterval.max.rawValue),
+            rawValue >= Double(AdvertisingInterval.min.rawValue)
+            else { return nil }
+        self.rawValue = UInt16(rawValue)
     }
     
     /// Value converted to miliseconds.
