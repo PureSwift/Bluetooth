@@ -25,6 +25,7 @@ jobs:
             name: swiftpm-build
             path: .build/*
         - name: Test
+          continue-on-error: true
           run: |
             cd /usr/src/buildroot-external
             export SWIFT_ARCH=armv7
