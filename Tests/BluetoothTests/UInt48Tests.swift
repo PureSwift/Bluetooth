@@ -32,7 +32,8 @@ final class UInt48Tests: XCTestCase {
     
     func testHashable() {
         
-        XCTAssertEqual(UInt48.zero.hashValue, 0.hashValue)
+        XCTAssertEqual(UInt48.zero.hashValue, UInt64(UInt48.zero).hashValue)
+        XCTAssertEqual(UInt48.max.hashValue, UInt64(UInt48.max).hashValue)
         XCTAssertNotEqual(UInt48.max.hashValue, 0)
     }
     
