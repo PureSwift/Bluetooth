@@ -24,10 +24,3 @@ jobs:
           with:
             name: swiftpm-build
             path: .build/*
-        - name: Test
-          continue-on-error: true
-          run: |
-            cd /usr/src/buildroot-external
-            export SWIFT_ARCH=armv7
-            export BUILDROOT_SRCDIR=./buildroot-${SWIFT_ARCH}
-            chroot ${BUILDROOT_SRCDIR}/output/target /usr/bin/qemu-arm-static /usr/bin/BluetoothPackageTests.xctest
