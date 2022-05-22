@@ -1,0 +1,26 @@
+name: Buildroot
+
+on: [push]
+
+jobs:
+
+    buildroot-armv7:
+        name: Buildroot Armv7
+        runs-on: ubuntu-20.04
+        container: colemancda/swift-buildroot:amd64-prebuilt-armv7
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Swift Version
+          run: swift --version
+        - name: Build
+          run: |
+            cd /usr/src/buildroot-external
+            export SWIFT_ARCH=armv7
+            export SWIFT_PACKAGE_PATH=$GITHUB_WORKSPACE
+            ./build-swift-package.sh
+        - name: Archive Build artifacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: swiftpm-build
+            path: .build/*
