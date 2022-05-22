@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
 
-    linux-swift-arm64-debian:
-        name: Linux ARM64 Debian
+    linux-swift-arm64-debian-build:
+        name: Debian ARM64 (Build)
         runs-on: [self-hosted, linux, ARM64, swift, debian11]
         steps:
         - name: Checkout
@@ -14,3 +14,32 @@ jobs:
           run: swift --version
         - name: Build (Debug)
           run: swift build -c debug -j 1
+        - name: Archive Build artifacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: swiftpm-build-debian-arm64
+            path: .build/*
+
+    linux-swift-armv7-debian-build:
+        name: Debian Armv7 (Build)
+        runs-on: ubuntu-20.04
+        container: colemancda/swift-armv7:amd64-prebuilt
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Swift Version
+          run: swift --version
+        - name: Build
+          run: |
+            cd /usr/src/swift-armv7
+            export SWIFT_PACKAGE_SRCDIR=$GITHUB_WORKSPACE
+            export SWIFT_PACKAGE_BUILDDIR=$SWIFT_PACKAGE_SRCDIR/.build
+            mkdir -p $SWIFT_PACKAGE_BUILDDIR
+            mkdir -p /usr/src/swift-armv7/build/
+            ./generate-swiftpm-toolchain.sh
+            ./build-swift-package.sh
+        - name: Archive Build artifacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: swiftpm-build-debian-armv7
+            path: .build/*
