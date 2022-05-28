@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
 
-    buildroot-armv7:
-        name: Buildroot Armv7
+    buildroot-armv7-build:
+        name: Build Armv7
         runs-on: ubuntu-20.04
         container: colemancda/swift-buildroot:amd64-prebuilt-armv7
         steps:
@@ -22,5 +22,5 @@ jobs:
         - name: Archive Build artifacts
           uses: actions/upload-artifact@v3
           with:
-            name: swiftpm-build
-            path: .build/*
+            name: swiftpm-build-armv7
+            path: .build/*/*.xctest

@@ -3,27 +3,11 @@ name: Swift ARM
 on: [push]
 
 jobs:
-
-    linux-swift-arm64-debian-build:
-        name: Debian ARM64 (Build)
-        runs-on: [self-hosted, linux, ARM64, swift, debian11]
-        steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: Swift Version
-          run: swift --version
-        - name: Build (Debug)
-          run: swift build -c debug -j 1
-        - name: Archive Build artifacts
-          uses: actions/upload-artifact@v3
-          with:
-            name: swiftpm-build-debian-arm64
-            path: .build/*
-
-    linux-swift-armv7-debian-build:
-        name: Debian Armv7 (Build)
+    
+    linux-swift-5_6-armv7-debian-build:
+        name: Build Debian Armv7 (Swift 5.6.1)
         runs-on: ubuntu-20.04
-        container: colemancda/swift-armv7:amd64-prebuilt
+        container: colemancda/swift-armv7:5.6.1-prebuilt
         steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -41,5 +25,43 @@ jobs:
         - name: Archive Build artifacts
           uses: actions/upload-artifact@v3
           with:
-            name: swiftpm-build-debian-armv7
-            path: .build/*
+            name: swiftpm-5_6-build-debian-armv7
+            path: .build/*/*.xctest
+    
+    linux-swift-5_6-armv7-debian-armv7-test:
+        name: Test Armv7
+        runs-on: [self-hosted, linux, ARM64, debian-unstable]
+        needs: linux-swift-5_6-armv7-debian-build
+        steps:
+        - name: Download artifacts
+          uses: actions/download-artifact@v3
+          with: 
+            name: swiftpm-5_6-build-debian-armv7
+        - name: Test
+          run: |
+            chmod +x ./release/BluetoothPackageTests.xctest
+            schroot -c bullseye-armv7 ./release/BluetoothPackageTests.xctest
+    
+    linux-swift-5_5-armv7-debian-build:
+        name: Build Debian Armv7 (Swift 5.5.3)
+        runs-on: ubuntu-20.04
+        container: colemancda/swift-armv7:5.5.3-amd64-prebuilt
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Swift Version
+          run: swift --version
+        - name: Build
+          run: |
+            cd /usr/src/swift-armv7
+            export SWIFT_PACKAGE_SRCDIR=$GITHUB_WORKSPACE
+            export SWIFT_PACKAGE_BUILDDIR=$SWIFT_PACKAGE_SRCDIR/.build
+            mkdir -p $SWIFT_PACKAGE_BUILDDIR
+            mkdir -p /usr/src/swift-armv7/build/
+            ./generate-swiftpm-toolchain.sh
+            ./build-swift-package.sh
+        - name: Archive Build artifacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: swiftpm-5_5-build-debian-armv7
+            path: .build/*/*.xctest
