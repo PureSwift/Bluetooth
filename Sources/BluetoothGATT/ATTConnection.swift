@@ -56,10 +56,6 @@ internal actor ATTConnection {
         
     // MARK: - Initialization
     
-    deinit {
-        unregisterAll()
-    }
-    
     public init(
         socket: L2CAPSocket,
         log: ((String) -> ())? = nil,

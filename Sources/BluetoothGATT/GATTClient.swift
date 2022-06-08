@@ -38,17 +38,17 @@ public actor GATTClient {
     
     internal let connection: ATTConnection
     
-    private var sendContinuations = [UInt: (Swift.Error) -> ()]()
+    private var sendContinuations = [UInt: @Sendable (Swift.Error) -> ()]()
     
     private var sendID: UInt = 0
     
     // MARK: - Initialization
     
     deinit {
-        sendContinuations.values.forEach { continuation in
+        let continuations = self.sendContinuations.values
+        continuations.forEach { continuation in
             continuation(CancellationError())
         }
-        sendContinuations.removeAll()
     }
     
     public init(
