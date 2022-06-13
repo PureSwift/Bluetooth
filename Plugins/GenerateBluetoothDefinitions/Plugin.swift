@@ -15,7 +15,8 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) throws -> [Command] {
         let target = target as! SwiftSourceModuleTarget
         var commands = [Command]()
-        do {
+        // Generate Bluetooth Company Identifier Definitions
+        if target.name == "Bluetooth" {
             let inputFileName = "CompanyIdentifiers.csv"
             let inputPath = target
                 .sourceFiles(withSuffix: "csv")
@@ -26,7 +27,7 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
                 Diagnostics.error("Missing \(inputFileName)")
                 throw CocoaError(CocoaError.fileNoSuchFile)
             }
-            let outputDirectory = context.pluginWorkDirectory.appending("Generated")
+            let outputDirectory = context.pluginWorkDirectory
             let outputPaths = [
                 outputDirectory.appending("CompanyIdentifiers.swift"),
                 outputDirectory.appending("CompanyIdentifierNames.swift")
@@ -37,6 +38,32 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
                 arguments: ["companyIdentifier", inputPath] + outputPaths,
                 inputFiles: [inputPath],
                 outputFiles: outputPaths
+            )
+            commands.append(command)
+        }
+        // Generate Bluetooth Company Identifier Unit Tests
+        if target.name == "BluetoothTests" {
+            let inputFileName = "CompanyIdentifiers.csv"
+            guard let bluetoothTarget = try context.package.targets(named: ["Bluetooth"]).first as? SwiftSourceModuleTarget else {
+                fatalError("Missing Bluetooth target")
+            }
+            let inputPath = bluetoothTarget
+                .sourceFiles(withSuffix: "csv")
+                .filter { $0.type == .unknown }
+                .first { $0.path.lastComponent == inputFileName }
+                .map { $0.path }
+            guard let inputPath = inputPath else {
+                Diagnostics.error("Missing \(inputFileName)")
+                throw CocoaError(CocoaError.fileNoSuchFile)
+            }
+            let outputDirectory = context.pluginWorkDirectory
+            let outputPath = outputDirectory.appending("CompanyIdentifierTests.swift")
+            let command = Command.buildCommand(
+                displayName: "Generate Bluetooth Company Identifier Unit Tests",
+                executable: try context.tool(named: "GenerateBluetooth").path,
+                arguments: ["companyIdentifierTests", inputPath, outputPath],
+                inputFiles: [inputPath],
+                outputFiles: [outputPath]
             )
             commands.append(command)
         }

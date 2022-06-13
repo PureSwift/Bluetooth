@@ -32,6 +32,18 @@ struct GenerateTool {
                 input: inputFile,
                 output: outputFiles
             )
+        case .companyIdentifierTests:
+            // parse arguments
+            guard arguments.count == 4 else {
+                throw CommandError.invalidArguments(arguments)
+            }
+            let inputFile = URL(fileURLWithPath: arguments[2])
+            let outputFile = URL(fileURLWithPath: arguments[3])
+            // generate files
+            try generateCompanyIdentifierTests(
+                input: inputFile,
+                output: outputFile
+            )
         }
     }
 }
@@ -39,6 +51,7 @@ struct GenerateTool {
 enum CommandType: String {
     
     case companyIdentifier
+    case companyIdentifierTests
 }
 
 enum CommandError: Error {

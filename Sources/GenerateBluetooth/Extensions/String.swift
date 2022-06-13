@@ -76,6 +76,7 @@ public extension String {
         name = name.replacingOccurrences(of: "sp. z o.o. sp. k.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Sp. z o.o.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " S.A.S.", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " S.A.S", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " S.p.A.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " ASA", with: "")
         name = name.replacingOccurrences(of: " A.S.A.", with: "", options: .caseInsensitive)

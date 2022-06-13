@@ -9,29 +9,45 @@ import Foundation
 
 extension GenerateTool {
     
-    static func parseCSV() throws -> [UInt16: String] {
+    static func parseCSV(input: URL) throws -> [UInt16: String] {
         // TODO: parse CSV
-        return companyIdentifiers
+        return _companyIdentifiers
+    }
+    
+    static func companyIdentifiers(from data: [UInt16: String]) -> [(id: UInt16, name: String, member: String)] {
+        let blacklist: [UInt16] = [
+            .max // remove internal use identifier
+        ]
+        let companies = data
+            .sorted(by: { $0.key < $1.key })
+            .filter { blacklist.contains($0.key) == false }
+        var memberNames = [UInt16: String]()
+        memberNames.reserveCapacity(companies.count)
+        for (id, name) in companies {
+            let sanitizedName = name.sanitizeName()
+            let llamaCaseName = sanitizedName.llamaCase()
+            var memberName = llamaCaseName
+            // prevent duplicate entries
+            var duplicateNumber = 1
+            while memberNames.values.contains(memberName) {
+                duplicateNumber += 1
+                memberName = llamaCaseName + "\(duplicateNumber)"
+            }
+            memberNames[id] = memberName
+        }
+        return companies.map { ($0, $1, memberNames[$0]!) }
     }
     
     static func generateCompanyIdentifiers(input: URL, output: [URL]) throws {
-        let data = try parseCSV()
+        let data = try parseCSV(input: input)
         try generateCompanyIdentifierExtensions(data, output: output[0])
         try generateCompanyIdentifierNames(data, output: output[1])
     }
     
     static func generateCompanyIdentifierExtensions(_ data: [UInt16: String], output: URL) throws {
         
-        let blacklist: [UInt16] = [
-            .max // remove internal use identifier
-        ]
-        
-        let companies = companyIdentifiers
-            .sorted(by: { $0.key < $1.key })
-            .filter { blacklist.contains($0.key) == false }
-        
         var generatedCode = ""
-        var memberNameCache = [UInt16: String]()
+        let companies = companyIdentifiers(from: data)
         
         func 🖨(_ text: String) {
             generatedCode += text + "\n"
@@ -45,28 +61,14 @@ extension GenerateTool {
         🖨("public extension CompanyIdentifier {")
         🖨("")
         
-        for (identifier, name) in companies {
-            let sanitizedName = name.sanitizeName()
-            let llamaCaseName = sanitizedName.llamaCase()
-            var memberName = llamaCaseName
+        for (id, name, memberName) in companies {
             
-            // prevent duplicate entries
-            var duplicateNumber = 1
-            while memberNameCache.values.contains(memberName) {
-                duplicateNumber += 1
-                memberName = llamaCaseName + "\(duplicateNumber)"
-            }
-            
-            let comment = name + " " + "(`\(identifier)`)"
-            
-            🖨("    /// " + comment)
+            🖨("    /// " + name + " " + "(`\(id)`)")
             🖨("    @_alwaysEmitIntoClient")
             🖨("    static var " + memberName + ": CompanyIdentifier {")
-            🖨("        return CompanyIdentifier(rawValue: \(identifier))")
+            🖨("        return CompanyIdentifier(rawValue: \(id))")
             🖨("    }")
             🖨("")
-            
-            memberNameCache[identifier] = memberName
         }
         
         🖨("}")
@@ -77,67 +79,94 @@ extension GenerateTool {
     
     static func generateCompanyIdentifierNames(_ data: [UInt16: String], output: URL) throws {
         
-        let blacklist: [UInt16] = [
-            .max // remove internal use identifier
-        ]
-        
-        let companies = companyIdentifiers
-            .sorted(by: { $0.key < $1.key })
-            .filter { blacklist.contains($0.key) == false }
-        
         var generatedCode = ""
-        var memberNameCache = [UInt16: String]()
+        let companies = companyIdentifiers(from: data)
         
         func 🖨(_ text: String) {
             generatedCode += text + "\n"
         }
-                
+        
         🖨("//")
         🖨("//  CompanyIdentifierNames.swift")
         🖨("//  Bluetooth")
         🖨("//")
         🖨("")
-        🖨("internal let companyIdentifiers: [UInt16: String] = {")
+        🖨("internal extension CompanyIdentifier {")
         🖨("")
-        🖨("    var companyIdentifiers = [UInt16: String]()")
-        🖨("    companyIdentifiers.reserveCapacity(\(companies.count))")
+        🖨("    static let companyIdentifiers: [UInt16: String] = {")
+        🖨("")
+        🖨("        var companyIdentifiers = [UInt16: String]()")
+        🖨("        companyIdentifiers.reserveCapacity(\(companies.count))")
         🖨("")
         
-        for (identifier, name) in companies {
-            let sanitizedName = name.sanitizeName()
-            let llamaCaseName = sanitizedName.llamaCase()
-            var memberName = llamaCaseName
-            
-            // prevent duplicate entries
-            var duplicateNumber = 1
-            while memberNameCache.values.contains(memberName) {
-                duplicateNumber += 1
-                memberName = llamaCaseName + "\(duplicateNumber)"
-            }
-            
-            let comment = name + " " + "(`\(identifier)`)"
-            
-            🖨("    /// " + comment)
-            🖨("    companyIdentifiers[\(identifier)] = #\"\(name)\"#")
-            🖨("")
-            
-            memberNameCache[identifier] = memberName
+        for (id, name, _) in companies {
+            🖨("        companyIdentifiers[\(id)] = #\"\(name)\"#")
         }
         
-        🖨("    return companyIdentifiers")
-        🖨("}()")
+        🖨("        return companyIdentifiers")
+        🖨("    }()")
+        🖨("}")
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
         print("Generated Swift \(output.path)")
     }
     
-    static func generateCompanyIdentifierTests(_ data: [UInt16: String], output: URL) throws {
+    static func generateCompanyIdentifierTests(input: URL, output: URL) throws {
+        
+        let data = try parseCSV(input: input)
+        
+        var generatedCode = ""
+        let companies = companyIdentifiers(from: data)
+        
+        func 🖨(_ text: String) {
+            generatedCode += text + "\n"
+        }
+        
+        // generate unit test for extensions
+        generatedCode = """
+        //
+        //  CompanyIdentifierTests.swift
+        //  Bluetooth
+        //
+        
+        import XCTest
+        import Foundation
+        @testable import Bluetooth
+        
+        // swiftlint:disable type_body_length
+        final class CompanyIdentifierTests: XCTestCase {
+        
+            func testCompanies() {
         
         
+        """
+        
+        // generate test methods
+        
+        for (id, name, memberName) in companies {
+                        
+            🖨("""
+                    // \(name)
+                    XCTAssertEqual(CompanyIdentifier.\(memberName).rawValue, \(id))
+                    XCTAssertEqual(CompanyIdentifier.\(memberName).name, #\"\(name)\"#)
+                    XCTAssertEqual(CompanyIdentifier.\(memberName).description, #\"\(name)\"#)
+                
+            """)
+        }
+        
+        🖨("""
+                }
+            
+            }
+            // swiftlint:enable type_body_length
+            """)
+        
+        try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
+        print("Generated Swift \(output.path)")
     }
 }
 
-internal let companyIdentifiers: [UInt16: String] = [
+internal let _companyIdentifiers: [UInt16: String] = [
   0: "Ericsson Technology Licensing",
   1: "Nokia Mobile Phones",
   2: "Intel Corp.",

@@ -79,6 +79,7 @@ if buildDocs {
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ]
 }
+#if os(Linux) || os(macOS)
 package.targets += [
     .executableTarget(
         name: "GenerateBluetooth",
@@ -95,4 +96,8 @@ package.targets += [
 package.targets[0].plugins = [
     "GenerateBluetoothDefinitions"
 ]
+package.targets[4].plugins = [
+    "GenerateBluetoothDefinitions"
+]
+#endif
 #endif

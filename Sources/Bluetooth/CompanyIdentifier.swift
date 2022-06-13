@@ -38,7 +38,7 @@ public extension CompanyIdentifier {
     ///
     /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
     var name: String? {
-        return companyIdentifiers[rawValue]
+        return Self.companyIdentifiers[rawValue]
     }
 }
 
