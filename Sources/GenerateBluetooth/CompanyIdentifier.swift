@@ -100,6 +100,7 @@ extension GenerateTool {
         🖨("internal let companyIdentifiers: [UInt16: String] = {")
         🖨("")
         🖨("    var companyIdentifiers = [UInt16: String]()")
+        🖨("    companyIdentifiers.reserveCapacity(\(companies.count))")
         🖨("")
         
         for (identifier, name) in companies {
@@ -128,6 +129,11 @@ extension GenerateTool {
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
         print("Generated Swift \(output.path)")
+    }
+    
+    static func generateCompanyIdentifierTests(_ data: [UInt16: String], output: URL) throws {
+        
+        
     }
 }
 

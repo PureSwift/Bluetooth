@@ -7,6 +7,7 @@
 internal let companyIdentifiers: [UInt16: String] = {
 
     var companyIdentifiers = [UInt16: String]()
+    companyIdentifiers.reserveCapacity(1610)
 
     /// Ericsson Technology Licensing (`0`)
     companyIdentifiers[0] = #"Ericsson Technology Licensing"#
