@@ -53,7 +53,6 @@ extension GenerateTool {
             // prevent duplicate entries
             var duplicateNumber = 1
             while memberNameCache.values.contains(memberName) {
-                
                 duplicateNumber += 1
                 memberName = llamaCaseName + "\(duplicateNumber)"
             }
@@ -61,6 +60,7 @@ extension GenerateTool {
             let comment = name + " " + "(`\(identifier)`)"
             
             🖨("    /// " + comment)
+            🖨("    @_alwaysEmitIntoClient")
             🖨("    static var " + memberName + ": CompanyIdentifier {")
             🖨("        return CompanyIdentifier(rawValue: \(identifier))")
             🖨("    }")
@@ -72,7 +72,7 @@ extension GenerateTool {
         🖨("}")
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
-        print("Generated Swift code \(output.path)")
+        print("Generated Swift \(output.path)")
     }
     
     static func generateCompanyIdentifierNames(_ data: [UInt16: String], output: URL) throws {
@@ -98,6 +98,7 @@ extension GenerateTool {
         🖨("//")
         🖨("")
         🖨("internal let companyIdentifiers: [UInt16: String] = {")
+        🖨("")
         🖨("    var companyIdentifiers = [UInt16: String]()")
         🖨("")
         
@@ -109,7 +110,6 @@ extension GenerateTool {
             // prevent duplicate entries
             var duplicateNumber = 1
             while memberNameCache.values.contains(memberName) {
-                
                 duplicateNumber += 1
                 memberName = llamaCaseName + "\(duplicateNumber)"
             }
@@ -127,7 +127,7 @@ extension GenerateTool {
         🖨("}()")
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
-        print("Generated Swift code \(output.path)")
+        print("Generated Swift \(output.path)")
     }
 }
 

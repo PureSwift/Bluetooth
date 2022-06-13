@@ -31,14 +31,6 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
                 outputDirectory.appending("CompanyIdentifiers.swift"),
                 outputDirectory.appending("CompanyIdentifierNames.swift")
             ]
-            /*
-             .prebuildCommand(
-                 displayName: "Generate Bluetooth Company Identifier Definitions",
-                 executable: try context.tool(named: "GenerateBluetooth").path,
-                 arguments: ["companyIdentifier", inputPath, outputPath],
-                 outputFilesDirectory: target.directory.appending(subpath: "Generated")
-             )
-             */
             let command = Command.buildCommand(
                 displayName: "Generate Bluetooth Company Identifier Definitions",
                 executable: try context.tool(named: "GenerateBluetooth").path,

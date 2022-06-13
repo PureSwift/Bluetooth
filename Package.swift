@@ -59,10 +59,6 @@ var package = Package(
                 "BluetoothGAP"
             ]
         ),
-        .executableTarget(
-            name: "GenerateBluetooth",
-            dependencies: []
-        ),
         .testTarget(
             name: "BluetoothTests",
             dependencies: [
@@ -83,7 +79,11 @@ if buildDocs {
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ]
 }
-package.targets.append(
+package.targets += [
+    .executableTarget(
+        name: "GenerateBluetooth",
+        dependencies: []
+    ),
     .plugin(
         name: "GenerateBluetoothDefinitions",
         capability: .buildTool(),
@@ -91,7 +91,7 @@ package.targets.append(
             "GenerateBluetooth"
         ]
     )
-)
+]
 package.targets[0].plugins = [
     "GenerateBluetoothDefinitions"
 ]
