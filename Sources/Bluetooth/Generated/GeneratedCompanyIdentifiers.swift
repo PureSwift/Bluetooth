@@ -584,7 +584,7 @@ public extension CompanyIdentifier {
 
     /// RivieraWaves S.A.S (`96`)
     @_alwaysEmitIntoClient
-    static var rivierawavess: CompanyIdentifier {
+    static var rivierawaves: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 96)
     }
 
