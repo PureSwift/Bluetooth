@@ -1,27 +1,136 @@
 //
-//  DefinedCompanyIdentifier.swift
-//  Bluetooth
+//  CompanyIdentifier.swift
+//  
 //
-//  Created by Alsey Coleman Miller on 5/30/18.
-//  Copyright © 2018 PureSwift. All rights reserved.
+//  Created by Alsey Coleman Miller on 6/12/22.
 //
 
 import Foundation
 
-public extension CompanyIdentifier {
+extension GenerateTool {
     
-    /// Bluetooth Company name.
-    ///
-    /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
-    var name: String? {
+    static func parseCSV() throws -> [UInt16: String] {
+        // TODO: parse CSV
+        return companyIdentifiers
+    }
+    
+    static func generateCompanyIdentifiers(input: URL, output: [URL]) throws {
+        let data = try parseCSV()
+        try generateCompanyIdentifierExtensions(data, output: output[0])
+        try generateCompanyIdentifierNames(data, output: output[1])
+    }
+    
+    static func generateCompanyIdentifierExtensions(_ data: [UInt16: String], output: URL) throws {
         
-        return companyIdentifiers[rawValue]
+        let blacklist: [UInt16] = [
+            .max // remove internal use identifier
+        ]
+        
+        let companies = companyIdentifiers
+            .sorted(by: { $0.key < $1.key })
+            .filter { blacklist.contains($0.key) == false }
+        
+        var generatedCode = ""
+        var memberNameCache = [UInt16: String]()
+        
+        func 🖨(_ text: String) {
+            generatedCode += text + "\n"
+        }
+                
+        🖨("//")
+        🖨("//  CompanyIdentifiers.swift")
+        🖨("//  Bluetooth")
+        🖨("//")
+        🖨("")
+        🖨("public extension CompanyIdentifier {")
+        🖨("")
+        
+        for (identifier, name) in companies {
+            let sanitizedName = name.sanitizeName()
+            let llamaCaseName = sanitizedName.llamaCase()
+            var memberName = llamaCaseName
+            
+            // prevent duplicate entries
+            var duplicateNumber = 1
+            while memberNameCache.values.contains(memberName) {
+                
+                duplicateNumber += 1
+                memberName = llamaCaseName + "\(duplicateNumber)"
+            }
+            
+            let comment = name + " " + "(`\(identifier)`)"
+            
+            🖨("    /// " + comment)
+            🖨("    static var " + memberName + ": CompanyIdentifier {")
+            🖨("        return CompanyIdentifier(rawValue: \(identifier))")
+            🖨("    }")
+            🖨("")
+            
+            memberNameCache[identifier] = memberName
+        }
+        
+        🖨("}")
+        
+        try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
+        print("Generated Swift code \(output.path)")
+    }
+    
+    static func generateCompanyIdentifierNames(_ data: [UInt16: String], output: URL) throws {
+        
+        let blacklist: [UInt16] = [
+            .max // remove internal use identifier
+        ]
+        
+        let companies = companyIdentifiers
+            .sorted(by: { $0.key < $1.key })
+            .filter { blacklist.contains($0.key) == false }
+        
+        var generatedCode = ""
+        var memberNameCache = [UInt16: String]()
+        
+        func 🖨(_ text: String) {
+            generatedCode += text + "\n"
+        }
+                
+        🖨("//")
+        🖨("//  CompanyIdentifierNames.swift")
+        🖨("//  Bluetooth")
+        🖨("//")
+        🖨("")
+        🖨("internal let companyIdentifiers: [UInt16: String] = {")
+        🖨("    var companyIdentifiers = [UInt16: String]()")
+        🖨("")
+        
+        for (identifier, name) in companies {
+            let sanitizedName = name.sanitizeName()
+            let llamaCaseName = sanitizedName.llamaCase()
+            var memberName = llamaCaseName
+            
+            // prevent duplicate entries
+            var duplicateNumber = 1
+            while memberNameCache.values.contains(memberName) {
+                
+                duplicateNumber += 1
+                memberName = llamaCaseName + "\(duplicateNumber)"
+            }
+            
+            let comment = name + " " + "(`\(identifier)`)"
+            
+            🖨("    /// " + comment)
+            🖨("    companyIdentifiers[\(identifier)] = #\"\(name)\"#")
+            🖨("")
+            
+            memberNameCache[identifier] = memberName
+        }
+        
+        🖨("    return companyIdentifiers")
+        🖨("}()")
+        
+        try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
+        print("Generated Swift code \(output.path)")
     }
 }
 
-// MARK: - Name List
-
-/// https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers
 internal let companyIdentifiers: [UInt16: String] = [
   0: "Ericsson Technology Licensing",
   1: "Nokia Mobile Phones",
