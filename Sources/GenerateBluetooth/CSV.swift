@@ -481,14 +481,9 @@ public struct CSV {
             }
             
             let scanner = Scanner(string: string)
-            
-            var firstLine: NSString? = nil
-            scanner.scanUpToCharacters(from: CharacterSet.newlines, into: &firstLine)
-            
-            guard let header = firstLine else {
+            guard let header = scanner.scanUpToCharacters(from: .newlines) else {
                 return nil
             }
-            
             return self.detectConfigurationForString(header as String, encoding: encoding)
         }
         
