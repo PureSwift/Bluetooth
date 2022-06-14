@@ -90,9 +90,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 13)
     }
 
-    /// Ceva, Inc. (formerly Parthus Technologies, Inc.) (`14`)
+    /// Parthus Technologies Inc. (`14`)
     @_alwaysEmitIntoClient
-    static var cevaFormerlyParthusTechnologies: CompanyIdentifier {
+    static var parthusTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 14)
     }
 
@@ -108,7 +108,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 16)
     }
 
-    /// Widcomm, Inc (`17`)
+    /// Widcomm, Inc. (`17`)
     @_alwaysEmitIntoClient
     static var widcomm: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 17)
@@ -144,7 +144,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 22)
     }
 
-    /// NewLogic (`23`)
+    /// Newlogic (`23`)
     @_alwaysEmitIntoClient
     static var newlogic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 23)
@@ -354,9 +354,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 57)
     }
 
-    /// Matsushita Electric Industrial Co., Ltd. (`58`)
+    /// Panasonic Corporation (formerly Matsushita Electric Industrial Co., Ltd.) (`58`)
     @_alwaysEmitIntoClient
-    static var matsushitaElectricIndustrial: CompanyIdentifier {
+    static var panasonicFormerlyMatsushitaElectricIndustrial: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 58)
     }
 
@@ -366,7 +366,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 59)
     }
 
-    /// BlackBerry Limited (formerly Research In Motion) (`60`)
+    /// BlackBerry Limited  (formerly Research In Motion) (`60`)
     @_alwaysEmitIntoClient
     static var blackberryFormerlyResearchInMotion: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 60)
@@ -378,13 +378,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 61)
     }
 
-    /// Systems and Chips, Inc. (`62`)
+    /// Systems and Chips, Inc (`62`)
     @_alwaysEmitIntoClient
     static var systemsAndChips: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 62)
     }
 
-    /// Bluetooth SIG, Inc. (`63`)
+    /// Bluetooth SIG, Inc (`63`)
     @_alwaysEmitIntoClient
     static var bluetoothSig: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 63)
@@ -480,13 +480,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 78)
     }
 
-    /// APT Licensing Ltd. (`79`)
+    /// APT Ltd. (`79`)
     @_alwaysEmitIntoClient
-    static var aptLicensing: CompanyIdentifier {
+    static var apt: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 79)
     }
 
-    /// SiRF Technology (`80`)
+    /// SiRF Technology, Inc. (`80`)
     @_alwaysEmitIntoClient
     static var sirfTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 80)
@@ -612,9 +612,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 100)
     }
 
-    /// Hewlett-Packard Company (`101`)
+    /// HP, Inc. (`101`)
     @_alwaysEmitIntoClient
-    static var hewlettPackardCompany: CompanyIdentifier {
+    static var hp: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 101)
     }
 
@@ -660,7 +660,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 108)
     }
 
-    /// BriarTek, Inc. (`109`)
+    /// BriarTek, Inc (`109`)
     @_alwaysEmitIntoClient
     static var briartek: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 109)
@@ -756,7 +756,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 124)
     }
 
-    /// Seers Technology Co. Ltd (`125`)
+    /// Seers Technology Co., Ltd. (`125`)
     @_alwaysEmitIntoClient
     static var seersTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 125)
@@ -810,9 +810,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 133)
     }
 
-    /// Equinox AG (`134`)
+    /// Equinux AG (`134`)
     @_alwaysEmitIntoClient
-    static var equinox: CompanyIdentifier {
+    static var equinux: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 134)
     }
 
@@ -858,15 +858,15 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 141)
     }
 
-    /// Quintic Corp. (`142`)
+    /// Quintic Corp (`142`)
     @_alwaysEmitIntoClient
     static var quintic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 142)
     }
 
-    /// Telit Wireless Solutions GmbH (Formerly Stollman E+V GmbH) (`143`)
+    /// Telit Wireless Solutions GmbH (formerly Stollmann E+V GmbH) (`143`)
     @_alwaysEmitIntoClient
-    static var telitWirelessSolutionsFormerlyStollmanEV: CompanyIdentifier {
+    static var telitWirelessSolutionsFormerlyStollmannEV: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 143)
     }
 
@@ -876,7 +876,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 144)
     }
 
-    /// Advanced PANMOBIL Systems GmbH & Co. KG (`145`)
+    /// Advanced PANMOBIL systems GmbH & Co. KG (`145`)
     @_alwaysEmitIntoClient
     static var advancedPanmobilSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 145)
@@ -918,9 +918,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 151)
     }
 
-    /// zer01.tv GmbH (`152`)
+    /// zero1.tv GmbH (`152`)
     @_alwaysEmitIntoClient
-    static var zer01Tv: CompanyIdentifier {
+    static var zero1Tv: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 152)
     }
 
@@ -1020,9 +1020,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 168)
     }
 
-    /// Magneti Marelli S.p.A (`169`)
+    /// MARELLI EUROPE S.P.A. (formerly Magneti Marelli S.p.A.) (`169`)
     @_alwaysEmitIntoClient
-    static var magnetiMarelliSPA: CompanyIdentifier {
+    static var marelliEuropeFormerlyMagnetiMarelli: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 169)
     }
 
@@ -1074,19 +1074,19 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 177)
     }
 
-    /// Bekey A/S (`178`)
+    /// ​Bekey A/S (`178`)
     @_alwaysEmitIntoClient
     static var bekey: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 178)
     }
 
-    /// Clarinox Technologies Pty. Ltd. (`179`)
+    /// ​Clarinox Technologies Pty. Ltd. (`179`)
     @_alwaysEmitIntoClient
     static var clarinoxTechnologiesPty: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 179)
     }
 
-    /// BDE Technology Co., Ltd. (`180`)
+    /// ​BDE Technology Co., Ltd. (`180`)
     @_alwaysEmitIntoClient
     static var bdeTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 180)
@@ -1098,109 +1098,109 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 181)
     }
 
-    /// Meso international (`182`)
+    /// ​Meso international (`182`)
     @_alwaysEmitIntoClient
     static var mesoInternational: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 182)
     }
 
-    /// TreLab Ltd (`183`)
+    /// ​TreLab Ltd (`183`)
     @_alwaysEmitIntoClient
     static var trelab: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 183)
     }
 
-    /// Qualcomm Innovation Center, Inc. (QuIC) (`184`)
+    /// ​Qualcomm Innovation Center, Inc. (QuIC) (`184`)
     @_alwaysEmitIntoClient
     static var qualcommInnovationCenterQuic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 184)
     }
 
-    /// Johnson Controls, Inc. (`185`)
+    /// ​​Johnson Controls, Inc. (`185`)
     @_alwaysEmitIntoClient
     static var johnsonControls: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 185)
     }
 
-    /// Starkey Laboratories Inc. (`186`)
+    /// ​Starkey Laboratories Inc. (`186`)
     @_alwaysEmitIntoClient
     static var starkeyLaboratories: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 186)
     }
 
-    /// S-Power Electronics Limited (`187`)
+    /// ​​S-Power Electronics Limited (`187`)
     @_alwaysEmitIntoClient
     static var sPowerElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 187)
     }
 
-    /// Ace Sensor Inc (`188`)
+    /// ​​Ace Sensor Inc (`188`)
     @_alwaysEmitIntoClient
     static var aceSensor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 188)
     }
 
-    /// Aplix Corporation (`189`)
+    /// ​​Aplix Corporation (`189`)
     @_alwaysEmitIntoClient
     static var aplix: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 189)
     }
 
-    /// AAMP of America (`190`)
+    /// ​​AAMP of America (`190`)
     @_alwaysEmitIntoClient
     static var aampOfAmerica: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 190)
     }
 
-    /// Stalmart Technology Limited (`191`)
+    /// ​​Stalmart Technology Limited (`191`)
     @_alwaysEmitIntoClient
     static var stalmartTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 191)
     }
 
-    /// AMICCOM Electronics Corporation (`192`)
+    /// ​​AMICCOM Electronics Corporation (`192`)
     @_alwaysEmitIntoClient
     static var amiccomElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 192)
     }
 
-    /// Shenzhen Excelsecu Data Technology Co.,Ltd (`193`)
+    /// ​​Shenzhen Excelsecu Data Technology Co.,Ltd (`193`)
     @_alwaysEmitIntoClient
     static var shenzhenExcelsecuDataTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 193)
     }
 
-    /// Geneq Inc. (`194`)
+    /// ​​Geneq Inc. (`194`)
     @_alwaysEmitIntoClient
     static var geneq: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 194)
     }
 
-    /// adidas AG (`195`)
+    /// ​​adidas AG (`195`)
     @_alwaysEmitIntoClient
     static var adidas: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 195)
     }
 
-    /// LG Electronics (`196`)
+    /// ​​LG Electronics​ (`196`)
     @_alwaysEmitIntoClient
     static var lgElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 196)
     }
 
-    /// Onset Computer Corporation (`197`)
+    /// ​Onset Computer Corporation (`197`)
     @_alwaysEmitIntoClient
     static var onsetComputer: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 197)
     }
 
-    /// Selfly BV (`198`)
+    /// ​Selfly BV (`198`)
     @_alwaysEmitIntoClient
     static var selfly: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 198)
     }
 
-    /// Quuppa Oy. (`199`)
+    /// ​Quuppa Oy. (`199`)
     @_alwaysEmitIntoClient
     static var quuppa: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 199)
@@ -1374,9 +1374,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 227)
     }
 
-    /// L.S. Research Inc. (`228`)
+    /// Laird Connectivity, Inc. formerly L.S. Research Inc. (`228`)
     @_alwaysEmitIntoClient
-    static var lSResearch: CompanyIdentifier {
+    static var lairdConnectivityFormerlyLSResearch: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 228)
     }
 
@@ -1392,31 +1392,31 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 230)
     }
 
-    /// KS Technologies (`231`)
+    /// ​KS Technologies (`231`)
     @_alwaysEmitIntoClient
     static var ksTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 231)
     }
 
-    /// ACTS Technologies (`232`)
+    /// ​ACTS Technologies (`232`)
     @_alwaysEmitIntoClient
     static var actsTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 232)
     }
 
-    /// Vtrack Systems (`233`)
+    /// ​Vtrack Systems (`233`)
     @_alwaysEmitIntoClient
     static var vtrackSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 233)
     }
 
-    /// Nielsen-Kellerman Company (`234`)
+    /// ​Nielsen-Kellerman Company (`234`)
     @_alwaysEmitIntoClient
     static var nielsenKellermanCompany: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 234)
     }
 
-    /// Server Technology, Inc. (`235`)
+    /// Server Technology Inc. (`235`)
     @_alwaysEmitIntoClient
     static var serverTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 235)
@@ -1458,9 +1458,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 241)
     }
 
-    /// Aether Things Inc. (formerly Morse Project Inc.) (`242`)
+    /// Morse Project Inc. (`242`)
     @_alwaysEmitIntoClient
-    static var aetherThingsFormerlyMorseProject: CompanyIdentifier {
+    static var morseProject: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 242)
     }
 
@@ -1488,7 +1488,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 246)
     }
 
-    /// VSN Technologies Inc. (`247`)
+    /// VSN Technologies, Inc. (`247`)
     @_alwaysEmitIntoClient
     static var vsnTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 247)
@@ -1548,7 +1548,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 256)
     }
 
-    /// Fugoo, Inc (`257`)
+    /// Fugoo, Inc. (`257`)
     @_alwaysEmitIntoClient
     static var fugoo: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 257)
@@ -1566,9 +1566,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 259)
     }
 
-    /// PLUS Locations Systems Pty Ltd (`260`)
+    /// PLUS Location Systems Pty Ltd (`260`)
     @_alwaysEmitIntoClient
-    static var plusLocationsSystemsPty: CompanyIdentifier {
+    static var plusLocationSystemsPty: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 260)
     }
 
@@ -1602,13 +1602,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 265)
     }
 
-    /// Codegate Ltd. (`266`)
+    /// Codegate Ltd (`266`)
     @_alwaysEmitIntoClient
     static var codegate: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 266)
     }
 
-    /// ERi, Inc. (`267`)
+    /// ERi, Inc (`267`)
     @_alwaysEmitIntoClient
     static var eri: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 267)
@@ -1620,9 +1620,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 268)
     }
 
-    /// Fujitsu Ten Limited (`269`)
+    /// DENSO TEN LIMITED (formerly Fujitsu Ten LImited) (`269`)
     @_alwaysEmitIntoClient
-    static var fujitsuTen: CompanyIdentifier {
+    static var densoTenFormerlyFujitsuTen: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 269)
     }
 
@@ -1632,7 +1632,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 270)
     }
 
-    /// HiSilicon Technologies Co., Ltd. (`271`)
+    /// HiSilicon Technologies CO., LIMITED (`271`)
     @_alwaysEmitIntoClient
     static var hisiliconTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 271)
@@ -1674,9 +1674,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 277)
     }
 
-    /// 1OAK Technologies (`278`)
+    /// 10AK Technologies (`278`)
     @_alwaysEmitIntoClient
-    static var uuid1OakTechnologies: CompanyIdentifier {
+    static var uuid10AkTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 278)
     }
 
@@ -1752,7 +1752,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 290)
     }
 
-    /// Kinsa, Inc. (`291`)
+    /// Kinsa, Inc (`291`)
     @_alwaysEmitIntoClient
     static var kinsa: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 291)
@@ -1794,7 +1794,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 297)
     }
 
-    /// Changzhou Yongse Infotech Co., Ltd (`298`)
+    /// Changzhou Yongse Infotech  Co., Ltd. (`298`)
     @_alwaysEmitIntoClient
     static var changzhouYongseInfotech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 298)
@@ -1824,7 +1824,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 302)
     }
 
-    /// Clarion Co., Ltd. (`303`)
+    /// Clarion Co. Inc. (`303`)
     @_alwaysEmitIntoClient
     static var clarion: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 303)
@@ -1836,7 +1836,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 304)
     }
 
-    /// Cypress Semiconductor Corporation (`305`)
+    /// Cypress Semiconductor (`305`)
     @_alwaysEmitIntoClient
     static var cypressSemiconductor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 305)
@@ -1854,15 +1854,15 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 307)
     }
 
-    /// Resolution Products, Inc. (`308`)
+    /// Resolution Products, Ltd. (`308`)
     @_alwaysEmitIntoClient
     static var resolutionProducts: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 308)
     }
 
-    /// Airewear LLC (`309`)
+    /// Aireware LLC (`309`)
     @_alwaysEmitIntoClient
-    static var airewear: CompanyIdentifier {
+    static var aireware: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 309)
     }
 
@@ -1890,7 +1890,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 313)
     }
 
-    /// Tencent Holdings Limited (`314`)
+    /// Tencent Holdings Ltd. (`314`)
     @_alwaysEmitIntoClient
     static var tencentHoldings: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 314)
@@ -1902,9 +1902,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 315)
     }
 
-    /// Murata Manufacuring Co., Ltd. (`316`)
+    /// Murata Manufacturing Co., Ltd. (`316`)
     @_alwaysEmitIntoClient
-    static var murataManufacuring: CompanyIdentifier {
+    static var murataManufacturing: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 316)
     }
 
@@ -2004,7 +2004,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 332)
     }
 
-    /// Huizhou Desay SV Automotive CO., LTD. (`333`)
+    /// HUIZHOU DESAY SV AUTOMOTIVE CO., LTD. (`333`)
     @_alwaysEmitIntoClient
     static var huizhouDesaySvAutomotive: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 333)
@@ -2118,9 +2118,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 351)
     }
 
-    /// AwoX (`352`)
+    /// Awox formerly AwoX (`352`)
     @_alwaysEmitIntoClient
-    static var awox: CompanyIdentifier {
+    static var awoxFormerlyAwox: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 352)
     }
 
@@ -2130,9 +2130,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 353)
     }
 
-    /// MADSGlobal NZ Ltd. (`354`)
+    /// MADSGlobalNZ Ltd. (`354`)
     @_alwaysEmitIntoClient
-    static var madsglobalNz: CompanyIdentifier {
+    static var madsglobalnz: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 354)
     }
 
@@ -2148,9 +2148,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 356)
     }
 
-    /// Milwaukee Tool (formerly Milwaukee Electric Tools) (`357`)
+    /// Milwaukee Tool (Formally Milwaukee Electric Tools) (`357`)
     @_alwaysEmitIntoClient
-    static var milwaukeeToolFormerlyMilwaukeeElectricTools: CompanyIdentifier {
+    static var milwaukeeToolFormallyMilwaukeeElectricTools: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 357)
     }
 
@@ -2220,9 +2220,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 368)
     }
 
-    /// Amazon Fulfillment Service (`369`)
+    /// Amazon.com Services, LLC (formerly Amazon Fulfillment Service) (`369`)
     @_alwaysEmitIntoClient
-    static var amazonFulfillmentService: CompanyIdentifier {
+    static var amazonComServicesFormerlyAmazonFulfillmentService: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 369)
     }
 
@@ -2268,9 +2268,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 376)
     }
 
-    /// LAPIS Semiconductor Co., Ltd. (`377`)
+    /// LAPIS Technology Co., Ltd. formerly LAPIS Semiconductor Co., Ltd. (`377`)
     @_alwaysEmitIntoClient
-    static var lapisSemiconductor: CompanyIdentifier {
+    static var lapisTechnologyFormerlyLapisSemiconductor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 377)
     }
 
@@ -2286,9 +2286,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 379)
     }
 
-    /// Daimler AG (`380`)
+    /// Mercedes-Benz Group AG (`380`)
     @_alwaysEmitIntoClient
-    static var daimler: CompanyIdentifier {
+    static var mercedesBenzGroup: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 380)
     }
 
@@ -2448,15 +2448,15 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 406)
     }
 
-    /// WiSilica Inc (`407`)
+    /// WiSilica Inc. (`407`)
     @_alwaysEmitIntoClient
     static var wisilica: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 407)
     }
 
-    /// VENGIT Korlátolt Felelősségű Társaság (`408`)
+    /// VENGIT Korlatolt Felelossegu Tarsasag (`408`)
     @_alwaysEmitIntoClient
-    static var vengitKorlátoltFelelősségűTársaság: CompanyIdentifier {
+    static var vengitKorlatoltFelelosseguTarsasag: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 408)
     }
 
@@ -2538,9 +2538,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 421)
     }
 
-    /// Asandoo GmbH (`422`)
+    /// Wille Engineering (formely as Asandoo GmbH) (`422`)
     @_alwaysEmitIntoClient
-    static var asandoo: CompanyIdentifier {
+    static var willeEngineeringFormelyAsAsandoo: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 422)
     }
 
@@ -2940,7 +2940,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 488)
     }
 
-    /// Sano, Inc (`489`)
+    /// Sano, Inc. (`489`)
     @_alwaysEmitIntoClient
     static var sano: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 489)
@@ -3036,13 +3036,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 504)
     }
 
-    /// Medtronic, Inc. (`505`)
+    /// Medtronic Inc. (`505`)
     @_alwaysEmitIntoClient
     static var medtronic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 505)
     }
 
-    /// Gozio, Inc. (`506`)
+    /// Gozio Inc. (`506`)
     @_alwaysEmitIntoClient
     static var gozio: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 506)
@@ -3066,9 +3066,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 509)
     }
 
-    /// Radio System Corporation (`510`)
+    /// Radio Systems Corporation (`510`)
     @_alwaysEmitIntoClient
-    static var radioSystem: CompanyIdentifier {
+    static var radioSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 510)
     }
 
@@ -3078,7 +3078,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 511)
     }
 
-    /// Verifone Systems PTe Ltd. Taiwan Branch (`512`)
+    /// Verifone Systems Pte Ltd. Taiwan Branch (`512`)
     @_alwaysEmitIntoClient
     static var verifoneSystemsPteTaiwanBranch: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 512)
@@ -3240,7 +3240,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 538)
     }
 
-    /// Cisco Systems Inc (`539`)
+    /// Cisco Systems, Inc (`539`)
     @_alwaysEmitIntoClient
     static var ciscoSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 539)
@@ -3258,13 +3258,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 541)
     }
 
-    /// Goodnet Ltd (`542`)
+    /// Goodnet, Ltd (`542`)
     @_alwaysEmitIntoClient
     static var goodnet: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 542)
     }
 
-    /// Luster Leaf Products Inc (`543`)
+    /// Luster Leaf Products  Inc (`543`)
     @_alwaysEmitIntoClient
     static var lusterLeafProducts: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 543)
@@ -3426,9 +3426,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 569)
     }
 
-    /// Alatech Technology (`570`)
+    /// Alatech Tehnology (`570`)
     @_alwaysEmitIntoClient
-    static var alatechTechnology: CompanyIdentifier {
+    static var alatechTehnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 570)
     }
 
@@ -3456,7 +3456,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 574)
     }
 
-    /// WaveWare Technologies (`575`)
+    /// WaveWare Technologies Inc. (`575`)
     @_alwaysEmitIntoClient
     static var wavewareTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 575)
@@ -3486,13 +3486,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 579)
     }
 
-    /// Iotera Inc. (`580`)
+    /// Iotera Inc (`580`)
     @_alwaysEmitIntoClient
     static var iotera: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 580)
     }
 
-    /// Endress+Hauser (`581`)
+    /// Endress+Hauser  (`581`)
     @_alwaysEmitIntoClient
     static var endressHauser: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 581)
@@ -3630,7 +3630,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 603)
     }
 
-    /// NetEase (Hangzhou) Network co.Ltd. (`604`)
+    /// NetEase（Hangzhou）Network co.Ltd. (`604`)
     @_alwaysEmitIntoClient
     static var neteaseHangzhouNetwork: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 604)
@@ -3762,9 +3762,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 625)
     }
 
-    /// Alps Electric Co., Ltd. (`626`)
+    /// Alps Alpine Co., Ltd. (`626`)
     @_alwaysEmitIntoClient
-    static var alpsElectric: CompanyIdentifier {
+    static var alpsAlpine: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 626)
     }
 
@@ -3786,9 +3786,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 629)
     }
 
-    /// E.G.O. Elektro-Gerätebau GmbH (`630`)
+    /// E.G.O. Elektro-Geraetebau GmbH (`630`)
     @_alwaysEmitIntoClient
-    static var eGOElektroGerätebau: CompanyIdentifier {
+    static var eGOElektroGeraetebau: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 630)
     }
 
@@ -3828,9 +3828,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 636)
     }
 
-    /// HUAWEI Technologies Co., Ltd. ( 华为技术有限公司 ) (`637`)
+    /// HUAWEI Technologies Co., Ltd. (`637`)
     @_alwaysEmitIntoClient
-    static var huaweiTechnologies华为技术有限公司: CompanyIdentifier {
+    static var huaweiTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 637)
     }
 
@@ -4278,9 +4278,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 711)
     }
 
-    /// VASCO Data Security International, Inc. (`712`)
+    /// OneSpan  (`712`)
     @_alwaysEmitIntoClient
-    static var vascoDataSecurityInternational: CompanyIdentifier {
+    static var onespan: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 712)
     }
 
@@ -4500,13 +4500,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 748)
     }
 
-    /// HTC Corporation (`749`)
+    /// HTC Corporation  (`749`)
     @_alwaysEmitIntoClient
     static var htc: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 749)
     }
 
-    /// Citizen Holdings Co., Ltd. (`750`)
+    /// Citizen Holdings Co., Ltd.  (`750`)
     @_alwaysEmitIntoClient
     static var citizenHoldings: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 750)
@@ -4518,7 +4518,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 751)
     }
 
-    /// Blackrat Software (`752`)
+    /// Blackrat Software  (`752`)
     @_alwaysEmitIntoClient
     static var blackratSoftware: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 752)
@@ -4572,13 +4572,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 760)
     }
 
-    /// IMAGINATION TECHNOLOGIES LTD (`761`)
+    /// IMAGINATION TECHNOLOGIES LTD  (`761`)
     @_alwaysEmitIntoClient
     static var imaginationTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 761)
     }
 
-    /// CoSTAR Technologies (`762`)
+    /// CoSTAR TEchnologies (`762`)
     @_alwaysEmitIntoClient
     static var costarTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 762)
@@ -4638,9 +4638,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 771)
     }
 
-    /// Martians Inc (`772`)
+    /// Proxy Technologies, Inc. (`772`)
     @_alwaysEmitIntoClient
-    static var martians: CompanyIdentifier {
+    static var proxyTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 772)
     }
 
@@ -4650,7 +4650,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 773)
     }
 
-    /// Life Laboratory Inc. (`774`)
+    /// Life Laboratory Inc.  (`774`)
     @_alwaysEmitIntoClient
     static var lifeLaboratory: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 774)
@@ -4722,13 +4722,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 785)
     }
 
-    /// Ducere Technologies Pvt Ltd (`786`)
+    /// Ducere Technologies Pvt Ltd  (`786`)
     @_alwaysEmitIntoClient
     static var ducereTechnologiesPvt: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 786)
     }
 
-    /// DiveNav, Inc. (`787`)
+    /// DiveNav, Inc.  (`787`)
     @_alwaysEmitIntoClient
     static var divenav: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 787)
@@ -4740,55 +4740,55 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 788)
     }
 
-    /// Thermo Fisher Scientific (`789`)
+    /// Thermo Fisher Scientific  (`789`)
     @_alwaysEmitIntoClient
     static var thermoFisherScientific: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 789)
     }
 
-    /// AG Measurematics Pvt. Ltd. (`790`)
+    /// AG Measurematics Pvt. Ltd.  (`790`)
     @_alwaysEmitIntoClient
     static var agMeasurematics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 790)
     }
 
-    /// CHUO Electronics CO., LTD. (`791`)
+    /// CHUO Electronics CO., LTD.  (`791`)
     @_alwaysEmitIntoClient
     static var chuoElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 791)
     }
 
-    /// Aspenta International (`792`)
+    /// Aspenta International  (`792`)
     @_alwaysEmitIntoClient
     static var aspentaInternational: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 792)
     }
 
-    /// Eugster Frismag AG (`793`)
+    /// Eugster Frismag AG  (`793`)
     @_alwaysEmitIntoClient
     static var eugsterFrismag: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 793)
     }
 
-    /// Amber wireless GmbH (`794`)
+    /// Wurth Elektronik eiSos GmbH & Co. KG ( formerly Amber wireless GmbH)  (`794`)
     @_alwaysEmitIntoClient
-    static var amberWireless: CompanyIdentifier {
+    static var wurthElektronikEisosFormerlyAmberWireless: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 794)
     }
 
-    /// HQ Inc (`795`)
+    /// HQ Inc  (`795`)
     @_alwaysEmitIntoClient
     static var hq: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 795)
     }
 
-    /// Lab Sensor Solutions (`796`)
+    /// Lab Sensor Solutions  (`796`)
     @_alwaysEmitIntoClient
     static var labSensorSolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 796)
     }
 
-    /// Enterlab ApS (`797`)
+    /// Enterlab ApS  (`797`)
     @_alwaysEmitIntoClient
     static var enterlab: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 797)
@@ -4800,55 +4800,55 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 798)
     }
 
-    /// MetaSystem S.p.A (`799`)
+    /// MetaSystem S.p.A.  (`799`)
     @_alwaysEmitIntoClient
-    static var metasystemSPA: CompanyIdentifier {
+    static var metasystem: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 799)
     }
 
-    /// SONO ELECTRONICS. CO., LTD (`800`)
+    /// SONO ELECTRONICS. CO., LTD  (`800`)
     @_alwaysEmitIntoClient
     static var sonoElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 800)
     }
 
-    /// Jewelbots (`801`)
+    /// Jewelbots  (`801`)
     @_alwaysEmitIntoClient
     static var jewelbots: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 801)
     }
 
-    /// Compumedics Limited (`802`)
+    /// Compumedics Limited  (`802`)
     @_alwaysEmitIntoClient
     static var compumedics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 802)
     }
 
-    /// Rotor Bike Components (`803`)
+    /// Rotor Bike Components  (`803`)
     @_alwaysEmitIntoClient
     static var rotorBikeComponents: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 803)
     }
 
-    /// Astro, Inc. (`804`)
+    /// Astro, Inc.  (`804`)
     @_alwaysEmitIntoClient
     static var astro: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 804)
     }
 
-    /// Amotus Solutions (`805`)
+    /// Amotus Solutions  (`805`)
     @_alwaysEmitIntoClient
     static var amotusSolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 805)
     }
 
-    /// Healthwear Technologies (Changzhou)Ltd (`806`)
+    /// Healthwear Technologies (Changzhou)Ltd  (`806`)
     @_alwaysEmitIntoClient
     static var healthwearTechnologiesChangzhouLtd: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 806)
     }
 
-    /// Essex Electronics (`807`)
+    /// Essex Electronics  (`807`)
     @_alwaysEmitIntoClient
     static var essexElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 807)
@@ -4860,19 +4860,19 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 808)
     }
 
-    /// Eargo, Inc. (`809`)
+    /// Eargo, Inc.  (`809`)
     @_alwaysEmitIntoClient
     static var eargo: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 809)
     }
 
-    /// Electronic Design Lab (`810`)
+    /// Electronic Design Lab  (`810`)
     @_alwaysEmitIntoClient
     static var electronicDesignLab: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 810)
     }
 
-    /// ESYLUX (`811`)
+    /// ESYLUX  (`811`)
     @_alwaysEmitIntoClient
     static var esylux: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 811)
@@ -4884,7 +4884,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 812)
     }
 
-    /// BM innovations GmbH (`813`)
+    /// BM innovations GmbH  (`813`)
     @_alwaysEmitIntoClient
     static var bmInnovations: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 813)
@@ -4896,13 +4896,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 814)
     }
 
-    /// OttoQ Inc (`815`)
+    /// OttoQ Inc  (`815`)
     @_alwaysEmitIntoClient
     static var ottoq: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 815)
     }
 
-    /// North Pole Engineering (`816`)
+    /// North Pole Engineering  (`816`)
     @_alwaysEmitIntoClient
     static var northPoleEngineering: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 816)
@@ -4914,7 +4914,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 817)
     }
 
-    /// Electrocompaniet A.S. (`818`)
+    /// Electrocompaniet A.S.  (`818`)
     @_alwaysEmitIntoClient
     static var electrocompaniet: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 818)
@@ -4926,7 +4926,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 819)
     }
 
-    /// Corentium AS (`820`)
+    /// Corentium AS  (`820`)
     @_alwaysEmitIntoClient
     static var corentium: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 820)
@@ -4950,13 +4950,13 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 823)
     }
 
-    /// COBI GmbH (`824`)
+    /// COBI GmbH  (`824`)
     @_alwaysEmitIntoClient
     static var cobi: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 824)
     }
 
-    /// Blue Sky Scientific, LLC (`825`)
+    /// Blue Sky Scientific, LLC  (`825`)
     @_alwaysEmitIntoClient
     static var blueSkyScientific2: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 825)
@@ -4968,7 +4968,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 826)
     }
 
-    /// Courtney Thorne Limited (`827`)
+    /// Courtney Thorne Limited  (`827`)
     @_alwaysEmitIntoClient
     static var courtneyThorne: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 827)
@@ -4980,7 +4980,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 828)
     }
 
-    /// TPV Technology Limited (`829`)
+    /// TPV Technology Limited  (`829`)
     @_alwaysEmitIntoClient
     static var tpvTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 829)
@@ -4992,25 +4992,25 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 830)
     }
 
-    /// Automation Components, Inc. (`831`)
+    /// Automation Components, Inc.  (`831`)
     @_alwaysEmitIntoClient
     static var automationComponents: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 831)
     }
 
-    /// Letsense s.r.l. (`832`)
+    /// Letsense s.r.l.  (`832`)
     @_alwaysEmitIntoClient
     static var letsense: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 832)
     }
 
-    /// Etesian Technologies LLC (`833`)
+    /// Etesian Technologies LLC  (`833`)
     @_alwaysEmitIntoClient
     static var etesianTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 833)
     }
 
-    /// GERTEC BRASIL LTDA. (`834`)
+    /// GERTEC BRASIL LTDA.  (`834`)
     @_alwaysEmitIntoClient
     static var gertecBrasila: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 834)
@@ -5022,25 +5022,25 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 835)
     }
 
-    /// Whirl Inc (`836`)
+    /// Whirl Inc  (`836`)
     @_alwaysEmitIntoClient
     static var whirl: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 836)
     }
 
-    /// Locus Positioning (`837`)
+    /// Locus Positioning  (`837`)
     @_alwaysEmitIntoClient
     static var locusPositioning: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 837)
     }
 
-    /// Acuity Brands Lighting, Inc (`838`)
+    /// Acuity Brands Lighting, Inc  (`838`)
     @_alwaysEmitIntoClient
     static var acuityBrandsLighting: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 838)
     }
 
-    /// Prevent Biometrics (`839`)
+    /// Prevent Biometrics  (`839`)
     @_alwaysEmitIntoClient
     static var preventBiometrics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 839)
@@ -5052,25 +5052,25 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 840)
     }
 
-    /// VersaMe (`841`)
+    /// VersaMe  (`841`)
     @_alwaysEmitIntoClient
     static var versame: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 841)
     }
 
-    /// Vaddio (`842`)
+    /// Vaddio  (`842`)
     @_alwaysEmitIntoClient
     static var vaddio: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 842)
     }
 
-    /// Libratone A/S (`843`)
+    /// Libratone A/S  (`843`)
     @_alwaysEmitIntoClient
     static var libratone: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 843)
     }
 
-    /// HM Electronics, Inc. (`844`)
+    /// HM Electronics, Inc.  (`844`)
     @_alwaysEmitIntoClient
     static var hmElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 844)
@@ -5082,25 +5082,25 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 845)
     }
 
-    /// Safe Trust Inc. (`846`)
+    /// SafeTrust Inc.  (`846`)
     @_alwaysEmitIntoClient
-    static var safeTrust: CompanyIdentifier {
+    static var safetrust: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 846)
     }
 
-    /// Heartland Payment Systems (`847`)
+    /// Heartland Payment Systems  (`847`)
     @_alwaysEmitIntoClient
     static var heartlandPaymentSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 847)
     }
 
-    /// Bitstrata Systems Inc. (`848`)
+    /// Bitstrata Systems Inc.  (`848`)
     @_alwaysEmitIntoClient
     static var bitstrataSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 848)
     }
 
-    /// Pieps GmbH (`849`)
+    /// Pieps GmbH  (`849`)
     @_alwaysEmitIntoClient
     static var pieps: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 849)
@@ -5112,31 +5112,31 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 850)
     }
 
-    /// Alpha Audiotronics, Inc. (`851`)
+    /// Alpha Audiotronics, Inc.  (`851`)
     @_alwaysEmitIntoClient
     static var alphaAudiotronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 851)
     }
 
-    /// TOPPAN FORMS CO.,LTD. (`852`)
+    /// TOPPAN FORMS CO.,LTD.  (`852`)
     @_alwaysEmitIntoClient
     static var toppanForms: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 852)
     }
 
-    /// Sigma Designs, Inc. (`853`)
+    /// Sigma Designs, Inc.  (`853`)
     @_alwaysEmitIntoClient
     static var sigmaDesigns: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 853)
     }
 
-    /// Spectrum Brands, Inc. (`854`)
+    /// Spectrum Brands, Inc.  (`854`)
     @_alwaysEmitIntoClient
     static var spectrumBrands: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 854)
     }
 
-    /// Polymap Wireless (`855`)
+    /// Polymap Wireless  (`855`)
     @_alwaysEmitIntoClient
     static var polymapWireless: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 855)
@@ -5148,25 +5148,25 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 856)
     }
 
-    /// Novotec Medical GmbH (`857`)
+    /// Novotec Medical GmbH  (`857`)
     @_alwaysEmitIntoClient
     static var novotecMedical: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 857)
     }
 
-    /// Medicom Innovation Partner a/s (`858`)
+    /// Medicom Innovation Partner a/s  (`858`)
     @_alwaysEmitIntoClient
     static var medicomInnovationPartner: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 858)
     }
 
-    /// Matrix Inc. (`859`)
+    /// Matrix Inc.  (`859`)
     @_alwaysEmitIntoClient
     static var matrix: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 859)
     }
 
-    /// Eaton Corporation (`860`)
+    /// Eaton Corporation  (`860`)
     @_alwaysEmitIntoClient
     static var eaton: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 860)
@@ -5178,25 +5178,25 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 861)
     }
 
-    /// Naya Health, Inc. (`862`)
+    /// Naya Health, Inc.  (`862`)
     @_alwaysEmitIntoClient
     static var nayaHealth: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 862)
     }
 
-    /// Acromag (`863`)
+    /// Acromag  (`863`)
     @_alwaysEmitIntoClient
     static var acromag: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 863)
     }
 
-    /// Insulet Corporation (`864`)
+    /// Insulet Corporation  (`864`)
     @_alwaysEmitIntoClient
     static var insulet: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 864)
     }
 
-    /// Wellinks Inc. (`865`)
+    /// Wellinks Inc.  (`865`)
     @_alwaysEmitIntoClient
     static var wellinks: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 865)
@@ -5208,19 +5208,19 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 866)
     }
 
-    /// FREELAP SA (`867`)
+    /// FREELAP SA  (`867`)
     @_alwaysEmitIntoClient
     static var freelap: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 867)
     }
 
-    /// Favero Electronics Srl (`868`)
+    /// Favero Electronics Srl  (`868`)
     @_alwaysEmitIntoClient
     static var faveroElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 868)
     }
 
-    /// BioMech Sensor LLC (`869`)
+    /// BioMech Sensor LLC  (`869`)
     @_alwaysEmitIntoClient
     static var biomechSensor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 869)
@@ -5232,61 +5232,61 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 870)
     }
 
-    /// Saphe International (`871`)
+    /// Saphe International  (`871`)
     @_alwaysEmitIntoClient
     static var sapheInternational: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 871)
     }
 
-    /// Metormote AB (`872`)
+    /// Metormote AB  (`872`)
     @_alwaysEmitIntoClient
     static var metormote: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 872)
     }
 
-    /// littleBits (`873`)
+    /// littleBits  (`873`)
     @_alwaysEmitIntoClient
     static var littlebits: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 873)
     }
 
-    /// SetPoint Medical (`874`)
+    /// SetPoint Medical  (`874`)
     @_alwaysEmitIntoClient
     static var setpointMedical: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 874)
     }
 
-    /// BRControls Products BV (`875`)
+    /// BRControls Products BV  (`875`)
     @_alwaysEmitIntoClient
     static var brcontrolsProducts: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 875)
     }
 
-    /// Zipcar (`876`)
+    /// Zipcar  (`876`)
     @_alwaysEmitIntoClient
     static var zipcar: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 876)
     }
 
-    /// AirBolt Pty Ltd (`877`)
+    /// AirBolt Pty Ltd  (`877`)
     @_alwaysEmitIntoClient
     static var airboltPty: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 877)
     }
 
-    /// KeepTruckin Inc (`878`)
+    /// KeepTruckin Inc  (`878`)
     @_alwaysEmitIntoClient
     static var keeptruckin: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 878)
     }
 
-    /// Motiv, Inc. (`879`)
+    /// Motiv, Inc.  (`879`)
     @_alwaysEmitIntoClient
     static var motiv: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 879)
     }
 
-    /// Wazombi Labs OÜ (`880`)
+    /// Wazombi Labs OÜ  (`880`)
     @_alwaysEmitIntoClient
     static var wazombiLabsOü: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 880)
@@ -5376,9 +5376,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 894)
     }
 
-    /// Nestec S.A. (`895`)
+    /// Société des Produits Nestlé S.A. (formerly Nestec S.A.) (`895`)
     @_alwaysEmitIntoClient
-    static var nestec: CompanyIdentifier {
+    static var sociétéDesProduitsNestléFormerlyNestec: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 895)
     }
 
@@ -5736,9 +5736,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 954)
     }
 
-    /// Abbott Diabetes Care (`955`)
+    /// Abbott (`955`)
     @_alwaysEmitIntoClient
-    static var abbottDiabetesCare: CompanyIdentifier {
+    static var abbott: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 955)
     }
 
@@ -6156,9 +6156,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1024)
     }
 
-    /// リレーションズ株式会社 (`1025`)
+    /// Relations Inc. (`1025`)
     @_alwaysEmitIntoClient
-    static var リレーションズ株式会社: CompanyIdentifier {
+    static var relations: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1025)
     }
 
@@ -6294,9 +6294,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1047)
     }
 
-    /// Alpine Electronics Inc. (`1048`)
+    /// Reserved (`1048`)
     @_alwaysEmitIntoClient
-    static var alpineElectronics: CompanyIdentifier {
+    static var reserved: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1048)
     }
 
@@ -6648,9 +6648,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1106)
     }
 
-    /// GreenPeak Technologies BV (`1107`)
+    /// Qorvo Utrecht B.V. formerly GreenPeak Technologies BV (`1107`)
     @_alwaysEmitIntoClient
-    static var greenpeakTechnologies: CompanyIdentifier {
+    static var qorvoUtrechtFormerlyGreenpeakTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1107)
     }
 
@@ -7716,9 +7716,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1284)
     }
 
-    /// Inplay Technologies LLC (`1285`)
+    /// InPlay Inc. (`1285`)
     @_alwaysEmitIntoClient
-    static var inplayTechnologies: CompanyIdentifier {
+    static var inplay: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1285)
     }
 
@@ -7824,9 +7824,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1302)
     }
 
-    /// Amcore AB (`1303`)
+    /// Amtronic Sverige AB (formerly Amcore AB) (`1303`)
     @_alwaysEmitIntoClient
-    static var amcore: CompanyIdentifier {
+    static var amtronicSverigeFormerlyAmcore: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1303)
     }
 
@@ -7908,7 +7908,7 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1316)
     }
 
-    /// HONGKONG NANO IC TECHNOLOGIES CO., LIMITED (`1317`)
+    /// HONGKONG NANO IC TECHNOLOGIES  CO., LIMITED (`1317`)
     @_alwaysEmitIntoClient
     static var hongkongNanoIcTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1317)
@@ -8262,9 +8262,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1375)
     }
 
-    /// Sarita CareTech IVS (`1376`)
+    /// Sarita CareTech APS (formerly Sarita CareTech IVS) (`1376`)
     @_alwaysEmitIntoClient
-    static var saritaCaretech: CompanyIdentifier {
+    static var saritaCaretechFormerlySaritaCaretech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1376)
     }
 
@@ -8736,9 +8736,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1454)
     }
 
-    /// ONvocal (`1455`)
+    /// OV LOOP, INC. (formerly ONvocal) (`1455`)
     @_alwaysEmitIntoClient
-    static var onvocal: CompanyIdentifier {
+    static var ovLoopFormerlyOnvocal: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1455)
     }
 
@@ -9210,9 +9210,9 @@ public extension CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1533)
     }
 
-    /// Niko (`1534`)
+    /// Niko nv (`1534`)
     @_alwaysEmitIntoClient
-    static var niko: CompanyIdentifier {
+    static var nikoNv: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1534)
     }
 
@@ -9664,6 +9664,8076 @@ public extension CompanyIdentifier {
     @_alwaysEmitIntoClient
     static var ryeexTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1609)
+    }
+
+    /// Open Research Institute, Inc. (`1610`)
+    @_alwaysEmitIntoClient
+    static var openResearchInstitute: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1610)
+    }
+
+    /// Scale-Tec, Ltd (`1611`)
+    @_alwaysEmitIntoClient
+    static var scaleTec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1611)
+    }
+
+    /// Zumtobel Group AG (`1612`)
+    @_alwaysEmitIntoClient
+    static var zumtobelGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1612)
+    }
+
+    /// iLOQ Oy (`1613`)
+    @_alwaysEmitIntoClient
+    static var iloq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1613)
+    }
+
+    /// KRUXWorks Technologies Private Limited (`1614`)
+    @_alwaysEmitIntoClient
+    static var kruxworksTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1614)
+    }
+
+    /// Digital Matter Pty Ltd (`1615`)
+    @_alwaysEmitIntoClient
+    static var digitalMatterPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1615)
+    }
+
+    /// Coravin, Inc. (`1616`)
+    @_alwaysEmitIntoClient
+    static var coravin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1616)
+    }
+
+    /// Stasis Labs, Inc. (`1617`)
+    @_alwaysEmitIntoClient
+    static var stasisLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1617)
+    }
+
+    /// ITZ Innovations- und Technologiezentrum GmbH (`1618`)
+    @_alwaysEmitIntoClient
+    static var itzInnovationsUndTechnologiezentrum: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1618)
+    }
+
+    /// Meggitt SA (`1619`)
+    @_alwaysEmitIntoClient
+    static var meggitt: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1619)
+    }
+
+    /// Ledlenser GmbH & Co. KG (`1620`)
+    @_alwaysEmitIntoClient
+    static var ledlenser: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1620)
+    }
+
+    /// Renishaw PLC (`1621`)
+    @_alwaysEmitIntoClient
+    static var renishawPlc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1621)
+    }
+
+    /// ZhuHai AdvanPro Technology Company Limited (`1622`)
+    @_alwaysEmitIntoClient
+    static var zhuhaiAdvanproTechnologyCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1622)
+    }
+
+    /// Meshtronix Limited (`1623`)
+    @_alwaysEmitIntoClient
+    static var meshtronix: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1623)
+    }
+
+    /// Payex Norge AS (`1624`)
+    @_alwaysEmitIntoClient
+    static var payexNorge: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1624)
+    }
+
+    /// UnSeen Technologies Oy (`1625`)
+    @_alwaysEmitIntoClient
+    static var unseenTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1625)
+    }
+
+    /// Zound Industries International AB (`1626`)
+    @_alwaysEmitIntoClient
+    static var zoundIndustriesInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1626)
+    }
+
+    /// Sesam Solutions BV (`1627`)
+    @_alwaysEmitIntoClient
+    static var sesamSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1627)
+    }
+
+    /// PixArt Imaging Inc. (`1628`)
+    @_alwaysEmitIntoClient
+    static var pixartImaging: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1628)
+    }
+
+    /// Panduit Corp. (`1629`)
+    @_alwaysEmitIntoClient
+    static var panduit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1629)
+    }
+
+    /// Alo AB (`1630`)
+    @_alwaysEmitIntoClient
+    static var alo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1630)
+    }
+
+    /// Ricoh Company Ltd (`1631`)
+    @_alwaysEmitIntoClient
+    static var ricohCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1631)
+    }
+
+    /// RTC Industries, Inc. (`1632`)
+    @_alwaysEmitIntoClient
+    static var rtcIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1632)
+    }
+
+    /// Mode Lighting Limited (`1633`)
+    @_alwaysEmitIntoClient
+    static var modeLighting: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1633)
+    }
+
+    /// Particle Industries, Inc. (`1634`)
+    @_alwaysEmitIntoClient
+    static var particleIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1634)
+    }
+
+    /// Advanced Telemetry Systems, Inc. (`1635`)
+    @_alwaysEmitIntoClient
+    static var advancedTelemetrySystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1635)
+    }
+
+    /// RHA TECHNOLOGIES LTD (`1636`)
+    @_alwaysEmitIntoClient
+    static var rhaTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1636)
+    }
+
+    /// Pure International Limited (`1637`)
+    @_alwaysEmitIntoClient
+    static var pureInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1637)
+    }
+
+    /// WTO Werkzeug-Einrichtungen GmbH (`1638`)
+    @_alwaysEmitIntoClient
+    static var wtoWerkzeugEinrichtungen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1638)
+    }
+
+    /// Spark Technology Labs Inc. (`1639`)
+    @_alwaysEmitIntoClient
+    static var sparkTechnologyLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1639)
+    }
+
+    /// Bleb Technology srl (`1640`)
+    @_alwaysEmitIntoClient
+    static var blebTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1640)
+    }
+
+    /// Livanova USA, Inc. (`1641`)
+    @_alwaysEmitIntoClient
+    static var livanovaUsa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1641)
+    }
+
+    /// Brady Worldwide Inc. (`1642`)
+    @_alwaysEmitIntoClient
+    static var bradyWorldwide: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1642)
+    }
+
+    /// DewertOkin GmbH (`1643`)
+    @_alwaysEmitIntoClient
+    static var dewertokin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1643)
+    }
+
+    /// Ztove ApS (`1644`)
+    @_alwaysEmitIntoClient
+    static var ztove: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1644)
+    }
+
+    /// Venso EcoSolutions AB (`1645`)
+    @_alwaysEmitIntoClient
+    static var vensoEcosolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1645)
+    }
+
+    /// Eurotronik Kranj d.o.o. (`1646`)
+    @_alwaysEmitIntoClient
+    static var eurotronikKranj: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1646)
+    }
+
+    /// Hug Technology Ltd (`1647`)
+    @_alwaysEmitIntoClient
+    static var hugTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1647)
+    }
+
+    /// Gema Switzerland GmbH (`1648`)
+    @_alwaysEmitIntoClient
+    static var gemaSwitzerland: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1648)
+    }
+
+    /// Buzz Products Ltd. (`1649`)
+    @_alwaysEmitIntoClient
+    static var buzzProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1649)
+    }
+
+    /// Kopi (`1650`)
+    @_alwaysEmitIntoClient
+    static var kopi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1650)
+    }
+
+    /// Innova Ideas Limited (`1651`)
+    @_alwaysEmitIntoClient
+    static var innovaIdeas: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1651)
+    }
+
+    /// BeSpoon (`1652`)
+    @_alwaysEmitIntoClient
+    static var bespoon: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1652)
+    }
+
+    /// Deco Enterprises, Inc. (`1653`)
+    @_alwaysEmitIntoClient
+    static var decoEnterprises: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1653)
+    }
+
+    /// Expai Solutions Private Limited (`1654`)
+    @_alwaysEmitIntoClient
+    static var expaiSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1654)
+    }
+
+    /// Innovation First, Inc. (`1655`)
+    @_alwaysEmitIntoClient
+    static var innovationFirst: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1655)
+    }
+
+    /// SABIK Offshore GmbH (`1656`)
+    @_alwaysEmitIntoClient
+    static var sabikOffshore: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1656)
+    }
+
+    /// 4iiii Innovations Inc. (`1657`)
+    @_alwaysEmitIntoClient
+    static var uuid4IiiiInnovations: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1657)
+    }
+
+    /// The Energy Conservatory, Inc. (`1658`)
+    @_alwaysEmitIntoClient
+    static var energyConservatory: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1658)
+    }
+
+    /// I.FARM, INC. (`1659`)
+    @_alwaysEmitIntoClient
+    static var iFarm: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1659)
+    }
+
+    /// Tile, Inc. (`1660`)
+    @_alwaysEmitIntoClient
+    static var tile: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1660)
+    }
+
+    /// Form Athletica Inc. (`1661`)
+    @_alwaysEmitIntoClient
+    static var formAthletica: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1661)
+    }
+
+    /// MbientLab Inc (`1662`)
+    @_alwaysEmitIntoClient
+    static var mbientlab: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1662)
+    }
+
+    /// NETGRID S.N.C. DI BISSOLI MATTEO, CAMPOREALE SIMONE, TOGNETTI FEDERICO (`1663`)
+    @_alwaysEmitIntoClient
+    static var netgridSNCDiBissoliMatteoCamporealeSimoneTognettiFederico: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1663)
+    }
+
+    /// Mannkind Corporation (`1664`)
+    @_alwaysEmitIntoClient
+    static var mannkind: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1664)
+    }
+
+    /// Trade FIDES a.s. (`1665`)
+    @_alwaysEmitIntoClient
+    static var tradeFides: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1665)
+    }
+
+    /// Photron Limited (`1666`)
+    @_alwaysEmitIntoClient
+    static var photron: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1666)
+    }
+
+    /// Eltako GmbH (`1667`)
+    @_alwaysEmitIntoClient
+    static var eltako: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1667)
+    }
+
+    /// Dermalapps, LLC (`1668`)
+    @_alwaysEmitIntoClient
+    static var dermalapps: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1668)
+    }
+
+    /// Greenwald Industries (`1669`)
+    @_alwaysEmitIntoClient
+    static var greenwaldIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1669)
+    }
+
+    /// inQs Co., Ltd. (`1670`)
+    @_alwaysEmitIntoClient
+    static var inqs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1670)
+    }
+
+    /// Cherry GmbH (`1671`)
+    @_alwaysEmitIntoClient
+    static var cherry: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1671)
+    }
+
+    /// Amsted Digital Solutions Inc. (`1672`)
+    @_alwaysEmitIntoClient
+    static var amstedDigitalSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1672)
+    }
+
+    /// Tacx b.v. (`1673`)
+    @_alwaysEmitIntoClient
+    static var tacx: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1673)
+    }
+
+    /// Raytac Corporation (`1674`)
+    @_alwaysEmitIntoClient
+    static var raytac: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1674)
+    }
+
+    /// Jiangsu Teranovo Tech Co., Ltd. (`1675`)
+    @_alwaysEmitIntoClient
+    static var jiangsuTeranovoTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1675)
+    }
+
+    /// Changzhou Sound Dragon Electronics and Acoustics Co., Ltd (`1676`)
+    @_alwaysEmitIntoClient
+    static var changzhouSoundDragonElectronicsAndAcoustics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1676)
+    }
+
+    /// JetBeep Inc. (`1677`)
+    @_alwaysEmitIntoClient
+    static var jetbeep: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1677)
+    }
+
+    /// Razer Inc. (`1678`)
+    @_alwaysEmitIntoClient
+    static var razer: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1678)
+    }
+
+    /// JRM Group Limited (`1679`)
+    @_alwaysEmitIntoClient
+    static var jrmGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1679)
+    }
+
+    /// Eccrine Systems, Inc. (`1680`)
+    @_alwaysEmitIntoClient
+    static var eccrineSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1680)
+    }
+
+    /// Curie Point AB (`1681`)
+    @_alwaysEmitIntoClient
+    static var curiePoint: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1681)
+    }
+
+    /// Georg Fischer AG (`1682`)
+    @_alwaysEmitIntoClient
+    static var georgFischer: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1682)
+    }
+
+    /// Hach - Danaher (`1683`)
+    @_alwaysEmitIntoClient
+    static var hachDanaher: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1683)
+    }
+
+    /// T&A Laboratories LLC (`1684`)
+    @_alwaysEmitIntoClient
+    static var tALaboratories: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1684)
+    }
+
+    /// Koki Holdings Co., Ltd. (`1685`)
+    @_alwaysEmitIntoClient
+    static var kokiHoldings: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1685)
+    }
+
+    /// Gunakar Private Limited (`1686`)
+    @_alwaysEmitIntoClient
+    static var gunakar: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1686)
+    }
+
+    /// Stemco Products Inc (`1687`)
+    @_alwaysEmitIntoClient
+    static var stemcoProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1687)
+    }
+
+    /// Wood IT Security, LLC (`1688`)
+    @_alwaysEmitIntoClient
+    static var woodItSecurity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1688)
+    }
+
+    /// RandomLab SAS (`1689`)
+    @_alwaysEmitIntoClient
+    static var randomlabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1689)
+    }
+
+    /// Adero, Inc. (formerly as TrackR, Inc.) (`1690`)
+    @_alwaysEmitIntoClient
+    static var aderoFormerlyAsTrackr: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1690)
+    }
+
+    /// Dragonchip Limited (`1691`)
+    @_alwaysEmitIntoClient
+    static var dragonchip: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1691)
+    }
+
+    /// Noomi AB (`1692`)
+    @_alwaysEmitIntoClient
+    static var noomi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1692)
+    }
+
+    /// Vakaros LLC (`1693`)
+    @_alwaysEmitIntoClient
+    static var vakaros: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1693)
+    }
+
+    /// Delta Electronics, Inc. (`1694`)
+    @_alwaysEmitIntoClient
+    static var deltaElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1694)
+    }
+
+    /// FlowMotion Technologies AS (`1695`)
+    @_alwaysEmitIntoClient
+    static var flowmotionTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1695)
+    }
+
+    /// OBIQ Location Technology Inc. (`1696`)
+    @_alwaysEmitIntoClient
+    static var obiqLocationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1696)
+    }
+
+    /// Cardo Systems, Ltd (`1697`)
+    @_alwaysEmitIntoClient
+    static var cardoSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1697)
+    }
+
+    /// Globalworx GmbH (`1698`)
+    @_alwaysEmitIntoClient
+    static var globalworx: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1698)
+    }
+
+    /// Nymbus, LLC (`1699`)
+    @_alwaysEmitIntoClient
+    static var nymbus: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1699)
+    }
+
+    /// Sanyo Techno Solutions Tottori Co., Ltd. (`1700`)
+    @_alwaysEmitIntoClient
+    static var sanyoTechnoSolutionsTottori: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1700)
+    }
+
+    /// TEKZITEL PTY LTD (`1701`)
+    @_alwaysEmitIntoClient
+    static var tekzitelPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1701)
+    }
+
+    /// Roambee Corporation (`1702`)
+    @_alwaysEmitIntoClient
+    static var roambee: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1702)
+    }
+
+    /// Chipsea Technologies (ShenZhen) Corp. (`1703`)
+    @_alwaysEmitIntoClient
+    static var chipseaTechnologiesShenzhen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1703)
+    }
+
+    /// GD Midea Air-Conditioning Equipment Co., Ltd. (`1704`)
+    @_alwaysEmitIntoClient
+    static var gdMideaAirConditioningEquipment: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1704)
+    }
+
+    /// Soundmax Electronics Limited (`1705`)
+    @_alwaysEmitIntoClient
+    static var soundmaxElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1705)
+    }
+
+    /// Produal Oy (`1706`)
+    @_alwaysEmitIntoClient
+    static var produal: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1706)
+    }
+
+    /// HMS Industrial Networks AB (`1707`)
+    @_alwaysEmitIntoClient
+    static var hmsIndustrialNetworks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1707)
+    }
+
+    /// Ingchips Technology Co., Ltd. (`1708`)
+    @_alwaysEmitIntoClient
+    static var ingchipsTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1708)
+    }
+
+    /// InnovaSea Systems Inc. (`1709`)
+    @_alwaysEmitIntoClient
+    static var innovaseaSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1709)
+    }
+
+    /// SenseQ Inc. (`1710`)
+    @_alwaysEmitIntoClient
+    static var senseq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1710)
+    }
+
+    /// Shoof Technologies (`1711`)
+    @_alwaysEmitIntoClient
+    static var shoofTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1711)
+    }
+
+    /// BRK Brands, Inc. (`1712`)
+    @_alwaysEmitIntoClient
+    static var brkBrands: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1712)
+    }
+
+    /// SimpliSafe, Inc. (`1713`)
+    @_alwaysEmitIntoClient
+    static var simplisafe: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1713)
+    }
+
+    /// Tussock Innovation 2013 Limited (`1714`)
+    @_alwaysEmitIntoClient
+    static var tussockInnovation2013: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1714)
+    }
+
+    /// The Hablab ApS (`1715`)
+    @_alwaysEmitIntoClient
+    static var hablab: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1715)
+    }
+
+    /// Sencilion Oy (`1716`)
+    @_alwaysEmitIntoClient
+    static var sencilion: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1716)
+    }
+
+    /// Wabilogic Ltd. (`1717`)
+    @_alwaysEmitIntoClient
+    static var wabilogic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1717)
+    }
+
+    /// Sociometric Solutions, Inc. (`1718`)
+    @_alwaysEmitIntoClient
+    static var sociometricSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1718)
+    }
+
+    /// iCOGNIZE GmbH (`1719`)
+    @_alwaysEmitIntoClient
+    static var icognize: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1719)
+    }
+
+    /// ShadeCraft, Inc (`1720`)
+    @_alwaysEmitIntoClient
+    static var shadecraft: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1720)
+    }
+
+    /// Beflex Inc. (`1721`)
+    @_alwaysEmitIntoClient
+    static var beflex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1721)
+    }
+
+    /// Beaconzone Ltd (`1722`)
+    @_alwaysEmitIntoClient
+    static var beaconzone: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1722)
+    }
+
+    /// Leaftronix Analogic Solutions Private Limited (`1723`)
+    @_alwaysEmitIntoClient
+    static var leaftronixAnalogicSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1723)
+    }
+
+    /// TWS Srl (`1724`)
+    @_alwaysEmitIntoClient
+    static var tws: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1724)
+    }
+
+    /// ABB Oy (`1725`)
+    @_alwaysEmitIntoClient
+    static var abb: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1725)
+    }
+
+    /// HitSeed Oy (`1726`)
+    @_alwaysEmitIntoClient
+    static var hitseed: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1726)
+    }
+
+    /// Delcom Products Inc. (`1727`)
+    @_alwaysEmitIntoClient
+    static var delcomProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1727)
+    }
+
+    /// CAME S.p.A. (`1728`)
+    @_alwaysEmitIntoClient
+    static var came: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1728)
+    }
+
+    /// Alarm.com Holdings, Inc (`1729`)
+    @_alwaysEmitIntoClient
+    static var alarmComHoldings: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1729)
+    }
+
+    /// Measurlogic Inc. (`1730`)
+    @_alwaysEmitIntoClient
+    static var measurlogic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1730)
+    }
+
+    /// King I Electronics.Co.,Ltd (`1731`)
+    @_alwaysEmitIntoClient
+    static var kingIElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1731)
+    }
+
+    /// Dream Labs GmbH (`1732`)
+    @_alwaysEmitIntoClient
+    static var dreamLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1732)
+    }
+
+    /// Urban Compass, Inc (`1733`)
+    @_alwaysEmitIntoClient
+    static var urbanCompass: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1733)
+    }
+
+    /// Simm Tronic Limited (`1734`)
+    @_alwaysEmitIntoClient
+    static var simmTronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1734)
+    }
+
+    /// Somatix Inc (`1735`)
+    @_alwaysEmitIntoClient
+    static var somatix: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1735)
+    }
+
+    /// Storz & Bickel GmbH & Co. KG (`1736`)
+    @_alwaysEmitIntoClient
+    static var storzBickel: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1736)
+    }
+
+    /// MYLAPS B.V. (`1737`)
+    @_alwaysEmitIntoClient
+    static var mylaps: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1737)
+    }
+
+    /// Shenzhen Zhongguang Infotech Technology Development Co., Ltd (`1738`)
+    @_alwaysEmitIntoClient
+    static var shenzhenZhongguangInfotechTechnologyDevelopment: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1738)
+    }
+
+    /// Dyeware, LLC (`1739`)
+    @_alwaysEmitIntoClient
+    static var dyeware: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1739)
+    }
+
+    /// Dongguan SmartAction Technology Co.,Ltd. (`1740`)
+    @_alwaysEmitIntoClient
+    static var dongguanSmartactionTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1740)
+    }
+
+    /// DIG Corporation (`1741`)
+    @_alwaysEmitIntoClient
+    static var dig: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1741)
+    }
+
+    /// FIOR & GENTZ (`1742`)
+    @_alwaysEmitIntoClient
+    static var fiorGentz: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1742)
+    }
+
+    /// Belparts N.V. (`1743`)
+    @_alwaysEmitIntoClient
+    static var belparts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1743)
+    }
+
+    /// Etekcity Corporation (`1744`)
+    @_alwaysEmitIntoClient
+    static var etekcity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1744)
+    }
+
+    /// Meyer Sound Laboratories, Incorporated (`1745`)
+    @_alwaysEmitIntoClient
+    static var meyerSoundLaboratories: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1745)
+    }
+
+    /// CeoTronics AG (`1746`)
+    @_alwaysEmitIntoClient
+    static var ceotronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1746)
+    }
+
+    /// TriTeq Lock and Security, LLC (`1747`)
+    @_alwaysEmitIntoClient
+    static var triteqLockAndSecurity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1747)
+    }
+
+    /// DYNAKODE TECHNOLOGY PRIVATE LIMITED (`1748`)
+    @_alwaysEmitIntoClient
+    static var dynakodeTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1748)
+    }
+
+    /// Sensirion AG (`1749`)
+    @_alwaysEmitIntoClient
+    static var sensirion: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1749)
+    }
+
+    /// JCT Healthcare Pty Ltd (`1750`)
+    @_alwaysEmitIntoClient
+    static var jctHealthcarePty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1750)
+    }
+
+    /// FUBA Automotive Electronics GmbH (`1751`)
+    @_alwaysEmitIntoClient
+    static var fubaAutomotiveElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1751)
+    }
+
+    /// AW Company (`1752`)
+    @_alwaysEmitIntoClient
+    static var awCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1752)
+    }
+
+    /// Shanghai Mountain View Silicon Co.,Ltd. (`1753`)
+    @_alwaysEmitIntoClient
+    static var shanghaiMountainViewSilicon: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1753)
+    }
+
+    /// Zliide Technologies ApS (`1754`)
+    @_alwaysEmitIntoClient
+    static var zliideTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1754)
+    }
+
+    /// Automatic Labs, Inc. (`1755`)
+    @_alwaysEmitIntoClient
+    static var automaticLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1755)
+    }
+
+    /// Industrial Network Controls, LLC (`1756`)
+    @_alwaysEmitIntoClient
+    static var industrialNetworkControls: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1756)
+    }
+
+    /// Intellithings Ltd. (`1757`)
+    @_alwaysEmitIntoClient
+    static var intellithings: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1757)
+    }
+
+    /// Navcast, Inc. (`1758`)
+    @_alwaysEmitIntoClient
+    static var navcast: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1758)
+    }
+
+    /// Hubbell Lighting, Inc. (`1759`)
+    @_alwaysEmitIntoClient
+    static var hubbellLighting: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1759)
+    }
+
+    /// Avaya  (`1760`)
+    @_alwaysEmitIntoClient
+    static var avaya: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1760)
+    }
+
+    /// Milestone AV Technologies LLC (`1761`)
+    @_alwaysEmitIntoClient
+    static var milestoneAvTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1761)
+    }
+
+    /// Alango Technologies Ltd (`1762`)
+    @_alwaysEmitIntoClient
+    static var alangoTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1762)
+    }
+
+    /// Spinlock Ltd (`1763`)
+    @_alwaysEmitIntoClient
+    static var spinlock: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1763)
+    }
+
+    /// Aluna (`1764`)
+    @_alwaysEmitIntoClient
+    static var aluna: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1764)
+    }
+
+    /// OPTEX CO.,LTD. (`1765`)
+    @_alwaysEmitIntoClient
+    static var optex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1765)
+    }
+
+    /// NIHON DENGYO KOUSAKU (`1766`)
+    @_alwaysEmitIntoClient
+    static var nihonDengyoKousaku: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1766)
+    }
+
+    /// VELUX A/S (`1767`)
+    @_alwaysEmitIntoClient
+    static var velux: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1767)
+    }
+
+    /// Almendo Technologies GmbH (`1768`)
+    @_alwaysEmitIntoClient
+    static var almendoTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1768)
+    }
+
+    /// Zmartfun Electronics, Inc. (`1769`)
+    @_alwaysEmitIntoClient
+    static var zmartfunElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1769)
+    }
+
+    /// SafeLine Sweden AB (`1770`)
+    @_alwaysEmitIntoClient
+    static var safelineSweden: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1770)
+    }
+
+    /// Houston Radar LLC (`1771`)
+    @_alwaysEmitIntoClient
+    static var houstonRadar: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1771)
+    }
+
+    /// Sigur (`1772`)
+    @_alwaysEmitIntoClient
+    static var sigur: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1772)
+    }
+
+    /// J Neades Ltd (`1773`)
+    @_alwaysEmitIntoClient
+    static var jNeades: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1773)
+    }
+
+    /// Avantis Systems Limited (`1774`)
+    @_alwaysEmitIntoClient
+    static var avantisSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1774)
+    }
+
+    /// ALCARE Co., Ltd. (`1775`)
+    @_alwaysEmitIntoClient
+    static var alcare: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1775)
+    }
+
+    /// Chargy Technologies, SL (`1776`)
+    @_alwaysEmitIntoClient
+    static var chargyTechnologiesSl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1776)
+    }
+
+    /// Shibutani Co., Ltd. (`1777`)
+    @_alwaysEmitIntoClient
+    static var shibutani: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1777)
+    }
+
+    /// Trapper Data AB (`1778`)
+    @_alwaysEmitIntoClient
+    static var trapperData: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1778)
+    }
+
+    /// Alfred International Inc. (`1779`)
+    @_alwaysEmitIntoClient
+    static var alfredInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1779)
+    }
+
+    /// Touché Technology Ltd (`1780`)
+    @_alwaysEmitIntoClient
+    static var touchéTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1780)
+    }
+
+    /// Vigil Technologies Inc. (`1781`)
+    @_alwaysEmitIntoClient
+    static var vigilTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1781)
+    }
+
+    /// Vitulo Plus BV (`1782`)
+    @_alwaysEmitIntoClient
+    static var vituloPlus: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1782)
+    }
+
+    /// WILKA Schliesstechnik GmbH (`1783`)
+    @_alwaysEmitIntoClient
+    static var wilkaSchliesstechnik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1783)
+    }
+
+    /// BodyPlus Technology Co.,Ltd (`1784`)
+    @_alwaysEmitIntoClient
+    static var bodyplusTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1784)
+    }
+
+    /// happybrush GmbH (`1785`)
+    @_alwaysEmitIntoClient
+    static var happybrush: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1785)
+    }
+
+    /// Enequi AB (`1786`)
+    @_alwaysEmitIntoClient
+    static var enequi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1786)
+    }
+
+    /// Sartorius AG (`1787`)
+    @_alwaysEmitIntoClient
+    static var sartorius: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1787)
+    }
+
+    /// Tom Communication Industrial Co.,Ltd. (`1788`)
+    @_alwaysEmitIntoClient
+    static var tomCommunicationIndustrial: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1788)
+    }
+
+    /// ESS Embedded System Solutions Inc. (`1789`)
+    @_alwaysEmitIntoClient
+    static var essEmbeddedSystemSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1789)
+    }
+
+    /// Mahr GmbH (`1790`)
+    @_alwaysEmitIntoClient
+    static var mahr: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1790)
+    }
+
+    /// Redpine Signals Inc (`1791`)
+    @_alwaysEmitIntoClient
+    static var redpineSignals: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1791)
+    }
+
+    /// TraqFreq LLC (`1792`)
+    @_alwaysEmitIntoClient
+    static var traqfreq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1792)
+    }
+
+    /// PAFERS TECH (`1793`)
+    @_alwaysEmitIntoClient
+    static var pafersTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1793)
+    }
+
+    /// Akciju sabiedriba "SAF TEHNIKA" (`1794`)
+    @_alwaysEmitIntoClient
+    static var akcijuSabiedribafTehnika: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1794)
+    }
+
+    /// Beijing Jingdong Century Trading Co., Ltd. (`1795`)
+    @_alwaysEmitIntoClient
+    static var beijingJingdongCenturyTrading: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1795)
+    }
+
+    /// JBX Designs Inc. (`1796`)
+    @_alwaysEmitIntoClient
+    static var jbxDesigns: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1796)
+    }
+
+    /// AB Electrolux (`1797`)
+    @_alwaysEmitIntoClient
+    static var abElectrolux: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1797)
+    }
+
+    /// Wernher von Braun Center for ASdvanced Research (`1798`)
+    @_alwaysEmitIntoClient
+    static var wernherVonBraunCenterFordvancedResearch: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1798)
+    }
+
+    /// Essity Hygiene and Health Aktiebolag (`1799`)
+    @_alwaysEmitIntoClient
+    static var essityHygieneAndHealthAktiebolag: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1799)
+    }
+
+    /// Be Interactive Co., Ltd (`1800`)
+    @_alwaysEmitIntoClient
+    static var beInteractive: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1800)
+    }
+
+    /// Carewear Corp. (`1801`)
+    @_alwaysEmitIntoClient
+    static var carewear: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1801)
+    }
+
+    /// Huf Hülsbeck & Fürst GmbH & Co. KG (`1802`)
+    @_alwaysEmitIntoClient
+    static var hufHülsbeckFürst: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1802)
+    }
+
+    /// Element Products, Inc. (`1803`)
+    @_alwaysEmitIntoClient
+    static var elementProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1803)
+    }
+
+    /// Beijing Winner Microelectronics Co.,Ltd (`1804`)
+    @_alwaysEmitIntoClient
+    static var beijingWinnerMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1804)
+    }
+
+    /// SmartSnugg Pty Ltd (`1805`)
+    @_alwaysEmitIntoClient
+    static var smartsnuggPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1805)
+    }
+
+    /// FiveCo Sarl (`1806`)
+    @_alwaysEmitIntoClient
+    static var fivecoSarl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1806)
+    }
+
+    /// California Things Inc. (`1807`)
+    @_alwaysEmitIntoClient
+    static var californiaThings: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1807)
+    }
+
+    /// Audiodo AB (`1808`)
+    @_alwaysEmitIntoClient
+    static var audiodo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1808)
+    }
+
+    /// ABAX AS (`1809`)
+    @_alwaysEmitIntoClient
+    static var abax: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1809)
+    }
+
+    /// Bull Group Company Limited (`1810`)
+    @_alwaysEmitIntoClient
+    static var bullGroupCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1810)
+    }
+
+    /// Respiri Limited (`1811`)
+    @_alwaysEmitIntoClient
+    static var respiri: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1811)
+    }
+
+    /// MindPeace Safety LLC (`1812`)
+    @_alwaysEmitIntoClient
+    static var mindpeaceSafety: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1812)
+    }
+
+    /// Vgyan Solutions (`1813`)
+    @_alwaysEmitIntoClient
+    static var vgyanSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1813)
+    }
+
+    /// Altonics (`1814`)
+    @_alwaysEmitIntoClient
+    static var altonics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1814)
+    }
+
+    /// iQsquare BV (`1815`)
+    @_alwaysEmitIntoClient
+    static var iqsquare: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1815)
+    }
+
+    /// IDIBAIX enginneering (`1816`)
+    @_alwaysEmitIntoClient
+    static var idibaixEnginneering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1816)
+    }
+
+    /// ECSG (`1817`)
+    @_alwaysEmitIntoClient
+    static var ecsg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1817)
+    }
+
+    /// REVSMART WEARABLE HK CO LTD (`1818`)
+    @_alwaysEmitIntoClient
+    static var revsmartWearableCo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1818)
+    }
+
+    /// Precor (`1819`)
+    @_alwaysEmitIntoClient
+    static var precor: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1819)
+    }
+
+    /// F5 Sports, Inc (`1820`)
+    @_alwaysEmitIntoClient
+    static var f5Sports: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1820)
+    }
+
+    /// exoTIC Systems (`1821`)
+    @_alwaysEmitIntoClient
+    static var exoticSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1821)
+    }
+
+    /// DONGGUAN HELE ELECTRONICS CO., LTD (`1822`)
+    @_alwaysEmitIntoClient
+    static var dongguanHeleElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1822)
+    }
+
+    /// Dongguan Liesheng Electronic Co.Ltd (`1823`)
+    @_alwaysEmitIntoClient
+    static var dongguanLieshengElectronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1823)
+    }
+
+    /// Oculeve, Inc. (`1824`)
+    @_alwaysEmitIntoClient
+    static var oculeve: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1824)
+    }
+
+    /// Clover Network, Inc. (`1825`)
+    @_alwaysEmitIntoClient
+    static var cloverNetwork: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1825)
+    }
+
+    /// Xiamen Eholder Electronics Co.Ltd (`1826`)
+    @_alwaysEmitIntoClient
+    static var xiamenEholderElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1826)
+    }
+
+    /// Ford Motor Company (`1827`)
+    @_alwaysEmitIntoClient
+    static var fordMotorCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1827)
+    }
+
+    /// Guangzhou SuperSound Information Technology Co.,Ltd (`1828`)
+    @_alwaysEmitIntoClient
+    static var guangzhouSupersoundInformationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1828)
+    }
+
+    /// Tedee Sp. z o.o. (`1829`)
+    @_alwaysEmitIntoClient
+    static var tedee: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1829)
+    }
+
+    /// PHC Corporation (`1830`)
+    @_alwaysEmitIntoClient
+    static var phc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1830)
+    }
+
+    /// STALKIT AS (`1831`)
+    @_alwaysEmitIntoClient
+    static var stalkit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1831)
+    }
+
+    /// Eli Lilly and Company (`1832`)
+    @_alwaysEmitIntoClient
+    static var eliLillyAndCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1832)
+    }
+
+    /// SwaraLink Technologies (`1833`)
+    @_alwaysEmitIntoClient
+    static var swaralinkTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1833)
+    }
+
+    /// JMR embedded systems GmbH (`1834`)
+    @_alwaysEmitIntoClient
+    static var jmrEmbeddedSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1834)
+    }
+
+    /// Bitkey Inc. (`1835`)
+    @_alwaysEmitIntoClient
+    static var bitkey: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1835)
+    }
+
+    /// GWA Hygiene GmbH (`1836`)
+    @_alwaysEmitIntoClient
+    static var gwaHygiene: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1836)
+    }
+
+    /// Safera Oy (`1837`)
+    @_alwaysEmitIntoClient
+    static var safera: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1837)
+    }
+
+    /// Open Platform Systems LLC (`1838`)
+    @_alwaysEmitIntoClient
+    static var openPlatformSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1838)
+    }
+
+    /// OnePlus Electronics (Shenzhen) Co., Ltd. (`1839`)
+    @_alwaysEmitIntoClient
+    static var oneplusElectronicsShenzhen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1839)
+    }
+
+    /// Wildlife Acoustics, Inc. (`1840`)
+    @_alwaysEmitIntoClient
+    static var wildlifeAcoustics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1840)
+    }
+
+    /// ABLIC Inc. (`1841`)
+    @_alwaysEmitIntoClient
+    static var ablic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1841)
+    }
+
+    /// Dairy Tech, Inc. (`1842`)
+    @_alwaysEmitIntoClient
+    static var dairyTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1842)
+    }
+
+    /// Iguanavation, Inc. (`1843`)
+    @_alwaysEmitIntoClient
+    static var iguanavation: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1843)
+    }
+
+    /// DiUS Computing Pty Ltd (`1844`)
+    @_alwaysEmitIntoClient
+    static var diusComputingPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1844)
+    }
+
+    /// UpRight Technologies LTD (`1845`)
+    @_alwaysEmitIntoClient
+    static var uprightTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1845)
+    }
+
+    /// FrancisFund, LLC (`1846`)
+    @_alwaysEmitIntoClient
+    static var francisfund: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1846)
+    }
+
+    /// LLC Navitek (`1847`)
+    @_alwaysEmitIntoClient
+    static var llcNavitek: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1847)
+    }
+
+    /// Glass Security Pte Ltd (`1848`)
+    @_alwaysEmitIntoClient
+    static var glassSecurityPte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1848)
+    }
+
+    /// Jiangsu Qinheng Co., Ltd. (`1849`)
+    @_alwaysEmitIntoClient
+    static var jiangsuQinheng: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1849)
+    }
+
+    /// Chandler Systems Inc. (`1850`)
+    @_alwaysEmitIntoClient
+    static var chandlerSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1850)
+    }
+
+    /// Fantini Cosmi s.p.a. (`1851`)
+    @_alwaysEmitIntoClient
+    static var fantiniCosmi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1851)
+    }
+
+    /// Acubit ApS (`1852`)
+    @_alwaysEmitIntoClient
+    static var acubit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1852)
+    }
+
+    /// Beijing Hao Heng Tian Tech Co., Ltd. (`1853`)
+    @_alwaysEmitIntoClient
+    static var beijingHaoHengTianTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1853)
+    }
+
+    /// Bluepack S.R.L. (`1854`)
+    @_alwaysEmitIntoClient
+    static var bluepack: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1854)
+    }
+
+    /// Beijing Unisoc Technologies Co., Ltd. (`1855`)
+    @_alwaysEmitIntoClient
+    static var beijingUnisocTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1855)
+    }
+
+    /// HITIQ LIMITED (`1856`)
+    @_alwaysEmitIntoClient
+    static var hitiq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1856)
+    }
+
+    /// MAC SRL (`1857`)
+    @_alwaysEmitIntoClient
+    static var mac: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1857)
+    }
+
+    /// DML LLC (`1858`)
+    @_alwaysEmitIntoClient
+    static var dml: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1858)
+    }
+
+    /// Sanofi (`1859`)
+    @_alwaysEmitIntoClient
+    static var sanofi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1859)
+    }
+
+    /// SOCOMEC (`1860`)
+    @_alwaysEmitIntoClient
+    static var socomec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1860)
+    }
+
+    /// WIZNOVA, Inc. (`1861`)
+    @_alwaysEmitIntoClient
+    static var wiznova: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1861)
+    }
+
+    /// Seitec Elektronik GmbH (`1862`)
+    @_alwaysEmitIntoClient
+    static var seitecElektronik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1862)
+    }
+
+    /// OR Technologies Pty Ltd (`1863`)
+    @_alwaysEmitIntoClient
+    static var orTechnologiesPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1863)
+    }
+
+    /// GuangZhou KuGou Computer Technology Co.Ltd (`1864`)
+    @_alwaysEmitIntoClient
+    static var guangzhouKugouComputerTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1864)
+    }
+
+    /// DIAODIAO (Beijing) Technology Co., Ltd. (`1865`)
+    @_alwaysEmitIntoClient
+    static var diaodiaoBeijingTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1865)
+    }
+
+    /// Illusory Studios LLC (`1866`)
+    @_alwaysEmitIntoClient
+    static var illusoryStudios: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1866)
+    }
+
+    /// Sarvavid Software Solutions LLP (`1867`)
+    @_alwaysEmitIntoClient
+    static var sarvavidSoftwareSolutionsLlp: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1867)
+    }
+
+    /// iopool s.a. (`1868`)
+    @_alwaysEmitIntoClient
+    static var iopool: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1868)
+    }
+
+    /// Amtech Systems, LLC (`1869`)
+    @_alwaysEmitIntoClient
+    static var amtechSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1869)
+    }
+
+    /// EAGLE DETECTION SA (`1870`)
+    @_alwaysEmitIntoClient
+    static var eagleDetection: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1870)
+    }
+
+    /// MEDIATECH S.R.L. (`1871`)
+    @_alwaysEmitIntoClient
+    static var mediatech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1871)
+    }
+
+    /// Hamilton Professional Services of Canada Incorporated (`1872`)
+    @_alwaysEmitIntoClient
+    static var hamiltonProfessionalServicesOfCanada: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1872)
+    }
+
+    /// Changsha JEMO IC Design Co.,Ltd (`1873`)
+    @_alwaysEmitIntoClient
+    static var changshaJemoIcDesign: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1873)
+    }
+
+    /// Elatec GmbH (`1874`)
+    @_alwaysEmitIntoClient
+    static var elatec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1874)
+    }
+
+    /// JLG Industries, Inc. (`1875`)
+    @_alwaysEmitIntoClient
+    static var jlgIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1875)
+    }
+
+    /// Michael Parkin (`1876`)
+    @_alwaysEmitIntoClient
+    static var michaelParkin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1876)
+    }
+
+    /// Brother Industries, Ltd (`1877`)
+    @_alwaysEmitIntoClient
+    static var brotherIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1877)
+    }
+
+    /// Lumens For Less, Inc (`1878`)
+    @_alwaysEmitIntoClient
+    static var lumensForLess: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1878)
+    }
+
+    /// ELA Innovation (`1879`)
+    @_alwaysEmitIntoClient
+    static var elaInnovation: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1879)
+    }
+
+    /// umanSense AB (`1880`)
+    @_alwaysEmitIntoClient
+    static var umansense: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1880)
+    }
+
+    /// Shanghai InGeek Cyber Security Co., Ltd. (`1881`)
+    @_alwaysEmitIntoClient
+    static var shanghaiIngeekCyberSecurity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1881)
+    }
+
+    /// HARMAN CO.,LTD. (`1882`)
+    @_alwaysEmitIntoClient
+    static var harman: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1882)
+    }
+
+    /// Smart Sensor Devices AB (`1883`)
+    @_alwaysEmitIntoClient
+    static var smartSensorDevices: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1883)
+    }
+
+    /// Antitronics Inc. (`1884`)
+    @_alwaysEmitIntoClient
+    static var antitronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1884)
+    }
+
+    /// RHOMBUS SYSTEMS, INC. (`1885`)
+    @_alwaysEmitIntoClient
+    static var rhombusSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1885)
+    }
+
+    /// Katerra Inc. (`1886`)
+    @_alwaysEmitIntoClient
+    static var katerra: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1886)
+    }
+
+    /// Remote Solution Co., LTD. (`1887`)
+    @_alwaysEmitIntoClient
+    static var remoteSolution: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1887)
+    }
+
+    /// Vimar SpA (`1888`)
+    @_alwaysEmitIntoClient
+    static var vimarSpa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1888)
+    }
+
+    /// Mantis Tech LLC (`1889`)
+    @_alwaysEmitIntoClient
+    static var mantisTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1889)
+    }
+
+    /// TerOpta Ltd (`1890`)
+    @_alwaysEmitIntoClient
+    static var teropta: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1890)
+    }
+
+    /// PIKOLIN S.L. (`1891`)
+    @_alwaysEmitIntoClient
+    static var pikolin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1891)
+    }
+
+    /// WWZN Information Technology Company Limited (`1892`)
+    @_alwaysEmitIntoClient
+    static var wwznInformationTechnologyCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1892)
+    }
+
+    /// Voxx International (`1893`)
+    @_alwaysEmitIntoClient
+    static var voxxInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1893)
+    }
+
+    /// ART AND PROGRAM, INC. (`1894`)
+    @_alwaysEmitIntoClient
+    static var artAndProgram: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1894)
+    }
+
+    /// NITTO DENKO ASIA TECHNICAL CENTRE PTE. LTD. (`1895`)
+    @_alwaysEmitIntoClient
+    static var nittoDenkoiaTechnicalCentrePte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1895)
+    }
+
+    /// Peloton Interactive Inc. (`1896`)
+    @_alwaysEmitIntoClient
+    static var pelotonInteractive: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1896)
+    }
+
+    /// Force Impact Technologies (`1897`)
+    @_alwaysEmitIntoClient
+    static var forceImpactTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1897)
+    }
+
+    /// Dmac Mobile Developments, LLC (`1898`)
+    @_alwaysEmitIntoClient
+    static var dmacMobileDevelopments: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1898)
+    }
+
+    /// Engineered Medical Technologies (`1899`)
+    @_alwaysEmitIntoClient
+    static var engineeredMedicalTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1899)
+    }
+
+    /// Noodle Technology inc (`1900`)
+    @_alwaysEmitIntoClient
+    static var noodleTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1900)
+    }
+
+    /// Graesslin GmbH (`1901`)
+    @_alwaysEmitIntoClient
+    static var graesslin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1901)
+    }
+
+    /// WuQi technologies, Inc. (`1902`)
+    @_alwaysEmitIntoClient
+    static var wuqiTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1902)
+    }
+
+    /// Successful Endeavours Pty Ltd (`1903`)
+    @_alwaysEmitIntoClient
+    static var successfulEndeavoursPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1903)
+    }
+
+    /// InnoCon Medical ApS (`1904`)
+    @_alwaysEmitIntoClient
+    static var innoconMedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1904)
+    }
+
+    /// Corvex Connected Safety (`1905`)
+    @_alwaysEmitIntoClient
+    static var corvexConnectedSafety: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1905)
+    }
+
+    /// Thirdwayv Inc. (`1906`)
+    @_alwaysEmitIntoClient
+    static var thirdwayv: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1906)
+    }
+
+    /// Echoflex Solutions Inc. (`1907`)
+    @_alwaysEmitIntoClient
+    static var echoflexSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1907)
+    }
+
+    /// C-MAX Asia Limited (`1908`)
+    @_alwaysEmitIntoClient
+    static var cMaxAsia: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1908)
+    }
+
+    /// 4eBusiness GmbH (`1909`)
+    @_alwaysEmitIntoClient
+    static var uuid4Ebusiness: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1909)
+    }
+
+    /// Cyber Transport Control GmbH (`1910`)
+    @_alwaysEmitIntoClient
+    static var cyberTransportControl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1910)
+    }
+
+    /// Cue (`1911`)
+    @_alwaysEmitIntoClient
+    static var cue: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1911)
+    }
+
+    /// KOAMTAC INC. (`1912`)
+    @_alwaysEmitIntoClient
+    static var koamtac: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1912)
+    }
+
+    /// Loopshore Oy (`1913`)
+    @_alwaysEmitIntoClient
+    static var loopshore: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1913)
+    }
+
+    /// Niruha Systems Private Limited (`1914`)
+    @_alwaysEmitIntoClient
+    static var niruhaSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1914)
+    }
+
+    /// AmaterZ, Inc. (`1915`)
+    @_alwaysEmitIntoClient
+    static var amaterz: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1915)
+    }
+
+    /// radius co., ltd. (`1916`)
+    @_alwaysEmitIntoClient
+    static var radius: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1916)
+    }
+
+    /// Sensority, s.r.o. (`1917`)
+    @_alwaysEmitIntoClient
+    static var sensority: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1917)
+    }
+
+    /// Sparkage Inc. (`1918`)
+    @_alwaysEmitIntoClient
+    static var sparkage: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1918)
+    }
+
+    /// Glenview Software Corporation (`1919`)
+    @_alwaysEmitIntoClient
+    static var glenviewSoftware: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1919)
+    }
+
+    /// Finch Technologies Ltd. (`1920`)
+    @_alwaysEmitIntoClient
+    static var finchTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1920)
+    }
+
+    /// Qingping Technology (Beijing) Co., Ltd. (`1921`)
+    @_alwaysEmitIntoClient
+    static var qingpingTechnologyBeijing: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1921)
+    }
+
+    /// DeviceDrive AS (`1922`)
+    @_alwaysEmitIntoClient
+    static var devicedrive: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1922)
+    }
+
+    /// ESEMBER LIMITED LIABILITY COMPANY (`1923`)
+    @_alwaysEmitIntoClient
+    static var esemberLiabilityCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1923)
+    }
+
+    /// audifon GmbH & Co. KG (`1924`)
+    @_alwaysEmitIntoClient
+    static var audifon: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1924)
+    }
+
+    /// O2 Micro, Inc. (`1925`)
+    @_alwaysEmitIntoClient
+    static var o2Micro: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1925)
+    }
+
+    /// HLP Controls Pty Limited (`1926`)
+    @_alwaysEmitIntoClient
+    static var hlpControlsPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1926)
+    }
+
+    /// Pangaea Solution (`1927`)
+    @_alwaysEmitIntoClient
+    static var pangaeaSolution: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1927)
+    }
+
+    /// BubblyNet, LLC (`1928`)
+    @_alwaysEmitIntoClient
+    static var bubblynet: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1928)
+    }
+
+    /// The Wildflower Foundation (`1930`)
+    @_alwaysEmitIntoClient
+    static var wildflowerFoundation: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1930)
+    }
+
+    /// Optikam Tech Inc. (`1931`)
+    @_alwaysEmitIntoClient
+    static var optikamTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1931)
+    }
+
+    /// MINIBREW HOLDING B.V (`1932`)
+    @_alwaysEmitIntoClient
+    static var minibrewHoldingBV: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1932)
+    }
+
+    /// Cybex GmbH (`1933`)
+    @_alwaysEmitIntoClient
+    static var cybex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1933)
+    }
+
+    /// FUJIMIC NIIGATA, INC. (`1934`)
+    @_alwaysEmitIntoClient
+    static var fujimicNiigata: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1934)
+    }
+
+    /// Hanna Instruments, Inc. (`1935`)
+    @_alwaysEmitIntoClient
+    static var hannaInstruments: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1935)
+    }
+
+    /// KOMPAN A/S (`1936`)
+    @_alwaysEmitIntoClient
+    static var kompan: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1936)
+    }
+
+    /// Scosche Industries, Inc. (`1937`)
+    @_alwaysEmitIntoClient
+    static var scoscheIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1937)
+    }
+
+    /// Provo Craft (`1938`)
+    @_alwaysEmitIntoClient
+    static var provoCraft: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1938)
+    }
+
+    /// AEV spol. s r.o. (`1939`)
+    @_alwaysEmitIntoClient
+    static var aevSpolSRO: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1939)
+    }
+
+    /// The Coca-Cola Company (`1940`)
+    @_alwaysEmitIntoClient
+    static var cocaColaCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1940)
+    }
+
+    /// GASTEC CORPORATION (`1941`)
+    @_alwaysEmitIntoClient
+    static var gastec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1941)
+    }
+
+    /// StarLeaf Ltd (`1942`)
+    @_alwaysEmitIntoClient
+    static var starleaf: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1942)
+    }
+
+    /// Water-i.d. GmbH (`1943`)
+    @_alwaysEmitIntoClient
+    static var waterID: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1943)
+    }
+
+    /// HoloKit, Inc. (`1944`)
+    @_alwaysEmitIntoClient
+    static var holokit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1944)
+    }
+
+    /// PlantChoir Inc. (`1945`)
+    @_alwaysEmitIntoClient
+    static var plantchoir: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1945)
+    }
+
+    /// GuangDong Oppo Mobile Telecommunications Corp., Ltd. (`1946`)
+    @_alwaysEmitIntoClient
+    static var guangdongOppoMobileTelecommunications: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1946)
+    }
+
+    /// CST ELECTRONICS (PROPRIETARY) LIMITED (`1947`)
+    @_alwaysEmitIntoClient
+    static var cstElectronicsProprietary: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1947)
+    }
+
+    /// Sky UK Limited (`1948`)
+    @_alwaysEmitIntoClient
+    static var skyUk: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1948)
+    }
+
+    /// Digibale Pty Ltd (`1949`)
+    @_alwaysEmitIntoClient
+    static var digibalePty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1949)
+    }
+
+    /// Smartloxx GmbH (`1950`)
+    @_alwaysEmitIntoClient
+    static var smartloxx: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1950)
+    }
+
+    /// Pune Scientific LLP (`1951`)
+    @_alwaysEmitIntoClient
+    static var puneScientificLlp: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1951)
+    }
+
+    /// Regent Beleuchtungskorper AG (`1952`)
+    @_alwaysEmitIntoClient
+    static var regentBeleuchtungskorper: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1952)
+    }
+
+    /// Apollo Neuroscience, Inc. (`1953`)
+    @_alwaysEmitIntoClient
+    static var apolloNeuroscience: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1953)
+    }
+
+    /// Roku, Inc. (`1954`)
+    @_alwaysEmitIntoClient
+    static var roku: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1954)
+    }
+
+    /// Comcast Cable (`1955`)
+    @_alwaysEmitIntoClient
+    static var comcastCable: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1955)
+    }
+
+    /// Xiamen Mage Information Technology Co., Ltd. (`1956`)
+    @_alwaysEmitIntoClient
+    static var xiamenMageInformationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1956)
+    }
+
+    /// RAB Lighting, Inc. (`1957`)
+    @_alwaysEmitIntoClient
+    static var rabLighting: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1957)
+    }
+
+    /// Musen Connect, Inc. (`1958`)
+    @_alwaysEmitIntoClient
+    static var musenConnect: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1958)
+    }
+
+    /// Zume, Inc. (`1959`)
+    @_alwaysEmitIntoClient
+    static var zume: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1959)
+    }
+
+    /// conbee GmbH (`1960`)
+    @_alwaysEmitIntoClient
+    static var conbee: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1960)
+    }
+
+    /// Bruel & Kjaer Sound & Vibration (`1961`)
+    @_alwaysEmitIntoClient
+    static var bruelKjaerSoundVibration: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1961)
+    }
+
+    /// The Kroger Co. (`1962`)
+    @_alwaysEmitIntoClient
+    static var kroger: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1962)
+    }
+
+    /// Granite River Solutions, Inc. (`1963`)
+    @_alwaysEmitIntoClient
+    static var graniteRiverSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1963)
+    }
+
+    /// LoupeDeck Oy (`1964`)
+    @_alwaysEmitIntoClient
+    static var loupedeck: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1964)
+    }
+
+    /// New H3C Technologies Co.,Ltd (`1965`)
+    @_alwaysEmitIntoClient
+    static var newH3CTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1965)
+    }
+
+    /// Aurea Solucoes Tecnologicas Ltda. (`1966`)
+    @_alwaysEmitIntoClient
+    static var aureaSolucoesTecnologicasa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1966)
+    }
+
+    /// Hong Kong Bouffalo Lab Limited (`1967`)
+    @_alwaysEmitIntoClient
+    static var hongKongBouffaloLab: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1967)
+    }
+
+    /// GV Concepts Inc. (`1968`)
+    @_alwaysEmitIntoClient
+    static var gvConcepts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1968)
+    }
+
+    /// Thomas Dynamics, LLC (`1969`)
+    @_alwaysEmitIntoClient
+    static var thomasDynamics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1969)
+    }
+
+    /// Moeco IOT Inc. (`1970`)
+    @_alwaysEmitIntoClient
+    static var moecoIot: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1970)
+    }
+
+    /// 2N TELEKOMUNIKACE a.s. (`1971`)
+    @_alwaysEmitIntoClient
+    static var uuid2NTelekomunikace: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1971)
+    }
+
+    /// Hormann KG Antriebstechnik (`1972`)
+    @_alwaysEmitIntoClient
+    static var hormannKgAntriebstechnik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1972)
+    }
+
+    /// CRONO CHIP, S.L. (`1973`)
+    @_alwaysEmitIntoClient
+    static var cronoChip: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1973)
+    }
+
+    /// Soundbrenner Limited (`1974`)
+    @_alwaysEmitIntoClient
+    static var soundbrenner: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1974)
+    }
+
+    /// ETABLISSEMENTS GEORGES RENAULT (`1975`)
+    @_alwaysEmitIntoClient
+    static var etablissementsGeorgesRenault: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1975)
+    }
+
+    /// iSwip (`1976`)
+    @_alwaysEmitIntoClient
+    static var iswip: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1976)
+    }
+
+    /// Epona Biotec Limited (`1977`)
+    @_alwaysEmitIntoClient
+    static var eponaBiotec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1977)
+    }
+
+    /// Battery-Biz Inc. (`1978`)
+    @_alwaysEmitIntoClient
+    static var batteryBiz: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1978)
+    }
+
+    /// EPIC S.R.L. (`1979`)
+    @_alwaysEmitIntoClient
+    static var epic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1979)
+    }
+
+    /// KD CIRCUITS LLC (`1980`)
+    @_alwaysEmitIntoClient
+    static var kdCircuits: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1980)
+    }
+
+    /// Genedrive Diagnostics Ltd (`1981`)
+    @_alwaysEmitIntoClient
+    static var genedriveDiagnostics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1981)
+    }
+
+    /// Axentia Technologies AB (`1982`)
+    @_alwaysEmitIntoClient
+    static var axentiaTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1982)
+    }
+
+    /// REGULA Ltd. (`1983`)
+    @_alwaysEmitIntoClient
+    static var regula: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1983)
+    }
+
+    /// Biral AG (`1984`)
+    @_alwaysEmitIntoClient
+    static var biral: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1984)
+    }
+
+    /// A.W. Chesterton Company (`1985`)
+    @_alwaysEmitIntoClient
+    static var aWChestertonCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1985)
+    }
+
+    /// Radinn AB (`1986`)
+    @_alwaysEmitIntoClient
+    static var radinn: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1986)
+    }
+
+    /// CIMTechniques, Inc. (`1987`)
+    @_alwaysEmitIntoClient
+    static var cimtechniques: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1987)
+    }
+
+    /// Johnson Health Tech NA (`1988`)
+    @_alwaysEmitIntoClient
+    static var johnsonHealthTechNa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1988)
+    }
+
+    /// June Life, Inc. (`1989`)
+    @_alwaysEmitIntoClient
+    static var juneLife: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1989)
+    }
+
+    /// Bluenetics GmbH (`1990`)
+    @_alwaysEmitIntoClient
+    static var bluenetics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1990)
+    }
+
+    /// iaconicDesign Inc. (`1991`)
+    @_alwaysEmitIntoClient
+    static var iaconicdesign: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1991)
+    }
+
+    /// WRLDS Creations AB (`1992`)
+    @_alwaysEmitIntoClient
+    static var wrldsCreations: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1992)
+    }
+
+    /// Skullcandy, Inc. (`1993`)
+    @_alwaysEmitIntoClient
+    static var skullcandy: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1993)
+    }
+
+    /// Modul-System HH AB (`1994`)
+    @_alwaysEmitIntoClient
+    static var modulSystemHh: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1994)
+    }
+
+    /// West Pharmaceutical Services, Inc. (`1995`)
+    @_alwaysEmitIntoClient
+    static var westPharmaceuticalServices: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1995)
+    }
+
+    /// Barnacle Systems Inc. (`1996`)
+    @_alwaysEmitIntoClient
+    static var barnacleSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1996)
+    }
+
+    /// Smart Wave Technologies Canada Inc (`1997`)
+    @_alwaysEmitIntoClient
+    static var smartWaveTechnologiesCanada: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1997)
+    }
+
+    /// Shanghai Top-Chip Microelectronics Tech. Co., LTD (`1998`)
+    @_alwaysEmitIntoClient
+    static var shanghaiTopChipMicroelectronicsTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1998)
+    }
+
+    /// NeoSensory, Inc. (`1999`)
+    @_alwaysEmitIntoClient
+    static var neosensory: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 1999)
+    }
+
+    /// Hangzhou Tuya Information  Technology Co., Ltd (`2000`)
+    @_alwaysEmitIntoClient
+    static var hangzhouTuyaInformationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2000)
+    }
+
+    /// Shanghai Panchip Microelectronics Co., Ltd (`2001`)
+    @_alwaysEmitIntoClient
+    static var shanghaiPanchipMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2001)
+    }
+
+    /// React Accessibility Limited (`2002`)
+    @_alwaysEmitIntoClient
+    static var reactAccessibility: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2002)
+    }
+
+    /// LIVNEX Co.,Ltd. (`2003`)
+    @_alwaysEmitIntoClient
+    static var livnex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2003)
+    }
+
+    /// Kano Computing Limited (`2004`)
+    @_alwaysEmitIntoClient
+    static var kanoComputing: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2004)
+    }
+
+    /// hoots classic GmbH (`2005`)
+    @_alwaysEmitIntoClient
+    static var hootsClassic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2005)
+    }
+
+    /// ecobee Inc. (`2006`)
+    @_alwaysEmitIntoClient
+    static var ecobee: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2006)
+    }
+
+    /// Nanjing Qinheng Microelectronics Co., Ltd (`2007`)
+    @_alwaysEmitIntoClient
+    static var nanjingQinhengMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2007)
+    }
+
+    /// SOLUTIONS AMBRA INC. (`2008`)
+    @_alwaysEmitIntoClient
+    static var solutionsAmbra: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2008)
+    }
+
+    /// Micro-Design, Inc. (`2009`)
+    @_alwaysEmitIntoClient
+    static var microDesign: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2009)
+    }
+
+    /// STARLITE Co., Ltd. (`2010`)
+    @_alwaysEmitIntoClient
+    static var starlite: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2010)
+    }
+
+    /// Remedee Labs (`2011`)
+    @_alwaysEmitIntoClient
+    static var remedeeLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2011)
+    }
+
+    /// ThingOS GmbH (`2012`)
+    @_alwaysEmitIntoClient
+    static var thingos: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2012)
+    }
+
+    /// Linear Circuits (`2013`)
+    @_alwaysEmitIntoClient
+    static var linearCircuits: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2013)
+    }
+
+    /// Unlimited Engineering SL (`2014`)
+    @_alwaysEmitIntoClient
+    static var unlimitedEngineeringSl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2014)
+    }
+
+    /// Snap-on Incorporated (`2015`)
+    @_alwaysEmitIntoClient
+    static var snapOn: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2015)
+    }
+
+    /// Edifier International Limited (`2016`)
+    @_alwaysEmitIntoClient
+    static var edifierInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2016)
+    }
+
+    /// Lucie Labs (`2017`)
+    @_alwaysEmitIntoClient
+    static var lucieLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2017)
+    }
+
+    /// Alfred Kaercher SE & Co. KG (`2018`)
+    @_alwaysEmitIntoClient
+    static var alfredKaercherSeKg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2018)
+    }
+
+    /// Audiowise Technology Inc. (`2019`)
+    @_alwaysEmitIntoClient
+    static var audiowiseTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2019)
+    }
+
+    /// Geeksme S.L. (`2020`)
+    @_alwaysEmitIntoClient
+    static var geeksme: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2020)
+    }
+
+    /// Minut, Inc. (`2021`)
+    @_alwaysEmitIntoClient
+    static var minut: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2021)
+    }
+
+    /// Waybeyond Limited (`2022`)
+    @_alwaysEmitIntoClient
+    static var waybeyond: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2022)
+    }
+
+    /// Komfort IQ, Inc. (`2023`)
+    @_alwaysEmitIntoClient
+    static var komfortIq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2023)
+    }
+
+    /// Packetcraft, Inc. (`2024`)
+    @_alwaysEmitIntoClient
+    static var packetcraft: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2024)
+    }
+
+    /// Häfele GmbH & Co KG (`2025`)
+    @_alwaysEmitIntoClient
+    static var häfele: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2025)
+    }
+
+    /// ShapeLog, Inc. (`2026`)
+    @_alwaysEmitIntoClient
+    static var shapelog: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2026)
+    }
+
+    /// NOVABASE S.R.L. (`2027`)
+    @_alwaysEmitIntoClient
+    static var novabase: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2027)
+    }
+
+    /// Frecce LLC (`2028`)
+    @_alwaysEmitIntoClient
+    static var frecce: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2028)
+    }
+
+    /// Joule IQ, INC. (`2029`)
+    @_alwaysEmitIntoClient
+    static var jouleIq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2029)
+    }
+
+    /// KidzTek LLC (`2030`)
+    @_alwaysEmitIntoClient
+    static var kidztek: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2030)
+    }
+
+    /// Aktiebolaget Sandvik Coromant (`2031`)
+    @_alwaysEmitIntoClient
+    static var aktiebolagetSandvikCoromant: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2031)
+    }
+
+    /// e-moola.com Pty Ltd (`2032`)
+    @_alwaysEmitIntoClient
+    static var eMoolaComPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2032)
+    }
+
+    /// Zimi Innovations Pty Ltd (`2033`)
+    @_alwaysEmitIntoClient
+    static var zimiInnovationsPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2033)
+    }
+
+    /// SERENE GROUP, INC (`2034`)
+    @_alwaysEmitIntoClient
+    static var sereneGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2034)
+    }
+
+    /// DIGISINE ENERGYTECH CO. LTD. (`2035`)
+    @_alwaysEmitIntoClient
+    static var digisineEnergytech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2035)
+    }
+
+    /// MEDIRLAB Orvosbiologiai Fejleszto Korlatolt Felelossegu Tarsasag (`2036`)
+    @_alwaysEmitIntoClient
+    static var medirlabOrvosbiologiaiFejlesztoKorlatoltFelelosseguTarsasag: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2036)
+    }
+
+    /// Byton North America Corporation (`2037`)
+    @_alwaysEmitIntoClient
+    static var bytonNorthAmerica: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2037)
+    }
+
+    /// Shenzhen TonliScience and Technology Development Co.,Ltd (`2038`)
+    @_alwaysEmitIntoClient
+    static var shenzhenTonliscienceAndTechnologyDevelopment: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2038)
+    }
+
+    /// Cesar Systems Ltd. (`2039`)
+    @_alwaysEmitIntoClient
+    static var cesarSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2039)
+    }
+
+    /// quip NYC Inc. (`2040`)
+    @_alwaysEmitIntoClient
+    static var quipNyc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2040)
+    }
+
+    /// Direct Communication Solutions, Inc. (`2041`)
+    @_alwaysEmitIntoClient
+    static var directCommunicationSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2041)
+    }
+
+    /// Klipsch Group, Inc. (`2042`)
+    @_alwaysEmitIntoClient
+    static var klipschGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2042)
+    }
+
+    /// Access Co., Ltd (`2043`)
+    @_alwaysEmitIntoClient
+    static var access: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2043)
+    }
+
+    /// Renault SA (`2044`)
+    @_alwaysEmitIntoClient
+    static var renault: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2044)
+    }
+
+    /// JSK CO., LTD. (`2045`)
+    @_alwaysEmitIntoClient
+    static var jsk: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2045)
+    }
+
+    /// BIROTA (`2046`)
+    @_alwaysEmitIntoClient
+    static var birota: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2046)
+    }
+
+    /// maxon motor ltd. (`2047`)
+    @_alwaysEmitIntoClient
+    static var maxonMotor: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2047)
+    }
+
+    /// Optek (`2048`)
+    @_alwaysEmitIntoClient
+    static var optek: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2048)
+    }
+
+    /// CRONUS ELECTRONICS LTD (`2049`)
+    @_alwaysEmitIntoClient
+    static var cronusElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2049)
+    }
+
+    /// NantSound, Inc. (`2050`)
+    @_alwaysEmitIntoClient
+    static var nantsound: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2050)
+    }
+
+    /// Domintell s.a. (`2051`)
+    @_alwaysEmitIntoClient
+    static var domintell: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2051)
+    }
+
+    /// Andon Health Co.,Ltd (`2052`)
+    @_alwaysEmitIntoClient
+    static var andonHealth: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2052)
+    }
+
+    /// Urbanminded Ltd (`2053`)
+    @_alwaysEmitIntoClient
+    static var urbanminded: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2053)
+    }
+
+    /// TYRI Sweden AB (`2054`)
+    @_alwaysEmitIntoClient
+    static var tyriSweden: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2054)
+    }
+
+    /// ECD Electronic Components GmbH Dresden (`2055`)
+    @_alwaysEmitIntoClient
+    static var ecdElectronicComponentsDresden: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2055)
+    }
+
+    /// SISTEMAS KERN, SOCIEDAD ANÓMINA (`2056`)
+    @_alwaysEmitIntoClient
+    static var sistemasKernSociedadAnómina: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2056)
+    }
+
+    /// Trulli Audio (`2057`)
+    @_alwaysEmitIntoClient
+    static var trulliAudio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2057)
+    }
+
+    /// Altaneos (`2058`)
+    @_alwaysEmitIntoClient
+    static var altaneos: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2058)
+    }
+
+    /// Nanoleaf Canada Limited (`2059`)
+    @_alwaysEmitIntoClient
+    static var nanoleafCanada: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2059)
+    }
+
+    /// Ingy B.V. (`2060`)
+    @_alwaysEmitIntoClient
+    static var ingy: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2060)
+    }
+
+    /// Azbil Co. (`2061`)
+    @_alwaysEmitIntoClient
+    static var azbil: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2061)
+    }
+
+    /// TATTCOM LLC (`2062`)
+    @_alwaysEmitIntoClient
+    static var tattcom: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2062)
+    }
+
+    /// Paradox Engineering SA (`2063`)
+    @_alwaysEmitIntoClient
+    static var paradoxEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2063)
+    }
+
+    /// LECO Corporation (`2064`)
+    @_alwaysEmitIntoClient
+    static var leco: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2064)
+    }
+
+    /// Becker Antriebe GmbH (`2065`)
+    @_alwaysEmitIntoClient
+    static var beckerAntriebe: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2065)
+    }
+
+    /// Mstream Technologies., Inc. (`2066`)
+    @_alwaysEmitIntoClient
+    static var mstreamTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2066)
+    }
+
+    /// Flextronics International USA Inc. (`2067`)
+    @_alwaysEmitIntoClient
+    static var flextronicsInternationalUsa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2067)
+    }
+
+    /// Ossur hf. (`2068`)
+    @_alwaysEmitIntoClient
+    static var ossurHf: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2068)
+    }
+
+    /// SKC Inc (`2069`)
+    @_alwaysEmitIntoClient
+    static var skc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2069)
+    }
+
+    /// SPICA SYSTEMS LLC (`2070`)
+    @_alwaysEmitIntoClient
+    static var spicaSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2070)
+    }
+
+    /// Wangs Alliance Corporation (`2071`)
+    @_alwaysEmitIntoClient
+    static var wangsAlliance: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2071)
+    }
+
+    /// tatwah SA (`2072`)
+    @_alwaysEmitIntoClient
+    static var tatwah: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2072)
+    }
+
+    /// Hunter Douglas Inc (`2073`)
+    @_alwaysEmitIntoClient
+    static var hunterDouglas: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2073)
+    }
+
+    /// Shenzhen Conex (`2074`)
+    @_alwaysEmitIntoClient
+    static var shenzhenConex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2074)
+    }
+
+    /// DIM3 (`2075`)
+    @_alwaysEmitIntoClient
+    static var dim3: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2075)
+    }
+
+    /// Bobrick Washroom Equipment, Inc. (`2076`)
+    @_alwaysEmitIntoClient
+    static var bobrickWashroomEquipment: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2076)
+    }
+
+    /// Potrykus Holdings and Development LLC (`2077`)
+    @_alwaysEmitIntoClient
+    static var potrykusHoldingsAndDevelopment: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2077)
+    }
+
+    /// iNFORM Technology GmbH (`2078`)
+    @_alwaysEmitIntoClient
+    static var informTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2078)
+    }
+
+    /// eSenseLab LTD (`2079`)
+    @_alwaysEmitIntoClient
+    static var esenselab: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2079)
+    }
+
+    /// Brilliant Home Technology, Inc. (`2080`)
+    @_alwaysEmitIntoClient
+    static var brilliantHomeTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2080)
+    }
+
+    /// INOVA Geophysical, Inc. (`2081`)
+    @_alwaysEmitIntoClient
+    static var inovaGeophysical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2081)
+    }
+
+    /// adafruit industries (`2082`)
+    @_alwaysEmitIntoClient
+    static var adafruitIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2082)
+    }
+
+    /// Nexite Ltd (`2083`)
+    @_alwaysEmitIntoClient
+    static var nexite: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2083)
+    }
+
+    /// 8Power Limited (`2084`)
+    @_alwaysEmitIntoClient
+    static var uuid8Power: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2084)
+    }
+
+    /// CME PTE. LTD. (`2085`)
+    @_alwaysEmitIntoClient
+    static var cmePte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2085)
+    }
+
+    /// Hyundai Motor Company (`2086`)
+    @_alwaysEmitIntoClient
+    static var hyundaiMotorCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2086)
+    }
+
+    /// Kickmaker (`2087`)
+    @_alwaysEmitIntoClient
+    static var kickmaker: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2087)
+    }
+
+    /// Shanghai Suisheng Information Technology Co., Ltd. (`2088`)
+    @_alwaysEmitIntoClient
+    static var shanghaiSuishengInformationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2088)
+    }
+
+    /// HEXAGON (`2089`)
+    @_alwaysEmitIntoClient
+    static var hexagon: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2089)
+    }
+
+    /// Mitutoyo Corporation (`2090`)
+    @_alwaysEmitIntoClient
+    static var mitutoyo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2090)
+    }
+
+    /// shenzhen fitcare electronics Co.,Ltd (`2091`)
+    @_alwaysEmitIntoClient
+    static var shenzhenFitcareElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2091)
+    }
+
+    /// INGICS TECHNOLOGY CO., LTD. (`2092`)
+    @_alwaysEmitIntoClient
+    static var ingicsTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2092)
+    }
+
+    /// INCUS PERFORMANCE LTD. (`2093`)
+    @_alwaysEmitIntoClient
+    static var incusPerformance: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2093)
+    }
+
+    /// ABB S.p.A. (`2094`)
+    @_alwaysEmitIntoClient
+    static var abb2: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2094)
+    }
+
+    /// Blippit AB (`2095`)
+    @_alwaysEmitIntoClient
+    static var blippit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2095)
+    }
+
+    /// Core Health and Fitness LLC (`2096`)
+    @_alwaysEmitIntoClient
+    static var coreHealthAndFitness: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2096)
+    }
+
+    /// Foxble, LLC (`2097`)
+    @_alwaysEmitIntoClient
+    static var foxble: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2097)
+    }
+
+    /// Intermotive,Inc. (`2098`)
+    @_alwaysEmitIntoClient
+    static var intermotive: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2098)
+    }
+
+    /// Conneqtech B.V. (`2099`)
+    @_alwaysEmitIntoClient
+    static var conneqtech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2099)
+    }
+
+    /// RIKEN KEIKI CO., LTD., (`2100`)
+    @_alwaysEmitIntoClient
+    static var rikenKeiki: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2100)
+    }
+
+    /// Canopy Growth Corporation (`2101`)
+    @_alwaysEmitIntoClient
+    static var canopyGrowth: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2101)
+    }
+
+    /// Bitwards Oy (`2102`)
+    @_alwaysEmitIntoClient
+    static var bitwards: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2102)
+    }
+
+    /// vivo Mobile Communication Co., Ltd. (`2103`)
+    @_alwaysEmitIntoClient
+    static var vivoMobileCommunication: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2103)
+    }
+
+    /// Etymotic Research, Inc. (`2104`)
+    @_alwaysEmitIntoClient
+    static var etymoticResearch: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2104)
+    }
+
+    /// A puissance 3 (`2105`)
+    @_alwaysEmitIntoClient
+    static var aPuissance3: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2105)
+    }
+
+    /// BPW Bergische Achsen Kommanditgesellschaft (`2106`)
+    @_alwaysEmitIntoClient
+    static var bpwBergischeAchsenKommanditgesellschaft: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2106)
+    }
+
+    /// Piaggio Fast Forward (`2107`)
+    @_alwaysEmitIntoClient
+    static var piaggioFastForward: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2107)
+    }
+
+    /// BeerTech LTD (`2108`)
+    @_alwaysEmitIntoClient
+    static var beertech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2108)
+    }
+
+    /// Tokenize, Inc. (`2109`)
+    @_alwaysEmitIntoClient
+    static var tokenize: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2109)
+    }
+
+    /// Zorachka LTD (`2110`)
+    @_alwaysEmitIntoClient
+    static var zorachka: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2110)
+    }
+
+    /// D-Link Corp. (`2111`)
+    @_alwaysEmitIntoClient
+    static var dLink: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2111)
+    }
+
+    /// Down Range Systems LLC (`2112`)
+    @_alwaysEmitIntoClient
+    static var downRangeSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2112)
+    }
+
+    /// General Luminaire (Shanghai) Co., Ltd. (`2113`)
+    @_alwaysEmitIntoClient
+    static var generalLuminaireShanghai: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2113)
+    }
+
+    /// Tangshan HongJia electronic technology co., LTD. (`2114`)
+    @_alwaysEmitIntoClient
+    static var tangshanHongjiaElectronicTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2114)
+    }
+
+    /// FRAGRANCE DELIVERY TECHNOLOGIES LTD (`2115`)
+    @_alwaysEmitIntoClient
+    static var fragranceDeliveryTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2115)
+    }
+
+    /// Pepperl + Fuchs GmbH (`2116`)
+    @_alwaysEmitIntoClient
+    static var pepperlFuchs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2116)
+    }
+
+    /// Dometic Corporation (`2117`)
+    @_alwaysEmitIntoClient
+    static var dometic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2117)
+    }
+
+    /// USound GmbH (`2118`)
+    @_alwaysEmitIntoClient
+    static var usound: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2118)
+    }
+
+    /// DNANUDGE LIMITED (`2119`)
+    @_alwaysEmitIntoClient
+    static var dnanudge: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2119)
+    }
+
+    /// JUJU JOINTS CANADA CORP. (`2120`)
+    @_alwaysEmitIntoClient
+    static var jujuJointsCanada: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2120)
+    }
+
+    /// Dopple Technologies B.V. (`2121`)
+    @_alwaysEmitIntoClient
+    static var doppleTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2121)
+    }
+
+    /// ARCOM (`2122`)
+    @_alwaysEmitIntoClient
+    static var arcom: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2122)
+    }
+
+    /// Biotechware SRL (`2123`)
+    @_alwaysEmitIntoClient
+    static var biotechware: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2123)
+    }
+
+    /// ORSO Inc. (`2124`)
+    @_alwaysEmitIntoClient
+    static var orso: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2124)
+    }
+
+    /// SafePort (`2125`)
+    @_alwaysEmitIntoClient
+    static var safeport: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2125)
+    }
+
+    /// Carol Cole Company (`2126`)
+    @_alwaysEmitIntoClient
+    static var carolColeCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2126)
+    }
+
+    /// Embedded Fitness B.V. (`2127`)
+    @_alwaysEmitIntoClient
+    static var embeddedFitness: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2127)
+    }
+
+    /// Yealink (Xiamen) Network Technology Co.,LTD (`2128`)
+    @_alwaysEmitIntoClient
+    static var yealinkXiamenNetworkTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2128)
+    }
+
+    /// Subeca, Inc. (`2129`)
+    @_alwaysEmitIntoClient
+    static var subeca: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2129)
+    }
+
+    /// Cognosos, Inc. (`2130`)
+    @_alwaysEmitIntoClient
+    static var cognosos: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2130)
+    }
+
+    /// Pektron Group Limited (`2131`)
+    @_alwaysEmitIntoClient
+    static var pektronGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2131)
+    }
+
+    /// Tap Sound System (`2132`)
+    @_alwaysEmitIntoClient
+    static var tapSoundSystem: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2132)
+    }
+
+    /// Helios Hockey, Inc. (`2133`)
+    @_alwaysEmitIntoClient
+    static var heliosHockey: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2133)
+    }
+
+    /// Canopy Growth Corporation (`2134`)
+    @_alwaysEmitIntoClient
+    static var canopyGrowth2: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2134)
+    }
+
+    /// Parsyl Inc (`2135`)
+    @_alwaysEmitIntoClient
+    static var parsyl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2135)
+    }
+
+    /// SOUNDBOKS (`2136`)
+    @_alwaysEmitIntoClient
+    static var soundboks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2136)
+    }
+
+    /// BlueUp (`2137`)
+    @_alwaysEmitIntoClient
+    static var blueup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2137)
+    }
+
+    /// DAKATECH (`2138`)
+    @_alwaysEmitIntoClient
+    static var dakatech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2138)
+    }
+
+    /// RICOH ELECTRONIC DEVICES CO., LTD. (`2139`)
+    @_alwaysEmitIntoClient
+    static var ricohElectronicDevices: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2139)
+    }
+
+    /// ACOS CO.,LTD. (`2140`)
+    @_alwaysEmitIntoClient
+    static var acos: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2140)
+    }
+
+    /// Guilin Zhishen Information Technology Co.,Ltd. (`2141`)
+    @_alwaysEmitIntoClient
+    static var guilinZhishenInformationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2141)
+    }
+
+    /// Krog Systems LLC (`2142`)
+    @_alwaysEmitIntoClient
+    static var krogSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2142)
+    }
+
+    /// COMPEGPS TEAM,SOCIEDAD LIMITADA (`2143`)
+    @_alwaysEmitIntoClient
+    static var compegpsTeamSociedadLimitada: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2143)
+    }
+
+    /// Alflex Products B.V. (`2144`)
+    @_alwaysEmitIntoClient
+    static var alflexProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2144)
+    }
+
+    /// SmartSensor Labs Ltd (`2145`)
+    @_alwaysEmitIntoClient
+    static var smartsensorLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2145)
+    }
+
+    /// SmartDrive Inc. (`2146`)
+    @_alwaysEmitIntoClient
+    static var smartdrive: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2146)
+    }
+
+    /// Yo-tronics Technology Co., Ltd. (`2147`)
+    @_alwaysEmitIntoClient
+    static var yoTronicsTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2147)
+    }
+
+    /// Rafaelmicro (`2148`)
+    @_alwaysEmitIntoClient
+    static var rafaelmicro: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2148)
+    }
+
+    /// Emergency Lighting Products Limited (`2149`)
+    @_alwaysEmitIntoClient
+    static var emergencyLightingProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2149)
+    }
+
+    /// LAONZ Co.,Ltd (`2150`)
+    @_alwaysEmitIntoClient
+    static var laonz: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2150)
+    }
+
+    /// Western Digital Techologies, Inc. (`2151`)
+    @_alwaysEmitIntoClient
+    static var westernDigitalTechologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2151)
+    }
+
+    /// WIOsense GmbH & Co. KG (`2152`)
+    @_alwaysEmitIntoClient
+    static var wiosense: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2152)
+    }
+
+    /// EVVA Sicherheitstechnologie GmbH (`2153`)
+    @_alwaysEmitIntoClient
+    static var evvaSicherheitstechnologie: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2153)
+    }
+
+    /// Odic Incorporated (`2154`)
+    @_alwaysEmitIntoClient
+    static var odic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2154)
+    }
+
+    /// Pacific Track, LLC (`2155`)
+    @_alwaysEmitIntoClient
+    static var pacificTrack: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2155)
+    }
+
+    /// Revvo Technologies, Inc. (`2156`)
+    @_alwaysEmitIntoClient
+    static var revvoTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2156)
+    }
+
+    /// Biometrika d.o.o. (`2157`)
+    @_alwaysEmitIntoClient
+    static var biometrika: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2157)
+    }
+
+    /// Vorwerk Elektrowerke GmbH & Co. KG (`2158`)
+    @_alwaysEmitIntoClient
+    static var vorwerkElektrowerke: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2158)
+    }
+
+    /// Trackunit A/S (`2159`)
+    @_alwaysEmitIntoClient
+    static var trackunit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2159)
+    }
+
+    /// Wyze Labs, Inc (`2160`)
+    @_alwaysEmitIntoClient
+    static var wyzeLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2160)
+    }
+
+    /// Dension Elektronikai Kft. (formerly: Dension Audio Systems Ltd.) (`2161`)
+    @_alwaysEmitIntoClient
+    static var densionElektronikaiKftFormerlyDensionAudioSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2161)
+    }
+
+    /// 11 Health & Technologies Limited (`2162`)
+    @_alwaysEmitIntoClient
+    static var uuid11HealthTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2162)
+    }
+
+    /// Innophase Incorporated (`2163`)
+    @_alwaysEmitIntoClient
+    static var innophase: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2163)
+    }
+
+    /// Treegreen Limited (`2164`)
+    @_alwaysEmitIntoClient
+    static var treegreen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2164)
+    }
+
+    /// Berner International LLC (`2165`)
+    @_alwaysEmitIntoClient
+    static var bernerInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2165)
+    }
+
+    /// SmartResQ ApS (`2166`)
+    @_alwaysEmitIntoClient
+    static var smartresq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2166)
+    }
+
+    /// Tome, Inc. (`2167`)
+    @_alwaysEmitIntoClient
+    static var tome: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2167)
+    }
+
+    /// The Chamberlain Group, Inc. (`2168`)
+    @_alwaysEmitIntoClient
+    static var chamberlainGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2168)
+    }
+
+    /// MIZUNO Corporation (`2169`)
+    @_alwaysEmitIntoClient
+    static var mizuno: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2169)
+    }
+
+    /// ZRF, LLC (`2170`)
+    @_alwaysEmitIntoClient
+    static var zrf: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2170)
+    }
+
+    /// BYSTAMP (`2171`)
+    @_alwaysEmitIntoClient
+    static var bystamp: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2171)
+    }
+
+    /// Crosscan GmbH (`2172`)
+    @_alwaysEmitIntoClient
+    static var crosscan: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2172)
+    }
+
+    /// Konftel AB (`2173`)
+    @_alwaysEmitIntoClient
+    static var konftel: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2173)
+    }
+
+    /// 1bar.net Limited (`2174`)
+    @_alwaysEmitIntoClient
+    static var uuid1BarNet: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2174)
+    }
+
+    /// Phillips Connect Technologies LLC (`2175`)
+    @_alwaysEmitIntoClient
+    static var phillipsConnectTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2175)
+    }
+
+    /// imagiLabs AB (`2176`)
+    @_alwaysEmitIntoClient
+    static var imagilabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2176)
+    }
+
+    /// Optalert (`2177`)
+    @_alwaysEmitIntoClient
+    static var optalert: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2177)
+    }
+
+    /// PSYONIC, Inc. (`2178`)
+    @_alwaysEmitIntoClient
+    static var psyonic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2178)
+    }
+
+    /// Wintersteiger AG (`2179`)
+    @_alwaysEmitIntoClient
+    static var wintersteiger: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2179)
+    }
+
+    /// Controlid Industria, Comercio de Hardware e Servicos de Tecnologia Ltda (`2180`)
+    @_alwaysEmitIntoClient
+    static var controlidIndustriaComercioDeHardwareEServicosDeTecnologiaa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2180)
+    }
+
+    /// LEVOLOR, INC. (`2181`)
+    @_alwaysEmitIntoClient
+    static var levolor: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2181)
+    }
+
+    /// Xsens Technologies B.V. (`2182`)
+    @_alwaysEmitIntoClient
+    static var xsensTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2182)
+    }
+
+    /// Hydro-Gear Limited Partnership (`2183`)
+    @_alwaysEmitIntoClient
+    static var hydroGearPartnership: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2183)
+    }
+
+    /// EnPointe Fencing Pty Ltd (`2184`)
+    @_alwaysEmitIntoClient
+    static var enpointeFencingPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2184)
+    }
+
+    /// XANTHIO (`2185`)
+    @_alwaysEmitIntoClient
+    static var xanthio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2185)
+    }
+
+    /// sclak s.r.l. (`2186`)
+    @_alwaysEmitIntoClient
+    static var sclak: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2186)
+    }
+
+    /// Tricorder Arraay Technologies LLC (`2187`)
+    @_alwaysEmitIntoClient
+    static var tricorderArraayTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2187)
+    }
+
+    /// GB Solution co.,Ltd (`2188`)
+    @_alwaysEmitIntoClient
+    static var gbSolution: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2188)
+    }
+
+    /// Soliton Systems K.K. (`2189`)
+    @_alwaysEmitIntoClient
+    static var solitonSystemsKK: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2189)
+    }
+
+    /// GIGA-TMS INC (`2190`)
+    @_alwaysEmitIntoClient
+    static var gigaTms: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2190)
+    }
+
+    /// Tait International Limited (`2191`)
+    @_alwaysEmitIntoClient
+    static var taitInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2191)
+    }
+
+    /// NICHIEI INTEC CO., LTD. (`2192`)
+    @_alwaysEmitIntoClient
+    static var nichieiIntec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2192)
+    }
+
+    /// SmartWireless GmbH & Co. KG (`2193`)
+    @_alwaysEmitIntoClient
+    static var smartwireless: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2193)
+    }
+
+    /// Ingenieurbuero Birnfeld UG (haftungsbeschraenkt) (`2194`)
+    @_alwaysEmitIntoClient
+    static var ingenieurbueroBirnfeldUgHaftungsbeschraenkt: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2194)
+    }
+
+    /// Maytronics Ltd (`2195`)
+    @_alwaysEmitIntoClient
+    static var maytronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2195)
+    }
+
+    /// EPIFIT (`2196`)
+    @_alwaysEmitIntoClient
+    static var epifit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2196)
+    }
+
+    /// Gimer medical (`2197`)
+    @_alwaysEmitIntoClient
+    static var gimerMedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2197)
+    }
+
+    /// Nokian Renkaat Oyj (`2198`)
+    @_alwaysEmitIntoClient
+    static var nokianRenkaatj: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2198)
+    }
+
+    /// Current Lighting Solutions LLC (`2199`)
+    @_alwaysEmitIntoClient
+    static var currentLightingSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2199)
+    }
+
+    /// Sensibo, Inc. (`2200`)
+    @_alwaysEmitIntoClient
+    static var sensibo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2200)
+    }
+
+    /// SFS unimarket AG (`2201`)
+    @_alwaysEmitIntoClient
+    static var sfsUnimarket: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2201)
+    }
+
+    /// Private limited company "Teltonika" (`2202`)
+    @_alwaysEmitIntoClient
+    static var privateCompanyTeltonika: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2202)
+    }
+
+    /// Saucon Technologies (`2203`)
+    @_alwaysEmitIntoClient
+    static var sauconTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2203)
+    }
+
+    /// Embedded Devices Co. Company (`2204`)
+    @_alwaysEmitIntoClient
+    static var embeddedDevicesCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2204)
+    }
+
+    /// J-J.A.D.E. Enterprise LLC (`2205`)
+    @_alwaysEmitIntoClient
+    static var jJADEEnterprise: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2205)
+    }
+
+    /// i-SENS, inc. (`2206`)
+    @_alwaysEmitIntoClient
+    static var iSens: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2206)
+    }
+
+    /// Witschi Electronic Ltd (`2207`)
+    @_alwaysEmitIntoClient
+    static var witschiElectronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2207)
+    }
+
+    /// Aclara Technologies LLC (`2208`)
+    @_alwaysEmitIntoClient
+    static var aclaraTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2208)
+    }
+
+    /// EXEO TECH CORPORATION (`2209`)
+    @_alwaysEmitIntoClient
+    static var exeoTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2209)
+    }
+
+    /// Epic Systems Co., Ltd. (`2210`)
+    @_alwaysEmitIntoClient
+    static var epicSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2210)
+    }
+
+    /// Hoffmann SE (`2211`)
+    @_alwaysEmitIntoClient
+    static var hoffmannSe: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2211)
+    }
+
+    /// Realme Chongqing Mobile Telecommunications Corp., Ltd. (`2212`)
+    @_alwaysEmitIntoClient
+    static var realmeChongqingMobileTelecommunications: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2212)
+    }
+
+    /// UMEHEAL Ltd (`2213`)
+    @_alwaysEmitIntoClient
+    static var umeheal: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2213)
+    }
+
+    /// Intelligenceworks Inc. (`2214`)
+    @_alwaysEmitIntoClient
+    static var intelligenceworks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2214)
+    }
+
+    /// TGR 1.618 Limited (`2215`)
+    @_alwaysEmitIntoClient
+    static var tgr1618: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2215)
+    }
+
+    /// Shanghai Kfcube Inc (`2216`)
+    @_alwaysEmitIntoClient
+    static var shanghaiKfcube: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2216)
+    }
+
+    /// Fraunhofer IIS (`2217`)
+    @_alwaysEmitIntoClient
+    static var fraunhoferIis: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2217)
+    }
+
+    /// SZ DJI TECHNOLOGY CO.,LTD (`2218`)
+    @_alwaysEmitIntoClient
+    static var szDjiTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2218)
+    }
+
+    /// Coburn Technology, LLC (`2219`)
+    @_alwaysEmitIntoClient
+    static var coburnTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2219)
+    }
+
+    /// Topre Corporation (`2220`)
+    @_alwaysEmitIntoClient
+    static var topre: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2220)
+    }
+
+    /// Kayamatics Limited (`2221`)
+    @_alwaysEmitIntoClient
+    static var kayamatics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2221)
+    }
+
+    /// Moticon ReGo AG (`2222`)
+    @_alwaysEmitIntoClient
+    static var moticonRego: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2222)
+    }
+
+    /// Polidea Sp. z o.o. (`2223`)
+    @_alwaysEmitIntoClient
+    static var polidea: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2223)
+    }
+
+    /// Trivedi Advanced Technologies LLC (`2224`)
+    @_alwaysEmitIntoClient
+    static var trivediAdvancedTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2224)
+    }
+
+    /// CORE|vision BV (`2225`)
+    @_alwaysEmitIntoClient
+    static var coreVision: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2225)
+    }
+
+    /// PF SCHWEISSTECHNOLOGIE GMBH (`2226`)
+    @_alwaysEmitIntoClient
+    static var pfSchweisstechnologie: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2226)
+    }
+
+    /// IONIQ Skincare GmbH & Co. KG (`2227`)
+    @_alwaysEmitIntoClient
+    static var ioniqSkincare: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2227)
+    }
+
+    /// Sengled Co., Ltd. (`2228`)
+    @_alwaysEmitIntoClient
+    static var sengled: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2228)
+    }
+
+    /// TransferFi (`2229`)
+    @_alwaysEmitIntoClient
+    static var transferfi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2229)
+    }
+
+    /// Boehringer Ingelheim Vetmedica GmbH (`2230`)
+    @_alwaysEmitIntoClient
+    static var boehringerIngelheimVetmedica: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2230)
+    }
+
+    /// ABB Inc (`2231`)
+    @_alwaysEmitIntoClient
+    static var abb3: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2231)
+    }
+
+    /// Check Technology Solutions LLC (`2232`)
+    @_alwaysEmitIntoClient
+    static var checkTechnologySolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2232)
+    }
+
+    /// U-Shin Ltd. (`2233`)
+    @_alwaysEmitIntoClient
+    static var uShin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2233)
+    }
+
+    /// HYPER ICE, INC. (`2234`)
+    @_alwaysEmitIntoClient
+    static var hyperIce: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2234)
+    }
+
+    /// Tokai-rika co.,ltd. (`2235`)
+    @_alwaysEmitIntoClient
+    static var tokaiRika: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2235)
+    }
+
+    /// Prevayl Limited (`2236`)
+    @_alwaysEmitIntoClient
+    static var prevayl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2236)
+    }
+
+    /// bf1systems limited (`2237`)
+    @_alwaysEmitIntoClient
+    static var bf1Systems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2237)
+    }
+
+    /// ubisys technologies GmbH (`2238`)
+    @_alwaysEmitIntoClient
+    static var ubisysTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2238)
+    }
+
+    /// SIRC Co., Ltd. (`2239`)
+    @_alwaysEmitIntoClient
+    static var sirc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2239)
+    }
+
+    /// Accent Advanced Systems SLU (`2240`)
+    @_alwaysEmitIntoClient
+    static var accentAdvancedSystemsSlu: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2240)
+    }
+
+    /// Rayden.Earth LTD (`2241`)
+    @_alwaysEmitIntoClient
+    static var raydenEarth: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2241)
+    }
+
+    /// Lindinvent AB (`2242`)
+    @_alwaysEmitIntoClient
+    static var lindinvent: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2242)
+    }
+
+    /// CHIPOLO d.o.o. (`2243`)
+    @_alwaysEmitIntoClient
+    static var chipolo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2243)
+    }
+
+    /// CellAssist, LLC (`2244`)
+    @_alwaysEmitIntoClient
+    static var cellassist: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2244)
+    }
+
+    /// J. Wagner GmbH (`2245`)
+    @_alwaysEmitIntoClient
+    static var jWagner: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2245)
+    }
+
+    /// Integra Optics Inc (`2246`)
+    @_alwaysEmitIntoClient
+    static var integraOptics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2246)
+    }
+
+    /// Monadnock Systems Ltd. (`2247`)
+    @_alwaysEmitIntoClient
+    static var monadnockSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2247)
+    }
+
+    /// Liteboxer Technologies Inc. (`2248`)
+    @_alwaysEmitIntoClient
+    static var liteboxerTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2248)
+    }
+
+    /// Noventa AG (`2249`)
+    @_alwaysEmitIntoClient
+    static var noventa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2249)
+    }
+
+    /// Nubia Technology Co.,Ltd. (`2250`)
+    @_alwaysEmitIntoClient
+    static var nubiaTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2250)
+    }
+
+    /// JT INNOVATIONS LIMITED (`2251`)
+    @_alwaysEmitIntoClient
+    static var jtInnovations: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2251)
+    }
+
+    /// TGM TECHNOLOGY CO., LTD. (`2252`)
+    @_alwaysEmitIntoClient
+    static var tgmTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2252)
+    }
+
+    /// ifly (`2253`)
+    @_alwaysEmitIntoClient
+    static var ifly: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2253)
+    }
+
+    /// ZIMI CORPORATION (`2254`)
+    @_alwaysEmitIntoClient
+    static var zimi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2254)
+    }
+
+    /// betternotstealmybike UG (with limited liability) (`2255`)
+    @_alwaysEmitIntoClient
+    static var betternotstealmybikeUgWithLiability: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2255)
+    }
+
+    /// ESTOM Infotech Kft. (`2256`)
+    @_alwaysEmitIntoClient
+    static var estomInfotechKft: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2256)
+    }
+
+    /// Sensovium Inc. (`2257`)
+    @_alwaysEmitIntoClient
+    static var sensovium: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2257)
+    }
+
+    /// Virscient Limited (`2258`)
+    @_alwaysEmitIntoClient
+    static var virscient: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2258)
+    }
+
+    /// Novel Bits, LLC (`2259`)
+    @_alwaysEmitIntoClient
+    static var novelBits: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2259)
+    }
+
+    /// ADATA Technology Co., LTD. (`2260`)
+    @_alwaysEmitIntoClient
+    static var adataTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2260)
+    }
+
+    /// KEYes (`2261`)
+    @_alwaysEmitIntoClient
+    static var keyes: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2261)
+    }
+
+    /// Nome Oy (`2262`)
+    @_alwaysEmitIntoClient
+    static var nome: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2262)
+    }
+
+    /// Inovonics Corp (`2263`)
+    @_alwaysEmitIntoClient
+    static var inovonics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2263)
+    }
+
+    /// WARES (`2264`)
+    @_alwaysEmitIntoClient
+    static var wares: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2264)
+    }
+
+    /// Pointr Labs Limited (`2265`)
+    @_alwaysEmitIntoClient
+    static var pointrLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2265)
+    }
+
+    /// Miridia Technology Incorporated (`2266`)
+    @_alwaysEmitIntoClient
+    static var miridiaTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2266)
+    }
+
+    /// Tertium Technology (`2267`)
+    @_alwaysEmitIntoClient
+    static var tertiumTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2267)
+    }
+
+    /// SHENZHEN AUKEY E BUSINESS CO., LTD (`2268`)
+    @_alwaysEmitIntoClient
+    static var shenzhenAukeyEBusiness: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2268)
+    }
+
+    /// code-Q (`2269`)
+    @_alwaysEmitIntoClient
+    static var codeQ: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2269)
+    }
+
+    /// Tyco Electronics Corporation a TE Connectivity Ltd Company (`2270`)
+    @_alwaysEmitIntoClient
+    static var tycoElectronicsATeConnectivityCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2270)
+    }
+
+    /// IRIS OHYAMA CO.,LTD. (`2271`)
+    @_alwaysEmitIntoClient
+    static var irisOhyama: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2271)
+    }
+
+    /// Philia Technology (`2272`)
+    @_alwaysEmitIntoClient
+    static var philiaTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2272)
+    }
+
+    /// KOZO KEIKAKU ENGINEERING Inc. (`2273`)
+    @_alwaysEmitIntoClient
+    static var kozoKeikakuEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2273)
+    }
+
+    /// Shenzhen Simo Technology co. LTD (`2274`)
+    @_alwaysEmitIntoClient
+    static var shenzhenSimoTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2274)
+    }
+
+    /// Republic Wireless, Inc. (`2275`)
+    @_alwaysEmitIntoClient
+    static var republicWireless: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2275)
+    }
+
+    /// Rashidov ltd (`2276`)
+    @_alwaysEmitIntoClient
+    static var rashidov: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2276)
+    }
+
+    /// Crowd Connected Ltd (`2277`)
+    @_alwaysEmitIntoClient
+    static var crowdConnected: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2277)
+    }
+
+    /// Eneso Tecnologia de Adaptacion S.L. (`2278`)
+    @_alwaysEmitIntoClient
+    static var enesoTecnologiaDeAdaptacion: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2278)
+    }
+
+    /// Barrot Technology Limited (`2279`)
+    @_alwaysEmitIntoClient
+    static var barrotTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2279)
+    }
+
+    /// Naonext (`2280`)
+    @_alwaysEmitIntoClient
+    static var naonext: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2280)
+    }
+
+    /// Taiwan Intelligent Home Corp. (`2281`)
+    @_alwaysEmitIntoClient
+    static var taiwanIntelligentHome: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2281)
+    }
+
+    /// COWBELL ENGINEERING CO.,LTD. (`2282`)
+    @_alwaysEmitIntoClient
+    static var cowbellEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2282)
+    }
+
+    /// Beijing Big Moment Technology Co., Ltd. (`2283`)
+    @_alwaysEmitIntoClient
+    static var beijingBigMomentTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2283)
+    }
+
+    /// Denso Corporation (`2284`)
+    @_alwaysEmitIntoClient
+    static var denso: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2284)
+    }
+
+    /// IMI Hydronic Engineering International SA (`2285`)
+    @_alwaysEmitIntoClient
+    static var imiHydronicEngineeringInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2285)
+    }
+
+    /// ASKEY (`2286`)
+    @_alwaysEmitIntoClient
+    static var askey: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2286)
+    }
+
+    /// Cumulus Digital Systems, Inc (`2287`)
+    @_alwaysEmitIntoClient
+    static var cumulusDigitalSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2287)
+    }
+
+    /// Joovv, Inc. (`2288`)
+    @_alwaysEmitIntoClient
+    static var joovv: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2288)
+    }
+
+    /// The L.S. Starrett Company (`2289`)
+    @_alwaysEmitIntoClient
+    static var lSStarrettCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2289)
+    }
+
+    /// Microoled (`2290`)
+    @_alwaysEmitIntoClient
+    static var microoled: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2290)
+    }
+
+    /// PSP - Pauli Services & Products GmbH (`2291`)
+    @_alwaysEmitIntoClient
+    static var pspPauliServicesProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2291)
+    }
+
+    /// Kodimo Technologies Company Limited (`2292`)
+    @_alwaysEmitIntoClient
+    static var kodimoTechnologiesCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2292)
+    }
+
+    /// Tymtix Technologies Private Limited (`2293`)
+    @_alwaysEmitIntoClient
+    static var tymtixTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2293)
+    }
+
+    /// Dermal Photonics Corporation (`2294`)
+    @_alwaysEmitIntoClient
+    static var dermalPhotonics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2294)
+    }
+
+    /// MTD Products Inc & Affiliates (`2295`)
+    @_alwaysEmitIntoClient
+    static var mtdProductsAffiliates: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2295)
+    }
+
+    /// instagrid GmbH (`2296`)
+    @_alwaysEmitIntoClient
+    static var instagrid: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2296)
+    }
+
+    /// Spacelabs Medical Inc. (`2297`)
+    @_alwaysEmitIntoClient
+    static var spacelabsMedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2297)
+    }
+
+    /// Troo Corporation (`2298`)
+    @_alwaysEmitIntoClient
+    static var troo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2298)
+    }
+
+    /// Darkglass Electronics Oy (`2299`)
+    @_alwaysEmitIntoClient
+    static var darkglassElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2299)
+    }
+
+    /// Hill-Rom (`2300`)
+    @_alwaysEmitIntoClient
+    static var hillRom: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2300)
+    }
+
+    /// BioIntelliSense, Inc. (`2301`)
+    @_alwaysEmitIntoClient
+    static var biointellisense: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2301)
+    }
+
+    /// Ketronixs Sdn Bhd (`2302`)
+    @_alwaysEmitIntoClient
+    static var ketronixsSdnBhd: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2302)
+    }
+
+    /// Plastimold Products, Inc (`2303`)
+    @_alwaysEmitIntoClient
+    static var plastimoldProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2303)
+    }
+
+    /// Beijing Zizai Technology Co., LTD. (`2304`)
+    @_alwaysEmitIntoClient
+    static var beijingZizaiTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2304)
+    }
+
+    /// Lucimed (`2305`)
+    @_alwaysEmitIntoClient
+    static var lucimed: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2305)
+    }
+
+    /// TSC Auto-ID Technology Co., Ltd. (`2306`)
+    @_alwaysEmitIntoClient
+    static var tscAutoIdTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2306)
+    }
+
+    /// DATAMARS, Inc. (`2307`)
+    @_alwaysEmitIntoClient
+    static var datamars: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2307)
+    }
+
+    /// SUNCORPORATION (`2308`)
+    @_alwaysEmitIntoClient
+    static var suncorporation: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2308)
+    }
+
+    /// Yandex Services AG (`2309`)
+    @_alwaysEmitIntoClient
+    static var yandexServices: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2309)
+    }
+
+    /// Scope Logistical Solutions (`2310`)
+    @_alwaysEmitIntoClient
+    static var scopeLogisticalSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2310)
+    }
+
+    /// User Hello, LLC (`2311`)
+    @_alwaysEmitIntoClient
+    static var userHello: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2311)
+    }
+
+    /// Pinpoint Innovations Limited (`2312`)
+    @_alwaysEmitIntoClient
+    static var pinpointInnovations: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2312)
+    }
+
+    /// 70mai Co.,Ltd. (`2313`)
+    @_alwaysEmitIntoClient
+    static var uuid70Mai: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2313)
+    }
+
+    /// Zhuhai Hoksi Technology CO.,LTD (`2314`)
+    @_alwaysEmitIntoClient
+    static var zhuhaiHoksiTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2314)
+    }
+
+    /// EMBR labs, INC (`2315`)
+    @_alwaysEmitIntoClient
+    static var embrLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2315)
+    }
+
+    /// Radiawave Technologies Co.,Ltd. (`2316`)
+    @_alwaysEmitIntoClient
+    static var radiawaveTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2316)
+    }
+
+    /// IOT Invent GmbH (`2317`)
+    @_alwaysEmitIntoClient
+    static var iotInvent: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2317)
+    }
+
+    /// OPTIMUSIOT TECH LLP (`2318`)
+    @_alwaysEmitIntoClient
+    static var optimusiotTechLlp: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2318)
+    }
+
+    /// VC Inc. (`2319`)
+    @_alwaysEmitIntoClient
+    static var vc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2319)
+    }
+
+    /// ASR Microelectronics (Shanghai) Co., Ltd. (`2320`)
+    @_alwaysEmitIntoClient
+    static var asrMicroelectronicsShanghai: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2320)
+    }
+
+    /// Douglas Lighting Controls Inc. (`2321`)
+    @_alwaysEmitIntoClient
+    static var douglasLightingControls: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2321)
+    }
+
+    /// Nerbio Medical Software Platforms Inc (`2322`)
+    @_alwaysEmitIntoClient
+    static var nerbioMedicalSoftwarePlatforms: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2322)
+    }
+
+    /// Braveheart Wireless, Inc. (`2323`)
+    @_alwaysEmitIntoClient
+    static var braveheartWireless: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2323)
+    }
+
+    /// INEO-SENSE (`2324`)
+    @_alwaysEmitIntoClient
+    static var ineoSense: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2324)
+    }
+
+    /// Honda Motor Co., Ltd. (`2325`)
+    @_alwaysEmitIntoClient
+    static var hondaMotor: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2325)
+    }
+
+    /// Ambient Sensors LLC (`2326`)
+    @_alwaysEmitIntoClient
+    static var ambientSensors: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2326)
+    }
+
+    /// ASR Microelectronics(ShenZhen)Co., Ltd. (`2327`)
+    @_alwaysEmitIntoClient
+    static var asrMicroelectronicsShenzhen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2327)
+    }
+
+    /// Technosphere Labs Pvt. Ltd. (`2328`)
+    @_alwaysEmitIntoClient
+    static var technosphereLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2328)
+    }
+
+    /// NO SMD LIMITED (`2329`)
+    @_alwaysEmitIntoClient
+    static var noSmd: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2329)
+    }
+
+    /// Albertronic BV (`2330`)
+    @_alwaysEmitIntoClient
+    static var albertronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2330)
+    }
+
+    /// Luminostics, Inc. (`2331`)
+    @_alwaysEmitIntoClient
+    static var luminostics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2331)
+    }
+
+    /// Oblamatik AG (`2332`)
+    @_alwaysEmitIntoClient
+    static var oblamatik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2332)
+    }
+
+    /// Innokind, Inc. (`2333`)
+    @_alwaysEmitIntoClient
+    static var innokind: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2333)
+    }
+
+    /// Melbot Studios, Sociedad Limitada (`2334`)
+    @_alwaysEmitIntoClient
+    static var melbotStudiosSociedadLimitada: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2334)
+    }
+
+    /// Myzee Technology (`2335`)
+    @_alwaysEmitIntoClient
+    static var myzeeTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2335)
+    }
+
+    /// Omnisense Limited (`2336`)
+    @_alwaysEmitIntoClient
+    static var omnisense: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2336)
+    }
+
+    /// KAHA PTE. LTD. (`2337`)
+    @_alwaysEmitIntoClient
+    static var kahaPte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2337)
+    }
+
+    /// Shanghai MXCHIP Information Technology Co., Ltd. (`2338`)
+    @_alwaysEmitIntoClient
+    static var shanghaiMxchipInformationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2338)
+    }
+
+    /// JSB TECH PTE LTD (`2339`)
+    @_alwaysEmitIntoClient
+    static var jsbTechPte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2339)
+    }
+
+    /// Fundacion Tecnalia Research and Innovation (`2340`)
+    @_alwaysEmitIntoClient
+    static var fundacionTecnaliaResearchAndInnovation: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2340)
+    }
+
+    /// Yukai Engineering Inc. (`2341`)
+    @_alwaysEmitIntoClient
+    static var yukaiEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2341)
+    }
+
+    /// Gooligum Technologies Pty Ltd (`2342`)
+    @_alwaysEmitIntoClient
+    static var gooligumTechnologiesPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2342)
+    }
+
+    /// ROOQ GmbH (`2343`)
+    @_alwaysEmitIntoClient
+    static var rooq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2343)
+    }
+
+    /// AiRISTA (`2344`)
+    @_alwaysEmitIntoClient
+    static var airista: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2344)
+    }
+
+    /// Qingdao Haier Technology Co., Ltd. (`2345`)
+    @_alwaysEmitIntoClient
+    static var qingdaoHaierTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2345)
+    }
+
+    /// Sappl Verwaltungs- und Betriebs GmbH (`2346`)
+    @_alwaysEmitIntoClient
+    static var sapplVerwaltungsUndBetriebs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2346)
+    }
+
+    /// TekHome (`2347`)
+    @_alwaysEmitIntoClient
+    static var tekhome: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2347)
+    }
+
+    /// PCI Private Limited (`2348`)
+    @_alwaysEmitIntoClient
+    static var pci: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2348)
+    }
+
+    /// Leggett & Platt, Incorporated (`2349`)
+    @_alwaysEmitIntoClient
+    static var leggettPlatt: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2349)
+    }
+
+    /// PS GmbH (`2350`)
+    @_alwaysEmitIntoClient
+    static var ps: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2350)
+    }
+
+    /// C.O.B.O. SpA (`2351`)
+    @_alwaysEmitIntoClient
+    static var cOBOSpa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2351)
+    }
+
+    /// James Walker RotaBolt Limited (`2352`)
+    @_alwaysEmitIntoClient
+    static var jamesWalkerRotabolt: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2352)
+    }
+
+    /// BREATHINGS Co., Ltd. (`2353`)
+    @_alwaysEmitIntoClient
+    static var breathings: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2353)
+    }
+
+    /// BarVision, LLC (`2354`)
+    @_alwaysEmitIntoClient
+    static var barvision: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2354)
+    }
+
+    /// SRAM (`2355`)
+    @_alwaysEmitIntoClient
+    static var sram: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2355)
+    }
+
+    /// KiteSpring Inc. (`2356`)
+    @_alwaysEmitIntoClient
+    static var kitespring: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2356)
+    }
+
+    /// Reconnect, Inc. (`2357`)
+    @_alwaysEmitIntoClient
+    static var reconnect: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2357)
+    }
+
+    /// Elekon AG (`2358`)
+    @_alwaysEmitIntoClient
+    static var elekon: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2358)
+    }
+
+    /// RealThingks GmbH (`2359`)
+    @_alwaysEmitIntoClient
+    static var realthingks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2359)
+    }
+
+    /// Henway Technologies, LTD. (`2360`)
+    @_alwaysEmitIntoClient
+    static var henwayTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2360)
+    }
+
+    /// ASTEM Co.,Ltd. (`2361`)
+    @_alwaysEmitIntoClient
+    static var astem: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2361)
+    }
+
+    /// LinkedSemi Microelectronics (Xiamen) Co., Ltd (`2362`)
+    @_alwaysEmitIntoClient
+    static var linkedsemiMicroelectronicsXiamen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2362)
+    }
+
+    /// ENSESO LLC (`2363`)
+    @_alwaysEmitIntoClient
+    static var enseso: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2363)
+    }
+
+    /// Xenoma Inc. (`2364`)
+    @_alwaysEmitIntoClient
+    static var xenoma: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2364)
+    }
+
+    /// Adolf Wuerth GmbH & Co KG (`2365`)
+    @_alwaysEmitIntoClient
+    static var adolfWuerth: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2365)
+    }
+
+    /// Catalyft Labs, Inc. (`2366`)
+    @_alwaysEmitIntoClient
+    static var catalyftLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2366)
+    }
+
+    /// JEPICO Corporation (`2367`)
+    @_alwaysEmitIntoClient
+    static var jepico: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2367)
+    }
+
+    /// Hero Workout GmbH (`2368`)
+    @_alwaysEmitIntoClient
+    static var heroWorkout: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2368)
+    }
+
+    /// Rivian Automotive, LLC (`2369`)
+    @_alwaysEmitIntoClient
+    static var rivianAutomotive: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2369)
+    }
+
+    /// TRANSSION HOLDINGS LIMITED (`2370`)
+    @_alwaysEmitIntoClient
+    static var transsionHoldings: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2370)
+    }
+
+    /// Inovonics Corp. (`2371`)
+    @_alwaysEmitIntoClient
+    static var inovonics2: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2371)
+    }
+
+    /// Agitron d.o.o. (`2372`)
+    @_alwaysEmitIntoClient
+    static var agitron: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2372)
+    }
+
+    /// Globe (Jiangsu) Co., Ltd (`2373`)
+    @_alwaysEmitIntoClient
+    static var globeJiangsu: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2373)
+    }
+
+    /// AMC International Alfa Metalcraft Corporation AG (`2374`)
+    @_alwaysEmitIntoClient
+    static var amcInternationalAlfaMetalcraft: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2374)
+    }
+
+    /// First Light Technologies Ltd. (`2375`)
+    @_alwaysEmitIntoClient
+    static var firstLightTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2375)
+    }
+
+    /// Wearable Link Limited (`2376`)
+    @_alwaysEmitIntoClient
+    static var wearableLink: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2376)
+    }
+
+    /// Metronom Health Europe (`2377`)
+    @_alwaysEmitIntoClient
+    static var metronomHealthEurope: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2377)
+    }
+
+    /// Zwift, Inc. (`2378`)
+    @_alwaysEmitIntoClient
+    static var zwift: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2378)
+    }
+
+    /// Kindeva Drug Delivery L.P. (`2379`)
+    @_alwaysEmitIntoClient
+    static var kindevaDrugDeliveryLP: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2379)
+    }
+
+    /// GimmiSys GmbH (`2380`)
+    @_alwaysEmitIntoClient
+    static var gimmisys: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2380)
+    }
+
+    /// tkLABS INC. (`2381`)
+    @_alwaysEmitIntoClient
+    static var tklabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2381)
+    }
+
+    /// PassiveBolt, Inc. (`2382`)
+    @_alwaysEmitIntoClient
+    static var passivebolt: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2382)
+    }
+
+    /// Limited Liability Company "Mikrotikls" (`2383`)
+    @_alwaysEmitIntoClient
+    static var limitedLiabilityCompanyMikrotikls: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2383)
+    }
+
+    /// Capetech (`2384`)
+    @_alwaysEmitIntoClient
+    static var capetech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2384)
+    }
+
+    /// PPRS (`2385`)
+    @_alwaysEmitIntoClient
+    static var pprs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2385)
+    }
+
+    /// Apptricity Corporation (`2386`)
+    @_alwaysEmitIntoClient
+    static var apptricity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2386)
+    }
+
+    /// LogiLube, LLC (`2387`)
+    @_alwaysEmitIntoClient
+    static var logilube: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2387)
+    }
+
+    /// Julbo (`2388`)
+    @_alwaysEmitIntoClient
+    static var julbo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2388)
+    }
+
+    /// Breville Group (`2389`)
+    @_alwaysEmitIntoClient
+    static var brevilleGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2389)
+    }
+
+    /// Kerlink (`2390`)
+    @_alwaysEmitIntoClient
+    static var kerlink: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2390)
+    }
+
+    /// Ohsung Electronics (`2391`)
+    @_alwaysEmitIntoClient
+    static var ohsungElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2391)
+    }
+
+    /// ZTE Corporation (`2392`)
+    @_alwaysEmitIntoClient
+    static var zte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2392)
+    }
+
+    /// HerdDogg, Inc (`2393`)
+    @_alwaysEmitIntoClient
+    static var herddogg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2393)
+    }
+
+    /// Selekt Bilgisayar, lletisim Urunleri lnsaat Sanayi ve Ticaret Limited Sirketi (`2394`)
+    @_alwaysEmitIntoClient
+    static var selektBilgisayarLletisimUrunleriLnsaatSanayiVeTicaretSirketi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2394)
+    }
+
+    /// Lismore Instruments Limited (`2395`)
+    @_alwaysEmitIntoClient
+    static var lismoreInstruments: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2395)
+    }
+
+    /// LogiLube, LLC (`2396`)
+    @_alwaysEmitIntoClient
+    static var logilube2: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2396)
+    }
+
+    /// ETC (`2397`)
+    @_alwaysEmitIntoClient
+    static var etc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2397)
+    }
+
+    /// BioEchoNet inc. (`2398`)
+    @_alwaysEmitIntoClient
+    static var bioechonet: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2398)
+    }
+
+    /// NUANCE HEARING LTD (`2399`)
+    @_alwaysEmitIntoClient
+    static var nuanceHearing: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2399)
+    }
+
+    /// Sena Technologies Inc. (`2400`)
+    @_alwaysEmitIntoClient
+    static var senaTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2400)
+    }
+
+    /// Linkura AB (`2401`)
+    @_alwaysEmitIntoClient
+    static var linkura: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2401)
+    }
+
+    /// GL Solutions K.K. (`2402`)
+    @_alwaysEmitIntoClient
+    static var glSolutionsKK: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2402)
+    }
+
+    /// Moonbird BV (`2403`)
+    @_alwaysEmitIntoClient
+    static var moonbird: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2403)
+    }
+
+    /// Countrymate Technology Limited (`2404`)
+    @_alwaysEmitIntoClient
+    static var countrymateTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2404)
+    }
+
+    /// Asahi Kasei Corporation (`2405`)
+    @_alwaysEmitIntoClient
+    static var asahiKasei: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2405)
+    }
+
+    /// PointGuard, LLC (`2406`)
+    @_alwaysEmitIntoClient
+    static var pointguard: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2406)
+    }
+
+    /// Neo Materials and Consulting Inc. (`2407`)
+    @_alwaysEmitIntoClient
+    static var neoMaterialsAndConsulting: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2407)
+    }
+
+    /// Actev Motors, Inc. (`2408`)
+    @_alwaysEmitIntoClient
+    static var actevMotors: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2408)
+    }
+
+    /// Woan Technology (Shenzhen) Co., Ltd. (`2409`)
+    @_alwaysEmitIntoClient
+    static var woanTechnologyShenzhen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2409)
+    }
+
+    /// dricos, Inc. (`2410`)
+    @_alwaysEmitIntoClient
+    static var dricos: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2410)
+    }
+
+    /// Guide ID B.V. (`2411`)
+    @_alwaysEmitIntoClient
+    static var guideId: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2411)
+    }
+
+    /// 9374-7319 Quebec inc (`2412`)
+    @_alwaysEmitIntoClient
+    static var uuid93747319Quebec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2412)
+    }
+
+    /// Gunwerks, LLC (`2413`)
+    @_alwaysEmitIntoClient
+    static var gunwerks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2413)
+    }
+
+    /// Band Industries, inc. (`2414`)
+    @_alwaysEmitIntoClient
+    static var bandIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2414)
+    }
+
+    /// Lund Motion Products, Inc. (`2415`)
+    @_alwaysEmitIntoClient
+    static var lundMotionProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2415)
+    }
+
+    /// IBA Dosimetry GmbH (`2416`)
+    @_alwaysEmitIntoClient
+    static var ibaDosimetry: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2416)
+    }
+
+    /// GA (`2417`)
+    @_alwaysEmitIntoClient
+    static var ga: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2417)
+    }
+
+    /// Closed Joint Stock Company "Zavod Flometr" ("Zavod Flometr" CJSC) (`2418`)
+    @_alwaysEmitIntoClient
+    static var closedJointStockCompanyZavodFlometrZavodFlometrCjsc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2418)
+    }
+
+    /// Popit Oy (`2419`)
+    @_alwaysEmitIntoClient
+    static var popit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2419)
+    }
+
+    /// ABEYE (`2420`)
+    @_alwaysEmitIntoClient
+    static var abeye: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2420)
+    }
+
+    /// BlueIOT(Beijing) Technology Co.,Ltd (`2421`)
+    @_alwaysEmitIntoClient
+    static var blueiotBeijingTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2421)
+    }
+
+    /// Fauna Audio GmbH (`2422`)
+    @_alwaysEmitIntoClient
+    static var faunaAudio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2422)
+    }
+
+    /// TOYOTA motor corporation (`2423`)
+    @_alwaysEmitIntoClient
+    static var toyotaMotor: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2423)
+    }
+
+    /// ZifferEins GmbH & Co. KG (`2424`)
+    @_alwaysEmitIntoClient
+    static var ziffereins: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2424)
+    }
+
+    /// BIOTRONIK SE & Co. KG (`2425`)
+    @_alwaysEmitIntoClient
+    static var biotronikSeKg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2425)
+    }
+
+    /// CORE CORPORATION (`2426`)
+    @_alwaysEmitIntoClient
+    static var core: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2426)
+    }
+
+    /// CTEK Sweden AB (`2427`)
+    @_alwaysEmitIntoClient
+    static var ctekSweden: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2427)
+    }
+
+    /// Thorley Industries, LLC (`2428`)
+    @_alwaysEmitIntoClient
+    static var thorleyIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2428)
+    }
+
+    /// CLB B.V. (`2429`)
+    @_alwaysEmitIntoClient
+    static var clb: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2429)
+    }
+
+    /// SonicSensory Inc (`2430`)
+    @_alwaysEmitIntoClient
+    static var sonicsensory: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2430)
+    }
+
+    /// ISEMAR S.R.L. (`2431`)
+    @_alwaysEmitIntoClient
+    static var isemar: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2431)
+    }
+
+    /// DEKRA TESTING AND CERTIFICATION, S.A.U. (`2432`)
+    @_alwaysEmitIntoClient
+    static var dekraTestingAndCertificationU: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2432)
+    }
+
+    /// Bernard Krone Holding SE & Co.KG (`2433`)
+    @_alwaysEmitIntoClient
+    static var bernardKroneHoldingSeKg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2433)
+    }
+
+    /// ELPRO-BUCHS AG (`2434`)
+    @_alwaysEmitIntoClient
+    static var elproBuchs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2434)
+    }
+
+    /// Feedback Sports LLC (`2435`)
+    @_alwaysEmitIntoClient
+    static var feedbackSports: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2435)
+    }
+
+    /// TeraTron GmbH (`2436`)
+    @_alwaysEmitIntoClient
+    static var teratron: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2436)
+    }
+
+    /// Lumos Health Inc. (`2437`)
+    @_alwaysEmitIntoClient
+    static var lumosHealth: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2437)
+    }
+
+    /// Cello Hill, LLC (`2438`)
+    @_alwaysEmitIntoClient
+    static var celloHill: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2438)
+    }
+
+    /// TSE BRAKES, INC. (`2439`)
+    @_alwaysEmitIntoClient
+    static var tseBrakes: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2439)
+    }
+
+    /// BHM-Tech Produktionsgesellschaft m.b.H (`2440`)
+    @_alwaysEmitIntoClient
+    static var bhmTechProduktionsgesellschaftMBH: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2440)
+    }
+
+    /// WIKA Alexander Wiegand SE & Co.KG (`2441`)
+    @_alwaysEmitIntoClient
+    static var wikaAlexanderWiegandSeKg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2441)
+    }
+
+    /// Biovigil (`2442`)
+    @_alwaysEmitIntoClient
+    static var biovigil: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2442)
+    }
+
+    /// Mequonic Engineering, S.L. (`2443`)
+    @_alwaysEmitIntoClient
+    static var mequonicEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2443)
+    }
+
+    /// bGrid B.V. (`2444`)
+    @_alwaysEmitIntoClient
+    static var bgrid: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2444)
+    }
+
+    /// C3-WIRELESS, LLC (`2445`)
+    @_alwaysEmitIntoClient
+    static var c3Wireless: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2445)
+    }
+
+    /// ADVEEZ (`2446`)
+    @_alwaysEmitIntoClient
+    static var adveez: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2446)
+    }
+
+    /// Aktiebolaget Regin (`2447`)
+    @_alwaysEmitIntoClient
+    static var aktiebolagetRegin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2447)
+    }
+
+    /// Anton Paar GmbH (`2448`)
+    @_alwaysEmitIntoClient
+    static var antonPaar: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2448)
+    }
+
+    /// Telenor ASA (`2449`)
+    @_alwaysEmitIntoClient
+    static var telenor: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2449)
+    }
+
+    /// Big Kaiser Precision Tooling Ltd (`2450`)
+    @_alwaysEmitIntoClient
+    static var bigKaiserPrecisionTooling: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2450)
+    }
+
+    /// Absolute Audio Labs B.V. (`2451`)
+    @_alwaysEmitIntoClient
+    static var absoluteAudioLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2451)
+    }
+
+    /// VT42 Pty Ltd (`2452`)
+    @_alwaysEmitIntoClient
+    static var vt42Pty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2452)
+    }
+
+    /// Bronkhorst High-Tech B.V. (`2453`)
+    @_alwaysEmitIntoClient
+    static var bronkhorstHighTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2453)
+    }
+
+    /// C. & E. Fein GmbH (`2454`)
+    @_alwaysEmitIntoClient
+    static var cEFein: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2454)
+    }
+
+    /// NextMind (`2455`)
+    @_alwaysEmitIntoClient
+    static var nextmind: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2455)
+    }
+
+    /// Pixie Dust Technologies, Inc. (`2456`)
+    @_alwaysEmitIntoClient
+    static var pixieDustTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2456)
+    }
+
+    /// eTactica ehf (`2457`)
+    @_alwaysEmitIntoClient
+    static var etacticaEhf: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2457)
+    }
+
+    /// New Audio LLC (`2458`)
+    @_alwaysEmitIntoClient
+    static var newAudio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2458)
+    }
+
+    /// Sendum Wireless Corporation (`2459`)
+    @_alwaysEmitIntoClient
+    static var sendumWireless: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2459)
+    }
+
+    /// deister electronic GmbH (`2460`)
+    @_alwaysEmitIntoClient
+    static var deisterElectronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2460)
+    }
+
+    /// YKK AP Inc. (`2461`)
+    @_alwaysEmitIntoClient
+    static var ykkAp: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2461)
+    }
+
+    /// Step One Limited (`2462`)
+    @_alwaysEmitIntoClient
+    static var stepOne: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2462)
+    }
+
+    /// Koya Medical, Inc. (`2463`)
+    @_alwaysEmitIntoClient
+    static var koyaMedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2463)
+    }
+
+    /// Proof Diagnostics, Inc. (`2464`)
+    @_alwaysEmitIntoClient
+    static var proofDiagnostics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2464)
+    }
+
+    /// VOS Systems, LLC (`2465`)
+    @_alwaysEmitIntoClient
+    static var vosSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2465)
+    }
+
+    /// ENGAGENOW DATA SCIENCES PRIVATE LIMITED (`2466`)
+    @_alwaysEmitIntoClient
+    static var engagenowDataSciences: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2466)
+    }
+
+    /// ARDUINO SA (`2467`)
+    @_alwaysEmitIntoClient
+    static var arduino: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2467)
+    }
+
+    /// KUMHO ELECTRICS, INC (`2468`)
+    @_alwaysEmitIntoClient
+    static var kumhoElectrics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2468)
+    }
+
+    /// Security Enhancement Systems, LLC (`2469`)
+    @_alwaysEmitIntoClient
+    static var securityEnhancementSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2469)
+    }
+
+    /// BEIJING ELECTRIC VEHICLE CO.,LTD (`2470`)
+    @_alwaysEmitIntoClient
+    static var beijingElectricVehicle: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2470)
+    }
+
+    /// Paybuddy ApS (`2471`)
+    @_alwaysEmitIntoClient
+    static var paybuddy: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2471)
+    }
+
+    /// KHN Solutions Inc (`2472`)
+    @_alwaysEmitIntoClient
+    static var khnSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2472)
+    }
+
+    /// Nippon Ceramic Co.,Ltd. (`2473`)
+    @_alwaysEmitIntoClient
+    static var nipponCeramic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2473)
+    }
+
+    /// PHOTODYNAMIC INCORPORATED (`2474`)
+    @_alwaysEmitIntoClient
+    static var photodynamic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2474)
+    }
+
+    /// DashLogic, Inc. (`2475`)
+    @_alwaysEmitIntoClient
+    static var dashlogic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2475)
+    }
+
+    /// Ambiq (`2476`)
+    @_alwaysEmitIntoClient
+    static var ambiq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2476)
+    }
+
+    /// Narhwall Inc. (`2477`)
+    @_alwaysEmitIntoClient
+    static var narhwall: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2477)
+    }
+
+    /// Pozyx NV (`2478`)
+    @_alwaysEmitIntoClient
+    static var pozyxNv: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2478)
+    }
+
+    /// ifLink Open Community (`2479`)
+    @_alwaysEmitIntoClient
+    static var iflinkOpenCommunity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2479)
+    }
+
+    /// Deublin Company, LLC (`2480`)
+    @_alwaysEmitIntoClient
+    static var deublinCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2480)
+    }
+
+    /// BLINQY (`2481`)
+    @_alwaysEmitIntoClient
+    static var blinqy: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2481)
+    }
+
+    /// DYPHI (`2482`)
+    @_alwaysEmitIntoClient
+    static var dyphi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2482)
+    }
+
+    /// BlueX Microelectronics Corp Ltd. (`2483`)
+    @_alwaysEmitIntoClient
+    static var bluexMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2483)
+    }
+
+    /// PentaLock Aps. (`2484`)
+    @_alwaysEmitIntoClient
+    static var pentalock: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2484)
+    }
+
+    /// AUTEC Gesellschaft fuer Automationstechnik mbH (`2485`)
+    @_alwaysEmitIntoClient
+    static var autecGesellschaftFuerAutomationstechnikMbh: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2485)
+    }
+
+    /// Pegasus Technologies, Inc. (`2486`)
+    @_alwaysEmitIntoClient
+    static var pegasusTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2486)
+    }
+
+    /// Bout Labs, LLC (`2487`)
+    @_alwaysEmitIntoClient
+    static var boutLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2487)
+    }
+
+    /// PlayerData Limited (`2488`)
+    @_alwaysEmitIntoClient
+    static var playerdata: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2488)
+    }
+
+    /// SAVOY ELECTRONIC LIGHTING (`2489`)
+    @_alwaysEmitIntoClient
+    static var savoyElectronicLighting: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2489)
+    }
+
+    /// Elimo Engineering Ltd (`2490`)
+    @_alwaysEmitIntoClient
+    static var elimoEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2490)
+    }
+
+    /// SkyStream Corporation (`2491`)
+    @_alwaysEmitIntoClient
+    static var skystream: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2491)
+    }
+
+    /// Aerosens LLC (`2492`)
+    @_alwaysEmitIntoClient
+    static var aerosens: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2492)
+    }
+
+    /// Centre Suisse d'Electronique et de Microtechnique SA (`2493`)
+    @_alwaysEmitIntoClient
+    static var centreSuisseDElectroniqueEtDeMicrotechnique: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2493)
+    }
+
+    /// Vessel Ltd. (`2494`)
+    @_alwaysEmitIntoClient
+    static var vessel: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2494)
+    }
+
+    /// Span.IO, Inc. (`2495`)
+    @_alwaysEmitIntoClient
+    static var spanIo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2495)
+    }
+
+    /// AnotherBrain inc. (`2496`)
+    @_alwaysEmitIntoClient
+    static var anotherbrain: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2496)
+    }
+
+    /// Rosewill (`2497`)
+    @_alwaysEmitIntoClient
+    static var rosewill: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2497)
+    }
+
+    /// Universal Audio, Inc. (`2498`)
+    @_alwaysEmitIntoClient
+    static var universalAudio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2498)
+    }
+
+    /// JAPAN TOBACCO INC. (`2499`)
+    @_alwaysEmitIntoClient
+    static var japanTobacco: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2499)
+    }
+
+    /// UVISIO (`2500`)
+    @_alwaysEmitIntoClient
+    static var uvisio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2500)
+    }
+
+    /// HungYi Microelectronics Co.,Ltd. (`2501`)
+    @_alwaysEmitIntoClient
+    static var hungyiMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2501)
+    }
+
+    /// Honor Device Co., Ltd. (`2502`)
+    @_alwaysEmitIntoClient
+    static var honorDevice: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2502)
+    }
+
+    /// Combustion, LLC (`2503`)
+    @_alwaysEmitIntoClient
+    static var combustion: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2503)
+    }
+
+    /// XUNTONG (`2504`)
+    @_alwaysEmitIntoClient
+    static var xuntong: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2504)
+    }
+
+    /// CrowdGlow Ltd (`2505`)
+    @_alwaysEmitIntoClient
+    static var crowdglow: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2505)
+    }
+
+    /// Mobitrace (`2506`)
+    @_alwaysEmitIntoClient
+    static var mobitrace: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2506)
+    }
+
+    /// Hx Engineering, LLC (`2507`)
+    @_alwaysEmitIntoClient
+    static var hxEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2507)
+    }
+
+    /// Senso4s d.o.o. (`2508`)
+    @_alwaysEmitIntoClient
+    static var senso4S: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2508)
+    }
+
+    /// Blyott (`2509`)
+    @_alwaysEmitIntoClient
+    static var blyott: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2509)
+    }
+
+    /// Julius Blum GmbH (`2510`)
+    @_alwaysEmitIntoClient
+    static var juliusBlum: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2510)
+    }
+
+    /// BlueStreak IoT, LLC (`2511`)
+    @_alwaysEmitIntoClient
+    static var bluestreakIot: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2511)
+    }
+
+    /// Chess Wise B.V. (`2512`)
+    @_alwaysEmitIntoClient
+    static var chessWise: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2512)
+    }
+
+    /// ABLEPAY TECHNOLOGIES AS (`2513`)
+    @_alwaysEmitIntoClient
+    static var ablepayTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2513)
+    }
+
+    /// Temperature Sensitive Solutions Systems Sweden AB (`2514`)
+    @_alwaysEmitIntoClient
+    static var temperatureSensitiveSolutionsSystemsSweden: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2514)
+    }
+
+    /// HeartHero, inc. (`2515`)
+    @_alwaysEmitIntoClient
+    static var hearthero: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2515)
+    }
+
+    /// ORBIS Inc. (`2516`)
+    @_alwaysEmitIntoClient
+    static var orbis: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2516)
+    }
+
+    /// GEAR RADIO ELECTRONICS CORP. (`2517`)
+    @_alwaysEmitIntoClient
+    static var gearRadioElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2517)
+    }
+
+    /// EAR TEKNIK ISITME VE ODIOMETRI CIHAZLARI SANAYI VE TICARET ANONIM SIRKETI (`2518`)
+    @_alwaysEmitIntoClient
+    static var earTeknikIsitmeVeOdiometriCihazlarinayiVeTicaretAnonimSirketi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2518)
+    }
+
+    /// Coyotta (`2519`)
+    @_alwaysEmitIntoClient
+    static var coyotta: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2519)
+    }
+
+    /// Synergy Tecnologia em Sistemas Ltda (`2520`)
+    @_alwaysEmitIntoClient
+    static var synergyTecnologiaEmSistemasa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2520)
+    }
+
+    /// VivoSensMedical GmbH (`2521`)
+    @_alwaysEmitIntoClient
+    static var vivosensmedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2521)
+    }
+
+    /// Nagravision SA (`2522`)
+    @_alwaysEmitIntoClient
+    static var nagravision: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2522)
+    }
+
+    /// Bionic Avionics Inc. (`2523`)
+    @_alwaysEmitIntoClient
+    static var bionicAvionics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2523)
+    }
+
+    /// AON2 Ltd. (`2524`)
+    @_alwaysEmitIntoClient
+    static var aon2: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2524)
+    }
+
+    /// Innoware Development AB (`2525`)
+    @_alwaysEmitIntoClient
+    static var innowareDevelopment: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2525)
+    }
+
+    /// JLD Technology Solutions, LLC (`2526`)
+    @_alwaysEmitIntoClient
+    static var jldTechnologySolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2526)
+    }
+
+    /// Magnus Technology Sdn Bhd (`2527`)
+    @_alwaysEmitIntoClient
+    static var magnusTechnologySdnBhd: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2527)
+    }
+
+    /// Preddio Technologies Inc. (`2528`)
+    @_alwaysEmitIntoClient
+    static var preddioTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2528)
+    }
+
+    /// Tag-N-Trac Inc (`2529`)
+    @_alwaysEmitIntoClient
+    static var tagNTrac: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2529)
+    }
+
+    /// Wuhan Linptech Co.,Ltd. (`2530`)
+    @_alwaysEmitIntoClient
+    static var wuhanLinptech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2530)
+    }
+
+    /// Friday Home Aps (`2531`)
+    @_alwaysEmitIntoClient
+    static var fridayHome: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2531)
+    }
+
+    /// CPS AS (`2532`)
+    @_alwaysEmitIntoClient
+    static var cps: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2532)
+    }
+
+    /// Mobilogix (`2533`)
+    @_alwaysEmitIntoClient
+    static var mobilogix: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2533)
+    }
+
+    /// Masonite Corporation (`2534`)
+    @_alwaysEmitIntoClient
+    static var masonite: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2534)
+    }
+
+    /// Kabushikigaisha HANERON (`2535`)
+    @_alwaysEmitIntoClient
+    static var kabushikigaishaHaneron: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2535)
+    }
+
+    /// Melange Systems Pvt. Ltd. (`2536`)
+    @_alwaysEmitIntoClient
+    static var melangeSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2536)
+    }
+
+    /// LumenRadio AB (`2537`)
+    @_alwaysEmitIntoClient
+    static var lumenradio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2537)
+    }
+
+    /// Athlos Oy (`2538`)
+    @_alwaysEmitIntoClient
+    static var athlos: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2538)
+    }
+
+    /// KEAN ELECTRONICS PTY LTD (`2539`)
+    @_alwaysEmitIntoClient
+    static var keanElectronicsPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2539)
+    }
+
+    /// Yukon advanced optics worldwide, UAB (`2540`)
+    @_alwaysEmitIntoClient
+    static var yukonAdvancedOpticsWorldwideUab: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2540)
+    }
+
+    /// Sibel Inc. (`2541`)
+    @_alwaysEmitIntoClient
+    static var sibel: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2541)
+    }
+
+    /// OJMAR SA (`2542`)
+    @_alwaysEmitIntoClient
+    static var ojmar: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2542)
+    }
+
+    /// Steinel Solutions AG (`2543`)
+    @_alwaysEmitIntoClient
+    static var steinelSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2543)
+    }
+
+    /// WatchGas B.V. (`2544`)
+    @_alwaysEmitIntoClient
+    static var watchgas: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2544)
+    }
+
+    /// OM Digital Solutions Corporation (`2545`)
+    @_alwaysEmitIntoClient
+    static var omDigitalSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2545)
+    }
+
+    /// Audeara Pty Ltd (`2546`)
+    @_alwaysEmitIntoClient
+    static var audearaPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2546)
+    }
+
+    /// Beijing Zero Zero Infinity Technology Co.,Ltd. (`2547`)
+    @_alwaysEmitIntoClient
+    static var beijingZeroZeroInfinityTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2547)
+    }
+
+    /// Spectrum Technologies, Inc. (`2548`)
+    @_alwaysEmitIntoClient
+    static var spectrumTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2548)
+    }
+
+    /// OKI Electric Industry Co., Ltd (`2549`)
+    @_alwaysEmitIntoClient
+    static var okiElectricIndustry: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2549)
+    }
+
+    /// Mobile Action Technology Inc. (`2550`)
+    @_alwaysEmitIntoClient
+    static var mobileActionTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2550)
+    }
+
+    /// SENSATEC Co., Ltd. (`2551`)
+    @_alwaysEmitIntoClient
+    static var sensatec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2551)
+    }
+
+    /// R.O. S.R.L. (`2552`)
+    @_alwaysEmitIntoClient
+    static var rO: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2552)
+    }
+
+    /// Hangzhou Yaguan Technology Co. LTD (`2553`)
+    @_alwaysEmitIntoClient
+    static var hangzhouYaguanTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2553)
+    }
+
+    /// Listen Technologies Corporation (`2554`)
+    @_alwaysEmitIntoClient
+    static var listenTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2554)
+    }
+
+    /// TOITU CO., LTD. (`2555`)
+    @_alwaysEmitIntoClient
+    static var toitu: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2555)
+    }
+
+    /// Confidex (`2556`)
+    @_alwaysEmitIntoClient
+    static var confidex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2556)
+    }
+
+    /// Keep Technologies, Inc. (`2557`)
+    @_alwaysEmitIntoClient
+    static var keepTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2557)
+    }
+
+    /// Lichtvision Engineering GmbH (`2558`)
+    @_alwaysEmitIntoClient
+    static var lichtvisionEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2558)
+    }
+
+    /// AIRSTAR (`2559`)
+    @_alwaysEmitIntoClient
+    static var airstar: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2559)
+    }
+
+    /// Ampler Bikes OU (`2560`)
+    @_alwaysEmitIntoClient
+    static var amplerBikesOu: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2560)
+    }
+
+    /// Cleveron AS (`2561`)
+    @_alwaysEmitIntoClient
+    static var cleveron: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2561)
+    }
+
+    /// Ayxon-Dynamics GmbH (`2562`)
+    @_alwaysEmitIntoClient
+    static var ayxonDynamics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2562)
+    }
+
+    /// donutrobotics Co., Ltd. (`2563`)
+    @_alwaysEmitIntoClient
+    static var donutrobotics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2563)
+    }
+
+    /// Flosonics Medical (`2564`)
+    @_alwaysEmitIntoClient
+    static var flosonicsMedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2564)
+    }
+
+    /// Southwire Company, LLC (`2565`)
+    @_alwaysEmitIntoClient
+    static var southwireCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2565)
+    }
+
+    /// Shanghai wuqi microelectronics Co.,Ltd (`2566`)
+    @_alwaysEmitIntoClient
+    static var shanghaiWuqiMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2566)
+    }
+
+    /// Reflow Pty Ltd (`2567`)
+    @_alwaysEmitIntoClient
+    static var reflowPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2567)
+    }
+
+    /// Oras Oy (`2568`)
+    @_alwaysEmitIntoClient
+    static var oras: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2568)
+    }
+
+    /// ECCT (`2569`)
+    @_alwaysEmitIntoClient
+    static var ecct: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2569)
+    }
+
+    /// Volan Technology Inc. (`2570`)
+    @_alwaysEmitIntoClient
+    static var volanTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2570)
+    }
+
+    /// SIANA Systems (`2571`)
+    @_alwaysEmitIntoClient
+    static var sianaSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2571)
+    }
+
+    /// Shanghai Yidian Intelligent Technology Co., Ltd. (`2572`)
+    @_alwaysEmitIntoClient
+    static var shanghaiYidianIntelligentTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2572)
+    }
+
+    /// Blue Peacock GmbH (`2573`)
+    @_alwaysEmitIntoClient
+    static var bluePeacock: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2573)
+    }
+
+    /// Roland Corporation (`2574`)
+    @_alwaysEmitIntoClient
+    static var roland: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2574)
+    }
+
+    /// LIXIL Corporation (`2575`)
+    @_alwaysEmitIntoClient
+    static var lixil: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2575)
+    }
+
+    /// SUBARU Corporation (`2576`)
+    @_alwaysEmitIntoClient
+    static var subaru: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2576)
+    }
+
+    /// Sensolus (`2577`)
+    @_alwaysEmitIntoClient
+    static var sensolus: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2577)
+    }
+
+    /// Dyson Technology Limited (`2578`)
+    @_alwaysEmitIntoClient
+    static var dysonTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2578)
+    }
+
+    /// Tec4med LifeScience GmbH (`2579`)
+    @_alwaysEmitIntoClient
+    static var tec4MedLifescience: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2579)
+    }
+
+    /// CROXEL, INC. (`2580`)
+    @_alwaysEmitIntoClient
+    static var croxel: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2580)
+    }
+
+    /// Syng Inc (`2581`)
+    @_alwaysEmitIntoClient
+    static var syng: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2581)
+    }
+
+    /// RIDE VISION LTD (`2582`)
+    @_alwaysEmitIntoClient
+    static var rideVision: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2582)
+    }
+
+    /// Plume Design Inc (`2583`)
+    @_alwaysEmitIntoClient
+    static var plumeDesign: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2583)
+    }
+
+    /// Cambridge Animal Technologies Ltd (`2584`)
+    @_alwaysEmitIntoClient
+    static var cambridgeAnimalTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2584)
+    }
+
+    /// Maxell, Ltd. (`2585`)
+    @_alwaysEmitIntoClient
+    static var maxell: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2585)
+    }
+
+    /// Link Labs, Inc. (`2586`)
+    @_alwaysEmitIntoClient
+    static var linkLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2586)
+    }
+
+    /// Embrava Pty Ltd (`2587`)
+    @_alwaysEmitIntoClient
+    static var embravaPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2587)
+    }
+
+    /// INPEAK S.C. (`2588`)
+    @_alwaysEmitIntoClient
+    static var inpeakSC: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2588)
+    }
+
+    /// API-K (`2589`)
+    @_alwaysEmitIntoClient
+    static var apiK: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2589)
+    }
+
+    /// CombiQ AB (`2590`)
+    @_alwaysEmitIntoClient
+    static var combiq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2590)
+    }
+
+    /// DeVilbiss Healthcare LLC (`2591`)
+    @_alwaysEmitIntoClient
+    static var devilbissHealthcare: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2591)
+    }
+
+    /// Jiangxi Innotech Technology Co., Ltd (`2592`)
+    @_alwaysEmitIntoClient
+    static var jiangxiInnotechTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2592)
+    }
+
+    /// Apollogic Sp. z o.o. (`2593`)
+    @_alwaysEmitIntoClient
+    static var apollogic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2593)
+    }
+
+    /// DAIICHIKOSHO CO., LTD. (`2594`)
+    @_alwaysEmitIntoClient
+    static var daiichikosho: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2594)
+    }
+
+    /// BIXOLON CO.,LTD (`2595`)
+    @_alwaysEmitIntoClient
+    static var bixolon: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2595)
+    }
+
+    /// Atmosic Technologies, Inc. (`2596`)
+    @_alwaysEmitIntoClient
+    static var atmosicTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2596)
+    }
+
+    /// Eran Financial Services LLC (`2597`)
+    @_alwaysEmitIntoClient
+    static var eranFinancialServices: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2597)
+    }
+
+    /// Louis Vuitton (`2598`)
+    @_alwaysEmitIntoClient
+    static var louisVuitton: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2598)
+    }
+
+    /// AYU DEVICES PRIVATE LIMITED (`2599`)
+    @_alwaysEmitIntoClient
+    static var ayuDevices: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2599)
+    }
+
+    /// NanoFlex (`2600`)
+    @_alwaysEmitIntoClient
+    static var nanoflex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2600)
+    }
+
+    /// Worthcloud Technology Co.,Ltd (`2601`)
+    @_alwaysEmitIntoClient
+    static var worthcloudTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2601)
+    }
+
+    /// Yamaha Corporation (`2602`)
+    @_alwaysEmitIntoClient
+    static var yamaha: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2602)
+    }
+
+    /// PaceBait IVS (`2603`)
+    @_alwaysEmitIntoClient
+    static var pacebait: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2603)
+    }
+
+    /// Shenzhen H&T Intelligent Control Co., Ltd (`2604`)
+    @_alwaysEmitIntoClient
+    static var shenzhenHTIntelligentControl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2604)
+    }
+
+    /// Shenzhen Feasycom Technology Co., Ltd. (`2605`)
+    @_alwaysEmitIntoClient
+    static var shenzhenFeasycomTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2605)
+    }
+
+    /// Zuma Array Limited (`2606`)
+    @_alwaysEmitIntoClient
+    static var zumaArray: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2606)
+    }
+
+    /// Instamic, Inc. (`2607`)
+    @_alwaysEmitIntoClient
+    static var instamic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2607)
+    }
+
+    /// Air-Weigh (`2608`)
+    @_alwaysEmitIntoClient
+    static var airWeigh: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2608)
+    }
+
+    /// Nevro Corp. (`2609`)
+    @_alwaysEmitIntoClient
+    static var nevro: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2609)
+    }
+
+    /// Pinnacle Technology, Inc. (`2610`)
+    @_alwaysEmitIntoClient
+    static var pinnacleTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2610)
+    }
+
+    /// WMF AG (`2611`)
+    @_alwaysEmitIntoClient
+    static var wmf: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2611)
+    }
+
+    /// Luxer Corporation (`2612`)
+    @_alwaysEmitIntoClient
+    static var luxer: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2612)
+    }
+
+    /// safectory GmbH (`2613`)
+    @_alwaysEmitIntoClient
+    static var safectory: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2613)
+    }
+
+    /// NGK SPARK PLUG CO., LTD. (`2614`)
+    @_alwaysEmitIntoClient
+    static var ngkSparkPlug: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2614)
+    }
+
+    /// 2587702 Ontario Inc. (`2615`)
+    @_alwaysEmitIntoClient
+    static var uuid2587702Ontario: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2615)
+    }
+
+    /// Bouffalo Lab (Nanjing)., Ltd. (`2616`)
+    @_alwaysEmitIntoClient
+    static var bouffaloLabNanjing: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2616)
+    }
+
+    /// BLUETICKETING SRL (`2617`)
+    @_alwaysEmitIntoClient
+    static var blueticketing: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2617)
+    }
+
+    /// Incotex Co. Ltd. (`2618`)
+    @_alwaysEmitIntoClient
+    static var incotex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2618)
+    }
+
+    /// Galileo Technology Limited (`2619`)
+    @_alwaysEmitIntoClient
+    static var galileoTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2619)
+    }
+
+    /// Siteco GmbH (`2620`)
+    @_alwaysEmitIntoClient
+    static var siteco: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2620)
+    }
+
+    /// DELABIE (`2621`)
+    @_alwaysEmitIntoClient
+    static var delabie: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2621)
+    }
+
+    /// Hefei Yunlian Semiconductor Co., Ltd (`2622`)
+    @_alwaysEmitIntoClient
+    static var hefeiYunlianSemiconductor: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2622)
+    }
+
+    /// Shenzhen Yopeak Optoelectronics Technology Co., Ltd. (`2623`)
+    @_alwaysEmitIntoClient
+    static var shenzhenYopeakOptoelectronicsTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2623)
+    }
+
+    /// GEWISS S.p.A. (`2624`)
+    @_alwaysEmitIntoClient
+    static var gewiss: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2624)
+    }
+
+    /// OPEX Corporation (`2625`)
+    @_alwaysEmitIntoClient
+    static var opex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2625)
+    }
+
+    /// Motionalysis, Inc. (`2626`)
+    @_alwaysEmitIntoClient
+    static var motionalysis: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2626)
+    }
+
+    /// Busch Systems International Inc. (`2627`)
+    @_alwaysEmitIntoClient
+    static var buschSystemsInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2627)
+    }
+
+    /// Novidan, Inc. (`2628`)
+    @_alwaysEmitIntoClient
+    static var novidan: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2628)
+    }
+
+    /// 3SI Security Systems, Inc (`2629`)
+    @_alwaysEmitIntoClient
+    static var uuid3SiSecuritySystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2629)
+    }
+
+    /// Beijing HC-Infinite Technology Limited (`2630`)
+    @_alwaysEmitIntoClient
+    static var beijingHcInfiniteTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2630)
+    }
+
+    /// The Wand Company Ltd (`2631`)
+    @_alwaysEmitIntoClient
+    static var wandCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2631)
+    }
+
+    /// JRC Mobility Inc. (`2632`)
+    @_alwaysEmitIntoClient
+    static var jrcMobility: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2632)
+    }
+
+    /// Venture Research Inc. (`2633`)
+    @_alwaysEmitIntoClient
+    static var ventureResearch: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2633)
+    }
+
+    /// Map Large, Inc. (`2634`)
+    @_alwaysEmitIntoClient
+    static var mapLarge: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2634)
+    }
+
+    /// MistyWest Energy and Transport Ltd. (`2635`)
+    @_alwaysEmitIntoClient
+    static var mistywestEnergyAndTransport: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2635)
+    }
+
+    /// SiFli Technologies (shanghai) Inc. (`2636`)
+    @_alwaysEmitIntoClient
+    static var sifliTechnologiesShanghai: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2636)
+    }
+
+    /// Lockn Technologies Private Limited (`2637`)
+    @_alwaysEmitIntoClient
+    static var locknTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2637)
+    }
+
+    /// Toytec Corporation (`2638`)
+    @_alwaysEmitIntoClient
+    static var toytec: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2638)
+    }
+
+    /// VANMOOF Global Holding B.V. (`2639`)
+    @_alwaysEmitIntoClient
+    static var vanmoofGlobalHolding: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2639)
+    }
+
+    /// Nextscape Inc. (`2640`)
+    @_alwaysEmitIntoClient
+    static var nextscape: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2640)
+    }
+
+    /// CSIRO (`2641`)
+    @_alwaysEmitIntoClient
+    static var csiro: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2641)
+    }
+
+    /// Follow Sense Europe B.V. (`2642`)
+    @_alwaysEmitIntoClient
+    static var followSenseEurope: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2642)
+    }
+
+    /// KKM COMPANY LIMITED (`2643`)
+    @_alwaysEmitIntoClient
+    static var kkmCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2643)
+    }
+
+    /// SQL Technologies Corp. (`2644`)
+    @_alwaysEmitIntoClient
+    static var sqlTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2644)
+    }
+
+    /// Inugo Systems Limited (`2645`)
+    @_alwaysEmitIntoClient
+    static var inugoSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2645)
+    }
+
+    /// ambie (`2646`)
+    @_alwaysEmitIntoClient
+    static var ambie: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2646)
+    }
+
+    /// Meizhou Guo Wei Electronics Co., Ltd (`2647`)
+    @_alwaysEmitIntoClient
+    static var meizhouGuoWeiElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2647)
+    }
+
+    /// Indigo Diabetes (`2648`)
+    @_alwaysEmitIntoClient
+    static var indigoDiabetes: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2648)
+    }
+
+    /// TourBuilt, LLC (`2649`)
+    @_alwaysEmitIntoClient
+    static var tourbuilt: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2649)
+    }
+
+    /// Sontheim Industrie Elektronik GmbH (`2650`)
+    @_alwaysEmitIntoClient
+    static var sontheimIndustrieElektronik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2650)
+    }
+
+    /// LEGIC Identsystems AG (`2651`)
+    @_alwaysEmitIntoClient
+    static var legicIdentsystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2651)
+    }
+
+    /// Innovative Design Labs Inc. (`2652`)
+    @_alwaysEmitIntoClient
+    static var innovativeDesignLabs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2652)
+    }
+
+    /// MG Energy Systems B.V. (`2653`)
+    @_alwaysEmitIntoClient
+    static var mgEnergySystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2653)
+    }
+
+    /// LaceClips llc (`2654`)
+    @_alwaysEmitIntoClient
+    static var laceclips: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2654)
+    }
+
+    /// stryker (`2655`)
+    @_alwaysEmitIntoClient
+    static var stryker: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2655)
+    }
+
+    /// DATANG SEMICONDUCTOR TECHNOLOGY CO.,LTD (`2656`)
+    @_alwaysEmitIntoClient
+    static var datangSemiconductorTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2656)
+    }
+
+    /// Smart Parks B.V. (`2657`)
+    @_alwaysEmitIntoClient
+    static var smartParks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2657)
+    }
+
+    /// MOKO TECHNOLOGY Ltd (`2658`)
+    @_alwaysEmitIntoClient
+    static var mokoTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2658)
+    }
+
+    /// Gremsy JSC (`2659`)
+    @_alwaysEmitIntoClient
+    static var gremsyJsc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2659)
+    }
+
+    /// Geopal system A/S (`2660`)
+    @_alwaysEmitIntoClient
+    static var geopalSystem: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2660)
+    }
+
+    /// Lytx, INC. (`2661`)
+    @_alwaysEmitIntoClient
+    static var lytx: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2661)
+    }
+
+    /// JUSTMORPH PTE. LTD. (`2662`)
+    @_alwaysEmitIntoClient
+    static var justmorphPte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2662)
+    }
+
+    /// Beijing SuperHexa Century Technology CO. Ltd (`2663`)
+    @_alwaysEmitIntoClient
+    static var beijingSuperhexaCenturyTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2663)
+    }
+
+    /// Focus Ingenieria SRL (`2664`)
+    @_alwaysEmitIntoClient
+    static var focusIngenieria: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2664)
+    }
+
+    /// HAPPIEST BABY, INC. (`2665`)
+    @_alwaysEmitIntoClient
+    static var happiestBaby: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2665)
+    }
+
+    /// Scribble Design Inc. (`2666`)
+    @_alwaysEmitIntoClient
+    static var scribbleDesign: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2666)
+    }
+
+    /// Olympic Ophthalmics, Inc. (`2667`)
+    @_alwaysEmitIntoClient
+    static var olympicOphthalmics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2667)
+    }
+
+    /// Pokkels (`2668`)
+    @_alwaysEmitIntoClient
+    static var pokkels: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2668)
+    }
+
+    /// KUUKANJYOKIN Co.,Ltd. (`2669`)
+    @_alwaysEmitIntoClient
+    static var kuukanjyokin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2669)
+    }
+
+    /// Pac Sane Limited (`2670`)
+    @_alwaysEmitIntoClient
+    static var pacSane: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2670)
+    }
+
+    /// Warner Bros. (`2671`)
+    @_alwaysEmitIntoClient
+    static var warnerBros: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2671)
+    }
+
+    /// Ooma (`2672`)
+    @_alwaysEmitIntoClient
+    static var ooma: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2672)
+    }
+
+    /// Senquip Pty Ltd (`2673`)
+    @_alwaysEmitIntoClient
+    static var senquipPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2673)
+    }
+
+    /// Jumo GmbH & Co. KG (`2674`)
+    @_alwaysEmitIntoClient
+    static var jumo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2674)
+    }
+
+    /// Innohome Oy (`2675`)
+    @_alwaysEmitIntoClient
+    static var innohome: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2675)
+    }
+
+    /// MICROSON S.A. (`2676`)
+    @_alwaysEmitIntoClient
+    static var microson: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2676)
+    }
+
+    /// Delta Cycle Corporation (`2677`)
+    @_alwaysEmitIntoClient
+    static var deltaCycle: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2677)
+    }
+
+    /// Synaptics Incorporated (`2678`)
+    @_alwaysEmitIntoClient
+    static var synaptics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2678)
+    }
+
+    /// JMD PACIFIC PTE. LTD. (`2679`)
+    @_alwaysEmitIntoClient
+    static var jmdPacificPte: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2679)
+    }
+
+    /// Shenzhen Sunricher Technology Limited (`2680`)
+    @_alwaysEmitIntoClient
+    static var shenzhenSunricherTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2680)
+    }
+
+    /// Webasto SE (`2681`)
+    @_alwaysEmitIntoClient
+    static var webastoSe: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2681)
+    }
+
+    /// Emlid Limited (`2682`)
+    @_alwaysEmitIntoClient
+    static var emlid: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2682)
+    }
+
+    /// UniqAir Oy (`2683`)
+    @_alwaysEmitIntoClient
+    static var uniqair: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2683)
+    }
+
+    /// WAFERLOCK (`2684`)
+    @_alwaysEmitIntoClient
+    static var waferlock: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2684)
+    }
+
+    /// Freedman Electronics Pty Ltd (`2685`)
+    @_alwaysEmitIntoClient
+    static var freedmanElectronicsPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2685)
+    }
+
+    /// KEBA Handover Automation GmbH (`2686`)
+    @_alwaysEmitIntoClient
+    static var kebaHandoverAutomation: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2686)
+    }
+
+    /// Intuity Medical (`2687`)
+    @_alwaysEmitIntoClient
+    static var intuityMedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2687)
+    }
+
+    /// Cleer Limited (`2688`)
+    @_alwaysEmitIntoClient
+    static var cleer: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2688)
+    }
+
+    /// Universal Biosensors Pty Ltd (`2689`)
+    @_alwaysEmitIntoClient
+    static var universalBiosensorsPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2689)
+    }
+
+    /// Corsair (`2690`)
+    @_alwaysEmitIntoClient
+    static var corsair: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2690)
+    }
+
+    /// Rivata, Inc. (`2691`)
+    @_alwaysEmitIntoClient
+    static var rivata: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2691)
+    }
+
+    /// Greennote Inc, (`2692`)
+    @_alwaysEmitIntoClient
+    static var greennote: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2692)
+    }
+
+    /// Snowball Technology Co., Ltd. (`2693`)
+    @_alwaysEmitIntoClient
+    static var snowballTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2693)
+    }
+
+    /// ALIZENT International (`2694`)
+    @_alwaysEmitIntoClient
+    static var alizentInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2694)
+    }
+
+    /// Shanghai Smart System Technology Co., Ltd (`2695`)
+    @_alwaysEmitIntoClient
+    static var shanghaiSmartSystemTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2695)
+    }
+
+    /// PSA Peugeot Citroen (`2696`)
+    @_alwaysEmitIntoClient
+    static var psaPeugeotCitroen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2696)
+    }
+
+    /// SES-Imagotag (`2697`)
+    @_alwaysEmitIntoClient
+    static var sesImagotag: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2697)
+    }
+
+    /// HAINBUCH SPANNENDE TECHNIK (`2698`)
+    @_alwaysEmitIntoClient
+    static var hainbuchSpannendeTechnik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2698)
+    }
+
+    /// SANlight GmbH (`2699`)
+    @_alwaysEmitIntoClient
+    static var sanlight: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2699)
+    }
+
+    /// DelpSys, s.r.o. (`2700`)
+    @_alwaysEmitIntoClient
+    static var delpsys: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2700)
+    }
+
+    /// JCM TECHNOLOGIES S.A. (`2701`)
+    @_alwaysEmitIntoClient
+    static var jcmTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2701)
+    }
+
+    /// Perfect Company (`2702`)
+    @_alwaysEmitIntoClient
+    static var perfectCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2702)
+    }
+
+    /// TOTO LTD. (`2703`)
+    @_alwaysEmitIntoClient
+    static var toto: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2703)
+    }
+
+    /// Shenzhen Grandsun Electronic Co.,Ltd. (`2704`)
+    @_alwaysEmitIntoClient
+    static var shenzhenGrandsunElectronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2704)
+    }
+
+    /// Monarch International Inc. (`2705`)
+    @_alwaysEmitIntoClient
+    static var monarchInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2705)
+    }
+
+    /// Carestream Dental LLC (`2706`)
+    @_alwaysEmitIntoClient
+    static var carestreamDental: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2706)
+    }
+
+    /// GiPStech S.r.l. (`2707`)
+    @_alwaysEmitIntoClient
+    static var gipstech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2707)
+    }
+
+    /// OOBIK Inc. (`2708`)
+    @_alwaysEmitIntoClient
+    static var oobik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2708)
+    }
+
+    /// Pamex Inc. (`2709`)
+    @_alwaysEmitIntoClient
+    static var pamex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2709)
+    }
+
+    /// Lightricity Ltd (`2710`)
+    @_alwaysEmitIntoClient
+    static var lightricity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2710)
+    }
+
+    /// SensTek (`2711`)
+    @_alwaysEmitIntoClient
+    static var senstek: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2711)
+    }
+
+    /// Foil, Inc. (`2712`)
+    @_alwaysEmitIntoClient
+    static var foil: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2712)
+    }
+
+    /// Shanghai high-flying electronics technology Co.,Ltd (`2713`)
+    @_alwaysEmitIntoClient
+    static var shanghaiHighFlyingElectronicsTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2713)
+    }
+
+    /// TEMKIN ASSOCIATES, LLC (`2714`)
+    @_alwaysEmitIntoClient
+    static var temkinsociates: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2714)
+    }
+
+    /// Eello LLC (`2715`)
+    @_alwaysEmitIntoClient
+    static var eello: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2715)
+    }
+
+    /// Xi'an Fengyu Information Technology Co., Ltd. (`2716`)
+    @_alwaysEmitIntoClient
+    static var xiAnFengyuInformationTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2716)
+    }
+
+    /// Canon Finetech Nisca Inc. (`2717`)
+    @_alwaysEmitIntoClient
+    static var canonFinetechNisca: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2717)
+    }
+
+    /// LifePlus, Inc. (`2718`)
+    @_alwaysEmitIntoClient
+    static var lifeplus: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2718)
+    }
+
+    /// ista International GmbH (`2719`)
+    @_alwaysEmitIntoClient
+    static var istaInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2719)
+    }
+
+    /// Loy Tec electronics GmbH (`2720`)
+    @_alwaysEmitIntoClient
+    static var loyTecElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2720)
+    }
+
+    /// LINCOGN TECHNOLOGY CO. LIMITED (`2721`)
+    @_alwaysEmitIntoClient
+    static var lincognTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2721)
+    }
+
+    /// Care Bloom, LLC (`2722`)
+    @_alwaysEmitIntoClient
+    static var careBloom: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2722)
+    }
+
+    /// DIC Corporation (`2723`)
+    @_alwaysEmitIntoClient
+    static var dic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2723)
+    }
+
+    /// FAZEPRO LLC (`2724`)
+    @_alwaysEmitIntoClient
+    static var fazepro: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2724)
+    }
+
+    /// Shenzhen Uascent Technology Co., Ltd (`2725`)
+    @_alwaysEmitIntoClient
+    static var shenzhenUascentTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2725)
+    }
+
+    /// Realityworks, inc. (`2726`)
+    @_alwaysEmitIntoClient
+    static var realityworks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2726)
+    }
+
+    /// Urbanista AB (`2727`)
+    @_alwaysEmitIntoClient
+    static var urbanista: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2727)
+    }
+
+    /// Zencontrol Pty Ltd (`2728`)
+    @_alwaysEmitIntoClient
+    static var zencontrolPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2728)
+    }
+
+    /// Mrinq Technologies LLC (`2729`)
+    @_alwaysEmitIntoClient
+    static var mrinqTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2729)
+    }
+
+    /// Computime International Ltd (`2730`)
+    @_alwaysEmitIntoClient
+    static var computimeInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2730)
+    }
+
+    /// Anhui Listenai Co (`2731`)
+    @_alwaysEmitIntoClient
+    static var anhuiListenaiCo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2731)
+    }
+
+    /// OSM HK Limited (`2732`)
+    @_alwaysEmitIntoClient
+    static var osm: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2732)
+    }
+
+    /// Adevo Consulting AB (`2733`)
+    @_alwaysEmitIntoClient
+    static var adevoConsulting: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2733)
+    }
+
+    /// PS Engineering, Inc. (`2734`)
+    @_alwaysEmitIntoClient
+    static var psEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2734)
+    }
+
+    /// AIAIAI ApS (`2735`)
+    @_alwaysEmitIntoClient
+    static var aiaiai: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2735)
+    }
+
+    /// Visiontronic s.r.o. (`2736`)
+    @_alwaysEmitIntoClient
+    static var visiontronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2736)
+    }
+
+    /// InVue Security Products Inc (`2737`)
+    @_alwaysEmitIntoClient
+    static var invueSecurityProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2737)
+    }
+
+    /// TouchTronics, Inc. (`2738`)
+    @_alwaysEmitIntoClient
+    static var touchtronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2738)
+    }
+
+    /// INNER RANGE PTY. LTD. (`2739`)
+    @_alwaysEmitIntoClient
+    static var innerRangePty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2739)
+    }
+
+    /// Ellenby Technologies, Inc. (`2740`)
+    @_alwaysEmitIntoClient
+    static var ellenbyTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2740)
+    }
+
+    /// Elstat Ltd [ Formerly Elstat Electronics Ltd.] (`2741`)
+    @_alwaysEmitIntoClient
+    static var elstatFormerlyElstatElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2741)
+    }
+
+    /// Xenter, Inc. (`2742`)
+    @_alwaysEmitIntoClient
+    static var xenter: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2742)
+    }
+
+    /// LogTag North America Inc. (`2743`)
+    @_alwaysEmitIntoClient
+    static var logtagNorthAmerica: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2743)
+    }
+
+    /// Sens.ai Incorporated (`2744`)
+    @_alwaysEmitIntoClient
+    static var sensAi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2744)
+    }
+
+    /// STL (`2745`)
+    @_alwaysEmitIntoClient
+    static var stl: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2745)
+    }
+
+    /// Open Bionics Ltd. (`2746`)
+    @_alwaysEmitIntoClient
+    static var openBionics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2746)
+    }
+
+    /// R-DAS, s.r.o. (`2747`)
+    @_alwaysEmitIntoClient
+    static var rDas: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2747)
+    }
+
+    /// KCCS Mobile Engineering Co., Ltd. (`2748`)
+    @_alwaysEmitIntoClient
+    static var kccsMobileEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2748)
+    }
+
+    /// Inventas AS (`2749`)
+    @_alwaysEmitIntoClient
+    static var inventas: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2749)
+    }
+
+    /// Robkoo Information & Technologies Co., Ltd. (`2750`)
+    @_alwaysEmitIntoClient
+    static var robkooInformationTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2750)
+    }
+
+    /// PAUL HARTMANN AG (`2751`)
+    @_alwaysEmitIntoClient
+    static var paulHartmann: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2751)
+    }
+
+    /// Omni-ID USA, INC. (`2752`)
+    @_alwaysEmitIntoClient
+    static var omniIdUsa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2752)
+    }
+
+    /// Shenzhen Jingxun Technology Co., Ltd. (`2753`)
+    @_alwaysEmitIntoClient
+    static var shenzhenJingxunTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2753)
+    }
+
+    /// RealMega Microelectronics technology (Shanghai) Co. Ltd. (`2754`)
+    @_alwaysEmitIntoClient
+    static var realmegaMicroelectronicsTechnologyShanghai: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2754)
+    }
+
+    /// Kenzen, Inc. (`2755`)
+    @_alwaysEmitIntoClient
+    static var kenzen: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2755)
+    }
+
+    /// CODIUM (`2756`)
+    @_alwaysEmitIntoClient
+    static var codium: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2756)
+    }
+
+    /// Flexoptix GmbH (`2757`)
+    @_alwaysEmitIntoClient
+    static var flexoptix: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2757)
+    }
+
+    /// Barnes Group Inc. (`2758`)
+    @_alwaysEmitIntoClient
+    static var barnesGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2758)
+    }
+
+    /// Chengdu Aich Technology Co.,Ltd (`2759`)
+    @_alwaysEmitIntoClient
+    static var chengduAichTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2759)
+    }
+
+    /// Keepin Co., Ltd. (`2760`)
+    @_alwaysEmitIntoClient
+    static var keepin: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2760)
+    }
+
+    /// Swedlock AB (`2761`)
+    @_alwaysEmitIntoClient
+    static var swedlock: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2761)
+    }
+
+    /// Shenzhen CoolKit Technology Co., Ltd (`2762`)
+    @_alwaysEmitIntoClient
+    static var shenzhenCoolkitTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2762)
+    }
+
+    /// ise Individuelle Software und Elektronik GmbH (`2763`)
+    @_alwaysEmitIntoClient
+    static var iseIndividuelleSoftwareUndElektronik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2763)
+    }
+
+    /// Nuvoton (`2764`)
+    @_alwaysEmitIntoClient
+    static var nuvoton: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2764)
+    }
+
+    /// Visuallex Sport International Limited (`2765`)
+    @_alwaysEmitIntoClient
+    static var visuallexSportInternational: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2765)
+    }
+
+    /// KOBATA GAUGE MFG. CO., LTD. (`2766`)
+    @_alwaysEmitIntoClient
+    static var kobataGaugeMfg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2766)
+    }
+
+    /// CACI Technologies (`2767`)
+    @_alwaysEmitIntoClient
+    static var caciTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2767)
+    }
+
+    /// Nordic Strong ApS (`2768`)
+    @_alwaysEmitIntoClient
+    static var nordicStrong: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2768)
+    }
+
+    /// EAGLE KINGDOM TECHNOLOGIES LIMITED (`2769`)
+    @_alwaysEmitIntoClient
+    static var eagleKingdomTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2769)
+    }
+
+    /// Lautsprecher Teufel GmbH (`2770`)
+    @_alwaysEmitIntoClient
+    static var lautsprecherTeufel: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2770)
+    }
+
+    /// SSV Software Systems GmbH (`2771`)
+    @_alwaysEmitIntoClient
+    static var ssvSoftwareSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2771)
+    }
+
+    /// Zhuhai Pantum Electronisc Co., Ltd (`2772`)
+    @_alwaysEmitIntoClient
+    static var zhuhaiPantumElectronisc: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2772)
+    }
+
+    /// Streamit B.V. (`2773`)
+    @_alwaysEmitIntoClient
+    static var streamit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2773)
+    }
+
+    /// nymea GmbH (`2774`)
+    @_alwaysEmitIntoClient
+    static var nymea: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2774)
+    }
+
+    /// AL-KO Geraete GmbH (`2775`)
+    @_alwaysEmitIntoClient
+    static var alKoGeraete: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2775)
+    }
+
+    /// Franz Kaldewei GmbH&Co KG (`2776`)
+    @_alwaysEmitIntoClient
+    static var franzKaldeweiCoKg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2776)
+    }
+
+    /// Shenzhen Aimore. Co.,Ltd (`2777`)
+    @_alwaysEmitIntoClient
+    static var shenzhenAimore: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2777)
+    }
+
+    /// Codefabrik GmbH (`2778`)
+    @_alwaysEmitIntoClient
+    static var codefabrik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2778)
+    }
+
+    /// Reelables, Inc. (`2779`)
+    @_alwaysEmitIntoClient
+    static var reelables: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2779)
+    }
+
+    /// Duravit AG  (`2780`)
+    @_alwaysEmitIntoClient
+    static var duravit: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2780)
+    }
+
+    /// Boss Audio (`2781`)
+    @_alwaysEmitIntoClient
+    static var bossAudio: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2781)
+    }
+
+    /// Vocera Communications, Inc. (`2782`)
+    @_alwaysEmitIntoClient
+    static var voceraCommunications: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2782)
+    }
+
+    /// Douglas Dynamics L.L.C. (`2783`)
+    @_alwaysEmitIntoClient
+    static var douglasDynamicsLLC: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2783)
+    }
+
+    /// Viceroy Devices Corporation (`2784`)
+    @_alwaysEmitIntoClient
+    static var viceroyDevices: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2784)
+    }
+
+    /// ChengDu ForThink Technology Co., Ltd. (`2785`)
+    @_alwaysEmitIntoClient
+    static var chengduForthinkTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2785)
+    }
+
+    /// IMATRIX SYSTEMS, INC. (`2786`)
+    @_alwaysEmitIntoClient
+    static var imatrixSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2786)
+    }
+
+    /// GlobalMed (`2787`)
+    @_alwaysEmitIntoClient
+    static var globalmed: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2787)
+    }
+
+    /// DALI Alliance (`2788`)
+    @_alwaysEmitIntoClient
+    static var daliAlliance: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2788)
+    }
+
+    /// unu GmbH (`2789`)
+    @_alwaysEmitIntoClient
+    static var unu: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2789)
+    }
+
+    /// Hexology (`2790`)
+    @_alwaysEmitIntoClient
+    static var hexology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2790)
+    }
+
+    /// Sunplus Technology Co., Ltd. (`2791`)
+    @_alwaysEmitIntoClient
+    static var sunplusTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2791)
+    }
+
+    /// LEVEL, s.r.o. (`2792`)
+    @_alwaysEmitIntoClient
+    static var level: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2792)
+    }
+
+    /// FLIR Systems AB (`2793`)
+    @_alwaysEmitIntoClient
+    static var flirSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2793)
+    }
+
+    /// Borda Technology (`2794`)
+    @_alwaysEmitIntoClient
+    static var bordaTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2794)
+    }
+
+    /// Square, Inc. (`2795`)
+    @_alwaysEmitIntoClient
+    static var square: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2795)
+    }
+
+    /// FUTEK ADVANCED SENSOR TECHNOLOGY, INC (`2796`)
+    @_alwaysEmitIntoClient
+    static var futekAdvancedSensorTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2796)
+    }
+
+    /// Saxonar GmbH (`2797`)
+    @_alwaysEmitIntoClient
+    static var saxonar: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2797)
+    }
+
+    /// Velentium, LLC (`2798`)
+    @_alwaysEmitIntoClient
+    static var velentium: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2798)
+    }
+
+    /// GLP German Light Products GmbH (`2799`)
+    @_alwaysEmitIntoClient
+    static var glpGermanLightProducts: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2799)
+    }
+
+    /// Leupold & Stevens, Inc. (`2800`)
+    @_alwaysEmitIntoClient
+    static var leupoldStevens: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2800)
+    }
+
+    /// CRADERS,CO.,LTD (`2801`)
+    @_alwaysEmitIntoClient
+    static var craders: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2801)
+    }
+
+    /// Shanghai All Link Microelectronics Co.,Ltd (`2802`)
+    @_alwaysEmitIntoClient
+    static var shanghaiAllLinkMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2802)
+    }
+
+    /// 701x Inc. (`2803`)
+    @_alwaysEmitIntoClient
+    static var uuid701X: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2803)
+    }
+
+    /// Radioworks Microelectronics PTY LTD (`2804`)
+    @_alwaysEmitIntoClient
+    static var radioworksMicroelectronicsPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2804)
+    }
+
+    /// Unitech Electronic Inc. (`2805`)
+    @_alwaysEmitIntoClient
+    static var unitechElectronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2805)
+    }
+
+    /// AMETEK, Inc. (`2806`)
+    @_alwaysEmitIntoClient
+    static var ametek: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2806)
+    }
+
+    /// Irdeto (`2807`)
+    @_alwaysEmitIntoClient
+    static var irdeto: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2807)
+    }
+
+    /// First Design System Inc. (`2808`)
+    @_alwaysEmitIntoClient
+    static var firstDesignSystem: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2808)
+    }
+
+    /// Unisto AG (`2809`)
+    @_alwaysEmitIntoClient
+    static var unisto: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2809)
+    }
+
+    /// Chengdu Ambit Technology Co., Ltd. (`2810`)
+    @_alwaysEmitIntoClient
+    static var chengduAmbitTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2810)
+    }
+
+    /// SMT ELEKTRONIK GmbH (`2811`)
+    @_alwaysEmitIntoClient
+    static var smtElektronik: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2811)
+    }
+
+    /// Cerebrum Sensor Technologies Inc. (`2812`)
+    @_alwaysEmitIntoClient
+    static var cerebrumSensorTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2812)
+    }
+
+    /// Weber Sensors, LLC (`2813`)
+    @_alwaysEmitIntoClient
+    static var weberSensors: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2813)
+    }
+
+    /// Earda Technologies Co.,Ltd (`2814`)
+    @_alwaysEmitIntoClient
+    static var eardaTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2814)
+    }
+
+    /// FUSEAWARE LIMITED (`2815`)
+    @_alwaysEmitIntoClient
+    static var fuseaware: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2815)
+    }
+
+    /// Flaircomm Microelectronics Inc. (`2816`)
+    @_alwaysEmitIntoClient
+    static var flaircommMicroelectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2816)
+    }
+
+    /// RESIDEO TECHNOLOGIES, INC. (`2817`)
+    @_alwaysEmitIntoClient
+    static var resideoTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2817)
+    }
+
+    /// IORA Technology Development Ltd. Sti. (`2818`)
+    @_alwaysEmitIntoClient
+    static var ioraTechnologyDevelopmentSti: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2818)
+    }
+
+    /// Precision Triathlon Systems Limited (`2819`)
+    @_alwaysEmitIntoClient
+    static var precisionTriathlonSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2819)
+    }
+
+    /// I-PERCUT (`2820`)
+    @_alwaysEmitIntoClient
+    static var iPercut: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2820)
+    }
+
+    /// Marquardt GmbH (`2821`)
+    @_alwaysEmitIntoClient
+    static var marquardt: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2821)
+    }
+
+    /// FAZUA GmbH (`2822`)
+    @_alwaysEmitIntoClient
+    static var fazua: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2822)
+    }
+
+    /// Workaround Gmbh (`2823`)
+    @_alwaysEmitIntoClient
+    static var workaround: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2823)
+    }
+
+    /// Shenzhen Qianfenyi Intelligent Technology Co., LTD (`2824`)
+    @_alwaysEmitIntoClient
+    static var shenzhenQianfenyiIntelligentTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2824)
+    }
+
+    /// soonisys (`2825`)
+    @_alwaysEmitIntoClient
+    static var soonisys: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2825)
+    }
+
+    /// Belun Technology Company Limited (`2826`)
+    @_alwaysEmitIntoClient
+    static var belunTechnologyCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2826)
+    }
+
+    /// Sanistaal A/S (`2827`)
+    @_alwaysEmitIntoClient
+    static var sanistaal: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2827)
+    }
+
+    /// BluPeak (`2828`)
+    @_alwaysEmitIntoClient
+    static var blupeak: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2828)
+    }
+
+    /// SANYO DENKO Co.,Ltd. (`2829`)
+    @_alwaysEmitIntoClient
+    static var sanyoDenko: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2829)
+    }
+
+    /// Honda Lock Mfg. Co.,Ltd. (`2830`)
+    @_alwaysEmitIntoClient
+    static var hondaLockMfg: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2830)
+    }
+
+    /// B.E.A. S.A. (`2831`)
+    @_alwaysEmitIntoClient
+    static var bEA: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2831)
+    }
+
+    /// Alfa Laval Corporate AB (`2832`)
+    @_alwaysEmitIntoClient
+    static var alfaLavalorate: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2832)
+    }
+
+    /// ThermoWorks, Inc. (`2833`)
+    @_alwaysEmitIntoClient
+    static var thermoworks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2833)
+    }
+
+    /// ToughBuilt Industries LLC (`2834`)
+    @_alwaysEmitIntoClient
+    static var toughbuiltIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2834)
+    }
+
+    /// IOTOOLS (`2835`)
+    @_alwaysEmitIntoClient
+    static var iotools: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2835)
+    }
+
+    /// Olumee (`2836`)
+    @_alwaysEmitIntoClient
+    static var olumee: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2836)
+    }
+
+    /// NAOS JAPAN K.K. (`2837`)
+    @_alwaysEmitIntoClient
+    static var naosJapanKK: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2837)
+    }
+
+    /// Guard RFID Solutions Inc. (`2838`)
+    @_alwaysEmitIntoClient
+    static var guardRfidSolutions: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2838)
+    }
+
+    /// SIG SAUER, INC. (`2839`)
+    @_alwaysEmitIntoClient
+    static var siguer: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2839)
+    }
+
+    /// DECATHLON SE (`2840`)
+    @_alwaysEmitIntoClient
+    static var decathlonSe: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2840)
+    }
+
+    /// WBS PROJECT H PTY LTD (`2841`)
+    @_alwaysEmitIntoClient
+    static var wbsProjectHPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2841)
+    }
+
+    /// Roca Sanitario, S.A. (`2842`)
+    @_alwaysEmitIntoClient
+    static var rocaSanitario: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2842)
+    }
+
+    /// Enerpac Tool Group Corp. (`2843`)
+    @_alwaysEmitIntoClient
+    static var enerpacToolGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2843)
+    }
+
+    /// Nanoleq AG (`2844`)
+    @_alwaysEmitIntoClient
+    static var nanoleq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2844)
+    }
+
+    /// Accelerated Systems (`2845`)
+    @_alwaysEmitIntoClient
+    static var acceleratedSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2845)
+    }
+
+    /// PB INC. (`2846`)
+    @_alwaysEmitIntoClient
+    static var pb: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2846)
+    }
+
+    /// Beijing ESWIN Computing Technology Co., Ltd. (`2847`)
+    @_alwaysEmitIntoClient
+    static var beijingEswinComputingTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2847)
+    }
+
+    /// TKH Security B.V. (`2848`)
+    @_alwaysEmitIntoClient
+    static var tkhSecurity: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2848)
+    }
+
+    /// ams AG (`2849`)
+    @_alwaysEmitIntoClient
+    static var ams: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2849)
+    }
+
+    /// Hygiene IQ, LLC. (`2850`)
+    @_alwaysEmitIntoClient
+    static var hygieneIq: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2850)
+    }
+
+    /// iRhythm Technologies, Inc. (`2851`)
+    @_alwaysEmitIntoClient
+    static var irhythmTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2851)
+    }
+
+    /// BeiJing ZiJie TiaoDong KeJi Co.,Ltd. (`2852`)
+    @_alwaysEmitIntoClient
+    static var beijingZijieTiaodongKeji: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2852)
+    }
+
+    /// NIBROTECH LTD (`2853`)
+    @_alwaysEmitIntoClient
+    static var nibrotech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2853)
+    }
+
+    /// Baracoda Daily Healthtech. (`2854`)
+    @_alwaysEmitIntoClient
+    static var baracodaDailyHealthtech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2854)
+    }
+
+    /// Lumi United Technology Co., Ltd (`2855`)
+    @_alwaysEmitIntoClient
+    static var lumiUnitedTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2855)
+    }
+
+    /// CHACON (`2856`)
+    @_alwaysEmitIntoClient
+    static var chacon: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2856)
+    }
+
+    /// Tech-Venom Entertainment Private Limited (`2857`)
+    @_alwaysEmitIntoClient
+    static var techVenomEntertainment: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2857)
+    }
+
+    /// ACL Airshop B.V. (`2858`)
+    @_alwaysEmitIntoClient
+    static var aclAirshop: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2858)
+    }
+
+    /// MAINBOT (`2859`)
+    @_alwaysEmitIntoClient
+    static var mainbot: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2859)
+    }
+
+    /// ILLUMAGEAR, Inc. (`2860`)
+    @_alwaysEmitIntoClient
+    static var illumagear: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2860)
+    }
+
+    /// REDARC ELECTRONICS PTY LTD (`2861`)
+    @_alwaysEmitIntoClient
+    static var redarcElectronicsPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2861)
+    }
+
+    /// MOCA System Inc. (`2862`)
+    @_alwaysEmitIntoClient
+    static var mocaSystem: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2862)
+    }
+
+    /// Duke Manufacturing Co (`2863`)
+    @_alwaysEmitIntoClient
+    static var dukeManufacturingCo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2863)
+    }
+
+    /// ART SPA (`2864`)
+    @_alwaysEmitIntoClient
+    static var artSpa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2864)
+    }
+
+    /// Silver Wolf Vehicles Inc. (`2865`)
+    @_alwaysEmitIntoClient
+    static var silverWolfVehicles: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2865)
+    }
+
+    /// Hala Systems, Inc. (`2866`)
+    @_alwaysEmitIntoClient
+    static var halaSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2866)
+    }
+
+    /// ARMATURA LLC (`2867`)
+    @_alwaysEmitIntoClient
+    static var armatura: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2867)
+    }
+
+    /// CONZUMEX INDUSTRIES PRIVATE LIMITED (`2868`)
+    @_alwaysEmitIntoClient
+    static var conzumexIndustries: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2868)
+    }
+
+    /// BH Sens (`2869`)
+    @_alwaysEmitIntoClient
+    static var bhSens: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2869)
+    }
+
+    /// SINTEF (`2870`)
+    @_alwaysEmitIntoClient
+    static var sintef: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2870)
+    }
+
+    /// Omnivoltaic Energy Solutions Limited Company (`2871`)
+    @_alwaysEmitIntoClient
+    static var omnivoltaicEnergySolutionsCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2871)
+    }
+
+    /// WISYCOM S.R.L. (`2872`)
+    @_alwaysEmitIntoClient
+    static var wisycom: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2872)
+    }
+
+    /// Red 100 Lighting Co., ltd. (`2873`)
+    @_alwaysEmitIntoClient
+    static var red100Lighting: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2873)
+    }
+
+    /// Impact Biosystems, Inc. (`2874`)
+    @_alwaysEmitIntoClient
+    static var impactBiosystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2874)
+    }
+
+    /// AIC semiconductor (Shanghai) Co., Ltd. (`2875`)
+    @_alwaysEmitIntoClient
+    static var aicSemiconductorShanghai: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2875)
+    }
+
+    /// Dodge Industrial, Inc. (`2876`)
+    @_alwaysEmitIntoClient
+    static var dodgeIndustrial: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2876)
+    }
+
+    /// REALTIMEID AS (`2877`)
+    @_alwaysEmitIntoClient
+    static var realtimeid: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2877)
+    }
+
+    /// ISEO Serrature S.p.a. (`2878`)
+    @_alwaysEmitIntoClient
+    static var iseoSerrature: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2878)
+    }
+
+    /// MindRhythm, Inc. (`2879`)
+    @_alwaysEmitIntoClient
+    static var mindrhythm: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2879)
+    }
+
+    /// Havells India Limited (`2880`)
+    @_alwaysEmitIntoClient
+    static var havellsIndia: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2880)
+    }
+
+    /// Sentrax GmbH (`2881`)
+    @_alwaysEmitIntoClient
+    static var sentrax: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2881)
+    }
+
+    /// TSI (`2882`)
+    @_alwaysEmitIntoClient
+    static var tsi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2882)
+    }
+
+    /// INCITAT ENVIRONNEMENT (`2883`)
+    @_alwaysEmitIntoClient
+    static var incitatEnvironnement: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2883)
+    }
+
+    /// nFore Technology Co., Ltd. (`2884`)
+    @_alwaysEmitIntoClient
+    static var nforeTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2884)
+    }
+
+    /// Electronic Sensors, Inc. (`2885`)
+    @_alwaysEmitIntoClient
+    static var electronicSensors: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2885)
+    }
+
+    /// Bird Rides, Inc. (`2886`)
+    @_alwaysEmitIntoClient
+    static var birdRides: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2886)
+    }
+
+    /// Gentex Corporation  (`2887`)
+    @_alwaysEmitIntoClient
+    static var gentex: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2887)
+    }
+
+    /// NIO USA, Inc. (`2888`)
+    @_alwaysEmitIntoClient
+    static var nioUsa: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2888)
+    }
+
+    /// SkyHawke Technologies (`2889`)
+    @_alwaysEmitIntoClient
+    static var skyhawkeTechnologies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2889)
+    }
+
+    /// Nomono AS (`2890`)
+    @_alwaysEmitIntoClient
+    static var nomono: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2890)
+    }
+
+    /// EMS Integrators, LLC (`2891`)
+    @_alwaysEmitIntoClient
+    static var emsIntegrators: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2891)
+    }
+
+    /// BiosBob.Biz (`2892`)
+    @_alwaysEmitIntoClient
+    static var biosbobBiz: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2892)
+    }
+
+    /// Adam Hall GmbH (`2893`)
+    @_alwaysEmitIntoClient
+    static var adamHall: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2893)
+    }
+
+    /// ICP Systems B.V. (`2894`)
+    @_alwaysEmitIntoClient
+    static var icpSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2894)
+    }
+
+    /// Breezi.io, Inc. (`2895`)
+    @_alwaysEmitIntoClient
+    static var breeziIo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2895)
+    }
+
+    /// Mesh Systems LLC (`2896`)
+    @_alwaysEmitIntoClient
+    static var meshSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2896)
+    }
+
+    /// FUN FACTORY GmbH (`2897`)
+    @_alwaysEmitIntoClient
+    static var funFactory: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2897)
+    }
+
+    /// ZIIP Inc (`2898`)
+    @_alwaysEmitIntoClient
+    static var ziip: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2898)
+    }
+
+    /// SHENZHEN KAADAS INTELLIGENT TECHNOLOGY CO.,Ltd (`2899`)
+    @_alwaysEmitIntoClient
+    static var shenzhenKaadasIntelligentTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2899)
+    }
+
+    /// Emotion Fitness GmbH & Co. KG (`2900`)
+    @_alwaysEmitIntoClient
+    static var emotionFitness: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2900)
+    }
+
+    /// H G M Automotive Electronics, Inc. (`2901`)
+    @_alwaysEmitIntoClient
+    static var hGMAutomotiveElectronics: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2901)
+    }
+
+    /// BORA - Vertriebs GmbH & Co KG (`2902`)
+    @_alwaysEmitIntoClient
+    static var boraVertriebs: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2902)
+    }
+
+    /// CONVERTRONIX TECHNOLOGIES AND SERVICES LLP (`2903`)
+    @_alwaysEmitIntoClient
+    static var convertronixTechnologiesAndServicesLlp: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2903)
+    }
+
+    /// TOKAI-DENSHI INC (`2904`)
+    @_alwaysEmitIntoClient
+    static var tokaiDenshi: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2904)
+    }
+
+    /// Versa Group B.V. (`2905`)
+    @_alwaysEmitIntoClient
+    static var versaGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2905)
+    }
+
+    /// H.P. Shelby Manufacturing, LLC. (`2906`)
+    @_alwaysEmitIntoClient
+    static var hPShelbyManufacturing: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2906)
+    }
+
+    /// Shenzhen ImagineVision Technology Limited (`2907`)
+    @_alwaysEmitIntoClient
+    static var shenzhenImaginevisionTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2907)
+    }
+
+    /// Exponential Power, Inc. (`2908`)
+    @_alwaysEmitIntoClient
+    static var exponentialPower: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2908)
+    }
+
+    /// Fujian Newland Auto-ID Tech. Co., Ltd. (`2909`)
+    @_alwaysEmitIntoClient
+    static var fujianNewlandAutoIdTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2909)
+    }
+
+    /// CELLCONTROL, INC. (`2910`)
+    @_alwaysEmitIntoClient
+    static var cellcontrol: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2910)
+    }
+
+    /// Rivieh, Inc. (`2911`)
+    @_alwaysEmitIntoClient
+    static var rivieh: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2911)
+    }
+
+    /// RATOC Systems, Inc. (`2912`)
+    @_alwaysEmitIntoClient
+    static var ratocSystems: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2912)
+    }
+
+    /// Sentek Pty Ltd (`2913`)
+    @_alwaysEmitIntoClient
+    static var sentekPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2913)
+    }
+
+    /// NOVEA ENERGIES (`2914`)
+    @_alwaysEmitIntoClient
+    static var noveaEnergies: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2914)
+    }
+
+    /// Innolux Corporation (`2915`)
+    @_alwaysEmitIntoClient
+    static var innolux: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2915)
+    }
+
+    /// NingBo klite Electric Manufacture Co.,LTD (`2916`)
+    @_alwaysEmitIntoClient
+    static var ningboKliteElectricManufacture: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2916)
+    }
+
+    /// The Apache Software Foundation (`2917`)
+    @_alwaysEmitIntoClient
+    static var apacheSoftwareFoundation: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2917)
+    }
+
+    /// MITSUBISHI ELECTRIC AUTOMATION (THAILAND) COMPANY LIMITED (`2918`)
+    @_alwaysEmitIntoClient
+    static var mitsubishiElectricAutomationThailandCompany: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2918)
+    }
+
+    /// CleanSpace Technology Pty Ltd (`2919`)
+    @_alwaysEmitIntoClient
+    static var cleanspaceTechnologyPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2919)
+    }
+
+    /// Quha oy (`2920`)
+    @_alwaysEmitIntoClient
+    static var quha: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2920)
+    }
+
+    /// Addaday (`2921`)
+    @_alwaysEmitIntoClient
+    static var addaday: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2921)
+    }
+
+    /// Dymo (`2922`)
+    @_alwaysEmitIntoClient
+    static var dymo: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2922)
+    }
+
+    /// Samsara Networks, Inc (`2923`)
+    @_alwaysEmitIntoClient
+    static var samsaraNetworks: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2923)
+    }
+
+    /// Sensitech, Inc. (`2924`)
+    @_alwaysEmitIntoClient
+    static var sensitech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2924)
+    }
+
+    /// SOLUM CO., LTD (`2925`)
+    @_alwaysEmitIntoClient
+    static var solum: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2925)
+    }
+
+    /// React Mobile (`2926`)
+    @_alwaysEmitIntoClient
+    static var reactMobile: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2926)
+    }
+
+    /// Shenzhen Malide Technology Co.,Ltd (`2927`)
+    @_alwaysEmitIntoClient
+    static var shenzhenMalideTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2927)
+    }
+
+    /// JDRF Electromag Engineering Inc (`2928`)
+    @_alwaysEmitIntoClient
+    static var jdrfElectromagEngineering: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2928)
+    }
+
+    /// lilbit ODM AS (`2929`)
+    @_alwaysEmitIntoClient
+    static var lilbitOdm: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2929)
+    }
+
+    /// Geeknet, Inc. (`2930`)
+    @_alwaysEmitIntoClient
+    static var geeknet: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2930)
+    }
+
+    /// HARADA INDUSTRY CO., LTD. (`2931`)
+    @_alwaysEmitIntoClient
+    static var haradaIndustry: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2931)
+    }
+
+    /// BQN (`2932`)
+    @_alwaysEmitIntoClient
+    static var bqn: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2932)
+    }
+
+    /// Triple W Japan Inc. (`2933`)
+    @_alwaysEmitIntoClient
+    static var tripleWJapan: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2933)
+    }
+
+    /// MAX-co., ltd (`2934`)
+    @_alwaysEmitIntoClient
+    static var max: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2934)
+    }
+
+    /// Aixlink(Chengdu) Co., Ltd. (`2935`)
+    @_alwaysEmitIntoClient
+    static var aixlinkChengdu: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2935)
+    }
+
+    /// FIELD DESIGN INC. (`2936`)
+    @_alwaysEmitIntoClient
+    static var fieldDesign: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2936)
+    }
+
+    /// Sankyo Air Tech Co.,Ltd. (`2937`)
+    @_alwaysEmitIntoClient
+    static var sankyoAirTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2937)
+    }
+
+    /// Shenzhen KTC Technology Co.,Ltd. (`2938`)
+    @_alwaysEmitIntoClient
+    static var shenzhenKtcTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2938)
+    }
+
+    /// Hardcoder Oy (`2939`)
+    @_alwaysEmitIntoClient
+    static var hardcoder: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2939)
+    }
+
+    /// Scangrip A/S (`2940`)
+    @_alwaysEmitIntoClient
+    static var scangrip: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2940)
+    }
+
+    /// FoundersLane GmbH (`2941`)
+    @_alwaysEmitIntoClient
+    static var founderslane: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2941)
+    }
+
+    /// Offcode Oy (`2942`)
+    @_alwaysEmitIntoClient
+    static var offcode: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2942)
+    }
+
+    /// ICU tech GmbH (`2943`)
+    @_alwaysEmitIntoClient
+    static var icuTech: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2943)
+    }
+
+    /// AXELIFE (`2944`)
+    @_alwaysEmitIntoClient
+    static var axelife: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2944)
+    }
+
+    /// SCM Group (`2945`)
+    @_alwaysEmitIntoClient
+    static var scmGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2945)
+    }
+
+    /// Mammut Sports Group AG (`2946`)
+    @_alwaysEmitIntoClient
+    static var mammutSportsGroup: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2946)
+    }
+
+    /// Taiga Motors Inc. (`2947`)
+    @_alwaysEmitIntoClient
+    static var taigaMotors: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2947)
+    }
+
+    /// Presidio Medical, Inc. (`2948`)
+    @_alwaysEmitIntoClient
+    static var presidioMedical: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2948)
+    }
+
+    /// VIMANA TECH PTY LTD (`2949`)
+    @_alwaysEmitIntoClient
+    static var vimanaTechPty: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2949)
+    }
+
+    /// Trek Bicycle (`2950`)
+    @_alwaysEmitIntoClient
+    static var trekBicycle: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2950)
+    }
+
+    /// Ampetronic Ltd (`2951`)
+    @_alwaysEmitIntoClient
+    static var ampetronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2951)
+    }
+
+    /// Muguang (Guangdong) Intelligent Lighting Technology Co., Ltd (`2952`)
+    @_alwaysEmitIntoClient
+    static var muguangGuangdongIntelligentLightingTechnology: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2952)
+    }
+
+    /// Rotronic AG (`2953`)
+    @_alwaysEmitIntoClient
+    static var rotronic: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2953)
+    }
+
+    /// Seiko Instruments Inc. (`2954`)
+    @_alwaysEmitIntoClient
+    static var seikoInstruments: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2954)
+    }
+
+    /// American Technology Components, Incorporated (`2955`)
+    @_alwaysEmitIntoClient
+    static var americanTechnologyComponents: CompanyIdentifier {
+        return CompanyIdentifier(rawValue: 2955)
     }
 
 }
