@@ -43,21 +43,27 @@ public extension String {
         return result
     }
     
-    func sanitizeName() -> String {
+    func sanitizeName(prefix: String) -> String {
         
         var name = self
         let blackList = ["ASSA ABLOY"]
         guard blackList.contains(name) == false
             else { return name }
         
+        // remove diacritics
+        name = name.applyingTransform(.stripDiacritics, reverse: false)!
+        // remove company name suffixes
         if let range = name.firstMatch(of: formerlyRegex) {
             name.removeSubrange(range)
         }
-        
-        // remove company name suffixes
+        name = name.replacingOccurrences(of: " USA, Inc", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " USA, Inc", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " USA Inc", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " Inc. USA", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " USA LLC", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "LLC \"", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "\"", with: "", options: .caseInsensitive)
-        name = name.replacingOccurrences(of: "3D ", with: "uuid3D", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: "3D ", with: prefix + "3D", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "IF, LLC", with: "ifLLC", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "WHERE, Inc.", with: "whereInc", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon", options: .caseInsensitive)
@@ -119,13 +125,11 @@ public extension String {
         name = name.replacingOccurrences(of: " s.r.o.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Srl", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " S.r.l.", with: "", options: .caseInsensitive)
-        name = name.replacingOccurrences(of: " USA Inc.", with: "", options: .caseInsensitive)
         
         // if first letter is a number, add prefix
         if let firstCharacter = name.first,
             let _ = Int(String(firstCharacter)) {
-            
-            name = "uuid" + name
+            name = prefix + name
         }
         
         return name

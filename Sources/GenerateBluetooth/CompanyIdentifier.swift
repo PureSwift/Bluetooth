@@ -25,7 +25,7 @@ extension GenerateTool {
         var memberNames = [UInt16: String]()
         memberNames.reserveCapacity(companies.count)
         for (id, name) in companies {
-            let sanitizedName = name.sanitizeName()
+            let sanitizedName = name.sanitizeName(prefix: "company")
             let llamaCaseName = sanitizedName.llamaCase()
             var memberName = llamaCaseName
             // prevent duplicate entries

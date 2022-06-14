@@ -220,7 +220,6 @@ public struct CSV {
         ///
         /// - Paramter url: An url referencing a CSV file.
         public convenience init?(url: URL, configuration: CSV.Configuration) {
-            print(#file, #function, #line)
             guard let inputStream = InputStream(url: url) else {
                 return nil
             }
@@ -440,70 +439,6 @@ public struct CSV {
         
         public let delimiter: UnicodeScalar
         public let encoding: String.Encoding
-        
-        /// Returns a configuration by detecting the delimeter and text encoding from a file at an url.
-        public static func detectConfigurationForContentsOfURL(_ url: URL) -> Configuration? {
-            guard let stream = InputStream(url: url) else {
-                return nil
-            }
-            
-            return self.detectConfigurationForInputStream(stream)
-        }
-        
-        /// Returns a configuration by detecting the delimeter and text encoding from the CSV input stream.
-        public static func detectConfigurationForInputStream(_ stream: InputStream) -> Configuration? {
-            if stream.streamStatus == .notOpen {
-                stream.open()
-            }
-            
-            let maxLength = 400
-            var buffer = Array<UInt8>(repeating: 0, count: maxLength)
-            let length = stream.read(&buffer, maxLength: buffer.count)
-            if let error = stream.streamError {
-                print(error)
-                return nil
-            }
-            
-            var encoding: String.Encoding = .utf8
-            
-            if length > 4, let bom = String.Encoding.BOM(bom0: buffer[0], bom1: buffer[1], bom2: buffer[2], bom3: buffer[3]) {
-                encoding = bom.encoding
-                buffer.removeFirst(bom.length)
-            }
-            
-            let string: String
-            if let decoded = String(bytes: buffer, encoding: encoding) {
-                string = decoded
-            } else if let macOSRoman = String(bytes: buffer, encoding: .macOSRoman) {
-                string = macOSRoman
-                encoding = .macOSRoman
-            } else {
-                return nil
-            }
-            
-            let scanner = Scanner(string: string)
-            guard let header = scanner.scanUpToCharacters(from: .newlines) else {
-                return nil
-            }
-            return self.detectConfigurationForString(header as String, encoding: encoding)
-        }
-        
-        /// Returns a configuration by detecting the delimeter and text encoding from a CSV string.
-        public static func detectConfigurationForString(_ string: String, encoding: String.Encoding) -> Configuration {
-            struct Delimiter {
-                let scalar: UnicodeScalar
-                let weight: Int
-            }
-            
-            let delimiters = [",", ";", "\t"].map({ Delimiter(scalar: UnicodeScalar($0)!, weight: string.components(separatedBy: $0).count) })
-            
-            let winner = delimiters.sorted(by: {
-                lhs, rhs in
-                return lhs.weight > rhs.weight
-            }).first!
-            
-            return Configuration(delimiter: winner.scalar, encoding: encoding)
-        }
         
         /// Initializes a configuration with a delimiter and text encoding.
         public init(delimiter: UnicodeScalar, encoding: String.Encoding = .utf8) {
