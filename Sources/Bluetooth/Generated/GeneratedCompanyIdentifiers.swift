@@ -38,7 +38,7 @@ public extension CompanyIdentifier {
 
     /// 3Com (`5`)
     @_alwaysEmitIntoClient
-    static var uuid3Com: CompanyIdentifier {
+    static var company3Com: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 5)
     }
 
@@ -446,7 +446,7 @@ public extension CompanyIdentifier {
 
     /// 3DSP Corporation (`73`)
     @_alwaysEmitIntoClient
-    static var uuid3Dsp: CompanyIdentifier {
+    static var company3Dsp: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 73)
     }
 
@@ -512,7 +512,7 @@ public extension CompanyIdentifier {
 
     /// 3DiJoy Corporation (`84`)
     @_alwaysEmitIntoClient
-    static var uuid3Dijoy: CompanyIdentifier {
+    static var company3Dijoy: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 84)
     }
 
@@ -620,7 +620,7 @@ public extension CompanyIdentifier {
 
     /// 9Solutions Oy (`102`)
     @_alwaysEmitIntoClient
-    static var uuid9Solutions: CompanyIdentifier {
+    static var company9Solutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 102)
     }
 
@@ -1292,7 +1292,7 @@ public extension CompanyIdentifier {
 
     /// Timex Group USA, Inc. (`214`)
     @_alwaysEmitIntoClient
-    static var timexGroupUsa: CompanyIdentifier {
+    static var timexGroup: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 214)
     }
 
@@ -1676,7 +1676,7 @@ public extension CompanyIdentifier {
 
     /// 10AK Technologies (`278`)
     @_alwaysEmitIntoClient
-    static var uuid10AkTechnologies: CompanyIdentifier {
+    static var company10AkTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 278)
     }
 
@@ -3302,7 +3302,7 @@ public extension CompanyIdentifier {
 
     /// Nestlé Nespresso S.A. (`549`)
     @_alwaysEmitIntoClient
-    static var nestléNespresso: CompanyIdentifier {
+    static var nestleNespresso: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 549)
     }
 
@@ -3476,7 +3476,7 @@ public extension CompanyIdentifier {
 
     /// 16Lab Inc (`578`)
     @_alwaysEmitIntoClient
-    static var uuid16Lab: CompanyIdentifier {
+    static var company16Lab: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 578)
     }
 
@@ -3554,7 +3554,7 @@ public extension CompanyIdentifier {
 
     /// Schneider Schreibgeräte GmbH (`591`)
     @_alwaysEmitIntoClient
-    static var schneiderSchreibgeräte: CompanyIdentifier {
+    static var schneiderSchreibgerate: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 591)
     }
 
@@ -4130,7 +4130,7 @@ public extension CompanyIdentifier {
 
     /// Technicolor USA Inc. (`687`)
     @_alwaysEmitIntoClient
-    static var technicolorUsa: CompanyIdentifier {
+    static var technicolor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 687)
     }
 
@@ -4328,7 +4328,7 @@ public extension CompanyIdentifier {
 
     /// 3M (`720`)
     @_alwaysEmitIntoClient
-    static var uuid3M: CompanyIdentifier {
+    static var company3M: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 720)
     }
 
@@ -4910,7 +4910,7 @@ public extension CompanyIdentifier {
 
     /// 3flares Technologies Inc. (`817`)
     @_alwaysEmitIntoClient
-    static var uuid3FlaresTechnologies: CompanyIdentifier {
+    static var company3FlaresTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 817)
     }
 
@@ -5288,7 +5288,7 @@ public extension CompanyIdentifier {
 
     /// Wazombi Labs OÜ  (`880`)
     @_alwaysEmitIntoClient
-    static var wazombiLabsOü: CompanyIdentifier {
+    static var wazombiLabsOu: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 880)
     }
 
@@ -5378,7 +5378,7 @@ public extension CompanyIdentifier {
 
     /// Société des Produits Nestlé S.A. (formerly Nestec S.A.) (`895`)
     @_alwaysEmitIntoClient
-    static var sociétéDesProduitsNestlé: CompanyIdentifier {
+    static var societeDesProduitsNestle: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 895)
     }
 
@@ -5918,7 +5918,7 @@ public extension CompanyIdentifier {
 
     /// 3IWare Co., Ltd. (`985`)
     @_alwaysEmitIntoClient
-    static var uuid3Iware: CompanyIdentifier {
+    static var company3Iware: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 985)
     }
 
@@ -6590,7 +6590,7 @@ public extension CompanyIdentifier {
 
     /// 1UP USA.com llc (`1097`)
     @_alwaysEmitIntoClient
-    static var uuid1UpUsaCom: CompanyIdentifier {
+    static var company1UpUsaCom: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1097)
     }
 
@@ -6692,7 +6692,7 @@ public extension CompanyIdentifier {
 
     /// 2048450 Ontario Inc (`1114`)
     @_alwaysEmitIntoClient
-    static var uuid2048450Ontario: CompanyIdentifier {
+    static var company2048450Ontario: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1114)
     }
 
@@ -7064,7 +7064,7 @@ public extension CompanyIdentifier {
 
     /// METER Group, Inc. USA (`1176`)
     @_alwaysEmitIntoClient
-    static var meterGroupUsa: CompanyIdentifier {
+    static var meterGroup: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1176)
     }
 
@@ -7424,7 +7424,7 @@ public extension CompanyIdentifier {
 
     /// 5th Element Ltd (`1236`)
     @_alwaysEmitIntoClient
-    static var uuid5ThElement: CompanyIdentifier {
+    static var company5ThElement: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1236)
     }
 
@@ -7478,7 +7478,7 @@ public extension CompanyIdentifier {
 
     /// 4MOD Technology (`1245`)
     @_alwaysEmitIntoClient
-    static var uuid4ModTechnology: CompanyIdentifier {
+    static var company4ModTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1245)
     }
 
@@ -7802,7 +7802,7 @@ public extension CompanyIdentifier {
 
     /// 9974091 Canada Inc. (`1299`)
     @_alwaysEmitIntoClient
-    static var uuid9974091Canada: CompanyIdentifier {
+    static var company9974091Canada: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1299)
     }
 
@@ -9320,7 +9320,7 @@ public extension CompanyIdentifier {
 
     /// ADH GUARDIAN USA LLC (`1552`)
     @_alwaysEmitIntoClient
-    static var adhGuardianUsa: CompanyIdentifier {
+    static var adhGuardian: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1552)
     }
 
@@ -9854,7 +9854,7 @@ public extension CompanyIdentifier {
 
     /// Livanova USA, Inc. (`1641`)
     @_alwaysEmitIntoClient
-    static var livanovaUsa: CompanyIdentifier {
+    static var livanova: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1641)
     }
 
@@ -9950,7 +9950,7 @@ public extension CompanyIdentifier {
 
     /// 4iiii Innovations Inc. (`1657`)
     @_alwaysEmitIntoClient
-    static var uuid4IiiiInnovations: CompanyIdentifier {
+    static var company4IiiiInnovations: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1657)
     }
 
@@ -10688,7 +10688,7 @@ public extension CompanyIdentifier {
 
     /// Touché Technology Ltd (`1780`)
     @_alwaysEmitIntoClient
-    static var touchéTechnology: CompanyIdentifier {
+    static var toucheTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1780)
     }
 
@@ -10820,7 +10820,7 @@ public extension CompanyIdentifier {
 
     /// Huf Hülsbeck & Fürst GmbH & Co. KG (`1802`)
     @_alwaysEmitIntoClient
-    static var hufHülsbeckFürst: CompanyIdentifier {
+    static var hufHulsbeckFurst: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1802)
     }
 
@@ -11462,7 +11462,7 @@ public extension CompanyIdentifier {
 
     /// 4eBusiness GmbH (`1909`)
     @_alwaysEmitIntoClient
-    static var uuid4Ebusiness: CompanyIdentifier {
+    static var company4Ebusiness: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1909)
     }
 
@@ -11828,7 +11828,7 @@ public extension CompanyIdentifier {
 
     /// 2N TELEKOMUNIKACE a.s. (`1971`)
     @_alwaysEmitIntoClient
-    static var uuid2NTelekomunikace: CompanyIdentifier {
+    static var company2NTelekomunikace: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1971)
     }
 
@@ -12152,7 +12152,7 @@ public extension CompanyIdentifier {
 
     /// Häfele GmbH & Co KG (`2025`)
     @_alwaysEmitIntoClient
-    static var häfele: CompanyIdentifier {
+    static var hafele: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2025)
     }
 
@@ -12338,7 +12338,7 @@ public extension CompanyIdentifier {
 
     /// SISTEMAS KERN, SOCIEDAD ANÓMINA (`2056`)
     @_alwaysEmitIntoClient
-    static var sistemasKernSociedadAnómina: CompanyIdentifier {
+    static var sistemasKernSociedadAnomina: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2056)
     }
 
@@ -12404,7 +12404,7 @@ public extension CompanyIdentifier {
 
     /// Flextronics International USA Inc. (`2067`)
     @_alwaysEmitIntoClient
-    static var flextronicsInternationalUsa: CompanyIdentifier {
+    static var flextronicsInternational: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2067)
     }
 
@@ -12506,7 +12506,7 @@ public extension CompanyIdentifier {
 
     /// 8Power Limited (`2084`)
     @_alwaysEmitIntoClient
-    static var uuid8Power: CompanyIdentifier {
+    static var company8Power: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2084)
     }
 
@@ -12974,7 +12974,7 @@ public extension CompanyIdentifier {
 
     /// 11 Health & Technologies Limited (`2162`)
     @_alwaysEmitIntoClient
-    static var uuid11HealthTechnologies: CompanyIdentifier {
+    static var company11HealthTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2162)
     }
 
@@ -13046,7 +13046,7 @@ public extension CompanyIdentifier {
 
     /// 1bar.net Limited (`2174`)
     @_alwaysEmitIntoClient
-    static var uuid1BarNet: CompanyIdentifier {
+    static var company1BarNet: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2174)
     }
 
@@ -13880,7 +13880,7 @@ public extension CompanyIdentifier {
 
     /// 70mai Co.,Ltd. (`2313`)
     @_alwaysEmitIntoClient
-    static var uuid70Mai: CompanyIdentifier {
+    static var company70Mai: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2313)
     }
 
@@ -14474,7 +14474,7 @@ public extension CompanyIdentifier {
 
     /// 9374-7319 Quebec inc (`2412`)
     @_alwaysEmitIntoClient
-    static var uuid93747319Quebec: CompanyIdentifier {
+    static var company93747319Quebec: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2412)
     }
 
@@ -15692,7 +15692,7 @@ public extension CompanyIdentifier {
 
     /// 2587702 Ontario Inc. (`2615`)
     @_alwaysEmitIntoClient
-    static var uuid2587702Ontario: CompanyIdentifier {
+    static var company2587702Ontario: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2615)
     }
 
@@ -15776,7 +15776,7 @@ public extension CompanyIdentifier {
 
     /// 3SI Security Systems, Inc (`2629`)
     @_alwaysEmitIntoClient
-    static var uuid3SiSecuritySystems: CompanyIdentifier {
+    static var company3SiSecuritySystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2629)
     }
 
@@ -16514,7 +16514,7 @@ public extension CompanyIdentifier {
 
     /// Omni-ID USA, INC. (`2752`)
     @_alwaysEmitIntoClient
-    static var omniIdUsa: CompanyIdentifier {
+    static var omniId: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2752)
     }
 
@@ -16820,7 +16820,7 @@ public extension CompanyIdentifier {
 
     /// 701x Inc. (`2803`)
     @_alwaysEmitIntoClient
-    static var uuid701X: CompanyIdentifier {
+    static var company701X: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2803)
     }
 
@@ -17330,7 +17330,7 @@ public extension CompanyIdentifier {
 
     /// NIO USA, Inc. (`2888`)
     @_alwaysEmitIntoClient
-    static var nioUsa: CompanyIdentifier {
+    static var nio: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2888)
     }
 
