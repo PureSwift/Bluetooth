@@ -9,6 +9,11 @@ import Foundation
 
 public extension String {
     
+    func firstMatch(of regex: NSRegularExpression) -> Range<String.Index>? {
+        return regex
+            .firstMatch(in: self, range: NSRange(location: 0, length: self.utf16.count))
+            .flatMap { Range($0.range, in: self) }
+    }
     
     // https://gist.github.com/AmitaiB/bbfcba3a21411ee6d3f972320bcd1ecd
     func camelCase() -> String {
@@ -40,11 +45,16 @@ public extension String {
     
     func sanitizeName() -> String {
         
-        let blackList = ["ASSA ABLOY"]
-        guard blackList.contains(self) == false
-            else { return self }
-        
         var name = self
+        let blackList = ["ASSA ABLOY"]
+        guard blackList.contains(name) == false
+            else { return name }
+        
+        if let range = name.firstMatch(of: formerlyRegex) {
+            name.removeSubrange(range)
+        }
+        
+        // remove company name suffixes
         name = name.replacingOccurrences(of: "LLC \"", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "\"", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "3D ", with: "uuid3D", options: .caseInsensitive)
@@ -109,6 +119,7 @@ public extension String {
         name = name.replacingOccurrences(of: " s.r.o.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Srl", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " S.r.l.", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " USA Inc.", with: "", options: .caseInsensitive)
         
         // if first letter is a number, add prefix
         if let firstCharacter = name.first,
@@ -120,3 +131,5 @@ public extension String {
         return name
     }
 }
+
+let formerlyRegex = try! NSRegularExpression(pattern: #" \(formerly [^()]+\)\Z"#)
