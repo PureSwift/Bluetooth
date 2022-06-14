@@ -230,7 +230,7 @@ public extension CompanyIdentifier {
 
     /// NXP Semiconductors (formerly Philips Semiconductors) (`37`)
     @_alwaysEmitIntoClient
-    static var nxpSemiconductorsFormerlyPhilipsSemiconductors: CompanyIdentifier {
+    static var nxpSemiconductors: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 37)
     }
 
@@ -356,7 +356,7 @@ public extension CompanyIdentifier {
 
     /// Panasonic Corporation (formerly Matsushita Electric Industrial Co., Ltd.) (`58`)
     @_alwaysEmitIntoClient
-    static var panasonicFormerlyMatsushitaElectricIndustrial: CompanyIdentifier {
+    static var panasonic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 58)
     }
 
@@ -368,7 +368,7 @@ public extension CompanyIdentifier {
 
     /// BlackBerry Limited  (formerly Research In Motion) (`60`)
     @_alwaysEmitIntoClient
-    static var blackberryFormerlyResearchInMotion: CompanyIdentifier {
+    static var blackberry: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 60)
     }
 
@@ -848,7 +848,7 @@ public extension CompanyIdentifier {
 
     /// Gimbal Inc. (formerly Qualcomm Labs, Inc. and Qualcomm Retail Solutions, Inc.) (`140`)
     @_alwaysEmitIntoClient
-    static var gimbalFormerlyQualcommLabsAndQualcommRetailSolutions: CompanyIdentifier {
+    static var gimbal: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 140)
     }
 
@@ -866,7 +866,7 @@ public extension CompanyIdentifier {
 
     /// Telit Wireless Solutions GmbH (formerly Stollmann E+V GmbH) (`143`)
     @_alwaysEmitIntoClient
-    static var telitWirelessSolutionsFormerlyStollmannEV: CompanyIdentifier {
+    static var telitWirelessSolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 143)
     }
 
@@ -1022,7 +1022,7 @@ public extension CompanyIdentifier {
 
     /// MARELLI EUROPE S.P.A. (formerly Magneti Marelli S.p.A.) (`169`)
     @_alwaysEmitIntoClient
-    static var marelliEuropeFormerlyMagnetiMarelli: CompanyIdentifier {
+    static var marelliEurope: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 169)
     }
 
@@ -1622,7 +1622,7 @@ public extension CompanyIdentifier {
 
     /// DENSO TEN LIMITED (formerly Fujitsu Ten LImited) (`269`)
     @_alwaysEmitIntoClient
-    static var densoTenFormerlyFujitsuTen: CompanyIdentifier {
+    static var densoTen: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 269)
     }
 
@@ -2222,7 +2222,7 @@ public extension CompanyIdentifier {
 
     /// Amazon.com Services, LLC (formerly Amazon Fulfillment Service) (`369`)
     @_alwaysEmitIntoClient
-    static var amazonComServicesFormerlyAmazonFulfillmentService: CompanyIdentifier {
+    static var amazonComServices: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 369)
     }
 
@@ -2468,7 +2468,7 @@ public extension CompanyIdentifier {
 
     /// TRON Forum (formerly T-Engine Forum) (`410`)
     @_alwaysEmitIntoClient
-    static var tronForumFormerlyTEngineForum: CompanyIdentifier {
+    static var tronForum: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 410)
     }
 
@@ -5378,7 +5378,7 @@ public extension CompanyIdentifier {
 
     /// Société des Produits Nestlé S.A. (formerly Nestec S.A.) (`895`)
     @_alwaysEmitIntoClient
-    static var sociétéDesProduitsNestléFormerlyNestec: CompanyIdentifier {
+    static var sociétéDesProduitsNestlé: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 895)
     }
 
@@ -7826,7 +7826,7 @@ public extension CompanyIdentifier {
 
     /// Amtronic Sverige AB (formerly Amcore AB) (`1303`)
     @_alwaysEmitIntoClient
-    static var amtronicSverigeFormerlyAmcore: CompanyIdentifier {
+    static var amtronicSverige: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1303)
     }
 
@@ -8264,7 +8264,7 @@ public extension CompanyIdentifier {
 
     /// Sarita CareTech APS (formerly Sarita CareTech IVS) (`1376`)
     @_alwaysEmitIntoClient
-    static var saritaCaretechFormerlySaritaCaretech: CompanyIdentifier {
+    static var saritaCaretech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1376)
     }
 
@@ -8738,7 +8738,7 @@ public extension CompanyIdentifier {
 
     /// OV LOOP, INC. (formerly ONvocal) (`1455`)
     @_alwaysEmitIntoClient
-    static var ovLoopFormerlyOnvocal: CompanyIdentifier {
+    static var ovLoop: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1455)
     }
 
@@ -10148,7 +10148,7 @@ public extension CompanyIdentifier {
 
     /// Adero, Inc. (formerly as TrackR, Inc.) (`1690`)
     @_alwaysEmitIntoClient
-    static var aderoFormerlyAsTrackr: CompanyIdentifier {
+    static var adero: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1690)
     }
 
