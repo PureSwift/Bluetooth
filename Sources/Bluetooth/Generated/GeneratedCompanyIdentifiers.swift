@@ -3,7 +3,7 @@
 //  Bluetooth
 //
 
-#if swift(<5.6)
+#if swift(<5.6) || SWIFTPM_DISABLE_PLUGINS
 public extension CompanyIdentifier {
 
     /// Ericsson Technology Licensing (`0`)
