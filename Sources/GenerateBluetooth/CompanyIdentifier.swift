@@ -182,7 +182,7 @@ final class CompanyIdentifierCSVParser: CSVParserDelegate {
         defer { error = nil }
         guard let parser = CSV.Parser(
             url: url,
-            configuration: .detectConfigurationForContentsOfURL(url) ?? .init(delimiter: ",", encoding: .utf8)
+            configuration: .init(delimiter: ",", encoding: .utf8)
         ) else {
             throw CSVError(description: "Invalid file \(url)")
         }

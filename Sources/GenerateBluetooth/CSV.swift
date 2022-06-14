@@ -137,7 +137,7 @@ public struct CSV {
                 data.withUnsafeBytes({
                     (pointer: UnsafeRawBufferPointer) -> Void in
                     if let bytes = pointer.bindMemory(to: UInt8.self).baseAddress {
-                        self.outputStream.write(bytes, maxLength: pointer.count)
+                        let _ = self.outputStream.write(bytes, maxLength: pointer.count)
                     }
                 })
             }
@@ -220,6 +220,7 @@ public struct CSV {
         ///
         /// - Paramter url: An url referencing a CSV file.
         public convenience init?(url: URL, configuration: CSV.Configuration) {
+            print(#file, #function, #line)
             guard let inputStream = InputStream(url: url) else {
                 return nil
             }
