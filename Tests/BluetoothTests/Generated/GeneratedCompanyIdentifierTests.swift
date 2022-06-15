@@ -3719,9 +3719,9 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.bytestorm.description, #"Bytestorm Ltd."#)
     
         // Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )
-        XCTAssertEqual(CompanyIdentifier.espressif乐鑫信息科技上海有限公司.rawValue, 741)
-        XCTAssertEqual(CompanyIdentifier.espressif乐鑫信息科技上海有限公司.name, #"Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )"#)
-        XCTAssertEqual(CompanyIdentifier.espressif乐鑫信息科技上海有限公司.description, #"Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )"#)
+        XCTAssertEqual(CompanyIdentifier.espressif.rawValue, 741)
+        XCTAssertEqual(CompanyIdentifier.espressif.name, #"Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )"#)
+        XCTAssertEqual(CompanyIdentifier.espressif.description, #"Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )"#)
     
         // Unwire
         XCTAssertEqual(CompanyIdentifier.unwire.rawValue, 742)

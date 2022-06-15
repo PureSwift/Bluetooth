@@ -4454,7 +4454,7 @@ public extension CompanyIdentifier {
 
     /// Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 ) (`741`)
     @_alwaysEmitIntoClient
-    static var espressif乐鑫信息科技上海有限公司: CompanyIdentifier {
+    static var espressif: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 741)
     }
 
