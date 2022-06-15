@@ -56,6 +56,7 @@ public extension String {
         if let range = name.firstMatch(of: formerlyRegex) {
             name.removeSubrange(range)
         }
+        name = name.replacingOccurrences(of: "乐鑫信息科技(上海)有限公司", with: "")
         name = name.replacingOccurrences(of: " USA, Inc", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " USA, Inc", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " USA Inc", with: "", options: .caseInsensitive)
