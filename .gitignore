@@ -70,3 +70,6 @@ docs
 
 # VS Code
 .vscode
+
+# Finder
+.DS_Store

@@ -2,8 +2,13 @@
 import PackageDescription
 import class Foundation.ProcessInfo
 
+// get environment variables
+let environment = ProcessInfo.processInfo.environment
+let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] != nil
+let generateCode = environment["SWIFTPM_DISABLE_PLUGINS"] == nil
+let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] != nil
+
 // force building as dynamic library
-let dynamicLibrary = ProcessInfo.processInfo.environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] != nil
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
 
 var package = Package(
@@ -73,10 +78,36 @@ var package = Package(
 
 // SwiftPM command plugins are only supported by Swift version 5.6 and later.
 #if swift(>=5.6)
-let buildDocs = ProcessInfo.processInfo.environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] != nil
 if buildDocs {
     package.dependencies += [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ]
+}
+if generateCode {
+    package.targets += [
+        .executableTarget(
+            name: "GenerateBluetooth",
+            dependencies: []
+        ),
+        .plugin(
+            name: "GenerateBluetoothDefinitions",
+            capability: .buildTool(),
+            dependencies: [
+                "GenerateBluetooth"
+            ]
+        )
+    ]
+    package.targets[0].plugins = [
+        "GenerateBluetoothDefinitions"
+    ]
+    package.targets[4].plugins = [
+        "GenerateBluetoothDefinitions"
+    ]
+} else {
+    for (index, _) in package.targets.enumerated() {
+        package.targets[index].swiftSettings = [
+            .define("SWIFTPM_DISABLE_PLUGINS")
+        ]
+    }
 }
 #endif

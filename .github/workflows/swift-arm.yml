@@ -18,6 +18,7 @@ jobs:
             cd /usr/src/swift-armv7
             export SWIFT_PACKAGE_SRCDIR=$GITHUB_WORKSPACE
             export SWIFT_PACKAGE_BUILDDIR=$SWIFT_PACKAGE_SRCDIR/.build
+            export SWIFTPM_DISABLE_PLUGINS=1
             mkdir -p $SWIFT_PACKAGE_BUILDDIR
             mkdir -p /usr/src/swift-armv7/build/
             ./generate-swiftpm-toolchain.sh

@@ -18,6 +18,7 @@ jobs:
             cd /usr/src/buildroot-external
             export SWIFT_ARCH=armv7
             export SWIFT_PACKAGE_PATH=$GITHUB_WORKSPACE
+            export SWIFTPM_DISABLE_PLUGINS=1
             ./build-swift-package.sh
         - name: Archive Build artifacts
           uses: actions/upload-artifact@v3
