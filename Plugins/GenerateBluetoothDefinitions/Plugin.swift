@@ -67,6 +67,34 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
             )
             commands.append(command)
         }
+        #if os(macOS)
+        // Generate Bluetooth Assigned UUID Definitions
+        if target.name == "Bluetooth" {
+            let inputFileName = "AssignedUUIDs.pdf"
+            let inputPath = target
+                .sourceFiles(withSuffix: "pdf")
+                .filter { $0.type == .unknown }
+                .first { $0.path.lastComponent == inputFileName }
+                .map { $0.path }
+            guard let inputPath = inputPath else {
+                Diagnostics.error("Missing \(inputFileName)")
+                throw CocoaError(CocoaError.fileNoSuchFile)
+            }
+            let outputDirectory = context.pluginWorkDirectory
+            let outputPaths = [
+                outputDirectory.appending("AssignedUUIDs.swift"),
+                outputDirectory.appending("AssignedUUIDNames.swift")
+            ]
+            let command = Command.buildCommand(
+                displayName: "Generate Bluetooth Assigned UUID Definitions",
+                executable: try context.tool(named: "GenerateBluetooth").path,
+                arguments: ["uuid", inputPath] + outputPaths,
+                inputFiles: [inputPath],
+                outputFiles: outputPaths
+            )
+            commands.append(command)
+        }
+        #endif
         return commands
     }
 }
