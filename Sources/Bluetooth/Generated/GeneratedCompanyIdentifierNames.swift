@@ -9,7 +9,7 @@ internal extension CompanyIdentifier {
     static let companyIdentifiers: [UInt16: String] = {
 
         var companyIdentifiers = [UInt16: String]()
-        companyIdentifiers.reserveCapacity(2955)
+        companyIdentifiers.reserveCapacity(3031)
 
         companyIdentifiers[0] = #"Ericsson Technology Licensing"#
         companyIdentifiers[1] = #"Nokia Mobile Phones"#
@@ -69,7 +69,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[55] = #"Mobilian Corporation"#
         companyIdentifiers[56] = #"Syntronix Corporation"#
         companyIdentifiers[57] = #"Integrated System Solution Corp."#
-        companyIdentifiers[58] = #"Panasonic Corporation (formerly Matsushita Electric Industrial Co., Ltd.)"#
+        companyIdentifiers[58] = #"Panasonic Holdings Corporation"#
         companyIdentifiers[59] = #"Gennum Corporation"#
         companyIdentifiers[60] = #"BlackBerry Limited  (formerly Research In Motion)"#
         companyIdentifiers[61] = #"IPextreme, Inc."#
@@ -373,14 +373,14 @@ internal extension CompanyIdentifier {
         companyIdentifiers[359] = #"Ascensia Diabetes Care US Inc."#
         companyIdentifiers[360] = #"Spicebox LLC"#
         companyIdentifiers[361] = #"emberlight"#
-        companyIdentifiers[362] = #"Cooper-Atkins Corporation"#
+        companyIdentifiers[362] = #"Emerson Digital Cold Chain, Inc."#
         companyIdentifiers[363] = #"Qblinks"#
         companyIdentifiers[364] = #"MYSPHERA"#
         companyIdentifiers[365] = #"LifeScan Inc"#
         companyIdentifiers[366] = #"Volantic AB"#
         companyIdentifiers[367] = #"Podo Labs, Inc"#
         companyIdentifiers[368] = #"Roche Diabetes Care AG"#
-        companyIdentifiers[369] = #"Amazon.com Services, LLC (formerly Amazon Fulfillment Service)"#
+        companyIdentifiers[369] = #"Amazon.com Services LLC"#
         companyIdentifiers[370] = #"Connovate Technology Private Limited"#
         companyIdentifiers[371] = #"Kocomojo, LLC"#
         companyIdentifiers[372] = #"Everykey Inc."#
@@ -656,7 +656,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[642] = #"Sonova AG"#
         companyIdentifiers[643] = #"Maven Machines, Inc."#
         companyIdentifiers[644] = #"Synapse Electronics"#
-        companyIdentifiers[645] = #"Standard Innovation Inc."#
+        companyIdentifiers[645] = #"WOWTech Canada Ltd."#
         companyIdentifiers[646] = #"RF Code, Inc."#
         companyIdentifiers[647] = #"Wally Ventures S.L."#
         companyIdentifiers[648] = #"Willowbank Electronics Ltd"#
@@ -889,7 +889,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[875] = #"BRControls Products BV "#
         companyIdentifiers[876] = #"Zipcar "#
         companyIdentifiers[877] = #"AirBolt Pty Ltd "#
-        companyIdentifiers[878] = #"KeepTruckin Inc "#
+        companyIdentifiers[878] = #"MOTIVE TECHNOLOGIES, INC."#
         companyIdentifiers[879] = #"Motiv, Inc. "#
         companyIdentifiers[880] = #"Wazombi Labs OÜ "#
         companyIdentifiers[881] = #"ORBCOMM"#
@@ -1014,7 +1014,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[1000] = #"Reiner Kartengeraete GmbH & Co. KG."#
         companyIdentifiers[1001] = #"SHENZHEN LEMONJOY TECHNOLOGY CO., LTD."#
         companyIdentifiers[1002] = #"Hello Inc."#
-        companyIdentifiers[1003] = #"Evollve Inc."#
+        companyIdentifiers[1003] = #"Ozo Edu, Inc."#
         companyIdentifiers[1004] = #"Jigowatts Inc."#
         companyIdentifiers[1005] = #"BASIC MICRO.COM,INC."#
         companyIdentifiers[1006] = #"CUBE TECHNOLOGIES"#
@@ -1296,7 +1296,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[1282] = #"Specifi-Kali LLC"#
         companyIdentifiers[1283] = #"Locoroll, Inc"#
         companyIdentifiers[1284] = #"PHYPLUS Inc"#
-        companyIdentifiers[1285] = #"InPlay Inc."#
+        companyIdentifiers[1285] = #"InPlay, Inc."#
         companyIdentifiers[1286] = #"Hager"#
         companyIdentifiers[1287] = #"Yellowcog"#
         companyIdentifiers[1288] = #"Axes System sp. z o. o."#
@@ -1611,7 +1611,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[1597] = #"Xradio Technology Co.,Ltd."#
         companyIdentifiers[1598] = #"The Indoor Lab, LLC"#
         companyIdentifiers[1599] = #"LDL TECHNOLOGY"#
-        companyIdentifiers[1600] = #"Parkifi"#
+        companyIdentifiers[1600] = #"Dish Network LLC"#
         companyIdentifiers[1601] = #"Revenue Collection Systems FRANCE SAS"#
         companyIdentifiers[1602] = #"Bluetrum Technology Co.,Ltd"#
         companyIdentifiers[1603] = #"makita corporation"#
@@ -1771,7 +1771,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[1757] = #"Intellithings Ltd."#
         companyIdentifiers[1758] = #"Navcast, Inc."#
         companyIdentifiers[1759] = #"Hubbell Lighting, Inc."#
-        companyIdentifiers[1760] = #"Avaya "#
+        companyIdentifiers[1760] = #"Avaya Inc. "#
         companyIdentifiers[1761] = #"Milestone AV Technologies LLC"#
         companyIdentifiers[1762] = #"Alango Technologies Ltd"#
         companyIdentifiers[1763] = #"Spinlock Ltd"#
@@ -1824,7 +1824,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[1810] = #"Bull Group Company Limited"#
         companyIdentifiers[1811] = #"Respiri Limited"#
         companyIdentifiers[1812] = #"MindPeace Safety LLC"#
-        companyIdentifiers[1813] = #"Vgyan Solutions"#
+        companyIdentifiers[1813] = #"MBARC LABS Inc"#
         companyIdentifiers[1814] = #"Altonics"#
         companyIdentifiers[1815] = #"iQsquare BV"#
         companyIdentifiers[1816] = #"IDIBAIX enginneering"#
@@ -2156,7 +2156,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[2143] = #"COMPEGPS TEAM,SOCIEDAD LIMITADA"#
         companyIdentifiers[2144] = #"Alflex Products B.V."#
         companyIdentifiers[2145] = #"SmartSensor Labs Ltd"#
-        companyIdentifiers[2146] = #"SmartDrive Inc."#
+        companyIdentifiers[2146] = #"SmartDrive"#
         companyIdentifiers[2147] = #"Yo-tronics Technology Co., Ltd."#
         companyIdentifiers[2148] = #"Rafaelmicro"#
         companyIdentifiers[2149] = #"Emergency Lighting Products Limited"#
@@ -2191,7 +2191,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[2178] = #"PSYONIC, Inc."#
         companyIdentifiers[2179] = #"Wintersteiger AG"#
         companyIdentifiers[2180] = #"Controlid Industria, Comercio de Hardware e Servicos de Tecnologia Ltda"#
-        companyIdentifiers[2181] = #"LEVOLOR, INC."#
+        companyIdentifiers[2181] = #"LEVOLOR INC"#
         companyIdentifiers[2182] = #"Xsens Technologies B.V."#
         companyIdentifiers[2183] = #"Hydro-Gear Limited Partnership"#
         companyIdentifiers[2184] = #"EnPointe Fencing Pty Ltd"#
@@ -2381,7 +2381,7 @@ internal extension CompanyIdentifier {
         companyIdentifiers[2368] = #"Hero Workout GmbH"#
         companyIdentifiers[2369] = #"Rivian Automotive, LLC"#
         companyIdentifiers[2370] = #"TRANSSION HOLDINGS LIMITED"#
-        companyIdentifiers[2371] = #"Inovonics Corp."#
+        companyIdentifiers[2371] = #"Reserved"#
         companyIdentifiers[2372] = #"Agitron d.o.o."#
         companyIdentifiers[2373] = #"Globe (Jiangsu) Co., Ltd"#
         companyIdentifiers[2374] = #"AMC International Alfa Metalcraft Corporation AG"#
@@ -2966,6 +2966,82 @@ internal extension CompanyIdentifier {
         companyIdentifiers[2953] = #"Rotronic AG"#
         companyIdentifiers[2954] = #"Seiko Instruments Inc."#
         companyIdentifiers[2955] = #"American Technology Components, Incorporated"#
+        companyIdentifiers[2956] = #"MOTREX"#
+        companyIdentifiers[2957] = #"Pertech Industries Inc"#
+        companyIdentifiers[2958] = #"Gentle Energy Corp."#
+        companyIdentifiers[2959] = #"Senscomm Semiconductor Co., Ltd."#
+        companyIdentifiers[2960] = #"Ineos Automotive Limited"#
+        companyIdentifiers[2961] = #"Alfen ICU B.V."#
+        companyIdentifiers[2962] = #"Citisend Solutions, SL"#
+        companyIdentifiers[2963] = #"Hangzhou BroadLink Technology Co., Ltd."#
+        companyIdentifiers[2964] = #"Dreem SAS"#
+        companyIdentifiers[2965] = #"Netwake GmbH"#
+        companyIdentifiers[2966] = #"Telecom Design"#
+        companyIdentifiers[2967] = #"SILVER TREE LABS, INC."#
+        companyIdentifiers[2968] = #"Gymstory B.V."#
+        companyIdentifiers[2969] = #"The Goodyear Tire & Rubber Company"#
+        companyIdentifiers[2970] = #"Beijing Wisepool Infinite Intelligence Technology Co.,Ltd"#
+        companyIdentifiers[2971] = #"GISMAN"#
+        companyIdentifiers[2972] = #"Komatsu Ltd."#
+        companyIdentifiers[2973] = #"Sensoria Holdings LTD"#
+        companyIdentifiers[2974] = #"Audio Partnership Plc"#
+        companyIdentifiers[2975] = #"Group Lotus Limited"#
+        companyIdentifiers[2976] = #"Data Sciences International"#
+        companyIdentifiers[2977] = #"Bunn-O-Matic Corporation"#
+        companyIdentifiers[2978] = #"TireCheck GmbH"#
+        companyIdentifiers[2979] = #"Sonova Consumer Hearing GmbH"#
+        companyIdentifiers[2980] = #"Vervent Audio Group"#
+        companyIdentifiers[2981] = #"SONICOS ENTERPRISES, LLC"#
+        companyIdentifiers[2982] = #"Nissan Motor Co., Ltd."#
+        companyIdentifiers[2983] = #"hearX Group (Pty) Ltd"#
+        companyIdentifiers[2984] = #"GLOWFORGE INC."#
+        companyIdentifiers[2985] = #"Allterco Robotics ltd"#
+        companyIdentifiers[2986] = #"Infinitegra, Inc."#
+        companyIdentifiers[2987] = #"Grandex International Corporation"#
+        companyIdentifiers[2988] = #"Machfu Inc."#
+        companyIdentifiers[2989] = #"Roambotics, Inc."#
+        companyIdentifiers[2990] = #"Soma Labs LLC"#
+        companyIdentifiers[2991] = #"NITTO KOGYO CORPORATION"#
+        companyIdentifiers[2992] = #"Ecolab Inc."#
+        companyIdentifiers[2993] = #"Beijing ranxin intelligence technology Co.,LTD"#
+        companyIdentifiers[2994] = #"Fjorden Electra AS"#
+        companyIdentifiers[2995] = #"Flender GmbH"#
+        companyIdentifiers[2996] = #"New Cosmos USA, Inc."#
+        companyIdentifiers[2997] = #"Xirgo Technologies, LLC"#
+        companyIdentifiers[2998] = #"Build With Robots Inc."#
+        companyIdentifiers[2999] = #"IONA Tech LLC"#
+        companyIdentifiers[3000] = #"INNOVAG PTY. LTD."#
+        companyIdentifiers[3001] = #"SaluStim Group Oy"#
+        companyIdentifiers[3002] = #"Huso, INC"#
+        companyIdentifiers[3003] = #"SWISSINNO SOLUTIONS AG"#
+        companyIdentifiers[3004] = #"T2REALITY SOLUTIONS PRIVATE LIMITED"#
+        companyIdentifiers[3005] = #"ETHEORY PTY LTD"#
+        companyIdentifiers[3006] = #"SAAB Aktiebolag"#
+        companyIdentifiers[3007] = #"HIMSA II K/S"#
+        companyIdentifiers[3008] = #"READY FOR SKY LLP"#
+        companyIdentifiers[3009] = #"Miele & Cie. KG"#
+        companyIdentifiers[3010] = #"EntWick Co."#
+        companyIdentifiers[3011] = #"MCOT INC."#
+        companyIdentifiers[3012] = #"TECHTICS ENGINEERING B.V."#
+        companyIdentifiers[3013] = #"Aperia Technologies, Inc."#
+        companyIdentifiers[3014] = #"TCL COMMUNICATION EQUIPMENT CO.,LTD."#
+        companyIdentifiers[3015] = #"Signtle Inc."#
+        companyIdentifiers[3016] = #"OTF Distribution, LLC"#
+        companyIdentifiers[3017] = #"Neuvatek Inc."#
+        companyIdentifiers[3018] = #"Perimeter Technologies, Inc."#
+        companyIdentifiers[3019] = #"Divesoft s.r.o."#
+        companyIdentifiers[3020] = #"Sylvac sa"#
+        companyIdentifiers[3021] = #"Amiko srl"#
+        companyIdentifiers[3022] = #"Neurosity, Inc."#
+        companyIdentifiers[3023] = #"LL Tec Group LLC"#
+        companyIdentifiers[3024] = #"Durag GmbH"#
+        companyIdentifiers[3025] = #"Hubei Yuanshidai Technology Co., Ltd."#
+        companyIdentifiers[3026] = #"IDEC"#
+        companyIdentifiers[3027] = #"Procon Analytics, LLC"#
+        companyIdentifiers[3028] = #"ndd Medizintechnik AG"#
+        companyIdentifiers[3029] = #"Super B Lithium Power B.V."#
+        companyIdentifiers[3030] = #"Injoinic"#
+        companyIdentifiers[3031] = #"VINFAST TRADING AND PRODUCTION JOINT STOCK COMPANY"#
         return companyIdentifiers
     }()
 }
