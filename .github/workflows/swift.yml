@@ -7,7 +7,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        swift: [5.5.3, 5.6.3, swift-5.7-DEVELOPMENT-SNAPSHOT-2022-08-30-a, swift-DEVELOPMENT-SNAPSHOT-2022-09-06-a]
+        swift: [5.5.3, 5.6.3, 5.7]
         os: [ubuntu-20.04, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -28,7 +28,7 @@ jobs:
     name: Test Linux
     strategy:
       matrix:
-        swift: [5.5.3, 5.6.3, swift-5.7-DEVELOPMENT-SNAPSHOT-2022-08-30-a, swift-DEVELOPMENT-SNAPSHOT-2022-09-06-a]
+        swift: [5.5.3, 5.6.3, 5.7]
         os: [ubuntu-20.04]
     runs-on: ${{ matrix.os }}
     steps:
