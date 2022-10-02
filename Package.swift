@@ -5,7 +5,7 @@ import class Foundation.ProcessInfo
 // get environment variables
 let environment = ProcessInfo.processInfo.environment
 let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] != nil
-let generateCode = environment["SWIFTPM_DISABLE_PLUGINS"] == nil
+let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != nil
 let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] != nil
 
 // force building as dynamic library
@@ -84,6 +84,11 @@ if buildDocs {
     ]
 }
 if generateCode {
+    for (index, _) in package.targets.enumerated() {
+        package.targets[index].swiftSettings = [
+            .define("SWIFTPM_ENABLE_PLUGINS")
+        ]
+    }
     package.targets += [
         .executableTarget(
             name: "GenerateBluetooth",
@@ -103,11 +108,5 @@ if generateCode {
     package.targets[4].plugins = [
         "GenerateBluetoothDefinitions"
     ]
-} else {
-    for (index, _) in package.targets.enumerated() {
-        package.targets[index].swiftSettings = [
-            .define("SWIFTPM_DISABLE_PLUGINS")
-        ]
-    }
 }
 #endif

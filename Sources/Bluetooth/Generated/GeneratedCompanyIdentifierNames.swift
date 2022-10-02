@@ -3,7 +3,7 @@
 //  Bluetooth
 //
 
-#if swift(<5.6) || SWIFTPM_DISABLE_PLUGINS
+#if swift(<5.6) || !SWIFTPM_ENABLE_PLUGINS
 internal extension CompanyIdentifier {
 
     static let companyIdentifiers: [UInt16: String] = {

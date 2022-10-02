@@ -8,7 +8,7 @@ import Foundation
 @testable import Bluetooth
 
 // swiftlint:disable type_body_length
-#if swift(<5.6) || SWIFTPM_DISABLE_PLUGINS
+#if swift(<5.6) || !SWIFTPM_ENABLE_PLUGINS
 final class CompanyIdentifierTests: XCTestCase {
 
     func testCompanies() {
