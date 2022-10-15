@@ -3,6 +3,30 @@ name: Swift ARM
 on: [push]
 
 jobs:
+
+    linux-swift-5_7-armv7-debian-build:
+        name: Build Debian Armv7 (Swift 5.7)
+        runs-on: ubuntu-20.04
+        container: colemancda/swift-armv7:5.7-prebuilt
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Swift Version
+          run: swift --version
+        - name: Build
+          run: |
+            cd /usr/src/swift-armv7
+            export SWIFT_PACKAGE_SRCDIR=$GITHUB_WORKSPACE
+            export SWIFT_PACKAGE_BUILDDIR=$SWIFT_PACKAGE_SRCDIR/.build
+            mkdir -p $SWIFT_PACKAGE_BUILDDIR
+            mkdir -p /usr/src/swift-armv7/build/
+            ./generate-swiftpm-toolchain.sh
+            ./build-swift-package.sh
+        - name: Archive Build artifacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: swiftpm-5_7-build-debian-armv7
+            path: .build/*/*.xctest
     
     linux-swift-5_6-armv7-debian-build:
         name: Build Debian Armv7 (Swift 5.6.1)
@@ -18,7 +42,6 @@ jobs:
             cd /usr/src/swift-armv7
             export SWIFT_PACKAGE_SRCDIR=$GITHUB_WORKSPACE
             export SWIFT_PACKAGE_BUILDDIR=$SWIFT_PACKAGE_SRCDIR/.build
-            export SWIFTPM_DISABLE_PLUGINS=1
             mkdir -p $SWIFT_PACKAGE_BUILDDIR
             mkdir -p /usr/src/swift-armv7/build/
             ./generate-swiftpm-toolchain.sh
