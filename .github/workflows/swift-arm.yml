@@ -22,7 +22,7 @@ jobs:
         run: swift build -c release -j 1
 
     linux-swift-arm64-test:
-      name: Build for Linux Arm64
+      name: Test for Linux Arm64
       runs-on: [Linux, ARM64]
       strategy:
         matrix:
@@ -85,4 +85,18 @@ jobs:
           with:
             name: swiftpm-5_6-build-debian-armv7
             path: .build/*/*.xctest
-
+    
+    linux-swift-5_7-armv7-debian-armv7-test:
+        name: Test Armv7 (Swift 5.7)
+        runs-on: [self-hosted, Linux, ARM]
+        container: colemancda/swift-armv7:5.7-debian11
+        needs: linux-swift-5_7-armv7-debian-build
+        steps:
+        - name: Download artifacts
+          uses: actions/download-artifact@v3
+          with: 
+            name: swiftpm-5_7-build-debian-armv7
+        - name: Test
+          run: |
+            chmod +x ./release/BluetoothPackageTests.xctest
+            ./release/BluetoothPackageTests.xctest
