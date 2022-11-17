@@ -2,13 +2,31 @@ name: Swift
 on: [push]
 jobs:
 
-  build:
-    name: Build
+  macos:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+    - name: Install Swift
+      uses: slashmo/install-swift@v0.3.0
+      with:
+        version: 5.7.1
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Swift Version
+      run: swift --version
+    - name: Build (Debug)
+      run: swift build -c debug
+    - name: Build (Release)
+      run: swift build -c release
+    - name: Test (Debug)
+      run: swift test -c debug
+  
+  linux:
+    name: Linux
     strategy:
       matrix:
         swift: [5.6.3, 5.7.1]
-        os: [macos-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
     - name: Install Swift
       uses: slashmo/install-swift@v0.3.0
