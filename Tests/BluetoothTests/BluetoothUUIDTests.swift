@@ -8,9 +8,11 @@
 
 import XCTest
 import Foundation
-@testable import Bluetooth
 #if canImport(BluetoothGATT)
+import Bluetooth
 @testable import BluetoothGATT
+#else
+@testable import Bluetooth
 #endif
 
 final class BluetoothUUIDTests: XCTestCase {
