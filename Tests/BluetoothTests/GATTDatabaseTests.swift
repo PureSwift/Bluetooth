@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(BluetoothGATT)
 import XCTest
 import Foundation
 import Bluetooth
@@ -47,3 +48,4 @@ extension GATTDatabase {
         }
     }
 }
+#endif

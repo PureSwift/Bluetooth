@@ -6,12 +6,11 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if os(macOS)
 import XCTest
 import Foundation
 @testable import Bluetooth
 import BluetoothGAP
-
-#if os(macOS)
 import CoreBluetooth
 import IOKit
 import Darwin

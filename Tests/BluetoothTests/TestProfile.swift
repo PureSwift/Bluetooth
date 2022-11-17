@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(BluetoothGATT)
 import Foundation
 import Bluetooth
 import BluetoothGATT
@@ -97,3 +98,4 @@ public struct TestProfile {
         WriteBlobWithoutResponse.uuid: (WriteBlobValue, false)
     ]
 }
+#endif

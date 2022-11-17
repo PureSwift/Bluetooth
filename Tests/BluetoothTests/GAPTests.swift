@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(BluetoothGAP)
 import XCTest
 import Foundation
 import Bluetooth
@@ -978,3 +979,4 @@ internal extension GAPDataDecoder {
         return try decoder.decode(data)
     }
 }
+#endif

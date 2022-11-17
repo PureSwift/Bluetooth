@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(BluetoothGAP) && canImport(BluetoothHCI)
 import XCTest
 import Foundation
 import Bluetooth
@@ -215,3 +216,4 @@ final class iBeaconTests: XCTestCase {
                                                     interval: AdvertisingInterval(rawValue: 100)!))
     }*/
 }
+#endif
