@@ -1,14 +1,13 @@
 name: Swift
-
 on: [push]
-
 jobs:
+
   build:
     name: Build
     strategy:
       matrix:
-        swift: [5.5.3, 5.6.3, 5.7]
-        os: [ubuntu-20.04, macos-latest]
+        swift: [5.5.3, 5.6.3, 5.7.1]
+        os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install Swift
@@ -28,8 +27,8 @@ jobs:
     name: Test Linux
     strategy:
       matrix:
-        swift: [5.5.3, 5.6.3, 5.7]
-        os: [ubuntu-20.04]
+        swift: [5.5.3, 5.6.3, 5.7.1]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install Swift
