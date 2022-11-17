@@ -6,11 +6,11 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(BluetoothGATT)
 import Foundation
 @testable import Bluetooth
 @testable import BluetoothGATT
 
-#if swift(>=5.6)
 /// Test L2CAP socket
 internal actor TestL2CAPSocket: L2CAPSocket {
         

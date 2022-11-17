@@ -9,11 +9,16 @@
 import XCTest
 import Foundation
 @testable import Bluetooth
+#if canImport(BluetoothHCI)
 import BluetoothHCI
+#endif
+#if canImport(BluetoothGATT)
 import BluetoothGATT
+#endif
 
 final class BluetoothTests: XCTestCase {
     
+    #if canImport(BluetoothHCI)
     func testAdvertisingInterval() {
         
         let value = AdvertisingInterval.default
@@ -38,6 +43,7 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual("\(AdvertisingInterval.max)", "10240ms")
         XCTAssertEqual("\(AdvertisingInterval.default)", "1280ms")
     }
+    #endif
     
     func testSecurityLevel() {
         
@@ -51,11 +57,14 @@ final class BluetoothTests: XCTestCase {
         
         let company: CompanyIdentifier = 76 // Apple, Inc.
         
+        #if !os(WASI)
         XCTAssertEqual(company.description, "Apple, Inc.")
+        #endif
         XCTAssertNotEqual(company.hashValue, 0)
         XCTAssertNotEqual(company, 77)
     }
     
+    #if canImport(BluetoothHCI)
     func testChannelIdentifier() {
         
         XCTAssertEqual(ChannelIdentifier.att, 4)
@@ -87,6 +96,7 @@ final class BluetoothTests: XCTestCase {
         XCTAssertLessThan(HCIVersion.v4_0, .v4_2)
         XCTAssertGreaterThan(HCIVersion.v5_0, .v4_2)
     }
+    #endif
     
     func testLowEnergyAdvertisingData() {
         
@@ -106,7 +116,8 @@ final class BluetoothTests: XCTestCase {
             XCTAssertNotEqual(advertisingData.hashValue, 0)
         }
     }
-    
+
+    #if canImport(BluetoothHCI)
     func testLowEnergyAddressType() {
         
         XCTAssertEqual(LowEnergyAddressType(), .public)
@@ -238,7 +249,9 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(AdvertisingChannelHeader().rawValue, 0)
         XCTAssertEqual(AdvertisingChannelHeader(), .undirectedAdvertising)
     }
+    #endif
     
+    #if canImport(BluetoothGATT)
     func testBitMaskOption() {
         
         do {
@@ -301,6 +314,7 @@ final class BluetoothTests: XCTestCase {
             XCTAssert(set == [.read, .write])
         }
     }
+    #endif
     
     func testClassOfDevice() {
         

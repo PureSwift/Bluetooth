@@ -8,8 +8,12 @@
 
 import XCTest
 import Foundation
+#if canImport(BluetoothGATT)
 import Bluetooth
 @testable import BluetoothGATT
+#else
+@testable import Bluetooth
+#endif
 
 final class BluetoothUUIDTests: XCTestCase {
 
@@ -83,6 +87,7 @@ final class BluetoothUUIDTests: XCTestCase {
         }
     }
     
+    #if canImport(BluetoothGATT)
     func testPrimaryServiceUUID() {
         
         let uuidString = "2800" // big endian representation
@@ -96,6 +101,7 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssert(uuid.bigEndian.data == Data([0x28, 0x00]))
         XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
     }
+    #endif
     
     func test128BitUUID() {
         
@@ -119,6 +125,7 @@ final class BluetoothUUIDTests: XCTestCase {
         
     }
     
+    #if !os(WASI)
     func testDefinedUUID() {
         
         let uuidString = "FEA9"
@@ -145,6 +152,7 @@ final class BluetoothUUIDTests: XCTestCase {
         
         XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
     }
+    #endif
     
     func test32BitUUID() {
         
@@ -154,7 +162,9 @@ final class BluetoothUUIDTests: XCTestCase {
         guard let uuid = BluetoothUUID(rawValue: uuidString)
             else { XCTFail("Could not parse UUID string"); return }
         
+        #if !os(WASI)
         XCTAssertNil(uuid.name)
+        #endif
         XCTAssertEqual(uuid.rawValue, uuidString)
         XCTAssertEqual(uuid.description, uuidString)
         XCTAssertEqual(uuid, uuid)

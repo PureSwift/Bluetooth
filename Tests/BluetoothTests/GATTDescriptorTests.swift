@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(BluetoothGATT)
 import XCTest
 import Foundation
 import Bluetooth
@@ -240,3 +241,4 @@ final class GATTDescriptorTests: XCTestCase {
         XCTAssertEqual(numbersOfDigitals?.data, Data([0x00]))
     }
 }
+#endif

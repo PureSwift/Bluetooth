@@ -68,9 +68,18 @@ var package = Package(
             name: "BluetoothTests",
             dependencies: [
                 "Bluetooth",
-                "BluetoothGAP",
-                "BluetoothGATT",
-                "BluetoothHCI"
+                .target(
+                    name: "BluetoothGAP", 
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                ),
+                .target(
+                    name: "BluetoothGATT", 
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                ),
+                .target(
+                    name: "BluetoothHCI", 
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                )
             ]
         )
     ]

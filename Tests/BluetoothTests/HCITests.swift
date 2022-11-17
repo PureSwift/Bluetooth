@@ -6,8 +6,7 @@
 //
 //
 
-import Foundation
-
+#if canImport(BluetoothHCI)
 import XCTest
 import Foundation
 import Bluetooth
@@ -2843,3 +2842,4 @@ fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ ev
     
     return event
 }
+#endif

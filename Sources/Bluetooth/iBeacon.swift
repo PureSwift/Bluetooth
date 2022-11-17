@@ -20,8 +20,10 @@ import Foundation
 @frozen
 public struct AppleBeacon: Equatable, Hashable {
     
+    #if !os(WASI)
     /// The company that created this specification.
     public static var companyIdentifier: CompanyIdentifier { return .apple }
+    #endif
     
     /// The unique ID of the beacons being targeted.
     ///

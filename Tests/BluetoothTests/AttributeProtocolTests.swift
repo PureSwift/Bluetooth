@@ -6,6 +6,7 @@
 //
 //
 
+#if canImport(BluetoothGATT)
 import XCTest
 import Foundation
 @testable import Bluetooth
@@ -982,3 +983,4 @@ final class AttributeProtocolTests: XCTestCase {
         }
     }
 }
+#endif

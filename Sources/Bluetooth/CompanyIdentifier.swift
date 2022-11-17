@@ -32,6 +32,7 @@ public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable {
     }
 }
 
+#if !os(WASI)
 public extension CompanyIdentifier {
     
     /// Bluetooth Company name.
@@ -41,6 +42,7 @@ public extension CompanyIdentifier {
         return Self.companyIdentifiers[rawValue]
     }
 }
+#endif
 
 // MARK: - ExpressibleByIntegerLiteral
 
@@ -56,6 +58,10 @@ extension CompanyIdentifier: ExpressibleByIntegerLiteral {
 extension CompanyIdentifier: CustomStringConvertible {
     
     public var description: String {
+        #if os(WASI)
+        return rawValue.description
+        #else
         return name ?? rawValue.description
+        #endif
     }
 }
