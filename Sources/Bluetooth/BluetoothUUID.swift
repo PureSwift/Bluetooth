@@ -31,15 +31,11 @@ extension BluetoothUUID: CustomStringConvertible {
     
     public var description: String {
         
-        #if os(WASI)
-        return rawValue
-        #else
         if let name = self.name {
             return "\(rawValue) (\(name))"
         } else {
             return rawValue
         }
-        #endif
     }
 }
 

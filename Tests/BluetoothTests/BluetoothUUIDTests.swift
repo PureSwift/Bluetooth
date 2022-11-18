@@ -125,7 +125,6 @@ final class BluetoothUUIDTests: XCTestCase {
         
     }
     
-    #if !os(WASI)
     func testDefinedUUID() {
         
         let uuidString = "FEA9"
@@ -134,7 +133,9 @@ final class BluetoothUUIDTests: XCTestCase {
         guard let uuid = BluetoothUUID(rawValue: uuidString)
             else { XCTFail("Could not parse UUID string"); return }
         
+        #if !os(WASI)
         XCTAssertEqual(uuid, .savantSystems2)
+        #endif
         XCTAssertEqual(uuid.name, "Savant Systems LLC")
         XCTAssertEqual("\(uuid)", "FEA9 (Savant Systems LLC)", "\(uuid)")
         XCTAssertEqual(uuid.rawValue, uuidString)
@@ -152,7 +153,6 @@ final class BluetoothUUIDTests: XCTestCase {
         
         XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
     }
-    #endif
     
     func test32BitUUID() {
         
@@ -162,9 +162,7 @@ final class BluetoothUUIDTests: XCTestCase {
         guard let uuid = BluetoothUUID(rawValue: uuidString)
             else { XCTFail("Could not parse UUID string"); return }
         
-        #if !os(WASI)
         XCTAssertNil(uuid.name)
-        #endif
         XCTAssertEqual(uuid.rawValue, uuidString)
         XCTAssertEqual(uuid.description, uuidString)
         XCTAssertEqual(uuid, uuid)
