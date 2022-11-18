@@ -87,11 +87,14 @@ final class BluetoothUUIDTests: XCTestCase {
         }
     }
     
-    #if canImport(BluetoothGATT)
     func testPrimaryServiceUUID() {
         
         let uuidString = "2800" // big endian representation
+        #if canImport(BluetoothGATT)
         let uuidValue = GATTUUID.primaryService.rawValue // 0x2800
+        #else
+        let uuidValue: UInt16 = 0x2800
+        #endif
         let uuid = BluetoothUUID.bit16(uuidValue)
         
         XCTAssert(uuid.rawValue == uuidString)
@@ -101,7 +104,6 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssert(uuid.bigEndian.data == Data([0x28, 0x00]))
         XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
     }
-    #endif
     
     func test128BitUUID() {
         
