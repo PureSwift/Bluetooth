@@ -1,4 +1,4 @@
-name: SwiftWASM
+name: Swift WASM
 on: [push]
 jobs:
   test:
