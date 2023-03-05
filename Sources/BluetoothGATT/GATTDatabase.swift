@@ -9,7 +9,7 @@
 import Foundation
 
 /// GATT Database
-public struct GATTDatabase {
+public struct GATTDatabase: Equatable, Hashable {
     
     // MARK: - Internal Properties
     
@@ -20,8 +20,10 @@ public struct GATTDatabase {
     
     // MARK: - Initialization
     
+    /// Initialize empty database.
     public init() { }
     
+    /// Initialize database with the specified services.
     public init(services: [GATTAttribute.Service]) {
         services.forEach { add(service: $0) }
     }
@@ -35,51 +37,38 @@ public struct GATTDatabase {
     
     /// Attribute representation of the database.
     internal var attributes: [Attribute] {
-        
         let attributeCount = self.count
-        
         var attributes = [Attribute]()
         attributes.reserveCapacity(attributeCount)
-        
         attributeGroups.forEach { attributes += $0.attributes }
-        
         assert(attributes.count == attributeCount)
-        
         return attributes
     }
     
     /// Number of attributes in the database.
     public var count: Int {
-        
         return attributeGroups.reduce(0) { $0 + $1.attributes.count }
     }
     
     /// Returns the last attribute in the database.
     public var first: Attribute? {
-        
         return attributeGroups.first?.attributes.first
     }
     
     /// Returns the last attribute in the database.
     public var last: Attribute? {
-        
         return attributeGroups.last?.attributes.last
     }
     
     /// Whether the database contains an attribute with the specified handle.
     public func contains(handle: UInt16) -> Bool {
-        
         for group in attributeGroups {
-            
             for attribute in group.attributes {
-                
                 guard attribute.handle == handle
                     else { continue }
-                
                 return true
             }
         }
-        
         return false
     }
     
@@ -101,7 +90,6 @@ public struct GATTDatabase {
         for characteristic in service.characteristics {
             
             let declarationHandle = self.newHandle()
-            
             let valueHandle = self.newHandle()
 
             let declarationAttribute = CharacteristicDeclarationAttribute(handle: declarationHandle,
@@ -117,7 +105,7 @@ public struct GATTDatabase {
             attributes += [declarationAttribute.attribute, valueAttribute.attribute]
             
             attributes += characteristic.descriptors.map {
-                CharacteristicDescriptorAttribute(descriptor: $0, handle: self.newHandle()).attribute
+                DescriptorAttribute(descriptor: $0, handle: self.newHandle()).attribute
             }
         }
         
@@ -128,11 +116,10 @@ public struct GATTDatabase {
     
     /// Clear the database.
     public mutating func removeAll() {
-        
         self.attributeGroups = []
     }
     
-    /// Remove the Service at the specified index.
+    /// Remove the Service with the specified handl.
     public mutating func remove(service handle: UInt16) {
         
         guard let serviceIndex = attributeGroups.firstIndex(where: { $0.serviceAttribute.handle == handle })
@@ -143,15 +130,12 @@ public struct GATTDatabase {
     
     /// Write the value to attribute specified by the handle.
     public mutating func write(_ value: Data, forAttribute handle: UInt16) {
-        
         self[handle: handle].value = value
     }
     
     /// The handle of the service at the specified index.
     public func serviceHandles(at index: Int) -> (start: UInt16, end: UInt16) {
-        
         let service = attributeGroups[index]
-        
         return (service.startHandle, service.endHandle)
     }
     
@@ -159,19 +143,26 @@ public struct GATTDatabase {
     
     /// The attribute at the specified index.
     public subscript(index: Int) -> Attribute {
-        
-        return attributes[index]
+        var cursor = 0
+        for group in attributeGroups {
+            for attribute in group.attributes {
+                guard cursor == index else {
+                    cursor += 1
+                    continue
+                }
+                assert(self.attributes[index] == attribute)
+                return attribute
+            }
+        }
+        fatalError("Invalid attribute index \(index)")
     }
     
     /// The attribute with the specified handle.
     public private(set) subscript(handle handle: UInt16) -> Attribute {
         
         get {
-            
             for group in attributeGroups {
-                
                 for attribute in group.attributes {
-                    
                     guard attribute.handle != handle
                         else { return attribute }
                 }
@@ -183,13 +174,9 @@ public struct GATTDatabase {
         mutating set {
             
             for (groupIndex, group) in attributeGroups.enumerated() {
-                
                 for (attributeIndex, attribute) in group.attributes.enumerated() {
-                    
                     guard attribute.handle != handle else {
-                        
                         attributeGroups[groupIndex].attributes[attributeIndex] = newValue
-                        
                         return
                     }
                 }
@@ -202,10 +189,8 @@ public struct GATTDatabase {
     // MARK: - Private Methods
     
     private mutating func newHandle() -> UInt16 {
-        
         // starts at 0x0001
         lastHandle += 1
-        
         return lastHandle
     }
 }
@@ -215,7 +200,6 @@ public struct GATTDatabase {
 extension GATTDatabase: ExpressibleByArrayLiteral {
     
     public init(arrayLiteral elements: GATTAttribute.Service...) {
-        
         self.init(services: elements)
     }
 }
@@ -234,17 +218,14 @@ extension GATTDatabase: Sequence {
 extension GATTDatabase: Collection {
     
     public func index(after index: Int) -> Int {
-        
         return index + 1
     }
     
     public var startIndex: Int {
-        
         return 0
     }
     
     public var endIndex: Int {
-        
         return count
     }
 }
@@ -254,7 +235,6 @@ extension GATTDatabase: Collection {
 extension GATTDatabase: RandomAccessCollection {
     
     public subscript(bounds: Range<Int>) -> Slice<GATTDatabase> {
-        
         return Slice<GATTDatabase>(base: self, bounds: bounds)
     }
 }
@@ -264,7 +244,7 @@ extension GATTDatabase: RandomAccessCollection {
 public extension GATTDatabase {
     
     /// ATT Attribute
-    struct Attribute {
+    struct Attribute: Equatable, Hashable {
         
         public typealias Permission = ATTAttributePermission
         
@@ -297,22 +277,19 @@ internal extension GATTDatabase {
     /// Internal Representation of a GATT Service. 
     ///
     ///- Note: For use with `GATTDatabase` only.
-    struct AttributeGroup {
+    struct AttributeGroup: Equatable, Hashable {
         
         var attributes: [Attribute]
         
         var startHandle: UInt16 {
-            
             return attributes[0].handle
         }
         
         var endHandle: UInt16 {
-            
             return attributes.last!.handle
         }
         
         var serviceAttribute: Attribute {
-            
             return attributes[0]
         }
         
@@ -368,8 +345,7 @@ internal extension GATTDatabase {
                     
                 } else {
                     
-                    guard let descriptorAttribute = CharacteristicDescriptorAttribute(attribute: attribute)
-                        else { return nil }
+                    let descriptorAttribute = DescriptorAttribute(attribute: attribute)
                     
                     let descriptor = GATTAttribute.Descriptor(
                         uuid: descriptorAttribute.uuid,
@@ -436,10 +412,12 @@ internal extension GATTDatabase {
             
             let serviceUUID: BluetoothUUID = isPrimary ? .primaryService : .secondaryService
             
-            return Attribute(handle: handle,
-                             uuid: serviceUUID,
-                             value: self.uuid.littleEndian.data,
-                             permissions: [.read])
+            return Attribute(
+                handle: handle,
+                uuid: serviceUUID,
+                value: self.uuid.littleEndian.data,
+                permissions: [.read]
+            )
         }
     }
     
@@ -620,7 +598,7 @@ internal extension GATTDatabase {
         }
     }
     
-    struct CharacteristicDescriptorAttribute {
+    struct DescriptorAttribute {
         
         /// Attribute Handle
         var handle: UInt16
@@ -642,7 +620,7 @@ internal extension GATTDatabase {
             self.permissions = descriptor.permissions
         }
         
-        init?(attribute: Attribute) {
+        init(attribute: Attribute) {
             
             self.uuid = attribute.uuid
             self.value = attribute.value
