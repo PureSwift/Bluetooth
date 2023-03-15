@@ -59,7 +59,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         public static let length = 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1
         
-        public let eventType: EventType
+        public let eventType: BitMaskOptionSet<EventType>
         
         public let addressType: AddressType
         
@@ -69,11 +69,11 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         public let secondaryPHY: SecondaryPHY
         
-        public let advertisingSID: UInt8
+        public let advertisingSID: UInt8?
         
-        public let txPower: LowEnergyTxPower
+        public let txPower: LowEnergyTxPower?
         
-        public let rssi: RSSI
+        public let rssi: RSSI?
         
         public let periodicAdvertisingInterval: PeriodicAdvertisingInterval
         
@@ -88,29 +88,29 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
             guard data.count >= Report.length
                 else { return nil }
             
-            guard let eventType = EventType(rawValue: UInt16(bytes: (data[0], data[1]))),
-                let addressType = AddressType(rawValue: data[2])
+            let eventType = BitMaskOptionSet<EventType>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+            
+            guard let addressType = AddressType(rawValue: data[2])
                 else { return nil }
             
             let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[3], data[4],
                                                                 data[5], data[6],
                                                                 data[7], data[8])))
             
-            guard let primaryPHY = PrimaryPHY(rawValue: data[9]),
-                let secondaryPHY = SecondaryPHY(rawValue: data[10])
+            let primaryPHY = PrimaryPHY(rawValue: data[9]) ?? .le1M
+            
+            guard let secondaryPHY = SecondaryPHY(rawValue: data[10])
                 else { return nil }
             
-            let advertisingSID = data[11]
+            let advertisingSID = data[11] == 0xFF ? nil : data[11]
             
             let txPowerByte = Int8(bitPattern: data[12])
             
-            guard let txPower = LowEnergyTxPower(rawValue: txPowerByte)
-                else { return nil }
+            let txPower = LowEnergyTxPower(rawValue: txPowerByte)
             
             let rssiByte = Int8(bitPattern: data[13])
             
-            guard let rssi = RSSI(rawValue: rssiByte)
-                else { return nil }
+            let rssi = RSSI(rawValue: rssiByte)
             
             let periodicAdvertisingInterval = PeriodicAdvertisingInterval(rawValue: UInt16(bytes: (data[14], data[15])))
             
@@ -124,7 +124,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
             let dataLength = Int(data[23])
             
             let responseData = Data(data[24 ..< (24 + dataLength)])
-            assert(data.count == dataLength)
+            assert(responseData.count == dataLength)
             
             self.eventType = eventType
             self.addressType = addressType
@@ -173,7 +173,6 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         // Comparable
         public static func < (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
         }
     }
@@ -224,7 +223,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
     }
     
     /// Event Type
-    public enum EventType: UInt16, BitMaskOption {
+    public enum EventType: UInt16, BitMaskOption, CaseIterable {
         
         /// Connectable advertising
         case connectableAdvertising         = 0b0000000000000001
@@ -252,18 +251,5 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         /// Data status: Reserved for future use
         case dataStatusReserved             = 0b0000000001100000
-        
-        /// All enum cases
-        public static let allCases: [EventType] = [
-            .connectableAdvertising,
-            .scannableAdvertising,
-            .directedAdvertising,
-            .scanResponse,
-            .legacyAdvertisingPDU,
-            .dataStatusComplete,
-            .dataStatusIncompleteMoreData,
-            .dataStatusIncompleteTruncated,
-            .dataStatusReserved
-        ]
     }
 }
