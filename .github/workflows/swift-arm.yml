@@ -7,7 +7,7 @@ jobs:
       runs-on: [Linux, ARM64]
       strategy:
         matrix:
-          swift: [5.6.3-focal, 5.7.1-jammy]
+          swift: [5.6.3-focal, 5.7.3-jammy]
       container: swift:${{ matrix.swift }}
       steps:
       - name: Checkout

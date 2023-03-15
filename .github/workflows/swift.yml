@@ -9,7 +9,7 @@ jobs:
     - name: Install Swift
       uses: slashmo/install-swift@v0.3.0
       with:
-        version: 5.7.1
+        version: 5.7.3
     - name: Checkout
       uses: actions/checkout@v2
     - name: Swift Version
@@ -25,8 +25,8 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        swift: [5.6.3, 5.7.1]
-    runs-on: ubuntu-latest
+        swift: [5.6.3, 5.7.3]
+    runs-on: ubuntu-20.04
     steps:
     - name: Install Swift
       uses: slashmo/install-swift@v0.3.0
