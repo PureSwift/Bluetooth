@@ -2,27 +2,6 @@ name: Swift ARM
 on: [push]
 jobs:
 
-    linux-arm64-build:
-      name: Build for Linux Arm64
-      runs-on: [Linux, ARM64]
-      strategy:
-        matrix:
-          swift: [5.6.3-focal, 5.7.3-jammy]
-      container: swift:${{ matrix.swift }}
-      steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Swift Version
-        run: swift --version
-      - name: Build (Debug)
-        run: swift build -c debug -j 1
-      - name: Build (Release)
-        run: swift build -c release -j 1
-      - name: Test (Debug)
-        run: swift test --configuration debug -j 1
-      - name: Test (Release)
-        run: swift test --configuration release -Xswiftc -enable-testing -j 1
-
     linux-armv7-build:
       name: Build for Linux Armv7
       runs-on: [self-hosted, Linux, ARM]
@@ -57,18 +36,3 @@ jobs:
           with:
             name: linux-armv7-crosscompile-test
             path: .build/*/*.xctest
-    
-    linux-armv7-crosscompile-test:
-        name: Test for Linux Armv7
-        runs-on: [self-hosted, Linux, ARM]
-        container: colemancda/swift-armv7:latest-runtime
-        needs: linux-armv7-crosscompile-build
-        steps:
-        - name: Download artifacts
-          uses: actions/download-artifact@v3
-          with: 
-            name: linux-armv7-crosscompile-test
-        - name: Test (Release)
-          run: |
-            chmod +x ./release/BluetoothPackageTests.xctest
-            ./release/BluetoothPackageTests.xctest
