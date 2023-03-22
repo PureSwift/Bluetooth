@@ -126,6 +126,7 @@ public extension String {
         name = name.replacingOccurrences(of: " s.r.o.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Srl", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " S.r.l.", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " Sdn Bhd", with: "", options: .caseInsensitive)
         
         // if first letter is a number, add prefix
         if let firstCharacter = name.first,

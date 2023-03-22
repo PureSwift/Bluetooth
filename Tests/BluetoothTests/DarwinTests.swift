@@ -28,7 +28,7 @@ final class DarwinTests: XCTestCase {
     
     func testCompanyIdentifiers() {
         
-        XCTAssertEqual(CompanyIdentifier.ericssonTechnologyLicensing.rawValue, IOKitBluetoothCompanyIdentifers.EricssonTechnologyLicensing.rawValue)
+        XCTAssertEqual(CompanyIdentifier.ericsson.rawValue, IOKitBluetoothCompanyIdentifers.EricssonTechnologyLicensing.rawValue)
         XCTAssertEqual(CompanyIdentifier.nokiaMobilePhones.rawValue, IOKitBluetoothCompanyIdentifers.NokiaMobilePhones.rawValue)
         XCTAssertEqual(CompanyIdentifier.ibm.rawValue, IOKitBluetoothCompanyIdentifers.IBM.rawValue)
         XCTAssertEqual(CompanyIdentifier.intel.rawValue, IOKitBluetoothCompanyIdentifers.Intel.rawValue)

@@ -13,10 +13,10 @@ final class CompanyIdentifierTests: XCTestCase {
 
     func testCompanies() {
 
-        // Ericsson Technology Licensing
-        XCTAssertEqual(CompanyIdentifier.ericssonTechnologyLicensing.rawValue, 0)
-        XCTAssertEqual(CompanyIdentifier.ericssonTechnologyLicensing.name, #"Ericsson Technology Licensing"#)
-        XCTAssertEqual(CompanyIdentifier.ericssonTechnologyLicensing.description, #"Ericsson Technology Licensing"#)
+        // Ericsson AB
+        XCTAssertEqual(CompanyIdentifier.ericsson.rawValue, 0)
+        XCTAssertEqual(CompanyIdentifier.ericsson.name, #"Ericsson AB"#)
+        XCTAssertEqual(CompanyIdentifier.ericsson.description, #"Ericsson AB"#)
     
         // Nokia Mobile Phones
         XCTAssertEqual(CompanyIdentifier.nokiaMobilePhones.rawValue, 1)
@@ -118,10 +118,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.mitsubishiElectric.name, #"Mitsubishi Electric Corporation"#)
         XCTAssertEqual(CompanyIdentifier.mitsubishiElectric.description, #"Mitsubishi Electric Corporation"#)
     
-        // RTX Telecom A/S
-        XCTAssertEqual(CompanyIdentifier.rtxTelecom.rawValue, 21)
-        XCTAssertEqual(CompanyIdentifier.rtxTelecom.name, #"RTX Telecom A/S"#)
-        XCTAssertEqual(CompanyIdentifier.rtxTelecom.description, #"RTX Telecom A/S"#)
+        // RTX A/S
+        XCTAssertEqual(CompanyIdentifier.rtx.rawValue, 21)
+        XCTAssertEqual(CompanyIdentifier.rtx.name, #"RTX A/S"#)
+        XCTAssertEqual(CompanyIdentifier.rtx.description, #"RTX A/S"#)
     
         // KC Technology Inc.
         XCTAssertEqual(CompanyIdentifier.kcTechnology.rawValue, 22)
@@ -198,10 +198,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.alcatel.name, #"Alcatel"#)
         XCTAssertEqual(CompanyIdentifier.alcatel.description, #"Alcatel"#)
     
-        // NXP Semiconductors (formerly Philips Semiconductors)
-        XCTAssertEqual(CompanyIdentifier.nxpSemiconductors.rawValue, 37)
-        XCTAssertEqual(CompanyIdentifier.nxpSemiconductors.name, #"NXP Semiconductors (formerly Philips Semiconductors)"#)
-        XCTAssertEqual(CompanyIdentifier.nxpSemiconductors.description, #"NXP Semiconductors (formerly Philips Semiconductors)"#)
+        // NXP B.V.
+        XCTAssertEqual(CompanyIdentifier.nxp.rawValue, 37)
+        XCTAssertEqual(CompanyIdentifier.nxp.name, #"NXP B.V."#)
+        XCTAssertEqual(CompanyIdentifier.nxp.description, #"NXP B.V."#)
     
         // C Technologies
         XCTAssertEqual(CompanyIdentifier.cTechnologies.rawValue, 38)
@@ -263,10 +263,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.synopsys.name, #"Synopsys, Inc."#)
         XCTAssertEqual(CompanyIdentifier.synopsys.description, #"Synopsys, Inc."#)
     
-        // Red-M (Communications) Ltd
+        // Red­M (Communications) Ltd
         XCTAssertEqual(CompanyIdentifier.redMCommunications.rawValue, 50)
-        XCTAssertEqual(CompanyIdentifier.redMCommunications.name, #"Red-M (Communications) Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.redMCommunications.description, #"Red-M (Communications) Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.redMCommunications.name, #"Red­M (Communications) Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.redMCommunications.description, #"Red­M (Communications) Ltd"#)
     
         // Commil Ltd
         XCTAssertEqual(CompanyIdentifier.commil.rawValue, 51)
@@ -313,10 +313,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.gennum.name, #"Gennum Corporation"#)
         XCTAssertEqual(CompanyIdentifier.gennum.description, #"Gennum Corporation"#)
     
-        // BlackBerry Limited  (formerly Research In Motion)
+        // BlackBerry Limited
         XCTAssertEqual(CompanyIdentifier.blackberry.rawValue, 60)
-        XCTAssertEqual(CompanyIdentifier.blackberry.name, #"BlackBerry Limited  (formerly Research In Motion)"#)
-        XCTAssertEqual(CompanyIdentifier.blackberry.description, #"BlackBerry Limited  (formerly Research In Motion)"#)
+        XCTAssertEqual(CompanyIdentifier.blackberry.name, #"BlackBerry Limited"#)
+        XCTAssertEqual(CompanyIdentifier.blackberry.description, #"BlackBerry Limited"#)
     
         // IPextreme, Inc.
         XCTAssertEqual(CompanyIdentifier.ipextreme.rawValue, 61)
@@ -463,10 +463,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.nordicSemiconductor.name, #"Nordic Semiconductor ASA"#)
         XCTAssertEqual(CompanyIdentifier.nordicSemiconductor.description, #"Nordic Semiconductor ASA"#)
     
-        // EM Microelectronic-Marin SA
+        // EM Microelectronic­Marin SA
         XCTAssertEqual(CompanyIdentifier.emMicroelectronicMarin.rawValue, 90)
-        XCTAssertEqual(CompanyIdentifier.emMicroelectronicMarin.name, #"EM Microelectronic-Marin SA"#)
-        XCTAssertEqual(CompanyIdentifier.emMicroelectronicMarin.description, #"EM Microelectronic-Marin SA"#)
+        XCTAssertEqual(CompanyIdentifier.emMicroelectronicMarin.name, #"EM Microelectronic­Marin SA"#)
+        XCTAssertEqual(CompanyIdentifier.emMicroelectronicMarin.description, #"EM Microelectronic­Marin SA"#)
     
         // Ralink Technology Corporation
         XCTAssertEqual(CompanyIdentifier.ralinkTechnology.rawValue, 91)
@@ -528,10 +528,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.company9Solutions.name, #"9Solutions Oy"#)
         XCTAssertEqual(CompanyIdentifier.company9Solutions.description, #"9Solutions Oy"#)
     
-        // GN Netcom A/S
-        XCTAssertEqual(CompanyIdentifier.gnNetcom.rawValue, 103)
-        XCTAssertEqual(CompanyIdentifier.gnNetcom.name, #"GN Netcom A/S"#)
-        XCTAssertEqual(CompanyIdentifier.gnNetcom.description, #"GN Netcom A/S"#)
+        // GN Audio A/S
+        XCTAssertEqual(CompanyIdentifier.gnAudio.rawValue, 103)
+        XCTAssertEqual(CompanyIdentifier.gnAudio.name, #"GN Audio A/S"#)
+        XCTAssertEqual(CompanyIdentifier.gnAudio.description, #"GN Audio A/S"#)
     
         // General Motors
         XCTAssertEqual(CompanyIdentifier.generalMotors.rawValue, 104)
@@ -608,10 +608,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.creativeTechnology.name, #"Creative Technology Ltd."#)
         XCTAssertEqual(CompanyIdentifier.creativeTechnology.description, #"Creative Technology Ltd."#)
     
-        // Laird Technologies
-        XCTAssertEqual(CompanyIdentifier.lairdTechnologies.rawValue, 119)
-        XCTAssertEqual(CompanyIdentifier.lairdTechnologies.name, #"Laird Technologies"#)
-        XCTAssertEqual(CompanyIdentifier.lairdTechnologies.description, #"Laird Technologies"#)
+        // Laird Connectivity LLC
+        XCTAssertEqual(CompanyIdentifier.lairdConnectivity.rawValue, 119)
+        XCTAssertEqual(CompanyIdentifier.lairdConnectivity.name, #"Laird Connectivity LLC"#)
+        XCTAssertEqual(CompanyIdentifier.lairdConnectivity.description, #"Laird Connectivity LLC"#)
     
         // Nike, Inc.
         XCTAssertEqual(CompanyIdentifier.nike.rawValue, 120)
@@ -663,10 +663,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.wuxiVimicro.name, #"WuXi Vimicro"#)
         XCTAssertEqual(CompanyIdentifier.wuxiVimicro.description, #"WuXi Vimicro"#)
     
-        // Sennheiser Communications A/S
-        XCTAssertEqual(CompanyIdentifier.sennheiserCommunications.rawValue, 130)
-        XCTAssertEqual(CompanyIdentifier.sennheiserCommunications.name, #"Sennheiser Communications A/S"#)
-        XCTAssertEqual(CompanyIdentifier.sennheiserCommunications.description, #"Sennheiser Communications A/S"#)
+        // DSEA A/S
+        XCTAssertEqual(CompanyIdentifier.dsea.rawValue, 130)
+        XCTAssertEqual(CompanyIdentifier.dsea.name, #"DSEA A/S"#)
+        XCTAssertEqual(CompanyIdentifier.dsea.description, #"DSEA A/S"#)
     
         // TimeKeeping Systems, Inc.
         XCTAssertEqual(CompanyIdentifier.timekeepingSystems.rawValue, 131)
@@ -698,10 +698,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.ecotest.name, #"Ecotest"#)
         XCTAssertEqual(CompanyIdentifier.ecotest.description, #"Ecotest"#)
     
-        // GN ReSound A/S
-        XCTAssertEqual(CompanyIdentifier.gnResound.rawValue, 137)
-        XCTAssertEqual(CompanyIdentifier.gnResound.name, #"GN ReSound A/S"#)
-        XCTAssertEqual(CompanyIdentifier.gnResound.description, #"GN ReSound A/S"#)
+        // GN Hearing A/S
+        XCTAssertEqual(CompanyIdentifier.gnHearing.rawValue, 137)
+        XCTAssertEqual(CompanyIdentifier.gnHearing.name, #"GN Hearing A/S"#)
+        XCTAssertEqual(CompanyIdentifier.gnHearing.description, #"GN Hearing A/S"#)
     
         // Jawbone
         XCTAssertEqual(CompanyIdentifier.jawbone.rawValue, 138)
@@ -713,10 +713,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.topconPositioningSystems.name, #"Topcon Positioning Systems, LLC"#)
         XCTAssertEqual(CompanyIdentifier.topconPositioningSystems.description, #"Topcon Positioning Systems, LLC"#)
     
-        // Gimbal Inc. (formerly Qualcomm Labs, Inc. and Qualcomm Retail Solutions, Inc.)
+        // Gimbal Inc.
         XCTAssertEqual(CompanyIdentifier.gimbal.rawValue, 140)
-        XCTAssertEqual(CompanyIdentifier.gimbal.name, #"Gimbal Inc. (formerly Qualcomm Labs, Inc. and Qualcomm Retail Solutions, Inc.)"#)
-        XCTAssertEqual(CompanyIdentifier.gimbal.description, #"Gimbal Inc. (formerly Qualcomm Labs, Inc. and Qualcomm Retail Solutions, Inc.)"#)
+        XCTAssertEqual(CompanyIdentifier.gimbal.name, #"Gimbal Inc."#)
+        XCTAssertEqual(CompanyIdentifier.gimbal.description, #"Gimbal Inc."#)
     
         // Zscan Software
         XCTAssertEqual(CompanyIdentifier.zscanSoftware.rawValue, 141)
@@ -728,10 +728,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.quintic.name, #"Quintic Corp"#)
         XCTAssertEqual(CompanyIdentifier.quintic.description, #"Quintic Corp"#)
     
-        // Telit Wireless Solutions GmbH (formerly Stollmann E+V GmbH)
+        // Telit Wireless Solutions GmbH
         XCTAssertEqual(CompanyIdentifier.telitWirelessSolutions.rawValue, 143)
-        XCTAssertEqual(CompanyIdentifier.telitWirelessSolutions.name, #"Telit Wireless Solutions GmbH (formerly Stollmann E+V GmbH)"#)
-        XCTAssertEqual(CompanyIdentifier.telitWirelessSolutions.description, #"Telit Wireless Solutions GmbH (formerly Stollmann E+V GmbH)"#)
+        XCTAssertEqual(CompanyIdentifier.telitWirelessSolutions.name, #"Telit Wireless Solutions GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.telitWirelessSolutions.description, #"Telit Wireless Solutions GmbH"#)
     
         // Funai Electric Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.funaiElectric.rawValue, 144)
@@ -818,10 +818,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.kensingtonComputerProductsGroup.name, #"Kensington Computer Products Group"#)
         XCTAssertEqual(CompanyIdentifier.kensingtonComputerProductsGroup.description, #"Kensington Computer Products Group"#)
     
-        // SR-Medizinelektronik
+        // SR­Medizinelektronik
         XCTAssertEqual(CompanyIdentifier.srMedizinelektronik.rawValue, 161)
-        XCTAssertEqual(CompanyIdentifier.srMedizinelektronik.name, #"SR-Medizinelektronik"#)
-        XCTAssertEqual(CompanyIdentifier.srMedizinelektronik.description, #"SR-Medizinelektronik"#)
+        XCTAssertEqual(CompanyIdentifier.srMedizinelektronik.name, #"SR­Medizinelektronik"#)
+        XCTAssertEqual(CompanyIdentifier.srMedizinelektronik.description, #"SR­Medizinelektronik"#)
     
         // Vertu Corporation Limited
         XCTAssertEqual(CompanyIdentifier.vertu.rawValue, 162)
@@ -858,20 +858,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.arpDevices.name, #"ARP Devices Limited"#)
         XCTAssertEqual(CompanyIdentifier.arpDevices.description, #"ARP Devices Limited"#)
     
-        // MARELLI EUROPE S.P.A. (formerly Magneti Marelli S.p.A.)
+        // MARELLI EUROPE S.P.A.
         XCTAssertEqual(CompanyIdentifier.marelliEurope.rawValue, 169)
-        XCTAssertEqual(CompanyIdentifier.marelliEurope.name, #"MARELLI EUROPE S.P.A. (formerly Magneti Marelli S.p.A.)"#)
-        XCTAssertEqual(CompanyIdentifier.marelliEurope.description, #"MARELLI EUROPE S.P.A. (formerly Magneti Marelli S.p.A.)"#)
+        XCTAssertEqual(CompanyIdentifier.marelliEurope.name, #"MARELLI EUROPE S.P.A."#)
+        XCTAssertEqual(CompanyIdentifier.marelliEurope.description, #"MARELLI EUROPE S.P.A."#)
     
         // CAEN RFID srl
         XCTAssertEqual(CompanyIdentifier.caenRfid.rawValue, 170)
         XCTAssertEqual(CompanyIdentifier.caenRfid.name, #"CAEN RFID srl"#)
         XCTAssertEqual(CompanyIdentifier.caenRfid.description, #"CAEN RFID srl"#)
     
-        // Ingenieur-Systemgruppe Zahn GmbH
+        // Ingenieur­Systemgruppe Zahn GmbH
         XCTAssertEqual(CompanyIdentifier.ingenieurSystemgruppeZahn.rawValue, 171)
-        XCTAssertEqual(CompanyIdentifier.ingenieurSystemgruppeZahn.name, #"Ingenieur-Systemgruppe Zahn GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.ingenieurSystemgruppeZahn.description, #"Ingenieur-Systemgruppe Zahn GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.ingenieurSystemgruppeZahn.name, #"Ingenieur­Systemgruppe Zahn GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.ingenieurSystemgruppeZahn.description, #"Ingenieur­Systemgruppe Zahn GmbH"#)
     
         // Green Throttle Games
         XCTAssertEqual(CompanyIdentifier.greenThrottleGames.rawValue, 172)
@@ -903,115 +903,115 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.sarisCyclingGroup.name, #"Saris Cycling Group, Inc"#)
         XCTAssertEqual(CompanyIdentifier.sarisCyclingGroup.description, #"Saris Cycling Group, Inc"#)
     
-        // ​Bekey A/S
+        // Bekey A/S
         XCTAssertEqual(CompanyIdentifier.bekey.rawValue, 178)
-        XCTAssertEqual(CompanyIdentifier.bekey.name, #"​Bekey A/S"#)
-        XCTAssertEqual(CompanyIdentifier.bekey.description, #"​Bekey A/S"#)
+        XCTAssertEqual(CompanyIdentifier.bekey.name, #"Bekey A/S"#)
+        XCTAssertEqual(CompanyIdentifier.bekey.description, #"Bekey A/S"#)
     
-        // ​Clarinox Technologies Pty. Ltd.
+        // Clarinox Technologies Pty. Ltd.
         XCTAssertEqual(CompanyIdentifier.clarinoxTechnologiesPty.rawValue, 179)
-        XCTAssertEqual(CompanyIdentifier.clarinoxTechnologiesPty.name, #"​Clarinox Technologies Pty. Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.clarinoxTechnologiesPty.description, #"​Clarinox Technologies Pty. Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.clarinoxTechnologiesPty.name, #"Clarinox Technologies Pty. Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.clarinoxTechnologiesPty.description, #"Clarinox Technologies Pty. Ltd."#)
     
-        // ​BDE Technology Co., Ltd.
+        // BDE Technology Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.bdeTechnology.rawValue, 180)
-        XCTAssertEqual(CompanyIdentifier.bdeTechnology.name, #"​BDE Technology Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.bdeTechnology.description, #"​BDE Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.bdeTechnology.name, #"BDE Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.bdeTechnology.description, #"BDE Technology Co., Ltd."#)
     
         // Swirl Networks
         XCTAssertEqual(CompanyIdentifier.swirlNetworks.rawValue, 181)
         XCTAssertEqual(CompanyIdentifier.swirlNetworks.name, #"Swirl Networks"#)
         XCTAssertEqual(CompanyIdentifier.swirlNetworks.description, #"Swirl Networks"#)
     
-        // ​Meso international
+        // Meso international
         XCTAssertEqual(CompanyIdentifier.mesoInternational.rawValue, 182)
-        XCTAssertEqual(CompanyIdentifier.mesoInternational.name, #"​Meso international"#)
-        XCTAssertEqual(CompanyIdentifier.mesoInternational.description, #"​Meso international"#)
+        XCTAssertEqual(CompanyIdentifier.mesoInternational.name, #"Meso international"#)
+        XCTAssertEqual(CompanyIdentifier.mesoInternational.description, #"Meso international"#)
     
-        // ​TreLab Ltd
+        // TreLab Ltd
         XCTAssertEqual(CompanyIdentifier.trelab.rawValue, 183)
-        XCTAssertEqual(CompanyIdentifier.trelab.name, #"​TreLab Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.trelab.description, #"​TreLab Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.trelab.name, #"TreLab Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.trelab.description, #"TreLab Ltd"#)
     
-        // ​Qualcomm Innovation Center, Inc. (QuIC)
+        // Qualcomm Innovation Center, Inc. (QuIC)
         XCTAssertEqual(CompanyIdentifier.qualcommInnovationCenterQuic.rawValue, 184)
-        XCTAssertEqual(CompanyIdentifier.qualcommInnovationCenterQuic.name, #"​Qualcomm Innovation Center, Inc. (QuIC)"#)
-        XCTAssertEqual(CompanyIdentifier.qualcommInnovationCenterQuic.description, #"​Qualcomm Innovation Center, Inc. (QuIC)"#)
+        XCTAssertEqual(CompanyIdentifier.qualcommInnovationCenterQuic.name, #"Qualcomm Innovation Center, Inc. (QuIC)"#)
+        XCTAssertEqual(CompanyIdentifier.qualcommInnovationCenterQuic.description, #"Qualcomm Innovation Center, Inc. (QuIC)"#)
     
-        // ​​Johnson Controls, Inc.
+        // Johnson Controls, Inc.
         XCTAssertEqual(CompanyIdentifier.johnsonControls.rawValue, 185)
-        XCTAssertEqual(CompanyIdentifier.johnsonControls.name, #"​​Johnson Controls, Inc."#)
-        XCTAssertEqual(CompanyIdentifier.johnsonControls.description, #"​​Johnson Controls, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.johnsonControls.name, #"Johnson Controls, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.johnsonControls.description, #"Johnson Controls, Inc."#)
     
-        // ​Starkey Laboratories Inc.
-        XCTAssertEqual(CompanyIdentifier.starkeyLaboratories.rawValue, 186)
-        XCTAssertEqual(CompanyIdentifier.starkeyLaboratories.name, #"​Starkey Laboratories Inc."#)
-        XCTAssertEqual(CompanyIdentifier.starkeyLaboratories.description, #"​Starkey Laboratories Inc."#)
+        // Starkey Hearing Technologies
+        XCTAssertEqual(CompanyIdentifier.starkeyHearingTechnologies.rawValue, 186)
+        XCTAssertEqual(CompanyIdentifier.starkeyHearingTechnologies.name, #"Starkey Hearing Technologies"#)
+        XCTAssertEqual(CompanyIdentifier.starkeyHearingTechnologies.description, #"Starkey Hearing Technologies"#)
     
-        // ​​S-Power Electronics Limited
+        // S­Power Electronics Limited
         XCTAssertEqual(CompanyIdentifier.sPowerElectronics.rawValue, 187)
-        XCTAssertEqual(CompanyIdentifier.sPowerElectronics.name, #"​​S-Power Electronics Limited"#)
-        XCTAssertEqual(CompanyIdentifier.sPowerElectronics.description, #"​​S-Power Electronics Limited"#)
+        XCTAssertEqual(CompanyIdentifier.sPowerElectronics.name, #"S­Power Electronics Limited"#)
+        XCTAssertEqual(CompanyIdentifier.sPowerElectronics.description, #"S­Power Electronics Limited"#)
     
-        // ​​Ace Sensor Inc
+        // Ace Sensor Inc
         XCTAssertEqual(CompanyIdentifier.aceSensor.rawValue, 188)
-        XCTAssertEqual(CompanyIdentifier.aceSensor.name, #"​​Ace Sensor Inc"#)
-        XCTAssertEqual(CompanyIdentifier.aceSensor.description, #"​​Ace Sensor Inc"#)
+        XCTAssertEqual(CompanyIdentifier.aceSensor.name, #"Ace Sensor Inc"#)
+        XCTAssertEqual(CompanyIdentifier.aceSensor.description, #"Ace Sensor Inc"#)
     
-        // ​​Aplix Corporation
+        // Aplix Corporation
         XCTAssertEqual(CompanyIdentifier.aplix.rawValue, 189)
-        XCTAssertEqual(CompanyIdentifier.aplix.name, #"​​Aplix Corporation"#)
-        XCTAssertEqual(CompanyIdentifier.aplix.description, #"​​Aplix Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.aplix.name, #"Aplix Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.aplix.description, #"Aplix Corporation"#)
     
-        // ​​AAMP of America
+        // AAMP of America
         XCTAssertEqual(CompanyIdentifier.aampOfAmerica.rawValue, 190)
-        XCTAssertEqual(CompanyIdentifier.aampOfAmerica.name, #"​​AAMP of America"#)
-        XCTAssertEqual(CompanyIdentifier.aampOfAmerica.description, #"​​AAMP of America"#)
+        XCTAssertEqual(CompanyIdentifier.aampOfAmerica.name, #"AAMP of America"#)
+        XCTAssertEqual(CompanyIdentifier.aampOfAmerica.description, #"AAMP of America"#)
     
-        // ​​Stalmart Technology Limited
+        // Stalmart Technology Limited
         XCTAssertEqual(CompanyIdentifier.stalmartTechnology.rawValue, 191)
-        XCTAssertEqual(CompanyIdentifier.stalmartTechnology.name, #"​​Stalmart Technology Limited"#)
-        XCTAssertEqual(CompanyIdentifier.stalmartTechnology.description, #"​​Stalmart Technology Limited"#)
+        XCTAssertEqual(CompanyIdentifier.stalmartTechnology.name, #"Stalmart Technology Limited"#)
+        XCTAssertEqual(CompanyIdentifier.stalmartTechnology.description, #"Stalmart Technology Limited"#)
     
-        // ​​AMICCOM Electronics Corporation
+        // AMICCOM Electronics Corporation
         XCTAssertEqual(CompanyIdentifier.amiccomElectronics.rawValue, 192)
-        XCTAssertEqual(CompanyIdentifier.amiccomElectronics.name, #"​​AMICCOM Electronics Corporation"#)
-        XCTAssertEqual(CompanyIdentifier.amiccomElectronics.description, #"​​AMICCOM Electronics Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.amiccomElectronics.name, #"AMICCOM Electronics Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.amiccomElectronics.description, #"AMICCOM Electronics Corporation"#)
     
-        // ​​Shenzhen Excelsecu Data Technology Co.,Ltd
+        // Shenzhen Excelsecu Data Technology Co.,Ltd
         XCTAssertEqual(CompanyIdentifier.shenzhenExcelsecuDataTechnology.rawValue, 193)
-        XCTAssertEqual(CompanyIdentifier.shenzhenExcelsecuDataTechnology.name, #"​​Shenzhen Excelsecu Data Technology Co.,Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.shenzhenExcelsecuDataTechnology.description, #"​​Shenzhen Excelsecu Data Technology Co.,Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.shenzhenExcelsecuDataTechnology.name, #"Shenzhen Excelsecu Data Technology Co.,Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.shenzhenExcelsecuDataTechnology.description, #"Shenzhen Excelsecu Data Technology Co.,Ltd"#)
     
-        // ​​Geneq Inc.
+        // Geneq Inc.
         XCTAssertEqual(CompanyIdentifier.geneq.rawValue, 194)
-        XCTAssertEqual(CompanyIdentifier.geneq.name, #"​​Geneq Inc."#)
-        XCTAssertEqual(CompanyIdentifier.geneq.description, #"​​Geneq Inc."#)
+        XCTAssertEqual(CompanyIdentifier.geneq.name, #"Geneq Inc."#)
+        XCTAssertEqual(CompanyIdentifier.geneq.description, #"Geneq Inc."#)
     
-        // ​​adidas AG
+        // adidas AG
         XCTAssertEqual(CompanyIdentifier.adidas.rawValue, 195)
-        XCTAssertEqual(CompanyIdentifier.adidas.name, #"​​adidas AG"#)
-        XCTAssertEqual(CompanyIdentifier.adidas.description, #"​​adidas AG"#)
+        XCTAssertEqual(CompanyIdentifier.adidas.name, #"adidas AG"#)
+        XCTAssertEqual(CompanyIdentifier.adidas.description, #"adidas AG"#)
     
-        // ​​LG Electronics
+        // LG Electronics
         XCTAssertEqual(CompanyIdentifier.lgElectronics.rawValue, 196)
-        XCTAssertEqual(CompanyIdentifier.lgElectronics.name, #"​​LG Electronics​"#)
-        XCTAssertEqual(CompanyIdentifier.lgElectronics.description, #"​​LG Electronics​"#)
+        XCTAssertEqual(CompanyIdentifier.lgElectronics.name, #"LG Electronics"#)
+        XCTAssertEqual(CompanyIdentifier.lgElectronics.description, #"LG Electronics"#)
     
-        // ​Onset Computer Corporation
+        // Onset Computer Corporation
         XCTAssertEqual(CompanyIdentifier.onsetComputer.rawValue, 197)
-        XCTAssertEqual(CompanyIdentifier.onsetComputer.name, #"​Onset Computer Corporation"#)
-        XCTAssertEqual(CompanyIdentifier.onsetComputer.description, #"​Onset Computer Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.onsetComputer.name, #"Onset Computer Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.onsetComputer.description, #"Onset Computer Corporation"#)
     
-        // ​Selfly BV
+        // Selfly BV
         XCTAssertEqual(CompanyIdentifier.selfly.rawValue, 198)
-        XCTAssertEqual(CompanyIdentifier.selfly.name, #"​Selfly BV"#)
-        XCTAssertEqual(CompanyIdentifier.selfly.description, #"​Selfly BV"#)
+        XCTAssertEqual(CompanyIdentifier.selfly.name, #"Selfly BV"#)
+        XCTAssertEqual(CompanyIdentifier.selfly.description, #"Selfly BV"#)
     
-        // ​Quuppa Oy.
+        // Quuppa Oy.
         XCTAssertEqual(CompanyIdentifier.quuppa.rawValue, 199)
-        XCTAssertEqual(CompanyIdentifier.quuppa.name, #"​Quuppa Oy."#)
-        XCTAssertEqual(CompanyIdentifier.quuppa.description, #"​Quuppa Oy."#)
+        XCTAssertEqual(CompanyIdentifier.quuppa.name, #"Quuppa Oy."#)
+        XCTAssertEqual(CompanyIdentifier.quuppa.description, #"Quuppa Oy."#)
     
         // GeLo Inc
         XCTAssertEqual(CompanyIdentifier.gelo.rawValue, 200)
@@ -1043,10 +1043,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.microchipTechnology.name, #"Microchip Technology Inc."#)
         XCTAssertEqual(CompanyIdentifier.microchipTechnology.description, #"Microchip Technology Inc."#)
     
-        // Elgato Systems GmbH
-        XCTAssertEqual(CompanyIdentifier.elgatoSystems.rawValue, 206)
-        XCTAssertEqual(CompanyIdentifier.elgatoSystems.name, #"Elgato Systems GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.elgatoSystems.description, #"Elgato Systems GmbH"#)
+        // Eve Systems GmbH
+        XCTAssertEqual(CompanyIdentifier.eveSystems.rawValue, 206)
+        XCTAssertEqual(CompanyIdentifier.eveSystems.name, #"Eve Systems GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.eveSystems.description, #"Eve Systems GmbH"#)
     
         // ARCHOS SA
         XCTAssertEqual(CompanyIdentifier.archos.rawValue, 207)
@@ -1108,10 +1108,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.txtr.name, #"txtr GmbH"#)
         XCTAssertEqual(CompanyIdentifier.txtr.description, #"txtr GmbH"#)
     
-        // Biosentronics
-        XCTAssertEqual(CompanyIdentifier.biosentronics.rawValue, 219)
-        XCTAssertEqual(CompanyIdentifier.biosentronics.name, #"Biosentronics"#)
-        XCTAssertEqual(CompanyIdentifier.biosentronics.description, #"Biosentronics"#)
+        // Snuza (Pty) Ltd
+        XCTAssertEqual(CompanyIdentifier.snuzaPty.rawValue, 219)
+        XCTAssertEqual(CompanyIdentifier.snuzaPty.name, #"Snuza (Pty) Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.snuzaPty.description, #"Snuza (Pty) Ltd"#)
     
         // Procter & Gamble
         XCTAssertEqual(CompanyIdentifier.procterGamble.rawValue, 220)
@@ -1153,10 +1153,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.inmusicBrands.name, #"inMusic Brands, Inc"#)
         XCTAssertEqual(CompanyIdentifier.inmusicBrands.description, #"inMusic Brands, Inc"#)
     
-        // Laird Connectivity, Inc. formerly L.S. Research Inc.
-        XCTAssertEqual(CompanyIdentifier.lairdConnectivityFormerlyLSResearch.rawValue, 228)
-        XCTAssertEqual(CompanyIdentifier.lairdConnectivityFormerlyLSResearch.name, #"Laird Connectivity, Inc. formerly L.S. Research Inc."#)
-        XCTAssertEqual(CompanyIdentifier.lairdConnectivityFormerlyLSResearch.description, #"Laird Connectivity, Inc. formerly L.S. Research Inc."#)
+        // L.S. Research, Inc.
+        XCTAssertEqual(CompanyIdentifier.lSResearch.rawValue, 228)
+        XCTAssertEqual(CompanyIdentifier.lSResearch.name, #"L.S. Research, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.lSResearch.description, #"L.S. Research, Inc."#)
     
         // Eden Software Consultants Ltd.
         XCTAssertEqual(CompanyIdentifier.edenSoftwareConsultants.rawValue, 229)
@@ -1168,25 +1168,25 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.freshtemp.name, #"Freshtemp"#)
         XCTAssertEqual(CompanyIdentifier.freshtemp.description, #"Freshtemp"#)
     
-        // ​KS Technologies
+        // KS Technologies
         XCTAssertEqual(CompanyIdentifier.ksTechnologies.rawValue, 231)
-        XCTAssertEqual(CompanyIdentifier.ksTechnologies.name, #"​KS Technologies"#)
-        XCTAssertEqual(CompanyIdentifier.ksTechnologies.description, #"​KS Technologies"#)
+        XCTAssertEqual(CompanyIdentifier.ksTechnologies.name, #"KS Technologies"#)
+        XCTAssertEqual(CompanyIdentifier.ksTechnologies.description, #"KS Technologies"#)
     
-        // ​ACTS Technologies
+        // ACTS Technologies
         XCTAssertEqual(CompanyIdentifier.actsTechnologies.rawValue, 232)
-        XCTAssertEqual(CompanyIdentifier.actsTechnologies.name, #"​ACTS Technologies"#)
-        XCTAssertEqual(CompanyIdentifier.actsTechnologies.description, #"​ACTS Technologies"#)
+        XCTAssertEqual(CompanyIdentifier.actsTechnologies.name, #"ACTS Technologies"#)
+        XCTAssertEqual(CompanyIdentifier.actsTechnologies.description, #"ACTS Technologies"#)
     
-        // ​Vtrack Systems
+        // Vtrack Systems
         XCTAssertEqual(CompanyIdentifier.vtrackSystems.rawValue, 233)
-        XCTAssertEqual(CompanyIdentifier.vtrackSystems.name, #"​Vtrack Systems"#)
-        XCTAssertEqual(CompanyIdentifier.vtrackSystems.description, #"​Vtrack Systems"#)
+        XCTAssertEqual(CompanyIdentifier.vtrackSystems.name, #"Vtrack Systems"#)
+        XCTAssertEqual(CompanyIdentifier.vtrackSystems.description, #"Vtrack Systems"#)
     
-        // ​Nielsen-Kellerman Company
-        XCTAssertEqual(CompanyIdentifier.nielsenKellermanCompany.rawValue, 234)
-        XCTAssertEqual(CompanyIdentifier.nielsenKellermanCompany.name, #"​Nielsen-Kellerman Company"#)
-        XCTAssertEqual(CompanyIdentifier.nielsenKellermanCompany.description, #"​Nielsen-Kellerman Company"#)
+        // www.vtracksystems.com
+        XCTAssertEqual(CompanyIdentifier.wwwVtracksystemsCom.rawValue, 234)
+        XCTAssertEqual(CompanyIdentifier.wwwVtracksystemsCom.name, #"www.vtracksystems.com"#)
+        XCTAssertEqual(CompanyIdentifier.wwwVtracksystemsCom.description, #"www.vtracksystems.com"#)
     
         // Server Technology Inc.
         XCTAssertEqual(CompanyIdentifier.serverTechnology.rawValue, 235)
@@ -1263,10 +1263,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.sticknfind.name, #"StickNFind"#)
         XCTAssertEqual(CompanyIdentifier.sticknfind.description, #"StickNFind"#)
     
-        // Crystal Code AB
-        XCTAssertEqual(CompanyIdentifier.crystalCode.rawValue, 250)
-        XCTAssertEqual(CompanyIdentifier.crystalCode.name, #"Crystal Code AB"#)
-        XCTAssertEqual(CompanyIdentifier.crystalCode.description, #"Crystal Code AB"#)
+        // Crystal Alarm AB
+        XCTAssertEqual(CompanyIdentifier.crystalAlarm.rawValue, 250)
+        XCTAssertEqual(CompanyIdentifier.crystalAlarm.name, #"Crystal Alarm AB"#)
+        XCTAssertEqual(CompanyIdentifier.crystalAlarm.description, #"Crystal Alarm AB"#)
     
         // KOUKAAM a.s.
         XCTAssertEqual(CompanyIdentifier.koukaam.rawValue, 251)
@@ -1328,10 +1328,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.innovativeYachtterSolutions.name, #"Innovative Yachtter Solutions"#)
         XCTAssertEqual(CompanyIdentifier.innovativeYachtterSolutions.description, #"Innovative Yachtter Solutions"#)
     
-        // William Demant Holding A/S
-        XCTAssertEqual(CompanyIdentifier.williamDemantHolding.rawValue, 263)
-        XCTAssertEqual(CompanyIdentifier.williamDemantHolding.name, #"William Demant Holding A/S"#)
-        XCTAssertEqual(CompanyIdentifier.williamDemantHolding.description, #"William Demant Holding A/S"#)
+        // Demant A/S
+        XCTAssertEqual(CompanyIdentifier.demant.rawValue, 263)
+        XCTAssertEqual(CompanyIdentifier.demant.name, #"Demant A/S"#)
+        XCTAssertEqual(CompanyIdentifier.demant.description, #"Demant A/S"#)
     
         // Chicony Electronics Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.chiconyElectronics.rawValue, 264)
@@ -1358,10 +1358,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.transducersDirect.name, #"Transducers Direct, LLC"#)
         XCTAssertEqual(CompanyIdentifier.transducersDirect.description, #"Transducers Direct, LLC"#)
     
-        // DENSO TEN LIMITED (formerly Fujitsu Ten LImited)
+        // DENSO TEN Limited
         XCTAssertEqual(CompanyIdentifier.densoTen.rawValue, 269)
-        XCTAssertEqual(CompanyIdentifier.densoTen.name, #"DENSO TEN LIMITED (formerly Fujitsu Ten LImited)"#)
-        XCTAssertEqual(CompanyIdentifier.densoTen.description, #"DENSO TEN LIMITED (formerly Fujitsu Ten LImited)"#)
+        XCTAssertEqual(CompanyIdentifier.densoTen.name, #"DENSO TEN Limited"#)
+        XCTAssertEqual(CompanyIdentifier.densoTen.description, #"DENSO TEN Limited"#)
     
         // Audi AG
         XCTAssertEqual(CompanyIdentifier.audi.rawValue, 270)
@@ -1503,10 +1503,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.nimbleDevices.name, #"Nimble Devices Oy"#)
         XCTAssertEqual(CompanyIdentifier.nimbleDevices.description, #"Nimble Devices Oy"#)
     
-        // Changzhou Yongse Infotech  Co., Ltd.
+        // Changzhou Yongse Infotech Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.changzhouYongseInfotech.rawValue, 298)
-        XCTAssertEqual(CompanyIdentifier.changzhouYongseInfotech.name, #"Changzhou Yongse Infotech  Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.changzhouYongseInfotech.description, #"Changzhou Yongse Infotech  Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.changzhouYongseInfotech.name, #"Changzhou Yongse Infotech Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.changzhouYongseInfotech.description, #"Changzhou Yongse Infotech Co., Ltd."#)
     
         // SportIQ
         XCTAssertEqual(CompanyIdentifier.sportiq.rawValue, 299)
@@ -1663,20 +1663,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.perytons.name, #"Perytons Ltd."#)
         XCTAssertEqual(CompanyIdentifier.perytons.description, #"Perytons Ltd."#)
     
-        // Tivoli Audio, LLC
-        XCTAssertEqual(CompanyIdentifier.tivoliAudio.rawValue, 330)
-        XCTAssertEqual(CompanyIdentifier.tivoliAudio.name, #"Tivoli Audio, LLC"#)
-        XCTAssertEqual(CompanyIdentifier.tivoliAudio.description, #"Tivoli Audio, LLC"#)
+        // Tivoli Audio, LLC Bluetooth SIG Proprietary
+        XCTAssertEqual(CompanyIdentifier.tivoliAudioBluetoothSigProprietary.rawValue, 330)
+        XCTAssertEqual(CompanyIdentifier.tivoliAudioBluetoothSigProprietary.name, #"Tivoli Audio, LLC Bluetooth SIG Proprietary"#)
+        XCTAssertEqual(CompanyIdentifier.tivoliAudioBluetoothSigProprietary.description, #"Tivoli Audio, LLC Bluetooth SIG Proprietary"#)
     
         // Master Lock
         XCTAssertEqual(CompanyIdentifier.masterLock.rawValue, 331)
         XCTAssertEqual(CompanyIdentifier.masterLock.name, #"Master Lock"#)
         XCTAssertEqual(CompanyIdentifier.masterLock.description, #"Master Lock"#)
     
-        // Mesh-Net Ltd
+        // Mesh­Net Ltd
         XCTAssertEqual(CompanyIdentifier.meshNet.rawValue, 332)
-        XCTAssertEqual(CompanyIdentifier.meshNet.name, #"Mesh-Net Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.meshNet.description, #"Mesh-Net Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.meshNet.name, #"Mesh­Net Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.meshNet.description, #"Mesh­Net Ltd"#)
     
         // HUIZHOU DESAY SV AUTOMOTIVE CO., LTD.
         XCTAssertEqual(CompanyIdentifier.huizhouDesaySvAutomotive.rawValue, 333)
@@ -1773,10 +1773,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.timerCap.name, #"Timer Cap Co."#)
         XCTAssertEqual(CompanyIdentifier.timerCap.description, #"Timer Cap Co."#)
     
-        // Awox formerly AwoX
-        XCTAssertEqual(CompanyIdentifier.awoxFormerlyAwox.rawValue, 352)
-        XCTAssertEqual(CompanyIdentifier.awoxFormerlyAwox.name, #"Awox formerly AwoX"#)
-        XCTAssertEqual(CompanyIdentifier.awoxFormerlyAwox.description, #"Awox formerly AwoX"#)
+        // AwoX
+        XCTAssertEqual(CompanyIdentifier.awox.rawValue, 352)
+        XCTAssertEqual(CompanyIdentifier.awox.name, #"AwoX"#)
+        XCTAssertEqual(CompanyIdentifier.awox.description, #"AwoX"#)
     
         // yikes
         XCTAssertEqual(CompanyIdentifier.yikes.rawValue, 353)
@@ -1798,10 +1798,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.qingdaoYeelinkInformationTechnology.name, #"Qingdao Yeelink Information Technology Co., Ltd."#)
         XCTAssertEqual(CompanyIdentifier.qingdaoYeelinkInformationTechnology.description, #"Qingdao Yeelink Information Technology Co., Ltd."#)
     
-        // Milwaukee Tool (Formally Milwaukee Electric Tools)
-        XCTAssertEqual(CompanyIdentifier.milwaukeeToolFormallyMilwaukeeElectricTools.rawValue, 357)
-        XCTAssertEqual(CompanyIdentifier.milwaukeeToolFormallyMilwaukeeElectricTools.name, #"Milwaukee Tool (Formally Milwaukee Electric Tools)"#)
-        XCTAssertEqual(CompanyIdentifier.milwaukeeToolFormallyMilwaukeeElectricTools.description, #"Milwaukee Tool (Formally Milwaukee Electric Tools)"#)
+        // Milwaukee Electric Tools
+        XCTAssertEqual(CompanyIdentifier.milwaukeeElectricTools.rawValue, 357)
+        XCTAssertEqual(CompanyIdentifier.milwaukeeElectricTools.name, #"Milwaukee Electric Tools"#)
+        XCTAssertEqual(CompanyIdentifier.milwaukeeElectricTools.description, #"Milwaukee Electric Tools"#)
     
         // MISHIK Pte Ltd
         XCTAssertEqual(CompanyIdentifier.mishikPte.rawValue, 358)
@@ -1888,20 +1888,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.sentrilock.name, #"SentriLock"#)
         XCTAssertEqual(CompanyIdentifier.sentrilock.description, #"SentriLock"#)
     
-        // I-SYST inc.
+        // I­SYST inc.
         XCTAssertEqual(CompanyIdentifier.iSyst.rawValue, 375)
-        XCTAssertEqual(CompanyIdentifier.iSyst.name, #"I-SYST inc."#)
-        XCTAssertEqual(CompanyIdentifier.iSyst.description, #"I-SYST inc."#)
+        XCTAssertEqual(CompanyIdentifier.iSyst.name, #"I­SYST inc."#)
+        XCTAssertEqual(CompanyIdentifier.iSyst.description, #"I­SYST inc."#)
     
         // CASIO COMPUTER CO., LTD.
         XCTAssertEqual(CompanyIdentifier.casioComputer.rawValue, 376)
         XCTAssertEqual(CompanyIdentifier.casioComputer.name, #"CASIO COMPUTER CO., LTD."#)
         XCTAssertEqual(CompanyIdentifier.casioComputer.description, #"CASIO COMPUTER CO., LTD."#)
     
-        // LAPIS Technology Co., Ltd. formerly LAPIS Semiconductor Co., Ltd.
-        XCTAssertEqual(CompanyIdentifier.lapisTechnologyFormerlyLapisSemiconductor.rawValue, 377)
-        XCTAssertEqual(CompanyIdentifier.lapisTechnologyFormerlyLapisSemiconductor.name, #"LAPIS Technology Co., Ltd. formerly LAPIS Semiconductor Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.lapisTechnologyFormerlyLapisSemiconductor.description, #"LAPIS Technology Co., Ltd. formerly LAPIS Semiconductor Co., Ltd."#)
+        // LAPIS Semiconductor Co.,Ltd
+        XCTAssertEqual(CompanyIdentifier.lapisSemiconductor.rawValue, 377)
+        XCTAssertEqual(CompanyIdentifier.lapisSemiconductor.name, #"LAPIS Semiconductor Co.,Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.lapisSemiconductor.description, #"LAPIS Semiconductor Co.,Ltd"#)
     
         // Telemonitor, Inc.
         XCTAssertEqual(CompanyIdentifier.telemonitor.rawValue, 378)
@@ -1913,10 +1913,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.taskit.name, #"taskit GmbH"#)
         XCTAssertEqual(CompanyIdentifier.taskit.description, #"taskit GmbH"#)
     
-        // Mercedes-Benz Group AG
+        // Mercedes­Benz Group AG
         XCTAssertEqual(CompanyIdentifier.mercedesBenzGroup.rawValue, 380)
-        XCTAssertEqual(CompanyIdentifier.mercedesBenzGroup.name, #"Mercedes-Benz Group AG"#)
-        XCTAssertEqual(CompanyIdentifier.mercedesBenzGroup.description, #"Mercedes-Benz Group AG"#)
+        XCTAssertEqual(CompanyIdentifier.mercedesBenzGroup.name, #"Mercedes­Benz Group AG"#)
+        XCTAssertEqual(CompanyIdentifier.mercedesBenzGroup.description, #"Mercedes­Benz Group AG"#)
     
         // BatAndCat
         XCTAssertEqual(CompanyIdentifier.batandcat.rawValue, 381)
@@ -1958,10 +1958,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.nectar.name, #"Nectar"#)
         XCTAssertEqual(CompanyIdentifier.nectar.description, #"Nectar"#)
     
-        // bel'apps LLC
+        // bel’apps LLC
         XCTAssertEqual(CompanyIdentifier.belApps.rawValue, 389)
-        XCTAssertEqual(CompanyIdentifier.belApps.name, #"bel'apps LLC"#)
-        XCTAssertEqual(CompanyIdentifier.belApps.description, #"bel'apps LLC"#)
+        XCTAssertEqual(CompanyIdentifier.belApps.name, #"bel’apps LLC"#)
+        XCTAssertEqual(CompanyIdentifier.belApps.description, #"bel’apps LLC"#)
     
         // CORE Lighting Ltd
         XCTAssertEqual(CompanyIdentifier.coreLighting.rawValue, 390)
@@ -2063,10 +2063,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.saltoSystems.name, #"SALTO SYSTEMS S.L."#)
         XCTAssertEqual(CompanyIdentifier.saltoSystems.description, #"SALTO SYSTEMS S.L."#)
     
-        // TRON Forum (formerly T-Engine Forum)
+        // TRON Forum
         XCTAssertEqual(CompanyIdentifier.tronForum.rawValue, 410)
-        XCTAssertEqual(CompanyIdentifier.tronForum.name, #"TRON Forum (formerly T-Engine Forum)"#)
-        XCTAssertEqual(CompanyIdentifier.tronForum.description, #"TRON Forum (formerly T-Engine Forum)"#)
+        XCTAssertEqual(CompanyIdentifier.tronForum.name, #"TRON Forum"#)
+        XCTAssertEqual(CompanyIdentifier.tronForum.description, #"TRON Forum"#)
     
         // CUBETECH s.r.o.
         XCTAssertEqual(CompanyIdentifier.cubetech.rawValue, 411)
@@ -2123,10 +2123,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.iconHealthAndFitness.name, #"Icon Health and Fitness"#)
         XCTAssertEqual(CompanyIdentifier.iconHealthAndFitness.description, #"Icon Health and Fitness"#)
     
-        // Wille Engineering (formely as Asandoo GmbH)
-        XCTAssertEqual(CompanyIdentifier.willeEngineeringFormelyAsAsandoo.rawValue, 422)
-        XCTAssertEqual(CompanyIdentifier.willeEngineeringFormelyAsAsandoo.name, #"Wille Engineering (formely as Asandoo GmbH)"#)
-        XCTAssertEqual(CompanyIdentifier.willeEngineeringFormelyAsAsandoo.description, #"Wille Engineering (formely as Asandoo GmbH)"#)
+        // Wille Engineering
+        XCTAssertEqual(CompanyIdentifier.willeEngineering.rawValue, 422)
+        XCTAssertEqual(CompanyIdentifier.willeEngineering.name, #"Wille Engineering"#)
+        XCTAssertEqual(CompanyIdentifier.willeEngineering.description, #"Wille Engineering"#)
     
         // ENERGOUS CORPORATION
         XCTAssertEqual(CompanyIdentifier.energous.rawValue, 423)
@@ -2148,10 +2148,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.geophysicalTechnology.name, #"Geophysical Technology Inc."#)
         XCTAssertEqual(CompanyIdentifier.geophysicalTechnology.description, #"Geophysical Technology Inc."#)
     
-        // Facebook, Inc.
-        XCTAssertEqual(CompanyIdentifier.facebook.rawValue, 427)
-        XCTAssertEqual(CompanyIdentifier.facebook.name, #"Facebook, Inc."#)
-        XCTAssertEqual(CompanyIdentifier.facebook.description, #"Facebook, Inc."#)
+        // Meta Platforms, Inc.
+        XCTAssertEqual(CompanyIdentifier.metaPlatforms.rawValue, 427)
+        XCTAssertEqual(CompanyIdentifier.metaPlatforms.name, #"Meta Platforms, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.metaPlatforms.description, #"Meta Platforms, Inc."#)
     
         // Trividia Health, Inc.
         XCTAssertEqual(CompanyIdentifier.trividiaHealth.rawValue, 428)
@@ -2293,15 +2293,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.abiogenix.name, #"Abiogenix Inc."#)
         XCTAssertEqual(CompanyIdentifier.abiogenix.description, #"Abiogenix Inc."#)
     
-        // Poly-Control ApS
+        // Poly­Control ApS
         XCTAssertEqual(CompanyIdentifier.polyControl.rawValue, 456)
-        XCTAssertEqual(CompanyIdentifier.polyControl.name, #"Poly-Control ApS"#)
-        XCTAssertEqual(CompanyIdentifier.polyControl.description, #"Poly-Control ApS"#)
+        XCTAssertEqual(CompanyIdentifier.polyControl.name, #"Poly­Control ApS"#)
+        XCTAssertEqual(CompanyIdentifier.polyControl.description, #"Poly­Control ApS"#)
     
-        // Avi-on
+        // Avi­on
         XCTAssertEqual(CompanyIdentifier.aviOn.rawValue, 457)
-        XCTAssertEqual(CompanyIdentifier.aviOn.name, #"Avi-on"#)
-        XCTAssertEqual(CompanyIdentifier.aviOn.description, #"Avi-on"#)
+        XCTAssertEqual(CompanyIdentifier.aviOn.name, #"Avi­on"#)
+        XCTAssertEqual(CompanyIdentifier.aviOn.description, #"Avi­on"#)
     
         // Laerdal Medical AS
         XCTAssertEqual(CompanyIdentifier.laerdalMedical.rawValue, 458)
@@ -2363,10 +2363,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.elad.name, #"ELAD srl"#)
         XCTAssertEqual(CompanyIdentifier.elad.description, #"ELAD srl"#)
     
-        // G-wearables inc.
+        // G­wearables inc.
         XCTAssertEqual(CompanyIdentifier.gWearables.rawValue, 470)
-        XCTAssertEqual(CompanyIdentifier.gWearables.name, #"G-wearables inc."#)
-        XCTAssertEqual(CompanyIdentifier.gWearables.description, #"G-wearables inc."#)
+        XCTAssertEqual(CompanyIdentifier.gWearables.name, #"G­wearables inc."#)
+        XCTAssertEqual(CompanyIdentifier.gWearables.description, #"G­wearables inc."#)
     
         // Squadrone Systems Inc.
         XCTAssertEqual(CompanyIdentifier.squadroneSystems.rawValue, 471)
@@ -2398,10 +2398,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.iparking.name, #"iParking Ltd."#)
         XCTAssertEqual(CompanyIdentifier.iparking.description, #"iParking Ltd."#)
     
-        // Koninklijke Philips Electronics N.V.
-        XCTAssertEqual(CompanyIdentifier.koninklijkePhilipsElectronics.rawValue, 477)
-        XCTAssertEqual(CompanyIdentifier.koninklijkePhilipsElectronics.name, #"Koninklijke Philips Electronics N.V."#)
-        XCTAssertEqual(CompanyIdentifier.koninklijkePhilipsElectronics.description, #"Koninklijke Philips Electronics N.V."#)
+        // Koninklijke Philips N.V.
+        XCTAssertEqual(CompanyIdentifier.koninklijkePhilips.rawValue, 477)
+        XCTAssertEqual(CompanyIdentifier.koninklijkePhilips.name, #"Koninklijke Philips N.V."#)
+        XCTAssertEqual(CompanyIdentifier.koninklijkePhilips.description, #"Koninklijke Philips N.V."#)
     
         // Minelab Electronics Pty Limited
         XCTAssertEqual(CompanyIdentifier.minelabElectronicsPty.rawValue, 478)
@@ -2558,10 +2558,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.wahooFitness.name, #"Wahoo Fitness, LLC"#)
         XCTAssertEqual(CompanyIdentifier.wahooFitness.description, #"Wahoo Fitness, LLC"#)
     
-        // Kontakt Micro-Location Sp. z o.o.
+        // Kontakt Micro­Location Sp. z o.o.
         XCTAssertEqual(CompanyIdentifier.kontaktMicroLocation.rawValue, 509)
-        XCTAssertEqual(CompanyIdentifier.kontaktMicroLocation.name, #"Kontakt Micro-Location Sp. z o.o."#)
-        XCTAssertEqual(CompanyIdentifier.kontaktMicroLocation.description, #"Kontakt Micro-Location Sp. z o.o."#)
+        XCTAssertEqual(CompanyIdentifier.kontaktMicroLocation.name, #"Kontakt Micro­Location Sp. z o.o."#)
+        XCTAssertEqual(CompanyIdentifier.kontaktMicroLocation.description, #"Kontakt Micro­Location Sp. z o.o."#)
     
         // Radio Systems Corporation
         XCTAssertEqual(CompanyIdentifier.radioSystems.rawValue, 510)
@@ -2728,10 +2728,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.goodnet.name, #"Goodnet, Ltd"#)
         XCTAssertEqual(CompanyIdentifier.goodnet.description, #"Goodnet, Ltd"#)
     
-        // Luster Leaf Products  Inc
+        // Luster Leaf Products Inc
         XCTAssertEqual(CompanyIdentifier.lusterLeafProducts.rawValue, 543)
-        XCTAssertEqual(CompanyIdentifier.lusterLeafProducts.name, #"Luster Leaf Products  Inc"#)
-        XCTAssertEqual(CompanyIdentifier.lusterLeafProducts.description, #"Luster Leaf Products  Inc"#)
+        XCTAssertEqual(CompanyIdentifier.lusterLeafProducts.name, #"Luster Leaf Products Inc"#)
+        XCTAssertEqual(CompanyIdentifier.lusterLeafProducts.description, #"Luster Leaf Products Inc"#)
     
         // Manus Machina BV
         XCTAssertEqual(CompanyIdentifier.manusMachina.rawValue, 544)
@@ -2788,10 +2788,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.stamerMusikanlagen.name, #"Stamer Musikanlagen GMBH"#)
         XCTAssertEqual(CompanyIdentifier.stamerMusikanlagen.description, #"Stamer Musikanlagen GMBH"#)
     
-        // Tesla Motors
-        XCTAssertEqual(CompanyIdentifier.teslaMotors.rawValue, 555)
-        XCTAssertEqual(CompanyIdentifier.teslaMotors.name, #"Tesla Motors"#)
-        XCTAssertEqual(CompanyIdentifier.teslaMotors.description, #"Tesla Motors"#)
+        // Tesla, Inc.
+        XCTAssertEqual(CompanyIdentifier.tesla.rawValue, 555)
+        XCTAssertEqual(CompanyIdentifier.tesla.name, #"Tesla, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.tesla.description, #"Tesla, Inc."#)
     
         // Pharynks Corporation
         XCTAssertEqual(CompanyIdentifier.pharynks.rawValue, 556)
@@ -2823,10 +2823,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.eta.name, #"ETA SA"#)
         XCTAssertEqual(CompanyIdentifier.eta.description, #"ETA SA"#)
     
-        // x-Senso Solutions Kft
+        // x­Senso Solutions Kft
         XCTAssertEqual(CompanyIdentifier.xSensoSolutionsKft.rawValue, 562)
-        XCTAssertEqual(CompanyIdentifier.xSensoSolutionsKft.name, #"x-Senso Solutions Kft"#)
-        XCTAssertEqual(CompanyIdentifier.xSensoSolutionsKft.description, #"x-Senso Solutions Kft"#)
+        XCTAssertEqual(CompanyIdentifier.xSensoSolutionsKft.name, #"x­Senso Solutions Kft"#)
+        XCTAssertEqual(CompanyIdentifier.xSensoSolutionsKft.description, #"x­Senso Solutions Kft"#)
     
         // Shenzhen SuLong Communication Ltd
         XCTAssertEqual(CompanyIdentifier.shenzhenSulongCommunication.rawValue, 563)
@@ -2920,8 +2920,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Endress+Hauser
         XCTAssertEqual(CompanyIdentifier.endressHauser.rawValue, 581)
-        XCTAssertEqual(CompanyIdentifier.endressHauser.name, #"Endress+Hauser "#)
-        XCTAssertEqual(CompanyIdentifier.endressHauser.description, #"Endress+Hauser "#)
+        XCTAssertEqual(CompanyIdentifier.endressHauser.name, #"Endress+Hauser"#)
+        XCTAssertEqual(CompanyIdentifier.endressHauser.description, #"Endress+Hauser"#)
     
         // ACKme Networks, Inc.
         XCTAssertEqual(CompanyIdentifier.ackmeNetworks.rawValue, 582)
@@ -2958,10 +2958,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.blueCloverDevices.name, #"Blue Clover Devices"#)
         XCTAssertEqual(CompanyIdentifier.blueCloverDevices.description, #"Blue Clover Devices"#)
     
-        // M-Way Solutions GmbH
+        // M­Way Solutions GmbH
         XCTAssertEqual(CompanyIdentifier.mWaySolutions.rawValue, 589)
-        XCTAssertEqual(CompanyIdentifier.mWaySolutions.name, #"M-Way Solutions GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.mWaySolutions.description, #"M-Way Solutions GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.mWaySolutions.name, #"M­Way Solutions GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.mWaySolutions.description, #"M­Way Solutions GmbH"#)
     
         // Microtronics Engineering GmbH
         XCTAssertEqual(CompanyIdentifier.microtronicsEngineering.rawValue, 590)
@@ -3033,10 +3033,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.fiveInteractiveDbaZendo.name, #"Five Interactive, LLC dba Zendo"#)
         XCTAssertEqual(CompanyIdentifier.fiveInteractiveDbaZendo.description, #"Five Interactive, LLC dba Zendo"#)
     
-        // NetEase（Hangzhou）Network co.Ltd.
+        // NetEase￿Hangzhou￿Network co.Ltd.
         XCTAssertEqual(CompanyIdentifier.neteaseHangzhouNetwork.rawValue, 604)
-        XCTAssertEqual(CompanyIdentifier.neteaseHangzhouNetwork.name, #"NetEase（Hangzhou）Network co.Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.neteaseHangzhouNetwork.description, #"NetEase（Hangzhou）Network co.Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.neteaseHangzhouNetwork.name, #"NetEase￿Hangzhou￿Network co.Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.neteaseHangzhouNetwork.description, #"NetEase￿Hangzhou￿Network co.Ltd."#)
     
         // Lexmark International Inc.
         XCTAssertEqual(CompanyIdentifier.lexmarkInternational.rawValue, 605)
@@ -3163,10 +3163,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.geotab.name, #"Geotab"#)
         XCTAssertEqual(CompanyIdentifier.geotab.description, #"Geotab"#)
     
-        // E.G.O. Elektro-Geraetebau GmbH
+        // E.G.O. Elektro­Geraetebau GmbH
         XCTAssertEqual(CompanyIdentifier.eGOElektroGeraetebau.rawValue, 630)
-        XCTAssertEqual(CompanyIdentifier.eGOElektroGeraetebau.name, #"E.G.O. Elektro-Geraetebau GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.eGOElektroGeraetebau.description, #"E.G.O. Elektro-Geraetebau GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.eGOElektroGeraetebau.name, #"E.G.O. Elektro­Geraetebau GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.eGOElektroGeraetebau.description, #"E.G.O. Elektro­Geraetebau GmbH"#)
     
         // bewhere inc
         XCTAssertEqual(CompanyIdentifier.bewhere.rawValue, 631)
@@ -3383,10 +3383,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.inventuretrackSystems.name, #"InventureTrack Systems"#)
         XCTAssertEqual(CompanyIdentifier.inventuretrackSystems.description, #"InventureTrack Systems"#)
     
-        // LockedUp
-        XCTAssertEqual(CompanyIdentifier.lockedup.rawValue, 674)
-        XCTAssertEqual(CompanyIdentifier.lockedup.name, #"LockedUp"#)
-        XCTAssertEqual(CompanyIdentifier.lockedup.description, #"LockedUp"#)
+        // Sera4 Ltd.
+        XCTAssertEqual(CompanyIdentifier.sera4.rawValue, 674)
+        XCTAssertEqual(CompanyIdentifier.sera4.name, #"Sera4 Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.sera4.description, #"Sera4 Ltd."#)
     
         // Itude
         XCTAssertEqual(CompanyIdentifier.itude.rawValue, 675)
@@ -3398,10 +3398,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.pacificLockCompany.name, #"Pacific Lock Company"#)
         XCTAssertEqual(CompanyIdentifier.pacificLockCompany.description, #"Pacific Lock Company"#)
     
-        // Tendyron Corporation ( 天地融科技股份有限公司 )
-        XCTAssertEqual(CompanyIdentifier.tendyron天地融科技股份有限公司.rawValue, 677)
-        XCTAssertEqual(CompanyIdentifier.tendyron天地融科技股份有限公司.name, #"Tendyron Corporation ( 天地融科技股份有限公司 )"#)
-        XCTAssertEqual(CompanyIdentifier.tendyron天地融科技股份有限公司.description, #"Tendyron Corporation ( 天地融科技股份有限公司 )"#)
+        // Tendyron Corporation
+        XCTAssertEqual(CompanyIdentifier.tendyron.rawValue, 677)
+        XCTAssertEqual(CompanyIdentifier.tendyron.name, #"Tendyron Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.tendyron.description, #"Tendyron Corporation"#)
     
         // Robert Bosch GmbH
         XCTAssertEqual(CompanyIdentifier.robertBosch.rawValue, 678)
@@ -3463,10 +3463,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.raden.name, #"Raden Inc"#)
         XCTAssertEqual(CompanyIdentifier.raden.description, #"Raden Inc"#)
     
-        // JouZen Oy
-        XCTAssertEqual(CompanyIdentifier.jouzen.rawValue, 690)
-        XCTAssertEqual(CompanyIdentifier.jouzen.name, #"JouZen Oy"#)
-        XCTAssertEqual(CompanyIdentifier.jouzen.description, #"JouZen Oy"#)
+        // Oura Health Oy
+        XCTAssertEqual(CompanyIdentifier.ouraHealth.rawValue, 690)
+        XCTAssertEqual(CompanyIdentifier.ouraHealth.name, #"Oura Health Oy"#)
+        XCTAssertEqual(CompanyIdentifier.ouraHealth.description, #"Oura Health Oy"#)
     
         // CLABER S.P.A.
         XCTAssertEqual(CompanyIdentifier.claber.rawValue, 691)
@@ -3558,10 +3558,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.wilsonSportingGoods.name, #"Wilson Sporting Goods"#)
         XCTAssertEqual(CompanyIdentifier.wilsonSportingGoods.description, #"Wilson Sporting Goods"#)
     
-        // Lenovo (Singapore) Pte Ltd. ( 联想（新加坡） )
-        XCTAssertEqual(CompanyIdentifier.lenovoSingaporePte联想新加坡.rawValue, 709)
-        XCTAssertEqual(CompanyIdentifier.lenovoSingaporePte联想新加坡.name, #"Lenovo (Singapore) Pte Ltd. ( 联想（新加坡） )"#)
-        XCTAssertEqual(CompanyIdentifier.lenovoSingaporePte联想新加坡.description, #"Lenovo (Singapore) Pte Ltd. ( 联想（新加坡） )"#)
+        // Lenovo (Singapore) Pte Ltd.
+        XCTAssertEqual(CompanyIdentifier.lenovoSingaporePte.rawValue, 709)
+        XCTAssertEqual(CompanyIdentifier.lenovoSingaporePte.name, #"Lenovo (Singapore) Pte Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.lenovoSingaporePte.description, #"Lenovo (Singapore) Pte Ltd."#)
     
         // Ayatan Sensors
         XCTAssertEqual(CompanyIdentifier.ayatanSensors.rawValue, 710)
@@ -3575,8 +3575,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // OneSpan
         XCTAssertEqual(CompanyIdentifier.onespan.rawValue, 712)
-        XCTAssertEqual(CompanyIdentifier.onespan.name, #"OneSpan "#)
-        XCTAssertEqual(CompanyIdentifier.onespan.description, #"OneSpan "#)
+        XCTAssertEqual(CompanyIdentifier.onespan.name, #"OneSpan"#)
+        XCTAssertEqual(CompanyIdentifier.onespan.description, #"OneSpan"#)
     
         // PayRange Inc.
         XCTAssertEqual(CompanyIdentifier.payrange.rawValue, 713)
@@ -3588,10 +3588,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.abovSemiconductor.name, #"ABOV Semiconductor"#)
         XCTAssertEqual(CompanyIdentifier.abovSemiconductor.description, #"ABOV Semiconductor"#)
     
-        // AINA-Wireless Inc.
+        // AINA­Wireless Inc.
         XCTAssertEqual(CompanyIdentifier.ainaWireless.rawValue, 715)
-        XCTAssertEqual(CompanyIdentifier.ainaWireless.name, #"AINA-Wireless Inc."#)
-        XCTAssertEqual(CompanyIdentifier.ainaWireless.description, #"AINA-Wireless Inc."#)
+        XCTAssertEqual(CompanyIdentifier.ainaWireless.name, #"AINA­Wireless Inc."#)
+        XCTAssertEqual(CompanyIdentifier.ainaWireless.description, #"AINA­Wireless Inc."#)
     
         // Eijkelkamp Soil & Water
         XCTAssertEqual(CompanyIdentifier.eijkelkampSoilWater.rawValue, 716)
@@ -3718,10 +3718,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.bytestorm.name, #"Bytestorm Ltd."#)
         XCTAssertEqual(CompanyIdentifier.bytestorm.description, #"Bytestorm Ltd."#)
     
-        // Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )
-        XCTAssertEqual(CompanyIdentifier.espressif.rawValue, 741)
-        XCTAssertEqual(CompanyIdentifier.espressif.name, #"Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )"#)
-        XCTAssertEqual(CompanyIdentifier.espressif.description, #"Espressif Incorporated ( 乐鑫信息科技(上海)有限公司 )"#)
+        // Espressif Systems (Shanghai) Co., Ltd.
+        XCTAssertEqual(CompanyIdentifier.espressifSystemsShanghai.rawValue, 741)
+        XCTAssertEqual(CompanyIdentifier.espressifSystemsShanghai.name, #"Espressif Systems (Shanghai) Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.espressifSystemsShanghai.description, #"Espressif Systems (Shanghai) Co., Ltd."#)
     
         // Unwire
         XCTAssertEqual(CompanyIdentifier.unwire.rawValue, 742)
@@ -3760,23 +3760,23 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // HTC Corporation
         XCTAssertEqual(CompanyIdentifier.htc.rawValue, 749)
-        XCTAssertEqual(CompanyIdentifier.htc.name, #"HTC Corporation "#)
-        XCTAssertEqual(CompanyIdentifier.htc.description, #"HTC Corporation "#)
+        XCTAssertEqual(CompanyIdentifier.htc.name, #"HTC Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.htc.description, #"HTC Corporation"#)
     
         // Citizen Holdings Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.citizenHoldings.rawValue, 750)
-        XCTAssertEqual(CompanyIdentifier.citizenHoldings.name, #"Citizen Holdings Co., Ltd. "#)
-        XCTAssertEqual(CompanyIdentifier.citizenHoldings.description, #"Citizen Holdings Co., Ltd. "#)
+        XCTAssertEqual(CompanyIdentifier.citizenHoldings.name, #"Citizen Holdings Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.citizenHoldings.description, #"Citizen Holdings Co., Ltd."#)
     
-        // SMART-INNOVATION.inc
+        // SMART­INNOVATION.inc
         XCTAssertEqual(CompanyIdentifier.smartInnovationInc.rawValue, 751)
-        XCTAssertEqual(CompanyIdentifier.smartInnovationInc.name, #"SMART-INNOVATION.inc"#)
-        XCTAssertEqual(CompanyIdentifier.smartInnovationInc.description, #"SMART-INNOVATION.inc"#)
+        XCTAssertEqual(CompanyIdentifier.smartInnovationInc.name, #"SMART­INNOVATION.inc"#)
+        XCTAssertEqual(CompanyIdentifier.smartInnovationInc.description, #"SMART­INNOVATION.inc"#)
     
         // Blackrat Software
         XCTAssertEqual(CompanyIdentifier.blackratSoftware.rawValue, 752)
-        XCTAssertEqual(CompanyIdentifier.blackratSoftware.name, #"Blackrat Software "#)
-        XCTAssertEqual(CompanyIdentifier.blackratSoftware.description, #"Blackrat Software "#)
+        XCTAssertEqual(CompanyIdentifier.blackratSoftware.name, #"Blackrat Software"#)
+        XCTAssertEqual(CompanyIdentifier.blackratSoftware.description, #"Blackrat Software"#)
     
         // The Idea Cave, LLC
         XCTAssertEqual(CompanyIdentifier.ideaCave.rawValue, 753)
@@ -3820,8 +3820,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // IMAGINATION TECHNOLOGIES LTD
         XCTAssertEqual(CompanyIdentifier.imaginationTechnologies.rawValue, 761)
-        XCTAssertEqual(CompanyIdentifier.imaginationTechnologies.name, #"IMAGINATION TECHNOLOGIES LTD "#)
-        XCTAssertEqual(CompanyIdentifier.imaginationTechnologies.description, #"IMAGINATION TECHNOLOGIES LTD "#)
+        XCTAssertEqual(CompanyIdentifier.imaginationTechnologies.name, #"IMAGINATION TECHNOLOGIES LTD"#)
+        XCTAssertEqual(CompanyIdentifier.imaginationTechnologies.description, #"IMAGINATION TECHNOLOGIES LTD"#)
     
         // CoSTAR TEchnologies
         XCTAssertEqual(CompanyIdentifier.costarTechnologies.rawValue, 762)
@@ -3885,8 +3885,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Life Laboratory Inc.
         XCTAssertEqual(CompanyIdentifier.lifeLaboratory.rawValue, 774)
-        XCTAssertEqual(CompanyIdentifier.lifeLaboratory.name, #"Life Laboratory Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.lifeLaboratory.description, #"Life Laboratory Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.lifeLaboratory.name, #"Life Laboratory Inc."#)
+        XCTAssertEqual(CompanyIdentifier.lifeLaboratory.description, #"Life Laboratory Inc."#)
     
         // FUJI INDUSTRIAL CO.,LTD.
         XCTAssertEqual(CompanyIdentifier.fujiIndustrial.rawValue, 775)
@@ -3945,13 +3945,13 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Ducere Technologies Pvt Ltd
         XCTAssertEqual(CompanyIdentifier.ducereTechnologiesPvt.rawValue, 786)
-        XCTAssertEqual(CompanyIdentifier.ducereTechnologiesPvt.name, #"Ducere Technologies Pvt Ltd "#)
-        XCTAssertEqual(CompanyIdentifier.ducereTechnologiesPvt.description, #"Ducere Technologies Pvt Ltd "#)
+        XCTAssertEqual(CompanyIdentifier.ducereTechnologiesPvt.name, #"Ducere Technologies Pvt Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.ducereTechnologiesPvt.description, #"Ducere Technologies Pvt Ltd"#)
     
         // DiveNav, Inc.
         XCTAssertEqual(CompanyIdentifier.divenav.rawValue, 787)
-        XCTAssertEqual(CompanyIdentifier.divenav.name, #"DiveNav, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.divenav.description, #"DiveNav, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.divenav.name, #"DiveNav, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.divenav.description, #"DiveNav, Inc."#)
     
         // RIIG AI Sp. z o.o.
         XCTAssertEqual(CompanyIdentifier.riigAi.rawValue, 788)
@@ -3960,48 +3960,48 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Thermo Fisher Scientific
         XCTAssertEqual(CompanyIdentifier.thermoFisherScientific.rawValue, 789)
-        XCTAssertEqual(CompanyIdentifier.thermoFisherScientific.name, #"Thermo Fisher Scientific "#)
-        XCTAssertEqual(CompanyIdentifier.thermoFisherScientific.description, #"Thermo Fisher Scientific "#)
+        XCTAssertEqual(CompanyIdentifier.thermoFisherScientific.name, #"Thermo Fisher Scientific"#)
+        XCTAssertEqual(CompanyIdentifier.thermoFisherScientific.description, #"Thermo Fisher Scientific"#)
     
         // AG Measurematics Pvt. Ltd.
         XCTAssertEqual(CompanyIdentifier.agMeasurematics.rawValue, 790)
-        XCTAssertEqual(CompanyIdentifier.agMeasurematics.name, #"AG Measurematics Pvt. Ltd. "#)
-        XCTAssertEqual(CompanyIdentifier.agMeasurematics.description, #"AG Measurematics Pvt. Ltd. "#)
+        XCTAssertEqual(CompanyIdentifier.agMeasurematics.name, #"AG Measurematics Pvt. Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.agMeasurematics.description, #"AG Measurematics Pvt. Ltd."#)
     
         // CHUO Electronics CO., LTD.
         XCTAssertEqual(CompanyIdentifier.chuoElectronics.rawValue, 791)
-        XCTAssertEqual(CompanyIdentifier.chuoElectronics.name, #"CHUO Electronics CO., LTD. "#)
-        XCTAssertEqual(CompanyIdentifier.chuoElectronics.description, #"CHUO Electronics CO., LTD. "#)
+        XCTAssertEqual(CompanyIdentifier.chuoElectronics.name, #"CHUO Electronics CO., LTD."#)
+        XCTAssertEqual(CompanyIdentifier.chuoElectronics.description, #"CHUO Electronics CO., LTD."#)
     
         // Aspenta International
         XCTAssertEqual(CompanyIdentifier.aspentaInternational.rawValue, 792)
-        XCTAssertEqual(CompanyIdentifier.aspentaInternational.name, #"Aspenta International "#)
-        XCTAssertEqual(CompanyIdentifier.aspentaInternational.description, #"Aspenta International "#)
+        XCTAssertEqual(CompanyIdentifier.aspentaInternational.name, #"Aspenta International"#)
+        XCTAssertEqual(CompanyIdentifier.aspentaInternational.description, #"Aspenta International"#)
     
         // Eugster Frismag AG
         XCTAssertEqual(CompanyIdentifier.eugsterFrismag.rawValue, 793)
-        XCTAssertEqual(CompanyIdentifier.eugsterFrismag.name, #"Eugster Frismag AG "#)
-        XCTAssertEqual(CompanyIdentifier.eugsterFrismag.description, #"Eugster Frismag AG "#)
+        XCTAssertEqual(CompanyIdentifier.eugsterFrismag.name, #"Eugster Frismag AG"#)
+        XCTAssertEqual(CompanyIdentifier.eugsterFrismag.description, #"Eugster Frismag AG"#)
     
-        // Wurth Elektronik eiSos GmbH & Co. KG ( formerly Amber wireless GmbH)
-        XCTAssertEqual(CompanyIdentifier.wurthElektronikEisosFormerlyAmberWireless.rawValue, 794)
-        XCTAssertEqual(CompanyIdentifier.wurthElektronikEisosFormerlyAmberWireless.name, #"Wurth Elektronik eiSos GmbH & Co. KG ( formerly Amber wireless GmbH) "#)
-        XCTAssertEqual(CompanyIdentifier.wurthElektronikEisosFormerlyAmberWireless.description, #"Wurth Elektronik eiSos GmbH & Co. KG ( formerly Amber wireless GmbH) "#)
+        // Wurth Elektronik eiSos GmbH & Co. KG
+        XCTAssertEqual(CompanyIdentifier.wurthElektronikEisos.rawValue, 794)
+        XCTAssertEqual(CompanyIdentifier.wurthElektronikEisos.name, #"Wurth Elektronik eiSos GmbH & Co. KG"#)
+        XCTAssertEqual(CompanyIdentifier.wurthElektronikEisos.description, #"Wurth Elektronik eiSos GmbH & Co. KG"#)
     
         // HQ Inc
         XCTAssertEqual(CompanyIdentifier.hq.rawValue, 795)
-        XCTAssertEqual(CompanyIdentifier.hq.name, #"HQ Inc "#)
-        XCTAssertEqual(CompanyIdentifier.hq.description, #"HQ Inc "#)
+        XCTAssertEqual(CompanyIdentifier.hq.name, #"HQ Inc"#)
+        XCTAssertEqual(CompanyIdentifier.hq.description, #"HQ Inc"#)
     
         // Lab Sensor Solutions
         XCTAssertEqual(CompanyIdentifier.labSensorSolutions.rawValue, 796)
-        XCTAssertEqual(CompanyIdentifier.labSensorSolutions.name, #"Lab Sensor Solutions "#)
-        XCTAssertEqual(CompanyIdentifier.labSensorSolutions.description, #"Lab Sensor Solutions "#)
+        XCTAssertEqual(CompanyIdentifier.labSensorSolutions.name, #"Lab Sensor Solutions"#)
+        XCTAssertEqual(CompanyIdentifier.labSensorSolutions.description, #"Lab Sensor Solutions"#)
     
         // Enterlab ApS
         XCTAssertEqual(CompanyIdentifier.enterlab.rawValue, 797)
-        XCTAssertEqual(CompanyIdentifier.enterlab.name, #"Enterlab ApS "#)
-        XCTAssertEqual(CompanyIdentifier.enterlab.description, #"Enterlab ApS "#)
+        XCTAssertEqual(CompanyIdentifier.enterlab.name, #"Enterlab ApS"#)
+        XCTAssertEqual(CompanyIdentifier.enterlab.description, #"Enterlab ApS"#)
     
         // Eyefi, Inc.
         XCTAssertEqual(CompanyIdentifier.eyefi.rawValue, 798)
@@ -4010,48 +4010,48 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // MetaSystem S.p.A.
         XCTAssertEqual(CompanyIdentifier.metasystem.rawValue, 799)
-        XCTAssertEqual(CompanyIdentifier.metasystem.name, #"MetaSystem S.p.A. "#)
-        XCTAssertEqual(CompanyIdentifier.metasystem.description, #"MetaSystem S.p.A. "#)
+        XCTAssertEqual(CompanyIdentifier.metasystem.name, #"MetaSystem S.p.A."#)
+        XCTAssertEqual(CompanyIdentifier.metasystem.description, #"MetaSystem S.p.A."#)
     
         // SONO ELECTRONICS. CO., LTD
         XCTAssertEqual(CompanyIdentifier.sonoElectronics.rawValue, 800)
-        XCTAssertEqual(CompanyIdentifier.sonoElectronics.name, #"SONO ELECTRONICS. CO., LTD "#)
-        XCTAssertEqual(CompanyIdentifier.sonoElectronics.description, #"SONO ELECTRONICS. CO., LTD "#)
+        XCTAssertEqual(CompanyIdentifier.sonoElectronics.name, #"SONO ELECTRONICS. CO., LTD"#)
+        XCTAssertEqual(CompanyIdentifier.sonoElectronics.description, #"SONO ELECTRONICS. CO., LTD"#)
     
         // Jewelbots
         XCTAssertEqual(CompanyIdentifier.jewelbots.rawValue, 801)
-        XCTAssertEqual(CompanyIdentifier.jewelbots.name, #"Jewelbots "#)
-        XCTAssertEqual(CompanyIdentifier.jewelbots.description, #"Jewelbots "#)
+        XCTAssertEqual(CompanyIdentifier.jewelbots.name, #"Jewelbots"#)
+        XCTAssertEqual(CompanyIdentifier.jewelbots.description, #"Jewelbots"#)
     
         // Compumedics Limited
         XCTAssertEqual(CompanyIdentifier.compumedics.rawValue, 802)
-        XCTAssertEqual(CompanyIdentifier.compumedics.name, #"Compumedics Limited "#)
-        XCTAssertEqual(CompanyIdentifier.compumedics.description, #"Compumedics Limited "#)
+        XCTAssertEqual(CompanyIdentifier.compumedics.name, #"Compumedics Limited"#)
+        XCTAssertEqual(CompanyIdentifier.compumedics.description, #"Compumedics Limited"#)
     
         // Rotor Bike Components
         XCTAssertEqual(CompanyIdentifier.rotorBikeComponents.rawValue, 803)
-        XCTAssertEqual(CompanyIdentifier.rotorBikeComponents.name, #"Rotor Bike Components "#)
-        XCTAssertEqual(CompanyIdentifier.rotorBikeComponents.description, #"Rotor Bike Components "#)
+        XCTAssertEqual(CompanyIdentifier.rotorBikeComponents.name, #"Rotor Bike Components"#)
+        XCTAssertEqual(CompanyIdentifier.rotorBikeComponents.description, #"Rotor Bike Components"#)
     
         // Astro, Inc.
         XCTAssertEqual(CompanyIdentifier.astro.rawValue, 804)
-        XCTAssertEqual(CompanyIdentifier.astro.name, #"Astro, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.astro.description, #"Astro, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.astro.name, #"Astro, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.astro.description, #"Astro, Inc."#)
     
         // Amotus Solutions
         XCTAssertEqual(CompanyIdentifier.amotusSolutions.rawValue, 805)
-        XCTAssertEqual(CompanyIdentifier.amotusSolutions.name, #"Amotus Solutions "#)
-        XCTAssertEqual(CompanyIdentifier.amotusSolutions.description, #"Amotus Solutions "#)
+        XCTAssertEqual(CompanyIdentifier.amotusSolutions.name, #"Amotus Solutions"#)
+        XCTAssertEqual(CompanyIdentifier.amotusSolutions.description, #"Amotus Solutions"#)
     
         // Healthwear Technologies (Changzhou)Ltd
         XCTAssertEqual(CompanyIdentifier.healthwearTechnologiesChangzhouLtd.rawValue, 806)
-        XCTAssertEqual(CompanyIdentifier.healthwearTechnologiesChangzhouLtd.name, #"Healthwear Technologies (Changzhou)Ltd "#)
-        XCTAssertEqual(CompanyIdentifier.healthwearTechnologiesChangzhouLtd.description, #"Healthwear Technologies (Changzhou)Ltd "#)
+        XCTAssertEqual(CompanyIdentifier.healthwearTechnologiesChangzhouLtd.name, #"Healthwear Technologies (Changzhou)Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.healthwearTechnologiesChangzhouLtd.description, #"Healthwear Technologies (Changzhou)Ltd"#)
     
         // Essex Electronics
         XCTAssertEqual(CompanyIdentifier.essexElectronics.rawValue, 807)
-        XCTAssertEqual(CompanyIdentifier.essexElectronics.name, #"Essex Electronics "#)
-        XCTAssertEqual(CompanyIdentifier.essexElectronics.description, #"Essex Electronics "#)
+        XCTAssertEqual(CompanyIdentifier.essexElectronics.name, #"Essex Electronics"#)
+        XCTAssertEqual(CompanyIdentifier.essexElectronics.description, #"Essex Electronics"#)
     
         // Grundfos A/S
         XCTAssertEqual(CompanyIdentifier.grundfos.rawValue, 808)
@@ -4060,18 +4060,18 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Eargo, Inc.
         XCTAssertEqual(CompanyIdentifier.eargo.rawValue, 809)
-        XCTAssertEqual(CompanyIdentifier.eargo.name, #"Eargo, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.eargo.description, #"Eargo, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.eargo.name, #"Eargo, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.eargo.description, #"Eargo, Inc."#)
     
         // Electronic Design Lab
         XCTAssertEqual(CompanyIdentifier.electronicDesignLab.rawValue, 810)
-        XCTAssertEqual(CompanyIdentifier.electronicDesignLab.name, #"Electronic Design Lab "#)
-        XCTAssertEqual(CompanyIdentifier.electronicDesignLab.description, #"Electronic Design Lab "#)
+        XCTAssertEqual(CompanyIdentifier.electronicDesignLab.name, #"Electronic Design Lab"#)
+        XCTAssertEqual(CompanyIdentifier.electronicDesignLab.description, #"Electronic Design Lab"#)
     
         // ESYLUX
         XCTAssertEqual(CompanyIdentifier.esylux.rawValue, 811)
-        XCTAssertEqual(CompanyIdentifier.esylux.name, #"ESYLUX "#)
-        XCTAssertEqual(CompanyIdentifier.esylux.description, #"ESYLUX "#)
+        XCTAssertEqual(CompanyIdentifier.esylux.name, #"ESYLUX"#)
+        XCTAssertEqual(CompanyIdentifier.esylux.description, #"ESYLUX"#)
     
         // NIPPON SMT.CO.,Ltd
         XCTAssertEqual(CompanyIdentifier.nipponSmt.rawValue, 812)
@@ -4080,8 +4080,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // BM innovations GmbH
         XCTAssertEqual(CompanyIdentifier.bmInnovations.rawValue, 813)
-        XCTAssertEqual(CompanyIdentifier.bmInnovations.name, #"BM innovations GmbH "#)
-        XCTAssertEqual(CompanyIdentifier.bmInnovations.description, #"BM innovations GmbH "#)
+        XCTAssertEqual(CompanyIdentifier.bmInnovations.name, #"BM innovations GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.bmInnovations.description, #"BM innovations GmbH"#)
     
         // indoormap
         XCTAssertEqual(CompanyIdentifier.indoormap.rawValue, 814)
@@ -4090,13 +4090,13 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // OttoQ Inc
         XCTAssertEqual(CompanyIdentifier.ottoq.rawValue, 815)
-        XCTAssertEqual(CompanyIdentifier.ottoq.name, #"OttoQ Inc "#)
-        XCTAssertEqual(CompanyIdentifier.ottoq.description, #"OttoQ Inc "#)
+        XCTAssertEqual(CompanyIdentifier.ottoq.name, #"OttoQ Inc"#)
+        XCTAssertEqual(CompanyIdentifier.ottoq.description, #"OttoQ Inc"#)
     
         // North Pole Engineering
         XCTAssertEqual(CompanyIdentifier.northPoleEngineering.rawValue, 816)
-        XCTAssertEqual(CompanyIdentifier.northPoleEngineering.name, #"North Pole Engineering "#)
-        XCTAssertEqual(CompanyIdentifier.northPoleEngineering.description, #"North Pole Engineering "#)
+        XCTAssertEqual(CompanyIdentifier.northPoleEngineering.name, #"North Pole Engineering"#)
+        XCTAssertEqual(CompanyIdentifier.northPoleEngineering.description, #"North Pole Engineering"#)
     
         // 3flares Technologies Inc.
         XCTAssertEqual(CompanyIdentifier.company3FlaresTechnologies.rawValue, 817)
@@ -4105,18 +4105,18 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Electrocompaniet A.S.
         XCTAssertEqual(CompanyIdentifier.electrocompaniet.rawValue, 818)
-        XCTAssertEqual(CompanyIdentifier.electrocompaniet.name, #"Electrocompaniet A.S. "#)
-        XCTAssertEqual(CompanyIdentifier.electrocompaniet.description, #"Electrocompaniet A.S. "#)
+        XCTAssertEqual(CompanyIdentifier.electrocompaniet.name, #"Electrocompaniet A.S."#)
+        XCTAssertEqual(CompanyIdentifier.electrocompaniet.description, #"Electrocompaniet A.S."#)
     
-        // Mul-T-Lock
+        // Mul­T­Lock
         XCTAssertEqual(CompanyIdentifier.mulTLock.rawValue, 819)
-        XCTAssertEqual(CompanyIdentifier.mulTLock.name, #"Mul-T-Lock"#)
-        XCTAssertEqual(CompanyIdentifier.mulTLock.description, #"Mul-T-Lock"#)
+        XCTAssertEqual(CompanyIdentifier.mulTLock.name, #"Mul­T­Lock"#)
+        XCTAssertEqual(CompanyIdentifier.mulTLock.description, #"Mul­T­Lock"#)
     
-        // Corentium AS
-        XCTAssertEqual(CompanyIdentifier.corentium.rawValue, 820)
-        XCTAssertEqual(CompanyIdentifier.corentium.name, #"Corentium AS "#)
-        XCTAssertEqual(CompanyIdentifier.corentium.description, #"Corentium AS "#)
+        // Airthings ASA
+        XCTAssertEqual(CompanyIdentifier.airthings.rawValue, 820)
+        XCTAssertEqual(CompanyIdentifier.airthings.name, #"Airthings ASA"#)
+        XCTAssertEqual(CompanyIdentifier.airthings.description, #"Airthings ASA"#)
     
         // Enlighted Inc
         XCTAssertEqual(CompanyIdentifier.enlighted.rawValue, 821)
@@ -4135,13 +4135,13 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // COBI GmbH
         XCTAssertEqual(CompanyIdentifier.cobi.rawValue, 824)
-        XCTAssertEqual(CompanyIdentifier.cobi.name, #"COBI GmbH "#)
-        XCTAssertEqual(CompanyIdentifier.cobi.description, #"COBI GmbH "#)
+        XCTAssertEqual(CompanyIdentifier.cobi.name, #"COBI GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.cobi.description, #"COBI GmbH"#)
     
         // Blue Sky Scientific, LLC
         XCTAssertEqual(CompanyIdentifier.blueSkyScientific2.rawValue, 825)
-        XCTAssertEqual(CompanyIdentifier.blueSkyScientific2.name, #"Blue Sky Scientific, LLC "#)
-        XCTAssertEqual(CompanyIdentifier.blueSkyScientific2.description, #"Blue Sky Scientific, LLC "#)
+        XCTAssertEqual(CompanyIdentifier.blueSkyScientific2.name, #"Blue Sky Scientific, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.blueSkyScientific2.description, #"Blue Sky Scientific, LLC"#)
     
         // Appception, Inc.
         XCTAssertEqual(CompanyIdentifier.appception.rawValue, 826)
@@ -4150,8 +4150,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Courtney Thorne Limited
         XCTAssertEqual(CompanyIdentifier.courtneyThorne.rawValue, 827)
-        XCTAssertEqual(CompanyIdentifier.courtneyThorne.name, #"Courtney Thorne Limited "#)
-        XCTAssertEqual(CompanyIdentifier.courtneyThorne.description, #"Courtney Thorne Limited "#)
+        XCTAssertEqual(CompanyIdentifier.courtneyThorne.name, #"Courtney Thorne Limited"#)
+        XCTAssertEqual(CompanyIdentifier.courtneyThorne.description, #"Courtney Thorne Limited"#)
     
         // Virtuosys
         XCTAssertEqual(CompanyIdentifier.virtuosys.rawValue, 828)
@@ -4160,8 +4160,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // TPV Technology Limited
         XCTAssertEqual(CompanyIdentifier.tpvTechnology.rawValue, 829)
-        XCTAssertEqual(CompanyIdentifier.tpvTechnology.name, #"TPV Technology Limited "#)
-        XCTAssertEqual(CompanyIdentifier.tpvTechnology.description, #"TPV Technology Limited "#)
+        XCTAssertEqual(CompanyIdentifier.tpvTechnology.name, #"TPV Technology Limited"#)
+        XCTAssertEqual(CompanyIdentifier.tpvTechnology.description, #"TPV Technology Limited"#)
     
         // Monitra SA
         XCTAssertEqual(CompanyIdentifier.monitra.rawValue, 830)
@@ -4170,23 +4170,23 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Automation Components, Inc.
         XCTAssertEqual(CompanyIdentifier.automationComponents.rawValue, 831)
-        XCTAssertEqual(CompanyIdentifier.automationComponents.name, #"Automation Components, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.automationComponents.description, #"Automation Components, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.automationComponents.name, #"Automation Components, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.automationComponents.description, #"Automation Components, Inc."#)
     
         // Letsense s.r.l.
         XCTAssertEqual(CompanyIdentifier.letsense.rawValue, 832)
-        XCTAssertEqual(CompanyIdentifier.letsense.name, #"Letsense s.r.l. "#)
-        XCTAssertEqual(CompanyIdentifier.letsense.description, #"Letsense s.r.l. "#)
+        XCTAssertEqual(CompanyIdentifier.letsense.name, #"Letsense s.r.l."#)
+        XCTAssertEqual(CompanyIdentifier.letsense.description, #"Letsense s.r.l."#)
     
         // Etesian Technologies LLC
         XCTAssertEqual(CompanyIdentifier.etesianTechnologies.rawValue, 833)
-        XCTAssertEqual(CompanyIdentifier.etesianTechnologies.name, #"Etesian Technologies LLC "#)
-        XCTAssertEqual(CompanyIdentifier.etesianTechnologies.description, #"Etesian Technologies LLC "#)
+        XCTAssertEqual(CompanyIdentifier.etesianTechnologies.name, #"Etesian Technologies LLC"#)
+        XCTAssertEqual(CompanyIdentifier.etesianTechnologies.description, #"Etesian Technologies LLC"#)
     
         // GERTEC BRASIL LTDA.
         XCTAssertEqual(CompanyIdentifier.gertecBrasila.rawValue, 834)
-        XCTAssertEqual(CompanyIdentifier.gertecBrasila.name, #"GERTEC BRASIL LTDA. "#)
-        XCTAssertEqual(CompanyIdentifier.gertecBrasila.description, #"GERTEC BRASIL LTDA. "#)
+        XCTAssertEqual(CompanyIdentifier.gertecBrasila.name, #"GERTEC BRASIL LTDA."#)
+        XCTAssertEqual(CompanyIdentifier.gertecBrasila.description, #"GERTEC BRASIL LTDA."#)
     
         // Drekker Development Pty. Ltd.
         XCTAssertEqual(CompanyIdentifier.drekkerDevelopmentPty.rawValue, 835)
@@ -4195,23 +4195,23 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Whirl Inc
         XCTAssertEqual(CompanyIdentifier.whirl.rawValue, 836)
-        XCTAssertEqual(CompanyIdentifier.whirl.name, #"Whirl Inc "#)
-        XCTAssertEqual(CompanyIdentifier.whirl.description, #"Whirl Inc "#)
+        XCTAssertEqual(CompanyIdentifier.whirl.name, #"Whirl Inc"#)
+        XCTAssertEqual(CompanyIdentifier.whirl.description, #"Whirl Inc"#)
     
         // Locus Positioning
         XCTAssertEqual(CompanyIdentifier.locusPositioning.rawValue, 837)
-        XCTAssertEqual(CompanyIdentifier.locusPositioning.name, #"Locus Positioning "#)
-        XCTAssertEqual(CompanyIdentifier.locusPositioning.description, #"Locus Positioning "#)
+        XCTAssertEqual(CompanyIdentifier.locusPositioning.name, #"Locus Positioning"#)
+        XCTAssertEqual(CompanyIdentifier.locusPositioning.description, #"Locus Positioning"#)
     
         // Acuity Brands Lighting, Inc
         XCTAssertEqual(CompanyIdentifier.acuityBrandsLighting.rawValue, 838)
-        XCTAssertEqual(CompanyIdentifier.acuityBrandsLighting.name, #"Acuity Brands Lighting, Inc "#)
-        XCTAssertEqual(CompanyIdentifier.acuityBrandsLighting.description, #"Acuity Brands Lighting, Inc "#)
+        XCTAssertEqual(CompanyIdentifier.acuityBrandsLighting.name, #"Acuity Brands Lighting, Inc"#)
+        XCTAssertEqual(CompanyIdentifier.acuityBrandsLighting.description, #"Acuity Brands Lighting, Inc"#)
     
         // Prevent Biometrics
         XCTAssertEqual(CompanyIdentifier.preventBiometrics.rawValue, 839)
-        XCTAssertEqual(CompanyIdentifier.preventBiometrics.name, #"Prevent Biometrics "#)
-        XCTAssertEqual(CompanyIdentifier.preventBiometrics.description, #"Prevent Biometrics "#)
+        XCTAssertEqual(CompanyIdentifier.preventBiometrics.name, #"Prevent Biometrics"#)
+        XCTAssertEqual(CompanyIdentifier.preventBiometrics.description, #"Prevent Biometrics"#)
     
         // Arioneo
         XCTAssertEqual(CompanyIdentifier.arioneo.rawValue, 840)
@@ -4220,23 +4220,23 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // VersaMe
         XCTAssertEqual(CompanyIdentifier.versame.rawValue, 841)
-        XCTAssertEqual(CompanyIdentifier.versame.name, #"VersaMe "#)
-        XCTAssertEqual(CompanyIdentifier.versame.description, #"VersaMe "#)
+        XCTAssertEqual(CompanyIdentifier.versame.name, #"VersaMe"#)
+        XCTAssertEqual(CompanyIdentifier.versame.description, #"VersaMe"#)
     
         // Vaddio
         XCTAssertEqual(CompanyIdentifier.vaddio.rawValue, 842)
-        XCTAssertEqual(CompanyIdentifier.vaddio.name, #"Vaddio "#)
-        XCTAssertEqual(CompanyIdentifier.vaddio.description, #"Vaddio "#)
+        XCTAssertEqual(CompanyIdentifier.vaddio.name, #"Vaddio"#)
+        XCTAssertEqual(CompanyIdentifier.vaddio.description, #"Vaddio"#)
     
         // Libratone A/S
         XCTAssertEqual(CompanyIdentifier.libratone.rawValue, 843)
-        XCTAssertEqual(CompanyIdentifier.libratone.name, #"Libratone A/S "#)
-        XCTAssertEqual(CompanyIdentifier.libratone.description, #"Libratone A/S "#)
+        XCTAssertEqual(CompanyIdentifier.libratone.name, #"Libratone A/S"#)
+        XCTAssertEqual(CompanyIdentifier.libratone.description, #"Libratone A/S"#)
     
         // HM Electronics, Inc.
         XCTAssertEqual(CompanyIdentifier.hmElectronics.rawValue, 844)
-        XCTAssertEqual(CompanyIdentifier.hmElectronics.name, #"HM Electronics, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.hmElectronics.description, #"HM Electronics, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.hmElectronics.name, #"HM Electronics, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.hmElectronics.description, #"HM Electronics, Inc."#)
     
         // TASER International, Inc.
         XCTAssertEqual(CompanyIdentifier.taserInternational.rawValue, 845)
@@ -4245,23 +4245,23 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // SafeTrust Inc.
         XCTAssertEqual(CompanyIdentifier.safetrust.rawValue, 846)
-        XCTAssertEqual(CompanyIdentifier.safetrust.name, #"SafeTrust Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.safetrust.description, #"SafeTrust Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.safetrust.name, #"SafeTrust Inc."#)
+        XCTAssertEqual(CompanyIdentifier.safetrust.description, #"SafeTrust Inc."#)
     
         // Heartland Payment Systems
         XCTAssertEqual(CompanyIdentifier.heartlandPaymentSystems.rawValue, 847)
-        XCTAssertEqual(CompanyIdentifier.heartlandPaymentSystems.name, #"Heartland Payment Systems "#)
-        XCTAssertEqual(CompanyIdentifier.heartlandPaymentSystems.description, #"Heartland Payment Systems "#)
+        XCTAssertEqual(CompanyIdentifier.heartlandPaymentSystems.name, #"Heartland Payment Systems"#)
+        XCTAssertEqual(CompanyIdentifier.heartlandPaymentSystems.description, #"Heartland Payment Systems"#)
     
         // Bitstrata Systems Inc.
         XCTAssertEqual(CompanyIdentifier.bitstrataSystems.rawValue, 848)
-        XCTAssertEqual(CompanyIdentifier.bitstrataSystems.name, #"Bitstrata Systems Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.bitstrataSystems.description, #"Bitstrata Systems Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.bitstrataSystems.name, #"Bitstrata Systems Inc."#)
+        XCTAssertEqual(CompanyIdentifier.bitstrataSystems.description, #"Bitstrata Systems Inc."#)
     
         // Pieps GmbH
         XCTAssertEqual(CompanyIdentifier.pieps.rawValue, 849)
-        XCTAssertEqual(CompanyIdentifier.pieps.name, #"Pieps GmbH "#)
-        XCTAssertEqual(CompanyIdentifier.pieps.description, #"Pieps GmbH "#)
+        XCTAssertEqual(CompanyIdentifier.pieps.name, #"Pieps GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.pieps.description, #"Pieps GmbH"#)
     
         // iRiding(Xiamen)Technology Co.,Ltd.
         XCTAssertEqual(CompanyIdentifier.iridingXiamenTechnology.rawValue, 850)
@@ -4270,28 +4270,28 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Alpha Audiotronics, Inc.
         XCTAssertEqual(CompanyIdentifier.alphaAudiotronics.rawValue, 851)
-        XCTAssertEqual(CompanyIdentifier.alphaAudiotronics.name, #"Alpha Audiotronics, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.alphaAudiotronics.description, #"Alpha Audiotronics, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.alphaAudiotronics.name, #"Alpha Audiotronics, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.alphaAudiotronics.description, #"Alpha Audiotronics, Inc."#)
     
         // TOPPAN FORMS CO.,LTD.
         XCTAssertEqual(CompanyIdentifier.toppanForms.rawValue, 852)
-        XCTAssertEqual(CompanyIdentifier.toppanForms.name, #"TOPPAN FORMS CO.,LTD. "#)
-        XCTAssertEqual(CompanyIdentifier.toppanForms.description, #"TOPPAN FORMS CO.,LTD. "#)
+        XCTAssertEqual(CompanyIdentifier.toppanForms.name, #"TOPPAN FORMS CO.,LTD."#)
+        XCTAssertEqual(CompanyIdentifier.toppanForms.description, #"TOPPAN FORMS CO.,LTD."#)
     
         // Sigma Designs, Inc.
         XCTAssertEqual(CompanyIdentifier.sigmaDesigns.rawValue, 853)
-        XCTAssertEqual(CompanyIdentifier.sigmaDesigns.name, #"Sigma Designs, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.sigmaDesigns.description, #"Sigma Designs, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.sigmaDesigns.name, #"Sigma Designs, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.sigmaDesigns.description, #"Sigma Designs, Inc."#)
     
         // Spectrum Brands, Inc.
         XCTAssertEqual(CompanyIdentifier.spectrumBrands.rawValue, 854)
-        XCTAssertEqual(CompanyIdentifier.spectrumBrands.name, #"Spectrum Brands, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.spectrumBrands.description, #"Spectrum Brands, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.spectrumBrands.name, #"Spectrum Brands, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.spectrumBrands.description, #"Spectrum Brands, Inc."#)
     
         // Polymap Wireless
         XCTAssertEqual(CompanyIdentifier.polymapWireless.rawValue, 855)
-        XCTAssertEqual(CompanyIdentifier.polymapWireless.name, #"Polymap Wireless "#)
-        XCTAssertEqual(CompanyIdentifier.polymapWireless.description, #"Polymap Wireless "#)
+        XCTAssertEqual(CompanyIdentifier.polymapWireless.name, #"Polymap Wireless"#)
+        XCTAssertEqual(CompanyIdentifier.polymapWireless.description, #"Polymap Wireless"#)
     
         // MagniWare Ltd.
         XCTAssertEqual(CompanyIdentifier.magniware.rawValue, 856)
@@ -4300,23 +4300,23 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Novotec Medical GmbH
         XCTAssertEqual(CompanyIdentifier.novotecMedical.rawValue, 857)
-        XCTAssertEqual(CompanyIdentifier.novotecMedical.name, #"Novotec Medical GmbH "#)
-        XCTAssertEqual(CompanyIdentifier.novotecMedical.description, #"Novotec Medical GmbH "#)
+        XCTAssertEqual(CompanyIdentifier.novotecMedical.name, #"Novotec Medical GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.novotecMedical.description, #"Novotec Medical GmbH"#)
     
-        // Medicom Innovation Partner a/s
-        XCTAssertEqual(CompanyIdentifier.medicomInnovationPartner.rawValue, 858)
-        XCTAssertEqual(CompanyIdentifier.medicomInnovationPartner.name, #"Medicom Innovation Partner a/s "#)
-        XCTAssertEqual(CompanyIdentifier.medicomInnovationPartner.description, #"Medicom Innovation Partner a/s "#)
+        // Phillips­Medisize A/S
+        XCTAssertEqual(CompanyIdentifier.phillipsMedisize.rawValue, 858)
+        XCTAssertEqual(CompanyIdentifier.phillipsMedisize.name, #"Phillips­Medisize A/S"#)
+        XCTAssertEqual(CompanyIdentifier.phillipsMedisize.description, #"Phillips­Medisize A/S"#)
     
         // Matrix Inc.
         XCTAssertEqual(CompanyIdentifier.matrix.rawValue, 859)
-        XCTAssertEqual(CompanyIdentifier.matrix.name, #"Matrix Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.matrix.description, #"Matrix Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.matrix.name, #"Matrix Inc."#)
+        XCTAssertEqual(CompanyIdentifier.matrix.description, #"Matrix Inc."#)
     
         // Eaton Corporation
         XCTAssertEqual(CompanyIdentifier.eaton.rawValue, 860)
-        XCTAssertEqual(CompanyIdentifier.eaton.name, #"Eaton Corporation "#)
-        XCTAssertEqual(CompanyIdentifier.eaton.description, #"Eaton Corporation "#)
+        XCTAssertEqual(CompanyIdentifier.eaton.name, #"Eaton Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.eaton.description, #"Eaton Corporation"#)
     
         // KYS
         XCTAssertEqual(CompanyIdentifier.kys.rawValue, 861)
@@ -4325,23 +4325,23 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Naya Health, Inc.
         XCTAssertEqual(CompanyIdentifier.nayaHealth.rawValue, 862)
-        XCTAssertEqual(CompanyIdentifier.nayaHealth.name, #"Naya Health, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.nayaHealth.description, #"Naya Health, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.nayaHealth.name, #"Naya Health, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.nayaHealth.description, #"Naya Health, Inc."#)
     
         // Acromag
         XCTAssertEqual(CompanyIdentifier.acromag.rawValue, 863)
-        XCTAssertEqual(CompanyIdentifier.acromag.name, #"Acromag "#)
-        XCTAssertEqual(CompanyIdentifier.acromag.description, #"Acromag "#)
+        XCTAssertEqual(CompanyIdentifier.acromag.name, #"Acromag"#)
+        XCTAssertEqual(CompanyIdentifier.acromag.description, #"Acromag"#)
     
         // Insulet Corporation
         XCTAssertEqual(CompanyIdentifier.insulet.rawValue, 864)
-        XCTAssertEqual(CompanyIdentifier.insulet.name, #"Insulet Corporation "#)
-        XCTAssertEqual(CompanyIdentifier.insulet.description, #"Insulet Corporation "#)
+        XCTAssertEqual(CompanyIdentifier.insulet.name, #"Insulet Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.insulet.description, #"Insulet Corporation"#)
     
         // Wellinks Inc.
         XCTAssertEqual(CompanyIdentifier.wellinks.rawValue, 865)
-        XCTAssertEqual(CompanyIdentifier.wellinks.name, #"Wellinks Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.wellinks.description, #"Wellinks Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.wellinks.name, #"Wellinks Inc."#)
+        XCTAssertEqual(CompanyIdentifier.wellinks.description, #"Wellinks Inc."#)
     
         // ON Semiconductor
         XCTAssertEqual(CompanyIdentifier.onSemiconductor.rawValue, 866)
@@ -4350,18 +4350,18 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // FREELAP SA
         XCTAssertEqual(CompanyIdentifier.freelap.rawValue, 867)
-        XCTAssertEqual(CompanyIdentifier.freelap.name, #"FREELAP SA "#)
-        XCTAssertEqual(CompanyIdentifier.freelap.description, #"FREELAP SA "#)
+        XCTAssertEqual(CompanyIdentifier.freelap.name, #"FREELAP SA"#)
+        XCTAssertEqual(CompanyIdentifier.freelap.description, #"FREELAP SA"#)
     
         // Favero Electronics Srl
         XCTAssertEqual(CompanyIdentifier.faveroElectronics.rawValue, 868)
-        XCTAssertEqual(CompanyIdentifier.faveroElectronics.name, #"Favero Electronics Srl "#)
-        XCTAssertEqual(CompanyIdentifier.faveroElectronics.description, #"Favero Electronics Srl "#)
+        XCTAssertEqual(CompanyIdentifier.faveroElectronics.name, #"Favero Electronics Srl"#)
+        XCTAssertEqual(CompanyIdentifier.faveroElectronics.description, #"Favero Electronics Srl"#)
     
         // BioMech Sensor LLC
         XCTAssertEqual(CompanyIdentifier.biomechSensor.rawValue, 869)
-        XCTAssertEqual(CompanyIdentifier.biomechSensor.name, #"BioMech Sensor LLC "#)
-        XCTAssertEqual(CompanyIdentifier.biomechSensor.description, #"BioMech Sensor LLC "#)
+        XCTAssertEqual(CompanyIdentifier.biomechSensor.name, #"BioMech Sensor LLC"#)
+        XCTAssertEqual(CompanyIdentifier.biomechSensor.description, #"BioMech Sensor LLC"#)
     
         // BOLTT Sports technologies Private limited
         XCTAssertEqual(CompanyIdentifier.bolttSportsTechnologies.rawValue, 870)
@@ -4370,38 +4370,38 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Saphe International
         XCTAssertEqual(CompanyIdentifier.sapheInternational.rawValue, 871)
-        XCTAssertEqual(CompanyIdentifier.sapheInternational.name, #"Saphe International "#)
-        XCTAssertEqual(CompanyIdentifier.sapheInternational.description, #"Saphe International "#)
+        XCTAssertEqual(CompanyIdentifier.sapheInternational.name, #"Saphe International"#)
+        XCTAssertEqual(CompanyIdentifier.sapheInternational.description, #"Saphe International"#)
     
         // Metormote AB
         XCTAssertEqual(CompanyIdentifier.metormote.rawValue, 872)
-        XCTAssertEqual(CompanyIdentifier.metormote.name, #"Metormote AB "#)
-        XCTAssertEqual(CompanyIdentifier.metormote.description, #"Metormote AB "#)
+        XCTAssertEqual(CompanyIdentifier.metormote.name, #"Metormote AB"#)
+        XCTAssertEqual(CompanyIdentifier.metormote.description, #"Metormote AB"#)
     
         // littleBits
         XCTAssertEqual(CompanyIdentifier.littlebits.rawValue, 873)
-        XCTAssertEqual(CompanyIdentifier.littlebits.name, #"littleBits "#)
-        XCTAssertEqual(CompanyIdentifier.littlebits.description, #"littleBits "#)
+        XCTAssertEqual(CompanyIdentifier.littlebits.name, #"littleBits"#)
+        XCTAssertEqual(CompanyIdentifier.littlebits.description, #"littleBits"#)
     
         // SetPoint Medical
         XCTAssertEqual(CompanyIdentifier.setpointMedical.rawValue, 874)
-        XCTAssertEqual(CompanyIdentifier.setpointMedical.name, #"SetPoint Medical "#)
-        XCTAssertEqual(CompanyIdentifier.setpointMedical.description, #"SetPoint Medical "#)
+        XCTAssertEqual(CompanyIdentifier.setpointMedical.name, #"SetPoint Medical"#)
+        XCTAssertEqual(CompanyIdentifier.setpointMedical.description, #"SetPoint Medical"#)
     
         // BRControls Products BV
         XCTAssertEqual(CompanyIdentifier.brcontrolsProducts.rawValue, 875)
-        XCTAssertEqual(CompanyIdentifier.brcontrolsProducts.name, #"BRControls Products BV "#)
-        XCTAssertEqual(CompanyIdentifier.brcontrolsProducts.description, #"BRControls Products BV "#)
+        XCTAssertEqual(CompanyIdentifier.brcontrolsProducts.name, #"BRControls Products BV"#)
+        XCTAssertEqual(CompanyIdentifier.brcontrolsProducts.description, #"BRControls Products BV"#)
     
         // Zipcar
         XCTAssertEqual(CompanyIdentifier.zipcar.rawValue, 876)
-        XCTAssertEqual(CompanyIdentifier.zipcar.name, #"Zipcar "#)
-        XCTAssertEqual(CompanyIdentifier.zipcar.description, #"Zipcar "#)
+        XCTAssertEqual(CompanyIdentifier.zipcar.name, #"Zipcar"#)
+        XCTAssertEqual(CompanyIdentifier.zipcar.description, #"Zipcar"#)
     
         // AirBolt Pty Ltd
         XCTAssertEqual(CompanyIdentifier.airboltPty.rawValue, 877)
-        XCTAssertEqual(CompanyIdentifier.airboltPty.name, #"AirBolt Pty Ltd "#)
-        XCTAssertEqual(CompanyIdentifier.airboltPty.description, #"AirBolt Pty Ltd "#)
+        XCTAssertEqual(CompanyIdentifier.airboltPty.name, #"AirBolt Pty Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.airboltPty.description, #"AirBolt Pty Ltd"#)
     
         // MOTIVE TECHNOLOGIES, INC.
         XCTAssertEqual(CompanyIdentifier.motiveTechnologies.rawValue, 878)
@@ -4410,13 +4410,13 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Motiv, Inc.
         XCTAssertEqual(CompanyIdentifier.motiv.rawValue, 879)
-        XCTAssertEqual(CompanyIdentifier.motiv.name, #"Motiv, Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.motiv.description, #"Motiv, Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.motiv.name, #"Motiv, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.motiv.description, #"Motiv, Inc."#)
     
         // Wazombi Labs OÜ
         XCTAssertEqual(CompanyIdentifier.wazombiLabsOu.rawValue, 880)
-        XCTAssertEqual(CompanyIdentifier.wazombiLabsOu.name, #"Wazombi Labs OÜ "#)
-        XCTAssertEqual(CompanyIdentifier.wazombiLabsOu.description, #"Wazombi Labs OÜ "#)
+        XCTAssertEqual(CompanyIdentifier.wazombiLabsOu.name, #"Wazombi Labs OÜ"#)
+        XCTAssertEqual(CompanyIdentifier.wazombiLabsOu.description, #"Wazombi Labs OÜ"#)
     
         // ORBCOMM
         XCTAssertEqual(CompanyIdentifier.orbcomm.rawValue, 881)
@@ -4488,15 +4488,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.lulabytes.name, #"lulabytes S.L."#)
         XCTAssertEqual(CompanyIdentifier.lulabytes.description, #"lulabytes S.L."#)
     
-        // Société des Produits Nestlé S.A. (formerly Nestec S.A.)
+        // Société des Produits Nestlé S.A.
         XCTAssertEqual(CompanyIdentifier.societeDesProduitsNestle.rawValue, 895)
-        XCTAssertEqual(CompanyIdentifier.societeDesProduitsNestle.name, #"Société des Produits Nestlé S.A. (formerly Nestec S.A.)"#)
-        XCTAssertEqual(CompanyIdentifier.societeDesProduitsNestle.description, #"Société des Produits Nestlé S.A. (formerly Nestec S.A.)"#)
+        XCTAssertEqual(CompanyIdentifier.societeDesProduitsNestle.name, #"Société des Produits Nestlé S.A."#)
+        XCTAssertEqual(CompanyIdentifier.societeDesProduitsNestle.description, #"Société des Produits Nestlé S.A."#)
     
-        // LLC "MEGA-F service"
-        XCTAssertEqual(CompanyIdentifier.megaFService.rawValue, 896)
-        XCTAssertEqual(CompanyIdentifier.megaFService.name, #"LLC "MEGA-F service""#)
-        XCTAssertEqual(CompanyIdentifier.megaFService.description, #"LLC "MEGA-F service""#)
+        // LLC ”MEGA­F service”
+        XCTAssertEqual(CompanyIdentifier.llcMegaFService.rawValue, 896)
+        XCTAssertEqual(CompanyIdentifier.llcMegaFService.name, #"LLC ”MEGA­F service”"#)
+        XCTAssertEqual(CompanyIdentifier.llcMegaFService.description, #"LLC ”MEGA­F service”"#)
     
         // Sharp Corporation
         XCTAssertEqual(CompanyIdentifier.sharp.rawValue, 897)
@@ -4728,10 +4728,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.allswell.name, #"Allswell Inc."#)
         XCTAssertEqual(CompanyIdentifier.allswell.description, #"Allswell Inc."#)
     
-        // Comm-N-Sense Corp DBA Verigo
+        // Comm­N­Sense Corp DBA Verigo
         XCTAssertEqual(CompanyIdentifier.commNSenseDbaVerigo.rawValue, 943)
-        XCTAssertEqual(CompanyIdentifier.commNSenseDbaVerigo.name, #"Comm-N-Sense Corp DBA Verigo"#)
-        XCTAssertEqual(CompanyIdentifier.commNSenseDbaVerigo.description, #"Comm-N-Sense Corp DBA Verigo"#)
+        XCTAssertEqual(CompanyIdentifier.commNSenseDbaVerigo.name, #"Comm­N­Sense Corp DBA Verigo"#)
+        XCTAssertEqual(CompanyIdentifier.commNSenseDbaVerigo.description, #"Comm­N­Sense Corp DBA Verigo"#)
     
         // VIBRADORM GmbH
         XCTAssertEqual(CompanyIdentifier.vibradorm.rawValue, 944)
@@ -4773,10 +4773,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.airbly.name, #"Airbly Inc."#)
         XCTAssertEqual(CompanyIdentifier.airbly.description, #"Airbly Inc."#)
     
-        // A-Safe Limited
+        // A­Safe Limited
         XCTAssertEqual(CompanyIdentifier.aSafe.rawValue, 952)
-        XCTAssertEqual(CompanyIdentifier.aSafe.name, #"A-Safe Limited"#)
-        XCTAssertEqual(CompanyIdentifier.aSafe.description, #"A-Safe Limited"#)
+        XCTAssertEqual(CompanyIdentifier.aSafe.name, #"A­Safe Limited"#)
+        XCTAssertEqual(CompanyIdentifier.aSafe.description, #"A­Safe Limited"#)
     
         // FREDERIQUE CONSTANT SA
         XCTAssertEqual(CompanyIdentifier.frederiqueConstant.rawValue, 953)
@@ -4813,10 +4813,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.ilumiSolutions.name, #"iLumi Solutions Inc."#)
         XCTAssertEqual(CompanyIdentifier.ilumiSolutions.description, #"iLumi Solutions Inc."#)
     
-        // Arch Systems Inc.
-        XCTAssertEqual(CompanyIdentifier.archSystems.rawValue, 960)
-        XCTAssertEqual(CompanyIdentifier.archSystems.name, #"Arch Systems Inc."#)
-        XCTAssertEqual(CompanyIdentifier.archSystems.description, #"Arch Systems Inc."#)
+        // Arch Systems Inc. Bluetooth SIG Proprietary
+        XCTAssertEqual(CompanyIdentifier.archSystemsBluetoothSigProprietary.rawValue, 960)
+        XCTAssertEqual(CompanyIdentifier.archSystemsBluetoothSigProprietary.name, #"Arch Systems Inc. Bluetooth SIG Proprietary"#)
+        XCTAssertEqual(CompanyIdentifier.archSystemsBluetoothSigProprietary.description, #"Arch Systems Inc. Bluetooth SIG Proprietary"#)
     
         // Ember Technologies, Inc.
         XCTAssertEqual(CompanyIdentifier.emberTechnologies.rawValue, 961)
@@ -4933,10 +4933,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.finsecur.name, #"FINSECUR"#)
         XCTAssertEqual(CompanyIdentifier.finsecur.description, #"FINSECUR"#)
     
-        // Zen-Me Labs Ltd
+        // Zen­Me Labs Ltd
         XCTAssertEqual(CompanyIdentifier.zenMeLabs.rawValue, 984)
-        XCTAssertEqual(CompanyIdentifier.zenMeLabs.name, #"Zen-Me Labs Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.zenMeLabs.description, #"Zen-Me Labs Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.zenMeLabs.name, #"Zen­Me Labs Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.zenMeLabs.description, #"Zen­Me Labs Ltd"#)
     
         // 3IWare Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.company3Iware.rawValue, 985)
@@ -4993,10 +4993,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.qualcommLife.name, #"Qualcomm Life Inc"#)
         XCTAssertEqual(CompanyIdentifier.qualcommLife.description, #"Qualcomm Life Inc"#)
     
-        // Chip-ing AG
+        // Chip­ing AG
         XCTAssertEqual(CompanyIdentifier.chipIng.rawValue, 996)
-        XCTAssertEqual(CompanyIdentifier.chipIng.name, #"Chip-ing AG"#)
-        XCTAssertEqual(CompanyIdentifier.chipIng.description, #"Chip-ing AG"#)
+        XCTAssertEqual(CompanyIdentifier.chipIng.name, #"Chip­ing AG"#)
+        XCTAssertEqual(CompanyIdentifier.chipIng.description, #"Chip­ing AG"#)
     
         // ffly4u
         XCTAssertEqual(CompanyIdentifier.ffly4U.rawValue, 997)
@@ -5113,15 +5113,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.noxMedical.name, #"Nox Medical"#)
         XCTAssertEqual(CompanyIdentifier.noxMedical.description, #"Nox Medical"#)
     
-        // Kimberly-Clark
+        // Kimberly­Clark
         XCTAssertEqual(CompanyIdentifier.kimberlyClark.rawValue, 1020)
-        XCTAssertEqual(CompanyIdentifier.kimberlyClark.name, #"Kimberly-Clark"#)
-        XCTAssertEqual(CompanyIdentifier.kimberlyClark.description, #"Kimberly-Clark"#)
+        XCTAssertEqual(CompanyIdentifier.kimberlyClark.name, #"Kimberly­Clark"#)
+        XCTAssertEqual(CompanyIdentifier.kimberlyClark.description, #"Kimberly­Clark"#)
     
-        // Trimble Navigation Ltd.
-        XCTAssertEqual(CompanyIdentifier.trimbleNavigation.rawValue, 1021)
-        XCTAssertEqual(CompanyIdentifier.trimbleNavigation.name, #"Trimble Navigation Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.trimbleNavigation.description, #"Trimble Navigation Ltd."#)
+        // Trimble Inc.
+        XCTAssertEqual(CompanyIdentifier.trimble.rawValue, 1021)
+        XCTAssertEqual(CompanyIdentifier.trimble.name, #"Trimble Inc."#)
+        XCTAssertEqual(CompanyIdentifier.trimble.description, #"Trimble Inc."#)
     
         // Littelfuse
         XCTAssertEqual(CompanyIdentifier.littelfuse.rawValue, 1022)
@@ -5133,10 +5133,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.withings.name, #"Withings"#)
         XCTAssertEqual(CompanyIdentifier.withings.description, #"Withings"#)
     
-        // i-developer IT Beratung UG
+        // i­developer IT Beratung UG
         XCTAssertEqual(CompanyIdentifier.iDeveloperItBeratungUg.rawValue, 1024)
-        XCTAssertEqual(CompanyIdentifier.iDeveloperItBeratungUg.name, #"i-developer IT Beratung UG"#)
-        XCTAssertEqual(CompanyIdentifier.iDeveloperItBeratungUg.description, #"i-developer IT Beratung UG"#)
+        XCTAssertEqual(CompanyIdentifier.iDeveloperItBeratungUg.name, #"i­developer IT Beratung UG"#)
+        XCTAssertEqual(CompanyIdentifier.iDeveloperItBeratungUg.description, #"i­developer IT Beratung UG"#)
     
         // Relations Inc.
         XCTAssertEqual(CompanyIdentifier.relations.rawValue, 1025)
@@ -5178,15 +5178,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.togethome.name, #"ToGetHome Inc."#)
         XCTAssertEqual(CompanyIdentifier.togethome.description, #"ToGetHome Inc."#)
     
-        // AXIS
-        XCTAssertEqual(CompanyIdentifier.axis.rawValue, 1033)
-        XCTAssertEqual(CompanyIdentifier.axis.name, #"AXIS"#)
-        XCTAssertEqual(CompanyIdentifier.axis.description, #"AXIS"#)
+        // RYSE INC.
+        XCTAssertEqual(CompanyIdentifier.ryse.rawValue, 1033)
+        XCTAssertEqual(CompanyIdentifier.ryse.name, #"RYSE INC."#)
+        XCTAssertEqual(CompanyIdentifier.ryse.description, #"RYSE INC."#)
     
-        // Openmatics
-        XCTAssertEqual(CompanyIdentifier.openmatics.rawValue, 1034)
-        XCTAssertEqual(CompanyIdentifier.openmatics.name, #"Openmatics"#)
-        XCTAssertEqual(CompanyIdentifier.openmatics.description, #"Openmatics"#)
+        // ZF OPENMATICS s.r.o.
+        XCTAssertEqual(CompanyIdentifier.zfOpenmatics.rawValue, 1034)
+        XCTAssertEqual(CompanyIdentifier.zfOpenmatics.name, #"ZF OPENMATICS s.r.o."#)
+        XCTAssertEqual(CompanyIdentifier.zfOpenmatics.description, #"ZF OPENMATICS s.r.o."#)
     
         // Jana Care Inc.
         XCTAssertEqual(CompanyIdentifier.janaCare.rawValue, 1035)
@@ -5208,10 +5208,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.skfUK.name, #"SKF (U.K.) Limited"#)
         XCTAssertEqual(CompanyIdentifier.skfUK.description, #"SKF (U.K.) Limited"#)
     
-        // CO-AX Technology, Inc.
+        // CO­AX Technology, Inc.
         XCTAssertEqual(CompanyIdentifier.coAxTechnology.rawValue, 1039)
-        XCTAssertEqual(CompanyIdentifier.coAxTechnology.name, #"CO-AX Technology, Inc."#)
-        XCTAssertEqual(CompanyIdentifier.coAxTechnology.description, #"CO-AX Technology, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.coAxTechnology.name, #"CO­AX Technology, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.coAxTechnology.description, #"CO­AX Technology, Inc."#)
     
         // Fender Musical Instruments
         XCTAssertEqual(CompanyIdentifier.fenderMusicalInstruments.rawValue, 1040)
@@ -5378,10 +5378,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.snapstyk.name, #"SnapStyk Inc."#)
         XCTAssertEqual(CompanyIdentifier.snapstyk.description, #"SnapStyk Inc."#)
     
-        // Amway Corporation
-        XCTAssertEqual(CompanyIdentifier.amway.rawValue, 1073)
-        XCTAssertEqual(CompanyIdentifier.amway.name, #"Amway Corporation"#)
-        XCTAssertEqual(CompanyIdentifier.amway.description, #"Amway Corporation"#)
+        // Alticor Inc.
+        XCTAssertEqual(CompanyIdentifier.alticor.rawValue, 1073)
+        XCTAssertEqual(CompanyIdentifier.alticor.name, #"Alticor Inc."#)
+        XCTAssertEqual(CompanyIdentifier.alticor.description, #"Alticor Inc."#)
     
         // Silk Labs, Inc.
         XCTAssertEqual(CompanyIdentifier.silkLabs.rawValue, 1074)
@@ -5548,10 +5548,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.svepDesignCenter.name, #"Svep Design Center AB"#)
         XCTAssertEqual(CompanyIdentifier.svepDesignCenter.description, #"Svep Design Center AB"#)
     
-        // Qorvo Utrecht B.V. formerly GreenPeak Technologies BV
-        XCTAssertEqual(CompanyIdentifier.qorvoUtrechtFormerlyGreenpeakTechnologies.rawValue, 1107)
-        XCTAssertEqual(CompanyIdentifier.qorvoUtrechtFormerlyGreenpeakTechnologies.name, #"Qorvo Utrecht B.V. formerly GreenPeak Technologies BV"#)
-        XCTAssertEqual(CompanyIdentifier.qorvoUtrechtFormerlyGreenpeakTechnologies.description, #"Qorvo Utrecht B.V. formerly GreenPeak Technologies BV"#)
+        // Qorvo Utrecht B.V.
+        XCTAssertEqual(CompanyIdentifier.qorvoUtrecht.rawValue, 1107)
+        XCTAssertEqual(CompanyIdentifier.qorvoUtrecht.name, #"Qorvo Utrecht B.V."#)
+        XCTAssertEqual(CompanyIdentifier.qorvoUtrecht.description, #"Qorvo Utrecht B.V."#)
     
         // Sphinx Electronics GmbH & Co KG
         XCTAssertEqual(CompanyIdentifier.sphinxElectronics.rawValue, 1108)
@@ -5678,10 +5678,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.qingdaoRealtimeTechnology.name, #"Qingdao Realtime Technology Co., Ltd."#)
         XCTAssertEqual(CompanyIdentifier.qingdaoRealtimeTechnology.description, #"Qingdao Realtime Technology Co., Ltd."#)
     
-        // BEGA Gantenbrink-Leuchten KG
+        // BEGA Gantenbrink­Leuchten KG
         XCTAssertEqual(CompanyIdentifier.begaGantenbrinkLeuchtenKg.rawValue, 1133)
-        XCTAssertEqual(CompanyIdentifier.begaGantenbrinkLeuchtenKg.name, #"BEGA Gantenbrink-Leuchten KG"#)
-        XCTAssertEqual(CompanyIdentifier.begaGantenbrinkLeuchtenKg.description, #"BEGA Gantenbrink-Leuchten KG"#)
+        XCTAssertEqual(CompanyIdentifier.begaGantenbrinkLeuchtenKg.name, #"BEGA Gantenbrink­Leuchten KG"#)
+        XCTAssertEqual(CompanyIdentifier.begaGantenbrinkLeuchtenKg.description, #"BEGA Gantenbrink­Leuchten KG"#)
     
         // Pambor Ltd.
         XCTAssertEqual(CompanyIdentifier.pambor.rawValue, 1134)
@@ -5703,10 +5703,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.tivo.name, #"TiVo Corp"#)
         XCTAssertEqual(CompanyIdentifier.tivo.description, #"TiVo Corp"#)
     
-        // Control-J Pty Ltd
+        // Control­J Pty Ltd
         XCTAssertEqual(CompanyIdentifier.controlJPty.rawValue, 1138)
-        XCTAssertEqual(CompanyIdentifier.controlJPty.name, #"Control-J Pty Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.controlJPty.description, #"Control-J Pty Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.controlJPty.name, #"Control­J Pty Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.controlJPty.description, #"Control­J Pty Ltd"#)
     
         // Steelcase, Inc.
         XCTAssertEqual(CompanyIdentifier.steelcase.rawValue, 1139)
@@ -5768,10 +5768,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.ourhubDevIvs.name, #"OurHub Dev IvS"#)
         XCTAssertEqual(CompanyIdentifier.ourhubDevIvs.description, #"OurHub Dev IvS"#)
     
-        // Pro-Mark, Inc.
+        // Pro­Mark, Inc.
         XCTAssertEqual(CompanyIdentifier.proMark.rawValue, 1151)
-        XCTAssertEqual(CompanyIdentifier.proMark.name, #"Pro-Mark, Inc."#)
-        XCTAssertEqual(CompanyIdentifier.proMark.description, #"Pro-Mark, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.proMark.name, #"Pro­Mark, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.proMark.description, #"Pro­Mark, Inc."#)
     
         // Dynometrics Inc.
         XCTAssertEqual(CompanyIdentifier.dynometrics.rawValue, 1152)
@@ -5803,10 +5803,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.skidata.name, #"SKIDATA AG"#)
         XCTAssertEqual(CompanyIdentifier.skidata.description, #"SKIDATA AG"#)
     
-        // DEV TECNOLOGIA INDUSTRIA, COMERCIO E MANUTENCAO DE EQUIPAMENTOS LTDA. - ME
+        // DEV TECNOLOGIA INDUSTRIA, COMERCIO E MANUTENCAO DE EQUIPAMENTOS LTDA. ­ ME
         XCTAssertEqual(CompanyIdentifier.devTecnologiaIndustriaComercioEManutencaoDeEquipamentosaMe.rawValue, 1158)
-        XCTAssertEqual(CompanyIdentifier.devTecnologiaIndustriaComercioEManutencaoDeEquipamentosaMe.name, #"DEV TECNOLOGIA INDUSTRIA, COMERCIO E MANUTENCAO DE EQUIPAMENTOS LTDA. - ME"#)
-        XCTAssertEqual(CompanyIdentifier.devTecnologiaIndustriaComercioEManutencaoDeEquipamentosaMe.description, #"DEV TECNOLOGIA INDUSTRIA, COMERCIO E MANUTENCAO DE EQUIPAMENTOS LTDA. - ME"#)
+        XCTAssertEqual(CompanyIdentifier.devTecnologiaIndustriaComercioEManutencaoDeEquipamentosaMe.name, #"DEV TECNOLOGIA INDUSTRIA, COMERCIO E MANUTENCAO DE EQUIPAMENTOS LTDA. ­ ME"#)
+        XCTAssertEqual(CompanyIdentifier.devTecnologiaIndustriaComercioEManutencaoDeEquipamentosaMe.description, #"DEV TECNOLOGIA INDUSTRIA, COMERCIO E MANUTENCAO DE EQUIPAMENTOS LTDA. ­ ME"#)
     
         // Centrica Connected Home
         XCTAssertEqual(CompanyIdentifier.centricaConnectedHome.rawValue, 1159)
@@ -5838,10 +5838,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.vectronix.name, #"Vectronix AG"#)
         XCTAssertEqual(CompanyIdentifier.vectronix.description, #"Vectronix AG"#)
     
-        // S-Labs Sp. z o.o.
+        // S­Labs Sp. z o.o.
         XCTAssertEqual(CompanyIdentifier.sLabs.rawValue, 1165)
-        XCTAssertEqual(CompanyIdentifier.sLabs.name, #"S-Labs Sp. z o.o."#)
-        XCTAssertEqual(CompanyIdentifier.sLabs.description, #"S-Labs Sp. z o.o."#)
+        XCTAssertEqual(CompanyIdentifier.sLabs.name, #"S­Labs Sp. z o.o."#)
+        XCTAssertEqual(CompanyIdentifier.sLabs.description, #"S­Labs Sp. z o.o."#)
     
         // Companion Medical, Inc.
         XCTAssertEqual(CompanyIdentifier.companionMedical.rawValue, 1166)
@@ -5858,10 +5858,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.matting.name, #"Matting AB"#)
         XCTAssertEqual(CompanyIdentifier.matting.description, #"Matting AB"#)
     
-        // SOREX - Wireless Solutions GmbH
+        // SOREX ­ Wireless Solutions GmbH
         XCTAssertEqual(CompanyIdentifier.sorexWirelessSolutions.rawValue, 1169)
-        XCTAssertEqual(CompanyIdentifier.sorexWirelessSolutions.name, #"SOREX - Wireless Solutions GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.sorexWirelessSolutions.description, #"SOREX - Wireless Solutions GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.sorexWirelessSolutions.name, #"SOREX ­ Wireless Solutions GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.sorexWirelessSolutions.description, #"SOREX ­ Wireless Solutions GmbH"#)
     
         // ADC Technology, Inc.
         XCTAssertEqual(CompanyIdentifier.adcTechnology.rawValue, 1170)
@@ -5928,10 +5928,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.andXor.name, #"AND!XOR LLC"#)
         XCTAssertEqual(CompanyIdentifier.andXor.description, #"AND!XOR LLC"#)
     
-        // tictote AB
-        XCTAssertEqual(CompanyIdentifier.tictote.rawValue, 1183)
-        XCTAssertEqual(CompanyIdentifier.tictote.name, #"tictote AB"#)
-        XCTAssertEqual(CompanyIdentifier.tictote.description, #"tictote AB"#)
+        // Popper Pay AB
+        XCTAssertEqual(CompanyIdentifier.popperPay.rawValue, 1183)
+        XCTAssertEqual(CompanyIdentifier.popperPay.name, #"Popper Pay AB"#)
+        XCTAssertEqual(CompanyIdentifier.popperPay.description, #"Popper Pay AB"#)
     
         // Vypin, LLC
         XCTAssertEqual(CompanyIdentifier.vypin.rawValue, 1184)
@@ -5948,10 +5948,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.ovrengineered.name, #"ovrEngineered, LLC"#)
         XCTAssertEqual(CompanyIdentifier.ovrengineered.description, #"ovrEngineered, LLC"#)
     
-        // GT-tronics HK Ltd
+        // GT­tronics HK Ltd
         XCTAssertEqual(CompanyIdentifier.gtTronics.rawValue, 1187)
-        XCTAssertEqual(CompanyIdentifier.gtTronics.name, #"GT-tronics HK Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.gtTronics.description, #"GT-tronics HK Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.gtTronics.name, #"GT­tronics HK Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.gtTronics.description, #"GT­tronics HK Ltd"#)
     
         // Herbert Waldmann GmbH & Co. KG
         XCTAssertEqual(CompanyIdentifier.herbertWaldmann.rawValue, 1188)
@@ -6143,10 +6143,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.thornwaveLabs.name, #"Thornwave Labs Inc"#)
         XCTAssertEqual(CompanyIdentifier.thornwaveLabs.description, #"Thornwave Labs Inc"#)
     
-        // Steiner-Optik GmbH
+        // Steiner­Optik GmbH
         XCTAssertEqual(CompanyIdentifier.steinerOptik.rawValue, 1226)
-        XCTAssertEqual(CompanyIdentifier.steinerOptik.name, #"Steiner-Optik GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.steinerOptik.description, #"Steiner-Optik GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.steinerOptik.name, #"Steiner­Optik GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.steinerOptik.description, #"Steiner­Optik GmbH"#)
     
         // Novo Nordisk A/S
         XCTAssertEqual(CompanyIdentifier.novoNordisk.rawValue, 1227)
@@ -6218,10 +6218,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.fujifilm.name, #"FUJIFILM Corporation"#)
         XCTAssertEqual(CompanyIdentifier.fujifilm.description, #"FUJIFILM Corporation"#)
     
-        // RandMcNally
-        XCTAssertEqual(CompanyIdentifier.randmcnally.rawValue, 1241)
-        XCTAssertEqual(CompanyIdentifier.randmcnally.name, #"RandMcNally"#)
-        XCTAssertEqual(CompanyIdentifier.randmcnally.description, #"RandMcNally"#)
+        // RM Acquisition LLC
+        XCTAssertEqual(CompanyIdentifier.rmAcquisition.rawValue, 1241)
+        XCTAssertEqual(CompanyIdentifier.rmAcquisition.name, #"RM Acquisition LLC"#)
+        XCTAssertEqual(CompanyIdentifier.rmAcquisition.description, #"RM Acquisition LLC"#)
     
         // Franceschi Marina snc
         XCTAssertEqual(CompanyIdentifier.franceschiMarinaSnc.rawValue, 1242)
@@ -6248,10 +6248,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.lutronElectronics.name, #"Lutron Electronics Co., Inc."#)
         XCTAssertEqual(CompanyIdentifier.lutronElectronics.description, #"Lutron Electronics Co., Inc."#)
     
-        // Emerson
-        XCTAssertEqual(CompanyIdentifier.emerson.rawValue, 1247)
-        XCTAssertEqual(CompanyIdentifier.emerson.name, #"Emerson"#)
-        XCTAssertEqual(CompanyIdentifier.emerson.description, #"Emerson"#)
+        // Emerson Electric Co.
+        XCTAssertEqual(CompanyIdentifier.emersonElectric.rawValue, 1247)
+        XCTAssertEqual(CompanyIdentifier.emersonElectric.name, #"Emerson Electric Co."#)
+        XCTAssertEqual(CompanyIdentifier.emersonElectric.description, #"Emerson Electric Co."#)
     
         // Guardtec, Inc.
         XCTAssertEqual(CompanyIdentifier.guardtec.rawValue, 1248)
@@ -6368,10 +6368,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.mclear.name, #"McLear Limited"#)
         XCTAssertEqual(CompanyIdentifier.mclear.description, #"McLear Limited"#)
     
-        // Shenzhen Huiding Technology Co.,Ltd.
-        XCTAssertEqual(CompanyIdentifier.shenzhenHuidingTechnology.rawValue, 1271)
-        XCTAssertEqual(CompanyIdentifier.shenzhenHuidingTechnology.name, #"Shenzhen Huiding Technology Co.,Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.shenzhenHuidingTechnology.description, #"Shenzhen Huiding Technology Co.,Ltd."#)
+        // Shenzhen Goodix Technology Co., Ltd
+        XCTAssertEqual(CompanyIdentifier.shenzhenGoodixTechnology.rawValue, 1271)
+        XCTAssertEqual(CompanyIdentifier.shenzhenGoodixTechnology.name, #"Shenzhen Goodix Technology Co., Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.shenzhenGoodixTechnology.description, #"Shenzhen Goodix Technology Co., Ltd"#)
     
         // Convergence Systems Limited
         XCTAssertEqual(CompanyIdentifier.convergenceSystems.rawValue, 1272)
@@ -6383,10 +6383,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.interactio.name, #"Interactio"#)
         XCTAssertEqual(CompanyIdentifier.interactio.description, #"Interactio"#)
     
-        // Androtec GmbH
-        XCTAssertEqual(CompanyIdentifier.androtec.rawValue, 1274)
-        XCTAssertEqual(CompanyIdentifier.androtec.name, #"Androtec GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.androtec.description, #"Androtec GmbH"#)
+        // Androtec GmbH Bluetooth SIG Proprietary
+        XCTAssertEqual(CompanyIdentifier.androtecBluetoothSigProprietary.rawValue, 1274)
+        XCTAssertEqual(CompanyIdentifier.androtecBluetoothSigProprietary.name, #"Androtec GmbH Bluetooth SIG Proprietary"#)
+        XCTAssertEqual(CompanyIdentifier.androtecBluetoothSigProprietary.description, #"Androtec GmbH Bluetooth SIG Proprietary"#)
     
         // Benchmark Drives GmbH & Co. KG
         XCTAssertEqual(CompanyIdentifier.benchmarkDrives.rawValue, 1275)
@@ -6423,10 +6423,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.polarisInd.name, #"Polaris IND"#)
         XCTAssertEqual(CompanyIdentifier.polarisInd.description, #"Polaris IND"#)
     
-        // Specifi-Kali LLC
+        // Specifi­Kali LLC
         XCTAssertEqual(CompanyIdentifier.specifiKali.rawValue, 1282)
-        XCTAssertEqual(CompanyIdentifier.specifiKali.name, #"Specifi-Kali LLC"#)
-        XCTAssertEqual(CompanyIdentifier.specifiKali.description, #"Specifi-Kali LLC"#)
+        XCTAssertEqual(CompanyIdentifier.specifiKali.name, #"Specifi­Kali LLC"#)
+        XCTAssertEqual(CompanyIdentifier.specifiKali.description, #"Specifi­Kali LLC"#)
     
         // Locoroll, Inc
         XCTAssertEqual(CompanyIdentifier.locoroll.rawValue, 1283)
@@ -6458,15 +6458,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.axesSystemSpZOO.name, #"Axes System sp. z o. o."#)
         XCTAssertEqual(CompanyIdentifier.axesSystemSpZOO.description, #"Axes System sp. z o. o."#)
     
-        // myLIFTER Inc.
-        XCTAssertEqual(CompanyIdentifier.mylifter.rawValue, 1289)
-        XCTAssertEqual(CompanyIdentifier.mylifter.name, #"myLIFTER Inc."#)
-        XCTAssertEqual(CompanyIdentifier.mylifter.description, #"myLIFTER Inc."#)
+        // Garage Smart, Inc.
+        XCTAssertEqual(CompanyIdentifier.garageSmart.rawValue, 1289)
+        XCTAssertEqual(CompanyIdentifier.garageSmart.name, #"Garage Smart, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.garageSmart.description, #"Garage Smart, Inc."#)
     
-        // Shake-on B.V.
+        // Shake­on B.V.
         XCTAssertEqual(CompanyIdentifier.shakeOn.rawValue, 1290)
-        XCTAssertEqual(CompanyIdentifier.shakeOn.name, #"Shake-on B.V."#)
-        XCTAssertEqual(CompanyIdentifier.shakeOn.description, #"Shake-on B.V."#)
+        XCTAssertEqual(CompanyIdentifier.shakeOn.name, #"Shake­on B.V."#)
+        XCTAssertEqual(CompanyIdentifier.shakeOn.description, #"Shake­on B.V."#)
     
         // Vibrissa Inc.
         XCTAssertEqual(CompanyIdentifier.vibrissa.rawValue, 1291)
@@ -6493,10 +6493,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.foundationEngineering.name, #"Foundation Engineering LLC"#)
         XCTAssertEqual(CompanyIdentifier.foundationEngineering.description, #"Foundation Engineering LLC"#)
     
-        // UNI-ELECTRONICS, INC.
+        // UNI­ELECTRONICS, INC.
         XCTAssertEqual(CompanyIdentifier.uniElectronics.rawValue, 1296)
-        XCTAssertEqual(CompanyIdentifier.uniElectronics.name, #"UNI-ELECTRONICS, INC."#)
-        XCTAssertEqual(CompanyIdentifier.uniElectronics.description, #"UNI-ELECTRONICS, INC."#)
+        XCTAssertEqual(CompanyIdentifier.uniElectronics.name, #"UNI­ELECTRONICS, INC."#)
+        XCTAssertEqual(CompanyIdentifier.uniElectronics.description, #"UNI­ELECTRONICS, INC."#)
     
         // Brookfield Equinox LLC
         XCTAssertEqual(CompanyIdentifier.brookfieldEquinox.rawValue, 1297)
@@ -6528,10 +6528,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.footmarks.name, #"Footmarks"#)
         XCTAssertEqual(CompanyIdentifier.footmarks.description, #"Footmarks"#)
     
-        // Amtronic Sverige AB (formerly Amcore AB)
+        // Amtronic Sverige AB
         XCTAssertEqual(CompanyIdentifier.amtronicSverige.rawValue, 1303)
-        XCTAssertEqual(CompanyIdentifier.amtronicSverige.name, #"Amtronic Sverige AB (formerly Amcore AB)"#)
-        XCTAssertEqual(CompanyIdentifier.amtronicSverige.description, #"Amtronic Sverige AB (formerly Amcore AB)"#)
+        XCTAssertEqual(CompanyIdentifier.amtronicSverige.name, #"Amtronic Sverige AB"#)
+        XCTAssertEqual(CompanyIdentifier.amtronicSverige.description, #"Amtronic Sverige AB"#)
     
         // MAMORIO.inc
         XCTAssertEqual(CompanyIdentifier.mamorioInc.rawValue, 1304)
@@ -6598,10 +6598,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.hangzhouImagicTechnology.name, #"Hangzhou iMagic Technology Co., Ltd"#)
         XCTAssertEqual(CompanyIdentifier.hangzhouImagicTechnology.description, #"Hangzhou iMagic Technology Co., Ltd"#)
     
-        // HONGKONG NANO IC TECHNOLOGIES  CO., LIMITED
+        // HONGKONG NANO IC TECHNOLOGIES CO., LIMITED
         XCTAssertEqual(CompanyIdentifier.hongkongNanoIcTechnologies.rawValue, 1317)
-        XCTAssertEqual(CompanyIdentifier.hongkongNanoIcTechnologies.name, #"HONGKONG NANO IC TECHNOLOGIES  CO., LIMITED"#)
-        XCTAssertEqual(CompanyIdentifier.hongkongNanoIcTechnologies.description, #"HONGKONG NANO IC TECHNOLOGIES  CO., LIMITED"#)
+        XCTAssertEqual(CompanyIdentifier.hongkongNanoIcTechnologies.name, #"HONGKONG NANO IC TECHNOLOGIES CO., LIMITED"#)
+        XCTAssertEqual(CompanyIdentifier.hongkongNanoIcTechnologies.description, #"HONGKONG NANO IC TECHNOLOGIES CO., LIMITED"#)
     
         // Honeywell International Inc.
         XCTAssertEqual(CompanyIdentifier.honeywellInternational.rawValue, 1318)
@@ -6768,10 +6768,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.apexarTechnologies.name, #"Apexar Technologies S.A."#)
         XCTAssertEqual(CompanyIdentifier.apexarTechnologies.description, #"Apexar Technologies S.A."#)
     
-        // LOGICDATA d.o.o.
-        XCTAssertEqual(CompanyIdentifier.logicdata.rawValue, 1351)
-        XCTAssertEqual(CompanyIdentifier.logicdata.name, #"LOGICDATA d.o.o."#)
-        XCTAssertEqual(CompanyIdentifier.logicdata.description, #"LOGICDATA d.o.o."#)
+        // LOGICDATA Electronic & Software Entwicklungs GmbH
+        XCTAssertEqual(CompanyIdentifier.logicdataElectronicSoftwareEntwicklungs.rawValue, 1351)
+        XCTAssertEqual(CompanyIdentifier.logicdataElectronicSoftwareEntwicklungs.name, #"LOGICDATA Electronic & Software Entwicklungs GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.logicdataElectronicSoftwareEntwicklungs.description, #"LOGICDATA Electronic & Software Entwicklungs GmbH"#)
     
         // Knick Elektronische Messgeraete GmbH & Co. KG
         XCTAssertEqual(CompanyIdentifier.knickElektronischeMessgeraete.rawValue, 1352)
@@ -6893,10 +6893,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.protechDiGirardiAndreaC.name, #"PROTECH S.A.S. DI GIRARDI ANDREA & C."#)
         XCTAssertEqual(CompanyIdentifier.protechDiGirardiAndreaC.description, #"PROTECH S.A.S. DI GIRARDI ANDREA & C."#)
     
-        // Sarita CareTech APS (formerly Sarita CareTech IVS)
+        // Sarita CareTech APS
         XCTAssertEqual(CompanyIdentifier.saritaCaretech.rawValue, 1376)
-        XCTAssertEqual(CompanyIdentifier.saritaCaretech.name, #"Sarita CareTech APS (formerly Sarita CareTech IVS)"#)
-        XCTAssertEqual(CompanyIdentifier.saritaCaretech.description, #"Sarita CareTech APS (formerly Sarita CareTech IVS)"#)
+        XCTAssertEqual(CompanyIdentifier.saritaCaretech.name, #"Sarita CareTech APS"#)
+        XCTAssertEqual(CompanyIdentifier.saritaCaretech.description, #"Sarita CareTech APS"#)
     
         // Finder S.p.A.
         XCTAssertEqual(CompanyIdentifier.finder.rawValue, 1377)
@@ -7093,10 +7093,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.derichs.name, #"Derichs GmbH"#)
         XCTAssertEqual(CompanyIdentifier.derichs.description, #"Derichs GmbH"#)
     
-        // ALT-TEKNIK LLC
+        // ALT­TEKNIK LLC
         XCTAssertEqual(CompanyIdentifier.altTeknik.rawValue, 1416)
-        XCTAssertEqual(CompanyIdentifier.altTeknik.name, #"ALT-TEKNIK LLC"#)
-        XCTAssertEqual(CompanyIdentifier.altTeknik.description, #"ALT-TEKNIK LLC"#)
+        XCTAssertEqual(CompanyIdentifier.altTeknik.name, #"ALT­TEKNIK LLC"#)
+        XCTAssertEqual(CompanyIdentifier.altTeknik.description, #"ALT­TEKNIK LLC"#)
     
         // Star Technologies
         XCTAssertEqual(CompanyIdentifier.starTechnologies.rawValue, 1417)
@@ -7113,20 +7113,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.maximIntegratedProducts.name, #"Maxim Integrated Products"#)
         XCTAssertEqual(CompanyIdentifier.maximIntegratedProducts.description, #"Maxim Integrated Products"#)
     
-        // MERCK Kommanditgesellschaft auf Aktien
-        XCTAssertEqual(CompanyIdentifier.merckKommanditgesellschaftAufAktien.rawValue, 1420)
-        XCTAssertEqual(CompanyIdentifier.merckKommanditgesellschaftAufAktien.name, #"MERCK Kommanditgesellschaft auf Aktien"#)
-        XCTAssertEqual(CompanyIdentifier.merckKommanditgesellschaftAufAktien.description, #"MERCK Kommanditgesellschaft auf Aktien"#)
+        // Fracarro Radioindustrie SRL
+        XCTAssertEqual(CompanyIdentifier.fracarroRadioindustrie.rawValue, 1420)
+        XCTAssertEqual(CompanyIdentifier.fracarroRadioindustrie.name, #"Fracarro Radioindustrie SRL"#)
+        XCTAssertEqual(CompanyIdentifier.fracarroRadioindustrie.description, #"Fracarro Radioindustrie SRL"#)
     
         // Jungheinrich Aktiengesellschaft
         XCTAssertEqual(CompanyIdentifier.jungheinrichAktiengesellschaft.rawValue, 1421)
         XCTAssertEqual(CompanyIdentifier.jungheinrichAktiengesellschaft.name, #"Jungheinrich Aktiengesellschaft"#)
         XCTAssertEqual(CompanyIdentifier.jungheinrichAktiengesellschaft.description, #"Jungheinrich Aktiengesellschaft"#)
     
-        // Oculus VR, LLC
-        XCTAssertEqual(CompanyIdentifier.oculusVr.rawValue, 1422)
-        XCTAssertEqual(CompanyIdentifier.oculusVr.name, #"Oculus VR, LLC"#)
-        XCTAssertEqual(CompanyIdentifier.oculusVr.description, #"Oculus VR, LLC"#)
+        // Meta Platforms Technologies, LLC
+        XCTAssertEqual(CompanyIdentifier.metaPlatformsTechnologies.rawValue, 1422)
+        XCTAssertEqual(CompanyIdentifier.metaPlatformsTechnologies.name, #"Meta Platforms Technologies, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.metaPlatformsTechnologies.description, #"Meta Platforms Technologies, LLC"#)
     
         // HENDON SEMICONDUCTORS PTY LTD
         XCTAssertEqual(CompanyIdentifier.hendonSemiconductorsPty.rawValue, 1423)
@@ -7288,10 +7288,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.carmateMfg.name, #"CARMATE MFG.CO.,LTD"#)
         XCTAssertEqual(CompanyIdentifier.carmateMfg.description, #"CARMATE MFG.CO.,LTD"#)
     
-        // OV LOOP, INC. (formerly ONvocal)
+        // OV LOOP, INC.
         XCTAssertEqual(CompanyIdentifier.ovLoop.rawValue, 1455)
-        XCTAssertEqual(CompanyIdentifier.ovLoop.name, #"OV LOOP, INC. (formerly ONvocal)"#)
-        XCTAssertEqual(CompanyIdentifier.ovLoop.description, #"OV LOOP, INC. (formerly ONvocal)"#)
+        XCTAssertEqual(CompanyIdentifier.ovLoop.name, #"OV LOOP, INC."#)
+        XCTAssertEqual(CompanyIdentifier.ovLoop.description, #"OV LOOP, INC."#)
     
         // NewTec GmbH
         XCTAssertEqual(CompanyIdentifier.newtec.rawValue, 1456)
@@ -7368,10 +7368,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.rfidGlobalBySoftwork.name, #"RFID Global by Softwork SrL"#)
         XCTAssertEqual(CompanyIdentifier.rfidGlobalBySoftwork.description, #"RFID Global by Softwork SrL"#)
     
-        // Real-World-Systems Corporation
+        // Real­World­Systems Corporation
         XCTAssertEqual(CompanyIdentifier.realWorldSystems.rawValue, 1471)
-        XCTAssertEqual(CompanyIdentifier.realWorldSystems.name, #"Real-World-Systems Corporation"#)
-        XCTAssertEqual(CompanyIdentifier.realWorldSystems.description, #"Real-World-Systems Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.realWorldSystems.name, #"Real­World­Systems Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.realWorldSystems.description, #"Real­World­Systems Corporation"#)
     
         // Nalu Medical, Inc.
         XCTAssertEqual(CompanyIdentifier.naluMedical.rawValue, 1472)
@@ -7443,10 +7443,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.rjBrands.name, #"RJ Brands LLC"#)
         XCTAssertEqual(CompanyIdentifier.rjBrands.description, #"RJ Brands LLC"#)
     
-        // V-ZUG Ltd
+        // V­ZUG Ltd
         XCTAssertEqual(CompanyIdentifier.vZug.rawValue, 1486)
-        XCTAssertEqual(CompanyIdentifier.vZug.name, #"V-ZUG Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.vZug.description, #"V-ZUG Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.vZug.name, #"V­ZUG Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.vZug.description, #"V­ZUG Ltd"#)
     
         // Biowatch SA
         XCTAssertEqual(CompanyIdentifier.biowatch.rawValue, 1487)
@@ -7583,10 +7583,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.iconmobile.name, #"iconmobile GmbH"#)
         XCTAssertEqual(CompanyIdentifier.iconmobile.description, #"iconmobile GmbH"#)
     
-        // ACS-Control-System GmbH
+        // ACS­Control­System GmbH
         XCTAssertEqual(CompanyIdentifier.acsControlSystem.rawValue, 1514)
-        XCTAssertEqual(CompanyIdentifier.acsControlSystem.name, #"ACS-Control-System GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.acsControlSystem.description, #"ACS-Control-System GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.acsControlSystem.name, #"ACS­Control­System GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.acsControlSystem.description, #"ACS­Control­System GmbH"#)
     
         // Bayerische Motoren Werke AG
         XCTAssertEqual(CompanyIdentifier.bayerischeMotorenWerke.rawValue, 1515)
@@ -7603,10 +7603,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.fujiXerox.name, #"Fuji Xerox Co., Ltd"#)
         XCTAssertEqual(CompanyIdentifier.fujiXerox.description, #"Fuji Xerox Co., Ltd"#)
     
-        // Glide Inc.
-        XCTAssertEqual(CompanyIdentifier.glide.rawValue, 1518)
-        XCTAssertEqual(CompanyIdentifier.glide.name, #"Glide Inc."#)
-        XCTAssertEqual(CompanyIdentifier.glide.description, #"Glide Inc."#)
+        // Wristcam Inc.
+        XCTAssertEqual(CompanyIdentifier.wristcam.rawValue, 1518)
+        XCTAssertEqual(CompanyIdentifier.wristcam.name, #"Wristcam Inc."#)
+        XCTAssertEqual(CompanyIdentifier.wristcam.description, #"Wristcam Inc."#)
     
         // SIKOM AS
         XCTAssertEqual(CompanyIdentifier.sikom.rawValue, 1519)
@@ -7718,10 +7718,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.cell2Jack.name, #"Cell2Jack LLC"#)
         XCTAssertEqual(CompanyIdentifier.cell2Jack.description, #"Cell2Jack LLC"#)
     
-        // FMW electronic Futterer u. Maier-Wolf OHG
+        // FMW electronic Futterer u. Maier­Wolf OHG
         XCTAssertEqual(CompanyIdentifier.fmwElectronicFuttererUMaierWolfOhg.rawValue, 1541)
-        XCTAssertEqual(CompanyIdentifier.fmwElectronicFuttererUMaierWolfOhg.name, #"FMW electronic Futterer u. Maier-Wolf OHG"#)
-        XCTAssertEqual(CompanyIdentifier.fmwElectronicFuttererUMaierWolfOhg.description, #"FMW electronic Futterer u. Maier-Wolf OHG"#)
+        XCTAssertEqual(CompanyIdentifier.fmwElectronicFuttererUMaierWolfOhg.name, #"FMW electronic Futterer u. Maier­Wolf OHG"#)
+        XCTAssertEqual(CompanyIdentifier.fmwElectronicFuttererUMaierWolfOhg.description, #"FMW electronic Futterer u. Maier­Wolf OHG"#)
     
         // John Deere
         XCTAssertEqual(CompanyIdentifier.johnDeere.rawValue, 1542)
@@ -7733,10 +7733,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.rookeryTechnology.name, #"Rookery Technology Ltd"#)
         XCTAssertEqual(CompanyIdentifier.rookeryTechnology.description, #"Rookery Technology Ltd"#)
     
-        // KeySafe-Cloud
+        // KeySafe­Cloud
         XCTAssertEqual(CompanyIdentifier.keysafeCloud.rawValue, 1544)
-        XCTAssertEqual(CompanyIdentifier.keysafeCloud.name, #"KeySafe-Cloud"#)
-        XCTAssertEqual(CompanyIdentifier.keysafeCloud.description, #"KeySafe-Cloud"#)
+        XCTAssertEqual(CompanyIdentifier.keysafeCloud.name, #"KeySafe­Cloud"#)
+        XCTAssertEqual(CompanyIdentifier.keysafeCloud.description, #"KeySafe­Cloud"#)
     
         // BUCHI Labortechnik AG
         XCTAssertEqual(CompanyIdentifier.buchiLabortechnik.rawValue, 1545)
@@ -7768,10 +7768,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.blueair.name, #"Blueair AB"#)
         XCTAssertEqual(CompanyIdentifier.blueair.description, #"Blueair AB"#)
     
-        // Signify Netherlands
+        // Signify Netherlands B.V.
         XCTAssertEqual(CompanyIdentifier.signifyNetherlands.rawValue, 1551)
-        XCTAssertEqual(CompanyIdentifier.signifyNetherlands.name, #"Signify Netherlands"#)
-        XCTAssertEqual(CompanyIdentifier.signifyNetherlands.description, #"Signify Netherlands"#)
+        XCTAssertEqual(CompanyIdentifier.signifyNetherlands.name, #"Signify Netherlands B.V."#)
+        XCTAssertEqual(CompanyIdentifier.signifyNetherlands.description, #"Signify Netherlands B.V."#)
     
         // ADH GUARDIAN USA LLC
         XCTAssertEqual(CompanyIdentifier.adhGuardian.rawValue, 1552)
@@ -7813,10 +7813,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.wizconnectedCompany.name, #"WIZCONNECTED COMPANY LIMITED"#)
         XCTAssertEqual(CompanyIdentifier.wizconnectedCompany.description, #"WIZCONNECTED COMPANY LIMITED"#)
     
-        // Audio-Technica Corporation
+        // Audio­Technica Corporation
         XCTAssertEqual(CompanyIdentifier.audioTechnica.rawValue, 1560)
-        XCTAssertEqual(CompanyIdentifier.audioTechnica.name, #"Audio-Technica Corporation"#)
-        XCTAssertEqual(CompanyIdentifier.audioTechnica.description, #"Audio-Technica Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.audioTechnica.name, #"Audio­Technica Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.audioTechnica.description, #"Audio­Technica Corporation"#)
     
         // Six Guys Labs, s.r.o.
         XCTAssertEqual(CompanyIdentifier.sixGuysLabs.rawValue, 1561)
@@ -7918,10 +7918,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.aspion.name, #"ASPion GmbH"#)
         XCTAssertEqual(CompanyIdentifier.aspion.description, #"ASPion GmbH"#)
     
-        // Vossloh-Schwabe Deutschland GmbH
+        // Vossloh­Schwabe Deutschland GmbH
         XCTAssertEqual(CompanyIdentifier.vosslohSchwabeDeutschland.rawValue, 1581)
-        XCTAssertEqual(CompanyIdentifier.vosslohSchwabeDeutschland.name, #"Vossloh-Schwabe Deutschland GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.vosslohSchwabeDeutschland.description, #"Vossloh-Schwabe Deutschland GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.vosslohSchwabeDeutschland.name, #"Vossloh­Schwabe Deutschland GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.vosslohSchwabeDeutschland.description, #"Vossloh­Schwabe Deutschland GmbH"#)
     
         // Procept
         XCTAssertEqual(CompanyIdentifier.procept.rawValue, 1582)
@@ -8048,10 +8048,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.sgvGroupHolding.name, #"SGV Group Holding GmbH & Co. KG"#)
         XCTAssertEqual(CompanyIdentifier.sgvGroupHolding.description, #"SGV Group Holding GmbH & Co. KG"#)
     
-        // MED-EL
+        // MED­EL
         XCTAssertEqual(CompanyIdentifier.medEl.rawValue, 1607)
-        XCTAssertEqual(CompanyIdentifier.medEl.name, #"MED-EL"#)
-        XCTAssertEqual(CompanyIdentifier.medEl.description, #"MED-EL"#)
+        XCTAssertEqual(CompanyIdentifier.medEl.name, #"MED­EL"#)
+        XCTAssertEqual(CompanyIdentifier.medEl.description, #"MED­EL"#)
     
         // Ultune Technologies
         XCTAssertEqual(CompanyIdentifier.ultuneTechnologies.rawValue, 1608)
@@ -8068,10 +8068,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.openResearchInstitute.name, #"Open Research Institute, Inc."#)
         XCTAssertEqual(CompanyIdentifier.openResearchInstitute.description, #"Open Research Institute, Inc."#)
     
-        // Scale-Tec, Ltd
+        // Scale­Tec, Ltd
         XCTAssertEqual(CompanyIdentifier.scaleTec.rawValue, 1611)
-        XCTAssertEqual(CompanyIdentifier.scaleTec.name, #"Scale-Tec, Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.scaleTec.description, #"Scale-Tec, Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.scaleTec.name, #"Scale­Tec, Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.scaleTec.description, #"Scale­Tec, Ltd"#)
     
         // Zumtobel Group AG
         XCTAssertEqual(CompanyIdentifier.zumtobelGroup.rawValue, 1612)
@@ -8103,10 +8103,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.stasisLabs.name, #"Stasis Labs, Inc."#)
         XCTAssertEqual(CompanyIdentifier.stasisLabs.description, #"Stasis Labs, Inc."#)
     
-        // ITZ Innovations- und Technologiezentrum GmbH
+        // ITZ Innovations­ und Technologiezentrum GmbH
         XCTAssertEqual(CompanyIdentifier.itzInnovationsUndTechnologiezentrum.rawValue, 1618)
-        XCTAssertEqual(CompanyIdentifier.itzInnovationsUndTechnologiezentrum.name, #"ITZ Innovations- und Technologiezentrum GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.itzInnovationsUndTechnologiezentrum.description, #"ITZ Innovations- und Technologiezentrum GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.itzInnovationsUndTechnologiezentrum.name, #"ITZ Innovations­ und Technologiezentrum GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.itzInnovationsUndTechnologiezentrum.description, #"ITZ Innovations­ und Technologiezentrum GmbH"#)
     
         // Meggitt SA
         XCTAssertEqual(CompanyIdentifier.meggitt.rawValue, 1619)
@@ -8203,10 +8203,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.pureInternational.name, #"Pure International Limited"#)
         XCTAssertEqual(CompanyIdentifier.pureInternational.description, #"Pure International Limited"#)
     
-        // WTO Werkzeug-Einrichtungen GmbH
+        // WTO Werkzeug­Einrichtungen GmbH
         XCTAssertEqual(CompanyIdentifier.wtoWerkzeugEinrichtungen.rawValue, 1638)
-        XCTAssertEqual(CompanyIdentifier.wtoWerkzeugEinrichtungen.name, #"WTO Werkzeug-Einrichtungen GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.wtoWerkzeugEinrichtungen.description, #"WTO Werkzeug-Einrichtungen GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.wtoWerkzeugEinrichtungen.name, #"WTO Werkzeug­Einrichtungen GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.wtoWerkzeugEinrichtungen.description, #"WTO Werkzeug­Einrichtungen GmbH"#)
     
         // Spark Technology Labs Inc.
         XCTAssertEqual(CompanyIdentifier.sparkTechnologyLabs.rawValue, 1639)
@@ -8428,10 +8428,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.georgFischer.name, #"Georg Fischer AG"#)
         XCTAssertEqual(CompanyIdentifier.georgFischer.description, #"Georg Fischer AG"#)
     
-        // Hach - Danaher
+        // Hach ­ Danaher
         XCTAssertEqual(CompanyIdentifier.hachDanaher.rawValue, 1683)
-        XCTAssertEqual(CompanyIdentifier.hachDanaher.name, #"Hach - Danaher"#)
-        XCTAssertEqual(CompanyIdentifier.hachDanaher.description, #"Hach - Danaher"#)
+        XCTAssertEqual(CompanyIdentifier.hachDanaher.name, #"Hach ­ Danaher"#)
+        XCTAssertEqual(CompanyIdentifier.hachDanaher.description, #"Hach ­ Danaher"#)
     
         // T&A Laboratories LLC
         XCTAssertEqual(CompanyIdentifier.tALaboratories.rawValue, 1684)
@@ -8463,10 +8463,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.randomlabs.name, #"RandomLab SAS"#)
         XCTAssertEqual(CompanyIdentifier.randomlabs.description, #"RandomLab SAS"#)
     
-        // Adero, Inc. (formerly as TrackR, Inc.)
+        // Adero, Inc.
         XCTAssertEqual(CompanyIdentifier.adero.rawValue, 1690)
-        XCTAssertEqual(CompanyIdentifier.adero.name, #"Adero, Inc. (formerly as TrackR, Inc.)"#)
-        XCTAssertEqual(CompanyIdentifier.adero.description, #"Adero, Inc. (formerly as TrackR, Inc.)"#)
+        XCTAssertEqual(CompanyIdentifier.adero.name, #"Adero, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.adero.description, #"Adero, Inc."#)
     
         // Dragonchip Limited
         XCTAssertEqual(CompanyIdentifier.dragonchip.rawValue, 1691)
@@ -8513,10 +8513,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.nymbus.name, #"Nymbus, LLC"#)
         XCTAssertEqual(CompanyIdentifier.nymbus.description, #"Nymbus, LLC"#)
     
-        // Sanyo Techno Solutions Tottori Co., Ltd.
-        XCTAssertEqual(CompanyIdentifier.sanyoTechnoSolutionsTottori.rawValue, 1700)
-        XCTAssertEqual(CompanyIdentifier.sanyoTechnoSolutionsTottori.name, #"Sanyo Techno Solutions Tottori Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.sanyoTechnoSolutionsTottori.description, #"Sanyo Techno Solutions Tottori Co., Ltd."#)
+        // SLIMNO Co. Ltd.
+        XCTAssertEqual(CompanyIdentifier.slimno.rawValue, 1700)
+        XCTAssertEqual(CompanyIdentifier.slimno.name, #"SLIMNO Co. Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.slimno.description, #"SLIMNO Co. Ltd."#)
     
         // TEKZITEL PTY LTD
         XCTAssertEqual(CompanyIdentifier.tekzitelPty.rawValue, 1701)
@@ -8533,10 +8533,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.chipseaTechnologiesShenzhen.name, #"Chipsea Technologies (ShenZhen) Corp."#)
         XCTAssertEqual(CompanyIdentifier.chipseaTechnologiesShenzhen.description, #"Chipsea Technologies (ShenZhen) Corp."#)
     
-        // GD Midea Air-Conditioning Equipment Co., Ltd.
+        // GD Midea Air­Conditioning Equipment Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.gdMideaAirConditioningEquipment.rawValue, 1704)
-        XCTAssertEqual(CompanyIdentifier.gdMideaAirConditioningEquipment.name, #"GD Midea Air-Conditioning Equipment Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.gdMideaAirConditioningEquipment.description, #"GD Midea Air-Conditioning Equipment Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.gdMideaAirConditioningEquipment.name, #"GD Midea Air­Conditioning Equipment Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.gdMideaAirConditioningEquipment.description, #"GD Midea Air­Conditioning Equipment Co., Ltd."#)
     
         // Soundmax Electronics Limited
         XCTAssertEqual(CompanyIdentifier.soundmaxElectronics.rawValue, 1705)
@@ -8808,15 +8808,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.navcast.name, #"Navcast, Inc."#)
         XCTAssertEqual(CompanyIdentifier.navcast.description, #"Navcast, Inc."#)
     
-        // Hubbell Lighting, Inc.
-        XCTAssertEqual(CompanyIdentifier.hubbellLighting.rawValue, 1759)
-        XCTAssertEqual(CompanyIdentifier.hubbellLighting.name, #"Hubbell Lighting, Inc."#)
-        XCTAssertEqual(CompanyIdentifier.hubbellLighting.description, #"Hubbell Lighting, Inc."#)
+        // HLI Solutions Inc.
+        XCTAssertEqual(CompanyIdentifier.hliSolutions.rawValue, 1759)
+        XCTAssertEqual(CompanyIdentifier.hliSolutions.name, #"HLI Solutions Inc."#)
+        XCTAssertEqual(CompanyIdentifier.hliSolutions.description, #"HLI Solutions Inc."#)
     
         // Avaya Inc.
         XCTAssertEqual(CompanyIdentifier.avaya.rawValue, 1760)
-        XCTAssertEqual(CompanyIdentifier.avaya.name, #"Avaya Inc. "#)
-        XCTAssertEqual(CompanyIdentifier.avaya.description, #"Avaya Inc. "#)
+        XCTAssertEqual(CompanyIdentifier.avaya.name, #"Avaya Inc."#)
+        XCTAssertEqual(CompanyIdentifier.avaya.description, #"Avaya Inc."#)
     
         // Milestone AV Technologies LLC
         XCTAssertEqual(CompanyIdentifier.milestoneAvTechnologies.rawValue, 1761)
@@ -8983,10 +8983,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.pafersTech.name, #"PAFERS TECH"#)
         XCTAssertEqual(CompanyIdentifier.pafersTech.description, #"PAFERS TECH"#)
     
-        // Akciju sabiedriba "SAF TEHNIKA"
-        XCTAssertEqual(CompanyIdentifier.akcijuSabiedribafTehnika.rawValue, 1794)
-        XCTAssertEqual(CompanyIdentifier.akcijuSabiedribafTehnika.name, #"Akciju sabiedriba "SAF TEHNIKA""#)
-        XCTAssertEqual(CompanyIdentifier.akcijuSabiedribafTehnika.description, #"Akciju sabiedriba "SAF TEHNIKA""#)
+        // Akciju sabiedriba ”SAF TEHNIKA”
+        XCTAssertEqual(CompanyIdentifier.akcijuSabiedribaSafTehnika.rawValue, 1794)
+        XCTAssertEqual(CompanyIdentifier.akcijuSabiedribaSafTehnika.name, #"Akciju sabiedriba ”SAF TEHNIKA”"#)
+        XCTAssertEqual(CompanyIdentifier.akcijuSabiedribaSafTehnika.description, #"Akciju sabiedriba ”SAF TEHNIKA”"#)
     
         // Beijing Jingdong Century Trading Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.beijingJingdongCenturyTrading.rawValue, 1795)
@@ -9098,10 +9098,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.idibaixEnginneering.name, #"IDIBAIX enginneering"#)
         XCTAssertEqual(CompanyIdentifier.idibaixEnginneering.description, #"IDIBAIX enginneering"#)
     
-        // ECSG
-        XCTAssertEqual(CompanyIdentifier.ecsg.rawValue, 1817)
-        XCTAssertEqual(CompanyIdentifier.ecsg.name, #"ECSG"#)
-        XCTAssertEqual(CompanyIdentifier.ecsg.description, #"ECSG"#)
+        // COREIOT PTY LTD
+        XCTAssertEqual(CompanyIdentifier.coreiotPty.rawValue, 1817)
+        XCTAssertEqual(CompanyIdentifier.coreiotPty.name, #"COREIOT PTY LTD"#)
+        XCTAssertEqual(CompanyIdentifier.coreiotPty.description, #"COREIOT PTY LTD"#)
     
         // REVSMART WEARABLE HK CO LTD
         XCTAssertEqual(CompanyIdentifier.revsmartWearableCo.rawValue, 1818)
@@ -9553,10 +9553,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.echoflexSolutions.name, #"Echoflex Solutions Inc."#)
         XCTAssertEqual(CompanyIdentifier.echoflexSolutions.description, #"Echoflex Solutions Inc."#)
     
-        // C-MAX Asia Limited
+        // C­MAX Asia Limited
         XCTAssertEqual(CompanyIdentifier.cMaxAsia.rawValue, 1908)
-        XCTAssertEqual(CompanyIdentifier.cMaxAsia.name, #"C-MAX Asia Limited"#)
-        XCTAssertEqual(CompanyIdentifier.cMaxAsia.description, #"C-MAX Asia Limited"#)
+        XCTAssertEqual(CompanyIdentifier.cMaxAsia.name, #"C­MAX Asia Limited"#)
+        XCTAssertEqual(CompanyIdentifier.cMaxAsia.description, #"C­MAX Asia Limited"#)
     
         // 4eBusiness GmbH
         XCTAssertEqual(CompanyIdentifier.company4Ebusiness.rawValue, 1909)
@@ -9658,6 +9658,11 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.bubblynet.name, #"BubblyNet, LLC"#)
         XCTAssertEqual(CompanyIdentifier.bubblynet.description, #"BubblyNet, LLC"#)
     
+        // PCB Piezotronics, Inc.
+        XCTAssertEqual(CompanyIdentifier.pcbPiezotronics.rawValue, 1929)
+        XCTAssertEqual(CompanyIdentifier.pcbPiezotronics.name, #"PCB Piezotronics, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.pcbPiezotronics.description, #"PCB Piezotronics, Inc."#)
+    
         // The Wildflower Foundation
         XCTAssertEqual(CompanyIdentifier.wildflowerFoundation.rawValue, 1930)
         XCTAssertEqual(CompanyIdentifier.wildflowerFoundation.name, #"The Wildflower Foundation"#)
@@ -9698,20 +9703,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.scoscheIndustries.name, #"Scosche Industries, Inc."#)
         XCTAssertEqual(CompanyIdentifier.scoscheIndustries.description, #"Scosche Industries, Inc."#)
     
-        // Provo Craft
-        XCTAssertEqual(CompanyIdentifier.provoCraft.rawValue, 1938)
-        XCTAssertEqual(CompanyIdentifier.provoCraft.name, #"Provo Craft"#)
-        XCTAssertEqual(CompanyIdentifier.provoCraft.description, #"Provo Craft"#)
+        // Cricut, Inc.
+        XCTAssertEqual(CompanyIdentifier.cricut.rawValue, 1938)
+        XCTAssertEqual(CompanyIdentifier.cricut.name, #"Cricut, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.cricut.description, #"Cricut, Inc."#)
     
         // AEV spol. s r.o.
         XCTAssertEqual(CompanyIdentifier.aevSpolSRO.rawValue, 1939)
         XCTAssertEqual(CompanyIdentifier.aevSpolSRO.name, #"AEV spol. s r.o."#)
         XCTAssertEqual(CompanyIdentifier.aevSpolSRO.description, #"AEV spol. s r.o."#)
     
-        // The Coca-Cola Company
+        // The Coca­Cola Company
         XCTAssertEqual(CompanyIdentifier.cocaColaCompany.rawValue, 1940)
-        XCTAssertEqual(CompanyIdentifier.cocaColaCompany.name, #"The Coca-Cola Company"#)
-        XCTAssertEqual(CompanyIdentifier.cocaColaCompany.description, #"The Coca-Cola Company"#)
+        XCTAssertEqual(CompanyIdentifier.cocaColaCompany.name, #"The Coca­Cola Company"#)
+        XCTAssertEqual(CompanyIdentifier.cocaColaCompany.description, #"The Coca­Cola Company"#)
     
         // GASTEC CORPORATION
         XCTAssertEqual(CompanyIdentifier.gastec.rawValue, 1941)
@@ -9723,10 +9728,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.starleaf.name, #"StarLeaf Ltd"#)
         XCTAssertEqual(CompanyIdentifier.starleaf.description, #"StarLeaf Ltd"#)
     
-        // Water-i.d. GmbH
+        // Water­i.d. GmbH
         XCTAssertEqual(CompanyIdentifier.waterID.rawValue, 1943)
-        XCTAssertEqual(CompanyIdentifier.waterID.name, #"Water-i.d. GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.waterID.description, #"Water-i.d. GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.waterID.name, #"Water­i.d. GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.waterID.description, #"Water­i.d. GmbH"#)
     
         // HoloKit, Inc.
         XCTAssertEqual(CompanyIdentifier.holokit.rawValue, 1944)
@@ -9898,10 +9903,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.eponaBiotec.name, #"Epona Biotec Limited"#)
         XCTAssertEqual(CompanyIdentifier.eponaBiotec.description, #"Epona Biotec Limited"#)
     
-        // Battery-Biz Inc.
+        // Battery­Biz Inc.
         XCTAssertEqual(CompanyIdentifier.batteryBiz.rawValue, 1978)
-        XCTAssertEqual(CompanyIdentifier.batteryBiz.name, #"Battery-Biz Inc."#)
-        XCTAssertEqual(CompanyIdentifier.batteryBiz.description, #"Battery-Biz Inc."#)
+        XCTAssertEqual(CompanyIdentifier.batteryBiz.name, #"Battery­Biz Inc."#)
+        XCTAssertEqual(CompanyIdentifier.batteryBiz.description, #"Battery­Biz Inc."#)
     
         // EPIC S.R.L.
         XCTAssertEqual(CompanyIdentifier.epic.rawValue, 1979)
@@ -9978,10 +9983,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.skullcandy.name, #"Skullcandy, Inc."#)
         XCTAssertEqual(CompanyIdentifier.skullcandy.description, #"Skullcandy, Inc."#)
     
-        // Modul-System HH AB
+        // Modul­System HH AB
         XCTAssertEqual(CompanyIdentifier.modulSystemHh.rawValue, 1994)
-        XCTAssertEqual(CompanyIdentifier.modulSystemHh.name, #"Modul-System HH AB"#)
-        XCTAssertEqual(CompanyIdentifier.modulSystemHh.description, #"Modul-System HH AB"#)
+        XCTAssertEqual(CompanyIdentifier.modulSystemHh.name, #"Modul­System HH AB"#)
+        XCTAssertEqual(CompanyIdentifier.modulSystemHh.description, #"Modul­System HH AB"#)
     
         // West Pharmaceutical Services, Inc.
         XCTAssertEqual(CompanyIdentifier.westPharmaceuticalServices.rawValue, 1995)
@@ -9998,20 +10003,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.smartWaveTechnologiesCanada.name, #"Smart Wave Technologies Canada Inc"#)
         XCTAssertEqual(CompanyIdentifier.smartWaveTechnologiesCanada.description, #"Smart Wave Technologies Canada Inc"#)
     
-        // Shanghai Top-Chip Microelectronics Tech. Co., LTD
+        // Shanghai Top­Chip Microelectronics Tech. Co., LTD
         XCTAssertEqual(CompanyIdentifier.shanghaiTopChipMicroelectronicsTech.rawValue, 1998)
-        XCTAssertEqual(CompanyIdentifier.shanghaiTopChipMicroelectronicsTech.name, #"Shanghai Top-Chip Microelectronics Tech. Co., LTD"#)
-        XCTAssertEqual(CompanyIdentifier.shanghaiTopChipMicroelectronicsTech.description, #"Shanghai Top-Chip Microelectronics Tech. Co., LTD"#)
+        XCTAssertEqual(CompanyIdentifier.shanghaiTopChipMicroelectronicsTech.name, #"Shanghai Top­Chip Microelectronics Tech. Co., LTD"#)
+        XCTAssertEqual(CompanyIdentifier.shanghaiTopChipMicroelectronicsTech.description, #"Shanghai Top­Chip Microelectronics Tech. Co., LTD"#)
     
         // NeoSensory, Inc.
         XCTAssertEqual(CompanyIdentifier.neosensory.rawValue, 1999)
         XCTAssertEqual(CompanyIdentifier.neosensory.name, #"NeoSensory, Inc."#)
         XCTAssertEqual(CompanyIdentifier.neosensory.description, #"NeoSensory, Inc."#)
     
-        // Hangzhou Tuya Information  Technology Co., Ltd
+        // Hangzhou Tuya Information Technology Co., Ltd
         XCTAssertEqual(CompanyIdentifier.hangzhouTuyaInformationTechnology.rawValue, 2000)
-        XCTAssertEqual(CompanyIdentifier.hangzhouTuyaInformationTechnology.name, #"Hangzhou Tuya Information  Technology Co., Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.hangzhouTuyaInformationTechnology.description, #"Hangzhou Tuya Information  Technology Co., Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.hangzhouTuyaInformationTechnology.name, #"Hangzhou Tuya Information Technology Co., Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.hangzhouTuyaInformationTechnology.description, #"Hangzhou Tuya Information Technology Co., Ltd"#)
     
         // Shanghai Panchip Microelectronics Co., Ltd
         XCTAssertEqual(CompanyIdentifier.shanghaiPanchipMicroelectronics.rawValue, 2001)
@@ -10053,10 +10058,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.solutionsAmbra.name, #"SOLUTIONS AMBRA INC."#)
         XCTAssertEqual(CompanyIdentifier.solutionsAmbra.description, #"SOLUTIONS AMBRA INC."#)
     
-        // Micro-Design, Inc.
+        // Micro­Design, Inc.
         XCTAssertEqual(CompanyIdentifier.microDesign.rawValue, 2009)
-        XCTAssertEqual(CompanyIdentifier.microDesign.name, #"Micro-Design, Inc."#)
-        XCTAssertEqual(CompanyIdentifier.microDesign.description, #"Micro-Design, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.microDesign.name, #"Micro­Design, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.microDesign.description, #"Micro­Design, Inc."#)
     
         // STARLITE Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.starlite.rawValue, 2010)
@@ -10083,10 +10088,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.unlimitedEngineeringSl.name, #"Unlimited Engineering SL"#)
         XCTAssertEqual(CompanyIdentifier.unlimitedEngineeringSl.description, #"Unlimited Engineering SL"#)
     
-        // Snap-on Incorporated
+        // Snap­on Incorporated
         XCTAssertEqual(CompanyIdentifier.snapOn.rawValue, 2015)
-        XCTAssertEqual(CompanyIdentifier.snapOn.name, #"Snap-on Incorporated"#)
-        XCTAssertEqual(CompanyIdentifier.snapOn.description, #"Snap-on Incorporated"#)
+        XCTAssertEqual(CompanyIdentifier.snapOn.name, #"Snap­on Incorporated"#)
+        XCTAssertEqual(CompanyIdentifier.snapOn.description, #"Snap­on Incorporated"#)
     
         // Edifier International Limited
         XCTAssertEqual(CompanyIdentifier.edifierInternational.rawValue, 2016)
@@ -10168,10 +10173,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.aktiebolagetSandvikCoromant.name, #"Aktiebolaget Sandvik Coromant"#)
         XCTAssertEqual(CompanyIdentifier.aktiebolagetSandvikCoromant.description, #"Aktiebolaget Sandvik Coromant"#)
     
-        // e-moola.com Pty Ltd
+        // e­moola.com Pty Ltd
         XCTAssertEqual(CompanyIdentifier.eMoolaComPty.rawValue, 2032)
-        XCTAssertEqual(CompanyIdentifier.eMoolaComPty.name, #"e-moola.com Pty Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.eMoolaComPty.description, #"e-moola.com Pty Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.eMoolaComPty.name, #"e­moola.com Pty Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.eMoolaComPty.description, #"e­moola.com Pty Ltd"#)
     
         // Zimi Innovations Pty Ltd
         XCTAssertEqual(CompanyIdentifier.zimiInnovationsPty.rawValue, 2033)
@@ -10453,10 +10458,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.shanghaiSuishengInformationTechnology.name, #"Shanghai Suisheng Information Technology Co., Ltd."#)
         XCTAssertEqual(CompanyIdentifier.shanghaiSuishengInformationTechnology.description, #"Shanghai Suisheng Information Technology Co., Ltd."#)
     
-        // HEXAGON
-        XCTAssertEqual(CompanyIdentifier.hexagon.rawValue, 2089)
-        XCTAssertEqual(CompanyIdentifier.hexagon.name, #"HEXAGON"#)
-        XCTAssertEqual(CompanyIdentifier.hexagon.description, #"HEXAGON"#)
+        // HEXAGON METROLOGY DIVISION ROMER
+        XCTAssertEqual(CompanyIdentifier.hexagonMetrologyDivisionRomer.rawValue, 2089)
+        XCTAssertEqual(CompanyIdentifier.hexagonMetrologyDivisionRomer.name, #"HEXAGON METROLOGY DIVISION ROMER"#)
+        XCTAssertEqual(CompanyIdentifier.hexagonMetrologyDivisionRomer.description, #"HEXAGON METROLOGY DIVISION ROMER"#)
     
         // Mitutoyo Corporation
         XCTAssertEqual(CompanyIdentifier.mitutoyo.rawValue, 2090)
@@ -10563,10 +10568,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.zorachka.name, #"Zorachka LTD"#)
         XCTAssertEqual(CompanyIdentifier.zorachka.description, #"Zorachka LTD"#)
     
-        // D-Link Corp.
+        // D­Link Corp.
         XCTAssertEqual(CompanyIdentifier.dLink.rawValue, 2111)
-        XCTAssertEqual(CompanyIdentifier.dLink.name, #"D-Link Corp."#)
-        XCTAssertEqual(CompanyIdentifier.dLink.description, #"D-Link Corp."#)
+        XCTAssertEqual(CompanyIdentifier.dLink.name, #"D­Link Corp."#)
+        XCTAssertEqual(CompanyIdentifier.dLink.description, #"D­Link Corp."#)
     
         // Down Range Systems LLC
         XCTAssertEqual(CompanyIdentifier.downRangeSystems.rawValue, 2112)
@@ -10673,10 +10678,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.tapSoundSystem.name, #"Tap Sound System"#)
         XCTAssertEqual(CompanyIdentifier.tapSoundSystem.description, #"Tap Sound System"#)
     
-        // Helios Hockey, Inc.
-        XCTAssertEqual(CompanyIdentifier.heliosHockey.rawValue, 2133)
-        XCTAssertEqual(CompanyIdentifier.heliosHockey.name, #"Helios Hockey, Inc."#)
-        XCTAssertEqual(CompanyIdentifier.heliosHockey.description, #"Helios Hockey, Inc."#)
+        // Helios Sports, Inc.
+        XCTAssertEqual(CompanyIdentifier.heliosSports.rawValue, 2133)
+        XCTAssertEqual(CompanyIdentifier.heliosSports.name, #"Helios Sports, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.heliosSports.description, #"Helios Sports, Inc."#)
     
         // Canopy Growth Corporation
         XCTAssertEqual(CompanyIdentifier.canopyGrowth2.rawValue, 2134)
@@ -10703,10 +10708,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.dakatech.name, #"DAKATECH"#)
         XCTAssertEqual(CompanyIdentifier.dakatech.description, #"DAKATECH"#)
     
-        // RICOH ELECTRONIC DEVICES CO., LTD.
-        XCTAssertEqual(CompanyIdentifier.ricohElectronicDevices.rawValue, 2139)
-        XCTAssertEqual(CompanyIdentifier.ricohElectronicDevices.name, #"RICOH ELECTRONIC DEVICES CO., LTD."#)
-        XCTAssertEqual(CompanyIdentifier.ricohElectronicDevices.description, #"RICOH ELECTRONIC DEVICES CO., LTD."#)
+        // Nisshinbo Micro Devices Inc.
+        XCTAssertEqual(CompanyIdentifier.nisshinboMicroDevices.rawValue, 2139)
+        XCTAssertEqual(CompanyIdentifier.nisshinboMicroDevices.name, #"Nisshinbo Micro Devices Inc."#)
+        XCTAssertEqual(CompanyIdentifier.nisshinboMicroDevices.description, #"Nisshinbo Micro Devices Inc."#)
     
         // ACOS CO.,LTD.
         XCTAssertEqual(CompanyIdentifier.acos.rawValue, 2140)
@@ -10743,10 +10748,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.smartdrive.name, #"SmartDrive"#)
         XCTAssertEqual(CompanyIdentifier.smartdrive.description, #"SmartDrive"#)
     
-        // Yo-tronics Technology Co., Ltd.
+        // Yo­tronics Technology Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.yoTronicsTechnology.rawValue, 2147)
-        XCTAssertEqual(CompanyIdentifier.yoTronicsTechnology.name, #"Yo-tronics Technology Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.yoTronicsTechnology.description, #"Yo-tronics Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.yoTronicsTechnology.name, #"Yo­tronics Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.yoTronicsTechnology.description, #"Yo­tronics Technology Co., Ltd."#)
     
         // Rafaelmicro
         XCTAssertEqual(CompanyIdentifier.rafaelmicro.rawValue, 2148)
@@ -10813,10 +10818,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.wyzeLabs.name, #"Wyze Labs, Inc"#)
         XCTAssertEqual(CompanyIdentifier.wyzeLabs.description, #"Wyze Labs, Inc"#)
     
-        // Dension Elektronikai Kft. (formerly: Dension Audio Systems Ltd.)
-        XCTAssertEqual(CompanyIdentifier.densionElektronikaiKftFormerlyDensionAudioSystems.rawValue, 2161)
-        XCTAssertEqual(CompanyIdentifier.densionElektronikaiKftFormerlyDensionAudioSystems.name, #"Dension Elektronikai Kft. (formerly: Dension Audio Systems Ltd.)"#)
-        XCTAssertEqual(CompanyIdentifier.densionElektronikaiKftFormerlyDensionAudioSystems.description, #"Dension Elektronikai Kft. (formerly: Dension Audio Systems Ltd.)"#)
+        // Dension Elektronikai Kft.
+        XCTAssertEqual(CompanyIdentifier.densionElektronikaiKft.rawValue, 2161)
+        XCTAssertEqual(CompanyIdentifier.densionElektronikaiKft.name, #"Dension Elektronikai Kft."#)
+        XCTAssertEqual(CompanyIdentifier.densionElektronikaiKft.description, #"Dension Elektronikai Kft."#)
     
         // 11 Health & Technologies Limited
         XCTAssertEqual(CompanyIdentifier.company11HealthTechnologies.rawValue, 2162)
@@ -10918,15 +10923,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.levolor.name, #"LEVOLOR INC"#)
         XCTAssertEqual(CompanyIdentifier.levolor.description, #"LEVOLOR INC"#)
     
-        // Xsens Technologies B.V.
-        XCTAssertEqual(CompanyIdentifier.xsensTechnologies.rawValue, 2182)
-        XCTAssertEqual(CompanyIdentifier.xsensTechnologies.name, #"Xsens Technologies B.V."#)
-        XCTAssertEqual(CompanyIdentifier.xsensTechnologies.description, #"Xsens Technologies B.V."#)
+        // Movella Technologies B.V.
+        XCTAssertEqual(CompanyIdentifier.movellaTechnologies.rawValue, 2182)
+        XCTAssertEqual(CompanyIdentifier.movellaTechnologies.name, #"Movella Technologies B.V."#)
+        XCTAssertEqual(CompanyIdentifier.movellaTechnologies.description, #"Movella Technologies B.V."#)
     
-        // Hydro-Gear Limited Partnership
+        // Hydro­Gear Limited Partnership
         XCTAssertEqual(CompanyIdentifier.hydroGearPartnership.rawValue, 2183)
-        XCTAssertEqual(CompanyIdentifier.hydroGearPartnership.name, #"Hydro-Gear Limited Partnership"#)
-        XCTAssertEqual(CompanyIdentifier.hydroGearPartnership.description, #"Hydro-Gear Limited Partnership"#)
+        XCTAssertEqual(CompanyIdentifier.hydroGearPartnership.name, #"Hydro­Gear Limited Partnership"#)
+        XCTAssertEqual(CompanyIdentifier.hydroGearPartnership.description, #"Hydro­Gear Limited Partnership"#)
     
         // EnPointe Fencing Pty Ltd
         XCTAssertEqual(CompanyIdentifier.enpointeFencingPty.rawValue, 2184)
@@ -10958,10 +10963,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.solitonSystemsKK.name, #"Soliton Systems K.K."#)
         XCTAssertEqual(CompanyIdentifier.solitonSystemsKK.description, #"Soliton Systems K.K."#)
     
-        // GIGA-TMS INC
+        // GIGA­TMS INC
         XCTAssertEqual(CompanyIdentifier.gigaTms.rawValue, 2190)
-        XCTAssertEqual(CompanyIdentifier.gigaTms.name, #"GIGA-TMS INC"#)
-        XCTAssertEqual(CompanyIdentifier.gigaTms.description, #"GIGA-TMS INC"#)
+        XCTAssertEqual(CompanyIdentifier.gigaTms.name, #"GIGA­TMS INC"#)
+        XCTAssertEqual(CompanyIdentifier.gigaTms.description, #"GIGA­TMS INC"#)
     
         // Tait International Limited
         XCTAssertEqual(CompanyIdentifier.taitInternational.rawValue, 2191)
@@ -11018,10 +11023,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.sfsUnimarket.name, #"SFS unimarket AG"#)
         XCTAssertEqual(CompanyIdentifier.sfsUnimarket.description, #"SFS unimarket AG"#)
     
-        // Private limited company "Teltonika"
+        // Private limited company ”Teltonika”
         XCTAssertEqual(CompanyIdentifier.privateCompanyTeltonika.rawValue, 2202)
-        XCTAssertEqual(CompanyIdentifier.privateCompanyTeltonika.name, #"Private limited company "Teltonika""#)
-        XCTAssertEqual(CompanyIdentifier.privateCompanyTeltonika.description, #"Private limited company "Teltonika""#)
+        XCTAssertEqual(CompanyIdentifier.privateCompanyTeltonika.name, #"Private limited company ”Teltonika”"#)
+        XCTAssertEqual(CompanyIdentifier.privateCompanyTeltonika.description, #"Private limited company ”Teltonika”"#)
     
         // Saucon Technologies
         XCTAssertEqual(CompanyIdentifier.sauconTechnologies.rawValue, 2203)
@@ -11033,15 +11038,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.embeddedDevicesCompany.name, #"Embedded Devices Co. Company"#)
         XCTAssertEqual(CompanyIdentifier.embeddedDevicesCompany.description, #"Embedded Devices Co. Company"#)
     
-        // J-J.A.D.E. Enterprise LLC
+        // J­J.A.D.E. Enterprise LLC
         XCTAssertEqual(CompanyIdentifier.jJADEEnterprise.rawValue, 2205)
-        XCTAssertEqual(CompanyIdentifier.jJADEEnterprise.name, #"J-J.A.D.E. Enterprise LLC"#)
-        XCTAssertEqual(CompanyIdentifier.jJADEEnterprise.description, #"J-J.A.D.E. Enterprise LLC"#)
+        XCTAssertEqual(CompanyIdentifier.jJADEEnterprise.name, #"J­J.A.D.E. Enterprise LLC"#)
+        XCTAssertEqual(CompanyIdentifier.jJADEEnterprise.description, #"J­J.A.D.E. Enterprise LLC"#)
     
-        // i-SENS, inc.
+        // i­SENS, inc.
         XCTAssertEqual(CompanyIdentifier.iSens.rawValue, 2206)
-        XCTAssertEqual(CompanyIdentifier.iSens.name, #"i-SENS, inc."#)
-        XCTAssertEqual(CompanyIdentifier.iSens.description, #"i-SENS, inc."#)
+        XCTAssertEqual(CompanyIdentifier.iSens.name, #"i­SENS, inc."#)
+        XCTAssertEqual(CompanyIdentifier.iSens.description, #"i­SENS, inc."#)
     
         // Witschi Electronic Ltd
         XCTAssertEqual(CompanyIdentifier.witschiElectronic.rawValue, 2207)
@@ -11173,20 +11178,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.checkTechnologySolutions.name, #"Check Technology Solutions LLC"#)
         XCTAssertEqual(CompanyIdentifier.checkTechnologySolutions.description, #"Check Technology Solutions LLC"#)
     
-        // U-Shin Ltd.
+        // U­Shin Ltd.
         XCTAssertEqual(CompanyIdentifier.uShin.rawValue, 2233)
-        XCTAssertEqual(CompanyIdentifier.uShin.name, #"U-Shin Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.uShin.description, #"U-Shin Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.uShin.name, #"U­Shin Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.uShin.description, #"U­Shin Ltd."#)
     
         // HYPER ICE, INC.
         XCTAssertEqual(CompanyIdentifier.hyperIce.rawValue, 2234)
         XCTAssertEqual(CompanyIdentifier.hyperIce.name, #"HYPER ICE, INC."#)
         XCTAssertEqual(CompanyIdentifier.hyperIce.description, #"HYPER ICE, INC."#)
     
-        // Tokai-rika co.,ltd.
+        // Tokai­rika co.,ltd.
         XCTAssertEqual(CompanyIdentifier.tokaiRika.rawValue, 2235)
-        XCTAssertEqual(CompanyIdentifier.tokaiRika.name, #"Tokai-rika co.,ltd."#)
-        XCTAssertEqual(CompanyIdentifier.tokaiRika.description, #"Tokai-rika co.,ltd."#)
+        XCTAssertEqual(CompanyIdentifier.tokaiRika.name, #"Tokai­rika co.,ltd."#)
+        XCTAssertEqual(CompanyIdentifier.tokaiRika.description, #"Tokai­rika co.,ltd."#)
     
         // Prevayl Limited
         XCTAssertEqual(CompanyIdentifier.prevayl.rawValue, 2236)
@@ -11353,15 +11358,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.shenzhenAukeyEBusiness.name, #"SHENZHEN AUKEY E BUSINESS CO., LTD"#)
         XCTAssertEqual(CompanyIdentifier.shenzhenAukeyEBusiness.description, #"SHENZHEN AUKEY E BUSINESS CO., LTD"#)
     
-        // code-Q
+        // code­Q
         XCTAssertEqual(CompanyIdentifier.codeQ.rawValue, 2269)
-        XCTAssertEqual(CompanyIdentifier.codeQ.name, #"code-Q"#)
-        XCTAssertEqual(CompanyIdentifier.codeQ.description, #"code-Q"#)
+        XCTAssertEqual(CompanyIdentifier.codeQ.name, #"code­Q"#)
+        XCTAssertEqual(CompanyIdentifier.codeQ.description, #"code­Q"#)
     
-        // Tyco Electronics Corporation a TE Connectivity Ltd Company
-        XCTAssertEqual(CompanyIdentifier.tycoElectronicsATeConnectivityCompany.rawValue, 2270)
-        XCTAssertEqual(CompanyIdentifier.tycoElectronicsATeConnectivityCompany.name, #"Tyco Electronics Corporation a TE Connectivity Ltd Company"#)
-        XCTAssertEqual(CompanyIdentifier.tycoElectronicsATeConnectivityCompany.description, #"Tyco Electronics Corporation a TE Connectivity Ltd Company"#)
+        // TE Connectivity Corporation
+        XCTAssertEqual(CompanyIdentifier.teConnectivity.rawValue, 2270)
+        XCTAssertEqual(CompanyIdentifier.teConnectivity.name, #"TE Connectivity Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.teConnectivity.description, #"TE Connectivity Corporation"#)
     
         // IRIS OHYAMA CO.,LTD.
         XCTAssertEqual(CompanyIdentifier.irisOhyama.rawValue, 2271)
@@ -11403,10 +11408,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.enesoTecnologiaDeAdaptacion.name, #"Eneso Tecnologia de Adaptacion S.L."#)
         XCTAssertEqual(CompanyIdentifier.enesoTecnologiaDeAdaptacion.description, #"Eneso Tecnologia de Adaptacion S.L."#)
     
-        // Barrot Technology Limited
+        // Barrot Technology Co.,Ltd.
         XCTAssertEqual(CompanyIdentifier.barrotTechnology.rawValue, 2279)
-        XCTAssertEqual(CompanyIdentifier.barrotTechnology.name, #"Barrot Technology Limited"#)
-        XCTAssertEqual(CompanyIdentifier.barrotTechnology.description, #"Barrot Technology Limited"#)
+        XCTAssertEqual(CompanyIdentifier.barrotTechnology.name, #"Barrot Technology Co.,Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.barrotTechnology.description, #"Barrot Technology Co.,Ltd."#)
     
         // Naonext
         XCTAssertEqual(CompanyIdentifier.naonext.rawValue, 2280)
@@ -11438,10 +11443,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.imiHydronicEngineeringInternational.name, #"IMI Hydronic Engineering International SA"#)
         XCTAssertEqual(CompanyIdentifier.imiHydronicEngineeringInternational.description, #"IMI Hydronic Engineering International SA"#)
     
-        // ASKEY
-        XCTAssertEqual(CompanyIdentifier.askey.rawValue, 2286)
-        XCTAssertEqual(CompanyIdentifier.askey.name, #"ASKEY"#)
-        XCTAssertEqual(CompanyIdentifier.askey.description, #"ASKEY"#)
+        // Askey Computer Corp.
+        XCTAssertEqual(CompanyIdentifier.askeyComputer.rawValue, 2286)
+        XCTAssertEqual(CompanyIdentifier.askeyComputer.name, #"Askey Computer Corp."#)
+        XCTAssertEqual(CompanyIdentifier.askeyComputer.description, #"Askey Computer Corp."#)
     
         // Cumulus Digital Systems, Inc
         XCTAssertEqual(CompanyIdentifier.cumulusDigitalSystems.rawValue, 2287)
@@ -11463,10 +11468,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.microoled.name, #"Microoled"#)
         XCTAssertEqual(CompanyIdentifier.microoled.description, #"Microoled"#)
     
-        // PSP - Pauli Services & Products GmbH
+        // PSP ­ Pauli Services & Products GmbH
         XCTAssertEqual(CompanyIdentifier.pspPauliServicesProducts.rawValue, 2291)
-        XCTAssertEqual(CompanyIdentifier.pspPauliServicesProducts.name, #"PSP - Pauli Services & Products GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.pspPauliServicesProducts.description, #"PSP - Pauli Services & Products GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.pspPauliServicesProducts.name, #"PSP ­ Pauli Services & Products GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.pspPauliServicesProducts.description, #"PSP ­ Pauli Services & Products GmbH"#)
     
         // Kodimo Technologies Company Limited
         XCTAssertEqual(CompanyIdentifier.kodimoTechnologiesCompany.rawValue, 2292)
@@ -11508,10 +11513,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.darkglassElectronics.name, #"Darkglass Electronics Oy"#)
         XCTAssertEqual(CompanyIdentifier.darkglassElectronics.description, #"Darkglass Electronics Oy"#)
     
-        // Hill-Rom
+        // Hill­Rom
         XCTAssertEqual(CompanyIdentifier.hillRom.rawValue, 2300)
-        XCTAssertEqual(CompanyIdentifier.hillRom.name, #"Hill-Rom"#)
-        XCTAssertEqual(CompanyIdentifier.hillRom.description, #"Hill-Rom"#)
+        XCTAssertEqual(CompanyIdentifier.hillRom.name, #"Hill­Rom"#)
+        XCTAssertEqual(CompanyIdentifier.hillRom.description, #"Hill­Rom"#)
     
         // BioIntelliSense, Inc.
         XCTAssertEqual(CompanyIdentifier.biointellisense.rawValue, 2301)
@@ -11519,9 +11524,9 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.biointellisense.description, #"BioIntelliSense, Inc."#)
     
         // Ketronixs Sdn Bhd
-        XCTAssertEqual(CompanyIdentifier.ketronixsSdnBhd.rawValue, 2302)
-        XCTAssertEqual(CompanyIdentifier.ketronixsSdnBhd.name, #"Ketronixs Sdn Bhd"#)
-        XCTAssertEqual(CompanyIdentifier.ketronixsSdnBhd.description, #"Ketronixs Sdn Bhd"#)
+        XCTAssertEqual(CompanyIdentifier.ketronixs.rawValue, 2302)
+        XCTAssertEqual(CompanyIdentifier.ketronixs.name, #"Ketronixs Sdn Bhd"#)
+        XCTAssertEqual(CompanyIdentifier.ketronixs.description, #"Ketronixs Sdn Bhd"#)
     
         // Plastimold Products, Inc
         XCTAssertEqual(CompanyIdentifier.plastimoldProducts.rawValue, 2303)
@@ -11538,10 +11543,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.lucimed.name, #"Lucimed"#)
         XCTAssertEqual(CompanyIdentifier.lucimed.description, #"Lucimed"#)
     
-        // TSC Auto-ID Technology Co., Ltd.
+        // TSC Auto­ID Technology Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.tscAutoIdTechnology.rawValue, 2306)
-        XCTAssertEqual(CompanyIdentifier.tscAutoIdTechnology.name, #"TSC Auto-ID Technology Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.tscAutoIdTechnology.description, #"TSC Auto-ID Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.tscAutoIdTechnology.name, #"TSC Auto­ID Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.tscAutoIdTechnology.description, #"TSC Auto­ID Technology Co., Ltd."#)
     
         // DATAMARS, Inc.
         XCTAssertEqual(CompanyIdentifier.datamars.rawValue, 2307)
@@ -11628,10 +11633,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.braveheartWireless.name, #"Braveheart Wireless, Inc."#)
         XCTAssertEqual(CompanyIdentifier.braveheartWireless.description, #"Braveheart Wireless, Inc."#)
     
-        // INEO-SENSE
+        // INEO­SENSE
         XCTAssertEqual(CompanyIdentifier.ineoSense.rawValue, 2324)
-        XCTAssertEqual(CompanyIdentifier.ineoSense.name, #"INEO-SENSE"#)
-        XCTAssertEqual(CompanyIdentifier.ineoSense.description, #"INEO-SENSE"#)
+        XCTAssertEqual(CompanyIdentifier.ineoSense.name, #"INEO­SENSE"#)
+        XCTAssertEqual(CompanyIdentifier.ineoSense.description, #"INEO­SENSE"#)
     
         // Honda Motor Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.hondaMotor.rawValue, 2325)
@@ -11738,10 +11743,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.qingdaoHaierTechnology.name, #"Qingdao Haier Technology Co., Ltd."#)
         XCTAssertEqual(CompanyIdentifier.qingdaoHaierTechnology.description, #"Qingdao Haier Technology Co., Ltd."#)
     
-        // Sappl Verwaltungs- und Betriebs GmbH
+        // Sappl Verwaltungs­ und Betriebs GmbH
         XCTAssertEqual(CompanyIdentifier.sapplVerwaltungsUndBetriebs.rawValue, 2346)
-        XCTAssertEqual(CompanyIdentifier.sapplVerwaltungsUndBetriebs.name, #"Sappl Verwaltungs- und Betriebs GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.sapplVerwaltungsUndBetriebs.description, #"Sappl Verwaltungs- und Betriebs GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.sapplVerwaltungsUndBetriebs.name, #"Sappl Verwaltungs­ und Betriebs GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.sapplVerwaltungsUndBetriebs.description, #"Sappl Verwaltungs­ und Betriebs GmbH"#)
     
         // TekHome
         XCTAssertEqual(CompanyIdentifier.tekhome.rawValue, 2347)
@@ -11923,10 +11928,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.passivebolt.name, #"PassiveBolt, Inc."#)
         XCTAssertEqual(CompanyIdentifier.passivebolt.description, #"PassiveBolt, Inc."#)
     
-        // Limited Liability Company "Mikrotikls"
+        // Limited Liability Company ”Mikrotikls”
         XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyMikrotikls.rawValue, 2383)
-        XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyMikrotikls.name, #"Limited Liability Company "Mikrotikls""#)
-        XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyMikrotikls.description, #"Limited Liability Company "Mikrotikls""#)
+        XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyMikrotikls.name, #"Limited Liability Company ”Mikrotikls”"#)
+        XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyMikrotikls.description, #"Limited Liability Company ”Mikrotikls”"#)
     
         // Capetech
         XCTAssertEqual(CompanyIdentifier.capetech.rawValue, 2384)
@@ -11993,10 +11998,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.logilube2.name, #"LogiLube, LLC"#)
         XCTAssertEqual(CompanyIdentifier.logilube2.description, #"LogiLube, LLC"#)
     
-        // ETC
-        XCTAssertEqual(CompanyIdentifier.etc.rawValue, 2397)
-        XCTAssertEqual(CompanyIdentifier.etc.name, #"ETC"#)
-        XCTAssertEqual(CompanyIdentifier.etc.description, #"ETC"#)
+        // Electronic Theatre Controls
+        XCTAssertEqual(CompanyIdentifier.electronicTheatreControls.rawValue, 2397)
+        XCTAssertEqual(CompanyIdentifier.electronicTheatreControls.name, #"Electronic Theatre Controls"#)
+        XCTAssertEqual(CompanyIdentifier.electronicTheatreControls.description, #"Electronic Theatre Controls"#)
     
         // BioEchoNet inc.
         XCTAssertEqual(CompanyIdentifier.bioechonet.rawValue, 2398)
@@ -12068,10 +12073,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.guideId.name, #"Guide ID B.V."#)
         XCTAssertEqual(CompanyIdentifier.guideId.description, #"Guide ID B.V."#)
     
-        // 9374-7319 Quebec inc
+        // 9374­7319 Quebec inc
         XCTAssertEqual(CompanyIdentifier.company93747319Quebec.rawValue, 2412)
-        XCTAssertEqual(CompanyIdentifier.company93747319Quebec.name, #"9374-7319 Quebec inc"#)
-        XCTAssertEqual(CompanyIdentifier.company93747319Quebec.description, #"9374-7319 Quebec inc"#)
+        XCTAssertEqual(CompanyIdentifier.company93747319Quebec.name, #"9374­7319 Quebec inc"#)
+        XCTAssertEqual(CompanyIdentifier.company93747319Quebec.description, #"9374­7319 Quebec inc"#)
     
         // Gunwerks, LLC
         XCTAssertEqual(CompanyIdentifier.gunwerks.rawValue, 2413)
@@ -12098,10 +12103,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.ga.name, #"GA"#)
         XCTAssertEqual(CompanyIdentifier.ga.description, #"GA"#)
     
-        // Closed Joint Stock Company "Zavod Flometr" ("Zavod Flometr" CJSC)
+        // Closed Joint Stock Company ”Zavod Flometr” (”Zavod Flometr” CJSC)
         XCTAssertEqual(CompanyIdentifier.closedJointStockCompanyZavodFlometrZavodFlometrCjsc.rawValue, 2418)
-        XCTAssertEqual(CompanyIdentifier.closedJointStockCompanyZavodFlometrZavodFlometrCjsc.name, #"Closed Joint Stock Company "Zavod Flometr" ("Zavod Flometr" CJSC)"#)
-        XCTAssertEqual(CompanyIdentifier.closedJointStockCompanyZavodFlometrZavodFlometrCjsc.description, #"Closed Joint Stock Company "Zavod Flometr" ("Zavod Flometr" CJSC)"#)
+        XCTAssertEqual(CompanyIdentifier.closedJointStockCompanyZavodFlometrZavodFlometrCjsc.name, #"Closed Joint Stock Company ”Zavod Flometr” (”Zavod Flometr” CJSC)"#)
+        XCTAssertEqual(CompanyIdentifier.closedJointStockCompanyZavodFlometrZavodFlometrCjsc.description, #"Closed Joint Stock Company ”Zavod Flometr” (”Zavod Flometr” CJSC)"#)
     
         // Popit Oy
         XCTAssertEqual(CompanyIdentifier.popit.rawValue, 2419)
@@ -12178,10 +12183,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.bernardKroneHoldingSeKg.name, #"Bernard Krone Holding SE & Co.KG"#)
         XCTAssertEqual(CompanyIdentifier.bernardKroneHoldingSeKg.description, #"Bernard Krone Holding SE & Co.KG"#)
     
-        // ELPRO-BUCHS AG
+        // ELPRO­BUCHS AG
         XCTAssertEqual(CompanyIdentifier.elproBuchs.rawValue, 2434)
-        XCTAssertEqual(CompanyIdentifier.elproBuchs.name, #"ELPRO-BUCHS AG"#)
-        XCTAssertEqual(CompanyIdentifier.elproBuchs.description, #"ELPRO-BUCHS AG"#)
+        XCTAssertEqual(CompanyIdentifier.elproBuchs.name, #"ELPRO­BUCHS AG"#)
+        XCTAssertEqual(CompanyIdentifier.elproBuchs.description, #"ELPRO­BUCHS AG"#)
     
         // Feedback Sports LLC
         XCTAssertEqual(CompanyIdentifier.feedbackSports.rawValue, 2435)
@@ -12208,10 +12213,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.tseBrakes.name, #"TSE BRAKES, INC."#)
         XCTAssertEqual(CompanyIdentifier.tseBrakes.description, #"TSE BRAKES, INC."#)
     
-        // BHM-Tech Produktionsgesellschaft m.b.H
+        // BHM­Tech Produktionsgesellschaft m.b.H
         XCTAssertEqual(CompanyIdentifier.bhmTechProduktionsgesellschaftMBH.rawValue, 2440)
-        XCTAssertEqual(CompanyIdentifier.bhmTechProduktionsgesellschaftMBH.name, #"BHM-Tech Produktionsgesellschaft m.b.H"#)
-        XCTAssertEqual(CompanyIdentifier.bhmTechProduktionsgesellschaftMBH.description, #"BHM-Tech Produktionsgesellschaft m.b.H"#)
+        XCTAssertEqual(CompanyIdentifier.bhmTechProduktionsgesellschaftMBH.name, #"BHM­Tech Produktionsgesellschaft m.b.H"#)
+        XCTAssertEqual(CompanyIdentifier.bhmTechProduktionsgesellschaftMBH.description, #"BHM­Tech Produktionsgesellschaft m.b.H"#)
     
         // WIKA Alexander Wiegand SE & Co.KG
         XCTAssertEqual(CompanyIdentifier.wikaAlexanderWiegandSeKg.rawValue, 2441)
@@ -12233,10 +12238,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.bgrid.name, #"bGrid B.V."#)
         XCTAssertEqual(CompanyIdentifier.bgrid.description, #"bGrid B.V."#)
     
-        // C3-WIRELESS, LLC
+        // C3­WIRELESS, LLC
         XCTAssertEqual(CompanyIdentifier.c3Wireless.rawValue, 2445)
-        XCTAssertEqual(CompanyIdentifier.c3Wireless.name, #"C3-WIRELESS, LLC"#)
-        XCTAssertEqual(CompanyIdentifier.c3Wireless.description, #"C3-WIRELESS, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.c3Wireless.name, #"C3­WIRELESS, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.c3Wireless.description, #"C3­WIRELESS, LLC"#)
     
         // ADVEEZ
         XCTAssertEqual(CompanyIdentifier.adveez.rawValue, 2446)
@@ -12273,10 +12278,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.vt42Pty.name, #"VT42 Pty Ltd"#)
         XCTAssertEqual(CompanyIdentifier.vt42Pty.description, #"VT42 Pty Ltd"#)
     
-        // Bronkhorst High-Tech B.V.
+        // Bronkhorst High­Tech B.V.
         XCTAssertEqual(CompanyIdentifier.bronkhorstHighTech.rawValue, 2453)
-        XCTAssertEqual(CompanyIdentifier.bronkhorstHighTech.name, #"Bronkhorst High-Tech B.V."#)
-        XCTAssertEqual(CompanyIdentifier.bronkhorstHighTech.description, #"Bronkhorst High-Tech B.V."#)
+        XCTAssertEqual(CompanyIdentifier.bronkhorstHighTech.name, #"Bronkhorst High­Tech B.V."#)
+        XCTAssertEqual(CompanyIdentifier.bronkhorstHighTech.description, #"Bronkhorst High­Tech B.V."#)
     
         // C. & E. Fein GmbH
         XCTAssertEqual(CompanyIdentifier.cEFein.rawValue, 2454)
@@ -12473,10 +12478,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.aerosens.name, #"Aerosens LLC"#)
         XCTAssertEqual(CompanyIdentifier.aerosens.description, #"Aerosens LLC"#)
     
-        // Centre Suisse d'Electronique et de Microtechnique SA
+        // Centre Suisse d’Electronique et de Microtechnique SA
         XCTAssertEqual(CompanyIdentifier.centreSuisseDElectroniqueEtDeMicrotechnique.rawValue, 2493)
-        XCTAssertEqual(CompanyIdentifier.centreSuisseDElectroniqueEtDeMicrotechnique.name, #"Centre Suisse d'Electronique et de Microtechnique SA"#)
-        XCTAssertEqual(CompanyIdentifier.centreSuisseDElectroniqueEtDeMicrotechnique.description, #"Centre Suisse d'Electronique et de Microtechnique SA"#)
+        XCTAssertEqual(CompanyIdentifier.centreSuisseDElectroniqueEtDeMicrotechnique.name, #"Centre Suisse d’Electronique et de Microtechnique SA"#)
+        XCTAssertEqual(CompanyIdentifier.centreSuisseDElectroniqueEtDeMicrotechnique.description, #"Centre Suisse d’Electronique et de Microtechnique SA"#)
     
         // Vessel Ltd.
         XCTAssertEqual(CompanyIdentifier.vessel.rawValue, 2494)
@@ -12644,19 +12649,19 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.jldTechnologySolutions.description, #"JLD Technology Solutions, LLC"#)
     
         // Magnus Technology Sdn Bhd
-        XCTAssertEqual(CompanyIdentifier.magnusTechnologySdnBhd.rawValue, 2527)
-        XCTAssertEqual(CompanyIdentifier.magnusTechnologySdnBhd.name, #"Magnus Technology Sdn Bhd"#)
-        XCTAssertEqual(CompanyIdentifier.magnusTechnologySdnBhd.description, #"Magnus Technology Sdn Bhd"#)
+        XCTAssertEqual(CompanyIdentifier.magnusTechnology.rawValue, 2527)
+        XCTAssertEqual(CompanyIdentifier.magnusTechnology.name, #"Magnus Technology Sdn Bhd"#)
+        XCTAssertEqual(CompanyIdentifier.magnusTechnology.description, #"Magnus Technology Sdn Bhd"#)
     
         // Preddio Technologies Inc.
         XCTAssertEqual(CompanyIdentifier.preddioTechnologies.rawValue, 2528)
         XCTAssertEqual(CompanyIdentifier.preddioTechnologies.name, #"Preddio Technologies Inc."#)
         XCTAssertEqual(CompanyIdentifier.preddioTechnologies.description, #"Preddio Technologies Inc."#)
     
-        // Tag-N-Trac Inc
+        // Tag­N­Trac Inc
         XCTAssertEqual(CompanyIdentifier.tagNTrac.rawValue, 2529)
-        XCTAssertEqual(CompanyIdentifier.tagNTrac.name, #"Tag-N-Trac Inc"#)
-        XCTAssertEqual(CompanyIdentifier.tagNTrac.description, #"Tag-N-Trac Inc"#)
+        XCTAssertEqual(CompanyIdentifier.tagNTrac.name, #"Tag­N­Trac Inc"#)
+        XCTAssertEqual(CompanyIdentifier.tagNTrac.description, #"Tag­N­Trac Inc"#)
     
         // Wuhan Linptech Co.,Ltd.
         XCTAssertEqual(CompanyIdentifier.wuhanLinptech.rawValue, 2530)
@@ -12818,10 +12823,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.cleveron.name, #"Cleveron AS"#)
         XCTAssertEqual(CompanyIdentifier.cleveron.description, #"Cleveron AS"#)
     
-        // Ayxon-Dynamics GmbH
+        // Ayxon­Dynamics GmbH
         XCTAssertEqual(CompanyIdentifier.ayxonDynamics.rawValue, 2562)
-        XCTAssertEqual(CompanyIdentifier.ayxonDynamics.name, #"Ayxon-Dynamics GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.ayxonDynamics.description, #"Ayxon-Dynamics GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.ayxonDynamics.name, #"Ayxon­Dynamics GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.ayxonDynamics.description, #"Ayxon­Dynamics GmbH"#)
     
         // donutrobotics Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.donutrobotics.rawValue, 2563)
@@ -12953,10 +12958,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.inpeakSC.name, #"INPEAK S.C."#)
         XCTAssertEqual(CompanyIdentifier.inpeakSC.description, #"INPEAK S.C."#)
     
-        // API-K
+        // API­K
         XCTAssertEqual(CompanyIdentifier.apiK.rawValue, 2589)
-        XCTAssertEqual(CompanyIdentifier.apiK.name, #"API-K"#)
-        XCTAssertEqual(CompanyIdentifier.apiK.description, #"API-K"#)
+        XCTAssertEqual(CompanyIdentifier.apiK.name, #"API­K"#)
+        XCTAssertEqual(CompanyIdentifier.apiK.description, #"API­K"#)
     
         // CombiQ AB
         XCTAssertEqual(CompanyIdentifier.combiq.rawValue, 2590)
@@ -13008,10 +13013,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.ayuDevices.name, #"AYU DEVICES PRIVATE LIMITED"#)
         XCTAssertEqual(CompanyIdentifier.ayuDevices.description, #"AYU DEVICES PRIVATE LIMITED"#)
     
-        // NanoFlex
-        XCTAssertEqual(CompanyIdentifier.nanoflex.rawValue, 2600)
-        XCTAssertEqual(CompanyIdentifier.nanoflex.name, #"NanoFlex"#)
-        XCTAssertEqual(CompanyIdentifier.nanoflex.description, #"NanoFlex"#)
+        // NanoFlex Power Corporation
+        XCTAssertEqual(CompanyIdentifier.nanoflexPower.rawValue, 2600)
+        XCTAssertEqual(CompanyIdentifier.nanoflexPower.name, #"NanoFlex Power Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.nanoflexPower.description, #"NanoFlex Power Corporation"#)
     
         // Worthcloud Technology Co.,Ltd
         XCTAssertEqual(CompanyIdentifier.worthcloudTechnology.rawValue, 2601)
@@ -13048,10 +13053,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.instamic.name, #"Instamic, Inc."#)
         XCTAssertEqual(CompanyIdentifier.instamic.description, #"Instamic, Inc."#)
     
-        // Air-Weigh
+        // Air­Weigh
         XCTAssertEqual(CompanyIdentifier.airWeigh.rawValue, 2608)
-        XCTAssertEqual(CompanyIdentifier.airWeigh.name, #"Air-Weigh"#)
-        XCTAssertEqual(CompanyIdentifier.airWeigh.description, #"Air-Weigh"#)
+        XCTAssertEqual(CompanyIdentifier.airWeigh.name, #"Air­Weigh"#)
+        XCTAssertEqual(CompanyIdentifier.airWeigh.description, #"Air­Weigh"#)
     
         // Nevro Corp.
         XCTAssertEqual(CompanyIdentifier.nevro.rawValue, 2609)
@@ -13158,10 +13163,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.company3SiSecuritySystems.name, #"3SI Security Systems, Inc"#)
         XCTAssertEqual(CompanyIdentifier.company3SiSecuritySystems.description, #"3SI Security Systems, Inc"#)
     
-        // Beijing HC-Infinite Technology Limited
+        // Beijing HC­Infinite Technology Limited
         XCTAssertEqual(CompanyIdentifier.beijingHcInfiniteTechnology.rawValue, 2630)
-        XCTAssertEqual(CompanyIdentifier.beijingHcInfiniteTechnology.name, #"Beijing HC-Infinite Technology Limited"#)
-        XCTAssertEqual(CompanyIdentifier.beijingHcInfiniteTechnology.description, #"Beijing HC-Infinite Technology Limited"#)
+        XCTAssertEqual(CompanyIdentifier.beijingHcInfiniteTechnology.name, #"Beijing HC­Infinite Technology Limited"#)
+        XCTAssertEqual(CompanyIdentifier.beijingHcInfiniteTechnology.description, #"Beijing HC­Infinite Technology Limited"#)
     
         // The Wand Company Ltd
         XCTAssertEqual(CompanyIdentifier.wandCompany.rawValue, 2631)
@@ -13403,10 +13408,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.synaptics.name, #"Synaptics Incorporated"#)
         XCTAssertEqual(CompanyIdentifier.synaptics.description, #"Synaptics Incorporated"#)
     
-        // JMD PACIFIC PTE. LTD.
-        XCTAssertEqual(CompanyIdentifier.jmdPacificPte.rawValue, 2679)
-        XCTAssertEqual(CompanyIdentifier.jmdPacificPte.name, #"JMD PACIFIC PTE. LTD."#)
-        XCTAssertEqual(CompanyIdentifier.jmdPacificPte.description, #"JMD PACIFIC PTE. LTD."#)
+        // AXTRO PTE. LTD.
+        XCTAssertEqual(CompanyIdentifier.axtroPte.rawValue, 2679)
+        XCTAssertEqual(CompanyIdentifier.axtroPte.name, #"AXTRO PTE. LTD."#)
+        XCTAssertEqual(CompanyIdentifier.axtroPte.description, #"AXTRO PTE. LTD."#)
     
         // Shenzhen Sunricher Technology Limited
         XCTAssertEqual(CompanyIdentifier.shenzhenSunricherTechnology.rawValue, 2680)
@@ -13493,15 +13498,15 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.psaPeugeotCitroen.name, #"PSA Peugeot Citroen"#)
         XCTAssertEqual(CompanyIdentifier.psaPeugeotCitroen.description, #"PSA Peugeot Citroen"#)
     
-        // SES-Imagotag
+        // SES­Imagotag
         XCTAssertEqual(CompanyIdentifier.sesImagotag.rawValue, 2697)
-        XCTAssertEqual(CompanyIdentifier.sesImagotag.name, #"SES-Imagotag"#)
-        XCTAssertEqual(CompanyIdentifier.sesImagotag.description, #"SES-Imagotag"#)
+        XCTAssertEqual(CompanyIdentifier.sesImagotag.name, #"SES­Imagotag"#)
+        XCTAssertEqual(CompanyIdentifier.sesImagotag.description, #"SES­Imagotag"#)
     
-        // HAINBUCH SPANNENDE TECHNIK
+        // HAINBUCH GMBH SPANNENDE TECHNIK
         XCTAssertEqual(CompanyIdentifier.hainbuchSpannendeTechnik.rawValue, 2698)
-        XCTAssertEqual(CompanyIdentifier.hainbuchSpannendeTechnik.name, #"HAINBUCH SPANNENDE TECHNIK"#)
-        XCTAssertEqual(CompanyIdentifier.hainbuchSpannendeTechnik.description, #"HAINBUCH SPANNENDE TECHNIK"#)
+        XCTAssertEqual(CompanyIdentifier.hainbuchSpannendeTechnik.name, #"HAINBUCH GMBH SPANNENDE TECHNIK"#)
+        XCTAssertEqual(CompanyIdentifier.hainbuchSpannendeTechnik.description, #"HAINBUCH GMBH SPANNENDE TECHNIK"#)
     
         // SANlight GmbH
         XCTAssertEqual(CompanyIdentifier.sanlight.rawValue, 2699)
@@ -13573,10 +13578,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.foil.name, #"Foil, Inc."#)
         XCTAssertEqual(CompanyIdentifier.foil.description, #"Foil, Inc."#)
     
-        // Shanghai high-flying electronics technology Co.,Ltd
+        // Shanghai high­flying electronics technology Co.,Ltd
         XCTAssertEqual(CompanyIdentifier.shanghaiHighFlyingElectronicsTechnology.rawValue, 2713)
-        XCTAssertEqual(CompanyIdentifier.shanghaiHighFlyingElectronicsTechnology.name, #"Shanghai high-flying electronics technology Co.,Ltd"#)
-        XCTAssertEqual(CompanyIdentifier.shanghaiHighFlyingElectronicsTechnology.description, #"Shanghai high-flying electronics technology Co.,Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.shanghaiHighFlyingElectronicsTechnology.name, #"Shanghai high­flying electronics technology Co.,Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.shanghaiHighFlyingElectronicsTechnology.description, #"Shanghai high­flying electronics technology Co.,Ltd"#)
     
         // TEMKIN ASSOCIATES, LLC
         XCTAssertEqual(CompanyIdentifier.temkinsociates.rawValue, 2714)
@@ -13588,10 +13593,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.eello.name, #"Eello LLC"#)
         XCTAssertEqual(CompanyIdentifier.eello.description, #"Eello LLC"#)
     
-        // Xi'an Fengyu Information Technology Co., Ltd.
+        // Xi’an Fengyu Information Technology Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.xiAnFengyuInformationTechnology.rawValue, 2716)
-        XCTAssertEqual(CompanyIdentifier.xiAnFengyuInformationTechnology.name, #"Xi'an Fengyu Information Technology Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.xiAnFengyuInformationTechnology.description, #"Xi'an Fengyu Information Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.xiAnFengyuInformationTechnology.name, #"Xi’an Fengyu Information Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.xiAnFengyuInformationTechnology.description, #"Xi’an Fengyu Information Technology Co., Ltd."#)
     
         // Canon Finetech Nisca Inc.
         XCTAssertEqual(CompanyIdentifier.canonFinetechNisca.rawValue, 2717)
@@ -13713,10 +13718,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.ellenbyTechnologies.name, #"Ellenby Technologies, Inc."#)
         XCTAssertEqual(CompanyIdentifier.ellenbyTechnologies.description, #"Ellenby Technologies, Inc."#)
     
-        // Elstat Ltd [ Formerly Elstat Electronics Ltd.]
-        XCTAssertEqual(CompanyIdentifier.elstatFormerlyElstatElectronics.rawValue, 2741)
-        XCTAssertEqual(CompanyIdentifier.elstatFormerlyElstatElectronics.name, #"Elstat Ltd [ Formerly Elstat Electronics Ltd.]"#)
-        XCTAssertEqual(CompanyIdentifier.elstatFormerlyElstatElectronics.description, #"Elstat Ltd [ Formerly Elstat Electronics Ltd.]"#)
+        // Elstat Electronics Ltd.
+        XCTAssertEqual(CompanyIdentifier.elstatElectronics.rawValue, 2741)
+        XCTAssertEqual(CompanyIdentifier.elstatElectronics.name, #"Elstat Electronics Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.elstatElectronics.description, #"Elstat Electronics Ltd."#)
     
         // Xenter, Inc.
         XCTAssertEqual(CompanyIdentifier.xenter.rawValue, 2742)
@@ -13743,10 +13748,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.openBionics.name, #"Open Bionics Ltd."#)
         XCTAssertEqual(CompanyIdentifier.openBionics.description, #"Open Bionics Ltd."#)
     
-        // R-DAS, s.r.o.
+        // R­DAS, s.r.o.
         XCTAssertEqual(CompanyIdentifier.rDas.rawValue, 2747)
-        XCTAssertEqual(CompanyIdentifier.rDas.name, #"R-DAS, s.r.o."#)
-        XCTAssertEqual(CompanyIdentifier.rDas.description, #"R-DAS, s.r.o."#)
+        XCTAssertEqual(CompanyIdentifier.rDas.name, #"R­DAS, s.r.o."#)
+        XCTAssertEqual(CompanyIdentifier.rDas.description, #"R­DAS, s.r.o."#)
     
         // KCCS Mobile Engineering Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.kccsMobileEngineering.rawValue, 2748)
@@ -13768,10 +13773,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.paulHartmann.name, #"PAUL HARTMANN AG"#)
         XCTAssertEqual(CompanyIdentifier.paulHartmann.description, #"PAUL HARTMANN AG"#)
     
-        // Omni-ID USA, INC.
+        // Omni­ID USA, INC.
         XCTAssertEqual(CompanyIdentifier.omniId.rawValue, 2752)
-        XCTAssertEqual(CompanyIdentifier.omniId.name, #"Omni-ID USA, INC."#)
-        XCTAssertEqual(CompanyIdentifier.omniId.description, #"Omni-ID USA, INC."#)
+        XCTAssertEqual(CompanyIdentifier.omniId.name, #"Omni­ID USA, INC."#)
+        XCTAssertEqual(CompanyIdentifier.omniId.description, #"Omni­ID USA, INC."#)
     
         // Shenzhen Jingxun Technology Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.shenzhenJingxunTechnology.rawValue, 2753)
@@ -13883,10 +13888,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.nymea.name, #"nymea GmbH"#)
         XCTAssertEqual(CompanyIdentifier.nymea.description, #"nymea GmbH"#)
     
-        // AL-KO Geraete GmbH
+        // AL­KO Geraete GmbH
         XCTAssertEqual(CompanyIdentifier.alKoGeraete.rawValue, 2775)
-        XCTAssertEqual(CompanyIdentifier.alKoGeraete.name, #"AL-KO Geraete GmbH"#)
-        XCTAssertEqual(CompanyIdentifier.alKoGeraete.description, #"AL-KO Geraete GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.alKoGeraete.name, #"AL­KO Geraete GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.alKoGeraete.description, #"AL­KO Geraete GmbH"#)
     
         // Franz Kaldewei GmbH&Co KG
         XCTAssertEqual(CompanyIdentifier.franzKaldeweiCoKg.rawValue, 2776)
@@ -13910,8 +13915,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Duravit AG
         XCTAssertEqual(CompanyIdentifier.duravit.rawValue, 2780)
-        XCTAssertEqual(CompanyIdentifier.duravit.name, #"Duravit AG "#)
-        XCTAssertEqual(CompanyIdentifier.duravit.description, #"Duravit AG "#)
+        XCTAssertEqual(CompanyIdentifier.duravit.name, #"Duravit AG"#)
+        XCTAssertEqual(CompanyIdentifier.duravit.description, #"Duravit AG"#)
     
         // Boss Audio
         XCTAssertEqual(CompanyIdentifier.bossAudio.rawValue, 2781)
@@ -14108,10 +14113,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.precisionTriathlonSystems.name, #"Precision Triathlon Systems Limited"#)
         XCTAssertEqual(CompanyIdentifier.precisionTriathlonSystems.description, #"Precision Triathlon Systems Limited"#)
     
-        // I-PERCUT
+        // I­PERCUT
         XCTAssertEqual(CompanyIdentifier.iPercut.rawValue, 2820)
-        XCTAssertEqual(CompanyIdentifier.iPercut.name, #"I-PERCUT"#)
-        XCTAssertEqual(CompanyIdentifier.iPercut.description, #"I-PERCUT"#)
+        XCTAssertEqual(CompanyIdentifier.iPercut.name, #"I­PERCUT"#)
+        XCTAssertEqual(CompanyIdentifier.iPercut.description, #"I­PERCUT"#)
     
         // Marquardt GmbH
         XCTAssertEqual(CompanyIdentifier.marquardt.rawValue, 2821)
@@ -14293,10 +14298,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.chacon.name, #"CHACON"#)
         XCTAssertEqual(CompanyIdentifier.chacon.description, #"CHACON"#)
     
-        // Tech-Venom Entertainment Private Limited
+        // Tech­Venom Entertainment Private Limited
         XCTAssertEqual(CompanyIdentifier.techVenomEntertainment.rawValue, 2857)
-        XCTAssertEqual(CompanyIdentifier.techVenomEntertainment.name, #"Tech-Venom Entertainment Private Limited"#)
-        XCTAssertEqual(CompanyIdentifier.techVenomEntertainment.description, #"Tech-Venom Entertainment Private Limited"#)
+        XCTAssertEqual(CompanyIdentifier.techVenomEntertainment.name, #"Tech­Venom Entertainment Private Limited"#)
+        XCTAssertEqual(CompanyIdentifier.techVenomEntertainment.description, #"Tech­Venom Entertainment Private Limited"#)
     
         // ACL Airshop B.V.
         XCTAssertEqual(CompanyIdentifier.aclAirshop.rawValue, 2858)
@@ -14353,10 +14358,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.conzumexIndustries.name, #"CONZUMEX INDUSTRIES PRIVATE LIMITED"#)
         XCTAssertEqual(CompanyIdentifier.conzumexIndustries.description, #"CONZUMEX INDUSTRIES PRIVATE LIMITED"#)
     
-        // BH Sens
+        // BH SENS
         XCTAssertEqual(CompanyIdentifier.bhSens.rawValue, 2869)
-        XCTAssertEqual(CompanyIdentifier.bhSens.name, #"BH Sens"#)
-        XCTAssertEqual(CompanyIdentifier.bhSens.description, #"BH Sens"#)
+        XCTAssertEqual(CompanyIdentifier.bhSens.name, #"BH SENS"#)
+        XCTAssertEqual(CompanyIdentifier.bhSens.description, #"BH SENS"#)
     
         // SINTEF
         XCTAssertEqual(CompanyIdentifier.sintef.rawValue, 2870)
@@ -14445,8 +14450,8 @@ final class CompanyIdentifierTests: XCTestCase {
     
         // Gentex Corporation
         XCTAssertEqual(CompanyIdentifier.gentex.rawValue, 2887)
-        XCTAssertEqual(CompanyIdentifier.gentex.name, #"Gentex Corporation "#)
-        XCTAssertEqual(CompanyIdentifier.gentex.description, #"Gentex Corporation "#)
+        XCTAssertEqual(CompanyIdentifier.gentex.name, #"Gentex Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.gentex.description, #"Gentex Corporation"#)
     
         // NIO USA, Inc.
         XCTAssertEqual(CompanyIdentifier.nio.rawValue, 2888)
@@ -14518,20 +14523,20 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.hGMAutomotiveElectronics.name, #"H G M Automotive Electronics, Inc."#)
         XCTAssertEqual(CompanyIdentifier.hGMAutomotiveElectronics.description, #"H G M Automotive Electronics, Inc."#)
     
-        // BORA - Vertriebs GmbH & Co KG
+        // BORA ­ Vertriebs GmbH & Co KG
         XCTAssertEqual(CompanyIdentifier.boraVertriebs.rawValue, 2902)
-        XCTAssertEqual(CompanyIdentifier.boraVertriebs.name, #"BORA - Vertriebs GmbH & Co KG"#)
-        XCTAssertEqual(CompanyIdentifier.boraVertriebs.description, #"BORA - Vertriebs GmbH & Co KG"#)
+        XCTAssertEqual(CompanyIdentifier.boraVertriebs.name, #"BORA ­ Vertriebs GmbH & Co KG"#)
+        XCTAssertEqual(CompanyIdentifier.boraVertriebs.description, #"BORA ­ Vertriebs GmbH & Co KG"#)
     
         // CONVERTRONIX TECHNOLOGIES AND SERVICES LLP
         XCTAssertEqual(CompanyIdentifier.convertronixTechnologiesAndServicesLlp.rawValue, 2903)
         XCTAssertEqual(CompanyIdentifier.convertronixTechnologiesAndServicesLlp.name, #"CONVERTRONIX TECHNOLOGIES AND SERVICES LLP"#)
         XCTAssertEqual(CompanyIdentifier.convertronixTechnologiesAndServicesLlp.description, #"CONVERTRONIX TECHNOLOGIES AND SERVICES LLP"#)
     
-        // TOKAI-DENSHI INC
+        // TOKAI­DENSHI INC
         XCTAssertEqual(CompanyIdentifier.tokaiDenshi.rawValue, 2904)
-        XCTAssertEqual(CompanyIdentifier.tokaiDenshi.name, #"TOKAI-DENSHI INC"#)
-        XCTAssertEqual(CompanyIdentifier.tokaiDenshi.description, #"TOKAI-DENSHI INC"#)
+        XCTAssertEqual(CompanyIdentifier.tokaiDenshi.name, #"TOKAI­DENSHI INC"#)
+        XCTAssertEqual(CompanyIdentifier.tokaiDenshi.description, #"TOKAI­DENSHI INC"#)
     
         // Versa Group B.V.
         XCTAssertEqual(CompanyIdentifier.versaGroup.rawValue, 2905)
@@ -14553,10 +14558,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.exponentialPower.name, #"Exponential Power, Inc."#)
         XCTAssertEqual(CompanyIdentifier.exponentialPower.description, #"Exponential Power, Inc."#)
     
-        // Fujian Newland Auto-ID Tech. Co., Ltd.
+        // Fujian Newland Auto­ID Tech. Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.fujianNewlandAutoIdTech.rawValue, 2909)
-        XCTAssertEqual(CompanyIdentifier.fujianNewlandAutoIdTech.name, #"Fujian Newland Auto-ID Tech. Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.fujianNewlandAutoIdTech.description, #"Fujian Newland Auto-ID Tech. Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.fujianNewlandAutoIdTech.name, #"Fujian Newland Auto­ID Tech. Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.fujianNewlandAutoIdTech.description, #"Fujian Newland Auto­ID Tech. Co., Ltd."#)
     
         // CELLCONTROL, INC.
         XCTAssertEqual(CompanyIdentifier.cellcontrol.rawValue, 2910)
@@ -14678,10 +14683,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.tripleWJapan.name, #"Triple W Japan Inc."#)
         XCTAssertEqual(CompanyIdentifier.tripleWJapan.description, #"Triple W Japan Inc."#)
     
-        // MAX-co., ltd
+        // MAX­co., ltd
         XCTAssertEqual(CompanyIdentifier.max.rawValue, 2934)
-        XCTAssertEqual(CompanyIdentifier.max.name, #"MAX-co., ltd"#)
-        XCTAssertEqual(CompanyIdentifier.max.description, #"MAX-co., ltd"#)
+        XCTAssertEqual(CompanyIdentifier.max.name, #"MAX­co., ltd"#)
+        XCTAssertEqual(CompanyIdentifier.max.description, #"MAX­co., ltd"#)
     
         // Aixlink(Chengdu) Co., Ltd.
         XCTAssertEqual(CompanyIdentifier.aixlinkChengdu.rawValue, 2935)
@@ -14893,10 +14898,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.dataSciencesInternational.name, #"Data Sciences International"#)
         XCTAssertEqual(CompanyIdentifier.dataSciencesInternational.description, #"Data Sciences International"#)
     
-        // Bunn-O-Matic Corporation
+        // Bunn­O­Matic Corporation
         XCTAssertEqual(CompanyIdentifier.bunnOMatic.rawValue, 2977)
-        XCTAssertEqual(CompanyIdentifier.bunnOMatic.name, #"Bunn-O-Matic Corporation"#)
-        XCTAssertEqual(CompanyIdentifier.bunnOMatic.description, #"Bunn-O-Matic Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.bunnOMatic.name, #"Bunn­O­Matic Corporation"#)
+        XCTAssertEqual(CompanyIdentifier.bunnOMatic.description, #"Bunn­O­Matic Corporation"#)
     
         // TireCheck GmbH
         XCTAssertEqual(CompanyIdentifier.tirecheck.rawValue, 2978)
@@ -15133,10 +15138,10 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.durag.name, #"Durag GmbH"#)
         XCTAssertEqual(CompanyIdentifier.durag.description, #"Durag GmbH"#)
     
-        // Hubei Yuanshidai Technology Co., Ltd.
-        XCTAssertEqual(CompanyIdentifier.hubeiYuanshidaiTechnology.rawValue, 3025)
-        XCTAssertEqual(CompanyIdentifier.hubeiYuanshidaiTechnology.name, #"Hubei Yuanshidai Technology Co., Ltd."#)
-        XCTAssertEqual(CompanyIdentifier.hubeiYuanshidaiTechnology.description, #"Hubei Yuanshidai Technology Co., Ltd."#)
+        // Hubei Yuan Times Technology Co., Ltd.
+        XCTAssertEqual(CompanyIdentifier.hubeiYuanTimesTechnology.rawValue, 3025)
+        XCTAssertEqual(CompanyIdentifier.hubeiYuanTimesTechnology.name, #"Hubei Yuan Times Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.hubeiYuanTimesTechnology.description, #"Hubei Yuan Times Technology Co., Ltd."#)
     
         // IDEC
         XCTAssertEqual(CompanyIdentifier.idec.rawValue, 3026)
@@ -15158,15 +15163,675 @@ final class CompanyIdentifierTests: XCTestCase {
         XCTAssertEqual(CompanyIdentifier.superBLithiumPower.name, #"Super B Lithium Power B.V."#)
         XCTAssertEqual(CompanyIdentifier.superBLithiumPower.description, #"Super B Lithium Power B.V."#)
     
-        // Injoinic
-        XCTAssertEqual(CompanyIdentifier.injoinic.rawValue, 3030)
-        XCTAssertEqual(CompanyIdentifier.injoinic.name, #"Injoinic"#)
-        XCTAssertEqual(CompanyIdentifier.injoinic.description, #"Injoinic"#)
+        // Shenzhen Injoinic Technology Co., Ltd.
+        XCTAssertEqual(CompanyIdentifier.shenzhenInjoinicTechnology.rawValue, 3030)
+        XCTAssertEqual(CompanyIdentifier.shenzhenInjoinicTechnology.name, #"Shenzhen Injoinic Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.shenzhenInjoinicTechnology.description, #"Shenzhen Injoinic Technology Co., Ltd."#)
     
         // VINFAST TRADING AND PRODUCTION JOINT STOCK COMPANY
         XCTAssertEqual(CompanyIdentifier.vinfastTradingAndProductionJointStockCompany.rawValue, 3031)
         XCTAssertEqual(CompanyIdentifier.vinfastTradingAndProductionJointStockCompany.name, #"VINFAST TRADING AND PRODUCTION JOINT STOCK COMPANY"#)
         XCTAssertEqual(CompanyIdentifier.vinfastTradingAndProductionJointStockCompany.description, #"VINFAST TRADING AND PRODUCTION JOINT STOCK COMPANY"#)
+    
+        // PURA SCENTS, INC.
+        XCTAssertEqual(CompanyIdentifier.puraScents.rawValue, 3032)
+        XCTAssertEqual(CompanyIdentifier.puraScents.name, #"PURA SCENTS, INC."#)
+        XCTAssertEqual(CompanyIdentifier.puraScents.description, #"PURA SCENTS, INC."#)
+    
+        // Elics Basis Ltd.
+        XCTAssertEqual(CompanyIdentifier.elicsBasis.rawValue, 3033)
+        XCTAssertEqual(CompanyIdentifier.elicsBasis.name, #"Elics Basis Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.elicsBasis.description, #"Elics Basis Ltd."#)
+    
+        // Aardex Ltd.
+        XCTAssertEqual(CompanyIdentifier.aardex.rawValue, 3034)
+        XCTAssertEqual(CompanyIdentifier.aardex.name, #"Aardex Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.aardex.description, #"Aardex Ltd."#)
+    
+        // CHAR­BROIL, LLC
+        XCTAssertEqual(CompanyIdentifier.charBroil.rawValue, 3035)
+        XCTAssertEqual(CompanyIdentifier.charBroil.name, #"CHAR­BROIL, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.charBroil.description, #"CHAR­BROIL, LLC"#)
+    
+        // Ledworks S.r.l.
+        XCTAssertEqual(CompanyIdentifier.ledworks.rawValue, 3036)
+        XCTAssertEqual(CompanyIdentifier.ledworks.name, #"Ledworks S.r.l."#)
+        XCTAssertEqual(CompanyIdentifier.ledworks.description, #"Ledworks S.r.l."#)
+    
+        // Coroflo Limited
+        XCTAssertEqual(CompanyIdentifier.coroflo.rawValue, 3037)
+        XCTAssertEqual(CompanyIdentifier.coroflo.name, #"Coroflo Limited"#)
+        XCTAssertEqual(CompanyIdentifier.coroflo.description, #"Coroflo Limited"#)
+    
+        // Yale
+        XCTAssertEqual(CompanyIdentifier.yale.rawValue, 3038)
+        XCTAssertEqual(CompanyIdentifier.yale.name, #"Yale"#)
+        XCTAssertEqual(CompanyIdentifier.yale.description, #"Yale"#)
+    
+        // WINKEY ENTERPRISE (HONG KONG) LIMITED
+        XCTAssertEqual(CompanyIdentifier.winkeyEnterpriseHongKong.rawValue, 3039)
+        XCTAssertEqual(CompanyIdentifier.winkeyEnterpriseHongKong.name, #"WINKEY ENTERPRISE (HONG KONG) LIMITED"#)
+        XCTAssertEqual(CompanyIdentifier.winkeyEnterpriseHongKong.description, #"WINKEY ENTERPRISE (HONG KONG) LIMITED"#)
+    
+        // Koizumi Lighting Technology corp.
+        XCTAssertEqual(CompanyIdentifier.koizumiLightingTechnology.rawValue, 3040)
+        XCTAssertEqual(CompanyIdentifier.koizumiLightingTechnology.name, #"Koizumi Lighting Technology corp."#)
+        XCTAssertEqual(CompanyIdentifier.koizumiLightingTechnology.description, #"Koizumi Lighting Technology corp."#)
+    
+        // Back40 Precision
+        XCTAssertEqual(CompanyIdentifier.back40Precision.rawValue, 3041)
+        XCTAssertEqual(CompanyIdentifier.back40Precision.name, #"Back40 Precision"#)
+        XCTAssertEqual(CompanyIdentifier.back40Precision.description, #"Back40 Precision"#)
+    
+        // OTC engineering
+        XCTAssertEqual(CompanyIdentifier.otcEngineering.rawValue, 3042)
+        XCTAssertEqual(CompanyIdentifier.otcEngineering.name, #"OTC engineering"#)
+        XCTAssertEqual(CompanyIdentifier.otcEngineering.description, #"OTC engineering"#)
+    
+        // Comtel Systems Ltd.
+        XCTAssertEqual(CompanyIdentifier.comtelSystems.rawValue, 3043)
+        XCTAssertEqual(CompanyIdentifier.comtelSystems.name, #"Comtel Systems Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.comtelSystems.description, #"Comtel Systems Ltd."#)
+    
+        // Deepfield Connect GmbH
+        XCTAssertEqual(CompanyIdentifier.deepfieldConnect.rawValue, 3044)
+        XCTAssertEqual(CompanyIdentifier.deepfieldConnect.name, #"Deepfield Connect GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.deepfieldConnect.description, #"Deepfield Connect GmbH"#)
+    
+        // ZWILLING J.A. Henckels Aktiengesellschaft
+        XCTAssertEqual(CompanyIdentifier.zwillingJAHenckelsAktiengesellschaft.rawValue, 3045)
+        XCTAssertEqual(CompanyIdentifier.zwillingJAHenckelsAktiengesellschaft.name, #"ZWILLING J.A. Henckels Aktiengesellschaft"#)
+        XCTAssertEqual(CompanyIdentifier.zwillingJAHenckelsAktiengesellschaft.description, #"ZWILLING J.A. Henckels Aktiengesellschaft"#)
+    
+        // Puratap Pty Ltd
+        XCTAssertEqual(CompanyIdentifier.puratapPty.rawValue, 3046)
+        XCTAssertEqual(CompanyIdentifier.puratapPty.name, #"Puratap Pty Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.puratapPty.description, #"Puratap Pty Ltd"#)
+    
+        // Fresnel Technologies, Inc.
+        XCTAssertEqual(CompanyIdentifier.fresnelTechnologies.rawValue, 3047)
+        XCTAssertEqual(CompanyIdentifier.fresnelTechnologies.name, #"Fresnel Technologies, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.fresnelTechnologies.description, #"Fresnel Technologies, Inc."#)
+    
+        // Sensormate AG
+        XCTAssertEqual(CompanyIdentifier.sensormate.rawValue, 3048)
+        XCTAssertEqual(CompanyIdentifier.sensormate.name, #"Sensormate AG"#)
+        XCTAssertEqual(CompanyIdentifier.sensormate.description, #"Sensormate AG"#)
+    
+        // Shindengen Electric Manufacturing Co., Ltd.
+        XCTAssertEqual(CompanyIdentifier.shindengenElectricManufacturing.rawValue, 3049)
+        XCTAssertEqual(CompanyIdentifier.shindengenElectricManufacturing.name, #"Shindengen Electric Manufacturing Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.shindengenElectricManufacturing.description, #"Shindengen Electric Manufacturing Co., Ltd."#)
+    
+        // Twenty Five Seven, prodaja in storitve, d.o.o.
+        XCTAssertEqual(CompanyIdentifier.twentyFiveSevenProdajaInStoritve.rawValue, 3050)
+        XCTAssertEqual(CompanyIdentifier.twentyFiveSevenProdajaInStoritve.name, #"Twenty Five Seven, prodaja in storitve, d.o.o."#)
+        XCTAssertEqual(CompanyIdentifier.twentyFiveSevenProdajaInStoritve.description, #"Twenty Five Seven, prodaja in storitve, d.o.o."#)
+    
+        // Luna Health, Inc.
+        XCTAssertEqual(CompanyIdentifier.lunaHealth.rawValue, 3051)
+        XCTAssertEqual(CompanyIdentifier.lunaHealth.name, #"Luna Health, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.lunaHealth.description, #"Luna Health, Inc."#)
+    
+        // Miracle­Ear, Inc.
+        XCTAssertEqual(CompanyIdentifier.miracleEar.rawValue, 3052)
+        XCTAssertEqual(CompanyIdentifier.miracleEar.name, #"Miracle­Ear, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.miracleEar.description, #"Miracle­Ear, Inc."#)
+    
+        // CORAL­TAIYI Co. Ltd.
+        XCTAssertEqual(CompanyIdentifier.coralTaiyi.rawValue, 3053)
+        XCTAssertEqual(CompanyIdentifier.coralTaiyi.name, #"CORAL­TAIYI Co. Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.coralTaiyi.description, #"CORAL­TAIYI Co. Ltd."#)
+    
+        // LINKSYS USA, INC.
+        XCTAssertEqual(CompanyIdentifier.linksys.rawValue, 3054)
+        XCTAssertEqual(CompanyIdentifier.linksys.name, #"LINKSYS USA, INC."#)
+        XCTAssertEqual(CompanyIdentifier.linksys.description, #"LINKSYS USA, INC."#)
+    
+        // Safetytest GmbH
+        XCTAssertEqual(CompanyIdentifier.safetytest.rawValue, 3055)
+        XCTAssertEqual(CompanyIdentifier.safetytest.name, #"Safetytest GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.safetytest.description, #"Safetytest GmbH"#)
+    
+        // KIDO SPORTS CO., LTD.
+        XCTAssertEqual(CompanyIdentifier.kidoSports.rawValue, 3056)
+        XCTAssertEqual(CompanyIdentifier.kidoSports.name, #"KIDO SPORTS CO., LTD."#)
+        XCTAssertEqual(CompanyIdentifier.kidoSports.description, #"KIDO SPORTS CO., LTD."#)
+    
+        // Site IQ LLC
+        XCTAssertEqual(CompanyIdentifier.siteIq.rawValue, 3057)
+        XCTAssertEqual(CompanyIdentifier.siteIq.name, #"Site IQ LLC"#)
+        XCTAssertEqual(CompanyIdentifier.siteIq.description, #"Site IQ LLC"#)
+    
+        // Angel Medical Systems, Inc.
+        XCTAssertEqual(CompanyIdentifier.angelMedicalSystems.rawValue, 3058)
+        XCTAssertEqual(CompanyIdentifier.angelMedicalSystems.name, #"Angel Medical Systems, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.angelMedicalSystems.description, #"Angel Medical Systems, Inc."#)
+    
+        // PONE BIOMETRICS AS
+        XCTAssertEqual(CompanyIdentifier.poneBiometrics.rawValue, 3059)
+        XCTAssertEqual(CompanyIdentifier.poneBiometrics.name, #"PONE BIOMETRICS AS"#)
+        XCTAssertEqual(CompanyIdentifier.poneBiometrics.description, #"PONE BIOMETRICS AS"#)
+    
+        // ER Lab LLC
+        XCTAssertEqual(CompanyIdentifier.erLab.rawValue, 3060)
+        XCTAssertEqual(CompanyIdentifier.erLab.name, #"ER Lab LLC"#)
+        XCTAssertEqual(CompanyIdentifier.erLab.description, #"ER Lab LLC"#)
+    
+        // T5 tek, Inc.
+        XCTAssertEqual(CompanyIdentifier.t5Tek.rawValue, 3061)
+        XCTAssertEqual(CompanyIdentifier.t5Tek.name, #"T5 tek, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.t5Tek.description, #"T5 tek, Inc."#)
+    
+        // greenTEG AG
+        XCTAssertEqual(CompanyIdentifier.greenteg.rawValue, 3062)
+        XCTAssertEqual(CompanyIdentifier.greenteg.name, #"greenTEG AG"#)
+        XCTAssertEqual(CompanyIdentifier.greenteg.description, #"greenTEG AG"#)
+    
+        // Wacker Neuson SE
+        XCTAssertEqual(CompanyIdentifier.wackerNeusonSe.rawValue, 3063)
+        XCTAssertEqual(CompanyIdentifier.wackerNeusonSe.name, #"Wacker Neuson SE"#)
+        XCTAssertEqual(CompanyIdentifier.wackerNeusonSe.description, #"Wacker Neuson SE"#)
+    
+        // Innovacionnye Resheniya
+        XCTAssertEqual(CompanyIdentifier.innovacionnyeResheniya.rawValue, 3064)
+        XCTAssertEqual(CompanyIdentifier.innovacionnyeResheniya.name, #"Innovacionnye Resheniya"#)
+        XCTAssertEqual(CompanyIdentifier.innovacionnyeResheniya.description, #"Innovacionnye Resheniya"#)
+    
+        // Alio, Inc
+        XCTAssertEqual(CompanyIdentifier.alio.rawValue, 3065)
+        XCTAssertEqual(CompanyIdentifier.alio.name, #"Alio, Inc"#)
+        XCTAssertEqual(CompanyIdentifier.alio.description, #"Alio, Inc"#)
+    
+        // CleanBands Systems Ltd.
+        XCTAssertEqual(CompanyIdentifier.cleanbandsSystems.rawValue, 3066)
+        XCTAssertEqual(CompanyIdentifier.cleanbandsSystems.name, #"CleanBands Systems Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.cleanbandsSystems.description, #"CleanBands Systems Ltd."#)
+    
+        // Dodam Enersys Co., Ltd
+        XCTAssertEqual(CompanyIdentifier.dodamEnersys.rawValue, 3067)
+        XCTAssertEqual(CompanyIdentifier.dodamEnersys.name, #"Dodam Enersys Co., Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.dodamEnersys.description, #"Dodam Enersys Co., Ltd"#)
+    
+        // T+A elektroakustik GmbH & Co.KG
+        XCTAssertEqual(CompanyIdentifier.tAElektroakustikKg.rawValue, 3068)
+        XCTAssertEqual(CompanyIdentifier.tAElektroakustikKg.name, #"T+A elektroakustik GmbH & Co.KG"#)
+        XCTAssertEqual(CompanyIdentifier.tAElektroakustikKg.description, #"T+A elektroakustik GmbH & Co.KG"#)
+    
+        // Esmé Solutions
+        XCTAssertEqual(CompanyIdentifier.esmeSolutions.rawValue, 3069)
+        XCTAssertEqual(CompanyIdentifier.esmeSolutions.name, #"Esmé Solutions"#)
+        XCTAssertEqual(CompanyIdentifier.esmeSolutions.description, #"Esmé Solutions"#)
+    
+        // Media­Cartec GmbH
+        XCTAssertEqual(CompanyIdentifier.mediaCartec.rawValue, 3070)
+        XCTAssertEqual(CompanyIdentifier.mediaCartec.name, #"Media­Cartec GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.mediaCartec.description, #"Media­Cartec GmbH"#)
+    
+        // Ratio Electric BV
+        XCTAssertEqual(CompanyIdentifier.ratioElectric.rawValue, 3071)
+        XCTAssertEqual(CompanyIdentifier.ratioElectric.name, #"Ratio Electric BV"#)
+        XCTAssertEqual(CompanyIdentifier.ratioElectric.description, #"Ratio Electric BV"#)
+    
+        // MQA Limited
+        XCTAssertEqual(CompanyIdentifier.mqa.rawValue, 3072)
+        XCTAssertEqual(CompanyIdentifier.mqa.name, #"MQA Limited"#)
+        XCTAssertEqual(CompanyIdentifier.mqa.description, #"MQA Limited"#)
+    
+        // NEOWRK SISTEMAS INTELIGENTES S.A.
+        XCTAssertEqual(CompanyIdentifier.neowrkSistemasInteligentes.rawValue, 3073)
+        XCTAssertEqual(CompanyIdentifier.neowrkSistemasInteligentes.name, #"NEOWRK SISTEMAS INTELIGENTES S.A."#)
+        XCTAssertEqual(CompanyIdentifier.neowrkSistemasInteligentes.description, #"NEOWRK SISTEMAS INTELIGENTES S.A."#)
+    
+        // Loomanet, Inc.
+        XCTAssertEqual(CompanyIdentifier.loomanet.rawValue, 3074)
+        XCTAssertEqual(CompanyIdentifier.loomanet.name, #"Loomanet, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.loomanet.description, #"Loomanet, Inc."#)
+    
+        // Puff Corp
+        XCTAssertEqual(CompanyIdentifier.puff.rawValue, 3075)
+        XCTAssertEqual(CompanyIdentifier.puff.name, #"Puff Corp"#)
+        XCTAssertEqual(CompanyIdentifier.puff.description, #"Puff Corp"#)
+    
+        // Happy Health, Inc.
+        XCTAssertEqual(CompanyIdentifier.happyHealth.rawValue, 3076)
+        XCTAssertEqual(CompanyIdentifier.happyHealth.name, #"Happy Health, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.happyHealth.description, #"Happy Health, Inc."#)
+    
+        // Montage Connect, Inc.
+        XCTAssertEqual(CompanyIdentifier.montageConnect.rawValue, 3077)
+        XCTAssertEqual(CompanyIdentifier.montageConnect.name, #"Montage Connect, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.montageConnect.description, #"Montage Connect, Inc."#)
+    
+        // LED Smart Inc.
+        XCTAssertEqual(CompanyIdentifier.ledSmart.rawValue, 3078)
+        XCTAssertEqual(CompanyIdentifier.ledSmart.name, #"LED Smart Inc."#)
+        XCTAssertEqual(CompanyIdentifier.ledSmart.description, #"LED Smart Inc."#)
+    
+        // CONSTRUKTS, INC.
+        XCTAssertEqual(CompanyIdentifier.construkts.rawValue, 3079)
+        XCTAssertEqual(CompanyIdentifier.construkts.name, #"CONSTRUKTS, INC."#)
+        XCTAssertEqual(CompanyIdentifier.construkts.description, #"CONSTRUKTS, INC."#)
+    
+        // limited liability company ”Red”
+        XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyRed.rawValue, 3080)
+        XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyRed.name, #"limited liability company ”Red”"#)
+        XCTAssertEqual(CompanyIdentifier.limitedLiabilityCompanyRed.description, #"limited liability company ”Red”"#)
+    
+        // Senic Inc.
+        XCTAssertEqual(CompanyIdentifier.senic.rawValue, 3081)
+        XCTAssertEqual(CompanyIdentifier.senic.name, #"Senic Inc."#)
+        XCTAssertEqual(CompanyIdentifier.senic.description, #"Senic Inc."#)
+    
+        // Automated Pet Care Products, LLC
+        XCTAssertEqual(CompanyIdentifier.automatedPetCareProducts.rawValue, 3082)
+        XCTAssertEqual(CompanyIdentifier.automatedPetCareProducts.name, #"Automated Pet Care Products, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.automatedPetCareProducts.description, #"Automated Pet Care Products, LLC"#)
+    
+        // aconno GmbH
+        XCTAssertEqual(CompanyIdentifier.aconno.rawValue, 3083)
+        XCTAssertEqual(CompanyIdentifier.aconno.name, #"aconno GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.aconno.description, #"aconno GmbH"#)
+    
+        // Mendeltron, Inc.
+        XCTAssertEqual(CompanyIdentifier.mendeltron.rawValue, 3084)
+        XCTAssertEqual(CompanyIdentifier.mendeltron.name, #"Mendeltron, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.mendeltron.description, #"Mendeltron, Inc."#)
+    
+        // Mereltron bv
+        XCTAssertEqual(CompanyIdentifier.mereltronBv.rawValue, 3085)
+        XCTAssertEqual(CompanyIdentifier.mereltronBv.name, #"Mereltron bv"#)
+        XCTAssertEqual(CompanyIdentifier.mereltronBv.description, #"Mereltron bv"#)
+    
+        // ALEX DENKO CO.,LTD.
+        XCTAssertEqual(CompanyIdentifier.alexDenko.rawValue, 3086)
+        XCTAssertEqual(CompanyIdentifier.alexDenko.name, #"ALEX DENKO CO.,LTD."#)
+        XCTAssertEqual(CompanyIdentifier.alexDenko.description, #"ALEX DENKO CO.,LTD."#)
+    
+        // AETERLINK
+        XCTAssertEqual(CompanyIdentifier.aeterlink.rawValue, 3087)
+        XCTAssertEqual(CompanyIdentifier.aeterlink.name, #"AETERLINK"#)
+        XCTAssertEqual(CompanyIdentifier.aeterlink.description, #"AETERLINK"#)
+    
+        // Cosmed s.r.l.
+        XCTAssertEqual(CompanyIdentifier.cosmed.rawValue, 3088)
+        XCTAssertEqual(CompanyIdentifier.cosmed.name, #"Cosmed s.r.l."#)
+        XCTAssertEqual(CompanyIdentifier.cosmed.description, #"Cosmed s.r.l."#)
+    
+        // Gordon Murray Design Limited
+        XCTAssertEqual(CompanyIdentifier.gordonMurrayDesign.rawValue, 3089)
+        XCTAssertEqual(CompanyIdentifier.gordonMurrayDesign.name, #"Gordon Murray Design Limited"#)
+        XCTAssertEqual(CompanyIdentifier.gordonMurrayDesign.description, #"Gordon Murray Design Limited"#)
+    
+        // IoSA
+        XCTAssertEqual(CompanyIdentifier.iosa.rawValue, 3090)
+        XCTAssertEqual(CompanyIdentifier.iosa.name, #"IoSA"#)
+        XCTAssertEqual(CompanyIdentifier.iosa.description, #"IoSA"#)
+    
+        // Scandinavian Health Limited
+        XCTAssertEqual(CompanyIdentifier.scandinavianHealth.rawValue, 3091)
+        XCTAssertEqual(CompanyIdentifier.scandinavianHealth.name, #"Scandinavian Health Limited"#)
+        XCTAssertEqual(CompanyIdentifier.scandinavianHealth.description, #"Scandinavian Health Limited"#)
+    
+        // Fasetto, Inc.
+        XCTAssertEqual(CompanyIdentifier.fasetto.rawValue, 3092)
+        XCTAssertEqual(CompanyIdentifier.fasetto.name, #"Fasetto, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.fasetto.description, #"Fasetto, Inc."#)
+    
+        // Geva Sol B.V.
+        XCTAssertEqual(CompanyIdentifier.gevaSol.rawValue, 3093)
+        XCTAssertEqual(CompanyIdentifier.gevaSol.name, #"Geva Sol B.V."#)
+        XCTAssertEqual(CompanyIdentifier.gevaSol.description, #"Geva Sol B.V."#)
+    
+        // TYKEE PTY. LTD.
+        XCTAssertEqual(CompanyIdentifier.tykeePty.rawValue, 3094)
+        XCTAssertEqual(CompanyIdentifier.tykeePty.name, #"TYKEE PTY. LTD."#)
+        XCTAssertEqual(CompanyIdentifier.tykeePty.description, #"TYKEE PTY. LTD."#)
+    
+        // SomnoMed Limited
+        XCTAssertEqual(CompanyIdentifier.somnomed.rawValue, 3095)
+        XCTAssertEqual(CompanyIdentifier.somnomed.name, #"SomnoMed Limited"#)
+        XCTAssertEqual(CompanyIdentifier.somnomed.description, #"SomnoMed Limited"#)
+    
+        // CORROHM
+        XCTAssertEqual(CompanyIdentifier.corrohm.rawValue, 3096)
+        XCTAssertEqual(CompanyIdentifier.corrohm.name, #"CORROHM"#)
+        XCTAssertEqual(CompanyIdentifier.corrohm.description, #"CORROHM"#)
+    
+        // Arlo Technologies, Inc.
+        XCTAssertEqual(CompanyIdentifier.arloTechnologies.rawValue, 3097)
+        XCTAssertEqual(CompanyIdentifier.arloTechnologies.name, #"Arlo Technologies, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.arloTechnologies.description, #"Arlo Technologies, Inc."#)
+    
+        // Catapult Group International Ltd
+        XCTAssertEqual(CompanyIdentifier.catapultGroupInternational.rawValue, 3098)
+        XCTAssertEqual(CompanyIdentifier.catapultGroupInternational.name, #"Catapult Group International Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.catapultGroupInternational.description, #"Catapult Group International Ltd"#)
+    
+        // Fuzhou Rockchip
+        XCTAssertEqual(CompanyIdentifier.fuzhouRockchip.rawValue, 3099)
+        XCTAssertEqual(CompanyIdentifier.fuzhouRockchip.name, #"Fuzhou Rockchip"#)
+        XCTAssertEqual(CompanyIdentifier.fuzhouRockchip.description, #"Fuzhou Rockchip"#)
+    
+        // GEMU
+        XCTAssertEqual(CompanyIdentifier.gemu.rawValue, 3100)
+        XCTAssertEqual(CompanyIdentifier.gemu.name, #"GEMU"#)
+        XCTAssertEqual(CompanyIdentifier.gemu.description, #"GEMU"#)
+    
+        // OFF Line Japan Co., Ltd.
+        XCTAssertEqual(CompanyIdentifier.offLineJapan.rawValue, 3101)
+        XCTAssertEqual(CompanyIdentifier.offLineJapan.name, #"OFF Line Japan Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.offLineJapan.description, #"OFF Line Japan Co., Ltd."#)
+    
+        // EC sense co., Ltd
+        XCTAssertEqual(CompanyIdentifier.ecSense.rawValue, 3102)
+        XCTAssertEqual(CompanyIdentifier.ecSense.name, #"EC sense co., Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.ecSense.description, #"EC sense co., Ltd"#)
+    
+        // LVI Co.
+        XCTAssertEqual(CompanyIdentifier.lvi.rawValue, 3103)
+        XCTAssertEqual(CompanyIdentifier.lvi.name, #"LVI Co."#)
+        XCTAssertEqual(CompanyIdentifier.lvi.description, #"LVI Co."#)
+    
+        // COMELIT GROUP S.P.A.
+        XCTAssertEqual(CompanyIdentifier.comelitGroup.rawValue, 3104)
+        XCTAssertEqual(CompanyIdentifier.comelitGroup.name, #"COMELIT GROUP S.P.A."#)
+        XCTAssertEqual(CompanyIdentifier.comelitGroup.description, #"COMELIT GROUP S.P.A."#)
+    
+        // Foshan Viomi Electrical Technology Co., Ltd
+        XCTAssertEqual(CompanyIdentifier.foshanViomiElectricalTechnology.rawValue, 3105)
+        XCTAssertEqual(CompanyIdentifier.foshanViomiElectricalTechnology.name, #"Foshan Viomi Electrical Technology Co., Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.foshanViomiElectricalTechnology.description, #"Foshan Viomi Electrical Technology Co., Ltd"#)
+    
+        // Glamo Inc.
+        XCTAssertEqual(CompanyIdentifier.glamo.rawValue, 3106)
+        XCTAssertEqual(CompanyIdentifier.glamo.name, #"Glamo Inc."#)
+        XCTAssertEqual(CompanyIdentifier.glamo.description, #"Glamo Inc."#)
+    
+        // KEYTEC,Inc.
+        XCTAssertEqual(CompanyIdentifier.keytec.rawValue, 3107)
+        XCTAssertEqual(CompanyIdentifier.keytec.name, #"KEYTEC,Inc."#)
+        XCTAssertEqual(CompanyIdentifier.keytec.description, #"KEYTEC,Inc."#)
+    
+        // SMARTD TECHNOLOGIES INC.
+        XCTAssertEqual(CompanyIdentifier.smartdTechnologies.rawValue, 3108)
+        XCTAssertEqual(CompanyIdentifier.smartdTechnologies.name, #"SMARTD TECHNOLOGIES INC."#)
+        XCTAssertEqual(CompanyIdentifier.smartdTechnologies.description, #"SMARTD TECHNOLOGIES INC."#)
+    
+        // JURA Elektroapparate AG
+        XCTAssertEqual(CompanyIdentifier.juraElektroapparate.rawValue, 3109)
+        XCTAssertEqual(CompanyIdentifier.juraElektroapparate.name, #"JURA Elektroapparate AG"#)
+        XCTAssertEqual(CompanyIdentifier.juraElektroapparate.description, #"JURA Elektroapparate AG"#)
+    
+        // Performance Electronics, Ltd.
+        XCTAssertEqual(CompanyIdentifier.performanceElectronics.rawValue, 3110)
+        XCTAssertEqual(CompanyIdentifier.performanceElectronics.name, #"Performance Electronics, Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.performanceElectronics.description, #"Performance Electronics, Ltd."#)
+    
+        // Pal Electronics
+        XCTAssertEqual(CompanyIdentifier.palElectronics.rawValue, 3111)
+        XCTAssertEqual(CompanyIdentifier.palElectronics.name, #"Pal Electronics"#)
+        XCTAssertEqual(CompanyIdentifier.palElectronics.description, #"Pal Electronics"#)
+    
+        // Embecta Corp.
+        XCTAssertEqual(CompanyIdentifier.embecta.rawValue, 3112)
+        XCTAssertEqual(CompanyIdentifier.embecta.name, #"Embecta Corp."#)
+        XCTAssertEqual(CompanyIdentifier.embecta.description, #"Embecta Corp."#)
+    
+        // DENSO AIRCOOL CORPORATION
+        XCTAssertEqual(CompanyIdentifier.densoAircool.rawValue, 3113)
+        XCTAssertEqual(CompanyIdentifier.densoAircool.name, #"DENSO AIRCOOL CORPORATION"#)
+        XCTAssertEqual(CompanyIdentifier.densoAircool.description, #"DENSO AIRCOOL CORPORATION"#)
+    
+        // Caresix Inc.
+        XCTAssertEqual(CompanyIdentifier.caresix.rawValue, 3114)
+        XCTAssertEqual(CompanyIdentifier.caresix.name, #"Caresix Inc."#)
+        XCTAssertEqual(CompanyIdentifier.caresix.description, #"Caresix Inc."#)
+    
+        // GigaDevice Semiconductor Inc.
+        XCTAssertEqual(CompanyIdentifier.gigadeviceSemiconductor.rawValue, 3115)
+        XCTAssertEqual(CompanyIdentifier.gigadeviceSemiconductor.name, #"GigaDevice Semiconductor Inc."#)
+        XCTAssertEqual(CompanyIdentifier.gigadeviceSemiconductor.description, #"GigaDevice Semiconductor Inc."#)
+    
+        // Zeku Technology (Shanghai) Corp., Ltd.
+        XCTAssertEqual(CompanyIdentifier.zekuTechnologyShanghai.rawValue, 3116)
+        XCTAssertEqual(CompanyIdentifier.zekuTechnologyShanghai.name, #"Zeku Technology (Shanghai) Corp., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.zekuTechnologyShanghai.description, #"Zeku Technology (Shanghai) Corp., Ltd."#)
+    
+        // OTF Product Sourcing, LLC
+        XCTAssertEqual(CompanyIdentifier.otfProductSourcing.rawValue, 3117)
+        XCTAssertEqual(CompanyIdentifier.otfProductSourcing.name, #"OTF Product Sourcing, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.otfProductSourcing.description, #"OTF Product Sourcing, LLC"#)
+    
+        // Easee AS
+        XCTAssertEqual(CompanyIdentifier.easee.rawValue, 3118)
+        XCTAssertEqual(CompanyIdentifier.easee.name, #"Easee AS"#)
+        XCTAssertEqual(CompanyIdentifier.easee.description, #"Easee AS"#)
+    
+        // BEEHERO, INC.
+        XCTAssertEqual(CompanyIdentifier.beehero.rawValue, 3119)
+        XCTAssertEqual(CompanyIdentifier.beehero.name, #"BEEHERO, INC."#)
+        XCTAssertEqual(CompanyIdentifier.beehero.description, #"BEEHERO, INC."#)
+    
+        // McIntosh Group Inc
+        XCTAssertEqual(CompanyIdentifier.mcintoshGroup.rawValue, 3120)
+        XCTAssertEqual(CompanyIdentifier.mcintoshGroup.name, #"McIntosh Group Inc"#)
+        XCTAssertEqual(CompanyIdentifier.mcintoshGroup.description, #"McIntosh Group Inc"#)
+    
+        // KINDOO LLP
+        XCTAssertEqual(CompanyIdentifier.kindooLlp.rawValue, 3121)
+        XCTAssertEqual(CompanyIdentifier.kindooLlp.name, #"KINDOO LLP"#)
+        XCTAssertEqual(CompanyIdentifier.kindooLlp.description, #"KINDOO LLP"#)
+    
+        // Xian Yisuobao Electronic Technology Co., Ltd.
+        XCTAssertEqual(CompanyIdentifier.xianYisuobaoElectronicTechnology.rawValue, 3122)
+        XCTAssertEqual(CompanyIdentifier.xianYisuobaoElectronicTechnology.name, #"Xian Yisuobao Electronic Technology Co., Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.xianYisuobaoElectronicTechnology.description, #"Xian Yisuobao Electronic Technology Co., Ltd."#)
+    
+        // Exeger Operations AB
+        XCTAssertEqual(CompanyIdentifier.exegerOperations.rawValue, 3123)
+        XCTAssertEqual(CompanyIdentifier.exegerOperations.name, #"Exeger Operations AB"#)
+        XCTAssertEqual(CompanyIdentifier.exegerOperations.description, #"Exeger Operations AB"#)
+    
+        // BYD Company Limited
+        XCTAssertEqual(CompanyIdentifier.bydCompany.rawValue, 3124)
+        XCTAssertEqual(CompanyIdentifier.bydCompany.name, #"BYD Company Limited"#)
+        XCTAssertEqual(CompanyIdentifier.bydCompany.description, #"BYD Company Limited"#)
+    
+        // Thermokon­Sensortechnik GmbH
+        XCTAssertEqual(CompanyIdentifier.thermokonSensortechnik.rawValue, 3125)
+        XCTAssertEqual(CompanyIdentifier.thermokonSensortechnik.name, #"Thermokon­Sensortechnik GmbH"#)
+        XCTAssertEqual(CompanyIdentifier.thermokonSensortechnik.description, #"Thermokon­Sensortechnik GmbH"#)
+    
+        // Cosmicnode BV
+        XCTAssertEqual(CompanyIdentifier.cosmicnode.rawValue, 3126)
+        XCTAssertEqual(CompanyIdentifier.cosmicnode.name, #"Cosmicnode BV"#)
+        XCTAssertEqual(CompanyIdentifier.cosmicnode.description, #"Cosmicnode BV"#)
+    
+        // SignalQuest, LLC
+        XCTAssertEqual(CompanyIdentifier.signalquest.rawValue, 3127)
+        XCTAssertEqual(CompanyIdentifier.signalquest.name, #"SignalQuest, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.signalquest.description, #"SignalQuest, LLC"#)
+    
+        // Noritz Corporation.
+        XCTAssertEqual(CompanyIdentifier.noritz.rawValue, 3128)
+        XCTAssertEqual(CompanyIdentifier.noritz.name, #"Noritz Corporation."#)
+        XCTAssertEqual(CompanyIdentifier.noritz.description, #"Noritz Corporation."#)
+    
+        // TIGER CORPORATION
+        XCTAssertEqual(CompanyIdentifier.tiger.rawValue, 3129)
+        XCTAssertEqual(CompanyIdentifier.tiger.name, #"TIGER CORPORATION"#)
+        XCTAssertEqual(CompanyIdentifier.tiger.description, #"TIGER CORPORATION"#)
+    
+        // Equinosis, LLC
+        XCTAssertEqual(CompanyIdentifier.equinosis.rawValue, 3130)
+        XCTAssertEqual(CompanyIdentifier.equinosis.name, #"Equinosis, LLC"#)
+        XCTAssertEqual(CompanyIdentifier.equinosis.description, #"Equinosis, LLC"#)
+    
+        // ORB Innovations Ltd
+        XCTAssertEqual(CompanyIdentifier.orbInnovations.rawValue, 3131)
+        XCTAssertEqual(CompanyIdentifier.orbInnovations.name, #"ORB Innovations Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.orbInnovations.description, #"ORB Innovations Ltd"#)
+    
+        // Classified Cycling
+        XCTAssertEqual(CompanyIdentifier.classifiedCycling.rawValue, 3132)
+        XCTAssertEqual(CompanyIdentifier.classifiedCycling.name, #"Classified Cycling"#)
+        XCTAssertEqual(CompanyIdentifier.classifiedCycling.description, #"Classified Cycling"#)
+    
+        // Wrmth Corp.
+        XCTAssertEqual(CompanyIdentifier.wrmth.rawValue, 3133)
+        XCTAssertEqual(CompanyIdentifier.wrmth.name, #"Wrmth Corp."#)
+        XCTAssertEqual(CompanyIdentifier.wrmth.description, #"Wrmth Corp."#)
+    
+        // BELLDESIGN Inc.
+        XCTAssertEqual(CompanyIdentifier.belldesign.rawValue, 3134)
+        XCTAssertEqual(CompanyIdentifier.belldesign.name, #"BELLDESIGN Inc."#)
+        XCTAssertEqual(CompanyIdentifier.belldesign.description, #"BELLDESIGN Inc."#)
+    
+        // Stinger Equipment, Inc.
+        XCTAssertEqual(CompanyIdentifier.stingerEquipment.rawValue, 3135)
+        XCTAssertEqual(CompanyIdentifier.stingerEquipment.name, #"Stinger Equipment, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.stingerEquipment.description, #"Stinger Equipment, Inc."#)
+    
+        // HORIBA, Ltd.
+        XCTAssertEqual(CompanyIdentifier.horiba.rawValue, 3136)
+        XCTAssertEqual(CompanyIdentifier.horiba.name, #"HORIBA, Ltd."#)
+        XCTAssertEqual(CompanyIdentifier.horiba.description, #"HORIBA, Ltd."#)
+    
+        // Control Solutions LLC
+        XCTAssertEqual(CompanyIdentifier.controlSolutions.rawValue, 3137)
+        XCTAssertEqual(CompanyIdentifier.controlSolutions.name, #"Control Solutions LLC"#)
+        XCTAssertEqual(CompanyIdentifier.controlSolutions.description, #"Control Solutions LLC"#)
+    
+        // Heath Consultants Inc.
+        XCTAssertEqual(CompanyIdentifier.heathConsultants.rawValue, 3138)
+        XCTAssertEqual(CompanyIdentifier.heathConsultants.name, #"Heath Consultants Inc."#)
+        XCTAssertEqual(CompanyIdentifier.heathConsultants.description, #"Heath Consultants Inc."#)
+    
+        // Berlinger & Co. AG
+        XCTAssertEqual(CompanyIdentifier.berlinger.rawValue, 3139)
+        XCTAssertEqual(CompanyIdentifier.berlinger.name, #"Berlinger & Co. AG"#)
+        XCTAssertEqual(CompanyIdentifier.berlinger.description, #"Berlinger & Co. AG"#)
+    
+        // ONCELABS LLC
+        XCTAssertEqual(CompanyIdentifier.oncelabs.rawValue, 3140)
+        XCTAssertEqual(CompanyIdentifier.oncelabs.name, #"ONCELABS LLC"#)
+        XCTAssertEqual(CompanyIdentifier.oncelabs.description, #"ONCELABS LLC"#)
+    
+        // Brose Verwaltung SE, Bamberg
+        XCTAssertEqual(CompanyIdentifier.broseVerwaltungSeBamberg.rawValue, 3141)
+        XCTAssertEqual(CompanyIdentifier.broseVerwaltungSeBamberg.name, #"Brose Verwaltung SE, Bamberg"#)
+        XCTAssertEqual(CompanyIdentifier.broseVerwaltungSeBamberg.description, #"Brose Verwaltung SE, Bamberg"#)
+    
+        // Granwin IoT Technology (Guangzhou) Co.,Ltd
+        XCTAssertEqual(CompanyIdentifier.granwinIotTechnologyGuangzhou.rawValue, 3142)
+        XCTAssertEqual(CompanyIdentifier.granwinIotTechnologyGuangzhou.name, #"Granwin IoT Technology (Guangzhou) Co.,Ltd"#)
+        XCTAssertEqual(CompanyIdentifier.granwinIotTechnologyGuangzhou.description, #"Granwin IoT Technology (Guangzhou) Co.,Ltd"#)
+    
+        // Epsilon Electronics,lnc
+        XCTAssertEqual(CompanyIdentifier.epsilonElectronicsLnc.rawValue, 3143)
+        XCTAssertEqual(CompanyIdentifier.epsilonElectronicsLnc.name, #"Epsilon Electronics,lnc"#)
+        XCTAssertEqual(CompanyIdentifier.epsilonElectronicsLnc.description, #"Epsilon Electronics,lnc"#)
+    
+        // VALEO MANAGEMENT SERVICES
+        XCTAssertEqual(CompanyIdentifier.valeoManagementServices.rawValue, 3144)
+        XCTAssertEqual(CompanyIdentifier.valeoManagementServices.name, #"VALEO MANAGEMENT SERVICES"#)
+        XCTAssertEqual(CompanyIdentifier.valeoManagementServices.description, #"VALEO MANAGEMENT SERVICES"#)
+    
+        // twopounds gmbh
+        XCTAssertEqual(CompanyIdentifier.twopounds.rawValue, 3145)
+        XCTAssertEqual(CompanyIdentifier.twopounds.name, #"twopounds gmbh"#)
+        XCTAssertEqual(CompanyIdentifier.twopounds.description, #"twopounds gmbh"#)
+    
+        // atSpiro ApS
+        XCTAssertEqual(CompanyIdentifier.atspiro.rawValue, 3146)
+        XCTAssertEqual(CompanyIdentifier.atspiro.name, #"atSpiro ApS"#)
+        XCTAssertEqual(CompanyIdentifier.atspiro.description, #"atSpiro ApS"#)
+    
+        // ADTRAN, Inc.
+        XCTAssertEqual(CompanyIdentifier.adtran.rawValue, 3147)
+        XCTAssertEqual(CompanyIdentifier.adtran.name, #"ADTRAN, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.adtran.description, #"ADTRAN, Inc."#)
+    
+        // Orpyx Medical Technologies Inc.
+        XCTAssertEqual(CompanyIdentifier.orpyxMedicalTechnologies.rawValue, 3148)
+        XCTAssertEqual(CompanyIdentifier.orpyxMedicalTechnologies.name, #"Orpyx Medical Technologies Inc."#)
+        XCTAssertEqual(CompanyIdentifier.orpyxMedicalTechnologies.description, #"Orpyx Medical Technologies Inc."#)
+    
+        // Seekwave Technology Co.,ltd.
+        XCTAssertEqual(CompanyIdentifier.seekwaveTechnology.rawValue, 3149)
+        XCTAssertEqual(CompanyIdentifier.seekwaveTechnology.name, #"Seekwave Technology Co.,ltd."#)
+        XCTAssertEqual(CompanyIdentifier.seekwaveTechnology.description, #"Seekwave Technology Co.,ltd."#)
+    
+        // Tactile Engineering, Inc.
+        XCTAssertEqual(CompanyIdentifier.tactileEngineering.rawValue, 3150)
+        XCTAssertEqual(CompanyIdentifier.tactileEngineering.name, #"Tactile Engineering, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.tactileEngineering.description, #"Tactile Engineering, Inc."#)
+    
+        // SharkNinja Operating LLC
+        XCTAssertEqual(CompanyIdentifier.sharkninjaOperating.rawValue, 3151)
+        XCTAssertEqual(CompanyIdentifier.sharkninjaOperating.name, #"SharkNinja Operating LLC"#)
+        XCTAssertEqual(CompanyIdentifier.sharkninjaOperating.description, #"SharkNinja Operating LLC"#)
+    
+        // Imostar Technologies Inc.
+        XCTAssertEqual(CompanyIdentifier.imostarTechnologies.rawValue, 3152)
+        XCTAssertEqual(CompanyIdentifier.imostarTechnologies.name, #"Imostar Technologies Inc."#)
+        XCTAssertEqual(CompanyIdentifier.imostarTechnologies.description, #"Imostar Technologies Inc."#)
+    
+        // INNOVA S.R.L.
+        XCTAssertEqual(CompanyIdentifier.innova.rawValue, 3153)
+        XCTAssertEqual(CompanyIdentifier.innova.name, #"INNOVA S.R.L."#)
+        XCTAssertEqual(CompanyIdentifier.innova.description, #"INNOVA S.R.L."#)
+    
+        // ESCEA LIMITED
+        XCTAssertEqual(CompanyIdentifier.escea.rawValue, 3154)
+        XCTAssertEqual(CompanyIdentifier.escea.name, #"ESCEA LIMITED"#)
+        XCTAssertEqual(CompanyIdentifier.escea.description, #"ESCEA LIMITED"#)
+    
+        // Taco, Inc.
+        XCTAssertEqual(CompanyIdentifier.taco.rawValue, 3155)
+        XCTAssertEqual(CompanyIdentifier.taco.name, #"Taco, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.taco.description, #"Taco, Inc."#)
+    
+        // HiViz Lighting, Inc.
+        XCTAssertEqual(CompanyIdentifier.hivizLighting.rawValue, 3156)
+        XCTAssertEqual(CompanyIdentifier.hivizLighting.name, #"HiViz Lighting, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.hivizLighting.description, #"HiViz Lighting, Inc."#)
+    
+        // Zintouch B.V.
+        XCTAssertEqual(CompanyIdentifier.zintouch.rawValue, 3157)
+        XCTAssertEqual(CompanyIdentifier.zintouch.name, #"Zintouch B.V."#)
+        XCTAssertEqual(CompanyIdentifier.zintouch.description, #"Zintouch B.V."#)
+    
+        // Rheem Sales Company, Inc.
+        XCTAssertEqual(CompanyIdentifier.rheemSalesCompany.rawValue, 3158)
+        XCTAssertEqual(CompanyIdentifier.rheemSalesCompany.name, #"Rheem Sales Company, Inc."#)
+        XCTAssertEqual(CompanyIdentifier.rheemSalesCompany.description, #"Rheem Sales Company, Inc."#)
+    
+        // UNEEG medical A/S
+        XCTAssertEqual(CompanyIdentifier.uneegMedical.rawValue, 3159)
+        XCTAssertEqual(CompanyIdentifier.uneegMedical.name, #"UNEEG medical A/S"#)
+        XCTAssertEqual(CompanyIdentifier.uneegMedical.description, #"UNEEG medical A/S"#)
+    
+        // Hykso Inc.
+        XCTAssertEqual(CompanyIdentifier.hykso.rawValue, 3160)
+        XCTAssertEqual(CompanyIdentifier.hykso.name, #"Hykso Inc."#)
+        XCTAssertEqual(CompanyIdentifier.hykso.description, #"Hykso Inc."#)
+    
+        // CYBERDYNE Inc.
+        XCTAssertEqual(CompanyIdentifier.cyberdyne.rawValue, 3161)
+        XCTAssertEqual(CompanyIdentifier.cyberdyne.name, #"CYBERDYNE Inc."#)
+        XCTAssertEqual(CompanyIdentifier.cyberdyne.description, #"CYBERDYNE Inc."#)
+    
+        // Lockswitch Sdn Bhd
+        XCTAssertEqual(CompanyIdentifier.lockswitch.rawValue, 3162)
+        XCTAssertEqual(CompanyIdentifier.lockswitch.name, #"Lockswitch Sdn Bhd"#)
+        XCTAssertEqual(CompanyIdentifier.lockswitch.description, #"Lockswitch Sdn Bhd"#)
+    
+        // Alban Giacomo S.P.A.
+        XCTAssertEqual(CompanyIdentifier.albanGiacomo.rawValue, 3163)
+        XCTAssertEqual(CompanyIdentifier.albanGiacomo.name, #"Alban Giacomo S.P.A."#)
+        XCTAssertEqual(CompanyIdentifier.albanGiacomo.description, #"Alban Giacomo S.P.A."#)
     
     }
 
