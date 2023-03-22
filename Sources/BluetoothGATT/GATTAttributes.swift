@@ -61,6 +61,7 @@ public enum GATTAttribute {
     public struct Characteristic {
         
         public typealias Property = GATTCharacteristicProperty
+        
         public typealias Permission = ATTAttributePermission
         
         public var uuid: BluetoothUUID
@@ -73,12 +74,13 @@ public enum GATTAttribute {
         
         public var descriptors: [Descriptor]
         
-        public init(uuid: BluetoothUUID = BluetoothUUID(),
-                    value: Data = Data(),
-                    permissions: BitMaskOptionSet<Permission> = [],
-                    properties: BitMaskOptionSet<Property> = [],
-                    descriptors: [Descriptor] = []) {
-            
+        public init(
+            uuid: BluetoothUUID = BluetoothUUID(),
+            value: Data = Data(),
+            permissions: BitMaskOptionSet<Permission> = [],
+            properties: BitMaskOptionSet<Property> = [],
+            descriptors: [Descriptor] = []
+        ) {
             self.uuid = uuid
             self.value = value
             self.permissions = permissions
