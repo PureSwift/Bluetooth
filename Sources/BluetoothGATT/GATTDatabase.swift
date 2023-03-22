@@ -76,41 +76,96 @@ public struct GATTDatabase: Equatable, Hashable {
     
     @discardableResult
     public mutating func add(service: GATTAttribute.Service) -> UInt16 {
+        var includedServicesHandles = [UInt16]()
+        var characteristicDeclarationHandles = [UInt16]()
+        var characteristicValueHandles = [UInt16]()
+        var descriptorHandles = [[UInt16]]()
+        return add(
+            service: service,
+            includedServicesHandles: &includedServicesHandles,
+            characteristicDeclarationHandles: &characteristicDeclarationHandles,
+            characteristicValueHandles: &characteristicValueHandles,
+            descriptorHandles: &descriptorHandles
+        )
+    }
+    
+    @discardableResult
+    public mutating func add(
+        service: GATTAttribute.Service,
+        includedServicesHandles: inout [UInt16],
+        characteristicDeclarationHandles: inout [UInt16],
+        characteristicValueHandles: inout [UInt16],
+        descriptorHandles: inout [[UInt16]]
+    ) -> UInt16 {
         
-        let serviceAttribute = ServiceAttribute(handle: self.newHandle(),
-                                                uuid: service.uuid,
-                                                isPrimary: service.primary)
+        let serviceAttribute = ServiceAttribute(
+            handle: self.newHandle(),
+            uuid: service.uuid,
+            isPrimary: service.primary
+        )
         
         var attributes = [serviceAttribute.attribute]
+        let descriptorsCount = service.characteristics.reduce(0, { $0 + $1.descriptors.count })
+        let attributeCount = 1 + service.includedServices.count + (service.characteristics.count * 2) + descriptorsCount
+        attributes.reserveCapacity(attributeCount)
         
-        attributes += service.includedServices.map {
-            IncludedServiceAttribute(include: $0, handle: self.newHandle()).attribute
+        includedServicesHandles.reserveCapacity(service.includedServices.count)
+        for includedService in service.includedServices {
+            let handle = self.newHandle()
+            let includedServiceAttribute = IncludedServiceAttribute(
+                include: includedService,
+                handle: handle
+            )
+            attributes.append(includedServiceAttribute.attribute)
         }
+        assert(includedServicesHandles.count == service.includedServices.count)
+        
+        characteristicDeclarationHandles.reserveCapacity(service.characteristics.count)
+        characteristicValueHandles.reserveCapacity(service.characteristics.count)
         
         for characteristic in service.characteristics {
             
             let declarationHandle = self.newHandle()
-            let valueHandle = self.newHandle()
-
-            let declarationAttribute = CharacteristicDeclarationAttribute(handle: declarationHandle,
-                                                                          valueHandle: valueHandle,
-                                                                          uuid: characteristic.uuid,
-                                                                          properties: characteristic.properties)
+            characteristicDeclarationHandles.append(declarationHandle)
             
-            let valueAttribute = CharacteristicValueAttribute(handle: valueHandle,
-                                                              value: characteristic.value,
-                                                              uuid: characteristic.uuid,
-                                                              permissions: characteristic.permissions)
+            let valueHandle = self.newHandle()
+            characteristicValueHandles.append(valueHandle)
+            
+            let declarationAttribute = CharacteristicDeclarationAttribute(
+                handle: declarationHandle,
+                valueHandle: valueHandle,
+                uuid: characteristic.uuid,
+                properties: characteristic.properties
+            )
+            
+            let valueAttribute = CharacteristicValueAttribute(
+                handle: valueHandle,
+                value: characteristic.value,
+                uuid: characteristic.uuid,
+                permissions: characteristic.permissions
+            )
             
             attributes += [declarationAttribute.attribute, valueAttribute.attribute]
             
-            attributes += characteristic.descriptors.map {
-                DescriptorAttribute(descriptor: $0, handle: self.newHandle()).attribute
+            var characteristicDescriptorHandles = [UInt16]()
+            characteristicDescriptorHandles.reserveCapacity(characteristic.descriptors.count)
+            for descriptor in characteristic.descriptors {
+                let descriptorHandle = self.newHandle()
+                let descriptorAttribute = DescriptorAttribute(
+                    descriptor: descriptor,
+                    handle: descriptorHandle
+                )
+                characteristicDescriptorHandles.append(descriptorHandle)
+                attributes.append(descriptorAttribute.attribute)
             }
+            descriptorHandles.append(characteristicDescriptorHandles)
+            assert(characteristicDescriptorHandles.count == characteristic.descriptors.count)
         }
         
-        attributeGroups.append(AttributeGroup(attributes: attributes))
+        assert(descriptorHandles.count == service.characteristics.count)
+        assert(attributes.count == attributeCount)
         
+        attributeGroups.append(AttributeGroup(attributes: attributes))
         return serviceAttribute.handle
     }
     
