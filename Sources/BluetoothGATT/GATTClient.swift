@@ -376,7 +376,7 @@ public actor GATTClient {
             else { fatalError("Could not add PDU to queue: \(request)") }
     }
     
-    private func endHandle(
+    internal func endHandle(
         for characteristic: Characteristic,
         service: (declaration: Service, characteristics: [Characteristic])
     ) -> UInt16 {

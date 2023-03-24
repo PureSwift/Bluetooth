@@ -841,7 +841,8 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, BluetoothUUID.characteristic)
         XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
         XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
-        //XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
+        let endHandle = await client.endHandle(for: foundCharacteristic, service: (foundService, characteristics))
+        XCTAssertEqual(endHandle, foundService.end)
         
         let foundDescriptors = try await client.discoverDescriptors(of: foundCharacteristic, service: (foundService, characteristics))
         
