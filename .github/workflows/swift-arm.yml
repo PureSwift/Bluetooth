@@ -2,20 +2,6 @@ name: Swift ARM
 on: [push]
 jobs:
 
-    linux-armv7-build:
-      name: Build for Linux Armv7
-      runs-on: [self-hosted, Linux, ARM]
-      container: colemancda/swift-armv7:latest-runtime
-      steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Swift Version
-        run: swift --version
-      - name: Build (Debug)
-        run: swift build -j 1
-      - name: Test (Debug)
-        run: swift test -j 1
-
     linux-armv7-crosscompile-build:
         name: Crosscompile for Linux Armv7
         runs-on: ubuntu-latest
