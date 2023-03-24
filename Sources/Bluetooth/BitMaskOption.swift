@@ -170,3 +170,20 @@ extension BitMaskOptionSet: Sequence {
         return Element.from(rawValue: rawValue).makeIterator()
     }
 }
+
+// MARK: - Codable
+
+extension BitMaskOptionSet: Decodable where Self.RawValue: Decodable {
+    
+    public init(from decoder: Decoder) throws {
+        let rawValue = try RawValue.init(from: decoder)
+        self.init(rawValue: rawValue)
+    }
+}
+
+extension BitMaskOptionSet: Encodable where Self.RawValue: Encodable {
+    
+    public func encode(to encoder: Encoder) throws {
+        try rawValue.encode(to: encoder)
+    }
+}
