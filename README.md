@@ -62,7 +62,7 @@ License
 
 **Bluetooth** is released under the MIT license. See LICENSE for details.
 
-[swift-badge]: https://img.shields.io/badge/swift-5.6-F05138.svg "Swift 5.6"
+[swift-badge]: https://img.shields.io/badge/swift-5.7-F05138.svg "Swift 5.7"
 [swift-url]: https://swift.org
 [platform-badge]: https://img.shields.io/badge/platform-macOS%20%7C%20iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux%20%7C%20Android-lightgrey.svg
 [platform-url]: https://swift.org
