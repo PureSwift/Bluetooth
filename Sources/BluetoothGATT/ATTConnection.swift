@@ -22,9 +22,7 @@ internal actor ATTConnection {
     internal let socket: L2CAPSocket
     
     internal let log: ((String) -> ())?
-    
-    internal let didDisconnect: ((Error?) async -> ())?
-    
+        
     // MARK: - Private Properties
     
     /// There's a pending incoming request.
@@ -53,17 +51,24 @@ internal actor ATTConnection {
     
     /// List of registered callbacks.
     private var notifyList = [ATTNotifyType]()
-        
+    
+    private var readTask: Task<Void, Error>?
+    
+    private var writeTask: Task<Void, Error>?
+    
     // MARK: - Initialization
+    
+    deinit {
+        readTask?.cancel()
+        writeTask?.cancel()
+    }
     
     public init(
         socket: L2CAPSocket,
-        log: ((String) -> ())? = nil,
-        didDisconnect: ((Error?) async -> ())? = nil
+        log: ((String) -> ())? = nil
     ) async {
         self.socket = socket
         self.log = log
-        self.didDisconnect = didDisconnect
         run()
     }
     
@@ -74,12 +79,10 @@ internal actor ATTConnection {
     }
     
     private func run() {
-        Task.detached(priority: .high) { [weak self] in
-            guard let stream = self?.socket.event else { return }
-            for await event in stream {
-                await self?.socketEvent(event)
+        self.readTask = Task.detached(priority: .userInitiated) { [weak self] in
+            while let self = self, await self.isConnected {
+                try await read()
             }
-            // socket closed
         }
     }
     
@@ -159,40 +162,16 @@ internal actor ATTConnection {
         return true
     }
     
-    private func socketEvent(_ event: L2CAPSocketEvent) async {
-        switch event {
-        case .pendingRead:
-            #if DEBUG
-            log?("Pending read")
-            #endif
-            do { try await read() }
-            catch { log?("Unable to read. \(error)") }
-        case let .read(byteCount):
-            #if DEBUG
-            log?("Did read \(byteCount) bytes")
-            #endif
-        case let .write(byteCount):
-            #if DEBUG
-            log?("Did write \(byteCount) bytes")
-            #endif
-            // try to write again
-            do { try await write() }
-            catch { log?("Unable to write. \(error)") }
-        case let .close(error):
-            #if DEBUG
-            log?("Did close. \(error?.localizedDescription ?? "")")
-            #endif
-            isConnected = false
-            await didDisconnect?(error)
-        }
-    }
-    
     // write all pending PDUs
     private func writePending() {
-        Task(priority: .high) { [weak self] in
+        let oldTask = self.writeTask
+        self.writeTask = Task.detached(priority: .userInitiated) { [weak self] in
             guard let self = self, await self.isConnected else { return }
-            do { try await self.write() } // event will call write again
-            catch { log?("Unable to write. \(error)") }
+            try await oldTask?.value // wait
+            var willWrite = true
+            while willWrite {
+                willWrite = try await self.write()
+            }
         }
     }
     

@@ -54,13 +54,11 @@ public actor GATTClient {
     public init(
         socket: L2CAPSocket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
-        log: ((String) -> ())? = nil,
-        didDisconnect: ((Swift.Error?) async -> ())? = nil
+        log: ((String) -> ())? = nil
     ) async {
         self.connection = await ATTConnection(
             socket: socket,
-            log: log,
-            didDisconnect: didDisconnect
+            log: log
         )
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
         self.log = log

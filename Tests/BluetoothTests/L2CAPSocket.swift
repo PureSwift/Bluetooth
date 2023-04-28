@@ -13,7 +13,7 @@ import Foundation
 
 /// Test L2CAP socket
 internal actor TestL2CAPSocket: L2CAPSocket {
-        
+            
     private actor Cache {
         
         static let shared = Cache()
@@ -107,6 +107,10 @@ internal actor TestL2CAPSocket: L2CAPSocket {
     
     // MARK: - Methods
     
+    func close() async throws {
+        
+    }
+    
     func accept() async throws -> TestL2CAPSocket {
         // sleep until a client socket is created
         while (await Cache.shared.pendingClients[address] ?? []).isEmpty {
@@ -129,7 +133,7 @@ internal actor TestL2CAPSocket: L2CAPSocket {
             else { throw POSIXError(.ECONNRESET) }
         
         await target.receive(data)
-        eventContinuation.yield(.write(data.count))
+        eventContinuation.yield(.didWrite(data.count))
     }
     
     /// Reads from the socket.
@@ -145,14 +149,14 @@ internal actor TestL2CAPSocket: L2CAPSocket {
         
         let data = self.receivedData.removeFirst()
         cache.append(data)
-        eventContinuation.yield(.read(data.count))
+        eventContinuation.yield(.didRead(data.count))
         return data
     }
     
     fileprivate func receive(_ data: Data) {
         receivedData.append(data)
         print("L2CAP Socket: \(name) recieved \([UInt8](data))")
-        eventContinuation.yield(.pendingRead)
+        eventContinuation.yield(.read)
     }
     
     internal func connect(to socket: TestL2CAPSocket) {

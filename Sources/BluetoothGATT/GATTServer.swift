@@ -41,8 +41,7 @@ public actor GATTServer {
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
         maximumPreparedWrites: Int = 50,
         database: GATTDatabase = GATTDatabase(),
-        log: ((String) -> ())?,
-        didDisconnect: ((Swift.Error?) async -> ())? = nil
+        log: ((String) -> ())?
     ) async {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
@@ -50,8 +49,7 @@ public actor GATTServer {
         self.database = database
         self.connection = await ATTConnection(
             socket: socket,
-            log: log,
-            didDisconnect: didDisconnect
+            log: log
         )
         self.log = log
         // async register handlers
