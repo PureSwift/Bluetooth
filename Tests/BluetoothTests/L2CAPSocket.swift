@@ -107,7 +107,7 @@ internal actor TestL2CAPSocket: L2CAPSocket {
     
     // MARK: - Methods
     
-    func close() async throws {
+    func close() async {
         
     }
     
