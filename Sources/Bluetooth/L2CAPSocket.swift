@@ -9,12 +9,11 @@
 import Foundation
 
 /// L2CAP Socket protocol.
-public protocol L2CAPSocket: AnyObject {
+public protocol L2CAPSocket {
     
     /// Socket address
     var address: BluetoothAddress { get }
     
-    /// Event stream
     var event: L2CAPSocketEventStream { get }
     
     /// Write to the socket.
@@ -31,6 +30,9 @@ public protocol L2CAPSocket: AnyObject {
     
     /// Get security level
     var securityLevel: SecurityLevel { get async throws }
+    
+    /// Close socket.
+    func close() async throws
     
     /// Creates a new socket connected to the remote address specified.
     static func lowEnergyClient(
@@ -50,10 +52,26 @@ public protocol L2CAPSocket: AnyObject {
 /// Bluetooth L2CAP Socket Event
 public enum L2CAPSocketEvent {
     
-    case pendingRead
-    case read(Int)
-    case write(Int)
-    case close(Error?)
+    /// New connection
+    case connection
+    
+    /// Pending read
+    case read
+    
+    /// Pending Write
+    case write
+    
+    /// Did read
+    case didRead(Int)
+    
+    /// Did write
+    case didWrite(Int)
+    
+    /// Error ocurred
+    case error(Error)
+    
+    /// Socket closed
+    case close
 }
 
 public typealias L2CAPSocketEventStream = AsyncStream<L2CAPSocketEvent>
