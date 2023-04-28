@@ -81,7 +81,7 @@ internal actor ATTConnection {
     private func run() {
         self.readTask = Task.detached(priority: .userInitiated) { [weak self] in
             while let self = self, await self.isConnected {
-                try await read()
+                try await self.read()
             }
         }
     }
