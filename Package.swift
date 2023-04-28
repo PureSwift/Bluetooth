@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 import PackageDescription
 import class Foundation.ProcessInfo
 
@@ -86,7 +86,6 @@ var package = Package(
 )
 
 // SwiftPM command plugins are only supported by Swift version 5.6 and later.
-#if swift(>=5.6)
 if buildDocs {
     package.dependencies += [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
@@ -118,4 +117,3 @@ if generateCode {
         "GenerateBluetoothDefinitions"
     ]
 }
-#endif

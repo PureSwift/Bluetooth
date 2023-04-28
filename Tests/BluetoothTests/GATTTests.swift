@@ -18,7 +18,6 @@ final class GATTTests: XCTestCase {
         GATTCharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }
     }
     
-    #if swift(>=5.6)
     func testMTUExchange() async throws {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 512)
@@ -989,7 +988,6 @@ final class GATTTests: XCTestCase {
         //try await test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
         //try await test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
     }
-    #endif
 }
 
 private extension GATTTests {

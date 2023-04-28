@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+#if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
 @available(iOS 14.0, watchOS 7.0, tvOS 14.0, *)
 @available(macOS, unavailable)
 @available(macCatalyst, unavailable)
@@ -46,7 +46,7 @@ public struct SFloat: Equatable, Hashable, Codable {
     }
     
     public init(_ value: Float) {
-        #if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+        #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
             self.init(Float16(value))
         } else {
@@ -61,7 +61,7 @@ public struct SFloat: Equatable, Hashable, Codable {
 public extension Float {
     
     init(_ value: SFloat) {
-        #if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+        #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
             self.init(Float16(value))
         } else {
@@ -138,7 +138,7 @@ internal extension Float {
 extension SFloat: CustomStringConvertible {
     
     public var description: String {
-        #if swift(>=5.3) && !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
+        #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
             return Float16(self).description
         } else {

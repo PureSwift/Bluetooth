@@ -9,7 +9,6 @@
 import Foundation
 import Bluetooth
 
-#if swift(>=5.6)
 /// GATT Client
 public actor GATTClient {
     
@@ -1280,4 +1279,3 @@ internal extension GATTClient {
         }
     }
 }
-#endif
