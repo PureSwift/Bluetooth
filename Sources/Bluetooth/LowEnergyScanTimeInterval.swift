@@ -12,7 +12,7 @@
 /// Time = N * 0.625 msec
 /// Time Range: 2.5 msec to 10240 msec
 @frozen
-public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable, Hashable {
+public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable, Hashable, Sendable {
     
     /// 2.5 msec
     public static let min = LowEnergyScanTimeInterval(0x0004)

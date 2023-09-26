@@ -9,12 +9,11 @@
 import Foundation
 
 @frozen
-public struct UnitIdentifier: RawRepresentable, Equatable, Hashable {
+public struct UnitIdentifier: RawRepresentable, Equatable, Hashable, Sendable {
     
     public var rawValue: UInt16
     
     public init(rawValue: UInt16) {
-        
         self.rawValue = rawValue
     }
 }
@@ -24,7 +23,6 @@ public struct UnitIdentifier: RawRepresentable, Equatable, Hashable {
 extension UnitIdentifier: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt16) {
-        
         self.init(rawValue: value)
     }
 }

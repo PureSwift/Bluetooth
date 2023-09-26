@@ -10,7 +10,7 @@ import Foundation
 
 /// Bluetooth UUID
 @frozen
-public enum BluetoothUUID: Equatable {
+public enum BluetoothUUID: Equatable, Hashable, Sendable {
     
     case bit16(UInt16)
     case bit32(UInt32)
@@ -35,23 +35,6 @@ extension BluetoothUUID: CustomStringConvertible {
             return "\(rawValue) (\(name))"
         } else {
             return rawValue
-        }
-    }
-}
-
-// MARK: - Hashable
-
-extension BluetoothUUID: Hashable {
-    
-    public func hash(into hasher: inout Hasher) {
-        
-        switch self {
-        case let .bit16(value):
-            return value.hash(into: &hasher)
-        case let .bit32(value):
-            return value.hash(into: &hasher)
-        case let .bit128(value):
-            return value.hash(into: &hasher)
         }
     }
 }

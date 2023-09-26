@@ -12,7 +12,7 @@
 /// Range: -127 ≤ N ≤ +20
 /// Units: dBm
 @frozen
-public struct RSSI: RawRepresentable, Equatable, Hashable {
+public struct RSSI: RawRepresentable, Equatable, Hashable, Sendable {
     
     /// Units: dBm
     public let rawValue: Int8

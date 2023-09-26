@@ -11,7 +11,7 @@ import Foundation
 ///
 /// Unlike `NSUUID` which is always stored in big endian.
 @frozen
-public struct UInt128: ByteValue {
+public struct UInt128: ByteValue, Sendable {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     

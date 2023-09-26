@@ -10,7 +10,7 @@ import Foundation
 
 /// Bluetooth address.
 @frozen
-public struct BluetoothAddress: ByteValue {
+public struct BluetoothAddress: ByteValue, Sendable {
     
     // MARK: - ByteValueType
     

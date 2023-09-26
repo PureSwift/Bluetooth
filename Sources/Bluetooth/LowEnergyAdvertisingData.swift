@@ -12,7 +12,7 @@ import Foundation
 ///
 /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/LowEnergyAdvertisingDataExample1.png)
 @frozen
-public struct LowEnergyAdvertisingData {
+public struct LowEnergyAdvertisingData: Sendable {
     
     // MARK: - ByteValue
     

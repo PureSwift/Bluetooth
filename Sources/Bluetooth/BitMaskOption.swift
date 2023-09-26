@@ -105,6 +105,10 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
     }
 }
 
+// MARK: - Sendable
+
+extension BitMaskOptionSet: Sendable where RawValue: Sendable { }
+
 // MARK: - Sequence Conversion
 
 public extension BitMaskOptionSet {

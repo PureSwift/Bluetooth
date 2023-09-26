@@ -7,7 +7,7 @@
 //
 
 /// Bluetooth security level.
-public enum SecurityLevel: UInt8 {
+public enum SecurityLevel: UInt8, Sendable {
     
     case sdp        = 0
     case low        = 1

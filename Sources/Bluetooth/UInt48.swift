@@ -9,7 +9,7 @@
 import Foundation
 
 @frozen
-public struct UInt48: ByteValue {
+public struct UInt48: ByteValue, Sendable {
  
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     

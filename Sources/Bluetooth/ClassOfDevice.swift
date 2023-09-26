@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ClassOfDevice: Equatable {
+public struct ClassOfDevice: Equatable, Sendable {
     
     internal static let length = 3
     
@@ -100,7 +100,7 @@ public struct ClassOfDevice: Equatable {
 
 extension ClassOfDevice {
     
-    public struct FormatType: RawRepresentable, Equatable, Hashable {
+    public struct FormatType: RawRepresentable, Equatable, Hashable, Sendable {
         
         public static let min = FormatType(0b00)
         
@@ -109,15 +109,12 @@ extension ClassOfDevice {
         public let rawValue: UInt8
         
         public init?(rawValue: UInt8) {
-            
             guard rawValue <= type(of: self).max.rawValue, rawValue >= type(of: self).min.rawValue
                 else { return nil }
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt8) {
-            
             self.rawValue = unsafe
         }
     }
@@ -125,7 +122,7 @@ extension ClassOfDevice {
 
 public extension ClassOfDevice {
     
-    enum MajorServiceClass: UInt16, BitMaskOption {
+    enum MajorServiceClass: UInt16, BitMaskOption, Sendable {
         
         /// Limited Discoverable Mode [Ref #1]
         case limitedDiscoverable = 0b01
@@ -170,7 +167,7 @@ public extension ClassOfDevice {
 
 public extension ClassOfDevice {
     
-    enum MajorDeviceClass: Equatable {
+    enum MajorDeviceClass: Equatable, Sendable {
         
         /// Miscellaneous
         case miscellaneous
@@ -273,7 +270,7 @@ public extension ClassOfDevice {
         }
     }
     
-    enum MajorDeviceClassType: UInt8 {
+    enum MajorDeviceClassType: UInt8, Sendable {
         
         /// Miscellaneous
         case miscellaneous = 0b00
@@ -328,7 +325,7 @@ public extension ClassOfDevice {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    enum Computer: UInt8 {
+    enum Computer: UInt8, Sendable {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -358,7 +355,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
 
-    enum Phone: UInt8 {
+    enum Phone: UInt8, Sendable {
         
         /// Uncategorized, code for device not assigned
         case uncategorized = 0b00
@@ -382,7 +379,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    enum NetworkAccessPoint: UInt8 {
+    enum NetworkAccessPoint: UInt8, Sendable {
         
         /// Fully available
         case fullyAvailable = 0b00
@@ -412,7 +409,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    enum AudioVideo: UInt8 {
+    enum AudioVideo: UInt8, Sendable {
 
         /// Uncategorized, code not assigned
         case uncategorized = 0b00
@@ -469,7 +466,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    enum PeripheralKeyboardPointing: UInt8 {
+    enum PeripheralKeyboardPointing: UInt8, Sendable {
         
         /// Not Keyboard / Not Pointing Device
         case notKeyboard = 0b00
@@ -484,7 +481,7 @@ public extension ClassOfDevice.MinorDeviceClass {
         case comboKeyboardPointingDevice = 0b11
     }
     
-    enum PeripheralDevice: UInt8 {
+    enum PeripheralDevice: UInt8, Sendable {
         
         /// Uncategorized device
         case uncategorized = 0b00
@@ -520,7 +517,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
 
-    enum Imaging: UInt8, BitMaskOption {
+    enum Imaging: UInt8, BitMaskOption, Sendable, CaseIterable {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -536,20 +533,12 @@ public extension ClassOfDevice.MinorDeviceClass {
         
         /// Printer
         case printer = 0b1000
-        
-        public static let allCases: [ClassOfDevice.MinorDeviceClass.Imaging] = [
-            .uncategorized,
-            .display,
-            .camera,
-            .scanner,
-            .printer
-        ]
     }
 }
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    enum Wearable: UInt8 {
+    enum Wearable: UInt8, Sendable {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -573,7 +562,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    enum Toy: UInt8 {
+    enum Toy: UInt8, Sendable {
         
         /// Uncategorized
         case uncategorized = 0b00
@@ -597,7 +586,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
     
-    enum Health: UInt8 {
+    enum Health: UInt8, Sendable {
         
         /// Uncategorized
         case uncategorized = 0b00

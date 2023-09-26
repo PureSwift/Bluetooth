@@ -30,7 +30,7 @@ public extension Float16 {
 
 /// IEEE-11073 16-bit SFLOAT
 @frozen
-public struct SFloat: Equatable, Hashable, Codable {
+public struct SFloat: Equatable, Hashable, Codable, Sendable {
     
     /// The bit pattern of the value’s encoding.
     public private(set) var bitPattern: UInt16
