@@ -57,7 +57,6 @@ extension UInt24: Comparable {
     }
     
     public static func == (lhs: UInt24, rhs: UInt24) -> Bool {
-        
         return lhs.bytes.0 == rhs.bytes.0
             && lhs.bytes.1 == rhs.bytes.1
             && lhs.bytes.2 == rhs.bytes.2
@@ -78,9 +77,7 @@ extension UInt24: Hashable {
 extension UInt24: CustomStringConvertible {
     
     public var description: String {
-        
         let bytes = self.bigEndian.bytes
-        
         return bytes.0.toHexadecimal()
              + bytes.1.toHexadecimal()
              + bytes.2.toHexadecimal()
@@ -94,14 +91,11 @@ public extension UInt24 {
     static var length: Int { return 3 }
     
     init?(data: Data) {
-        
         guard data.count == UInt24.length else { return nil }
-        
         self.init(bytes: (data[0], data[1], data[2]))
     }
     
     var data: Data {
-        
         return Data([bytes.0, bytes.1, bytes.2])
     }
 }
@@ -112,7 +106,6 @@ extension UInt24: ByteSwap {
     
     /// A representation of this integer with the byte order swapped.
     public var byteSwapped: UInt24 {
-        
         return UInt24(bytes: (bytes.2, bytes.1, bytes.0))
     }
 }
@@ -122,7 +115,6 @@ extension UInt24: ByteSwap {
 extension UInt24: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt32) {
-        
         self = UInt24(value)
     }
 }
@@ -133,12 +125,9 @@ public extension UInt24 {
     
     /// Initialize from a unsigned 32-bit integer.
     init(_ value: UInt32) {
-        
         guard value <= UInt32(UInt24.max)
             else { fatalError("Integer overflow") }
-        
         let bytes = value.bigEndian.bytes
-        
         self = UInt24(bigEndian: UInt24(bytes: (bytes.1, bytes.2, bytes.3)))
     }
 }
@@ -147,9 +136,27 @@ public extension UInt32 {
     
     /// Initialize from a unsigned 24-bit integer.
     init(_ value: UInt24) {
-        
         let bytes = value.bigEndian.bytes
-        
         self = UInt32(bigEndian: UInt32(bytes: (0, bytes.0, bytes.1, bytes.2)))
+    }
+}
+
+// MARK: - Codable
+
+extension UInt24: Codable {
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode(UInt32.self)
+        guard value <= UInt32(UInt24.max) else {
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode \(value) as \(UInt24.self)"))
+        }
+        self.init(value)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        let value = UInt32(self)
+        try container.encode(value)
     }
 }
