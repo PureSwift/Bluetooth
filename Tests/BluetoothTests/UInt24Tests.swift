@@ -60,4 +60,19 @@ final class UInt24Tests: XCTestCase {
         XCTAssertEqual(UInt24(data: data), 16777215)
         XCTAssertEqual(UInt24.max.data, data)
     }
+    
+    func testCodable() throws {
+        
+        struct Value: Equatable, Hashable, Codable {
+            let id: UInt24
+        }
+        
+        let value = Value(id: UInt24.max)
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(value)
+        XCTAssertEqual(String(data: data, encoding: .utf8), #"{"id":16777215}"#)
+        let decoder = JSONDecoder()
+        let decodedValue = try decoder.decode(Value.self, from: data)
+        XCTAssertEqual(value, decodedValue)
+    }
 }
