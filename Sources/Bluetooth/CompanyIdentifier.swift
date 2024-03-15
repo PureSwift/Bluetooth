@@ -23,7 +23,7 @@
 ///
 /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
 @frozen
-public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable, Sendable {
+public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable, Codable, Sendable {
     
     public var rawValue: UInt16
     
