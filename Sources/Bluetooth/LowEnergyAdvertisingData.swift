@@ -334,3 +334,22 @@ extension LowEnergyAdvertisingData: RandomAccessCollection {
         return Slice<LowEnergyAdvertisingData>(base: self, bounds: bounds)
     }
 }
+
+// MARK: - Codable
+
+extension LowEnergyAdvertisingData: Codable {
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let data = try container.decode(Data.self)
+        guard let value = Self.init(data: data) else {
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid number of bytes (\(data.count)."))
+        }
+        self = value
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(data)
+    }
+}
