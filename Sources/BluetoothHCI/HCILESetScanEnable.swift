@@ -43,7 +43,7 @@ public extension BluetoothHostControllerInterface {
                 // poll for scanned devices
                 while Task.isCancelled == false {
                     
-                    let metaEvent = try await self.recieve(HCILowEnergyMetaEvent.self)
+                    let metaEvent = try await self.receive(HCILowEnergyMetaEvent.self)
                     
                     // only want advertising report
                     guard metaEvent.subevent == .advertisingReport

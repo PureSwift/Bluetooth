@@ -39,7 +39,7 @@ public protocol BluetoothHostControllerInterface: AnyObject {
     func deviceRequest <CP: HCICommandParameter, Return: HCICommandReturnParameter> (_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout) async throws -> Return
         
     /// Polls and waits for events.
-    func recieve<Event>(_ eventType: Event.Type) async throws -> Event where Event: HCIEventParameter, Event.HCIEventType == HCIGeneralEvent
+    func receive<Event>(_ eventType: Event.Type) async throws -> Event where Event: HCIEventParameter, Event.HCIEventType == HCIGeneralEvent
 }
 
 /// Bluetooth HCI errors
@@ -56,7 +56,7 @@ public enum BluetoothHostControllerError: Error {
     /// The second error is the error while trying to restore the filter.
     case couldNotRestoreFilter(Error, Error)
     
-    /// The recieved data could not be parsed correctly.
+    /// The received data could not be parsed correctly.
     case garbageResponse(Data)
 }
 

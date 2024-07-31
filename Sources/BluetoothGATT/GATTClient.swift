@@ -984,7 +984,7 @@ public actor GATTClient {
             inLongWrite = false
             throw GATTClientError.errorResponse(errorResponse)
         case let .success(pdu):
-            // append recieved data
+            // append received data
             operation.receivedData += pdu.partValue
             
             // verify data sent
@@ -1048,7 +1048,7 @@ public actor GATTClient {
     
     private func notification(_ notification: ATTHandleValueNotification) {
         guard let handler = notifications[notification.handle] else {
-            log?("Recieved notification for unregistered handle \(notification.handle)")
+            log?("Received notification for unregistered handle \(notification.handle)")
             return
         }
         // callback
@@ -1061,7 +1061,7 @@ public actor GATTClient {
         await send(confirmation)
         // callback
         guard let handler = indications[indication.handle] else {
-            log?("Recieved indication for unregistered handle \(indication.handle)")
+            log?("Received indication for unregistered handle \(indication.handle)")
             return
         }
         handler(indication.value)

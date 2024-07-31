@@ -936,15 +936,15 @@ final class GATTTests: XCTestCase {
             XCTAssert(descriptors.isEmpty == false, "No descriptors found")
             
             // notifications
-            var recievedNotifications = [Data]()
-            var recievedIndications = [Data]()
+            var receivedNotifications = [Data]()
+            var receivedIndications = [Data]()
             
             func notification(_ data: Data) {
-                recievedNotifications.append(data)
+                receivedNotifications.append(data)
             }
             
             func indication(_ data: Data) {
-                recievedIndications.append(data)
+                receivedIndications.append(data)
             }
             
             try await client.clientCharacteristicConfiguration(
@@ -971,10 +971,10 @@ final class GATTTests: XCTestCase {
             let maxLength = 20 //MTU-3
             let expectedNotificationValues = newData.map { Data($0.prefix(maxLength)) }
             if notificationCharacteristic.properties.contains(.notify) {
-                XCTAssertEqual(recievedNotifications, expectedNotificationValues)
+                XCTAssertEqual(receivedNotifications, expectedNotificationValues)
             }
             if notificationCharacteristic.properties.contains(.indicate) {
-                XCTAssertEqual(recievedIndications, expectedNotificationValues)
+                XCTAssertEqual(receivedIndications, expectedNotificationValues)
             }
         }
         

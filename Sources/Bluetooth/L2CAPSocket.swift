@@ -20,7 +20,7 @@ public protocol L2CAPSocket {
     func send(_ data: Data) async throws
     
     /// Reads from the socket.
-    func recieve(_ bufferSize: Int) async throws -> Data
+    func receive(_ bufferSize: Int) async throws -> Data
     
     /// Attempt to accept an incoming connection.
     func accept() async throws -> Self

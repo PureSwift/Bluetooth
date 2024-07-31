@@ -93,35 +93,35 @@ internal actor ATTConnection {
         
         let bytesToRead = Int(self.maximumTransmissionUnit.rawValue)
         
-        let recievedData = try await socket.recieve(bytesToRead)
+        let receivedData = try await socket.receive(bytesToRead)
         
-        //log?("Recieved data (\(recievedData.count) bytes)")
+        //log?("Received data (\(receivedData.count) bytes)")
         
         // valid PDU data length
-        guard recievedData.count >= 1 // at least 1 byte for ATT opcode
-            else { throw ATTConnectionError.garbageResponse(recievedData) }
+        guard receivedData.count >= 1 // at least 1 byte for ATT opcode
+            else { throw ATTConnectionError.garbageResponse(receivedData) }
         
-        let opcodeByte = recievedData[0]
+        let opcodeByte = receivedData[0]
         
         // valid opcode
         guard let opcode = ATTOpcode(rawValue: opcodeByte)
-            else { throw ATTConnectionError.garbageResponse(recievedData) }
+            else { throw ATTConnectionError.garbageResponse(receivedData) }
         
-        //log?("Recieved opcode \(opcode)")
+        //log?("Received opcode \(opcode)")
         
         // Act on the received PDU based on the opcode type
         switch opcode.type {
         case .response:
-            try await handle(response: recievedData, opcode: opcode)
+            try await handle(response: receivedData, opcode: opcode)
         case .confirmation:
-            try handle(confirmation: recievedData, opcode: opcode)
+            try handle(confirmation: receivedData, opcode: opcode)
         case .request:
-            try await handle(request: recievedData, opcode: opcode)
+            try await handle(request: receivedData, opcode: opcode)
         case .command,
              .notification,
              .indication:
             // For all other opcodes notify the upper layer of the PDU and let them act on it.
-            try await handle(notify: recievedData, opcode: opcode)
+            try await handle(notify: receivedData, opcode: opcode)
         }
     }
     
@@ -330,7 +330,7 @@ internal actor ATTConnection {
         // clear current pending request
         defer { self.pendingRequest = nil }
         
-        /// Verify the recieved response belongs to the pending request
+        /// Verify the received response belongs to the pending request
         guard sendOperation.opcode == requestOpcode else {
             throw ATTConnectionError.unexpectedResponse(data)
         }
@@ -507,7 +507,7 @@ internal actor ATTConnection {
 /// ATT Connection Error
 public enum ATTConnectionError: Error {
     
-    /// The recieved data could not be parsed correctly.
+    /// The received data could not be parsed correctly.
     case garbageResponse(Data)
     
     /// Response is unexpected.
