@@ -137,7 +137,7 @@ internal actor TestL2CAPSocket: L2CAPSocket {
     }
     
     /// Reads from the socket.
-    func recieve(_ bufferSize: Int) async throws -> Data {
+    func receive(_ bufferSize: Int) async throws -> Data {
         
         print("L2CAP Socket: \(name) will read \(bufferSize) bytes")
         
@@ -155,7 +155,7 @@ internal actor TestL2CAPSocket: L2CAPSocket {
     
     fileprivate func receive(_ data: Data) {
         receivedData.append(data)
-        print("L2CAP Socket: \(name) recieved \([UInt8](data))")
+        print("L2CAP Socket: \(name) received \([UInt8](data))")
         eventContinuation.yield(.read)
     }
     
