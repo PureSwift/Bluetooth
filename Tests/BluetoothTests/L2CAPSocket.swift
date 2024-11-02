@@ -12,6 +12,7 @@ import Foundation
 @testable import BluetoothGATT
 
 /// Test L2CAP socket
+@preconcurrency
 internal actor TestL2CAPSocket: L2CAPSocket {
             
     private actor Cache {

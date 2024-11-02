@@ -6,7 +6,9 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// Bluetooth UUID
 @frozen
@@ -17,6 +19,7 @@ public enum BluetoothUUID: Equatable, Hashable, Sendable {
     case bit128(UInt128)
 }
 
+#if canImport(Foundation)
 public extension BluetoothUUID {
     
     /// Creates a random 128 bit Bluetooth UUID.
@@ -91,10 +94,6 @@ extension BluetoothUUID: RawRepresentable {
     }
 }
 
-// MARK: - Codable
-
-extension BluetoothUUID: Codable { }
-
 // MARK: - Data
 
 public extension BluetoothUUID {
@@ -130,6 +129,13 @@ public extension BluetoothUUID {
         return Data(self)
     }
 }
+#endif
+
+// MARK: - Codable
+
+#if !hasFeature(Embedded)
+extension BluetoothUUID: Codable { }
+#endif
 
 // MARK: - Byte Swap
 
@@ -198,13 +204,12 @@ public extension BluetoothUUID {
     
     /// Forceably convert `BluetoothUUID` to `UInt128` value.
     var bit128: BluetoothUUID {
-        
         let value = UInt128(self)
-        
         return .bit128(value)
     }
 }
 
+#if canImport(Foundation)
 internal extension UUID {
     
     @inline(__always)
@@ -278,7 +283,6 @@ public extension Foundation.UUID {
 // MARK: - CoreBluetooth
 
 #if canImport(CoreBluetooth)
-
 import CoreBluetooth
 
 public extension BluetoothUUID {
@@ -300,4 +304,5 @@ public extension CBUUID {
     }
 }
 
+#endif
 #endif

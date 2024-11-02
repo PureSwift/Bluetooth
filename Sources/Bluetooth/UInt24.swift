@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// A 24 bit number stored according to host endianness.
 @frozen
@@ -86,9 +88,10 @@ extension UInt24: CustomStringConvertible {
 
 // MARK: - Data Convertible
 
+#if canImport(Foundation)
 public extension UInt24 {
     
-    static var length: Int { return 3 }
+    internal static var length: Int { return 3 }
     
     init?(data: Data) {
         guard data.count == UInt24.length else { return nil }
@@ -99,6 +102,7 @@ public extension UInt24 {
         return Data([bytes.0, bytes.1, bytes.2])
     }
 }
+#endif
 
 // MARK: - Byte Swap
 
@@ -143,6 +147,7 @@ public extension UInt32 {
 
 // MARK: - Codable
 
+#if !hasFeature(Embedded)
 extension UInt24: Codable {
     
     public init(from decoder: Decoder) throws {
@@ -160,3 +165,4 @@ extension UInt24: Codable {
         try container.encode(value)
     }
 }
+#endif

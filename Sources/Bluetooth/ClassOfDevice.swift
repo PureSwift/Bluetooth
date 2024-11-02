@@ -6,11 +6,13 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 public struct ClassOfDevice: Equatable, Sendable {
     
-    internal static let length = 3
+    internal static var length: Int { 3 }
     
     public var formatType: FormatType
     
@@ -26,8 +28,12 @@ public struct ClassOfDevice: Equatable, Sendable {
         self.majorServiceClass = majorServiceClass
         self.majorDeviceClass = majorDeviceClass
     }
-    
-    public init?(data: Data) {
+}
+
+#if canImport(Foundation)
+public extension ClassOfDevice {
+
+    init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
@@ -81,7 +87,7 @@ public struct ClassOfDevice: Equatable, Sendable {
         }
     }
     
-    public var data: Data {
+    var data: Data {
         
         // combine Format Type with Major Device Class
         let firstByte = formatType.rawValue | (majorDeviceClass.minorClassValue << 2)
@@ -97,6 +103,7 @@ public struct ClassOfDevice: Equatable, Sendable {
         return Data([firstByte, secondByte, thirdByte])
     }
 }
+#endif
 
 extension ClassOfDevice {
     

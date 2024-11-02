@@ -23,7 +23,7 @@
 ///
 /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
 @frozen
-public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable, Codable, Sendable {
+public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable, Sendable {
     
     public var rawValue: UInt16
     
@@ -32,7 +32,11 @@ public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable, Codable,
     }
 }
 
-#if !os(WASI)
+#if !hasFeature(Embedded)
+extension CompanyIdentifier: Codable { }
+#endif
+
+#if !os(WASI) && !hasFeature(Embedded)
 public extension CompanyIdentifier {
     
     /// Bluetooth Company name.
@@ -58,10 +62,10 @@ extension CompanyIdentifier: ExpressibleByIntegerLiteral {
 extension CompanyIdentifier: CustomStringConvertible {
     
     public var description: String {
-        #if os(WASI)
-        return rawValue.description
-        #else
+        #if !os(WASI) && !hasFeature(Embedded)
         return name ?? rawValue.description
+        #else
+        return rawValue.description
         #endif
     }
 }

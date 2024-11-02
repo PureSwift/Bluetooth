@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// A 40 bit number stored according to host endianness.
 @frozen
@@ -77,6 +79,7 @@ extension UInt40: CustomStringConvertible {
 
 // MARK: - Data Convertible
 
+#if canImport(Foundation)
 public extension UInt40 {
     
     static var length: Int { return 5 }
@@ -93,6 +96,7 @@ public extension UInt40 {
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4])
     }
 }
+#endif
 
 // MARK: - Byte Swap
 
