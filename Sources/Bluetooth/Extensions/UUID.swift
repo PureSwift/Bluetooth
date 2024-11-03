@@ -41,15 +41,44 @@ internal extension UUID { // ByteValue
 internal extension UUID {
     
     init?(data: Data) {
-        
         guard data.count == UUID.length else { return nil }
-        
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
     }
     
     var data: Data {
-        
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15])
     }
 }
 #endif
+
+internal extension UInt128 {
+    
+    /// Generate UUID string, e.g. `0F4DD6A4-0F71-48EF-98A5-996301B868F9`.
+    var uuidString: String {
+        
+        let bytes = self.bigEndian.bytes
+        
+        let a = (bytes.0.toHexadecimal()
+            + bytes.1.toHexadecimal()
+            + bytes.2.toHexadecimal()
+            + bytes.3.toHexadecimal())
+            
+        let b = (bytes.4.toHexadecimal()
+            + bytes.5.toHexadecimal())
+        
+        let c = (bytes.6.toHexadecimal()
+            + bytes.7.toHexadecimal())
+
+        let d = (bytes.8.toHexadecimal()
+            + bytes.9.toHexadecimal())
+
+        let e = (bytes.10.toHexadecimal()
+            + bytes.11.toHexadecimal()
+            + bytes.12.toHexadecimal()
+            + bytes.13.toHexadecimal()
+            + bytes.14.toHexadecimal()
+            + bytes.15.toHexadecimal())
+        
+        return a + "-" + b + "-" + c + "-" + d + "-" + e
+    }
+}
