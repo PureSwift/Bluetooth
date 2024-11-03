@@ -86,20 +86,18 @@ extension BluetoothAddress: ByteSwap {
 
 // MARK: - RawRepresentable
 
-#if canImport(Foundation)
-
 extension BluetoothAddress: RawRepresentable {
     
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public init?(rawValue: String) {
         
         // verify string length
-        guard rawValue.utf8.count == 17
+        guard rawValue.count == 17
             else { return nil }
         
         var bytes: ByteValue = (0, 0, 0, 0, 0, 0)
         
-        let components = rawValue.components(separatedBy: ":")
+        let components = rawValue.split(whereSeparator: { $0 == ":" })
         
         guard components.count == 6
             else { return nil }
@@ -123,8 +121,12 @@ extension BluetoothAddress: RawRepresentable {
     public var rawValue: String {
         
         let bytes = self.bigEndian.bytes
-        
-        return String(format: "%02X:%02X:%02X:%02X:%02X:%02X", bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5)
+        return bytes.0.toHexadecimal()
+            + ":" + bytes.1.toHexadecimal()
+            + ":" + bytes.2.toHexadecimal()
+            + ":" + bytes.3.toHexadecimal()
+            + ":" + bytes.4.toHexadecimal()
+            + ":" + bytes.5.toHexadecimal()
     }
 }
 
@@ -137,6 +139,8 @@ extension BluetoothAddress: CustomStringConvertible {
 
 
 // MARK: - Data
+
+#if canImport(Foundation)
 
 public extension BluetoothAddress {
         
