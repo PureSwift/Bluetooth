@@ -30,10 +30,10 @@ public extension BluetoothUUID {
 
 // MARK: - CustomStringConvertible
 
+#if !os(WASI) && !hasFeature(Embedded)
 extension BluetoothUUID: CustomStringConvertible {
     
     public var description: String {
-        
         if let name = self.name {
             return "\(rawValue) (\(name))"
         } else {
@@ -41,6 +41,7 @@ extension BluetoothUUID: CustomStringConvertible {
         }
     }
 }
+#endif
 
 // MARK: - RawRepresentable
 
