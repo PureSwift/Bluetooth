@@ -12,7 +12,7 @@ import Foundation
 
 /// Bluetooth address.
 @frozen
-public struct BluetoothAddress: ByteValue, Sendable, Copyable {
+public struct BluetoothAddress: Sendable {
     
     // MARK: - Properties
     
@@ -41,14 +41,14 @@ public extension BluetoothAddress {
 
 // MARK: - ByteValue
 
-public extension BluetoothAddress {
+extension BluetoothAddress: ByteValue {
     
     /// Raw Bluetooth Address 6 byte (48 bit) value.
-    typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+    public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    static var bitWidth: Int { return 48 }
+    public static var bitWidth: Int { return 48 }
     
-    static var length: Int { return 6 }
+    public static var length: Int { return 6 }
 }
 
 // MARK: - Equatable
