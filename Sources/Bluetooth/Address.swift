@@ -86,6 +86,7 @@ extension BluetoothAddress: ByteSwap {
 
 // MARK: - RawRepresentable
 
+#if !hasFeature(Embedded)
 extension BluetoothAddress: RawRepresentable {
     
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
@@ -104,7 +105,8 @@ extension BluetoothAddress: RawRepresentable {
         
         for (index, string) in components.enumerated() {
             
-            guard let byte = UInt8(string, radix: 16)
+            guard string.count == 2,
+                let byte = UInt8(string, radix: 16)
                 else { return nil }
             
             withUnsafeMutablePointer(to: &bytes) {
@@ -119,7 +121,19 @@ extension BluetoothAddress: RawRepresentable {
     
     /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public var rawValue: String {
-        
+        _description
+    }
+}
+#endif
+
+// MARK: - CustomStringConvertible
+
+extension BluetoothAddress: CustomStringConvertible {
+    
+    public var description: String { _description }
+
+    /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
+    internal var _description: String {
         let bytes = self.bigEndian.bytes
         return bytes.0.toHexadecimal()
             + ":" + bytes.1.toHexadecimal()
@@ -129,14 +143,6 @@ extension BluetoothAddress: RawRepresentable {
             + ":" + bytes.5.toHexadecimal()
     }
 }
-
-// MARK: - CustomStringConvertible
-
-extension BluetoothAddress: CustomStringConvertible {
-    
-    public var description: String { return rawValue }
-}
-
 
 // MARK: - Data
 
