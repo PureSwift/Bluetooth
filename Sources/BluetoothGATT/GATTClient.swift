@@ -347,7 +347,7 @@ public actor GATTClient {
         log?("Request: \(request)")
         sendID += 1
         let id = sendID
-        return try await withCheckedThrowingContinuation { [unowned self] continuation in
+        return try await withCheckedThrowingContinuation { continuation in
             Task {
                 let responseType: ATTProtocolDataUnit.Type = response
                 // callback if no I/O errors or disconnect
