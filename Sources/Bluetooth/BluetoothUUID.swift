@@ -31,13 +31,25 @@ extension BluetoothUUID: CustomStringConvertible {
             return rawValue
         }
         #else
-        return rawValue
+        return _description
         #endif
+    }
+
+    internal var _description: String {
+        switch self {
+        case let .bit16(value):
+            return value.toHexadecimal()
+        case let .bit32(value):
+            return value.toHexadecimal()
+        case let .bit128(value):
+            return value.uuidString
+        }
     }
 }
 
 // MARK: - RawRepresentable
 
+#if !hasFeature(Embedded)
 extension BluetoothUUID: RawRepresentable {
     
     /// Initialize from a UUID string (in big endian representation).
@@ -72,17 +84,10 @@ extension BluetoothUUID: RawRepresentable {
     }
     
     public var rawValue: String {
-        
-        switch self {
-        case let .bit16(value):
-            return value.toHexadecimal()
-        case let .bit32(value):
-            return value.toHexadecimal()
-        case let .bit128(value):
-            return value.uuidString
-        }
+        _description
     }
 }
+#endif
 
 // MARK: - Data
 

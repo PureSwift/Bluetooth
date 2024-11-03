@@ -30,8 +30,9 @@ internal extension Collection where Element: FixedWidthInteger {
     }
 }
 
+#if !hasFeature(Embedded)
 internal extension StringProtocol {
-        
+    
     var hexadecimal: UnfoldSequence<UInt8, Index> {
         sequence(state: startIndex) { startIndex in
             guard startIndex < self.endIndex else { return nil }
@@ -41,6 +42,7 @@ internal extension StringProtocol {
         }
     }
 }
+#endif
 
 internal extension [UInt8] {
     
@@ -78,14 +80,9 @@ internal extension [UInt8] {
             else {
                 return nil
             }
-#if os(Linux)
-            var value = hi << 4 + lo
-            let buffer = UnsafeBufferPointer(start: &value, count:1)
-            data.append(buffer)
-#else
+            
             let value = hi << 4 + lo
             data.append(value)
-#endif
             
             guard let next = utf16.index(i, offsetBy:2, limitedBy: utf16.endIndex) else {
                 break
