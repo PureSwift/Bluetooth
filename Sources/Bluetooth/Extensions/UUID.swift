@@ -53,6 +53,31 @@ internal extension UUID {
 
 internal extension UInt128 {
     
+    /// Parse a UUID string.
+    init?(uuidString string: String) {
+        let separator: Character = "-"
+        guard string.count == 36 else {
+            return nil
+        }
+        guard string[string.index(string.startIndex, offsetBy: 8)] == separator,
+              string[string.index(string.startIndex, offsetBy: 13)] == separator,
+              string[string.index(string.startIndex, offsetBy: 18)] == separator,
+              string[string.index(string.startIndex, offsetBy: 23)] == separator
+            else { return nil }
+        let a = string[string.startIndex ..< string.index(string.startIndex, offsetBy: 8)]
+        let b = string[string.index(string.startIndex, offsetBy: 9) ..< string.index(string.startIndex, offsetBy: 13)]
+        let c = string[string.index(string.startIndex, offsetBy: 14) ..< string.index(string.startIndex, offsetBy: 18)]
+        let d = string[string.index(string.startIndex, offsetBy: 19) ..< string.index(string.startIndex, offsetBy: 23)]
+        let e = string[string.index(string.startIndex, offsetBy: 24) ..< string.index(string.startIndex, offsetBy: 36)]
+        let hexadecimal = (a + b + c + d + e)
+        guard hexadecimal.count == 32,
+              let bytes = [UInt8].init(hexadecimal: hexadecimal),
+              let value = UInt128(bytes) else {
+            return nil
+        }
+        self.init(bigEndian: value)
+    }
+    
     /// Generate UUID string, e.g. `0F4DD6A4-0F71-48EF-98A5-996301B868F9`.
     var uuidString: String {
         

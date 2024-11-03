@@ -38,7 +38,6 @@ extension BluetoothUUID: CustomStringConvertible {
 
 // MARK: - RawRepresentable
 
-#if canImport(Foundation)
 extension BluetoothUUID: RawRepresentable {
     
     /// Initialize from a UUID string (in big endian representation).
@@ -51,34 +50,26 @@ extension BluetoothUUID: RawRepresentable {
         case 4:
             
             guard let value = UInt16(rawValue, radix: 16)
-            else { return nil }
-            
+                else { return nil }
             self = .bit16(value)
             
         case 8:
             
             guard let value = UInt32(rawValue, radix: 16)
-            else { return nil }
-            
+                else { return nil }
             self = .bit32(value)
             
-        case UUID.stringLength:
+        case 36:
             
             // UUID string is always big endian
-            guard let uuid = UUID(uuidString: rawValue)
-            else { return nil }
-            
-            self = .bit128(UInt128(uuid: uuid))
+            guard let uuid = UInt128(uuidString: rawValue)
+                else { return nil }
+            self = .bit128(uuid)
             
         default:
-            
             return nil
         }
     }
-}
-#endif
-
-extension BluetoothUUID {
     
     public var rawValue: String {
         
