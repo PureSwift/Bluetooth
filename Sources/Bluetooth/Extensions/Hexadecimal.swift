@@ -30,37 +30,86 @@ internal extension Collection where Element: FixedWidthInteger {
     }
 }
 
-#if !hasFeature(Embedded)
-internal extension StringProtocol {
+internal extension UInt {
     
-    var hexadecimal: UnfoldSequence<UInt8, Index> {
-        sequence(state: startIndex) { startIndex in
-            guard startIndex < self.endIndex else { return nil }
-            let endIndex = self.index(startIndex, offsetBy: 2, limitedBy: self.endIndex) ?? self.endIndex
-            defer { startIndex = endIndex }
-            return UInt8(self[startIndex..<endIndex], radix: 16)
+    init?(parse string: String, radix: UInt) {
+        let digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        var result = UInt(0)
+        for digit in string {
+            #if hasFeature(Embedded)
+            let character = digit
+            #else
+            let character = String(digit).uppercased().first!
+            #endif
+            if let stringIndex = digits.enumerated().first(where: { $0.element == character })?.offset {
+                let val = UInt(stringIndex)
+                if val >= radix {
+                    return nil
+                }
+                result = result * radix + val
+            } else {
+                return nil
+            }
+        }
+        self = result
+    }
+}
+
+internal extension UInt16 {
+    
+    init?(hexadecimal string: String) {
+        guard string.count == MemoryLayout<Self>.size * 2 else {
+            return nil
+        }
+        #if hasFeature(Embedded) || DEBUG
+        guard let value = UInt(parse: string, radix: 16) else {
+            return nil
+        }
+        self.init(value)
+        #else
+        self.init(string, radix: 16)
+        #endif
+    }
+}
+
+internal extension UInt32 {
+    
+    init?(hexadecimal string: String) {
+        guard string.count == MemoryLayout<Self>.size * 2 else {
+            return nil
+        }
+        #if hasFeature(Embedded) || DEBUG
+        guard let value = UInt(parse: string, radix: 16) else {
+            return nil
+        }
+        self.init(value)
+        #else
+        self.init(string, radix: 16)
+        #endif
+    }
+}
+
+internal extension String.UTF16View.Element {
+    
+    // Convert 0 ... 9, a ... f, A ...F to their decimal value,
+    // return nil for all other input characters
+    func decodeHexNibble() -> UInt8? {
+        switch self {
+        case 0x30 ... 0x39:
+            return UInt8(self - 0x30)
+        case 0x41 ... 0x46:
+            return UInt8(self - 0x41 + 10)
+        case 0x61 ... 0x66:
+            return UInt8(self - 0x61 + 10)
+        default:
+            return nil
         }
     }
 }
-#endif
 
 internal extension [UInt8] {
     
     init?<S: StringProtocol>(hexadecimal string: S) {
-        // Convert 0 ... 9, a ... f, A ...F to their decimal value,
-        // return nil for all other input characters
-        func decodeNibble(_ u: UInt16) -> UInt8? {
-            switch(u) {
-            case 0x30 ... 0x39:
-                return UInt8(u - 0x30)
-            case 0x41 ... 0x46:
-                return UInt8(u - 0x41 + 10)
-            case 0x61 ... 0x66:
-                return UInt8(u - 0x61 + 10)
-            default:
-                return nil
-            }
-        }
         
         let str = String(string)
         let utf16: String.UTF16View
@@ -74,9 +123,9 @@ internal extension [UInt8] {
         
         var i = utf16.startIndex
         while i != utf16.endIndex {
-            guard let hi = decodeNibble(utf16[i]),
+            guard let hi = utf16[i].decodeHexNibble(),
                   let nxt = utf16.index(i, offsetBy:1, limitedBy: utf16.endIndex),
-                  let lo = decodeNibble(utf16[nxt])
+                  let lo = utf16[nxt].decodeHexNibble()
             else {
                 return nil
             }

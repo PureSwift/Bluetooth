@@ -288,10 +288,10 @@ internal extension UInt128 {
     
     /// Parse a UUID string.
     init?(uuidString string: String) {
-        guard let value = Self.bigEndian(uuidString: string) else {
+        guard let bigEndian = Self.bigEndian(uuidString: string) else {
             return nil
         }
-        self.init(bigEndian: value)
+        self.init(bigEndian: bigEndian)
     }
     
     /// Generate UUID string, e.g. `0F4DD6A4-0F71-48EF-98A5-996301B868F9`.

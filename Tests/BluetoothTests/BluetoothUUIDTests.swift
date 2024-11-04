@@ -144,7 +144,9 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssertNotEqual(uuid.hashValue, 0)
         XCTAssertEqual(uuid, .bit16(uuidValue))
         XCTAssertNotEqual(uuid, .bit16(0xFEAA))
-        XCTAssertNotEqual(uuid, .bit128(UInt128()))
+        if #available(macOS 15, iOS 18, *) {
+            XCTAssertNotEqual(uuid, .bit128(0x00))
+        }
         XCTAssertNotEqual(uuid, .bit32(0x12345678))
         
         XCTAssertEqual(uuid.littleEndian.data, Data([uuidValue.littleEndian.bytes.0,
@@ -173,7 +175,9 @@ final class BluetoothUUIDTests: XCTestCase {
         XCTAssertEqual(uuid, .bit32(uuidValue))
         XCTAssertNotEqual(uuid, .bit32(0x1234))
         XCTAssertNotEqual(uuid, .bit16(0xFEA9))
-        XCTAssertNotEqual(uuid, .bit128(UInt128()))
+        if #available(macOS 15, iOS 18, *) {
+            XCTAssertNotEqual(uuid, .bit128(0x00))
+        }
         
         XCTAssertEqual(uuid.littleEndian.data, Data([uuidValue.littleEndian.bytes.0,
                                                      uuidValue.littleEndian.bytes.1,
