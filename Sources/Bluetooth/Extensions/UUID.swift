@@ -249,8 +249,8 @@ fileprivate extension UInt128 {
         let e = string[string.index(string.startIndex, offsetBy: 24) ..< string.index(string.startIndex, offsetBy: 36)]
         let hexadecimal = (a + b + c + d + e)
         guard hexadecimal.count == 32,
-              let bytes = [UInt8].init(hexadecimal: hexadecimal),
-              let value = UInt128.init(bytes) else {
+              let bytes = [UInt8](hexadecimal: hexadecimal),
+              let value = UInt128(data: bytes) else {
             return nil
         }
         return value

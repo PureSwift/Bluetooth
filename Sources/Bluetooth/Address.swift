@@ -146,24 +146,14 @@ extension BluetoothAddress: CustomStringConvertible {
 
 // MARK: - Data
 
-#if canImport(Foundation)
-
 public extension BluetoothAddress {
         
-    init?(data: Data) {
-        
+    init?<Data: DataContainer>(data: Data) {
         guard data.count == type(of: self).length
             else { return nil }
-        
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
     }
-    
-    var data: Data {
-        return Data(self)
-    }
 }
-
-#endif
 
 // MARK: - Codable
 

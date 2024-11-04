@@ -92,11 +92,9 @@ extension BluetoothUUID: RawRepresentable {
 
 // MARK: - Data
 
-#if canImport(Foundation)
-
 public extension BluetoothUUID {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
     
         guard let length = Length(rawValue: data.count)
             else { return nil }
@@ -122,12 +120,7 @@ public extension BluetoothUUID {
             self = .bit128(value)
         }
     }
-    
-    var data: Data {
-        return Data(self)
-    }
 }
-#endif
 
 // MARK: - Codable
 
@@ -295,7 +288,7 @@ public extension BluetoothUUID {
 public extension CBUUID {
     
     convenience init(_ bluetoothUUID: BluetoothUUID) {
-        self.init(data: bluetoothUUID.bigEndian.data)
+        self.init(data: Data(bluetoothUUID.bigEndian))
     }
 }
 
