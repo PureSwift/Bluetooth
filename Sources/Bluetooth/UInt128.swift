@@ -60,7 +60,8 @@ public extension UInt128 {
 
 // MARK: - Byte Swap
 
-extension UInt128: ByteSwap { }
+// TODO: Conflicts with FixedWidthInteger
+//extension UInt128: ByteSwap { }
 
 // MARK: - UUID
 
@@ -268,7 +269,7 @@ extension UInt128 {
 
 // MARK: - Equatable
 
-extension UInt128: Equatable {
+extension Bluetooth.UInt128: Equatable {
     
     public static func == (lhs: UInt128, rhs: UInt128) -> Bool {
         return lhs._low == rhs._low
@@ -278,7 +279,7 @@ extension UInt128: Equatable {
 
 // MARK: - Hashable
 
-extension UInt128: Hashable {
+extension Bluetooth.UInt128: Hashable {
     
     @inlinable
     public func hash(into hasher: inout Hasher) {
@@ -290,7 +291,7 @@ extension UInt128: Hashable {
 // MARK: - Comparable
 
 @available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
-extension UInt128: Comparable {
+extension Bluetooth.UInt128: Comparable {
     
     @_transparent
     public static func < (lhs: Self, rhs: Self) -> Bool {
@@ -300,7 +301,7 @@ extension UInt128: Comparable {
 
 // MARK: - CustomStringConvertible
 
-extension UInt128: CustomStringConvertible {
+extension Bluetooth.UInt128: CustomStringConvertible {
     
     public var description: String {
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
