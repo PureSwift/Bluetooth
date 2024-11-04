@@ -1,5 +1,5 @@
-# [Choice] Swift version: 5.6-focal, 5.5, 5.4, 5.3, 5.2, 5.1, 4.2
-ARG VARIANT=5.7.1-jammy
+# [Choice] Swift version: 
+ARG VARIANT=6.0.2-jammy
 FROM swift:${VARIANT}
 
 # [Option] Install zsh
@@ -25,9 +25,3 @@ COPY library-scripts/node-debian.sh /tmp/library-scripts/
 RUN bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}" "${NODE_VERSION}" "${USERNAME}" \
     && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
-# [Optional] Uncomment this section to install additional OS packages you may want.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-
-# [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
