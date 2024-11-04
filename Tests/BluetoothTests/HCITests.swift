@@ -9,7 +9,7 @@
 #if canImport(BluetoothHCI)
 import XCTest
 import Foundation
-import Bluetooth
+@testable import Bluetooth
 @testable import BluetoothHCI
 
 final class HCITests: XCTestCase {
@@ -144,7 +144,7 @@ final class HCITests: XCTestCase {
             
             for (index, name) in names.enumerated().filter({ $1 != skip }) {
                 
-                XCTAssertEqual(T.init(rawValue: UInt16(index))?.name, name, "\(UInt8(index).toHexadecimal())")
+                XCTAssertEqual(T.init(rawValue: UInt16(index))?.name, name)
             }
         }
         
@@ -1130,7 +1130,11 @@ final class HCITests: XCTestCase {
         let randomNumber: UInt64 = 0x0000000000000000
         let encryptedDiversifier: UInt16 = 0x0000
         let longTermKey = UInt128(bigEndian: UInt128(bytes: (0x23, 0x57, 0xEB, 0x0D, 0x0C, 0x24, 0xD8, 0x5A, 0x98, 0x57, 0x64, 0xEC, 0xCB, 0xEC, 0xEC, 0x05)))
-        XCTAssertEqual(longTermKey.description, "2357EB0D0C24D85A985764ECCBECEC05")
+        if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
+            XCTAssertEqual(longTermKey.description, "46979477079145919533008304147725609989")
+        } else {
+            XCTAssertEqual(longTermKey.description, "2357EB0D0C24D85A985764ECCBECEC05")
+        }
         
         do {
             
@@ -1220,12 +1224,10 @@ final class HCITests: XCTestCase {
         let hostController = TestHostController()
         
         let key = UInt128(bigEndian: UInt128(bytes: (0x4C, 0x68, 0x38, 0x41, 0x39, 0xF5, 0x74, 0xD8, 0x36, 0xBC, 0xF3, 0x4E, 0x9D, 0xFB, 0x01, 0xBF)))
-        
-        XCTAssertEqual(key.description, "4C68384139F574D836BCF34E9DFB01BF")
+        XCTAssertEqual(key.hexadecimal, "4C68384139F574D836BCF34E9DFB01BF")
         
         let plainTextData = UInt128(bigEndian: UInt128(bytes: (0x02, 0x13, 0x24, 0x35, 0x46, 0x57, 0x68, 0x79, 0xac, 0xbd, 0xce, 0xdf, 0xe0, 0xf1, 0x02, 0x13)))
-        
-        XCTAssertEqual(plainTextData.description, "0213243546576879ACBDCEDFE0F10213")
+        XCTAssertEqual(plainTextData.hexadecimal, "0213243546576879ACBDCEDFE0F10213")
         
         /**
          HCI_LE_Encrypt (length 0x20) – command
@@ -1262,14 +1264,14 @@ final class HCITests: XCTestCase {
         
         hostController.queue.append(.event(eventHeader.data + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
         
-        XCTAssertEqual(HCILEEncryptReturn(data: Data([/* 0x02, 0x17, 0x20, 0x00, */ 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.description, "99AD1B5226A37E3E058E3B8E27C2C666")
+        XCTAssertEqual(HCILEEncryptReturn(data: Data([/* 0x02, 0x17, 0x20, 0x00, */ 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.hexadecimal, "99AD1B5226A37E3E058E3B8E27C2C666")
         
         var encryptedData: UInt128 = .zero
         (encryptedData = try await hostController.lowEnergyEncrypt(key: key, data: plainTextData))
         
         XCTAssert(hostController.queue.isEmpty)
         XCTAssertNotEqual(encryptedData, .zero)
-        XCTAssertEqual(encryptedData.description, "99AD1B5226A37E3E058E3B8E27C2C666")
+        XCTAssertEqual(encryptedData.hexadecimal, "99AD1B5226A37E3E058E3B8E27C2C666")
     }
     
     func testSetLERandomAddress() async throws {
@@ -1506,10 +1508,10 @@ final class HCITests: XCTestCase {
         
         let hostController = TestHostController()
         
-        guard let maxDuration = HCIPeriodicInquiryMode.MaxDuration(rawValue: UInt16(bytes: (0x09, 0x00)))
+        guard let maxDuration = HCIPeriodicInquiryMode.MaxDuration(rawValue: 0x09)
             else { XCTFail("Unable to init variable"); return }
         
-        guard let minDuration = HCIPeriodicInquiryMode.MinDuration(rawValue: UInt16(bytes: (0x05, 0x00)))
+        guard let minDuration = HCIPeriodicInquiryMode.MinDuration(rawValue: 0x05)
             else { XCTFail("Unable to init variable"); return }
         
         guard let lap = HCIPeriodicInquiryMode.LAP(rawValue: UInt24(bytes: (0x00, 0x8b, 0x9e)))
@@ -1936,8 +1938,7 @@ final class HCITests: XCTestCase {
          */
         hostController.queue.append(.event([0x0b, 0x0b, 0x00, 0x0d, 0x00, 0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00]))
         
-        let data = Data([0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00])
-        let value = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
+        let value: UInt64 = 0x00000008380402bd
         let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
         
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
@@ -2475,8 +2476,7 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x0c, 0x01, 0x03, 0x10, 0x00, 0xbf,
                                             0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87]))
         
-        let data = Data([0xbf, 0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87])
-        let value = UInt64(littleEndian: UInt64(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])))
+        let value: UInt64 = 0x877bffdbfecffebf
         let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
 
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?

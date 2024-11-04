@@ -21,10 +21,15 @@ final class UInt128Tests: XCTestCase {
     func testUUID() {
         
         let uuid = UUID(uuidString: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!
-        let value = Bluetooth.UInt128(uuid: uuid)
+        let number = Bluetooth.UInt128(uuid: uuid)
         
-        XCTAssertEqual(UUID(value), uuid)
-        XCTAssertEqual(value.description, "60F14FE2F97211E5B84F23E070D5A8C7")
+        XCTAssertEqual(UUID(number), uuid)
+        XCTAssertEqual(number.uuidString, uuid.uuidString)
+        if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
+            XCTAssertEqual(number.description, "128858851431381903469711580150894012615")
+        } else {
+            XCTAssertEqual(number.description, "60F14FE2F97211E5B84F23E070D5A8C7")
+        }
     }
     
     func testHashable() {
@@ -40,11 +45,10 @@ final class UInt128Tests: XCTestCase {
         }
         
         let values: [(UInt128, String)] = [
-            (UInt128.zero,                          "00000000000000000000000000000000"),
-            (0x00000000000000000000000000000000,    "00000000000000000000000000000000"),
-            (0x00000000000000000000000000000001,    "00000000000000000000000000000001"),
-            (100000000000000000000000000000,        "10000000000000000000000000000000"),
-            (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,    "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+            (0x00000000000000000000000000000000,    "0"),
+            (0x00000000000000000000000000000001,    "1"),
+            (100000000000000000000000000000,        "100000000000000000000000000000"),
+            (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,    "340282366920938463463374607431768211455")
         ]
         
         values.forEach { XCTAssertEqual($0.description, $1) }
