@@ -328,10 +328,10 @@ public actor GATTClient {
     private func registerATTHandlers() async  {
         
         // value notifications / indications
-        await connection.register { [unowned self] in
+        await connection.register {
             self.notification($0)
         }
-        await connection.register { [unowned self] in
+        await connection.register {
             await self.indication($0)
         }
     }
