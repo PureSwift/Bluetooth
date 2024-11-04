@@ -77,7 +77,7 @@ public struct UUID: Sendable {
     }
 }
 
-internal typealias _UUID = Bluetooth.UUID // Built-in UUID type
+public typealias _UUID = Bluetooth.UUID // Built-in UUID type
 
 #endif
 
@@ -213,7 +213,7 @@ extension _UUID : Comparable {
         var diff: Int = 0
         withUnsafeBytes(of: &leftUUID) { leftPtr in
             withUnsafeBytes(of: &rightUUID) { rightPtr in
-                for offset in (0 ..< MemoryLayout<uuid_t>.size).reversed() {
+                for offset in (0 ..< MemoryLayout<ByteValue>.size).reversed() {
                     diff = Int(leftPtr.load(fromByteOffset: offset, as: UInt8.self)) -
                         Int(rightPtr.load(fromByteOffset: offset, as: UInt8.self))
                     // Constant time, no branching equivalent of
