@@ -19,6 +19,14 @@ public enum BluetoothUUID: Equatable, Hashable, Sendable {
     case bit128(UInt128)
 }
 
+public extension BluetoothUUID {
+    
+    /// Creates a random 128-bit Bluetooth UUID.
+    init() {
+        self.init(uuid: UUID())
+    }
+}
+
 // MARK: - CustomStringConvertible
 
 extension BluetoothUUID: CustomStringConvertible {
@@ -92,14 +100,6 @@ extension BluetoothUUID: RawRepresentable {
 // MARK: - Data
 
 #if canImport(Foundation)
-
-public extension BluetoothUUID {
-    
-    /// Creates a random 128 bit Bluetooth UUID.
-    init() {
-        self.init(uuid: UUID())
-    }
-}
 
 public extension BluetoothUUID {
     
@@ -212,7 +212,6 @@ public extension BluetoothUUID {
     }
 }
 
-#if canImport(Foundation)
 internal extension UUID {
     
     @inline(__always)
@@ -242,7 +241,7 @@ internal extension UUID {
 public extension UInt16 {
     
     /// Attempt to extract Bluetooth 16-bit UUID from standard 128-bit UUID.
-    init?(bluetooth uuid: Foundation.UUID) {
+    init?(bluetooth uuid: UUID) {
         
         guard let prefixBytes = uuid.bluetoothPrefix(),
             prefixBytes.0 == 0,
@@ -256,7 +255,7 @@ public extension UInt16 {
 public extension UInt32 {
     
     /// Attempt to extract Bluetooth 32-bit UUID from standard 128-bit UUID.
-    init?(bluetooth uuid: Foundation.UUID) {
+    init?(bluetooth uuid: UUID) {
         
         guard let prefixBytes = uuid.bluetoothPrefix()
             else { return nil }
@@ -275,7 +274,7 @@ public extension BluetoothUUID {
     }
 }
 
-public extension Foundation.UUID {
+public extension UUID {
     
     /// Initialize and convert from a Bluetooth UUID.
     init(bluetooth uuid: BluetoothUUID) {
@@ -307,5 +306,4 @@ public extension CBUUID {
     }
 }
 
-#endif
 #endif

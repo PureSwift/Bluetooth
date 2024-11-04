@@ -61,14 +61,15 @@ public extension UInt128 {
 // MARK: - Byte Swap
 
 // TODO: Conflicts with FixedWidthInteger
-//extension UInt128: ByteSwap { }
+#if canImport(Darwin)
+extension UInt128: ByteSwap { }
+#endif
 
 // MARK: - UUID
 
 public extension UInt128 {
     
     init(uuid: UUID) {
-        
         /// UUID is always big endian
         let bigEndian = UInt128(bytes: uuid.uuid)
         self.init(bigEndian: bigEndian)
@@ -338,7 +339,6 @@ extension Bluetooth.UInt128 {
       return Self(_low: _high.byteSwapped, _high: _low.byteSwapped)
     }
 }
-
 
 #else
 public typealias UInt128 = Swift.UInt128
