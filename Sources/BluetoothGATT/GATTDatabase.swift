@@ -197,7 +197,7 @@ public struct GATTDatabase: Equatable, Hashable {
     // MARK: - Subscripting
     
     /// The attribute at the specified index.
-    public subscript(index: Int) -> Attribute {
+    public subscript(index: Int) -> GATTDatabase.Attribute {
         var cursor = 0
         for group in attributeGroups {
             for attribute in group.attributes {
@@ -213,7 +213,7 @@ public struct GATTDatabase: Equatable, Hashable {
     }
     
     /// The attribute with the specified handle.
-    public private(set) subscript(handle handle: UInt16) -> Attribute {
+    public private(set) subscript(handle handle: UInt16) -> GATTDatabase.Attribute {
         
         get {
             for group in attributeGroups {
@@ -262,6 +262,8 @@ extension GATTDatabase: ExpressibleByArrayLiteral {
 // MARK: - Sequence
 
 extension GATTDatabase: Sequence {
+    
+    public typealias Element = GATTDatabase.Attribute
     
     public func makeIterator() -> IndexingIterator<GATTDatabase> {
         return IndexingIterator(_elements: self)

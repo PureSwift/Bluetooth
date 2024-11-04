@@ -6,7 +6,9 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 internal extension UInt16 {
     
@@ -73,6 +75,7 @@ internal extension UInt8 {
     }
 }
 
+#if canImport(Foundation)
 internal extension UInt64 {
     
     /// The value of the characteristic is a bit mask implemented as an array of unsigned 8 bit integers.
@@ -133,3 +136,4 @@ internal extension UInt64 {
         }
     }
 }
+#endif

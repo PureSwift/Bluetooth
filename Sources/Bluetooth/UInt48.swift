@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 @frozen
 public struct UInt48: ByteValue, Sendable {
@@ -94,6 +96,7 @@ extension UInt48: CustomStringConvertible {
 
 // MARK: - Data Convertible
 
+#if canImport(Foundation)
 public extension UInt48 {
     
     static var length: Int { return 6 }
@@ -110,6 +113,7 @@ public extension UInt48 {
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
     }
 }
+#endif
 
 // MARK: - Byte Swap
 

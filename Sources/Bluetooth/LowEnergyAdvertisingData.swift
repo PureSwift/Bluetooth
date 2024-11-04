@@ -6,13 +6,17 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// Bluetooth Low Energy Advertising Data.
 ///
 /// ![Image](https://github.com/PureSwift/Bluetooth/raw/master/Assets/LowEnergyAdvertisingDataExample1.png)
 @frozen
 public struct LowEnergyAdvertisingData: Sendable {
+    
+    public typealias Element = UInt8
     
     // MARK: - ByteValue
     
@@ -51,13 +55,10 @@ public extension LowEnergyAdvertisingData {
 public extension LowEnergyAdvertisingData {
     
     /// Unsafe data access.
-    func withUnsafeData <Result> (_ block: (Data) throws -> Result) rethrows -> Result {
-        
-        return try withUnsafePointer(to: bytes) {
+    func withUnsafePointer <Result> (_ block: (UnsafePointer<UInt8>) throws -> Result) rethrows -> Result {
+        return try Swift.withUnsafePointer(to: bytes) {
             try $0.withMemoryRebound(to: UInt8.self, capacity: LowEnergyAdvertisingData.capacity) {
-                try block(Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0),
-                               count: count,
-                               deallocator: .none))
+                try block($0)
             }
         }
     }
@@ -69,8 +70,9 @@ public extension LowEnergyAdvertisingData {
         
         self.init()
         self.length = UInt8(slice.count)
-        slice.enumerated().forEach {
-            self[$0.offset] = $0.element
+        let enumeratedSlice = slice.enumerated()
+        for (offset, element) in enumeratedSlice {
+            self[offset] = element
         }
     }
     
@@ -203,18 +205,31 @@ extension LowEnergyAdvertisingData: ExpressibleByArrayLiteral {
 
 // MARK: - Data
 
+#if canImport(Foundation)
 public extension LowEnergyAdvertisingData {
     
+    /// Initialize from ``Foundation.Data``.
     init?(data: Data) {
         self.init(data)
     }
     
+    /// Allocate ``Foundation.Data`` from value.
     var data: Data {
         var data = Data(capacity: count)
         data += self
         return data
     }
+
+    /// Unsafe data access.
+    func withUnsafeData <Result> (_ block: (Data) throws -> Result) rethrows -> Result {
+        return try withUnsafePointer {
+            try block(Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: $0),
+                               count: count,
+                               deallocator: .none))
+        }
+    }
 }
+#endif
 
 // MARK: - Sequence
 
@@ -282,7 +297,12 @@ extension LowEnergyAdvertisingData: MutableCollection {
             case 28: return bytes.28
             case 29: return bytes.29
             case 30: return bytes.30
-            default: fatalError("Invalid index \(index)")
+            default:
+                #if hasFeature(Embedded)
+                return 0
+                #else
+                fatalError("Invalid index \(index)")
+                #endif
             }
         }
         
@@ -320,7 +340,12 @@ extension LowEnergyAdvertisingData: MutableCollection {
             case 28: bytes.28 = newValue
             case 29: bytes.29 = newValue
             case 30: bytes.30 = newValue
-            default: fatalError("Invalid index \(index)")
+            default: 
+                #if hasFeature(Embedded)
+                break
+                #else
+                fatalError("Invalid index \(index)")
+                #endif
             }
         }
     }
@@ -329,7 +354,7 @@ extension LowEnergyAdvertisingData: MutableCollection {
 // MARK: - RandomAccessCollection
 
 extension LowEnergyAdvertisingData: RandomAccessCollection {
-    
+        
     public subscript(bounds: Range<Int>) -> Slice<LowEnergyAdvertisingData> {
         return Slice<LowEnergyAdvertisingData>(base: self, bounds: bounds)
     }
@@ -337,6 +362,7 @@ extension LowEnergyAdvertisingData: RandomAccessCollection {
 
 // MARK: - Codable
 
+#if !hasFeature(Embedded)
 extension LowEnergyAdvertisingData: Codable {
     
     public init(from decoder: Decoder) throws {
@@ -353,3 +379,4 @@ extension LowEnergyAdvertisingData: Codable {
         try container.encode(data)
     }
 }
+#endif

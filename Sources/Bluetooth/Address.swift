@@ -6,18 +6,13 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// Bluetooth address.
 @frozen
-public struct BluetoothAddress: ByteValue, Sendable {
-    
-    // MARK: - ByteValueType
-    
-    /// Raw Bluetooth Address 6 byte (48 bit) value.
-    public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
-    
-    public static var bitWidth: Int { return 48 }
+public struct BluetoothAddress: Sendable {
     
     // MARK: - Properties
     
@@ -44,76 +39,16 @@ public extension BluetoothAddress {
     static var zero: BluetoothAddress { return .min }
 }
 
-// MARK: - Data
+// MARK: - ByteValue
 
-public extension BluetoothAddress {
+extension BluetoothAddress: ByteValue {
     
-    static var length: Int { return 6 }
+    /// Raw Bluetooth Address 6 byte (48 bit) value.
+    public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
-    }
+    public static var bitWidth: Int { return 48 }
     
-    var data: Data {
-        return Data(self)
-    }
-}
-
-// MARK: - Byte Swap
-
-extension BluetoothAddress: ByteSwap {
-    
-    /// A representation of this address with the byte order swapped.
-    public var byteSwapped: BluetoothAddress {
-        
-        return BluetoothAddress(bytes: (bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
-    }
-}
-
-// MARK: - RawRepresentable
-
-extension BluetoothAddress: RawRepresentable {
-    
-    /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
-    public init?(rawValue: String) {
-        
-        // verify string length
-        guard rawValue.utf8.count == 17
-            else { return nil }
-        
-        var bytes: ByteValue = (0, 0, 0, 0, 0, 0)
-        
-        let components = rawValue.components(separatedBy: ":")
-        
-        guard components.count == 6
-            else { return nil }
-        
-        for (index, string) in components.enumerated() {
-            
-            guard let byte = UInt8(string, radix: 16)
-                else { return nil }
-            
-            withUnsafeMutablePointer(to: &bytes) {
-                $0.withMemoryRebound(to: UInt8.self, capacity: 6) {
-                    $0.advanced(by: index).pointee = byte
-                }
-            }
-        }
-        
-        self.init(bigEndian: BluetoothAddress(bytes: bytes))
-    }
-    
-    /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
-    public var rawValue: String {
-        
-        let bytes = self.bigEndian.bytes
-        
-        return String(format: "%02X:%02X:%02X:%02X:%02X:%02X", bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5)
-    }
+    public static var length: Int { return 6 }
 }
 
 // MARK: - Equatable
@@ -121,7 +56,6 @@ extension BluetoothAddress: RawRepresentable {
 extension BluetoothAddress: Equatable {
     
     public static func == (lhs: BluetoothAddress, rhs: BluetoothAddress) -> Bool {
-        
         return lhs.bytes.0 == rhs.bytes.0
             && lhs.bytes.1 == rhs.bytes.1
             && lhs.bytes.2 == rhs.bytes.2
@@ -140,13 +74,99 @@ extension BluetoothAddress: Hashable {
     }
 }
 
+// MARK: - Byte Swap
+
+extension BluetoothAddress: ByteSwap {
+    
+    /// A representation of this address with the byte order swapped.
+    public var byteSwapped: BluetoothAddress {
+        return BluetoothAddress(bytes: (bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
+    }
+}
+
+// MARK: - RawRepresentable
+
+#if !hasFeature(Embedded)
+extension BluetoothAddress: RawRepresentable {
+    
+    /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
+    public init?(rawValue: String) {
+        
+        // verify string length
+        guard rawValue.count == 17
+            else { return nil }
+        
+        var bytes: ByteValue = (0, 0, 0, 0, 0, 0)
+        
+        let components = rawValue.split(whereSeparator: { $0 == ":" })
+        
+        guard components.count == 6
+            else { return nil }
+        
+        for (index, string) in components.enumerated() {
+            
+            guard string.count == 2,
+                let byte = UInt8(string, radix: 16)
+                else { return nil }
+            
+            withUnsafeMutablePointer(to: &bytes) {
+                $0.withMemoryRebound(to: UInt8.self, capacity: 6) {
+                    $0.advanced(by: index).pointee = byte
+                }
+            }
+        }
+        
+        self.init(bigEndian: BluetoothAddress(bytes: bytes))
+    }
+    
+    /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
+    public var rawValue: String {
+        _description
+    }
+}
+#endif
+
 // MARK: - CustomStringConvertible
 
 extension BluetoothAddress: CustomStringConvertible {
     
-    public var description: String { return rawValue }
+    public var description: String { _description }
+
+    /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
+    internal var _description: String {
+        let bytes = self.bigEndian.bytes
+        return bytes.0.toHexadecimal()
+            + ":" + bytes.1.toHexadecimal()
+            + ":" + bytes.2.toHexadecimal()
+            + ":" + bytes.3.toHexadecimal()
+            + ":" + bytes.4.toHexadecimal()
+            + ":" + bytes.5.toHexadecimal()
+    }
 }
+
+// MARK: - Data
+
+#if canImport(Foundation)
+
+public extension BluetoothAddress {
+        
+    init?(data: Data) {
+        
+        guard data.count == type(of: self).length
+            else { return nil }
+        
+        self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
+    }
+    
+    var data: Data {
+        return Data(self)
+    }
+}
+
+#endif
 
 // MARK: - Codable
 
+#if !hasFeature(Embedded)
 extension BluetoothAddress: Codable { }
+#endif

@@ -9,6 +9,7 @@ import XCTest
 import Foundation
 @testable import Bluetooth
 
+#if !os(WASI)
 // swiftlint:disable type_body_length
 final class UnitIdentifierTests: XCTestCase {
 
@@ -738,3 +739,4 @@ final class UnitIdentifierTests: XCTestCase {
 
 }
 // swiftlint:enable type_body_length
+#endif

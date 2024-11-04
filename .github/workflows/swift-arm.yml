@@ -2,23 +2,18 @@ name: Swift ARM
 on: [push]
 jobs:
 
-    linux-armv7-crosscompile-build:
-        name: Crosscompile for Linux Armv7
-        runs-on: ubuntu-latest
-        container: colemancda/swift-armv7:latest-prebuilt
-        steps:
-        - name: Checkout
-          uses: actions/checkout@v3
-        - name: Swift Version
-          run: swift --version
-        - name: Build (Release)
-          run: |
-            cd $SRC_ROOT
-            export SWIFT_PACKAGE_SRCDIR=$GITHUB_WORKSPACE
-            export SWIFT_PACKAGE_BUILDDIR=$SWIFT_PACKAGE_SRCDIR/.build
-            $SRC_ROOT/build-swift-package.sh
-        - name: Archive Build artifacts
-          uses: actions/upload-artifact@v3
-          with:
-            name: linux-armv7-crosscompile-test
-            path: .build/*/*.xctest
+    macos:
+      name: Baremetal Embedded ARM 
+      runs-on: macos-latest
+      steps:
+      - name: Install Swift
+        uses: slashmo/install-swift@v0.3.0
+        with:
+          version: swift-DEVELOPMENT-SNAPSHOT-2024-10-30-a
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Swift Version
+        run: swift --version
+      - name: Build
+        run: swift build --triple armv6m-apple-none-macho --configuration release --verbose -Xswiftc -enable-experimental-feature -Xswiftc Embedded -Xswiftc -disable-stack-protector -Xcc -D__MACH__ -Xcc -ffreestanding -Xcc -mcpu=cortex-m0plus -Xcc -mthumb --target Bluetooth
+

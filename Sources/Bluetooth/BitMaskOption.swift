@@ -129,6 +129,7 @@ extension BitMaskOptionSet: Equatable {
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension BitMaskOptionSet: CustomStringConvertible {
     
     public var description: String {
@@ -138,6 +139,7 @@ extension BitMaskOptionSet: CustomStringConvertible {
             .description
     }
 }
+#endif
 
 // MARK: - Hashable
 
@@ -177,6 +179,7 @@ extension BitMaskOptionSet: Sequence {
 
 // MARK: - Codable
 
+#if !hasFeature(Embedded)
 extension BitMaskOptionSet: Decodable where Self.RawValue: Decodable {
     
     public init(from decoder: Decoder) throws {
@@ -191,3 +194,4 @@ extension BitMaskOptionSet: Encodable where Self.RawValue: Encodable {
         try rawValue.encode(to: encoder)
     }
 }
+#endif

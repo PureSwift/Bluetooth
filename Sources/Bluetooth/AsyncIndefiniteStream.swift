@@ -5,6 +5,7 @@
 //  Created by Alsey Coleman Miller on 4/12/22.
 //
 
+#if canImport(Foundation)
 import Foundation
 
 /// Async Stream that will produce values until `stop()` is called or task is cancelled.
@@ -164,3 +165,4 @@ internal extension AsyncIndefiniteStream {
         }
     }
 }
+#endif

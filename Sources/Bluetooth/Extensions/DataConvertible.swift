@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// Can be converted into data.
 internal protocol DataConvertible {
@@ -18,6 +20,7 @@ internal protocol DataConvertible {
     var dataLength: Int { get }
 }
 
+#if canImport(Foundation)
 extension Data {
     
     /// Initialize data with contents of value.
@@ -28,6 +31,7 @@ extension Data {
         assert(self.count == length)
     }
 }
+#endif
 
 extension BluetoothUUID: DataConvertible {
     
@@ -116,6 +120,7 @@ extension DataContainer {
     }
 }
 
+#if canImport(Foundation)
 extension Data: DataContainer {
     
     @usableFromInline
@@ -123,5 +128,6 @@ extension Data: DataContainer {
         lhs.append(rhs)
     }
 }
+#endif
 
 extension LowEnergyAdvertisingData: DataContainer { }

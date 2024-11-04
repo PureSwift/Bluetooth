@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// Type that represents a unit of measurement defined by Bluetooth.
 public protocol BluetoothUnit: RawRepresentable {

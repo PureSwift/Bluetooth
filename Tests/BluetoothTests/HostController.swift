@@ -13,7 +13,7 @@ import BluetoothHCI
 
 /// Test Bluetooth Host Controller
 internal final class TestHostController: BluetoothHostControllerInterface {
-        
+    
     /// All controllers on the host.
     static var controllers: [TestHostController] { return [TestHostController()] }
     
@@ -137,7 +137,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         return response
     }
     
-    func recieve<Event>(_ eventType: Event.Type) async throws -> Event where Event : HCIEventParameter, Event.HCIEventType == HCIGeneralEvent {
+    func receive<Event>(_ eventType: Event.Type) async throws -> Event where Event : BluetoothHCI.HCIEventParameter, Event.HCIEventType == BluetoothHCI.HCIGeneralEvent {
         
         while queue.isEmpty {
             try await Task.sleep(nanoseconds: 100_000_000)

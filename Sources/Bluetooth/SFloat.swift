@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
 @available(iOS 14.0, watchOS 7.0, tvOS 14.0, *)
@@ -30,7 +32,7 @@ public extension Float16 {
 
 /// IEEE-11073 16-bit SFLOAT
 @frozen
-public struct SFloat: Equatable, Hashable, Codable, Sendable {
+public struct SFloat: Equatable, Hashable, Sendable {
     
     /// The bit pattern of the value’s encoding.
     public private(set) var bitPattern: UInt16
@@ -57,6 +59,10 @@ public struct SFloat: Equatable, Hashable, Codable, Sendable {
         #endif
     }
 }
+
+#if !hasFeature(Embedded)
+extension SFloat: Codable { }
+#endif
 
 public extension Float {
     

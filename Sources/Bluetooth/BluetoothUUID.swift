@@ -6,7 +6,9 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// Bluetooth UUID
 @frozen
@@ -17,30 +19,37 @@ public enum BluetoothUUID: Equatable, Hashable, Sendable {
     case bit128(UInt128)
 }
 
-public extension BluetoothUUID {
-    
-    /// Creates a random 128 bit Bluetooth UUID.
-    init() {
-        self.init(uuid: UUID())
-    }
-}
-
 // MARK: - CustomStringConvertible
 
 extension BluetoothUUID: CustomStringConvertible {
     
     public var description: String {
-        
+        #if !os(WASI) && !hasFeature(Embedded)
         if let name = self.name {
             return "\(rawValue) (\(name))"
         } else {
             return rawValue
+        }
+        #else
+        return _description
+        #endif
+    }
+
+    internal var _description: String {
+        switch self {
+        case let .bit16(value):
+            return value.toHexadecimal()
+        case let .bit32(value):
+            return value.toHexadecimal()
+        case let .bit128(value):
+            return value.uuidString
         }
     }
 }
 
 // MARK: - RawRepresentable
 
+#if !hasFeature(Embedded)
 extension BluetoothUUID: RawRepresentable {
     
     /// Initialize from a UUID string (in big endian representation).
@@ -54,48 +63,43 @@ extension BluetoothUUID: RawRepresentable {
             
             guard let value = UInt16(rawValue, radix: 16)
                 else { return nil }
-            
             self = .bit16(value)
             
         case 8:
             
             guard let value = UInt32(rawValue, radix: 16)
                 else { return nil }
-            
             self = .bit32(value)
             
-        case UUID.stringLength:
+        case 36:
             
             // UUID string is always big endian
-            guard let uuid = UUID(uuidString: rawValue)
+            guard let uuid = UInt128(uuidString: rawValue)
                 else { return nil }
-            
-            self = .bit128(UInt128(uuid: uuid))
+            self = .bit128(uuid)
             
         default:
-            
-             return nil
+            return nil
         }
     }
     
     public var rawValue: String {
-        
-        switch self {
-        case let .bit16(value):
-            return value.toHexadecimal()
-        case let .bit32(value):
-            return value.toHexadecimal()
-        case let .bit128(value):
-            return UUID(value).uuidString
-        }
+        _description
     }
 }
-
-// MARK: - Codable
-
-extension BluetoothUUID: Codable { }
+#endif
 
 // MARK: - Data
+
+#if canImport(Foundation)
+
+public extension BluetoothUUID {
+    
+    /// Creates a random 128 bit Bluetooth UUID.
+    init() {
+        self.init(uuid: UUID())
+    }
+}
 
 public extension BluetoothUUID {
     
@@ -130,6 +134,13 @@ public extension BluetoothUUID {
         return Data(self)
     }
 }
+#endif
+
+// MARK: - Codable
+
+#if !hasFeature(Embedded)
+extension BluetoothUUID: Codable { }
+#endif
 
 // MARK: - Byte Swap
 
@@ -166,7 +177,6 @@ public extension UInt128 {
         case let .bit16(value):
             
             let bytes = value.bigEndian.bytes
-            
             var bigEndianValue = BluetoothUUID.baseUUID
             
             bigEndianValue.bytes.2 = bytes.0
@@ -177,7 +187,6 @@ public extension UInt128 {
         case let .bit32(value):
             
             let bytes = value.bigEndian.bytes
-            
             var bigEndianValue = BluetoothUUID.baseUUID
             
             bigEndianValue.bytes.0 = bytes.0
@@ -198,13 +207,12 @@ public extension BluetoothUUID {
     
     /// Forceably convert `BluetoothUUID` to `UInt128` value.
     var bit128: BluetoothUUID {
-        
         let value = UInt128(self)
-        
         return .bit128(value)
     }
 }
 
+#if canImport(Foundation)
 internal extension UUID {
     
     @inline(__always)
@@ -278,7 +286,6 @@ public extension Foundation.UUID {
 // MARK: - CoreBluetooth
 
 #if canImport(CoreBluetooth)
-
 import CoreBluetooth
 
 public extension BluetoothUUID {
@@ -300,4 +307,5 @@ public extension CBUUID {
     }
 }
 
+#endif
 #endif

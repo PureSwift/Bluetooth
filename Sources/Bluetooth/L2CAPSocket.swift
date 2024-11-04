@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
 
 /// L2CAP Socket protocol.
@@ -75,3 +76,5 @@ public enum L2CAPSocketEvent {
 }
 
 public typealias L2CAPSocketEventStream = AsyncStream<L2CAPSocketEvent>
+
+#endif

@@ -6,7 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 @frozen
 public struct UnitIdentifier: RawRepresentable, Equatable, Hashable, Sendable {
@@ -32,33 +34,31 @@ extension UnitIdentifier: ExpressibleByIntegerLiteral {
 extension UnitIdentifier: CustomStringConvertible {
     
     public var description: String {
-        
         let valueString = rawValue.toHexadecimal()
-        
+        #if !os(WASI) && !hasFeature(Embedded)
         if let name = self.name {
-            
             return valueString + " " + "(" + name + ")"
-            
         } else {
-            
             return valueString
         }
+        #else
+        return valueString
+        #endif
     }
 }
 
 // MARK: - Definitions
 
+#if !os(WASI) && !hasFeature(Embedded)
 public extension UnitIdentifier {
     
     /// The name of the unit.
     var name: String? {
-        
         return units[rawValue]?.name
     }
     
     /// The Bluetooth type namespace of the unit.
     var type: String? {
-        
         return units[rawValue]?.type
     }
 }
@@ -185,3 +185,4 @@ internal let units: [UInt16: (name: String, type: String)] = [
     0x27C1: ("mass flow (gram per second)", "org.bluetooth.unit.mass_flow.gram_per_second"),
     0x27C2: ("volume flow (litre per second)", "org.bluetooth.unit.volume_flow.litre_per_second")
 ]
+#endif
