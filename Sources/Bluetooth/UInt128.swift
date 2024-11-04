@@ -78,9 +78,7 @@ extension UInt128: Hashable {
 extension UInt128: CustomStringConvertible {
     
     public var description: String {
-        
         let bytes = self.bigEndian.bytes
-        
         return bytes.0.toHexadecimal()
             + bytes.1.toHexadecimal()
             + bytes.2.toHexadecimal()
@@ -106,11 +104,9 @@ public extension UInt128 {
     
     static var length: Int { return 16 }
     
-    init?<C>(_ data: C) where C: Collection, C.Element == UInt8, C.Index == Int {
-        
+    init?<C>(_ data: C) where C: RandomAccessCollection, C.Element == UInt8, C.Index == Int {
         guard data.count == UInt128.length
             else { return nil }
-        
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
     }
 }
@@ -155,10 +151,9 @@ extension UInt128: ByteSwap {
 
 // MARK: - NSUUID
 
-#if canImport(Foundation)
 public extension UInt128 {
     
-    init(uuid: Foundation.UUID) {
+    init(uuid: UUID) {
         
         /// UUID is always big endian
         let bigEndian = UInt128(bytes: uuid.uuid)
@@ -166,7 +161,7 @@ public extension UInt128 {
     }
 }
 
-public extension Foundation.UUID {
+public extension UUID {
     
     init(_ value: UInt128) {
         
@@ -191,7 +186,6 @@ public extension Foundation.UUID {
                           bytes.15))
     }
 }
-#endif
 
 // MARK: - ExpressibleByIntegerLiteral
 
