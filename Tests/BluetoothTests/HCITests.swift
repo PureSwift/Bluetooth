@@ -1264,11 +1264,11 @@ final class HCITests: XCTestCase {
         
         XCTAssertEqual(HCILEEncryptReturn(data: Data([/* 0x02, 0x17, 0x20, 0x00, */ 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.description, "99AD1B5226A37E3E058E3B8E27C2C666")
         
-        var encryptedData: UInt128 = 0
+        var encryptedData: UInt128 = .zero
         (encryptedData = try await hostController.lowEnergyEncrypt(key: key, data: plainTextData))
         
         XCTAssert(hostController.queue.isEmpty)
-        XCTAssertNotEqual(encryptedData, 0)
+        XCTAssertNotEqual(encryptedData, .zero)
         XCTAssertEqual(encryptedData.description, "99AD1B5226A37E3E058E3B8E27C2C666")
     }
     
