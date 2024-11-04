@@ -58,13 +58,6 @@ public extension UInt128 {
 }
 #endif
 
-// MARK: - Byte Swap
-
-// TODO: Conflicts with FixedWidthInteger
-#if canImport(Darwin)
-extension UInt128: ByteSwap { }
-#endif
-
 // MARK: - UUID
 
 public extension UInt128 {
@@ -319,7 +312,7 @@ extension Bluetooth.UInt128: Comparable {
     
     @_transparent
     public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs._value < rhs._value
+        Swift.UInt128(lhs) < Swift.UInt128(rhs)
     }
 }
 
@@ -336,15 +329,269 @@ extension Bluetooth.UInt128: CustomStringConvertible {
     }
 }
 
-// TODO: Implement Integer protocols
-extension Bluetooth.UInt128 {
+// MARK: - Numeric
+
+@available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+extension UInt128: Numeric {
+  public typealias Magnitude = Self
+
+  @_transparent
+  public var magnitude: Self {
+    self
+  }
+}
+
+// MARK: - AdditiveArithmetic
+
+@available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+extension UInt128: AdditiveArithmetic {
+  @_transparent
+  public static func + (a: Self, b: Self) -> Self {
+      Bluetooth.UInt128(Swift.UInt128(a) + Swift.UInt128(b))
+  }
+
+  @_transparent
+  public static func - (a: Self, b: Self) -> Self {
+      Bluetooth.UInt128(Swift.UInt128(a) - Swift.UInt128(b))
+  }
+}
+
+// MARK: - Multiplication and division
+
+@available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+extension UInt128 {
+  @_transparent
+  public static func * (a: Self, b: Self) -> Self {
+      Bluetooth.UInt128(Swift.UInt128(a) * Swift.UInt128(b))
+  }
+
+  @_transparent
+  public static func *= (a: inout Self, b: Self) {
+    a = a * b
+  }
+
+  @_transparent
+  public static func /(a: Self, b: Self) -> Self {
+    a.dividedReportingOverflow(by: b).partialValue
+  }
+
+  @_transparent
+  public static func /=(a: inout Self, b: Self) {
+    a = a / b
+  }
+
+  @_transparent
+  public static func %(a: Self, b: Self) -> Self {
+    a.remainderReportingOverflow(dividingBy: b).partialValue
+  }
+
+  @_transparent
+  public static func %=(a: inout Self, b: Self) {
+    a = a % b
+  }
+}
+
+// MARK: - Overflow-reporting arithmetic
+
+@available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+extension UInt128 {
+  @_transparent
+  public func addingReportingOverflow(
+    _ other: Self
+  ) -> (partialValue: Self, overflow: Bool) {
+      let (partialValue, overflow) = Swift.UInt128(self).addingReportingOverflow(.init(other))
+      return (Self(partialValue), overflow)
+  }
+
+  @_transparent
+  public func subtractingReportingOverflow(
+    _ other: Self
+  ) -> (partialValue: Self, overflow: Bool) {
+      let (partialValue, overflow) = Swift.UInt128(self).subtractingReportingOverflow(.init(other))
+      return (Self(partialValue), overflow)
+  }
+
+  @_transparent
+  public func multipliedReportingOverflow(
+    by other: Self
+  ) -> (partialValue: Self, overflow: Bool) {
+      let (partialValue, overflow) = Swift.UInt128(self).multipliedReportingOverflow(by: .init(other))
+      return (Self(partialValue), overflow)
+  }
+
+  @_transparent
+  public func dividedReportingOverflow(
+    by other: Self
+  ) -> (partialValue: Self, overflow: Bool) {
+    precondition(other != .zero, "Division by zero")
+      let (partialValue, overflow) = Swift.UInt128(self).dividedReportingOverflow(by: .init(other))
+      return (Self(partialValue), overflow)
+  }
+
+  @_transparent
+  public func remainderReportingOverflow(
+    dividingBy other: Self
+  ) -> (partialValue: Self, overflow: Bool) {
+    precondition(other != .zero, "Division by zero in remainder operation")
+      let (partialValue, overflow) = Swift.UInt128(self).remainderReportingOverflow(dividingBy: .init(other))
+      return (Self(partialValue), overflow)
+  }
+}
+
+// MARK: - BinaryInteger conformance
+
+@available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+extension Bluetooth.UInt128: BinaryInteger {
+    
+    public typealias Words = Swift.UInt128.Words
+
+  @_transparent
+  public var words: Words {
+      Words(_value: .init(self))
+  }
+
+  @_transparent
+  public static func &=(a: inout Self, b: Self) {
+      a = Bluetooth.UInt128(Swift.UInt128(a) & Swift.UInt128(b))
+  }
+
+  @_transparent
+  public static func |=(a: inout Self, b: Self) {
+      a = Bluetooth.UInt128(Swift.UInt128(a) | Swift.UInt128(b))
+  }
+
+  @_transparent
+  public static func ^=(a: inout Self, b: Self) {
+      a = Bluetooth.UInt128(Swift.UInt128(a) ^ Swift.UInt128(b))
+  }
+
+  @_transparent
+  public static func &>>=(a: inout Self, b: Self) {
+      a = Bluetooth.UInt128(Swift.UInt128(a) &>> Swift.UInt128(b))
+  }
+
+  @_transparent
+  public static func &<<=(a: inout Self, b: Self) {
+      a = Bluetooth.UInt128(Swift.UInt128(a) &<< Swift.UInt128(b))
+  }
+
+  @_transparent
+  public var trailingZeroBitCount: Int {
+    _low == 0 ? 64 + _high.trailingZeroBitCount : _low.trailingZeroBitCount
+  }
+
+  @_transparent
+  public var _lowWord: UInt {
+      Swift.UInt128(self)._lowWord
+  }
+}
+
+// MARK: - FixedWidthInteger conformance
+
+@available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+extension UInt128: FixedWidthInteger, UnsignedInteger { }
+
+public extension UInt128 {
     
     @_transparent
-    public static var bitWidth: Int { 128 }
+    static var bitWidth: Int { 128 }
     
-    public var byteSwapped: Self {
+    @_transparent
+    var nonzeroBitCount: Int {
+      _high.nonzeroBitCount &+ _low.nonzeroBitCount
+    }
+
+    @_transparent
+    var leadingZeroBitCount: Int {
+      _high == 0 ? 64 + _low.leadingZeroBitCount : _high.leadingZeroBitCount
+    }
+    
+    @_transparent
+    var byteSwapped: Self {
       return Self(_low: _high.byteSwapped, _high: _low.byteSwapped)
     }
+    
+    /// Creates an instance from its little-endian representation, changing the
+    /// byte order if necessary.
+    ///
+    /// - Parameter value: A value to use as the little-endian representation of
+    ///   the new instance.
+    init(littleEndian value: Self) {
+        #if _endian(little)
+        self = value
+        #else
+        self = value.byteSwapped
+        #endif
+    }
+    
+    /// Creates an instance from its big-endian representation, changing the byte
+    /// order if necessary.
+    ///
+    /// - Parameter value: A value to use as the big-endian representation of the
+    ///   new instance.
+    init(bigEndian value: Self) {
+        #if _endian(big)
+        self = value
+        #else
+        self = value.byteSwapped
+        #endif
+    }
+    
+    /// The little-endian representation of this value.
+    ///
+    /// If necessary, the byte order of this value is reversed from the typical
+    /// byte order of this address. On a little-endian platform, for any
+    /// address `x`, `x == x.littleEndian`.
+    var littleEndian: Self {
+        #if _endian(little)
+        return self
+        #else
+        return byteSwapped
+        #endif
+    }
+    
+    /// The big-endian representation of this value.
+    ///
+    /// If necessary, the byte order of this value is reversed from the typical
+    /// byte order of this address. On a big-endian platform, for any
+    /// address `x`, `x == x.bigEndian`.
+    var bigEndian: Self {
+        #if _endian(big)
+        return self
+        #else
+        return byteSwapped
+        #endif
+    }
+}
+
+// MARK: - Integer comparison type inference
+
+extension UInt128 {
+  // IMPORTANT: The following four apparently unnecessary overloads of
+  // comparison operations are necessary for literal comparands to be
+  // inferred as the desired type.
+  @_transparent @_alwaysEmitIntoClient
+  public static func != (lhs: Self, rhs: Self) -> Bool {
+    return !(lhs == rhs)
+  }
+
+    @available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+  @_transparent @_alwaysEmitIntoClient
+  public static func <= (lhs: Self, rhs: Self) -> Bool {
+    return !(rhs < lhs)
+  }
+
+    @available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+  @_transparent @_alwaysEmitIntoClient
+  public static func >= (lhs: Self, rhs: Self) -> Bool {
+    return !(lhs < rhs)
+  }
+
+    @available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *)
+  @_transparent @_alwaysEmitIntoClient
+  public static func > (lhs: Self, rhs: Self) -> Bool {
+    return rhs < lhs
+  }
 }
 
 #else
