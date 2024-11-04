@@ -104,6 +104,29 @@ public extension UUID {
 
 // MARK: - Backwards compatibility
 
+internal extension UInt128 {
+    
+    var hexadecimal: String {
+        let bytes = self.bigEndian.bytes
+        return bytes.0.toHexadecimal()
+            + bytes.1.toHexadecimal()
+            + bytes.2.toHexadecimal()
+            + bytes.3.toHexadecimal()
+            + bytes.4.toHexadecimal()
+            + bytes.5.toHexadecimal()
+            + bytes.6.toHexadecimal()
+            + bytes.7.toHexadecimal()
+            + bytes.8.toHexadecimal()
+            + bytes.9.toHexadecimal()
+            + bytes.10.toHexadecimal()
+            + bytes.11.toHexadecimal()
+            + bytes.12.toHexadecimal()
+            + bytes.13.toHexadecimal()
+            + bytes.14.toHexadecimal()
+            + bytes.15.toHexadecimal()
+    }
+}
+
 #if canImport(Darwin)
 /// A 128-bit signed integer value type.
 @frozen
@@ -308,23 +331,7 @@ extension Bluetooth.UInt128: CustomStringConvertible {
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
             return Swift.UInt128(self).description
         } else {
-            let bytes = self.bigEndian.bytes
-            return bytes.0.toHexadecimal()
-                + bytes.1.toHexadecimal()
-                + bytes.2.toHexadecimal()
-                + bytes.3.toHexadecimal()
-                + bytes.4.toHexadecimal()
-                + bytes.5.toHexadecimal()
-                + bytes.6.toHexadecimal()
-                + bytes.7.toHexadecimal()
-                + bytes.8.toHexadecimal()
-                + bytes.9.toHexadecimal()
-                + bytes.10.toHexadecimal()
-                + bytes.11.toHexadecimal()
-                + bytes.12.toHexadecimal()
-                + bytes.13.toHexadecimal()
-                + bytes.14.toHexadecimal()
-                + bytes.15.toHexadecimal()
+            return hexadecimal
         }
     }
 }
