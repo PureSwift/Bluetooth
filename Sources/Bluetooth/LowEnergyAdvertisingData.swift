@@ -76,11 +76,8 @@ public extension LowEnergyAdvertisingData {
         }
     }
     
-    init? <C: Collection> (_ collection: C) where C.Element == UInt8 {
-        
-        guard collection.count <= 31
-            else { return nil }
-        
+    init<C: Collection> (_ collection: C) where C.Element == UInt8 {
+        precondition(collection.count <= 31)
         self.init()
         self.length = UInt8(collection.count)
         collection.enumerated().forEach {
