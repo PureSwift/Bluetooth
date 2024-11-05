@@ -348,7 +348,7 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded[0] as? GAPTxPowerLevel, txPowerLevel)
     }
     
-    func testClassOfDevice() {
+    func testClassOfDevice() throws {
         
         let data = Data([0x04, 0x0d, 0x18, 0xf3, 0xff])
         XCTAssertEqual(data.count, 5)
@@ -358,7 +358,7 @@ final class GAPTests: XCTestCase {
         
         let device = GAPClassOfDevice(device: (0x18, 0xf3, 0xff))
         
-        let decoded = try decoder.decode(data)
+        let decoded = try decoder.decode(from: data)
         
         XCTAssert(decoded.isEmpty == false)
         XCTAssertEqual(decoded.count, 1)

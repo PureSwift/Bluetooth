@@ -44,45 +44,33 @@ final class DarwinTests: XCTestCase {
         do {
             
             let uuid = BluetoothUUID.bit16(0xFEA9)
-            
             let coreBluetoothUUID = CBUUID(uuid)
-            
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
         
         do {
             
             let uuid = BluetoothUUID() // 128 bit
-            
             let coreBluetoothUUID = CBUUID(uuid)
-            
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
         
         do {
             
             let coreBluetoothUUID = CBUUID(string: "FEA9")
-            
             let uuid = BluetoothUUID(coreBluetoothUUID)
-            
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
         
         do {
             
             let coreBluetoothUUID = CBUUID(string: "68753A44-4D6F-1226-9C60-0050E4C00067")
-            
             let uuid = BluetoothUUID(coreBluetoothUUID)
-            
             XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            
-            XCTAssert(uuid.bigEndian.data == coreBluetoothUUID.data, "\(uuid.data) == \(coreBluetoothUUID.data)")
+            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
     }
     

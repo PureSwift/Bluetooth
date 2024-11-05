@@ -253,7 +253,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian.data)
+            XCTAssert(Data(pdu.attributeValue) == Data(BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian))
         }
         
         do {
@@ -268,7 +268,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian.data)
+            XCTAssert(Data(pdu.attributeValue) == Data(BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian))
         }
         
         do {

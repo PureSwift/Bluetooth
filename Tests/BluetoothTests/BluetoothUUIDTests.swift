@@ -99,10 +99,10 @@ final class BluetoothUUIDTests: XCTestCase {
         
         XCTAssert(uuid.rawValue == uuidString)
         XCTAssert(BluetoothUUID(rawValue: uuidString)?.rawValue == uuidString)
-        XCTAssert(uuid.littleEndian.data == Data([0x00, 0x28]))
-        XCTAssert(uuid.littleEndian.data != Data([0x28, 0x00]))
-        XCTAssert(uuid.bigEndian.data == Data([0x28, 0x00]))
-        XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
+        XCTAssert(Data(uuid.littleEndian) == Data([0x00, 0x28]))
+        XCTAssert(Data(uuid.littleEndian) != Data([0x28, 0x00]))
+        XCTAssert(Data(uuid.bigEndian) == Data([0x28, 0x00]))
+        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
     }
     
     func test128BitUUID() {
@@ -115,16 +115,15 @@ final class BluetoothUUIDTests: XCTestCase {
             else { XCTFail("Could not parse UUID string"); return }
         
         XCTAssert(uuid.rawValue == uuidString)
-        XCTAssert(uuid.data == uuidValue.data)
-        XCTAssert(uuid.littleEndian.data == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
-        XCTAssert(uuid.bigEndian.data == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
+        XCTAssert(Data(uuid) == Data(uuidValue))
+        XCTAssert(Data(uuid.littleEndian) == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
+        XCTAssert(Data(uuid.bigEndian) == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
         XCTAssert(uuid.bigEndian == .bit128(UInt128(bytes: (0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7))))
-        XCTAssert(uuid.littleEndian.data == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
-        XCTAssert(uuid.bigEndian.data == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
+        XCTAssert(Data(uuid.littleEndian) == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
+        XCTAssert(Data(uuid.bigEndian) == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
         XCTAssert(BluetoothUUID.init(littleEndian: BluetoothUUID.init(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
         XCTAssert(BluetoothUUID(littleEndian: BluetoothUUID(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
-        XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
-        
+        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
     }
     
     func testDefinedUUID() {
@@ -149,13 +148,13 @@ final class BluetoothUUIDTests: XCTestCase {
         }
         XCTAssertNotEqual(uuid, .bit32(0x12345678))
         
-        XCTAssertEqual(uuid.littleEndian.data, Data([uuidValue.littleEndian.bytes.0,
+        XCTAssertEqual(Data(uuid.littleEndian), Data([uuidValue.littleEndian.bytes.0,
                                                      uuidValue.littleEndian.bytes.1]))
         
-        XCTAssertEqual(uuid.bigEndian.data, Data([uuidValue.bigEndian.bytes.0,
+        XCTAssertEqual(Data(uuid.bigEndian), Data([uuidValue.bigEndian.bytes.0,
                                                   uuidValue.bigEndian.bytes.1]))
         
-        XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
+        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
     }
     
     func test32BitUUID() {
@@ -179,18 +178,17 @@ final class BluetoothUUIDTests: XCTestCase {
             XCTAssertNotEqual(uuid, .bit128(0x00))
         }
         
-        XCTAssertEqual(uuid.littleEndian.data, Data([uuidValue.littleEndian.bytes.0,
+        XCTAssertEqual(Data(uuid.littleEndian), Data([uuidValue.littleEndian.bytes.0,
                                                      uuidValue.littleEndian.bytes.1,
                                                      uuidValue.littleEndian.bytes.2,
                                                      uuidValue.littleEndian.bytes.3]))
         
-        XCTAssertEqual(uuid.bigEndian.data, Data([uuidValue.bigEndian.bytes.0,
+        XCTAssertEqual(Data(uuid.bigEndian), Data([uuidValue.bigEndian.bytes.0,
                                                   uuidValue.bigEndian.bytes.1,
                                                   uuidValue.bigEndian.bytes.2,
                                                   uuidValue.bigEndian.bytes.3]))
         
-        XCTAssertEqual(uuid, BluetoothUUID(data: uuid.data))
-        
+        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
         XCTAssertEqual(BluetoothUUID.bit16(1000).rawValue, "03E8")
     }
     
@@ -253,7 +251,7 @@ final class BluetoothUUIDTests: XCTestCase {
         
         let uuids = randomUUIDs.map { BluetoothUUID(uuid: $0) }
         
-        measure { uuids.forEach { let _ = $0.data } }
+        measure { uuids.forEach { let _ = Data($0) } }
     }
 }
 
