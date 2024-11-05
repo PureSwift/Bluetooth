@@ -93,7 +93,7 @@ extension BluetoothAddress: RawRepresentable {
     public init?(rawValue: String) {
         
         // verify string length
-        guard rawValue.count == 17
+        guard rawValue.utf8.count == 17
             else { return nil }
         
         var bytes: ByteValue = (0, 0, 0, 0, 0, 0)
@@ -105,7 +105,7 @@ extension BluetoothAddress: RawRepresentable {
         
         for (index, string) in components.enumerated() {
             
-            guard string.count == 2,
+            guard string.utf8.count == 2,
                 let byte = UInt8(string, radix: 16)
                 else { return nil }
             
