@@ -56,6 +56,7 @@ public extension String {
         if let range = name.firstMatch(of: formerlyRegex) {
             name.removeSubrange(range)
         }
+        name = name.replacingOccurrences(of: "Private limited company", with: "")
         name = name.replacingOccurrences(of: "乐鑫信息科技(上海)有限公司", with: "")
         name = name.replacingOccurrences(of: " USA, Inc", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " USA, Inc", with: "", options: .caseInsensitive)
@@ -75,9 +76,15 @@ public extension String {
         name = name.replacingOccurrences(of: " Corporation", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Limited", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Private", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: "Closed Joint Stock Company", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: "JOINT STOCK COMPANY", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: "limited liability company", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: "and Company", with: "andCompany", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " Company", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Pvt.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "GmbH & Co. KG", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "GmbH & Co KG", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " GmbH & Co. KGaA.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "AG & Co. KGaA", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "AG & Co. KG", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: "AG & Co.", with: "", options: .caseInsensitive)
@@ -107,9 +114,13 @@ public extension String {
         name = name.replacingOccurrences(of: " SA", with: "")
         name = name.replacingOccurrences(of: " S.A.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " S.L.", with: "", options: .caseInsensitive)
+        name = name.hasSuffix(" SLU") ? name.replacingOccurrences(of: " SLU", with: "") : name
+        name = name.hasSuffix(" SL") ? name.replacingOccurrences(of: " SL", with: "") : name
+        name = name.hasSuffix(" SE") ? name.replacingOccurrences(of: " SE", with: "") : name
         name = name.replacingOccurrences(of: " BV", with: "")
         name = name.replacingOccurrences(of: " B.V.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " N.V.", with: "", options: .caseInsensitive)
+        name = name.hasSuffix(" NV") ? name.replacingOccurrences(of: " NV", with: "") : name
         name = name.replacingOccurrences(of: " (NV)", with: "")
         name = name.replacingOccurrences(of: " HK", with: "")
         name = name.replacingOccurrences(of: " (HK)", with: "")
@@ -121,12 +132,19 @@ public extension String {
         name = name.replacingOccurrences(of: ", inc.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Inc", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " LLC", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " LTDA. - ME", with: "")
+        name = name.replacingOccurrences(of: " Ltda.", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " Ltda", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " LTD", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " ApS", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " s.r.o.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Srl", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " S.r.l.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Sdn Bhd", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " Pty", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " mbH", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " Kft.", with: "", options: .caseInsensitive)
+        name = name.replacingOccurrences(of: " Kft", with: "", options: .caseInsensitive)
         
         // if first letter is a number, add prefix
         if let firstCharacter = name.first,

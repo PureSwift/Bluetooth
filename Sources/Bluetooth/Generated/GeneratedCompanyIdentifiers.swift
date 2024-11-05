@@ -776,7 +776,7 @@ public extension CompanyIdentifier {
 
     /// DeLorme Publishing Company, Inc. (`128`)
     @_alwaysEmitIntoClient
-    static var delormePublishingCompany: CompanyIdentifier {
+    static var delormePublishing: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 128)
     }
 
@@ -1082,7 +1082,7 @@ public extension CompanyIdentifier {
 
     /// Clarinox Technologies Pty. Ltd. (`179`)
     @_alwaysEmitIntoClient
-    static var clarinoxTechnologiesPty: CompanyIdentifier {
+    static var clarinoxTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 179)
     }
 
@@ -1226,7 +1226,7 @@ public extension CompanyIdentifier {
 
     /// Binauric SE (`203`)
     @_alwaysEmitIntoClient
-    static var binauricSe: CompanyIdentifier {
+    static var binauric: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 203)
     }
 
@@ -1568,7 +1568,7 @@ public extension CompanyIdentifier {
 
     /// PLUS Location Systems Pty Ltd (`260`)
     @_alwaysEmitIntoClient
-    static var plusLocationSystemsPty: CompanyIdentifier {
+    static var plusLocationSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 260)
     }
 
@@ -1784,7 +1784,7 @@ public extension CompanyIdentifier {
 
     /// GPSI Group Pty Ltd (`296`)
     @_alwaysEmitIntoClient
-    static var gpsiGroupPty: CompanyIdentifier {
+    static var gpsiGroup: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 296)
     }
 
@@ -1922,7 +1922,7 @@ public extension CompanyIdentifier {
 
     /// B&B Manufacturing Company (`319`)
     @_alwaysEmitIntoClient
-    static var bBManufacturingCompany: CompanyIdentifier {
+    static var bBManufacturing: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 319)
     }
 
@@ -2384,7 +2384,7 @@ public extension CompanyIdentifier {
 
     /// Wilo SE (`396`)
     @_alwaysEmitIntoClient
-    static var wiloSe: CompanyIdentifier {
+    static var wilo: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 396)
     }
 
@@ -2642,7 +2642,7 @@ public extension CompanyIdentifier {
 
     /// General Electric Company (`439`)
     @_alwaysEmitIntoClient
-    static var generalElectricCompany: CompanyIdentifier {
+    static var generalElectric: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 439)
     }
 
@@ -2876,7 +2876,7 @@ public extension CompanyIdentifier {
 
     /// Minelab Electronics Pty Limited (`478`)
     @_alwaysEmitIntoClient
-    static var minelabElectronicsPty: CompanyIdentifier {
+    static var minelabElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 478)
     }
 
@@ -3368,7 +3368,7 @@ public extension CompanyIdentifier {
 
     /// Foster Electric Company, Ltd (`560`)
     @_alwaysEmitIntoClient
-    static var fosterElectricCompany: CompanyIdentifier {
+    static var fosterElectric: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 560)
     }
 
@@ -3380,7 +3380,7 @@ public extension CompanyIdentifier {
 
     /// x-Senso Solutions Kft (`562`)
     @_alwaysEmitIntoClient
-    static var xSensoSolutionsKft: CompanyIdentifier {
+    static var xSensoSolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 562)
     }
 
@@ -4064,7 +4064,7 @@ public extension CompanyIdentifier {
 
     /// Pacific Lock Company (`676`)
     @_alwaysEmitIntoClient
-    static var pacificLockCompany: CompanyIdentifier {
+    static var pacificLock: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 676)
     }
 
@@ -5012,13 +5012,13 @@ public extension CompanyIdentifier {
 
     /// GERTEC BRASIL LTDA. (`834`)
     @_alwaysEmitIntoClient
-    static var gertecBrasila: CompanyIdentifier {
+    static var gertecBrasil: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 834)
     }
 
     /// Drekker Development Pty. Ltd. (`835`)
     @_alwaysEmitIntoClient
-    static var drekkerDevelopmentPty: CompanyIdentifier {
+    static var drekkerDevelopment: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 835)
     }
 
@@ -5270,7 +5270,7 @@ public extension CompanyIdentifier {
 
     /// AirBolt Pty Ltd (`877`)
     @_alwaysEmitIntoClient
-    static var airboltPty: CompanyIdentifier {
+    static var airbolt: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 877)
     }
 
@@ -5732,7 +5732,7 @@ public extension CompanyIdentifier {
 
     /// Maxscend Microelectronics Company Limited (`954`)
     @_alwaysEmitIntoClient
-    static var maxscendMicroelectronicsCompany: CompanyIdentifier {
+    static var maxscendMicroelectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 954)
     }
 
@@ -5966,7 +5966,7 @@ public extension CompanyIdentifier {
 
     /// SPD Development Company Ltd (`993`)
     @_alwaysEmitIntoClient
-    static var spdDevelopmentCompany: CompanyIdentifier {
+    static var spdDevelopment: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 993)
     }
 
@@ -6230,7 +6230,7 @@ public extension CompanyIdentifier {
 
     /// NorthStar Battery Company, LLC (`1037`)
     @_alwaysEmitIntoClient
-    static var northstarBatteryCompany: CompanyIdentifier {
+    static var northstarBattery: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1037)
     }
 
@@ -6272,7 +6272,7 @@ public extension CompanyIdentifier {
 
     /// Lightning Protection International Pty Ltd (`1044`)
     @_alwaysEmitIntoClient
-    static var lightningProtectionInternationalPty: CompanyIdentifier {
+    static var lightningProtectionInternational: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1044)
     }
 
@@ -6572,7 +6572,7 @@ public extension CompanyIdentifier {
 
     /// Fabtronics Australia Pty Ltd (`1095`)
     @_alwaysEmitIntoClient
-    static var fabtronicsAustraliaPty: CompanyIdentifier {
+    static var fabtronicsAustralia: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1095)
     }
 
@@ -6830,7 +6830,7 @@ public extension CompanyIdentifier {
 
     /// Control-J Pty Ltd (`1138`)
     @_alwaysEmitIntoClient
-    static var controlJPty: CompanyIdentifier {
+    static var controlJ: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1138)
     }
 
@@ -6950,7 +6950,7 @@ public extension CompanyIdentifier {
 
     /// DEV TECNOLOGIA INDUSTRIA, COMERCIO E MANUTENCAO DE EQUIPAMENTOS LTDA. - ME (`1158`)
     @_alwaysEmitIntoClient
-    static var devTecnologiaIndustriaComercioEManutencaoDeEquipamentosaMe: CompanyIdentifier {
+    static var devTecnologiaIndustriaComercioEManutencaoDeEquipamentos: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1158)
     }
 
@@ -7868,7 +7868,7 @@ public extension CompanyIdentifier {
 
     /// Setec Pty Ltd (`1311`)
     @_alwaysEmitIntoClient
-    static var setecPty: CompanyIdentifier {
+    static var setec: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1311)
     }
 
@@ -7988,7 +7988,7 @@ public extension CompanyIdentifier {
 
     /// Nura Operations Pty Ltd (`1331`)
     @_alwaysEmitIntoClient
-    static var nuraOperationsPty: CompanyIdentifier {
+    static var nuraOperations: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1331)
     }
 
@@ -8540,7 +8540,7 @@ public extension CompanyIdentifier {
 
     /// HENDON SEMICONDUCTORS PTY LTD (`1423`)
     @_alwaysEmitIntoClient
-    static var hendonSemiconductorsPty: CompanyIdentifier {
+    static var hendonSemiconductors: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1423)
     }
 
@@ -8570,7 +8570,7 @@ public extension CompanyIdentifier {
 
     /// Kohler Company (`1428`)
     @_alwaysEmitIntoClient
-    static var kohlerCompany: CompanyIdentifier {
+    static var kohler: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1428)
     }
 
@@ -9356,7 +9356,7 @@ public extension CompanyIdentifier {
 
     /// WIZCONNECTED COMPANY LIMITED (`1559`)
     @_alwaysEmitIntoClient
-    static var wizconnectedCompany: CompanyIdentifier {
+    static var wizconnected: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1559)
     }
 
@@ -9470,7 +9470,7 @@ public extension CompanyIdentifier {
 
     /// Lunatico Astronomia SL (`1578`)
     @_alwaysEmitIntoClient
-    static var lunaticoAstronomiaSl: CompanyIdentifier {
+    static var lunaticoAstronomia: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1578)
     }
 
@@ -9554,7 +9554,7 @@ public extension CompanyIdentifier {
 
     /// LX SOLUTIONS PTY LIMITED (`1592`)
     @_alwaysEmitIntoClient
-    static var lxSolutionsPty: CompanyIdentifier {
+    static var lxSolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1592)
     }
 
@@ -9692,7 +9692,7 @@ public extension CompanyIdentifier {
 
     /// Digital Matter Pty Ltd (`1615`)
     @_alwaysEmitIntoClient
-    static var digitalMatterPty: CompanyIdentifier {
+    static var digitalMatter: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1615)
     }
 
@@ -9734,7 +9734,7 @@ public extension CompanyIdentifier {
 
     /// ZhuHai AdvanPro Technology Company Limited (`1622`)
     @_alwaysEmitIntoClient
-    static var zhuhaiAdvanproTechnologyCompany: CompanyIdentifier {
+    static var zhuhaiAdvanproTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1622)
     }
 
@@ -9788,7 +9788,7 @@ public extension CompanyIdentifier {
 
     /// Ricoh Company Ltd (`1631`)
     @_alwaysEmitIntoClient
-    static var ricohCompany: CompanyIdentifier {
+    static var ricoh: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1631)
     }
 
@@ -10208,7 +10208,7 @@ public extension CompanyIdentifier {
 
     /// TEKZITEL PTY LTD (`1701`)
     @_alwaysEmitIntoClient
-    static var tekzitelPty: CompanyIdentifier {
+    static var tekzitel: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1701)
     }
 
@@ -10502,7 +10502,7 @@ public extension CompanyIdentifier {
 
     /// JCT Healthcare Pty Ltd (`1750`)
     @_alwaysEmitIntoClient
-    static var jctHealthcarePty: CompanyIdentifier {
+    static var jctHealthcare: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1750)
     }
 
@@ -10514,7 +10514,7 @@ public extension CompanyIdentifier {
 
     /// AW Company (`1752`)
     @_alwaysEmitIntoClient
-    static var awCompany: CompanyIdentifier {
+    static var aw: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1752)
     }
 
@@ -10658,7 +10658,7 @@ public extension CompanyIdentifier {
 
     /// Chargy Technologies, SL (`1776`)
     @_alwaysEmitIntoClient
-    static var chargyTechnologiesSl: CompanyIdentifier {
+    static var chargyTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1776)
     }
 
@@ -10832,7 +10832,7 @@ public extension CompanyIdentifier {
 
     /// SmartSnugg Pty Ltd (`1805`)
     @_alwaysEmitIntoClient
-    static var smartsnuggPty: CompanyIdentifier {
+    static var smartsnugg: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1805)
     }
 
@@ -10862,7 +10862,7 @@ public extension CompanyIdentifier {
 
     /// Bull Group Company Limited (`1810`)
     @_alwaysEmitIntoClient
-    static var bullGroupCompany: CompanyIdentifier {
+    static var bullGroup: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1810)
     }
 
@@ -10904,7 +10904,7 @@ public extension CompanyIdentifier {
 
     /// COREIOT PTY LTD (`1817`)
     @_alwaysEmitIntoClient
-    static var coreiotPty: CompanyIdentifier {
+    static var coreiot: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1817)
     }
 
@@ -10964,7 +10964,7 @@ public extension CompanyIdentifier {
 
     /// Ford Motor Company (`1827`)
     @_alwaysEmitIntoClient
-    static var fordMotorCompany: CompanyIdentifier {
+    static var fordMotor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1827)
     }
 
@@ -10994,7 +10994,7 @@ public extension CompanyIdentifier {
 
     /// Eli Lilly and Company (`1832`)
     @_alwaysEmitIntoClient
-    static var eliLillyAndCompany: CompanyIdentifier {
+    static var eliLillyAndcompany: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1832)
     }
 
@@ -11066,7 +11066,7 @@ public extension CompanyIdentifier {
 
     /// DiUS Computing Pty Ltd (`1844`)
     @_alwaysEmitIntoClient
-    static var diusComputingPty: CompanyIdentifier {
+    static var diusComputing: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1844)
     }
 
@@ -11180,7 +11180,7 @@ public extension CompanyIdentifier {
 
     /// OR Technologies Pty Ltd (`1863`)
     @_alwaysEmitIntoClient
-    static var orTechnologiesPty: CompanyIdentifier {
+    static var orTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1863)
     }
 
@@ -11354,7 +11354,7 @@ public extension CompanyIdentifier {
 
     /// WWZN Information Technology Company Limited (`1892`)
     @_alwaysEmitIntoClient
-    static var wwznInformationTechnologyCompany: CompanyIdentifier {
+    static var wwznInformationTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1892)
     }
 
@@ -11420,7 +11420,7 @@ public extension CompanyIdentifier {
 
     /// Successful Endeavours Pty Ltd (`1903`)
     @_alwaysEmitIntoClient
-    static var successfulEndeavoursPty: CompanyIdentifier {
+    static var successfulEndeavours: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1903)
     }
 
@@ -11540,7 +11540,7 @@ public extension CompanyIdentifier {
 
     /// ESEMBER LIMITED LIABILITY COMPANY (`1923`)
     @_alwaysEmitIntoClient
-    static var esemberLiabilityCompany: CompanyIdentifier {
+    static var esemberLiability: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1923)
     }
 
@@ -11558,7 +11558,7 @@ public extension CompanyIdentifier {
 
     /// HLP Controls Pty Limited (`1926`)
     @_alwaysEmitIntoClient
-    static var hlpControlsPty: CompanyIdentifier {
+    static var hlpControls: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1926)
     }
 
@@ -11642,7 +11642,7 @@ public extension CompanyIdentifier {
 
     /// The Coca-Cola Company (`1940`)
     @_alwaysEmitIntoClient
-    static var cocaColaCompany: CompanyIdentifier {
+    static var cocaCola: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1940)
     }
 
@@ -11696,7 +11696,7 @@ public extension CompanyIdentifier {
 
     /// Digibale Pty Ltd (`1949`)
     @_alwaysEmitIntoClient
-    static var digibalePty: CompanyIdentifier {
+    static var digibale: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1949)
     }
 
@@ -11798,7 +11798,7 @@ public extension CompanyIdentifier {
 
     /// Aurea Solucoes Tecnologicas Ltda. (`1966`)
     @_alwaysEmitIntoClient
-    static var aureaSolucoesTecnologicasa: CompanyIdentifier {
+    static var aureaSolucoesTecnologicas: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1966)
     }
 
@@ -11912,7 +11912,7 @@ public extension CompanyIdentifier {
 
     /// A.W. Chesterton Company (`1985`)
     @_alwaysEmitIntoClient
-    static var aWChestertonCompany: CompanyIdentifier {
+    static var aWChesterton: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 1985)
     }
 
@@ -12086,7 +12086,7 @@ public extension CompanyIdentifier {
 
     /// Unlimited Engineering SL (`2014`)
     @_alwaysEmitIntoClient
-    static var unlimitedEngineeringSl: CompanyIdentifier {
+    static var unlimitedEngineering: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2014)
     }
 
@@ -12194,13 +12194,13 @@ public extension CompanyIdentifier {
 
     /// e-moola.com Pty Ltd (`2032`)
     @_alwaysEmitIntoClient
-    static var eMoolaComPty: CompanyIdentifier {
+    static var eMoolaCom: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2032)
     }
 
     /// Zimi Innovations Pty Ltd (`2033`)
     @_alwaysEmitIntoClient
-    static var zimiInnovationsPty: CompanyIdentifier {
+    static var zimiInnovations: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2033)
     }
 
@@ -12518,7 +12518,7 @@ public extension CompanyIdentifier {
 
     /// Hyundai Motor Company (`2086`)
     @_alwaysEmitIntoClient
-    static var hyundaiMotorCompany: CompanyIdentifier {
+    static var hyundaiMotor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2086)
     }
 
@@ -12758,7 +12758,7 @@ public extension CompanyIdentifier {
 
     /// Carol Cole Company (`2126`)
     @_alwaysEmitIntoClient
-    static var carolColeCompany: CompanyIdentifier {
+    static var carolCole: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2126)
     }
 
@@ -12968,7 +12968,7 @@ public extension CompanyIdentifier {
 
     /// Dension Elektronikai Kft. (`2161`)
     @_alwaysEmitIntoClient
-    static var densionElektronikaiKft: CompanyIdentifier {
+    static var densionElektronikai: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2161)
     }
 
@@ -13082,7 +13082,7 @@ public extension CompanyIdentifier {
 
     /// Controlid Industria, Comercio de Hardware e Servicos de Tecnologia Ltda (`2180`)
     @_alwaysEmitIntoClient
-    static var controlidIndustriaComercioDeHardwareEServicosDeTecnologiaa: CompanyIdentifier {
+    static var controlidIndustriaComercioDeHardwareEServicosDeTecnologia: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2180)
     }
 
@@ -13106,7 +13106,7 @@ public extension CompanyIdentifier {
 
     /// EnPointe Fencing Pty Ltd (`2184`)
     @_alwaysEmitIntoClient
-    static var enpointeFencingPty: CompanyIdentifier {
+    static var enpointeFencing: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2184)
     }
 
@@ -13214,7 +13214,7 @@ public extension CompanyIdentifier {
 
     /// Private limited company "Teltonika" (`2202`)
     @_alwaysEmitIntoClient
-    static var privateCompanyTeltonika: CompanyIdentifier {
+    static var teltonika: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2202)
     }
 
@@ -13226,7 +13226,7 @@ public extension CompanyIdentifier {
 
     /// Embedded Devices Co. Company (`2204`)
     @_alwaysEmitIntoClient
-    static var embeddedDevicesCompany: CompanyIdentifier {
+    static var embeddedDevices: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2204)
     }
 
@@ -13268,7 +13268,7 @@ public extension CompanyIdentifier {
 
     /// Hoffmann SE (`2211`)
     @_alwaysEmitIntoClient
-    static var hoffmannSe: CompanyIdentifier {
+    static var hoffmann: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2211)
     }
 
@@ -13442,7 +13442,7 @@ public extension CompanyIdentifier {
 
     /// Accent Advanced Systems SLU (`2240`)
     @_alwaysEmitIntoClient
-    static var accentAdvancedSystemsSlu: CompanyIdentifier {
+    static var accentAdvancedSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2240)
     }
 
@@ -13538,7 +13538,7 @@ public extension CompanyIdentifier {
 
     /// ESTOM Infotech Kft. (`2256`)
     @_alwaysEmitIntoClient
-    static var estomInfotechKft: CompanyIdentifier {
+    static var estomInfotech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2256)
     }
 
@@ -13736,7 +13736,7 @@ public extension CompanyIdentifier {
 
     /// The L.S. Starrett Company (`2289`)
     @_alwaysEmitIntoClient
-    static var lSStarrettCompany: CompanyIdentifier {
+    static var lSStarrett: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2289)
     }
 
@@ -13754,7 +13754,7 @@ public extension CompanyIdentifier {
 
     /// Kodimo Technologies Company Limited (`2292`)
     @_alwaysEmitIntoClient
-    static var kodimoTechnologiesCompany: CompanyIdentifier {
+    static var kodimoTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2292)
     }
 
@@ -14054,7 +14054,7 @@ public extension CompanyIdentifier {
 
     /// Gooligum Technologies Pty Ltd (`2342`)
     @_alwaysEmitIntoClient
-    static var gooligumTechnologiesPty: CompanyIdentifier {
+    static var gooligumTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2342)
     }
 
@@ -14294,7 +14294,7 @@ public extension CompanyIdentifier {
 
     /// Limited Liability Company "Mikrotikls" (`2383`)
     @_alwaysEmitIntoClient
-    static var limitedLiabilityCompanyMikrotikls: CompanyIdentifier {
+    static var mikrotikls: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2383)
     }
 
@@ -14504,7 +14504,7 @@ public extension CompanyIdentifier {
 
     /// Closed Joint Stock Company "Zavod Flometr" ("Zavod Flometr" CJSC) (`2418`)
     @_alwaysEmitIntoClient
-    static var closedJointStockCompanyZavodFlometrZavodFlometrCjsc: CompanyIdentifier {
+    static var zavodFlometrZavodFlometrCjsc: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2418)
     }
 
@@ -14708,7 +14708,7 @@ public extension CompanyIdentifier {
 
     /// VT42 Pty Ltd (`2452`)
     @_alwaysEmitIntoClient
-    static var vt42Pty: CompanyIdentifier {
+    static var vt42: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2452)
     }
 
@@ -14864,7 +14864,7 @@ public extension CompanyIdentifier {
 
     /// Pozyx NV (`2478`)
     @_alwaysEmitIntoClient
-    static var pozyxNv: CompanyIdentifier {
+    static var pozyx: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2478)
     }
 
@@ -14876,7 +14876,7 @@ public extension CompanyIdentifier {
 
     /// Deublin Company, LLC (`2480`)
     @_alwaysEmitIntoClient
-    static var deublinCompany: CompanyIdentifier {
+    static var deublin: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2480)
     }
 
@@ -14906,7 +14906,7 @@ public extension CompanyIdentifier {
 
     /// AUTEC Gesellschaft fuer Automationstechnik mbH (`2485`)
     @_alwaysEmitIntoClient
-    static var autecGesellschaftFuerAutomationstechnikMbh: CompanyIdentifier {
+    static var autecGesellschaftFuerAutomationstechnik: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2485)
     }
 
@@ -15116,7 +15116,7 @@ public extension CompanyIdentifier {
 
     /// Synergy Tecnologia em Sistemas Ltda (`2520`)
     @_alwaysEmitIntoClient
-    static var synergyTecnologiaEmSistemasa: CompanyIdentifier {
+    static var synergyTecnologiaEmSistemas: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2520)
     }
 
@@ -15230,7 +15230,7 @@ public extension CompanyIdentifier {
 
     /// KEAN ELECTRONICS PTY LTD (`2539`)
     @_alwaysEmitIntoClient
-    static var keanElectronicsPty: CompanyIdentifier {
+    static var keanElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2539)
     }
 
@@ -15272,7 +15272,7 @@ public extension CompanyIdentifier {
 
     /// Audeara Pty Ltd (`2546`)
     @_alwaysEmitIntoClient
-    static var audearaPty: CompanyIdentifier {
+    static var audeara: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2546)
     }
 
@@ -15386,7 +15386,7 @@ public extension CompanyIdentifier {
 
     /// Southwire Company, LLC (`2565`)
     @_alwaysEmitIntoClient
-    static var southwireCompany: CompanyIdentifier {
+    static var southwire: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2565)
     }
 
@@ -15398,7 +15398,7 @@ public extension CompanyIdentifier {
 
     /// Reflow Pty Ltd (`2567`)
     @_alwaysEmitIntoClient
-    static var reflowPty: CompanyIdentifier {
+    static var reflow: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2567)
     }
 
@@ -15518,7 +15518,7 @@ public extension CompanyIdentifier {
 
     /// Embrava Pty Ltd (`2587`)
     @_alwaysEmitIntoClient
-    static var embravaPty: CompanyIdentifier {
+    static var embrava: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2587)
     }
 
@@ -15782,7 +15782,7 @@ public extension CompanyIdentifier {
 
     /// The Wand Company Ltd (`2631`)
     @_alwaysEmitIntoClient
-    static var wandCompany: CompanyIdentifier {
+    static var wandcompany: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2631)
     }
 
@@ -15854,7 +15854,7 @@ public extension CompanyIdentifier {
 
     /// KKM COMPANY LIMITED (`2643`)
     @_alwaysEmitIntoClient
-    static var kkmCompany: CompanyIdentifier {
+    static var kkm: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2643)
     }
 
@@ -16034,7 +16034,7 @@ public extension CompanyIdentifier {
 
     /// Senquip Pty Ltd (`2673`)
     @_alwaysEmitIntoClient
-    static var senquipPty: CompanyIdentifier {
+    static var senquip: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2673)
     }
 
@@ -16082,7 +16082,7 @@ public extension CompanyIdentifier {
 
     /// Webasto SE (`2681`)
     @_alwaysEmitIntoClient
-    static var webastoSe: CompanyIdentifier {
+    static var webasto: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2681)
     }
 
@@ -16106,7 +16106,7 @@ public extension CompanyIdentifier {
 
     /// Freedman Electronics Pty Ltd (`2685`)
     @_alwaysEmitIntoClient
-    static var freedmanElectronicsPty: CompanyIdentifier {
+    static var freedmanElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2685)
     }
 
@@ -16130,7 +16130,7 @@ public extension CompanyIdentifier {
 
     /// Universal Biosensors Pty Ltd (`2689`)
     @_alwaysEmitIntoClient
-    static var universalBiosensorsPty: CompanyIdentifier {
+    static var universalBiosensors: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2689)
     }
 
@@ -16208,7 +16208,7 @@ public extension CompanyIdentifier {
 
     /// Perfect Company (`2702`)
     @_alwaysEmitIntoClient
-    static var perfectCompany: CompanyIdentifier {
+    static var perfect: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2702)
     }
 
@@ -16364,7 +16364,7 @@ public extension CompanyIdentifier {
 
     /// Zencontrol Pty Ltd (`2728`)
     @_alwaysEmitIntoClient
-    static var zencontrolPty: CompanyIdentifier {
+    static var zencontrol: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2728)
     }
 
@@ -16430,7 +16430,7 @@ public extension CompanyIdentifier {
 
     /// INNER RANGE PTY. LTD. (`2739`)
     @_alwaysEmitIntoClient
-    static var innerRangePty: CompanyIdentifier {
+    static var innerRange: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2739)
     }
 
@@ -16820,7 +16820,7 @@ public extension CompanyIdentifier {
 
     /// Radioworks Microelectronics PTY LTD (`2804`)
     @_alwaysEmitIntoClient
-    static var radioworksMicroelectronicsPty: CompanyIdentifier {
+    static var radioworksMicroelectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2804)
     }
 
@@ -16952,7 +16952,7 @@ public extension CompanyIdentifier {
 
     /// Belun Technology Company Limited (`2826`)
     @_alwaysEmitIntoClient
-    static var belunTechnologyCompany: CompanyIdentifier {
+    static var belunTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2826)
     }
 
@@ -17036,13 +17036,13 @@ public extension CompanyIdentifier {
 
     /// DECATHLON SE (`2840`)
     @_alwaysEmitIntoClient
-    static var decathlonSe: CompanyIdentifier {
+    static var decathlon: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2840)
     }
 
     /// WBS PROJECT H PTY LTD (`2841`)
     @_alwaysEmitIntoClient
-    static var wbsProjectHPty: CompanyIdentifier {
+    static var wbsProjectH: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2841)
     }
 
@@ -17162,7 +17162,7 @@ public extension CompanyIdentifier {
 
     /// REDARC ELECTRONICS PTY LTD (`2861`)
     @_alwaysEmitIntoClient
-    static var redarcElectronicsPty: CompanyIdentifier {
+    static var redarcElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2861)
     }
 
@@ -17222,7 +17222,7 @@ public extension CompanyIdentifier {
 
     /// Omnivoltaic Energy Solutions Limited Company (`2871`)
     @_alwaysEmitIntoClient
-    static var omnivoltaicEnergySolutionsCompany: CompanyIdentifier {
+    static var omnivoltaicEnergySolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2871)
     }
 
@@ -17474,7 +17474,7 @@ public extension CompanyIdentifier {
 
     /// Sentek Pty Ltd (`2913`)
     @_alwaysEmitIntoClient
-    static var sentekPty: CompanyIdentifier {
+    static var sentek: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2913)
     }
 
@@ -17504,13 +17504,13 @@ public extension CompanyIdentifier {
 
     /// MITSUBISHI ELECTRIC AUTOMATION (THAILAND) COMPANY LIMITED (`2918`)
     @_alwaysEmitIntoClient
-    static var mitsubishiElectricAutomationThailandCompany: CompanyIdentifier {
+    static var mitsubishiElectricAutomationThailand: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2918)
     }
 
     /// CleanSpace Technology Pty Ltd (`2919`)
     @_alwaysEmitIntoClient
-    static var cleanspaceTechnologyPty: CompanyIdentifier {
+    static var cleanspaceTechnology: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2919)
     }
 
@@ -17690,7 +17690,7 @@ public extension CompanyIdentifier {
 
     /// VIMANA TECH PTY LTD (`2949`)
     @_alwaysEmitIntoClient
-    static var vimanaTechPty: CompanyIdentifier {
+    static var vimanaTech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2949)
     }
 
@@ -17768,7 +17768,7 @@ public extension CompanyIdentifier {
 
     /// Citisend Solutions, SL (`2962`)
     @_alwaysEmitIntoClient
-    static var citisendSolutionsSl: CompanyIdentifier {
+    static var citisendSolutions: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2962)
     }
 
@@ -17810,7 +17810,7 @@ public extension CompanyIdentifier {
 
     /// The Goodyear Tire & Rubber Company (`2969`)
     @_alwaysEmitIntoClient
-    static var goodyearTireRubberCompany: CompanyIdentifier {
+    static var goodyearTireRubber: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 2969)
     }
 
@@ -17996,7 +17996,7 @@ public extension CompanyIdentifier {
 
     /// INNOVAG PTY. LTD. (`3000`)
     @_alwaysEmitIntoClient
-    static var innovagPty: CompanyIdentifier {
+    static var innovag: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3000)
     }
 
@@ -18026,7 +18026,7 @@ public extension CompanyIdentifier {
 
     /// ETHEORY PTY LTD (`3005`)
     @_alwaysEmitIntoClient
-    static var etheoryPty: CompanyIdentifier {
+    static var etheory: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3005)
     }
 
@@ -18182,7 +18182,7 @@ public extension CompanyIdentifier {
 
     /// VINFAST TRADING AND PRODUCTION JOINT STOCK COMPANY (`3031`)
     @_alwaysEmitIntoClient
-    static var vinfastTradingAndProductionJointStockCompany: CompanyIdentifier {
+    static var vinfastTradingAndProduction: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3031)
     }
 
@@ -18272,7 +18272,7 @@ public extension CompanyIdentifier {
 
     /// Puratap Pty Ltd (`3046`)
     @_alwaysEmitIntoClient
-    static var puratapPty: CompanyIdentifier {
+    static var puratap: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3046)
     }
 
@@ -18374,7 +18374,7 @@ public extension CompanyIdentifier {
 
     /// Wacker Neuson SE (`3063`)
     @_alwaysEmitIntoClient
-    static var wackerNeusonSe: CompanyIdentifier {
+    static var wackerNeuson: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3063)
     }
 
@@ -18476,7 +18476,7 @@ public extension CompanyIdentifier {
 
     /// limited liability company "Red" (`3080`)
     @_alwaysEmitIntoClient
-    static var limitedLiabilityCompanyRed: CompanyIdentifier {
+    static var red: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3080)
     }
 
@@ -18560,7 +18560,7 @@ public extension CompanyIdentifier {
 
     /// TYKEE PTY. LTD. (`3094`)
     @_alwaysEmitIntoClient
-    static var tykeePty: CompanyIdentifier {
+    static var tykee: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3094)
     }
 
@@ -18740,7 +18740,7 @@ public extension CompanyIdentifier {
 
     /// BYD Company Limited (`3124`)
     @_alwaysEmitIntoClient
-    static var bydCompany: CompanyIdentifier {
+    static var byd: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3124)
     }
 
@@ -18944,7 +18944,7 @@ public extension CompanyIdentifier {
 
     /// Rheem Sales Company, Inc. (`3158`)
     @_alwaysEmitIntoClient
-    static var rheemSalesCompany: CompanyIdentifier {
+    static var rheemSales: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3158)
     }
 
@@ -18980,7 +18980,7 @@ public extension CompanyIdentifier {
 
     /// MGM WIRELESSS HOLDINGS PTY LTD (`3164`)
     @_alwaysEmitIntoClient
-    static var mgmWirelesssHoldingsPty: CompanyIdentifier {
+    static var mgmWirelesssHoldings: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3164)
     }
 
@@ -19238,7 +19238,7 @@ public extension CompanyIdentifier {
 
     /// Weltek Technologies Company Limited (`3207`)
     @_alwaysEmitIntoClient
-    static var weltekTechnologiesCompany: CompanyIdentifier {
+    static var weltekTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3207)
     }
 
@@ -19430,7 +19430,7 @@ public extension CompanyIdentifier {
 
     /// Verve InfoTec Pty Ltd (`3239`)
     @_alwaysEmitIntoClient
-    static var verveInfotecPty: CompanyIdentifier {
+    static var verveInfotec: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3239)
     }
 
@@ -19550,7 +19550,7 @@ public extension CompanyIdentifier {
 
     /// Emlid Tech Kft. (`3259`)
     @_alwaysEmitIntoClient
-    static var emlidTechKft: CompanyIdentifier {
+    static var emlidTech: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3259)
     }
 
@@ -19646,7 +19646,7 @@ public extension CompanyIdentifier {
 
     /// Kord Defence Pty Ltd (`3276`)
     @_alwaysEmitIntoClient
-    static var kordDefencePty: CompanyIdentifier {
+    static var kordDefence: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3276)
     }
 
@@ -19766,7 +19766,7 @@ public extension CompanyIdentifier {
 
     /// VODALOGIC PTY LTD (`3296`)
     @_alwaysEmitIntoClient
-    static var vodalogicPty: CompanyIdentifier {
+    static var vodalogic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3296)
     }
 
@@ -19886,7 +19886,7 @@ public extension CompanyIdentifier {
 
     /// SOLUX PTY LTD (`3316`)
     @_alwaysEmitIntoClient
-    static var soluxPty: CompanyIdentifier {
+    static var solux: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3316)
     }
 
@@ -19904,7 +19904,7 @@ public extension CompanyIdentifier {
 
     /// TVS Motor Company Ltd. (`3319`)
     @_alwaysEmitIntoClient
-    static var tvsMotorCompany: CompanyIdentifier {
+    static var tvsMotor: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3319)
     }
 
@@ -20048,7 +20048,7 @@ public extension CompanyIdentifier {
 
     /// Timebirds Australia Pty Ltd (`3343`)
     @_alwaysEmitIntoClient
-    static var timebirdsAustraliaPty: CompanyIdentifier {
+    static var timebirdsAustralia: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3343)
     }
 
@@ -20312,7 +20312,7 @@ public extension CompanyIdentifier {
 
     /// Lone Star Marine Pty Ltd (`3387`)
     @_alwaysEmitIntoClient
-    static var loneStarMarinePty: CompanyIdentifier {
+    static var loneStarMarine: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3387)
     }
 
@@ -20588,7 +20588,7 @@ public extension CompanyIdentifier {
 
     /// AIR AROMA INTERNATIONAL PTY LTD (`3433`)
     @_alwaysEmitIntoClient
-    static var airAromaInternationalPty: CompanyIdentifier {
+    static var airAromaInternational: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3433)
     }
 
@@ -20606,7 +20606,7 @@ public extension CompanyIdentifier {
 
     /// Ambient IoT Pty Ltd (`3436`)
     @_alwaysEmitIntoClient
-    static var ambientIotPty: CompanyIdentifier {
+    static var ambientIot: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3436)
     }
 
@@ -20624,7 +20624,7 @@ public extension CompanyIdentifier {
 
     /// Closed Joint Stock Company NVP BOLID (`3439`)
     @_alwaysEmitIntoClient
-    static var closedJointStockCompanyNvpBolid: CompanyIdentifier {
+    static var nvpBolid: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3439)
     }
 
@@ -20858,7 +20858,7 @@ public extension CompanyIdentifier {
 
     /// NEOKOHM SISTEMAS ELETRONICOS LTDA (`3478`)
     @_alwaysEmitIntoClient
-    static var neokohmSistemasEletronicosa: CompanyIdentifier {
+    static var neokohmSistemasEletronicos: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3478)
     }
 
@@ -20870,7 +20870,7 @@ public extension CompanyIdentifier {
 
     /// E.F. Johnson Company (`3480`)
     @_alwaysEmitIntoClient
-    static var eFJohnsonCompany: CompanyIdentifier {
+    static var eFJohnson: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3480)
     }
 
@@ -21086,7 +21086,7 @@ public extension CompanyIdentifier {
 
     /// Felion Technologies Company Limited (`3516`)
     @_alwaysEmitIntoClient
-    static var felionTechnologiesCompany: CompanyIdentifier {
+    static var felionTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3516)
     }
 
@@ -21194,7 +21194,7 @@ public extension CompanyIdentifier {
 
     /// NOVAFON - Electromedical devices limited liability company (`3534`)
     @_alwaysEmitIntoClient
-    static var novafonElectromedicalDevicesLiabilityCompany: CompanyIdentifier {
+    static var novafonElectromedicalDevicesLiability: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3534)
     }
 
@@ -21302,7 +21302,7 @@ public extension CompanyIdentifier {
 
     /// KNOG PTY. LTD. (`3552`)
     @_alwaysEmitIntoClient
-    static var knogPty: CompanyIdentifier {
+    static var knog: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3552)
     }
 
@@ -21428,7 +21428,7 @@ public extension CompanyIdentifier {
 
     /// Delta Faucet Company (`3573`)
     @_alwaysEmitIntoClient
-    static var deltaFaucetCompany: CompanyIdentifier {
+    static var deltaFaucet: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3573)
     }
 
@@ -21470,7 +21470,7 @@ public extension CompanyIdentifier {
 
     /// SOJI ELECTRONICS JOINT STOCK COMPANY (`3580`)
     @_alwaysEmitIntoClient
-    static var sojiElectronicsJointStockCompany: CompanyIdentifier {
+    static var sojiElectronics: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3580)
     }
 
@@ -21548,7 +21548,7 @@ public extension CompanyIdentifier {
 
     /// Evolutive Systems SL (`3593`)
     @_alwaysEmitIntoClient
-    static var evolutiveSystemsSl: CompanyIdentifier {
+    static var evolutiveSystems: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3593)
     }
 
@@ -21578,13 +21578,13 @@ public extension CompanyIdentifier {
 
     /// ALOGIC CORPORATION PTY LTD (`3598`)
     @_alwaysEmitIntoClient
-    static var alogicPty: CompanyIdentifier {
+    static var alogic: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3598)
     }
 
     /// SenseWorks Tecnologia Ltda. (`3599`)
     @_alwaysEmitIntoClient
-    static var senseworksTecnologiaa: CompanyIdentifier {
+    static var senseworksTecnologia: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3599)
     }
 
@@ -21602,7 +21602,7 @@ public extension CompanyIdentifier {
 
     /// CLEVER LOGGER TECHNOLOGIES PTY LIMITED (`3602`)
     @_alwaysEmitIntoClient
-    static var cleverLoggerTechnologiesPty: CompanyIdentifier {
+    static var cleverLoggerTechnologies: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3602)
     }
 
@@ -21794,7 +21794,7 @@ public extension CompanyIdentifier {
 
     /// Crescent NV (`3635`)
     @_alwaysEmitIntoClient
-    static var crescentNv: CompanyIdentifier {
+    static var crescent: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3635)
     }
 
@@ -21818,7 +21818,7 @@ public extension CompanyIdentifier {
 
     /// CESYS Gesellschaft für angewandte Mikroelektronik mbH (`3639`)
     @_alwaysEmitIntoClient
-    static var cesysGesellschaftFurAngewandteMikroelektronikMbh: CompanyIdentifier {
+    static var cesysGesellschaftFurAngewandteMikroelektronik: CompanyIdentifier {
         return CompanyIdentifier(rawValue: 3639)
     }
 
