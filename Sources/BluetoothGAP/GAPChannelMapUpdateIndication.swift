@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The channel map (channelMap) used for periodic advertisements may be updated at any time by the advertiser.
 /// The advertiser can update the channel map by sending the Channel Map Update Indication data type in the extended header of the packet containing the AUX_SYNC_IND PDU.
@@ -33,7 +36,7 @@ public extension GAPChannelMapUpdateIndication {
     
     internal static let length = 7
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
@@ -41,7 +44,7 @@ public extension GAPChannelMapUpdateIndication {
         self.init(channelMap: (data[0], data[1], data[2], data[3], data[4]), instant: (data[5], data[6]))
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += [channelMap.0, channelMap.1, channelMap.2, channelMap.3, channelMap.4, instant.0, instant.1]
     }

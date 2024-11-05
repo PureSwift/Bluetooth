@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// GAP UUID List
 internal struct GAPUUIDList <Element: GAPUUIDElement> {
@@ -18,7 +21,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
         self.uuids = uuids
     }
     
-    internal init?(data: Data) {
+    internal init?<Data: DataContainer>(data: Data) {
         
         let elementSize = MemoryLayout<Element>.size
         
@@ -31,7 +34,7 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
             guard index + elementSize <= data.count
                 else { return nil }
             
-            let valueData = data.subdataNoCopy(in: data.startIndex + index ..< data.startIndex + index + elementSize)
+            let valueData = data.subdata(in: data.startIndex + index ..< data.startIndex + index + elementSize)
             
             let value = Element(littleEndian: Element(data: valueData)!)
             

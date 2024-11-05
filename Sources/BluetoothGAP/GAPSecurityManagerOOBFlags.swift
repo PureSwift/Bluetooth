@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  The Security Manager Out of Band data type allows an out of band mechanism to be used by the Security Manager to communicate discovery information as well as other information related to the pairing process.
@@ -28,7 +31,7 @@ public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
 
 public extension GAPSecurityManagerOOBFlags {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 1
             else { return nil }
@@ -36,7 +39,7 @@ public extension GAPSecurityManagerOOBFlags {
         self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[0])
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += flags.rawValue
     }

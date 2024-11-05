@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// GAP List of 32 bit Service Solicitation UUIDs
 @frozen
@@ -24,7 +27,7 @@ public struct GAPListOf32BitServiceSolicitationUUIDs: GAPData, Equatable {
 
 public extension GAPListOf32BitServiceSolicitationUUIDs {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
@@ -32,7 +35,7 @@ public extension GAPListOf32BitServiceSolicitationUUIDs {
         self.uuids = list.uuids
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += GAPUUIDList(uuids: uuids)
     }

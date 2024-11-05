@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// Specifies the Simple Pairing Randomizer
 /// Size: 16 octets
@@ -26,7 +29,7 @@ public struct GAPSimplePairingRandomizerR: GAPData, Equatable, Hashable {
 
 public extension GAPSimplePairingRandomizerR {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == UInt128.length
             else { return nil }
@@ -51,7 +54,7 @@ public extension GAPSimplePairingRandomizerR {
         self.init(uuid: uuid)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += UInt128(uuid: uuid).littleEndian
     }

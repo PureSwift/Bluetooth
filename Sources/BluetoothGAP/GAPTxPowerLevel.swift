@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The TX Power Level data type indicates the transmitted power level of the packet containing the data type.
 /// The TX Power Level should be the radiated power level.
@@ -43,7 +46,7 @@ public extension GAPTxPowerLevel {
 
 public extension GAPTxPowerLevel {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 1
             else { return nil }
@@ -53,7 +56,7 @@ public extension GAPTxPowerLevel {
         self.init(powerLevel: level)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += UInt8(bitPattern: powerLevel)
     }

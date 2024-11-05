@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The LE Role data type defines the LE role capabilities of the device.
 /// The LE Role data type size is 1 octet.
@@ -30,7 +33,7 @@ public enum GAPLERole: UInt8, GAPData {
 
 public extension GAPLERole {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 1
             else { return nil }
@@ -38,7 +41,7 @@ public extension GAPLERole {
         self.init(rawValue: data[0])
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         data += rawValue
     }
     

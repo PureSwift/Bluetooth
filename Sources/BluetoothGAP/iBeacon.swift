@@ -63,7 +63,7 @@ internal extension AppleBeacon {
     
     static var additionalDataLength: Int { return Int(length) + 2 }
     
-    static func from(advertisingData: LowEnergyAdvertisingData) throws(GAPDataDecoderError) -> (beacon: AppleBeacon, flags: GAPFlags)? {
+    static func from(advertisingData: LowEnergyAdvertisingData) throws(GAPDataDecoderError) -> (beacon: AppleBeacon, flags: GAPFlags) {
         let (flags, manufacturerData) = try GAPDataDecoder.decode(GAPFlags.self, AppleBeacon.ManufacturerData.self, from: advertisingData)
         return (manufacturerData.beacon, flags)
     }

@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  Mesh beacons are packets advertised periodically by nodes and unprovisioned devices.
@@ -29,7 +32,7 @@ public extension GAPMeshBeacon {
     
     internal static let minimumLength = 2
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= type(of: self).minimumLength
             else { return nil }
@@ -56,7 +59,7 @@ public extension GAPMeshBeacon {
         }
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         switch self {
         case let .unprovisionedDevice(beacon):
@@ -85,7 +88,7 @@ public protocol GAPMeshBeaconProtocol {
     
     static var beaconType: GAPBeaconType { get }
     
-    init?(data: Data)
+    init?<Data: DataContainer>(data: Data)
     
     var data: Data { get }
 }
@@ -122,7 +125,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
         self.uriHash = uriHash
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard let length = DataLength(rawValue: data.count)
             else { return nil }
@@ -157,7 +160,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
         
         data.append(type(of: self).beaconType.rawValue)
         
-        data.append(UInt128(uuid: deviceUUID).littleEndian.data)
+        data += UInt128(uuid: deviceUUID).littleEndian
         
         let flagsBytes = oobInformationFlags.rawValue.littleEndian.bytes
         
@@ -317,7 +320,7 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
         self.authenticationValue = authenticationValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }

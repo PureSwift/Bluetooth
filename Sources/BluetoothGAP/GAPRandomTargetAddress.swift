@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The Random Target Address data type defines the address of one or more intended recipients of an advertisement when one or more devices were bonded using a random address.
 /// This data type is intended to be used to avoid a situation where a bonded device unnecessarily responds to an advertisement intended for another bonded device.
@@ -31,7 +34,7 @@ public struct GAPRandomTargetAddress: GAPData, Equatable {
 
 public extension GAPRandomTargetAddress {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count % BluetoothAddress.length == 0
             else { return nil }
@@ -51,7 +54,7 @@ public extension GAPRandomTargetAddress {
         return addresses.count * BluetoothAddress.length
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         addresses.forEach { data += $0.littleEndian }
     }
@@ -62,7 +65,6 @@ public extension GAPRandomTargetAddress {
 extension GAPRandomTargetAddress: CustomStringConvertible {
     
     public var description: String {
-        
         return addresses.description
     }
 }

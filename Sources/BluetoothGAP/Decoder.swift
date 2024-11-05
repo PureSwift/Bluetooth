@@ -36,8 +36,8 @@ public struct GAPDataDecoder <Data: DataContainer> {
         
         #if !hasFeature(Embedded)
         /// initialize with default precomputed values
-        self.types = GAPDataDecoderCache.defaultTypes
-        self.dataTypes = GAPDataDecoderCache.defaultDataTypes
+        self.types = Self.defaultTypes
+        self.dataTypes = Self.defaultDataTypes
         #endif
     }
     
@@ -231,56 +231,59 @@ public enum GAPDataDecoderError: Swift.Error, Sendable {
 // MARK: - Constants
 
 #if !hasFeature(Embedded)
-internal enum GAPDataDecoderCache {
+internal extension GAPDataDecoder {
     
-    static let defaultDataTypes: [GAPDataType: GAPData.Type] = {
+    static var defaultDataTypes: [GAPDataType: GAPData.Type] {
+        let defaultTypes = self.defaultTypes
         var types = [GAPDataType: GAPData.Type](minimumCapacity: defaultTypes.count)
         defaultTypes.forEach { types[$0.dataType] = $0 }
         return types
-    }()
+    }
     
-    static let defaultTypes: [GAPData.Type] = [
-        GAP3DInformation.self,
-        GAPAdvertisingInterval.self,
-        GAPAppearanceData.self,
-        GAPChannelMapUpdateIndication.self,
-        GAPClassOfDevice.self,
-        GAPCompleteListOf16BitServiceClassUUIDs.self,
-        GAPCompleteListOf32BitServiceClassUUIDs.self,
-        GAPCompleteListOf128BitServiceClassUUIDs.self,
-        GAPCompleteLocalName.self,
-        GAPFlags.self,
-        GAPIncompleteListOf16BitServiceClassUUIDs.self,
-        GAPIncompleteListOf32BitServiceClassUUIDs.self,
-        GAPIncompleteListOf128BitServiceClassUUIDs.self,
-        GAPIndoorPositioning.self,
-        GAPLEDeviceAddress.self,
-        GAPLERole.self,
-        GAPLESecureConnectionsConfirmation.self,
-        GAPLESecureConnectionsRandom.self,
-        //GAPLESupportedFeatures.self,
-        GAPListOf16BitServiceSolicitationUUIDs.self,
-        GAPListOf32BitServiceSolicitationUUIDs.self,
-        GAPListOf128BitServiceSolicitationUUIDs.self,
-        GAPManufacturerSpecificData.self,
-        GAPMeshBeacon.self,
-        GAPMeshMessage.self,
-        GAPPBADV.self,
-        GAPPublicTargetAddress.self,
-        GAPRandomTargetAddress.self,
-        GAPSecurityManagerOOBFlags.self,
-        GAPSecurityManagerTKValue.self,
-        GAPServiceData16BitUUID.self,
-        GAPServiceData32BitUUID.self,
-        GAPServiceData128BitUUID.self,
-        GAPShortLocalName.self,
-        GAPSimplePairingHashC.self,
-        GAPSimplePairingRandomizerR.self,
-        GAPSlaveConnectionIntervalRange.self,
-        GAPTransportDiscoveryData.self,
-        GAPTxPowerLevel.self,
-        GAPURI.self
-    ]
+    static var defaultTypes: [GAPData.Type] {
+        [
+            GAP3DInformation.self,
+            GAPAdvertisingInterval.self,
+            GAPAppearanceData.self,
+            GAPChannelMapUpdateIndication.self,
+            GAPClassOfDevice.self,
+            GAPCompleteListOf16BitServiceClassUUIDs.self,
+            GAPCompleteListOf32BitServiceClassUUIDs.self,
+            GAPCompleteListOf128BitServiceClassUUIDs.self,
+            GAPCompleteLocalName.self,
+            GAPFlags.self,
+            GAPIncompleteListOf16BitServiceClassUUIDs.self,
+            GAPIncompleteListOf32BitServiceClassUUIDs.self,
+            GAPIncompleteListOf128BitServiceClassUUIDs.self,
+            GAPIndoorPositioning.self,
+            GAPLEDeviceAddress.self,
+            GAPLERole.self,
+            GAPLESecureConnectionsConfirmation.self,
+            GAPLESecureConnectionsRandom.self,
+            //GAPLESupportedFeatures.self,
+            GAPListOf16BitServiceSolicitationUUIDs.self,
+            GAPListOf32BitServiceSolicitationUUIDs.self,
+            GAPListOf128BitServiceSolicitationUUIDs.self,
+            GAPManufacturerSpecificData<Data>.self,
+            GAPMeshBeacon.self,
+            GAPMeshMessage.self,
+            GAPPBADV<Data>.self,
+            GAPPublicTargetAddress.self,
+            GAPRandomTargetAddress.self,
+            GAPSecurityManagerOOBFlags.self,
+            GAPSecurityManagerTKValue.self,
+            GAPServiceData16BitUUID<Data>.self,
+            GAPServiceData32BitUUID<Data>.self,
+            GAPServiceData128BitUUID<Data>.self,
+            GAPShortLocalName.self,
+            GAPSimplePairingHashC.self,
+            GAPSimplePairingRandomizerR.self,
+            GAPSlaveConnectionIntervalRange.self,
+            GAPTransportDiscoveryData<Data>.self,
+            GAPTxPowerLevel.self,
+            GAPURI.self
+        ]
+    }
 }
 #endif
 

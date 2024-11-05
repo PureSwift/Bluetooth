@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// GAP Complete List of 16-bit Service Class UUIDs
 @frozen
@@ -24,7 +27,7 @@ public struct GAPCompleteListOf16BitServiceClassUUIDs: GAPData, Equatable {
 
 public extension GAPCompleteListOf16BitServiceClassUUIDs {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
@@ -32,7 +35,7 @@ public extension GAPCompleteListOf16BitServiceClassUUIDs {
         self.uuids = list.uuids
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += GAPUUIDList(uuids: uuids)
     }

@@ -6,25 +6,27 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The Transport Discovery Data AD Type shall be present in the Advertising Data (i.e., AdvData) and may also be present in the Extended Inquiry Response (EIR).
 /// EIR and Advertising Packets may be of different sizes and may contain different information within the Transport Discovery Data AD Type.
 ///
 /// Note 1: Typically 0-26 (inclusive of the Flags AD Type), however larger values may be supported in future updates of the Core Specification.
 @frozen
-public struct GAPTransportDiscoveryData: GAPData, Equatable {
+public struct GAPTransportDiscoveryData<TransportData: DataContainer>: GAPData, Equatable, Hashable, Sendable {
     
-    internal static let minBlocks = 1
+    internal static var minBlocks: Int { 1 }
     
-    public static let dataType: GAPDataType = .transportDiscoveryData
+    public static var dataType: GAPDataType { .transportDiscoveryData }
     
     public let code: UInt8
     
-    public let blocks: [GAPTransportDiscoveryBlock]
+    public let blocks: [GAPTransportDiscoveryBlock<TransportData>]
     
-    public init(code: UInt8, blocks: [GAPTransportDiscoveryBlock]) {
-        
+    public init(code: UInt8, blocks: [GAPTransportDiscoveryBlock<TransportData>]) {
         self.code = code
         self.blocks = blocks
     }
@@ -32,27 +34,27 @@ public struct GAPTransportDiscoveryData: GAPData, Equatable {
 
 public extension GAPTransportDiscoveryData {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         var index = 1
-        var blocks = [GAPTransportDiscoveryBlock]()
+        var blocks = [GAPTransportDiscoveryBlock<TransportData>]()
         
         while index < data.count {
             
-            guard index + GAPTransportDiscoveryBlock.minLength < data.count
+            guard index + GAPTransportDiscoveryBlock<TransportData>.minLength < data.count
                 else { return nil }
             
             let flags = BitMaskOptionSet<GAPTransportDiscoveryDataFlag>(rawValue: data[index+1])
             let length = Int(data[index+2])
             
-            guard index + GAPTransportDiscoveryBlock.minLength + length < data.count
+            guard index + GAPTransportDiscoveryBlock<TransportData>.minLength + length < data.count
                 else { return nil }
             
             let transportData: [UInt8] = stride(from: index+3, to: index+3+length, by: 1).map { data[Int($0)] }
-            let block = GAPTransportDiscoveryBlock(organizationID: data[index], flags: flags, /* dataLength: data[index+2], */ transportData: Data(transportData))
+            let block = GAPTransportDiscoveryBlock(organizationID: data[index], flags: flags, /* dataLength: data[index+2], */ transportData: TransportData(transportData))
             blocks.append(block)
             
-            index += (GAPTransportDiscoveryBlock.minLength + length + 1)
+            index += (GAPTransportDiscoveryBlock<TransportData>.minLength + length + 1)
         }
         
         guard blocks.count >= GAPTransportDiscoveryData.minBlocks
@@ -61,14 +63,12 @@ public extension GAPTransportDiscoveryData {
         self.init(code: data[0], blocks: blocks)
     }
     
-    func append(to data: inout Data) {
-        
+    func append<Data: DataContainer>(to data: inout Data) {
         data += code
         blocks.forEach { data += $0 }
     }
     
     var dataLength: Int {
-        
         return blocks.reduce(1, { $0 + $1.dataLength })
     }
 }
@@ -85,22 +85,21 @@ public extension GAPTransportDiscoveryData {
 /// Where multiple Transport Blocks are used, the advertising device should list these in order of descending priority or preference.
 /// For example, if the blocks represent more than one supported service, the order represents preferred support (e.g., perhaps a printer is capable of printing using a faster technology from one organization, but also a slower technology from another organization). If the blocks represent more than one required service, the order represents preferred service order (e.g., perhaps a device requires an immediate service, but also another service that is of lower priority).
 @frozen
-public struct GAPTransportDiscoveryBlock: Equatable {
+public struct GAPTransportDiscoveryBlock<TransportData: DataContainer>: Equatable, Hashable, Sendable {
     
-    internal static let minLength = 2
+    internal static var minLength: Int { 2 }
     
     public let organizationID: UInt8
     
     public let flags: BitMaskOptionSet<GAPTransportDiscoveryDataFlag>
     
-    public let transportData: Data
+    public let transportData: TransportData
 }
 
 extension GAPTransportDiscoveryBlock: DataConvertible {
     
     /// Append data representation into buffer.
     static func += <T: DataContainer> (data: inout T, value: GAPTransportDiscoveryBlock) {
-        
         data += value.organizationID
         data += value.flags.rawValue
         data += UInt8(value.transportData.count)
@@ -109,7 +108,6 @@ extension GAPTransportDiscoveryBlock: DataConvertible {
     
     /// Length of value when encoded into data.
     var dataLength: Int {
-        
         return 3 + transportData.count
     }
 }

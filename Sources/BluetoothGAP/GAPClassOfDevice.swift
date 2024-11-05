@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// Specifies the class of the device
 /// Size: 3 octets
@@ -27,7 +30,7 @@ public struct GAPClassOfDevice: GAPData {
 
 public extension GAPClassOfDevice {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == MemoryLayout<Identifier>.size
             else { return nil }
@@ -39,7 +42,7 @@ public extension GAPClassOfDevice {
         self.init(device: device)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += device.0
         data += device.1

@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// Specifies the LE Secure Connections Random Value
 /// Size: 16 octets
@@ -26,7 +29,7 @@ public struct GAPLESecureConnectionsRandom: GAPData, Equatable, Hashable {
 
 public extension GAPLESecureConnectionsRandom {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 2
             else { return nil }
@@ -37,7 +40,7 @@ public extension GAPLESecureConnectionsRandom {
         self.init(random: random)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += random.littleEndian
     }

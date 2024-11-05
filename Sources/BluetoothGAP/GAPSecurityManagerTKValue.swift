@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The Security Manager TK Value data type allows an out of band mechanism to be used by the Security Manager to communicate the TK value.
 /// Size: 16 octets
@@ -26,7 +29,7 @@ public struct GAPSecurityManagerTKValue: GAPData, Equatable, Hashable {
 
 public extension GAPSecurityManagerTKValue {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == UInt128.length
             else { return nil }
@@ -51,7 +54,7 @@ public extension GAPSecurityManagerTKValue {
         self.init(uuid: uuid)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += UInt128(uuid: uuid).littleEndian
     }

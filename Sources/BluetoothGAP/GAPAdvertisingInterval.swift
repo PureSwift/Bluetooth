@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The Advertising Interval data type contains the `advInterval` value
 /// as defined in the Core specification, Volume 6, Part B, Section 4.4.2.2.
@@ -38,7 +41,7 @@ public extension GAPAdvertisingInterval {
 
 public extension GAPAdvertisingInterval {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == MemoryLayout<UInt16>.size
             else { return nil }
@@ -48,7 +51,7 @@ public extension GAPAdvertisingInterval {
         self.init(interval: interval)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += interval.littleEndian
     }

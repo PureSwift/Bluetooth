@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The Appearance data type defines the external appearance of the device.
 /// This value shall be the same as the Appearance characteristic, as defined in Vol. 3, Part C, Section 12.2.
@@ -25,7 +28,7 @@ public struct GAPAppearanceData: GAPData, Equatable {
 
 public extension GAPAppearanceData {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 2
             else { return nil }
@@ -35,7 +38,7 @@ public extension GAPAppearanceData {
         self.init(appearance: appearance)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += appearance.rawValue.littleEndian
     }
