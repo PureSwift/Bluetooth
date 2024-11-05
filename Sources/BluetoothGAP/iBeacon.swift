@@ -62,14 +62,11 @@ internal extension AppleBeacon {
     static var length: UInt8 { 0x15 } // length: 21 = 16 byte UUID + 2 bytes major + 2 bytes minor + 1 byte RSSI
     
     static var additionalDataLength: Int { return Int(length) + 2 }
-    /*
-    static func from(advertisingData: LowEnergyAdvertisingData) -> (beacon: AppleBeacon, flags: GAPFlags)? {
-        
-        guard let (flags, manufacturerData) = try? GAPDataDecoder.decode(GAPFlags.self, AppleBeacon.ManufacturerData.self, from: advertisingData)
-            else { return nil }
-        
+    
+    static func from(advertisingData: LowEnergyAdvertisingData) throws(GAPDataDecoderError) -> (beacon: AppleBeacon, flags: GAPFlags)? {
+        let (flags, manufacturerData) = try GAPDataDecoder.decode(GAPFlags.self, AppleBeacon.ManufacturerData.self, from: advertisingData)
         return (manufacturerData.beacon, flags)
-    }*/
+    }
     
     func appendAdditionalManufacturerData <T: DataContainer> (to data: inout T) {
         
@@ -86,10 +83,8 @@ public extension LowEnergyAdvertisingData {
     
     init(beacon: AppleBeacon,
          flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]) {
-        
-        let encoder = GAPDataEncoder<LowEnergyAdvertisingData>()
         let manufacturerData = AppleBeacon.ManufacturerData(beacon) // storage on stack
-        self = encoder.encode(flags, manufacturerData)
+        self = GAPDataEncoder.encode(flags, manufacturerData)
     }
 }
 
