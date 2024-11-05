@@ -17,9 +17,9 @@ final class AddressTests: XCTestCase {
         XCTAssertEqual(BluetoothAddress.bitWidth, MemoryLayout<BluetoothAddress.ByteValue>.size * 8)
         XCTAssertEqual(BluetoothAddress.bitWidth, 48)
         
-        BluetoothAddress.min.data.forEach { XCTAssertEqual($0, .min) }
-        BluetoothAddress.max.data.forEach { XCTAssertEqual($0, .max) }
-        BluetoothAddress.zero.data.forEach { XCTAssertEqual($0, 0) }
+        Data(BluetoothAddress.min).forEach { XCTAssertEqual($0, .min) }
+        Data(BluetoothAddress.max).forEach { XCTAssertEqual($0, .max) }
+        Data(BluetoothAddress.zero).forEach { XCTAssertEqual($0, 0) }
         XCTAssertEqual(BluetoothAddress.zero, BluetoothAddress.min)
         
         guard let address = BluetoothAddress(rawValue: "00:1A:7D:DA:71:13")
@@ -108,7 +108,7 @@ final class AddressTests: XCTestCase {
             
             XCTAssertEqual(address.rawValue, test.rawValue)
             XCTAssertEqual(address, BluetoothAddress(bigEndian: BluetoothAddress(data: test.data)!))
-            XCTAssertEqual(address.bigEndian.data, test.data)
+            XCTAssertEqual(Data(address.bigEndian), test.data)
         }
     }
     

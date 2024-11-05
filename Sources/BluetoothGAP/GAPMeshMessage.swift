@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// Any advertisement using the Mesh Message AD Type shall be non-connectable and
 /// non-scannable undirected advertising events.
@@ -32,7 +35,7 @@ public struct GAPMeshMessage: GAPData, Equatable, Hashable {
 
 public extension GAPMeshMessage {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == MemoryLayout<UInt16>.size
             else { return nil }
@@ -42,7 +45,7 @@ public extension GAPMeshMessage {
         self.init(message: message)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += message.littleEndian
     }

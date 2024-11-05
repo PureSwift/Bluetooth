@@ -472,7 +472,7 @@ internal extension GATTDatabase {
             return Attribute(
                 handle: handle,
                 uuid: serviceUUID,
-                value: self.uuid.littleEndian.data,
+                value: Data(self.uuid.littleEndian),
                 permissions: [.read]
             )
         }

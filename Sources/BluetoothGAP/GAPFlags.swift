@@ -6,14 +6,13 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// GAP Flag
 @frozen
 public struct GAPFlags: GAPData, Equatable, Hashable {
     
-    public static var dataType: GAPDataType { return .flags }
+    public static var dataType: GAPDataType { .flags }
     
     public var flags: BitMaskOptionSet<GAPFlag>
     
@@ -24,24 +23,20 @@ public struct GAPFlags: GAPData, Equatable, Hashable {
 
 public extension GAPFlags {
     
-    init?(data: Data) {
-        
+    init?<Data>(data: Data) where Data : Bluetooth.DataContainer {
+
         guard data.count == 1
             else { return nil }
         
         self.flags = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
     }
     
-    func append(to data: inout Data) {
-        data += self
-    }
-    
-    func append(to data: inout LowEnergyAdvertisingData) {
+    func append<Data>(to data: inout Data) where Data : Bluetooth.DataContainer {
         data += self
     }
     
     var dataLength: Int {
-        return 1
+        1
     }
 }
 
@@ -59,7 +54,6 @@ extension GAPFlags: DataConvertible {
 extension GAPFlags: CustomStringConvertible {
     
     public var description: String {
-        
         return flags.description
     }
 }
@@ -69,7 +63,6 @@ extension GAPFlags: CustomStringConvertible {
 extension GAPFlags: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral rawValue: GAPFlag.RawValue) {
-        
         self.init(flags: BitMaskOptionSet<GAPFlag>(rawValue: rawValue))
     }
 }

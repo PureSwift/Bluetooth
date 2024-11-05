@@ -6,43 +6,42 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  GAP URI
  */
 @frozen
-public struct GAPURI: GAPData, Equatable, Hashable {
+public struct GAPURI: GAPData, Equatable, Hashable, Sendable {
     
-    public static let dataType: GAPDataType = .uri
+    public static var dataType: GAPDataType { .uri }
     
-    public var uri: URL
+    public var uri: String
     
-    public init(uri: URL) {
-        
+    public init(uri: String) {
         self.uri = uri
     }
 }
 
 public extension GAPURI {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
-        guard let string = String(data: data, encoding: .utf8),
-            let uri = URL(string: string)
+        guard let string = String(utf8: data)
             else { return nil }
         
-        self.uri = uri
+        self.uri = string
     }
     
-    func append(to data: inout Data) {
-        
-        data += uri.absoluteString.utf8
+    func append<Data: DataContainer>(to data: inout Data) {
+        data += uri.utf8
     }
     
     var dataLength: Int {
-        
-        return uri.absoluteString.utf8.count
+        return uri.utf8.count
     }
 }
 
@@ -51,7 +50,6 @@ public extension GAPURI {
 extension GAPURI: CustomStringConvertible {
     
     public var description: String {
-        
-        return uri.absoluteString
+        return uri
     }
 }

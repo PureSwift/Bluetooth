@@ -129,17 +129,18 @@ extension BitMaskOptionSet: Equatable {
 
 // MARK: - CustomStringConvertible
 
-#if !hasFeature(Embedded)
 extension BitMaskOptionSet: CustomStringConvertible {
     
     public var description: String {
-        
+        #if hasFeature(Embedded)
+        return rawValue.description
+        #else
         return Element.from(rawValue: rawValue)
             .sorted(by: { $0.rawValue < $1.rawValue })
             .description
+        #endif
     }
 }
-#endif
 
 // MARK: - Hashable
 

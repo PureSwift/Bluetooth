@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The Random Target Address data type defines the address of one or more intended recipients of an advertisement when one or more devices were bonded using a random address.
 /// This data type is intended to be used to avoid a situation where a bonded device unnecessarily responds to an advertisement intended for another bonded device.
@@ -15,23 +18,22 @@ import Foundation
 /// The format of each 6 octet address is the same as the Random Device Address defined in Vol. 6, Part B, Section 1.3.
 /// The Random Target Address value shall be the enumerated value as defined by Bluetooth Assigned Numbers.
 @frozen
-public struct GAPRandomTargetAddress: GAPData, Equatable {
+public struct GAPRandomTargetAddress: GAPData, Equatable, Hashable, Sendable {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)
     
-    public static let dataType: GAPDataType = .randomTargetAddress
+    public static var dataType: GAPDataType { .randomTargetAddress }
     
     public let addresses: [BluetoothAddress]
     
     public init(addresses: [BluetoothAddress]) {
-        
         self.addresses = addresses
     }
 }
 
 public extension GAPRandomTargetAddress {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count % BluetoothAddress.length == 0
             else { return nil }
@@ -47,25 +49,24 @@ public extension GAPRandomTargetAddress {
     }
     
     var dataLength: Int {
-        
         return addresses.count * BluetoothAddress.length
     }
     
-    func append(to data: inout Data) {
-        
+    func append<Data: DataContainer>(to data: inout Data) {
         addresses.forEach { data += $0.littleEndian }
     }
 }
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPRandomTargetAddress: CustomStringConvertible {
     
     public var description: String {
-        
         return addresses.description
     }
 }
+#endif
 
 // MARK: - ExpressibleByArrayLiteral
 

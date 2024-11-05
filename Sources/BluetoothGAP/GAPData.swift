@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 @_exported import Bluetooth
 
 // MARK: - Generic Access Profile Data
@@ -22,43 +21,12 @@ public protocol GAPData {
     /// Generic Access Profile data type.
     static var dataType: GAPDataType { get }
     
-    /// Initialize from LE advertisement data.
-    init?(data: Slice<LowEnergyAdvertisingData>)
-    
-    /// Initialize from bytes.
-    init?(data: Data)
+    /// Initialize from data.
+    init?<Data: DataContainer>(data: Data)
     
     /// Append data representation into buffer.
-    func append(to data: inout Data)
-    
-    /// Append data representation into buffer.
-    func append(to data: inout LowEnergyAdvertisingData)
+    func append<Data: DataContainer>(to data: inout Data)
     
     /// Length of value when encoded into data.
     var dataLength: Int { get }
-}
-
-public extension GAPData {
-    
-    init?(data slice: Slice<LowEnergyAdvertisingData>) {
-        let range = slice.startIndex ..< slice.endIndex
-        guard let value = slice.base.withUnsafeData({
-            Self.init(data: $0.subdataNoCopy(in: range))
-        }) else { return nil }
-        self = value
-    }
-    
-    func append(to data: inout LowEnergyAdvertisingData) {
-        data += Data(self) // will be serialized on stack if small
-    }
-}
-
-public extension Data {
-    
-    /// Initialize from GAP Data type.
-    init<T: GAPData>(_ value: T) {
-        self.init(capacity: value.dataLength)
-        value.append(to: &self)
-        assert(self.count == value.dataLength)
-    }
 }

@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// A Peripheral device may send the Service Solicitation data type to invite Central devices that expose one or more of the services specified in the Service Solicitation data to connect. The Peripheral device should be in the undirected connectable mode and in one of the discoverable modes. This enables a Central device providing one or more of these services to connect to the Peripheral device, so that the Peripheral device can use the services on the Central device.
 
@@ -28,7 +31,7 @@ public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData, Equatable {
 
 public extension GAPListOf16BitServiceSolicitationUUIDs {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
@@ -36,7 +39,7 @@ public extension GAPListOf16BitServiceSolicitationUUIDs {
         self.uuids = list.uuids
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += GAPUUIDList(uuids: uuids)
     }
@@ -59,10 +62,11 @@ extension GAPListOf16BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPListOf16BitServiceSolicitationUUIDs: CustomStringConvertible {
     
     public var description: String {
-        
         return uuids.map { BluetoothUUID.bit16($0) }.description
     }
 }
+#endif

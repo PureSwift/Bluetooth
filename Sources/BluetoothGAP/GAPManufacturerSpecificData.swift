@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 @_exported import Bluetooth
 
 /**
@@ -18,7 +17,7 @@ import Foundation
  The first 2 octets contain the Company Identifier Code followed by additional manufacturer specific data
  */
 @frozen
-public struct GAPManufacturerSpecificData: GAPData, Equatable, Hashable {
+public struct GAPManufacturerSpecificData <AdditionalData: DataContainer> : GAPData, Equatable, Hashable {
     
     /// GAP Data Type
     public static var dataType: GAPDataType { return .manufacturerSpecificData }
@@ -27,45 +26,36 @@ public struct GAPManufacturerSpecificData: GAPData, Equatable, Hashable {
     public var companyIdentifier: CompanyIdentifier
     
     /// Additional Data.
-    public var additionalData: Data
+    public var additionalData: AdditionalData
     
     /// Initialize with company identifier and additional data.
     public init(companyIdentifier: CompanyIdentifier,
-                additionalData: Data = Data()) {
+                additionalData: AdditionalData = AdditionalData()) {
         
         self.companyIdentifier = companyIdentifier
         self.additionalData = additionalData
     }
     
-    public init?(data: Data) {
-        self.init(data: data, copy: true)
-    }
-    
-    internal init?(data: Data, copy: Bool) {
+    public init?<Data>(data: Data) where Data : Bluetooth.DataContainer {
         
         guard data.count >= 2
             else { return nil }
         
-        let companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
-        let additionalData: Data
+        self.companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         if data.count > 2 {
-            additionalData = copy ? Data(data.suffix(from: 2)) : data.suffixNoCopy(from: 2)
+            self.additionalData = AdditionalData(data[2 ..< data.count])
         } else {
-            additionalData = Data()
+            self.additionalData = AdditionalData()
         }
-        self.init(companyIdentifier: companyIdentifier, additionalData: additionalData)
     }
-        
+    
+    public func append<Data>(to data: inout Data) where Data : Bluetooth.DataContainer {
+        data += self.companyIdentifier.rawValue.littleEndian
+        data += self.additionalData
+    }
+    
     public var dataLength: Int {
         return 2 + additionalData.count
-    }
-    
-    public func append(to data: inout Data) {
-        data += self
-    }
-    
-    public func append(to data: inout LowEnergyAdvertisingData) {
-        data += self
     }
 }
 
@@ -74,7 +64,7 @@ public struct GAPManufacturerSpecificData: GAPData, Equatable, Hashable {
 extension GAPManufacturerSpecificData: CustomStringConvertible {
     
     public var description: String {
-        return "(\(companyIdentifier)) \(additionalData.toHexadecimal()))"
+        return "(\(companyIdentifier)) \(additionalData.toHexadecimal())"
     }
 }
 
@@ -83,7 +73,6 @@ extension GAPManufacturerSpecificData: CustomStringConvertible {
 extension GAPManufacturerSpecificData: DataConvertible {
     
     static func += <T: DataContainer> (data: inout T, value: GAPManufacturerSpecificData) {
-        data += value.companyIdentifier.rawValue.littleEndian
-        data += value.additionalData
+        value.append(to: &data)
     }
 }

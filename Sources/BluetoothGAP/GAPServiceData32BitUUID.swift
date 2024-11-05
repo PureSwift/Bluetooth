@@ -6,25 +6,28 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The Service Data data type consists of a service UUID with the data associated with that service.
 ///
 /// Size: 4 or more octets
 /// The first 4 octets contain the 32 bit Service UUID followed by additional service data
 @frozen
-public struct GAPServiceData32BitUUID: GAPData, Equatable, Hashable {
+public struct GAPServiceData32BitUUID<ServiceData: DataContainer>: GAPData, Equatable, Hashable, Sendable {
     
-    public static let dataType: GAPDataType = .serviceData32BitUUID
+    public static var dataType: GAPDataType { .serviceData32BitUUID }
     
     /// UUID
     public let uuid: UInt32
     
     /// Service Data
-    public let serviceData: Data
+    public let serviceData: ServiceData
     
     public init(uuid: UInt32,
-                serviceData: Data) {
+                serviceData: ServiceData) {
         
         self.uuid = uuid
         self.serviceData = serviceData
@@ -33,7 +36,7 @@ public struct GAPServiceData32BitUUID: GAPData, Equatable, Hashable {
 
 public extension GAPServiceData32BitUUID {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= 2
             else { return nil }
@@ -45,10 +48,10 @@ public extension GAPServiceData32BitUUID {
         
         let serviceData = data.subdata(in: 4 ..< data.startIndex + data.count)
         
-        self.init(uuid: uuid, serviceData: serviceData)
+        self.init(uuid: uuid, serviceData: ServiceData(serviceData))
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += uuid.littleEndian
         data += serviceData

@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  Mesh beacons are packets advertised periodically by nodes and unprovisioned devices.
@@ -29,7 +32,7 @@ public extension GAPMeshBeacon {
     
     internal static let minimumLength = 2
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= type(of: self).minimumLength
             else { return nil }
@@ -56,24 +59,22 @@ public extension GAPMeshBeacon {
         }
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         switch self {
         case let .unprovisionedDevice(beacon):
-            data += beacon.data
+            data += beacon
         case let .secureNetwork(beacon):
-            data += beacon.data
+            data += beacon
         }
     }
     
     var dataLength: Int {
-        
-        // FIXME: Improve performance
         switch self {
         case let .unprovisionedDevice(beacon):
-            return beacon.data.count
+            return beacon.dataLength
         case let .secureNetwork(beacon):
-            return beacon.data.count
+            return beacon.dataLength
         }
     }
 }
@@ -85,9 +86,9 @@ public protocol GAPMeshBeaconProtocol {
     
     static var beaconType: GAPBeaconType { get }
     
-    init?(data: Data)
+    init?<Data: DataContainer>(data: Data)
     
-    var data: Data { get }
+    
 }
 
 /**
@@ -122,7 +123,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
         self.uriHash = uriHash
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard let length = DataLength(rawValue: data.count)
             else { return nil }
@@ -147,28 +148,6 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
         }
         
         self.init(deviceUUID: deviceUUID, oobInformationFlags: oobInformationFlags, uriHash: uriHash)
-    }
-    
-    public var data: Data {
-        
-        let length = DataLength(uriHash: uriHash != nil)
-        
-        var data = Data(capacity: length.rawValue)
-        
-        data.append(type(of: self).beaconType.rawValue)
-        
-        data.append(UInt128(uuid: deviceUUID).littleEndian.data)
-        
-        let flagsBytes = oobInformationFlags.rawValue.littleEndian.bytes
-        
-        data += [flagsBytes.0, flagsBytes.1]
-        
-        if let uriBytes = uriHash?.littleEndian.bytes {
-            
-            data += [uriBytes.0, uriBytes.1, uriBytes.2, uriBytes.3]
-        }
-        
-        return data
     }
     
     struct DataLength: RawRepresentable {
@@ -209,6 +188,26 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
             
             return rawValue >= DataLength.minimum.rawValue + 4
         }
+    }
+}
+
+extension GAPUnprovisionedDeviceBeacon: DataConvertible {
+    
+    public static func += <Data: DataContainer> (data: inout Data, value: Self) {
+        
+        data.append(Self.beaconType.rawValue)
+        data += UInt128(uuid: value.deviceUUID).littleEndian
+        
+        let flagsBytes = value.oobInformationFlags.rawValue.littleEndian.bytes
+        data += [flagsBytes.0, flagsBytes.1]
+        
+        if let uriBytes = value.uriHash?.littleEndian.bytes {
+            data += [uriBytes.0, uriBytes.1, uriBytes.2, uriBytes.3]
+        }
+    }
+    
+    public var dataLength: Int {
+        DataLength(uriHash: uriHash != nil).rawValue
     }
 }
 
@@ -294,7 +293,7 @@ public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
 @frozen
 public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
     
-    internal static let length = 22
+    internal static var length: Int { 22 }
     
     public static let beaconType: GAPBeaconType = .secureNetwork
     
@@ -317,7 +316,7 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
         self.authenticationValue = authenticationValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
@@ -327,36 +326,32 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
             else { return nil }
         
         let flags = BitMaskOptionSet<GAPSecureNetworkFlag>(rawValue: data[1])
-        
         let networkID = UInt64(littleEndian: UInt64(bytes: (data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9])))
-        
         let ivIndex = UInt32(littleEndian: UInt32(bytes: (data[10], data[11], data[12], data[13])))
-        
         let authenticationValue = UInt64(littleEndian: UInt64(bytes: (data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21])))
         
         self.init(flags: flags, networkID: networkID, ivIndex: ivIndex, authenticationValue: authenticationValue)
     }
+}
+
+extension GAPSecureNetworkBeacon: DataConvertible {
     
-    public var data: Data {
+    static func += <T: DataContainer> (data: inout T, value: Self) {
+    
+        data.append(Self.beaconType.rawValue)
+        data.append(value.flags.rawValue)
         
-        var data = Data(capacity: type(of: self).length)
-        
-        data.append(type(of: self).beaconType.rawValue)
-        
-        data.append(flags.rawValue)
-        
-        let networkIDBytes = networkID.littleEndian.bytes
-        
+        let networkIDBytes = value.networkID.littleEndian.bytes
         data += [networkIDBytes.0, networkIDBytes.1, networkIDBytes.2, networkIDBytes.3, networkIDBytes.4, networkIDBytes.5, networkIDBytes.6, networkIDBytes.7]
         
-        let ivIndexBytes = ivIndex.littleEndian.bytes
-        
+        let ivIndexBytes = value.ivIndex.littleEndian.bytes
         data += [ivIndexBytes.0, ivIndexBytes.1, ivIndexBytes.2, ivIndexBytes.3]
         
-        let authValueBytes = authenticationValue.littleEndian.bytes
-        
+        let authValueBytes = value.authenticationValue.littleEndian.bytes
         data += [authValueBytes.0, authValueBytes.1, authValueBytes.2, authValueBytes.3, authValueBytes.4, authValueBytes.5, authValueBytes.6, authValueBytes.7]
-        
-        return data
+    }
+    
+    var dataLength: Int {
+        Self.length
     }
 }

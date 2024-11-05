@@ -195,7 +195,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(decoded.startHandle == pdu.startHandle)
             XCTAssert(decoded.endHandle == pdu.endHandle)
             XCTAssert(decoded.type == pdu.type)
-            XCTAssert(decoded.type.data == pdu.type.data)
+            XCTAssert(Data(decoded.type) == Data(pdu.type))
             XCTAssert(decoded.type.littleEndian == pdu.type.littleEndian)
             XCTAssert(decoded.type == GATTUUID.primaryService.uuid, "\(decoded.type)")
             XCTAssert(decoded.type == .bit16(0x2800))
@@ -233,7 +233,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.attributeData.first?.endGroupHandle, 48)
             XCTAssertEqual(pdu.attributeData[0].value, Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60])) // proper little endian representation
             XCTAssertNotEqual(pdu.attributeData[0].value, Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7])) // invalid data
-            XCTAssertEqual(pdu.attributeData[0].value, BluetoothUUID(rawValue: uuidString)!.littleEndian.data)
+            XCTAssertEqual(pdu.attributeData[0].value, Data(BluetoothUUID(rawValue: uuidString)!.littleEndian))
             XCTAssertEqual(BluetoothUUID(littleEndian:
                 BluetoothUUID(data: Data(pdu.attributeData[0].value))!).rawValue, uuidString)
         }
@@ -253,7 +253,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian.data)
+            XCTAssert(Data(pdu.attributeValue) == Data(BluetoothUUID(rawValue: "C7A8D570-E023-4FB8-E511-72F9E24FF160")!.littleEndian))
         }
         
         do {
@@ -268,7 +268,7 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(pdu.dataLength, data.count)
             XCTAssert(pdu.startHandle == 0x0001)
             XCTAssert(pdu.endHandle == 0xFFFF)
-            XCTAssert(Data(pdu.attributeValue) == BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian.data)
+            XCTAssert(Data(pdu.attributeValue) == Data(BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!.littleEndian))
         }
         
         do {

@@ -433,7 +433,7 @@ public actor GATTClient {
                 startHandle: start,
                 endHandle: end,
                 attributeType: attributeType.rawValue,
-                attributeValue: uuid.littleEndian.data
+                attributeValue: Data(uuid.littleEndian)
             )
             let response = try await send(request, response: ATTFindByTypeResponse.self)
             try await findByTypeResponse(response, &operation)
@@ -766,7 +766,7 @@ public actor GATTClient {
                     startHandle: operation.start,
                     endHandle: operation.end,
                     attributeType: operation.type.rawValue,
-                    attributeValue: serviceUUID.littleEndian.data
+                    attributeValue: Data(serviceUUID.littleEndian)
                 )
                 let response = try await send(request, response: ATTFindByTypeResponse.self)
                 try await findByTypeResponse(response, &operation)

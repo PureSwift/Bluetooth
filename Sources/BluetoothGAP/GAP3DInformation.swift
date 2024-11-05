@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  The 3DD shall include a section in its EIR data providing 3D Synchronization Profile
@@ -63,7 +66,7 @@ public struct GAP3DInformation: GAPData, Equatable {
 
 public extension GAP3DInformation {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 2
             else { return nil }
@@ -74,7 +77,7 @@ public extension GAP3DInformation {
         self.init(flags: flags, pathLossThreshold: pathLossThreshold)
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += flags.rawValue
         data += pathLossThreshold

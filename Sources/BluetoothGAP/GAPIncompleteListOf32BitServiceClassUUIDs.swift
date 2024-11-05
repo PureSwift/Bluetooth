@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// GAP Incomplete List of 32-bit Service Class UUIDs
 @frozen
@@ -24,7 +27,7 @@ public struct GAPIncompleteListOf32BitServiceClassUUIDs: GAPData, Equatable {
 
 public extension GAPIncompleteListOf32BitServiceClassUUIDs {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
             else { return nil }
@@ -32,7 +35,7 @@ public extension GAPIncompleteListOf32BitServiceClassUUIDs {
         self.uuids = list.uuids
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += GAPUUIDList(uuids: uuids)
     }
@@ -55,10 +58,11 @@ extension GAPIncompleteListOf32BitServiceClassUUIDs: ExpressibleByArrayLiteral {
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPIncompleteListOf32BitServiceClassUUIDs: CustomStringConvertible {
     
     public var description: String {
-        
         return uuids.map { BluetoothUUID.bit32($0) }.description
     }
 }
+#endif

@@ -234,7 +234,7 @@ fileprivate extension UInt128 {
     /// Parse a UUID string and return a value in big endian order.
     static func bigEndian(uuidString string: String) -> UInt128? {
         let separator: Character = "-"
-        guard string.count == 36 else {
+        guard string.utf8.count == 36 else {
             return nil
         }
         guard string[string.index(string.startIndex, offsetBy: 8)] == separator,
@@ -248,9 +248,9 @@ fileprivate extension UInt128 {
         let d = string[string.index(string.startIndex, offsetBy: 19) ..< string.index(string.startIndex, offsetBy: 23)]
         let e = string[string.index(string.startIndex, offsetBy: 24) ..< string.index(string.startIndex, offsetBy: 36)]
         let hexadecimal = (a + b + c + d + e)
-        guard hexadecimal.count == 32,
-              let bytes = [UInt8].init(hexadecimal: hexadecimal),
-              let value = UInt128.init(bytes) else {
+        guard hexadecimal.utf8.count == 32,
+              let bytes = [UInt8](hexadecimal: hexadecimal),
+              let value = UInt128(data: bytes) else {
             return nil
         }
         return value

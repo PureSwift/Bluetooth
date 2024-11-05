@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// The LE Bluetooth Device Address data type defines the device address of the local device
 /// and the address type on the LE transport.
@@ -40,7 +43,7 @@ public extension GAPLEDeviceAddress {
     
     internal static var length: Int { return 7 }
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == Swift.type(of: self).length,
             let type = GAPLEDeviceAddressType(rawValue: data[6])
@@ -55,7 +58,7 @@ public extension GAPLEDeviceAddress {
         return Swift.type(of: self).length
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         data += address.littleEndian
         data += type.rawValue
     }

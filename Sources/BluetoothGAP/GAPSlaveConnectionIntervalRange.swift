@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  
@@ -58,7 +61,7 @@ public extension GAPSlaveConnectionIntervalRange {
 
 public extension GAPSlaveConnectionIntervalRange {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 4
             else { return nil }
@@ -72,7 +75,7 @@ public extension GAPSlaveConnectionIntervalRange {
         self.init(range: (min: min, max: max))
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += range.min.littleEndian
         data += range.max.littleEndian

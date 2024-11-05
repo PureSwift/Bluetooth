@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /**
  GAP Shortened Local Name
  
@@ -16,35 +14,32 @@ import Foundation
  A shortened name shall only contain contiguous characters from the beginning of the full name. For example, if the device name is ‘BT_Device_Name’ then the shortened name could be ‘BT_Device’ or ‘BT_Dev’.
  */
 @frozen
-public struct GAPShortLocalName: GAPData, Equatable, Hashable {
+public struct GAPShortLocalName: GAPData, Equatable, Hashable, Sendable {
     
-    public static let dataType: GAPDataType = .shortLocalName
+    public static var dataType: GAPDataType { .shortLocalName }
     
-    public let name: String
+    public var name: String
     
     public init(name: String) {
-        
         self.name = name
     }
 }
 
 public extension GAPShortLocalName {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let rawValue = String(utf8: data)
             else { return nil }
         
         self.init(name: rawValue)
     }
     
-    func append(to data: inout Data) {
-        
+    func append<Data: DataContainer>(to data: inout Data) {
         data += name.utf8
     }
     
     var dataLength: Int {
-        
         return name.utf8.count
     }
 }
@@ -54,7 +49,6 @@ public extension GAPShortLocalName {
 extension GAPShortLocalName: CustomStringConvertible {
     
     public var description: String {
-        
         return name
     }
 }
@@ -64,7 +58,6 @@ extension GAPShortLocalName: CustomStringConvertible {
 extension GAPShortLocalName: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        
         self.init(name: value)
     }
 }

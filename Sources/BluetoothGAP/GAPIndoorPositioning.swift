@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  The Indoor Positioning Service exposes location information to support mobile devices to position themselves in an environment where GNSS signals are not available, for example in indoor premises.
@@ -98,7 +101,7 @@ internal extension GAPIndoorPositioning {
     
 public extension GAPIndoorPositioning {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         self.init() // empty data
         
@@ -203,7 +206,7 @@ public extension GAPIndoorPositioning {
         return length
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         // If all flag values are set to zero,
         // the Server shall omit the Flags field from the advertisement packet.

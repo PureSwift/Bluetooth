@@ -90,38 +90,3 @@ extension UInt32: UnsafeDataConvertible { }
 extension UInt64: UnsafeDataConvertible { }
 extension UInt128: UnsafeDataConvertible { }
 extension BluetoothAddress: UnsafeDataConvertible { }
-
-// MARK: - DataContainer
-
-/// Data container type.
-@usableFromInline
-internal protocol DataContainer: RandomAccessCollection where Self.Index == Int {
-    
-    subscript(index: Int) -> UInt8 { get }
-        
-    mutating func append(_ newElement: UInt8)
-    
-    mutating func append(_ pointer: UnsafePointer<UInt8>, count: Int)
-    
-    mutating func append <C: Collection> (contentsOf bytes: C) where C.Element == UInt8
-    
-    static func += (lhs: inout Self, rhs: UInt8)
-    static func += <C: Collection> (lhs: inout Self, rhs: C) where C.Element == UInt8
-}
-
-extension DataContainer {
-    
-    mutating func append <T: DataConvertible> (_ value: T) {
-        self += value
-    }
-}
-
-extension Data: DataContainer {
-    
-    @usableFromInline
-    static func += (lhs: inout Data, rhs: UInt8) {
-        lhs.append(rhs)
-    }
-}
-
-extension LowEnergyAdvertisingData: DataContainer { }

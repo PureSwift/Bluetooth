@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  PB-ADV is a provisioning bearer used to provision a device using Generic Provisioning PDUs (see Section 5.3) over the advertising channels.
@@ -29,7 +32,7 @@ import Foundation
  When a Provisioning PDU is retransmitted, the Transaction Number field is not changed.
  */
 @frozen
-public struct GAPPBADV: GAPData, Equatable {
+public struct GAPPBADV <ProvisioningData: DataContainer>: GAPData, Equatable, Sendable {
     
     public static var dataType: GAPDataType { return .pbAdv }
     
@@ -37,11 +40,11 @@ public struct GAPPBADV: GAPData, Equatable {
     
     public var transactionNumber: UInt8
     
-    public var genericProvisioningPDU: Data
+    public var genericProvisioningPDU: ProvisioningData
     
     public init(linkID: UInt32,
                 transactionNumber: UInt8,
-                genericProvisioningPDU: Data) {
+                genericProvisioningPDU: ProvisioningData) {
         
         self.linkID = linkID
         self.transactionNumber = transactionNumber
@@ -51,15 +54,15 @@ public struct GAPPBADV: GAPData, Equatable {
 
 public extension GAPPBADV {
     
-    internal static let provisioningMaxLength = 24
+    internal static var provisioningMaxLength: Int { 24 }
     
-    internal static let provisioningMinLength = 1
+    internal static var provisioningMinLength: Int { 1 }
     
-    internal static let maxLength = MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMaxLength
+    internal static var maxLength: Int { MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMaxLength }
     
-    internal static let minLength = MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMinLength
+    internal static var minLength: Int { MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + provisioningMinLength }
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= type(of: self).minLength,
             data.count <= type(of: self).maxLength
@@ -76,10 +79,10 @@ public extension GAPPBADV {
             }
         }
         
-        self.init(linkID: linkID, transactionNumber: transactionNumber, genericProvisioningPDU: genericProvisioningPDU)
+        self.init(linkID: linkID, transactionNumber: transactionNumber, genericProvisioningPDU: ProvisioningData(genericProvisioningPDU))
     }
     
-    func append(to data: inout Data) {
+    func append<Data: DataContainer>(to data: inout Data) {
         
         data += linkID.littleEndian
         data += transactionNumber
@@ -87,7 +90,6 @@ public extension GAPPBADV {
     }
     
     var dataLength: Int {
-        
         return MemoryLayout<UInt32>.size + MemoryLayout<UInt8>.size + genericProvisioningPDU.count
     }
 }

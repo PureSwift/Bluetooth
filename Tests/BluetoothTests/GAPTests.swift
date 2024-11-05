@@ -330,39 +330,35 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(decoded.count, 3)
     }
     
-    func testTxPowerLevel() {
+    func testTxPowerLevel() throws {
         
         let data = Data([0x02, 0x0A, 0x7F])
         
         XCTAssertEqual(data.count, 3)
         
-        let encoder = GAPDataEncoder()
-        let decoder = GAPDataDecoder()
+        let decoder = GAPDataDecoder<Data>()
         
         let txPowerLevel = GAPTxPowerLevel(powerLevel: 127)!
         
-        guard let decoded = try? decoder.decode(data)
-            else { XCTFail("Could not decode"); return }
+        let decoded = try decoder.decode(from: data)
         
         XCTAssert(decoded.isEmpty == false)
         XCTAssertEqual(decoded.count, 1)
-        XCTAssertEqual(encoder.encode(txPowerLevel), data)
-        
+        XCTAssertEqual(GAPDataEncoder.encode(txPowerLevel), data)
         XCTAssertEqual(decoded[0] as? GAPTxPowerLevel, txPowerLevel)
     }
     
-    func testClassOfDevice() {
+    func testClassOfDevice() throws {
         
         let data = Data([0x04, 0x0d, 0x18, 0xf3, 0xff])
         XCTAssertEqual(data.count, 5)
         
-        let encoder = GAPDataEncoder()
-        let decoder = GAPDataDecoder()
+        let encoder = GAPDataEncoder<Data>.self
+        let decoder = GAPDataDecoder<Data>()
         
         let device = GAPClassOfDevice(device: (0x18, 0xf3, 0xff))
         
-        guard let decoded = try? decoder.decode(data)
-            else { XCTFail("Could not decode"); return }
+        let decoded = try decoder.decode(from: data)
         
         XCTAssert(decoded.isEmpty == false)
         XCTAssertEqual(decoded.count, 1)
@@ -376,8 +372,8 @@ final class GAPTests: XCTestCase {
         let data = Data([0x05, 0x12, 0x06, 0x00, 0x80, 0x0c])
         XCTAssertEqual(data.count, 0x06)
         
-        let encoder = GAPDataEncoder()
-        let decoder = GAPDataDecoder()
+        let encoder = GAPDataEncoder<Data>.self
+        let decoder = GAPDataDecoder<Data>()
         
         XCTAssertNil(GAPSlaveConnectionIntervalRange(range: (0xFFF4, 0xFFF1)))
         XCTAssertNotNil(GAPSlaveConnectionIntervalRange(range: (GAPSlaveConnectionIntervalRange.min, GAPSlaveConnectionIntervalRange.min)))
@@ -385,7 +381,7 @@ final class GAPTests: XCTestCase {
         
         let intervalRange = GAPSlaveConnectionIntervalRange(range: (GAPSlaveConnectionIntervalRange.min, GAPSlaveConnectionIntervalRange.max))!
         
-        guard let decoded = try? decoder.decode(data)
+        guard let decoded = try? decoder.decode(from: data)
             else { XCTFail("Could not decode"); return }
         
         XCTAssert(decoded.isEmpty == false)
@@ -397,11 +393,11 @@ final class GAPTests: XCTestCase {
     
     func testServiceData16BitUUID() {
         
-        XCTAssertNil(GAPServiceData16BitUUID(data: Data([0x4f])))
+        XCTAssertNil(GAPServiceData16BitUUID<Data>(data: Data([0x4f])))
         
         do {
             let data = Data([0x4f, 0x30])
-            let serviceData = GAPServiceData16BitUUID(data: data)!
+            let serviceData = GAPServiceData16BitUUID<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 2)
             XCTAssertEqual(serviceData.serviceData.count, 0)
             XCTAssertEqual(serviceData.data, data)
@@ -410,24 +406,24 @@ final class GAPTests: XCTestCase {
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
-            let serviceData = GAPServiceData16BitUUID(data: data)!
+            let serviceData = GAPServiceData16BitUUID<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 2)
             XCTAssertEqual(serviceData.serviceData.count, 3)
             XCTAssertEqual(serviceData.data, data)
             XCTAssertEqual(serviceData.data.count, 5)
         }
         
-        XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])),
-                       GAPServiceData16BitUUID(data: Data([0x4f, 0x45, 0xff])))
+        XCTAssertEqual(GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x45, 0xff])),
+                       GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x45, 0xff])))
     }
     
     func testServiceData32BitUUID() {
         
-        XCTAssertNil(GAPServiceData32BitUUID(data: Data([0x4f])))
+        XCTAssertNil(GAPServiceData32BitUUID<Data>(data: Data([0x4f])))
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30])
-            let serviceData = GAPServiceData32BitUUID(data: data)!
+            let serviceData = GAPServiceData32BitUUID<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
             XCTAssertEqual(serviceData.serviceData.count, 0)
             XCTAssertEqual(serviceData.data, data)
@@ -436,24 +432,24 @@ final class GAPTests: XCTestCase {
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
-            let serviceData = GAPServiceData32BitUUID(data: data)!
+            let serviceData = GAPServiceData32BitUUID<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
             XCTAssertEqual(serviceData.serviceData.count, 1)
             XCTAssertEqual(serviceData.data, data)
             XCTAssertEqual(serviceData.data.count, 5)
         }
         
-        XCTAssertEqual(GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])),
-                       GAPServiceData16BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
+        XCTAssertEqual(GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])),
+                       GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
     }
     
     func testServiceData128BitUUID() {
         
-        XCTAssertNil(GAPServiceData128BitUUID(data: Data([0x4f])))
+        XCTAssertNil(GAPServiceData128BitUUID<Data>(data: Data([0x4f])))
 
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56])
-            let serviceData = GAPServiceData128BitUUID(data: data)!
+            let serviceData = GAPServiceData128BitUUID<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
             XCTAssertEqual(serviceData.serviceData.count, 0)
             XCTAssertEqual(serviceData.data, data)
@@ -462,15 +458,15 @@ final class GAPTests: XCTestCase {
 
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])
-            let serviceData = GAPServiceData128BitUUID(data: data)!
+            let serviceData = GAPServiceData128BitUUID<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
             XCTAssertEqual(serviceData.serviceData.count, 4)
             XCTAssertEqual(serviceData.data, data)
             XCTAssertEqual(serviceData.data.count, 20)
         }
 
-        XCTAssertEqual(GAPServiceData128BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])),
-                       GAPServiceData128BitUUID(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])))
+        XCTAssertEqual(GAPServiceData128BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])),
+                       GAPServiceData128BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])))
     }
     
     func testAppearance() {
@@ -637,16 +633,15 @@ final class GAPTests: XCTestCase {
         XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.preferred, .central)
     }
     
-    func testURI() {
+    func testURI() throws {
         
         let uriString = "/my/uri/string"
         let data = Data([15, 0x24, 47, 109, 121, 47, 117, 114, 105, 47, 115, 116, 114, 105, 110, 103])
-        let uri = GAPURI(uri: URL(string: uriString)!)
+        let uri = GAPURI(uri: uriString)
         let expectedData: [GAPData] = [uri]
         let types = expectedData.map { type(of: $0) }
         
-        guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
-            else { XCTFail("Could not decode"); return }
+        let decoded = try GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
         
         XCTAssert(decoded.isEmpty == false)
         XCTAssertEqual(decoded.count, 1)
@@ -777,43 +772,43 @@ final class GAPTests: XCTestCase {
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
-            let transport = GAPTransportDiscoveryData(data: data)
+            let transport = GAPTransportDiscoveryData<Data>(data: data)
             XCTAssertEqual(transport!.data, data)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01, 0x4d, 0b1011, 0x04, 0x02, 0x02, 0x02, 0x02])
-            let transport = GAPTransportDiscoveryData(data: data)
+            let transport = GAPTransportDiscoveryData<Data>(data: data)
             XCTAssertEqual(transport!.data, data)
         }
         
         do {
             let data = Data([0x05])
-            let transport = GAPTransportDiscoveryData(data: data)
+            let transport = GAPTransportDiscoveryData<Data>(data: data)
             XCTAssertNil(transport)
         }
         
         do {
             let data = Data([])
-            let transport = GAPTransportDiscoveryData(data: data)
+            let transport = GAPTransportDiscoveryData<Data>(data: data)
             XCTAssertNil(transport)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01])
-            let transport = GAPTransportDiscoveryData(data: data)
+            let transport = GAPTransportDiscoveryData<Data>(data: data)
             XCTAssertNil(transport)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000])
-            let transport = GAPTransportDiscoveryData(data: data)
+            let transport = GAPTransportDiscoveryData<Data>(data: data)
             XCTAssertNil(transport)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
-            XCTAssertEqual(GAPTransportDiscoveryData(data: data), GAPTransportDiscoveryData(data: data))
+            XCTAssertEqual(GAPTransportDiscoveryData<Data>(data: data), GAPTransportDiscoveryData<Data>(data: data))
         }
     }
     
@@ -864,12 +859,12 @@ final class GAPTests: XCTestCase {
     
     func testManufacturerSpecificData() {
         
-        XCTAssertNil(GAPManufacturerSpecificData(data: Data()))
-        XCTAssertNil(GAPManufacturerSpecificData(data: Data([0x4f])))
+        XCTAssertNil(GAPManufacturerSpecificData<Data>(data: Data()))
+        XCTAssertNil(GAPManufacturerSpecificData<Data>(data: Data([0x4f])))
         
         do {
             let data = Data([0x4f, 0x30])
-            let manufacturerData = GAPManufacturerSpecificData(data: data)!
+            let manufacturerData = GAPManufacturerSpecificData<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier), 2)
             XCTAssertEqual(manufacturerData.data, data)
             XCTAssertEqual(manufacturerData.data.count, 2)
@@ -877,26 +872,26 @@ final class GAPTests: XCTestCase {
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
-            let manufacturerData = GAPManufacturerSpecificData(data: data)!
+            let manufacturerData = GAPManufacturerSpecificData<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier), 2)
             XCTAssertEqual(manufacturerData.additionalData.count, 3)
             XCTAssertEqual(manufacturerData.data, data)
             XCTAssertEqual(manufacturerData.data.count, 5)
         }
         
-        XCTAssertEqual(GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])),
-                       GAPManufacturerSpecificData(data: Data([0x4f, 0x45, 0xff])))
+        XCTAssertEqual(GAPManufacturerSpecificData<Data>(data: Data([0x4f, 0x45, 0xff])),
+                       GAPManufacturerSpecificData<Data>(data: Data([0x4f, 0x45, 0xff])))
     }
     
     func testPBADV() {
         
-        XCTAssertNil(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x12])))
-        XCTAssertNil(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
-        XCTAssertNil(GAPPBADV(data: Data([])))
+        XCTAssertNil(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x12])))
+        XCTAssertNil(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
+        XCTAssertNil(GAPPBADV<Data>(data: Data([])))
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])
-            let pbadv = GAPPBADV(data: data)!
+            let pbadv = GAPPBADV<Data>(data: data)!
             XCTAssertEqual(MemoryLayout.size(ofValue: pbadv.linkID), 4)
             XCTAssertEqual(pbadv.data, data)
             XCTAssertEqual(pbadv.data.count, 6)
@@ -904,14 +899,14 @@ final class GAPTests: XCTestCase {
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38, 0x4f, 0x30, 0x4f, 0x30, 0x4f])
-            let pbadv = GAPPBADV(data: data)!
+            let pbadv = GAPPBADV<Data>(data: data)!
             XCTAssertEqual(pbadv.genericProvisioningPDU.count, 6)
             XCTAssertEqual(pbadv.data, data)
             XCTAssertEqual(pbadv.data.count, 11)
         }
         
-        XCTAssertEqual(GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])),
-                       GAPPBADV(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])))
+        XCTAssertEqual(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])),
+                       GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])))
     }
     
     func test3DInformation() {
@@ -953,17 +948,7 @@ internal extension GAPData {
 internal extension GAPUUIDList {
     
     var data: Data {
-        
         return Data(self)
-    }
-}
-
-internal extension GAPDataEncoder {
-    
-    static func encode(_ encodables: [GAPData]) -> Data {
-        
-        let encoder = GAPDataEncoder()
-        return encoder.encode(encodables)
     }
 }
 
@@ -973,10 +958,10 @@ internal extension GAPDataDecoder {
                         types: [GAPData.Type],
                         ignoreUnknownType: Bool = true) throws -> [GAPData] {
         
-        var decoder = GAPDataDecoder()
+        var decoder = GAPDataDecoder<Data>()
         decoder.types = types
         decoder.ignoreUnknownType = ignoreUnknownType
-        return try decoder.decode(data)
+        return try decoder.decode(from: data)
     }
 }
 #endif

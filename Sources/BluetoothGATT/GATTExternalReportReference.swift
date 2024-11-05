@@ -33,8 +33,7 @@ public struct GATTExternalReportReference: GATTDescriptor {
     }
     
     public var data: Data {
-        
-        return uuid.data
+        return Data(uuid)
     }
     
     public var descriptor: GATTAttribute.Descriptor {
