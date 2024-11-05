@@ -6,18 +6,14 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /// GAP Data Decoder
 @frozen
-public struct GAPDataEncoder {
-    
-    /// GAP Data Decoder Error
-    public enum Error: Swift.Error {
-        
-        /// Invalid data size.
-        case invalidSize(Int)
-    }
+public struct GAPDataEncoder <Data: DataContainer> {
     
     // MARK: - Initialization
     
@@ -26,74 +22,79 @@ public struct GAPDataEncoder {
     
     // MARK: - Methods
     
-    public func encode(_ encodables: [GAPData]) -> Data {
-        do { return try Self.encode(encodables) }
-        catch { fatalError("Unable to encode GAP Data: \(error)") }
-    }
-    
-    public func encode(_ encodables: GAPData...) -> Data {
-        return encode(encodables)
-    }
-    
-    public func encodeAdvertisingData(_ encodables: [GAPData]) throws -> LowEnergyAdvertisingData {
-        return try Self.encode(encodables)
-    }
-    
-    @inline(__always)
-    internal static func encode<S, DataType>(_ encodables: S) throws -> DataType where S: Sequence, S.Element == GAPData, DataType: GAPDataContainer {
-        
+    #if !hasFeature(Embedded)
+    public func encode(_ encodables: [GAPData]) throws(Error) -> Data {
         let dataLengths = encodables.map { $0.dataLength }
         let length = dataLengths.reduce(0, { $0 + $1 + 2 })
-        guard length <= DataType.maxCapacity else {
+        /*
+        guard length <= Data.maxCapacity else {
             throw Error.invalidSize(length)
-        }
-        var data = DataType(capacity: length)
+        }*/
+        var data = Data()
+        data.reserveCapacity(length)
         for (index, encodable) in encodables.enumerated() {
             let length = dataLengths[index]
-            encode(encodable, length: length, to: &data)
+            Self.encode(encodable, length: length, to: &data)
         }
         assert(data.count == length, "Invalid data length")
         return data
     }
+    #endif
     
-    internal static func encode<T: GAPData>(_ value: T, to data: inout LowEnergyAdvertisingData) throws {
-        let length = value.dataLength
+    internal static func encode<T>(_ value: T, length: Int? = nil, to data: inout Data) where T: GAPData {
+        let length = length ?? value.dataLength // try to use precalculated length
         data += UInt8(length + 1)
         data += T.dataType.rawValue
         value.append(to: &data)
-        guard data.count <= LowEnergyAdvertisingData.maxCapacity else {
-            throw Error.invalidSize(data.count)
-        }
-    }
-    
-    internal static func encode<D: GAPDataContainer>(_ value: GAPData, length: Int, to data: inout D) {
-        data += UInt8(length + 1)
-        data += type(of: value).dataType.rawValue
-        data.append(value)
     }
 }
 
 /// Generic specializations
 public extension GAPDataEncoder {
     
-    func encodeAdvertisingData<T: GAPData>(_ value: T) throws -> LowEnergyAdvertisingData {
-        var data = LowEnergyAdvertisingData()
-        try Self.encode(value, to: &data)
+    func encode<T: GAPData>(_ value: T) -> Data {
+        var data = Data()
+        data.reserveCapacity(value.dataLength + 2)
+        Self.encode(value, to: &data)
         return data
     }
     
-    func encodeAdvertisingData<T0: GAPData, T1: GAPData>(_ value0: T0, _ value1: T1) throws -> LowEnergyAdvertisingData {
-        var data = LowEnergyAdvertisingData()
-        try Self.encode(value0, to: &data)
-        try Self.encode(value1, to: &data)
+    func encode<T0: GAPData, T1: GAPData>(_ value0: T0, _ value1: T1) -> Data {
+        var data = Data()
+        let length = value0.dataLength
+            + value1.dataLength
+            + (2 * 2)
+        data.reserveCapacity(length)
+        Self.encode(value0, to: &data)
+        Self.encode(value1, to: &data)
         return data
     }
     
-    func encodeAdvertisingData<T0: GAPData, T1: GAPData, T2: GAPData>(_ value0: T0, _ value1: T1, _ value2: T2) throws -> LowEnergyAdvertisingData {
-        var data = LowEnergyAdvertisingData()
-        try Self.encode(value0, to: &data)
-        try Self.encode(value1, to: &data)
-        try Self.encode(value2, to: &data)
+    func encode<T0: GAPData, T1: GAPData, T2: GAPData>(_ value0: T0, _ value1: T1, _ value2: T2) -> Data {
+        var data = Data()
+        let length = value0.dataLength
+            + value1.dataLength
+            + value2.dataLength
+            + (2 * 3)
+        data.reserveCapacity(length)
+        Self.encode(value0, to: &data)
+        Self.encode(value1, to: &data)
+        Self.encode(value2, to: &data)
+        return data
+    }
+    
+    func encode<T0: GAPData, T1: GAPData, T2: GAPData, T3: GAPData>(_ value0: T0, _ value1: T1, _ value2: T2, _ value3: T3) -> Data {
+        var data = Data()
+        let length = value0.dataLength
+            + value1.dataLength
+            + value2.dataLength
+            + value3.dataLength
+            + (2 * 4)
+        data.reserveCapacity(length)
+        Self.encode(value0, to: &data)
+        Self.encode(value1, to: &data)
+        Self.encode(value2, to: &data)
+        Self.encode(value3, to: &data)
         return data
     }
 }
@@ -300,6 +301,7 @@ public extension GAPDataDecoder {
     }
 }
 
+#if !hasFeature(Embedded)
 internal extension GAPDataDecoder {
     
     static let defaultDataTypes: [GAPDataType: GAPData.Type] = {
@@ -351,6 +353,7 @@ internal extension GAPDataDecoder {
         GAPURI.self
     ]
 }
+#endif
 
 // MARK: - Supporting Types
 
