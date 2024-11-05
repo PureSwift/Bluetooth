@@ -7,22 +7,33 @@
 
 import Foundation
 
+struct CompanyIdentifiersFile: Equatable, Hashable, Codable, Sendable {
+    
+    var companyIdentifiers: [Element]
+}
+
+extension CompanyIdentifiersFile {
+    
+    struct Element: Equatable, Hashable, Codable, Sendable, Identifiable {
+        
+        var id: UInt16 { value }
+        
+        let value: UInt16
+        
+        let name: String
+    }
+}
+
 extension GenerateTool {
     
     static func parseFile(input: URL) throws -> [UInt16: String] {
         let data = try Data(contentsOf: input, options: [.mappedIfSafe])
-        guard let string = String(data: data, encoding: .utf8) else {
-            throw CocoaError(.fileReadUnknownStringEncoding)
-        }
+        let decoder = JSONDecoder()
+        let file = try decoder.decode(CompanyIdentifiersFile.self, from: data)
         var output = [UInt16: String]()
-        let lines = string.split(separator: "\n", omittingEmptySubsequences: true)
-        output.reserveCapacity(lines.count)
-        for line in lines {
-            let hexString = line.prefix(6).replacingOccurrences(of: "0x", with: "")
-            guard let id = UInt16(hexString, radix: 16) else {
-                throw CocoaError(.fileReadCorruptFile)
-            }
-            output[id] = String(line.suffix(from: line.index(after: line.firstIndex(where: { $0 == " " })!)))
+        output.reserveCapacity(file.companyIdentifiers.count)
+        for element in file.companyIdentifiers {
+            output[element.id] = element.name
         }
         return output
     }
