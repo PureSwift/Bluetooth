@@ -948,17 +948,7 @@ internal extension GAPData {
 internal extension GAPUUIDList {
     
     var data: Data {
-        
         return Data(self)
-    }
-}
-
-internal extension GAPDataEncoder {
-    
-    static func encode(_ encodables: [GAPData]) -> Data {
-        
-        let encoder = GAPDataEncoder<Data>.self
-        return encoder.encode(encodables)
     }
 }
 
