@@ -58,10 +58,11 @@ extension GAPListOf128BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPListOf128BitServiceSolicitationUUIDs: CustomStringConvertible {
     
     public var description: String {
-        
         return uuids.description
     }
 }
+#endif

@@ -58,10 +58,11 @@ extension GAPListOf32BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPListOf32BitServiceSolicitationUUIDs: CustomStringConvertible {
     
     public var description: String {
-        
         return uuids.map { BluetoothUUID.bit32($0) }.description
     }
 }
+#endif

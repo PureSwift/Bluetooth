@@ -61,13 +61,14 @@ public extension GAPPublicTargetAddress {
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPPublicTargetAddress: CustomStringConvertible {
     
     public var description: String {
-        
         return addresses.description
     }
 }
+#endif
 
 // MARK: - ExpressibleByArrayLiteral
 

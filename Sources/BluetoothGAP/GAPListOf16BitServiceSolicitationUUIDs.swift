@@ -62,10 +62,11 @@ extension GAPListOf16BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPListOf16BitServiceSolicitationUUIDs: CustomStringConvertible {
     
     public var description: String {
-        
         return uuids.map { BluetoothUUID.bit16($0) }.description
     }
 }
+#endif

@@ -14,28 +14,6 @@ internal extension UUID {
     static var length: Int { return 16 }
 }
 
-internal extension UUID { // ByteValue
-    
-    typealias ByteValue = uuid_t
-    
-    static var bitWidth: Int { return 128 }
-    
-    @inline(__always)
-    init(bytes: uuid_t) {
-        
-        self.init(uuid: bytes)
-    }
-    
-    var bytes: uuid_t {
-        
-        @inline(__always)
-        get { return uuid }
-        
-        @inline(__always)
-        set { self = UUID(uuid: newValue) }
-    }
-}
-
 internal extension UUID {
     
     init?(data: Data) {

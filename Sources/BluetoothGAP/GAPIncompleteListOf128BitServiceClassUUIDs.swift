@@ -58,10 +58,11 @@ extension GAPIncompleteListOf128BitServiceClassUUIDs: ExpressibleByArrayLiteral 
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPIncompleteListOf128BitServiceClassUUIDs: CustomStringConvertible {
     
     public var description: String {
-        
         return uuids.description
     }
 }
+#endif

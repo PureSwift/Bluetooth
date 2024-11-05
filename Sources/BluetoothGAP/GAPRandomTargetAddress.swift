@@ -18,16 +18,15 @@ import Bluetooth
 /// The format of each 6 octet address is the same as the Random Device Address defined in Vol. 6, Part B, Section 1.3.
 /// The Random Target Address value shall be the enumerated value as defined by Bluetooth Assigned Numbers.
 @frozen
-public struct GAPRandomTargetAddress: GAPData, Equatable {
+public struct GAPRandomTargetAddress: GAPData, Equatable, Hashable, Sendable {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)
     
-    public static let dataType: GAPDataType = .randomTargetAddress
+    public static var dataType: GAPDataType { .randomTargetAddress }
     
     public let addresses: [BluetoothAddress]
     
     public init(addresses: [BluetoothAddress]) {
-        
         self.addresses = addresses
     }
 }
@@ -50,24 +49,24 @@ public extension GAPRandomTargetAddress {
     }
     
     var dataLength: Int {
-        
         return addresses.count * BluetoothAddress.length
     }
     
     func append<Data: DataContainer>(to data: inout Data) {
-        
         addresses.forEach { data += $0.littleEndian }
     }
 }
 
 // MARK: - CustomStringConvertible
 
+#if !hasFeature(Embedded)
 extension GAPRandomTargetAddress: CustomStringConvertible {
     
     public var description: String {
         return addresses.description
     }
 }
+#endif
 
 // MARK: - ExpressibleByArrayLiteral
 
