@@ -17,9 +17,9 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
         var commands = [Command]()
         // Generate Bluetooth Company Identifier Definitions
         if target.name == "Bluetooth" {
-            let inputFileName = "CompanyIdentifiers.txt"
+            let inputFileName = "CompanyIdentifiers.json"
             let inputPath = target
-                .sourceFiles(withSuffix: "txt")
+                .sourceFiles(withSuffix: "json")
                 .filter { $0.type == .unknown }
                 .first { $0.path.lastComponent == inputFileName }
                 .map { $0.path }
@@ -43,12 +43,12 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
         }
         // Generate Bluetooth Company Identifier Unit Tests
         if target.name == "BluetoothTests" {
-            let inputFileName = "CompanyIdentifiers.txt"
+            let inputFileName = "CompanyIdentifiers.json"
             guard let bluetoothTarget = try context.package.targets(named: ["Bluetooth"]).first as? SwiftSourceModuleTarget else {
                 fatalError("Missing Bluetooth target")
             }
             let inputPath = bluetoothTarget
-                .sourceFiles(withSuffix: "txt")
+                .sourceFiles(withSuffix: "json")
                 .filter { $0.type == .unknown }
                 .first { $0.path.lastComponent == inputFileName }
                 .map { $0.path }
