@@ -66,24 +66,15 @@ public extension LowEnergyAdvertisingData {
 
 public extension LowEnergyAdvertisingData {
     
-    init(_ slice: Slice<LowEnergyAdvertisingData>) {
-        
-        self.init()
-        self.length = UInt8(slice.count)
-        let enumeratedSlice = slice.enumerated()
-        for (offset, element) in enumeratedSlice {
-            self[offset] = element
-        }
-    }
-    
     init<Data: DataContainer>(data: Data) {
         self.init(data)
     }
     
     init<C: Collection> (_ collection: C) where C.Element == UInt8 {
-        precondition(collection.count <= 31)
+        let length = collection.count
+        precondition(length <= 31)
         self.init()
-        self.length = UInt8(collection.count)
+        self.length = UInt8(length)
         collection.enumerated().forEach {
             self[$0.offset] = $0.element
         }

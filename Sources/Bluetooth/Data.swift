@@ -53,6 +53,7 @@ extension LowEnergyAdvertisingData: DataContainer {
     
     public func subdata(in range: Range<Int>) -> LowEnergyAdvertisingData {
         var data = LowEnergyAdvertisingData()
+        data.length = UInt8(range.count)
         for (newIndex, oldIndex) in range.enumerated() {
             data[newIndex] = self[oldIndex]
         }
