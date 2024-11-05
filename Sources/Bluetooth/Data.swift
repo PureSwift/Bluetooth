@@ -10,7 +10,7 @@ import Foundation
 #endif
 
 /// Data container type.
-public protocol DataContainer: RandomAccessCollection where Self.Index == Int, Self.Element == UInt8, Self: Hashable {
+public protocol DataContainer: RandomAccessCollection where Self.Index == Int, Self.Element == UInt8, Self: Hashable, Self: Sendable {
     
     init()
     
