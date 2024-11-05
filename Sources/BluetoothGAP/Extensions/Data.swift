@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
 
 internal extension Data {
@@ -72,3 +73,4 @@ internal extension Data {
         return MemoryLayout<Buffer>.size
     }
 }
+#endif

@@ -25,7 +25,7 @@ internal extension Collection where Element: FixedWidthInteger {
         var string = ""
         string.reserveCapacity(length)
         string = reduce(into: string) { $0 += $1.toHexadecimal() }
-        assert(string.count == length)
+        assert(string.utf8.count == length)
         return string
     }
 }
@@ -58,7 +58,7 @@ internal extension UInt {
 internal extension UInt16 {
     
     init?(hexadecimal string: String) {
-        guard string.count == MemoryLayout<Self>.size * 2 else {
+        guard string.utf8.count == MemoryLayout<Self>.size * 2 else {
             return nil
         }
         #if hasFeature(Embedded) || DEBUG
@@ -75,7 +75,7 @@ internal extension UInt16 {
 internal extension UInt32 {
     
     init?(hexadecimal string: String) {
-        guard string.count == MemoryLayout<Self>.size * 2 else {
+        guard string.utf8.count == MemoryLayout<Self>.size * 2 else {
             return nil
         }
         #if hasFeature(Embedded) || DEBUG

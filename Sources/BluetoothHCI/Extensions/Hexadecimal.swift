@@ -25,7 +25,7 @@ internal extension Collection where Element: FixedWidthInteger {
         var string = ""
         string.reserveCapacity(length)
         string = reduce(into: string) { $0 += $1.toHexadecimal() }
-        assert(string.count == length)
+        assert(string.utf8.count == length)
         return string
     }
 }
