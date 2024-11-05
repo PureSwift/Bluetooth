@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /**
  GAP Complete Local Name
  
@@ -16,33 +14,30 @@ import Foundation
 @frozen
 public struct GAPCompleteLocalName: GAPData, Equatable, Hashable {
     
-    public static let dataType: GAPDataType = .completeLocalName
+    public static var dataType: GAPDataType { .completeLocalName }
     
-    public let name: String
+    public var name: String
     
     public init(name: String) {
-        
         self.name = name
     }
 }
 
 public extension GAPCompleteLocalName {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let rawValue = String(utf8: data)
             else { return nil }
         
         self.init(name: rawValue)
     }
     
-    func append(to data: inout Data) {
-        
+    func append<Data: DataContainer>(to data: inout Data) {
         data += name.utf8
     }
     
     var dataLength: Int {
-        
         return name.utf8.count
     }
 }
@@ -52,7 +47,6 @@ public extension GAPCompleteLocalName {
 extension GAPCompleteLocalName: CustomStringConvertible {
     
     public var description: String {
-        
         return name
     }
 }
@@ -62,7 +56,6 @@ extension GAPCompleteLocalName: CustomStringConvertible {
 extension GAPCompleteLocalName: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        
         self.init(name: value)
     }
 }
