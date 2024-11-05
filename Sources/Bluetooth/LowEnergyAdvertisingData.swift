@@ -76,7 +76,7 @@ public extension LowEnergyAdvertisingData {
         }
     }
     
-    init?<Data: DataContainer>(data: Data) {
+    init<Data: DataContainer>(data: Data) {
         self.init(data)
     }
     
@@ -337,10 +337,10 @@ extension LowEnergyAdvertisingData: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let data = try container.decode(Data.self)
-        guard let value = Self.init(data: data) else {
+        guard data.count <= LowEnergyAdvertisingData.capacity else {
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid number of bytes (\(data.count)."))
         }
-        self = value
+        self.init(data: data)
     }
     
     public func encode(to encoder: Encoder) throws {
