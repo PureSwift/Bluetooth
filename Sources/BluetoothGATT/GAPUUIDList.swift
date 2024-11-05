@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /// GAP UUID List
 internal struct GAPUUIDList <Element: GAPUUIDElement> {
@@ -14,7 +15,6 @@ internal struct GAPUUIDList <Element: GAPUUIDElement> {
     internal var uuids: [Element]
     
     internal init(uuids: [Element]) {
-        
         self.uuids = uuids
     }
     
@@ -96,7 +96,7 @@ extension GAPUUIDList: Collection {
 
 internal protocol GAPUUIDElement: UnsafeDataConvertible {
     
-    init? <T: DataContainer> (data: T)
+    init?<Data: DataContainer>(data: Data)
     
     init(littleEndian: Self)
     
@@ -107,7 +107,7 @@ internal protocol GAPUUIDElement: UnsafeDataConvertible {
 
 extension UInt16: GAPUUIDElement {
     
-    init? <T: DataContainer> (data: T) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == MemoryLayout<UInt16>.size
             else { return nil }
@@ -119,7 +119,7 @@ extension UInt16: GAPUUIDElement {
 
 extension UInt32: GAPUUIDElement {
     
-    init? <T: DataContainer> (data: T) {
+    init?<Data: DataContainer>(data: Data) {
         
         guard data.count == MemoryLayout<UInt32>.size
             else { return nil }
@@ -131,28 +131,4 @@ extension UInt32: GAPUUIDElement {
     }
 }
 
-extension UInt128: GAPUUIDElement {
-    
-    init? <T: DataContainer> (data: T) {
-        
-        guard data.count == MemoryLayout<UInt128>.size
-            else { return nil }
-        
-        self.init(bytes: (data[0],
-                          data[1],
-                          data[2],
-                          data[3],
-                          data[4],
-                          data[5],
-                          data[6],
-                          data[7],
-                          data[8],
-                          data[9],
-                          data[10],
-                          data[11],
-                          data[12],
-                          data[13],
-                          data[14],
-                          data[15]))
-    }
-}
+extension Bluetooth.UInt128: GAPUUIDElement { }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /// Find Information Response
 ///
@@ -227,7 +228,7 @@ public extension ATTFindInformationResponse {
                     let uuid = UInt16(littleEndian: UInt16(bytes: (pairBytes[2], pairBytes[3])))
                     bit16Pairs.append(Attribute16Bit(handle: handle, uuid: uuid))
                 case .bit128:
-                    let uuidBytes = pairBytes.subdataNoCopy(in: 2 ..< 18)
+                    let uuidBytes = pairBytes.subdata(in: 2 ..< 18)
                     let uuid = UInt128(littleEndian: UInt128(data: uuidBytes)!)
                     bit128Pairs.append(Attribute128Bit(handle: handle, uuid: uuid))
                 }
