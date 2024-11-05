@@ -1,0 +1,634 @@
+﻿{
+  "uuids": [
+    {
+      "uuid": 9984,
+      "name": "unitless",
+      "id": "org.bluetooth.unit.unitless"
+    },
+    {
+      "uuid": 9985,
+      "name": "length (metre)",
+      "id": "org.bluetooth.unit.length.metre"
+    },
+    {
+      "uuid": 9986,
+      "name": "mass (kilogram)",
+      "id": "org.bluetooth.unit.mass.kilogram"
+    },
+    {
+      "uuid": 9987,
+      "name": "time (second)",
+      "id": "org.bluetooth.unit.time.second"
+    },
+    {
+      "uuid": 9988,
+      "name": "electric current (ampere)",
+      "id": "org.bluetooth.unit.electric_current.ampere"
+    },
+    {
+      "uuid": 9989,
+      "name": "thermodynamic temperature (kelvin)",
+      "id": "org.bluetooth.unit.thermodynamic_temperature.kelvin"
+    },
+    {
+      "uuid": 9990,
+      "name": "amount of substance (mole)",
+      "id": "org.bluetooth.unit.amount_of_substance.mole"
+    },
+    {
+      "uuid": 9991,
+      "name": "luminous intensity (candela)",
+      "id": "org.bluetooth.unit.luminous_intensity.candela"
+    },
+    {
+      "uuid": 10000,
+      "name": "area (square metres)",
+      "id": "org.bluetooth.unit.area.square_metres"
+    },
+    {
+      "uuid": 10001,
+      "name": "volume (cubic metres)",
+      "id": "org.bluetooth.unit.volume.cubic_metres"
+    },
+    {
+      "uuid": 10002,
+      "name": "velocity (metres per second)",
+      "id": "org.bluetooth.unit.velocity.metres_per_second"
+    },
+    {
+      "uuid": 10003,
+      "name": "acceleration (metres per second squared)",
+      "id": "org.bluetooth.unit.acceleration.metres_per_second_squared"
+    },
+    {
+      "uuid": 10004,
+      "name": "wavenumber (reciprocal metre)",
+      "id": "org.bluetooth.unit.wavenumber.reciprocal_metre"
+    },
+    {
+      "uuid": 10005,
+      "name": "density (kilogram per cubic metre)",
+      "id": "org.bluetooth.unit.density.kilogram_per_cubic_metre"
+    },
+    {
+      "uuid": 10006,
+      "name": "surface density (kilogram per square metre)",
+      "id": "org.bluetooth.unit.surface_density.kilogram_per_square_metre"
+    },
+    {
+      "uuid": 10007,
+      "name": "specific volume (cubic metre per kilogram)",
+      "id": "org.bluetooth.unit.specific_volume.cubic_metre_per_kilogram"
+    },
+    {
+      "uuid": 10008,
+      "name": "current density (ampere per square metre)",
+      "id": "org.bluetooth.unit.current_density.ampere_per_square_metre"
+    },
+    {
+      "uuid": 10009,
+      "name": "magnetic field strength (ampere per metre)",
+      "id": "org.bluetooth.unit.magnetic_field_strength.ampere_per_metre"
+    },
+    {
+      "uuid": 10010,
+      "name": "amount concentration (mole per cubic metre)",
+      "id": "org.bluetooth.unit.amount_concentration.mole_per_cubic_metre"
+    },
+    {
+      "uuid": 10011,
+      "name": "mass concentration (kilogram per cubic metre)",
+      "id": "org.bluetooth.unit.mass_concentration.kilogram_per_cubic_metre"
+    },
+    {
+      "uuid": 10012,
+      "name": "luminance (candela per square metre)",
+      "id": "org.bluetooth.unit.luminance.candela_per_square_metre"
+    },
+    {
+      "uuid": 10013,
+      "name": "refractive index",
+      "id": "org.bluetooth.unit.refractive_index"
+    },
+    {
+      "uuid": 10014,
+      "name": "relative permeability",
+      "id": "org.bluetooth.unit.relative_permeability"
+    },
+    {
+      "uuid": 10016,
+      "name": "plane angle (radian)",
+      "id": "org.bluetooth.unit.plane_angle.radian"
+    },
+    {
+      "uuid": 10017,
+      "name": "solid angle (steradian)",
+      "id": "org.bluetooth.unit.solid_angle.steradian"
+    },
+    {
+      "uuid": 10018,
+      "name": "frequency (hertz)",
+      "id": "org.bluetooth.unit.frequency.hertz"
+    },
+    {
+      "uuid": 10019,
+      "name": "force (newton)",
+      "id": "org.bluetooth.unit.force.newton"
+    },
+    {
+      "uuid": 10020,
+      "name": "pressure (pascal)",
+      "id": "org.bluetooth.unit.pressure.pascal"
+    },
+    {
+      "uuid": 10021,
+      "name": "energy (joule)",
+      "id": "org.bluetooth.unit.energy.joule"
+    },
+    {
+      "uuid": 10022,
+      "name": "power (watt)",
+      "id": "org.bluetooth.unit.power.watt"
+    },
+    {
+      "uuid": 10023,
+      "name": "electric charge (coulomb)",
+      "id": "org.bluetooth.unit.electric_charge.coulomb"
+    },
+    {
+      "uuid": 10024,
+      "name": "electric potential difference (volt)",
+      "id": "org.bluetooth.unit.electric_potential_difference.volt"
+    },
+    {
+      "uuid": 10025,
+      "name": "capacitance (farad)",
+      "id": "org.bluetooth.unit.capacitance.farad"
+    },
+    {
+      "uuid": 10026,
+      "name": "electric resistance (ohm)",
+      "id": "org.bluetooth.unit.electric_resistance.ohm"
+    },
+    {
+      "uuid": 10027,
+      "name": "electric conductance (siemens)",
+      "id": "org.bluetooth.unit.electric_conductance.siemens"
+    },
+    {
+      "uuid": 10028,
+      "name": "magnetic flux (weber)",
+      "id": "org.bluetooth.unit.magnetic_flux.weber"
+    },
+    {
+      "uuid": 10029,
+      "name": "magnetic flux density (tesla)",
+      "id": "org.bluetooth.unit.magnetic_flux_density.tesla"
+    },
+    {
+      "uuid": 10030,
+      "name": "inductance (henry)",
+      "id": "org.bluetooth.unit.inductance.henry"
+    },
+    {
+      "uuid": 10031,
+      "name": "Celsius temperature (degree Celsius)",
+      "id": "org.bluetooth.unit.thermodynamic_temperature.degree_celsius"
+    },
+    {
+      "uuid": 10032,
+      "name": "luminous flux (lumen)",
+      "id": "org.bluetooth.unit.luminous_flux.lumen"
+    },
+    {
+      "uuid": 10033,
+      "name": "illuminance (lux)",
+      "id": "org.bluetooth.unit.illuminance.lux"
+    },
+    {
+      "uuid": 10034,
+      "name": "activity referred to a radionuclide (becquerel)",
+      "id": "org.bluetooth.unit.activity_referred_to_a_radionuclide.becquerel"
+    },
+    {
+      "uuid": 10035,
+      "name": "absorbed dose (gray)",
+      "id": "org.bluetooth.unit.absorbed_dose.gray"
+    },
+    {
+      "uuid": 10036,
+      "name": "dose equivalent (sievert)",
+      "id": "org.bluetooth.unit.dose_equivalent.sievert"
+    },
+    {
+      "uuid": 10037,
+      "name": "catalytic activity (katal)",
+      "id": "org.bluetooth.unit.catalytic_activity.katal"
+    },
+    {
+      "uuid": 10048,
+      "name": "dynamic viscosity (pascal second)",
+      "id": "org.bluetooth.unit.dynamic_viscosity.pascal_second"
+    },
+    {
+      "uuid": 10049,
+      "name": "moment of force (newton metre)",
+      "id": "org.bluetooth.unit.moment_of_force.newton_metre"
+    },
+    {
+      "uuid": 10050,
+      "name": "surface tension (newton per metre)",
+      "id": "org.bluetooth.unit.surface_tension.newton_per_metre"
+    },
+    {
+      "uuid": 10051,
+      "name": "angular velocity (radian per second)",
+      "id": "org.bluetooth.unit.angular_velocity.radian_per_second"
+    },
+    {
+      "uuid": 10052,
+      "name": "angular acceleration (radian per second squared)",
+      "id": "org.bluetooth.unit.angular_acceleration.radian_per_second_squared"
+    },
+    {
+      "uuid": 10053,
+      "name": "heat flux density (watt per square metre)",
+      "id": "org.bluetooth.unit.heat_flux_density.watt_per_square_metre"
+    },
+    {
+      "uuid": 10054,
+      "name": "heat capacity (joule per kelvin)",
+      "id": "org.bluetooth.unit.heat_capacity.joule_per_kelvin"
+    },
+    {
+      "uuid": 10055,
+      "name": "specific heat capacity (joule per kilogram kelvin)",
+      "id": "org.bluetooth.unit.specific_heat_capacity.joule_per_kilogram_kelvin"
+    },
+    {
+      "uuid": 10056,
+      "name": "specific energy (joule per kilogram)",
+      "id": "org.bluetooth.unit.specific_energy.joule_per_kilogram"
+    },
+    {
+      "uuid": 10057,
+      "name": "thermal conductivity (watt per metre kelvin)",
+      "id": "org.bluetooth.unit.thermal_conductivity.watt_per_metre_kelvin"
+    },
+    {
+      "uuid": 10058,
+      "name": "energy density (joule per cubic metre)",
+      "id": "org.bluetooth.unit.energy_density.joule_per_cubic_metre"
+    },
+    {
+      "uuid": 10059,
+      "name": "electric field strength (volt per metre)",
+      "id": "org.bluetooth.unit.electric_field_strength.volt_per_metre"
+    },
+    {
+      "uuid": 10060,
+      "name": "electric charge density (coulomb per cubic metre)",
+      "id": "org.bluetooth.unit.electric_charge_density.coulomb_per_cubic_metre"
+    },
+    {
+      "uuid": 10061,
+      "name": "surface charge density (coulomb per square metre)",
+      "id": "org.bluetooth.unit.surface_charge_density.coulomb_per_square_metre"
+    },
+    {
+      "uuid": 10062,
+      "name": "electric flux density (coulomb per square metre)",
+      "id": "org.bluetooth.unit.electric_flux_density.coulomb_per_square_metre"
+    },
+    {
+      "uuid": 10063,
+      "name": "permittivity (farad per metre)",
+      "id": "org.bluetooth.unit.permittivity.farad_per_metre"
+    },
+    {
+      "uuid": 10064,
+      "name": "permeability (henry per metre)",
+      "id": "org.bluetooth.unit.permeability.henry_per_metre"
+    },
+    {
+      "uuid": 10065,
+      "name": "molar energy (joule per mole)",
+      "id": "org.bluetooth.unit.molar_energy.joule_per_mole"
+    },
+    {
+      "uuid": 10066,
+      "name": "molar entropy (joule per mole kelvin)",
+      "id": "org.bluetooth.unit.molar_entropy.joule_per_mole_kelvin"
+    },
+    {
+      "uuid": 10067,
+      "name": "exposure (coulomb per kilogram)",
+      "id": "org.bluetooth.unit.exposure.coulomb_per_kilogram"
+    },
+    {
+      "uuid": 10068,
+      "name": "absorbed dose rate (gray per second)",
+      "id": "org.bluetooth.unit.absorbed_dose_rate.gray_per_second"
+    },
+    {
+      "uuid": 10069,
+      "name": "radiant intensity (watt per steradian)",
+      "id": "org.bluetooth.unit.radiant_intensity.watt_per_steradian"
+    },
+    {
+      "uuid": 10070,
+      "name": "radiance (watt per square metre steradian)",
+      "id": "org.bluetooth.unit.radiance.watt_per_square_metre_steradian"
+    },
+    {
+      "uuid": 10071,
+      "name": "catalytic activity concentration (katal per cubic metre)",
+      "id": "org.bluetooth.unit.catalytic_activity_concentration.katal_per_cubic_metre"
+    },
+    {
+      "uuid": 10080,
+      "name": "time (minute)",
+      "id": "org.bluetooth.unit.time.minute"
+    },
+    {
+      "uuid": 10081,
+      "name": "time (hour)",
+      "id": "org.bluetooth.unit.time.hour"
+    },
+    {
+      "uuid": 10082,
+      "name": "time (day)",
+      "id": "org.bluetooth.unit.time.day"
+    },
+    {
+      "uuid": 10083,
+      "name": "plane angle (degree)",
+      "id": "org.bluetooth.unit.plane_angle.degree"
+    },
+    {
+      "uuid": 10084,
+      "name": "plane angle (minute)",
+      "id": "org.bluetooth.unit.plane_angle.minute"
+    },
+    {
+      "uuid": 10085,
+      "name": "plane angle (second)",
+      "id": "org.bluetooth.unit.plane_angle.second"
+    },
+    {
+      "uuid": 10086,
+      "name": "area (hectare)",
+      "id": "org.bluetooth.unit.area.hectare"
+    },
+    {
+      "uuid": 10087,
+      "name": "volume (litre)",
+      "id": "org.bluetooth.unit.volume.litre"
+    },
+    {
+      "uuid": 10088,
+      "name": "mass (tonne)",
+      "id": "org.bluetooth.unit.mass.tonne"
+    },
+    {
+      "uuid": 10112,
+      "name": "pressure (bar)",
+      "id": "org.bluetooth.unit.pressure.bar"
+    },
+    {
+      "uuid": 10113,
+      "name": "pressure (millimetre of mercury)",
+      "id": "org.bluetooth.unit.pressure.millimetre_of_mercury"
+    },
+    {
+      "uuid": 10114,
+      "name": "length (ångström)",
+      "id": "org.bluetooth.unit.length.ångström"
+    },
+    {
+      "uuid": 10115,
+      "name": "length (nautical mile)",
+      "id": "org.bluetooth.unit.length.nautical_mile"
+    },
+    {
+      "uuid": 10116,
+      "name": "area (barn)",
+      "id": "org.bluetooth.unit.area.barn"
+    },
+    {
+      "uuid": 10117,
+      "name": "velocity (knot)",
+      "id": "org.bluetooth.unit.velocity.knot"
+    },
+    {
+      "uuid": 10118,
+      "name": "logarithmic radio quantity (neper)",
+      "id": "org.bluetooth.unit.logarithmic_radio_quantity.neper"
+    },
+    {
+      "uuid": 10119,
+      "name": "logarithmic radio quantity (bel)",
+      "id": "org.bluetooth.unit.logarithmic_radio_quantity.bel"
+    },
+    {
+      "uuid": 10144,
+      "name": "length (yard)",
+      "id": "org.bluetooth.unit.length.yard"
+    },
+    {
+      "uuid": 10145,
+      "name": "length (parsec)",
+      "id": "org.bluetooth.unit.length.parsec"
+    },
+    {
+      "uuid": 10146,
+      "name": "length (inch)",
+      "id": "org.bluetooth.unit.length.inch"
+    },
+    {
+      "uuid": 10147,
+      "name": "length (foot)",
+      "id": "org.bluetooth.unit.length.foot"
+    },
+    {
+      "uuid": 10148,
+      "name": "length (mile)",
+      "id": "org.bluetooth.unit.length.mile"
+    },
+    {
+      "uuid": 10149,
+      "name": "pressure (pound-force per square inch)",
+      "id": "org.bluetooth.unit.pressure.pound_force_per_square_inch"
+    },
+    {
+      "uuid": 10150,
+      "name": "velocity (kilometre per hour)",
+      "id": "org.bluetooth.unit.velocity.kilometre_per_hour"
+    },
+    {
+      "uuid": 10151,
+      "name": "velocity (mile per hour)",
+      "id": "org.bluetooth.unit.velocity.mile_per_hour"
+    },
+    {
+      "uuid": 10152,
+      "name": "angular velocity (revolution per minute)",
+      "id": "org.bluetooth.unit.angular_velocity.revolution_per_minute"
+    },
+    {
+      "uuid": 10153,
+      "name": "energy (gram calorie)",
+      "id": "org.bluetooth.unit.energy.gram_calorie"
+    },
+    {
+      "uuid": 10154,
+      "name": "energy (kilogram calorie)",
+      "id": "org.bluetooth.unit.energy.kilogram_calorie"
+    },
+    {
+      "uuid": 10155,
+      "name": "energy (kilowatt hour)",
+      "id": "org.bluetooth.unit.energy.kilowatt_hour"
+    },
+    {
+      "uuid": 10156,
+      "name": "thermodynamic temperature (degree Fahrenheit)",
+      "id": "org.bluetooth.unit.thermodynamic_temperature.degree_fahrenheit"
+    },
+    {
+      "uuid": 10157,
+      "name": "percentage",
+      "id": "org.bluetooth.unit.percentage"
+    },
+    {
+      "uuid": 10158,
+      "name": "per mille",
+      "id": "org.bluetooth.unit.per_mille"
+    },
+    {
+      "uuid": 10159,
+      "name": "period (beats per minute)",
+      "id": "org.bluetooth.unit.period.beats_per_minute"
+    },
+    {
+      "uuid": 10160,
+      "name": "electric charge (ampere hours)",
+      "id": "org.bluetooth.unit.electric_charge.ampere_hours"
+    },
+    {
+      "uuid": 10161,
+      "name": "mass density (milligram per decilitre)",
+      "id": "org.bluetooth.unit.mass_density.milligram_per_decilitre"
+    },
+    {
+      "uuid": 10162,
+      "name": "mass density (millimole per litre)",
+      "id": "org.bluetooth.unit.mass_density.millimole_per_litre"
+    },
+    {
+      "uuid": 10163,
+      "name": "time (year)",
+      "id": "org.bluetooth.unit.time.year"
+    },
+    {
+      "uuid": 10164,
+      "name": "time (month)",
+      "id": "org.bluetooth.unit.time.month"
+    },
+    {
+      "uuid": 10165,
+      "name": "concentration (count per cubic metre)",
+      "id": "org.bluetooth.unit.concentration.count_per_cubic_metre"
+    },
+    {
+      "uuid": 10166,
+      "name": "irradiance (watt per square metre)",
+      "id": "org.bluetooth.unit.irradiance.watt_per_square_metre"
+    },
+    {
+      "uuid": 10167,
+      "name": "milliliter (per kilogram per minute)",
+      "id": "org.bluetooth.unit.transfer_rate.milliliter_per_kilogram_per_minute"
+    },
+    {
+      "uuid": 10168,
+      "name": "mass (pound)",
+      "id": "org.bluetooth.unit.mass.pound"
+    },
+    {
+      "uuid": 10169,
+      "name": "metabolic equivalent",
+      "id": "org.bluetooth.unit.metabolic_equivalent"
+    },
+    {
+      "uuid": 10170,
+      "name": "step (per minute)",
+      "id": "org.bluetooth.unit.step_per_minute"
+    },
+    {
+      "uuid": 10172,
+      "name": "stroke (per minute)",
+      "id": "org.bluetooth.unit.stroke_per_minute"
+    },
+    {
+      "uuid": 10173,
+      "name": "pace (kilometre per minute)",
+      "id": "org.bluetooth.unit.velocity.kilometer_per_minute"
+    },
+    {
+      "uuid": 10174,
+      "name": "luminous efficacy (lumen per watt)",
+      "id": "org.bluetooth.unit.luminous_efficacy.lumen_per_watt"
+    },
+    {
+      "uuid": 10175,
+      "name": "luminous energy (lumen hour)",
+      "id": "org.bluetooth.unit.luminous_energy.lumen_hour"
+    },
+    {
+      "uuid": 10176,
+      "name": "luminous exposure (lux hour)",
+      "id": "org.bluetooth.unit.luminous_exposure.lux_hour"
+    },
+    {
+      "uuid": 10177,
+      "name": "mass flow (gram per second)",
+      "id": "org.bluetooth.unit.mass_flow.gram_per_second"
+    },
+    {
+      "uuid": 10178,
+      "name": "volume flow (litre per second)",
+      "id": "org.bluetooth.unit.volume_flow.litre_per_second"
+    },
+    {
+      "uuid": 10179,
+      "name": "sound pressure (decibel)",
+      "id": "org.bluetooth.unit.sound_pressure.decibel_spl"
+    },
+    {
+      "uuid": 10180,
+      "name": "parts per million",
+      "id": "org.bluetooth.unit.ppm"
+    },
+    {
+      "uuid": 10181,
+      "name": "parts per billion",
+      "id": "org.bluetooth.unit.ppb"
+    },
+    {
+      "uuid": 10182,
+      "name": "mass density rate ((milligram per decilitre) per minute)",
+      "id": "org.bluetooth.unit.mass_density_rate.milligram_per_decilitre_per_minute"
+    },
+    {
+      "uuid": 10183,
+      "name": "Electrical Apparent Energy (kilovolt ampere hour)",
+      "id": "org.bluetooth.unit.energy.kilovolt_ampere_hour"
+    },
+    {
+      "uuid": 10184,
+      "name": "Electrical Apparent Power (volt ampere)",
+      "id": "org.bluetooth.unit.power.volt_ampere"
+    }
+  ]
+}
