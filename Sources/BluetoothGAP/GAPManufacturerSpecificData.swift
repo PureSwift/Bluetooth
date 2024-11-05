@@ -43,7 +43,7 @@ public struct GAPManufacturerSpecificData <AdditionalData: DataContainer> : GAPD
         
         self.companyIdentifier = CompanyIdentifier(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         if data.count > 2 {
-            self.additionalData = AdditionalData(data[2 ..< 2 + data.count])
+            self.additionalData = AdditionalData(data[2 ..< data.count])
         } else {
             self.additionalData = AdditionalData()
         }
