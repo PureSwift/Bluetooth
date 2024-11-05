@@ -26,7 +26,7 @@ extension CompanyIdentifiersFile {
 
 extension GenerateTool {
     
-    static func parseFile(input: URL) throws -> [UInt16: String] {
+    static func parseCompanyIdentifiersFile(input: URL) throws -> [UInt16: String] {
         let data = try Data(contentsOf: input, options: [.mappedIfSafe])
         let decoder = JSONDecoder()
         let file = try decoder.decode(CompanyIdentifiersFile.self, from: data)
@@ -63,7 +63,7 @@ extension GenerateTool {
     }
     
     static func generateCompanyIdentifiers(input: URL, output: [URL]) throws {
-        let data = try parseFile(input: input)
+        let data = try parseCompanyIdentifiersFile(input: input)
         try generateCompanyIdentifierExtensions(data, output: output[0])
         try generateCompanyIdentifierNames(data, output: output[1])
     }
@@ -98,7 +98,7 @@ extension GenerateTool {
         🖨("}")
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
-        print("Generated Swift \(output.path)")
+        print("Generated \(output.path)")
     }
     
     static func generateCompanyIdentifierNames(_ data: [UInt16: String], output: URL) throws {
@@ -132,12 +132,12 @@ extension GenerateTool {
         🖨("}")
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
-        print("Generated Swift \(output.path)")
+        print("Generated \(output.path)")
     }
     
     static func generateCompanyIdentifierTests(input: URL, output: URL) throws {
         
-        let data = try parseFile(input: input)
+        let data = try parseCompanyIdentifiersFile(input: input)
         
         var generatedCode = ""
         let companies = companyIdentifiers(from: data)
@@ -186,6 +186,6 @@ extension GenerateTool {
             """)
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
-        print("Generated Swift \(output.path)")
+        print("Generated \(output.path)")
     }
 }
