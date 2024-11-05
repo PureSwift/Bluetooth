@@ -675,7 +675,7 @@ final class HCITests: XCTestCase {
             XCTAssertEqual(report.event, .scanResponse)
             XCTAssertEqual(report.event.isConnectable, true)
             XCTAssertEqual(report.rssi?.rawValue, -44)
-            XCTAssertEqual(report.responseData.data, Data())
+            XCTAssertEqual(Data(report.responseData), Data())
         }
         
         do {

@@ -220,12 +220,12 @@ final class GATTTests: XCTestCase {
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x0001,
                     endGroupHandle: 0x0005,
-                    value: BluetoothUUID.bit16(0x1800).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x1800).littleEndian)
                 ),
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x0006,
                     endGroupHandle: 0x0009,
-                    value: BluetoothUUID.bit16(0x1801).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x1801).littleEndian)
                 )
                 ])!,
              
@@ -257,12 +257,12 @@ final class GATTTests: XCTestCase {
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x000A,
                     endGroupHandle: 0x000E,
-                    value: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!).littleEndian.data
+                    value: Data(BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!).littleEndian)
                 ),
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x000F,
                     endGroupHandle: 0x0013,
-                    value: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!).littleEndian.data
+                    value: Data(BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!).littleEndian)
                 )
                 ])!,
              
@@ -295,17 +295,17 @@ final class GATTTests: XCTestCase {
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x0014,
                     endGroupHandle: 0x0017,
-                    value: BluetoothUUID.bit16(0x180F).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x180F).littleEndian)
                 ),
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x0018,
                     endGroupHandle: 0x001D,
-                    value: BluetoothUUID.bit16(0x1805).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x1805).littleEndian)
                 ),
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x001E,
                     endGroupHandle: 0x0022,
-                    value: BluetoothUUID.bit16(0x180A).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x180A).littleEndian)
                 )
                 ])!,
              
@@ -337,12 +337,12 @@ final class GATTTests: XCTestCase {
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x0023,
                     endGroupHandle: 0x002C,
-                    value: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!).littleEndian.data
+                    value: Data(BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!).littleEndian)
                 ),
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x002D,
                     endGroupHandle: 0x0038,
-                    value: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!).littleEndian.data
+                    value: Data(BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!).littleEndian)
                 )
                 ])!,
              
@@ -375,17 +375,17 @@ final class GATTTests: XCTestCase {
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x0039,
                     endGroupHandle: 0x003C,
-                    value: BluetoothUUID.bit16(0x1803).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x1803).littleEndian)
                 ),
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x003D,
                     endGroupHandle: 0x003F,
-                    value: BluetoothUUID.bit16(0x1804).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x1804).littleEndian)
                 ),
                 ATTReadByGroupTypeResponse.AttributeData(
                     attributeHandle: 0x0040,
                     endGroupHandle: 0x0042,
-                    value: BluetoothUUID.bit16(0x1802).littleEndian.data
+                    value: Data(BluetoothUUID.bit16(0x1802).littleEndian)
                 )
                 ])!,
              
@@ -514,7 +514,7 @@ final class GATTTests: XCTestCase {
             (ATTReadByGroupTypeResponse(attributeData: [
                 ATTReadByGroupTypeResponse.AttributeData(attributeHandle: 0x001,
                                                          endGroupHandle: 0x0004,
-                                                         value: BluetoothUUID.batteryService.littleEndian.data)
+                                                         value: Data(BluetoothUUID.batteryService.littleEndian))
                 ])!,
              [0x11, 0x06, 0x01, 0x00, 0x04, 0x00, 0x0F, 0x18]),
             /**

@@ -10,7 +10,7 @@
 import XCTest
 import Foundation
 import Bluetooth
-import BluetoothGATT
+@testable import BluetoothGATT
 
 final class GATTDescriptorTests: XCTestCase {
     
@@ -220,16 +220,16 @@ final class GATTDescriptorTests: XCTestCase {
         XCTAssertNil(GATTExternalReportReference(data: Data()))
         XCTAssertNil(GATTExternalReportReference(data: Data([0x00])))
         
-        let aerobicHeartRateLowerLimit = BluetoothUUID.aerobicHeartRateLowerLimit.data
+        let aerobicHeartRateLowerLimit = Data(BluetoothUUID.aerobicHeartRateLowerLimit)
         var externalReportReference = GATTExternalReportReference(data: aerobicHeartRateLowerLimit)
         XCTAssertEqual(externalReportReference?.data, aerobicHeartRateLowerLimit)
         
-        let batteryLevel = BluetoothUUID.batteryLevel.data
+        let batteryLevel = Data(BluetoothUUID.batteryLevel)
         externalReportReference = GATTExternalReportReference(data: Data([0x19, 0x2A]))
         XCTAssertEqual(externalReportReference?.data, batteryLevel)
         
         externalReportReference = GATTExternalReportReference(uuid: .batteryService)
-        XCTAssertEqual(externalReportReference?.data, BluetoothUUID.batteryService.littleEndian.data)
+        XCTAssertEqual(externalReportReference?.data, Data(BluetoothUUID.batteryService.littleEndian))
     }
     
     func testNumberOfDigitalsDescritor() {

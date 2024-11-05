@@ -17,23 +17,23 @@ final class iBeaconTests: XCTestCase {
     
     func testInvalid() {
         
-        XCTAssertNil(AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x1a, 0x4c, 0x00]))
-        XCTAssertNil(AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x03, 0xff]))
+        XCTAssertNil(try? AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x1a, 0x4c, 0x00]))
+        XCTAssertNil(try? AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x03, 0xff]))
         do {
             let data: LowEnergyAdvertisingData = [0x02, 0x01, 0x1a, 0x03, 0xff, 0x4c, 0x00]
-            let decoder = GAPDataDecoder()
-            let manufacturerData = GAPManufacturerSpecificData(companyIdentifier: .apple)
+            let decoder = GAPDataDecoder<LowEnergyAdvertisingData>()
+            let manufacturerData = GAPManufacturerSpecificData<LowEnergyAdvertisingData>(companyIdentifier: .apple)
             var decoded = [GAPData]()
-            XCTAssertNoThrow(decoded = try decoder.decode(data))
+            XCTAssertNoThrow(decoded = try decoder.decode(from: data))
             guard decoded.count == 2
                 else { XCTFail(); return }
             XCTAssertEqual(decoded[0] as? GAPFlags, 0x1a)
-            XCTAssertEqual(decoded[1] as? GAPManufacturerSpecificData, manufacturerData)
-            XCTAssertNil(AppleBeacon.from(advertisingData: data))
+            XCTAssertEqual(decoded[1] as? GAPManufacturerSpecificData<LowEnergyAdvertisingData>, manufacturerData)
+            XCTAssertNil(try? AppleBeacon.from(advertisingData: data))
         }
     }
     
-    func testData() {
+    func testData() throws {
         
         let flags: GAPFlags = 0x1a
         
@@ -81,8 +81,7 @@ final class iBeaconTests: XCTestCase {
         XCTAssertEqual(advertisingData.description, "02011A1AFF4C000215F7826DA64FA24E988024BC5B71E0893E00AA00BBB3")
         advertisingData.withUnsafeData { XCTAssertEqual($0, Data(testData)) }
         
-        guard let decoded = AppleBeacon.from(advertisingData: testData)
-            else { XCTFail(); return }
+        let decoded = try AppleBeacon.from(advertisingData: testData)
         
         XCTAssertEqual(decoded.flags, flags)
         XCTAssertEqual(decoded.beacon.uuid, beacon.uuid)
