@@ -32,30 +32,14 @@ internal extension Collection where Element: FixedWidthInteger {
 
 internal extension FixedWidthInteger {
     
-    init?(parse string: String, radix: Self) {
+    init?<S: StringProtocol>(parse string: S, radix: Self) {
         #if !hasFeature(Embedded)
         let string = string.uppercased()
         #endif
-        let digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".utf8
-        var result = Self(0)
-        for character in string.utf8 {
-            if let stringIndex = digits.enumerated().first(where: { $0.element == character })?.offset {
-                let val = Self(stringIndex)
-                if val >= radix {
-                    return nil
-                }
-                result = result * radix + val
-            } else {
-                return nil
-            }
-        }
-        self = result
+        self.init(utf8: string.utf8, radix: radix)
     }
-}
-
-internal extension FixedWidthInteger {
     
-    init?(hexadecimal string: String) {
+    init?<S: StringProtocol>(hexadecimal string: S) {
         guard string.utf8.count == MemoryLayout<Self>.size * 2 else {
             return nil
         }
@@ -67,6 +51,37 @@ internal extension FixedWidthInteger {
         #else
         self.init(string, radix: 16)
         #endif
+    }
+    
+    init?<C>(hexadecimal utf8: C) where C: Collection, C.Element == UInt8 {
+        guard utf8.count == MemoryLayout<Self>.size * 2 else {
+            return nil
+        }
+        guard let value = Self(utf8: utf8, radix: 16) else {
+            return nil
+        }
+        self.init(value)
+    }
+    
+    /// Expects uppercase UTF8 data.
+    init?<C>(utf8: C, radix: Self) where C: Collection, C.Element == UInt8 {
+        #if !hasFeature(Embedded) && DEBUG
+        assert(String(decoding: utf8, as: UTF8.self) == String(decoding: utf8, as: UTF8.self).uppercased(), "Expected uppercase string")
+        #endif
+        let digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".utf8
+        var result = Self(0)
+        for character in utf8 {
+            if let stringIndex = digits.enumerated().first(where: { $0.element == character })?.offset {
+                let val = Self(stringIndex)
+                if val >= radix {
+                    return nil
+                }
+                result = result * radix + val
+            } else {
+                return nil
+            }
+        }
+        self = result
     }
 }
 

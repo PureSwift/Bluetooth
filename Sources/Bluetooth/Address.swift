@@ -90,6 +90,11 @@ extension BluetoothAddress: RawRepresentable {
     
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public init?(rawValue: String) {
+        self.init(rawValue)
+    }
+    
+    /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
+    internal init?<S: StringProtocol>(_ rawValue: S) {
         
         // verify string length
         let characters = rawValue.utf8
@@ -107,8 +112,7 @@ extension BluetoothAddress: RawRepresentable {
         for (index, subsequence) in components.enumerated() {
             
             guard subsequence.count == 2,
-                  let string = String(subsequence),
-                  let byte = UInt8(hexadecimal: string)
+                  let byte = UInt8(hexadecimal: subsequence)
                 else { return nil }
             
             withUnsafeMutablePointer(to: &bytes) {
