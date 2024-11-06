@@ -8,77 +8,6 @@
 
 import Bluetooth
 
-/// GAP Flag
-@frozen
-public struct GAPFlags: GAPData, Equatable, Hashable {
-    
-    public static var dataType: GAPDataType { .flags }
-    
-    public var flags: BitMaskOptionSet<GAPFlag>
-    
-    public init(flags: BitMaskOptionSet<GAPFlag> = 0) {
-        self.flags = flags
-    }
-}
-
-public extension GAPFlags {
-    
-    init?<Data>(data: Data) where Data : Bluetooth.DataContainer {
-
-        guard data.count == 1
-            else { return nil }
-        
-        self.flags = BitMaskOptionSet<GAPFlag>(rawValue: data[0])
-    }
-    
-    func append<Data>(to data: inout Data) where Data : Bluetooth.DataContainer {
-        data += self
-    }
-    
-    var dataLength: Int {
-        1
-    }
-}
-
-// MARK: - DataConvertible
-
-extension GAPFlags: DataConvertible {
-    
-    static func += <T: DataContainer> (data: inout T, value: GAPFlags) {
-        data += value.flags.rawValue
-    }
-}
-
-// MARK: - CustomStringConvertible
-
-extension GAPFlags: CustomStringConvertible {
-    
-    public var description: String {
-        return flags.description
-    }
-}
-
-// MARK: - ExpressibleByIntegerLiteral
-
-extension GAPFlags: ExpressibleByIntegerLiteral {
-    
-    public init(integerLiteral rawValue: GAPFlag.RawValue) {
-        self.init(flags: BitMaskOptionSet<GAPFlag>(rawValue: rawValue))
-    }
-}
-
-// MARK: - ExpressibleByArrayLiteral
-
-extension GAPFlags: ExpressibleByArrayLiteral {
-    
-    public init(arrayLiteral elements: GAPFlag...) {
-        
-        self.init(flags: BitMaskOptionSet<GAPFlag>(elements))
-    }
-}
-
-// MARK: - Supporting Types
-
 /**
  GAP Flag
  
@@ -102,8 +31,60 @@ extension GAPFlags: ExpressibleByArrayLiteral {
  
  The Flags field may be zero or more octets long. This allows the Flags field to be extended while using the minimum number of octets within the data packet.
  */
+@frozen
+public struct GAPFlags: GAPData, Equatable, Hashable, OptionSet, Sendable {
+    
+    public static var dataType: GAPDataType { .flags }
+    
+    public var rawValue: UInt8
+    
+    public init(rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
+}
 
-public enum GAPFlag: UInt8, BitMaskOption {
+public extension GAPFlags {
+    
+    init?<Data>(data: Data) where Data : Bluetooth.DataContainer {
+        guard data.count == 1
+            else { return nil }
+        self.init(rawValue: data[0])
+    }
+    
+    func append<Data>(to data: inout Data) where Data : Bluetooth.DataContainer {
+        data += self
+    }
+    
+    var dataLength: Int {
+        1
+    }
+}
+
+// MARK: - DataConvertible
+
+extension GAPFlags: DataConvertible {
+    
+    static func += <T: DataContainer> (data: inout T, value: GAPFlags) {
+        data += value.rawValue
+    }
+}
+
+// MARK: - ExpressibleByIntegerLiteral
+
+extension GAPFlags: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral rawValue: RawValue) {
+        self.init(rawValue: rawValue)
+    }
+}
+
+// MARK: - ExpressibleByArrayLiteral
+
+extension GAPFlags: ExpressibleByArrayLiteral { }
+
+// MARK: - Constants
+
+public extension GAPFlags {
     
     /**
     LE Limited Discoverable Mode
@@ -112,47 +93,51 @@ public enum GAPFlag: UInt8, BitMaskOption {
      
      - SeeAlso: [Bluetooth Advertising Works](https://blog.bluetooth.com/advertising-works-part-2)
     */
-    case lowEnergyLimitedDiscoverableMode   = 0b00000001
+    static var lowEnergyLimitedDiscoverableMode: GAPFlags   { 0b00000001 }
     
     /// LE General Discoverable Mode
     ///
     /// Use general discoverable mode to advertise indefinitely.
-    case lowEnergyGeneralDiscoverableMode   = 0b00000010
+    static var lowEnergyGeneralDiscoverableMode: GAPFlags   { 0b00000010 }
     
     /// BR/EDR Not Supported.
     ///
     /// Bit 37 of LMP Feature Mask Definitions  (Page 0)
-    case notSupportedBREDR                  = 0b00000100
+    static var notSupportedBREDR: GAPFlags                  { 0b00000100 }
     
     /// Simultaneous LE and BR/EDR to Same Device Capable (Controller).
     ///
     /// Bit 49 of LMP Feature Mask Definitions (Page 0)
-    case simultaneousController             = 0b00001000
+    static var simultaneousController: GAPFlags             { 0b00001000 }
     
     /// Simultaneous LE and BR/EDR to Same Device Capable (Host).
     ///
     /// Bit 66 of LMP Feature Mask Definitions (Page 1)
-    case simultaneousHost                   = 0b00010000
-    
-    public static let allCases: [GAPFlag] = [
-        .lowEnergyLimitedDiscoverableMode,
-        .lowEnergyGeneralDiscoverableMode,
-        .notSupportedBREDR,
-        .simultaneousController,
-        .simultaneousHost
-    ]
+    static var simultaneousHost: GAPFlags                   { 0b00010000 }
 }
 
-extension GAPFlag: CustomStringConvertible {
+// MARK: - CustomStringConvertible
+
+extension GAPFlags: CustomStringConvertible, CustomDebugStringConvertible {
     
+    #if hasFeature(Embedded)
     public var description: String {
-        
-        switch self {
-        case .lowEnergyLimitedDiscoverableMode:     return "LE Limited Discoverable Mode"
-        case .lowEnergyGeneralDiscoverableMode:     return "LE General Discoverable Mode"
-        case .notSupportedBREDR:                    return "BR/EDR Not Supported"
-        case .simultaneousController:               return "Simultaneous LE and BR/EDR Controller"
-        case .simultaneousHost:                     return "Simultaneous LE and BR/EDR Host"
-        }
+        rawValue.description
     }
+    #else
+    @inline(never)
+    public var description: String {
+        let descriptions: [(GAPFlags, StaticString)] = [
+            (.lowEnergyLimitedDiscoverableMode, ".lowEnergyLimitedDiscoverableMode"),
+            (.lowEnergyGeneralDiscoverableMode, ".lowEnergyGeneralDiscoverableMode"),
+            (.notSupportedBREDR, ".notSupportedBREDR"),
+            (.simultaneousController, ".simultaneousController"),
+            (.simultaneousHost, ".simultaneousHost")
+        ]
+        return buildDescription(descriptions)
+    }
+    #endif
+
+    /// A textual representation of the file permissions, suitable for debugging.
+    public var debugDescription: String { self.description }
 }
