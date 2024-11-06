@@ -14,7 +14,7 @@
 /// - SeeAlso:
 /// [Generic Access Profile](https://www.bluetooth.com/specifications/assigned-numbers/generic-access-profile)
 @frozen
-public struct GAPDataType: RawRepresentable, Equatable, Hashable {
+public struct GAPDataType: RawRepresentable, Equatable, Hashable, Sendable {
     
     public var rawValue: UInt8
     
@@ -174,57 +174,67 @@ extension GAPDataType: ExpressibleByIntegerLiteral {
 
 // MARK: - CustomStringConvertible
 
+#if hasFeature(Embedded)
 extension GAPDataType: CustomStringConvertible {
     
-    public var name: String? {
-        return gapDataTypeNames[self]
+    public var description: String {
+        rawValue.description
     }
+}
+#else
+extension GAPDataType: CustomStringConvertible {
     
+    @inline(never)
     public var description: String {
         return name ?? "GAP Data Type (\(rawValue))"
     }
+    
+    @inline(never)
+    public var name: String? {
+        let names: [GAPDataType: String] = [
+            .flags: "Flags",
+            .incompleteListOf16BitServiceClassUUIDs: "Incomplete List of 16-bit Service Class UUIDs",
+            .completeListOf16CitServiceClassUUIDs: "Complete List of 16-bit Service Class UUIDs",
+            .incompleteListOf32BitServiceClassUUIDs: "Incomplete List of 32-bit Service Class UUIDs",
+            .completeListOf32BitServiceClassUUIDs: "Complete List of 32-bit Service Class UUIDs",
+            .incompleteListOf128BitServiceClassUUIDs: "Incomplete List of 128-bit Service Class UUIDs",
+            .completeListOf128BitServiceClassUUIDs: "Complete List of 128-bit Service Class UUIDs",
+            .shortLocalName: "Shortened Local Name",
+            .completeLocalName: "Complete Local Name",
+            .txPowerLevel: "Tx Power Level",
+            .classOfDevice: "Class of Device",
+            .simplePairingHashC: "Simple Pairing Hash C",
+            .simplePairingRandomizerR: "Simple Pairing Randomizer R",
+            .securityManagerTKValue: "Security Manager TK Value",
+            .securityManagerOutOfBandFlags: "Security Manager Out of Band Flags",
+            .slaveConnectionIntervalRange: "Slave Connection Interval Range",
+            .listOf16BitServiceSolicitationUUIDs: "List of 16-bit Service Solicitation UUIDs",
+            .listOf32BitServiceSolicitationUUIDs: "List of 32-bit Service Solicitation UUIDs",
+            .listOf128BitServiceSolicitationUUIDs: "List of 128-bit Service Solicitation UUIDs",
+            .serviceData16BitUUID: "Service Data - 16-bit UUID",
+            .serviceData32BitUUID: "Service Data - 32-bit UUID",
+            .serviceData128BitUUID: "Service Data - 128-bit UUID",
+            .publicTargetAddress: "Public Target Address",
+            .randomTargetAddress: "Random Target Address",
+            .appearance: "Appearance",
+            .advertisingInterval: "Advertising Interval",
+            .lowEnergyDeviceAddress: "LE Bluetooth Device Address",
+            .lowEnergyRole: "LE Role",
+            .lowEnergySecureConnectionsConfirmation: "LE Secure Connections Confirmation Value",
+            .lowEnergySecureConnectionsRandom: "LE Secure Connections Random Value",
+            .uri: "URI",
+            .indoorPositioning: "Indoor Positioning",
+            .transportDiscoveryData: "Transport Discovery Data",
+            .lowEnergySupportedFeatures: "LE Supported Features",
+            .channelMapUpdateIndication: "Channel Map Update Indication",
+            .pbAdv: "PB-ADV",
+            .meshMessage: "Mesh Message",
+            .meshBeacon: "Mesh Beacon",
+            .informationData3D: "3D Information Data",
+            .manufacturerSpecificData: "Manufacturer Specific Data"
+        ]
+        return names[self]
+    }
 }
 
-/// Standard GAP Data Type names
-internal let gapDataTypeNames: [GAPDataType: String] = [
-    .flags: "Flags",
-    .incompleteListOf16BitServiceClassUUIDs: "Incomplete List of 16-bit Service Class UUIDs",
-    .completeListOf16CitServiceClassUUIDs: "Complete List of 16-bit Service Class UUIDs",
-    .incompleteListOf32BitServiceClassUUIDs: "Incomplete List of 32-bit Service Class UUIDs",
-    .completeListOf32BitServiceClassUUIDs: "Complete List of 32-bit Service Class UUIDs",
-    .incompleteListOf128BitServiceClassUUIDs: "Incomplete List of 128-bit Service Class UUIDs",
-    .completeListOf128BitServiceClassUUIDs: "Complete List of 128-bit Service Class UUIDs",
-    .shortLocalName: "Shortened Local Name",
-    .completeLocalName: "Complete Local Name",
-    .txPowerLevel: "Tx Power Level",
-    .classOfDevice: "Class of Device",
-    .simplePairingHashC: "Simple Pairing Hash C",
-    .simplePairingRandomizerR: "Simple Pairing Randomizer R",
-    .securityManagerTKValue: "Security Manager TK Value",
-    .securityManagerOutOfBandFlags: "Security Manager Out of Band Flags",
-    .slaveConnectionIntervalRange: "Slave Connection Interval Range",
-    .listOf16BitServiceSolicitationUUIDs: "List of 16-bit Service Solicitation UUIDs",
-    .listOf32BitServiceSolicitationUUIDs: "List of 32-bit Service Solicitation UUIDs",
-    .listOf128BitServiceSolicitationUUIDs: "List of 128-bit Service Solicitation UUIDs",
-    .serviceData16BitUUID: "Service Data - 16-bit UUID",
-    .serviceData32BitUUID: "Service Data - 32-bit UUID",
-    .serviceData128BitUUID: "Service Data - 128-bit UUID",
-    .publicTargetAddress: "Public Target Address",
-    .randomTargetAddress: "Random Target Address",
-    .appearance: "Appearance",
-    .advertisingInterval: "Advertising Interval",
-    .lowEnergyDeviceAddress: "LE Bluetooth Device Address",
-    .lowEnergyRole: "LE Role",
-    .lowEnergySecureConnectionsConfirmation: "LE Secure Connections Confirmation Value",
-    .lowEnergySecureConnectionsRandom: "LE Secure Connections Random Value",
-    .uri: "URI",
-    .indoorPositioning: "Indoor Positioning",
-    .transportDiscoveryData: "Transport Discovery Data",
-    .lowEnergySupportedFeatures: "LE Supported Features",
-    .channelMapUpdateIndication: "Channel Map Update Indication",
-    .pbAdv: "PB-ADV",
-    .meshMessage: "Mesh Message",
-    .meshBeacon: "Mesh Beacon",
-    .informationData3D: "3D Information Data",
-    .manufacturerSpecificData: "Manufacturer Specific Data"
-]
+#endif
