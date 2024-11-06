@@ -30,19 +30,17 @@ internal extension Collection where Element: FixedWidthInteger {
     }
 }
 
-internal extension UInt {
+internal extension FixedWidthInteger {
     
-    init?(parse string: String, radix: UInt) {
-        let digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        var result = UInt(0)
-        for digit in string {
-            #if hasFeature(Embedded)
-            let character = digit
-            #else
-            let character = String(digit).uppercased().first!
-            #endif
+    init?(parse string: String, radix: Self) {
+        #if !hasFeature(Embedded)
+        let string = string.uppercased()
+        #endif
+        let digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".utf8
+        var result = Self(0)
+        for character in string.utf8 {
             if let stringIndex = digits.enumerated().first(where: { $0.element == character })?.offset {
-                let val = UInt(stringIndex)
+                let val = Self(stringIndex)
                 if val >= radix {
                     return nil
                 }
@@ -55,14 +53,14 @@ internal extension UInt {
     }
 }
 
-internal extension UInt16 {
+internal extension FixedWidthInteger {
     
     init?(hexadecimal string: String) {
         guard string.utf8.count == MemoryLayout<Self>.size * 2 else {
             return nil
         }
         #if hasFeature(Embedded) || DEBUG
-        guard let value = UInt(parse: string, radix: 16) else {
+        guard let value = Self(parse: string, radix: 16) else {
             return nil
         }
         self.init(value)
@@ -72,23 +70,7 @@ internal extension UInt16 {
     }
 }
 
-internal extension UInt32 {
-    
-    init?(hexadecimal string: String) {
-        guard string.utf8.count == MemoryLayout<Self>.size * 2 else {
-            return nil
-        }
-        #if hasFeature(Embedded) || DEBUG
-        guard let value = UInt(parse: string, radix: 16) else {
-            return nil
-        }
-        self.init(value)
-        #else
-        self.init(string, radix: 16)
-        #endif
-    }
-}
-
+#if !hasFeature(Embedded)
 internal extension String.UTF16View.Element {
     
     // Convert 0 ... 9, a ... f, A ...F to their decimal value,
@@ -143,3 +125,4 @@ internal extension [UInt8] {
         
     }
 }
+#endif
