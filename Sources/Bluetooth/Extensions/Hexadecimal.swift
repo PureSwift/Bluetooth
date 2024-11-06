@@ -9,12 +9,26 @@
 internal extension FixedWidthInteger {
     
     func toHexadecimal() -> String {
-        
-        var string = String(self, radix: 16)
-        while string.utf8.count < (MemoryLayout<Self>.size * 2) {
+        let length = MemoryLayout<Self>.size * 2
+        var string: String
+        #if hasFeature(Embedded) || (canImport(Darwin) && DEBUG)
+        string = ""
+        string.reserveCapacity(length)
+        self.bigEndian.bytes.forEach { byte in
+            string.append(String(format: "%02X", length: 2, byte)!)
+        }
+        #else // Linux and non-Embedded release builds use Swift StdLib
+        string = String(self, radix: 16, uppercase: true)
+        // Add Zero padding
+        while string.utf8.count < length {
             string = "0" + string
         }
-        return string.uppercased()
+        #endif
+        assert(string.utf8.count == length)
+        #if !hasFeature(Embedded)
+        assert(string == string.uppercased(), "String should be uppercased")
+        #endif
+        return string
     }
 }
 
