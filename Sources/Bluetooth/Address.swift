@@ -86,27 +86,29 @@ extension BluetoothAddress: ByteSwap {
 
 // MARK: - RawRepresentable
 
-#if !hasFeature(Embedded)
 extension BluetoothAddress: RawRepresentable {
     
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public init?(rawValue: String) {
         
         // verify string length
-        guard rawValue.utf8.count == 17
+        let characters = rawValue.utf8
+        guard characters.count == 17,
+            let separator = ":".utf8.first
             else { return nil }
         
         var bytes: ByteValue = (0, 0, 0, 0, 0, 0)
         
-        let components = rawValue.split(whereSeparator: { $0 == ":" })
+        let components = characters.split(whereSeparator: { $0 == separator })
         
         guard components.count == 6
             else { return nil }
         
-        for (index, string) in components.enumerated() {
+        for (index, subsequence) in components.enumerated() {
             
-            guard string.utf8.count == 2,
-                let byte = UInt8(string, radix: 16)
+            guard subsequence.count == 2,
+                  let string = String(subsequence),
+                  let byte = UInt8(hexadecimal: string)
                 else { return nil }
             
             withUnsafeMutablePointer(to: &bytes) {
@@ -121,19 +123,6 @@ extension BluetoothAddress: RawRepresentable {
     
     /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
     public var rawValue: String {
-        _description
-    }
-}
-#endif
-
-// MARK: - CustomStringConvertible
-
-extension BluetoothAddress: CustomStringConvertible {
-    
-    public var description: String { _description }
-
-    /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
-    internal var _description: String {
         let bytes = self.bigEndian.bytes
         return bytes.0.toHexadecimal()
             + ":" + bytes.1.toHexadecimal()
@@ -142,6 +131,13 @@ extension BluetoothAddress: CustomStringConvertible {
             + ":" + bytes.4.toHexadecimal()
             + ":" + bytes.5.toHexadecimal()
     }
+}
+
+// MARK: - CustomStringConvertible
+
+extension BluetoothAddress: CustomStringConvertible {
+    
+    public var description: String { rawValue }
 }
 
 // MARK: - Data
