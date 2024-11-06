@@ -67,6 +67,15 @@ internal extension UInt8 {
     }
 }
 
+internal extension BinaryInteger {
+    
+    @inlinable
+    var bytes: [UInt8] {
+        var mutableValueCopy = self
+        return withUnsafeBytes(of: &mutableValueCopy) { Array($0) }
+    }
+}
+
 #if canImport(Foundation)
 internal extension UInt64 {
     
