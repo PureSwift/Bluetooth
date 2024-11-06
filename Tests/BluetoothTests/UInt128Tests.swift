@@ -37,6 +37,27 @@ final class UInt128Tests: XCTestCase {
         XCTAssertNotEqual(Bluetooth.UInt128.max.hashValue, 0)
     }
     
+    func testHexadecimal() {
+        
+        var testData: [(UInt128, String)] = [
+            (.min,     "00000000000000000000000000000000"),
+            (.max,     "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+        ]
+        
+        if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
+            testData += [
+                (0x60F14FE2F97211E5B84F23E070D5A8C7, "60F14FE2F97211E5B84F23E070D5A8C7")
+            ]
+        }
+        
+        for (value, hexadecimal) in testData {
+            XCTAssertEqual(value.hexadecimal, hexadecimal)
+            if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
+                XCTAssertEqual(UInt128(parse: hexadecimal, radix: 16), value)
+            }
+        }
+    }
+    
     func testExpressibleByIntegerLiteral() {
         
         guard #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) else {

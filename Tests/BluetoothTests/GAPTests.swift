@@ -26,10 +26,18 @@ final class GAPTests: XCTestCase {
         let flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]
         
         XCTAssertEqual(flags, 0b00000110)
-        XCTAssertEqual(flags.flags, [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR])
-        XCTAssertEqual(flags.description, "[LE General Discoverable Mode, BR/EDR Not Supported]")
+        XCTAssertEqual(flags, [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR])
+        XCTAssertEqual(flags.description, "[.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]")
         
-        let allFlags = Array(GAPFlag.allCases).sorted(by: { $0.rawValue < $1.rawValue })
+        let allCases: [GAPFlags] = [
+            .lowEnergyLimitedDiscoverableMode,
+            .lowEnergyGeneralDiscoverableMode,
+            .notSupportedBREDR,
+            .simultaneousController,
+            .simultaneousHost
+        ]
+        
+        let allFlags = allCases.sorted(by: { $0.rawValue < $1.rawValue })
         allFlags.forEach { XCTAssertFalse($0.description.isEmpty) }
     }
     

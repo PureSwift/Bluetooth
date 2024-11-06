@@ -14,13 +14,11 @@ internal extension UInt16 {
     
     /// Initializes value from two bytes.
     init(bytes: (UInt8, UInt8)) {
-        
         self = unsafeBitCast(bytes, to: UInt16.self)
     }
     
     /// Converts to two bytes. 
     var bytes: (UInt8, UInt8) {
-        
         return unsafeBitCast(self, to: (UInt8, UInt8).self)
     }
 }
@@ -29,13 +27,11 @@ internal extension UInt32 {
     
     /// Initializes value from four bytes.
     init(bytes: (UInt8, UInt8, UInt8, UInt8)) {
-        
         self = unsafeBitCast(bytes, to: UInt32.self)
     }
     
     /// Converts to four bytes.
     var bytes: (UInt8, UInt8, UInt8, UInt8) {
-        
         return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8).self)
     }
 }
@@ -44,13 +40,11 @@ internal extension UInt64 {
     
     /// Initializes value from four bytes.
     init(bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)) {
-        
         self = unsafeBitCast(bytes, to: UInt64.self)
     }
     
     /// Converts to eight bytes.
     var bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8) {
-        
         return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8).self)
     }
 }
@@ -59,7 +53,6 @@ internal extension UInt8 {
     
     /// Initialize a byte from 2 bit enums.
     static func bit2(_ enum1: UInt8, _ enum2: UInt8, _ enum3: UInt8, _ enum4: UInt8) -> UInt8 {
-        
         var value: UInt8 = 0
         value += enum1 << 6
         value += enum2 << 4
@@ -70,8 +63,16 @@ internal extension UInt8 {
     
     /// Get 2 bit values from a byte.
     func bit2() -> (UInt8, UInt8, UInt8, UInt8) {
-        
         return (self >> 6, (self << 2) >> 6, (self << 4) >> 6, (self << 6) >> 6)
+    }
+}
+
+internal extension BinaryInteger {
+    
+    @inlinable
+    var bytes: [UInt8] {
+        var mutableValueCopy = self
+        return withUnsafeBytes(of: &mutableValueCopy) { Array($0) }
     }
 }
 

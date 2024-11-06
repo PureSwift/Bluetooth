@@ -9,6 +9,7 @@
 /// Enum that represents a bit mask flag / option.
 ///
 /// Basically `Swift.OptionSet` for enums.
+@available(*, deprecated, message: "Use OptionSet instead")
 public protocol BitMaskOption: RawRepresentable, Hashable, CaseIterable where RawValue: FixedWidthInteger { }
 
 public extension Sequence where Element: BitMaskOption {
@@ -40,7 +41,7 @@ public extension BitMaskOption {
 /// Integer-backed array type for `BitMaskOption`.
 ///
 /// The elements are packed in the integer with bitwise math and stored on the stack.
-@frozen
+@available(*, deprecated, message: "Use OptionSet instead")
 public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
     
     public typealias RawValue = Element.RawValue

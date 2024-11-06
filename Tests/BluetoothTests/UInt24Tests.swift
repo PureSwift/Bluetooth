@@ -38,16 +38,36 @@ final class UInt24Tests: XCTestCase {
         XCTAssertNotEqual(UInt24.max.hashValue, 0)
     }
     
+    func testHexadecimal() {
+        
+        let testData: [(UInt24, String)] = [
+            (.zero,     "000000"),
+            (0x000000,  "000000"),
+            (0x000001,  "000001"),
+            (0x000020,  "000020"),
+            (0xABCDEF,  "ABCDEF"),
+            (16777215,  "FFFFFF"),
+            (0xFFFFFF,  "FFFFFF"),
+            (.max,      "FFFFFF")
+        ]
+        
+        for (value, hexadecimal) in testData {
+            XCTAssertEqual(String(UInt32(value).toHexadecimal().suffix(6)), hexadecimal)
+            XCTAssertEqual(UInt32(hexadecimal, radix: 16), UInt32(value))
+            XCTAssertEqual(UInt32(parse: hexadecimal, radix: 16), UInt32(value))
+        }
+    }
+    
     func testExpressibleByIntegerLiteral() {
         
         let values: [(UInt24, String)] = [
-            (.zero, "000000"),
-            (0x000000, "000000"),
-            (0x000001, "000001"),
-            (0x000020, "000020"),
-            (0xABCDEF, "ABCDEF"),
-            (16777215, "FFFFFF"),
-            (0xFFFFFF, "FFFFFF")
+            (.zero,     "000000"),
+            (0x000000,  "000000"),
+            (0x000001,  "000001"),
+            (0x000020,  "000020"),
+            (0xABCDEF,  "ABCDEF"),
+            (16777215,  "FFFFFF"),
+            (0xFFFFFF,  "FFFFFF")
         ]
         
         values.forEach { XCTAssertEqual($0.description, $1) }

@@ -233,27 +233,43 @@ fileprivate extension UInt128 {
     
     /// Parse a UUID string and return a value in big endian order.
     static func bigEndian(uuidString string: String) -> UInt128? {
-        let separator: Character = "-"
-        guard string.utf8.count == 36 else {
+        guard string.utf8.count == 36,
+            let separator = "-".utf8.first else {
             return nil
         }
-        guard string[string.index(string.startIndex, offsetBy: 8)] == separator,
-              string[string.index(string.startIndex, offsetBy: 13)] == separator,
-              string[string.index(string.startIndex, offsetBy: 18)] == separator,
-              string[string.index(string.startIndex, offsetBy: 23)] == separator
+        let characters = string.utf8
+        guard characters[characters.index(characters.startIndex, offsetBy: 8)] == separator,
+              characters[characters.index(characters.startIndex, offsetBy: 13)] == separator,
+              characters[characters.index(characters.startIndex, offsetBy: 18)] == separator,
+              characters[characters.index(characters.startIndex, offsetBy: 23)] == separator,
+              let a = String(characters[characters.startIndex ..< characters.index(characters.startIndex, offsetBy: 8)]),
+              let b = String(characters[characters.index(characters.startIndex, offsetBy: 9) ..< characters.index(characters.startIndex, offsetBy: 13)]),
+              let c = String(characters[characters.index(characters.startIndex, offsetBy: 14) ..< characters.index(characters.startIndex, offsetBy: 18)]),
+              let d = String(characters[characters.index(characters.startIndex, offsetBy: 19) ..< characters.index(characters.startIndex, offsetBy: 23)]),
+              let e = String(characters[characters.index(characters.startIndex, offsetBy: 24) ..< characters.index(characters.startIndex, offsetBy: 36)])
             else { return nil }
-        let a = string[string.startIndex ..< string.index(string.startIndex, offsetBy: 8)]
-        let b = string[string.index(string.startIndex, offsetBy: 9) ..< string.index(string.startIndex, offsetBy: 13)]
-        let c = string[string.index(string.startIndex, offsetBy: 14) ..< string.index(string.startIndex, offsetBy: 18)]
-        let d = string[string.index(string.startIndex, offsetBy: 19) ..< string.index(string.startIndex, offsetBy: 23)]
-        let e = string[string.index(string.startIndex, offsetBy: 24) ..< string.index(string.startIndex, offsetBy: 36)]
         let hexadecimal = (a + b + c + d + e)
-        guard hexadecimal.utf8.count == 32,
-              let bytes = [UInt8](hexadecimal: hexadecimal),
-              let value = UInt128(data: bytes) else {
+        guard hexadecimal.utf8.count == 32 else {
             return nil
         }
-        return value
+        if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
+            guard let value = UInt128(hexadecimal: hexadecimal) else {
+                return nil
+            }
+            return value.bigEndian
+        } else {
+            #if hasFeature(Embedded)
+            // should never be executed
+            assertionFailure()
+            return nil
+            #else
+            guard let bytes = [UInt8](hexadecimal: hexadecimal),
+                  let value = UInt128(data: bytes) else {
+                return nil
+            }
+            return value
+            #endif
+        }
     }
     
     /// Generate UUID string, e.g. `0F4DD6A4-0F71-48EF-98A5-996301B868F9` from a value initialized in its big endian order.
