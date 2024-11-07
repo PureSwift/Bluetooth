@@ -6,10 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 @frozen
 public struct UInt48: ByteValue, Sendable {
  
@@ -82,9 +78,7 @@ extension UInt48: Hashable {
 extension UInt48: CustomStringConvertible {
     
     public var description: String {
-        
         let bytes = self.bigEndian.bytes
-        
         return bytes.0.toHexadecimal()
             + bytes.1.toHexadecimal()
             + bytes.2.toHexadecimal()
@@ -96,24 +90,23 @@ extension UInt48: CustomStringConvertible {
 
 // MARK: - Data Convertible
 
-#if canImport(Foundation)
-public extension UInt48 {
+extension UInt48: DataConvertible {
     
-    static var length: Int { return 6 }
+    public static var length: Int { return 6 }
     
-    init?(data: Data) {
-        
-        guard data.count == UInt48.length else { return nil }
-        
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length else { return nil }
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
     }
     
-    var data: Data {
-        
-        return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5]
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
-#endif
 
 // MARK: - Byte Swap
 
@@ -121,7 +114,6 @@ extension UInt48: ByteSwap {
     
     /// A representation of this integer with the byte order swapped.
     public var byteSwapped: UInt48 {
-        
         return UInt48(bytes: (bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
     }
 }
@@ -131,7 +123,6 @@ extension UInt48: ByteSwap {
 extension UInt48: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt64) {
-        
         self = UInt48(value)
     }
 }
@@ -158,7 +149,6 @@ public extension UInt64 {
     init(_ value: UInt48) {
         
         let bytes = value.bigEndian.bytes
-        
         self = UInt64(bigEndian: UInt64(bytes: (0, 0, bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5)))
     }
 }
