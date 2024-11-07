@@ -6,10 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 /// A 40 bit number stored according to host endianness.
 @frozen
 public struct UInt40: ByteValue, Sendable {
@@ -79,24 +75,23 @@ extension UInt40: CustomStringConvertible {
 
 // MARK: - Data Convertible
 
-#if canImport(Foundation)
-public extension UInt40 {
+extension UInt40: DataConvertible {
     
-    static var length: Int { return 5 }
+    public static var length: Int { return 5 }
     
-    init?(data: Data) {
-        
+    public init?<Data: DataContainer>(data: Data) {
         guard data.count == UInt40.length else { return nil }
-        
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4]))
     }
     
-    var data: Data {
-        
-        return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4]
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
-#endif
 
 // MARK: - Byte Swap
 
@@ -104,7 +99,6 @@ extension UInt40: ByteSwap {
     
     /// A representation of this integer with the byte order swapped.
     public var byteSwapped: UInt40 {
-        
         return UInt40(bytes: (bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
     }
 }
@@ -114,7 +108,6 @@ extension UInt40: ByteSwap {
 extension UInt40: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt64) {
-        
         self = UInt40(value)
     }
 }

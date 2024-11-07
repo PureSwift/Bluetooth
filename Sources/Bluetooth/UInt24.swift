@@ -6,10 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 /// A 24 bit number stored according to host endianness.
 @frozen
 public struct UInt24: ByteValue, Sendable {
