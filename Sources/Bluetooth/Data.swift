@@ -79,3 +79,120 @@ extension Array: DataContainer where Self.Element == UInt8 {
         .init(self[range])
     }
 }
+
+// MARK: - DataConvertible
+
+/// Can be converted into data.
+public protocol DataConvertible {
+    
+    /// Initialize from data.
+    init?<Data: DataContainer>(data: Data)
+    
+    /// Append data representation into buffer.
+    func append<Data: DataContainer>(to data: inout Data)
+        
+    /// Length of value when encoded into data.
+    var dataLength: Int { get }
+}
+
+public extension DataConvertible {
+    
+    /// Append data representation into buffer.
+    static func += <T: DataContainer> (data: inout T, value: Self) {
+        value.append(to: &data)
+    }
+}
+
+public extension DataContainer {
+    
+    /// Initialize data with contents of value.
+    init <T: DataConvertible> (_ value: T) {
+        let length = value.dataLength
+        self.init()
+        self.reserveCapacity(length)
+        self += value
+        assert(self.count == length)
+    }
+    
+    mutating func append <T: DataConvertible> (_ value: T) {
+        self += value
+    }
+}
+
+// MARK: - UnsafeDataConvertible
+
+/// Internal Data casting protocol
+internal protocol UnsafeDataConvertible { }
+
+extension UnsafeDataConvertible {
+    
+    var unsafeDataLength: Int {
+        MemoryLayout<Self>.size
+    }
+    
+    func unsafeAppend <T: DataContainer> (to data: inout T) {
+        let length = unsafeDataLength
+        withUnsafePointer(to: self) {
+            $0.withMemoryRebound(to: UInt8.self, capacity: length) {
+                data.append($0, count: length)
+            }
+        }
+    }
+}
+
+extension UInt16: UnsafeDataConvertible { }
+extension UInt32: UnsafeDataConvertible { }
+extension UInt64: UnsafeDataConvertible { }
+extension UInt128: UnsafeDataConvertible { }
+extension BluetoothAddress: UnsafeDataConvertible { }
+
+extension UInt16: DataConvertible {
+    
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == MemoryLayout<Self>.size else {
+            return nil
+        }
+        self.init(bytes: (data[0], data[1]))
+    }
+    
+    public func append<Data: DataContainer>(to data: inout Data) {
+        unsafeAppend(to: &data)
+    }
+    
+    /// Length of value when encoded into data.
+    public var dataLength: Int { unsafeDataLength }
+}
+
+extension UInt32: DataConvertible {
+    
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == MemoryLayout<Self>.size else {
+            return nil
+        }
+        self.init(bytes: (data[0], data[1], data[2], data[3]))
+    }
+    
+    public func append<Data: DataContainer>(to data: inout Data) {
+        unsafeAppend(to: &data)
+    }
+    
+    /// Length of value when encoded into data.
+    public var dataLength: Int { unsafeDataLength }
+}
+
+extension UInt64: DataConvertible {
+    
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == MemoryLayout<Self>.size else {
+            return nil
+        }
+        self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
+    }
+    
+    public func append<Data: DataContainer>(to data: inout Data) {
+        unsafeAppend(to: &data)
+    }
+    
+    /// Length of value when encoded into data.
+    public var dataLength: Int { unsafeDataLength }
+}
