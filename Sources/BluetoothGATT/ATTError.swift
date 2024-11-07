@@ -6,6 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
+import Foundation
+#endif
+
 /**
  The possible errors returned by a GATT server (a remote peripheral) during Bluetooth low energy ATT transactions.
  
@@ -107,13 +111,17 @@ public enum ATTError: UInt8, Error {
 extension ATTError: CustomStringConvertible {
     
     public var description: String {
-        
+        #if hasFeature(Embedded)
+        return "0x" + rawValue.toHexadecimal()
+        #else
         return name
+        #endif
     }
 }
 
 // MARK: - Description Values
 
+#if !hasFeature(Embedded)
 public extension ATTError {
     
     var name: String {
@@ -196,11 +204,11 @@ public extension ATTError {
         }
     }
 }
+#endif
 
 // MARK: - CustomNSError
 
-import Foundation
-
+#if canImport(Foundation)
 extension ATTError: CustomNSError {
     
     public static var errorDomain: String {
@@ -219,3 +227,4 @@ extension ATTError: CustomNSError {
         ]
     }
 }
+#endif
