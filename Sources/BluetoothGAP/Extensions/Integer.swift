@@ -13,7 +13,7 @@ internal extension UInt16 {
         self = unsafeBitCast(bytes, to: UInt16.self)
     }
     
-    /// Converts to two bytes. 
+    /// Converts to two bytes.
     var bytes: (UInt8, UInt8) {
         return unsafeBitCast(self, to: (UInt8, UInt8).self)
     }
@@ -42,5 +42,14 @@ internal extension UInt64 {
     /// Converts to eight bytes.
     var bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8) {
         return unsafeBitCast(self, to: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8).self)
+    }
+}
+
+internal extension BinaryInteger {
+    
+    @inlinable
+    var bytes: [UInt8] {
+        var mutableValueCopy = self
+        return withUnsafeBytes(of: &mutableValueCopy) { Array($0) }
     }
 }

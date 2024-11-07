@@ -96,7 +96,7 @@ public struct GAPTransportDiscoveryBlock<TransportData: DataContainer>: Equatabl
     public let transportData: TransportData
 }
 
-extension GAPTransportDiscoveryBlock: DataConvertible {
+extension GAPTransportDiscoveryBlock {
     
     /// Append data representation into buffer.
     static func += <T: DataContainer> (data: inout T, value: GAPTransportDiscoveryBlock) {
