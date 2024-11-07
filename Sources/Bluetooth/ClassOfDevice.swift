@@ -6,10 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
+/// Bluetooth Class of Device
 public struct ClassOfDevice: Equatable, Sendable {
     
     internal static var length: Int { 3 }
