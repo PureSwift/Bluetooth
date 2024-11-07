@@ -6,10 +6,6 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 /// Bluetooth address.
 @frozen
 public struct BluetoothAddress: Sendable {
@@ -70,7 +66,7 @@ extension BluetoothAddress: Equatable {
 extension BluetoothAddress: Hashable {
     
     public func hash(into hasher: inout Hasher) {
-        withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
+        withUnsafeBytes{ hasher.combine(bytes: $0) }
     }
 }
 
@@ -146,12 +142,36 @@ extension BluetoothAddress: CustomStringConvertible {
 
 // MARK: - Data
 
-public extension BluetoothAddress {
+extension BluetoothAddress: DataConvertible {
         
-    init?<Data: DataContainer>(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         guard data.count == type(of: self).length
             else { return nil }
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
+    }
+    
+    /// Append data representation into buffer.
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        unsafeAppend(to: &data)
+    }
+    
+    /// Length of value when encoded into data.
+    public var dataLength: Int { Self.length }
+    
+    /// Invokes the given closure with a pointer to underlying value.
+    func withUnsafePointer <Result> (_ block: (UnsafePointer<UInt8>) throws -> Result) rethrows -> Result {
+        return try Swift.withUnsafePointer(to: bytes) {
+            try $0.withMemoryRebound(to: UInt8.self, capacity: BluetoothAddress.length) {
+                try block($0)
+            }
+        }
+    }
+    
+    /// Invokes the given closure with a buffer pointer covering the raw bytes of value.
+    func withUnsafeBytes <Result> (_ block: (UnsafeRawBufferPointer) throws -> Result) rethrows -> Result {
+        try Swift.withUnsafeBytes(of: bytes) {
+            try block($0)
+        }
     }
 }
 
