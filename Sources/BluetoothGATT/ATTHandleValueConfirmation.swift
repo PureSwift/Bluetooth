@@ -6,28 +6,32 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Handle Value Confirmation
 ///
 /// The *Handle Value Confirmation* is sent in response to a received *Handle Value Indication*
 /// and confirms that the client has received an indication of the given attribute.
 @frozen
-public struct ATTHandleValueConfirmation: ATTProtocolDataUnit {
+public struct ATTHandleValueConfirmation: ATTProtocolDataUnit, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .handleValueConfirmation }
+    public static var attributeOpcode: ATTOpcode { .handleValueConfirmation }
     
     public init() { }
+}
+
+extension ATTHandleValueConfirmation: DataConvertible {
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 1,
-            type(of: self).validateOpcode(data)
+            Self.validateOpcode(data)
             else { return nil }
     }
     
-    public var data: Data {
-        
-        return Data([type(of: self).attributeOpcode.rawValue])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
     }
+    
+    public var dataLength: Int { 1 }
 }
