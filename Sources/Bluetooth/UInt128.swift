@@ -34,15 +34,22 @@ extension UInt128: ByteValue {
 
 // MARK: - Data Convertible
 
-public extension UInt128 {
+extension UInt128: DataConvertible {
     
-    static var length: Int { return 16 }
+    public static var length: Int { return 16 }
     
-    init?<Data: DataContainer>(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         guard data.count == UInt128.length
             else { return nil }
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
     }
+    
+    public func append<Data: DataContainer>(to data: inout Data) {
+        unsafeAppend(to: &data)
+    }
+    
+    /// Length of value when encoded into data.
+    public var dataLength: Int { Self.length }
 }
 
 // MARK: - UUID
