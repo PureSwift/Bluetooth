@@ -45,7 +45,7 @@ public extension GAPLEDeviceAddress {
     
     init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == Swift.type(of: self).length,
+        guard data.count == Self.length,
             let type = GAPLEDeviceAddressType(rawValue: data[6])
             else { return nil }
         
@@ -55,7 +55,7 @@ public extension GAPLEDeviceAddress {
     }
     
     var dataLength: Int {
-        return Swift.type(of: self).length
+        return Self.length
     }
     
     func append<Data: DataContainer>(to data: inout Data) {

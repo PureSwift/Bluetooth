@@ -64,8 +64,8 @@ public extension GAPPBADV {
     
     init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).minLength,
-            data.count <= type(of: self).maxLength
+        guard data.count >= Self.minLength,
+            data.count <= Self.maxLength
             else { return nil }
         
         let linkID = UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))

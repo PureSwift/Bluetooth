@@ -38,7 +38,7 @@ public extension GAPChannelMapUpdateIndication {
     
     init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(channelMap: (data[0], data[1], data[2], data[3], data[4]), instant: (data[5], data[6]))
@@ -51,6 +51,6 @@ public extension GAPChannelMapUpdateIndication {
     
     var dataLength: Int {
         
-        return type(of: self).length
+        return Self.length
     }
 }
