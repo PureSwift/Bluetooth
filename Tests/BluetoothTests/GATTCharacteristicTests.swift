@@ -1450,4 +1450,11 @@ final class GATTCharacteristicTests: XCTestCase {
         XCTAssertEqual(GATTObjectID(data: data), GATTObjectID(data: data))
     }
 }
+
+internal extension GATTCharacteristic {
+    
+    var data: Data {
+        Data(self)
+    }
+}
 #endif
