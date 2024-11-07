@@ -6,28 +6,20 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 // MARK: - Protocol Definition
 
 /// Data packet for the ATT protocol.
-public protocol ATTProtocolDataUnit {
+public protocol ATTProtocolDataUnit: DataConvertible {
     
     /// The PDU's attribute opcode.
     static var attributeOpcode: ATTOpcode { get }
-    
-    /// Converts PDU to raw bytes (little-endian).
-    var data: Data { get }
-    
-    /// Initializes PDU from raw bytes (little-endian).
-    init?(data: Data)
 }
 
 internal extension ATTProtocolDataUnit {
     
-    @inline(__always)
-    static func validateOpcode(_ data: Data) -> Bool {
-        
+    static func validateOpcode<Data: DataContainer>(_ data: Data) -> Bool {
         return data.first == attributeOpcode.rawValue
     }
 }
@@ -43,7 +35,7 @@ internal protocol ATTAttributeDataList: ATTProtocolDataUnit {
 
 internal protocol ATTAttributeData {
     
-    init?(data: Data)
+    init?<Data: DataContainer>(data: Data)
 }
 
 extension ATTAttributeDataList {
@@ -84,8 +76,8 @@ internal extension ATTAttributeDataList where AttributeData: DataConvertible {
 }
 
 internal extension ATTAttributeDataList {
-    
-    static func from(data: Data) -> [AttributeData]? {
+
+    static func from<Data: DataContainer>(data: Data) -> [AttributeData]? {
         
         guard data.count > headerLength,
             validateOpcode(data)
@@ -110,7 +102,7 @@ internal extension ATTAttributeDataList {
             
             let byteIndex = headerLength + (index * attributeDataLength)
             
-            let attributeBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + attributeDataLength)
+            let attributeBytes = data.subdata(in: byteIndex ..< byteIndex + attributeDataLength)
             
             guard let attribute = AttributeData(data: attributeBytes)
                 else { return nil }
