@@ -88,21 +88,23 @@ extension UInt24: CustomStringConvertible {
 
 // MARK: - Data Convertible
 
-#if canImport(Foundation)
-public extension UInt24 {
+extension UInt24: DataConvertible {
     
-    internal static var length: Int { return 3 }
+    public static var length: Int { return 3 }
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         guard data.count == UInt24.length else { return nil }
         self.init(bytes: (data[0], data[1], data[2]))
     }
     
-    var data: Data {
-        return Data([bytes.0, bytes.1, bytes.2])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += [bytes.0, bytes.1, bytes.2]
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
-#endif
 
 // MARK: - Byte Swap
 
