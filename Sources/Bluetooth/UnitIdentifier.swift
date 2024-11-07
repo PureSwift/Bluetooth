@@ -6,10 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 @frozen
 public struct UnitIdentifier: RawRepresentable, Equatable, Hashable, Sendable {
     
