@@ -101,6 +101,8 @@ internal protocol FindInformationResponseAttribute {
     
     /// Attribute UUID
     var uuid: UUID { get }
+    
+    init?<Data>(data: Data) where Data : DataContainer
 }
 
 public extension ATTFindInformationResponse {
@@ -219,42 +221,43 @@ extension ATTFindInformationResponse.AttributeData {
     }
     
     internal init?<Data: DataContainer>(data: Data, format: ATTFindInformationResponse.Format) {
-        
+        switch format {
+        case .bit16:
+            guard let values = [ATTFindInformationResponse.Attribute16Bit](data: data) else {
+                return nil
+            }
+            self = .bit16(values)
+        case .bit128:
+            guard let values = [ATTFindInformationResponse.Attribute128Bit](data: data) else {
+                return nil
+            }
+            self = .bit128(values)
+        }
+    }
+}
+
+internal extension Array where Element: FindInformationResponseAttribute {
+    
+    init?<Data: DataContainer>(data: Data) {
+        let format = Element.format
         let pairLength = format.length
         
         guard data.count % pairLength == 0
             else { return nil }
         
         let pairCount = data.count / pairLength
-        
-        var bit16Pairs: [ATTFindInformationResponse.Attribute16Bit] = []
-        var bit128Pairs: [ATTFindInformationResponse.Attribute128Bit] = []
-        
-        switch format {
-        case .bit16:
-            bit16Pairs.reserveCapacity(pairCount)
-        case .bit128:
-            bit128Pairs.reserveCapacity(pairCount)
-        }
+        var pairs = [Element]()
+        pairs.reserveCapacity(pairCount)
         
         for pairIndex in 0 ..< pairCount {
-            
             let byteIndex = pairIndex * pairLength
             let pairBytes = data.subdata(in: byteIndex ..< byteIndex + pairLength)
-            switch format {
-            case .bit16:
-                bit16Pairs.append(ATTFindInformationResponse.Attribute16Bit(pairBytes))
-            case .bit128:
-                bit128Pairs.append(ATTFindInformationResponse.Attribute128Bit(pairBytes))
+            guard let element = Element(data: pairBytes) else {
+                return nil
             }
+            pairs.append(element)
         }
-        
-        switch format {
-        case .bit16:
-            self = .bit16(bit16Pairs)
-        case .bit128:
-            self = .bit128(bit128Pairs)
-        }
+        self = pairs
     }
 }
 
