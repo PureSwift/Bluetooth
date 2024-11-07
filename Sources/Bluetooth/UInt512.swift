@@ -6,10 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 /// A 512 bit number stored according to host endianness.
 @frozen
 public struct UInt512: ByteValue, Sendable {
@@ -165,24 +161,23 @@ extension UInt512: CustomStringConvertible {
 
 // MARK: - Data Convertible
 
-#if canImport(Foundation)
-public extension UInt512 {
+extension UInt512: DataConvertible {
     
-    internal static var length: Int { return 64 }
+    public static var length: Int { return 64 }
     
-    init?(data: Data) {
-        
-        guard data.count == UInt128.length else { return nil }
-        
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length else { return nil }
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23], data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31], data[32], data[33], data[34], data[35], data[36], data[37], data[38], data[39], data[40], data[41], data[42], data[43], data[44], data[45], data[46], data[47], data[48], data[49], data[50], data[51], data[52], data[53], data[54], data[55], data[56], data[57], data[58], data[59], data[60], data[61], data[62], data[63]))
     }
     
-    var data: Data {
-        
-        return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15, bytes.16, bytes.17, bytes.18, bytes.19, bytes.20, bytes.21, bytes.22, bytes.23, bytes.24, bytes.25, bytes.26, bytes.27, bytes.28, bytes.29, bytes.30, bytes.31, bytes.32, bytes.33, bytes.34, bytes.35, bytes.36, bytes.37, bytes.38, bytes.39, bytes.40, bytes.41, bytes.42, bytes.43, bytes.44, bytes.45, bytes.46, bytes.47, bytes.48, bytes.49, bytes.50, bytes.51, bytes.52, bytes.53, bytes.54, bytes.55, bytes.56, bytes.57, bytes.58, bytes.59, bytes.60, bytes.61, bytes.62, bytes.63])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15, bytes.16, bytes.17, bytes.18, bytes.19, bytes.20, bytes.21, bytes.22, bytes.23, bytes.24, bytes.25, bytes.26, bytes.27, bytes.28, bytes.29, bytes.30, bytes.31, bytes.32, bytes.33, bytes.34, bytes.35, bytes.36, bytes.37, bytes.38, bytes.39, bytes.40, bytes.41, bytes.42, bytes.43, bytes.44, bytes.45, bytes.46, bytes.47, bytes.48, bytes.49, bytes.50, bytes.51, bytes.52, bytes.53, bytes.54, bytes.55, bytes.56, bytes.57, bytes.58, bytes.59, bytes.60, bytes.61, bytes.62, bytes.63]
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
-#endif
 
 // MARK: - Byte Swap
 
