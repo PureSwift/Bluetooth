@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Find By Type Value Request
 ///
@@ -17,9 +17,9 @@ import Foundation
 ///
 /// - Note: Generic Attribute Profile defines grouping of attributes by attribute type.
 @frozen
-public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
+public struct ATTFindByTypeRequest<Value: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .findByTypeRequest }
+    public static var attributeOpcode: ATTOpcode { .findByTypeRequest }
     
     /// First requested handle number
     public var startHandle: UInt16
@@ -31,13 +31,14 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
     public var attributeType: UInt16
     
     /// Attribute value to find.
-    public var attributeValue: Data
+    public var attributeValue: Value
     
-    public init(startHandle: UInt16,
-                endHandle: UInt16,
-                attributeType: UInt16,
-                attributeValue: Data) {
-        
+    public init(
+        startHandle: UInt16,
+        endHandle: UInt16,
+        attributeType: UInt16,
+        attributeValue: Value
+    ) {
         self.startHandle = startHandle
         self.endHandle = endHandle
         self.attributeType = attributeType
@@ -45,46 +46,38 @@ public struct ATTFindByTypeRequest: ATTProtocolDataUnit, Equatable {
     }
 }
 
-public extension ATTFindByTypeRequest {
+// MARK: - DataConvertible
+
+extension ATTFindByTypeRequest: DataConvertible {
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= 7,
-            type(of: self).validateOpcode(data)
+            Self.validateOpcode(data)
             else { return nil }
         
         let startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         let endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         let attributeType = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
-        let attributeValue = data.suffixCheckingBounds(from: 7)
+        let attributeValue = Value(data.suffixCheckingBounds(from: 7))
         
-        self.init(startHandle: startHandle,
-                  endHandle: endHandle,
-                  attributeType: attributeType,
-                  attributeValue: attributeValue)
+        self.init(
+            startHandle: startHandle,
+            endHandle: endHandle,
+            attributeType: attributeType,
+            attributeValue: attributeValue
+        )
     }
     
-    var data: Data {
-        
-        return Data(self)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.startHandle.littleEndian
+        data += self.endHandle.littleEndian
+        data += self.attributeType.littleEndian
+        data += self.attributeValue
     }
-}
-
-// MARK: - DataConvertible
-
-extension ATTFindByTypeRequest: DataConvertible {
     
-    var dataLength: Int {
-        
+    public var dataLength: Int {
         return 7 + attributeValue.count
-    }
-    
-    static func += <T: DataContainer> (data: inout T, value: ATTFindByTypeRequest) {
-        
-        data += attributeOpcode.rawValue
-        data += value.startHandle.littleEndian
-        data += value.endHandle.littleEndian
-        data += value.attributeType.littleEndian
-        data += value.attributeValue
     }
 }
