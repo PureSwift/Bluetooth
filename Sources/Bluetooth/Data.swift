@@ -103,6 +103,14 @@ public extension DataConvertible {
     }
 }
 
+public extension Array where Element: DataConvertible {
+    
+    /// Append data representation into buffer.
+    static func += <T: DataContainer> (data: inout T, value: Self) {
+        value.forEach { data += $0 }
+    }
+}
+
 public extension DataContainer {
     
     /// Initialize data with contents of value.
