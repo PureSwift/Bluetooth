@@ -6,44 +6,43 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Find By Type Value Response
 ///
 /// The *Find By Type Value Response* is sent in reply to a received *Find By Type Value Request*
 /// and contains information about this server.
 @frozen
-public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable {
+public struct ATTFindByTypeResponse: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .findByTypeResponse }
+    public static var attributeOpcode: ATTOpcode { .findByTypeResponse }
     
     /// A list of 1 or more Handle Informations.
-    public var handles: [HandlesInformation]
+    public let handles: [HandlesInformation]
     
     public init?(handles: [HandlesInformation]) {
-        
         guard handles.isEmpty == false
             else { return nil }
-        
         self.handles = handles
     }
     
     internal init(_ handles: [HandlesInformation]) {
-        
-        assert(handles.isEmpty == false, "Must have at least one HandlesInformation")
+        assert(handles.isEmpty == false, "Must have at least one element")
         self.handles = handles
     }
 }
 
-public extension ATTFindByTypeResponse {
+// MARK: - DataConvertible
+
+extension ATTFindByTypeResponse: DataConvertible {
     
     /// Minimum length.
-    internal static var minimumLength: Int { return 1 + HandlesInformation.length }
+    internal static var minimumLength: Int { 1 + HandlesInformation.length }
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength,
-            type(of: self).validateOpcode(data)
+        guard data.count >= Self.minimumLength,
+            Self.validateOpcode(data)
             else { return nil }
         
         let handleLength = HandlesInformation.length
@@ -57,35 +56,24 @@ public extension ATTFindByTypeResponse {
         
         let handleIndices = (0 ..< handleCount)
         let handles = handleIndices.map { (index: Int) -> HandlesInformation in
-            
             let byteIndex = 1 + (index * handleLength)
-            return HandlesInformation(data.subdataNoCopy(in: byteIndex ..< byteIndex + handleLength))
+            return HandlesInformation(data.subdata(in: byteIndex ..< byteIndex + handleLength))
         }
         
         self.init(handles: handles)
     }
     
-    var data: Data {
-        
-        return Data(self)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.handles
+    }
+    
+    public var dataLength: Int {
+        1 + (handles.count * HandlesInformation.length)
     }
 }
 
-// MARK: - DataConvertible
-
-extension ATTFindByTypeResponse: DataConvertible {
-    
-    var dataLength: Int {
-        
-        return 1 + (handles.count * HandlesInformation.length)
-    }
-    
-    static func += <T: DataContainer> (data: inout T, value: ATTFindByTypeResponse) {
-        
-        data += attributeOpcode.rawValue
-        value.handles.forEach { data += $0 }
-    }
-}
+// MARK: - Supporting Types
 
 public extension ATTFindByTypeResponse {
     
@@ -95,44 +83,47 @@ public extension ATTFindByTypeResponse {
     /// a *Handles Information* shall be returned.
     /// The *Found Attribute Handle* shall be set to the handle of the attribute that has the exact attribute type
     /// and attribute value from the *Find By Type Value Request*.
-    struct HandlesInformation: Equatable {
+    struct HandlesInformation: Equatable, Hashable, Sendable {
         
         /// Found Attribute Handle
-        public let foundAttribute: UInt16
+        public var foundAttribute: UInt16
         
         /// Group End Handle
-        public let groupEnd: UInt16
+        public var groupEnd: UInt16
         
-        public init(foundAttribute: UInt16,
-                    groupEnd: UInt16) {
-            
+        public init(
+            foundAttribute: UInt16,
+            groupEnd: UInt16
+        ) {
             self.foundAttribute = foundAttribute
             self.groupEnd = groupEnd
         }
     }
 }
 
-internal extension ATTFindByTypeResponse.HandlesInformation {
+extension ATTFindByTypeResponse.HandlesInformation: DataConvertible {
     
-    static var length: Int { return 2 + 2 }
+    public static var length: Int { 4 }
     
-    init(_ data: Data) {
-        
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length else {
+            return nil
+        }
+        self.init(data)
+    }
+    
+    internal init<Data: DataContainer>(_ data: Data) {
+        assert(data.count == Self.length)
         self.foundAttribute = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.groupEnd = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
     }
-}
-
-extension ATTFindByTypeResponse.HandlesInformation: DataConvertible {
     
-    var dataLength: Int {
-        
-        return type(of: self).length
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += foundAttribute.littleEndian
+        data += groupEnd.littleEndian
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTFindByTypeResponse.HandlesInformation) {
-        
-        data += value.foundAttribute.littleEndian
-        data += value.groupEnd.littleEndian
+    public var dataLength: Int {
+        Self.length
     }
 }
