@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Execute Write Request
 ///
@@ -14,27 +14,35 @@ import Foundation
 /// of all the prepared values currently held in the prepare queue from this client.
 /// This request shall be handled by the server as an atomic operation.
 @frozen
-public enum ATTExecuteWriteRequest: UInt8, ATTProtocolDataUnit {
+public enum ATTExecuteWriteRequest: UInt8, ATTProtocolDataUnit, Sendable, CaseIterable {
     
-    public static var attributeOpcode: ATTOpcode { return .executeWriteRequest }
+    public static var attributeOpcode: ATTOpcode {  .executeWriteRequest }
     
     /// Cancel all prepared writes.
     case cancel = 0x00
     
     /// Immediately write all pending prepared values.
     case write  = 0x01
+}
+
+extension ATTExecuteWriteRequest: DataConvertible {
     
-    public init?(data: Data) {
+    public static var length: Int { 2 }
+    
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 2,
-            type(of: self).validateOpcode(data)
+            Self.validateOpcode(data)
             else { return nil }
         
         self.init(rawValue: data[1])
     }
     
-    public var data: Data {
-        
-        return Data([type(of: self).attributeOpcode.rawValue, rawValue])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += [Self.attributeOpcode.rawValue, rawValue]
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
