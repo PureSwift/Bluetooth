@@ -98,7 +98,7 @@ public protocol DataConvertible {
 public extension DataConvertible {
     
     /// Append data representation into buffer.
-    static func += <T: DataContainer> (data: inout T, value: Self) {
+    static func += <Data: DataContainer> (data: inout Data, value: Self) {
         value.append(to: &data)
     }
 }
@@ -124,6 +124,20 @@ public extension DataContainer {
     
     mutating func append <T: DataConvertible> (_ value: T) {
         self += value
+    }
+}
+
+public extension ByteValue where Self: DataConvertible {
+    
+    /// Append data representation into buffer.
+    func append<Data: DataContainer>(to data: inout Data) {
+        withUnsafePointer { (pointer, count) in
+            data.append(pointer, count: count)
+        }
+    }
+    
+    var dataLength: Int {
+        Self.length
     }
 }
 

@@ -26,13 +26,13 @@ public struct BluetoothAddress: Sendable {
 public extension BluetoothAddress {
     
     /// The minimum representable value in this type.
-    static var min: BluetoothAddress { return BluetoothAddress(bytes: (.min, .min, .min, .min, .min, .min)) }
+    static var min: BluetoothAddress { BluetoothAddress(bytes: (.min, .min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    static var max: BluetoothAddress { return BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
+    static var max: BluetoothAddress { BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
     
     /// A zero address.
-    static var zero: BluetoothAddress { return .min }
+    static var zero: BluetoothAddress { BluetoothAddress(bytes: (.zero, .zero, .zero, .zero, .zero, .zero)) }
 }
 
 // MARK: - ByteValue
@@ -42,9 +42,7 @@ extension BluetoothAddress: ByteValue {
     /// Raw Bluetooth Address 6 byte (48 bit) value.
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    public static var bitWidth: Int { return 48 }
-    
-    public static var length: Int { return 6 }
+    public static var bitWidth: Int { 48 }
 }
 
 // MARK: - Equatable
@@ -148,30 +146,6 @@ extension BluetoothAddress: DataConvertible {
         guard data.count == Self.length
             else { return nil }
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
-    }
-    
-    /// Append data representation into buffer.
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
-        unsafeAppend(to: &data)
-    }
-    
-    /// Length of value when encoded into data.
-    public var dataLength: Int { Self.length }
-    
-    /// Invokes the given closure with a pointer to underlying value.
-    func withUnsafePointer <Result> (_ block: (UnsafePointer<UInt8>) throws -> Result) rethrows -> Result {
-        return try Swift.withUnsafePointer(to: bytes) {
-            try $0.withMemoryRebound(to: UInt8.self, capacity: BluetoothAddress.length) {
-                try block($0)
-            }
-        }
-    }
-    
-    /// Invokes the given closure with a buffer pointer covering the raw bytes of value.
-    func withUnsafeBytes <Result> (_ block: (UnsafeRawBufferPointer) throws -> Result) rethrows -> Result {
-        try Swift.withUnsafeBytes(of: bytes) {
-            try block($0)
-        }
     }
 }
 
