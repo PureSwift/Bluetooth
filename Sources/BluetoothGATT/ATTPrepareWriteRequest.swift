@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Prepare Write Request
 ///
@@ -14,9 +14,9 @@ import Foundation
 /// The server will respond to this request with a *Prepare Write Response*,
 /// so that the client can verify that the value was received correctly.
 @frozen
-public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
+public struct ATTPrepareWriteRequest<Value: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .preparedWriteRequest }
+    public static var attributeOpcode: ATTOpcode { .preparedWriteRequest }
     
     /// The handle of the attribute to be written.
     public var handle: UInt16
@@ -25,11 +25,11 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
     public var offset: UInt16
     
     /// The value of the attribute to be written.
-    public var partValue: Data
+    public var partValue: Value
     
     public init(handle: UInt16,
                 offset: UInt16,
-                partValue: Data) {
+                partValue: Value) {
         
         self.handle = handle
         self.offset = offset
@@ -37,39 +37,29 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
     }
 }
 
-public extension ATTPrepareWriteRequest {
-    
-    init?(data: Data) {
-        
-        guard data.count >= 5,
-            type(of: self).validateOpcode(data)
-            else { return nil }
-        
-        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
-        self.partValue = data.suffixCheckingBounds(from: 5)
-    }
-    
-    var data: Data {
-        
-        return Data(self)
-    }
-}
-
 // MARK: - DataConvertible
 
 extension ATTPrepareWriteRequest: DataConvertible {
     
-    var dataLength: Int {
+    public init?<Data: DataContainer>(data: Data) {
         
-        return 5 + partValue.count
+        guard data.count >= 5,
+            Self.validateOpcode(data)
+            else { return nil }
+        
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
+        self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
+        self.partValue = Value(data.suffixCheckingBounds(from: 5))
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTPrepareWriteRequest) {
-        
-        data += attributeOpcode.rawValue
-        data += value.handle.littleEndian
-        data += value.offset.littleEndian
-        data += value.partValue
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.handle.littleEndian
+        data += self.offset.littleEndian
+        data += self.partValue
+    }
+    
+    public var dataLength: Int {
+        return 5 + partValue.count
     }
 }
