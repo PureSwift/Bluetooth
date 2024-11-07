@@ -30,12 +30,11 @@ public struct ClassOfDevice: Equatable, Sendable {
     }
 }
 
-#if canImport(Foundation)
-public extension ClassOfDevice {
+extension ClassOfDevice: DataConvertible {
 
-    init?(data: Data) {
-        
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+
+        guard data.count == Self.length
             else { return nil }
         
         guard let formatType = FormatType(rawValue: (data[0] << 6) >> 6)
@@ -87,23 +86,23 @@ public extension ClassOfDevice {
         }
     }
     
-    var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
         
         // combine Format Type with Major Device Class
         let firstByte = formatType.rawValue | (majorDeviceClass.minorClassValue << 2)
-        
         // get first 3 bits of the Mejor Service Class
         let majorServiceClass3Bits = (majorServiceClass.rawValue.bytes.0 << 5) /// e.g. 11100000
-        
         // combine part of the Major Device Class of part with the Major Service Class
         let secondByte = majorDeviceClass.type.rawValue | majorServiceClass3Bits
-        
         let thirdByte = (majorServiceClass.rawValue.bytes.1 << 5) | (majorServiceClass.rawValue.bytes.0 >> 3)
         
-        return Data([firstByte, secondByte, thirdByte])
+        data += [firstByte, secondByte, thirdByte]
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
-#endif
 
 extension ClassOfDevice {
     
