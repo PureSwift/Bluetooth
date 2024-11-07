@@ -35,40 +35,28 @@ extension GATTCharacteristicExtendedProperties: ExpressibleByIntegerLiteral {
         self.init(rawValue: rawValue)
     }
 }
-    public static let uuid: BluetoothUUID = .characteristicExtendedProperties
+
+// MARK: - DataConvertible
+
+extension GATTCharacteristicExtendedProperties: DataConvertible {
     
-    public static let length = 2
+    public static var length: Int { 2 }
     
-    public var properties: BitMaskOptionSet<Property>
-    
-    public init(properties: BitMaskOptionSet<Property> = []) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        self.properties = properties
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
-        self.properties = BitMaskOptionSet<Property>(rawValue: rawValue)
+        self.init(rawValue: rawValue)
     }
     
-    public var data: Data {
-        
-        let bytes = properties.rawValue.littleEndian.bytes
-        
-        return Data([bytes.0, bytes.1])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.littleEndian
     }
     
-    public var descriptor: GATTAttribute.Descriptor {
-        
-        return GATTAttribute.Descriptor(uuid: type(of: self).uuid,
-                               value: data,
-                               permissions: [.read])
-    }
+    public var dataLength: Int { Self.length }
+}
 
 // MARK: - GATTCharacteristicExtendedProperties
 
