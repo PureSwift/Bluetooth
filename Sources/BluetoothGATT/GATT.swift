@@ -32,20 +32,3 @@ internal enum GATTUUID: UInt16 {
         return .bit16(rawValue)
     }
 }
-
-// MARK: - Characteristic Extended Property
-
-/// GATT Characteristic Extended Properties Bitfield values.
-///
-/// The Characteristic Extended Properties bit field describes additional
-/// properties on how the Characteristic Value can be used, or how the characteristic
-/// descriptors can be accessed.
-@frozen
-public enum GATTCharacteristicExtendedProperty: UInt8 {
-    
-    /// If set, permits reliable writes of the Characteristic Value.
-    case reliableWrite          = 0x01
-    
-    ///
-    case writableAuxiliaries    = 0x02
-}
