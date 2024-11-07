@@ -6,11 +6,11 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-
+#if !hasFeature(Embedded)
 /// L2CAP Socket protocol.
 public protocol L2CAPSocket {
+    
+    associatedtype Data: DataContainer
     
     /// Socket address
     var address: BluetoothAddress { get }
@@ -76,5 +76,4 @@ public enum L2CAPSocketEvent {
 }
 
 public typealias L2CAPSocketEventStream = AsyncStream<L2CAPSocketEvent>
-
 #endif
