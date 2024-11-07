@@ -115,7 +115,7 @@ extension ClassOfDevice {
         public let rawValue: UInt8
         
         public init?(rawValue: UInt8) {
-            guard rawValue <= type(of: self).max.rawValue, rawValue >= type(of: self).min.rawValue
+            guard rawValue <= Self.max.rawValue, rawValue >= Self.min.rawValue
                 else { return nil }
             self.rawValue = rawValue
         }
