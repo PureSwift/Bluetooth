@@ -953,13 +953,6 @@ internal extension GAPData {
     }
 }
 
-internal extension GAPUUIDList {
-    
-    var data: Data {
-        return Data(self)
-    }
-}
-
 internal extension GAPDataDecoder {
     
     static func decode(_ data: Data,
