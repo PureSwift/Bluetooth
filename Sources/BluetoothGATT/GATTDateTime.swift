@@ -51,8 +51,13 @@ public struct GATTDateTime: GATTCharacteristic, Equatable, Hashable, Sendable {
         self.minute = minute
         self.second = second
     }
+}
+
+// MARK: - DataConvertible
+
+extension GATTDateTime: DataConvertible {
     
-    internal static var length: Int { 7 }
+    public static var length: Int { 7 }
 
     public init?<Data: DataContainer>(data: Data) {
         
@@ -77,6 +82,10 @@ public struct GATTDateTime: GATTCharacteristic, Equatable, Hashable, Sendable {
         data += hour.rawValue
         data += minute.rawValue
         data += second.rawValue
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
 
