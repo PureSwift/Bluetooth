@@ -6,9 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
-// MARK: - Characteristic Presentation Format
 /// GATT Characteristic Presentation Format Descriptor
 ///
 /// The Characteristic Presentation Format descriptor defines the format of the Characteristic Value.
@@ -28,12 +27,10 @@ import Foundation
 /// For a Characteristic Value of 23 and an Exponent of 2, the actual value is 2300
 /// For a Characteristic Value of 3892 and an Exponent of -3, the actual value is 3.892
 @frozen
-public struct GATTFormatDescriptor: GATTDescriptor {
+public struct GATTFormatDescriptor: GATTDescriptor, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .characteristicFormat
-    
-    public static let length = 7
-    
+    public static var uuid: BluetoothUUID { .characteristicFormat }
+        
     public let format: GATTCharacteristicFormatType
     
     public let exponent: Int8
@@ -56,10 +53,15 @@ public struct GATTFormatDescriptor: GATTDescriptor {
         self.namespace = namespace
         self.description = description
     }
+}
+
+extension GATTFormatDescriptor: DataConvertible {
     
-    public init?(data: Data) {
+    public static var length: Int { 7 }
+    
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let format = GATTCharacteristicFormatType(rawValue: data[0])
@@ -72,25 +74,15 @@ public struct GATTFormatDescriptor: GATTDescriptor {
                   description: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
     }
     
-    public var data: Data {
-        
-        let unitBytes = unit.littleEndian.bytes
-        let descriptionBytes = description.littleEndian.bytes
-        
-        return Data([format.rawValue,
-                     UInt8(bitPattern: exponent),
-                     unitBytes.0,
-                     unitBytes.1,
-                     namespace,
-                     descriptionBytes.0,
-                     descriptionBytes.1
-            ])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += format.rawValue
+        data += UInt8(bitPattern: exponent)
+        data += unit.littleEndian
+        data += namespace
+        data += description.littleEndian
     }
     
-    public var descriptor: GATTAttribute.Descriptor {
-        
-        return GATTAttribute.Descriptor(uuid: type(of: self).uuid,
-                               value: data,
-                               permissions: [.read])
+    public var dataLength: Int {
+        Self.length
     }
 }
