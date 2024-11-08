@@ -5,14 +5,30 @@
 //  Created by Alsey Coleman Miller on 11/7/24.
 //
 
-// Declares the required C functions
+#if canImport(Darwin)
+import Darwin
+#elseif os(Windows)
+import ucrt
+#elseif canImport(Glibc)
+import Glibc
+#elseif canImport(Musl)
+import Musl
+#elseif canImport(WASILibc)
+import WASILibc
+#elseif canImport(Bionic)
+import Bionic
+#else
+#error("Unsupported Platform")
+#endif
 
-@_silgen_name("memcmp")
-func _memcmp(
-    _: UnsafeRawPointer!,
-    _: UnsafeRawPointer!,
-    _: Int
-) -> Int32
+// Declares the required C functions
+internal func _memcmp(
+    _ p1: UnsafeRawPointer?,
+    _ p2: UnsafeRawPointer?,
+    _ size: Int
+) -> Int32 {
+    memcmp(p1, p2, size)
+}
 
 #if hasFeature(Embedded)
 @_silgen_name("snprintf")
