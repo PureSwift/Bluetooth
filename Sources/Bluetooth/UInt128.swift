@@ -316,7 +316,7 @@ extension Bluetooth.UInt128: CustomStringConvertible {
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
             return Swift.UInt128(self).description
         } else {
-            return hexadecimal
+            return "0x" + hexadecimal
         }
     }
 }

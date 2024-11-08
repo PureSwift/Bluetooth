@@ -63,6 +63,15 @@ extension UInt24: ExpressibleByIntegerLiteral {
     }
 }
 
+// MARK: - CustomStringConvertible
+
+extension UInt24: CustomStringConvertible {
+    
+    public var description: String {
+        UInt32(self).description
+    }
+}
+
 // MARK: - Integer Conversion
 
 public extension UInt24 {
