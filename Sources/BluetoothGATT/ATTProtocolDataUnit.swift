@@ -33,10 +33,7 @@ internal protocol ATTAttributeDataList: ATTProtocolDataUnit {
     static var headerLength: Int { get }
 }
 
-internal protocol ATTAttributeData {
-    
-    init?<Data: DataContainer>(data: Data)
-}
+internal protocol ATTAttributeData: DataConvertible { }
 
 extension ATTAttributeDataList {
     
@@ -52,26 +49,22 @@ internal extension ATTAttributeDataList where AttributeData: DataConvertible {
             else { return false }
         
         for attributeData in attributeData {
-            
             // all items must have same length
             guard attributeData.dataLength == valueLength
                 else { return false }
         }
-        
         return true
     }
     
     static func dataLength <T: Collection> (for attributes: T) -> Int where T.Element == AttributeData {
-        
         assert(attributes.isEmpty == false)
         return attributes.reduce(headerLength, { $0 + $1.dataLength })
     }
     
-    static func append <T: DataContainer> (_ data: inout T, _ attributeData: [AttributeData]) {
-        
+    static func append <Data: DataContainer> (_ data: inout Data, _ attributeData: [AttributeData]) {
         data += attributeOpcode.rawValue
         data += UInt8(attributeData[0].dataLength)
-        attributeData.forEach { data += $0 }
+        data += attributeData
     }
 }
 
