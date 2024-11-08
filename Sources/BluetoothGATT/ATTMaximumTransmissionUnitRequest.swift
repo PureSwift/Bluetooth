@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Exchange MTU Request
 ///
@@ -16,10 +16,10 @@ import Foundation
 /// - Note: This request shall only be sent once during a connection by the client.
 /// The *Client Rx MTU* parameter shall be set to the maximum size of the attribute protocol PDU that the client can receive.
 @frozen
-public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit, Equatable {
+public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
     /// 0x02 = Exchange MTU Request
-    public static var attributeOpcode: ATTOpcode { return .maximumTransmissionUnitRequest }
+    public static var attributeOpcode: ATTOpcode { .maximumTransmissionUnitRequest }
     
     /// Client Rx MTU
     ///
@@ -27,29 +27,7 @@ public struct ATTMaximumTransmissionUnitRequest: ATTProtocolDataUnit, Equatable 
     public var clientMTU: UInt16
     
     public init(clientMTU: UInt16) {
-        
         self.clientMTU = clientMTU
-    }
-}
-
-public extension ATTMaximumTransmissionUnitRequest {
-    
-    internal static var length: Int { return 3 }
-    
-    init?(data: Data) {
-        
-        guard data.count == type(of: self).length,
-            type(of: self).validateOpcode(data)
-            else { return nil }
-        
-        let clientMTU = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
-        self.clientMTU = clientMTU
-    }
-    
-    var data: Data {
-        
-       return Data(self)
     }
 }
 
@@ -57,14 +35,23 @@ public extension ATTMaximumTransmissionUnitRequest {
 
 extension ATTMaximumTransmissionUnitRequest: DataConvertible {
     
-    var dataLength: Int {
+    public static var length: Int { 3 }
+    
+    public init?<Data: DataContainer>(data: Data) {
         
-        return type(of: self).length
+        guard data.count == Self.length,
+            Self.validateOpcode(data)
+            else { return nil }
+        
+        self.clientMTU = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTMaximumTransmissionUnitRequest) {
-        
-        data += attributeOpcode.rawValue
-        data += value.clientMTU.littleEndian
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.clientMTU.littleEndian
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
