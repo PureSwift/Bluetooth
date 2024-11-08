@@ -6,19 +6,33 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// GATT Characteristic Descriptor
-public protocol GATTDescriptor {
+public protocol GATTDescriptor: DataConvertible {
     
     /// Bluetooth UUID of the descriptor.
     static var uuid: BluetoothUUID { get }
     
     /// Decode from data.
-    init?(data: Data)
+    init?<Data: DataContainer>(data: Data)
     
     /// Encode to data.
-    var data: Data { get }
+    func append<Data: DataContainer>(to data: inout Data)
+}
+
+public extension GATTAttribute.Descriptor {
+    
+    init<Descriptor: GATTDescriptor>(
+        _ descriptor: Descriptor,
+        permissions: ATTAttributePermissions = [.read]
+    ) {
+        self.init(
+            uuid: Descriptor.uuid,
+            value: Data(descriptor),
+            permissions: permissions
+        )
+    }
 }
 
 // MARK: - Characteristic Descriptor
