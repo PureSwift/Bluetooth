@@ -13,17 +13,17 @@ internal extension String {
     
     /// Initialize from UTF8 data.
     init?<Data: DataContainer>(utf8 data: Data) {
+        #if canImport(Darwin)
         // Newer Darwin and other platforms use StdLib parsing
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
             self.init(validating: data, as: UTF8.self)
         } else {
             // Older Darwin uses Foundation
-            #if canImport(Foundation)
             self.init(bytes: data, encoding: .utf8)
-            #else
-            #error("Darwin should have Foundation framework")
-            #endif
         }
+        #else
+        self.init(validating: data, as: UTF8.self)
+        #endif
     }
     
     #if hasFeature(Embedded)
@@ -45,8 +45,3 @@ internal extension String {
     }
     #endif
 }
-
-#if hasFeature(Embedded)
-@_silgen_name("snprintf")
-internal func _snprintf_uint8_t(_ pointer: UnsafeMutablePointer<CChar>, _ length: Int, _ format: UnsafePointer<CChar>, _ arg: UInt8) -> Int32
-#endif
