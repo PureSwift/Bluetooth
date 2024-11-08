@@ -49,8 +49,15 @@ internal extension BinaryInteger {
     
     @inlinable
     var bytes: [UInt8] {
-        var mutableValueCopy = self
-        return withUnsafeBytes(of: &mutableValueCopy) { Array($0) }
+        withUnsafeBytes(of: self) { Array($0) }
+    }
+    
+    func reduceBytes<T>(into initialValue: T, _ block: (inout T, UInt8) -> ()) -> T {
+        withUnsafeBytes(of: self) {
+            $0.reduce(into: initialValue, { (partialResult, byte) in
+                block(&partialResult, byte)
+            })
+        }
     }
 }
 
