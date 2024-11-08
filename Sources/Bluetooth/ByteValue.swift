@@ -42,6 +42,20 @@ public extension ByteValue {
     }
 }
 
+public extension ByteValue where Self: DataConvertible {
+    
+    /// Append data representation into buffer.
+    func append<Data: DataContainer>(to data: inout Data) {
+        withUnsafeBytes { buffer in
+            data += buffer
+        }
+    }
+    
+    var dataLength: Int {
+        Self.length
+    }
+}
+
 // MARK: - Equatable
 
 extension ByteValue where Self: Equatable {

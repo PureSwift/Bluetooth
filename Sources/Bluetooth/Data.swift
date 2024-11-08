@@ -127,20 +127,6 @@ public extension DataContainer {
     }
 }
 
-public extension ByteValue where Self: DataConvertible {
-    
-    /// Append data representation into buffer.
-    func append<Data: DataContainer>(to data: inout Data) {
-        withUnsafePointer { (pointer, count) in
-            data.append(pointer, count: count)
-        }
-    }
-    
-    var dataLength: Int {
-        Self.length
-    }
-}
-
 // MARK: - UnsafeDataConvertible
 
 /// Internal Data casting protocol
