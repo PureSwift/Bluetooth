@@ -116,7 +116,7 @@ extension _UUID {
     @inline(__always)
     internal func withUUIDBytes<R>(_ work: (UnsafeBufferPointer<UInt8>) throws -> R) rethrows -> R {
         return try withExtendedLifetime(self) {
-            try withUnsafeBytes(of: uuid) { rawBuffer in
+            try Swift.withUnsafeBytes(of: uuid) { rawBuffer in
                 return try rawBuffer.withMemoryRebound(to: UInt8.self) { buffer in
                     return try work(buffer)
                 }
@@ -143,8 +143,8 @@ extension _UUID {
 extension _UUID: Equatable {
     
     public static func ==(lhs: _UUID, rhs: _UUID) -> Bool {
-        withUnsafeBytes(of: lhs) { lhsPtr in
-            withUnsafeBytes(of: rhs) { rhsPtr in
+        Swift.withUnsafeBytes(of: lhs) { lhsPtr in
+            Swift.withUnsafeBytes(of: rhs) { rhsPtr in
                 let lhsTuple = lhsPtr.loadUnaligned(as: (UInt64, UInt64).self)
                 let rhsTuple = rhsPtr.loadUnaligned(as: (UInt64, UInt64).self)
                 return (lhsTuple.0 ^ rhsTuple.0) | (lhsTuple.1 ^ rhsTuple.1) == 0
@@ -156,7 +156,7 @@ extension _UUID: Equatable {
 extension _UUID: Hashable {
     
     public func hash(into hasher: inout Hasher) {
-        withUnsafeBytes(of: uuid) { buffer in
+        Swift.withUnsafeBytes(of: uuid) { buffer in
             hasher.combine(bytes: buffer)
         }
     }
@@ -211,8 +211,8 @@ extension _UUID : Comparable {
         var rightUUID = rhs.uuid
         var result: Int = 0
         var diff: Int = 0
-        withUnsafeBytes(of: &leftUUID) { leftPtr in
-            withUnsafeBytes(of: &rightUUID) { rightPtr in
+        Swift.withUnsafeBytes(of: &leftUUID) { leftPtr in
+            Swift.withUnsafeBytes(of: &rightUUID) { rightPtr in
                 for offset in (0 ..< MemoryLayout<ByteValue>.size).reversed() {
                     diff = Int(leftPtr.load(fromByteOffset: offset, as: UInt8.self)) -
                         Int(rightPtr.load(fromByteOffset: offset, as: UInt8.self))

@@ -17,11 +17,17 @@ import Musl
 import WASILibc
 #elseif canImport(Bionic)
 import Bionic
-#else
-#error("Unsupported Platform")
 #endif
 
 // Declares the required C functions
+#if hasFeature(Embedded)
+@_silgen_name("memcmp")
+internal func _memcmp(
+    _ p1: UnsafeRawPointer?,
+    _ p2: UnsafeRawPointer?,
+    _ size: Int
+) -> Int32
+#else
 internal func _memcmp(
     _ p1: UnsafeRawPointer?,
     _ p2: UnsafeRawPointer?,
@@ -29,6 +35,7 @@ internal func _memcmp(
 ) -> Int32 {
     memcmp(p1, p2, size)
 }
+#endif
 
 #if hasFeature(Embedded)
 @_silgen_name("snprintf")

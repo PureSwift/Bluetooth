@@ -21,7 +21,7 @@ internal extension String {
             #if canImport(Foundation)
             self.init(bytes: data, encoding: .utf8)
             #else
-            #error("Darwin should have Foundation framework")
+            fatalError()
             #endif
         }
     }
@@ -45,8 +45,3 @@ internal extension String {
     }
     #endif
 }
-
-#if hasFeature(Embedded)
-@_silgen_name("snprintf")
-internal func _snprintf_uint8_t(_ pointer: UnsafeMutablePointer<CChar>, _ length: Int, _ format: UnsafePointer<CChar>, _ arg: UInt8) -> Int32
-#endif
