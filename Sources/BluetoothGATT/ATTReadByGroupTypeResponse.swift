@@ -90,7 +90,7 @@ extension ATTReadByGroupTypeResponse.AttributeData: DataConvertible {
         
         self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.endGroupHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
-        self.value = Value(data.suffixCheckingBounds(from: 4))
+        self.value = data.suffixCheckingBounds(from: 4)
     }
     
     public func append<Data>(to data: inout Data) where Data : DataContainer {

@@ -59,7 +59,7 @@ extension ATTFindByTypeRequest: DataConvertible {
         let startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         let endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         let attributeType = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
-        let attributeValue = Value(data.suffixCheckingBounds(from: 7))
+        let attributeValue: Value = data.suffixCheckingBounds(from: 7)
         
         self.init(
             startHandle: startHandle,

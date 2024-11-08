@@ -48,7 +48,7 @@ extension ATTPrepareWriteResponse: DataConvertible {
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
-        self.partValue = Value(data.suffixCheckingBounds(from: 5))
+        self.partValue = data.suffixCheckingBounds(from: 5)
     }
     
     public func append<Data>(to data: inout Data) where Data : DataContainer {

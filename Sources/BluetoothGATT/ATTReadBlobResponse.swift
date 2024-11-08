@@ -34,12 +34,10 @@ public struct ATTReadBlobResponse<Value: DataContainer>: ATTProtocolDataUnit, Eq
 extension ATTReadBlobResponse: DataConvertible {
     
     public init?<Data: DataContainer>(data: Data) {
-        
         guard data.count >= 1,
             Self.validateOpcode(data)
             else { return nil }
-        
-        self.partAttributeValue = Value(data.suffixCheckingBounds(from: 1))
+        self.partAttributeValue = data.suffixCheckingBounds(from: 1)
     }
     
     public func append<Data>(to data: inout Data) where Data : DataContainer {

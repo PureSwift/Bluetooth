@@ -29,7 +29,7 @@ extension ATTReadMultipleResponse: DataConvertible {
     public init?<Data: DataContainer>(data: Data) {
         guard Self.validateOpcode(data)
             else { return nil }
-        self.values = Values(data.suffixCheckingBounds(from: 1))
+        self.values = data.suffixCheckingBounds(from: 1)
     }
     
     public func append<Data>(to data: inout Data) where Data : DataContainer {

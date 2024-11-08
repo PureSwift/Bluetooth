@@ -9,12 +9,20 @@
 internal extension DataContainer {
     
     @usableFromInline
-    func suffixCheckingBounds(from start: Int) -> Self {
-        
+    func suffixCheckingBounds<Data: DataContainer>(from start: Int) -> Data {
         if count > start {
-            return Self(suffix(from: start))
+            return Data(suffix(from: start))
         } else {
-            return Self()
+            return Data()
+        }
+    }
+    
+    static func += (data: inout Self, bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)) {
+        let length = MemoryLayout<(UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)>.size
+        withUnsafePointer(to: bytes) {
+            $0.withMemoryRebound(to: UInt8.self, capacity: length) {
+                data.append($0, count: length)
+            }
         }
     }
 }

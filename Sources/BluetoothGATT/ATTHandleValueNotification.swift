@@ -60,7 +60,7 @@ extension ATTHandleValueNotification: DataConvertible {
             else { return nil }
     
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        self.value = Value(data.suffixCheckingBounds(from: 3))
+        self.value = data.suffixCheckingBounds(from: 3)
     }
     
     public func append<Data>(to data: inout Data) where Data : DataContainer {
