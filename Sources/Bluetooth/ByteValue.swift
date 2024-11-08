@@ -23,26 +23,83 @@ public protocol ByteValue: Equatable {
     static var bitWidth: Int { get }
 }
 
+// MARK: - Data Convertible
+
 public extension ByteValue {
     
     /// Size of value in bytes.
     static var length: Int { bitWidth / 8 }
     
-    /// Invokes the given closure with a pointer to the given argument.
-    func withUnsafePointer<T>(_ body: (UnsafePointer<UInt8>, Int) -> T) -> T {
-        let length = Self.length
-        assert(length == MemoryLayout<ByteValue>.size)
-        return Swift.withUnsafePointer(to: bytes) {
-            $0.withMemoryRebound(to: UInt8.self, capacity: length) {
-                body($0, length)
+    @inline(__always)
+    func withUnsafeBytes<R>(_ body: (UnsafeBufferPointer<UInt8>) throws -> R) rethrows -> R {
+        return try Swift.withExtendedLifetime(self) {
+            try Swift.withUnsafeBytes(of: bytes) { rawBuffer in
+                return try rawBuffer.withMemoryRebound(to: UInt8.self) { buffer in
+                    return try body(buffer)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Equatable
+
+extension ByteValue where Self: Equatable {
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.withUnsafeBytes { (b1) in
+            rhs.withUnsafeBytes { (b2) in
+                b1.elementsEqual(b2)
+            }
+        }
+    }
+}
+
+// MARK: - Hashable
+
+extension ByteValue where Self: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
+    }
+}
+
+// MARK: - Comparable
+
+extension ByteValue where Self: Comparable {
+    
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.withUnsafeBytes { (b1) in
+            rhs.withUnsafeBytes { (b2) in
+                _memcmp(
+                    UnsafeRawPointer(b1.baseAddress),
+                    UnsafeRawPointer(b2.baseAddress),
+                    Self.length
+                ) < 0
             }
         }
     }
     
-    /// Invokes the given closure with a buffer pointer covering the raw bytes of value.
-    func withUnsafeBytes <Result> (_ block: (UnsafeRawBufferPointer) -> Result) -> Result {
-        Swift.withUnsafeBytes(of: bytes) {
-            block($0)
+    public static func > (lhs: Self, rhs: Self) -> Bool {
+        lhs.withUnsafeBytes { (b1) in
+            rhs.withUnsafeBytes { (b2) in
+                _memcmp(
+                    UnsafeRawPointer(b1.baseAddress),
+                    UnsafeRawPointer(b2.baseAddress),
+                    Self.length
+                ) > 0
+            }
+        }
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension ByteValue where Self: CustomStringConvertible {
+    
+    public var description: String {
+        withUnsafeBytes {
+            "0x" + $0.toHexadecimal()
         }
     }
 }

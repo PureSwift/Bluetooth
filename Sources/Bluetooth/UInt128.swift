@@ -35,9 +35,7 @@ extension UInt128: ByteValue {
 // MARK: - Data Convertible
 
 extension UInt128: DataConvertible {
-    
-    public static var length: Int { return 16 }
-    
+        
     public init?<Data: DataContainer>(data: Data) {
         guard data.count == UInt128.length
             else { return nil }

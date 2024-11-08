@@ -8,7 +8,7 @@
 
 /// Bluetooth address.
 @frozen
-public struct BluetoothAddress: Sendable {
+public struct BluetoothAddress: Hashable, Comparable, Sendable {
     
     // MARK: - Properties
     
@@ -43,29 +43,6 @@ extension BluetoothAddress: ByteValue {
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
     public static var bitWidth: Int { 48 }
-}
-
-// MARK: - Equatable
-
-extension BluetoothAddress: Equatable {
-    
-    public static func == (lhs: BluetoothAddress, rhs: BluetoothAddress) -> Bool {
-        return lhs.bytes.0 == rhs.bytes.0
-            && lhs.bytes.1 == rhs.bytes.1
-            && lhs.bytes.2 == rhs.bytes.2
-            && lhs.bytes.3 == rhs.bytes.3
-            && lhs.bytes.4 == rhs.bytes.4
-            && lhs.bytes.5 == rhs.bytes.5
-    }
-}
-
-// MARK: - Hashable
-
-extension BluetoothAddress: Hashable {
-    
-    public func hash(into hasher: inout Hasher) {
-        withUnsafeBytes{ hasher.combine(bytes: $0) }
-    }
 }
 
 // MARK: - Byte Swap

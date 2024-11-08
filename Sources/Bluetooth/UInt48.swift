@@ -7,16 +7,15 @@
 //
 
 @frozen
-public struct UInt48: ByteValue, Sendable {
+public struct UInt48: ByteValue, Hashable, Comparable, Sendable {
  
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    public static var bitWidth: Int { return 48 }
+    public static var bitWidth: Int { 48 }
     
     public var bytes: ByteValue
     
     public init(bytes: ByteValue = (0, 0, 0, 0, 0, 0)) {
-        
         self.bytes = bytes
     }
 }
@@ -33,78 +32,13 @@ public extension UInt48 {
     static var zero: UInt48 { return .min }
 }
 
-// MARK: - Comparable
-
-extension UInt48: Comparable {
-    
-    public static func > (lhs: UInt48, rhs: UInt48) -> Bool {
-        return UInt64(lhs) > UInt64(rhs)
-    }
-    
-    public static func < (lhs: UInt48, rhs: UInt48) -> Bool {
-        return UInt64(lhs) < UInt64(rhs)
-    }
-    
-    public static func >= (lhs: UInt48, rhs: UInt48) -> Bool {
-        return UInt64(lhs) >= UInt64(rhs)
-    }
-    
-    public static func <= (lhs: UInt48, rhs: UInt48) -> Bool {
-        return UInt64(lhs) <= UInt64(rhs)
-    }
-    
-    public static func == (lhs: UInt48, rhs: UInt48) -> Bool {
-        
-        return lhs.bytes.0 == rhs.bytes.0 &&
-            lhs.bytes.1 == rhs.bytes.1 &&
-            lhs.bytes.2 == rhs.bytes.2 &&
-            lhs.bytes.3 == rhs.bytes.3 &&
-            lhs.bytes.4 == rhs.bytes.4 &&
-            lhs.bytes.5 == rhs.bytes.5
-    }
-}
-
-// MARK: - Hashable
-
-extension UInt48: Hashable {
-    
-    public func hash(into hasher: inout Hasher) {
-        UInt64(self).hash(into: &hasher)
-    }
-}
-
-// MARK: - CustomStringConvertible
-
-extension UInt48: CustomStringConvertible {
-    
-    public var description: String {
-        let bytes = self.bigEndian.bytes
-        return bytes.0.toHexadecimal()
-            + bytes.1.toHexadecimal()
-            + bytes.2.toHexadecimal()
-            + bytes.3.toHexadecimal()
-            + bytes.4.toHexadecimal()
-            + bytes.5.toHexadecimal()
-    }
-}
-
 // MARK: - Data Convertible
 
 extension UInt48: DataConvertible {
-    
-    public static var length: Int { return 6 }
-    
+        
     public init?<Data: DataContainer>(data: Data) {
         guard data.count == Self.length else { return nil }
         self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5]))
-    }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
-        data += [bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5]
-    }
-    
-    public var dataLength: Int {
-        Self.length
     }
 }
 
