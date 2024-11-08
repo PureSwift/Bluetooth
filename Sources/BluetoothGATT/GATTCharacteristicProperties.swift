@@ -6,7 +6,7 @@
 //
 
 /// GATT Characteristic Properties Bitfield valuess
-public struct GATTCharacteristicProperty: OptionSet, Hashable, Sendable {
+public struct GATTCharacteristicProperties: OptionSet, Hashable, Sendable {
     
     public var rawValue: UInt8
     
@@ -17,7 +17,7 @@ public struct GATTCharacteristicProperty: OptionSet, Hashable, Sendable {
 
 // MARK: - ExpressibleByIntegerLiteral
 
-extension GATTCharacteristicProperty: ExpressibleByIntegerLiteral {
+extension GATTCharacteristicProperties: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
         self.rawValue = value
@@ -26,16 +26,15 @@ extension GATTCharacteristicProperty: ExpressibleByIntegerLiteral {
 
 // MARK: CustomStringConvertible
 
-extension GATTCharacteristicProperty: CustomStringConvertible, CustomDebugStringConvertible {
+extension GATTCharacteristicProperties: CustomStringConvertible, CustomDebugStringConvertible {
     
     #if hasFeature(Embedded)
     public var description: String {
-        rawValue.description
     }
     #else
     @inline(never)
     public var description: String {
-        let descriptions: [(GATTCharacteristicProperty, StaticString)] = [
+        let descriptions: [(GATTCharacteristicProperties, StaticString)] = [
             (.broadcast,            ".broadcast"),
             (.read,                 ".read"),
             (.write,                ".write"),
@@ -54,17 +53,17 @@ extension GATTCharacteristicProperty: CustomStringConvertible, CustomDebugString
 
 // MARK: - Options
 
-public extension GATTCharacteristicProperty {
+public extension GATTCharacteristicProperties {
     
-    static var broadcast: GATTCharacteristicProperty            { 0x01 }
-    static var read: GATTCharacteristicProperty                 { 0x02 }
-    static var writeWithoutResponse: GATTCharacteristicProperty { 0x04 }
-    static var write: GATTCharacteristicProperty                { 0x08 }
-    static var notify: GATTCharacteristicProperty               { 0x10 }
-    static var indicate: GATTCharacteristicProperty             { 0x20 }
+    static var broadcast: GATTCharacteristicProperties            { 0x01 }
+    static var read: GATTCharacteristicProperties                 { 0x02 }
+    static var writeWithoutResponse: GATTCharacteristicProperties { 0x04 }
+    static var write: GATTCharacteristicProperties                { 0x08 }
+    static var notify: GATTCharacteristicProperties               { 0x10 }
+    static var indicate: GATTCharacteristicProperties             { 0x20 }
     
     /// Characteristic supports write with signature
-    static var signedWrite: GATTCharacteristicProperty          { 0x40 } // BT_GATT_CHRC_PROP_AUTH
+    static var signedWrite: GATTCharacteristicProperties          { 0x40 } // BT_GATT_CHRC_PROP_AUTH
     
-    static var extendedProperties: GATTCharacteristicProperty   { 0x80 }
+    static var extendedProperties: GATTCharacteristicProperties   { 0x80 }
 }
