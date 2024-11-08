@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// GATT Client Characteristic Configuration Descriptor
 ///
@@ -20,57 +20,57 @@ import Foundation
 /// The default value for the Client Characteristic Configuration descriptor is `0x00`.
 /// Upon connection of non-binded clients, this descriptor is set to the default value.
 @frozen
-public struct GATTClientCharacteristicConfiguration: GATTDescriptor {
+public struct GATTClientCharacteristicConfiguration: GATTDescriptor, OptionSet, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .clientCharacteristicConfiguration
+    public static var uuid: BluetoothUUID { .clientCharacteristicConfiguration }
     
-    public static let length = 2
+    public var rawValue: UInt16
     
-    public var configuration: BitMaskOptionSet<Configuration>
-    
-    public init(configuration: BitMaskOptionSet<Configuration> = []) {
-        
-        self.configuration = configuration
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
-        self.configuration = BitMaskOptionSet<Configuration>(rawValue: rawValue)
-    }
-    
-    public var data: Data {
-        
-        let bytes = configuration.rawValue.littleEndian.bytes
-        
-        return Data([bytes.0, bytes.1])
-    }
-    
-    public var descriptor: GATTAttribute.Descriptor {
-        
-        return GATTAttribute.Descriptor(uuid: type(of: self).uuid,
-                               value: data,
-                               permissions: [.read, .write])
+    public init(rawValue: UInt16) {
+        self.rawValue = rawValue
     }
 }
 
-// MARK: - Supporting Types
+// MARK: - ExpressibleByIntegerLiteral
+
+extension GATTClientCharacteristicConfiguration: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral rawValue: RawValue) {
+        self.init(rawValue: rawValue)
+    }
+}
+
+
+// MARK: - Options
 
 public extension GATTClientCharacteristicConfiguration {
     
-    /// GATT Client Characteristic Configuration Options
-    enum Configuration: UInt16, BitMaskOption {
-        
-        /// Notifications enabled
-        case notify = 0b01
-        
-        /// Indications enabled
-        case indicate = 0b10
-        
-        public static let allCases: [Configuration] = [.notify, .indicate]
+    /// Notifications enabled
+    static var notify: GATTClientCharacteristicConfiguration { 0b01 }
+    
+    /// Indications enabled
+    static var indicate: GATTClientCharacteristicConfiguration { 0b10 }
+}
+
+// MARK: - CustomStringConvertible
+
+extension GATTClientCharacteristicConfiguration: CustomStringConvertible, CustomDebugStringConvertible {
+    
+    #if hasFeature(Embedded)
+    public var description: String {
+        "0x" + rawValue.toHexadecimal()
     }
+    #else
+    @inline(never)
+    public var description: String {
+        let descriptions: [(GATTClientCharacteristicConfiguration, StaticString)] = [
+            (.notify, ".notify"),
+            (.indicate, ".indicate")
+        ]
+        return buildDescription(descriptions)
+    }
+    #endif
+
+    /// A textual representation of the file permissions, suitable for debugging.
+    public var debugDescription: String { self.description }
 }
