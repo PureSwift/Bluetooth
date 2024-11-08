@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Read Response
 ///
@@ -15,33 +15,15 @@ import Foundation
 ///
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
 @frozen
-public struct ATTReadResponse: ATTProtocolDataUnit, Equatable {
+public struct ATTReadResponse<Value: DataContainer>: ATTProtocolDataUnit, Equatable {
     
     public static var attributeOpcode: ATTOpcode { return .readResponse }
     
     /// The value of the attribute with the handle given.
-    public var attributeValue: Data
+    public var attributeValue: Value
     
-    public init(attributeValue: Data) {
-        
+    public init(attributeValue: Value) {
         self.attributeValue = attributeValue
-    }
-}
-
-public extension ATTReadResponse {
-    
-    init?(data: Data) {
-        
-        guard data.count >= 1,
-            type(of: self).validateOpcode(data)
-            else { return nil }
-        
-        self.attributeValue = data.suffixCheckingBounds(from: 1)
-    }
-    
-    var data: Data {
-        
-        return Data(self)
     }
 }
 
@@ -49,14 +31,19 @@ public extension ATTReadResponse {
 
 extension ATTReadResponse: DataConvertible {
     
-    var dataLength: Int {
-        
-        return 1 + attributeValue.count
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count >= 1,
+            Self.validateOpcode(data)
+            else { return nil }
+        self.attributeValue = data.suffixCheckingBounds(from: 1)
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTReadResponse) {
-        
-        data += attributeOpcode.rawValue
-        data += value.attributeValue
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.attributeValue
+    }
+    
+    public var dataLength: Int {
+        return 1 + attributeValue.count
     }
 }
