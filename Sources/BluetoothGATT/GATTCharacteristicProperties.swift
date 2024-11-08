@@ -30,6 +30,7 @@ extension GATTCharacteristicProperties: CustomStringConvertible, CustomDebugStri
     
     #if hasFeature(Embedded)
     public var description: String {
+        "0x" + rawValue.toHexadecimal()
     }
     #else
     @inline(never)
