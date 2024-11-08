@@ -115,7 +115,7 @@ extension GAPFlags: CustomStringConvertible, CustomDebugStringConvertible {
     
     #if hasFeature(Embedded)
     public var description: String {
-        rawValue.description
+        "0x" + rawValue.toHexadecimal()
     }
     #else
     @inline(never)
