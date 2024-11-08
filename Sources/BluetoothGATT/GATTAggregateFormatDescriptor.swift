@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// GATT Characteristic Aggregate Format Descriptor
 ///
@@ -23,35 +23,36 @@ import Foundation
 /// If 3 Characteristic Presentation Format declarations exist at Attribute Handles 0x40, 0x50 and 0x60,
 /// the Characteris Aggregate Format Value is 0x405060.
 @frozen
-public struct GATTAggregateFormatDescriptor: GATTDescriptor {
+public struct GATTAggregateFormatDescriptor: GATTDescriptor, Equatable, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .characteristicAggregateFormat
+    public static var uuid: BluetoothUUID { .characteristicAggregateFormat }
     
     public var handles: [UInt16]
     
     public init(handles: [UInt16] = []) {
         self.handles = handles
     }
+}
+
+// MARK: - DataConvertible
+
+extension GATTAggregateFormatDescriptor: DataConvertible {
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         // this is not actually UInt16 UUID, but handles
         // since the binary format is the same we can reuse code
-        guard let list = GAPUUIDList<UInt16>(data: data)
+        guard let list = GATTUUIDList<UInt16>(data: data)
             else { return nil }
         
         self.handles = list.uuids
     }
     
-    public var data: Data {
-        return Data(GAPUUIDList<UInt16>(uuids: handles))
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += GATTUUIDList<UInt16>(uuids: handles)
     }
     
-    public var descriptor: GATTAttribute.Descriptor {
-        return GATTAttribute.Descriptor(
-            uuid: type(of: self).uuid,
-            value: data,
-            permissions: [.read]
-        )
+    public var dataLength: Int {
+        GATTUUIDList<UInt16>(uuids: handles).dataLength
     }
 }
