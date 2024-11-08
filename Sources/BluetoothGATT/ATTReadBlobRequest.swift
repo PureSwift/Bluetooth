@@ -6,16 +6,16 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Read Blob Request
 ///
 /// The *Read Blob Request* is used to request the server to read part of the value of an attribute
 /// at a given offset and return a specific part of the value in a *Read Blob Response*.
 @frozen
-public struct ATTReadBlobRequest: ATTProtocolDataUnit, Equatable {
+public struct ATTReadBlobRequest: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .readBlobRequest }
+    public static var attributeOpcode: ATTOpcode { .readBlobRequest }
     
     /// The handle of the attribute to be read.
     public var handle: UInt16
@@ -31,39 +31,29 @@ public struct ATTReadBlobRequest: ATTProtocolDataUnit, Equatable {
     }
 }
 
-public extension ATTReadBlobRequest {
+// MARK: - DataConvertible
+
+extension ATTReadBlobRequest: DataConvertible {
     
-    internal static var length: Int { return 1 + 2 + 2 }
+    public static var length: Int { 5 }
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length,
-            type(of: self).validateOpcode(data)
+        guard data.count == Self.length,
+            Self.validateOpcode(data)
             else { return nil }
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         self.offset = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
     }
     
-    var data: Data {
-        
-        return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension ATTReadBlobRequest: DataConvertible {
-    
-    var dataLength: Int {
-        
-        return type(of: self).length
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.handle.littleEndian
+        data += self.offset.littleEndian
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTReadBlobRequest) {
-        
-        data += attributeOpcode.rawValue
-        data += value.handle.littleEndian
-        data += value.offset.littleEndian
+    public var dataLength: Int {
+        Self.length
     }
 }
