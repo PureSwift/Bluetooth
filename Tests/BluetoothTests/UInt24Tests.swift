@@ -78,7 +78,7 @@ final class UInt24Tests: XCTestCase {
         let data = Data([0xFF, 0xFF, 0xFF])
         
         XCTAssertEqual(UInt24(data: data), 16777215)
-        XCTAssertEqual(UInt24.max.data, data)
+        XCTAssertEqual(Data(UInt24.max), data)
     }
     
     func testCodable() throws {
