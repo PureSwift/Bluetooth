@@ -40,6 +40,27 @@ extension GATTClientCharacteristicConfiguration: ExpressibleByIntegerLiteral {
     }
 }
 
+// MARK: - DataConvertible
+
+extension GATTClientCharacteristicConfiguration: DataConvertible {
+    
+    public static var length: Int { 2 }
+    
+    public init?<Data: DataContainer>(data: Data) {
+        
+        guard data.count == Self.length
+            else { return nil }
+        
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        self.init(rawValue: rawValue)
+    }
+    
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.littleEndian
+    }
+    
+    public var dataLength: Int { Self.length }
+}
 
 // MARK: - Options
 
