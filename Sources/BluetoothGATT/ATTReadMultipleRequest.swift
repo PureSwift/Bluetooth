@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Read Multiple Request
 ///
@@ -16,28 +16,28 @@ import Foundation
 /// Only values that have a known fixed size can be read, with the exception of the last value that can have a variable length.
 /// The knowledge of whether attributes have a known fixed size is defined in a higher layer specification.
 @frozen
-public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable {
+public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .readMultipleRequest }
+    public static var attributeOpcode: ATTOpcode { .readMultipleRequest }
     
     /// The handles of the attributes to read.
-    public var handles: [UInt16]
+    public let handles: [UInt16]
     
     public init?(handles: [UInt16]) {
-        
         guard handles.count >= 2
             else { return nil }
-        
         self.handles = handles
     }
 }
 
-public extension ATTReadMultipleRequest {
+// MARK: - DataConvertible
+
+extension ATTReadMultipleRequest: DataConvertible {
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= 5,
-            type(of: self).validateOpcode(data)
+            Self.validateOpcode(data)
             else { return nil }
         
         let handleCount = (data.count - 1) / 2
@@ -46,39 +46,20 @@ public extension ATTReadMultipleRequest {
             else { return nil }
         
         // preallocate handle buffer
-        var handles = [UInt16]()
-        handles.reserveCapacity(handleCount)
-        
-        for index in 0 ..< handleCount {
-            
+        let handles = (0 ..< handleCount).map { index in
             let handleIndex = 1 + (index * 2)
-            
-            let handle = UInt16(littleEndian: UInt16(bytes: (data[handleIndex], data[handleIndex + 1])))
-            
-            handles.append(handle)
+            return UInt16(littleEndian: UInt16(bytes: (data[handleIndex], data[handleIndex + 1])))
         }
         
         self.init(handles: handles)
     }
     
-    var data: Data {
-        
-        return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension ATTReadMultipleRequest: DataConvertible {
-    
-    var dataLength: Int {
-        
-        return 1 + (2 * handles.count)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.handles
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTReadMultipleRequest) {
-        
-        data += attributeOpcode.rawValue
-        value.handles.forEach { data += $0 }
+    public var dataLength: Int {
+        1 + (2 * handles.count)
     }
 }
