@@ -14,8 +14,8 @@ internal extension FixedWidthInteger {
         #if hasFeature(Embedded) || (canImport(Darwin) && DEBUG)
         string = ""
         string.reserveCapacity(length)
-        self.bigEndian.bytes.forEach { byte in
-            string.append(String(format: "%02X", length: 2, byte)!)
+        string = self.bigEndian.reduceBytes(into: string) { partialString, byte in
+            string += String(hexadecimal: byte)
         }
         #else // Linux and non-Embedded release builds use Swift StdLib
         string = String(self, radix: 16, uppercase: true)
@@ -29,6 +29,27 @@ internal extension FixedWidthInteger {
         assert(string == string.uppercased(), "String should be uppercased")
         #endif
         return string
+    }
+}
+
+internal extension String {
+    
+    /// Converts a byte to its uppercase hexadecimal representation.
+    init(hexadecimal byte: UInt8) {
+        let length = 2
+        #if hasFeature(Embedded) || (canImport(Darwin) && DEBUG)
+        self.init(format: "%02X", length: length, byte)!
+        #else
+        self.init(self, radix: 16, uppercase: true)
+        // Add Zero padding
+        while self.utf8.count < length {
+            self = "0" + self
+        }
+        #endif
+        assert(self.utf8.count == length)
+        #if !hasFeature(Embedded)
+        assert(self == self.uppercased(), "String should be uppercased")
+        #endif
     }
 }
 
@@ -79,7 +100,7 @@ internal extension FixedWidthInteger {
     
     /// Expects uppercase UTF8 data.
     init?<C>(utf8: C, radix: Self) where C: Collection, C.Element == UInt8 {
-        #if !hasFeature(Embedded) && DEBUG
+        #if !hasFeature(Embedded)
         assert(String(decoding: utf8, as: UTF8.self) == String(decoding: utf8, as: UTF8.self).uppercased(), "Expected uppercase string")
         #endif
         let digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".utf8
