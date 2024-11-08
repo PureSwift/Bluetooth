@@ -38,7 +38,26 @@ extension GATTServerCharacteristicConfiguration: ExpressibleByIntegerLiteral {
     }
 }
 
+// MARK: - DataConvertible
 
+extension GATTServerCharacteristicConfiguration: DataConvertible {
+    
+    public static var length: Int { 1 }
+    
+    public init?<Data: DataContainer>(data: Data) {
+        
+        guard data.count == Self.length
+            else { return nil }
+        
+        self.init(rawValue: data[0])
+    }
+    
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue
+    }
+    
+    public var dataLength: Int { Self.length }
+}
 
 // MARK: - CustomStringConvertible
 
