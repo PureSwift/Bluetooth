@@ -63,7 +63,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     public init(
         socket: Socket,
         log: ((String) -> ())? = nil
-    ) async {
+    ) {
         self.socket = socket
         self.log = log
     }
@@ -193,73 +193,90 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     ///
     /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
     @discardableResult
-    public mutating func queue <T: ATTProtocolDataUnit> (
-        _ pdu: T,
-        response: ((T) -> ())? = nil
-    ) -> UInt? {
-        
-        let attributeOpcode = T.attributeOpcode
-        let type = attributeOpcode.type
-        
-        // Only request and indication PDUs should have response callbacks. 
-        switch type {
+    public mutating func queue <Request: ATTProtocolDataUnit> (
+        _ pdu: Request
+    ) throws(Error) -> UInt {
+        let attributeOpcode = Request.attributeOpcode
+        // Only request and indication PDUs should have response callbacks.
+        switch attributeOpcode.type {
         case .request,
              .indication: // Indication handles confirmation
-            
-            guard response != nil
-                else { return nil }
-            
+            fatalError("Missing response")
         case .response,
              .command,
              .confirmation,
              .notification:
-            
-            guard response == nil
-                else { return nil }
+            break
         }
-        
-        /// unable to encode PDU
-        guard let encodedPDU = encode(pdu)
-            else { return nil }
-        
-        let id = nextSendOpcodeID
-        
-        let sendOpcode = SendOperation(
-            id: id,
+        let operation = try SendOperation(
+            id: nextSendOpcodeID,
             opcode: attributeOpcode,
-            data: encodedPDU,
+            data: encode(pdu)
+        )
+        return queue(operation)
+    }
+    
+    /// Adds a PDU to the queue to send.
+    ///
+    /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
+    @discardableResult
+    public mutating func queue <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
+        _ request: Request,
+        response: @escaping ((Response) -> ())
+    ) throws(Error) -> UInt {
+        let attributeOpcode = Request.attributeOpcode
+        // Only request and indication PDUs should have response callbacks.
+        switch attributeOpcode.type {
+        case .request,
+             .indication: // Indication handles confirmation
+            break
+        case .response,
+             .command,
+             .confirmation,
+             .notification:
+            fatalError()
+        }
+        let operation = try SendOperation(
+            id: nextSendOpcodeID,
+            opcode: attributeOpcode,
+            data: encode(request),
             response: response
         )
-        
-        // increment ID
-        nextSendOpcodeID += 1
-        
-        // Add the op to the correct queue based on its type
-        switch type {
-        case .request:
-            requestQueue.append(sendOpcode)
-        case .indication:
-            indicationQueue.append(sendOpcode)
-        case .response,
-             .command,
-             .confirmation,
-             .notification:
-            writeQueue.append(sendOpcode)
-        }
-        
-        writePending()
-        
-        return sendOpcode.id
+        return queue(operation)
     }
     
     // MARK: - Private Methods
     
-    private func encode <T: ATTProtocolDataUnit> (_ request: T) -> Data? {
+    private mutating func queue (
+        _ operation: SendOperation
+    ) -> UInt {
+        // increment ID
+        nextSendOpcodeID += 1
+        
+        // Add the op to the correct queue based on its type
+        switch operation.opcode.type {
+        case .request:
+            requestQueue.append(operation)
+        case .indication:
+            indicationQueue.append(operation)
+        case .response,
+             .command,
+             .confirmation,
+             .notification:
+            writeQueue.append(operation)
+        }
+        
+        writePending()
+        
+        return operation.id
+    }
+    
+    private func encode <T: ATTProtocolDataUnit> (_ request: T) throws(Error) -> Data {
         
         let data = Data(request)
         /// MTU must be large enough to hold PDU. 
         guard data.count <= Int(maximumTransmissionUnit.rawValue)
-            else { return nil }
+            else { throw .encoding }
         
         // TODO: Sign (encrypt) data
         
@@ -364,7 +381,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
                 attributeHandle: 0x00,
                 error: .requestNotSupported
             )
-            let _ = queue(errorResponse)
+            let _ = try queue(errorResponse)
         }
     }
     
@@ -478,6 +495,9 @@ public enum ATTConnectionError<SocketError: Swift.Error, Data: DataContainer>: E
     /// Error response.
     case errorResponse(ATTErrorResponse)
     
+    /// Enable to encode attribute
+    case encoding
+    
     /// Error ocurred at the socket layer.
     case socket(SocketError)
 }
@@ -498,21 +518,30 @@ internal extension ATTConnection {
         /// The response callback.
         let response: ((Data) throws(ATTConnection.Error) -> ())
         
-        init<T: ATTProtocolDataUnit>(
+        init(
             id: UInt,
             opcode: ATTOpcode,
-            data: Data,
-            response: ((T) -> ())? = nil
+            data: Data
         ) {
             self.id = id
             self.opcode = opcode
             self.data = data
             self.response = { (data: Data) throws(ATTConnection.Error) -> () in
-                // unexpected response
-                guard let response = response else {
-                    assertionFailure("Unexpected response")
-                    throw .unexpectedResponse(data)
-                }
+                assertionFailure("Unexpected response")
+                throw .unexpectedResponse(data)
+            }
+        }
+        
+        init<Response: ATTProtocolDataUnit>(
+            id: UInt,
+            opcode: ATTOpcode,
+            data: Data,
+            response: @escaping ((Response) -> ())
+        ) {
+            self.id = id
+            self.opcode = opcode
+            self.data = data
+            self.response = { (data: Data) throws(ATTConnection.Error) -> () in
                 // invalid ATT code
                 guard let responseOpcode = data.first.flatMap(ATTOpcode.init(rawValue:))
                     else { throw .garbageResponse(data) }
@@ -523,7 +552,7 @@ internal extension ATTConnection {
                     throw .errorResponse(errorResponse)
                 } else if responseOpcode == opcode.response {
                     // response is expected
-                    guard let value = T.init(data: data) else {
+                    guard let value = Response.init(data: data) else {
                         throw .garbageResponse(data)
                     }
                     response(value)
