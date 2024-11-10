@@ -6,10 +6,10 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// GATT Database
-public struct GATTDatabase: Equatable, Hashable {
+public struct GATTDatabase<Data: DataContainer>: Equatable, Hashable, Sendable {
     
     // MARK: - Internal Properties
     
@@ -24,7 +24,7 @@ public struct GATTDatabase: Equatable, Hashable {
     public init() { }
     
     /// Initialize database with the specified services.
-    public init(services: [GATTAttribute.Service]) {
+    public init(services: [GATTAttribute<Data>.Service]) {
         services.forEach { add(service: $0) }
     }
     
@@ -75,7 +75,7 @@ public struct GATTDatabase: Equatable, Hashable {
     // MARK: - Methods
     
     @discardableResult
-    public mutating func add(service: GATTAttribute.Service) -> UInt16 {
+    public mutating func add(service: GATTAttribute<Data>.Service) -> UInt16 {
         var includedServicesHandles = [UInt16]()
         var characteristicDeclarationHandles = [UInt16]()
         var characteristicValueHandles = [UInt16]()
@@ -91,7 +91,7 @@ public struct GATTDatabase: Equatable, Hashable {
     
     @discardableResult
     public mutating func add(
-        service: GATTAttribute.Service,
+        service: GATTAttribute<Data>.Service,
         includedServicesHandles: inout [UInt16],
         characteristicDeclarationHandles: inout [UInt16],
         characteristicValueHandles: inout [UInt16],
@@ -101,7 +101,7 @@ public struct GATTDatabase: Equatable, Hashable {
         let serviceAttribute = ServiceAttribute(
             handle: self.newHandle(),
             uuid: service.uuid,
-            isPrimary: service.primary
+            isPrimary: service.isPrimary
         )
         
         var attributes = [serviceAttribute.attribute]
@@ -254,7 +254,7 @@ public struct GATTDatabase: Equatable, Hashable {
 
 extension GATTDatabase: ExpressibleByArrayLiteral {
     
-    public init(arrayLiteral elements: GATTAttribute.Service...) {
+    public init(arrayLiteral elements: GATTAttribute<Data>.Service...) {
         self.init(services: elements)
     }
 }
@@ -301,24 +301,25 @@ extension GATTDatabase: RandomAccessCollection {
 public extension GATTDatabase {
     
     /// ATT Attribute
-    struct Attribute: Equatable, Hashable {
+    struct Attribute: Equatable, Hashable, Sendable {
         
-        public typealias Permission = ATTAttributePermission
+        public typealias Permissions = ATTAttributePermissions
         
         public let handle: UInt16
         
         public let uuid: BluetoothUUID
         
-        public let permissions: BitMaskOptionSet<Permission>
+        public let permissions: Permissions
         
         public var value: Data
         
         /// Defualt initializer
-        public init(handle: UInt16,
-                    uuid: BluetoothUUID,
-                    value: Data = Data(),
-                    permissions: BitMaskOptionSet<Permission> = []) {
-            
+        public init(
+            handle: UInt16,
+            uuid: BluetoothUUID,
+            value: Data = Data(),
+            permissions: Permissions = []
+        ) {
             self.handle = handle
             self.uuid = uuid
             self.value = value
@@ -334,7 +335,7 @@ internal extension GATTDatabase {
     /// Internal Representation of a GATT Service. 
     ///
     ///- Note: For use with `GATTDatabase` only.
-    struct AttributeGroup: Equatable, Hashable {
+    struct AttributeGroup: Equatable, Hashable, Sendable {
         
         var attributes: [Attribute]
         
@@ -350,13 +351,15 @@ internal extension GATTDatabase {
             return attributes[0]
         }
         
-        var service: GATTAttribute.Service? {
+        var service: GATTAttribute<Data>.Service? {
             
             guard let serviceAttribute = ServiceAttribute(attribute: self.serviceAttribute)
                 else { return nil }
             
-            var service = GATTAttribute.Service(uuid: serviceAttribute.uuid,
-                                       primary: serviceAttribute.isPrimary)
+            var service = GATTAttribute<Data>.Service(
+                uuid: serviceAttribute.uuid,
+                isPrimary: serviceAttribute.isPrimary
+            )
             
             guard attributes.count > 1
                 else { return service }
@@ -370,7 +373,7 @@ internal extension GATTDatabase {
                     guard let includeAttribute = IncludedServiceAttribute(attribute: attribute)
                         else { return nil }
                     
-                    let include = GATTAttribute.Include(serviceHandle: includeAttribute.serviceHandle,
+                    let include = GATTAttribute<Data>.Include(serviceHandle: includeAttribute.serviceHandle,
                                                endGroupHandle: includeAttribute.endGroupHandle,
                                                serviceUUID: includeAttribute.uuid)
                     
@@ -390,7 +393,7 @@ internal extension GATTDatabase {
                     
                     let characteristicValueAttribute = CharacteristicValueAttribute(attribute: valueAttribute)
                     
-                    let characteristic = GATTAttribute.Characteristic(uuid: characteristicAttribute.uuid,
+                    let characteristic = GATTAttribute<Data>.Characteristic(uuid: characteristicAttribute.uuid,
                                                              value: characteristicValueAttribute.value,
                                                              permissions: characteristicValueAttribute.permissions, properties: characteristicAttribute.properties, descriptors: [])
                     
@@ -404,7 +407,7 @@ internal extension GATTDatabase {
                     
                     let descriptorAttribute = DescriptorAttribute(attribute: attribute)
                     
-                    let descriptor = GATTAttribute.Descriptor(
+                    let descriptor = GATTAttribute<Data>.Descriptor(
                         uuid: descriptorAttribute.uuid,
                         value: descriptorAttribute.value,
                         permissions: descriptorAttribute.permissions
@@ -422,7 +425,7 @@ internal extension GATTDatabase {
         }
     }
     
-    struct ServiceAttribute {
+    struct ServiceAttribute: Equatable, Hashable, Sendable {
         
         /// Attribute Handle
         var handle: UInt16
@@ -480,7 +483,7 @@ internal extension GATTDatabase {
     
     struct IncludedServiceAttribute {
         
-        static let uuid: BluetoothUUID = .include
+        static var uuid: BluetoothUUID { .include }
         
         /// Attribute Handle
         var handle: UInt16
@@ -502,7 +505,7 @@ internal extension GATTDatabase {
             self.endGroupHandle = endGroupHandle
         }
         
-        init(include: GATTAttribute.Include, handle: UInt16) {
+        init(include: GATTAttribute<Data>.Include, handle: UInt16) {
             
             self.handle = handle
             self.serviceHandle = include.serviceHandle
@@ -512,7 +515,7 @@ internal extension GATTDatabase {
         
         init?(attribute: Attribute) {
             
-            guard attribute.uuid == type(of: self).uuid,
+            guard attribute.uuid == Self.uuid,
                 let _ = Length(rawValue: attribute.value.count)
                 else { return nil }
             
@@ -520,7 +523,7 @@ internal extension GATTDatabase {
             
             let serviceHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[0], attribute.value[1])))
             let endGroupHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[2], attribute.value[3])))
-            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: attribute.value.suffixNoCopy(from: 4))!)
+            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: Data(attribute.value.suffix(from: 4)))!)
             
             self.serviceHandle = serviceHandle
             self.endGroupHandle = endGroupHandle
@@ -530,13 +533,14 @@ internal extension GATTDatabase {
         
         var attribute: Attribute {
             
-            var data = Data(capacity: 4 + uuid.dataLength)
+            var data = Data()
+            data.reserveCapacity(4 + uuid.dataLength)
             data += serviceHandle.littleEndian
             data += endGroupHandle.littleEndian
             data += uuid.littleEndian
             
             return Attribute(handle: handle,
-                             uuid: type(of: self).uuid,
+                             uuid: Self.uuid,
                              value: data,
                              permissions: [.read])
         }
@@ -548,15 +552,17 @@ internal extension GATTDatabase {
         }
     }
     
-    struct CharacteristicDeclarationAttribute {
+    struct CharacteristicDeclarationAttribute: Equatable, Hashable, Sendable {
         
-        static let uuid: BluetoothUUID = .characteristic
+        static var uuid: BluetoothUUID { .characteristic }
+        
+        typealias Properties = GATTAttribute<Data>.Characteristic.Properties
         
         /// Characteristic UUID
         var uuid: BluetoothUUID
         
         /// Characteristic Properties
-        var properties: BitMaskOptionSet<GATTAttribute.Characteristic.Property>
+        var properties: Properties
         
         /// Attribute Handle
         var handle: UInt16
@@ -564,11 +570,12 @@ internal extension GATTDatabase {
         /// Characteristic Value Handle
         var valueHandle: UInt16
         
-        init(handle: UInt16,
-             valueHandle: UInt16,
-             uuid: BluetoothUUID,
-             properties: BitMaskOptionSet<GATTAttribute.Characteristic.Property>) {
-            
+        init(
+            handle: UInt16,
+            valueHandle: UInt16,
+            uuid: BluetoothUUID,
+            properties: Properties
+        ) {
             self.handle = handle
             self.valueHandle = valueHandle
             self.uuid = uuid
@@ -577,15 +584,15 @@ internal extension GATTDatabase {
         
         init?(attribute: Attribute) {
             
-            guard attribute.uuid == type(of: self).uuid,
+            guard attribute.uuid == Self.uuid,
                 let length = Length(rawValue: attribute.value.count)
                 else { return nil }
             
             assert(attribute.permissions == [.read], "Invalid attribute permissions")
             
-            let properties = BitMaskOptionSet<GATTAttribute.Characteristic.Property>(rawValue: attribute.value[0])
+            let properties = Properties(rawValue: attribute.value[0])
             let valueHandle = UInt16(littleEndian: UInt16(bytes: (attribute.value[1], attribute.value[2])))
-            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: attribute.value.subdataNoCopy(in: 3 ..< length.rawValue))!)
+            let uuid = BluetoothUUID(littleEndian: BluetoothUUID(data: attribute.value.subdata(in: 3 ..< length.rawValue))!)
             
             self.uuid = uuid
             self.properties = properties
@@ -595,15 +602,18 @@ internal extension GATTDatabase {
         
         var attribute: Attribute {
             
-            var data = Data(capacity: 3 + uuid.dataLength)
+            var data = Data()
+            data.reserveCapacity(3 + uuid.dataLength)
             data += properties.rawValue
             data += valueHandle.littleEndian
             data += uuid.littleEndian
             
-            return Attribute(handle: handle,
-                             uuid: type(of: self).uuid,
-                             value: data,
-                             permissions: [.read])
+            return Attribute(
+                handle: handle,
+                uuid: Self.uuid,
+                value: data,
+                permissions: [.read]
+            )
         }
         
         private enum Length: Int {
@@ -613,7 +623,9 @@ internal extension GATTDatabase {
         }
     }
     
-    struct CharacteristicValueAttribute {
+    struct CharacteristicValueAttribute: Equatable, Hashable, Sendable {
+        
+        typealias Permissions = ATTAttributePermissions
         
         /// Characteristic UUID
         var uuid: BluetoothUUID
@@ -622,7 +634,7 @@ internal extension GATTDatabase {
         var value: Data
         
         /// Characteristic Value Permissions
-        var permissions: BitMaskOptionSet<GATTAttribute.Characteristic.Permission>
+        var permissions: Permissions
         
         /// Attribute Handle
         var handle: UInt16
@@ -630,7 +642,7 @@ internal extension GATTDatabase {
         init(handle: UInt16,
              value: Data,
              uuid: BluetoothUUID,
-             permissions: BitMaskOptionSet<GATTAttribute.Characteristic.Permission>) {
+             permissions: Permissions) {
             
             self.handle = handle
             self.value = value
@@ -655,7 +667,9 @@ internal extension GATTDatabase {
         }
     }
     
-    struct DescriptorAttribute {
+    struct DescriptorAttribute: Equatable, Hashable, Sendable {
+        
+        typealias Permissions = ATTAttributePermissions
         
         /// Attribute Handle
         var handle: UInt16
@@ -667,9 +681,9 @@ internal extension GATTDatabase {
         var value: Data
         
         /// Descriptor Permissions
-        var permissions: BitMaskOptionSet<GATTAttribute.Characteristic.Permission>
+        var permissions: Permissions
         
-        init(descriptor: GATTAttribute.Descriptor, handle: UInt16) {
+        init(descriptor: GATTAttribute<Data>.Descriptor, handle: UInt16) {
             
             self.handle = handle
             self.uuid = descriptor.uuid
