@@ -6,52 +6,50 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if !hasFeature(Embedded)
 /// L2CAP Socket protocol.
 public protocol L2CAPSocket {
     
     associatedtype Data: DataContainer
     
+    associatedtype Error: Swift.Error
+    
     /// Socket address
     var address: BluetoothAddress { get }
     
-    var event: L2CAPSocketEventStream { get }
+    var event: ((L2CAPSocketEvent<Self.Error>) -> ())? { get set }
     
     /// Write to the socket.
-    func send(_ data: Data) async throws
+    func send(_ data: Data) throws(Self.Error)
     
     /// Reads from the socket.
-    func receive(_ bufferSize: Int) async throws -> Data
-    
-    /// Attempt to accept an incoming connection.
-    func accept() async throws -> Self
+    func receive(_ bufferSize: Int) throws(Self.Error) -> Self.Data
     
     /// Attempts to change the socket's security level.
-    func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
+    func setSecurityLevel(_ securityLevel: SecurityLevel) throws(Self.Error)
     
     /// Get security level
-    var securityLevel: SecurityLevel { get async throws }
+    var securityLevel: SecurityLevel { get throws(Self.Error) }
     
     /// Close socket.
-    func close() async
+    func close()
     
     /// Creates a new socket connected to the remote address specified.
     static func lowEnergyClient(
         address: BluetoothAddress,
         destination: BluetoothAddress,
         isRandom: Bool
-    ) async throws -> Self
+    ) throws(Self.Error) -> Self
     
     /// Creates a new server,
     static func lowEnergyServer(
         address: BluetoothAddress,
         isRandom: Bool,
         backlog: Int
-    ) async throws -> Self
+    ) throws(Self.Error) -> Self
 }
 
 /// Bluetooth L2CAP Socket Event
-public enum L2CAPSocketEvent {
+public enum L2CAPSocketEvent <Error: Swift.Error> {
     
     /// New connection
     case connection
@@ -74,6 +72,3 @@ public enum L2CAPSocketEvent {
     /// Socket closed
     case close
 }
-
-public typealias L2CAPSocketEventStream = AsyncStream<L2CAPSocketEvent>
-#endif
