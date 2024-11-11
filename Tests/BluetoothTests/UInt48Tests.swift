@@ -56,6 +56,6 @@ final class UInt48Tests: XCTestCase {
         let data = Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
         
         XCTAssertEqual(UInt48(data: data), 281474976710655)
-        XCTAssertEqual(UInt48.max.data, data)
+        XCTAssertEqual(Data(UInt48.max), data)
     }
 }

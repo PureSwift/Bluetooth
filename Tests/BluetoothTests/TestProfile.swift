@@ -14,8 +14,8 @@ import BluetoothGATT
 /// Test GATT Profile
 public struct TestProfile {
     
-    public typealias Service = GATTAttribute.Service
-    public typealias Characteristic = GATTAttribute.Characteristic
+    public typealias Service = GATTAttribute<Data>.Service
+    public typealias Characteristic = GATTAttribute<Data>.Characteristic
     
     public static let services: [Service] = [
         TestService,
@@ -23,7 +23,7 @@ public struct TestProfile {
     ]
     
     public static let TestService = Service(uuid: BluetoothUUID(rawValue: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!,
-                                            primary: true,
+                                            isPrimary: true,
                                             characteristics: [
                                                 TestProfile.Read,
                                                 TestProfile.ReadBlob,
@@ -72,16 +72,16 @@ public struct TestProfile {
                                               value: Data(),
                                               permissions: [.read],
                                               properties: [.read, .notify],
-                                              descriptors: [GATTClientCharacteristicConfiguration().descriptor])
+                                              descriptors: [.init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write])])
     
     public static let Indicate = Characteristic(uuid: BluetoothUUID(rawValue: "7F799666-678C-41E7-9380-EEB713E532F7")!,
                                               value: Data(),
                                               permissions: [.read],
                                               properties: [.read, .indicate],
-                                              descriptors: [GATTClientCharacteristicConfiguration().descriptor])
+                                              descriptors: [.init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write])])
     
     public static let TestDefinedService = Service(uuid: .savantSystems2,
-                                                   primary: true,
+                                                   isPrimary: true,
                                                    characteristics: [
                                                     TestProfile.Read,
                                                     TestProfile.ReadBlob,

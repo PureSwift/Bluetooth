@@ -12,22 +12,21 @@ import Foundation
 @testable import BluetoothGATT
 
 /// Test L2CAP socket
-@preconcurrency
-internal actor TestL2CAPSocket: L2CAPSocket {
-            
-    private actor Cache {
+internal final class TestL2CAPSocket: L2CAPSocket {
         
-        static let shared = Cache()
+    typealias Data = Foundation.Data
+    
+    typealias Error = POSIXError
+    
+    private enum Cache {
         
-        private init() { }
+        static var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
         
-        var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
-        
-        func queue(client socket: TestL2CAPSocket, server: BluetoothAddress) {
+        static func queue(client socket: TestL2CAPSocket, server: BluetoothAddress) {
             pendingClients[server, default: []].append(socket)
         }
         
-        func dequeue(server: BluetoothAddress) -> TestL2CAPSocket? {
+        static func dequeue(server: BluetoothAddress) -> TestL2CAPSocket? {
             guard let socket = pendingClients[server]?.first else {
                 return nil
             }
@@ -40,18 +39,12 @@ internal actor TestL2CAPSocket: L2CAPSocket {
         address: BluetoothAddress,
         destination: BluetoothAddress,
         isRandom: Bool
-    ) async throws -> TestL2CAPSocket {
+    ) throws(POSIXError) -> TestL2CAPSocket {
         let socket = TestL2CAPSocket(
             address: address,
             name: "Client"
         )
-        print("Client \(address) will connect to \(destination)")
-        // append to pending clients
-        await Cache.shared.queue(client: socket, server: destination)
-        // wait until client has connected
-        while await (Cache.shared.pendingClients[destination] ?? []).contains(where: { $0 === socket }) {
-            try await Task.sleep(nanoseconds: 10_000_000)
-        }
+        Cache.queue(client: socket, server: destination)
         return socket
     }
     
@@ -59,7 +52,7 @@ internal actor TestL2CAPSocket: L2CAPSocket {
         address: BluetoothAddress,
         isRandom: Bool,
         backlog: Int
-    ) async throws -> TestL2CAPSocket {
+    ) throws(POSIXError) -> TestL2CAPSocket {
         return TestL2CAPSocket(
             address: address,
             name: "Server"
@@ -72,24 +65,21 @@ internal actor TestL2CAPSocket: L2CAPSocket {
     
     let address: BluetoothAddress
     
-    public let event: L2CAPSocketEventStream
+    var event: ((L2CAPSocketEvent<POSIXError>) -> ())?
     
-    private var eventContinuation: L2CAPSocketEventStream.Continuation!
-    
-    /// The socket's security level.
-    private(set) var securityLevel: SecurityLevel = .sdp
-    
+    private(set) var securityLevel: Bluetooth.SecurityLevel = .sdp
+
     /// Attempts to change the socket's security level.
-    func setSecurityLevel(_ securityLevel: SecurityLevel) async throws {
+    func setSecurityLevel(_ securityLevel: SecurityLevel) throws(POSIXError) {
         self.securityLevel = securityLevel
     }
     
     /// Target socket.
     private weak var target: TestL2CAPSocket?
     
-    fileprivate(set) var receivedData = [Data]()
+    fileprivate(set) var receivedData = [Foundation.Data]()
     
-    private(set) var cache = [Data]()
+    private(set) var cache = [Foundation.Data]()
     
     // MARK: - Initialization
     
@@ -99,69 +89,63 @@ internal actor TestL2CAPSocket: L2CAPSocket {
     ) {
         self.address = address
         self.name = name
-        var continuation: L2CAPSocketEventStream.Continuation!
-        self.event = L2CAPSocketEventStream {
-            continuation = $0
-        }
-        self.eventContinuation = continuation
     }
     
     // MARK: - Methods
     
-    func close() async {
+    func close() {
         
     }
     
-    func accept() async throws -> TestL2CAPSocket {
+    func accept() throws(POSIXError) -> TestL2CAPSocket {
         // sleep until a client socket is created
-        while (await Cache.shared.pendingClients[address] ?? []).isEmpty {
-            try await Task.sleep(nanoseconds: 10_000_000)
+        guard let client = Cache.dequeue(server: address) else {
+            throw POSIXError(.EAGAIN)
         }
-        let client = await Cache.shared.dequeue(server: address)!
         let newConnection = TestL2CAPSocket(address: client.address, name: "Server connection")
         // connect sockets
-        await newConnection.connect(to: client)
-        await client.connect(to: newConnection)
+        newConnection.connect(to: client)
+        client.connect(to: newConnection)
         return newConnection
     }
     
     /// Write to the socket.
-    func send(_ data: Data) async throws {
+    func send(_ data: Data) throws(POSIXError) {
         
         print("L2CAP Socket: \(name) will send \(data.count) bytes")
         
         guard let target = self.target
             else { throw POSIXError(.ECONNRESET) }
         
-        await target.receive(data)
-        eventContinuation.yield(.didWrite(data.count))
+        target.receive(data)
+        event?(.didWrite(data.count))
     }
     
     /// Reads from the socket.
-    func receive(_ bufferSize: Int) async throws -> Data {
+    func receive(_ bufferSize: Int) throws(POSIXError) -> Data {
         
         print("L2CAP Socket: \(name) will read \(bufferSize) bytes")
         
         while self.receivedData.isEmpty {
             guard self.target != nil
                 else { throw POSIXError(.ECONNRESET) }
-            try await Task.sleep(nanoseconds: 100_000_000)
         }
         
         let data = self.receivedData.removeFirst()
         cache.append(data)
-        eventContinuation.yield(.didRead(data.count))
+        event?(.didRead(data.count))
         return data
     }
     
     fileprivate func receive(_ data: Data) {
         receivedData.append(data)
         print("L2CAP Socket: \(name) received \([UInt8](data))")
-        eventContinuation.yield(.read)
+        event?(.read)
     }
     
     internal func connect(to socket: TestL2CAPSocket) {
         self.target = socket
+        event?(.connection)
     }
 }
 #endif
