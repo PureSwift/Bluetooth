@@ -169,7 +169,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
         
         // check security
         let security: SecurityLevel
-        do { security = try connection.socket.securityLevel }
+        do { security = try connection.socket.securityLevel() }
         catch {
             log?("Unable to get security level. \(error)")
             security = .sdp

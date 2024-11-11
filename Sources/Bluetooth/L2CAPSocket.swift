@@ -28,7 +28,8 @@ public protocol L2CAPSocket {
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws(Self.Error)
     
     /// Get security level
-    var securityLevel: SecurityLevel { get throws(Self.Error) }
+    //var securityLevel: SecurityLevel { get throws(Self.Error) }
+    func securityLevel() throws(Self.Error) -> SecurityLevel
     
     /// Close socket.
     func close()

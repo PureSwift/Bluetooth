@@ -439,7 +439,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     private mutating func changeSecurity(for error: ATTError) -> Bool {
         
         let securityLevel: Bluetooth.SecurityLevel
-        do { securityLevel = try socket.securityLevel }
+        do { securityLevel = try socket.securityLevel() }
         catch {
             log?("Unable to get security level. \(error)")
             return false

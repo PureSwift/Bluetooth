@@ -13,7 +13,7 @@ import Foundation
 
 /// Test L2CAP socket
 internal final class TestL2CAPSocket: L2CAPSocket {
-        
+    
     typealias Data = Foundation.Data
         
     private enum Cache {
@@ -65,10 +65,8 @@ internal final class TestL2CAPSocket: L2CAPSocket {
     
     var event: ((L2CAPSocketEvent<POSIXError>) -> ())?
     
-    var securityLevel: Bluetooth.SecurityLevel {
-        get {
-            _securityLevel
-        }
+    func securityLevel() throws(POSIXError) -> Bluetooth.SecurityLevel {
+        _securityLevel
     }
     
     private var _securityLevel: Bluetooth.SecurityLevel = .sdp
