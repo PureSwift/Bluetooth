@@ -787,13 +787,13 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
         let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
+            let newConnection = try serverSocket.accept()
             print("GATTServer: New connection")
             return await GATTServer(
                 socket: newConnection,

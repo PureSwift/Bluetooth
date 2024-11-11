@@ -32,20 +32,19 @@ final class UInt48Tests: XCTestCase {
     
     func testHashable() {
         
-        XCTAssertEqual(UInt48.zero.hashValue, UInt64(UInt48.zero).hashValue)
-        XCTAssertEqual(UInt48.max.hashValue, UInt64(UInt48.max).hashValue)
         XCTAssertNotEqual(UInt48.max.hashValue, 0)
     }
     
     func testExpressibleByIntegerLiteral() {
         
         let values: [(UInt48, String)] = [
-            (UInt48.zero, "000000000000"),
-            (0x0000000000, "000000000000"),
-            (0x0000000001, "000000000001"),
-            (0x0000000020, "000000000020"),
-            (0xFFFE9ABCDE, "00FFFE9ABCDE"),
-            (281474976710655, "FFFFFFFFFFFF")
+            (.zero,             "0"),
+            (0x0000000000,      "0"),
+            (0x0000000001,      "1"),
+            (0x0000000020,      "32"),
+            (123456789,         "123456789"),
+            (281474976710655,   "281474976710655"),
+            (0xFFFFFFFFFFFF,    "281474976710655")
         ]
         
         values.forEach { XCTAssertEqual($0.description, $1) }

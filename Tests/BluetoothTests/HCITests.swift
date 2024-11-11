@@ -1133,7 +1133,7 @@ final class HCITests: XCTestCase {
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
             XCTAssertEqual(longTermKey.description, "46979477079145919533008304147725609989")
         } else {
-            XCTAssertEqual(longTermKey.description, "2357EB0D0C24D85A985764ECCBECEC05")
+            XCTAssertEqual(longTermKey.description, "0x2357EB0D0C24D85A985764ECCBECEC05")
         }
         
         do {

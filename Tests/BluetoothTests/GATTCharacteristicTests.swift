@@ -1356,7 +1356,7 @@ final class GATTCharacteristicTests: XCTestCase {
             
             XCTAssertEqual(characteristic.data, data)
             XCTAssertEqual(characteristic.date, GATTDateUTC.Day(rawValue: 16777214))
-            XCTAssertEqual(characteristic.description, "FFFFFE")
+            XCTAssertEqual(characteristic.description, "16777214")
             XCTAssertEqual(GATTDateUTC.uuid, .dateUtc)
             XCTAssertEqual(GATTDateUTC.Day.unitType, .day)
             XCTAssertEqual(GATTDateUTC(data: data), GATTDateUTC(data: data))
@@ -1445,7 +1445,7 @@ final class GATTCharacteristicTests: XCTestCase {
         
         XCTAssertEqual(characteristics.data, data)
         XCTAssertEqual(UInt64(characteristics.rawValue), 281474976710655)
-        XCTAssertEqual(characteristics.description, "FFFFFFFFFFFF")
+        XCTAssertEqual(characteristics.description, "281474976710655")
         XCTAssertEqual(GATTObjectID.uuid, .objectId)
         XCTAssertEqual(GATTObjectID(data: data), GATTObjectID(data: data))
     }

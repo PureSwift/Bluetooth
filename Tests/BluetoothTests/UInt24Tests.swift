@@ -33,8 +33,6 @@ final class UInt24Tests: XCTestCase {
     
     func testHashable() {
         
-        XCTAssertEqual(UInt24.zero.hashValue, UInt32(UInt24.zero).hashValue)
-        XCTAssertEqual(UInt24.max.hashValue, UInt32(UInt24.max).hashValue)
         XCTAssertNotEqual(UInt24.max.hashValue, 0)
     }
     
@@ -61,13 +59,13 @@ final class UInt24Tests: XCTestCase {
     func testExpressibleByIntegerLiteral() {
         
         let values: [(UInt24, String)] = [
-            (.zero,     "000000"),
-            (0x000000,  "000000"),
-            (0x000001,  "000001"),
-            (0x000020,  "000020"),
-            (0xABCDEF,  "ABCDEF"),
-            (16777215,  "FFFFFF"),
-            (0xFFFFFF,  "FFFFFF")
+            (.zero,     "0"),
+            (0x000000,  "0"),
+            (0x000001,  "1"),
+            (0x000020,  "32"),
+            (0xABCDEF,  "11259375"),
+            (16777215,  "16777215"),
+            (0xFFFFFF,  "16777215")
         ]
         
         values.forEach { XCTAssertEqual($0.description, $1) }

@@ -32,7 +32,7 @@ final class GATTDescriptorTests: XCTestCase {
         clientConfiguration.insert(.notify)
         XCTAssertEqual(clientConfiguration.data, Data([0x01, 00]))
         
-        XCTAssert(clientConfiguration.remove(.notify) == 0x0000)
+        XCTAssertEqual(clientConfiguration.remove(.notify), .notify)
         XCTAssertEqual(clientConfiguration.data, Data([0x00, 0x00]))
         XCTAssertEqual(clientConfiguration, [])
         XCTAssertEqual(clientConfiguration.rawValue, 0)
@@ -57,7 +57,7 @@ final class GATTDescriptorTests: XCTestCase {
         extendedProperties.insert(.reliableWrite)
         XCTAssertEqual(extendedProperties.data, Data([0x01, 0x00]))
         
-        XCTAssert(extendedProperties.remove(.reliableWrite) == 0x0000)
+        XCTAssertEqual(extendedProperties.remove(.reliableWrite), .reliableWrite)
         XCTAssertEqual(extendedProperties.data, Data([0x00, 0x00]))
         
         XCTAssertEqual(extendedProperties, [])
@@ -81,7 +81,7 @@ final class GATTDescriptorTests: XCTestCase {
         serverConfiguration.insert(.broadcasts)
         XCTAssertEqual(serverConfiguration.data, Data([0x01]))
         
-        XCTAssert(serverConfiguration.remove(.broadcasts) == 0x00)
+        XCTAssertEqual(serverConfiguration.remove(.broadcasts), .broadcasts)
         XCTAssertEqual(serverConfiguration.data, Data([0x00]))
         
         XCTAssertEqual(serverConfiguration, [])
