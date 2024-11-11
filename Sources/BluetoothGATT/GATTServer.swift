@@ -139,7 +139,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
     /// Send a server-initiated PDU message.
     private func send(
         _ indication: ATTHandleValueIndication<Data>,
-        response: @escaping (ATTHandleValueConfirmation) -> ()
+        response: @escaping (Result<ATTHandleValueConfirmation, ATTErrorResponse>) -> ()
     ) {
         log?("Indication: \(indication)")
         self.connection.queue(indication, response: response)
@@ -274,8 +274,13 @@ public final class GATTServer <Socket: L2CAPSocket> {
                         attribute: attribute,
                         maximumTransmissionUnit: connection.maximumTransmissionUnit
                     )
-                    send(indication) { [weak self] confirmation in
-                        self?.log?("Confirmation: \(confirmation)")
+                    send(indication) { [weak self] result in
+                        switch result {
+                        case .success(let confirmation):
+                            self?.log?("Confirmation: \(confirmation)")
+                        case .failure(let error):
+                            self?.log?("Confirmation error: \(error)")
+                        }
                     }
                 }
             }
@@ -372,22 +377,22 @@ public final class GATTServer <Socket: L2CAPSocket> {
         log?("Read by Group Type (\(pdu.startHandle) - \(pdu.endHandle))")
         // validate handles
         guard pdu.startHandle != 0 && pdu.endHandle != 0 else {
-            errorResponse(type(of: pdu).attributeOpcode, .invalidHandle)
+            errorResponse(ATTReadByGroupTypeRequest.attributeOpcode, .invalidHandle)
             return
         }
         guard pdu.startHandle <= pdu.endHandle else {
-            errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle)
+            errorResponse(ATTReadByGroupTypeRequest.attributeOpcode, .invalidHandle, pdu.startHandle)
             return
         }
         // GATT defines that only the Primary Service and Secondary Service group types
         // can be used for the "Read By Group Type" request. Return an error if any other group type is given.
         guard pdu.type == .primaryService || pdu.type == .secondaryService else {
-            errorResponse(type(of: pdu).attributeOpcode, .unsupportedGroupType, pdu.startHandle)
+            errorResponse(ATTReadByGroupTypeRequest.attributeOpcode, .unsupportedGroupType, pdu.startHandle)
             return
         }
         let attributeData = database.readByGroupType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.type)
         guard let firstAttribute = attributeData.first else {
-            errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle)
+            errorResponse(ATTReadByGroupTypeRequest.attributeOpcode, .attributeNotFound, pdu.startHandle)
             return
         }
         
@@ -431,17 +436,17 @@ public final class GATTServer <Socket: L2CAPSocket> {
         typealias AttributeData = ATTReadByTypeResponse<Data>.AttributeData
         log?("Read by Type (\(pdu.attributeType)) (\(pdu.startHandle) - \(pdu.endHandle))")
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
+            else { errorResponse(ATTReadByTypeRequest.attributeOpcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
+            else { errorResponse(ATTReadByTypeRequest.attributeOpcode, .invalidHandle, pdu.startHandle); return }
         
         let attributeData = database
             .readByType(handle: (pdu.startHandle, pdu.endHandle), type: pdu.attributeType)
             .map { AttributeData(handle: $0.handle, value: $0.value) }
         
         guard let firstAttribute = attributeData.first
-            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
+            else { errorResponse(ATTReadByTypeRequest.attributeOpcode, .attributeNotFound, pdu.startHandle); return }
         
         let mtu = Int(connection.maximumTransmissionUnit.rawValue)
         
@@ -495,7 +500,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
         
         typealias Format = ATTFindInformationResponse.Format
         
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTFindInformationRequest.attributeOpcode
         
         log?("Find Information (\(pdu.startHandle) - \(pdu.endHandle))")
         
@@ -559,34 +564,34 @@ public final class GATTServer <Socket: L2CAPSocket> {
         log?("Find By Type Value (\(pdu.startHandle) - \(pdu.endHandle)) (\(pdu.attributeType))")
         
         guard pdu.startHandle != 0 && pdu.endHandle != 0
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle); return }
+            else { errorResponse(ATTFindByTypeRequest<Data>.attributeOpcode, .invalidHandle); return }
         
         guard pdu.startHandle <= pdu.endHandle
-            else { errorResponse(type(of: pdu).attributeOpcode, .invalidHandle, pdu.startHandle); return }
+            else { errorResponse(ATTFindByTypeRequest<Data>.attributeOpcode, .invalidHandle, pdu.startHandle); return }
         
         let handles = database.findByTypeValue(handle: (pdu.startHandle, pdu.endHandle),
                                                type: pdu.attributeType,
                                                value: pdu.attributeValue)
         
         guard handles.isEmpty == false
-            else { errorResponse(type(of: pdu).attributeOpcode, .attributeNotFound, pdu.startHandle); return }
+            else { errorResponse(ATTFindByTypeRequest<Data>.attributeOpcode, .attributeNotFound, pdu.startHandle); return }
         
         let response = ATTFindByTypeResponse(handles)
         respond(response)
     }
     
     private func writeRequest(_ pdu: ATTWriteRequest<Data>) {
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTWriteRequest<Data>.attributeOpcode
         handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: true)
     }
     
     private func writeCommand(_ pdu: ATTWriteCommand<Data>) {
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTWriteCommand<Data>.attributeOpcode
         handleWriteRequest(opcode: opcode, handle: pdu.handle, value: pdu.value, shouldRespond: false)
     }
     
     private func readRequest(_ pdu: ATTReadRequest) {
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTReadRequest.attributeOpcode
         log?("Read (\(pdu.handle))")
         if let value = handleReadRequest(opcode: opcode, handle: pdu.handle) {
             respond(ATTReadResponse(attributeValue: value))
@@ -594,7 +599,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
     }
     
     private func readBlobRequest(_ pdu: ATTReadBlobRequest) {
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTReadBlobRequest.attributeOpcode
         log?("Read Blob (\(pdu.handle))")
         if let value = handleReadRequest(opcode: opcode, handle: pdu.handle, offset: pdu.offset, isBlob: true) {
             respond(ATTReadBlobResponse(partAttributeValue: value))
@@ -602,7 +607,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
     }
     
     private func readMultipleRequest(_ pdu: ATTReadMultipleRequest) {
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTReadMultipleRequest.attributeOpcode
         log?("Read Multiple Request \(pdu.handles)")
         
         // no attributes, impossible to read
@@ -635,7 +640,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
     
     private func prepareWriteRequest(_ pdu: ATTPrepareWriteRequest<Data>) {
         
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTPrepareWriteRequest<Data>.attributeOpcode
         
         log?("Prepare Write Request (\(pdu.handle))")
         
@@ -672,7 +677,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
     }
     
     private func executeWriteRequest(_ pdu: ATTExecuteWriteRequest) {
-        let opcode = type(of: pdu).attributeOpcode
+        let opcode = ATTExecuteWriteRequest.attributeOpcode
         log?("Execute Write Request (\(pdu))")
         let preparedWrites = self.preparedWrites
         self.preparedWrites = []
