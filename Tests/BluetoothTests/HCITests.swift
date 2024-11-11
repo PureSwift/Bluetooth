@@ -576,7 +576,7 @@ final class HCITests: XCTestCase {
             
             let eventData = Data(data[3 ..< readBytes])
             
-            guard let meta = HCILowEnergyMetaEvent(data: eventData)
+            guard let meta = HCILowEnergyMetaEvent<Data>(data: eventData)
                 else { XCTFail("Could not parse"); return [] }
             
             XCTAssert(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
@@ -852,9 +852,9 @@ final class HCITests: XCTestCase {
         
         let data = Data([0x3E, 0x39, 0x0D, 0x01, 0x13, 0xA6, 0x00, 0x27, 0x7A, 0x2D, 0x38, 0xC1, 0xA4, 0x81, 0x00, 0xFF, 0x7F, 0xDB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x0D, 0x09, 0x47, 0x56, 0x48, 0x35, 0x30, 0x37, 0x32, 0x5F, 0x37, 0x41, 0x32, 0x37, 0x03, 0x03, 0x88, 0xEC, 0x02, 0x01, 0x05, 0x09, 0xFF, 0x88, 0xEC, 0x00, 0x03, 0x94, 0x90, 0x64, 0x00])
         
-        guard let event = HCILowEnergyMetaEvent(data: data.advanced(by: 2)),
+        guard let event = HCILowEnergyMetaEvent<Data>(data: data.advanced(by: 2)),
               event.subevent == .extendedAdvertisingReport,
-              let reportEvent = HCILEExtendedAdvertisingReport(data: event.eventData),
+              let reportEvent = HCILEExtendedAdvertisingReport<Data>(data: event.eventData),
               let report = reportEvent.reports.first else {
             XCTFail("Unable to parse event")
             return
@@ -937,7 +937,7 @@ final class HCITests: XCTestCase {
             let readBytes = 22
             let data: [UInt8] = [4, 62, 19, 1, 0, 71, 0, 0, 0, 66, 103, 166, 50, 188, 172, 15, 0, 0, 0, 128, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            guard let metaEvent: HCILowEnergyMetaEvent = parseEvent(readBytes, data)
+            guard let metaEvent: HCILowEnergyMetaEvent<Data> = parseEvent(readBytes, data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(metaEvent.subevent == .connectionComplete)

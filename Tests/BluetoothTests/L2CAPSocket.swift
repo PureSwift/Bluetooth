@@ -15,9 +15,7 @@ import Foundation
 internal final class TestL2CAPSocket: L2CAPSocket {
         
     typealias Data = Foundation.Data
-    
-    typealias Error = POSIXError
-    
+        
     private enum Cache {
         
         static var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
@@ -67,11 +65,17 @@ internal final class TestL2CAPSocket: L2CAPSocket {
     
     var event: ((L2CAPSocketEvent<POSIXError>) -> ())?
     
-    private(set) var securityLevel: Bluetooth.SecurityLevel = .sdp
+    var securityLevel: Bluetooth.SecurityLevel {
+        get {
+            _securityLevel
+        }
+    }
+    
+    private var _securityLevel: Bluetooth.SecurityLevel = .sdp
 
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws(POSIXError) {
-        self.securityLevel = securityLevel
+        _securityLevel = securityLevel
     }
     
     /// Target socket.

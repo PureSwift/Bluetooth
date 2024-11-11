@@ -82,7 +82,7 @@ final class BluetoothUUIDTests: XCTestCase {
             case .bit32:
                 XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 8)
             case .bit128:
-                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, UUID.stringLength)
+                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 36)
             }
         }
     }
@@ -242,7 +242,7 @@ final class BluetoothUUIDTests: XCTestCase {
     
     func testPerformanceDataParse() {
         
-        let uuids = randomUUIDs.map { $0.data }
+        let uuids = randomUUIDs.map { Data($0) }
         
         measure { uuids.forEach { _ = BluetoothUUID(data: $0) } }
     }

@@ -16,79 +16,76 @@ final class GATTDescriptorTests: XCTestCase {
     
     func testCharacteristicClientConfigurationDescriptor() {
         
-        XCTAssertEqual(GATTClientCharacteristicConfiguration().configuration.rawValue, 0)
-        XCTAssertEqual(GATTClientCharacteristicConfiguration.Configuration.allCases.rawValue, 3)
+        XCTAssertEqual(GATTClientCharacteristicConfiguration().rawValue, 0)
         
         XCTAssertNil(GATTClientCharacteristicConfiguration(data: Data()))
         XCTAssertNil(GATTClientCharacteristicConfiguration(data: Data([0x00])))
         XCTAssertNil(GATTClientCharacteristicConfiguration(data: Data([0x00, 0x00, 0x03])))
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x00, 0x00]))?.configuration, [])
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x01, 0x00]))?.configuration, [.notify])
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x02, 0x00]))?.configuration, [.indicate])
-        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x03, 0x00]))?.configuration, [.notify, .indicate])
+        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x00, 0x00])), [])
+        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x01, 0x00])), [.notify])
+        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x02, 0x00])), [.indicate])
+        XCTAssertEqual(GATTClientCharacteristicConfiguration(data: Data([0x03, 0x00])), [.notify, .indicate])
         
         var clientConfiguration = GATTClientCharacteristicConfiguration()
-        XCTAssertEqual(clientConfiguration.configuration, [])
+        XCTAssertEqual(clientConfiguration, [])
         
-        clientConfiguration.configuration.insert(.notify)
+        clientConfiguration.insert(.notify)
         XCTAssertEqual(clientConfiguration.data, Data([0x01, 00]))
         
-        XCTAssert(clientConfiguration.configuration.remove(.notify))
+        XCTAssert(clientConfiguration.remove(.notify) == 0x0000)
         XCTAssertEqual(clientConfiguration.data, Data([0x00, 0x00]))
-        XCTAssertEqual(clientConfiguration.configuration, [])
-        XCTAssertEqual(clientConfiguration.configuration.rawValue, 0)
+        XCTAssertEqual(clientConfiguration, [])
+        XCTAssertEqual(clientConfiguration.rawValue, 0)
         
     }
     
     func testCharacteristicExtendedPropertiesDescriptor() {
-        XCTAssertEqual(GATTCharacteristicExtendedProperties().properties.rawValue, 0)
-        XCTAssertEqual(GATTCharacteristicExtendedProperties.Property.allCases.rawValue,3)
+        XCTAssertEqual(GATTCharacteristicExtendedProperties().rawValue, 0)
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data()))
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data([0x00])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data([0x03])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data([0x00, 0x00, 0x00])))
         XCTAssertNil(GATTCharacteristicExtendedProperties(data: Data([0x00, 0x00, 0x03])))
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x00, 0x00]))?.properties, [])
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x01, 0x00]))?.properties, [.reliableWrite])
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x02, 0x00]))?.properties, [.writableAuxiliaries])
-        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x03, 0x00]))?.properties, [.reliableWrite, .writableAuxiliaries])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x00, 0x00])), [])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x01, 0x00])), [.reliableWrite])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x02, 0x00])), [.writableAuxiliaries])
+        XCTAssertEqual(GATTCharacteristicExtendedProperties(data: Data([0x03, 0x00])), [.reliableWrite, .writableAuxiliaries])
         
         var extendedProperties = GATTCharacteristicExtendedProperties()
-        XCTAssertEqual(extendedProperties.properties, [])
+        XCTAssertEqual(extendedProperties, [])
         
-        extendedProperties.properties.insert(.reliableWrite)
+        extendedProperties.insert(.reliableWrite)
         XCTAssertEqual(extendedProperties.data, Data([0x01, 0x00]))
         
-        XCTAssert(extendedProperties.properties.remove(.reliableWrite))
+        XCTAssert(extendedProperties.remove(.reliableWrite) == 0x0000)
         XCTAssertEqual(extendedProperties.data, Data([0x00, 0x00]))
         
-        XCTAssertEqual(extendedProperties.properties, [])
-        XCTAssertEqual(extendedProperties.properties.rawValue, 0)
+        XCTAssertEqual(extendedProperties, [])
+        XCTAssertEqual(extendedProperties.rawValue, 0)
         
     }
     
     func testCharacteristicsServerConfigurationDescriptor() {
-        XCTAssertEqual(GATTServerCharacteristicConfiguration().serverConfiguration.rawValue, 0)
-        XCTAssertEqual(GATTServerCharacteristicConfiguration.ServerConfiguration.allCases.rawValue, 1)
+        XCTAssertEqual(GATTServerCharacteristicConfiguration().rawValue, 0)
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data()))
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data([0x00, 0x00])))
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data([0x00, 0x01])))
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data([0x00, 0x00, 0x00])))
         XCTAssertNil(GATTServerCharacteristicConfiguration(data: Data([0x00, 0x00, 0x01])))
-        XCTAssertEqual(GATTServerCharacteristicConfiguration(data: Data([0x00]))?.serverConfiguration, [])
-        XCTAssertEqual(GATTServerCharacteristicConfiguration(data: Data([0x01]))?.serverConfiguration, [.broadcasts])
+        XCTAssertEqual(GATTServerCharacteristicConfiguration(data: Data([0x00])), [])
+        XCTAssertEqual(GATTServerCharacteristicConfiguration(data: Data([0x01])), [.broadcasts])
         
         var serverConfiguration = GATTServerCharacteristicConfiguration()
-        XCTAssertEqual(serverConfiguration.serverConfiguration, [])
+        XCTAssertEqual(serverConfiguration, [])
         
-        serverConfiguration.serverConfiguration.insert(.broadcasts)
+        serverConfiguration.insert(.broadcasts)
         XCTAssertEqual(serverConfiguration.data, Data([0x01]))
         
-        XCTAssert(serverConfiguration.serverConfiguration.remove(.broadcasts))
+        XCTAssert(serverConfiguration.remove(.broadcasts) == 0x00)
         XCTAssertEqual(serverConfiguration.data, Data([0x00]))
         
-        XCTAssertEqual(serverConfiguration.serverConfiguration, [])
-        XCTAssertEqual(serverConfiguration.serverConfiguration.rawValue, 0)
+        XCTAssertEqual(serverConfiguration, [])
+        XCTAssertEqual(serverConfiguration.rawValue, 0)
         
         
     }
@@ -146,10 +143,10 @@ final class GATTDescriptorTests: XCTestCase {
     
     func testCharacteristicsUserDescriptionDescriptor() {
         
-        var userDescription = GATTUserDescription(userDescription: "")
+        var userDescription = GATTUserDescription(rawValue: "")
         XCTAssertEqual(userDescription.data, Data())
         
-        userDescription.userDescription = "Test"
+        userDescription = "Test"
         XCTAssertEqual(userDescription.data, Data([0x54, 0x65, 0x73, 0x74]))
     }
     
@@ -241,4 +238,12 @@ final class GATTDescriptorTests: XCTestCase {
         XCTAssertEqual(numbersOfDigitals?.data, Data([0x00]))
     }
 }
+
+internal extension GATTDescriptor {
+    
+    var data: Data {
+        Data(self)
+    }
+}
+
 #endif

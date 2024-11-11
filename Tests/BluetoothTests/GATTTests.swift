@@ -14,10 +14,6 @@ import Bluetooth
 
 final class GATTTests: XCTestCase {
     
-    func testCharacteristicProperty() {
-        GATTCharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }
-    }
-    
     func testMTUExchange() async throws {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 512)
@@ -36,7 +32,7 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
@@ -548,7 +544,7 @@ final class GATTTests: XCTestCase {
                                 value: batteryLevel.data,
                                 permissions: [.read],
                                 properties: [.read, .notify],
-                                descriptors: [GATTClientCharacteristicConfiguration().descriptor])
+                                descriptors: [.init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write])])
         ]
         
         let service = GATTAttribute<Data>.Service(uuid: .batteryService,
@@ -558,7 +554,7 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
@@ -576,7 +572,7 @@ final class GATTTests: XCTestCase {
         }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -755,7 +751,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
@@ -764,7 +760,7 @@ final class GATTTests: XCTestCase {
     func testDescriptors() async throws {
         
         let descriptors = [
-            GATTClientCharacteristicConfiguration().descriptor,
+            .init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write]),
             GATTAttribute<Data>.Descriptor(uuid: BluetoothUUID(),
                                      value: Data("UInt128 Descriptor".utf8),
                                      permissions: [.read, .write]),
@@ -786,7 +782,7 @@ final class GATTTests: XCTestCase {
                                         isPrimary: true,
                                         characteristics: [characteristic])
         
-        let database = GATTDatabase(services: [service])
+        let database = GATTDatabase<Data>(services: [service])
         
         // server
         let serverAddress = BluetoothAddress.min
@@ -830,7 +826,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(foundService.uuid, service.uuid)
         XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
         XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
+        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == BluetoothUUID.primaryService)
         
         let characteristics = try await client.discoverAllCharacteristics(of: foundService)
         
@@ -865,7 +861,7 @@ final class GATTTests: XCTestCase {
         }
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)

@@ -251,71 +251,6 @@ final class BluetoothTests: XCTestCase {
     }
     #endif
     
-    #if canImport(BluetoothGATT)
-    func testBitMaskOption() {
-        
-        do {
-            
-            // set conversion
-            let all = BitMaskOptionSet(ATTAttributePermission.allCases)
-            
-            let expected: Set<ATTAttributePermission> = [.read,
-                                                          .write,
-                                                          .readEncrypt,
-                                                          .writeEncrypt,
-                                                          .readAuthentication,
-                                                          .writeAuthentication,
-                                                          .authorized,
-                                                          .noAuthorization]
-            
-            XCTAssertEqual(expected, Set(ATTAttributePermission.allCases))
-            XCTAssert(all.contains(ATTAttributePermission.allCases))
-            XCTAssertEqual(all.count, ATTAttributePermission.allCases.count)
-            XCTAssertEqual(all.count, 8)
-            XCTAssertEqual(Set(all), Set(ATTAttributePermission.allCases))
-            XCTAssertEqual(all, BitMaskOptionSet<ATTAttributePermission>.all)
-            XCTAssert(all.contains(ATTAttributePermission.encrypt))
-            XCTAssert(all.contains(ATTAttributePermission.authentication))
-            XCTAssert(BitMaskOptionSet<ATTAttributePermission>().contains(.read) == false)
-            XCTAssert(BitMaskOptionSet<ATTAttributePermission>().contains(ATTAttributePermission.allCases) == false)
-        }
-        
-        do {
-            
-            // Sets are as large as a single element
-            XCTAssert(MemoryLayout<BitMaskOptionSet<GATTCharacteristicProperty>>.size == MemoryLayout<GATTCharacteristicProperty>.size)
-            
-            // create empty set
-            var set = BitMaskOptionSet<GATTCharacteristicProperty>()
-            XCTAssert(set.count == 0)
-            XCTAssert(set.isEmpty)
-            XCTAssert(set.rawValue == 0)
-            
-            // insert value
-            set.insert(.read)
-            XCTAssert(set.rawValue == GATTCharacteristicProperty.read.rawValue)
-            XCTAssert(set.count == 1)
-            XCTAssert(set.isEmpty == false)
-            
-            // cant store duplicates
-            set.insert(.read)
-            XCTAssert(set.rawValue == GATTCharacteristicProperty.read.rawValue)
-            XCTAssert(set.count == 1)
-            XCTAssert(set.isEmpty == false)
-            
-            // can store different values
-            set.insert(.write)
-            XCTAssert(set.rawValue == (GATTCharacteristicProperty.read.rawValue | GATTCharacteristicProperty.write.rawValue))
-            XCTAssert(set.count == 2)
-            XCTAssert(set.isEmpty == false)
-            
-            // comparison with other collections
-            XCTAssert(set.contains([.read, .write]))
-            XCTAssert(set == [.read, .write])
-        }
-    }
-    #endif
-    
     func testClassOfDevice() {
         
         do {
@@ -332,7 +267,7 @@ final class BluetoothTests: XCTestCase {
             guard computer == .laptop
                 else { XCTFail("majorDeviceClass is wrong"); return }
             
-            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(Data(classOfDevice), data)
             XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b01))
             
             guard let formatType = ClassOfDevice.FormatType(rawValue: 0b01)
@@ -367,7 +302,7 @@ final class BluetoothTests: XCTestCase {
             guard phone == .smartphone
                 else { XCTFail("majorDeviceClass is wrong"); return }
 
-            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(Data(classOfDevice), data)
             XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b01))
         }
 
@@ -384,7 +319,7 @@ final class BluetoothTests: XCTestCase {
 
             XCTAssertEqual(peripheral, .keyboard)
             XCTAssertEqual(device, .joystick)
-            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(Data(classOfDevice), data)
             XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b00))
         }
 
@@ -400,7 +335,7 @@ final class BluetoothTests: XCTestCase {
                 else { XCTFail("majorDeviceClass is wrong"); return }
 
             XCTAssertEqual(wearable, .wristwatch)
-            XCTAssertEqual(classOfDevice.data, data)
+            XCTAssertEqual(Data(classOfDevice), data)
             XCTAssertEqual(classOfDevice.formatType, ClassOfDevice.FormatType(rawValue: 0b00))
         }
     }
