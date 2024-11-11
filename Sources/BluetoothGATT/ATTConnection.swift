@@ -20,10 +20,8 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     // MARK: - Properties
     
     /// Actual number of bytes for PDU ATT exchange.
-    public private(set) var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default
-    
-    public private(set) var isConnected = true
-    
+    public var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default
+        
     internal var socket: Socket
     
     internal let log: ((String) -> ())?
@@ -195,20 +193,20 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     @discardableResult
     public mutating func queue <Request: ATTProtocolDataUnit> (
         _ pdu: Request
-    ) throws(Error) -> UInt {
+    ) -> UInt {
         let attributeOpcode = Request.attributeOpcode
         // Only request and indication PDUs should have response callbacks.
         switch attributeOpcode.type {
         case .request,
              .indication: // Indication handles confirmation
-            fatalError("Missing response")
+            assertionFailure("Missing response")
         case .response,
              .command,
              .confirmation,
              .notification:
             break
         }
-        let operation = try SendOperation(
+        let operation = SendOperation(
             id: nextSendOpcodeID,
             opcode: attributeOpcode,
             data: encode(pdu)
@@ -223,7 +221,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     public mutating func queue <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
         _ request: Request,
         response: @escaping ((Response) -> ())
-    ) throws(Error) -> UInt {
+    ) -> UInt {
         let attributeOpcode = Request.attributeOpcode
         // Only request and indication PDUs should have response callbacks.
         switch attributeOpcode.type {
@@ -234,9 +232,9 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
              .command,
              .confirmation,
              .notification:
-            fatalError()
+            assertionFailure()
         }
-        let operation = try SendOperation(
+        let operation = SendOperation(
             id: nextSendOpcodeID,
             opcode: attributeOpcode,
             data: encode(request),
@@ -271,12 +269,14 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
         return operation.id
     }
     
-    private func encode <T: ATTProtocolDataUnit> (_ request: T) throws(Error) -> Data {
+    private func encode <T: ATTProtocolDataUnit> (_ request: T) -> Data {
         
-        let data = Data(request)
-        /// MTU must be large enough to hold PDU. 
-        guard data.count <= Int(maximumTransmissionUnit.rawValue)
-            else { throw .encoding }
+        var data = Data(request)
+        /// MTU must be large enough to hold PDU.
+        if data.count > Int(maximumTransmissionUnit.rawValue) {
+            assertionFailure()
+            data = Data(data.prefix(Int(maximumTransmissionUnit.rawValue)))
+        }
         
         // TODO: Sign (encrypt) data
         
@@ -381,7 +381,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
                 attributeHandle: 0x00,
                 error: .requestNotSupported
             )
-            let _ = try queue(errorResponse)
+            let _ = queue(errorResponse)
         }
     }
     
@@ -495,9 +495,6 @@ public enum ATTConnectionError<SocketError: Swift.Error, Data: DataContainer>: E
     /// Error response.
     case errorResponse(ATTErrorResponse)
     
-    /// Enable to encode attribute
-    case encoding
-    
     /// Error ocurred at the socket layer.
     case socket(SocketError)
 }
@@ -572,14 +569,14 @@ internal extension ATTConnection {
         let notification: (Data) throws(Error) -> ()
         
         init<T: ATTProtocolDataUnit>(
-            _ notification: (T) -> ()
+            _ notification: @escaping (T) -> ()
         ) {
             self.opcode = T.attributeOpcode
             self.notification = { (data: Data) throws(ATTConnection.Error) -> () in
                 guard let value = T.init(data: data) else {
                     throw .garbageResponse(data)
                 }
-                
+                notification(value)
             }
         }
     }
