@@ -51,12 +51,10 @@ internal extension BinaryInteger {
     var bytes: [UInt8] {
         withUnsafeBytes(of: self) { Array($0) }
     }
-    
-    func reduceBytes<T>(into initialValue: T, _ block: (inout T, UInt8) -> ()) -> T {
+
+    func forEachByte(_ block: (UInt8) -> ()) {
         withUnsafeBytes(of: self) {
-            $0.reduce(into: initialValue, { (partialResult, byte) in
-                block(&partialResult, byte)
-            })
+            $0.forEach(block)
         }
     }
 }

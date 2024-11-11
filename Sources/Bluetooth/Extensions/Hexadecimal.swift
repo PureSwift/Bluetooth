@@ -14,7 +14,7 @@ internal extension FixedWidthInteger {
         #if hasFeature(Embedded) || (canImport(Darwin) && DEBUG)
         string = ""
         string.reserveCapacity(length)
-        string = self.bigEndian.reduceBytes(into: string) { partialString, byte in
+        self.bigEndian.forEachByte { byte in
             string += String(hexadecimal: byte)
         }
         #else // Linux and non-Embedded release builds use Swift StdLib
