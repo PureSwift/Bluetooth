@@ -6,32 +6,33 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
-// MARK: - Report Reference
 /// GATT Report Reference Descriptor
 ///
 /// Mapping information in the form of a Report ID and Report Type which maps the current parent characteristic to the Report ID(s) and Report Type (s) defined within the Report Map characteristic.
 @frozen
-public struct GATTReportReference: GATTDescriptor {
+public struct GATTReportReference: GATTDescriptor, Equatable, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .reportReference
-    
-    public static let length = 2
-    
+    public static var uuid: BluetoothUUID { .reportReference }
+        
     public var identifier: Identifier
     
     public var type: ReportType
     
     public init(identifier: Identifier, type: ReportType) {
-        
         self.identifier = identifier
         self.type = type
     }
+}
+
+extension GATTReportReference: DataConvertible {
     
-    public init?(data: Data) {
+    public static var length: Int { 2 }
+    
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == Swift.type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let reportType = ReportType(rawValue: data[1])
@@ -40,23 +41,20 @@ public struct GATTReportReference: GATTDescriptor {
         self.init(identifier: Identifier(rawValue: data[0]), type: reportType)
     }
     
-    public var data: Data {
-        
-        return Data([identifier.rawValue, type.rawValue])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += identifier.rawValue
+        data += type.rawValue
     }
     
-    public var descriptor: GATTAttribute.Descriptor {
-        
-        return GATTAttribute.Descriptor(uuid: Swift.type(of: self).uuid,
-                               value: data,
-                               permissions: [.read])
-    }
+    public var dataLength: Int { Self.length }
 }
+
+// MARK: - Supporting Types
 
 public extension GATTReportReference {
     
     /// GATT Report Type
-    enum ReportType: UInt8 {
+    enum ReportType: UInt8, Sendable {
         
         /// Input Report
         case input = 0x01
@@ -71,30 +69,19 @@ public extension GATTReportReference {
 
 public extension GATTReportReference {
     
-    struct Identifier: RawRepresentable {
+    struct Identifier: RawRepresentable, Equatable, Hashable, Sendable {
         
         public var rawValue: UInt8
         
         public init(rawValue: UInt8) {
-            
             self.rawValue = rawValue
         }
-    }
-}
-
-extension GATTReportReference.Identifier: Equatable {
-    
-    public static func == (lhs: GATTReportReference.Identifier,
-                           rhs: GATTReportReference.Identifier) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 
 extension GATTReportReference.Identifier: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }
@@ -102,7 +89,6 @@ extension GATTReportReference.Identifier: CustomStringConvertible {
 extension GATTReportReference.Identifier: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
-        
         self.init(rawValue: value)
     }
 }
