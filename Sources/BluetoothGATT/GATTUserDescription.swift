@@ -6,9 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 // MARK: - Characteristic User Description
+
 /// GATT Characteristic User Description Descriptor
 ///
 /// The Characteristic User Description descriptor provides a textual user description for a characteristic value.
@@ -16,33 +17,43 @@ import Foundation
 /// If the Writable Auxiliary bit of the Characteristics Properties is set then this descriptor is written.
 /// Only one User Description descriptor exists in a characteristic definition.
 @frozen
-public struct GATTUserDescription: GATTDescriptor {
+public struct GATTUserDescription: GATTDescriptor, RawRepresentable, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .characteristicUserDescription
+    public static var uuid: BluetoothUUID { .characteristicUserDescription }
     
-    public var userDescription: String
+    public var rawValue: String
     
-    public init(userDescription: String) {
-        
-        self.userDescription = userDescription
+    public init(rawValue: String) {
+        self.rawValue = rawValue
     }
+}
+
+// MARK: - ExpressibleByStringLiteral
+
+extension GATTUserDescription: ExpressibleByStringLiteral {
     
-    public init?(data: Data) {
+    public init(stringLiteral value: String) {
+        self.init(rawValue: value)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension GATTUserDescription: DataConvertible {
+    
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let rawValue = String(utf8: data)
             else { return nil }
         
-        self.init(userDescription: rawValue)
+        self.init(rawValue: rawValue)
     }
     
-    public var data: Data {
-        
-        return Data(userDescription.utf8)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.utf8
     }
     
-    public var descriptor: GATTAttribute.Descriptor {
-        return GATTAttribute.Descriptor(uuid: type(of: self).uuid,
-                               value: data,
-                               permissions: [])
+    public var dataLength: Int {
+        rawValue.utf8.count
     }
 }
