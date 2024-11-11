@@ -100,10 +100,10 @@ extension ByteValue where Self: Comparable {
 
 // MARK: - CustomStringConvertible
 
-extension ByteValue where Self: CustomStringConvertible {
+extension ByteValue where Self: CustomStringConvertible, Self: ByteSwap {
     
     public var description: String {
-        withUnsafeBytes {
+        bigEndian.withUnsafeBytes {
             "0x" + $0.toHexadecimal()
         }
     }
