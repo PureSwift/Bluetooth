@@ -38,6 +38,6 @@ extension ATTReadMultipleResponse: DataConvertible {
     }
     
     public var dataLength: Int {
-        values.count
+        1 + values.count
     }
 }
