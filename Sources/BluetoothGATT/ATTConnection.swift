@@ -220,7 +220,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     @discardableResult
     public mutating func queue <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
         _ request: Request,
-        response: @escaping ((Response) -> ())
+        response: @escaping ((Result<Response, ATTErrorResponse>) -> ())
     ) -> UInt {
         let attributeOpcode = Request.attributeOpcode
         // Only request and indication PDUs should have response callbacks.
@@ -484,16 +484,13 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
 // MARK: - Supporting Types
 
 /// ATT Connection Error
-public enum ATTConnectionError<SocketError: Swift.Error, Data: DataContainer>: Error {
+public enum ATTConnectionError<SocketError: Swift.Error, Data: DataContainer>: Error, Sendable {
     
     /// The received data could not be parsed correctly.
     case garbageResponse(Data)
     
     /// Response is unexpected.
     case unexpectedResponse(Data)
-    
-    /// Error response.
-    case errorResponse(ATTErrorResponse)
     
     /// Error ocurred at the socket layer.
     case socket(SocketError)
@@ -533,7 +530,7 @@ internal extension ATTConnection {
             id: UInt,
             opcode: ATTOpcode,
             data: Data,
-            response: @escaping ((Response) -> ())
+            response: @escaping ((Result<Response, ATTErrorResponse>) -> ())
         ) {
             self.id = id
             self.opcode = opcode
@@ -546,13 +543,14 @@ internal extension ATTConnection {
                 if responseOpcode == .errorResponse {
                     guard let errorResponse = ATTErrorResponse(data: data)
                         else { throw .garbageResponse(data) }
-                    throw .errorResponse(errorResponse)
+                    response(.failure(errorResponse))
+                    return
                 } else if responseOpcode == opcode.response {
                     // response is expected
                     guard let value = Response.init(data: data) else {
                         throw .garbageResponse(data)
                     }
-                    response(value)
+                    response(.success(value))
                     return
                 } else {
                     // other ATT response
