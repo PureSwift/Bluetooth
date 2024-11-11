@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Scan Interval Window
@@ -35,9 +36,9 @@ public struct GATTScanIntervalWindow: GATTCharacteristic {
         self.scanWindow = scanWindow
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let scanInterval = LowEnergyScanTimeInterval(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))

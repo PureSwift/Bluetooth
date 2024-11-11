@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Day of Week
@@ -27,9 +28,9 @@ public struct GATTDayOfWeek: GATTCharacteristic {
         self.day = day
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let day = Day(rawValue: data[0])

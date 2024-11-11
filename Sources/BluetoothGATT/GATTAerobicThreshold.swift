@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Aerobic Threshold
@@ -16,7 +17,7 @@ import Foundation
  - SeeAlso: [Aerobic Threshold](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_threshold.xml)
  */
 @frozen
-public struct GATTAerobicThreshold: GATTCharacteristic {
+public struct GATTAerobicThreshold: GATTCharacteristic, Equatable, Hashable, Sendable {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
     
@@ -27,13 +28,12 @@ public struct GATTAerobicThreshold: GATTCharacteristic {
     public var beats: BeatsPerMinute
     
     public init(beats: BeatsPerMinute) {
-        
         self.beats = beats
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let beats = BeatsPerMinute(rawValue: data[0])
@@ -41,26 +41,14 @@ public struct GATTAerobicThreshold: GATTCharacteristic {
         self.init(beats: beats)
     }
     
-    public var data: Data {
-        
-        return Data([beats.rawValue])
-    }
-    
-}
-
-extension GATTAerobicThreshold: Equatable {
-    
-    public static func == (lhs: GATTAerobicThreshold,
-                           rhs: GATTAerobicThreshold) -> Bool {
-        
-        return lhs.beats == rhs.beats
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data.append(beats.rawValue)
     }
 }
 
 extension GATTAerobicThreshold: CustomStringConvertible {
     
     public var description: String {
-        
         return beats.description
     }
 }

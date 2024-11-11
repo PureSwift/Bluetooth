@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 @frozen
 public struct GATTDateUTC: GATTCharacteristic, Equatable {
@@ -22,9 +23,9 @@ public struct GATTDateUTC: GATTCharacteristic, Equatable {
         self.date = date
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let date = Day(rawValue: UInt24(littleEndian: UInt24(bytes: (data[0], data[1], data[2]))))

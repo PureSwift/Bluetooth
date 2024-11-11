@@ -6,6 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+import Bluetooth
+
 /// The Error Response is used to state that a given request cannot be performed,
 /// and to provide the reason.
 ///

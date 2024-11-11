@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  New Alert
@@ -47,16 +48,16 @@ public struct GATTNewAlert: GATTCharacteristic, Equatable {
         self.information = information
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).minLength
+        guard data.count >= Self.minLength
             else { return nil }
         
         guard let categoryID = GATTAlertCategory(rawValue: data[0])
             else { return nil }
         
         let numberOfNewAlerts = data[1]
-        let textStringInformationData = data.subdataNoCopy(in: (2 ..< data.count))
+        let textStringInformationData = data.subdata(in: (2 ..< data.count))
         
         guard let information = Information(data: textStringInformationData)
             else { return nil }
@@ -69,15 +70,6 @@ public struct GATTNewAlert: GATTCharacteristic, Equatable {
     public var data: Data {
         
         return Data([category.rawValue, newAlertsCount]) + information.data
-    }
-    
-    public var characteristic: GATTAttribute.Characteristic {
-        
-        return GATTAttribute.Characteristic(uuid: type(of: self).uuid,
-                                   value: data,
-                                   permissions: [.read, .write],
-                                   properties: [.notify],
-                                   descriptors: [])
     }
 }
 
@@ -100,16 +92,16 @@ public extension GATTNewAlert {
             
             let length = rawValue.utf8.count
             
-            guard length >= type(of: self).length.min,
-                length <= type(of: self).length.max
+            guard length >= Self.length.min,
+                length <= Self.length.max
                 else { return nil }
             
             self.rawValue = rawValue
         }
         
-        public init?(data: Data) {
+        public init?<Data: DataContainer>(data: Data) {
             
-            guard let string = String(data: data, encoding: .utf8)
+            guard let string = String(utf8: data)
                 else { return nil }
             
             self.init(rawValue: string)

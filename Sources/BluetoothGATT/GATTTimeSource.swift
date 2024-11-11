@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Time Source
@@ -41,9 +42,9 @@ public enum GATTTimeSource: UInt8, GATTCharacteristic {
     /// Cellular Network
     case cellularNetwork = 6
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(rawValue: data[0])

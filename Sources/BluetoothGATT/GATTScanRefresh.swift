@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Scan Refresh
@@ -24,9 +25,9 @@ public enum GATTScanRefresh: UInt8, GATTCharacteristic {
     
     case serverRequiredRefresh = 0
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(rawValue: data[0])

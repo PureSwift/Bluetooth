@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Time Broadcast
@@ -36,22 +37,22 @@ public struct GATTTimeBroadcast: GATTCharacteristic, Equatable {
         self.referenceTime = referenceTime
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let time = GATTExactTime256(data: data.subdataNoCopy(in: (0 ..< GATTExactTime256.length)))
+        guard let time = GATTExactTime256(data: data.subdata(in: (0 ..< GATTExactTime256.length)))
             else { return nil }
         
         let rangeLocalTime = GATTExactTime256.length ..< GATTExactTime256.length + GATTLocalTimeInformation.length
         
-        guard let localTime = GATTLocalTimeInformation(data: data.subdataNoCopy(in: rangeLocalTime))
+        guard let localTime = GATTLocalTimeInformation(data: data.subdata(in: rangeLocalTime))
             else { return nil }
         
         let rangeReferenceTime = GATTExactTime256.length + GATTLocalTimeInformation.length ..< data.count
         
-        guard let referenceTime = GATTReferenceTimeInformation(data: data.subdataNoCopy(in: rangeReferenceTime))
+        guard let referenceTime = GATTReferenceTimeInformation(data: data.subdata(in: rangeReferenceTime))
             else { return nil }
         
         self.init(time: time, localTime: localTime, referenceTime: referenceTime)

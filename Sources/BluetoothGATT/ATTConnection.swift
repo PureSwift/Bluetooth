@@ -496,6 +496,8 @@ public enum ATTConnectionError<SocketError: Swift.Error, Data: DataContainer>: E
     case socket(SocketError)
 }
 
+internal typealias ATTResponse<Success: ATTProtocolDataUnit> = Result<Success, ATTErrorResponse>
+
 internal extension ATTConnection {
     
     struct SendOperation {

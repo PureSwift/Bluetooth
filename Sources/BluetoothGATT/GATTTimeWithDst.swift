@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Time with DST
@@ -30,15 +31,15 @@ public struct GATTTimeWithDst: GATTCharacteristic, Equatable {
         self.dstOffset = dstOffset
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let datetime = GATTDateTime(data: data.subdataNoCopy(in: (0 ..< GATTDateTime.length)))
+        guard let datetime = GATTDateTime(data: data.subdata(in: (0 ..< GATTDateTime.length)))
             else { return nil }
         
-        guard let dstOffset = GATTDstOffset(data: data.subdataNoCopy(in: GATTDateTime.length ..< GATTDateTime.length + GATTDstOffset.length))
+        guard let dstOffset = GATTDstOffset(data: data.subdata(in: GATTDateTime.length ..< GATTDateTime.length + GATTDstOffset.length))
             else { return nil }
         
         self.init(datetime: datetime, dstOffset: dstOffset)

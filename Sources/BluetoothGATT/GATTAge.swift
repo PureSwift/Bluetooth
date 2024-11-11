@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Age
@@ -29,9 +30,9 @@ public struct GATTAge: GATTCharacteristic, Equatable {
         self.year = year
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let year = Year(rawValue: data[0])

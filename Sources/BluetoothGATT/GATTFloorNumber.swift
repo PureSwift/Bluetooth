@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Floor Number
@@ -29,9 +30,9 @@ public struct GATTFloorNumber: RawRepresentable, GATTCharacteristic {
         self.rawValue = rawValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(rawValue: data[0])

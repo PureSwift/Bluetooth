@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Aerobic Heart Rate Upper Limit
@@ -31,9 +32,9 @@ public struct GATTAerobicHeartRateUpperLimit: GATTCharacteristic {
         self.beats = beats
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let beats = BeatsPerMinute(rawValue: data[0])

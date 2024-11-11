@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Uncertainty
@@ -35,9 +36,9 @@ public struct GATTUncertainty: GATTCharacteristic {
         self.precision = precision
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let stationary = Stationary(rawValue: data[0] & 0b0000_0001),

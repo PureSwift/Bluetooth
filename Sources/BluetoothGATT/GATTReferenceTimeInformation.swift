@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Reference Time Information
@@ -39,15 +40,15 @@ public struct GATTReferenceTimeInformation: GATTCharacteristic, Equatable {
         self.hoursSinceUpdate = hoursSinceUpdate
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let timeSource = GATTTimeSource(data: data.subdataNoCopy(in: (0 ..< GATTTimeSource.length)))
+        guard let timeSource = GATTTimeSource(data: data.subdata(in: (0 ..< GATTTimeSource.length)))
             else { return nil }
         
-        guard let timeAccuracy = GATTTimeAccuracy(data: data.subdataNoCopy(in: (GATTTimeAccuracy.length ..< 2)))
+        guard let timeAccuracy = GATTTimeAccuracy(data: data.subdata(in: (GATTTimeAccuracy.length ..< 2)))
             else { return nil }
         
         let daysSinceUpdate = Day(rawValue: data[2])

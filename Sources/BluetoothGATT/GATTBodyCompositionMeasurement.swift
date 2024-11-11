@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Body Composition Measurement
@@ -142,9 +143,9 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     }
     
     // swiftlint:disable:next cyclomatic_complexity
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard data.count >= Self.minimumLength
             else { return nil }
         
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
@@ -162,7 +163,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             guard index + GATTDateTime.length < data.count
                 else { return nil }
             
-            let timestampData = data.subdataNoCopy(in: index + 1 ..< index + 1 + GATTDateTime.length)
+            let timestampData = data.subdata(in: index + 1 ..< index + 1 + GATTDateTime.length)
             
             guard let timestamp = GATTDateTime(data: timestampData)
                 else { return nil }

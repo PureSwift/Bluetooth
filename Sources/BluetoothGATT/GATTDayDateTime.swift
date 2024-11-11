@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Day Date Time
@@ -30,15 +31,15 @@ public struct GATTDayDateTime: GATTCharacteristic {
         self.dayOfWeek = dayOfWeek
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let dateTime = GATTDateTime(data: data.subdataNoCopy(in: (0 ..< 7)))
+        guard let dateTime = GATTDateTime(data: data.subdata(in: (0 ..< 7)))
             else { return nil }
         
-        guard let dayOfWeek = GATTDayOfWeek(data: data.subdataNoCopy(in: (7 ..< 8)))
+        guard let dayOfWeek = GATTDayOfWeek(data: data.subdata(in: (7 ..< 8)))
             else { return nil }
         
         self.init(dateTime: dateTime, dayOfWeek: dayOfWeek)

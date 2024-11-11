@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Time Zone
@@ -45,9 +46,9 @@ public struct GATTTimeZone: RawRepresentable, GATTCharacteristic, Equatable, Has
         self.rawValue = unsafe
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let level = Int8(bitPattern: data[0])

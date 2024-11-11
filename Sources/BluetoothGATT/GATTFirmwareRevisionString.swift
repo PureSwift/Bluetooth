@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /*+
  Firmware Revision String
@@ -16,43 +17,32 @@ import Foundation
  The value of this characteristic is a UTF-8 string representing the firmware revision for the firmware within the device.
  */
 @frozen
-public struct GATTFirmwareRevisionString: RawRepresentable, GATTCharacteristic {
+public struct GATTFirmwareRevisionString: RawRepresentable, GATTCharacteristic, Equatable, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { return .firmwareRevisionString }
+    public static var uuid: BluetoothUUID { .firmwareRevisionString }
     
     public let rawValue: String
     
     public init(rawValue: String) {
-        
         self.rawValue = rawValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let rawValue = String(utf8: data)
             else { return nil }
         
         self.init(rawValue: rawValue)
     }
     
-    public var data: Data {
-        
-        return Data(rawValue.utf8)
-    }
-}
-
-extension GATTFirmwareRevisionString: Equatable {
-    
-    public static func == (lhs: GATTFirmwareRevisionString, rhs: GATTFirmwareRevisionString) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.utf8
     }
 }
 
 extension GATTFirmwareRevisionString: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue
     }
 }
@@ -60,17 +50,6 @@ extension GATTFirmwareRevisionString: CustomStringConvertible {
 extension GATTFirmwareRevisionString: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        
-        self.init(rawValue: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(rawValue: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
-        
         self.init(rawValue: value)
     }
 }

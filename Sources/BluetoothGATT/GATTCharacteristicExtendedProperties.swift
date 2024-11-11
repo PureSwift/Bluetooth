@@ -58,7 +58,7 @@ extension GATTCharacteristicExtendedProperties: DataConvertible {
     public var dataLength: Int { Self.length }
 }
 
-// MARK: - GATTCharacteristicExtendedProperties
+// MARK: - CustomStringConvertible
 
 extension GATTCharacteristicExtendedProperties: CustomStringConvertible, CustomDebugStringConvertible {
     

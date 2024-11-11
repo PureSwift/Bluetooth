@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Central Address Resolution
@@ -36,9 +37,9 @@ public struct GATTCentralAddressResolution: GATTCharacteristic {
         self.isSupported = isSupported
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let booleanValue = Bool(byteValue: data[0])

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Software Revision String
@@ -27,17 +28,16 @@ public struct GATTSoftwareRevisionString: RawRepresentable, GATTCharacteristic {
         self.rawValue = rawValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let rawValue = String(utf8: data)
             else { return nil }
         
         self.init(rawValue: rawValue)
     }
     
-    public var data: Data {
-        
-        return Data(rawValue.utf8)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.utf8
     }
 }
 

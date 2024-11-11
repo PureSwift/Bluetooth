@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Supported New Alert Category
@@ -35,7 +36,7 @@ public struct GATTSupportedNewAlertCategory: GATTCharacteristic {
         self.categories = categories
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard let bitmask = Category.RawValue(bitmaskArray: data)
             else { return nil }
@@ -45,16 +46,7 @@ public struct GATTSupportedNewAlertCategory: GATTCharacteristic {
     
     public var data: Data {
         
-        return categories.rawValue.bitmaskArray
-    }
-    
-    public var characteristic: GATTAttribute.Characteristic {
-        
-        return GATTAttribute.Characteristic(uuid: type(of: self).uuid,
-                                   value: data,
-                                   permissions: [.read],
-                                   properties: [.read],
-                                   descriptors: [])
+        return Data(categories.rawValue.bitmaskArray)
     }
 }
 

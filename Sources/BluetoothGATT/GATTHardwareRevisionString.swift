@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Hardware Revision String
@@ -16,43 +17,32 @@ import Foundation
  The value of this characteristic is a UTF-8 string representing the hardware revision for the hardware within the device.
  */
 @frozen
-public struct GATTHardwareRevisionString: RawRepresentable, GATTCharacteristic {
+public struct GATTHardwareRevisionString: RawRepresentable, Equatable, Hashable, Sendable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .hardwareRevisionString }
     
     public let rawValue: String
     
     public init(rawValue: String) {
-        
         self.rawValue = rawValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let rawValue = String(utf8: data)
             else { return nil }
         
         self.init(rawValue: rawValue)
     }
     
-    public var data: Data {
-        
-        return Data(rawValue.utf8)
-    }
-}
-
-extension GATTHardwareRevisionString: Equatable {
-    
-    public static func == (lhs: GATTHardwareRevisionString, rhs: GATTHardwareRevisionString) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.utf8
     }
 }
 
 extension GATTHardwareRevisionString: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue
     }
 }
@@ -60,17 +50,6 @@ extension GATTHardwareRevisionString: CustomStringConvertible {
 extension GATTHardwareRevisionString: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        
-        self.init(rawValue: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(rawValue: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
-        
         self.init(rawValue: value)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Categories of alerts/messages.
@@ -57,9 +58,9 @@ public enum GATTAlertCategory: UInt8, GATTCharacteristic {
     /// Instant Message: Alert for incoming instant messages
     case instantMessage
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(rawValue: data[0])

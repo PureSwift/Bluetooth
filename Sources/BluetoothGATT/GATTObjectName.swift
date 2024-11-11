@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Object Name
@@ -28,23 +29,22 @@ public struct GATTObjectName: Equatable, Hashable, RawRepresentable, GATTCharact
     
     public init?(rawValue: String) {
         
-        guard rawValue.utf8.count <= type(of: self).length
+        guard rawValue.utf8.count <= Self.length
             else { return nil }
         
         self.rawValue = rawValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard let rawValue = String(data: data, encoding: .utf8)
+        guard let rawValue = String(utf8: data)
             else { return nil }
         
         self.init(rawValue: rawValue)
     }
     
-    public var data: Data {
-        
-        return Data(rawValue.utf8)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.utf8
     }
 }
 

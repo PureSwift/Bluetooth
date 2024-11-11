@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Exact Time 256
@@ -30,12 +31,12 @@ public struct GATTExactTime256: GATTCharacteristic {
         self.fractions256 = fractions256
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let dayDateTime = GATTDayDateTime(data: data.subdataNoCopy(in: (0 ..< GATTDayDateTime.length)))
+        guard let dayDateTime = GATTDayDateTime(data: data.subdata(in: (0 ..< GATTDayDateTime.length)))
             else { return nil }
         
         let fractions256 = data[GATTDayDateTime.length]

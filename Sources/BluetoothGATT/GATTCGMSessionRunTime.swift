@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  CGM Session Run Time
@@ -39,14 +40,14 @@ public struct GATTCGMSessionRunTime: GATTCharacteristic {
         self.e2ecrc = e2ecrc
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).minLength
+        guard data.count >= Self.minLength
             else { return nil }
         
         let sessionRunTime = Hour(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
-        let validLength = (data.count == type(of: self).maxLength)
+        let validLength = (data.count == Self.maxLength)
         let e2ecrc: GATTE2ecrc? = validLength ? GATTE2ecrc(rawValue: UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))) : nil
         
         self.init(sessionRunTime: sessionRunTime, e2ecrc: e2ecrc)
@@ -56,7 +57,7 @@ public struct GATTCGMSessionRunTime: GATTCharacteristic {
         
         let sessionRunTimeBytes = sessionRunTime.rawValue.littleEndian.bytes
         
-        let totalBytes = e2ecrc != nil ? type(of: self).maxLength : type(of: self).minLength
+        let totalBytes = e2ecrc != nil ? Self.maxLength : Self.minLength
         
         var data = Data()
         data.reserveCapacity(totalBytes)
