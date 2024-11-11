@@ -55,8 +55,8 @@ public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_R
     /// a single Link Layer packet on a data connection.
     public let supportedMaxRxTime: SupportedMaxRxTime
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         guard let supportedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))

@@ -351,8 +351,8 @@ public struct HCILESetExtendedAdvertisingParametersReturn: HCICommandReturnParam
     
     public let selectedTxPower: LowEnergyTxPower
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         guard let selectedTxPower = LowEnergyTxPower(rawValue: Int8(bitPattern: data[0]))

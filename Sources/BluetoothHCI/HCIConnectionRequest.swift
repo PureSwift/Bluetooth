@@ -26,14 +26,14 @@ public struct HCIConnectionRequest: HCIEventParameter {
     
     public let linkType: LinkType
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
         
-        guard let classOfDevice = ClassOfDevice(data: data.subdataNoCopy(in: 6 ..< 9))
+        guard let classOfDevice = ClassOfDevice(data: data.subdata(in: 6 ..< 9))
             else { return nil }
         
         guard let linkType = LinkType(rawValue: data[9])

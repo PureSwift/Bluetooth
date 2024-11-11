@@ -90,7 +90,7 @@ public extension LinkPolicyCommand {
     
     var name: String {
         
-        return type(of: self).names[Int(rawValue)]
+        return Self.names[Int(rawValue)]
     }
     
     private static let names = [

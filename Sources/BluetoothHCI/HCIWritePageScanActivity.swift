@@ -74,8 +74,8 @@ extension HCIWritePageScanActivity {
         
         public init?(rawValue: UInt16) {
             
-            guard rawValue <= type(of: self).max.rawValue,
-                rawValue >= type(of: self).min.rawValue
+            guard rawValue <= Self.max.rawValue,
+                rawValue >= Self.min.rawValue
                 else { return nil }
             
             guard rawValue % 2 == 0
@@ -106,8 +106,8 @@ extension HCIWritePageScanActivity {
         
         public init?(rawValue: UInt16) {
             
-            guard rawValue <= type(of: self).max.rawValue,
-                rawValue >= type(of: self).min.rawValue
+            guard rawValue <= Self.max.rawValue,
+                rawValue >= Self.min.rawValue
                 else { return nil }
             
             self.rawValue = rawValue

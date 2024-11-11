@@ -66,7 +66,7 @@ public struct HCILinkKeyRequestNegativeReplyReturn: HCICommandReturnParameter {
     
     public var address: BluetoothAddress
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCILinkKeyRequestNegativeReplyReturn.length
             else { return nil }

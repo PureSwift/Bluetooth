@@ -131,15 +131,18 @@ public struct HCILEStartEncryption: HCICommandParameter { // HCI_LE_Start_Encryp
         self.encryptedDiversifier = encryptedDiversifier
         self.longTermKey = longTermKey
     }
-    
-    public var data: Data {
-        return Data(self)
-    }
 }
 
 // MARK: - DataConvertible
 
-extension HCILEStartEncryption: DataConvertible {
+extension HCILEStartEncryption {
+    
+    public var data: Data {
+        var data = Data()
+        data.reserveCapacity(self.dataLength)
+        data += self
+        return data
+    }
     
     var dataLength: Int {
         

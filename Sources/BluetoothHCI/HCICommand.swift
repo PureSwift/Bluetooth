@@ -64,5 +64,5 @@ public protocol HCICommandReturnParameter {
     static var length: Int { get }
     
     // Attempt to initialize command return parameter from data.
-    init?(data: Data)
+    init?<Data: DataContainer>(data: Data)
 }

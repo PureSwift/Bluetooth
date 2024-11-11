@@ -54,14 +54,16 @@ public struct HCILEEncrypt: HCICommandParameter { // HCI_LE_Encrypt
         self.key = key
         self.plainText = plainText
     }
-    
-    public var data: Data {
-        
-        return Data(self)
-    }
 }
 
-extension HCILEEncrypt: DataConvertible {
+extension HCILEEncrypt {
+    
+    public var data: Data {
+        var data = Data()
+        data.reserveCapacity(self.dataLength)
+        data += self
+        return data
+    }
     
     var dataLength: Int { return 32 }
     
@@ -90,9 +92,9 @@ public struct HCILEEncryptReturn: HCICommandReturnParameter {
     /// The most significant octet of the Encrypted_Data corresponds to out[0] using the notation specified in FIPS 197.
     public let encryptedData: UInt128
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let encryptedData = UInt128(data: data)

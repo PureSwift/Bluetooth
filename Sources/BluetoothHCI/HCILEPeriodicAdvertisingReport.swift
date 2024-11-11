@@ -6,18 +6,18 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// LE Periodic Advertising Report Event
 ///
 /// The event indicates that the Controller has received a Periodic Advertising packet.
 @frozen
-public struct HCILEPeriodicAdvertisingReport: HCIEventParameter {
+public struct HCILEPeriodicAdvertisingReport<ReportData: DataContainer>: HCIEventParameter {
     
-    public static let event = LowEnergyEvent.periodicAdvertisingReport // 0x0F
+    public static var event: LowEnergyEvent { .periodicAdvertisingReport } // 0x0F
     
     /// Minimum length
-    public static let length = 7
+    public static var length: Int { 7 }
     
     public let syncHandle: UInt16 // Sync_Handle
     
@@ -30,11 +30,11 @@ public struct HCILEPeriodicAdvertisingReport: HCIEventParameter {
     
     public let dataStatus: DataStatus
     
-    public let data: Data
+    public let data: ReportData
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Self.length
             else { return nil }
         
         let syncHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
@@ -54,11 +54,11 @@ public struct HCILEPeriodicAdvertisingReport: HCIEventParameter {
         
         if dataLength > 0 {
                         
-            self.data = Data(data[7 ... (7 + dataLength)])
+            self.data = ReportData(data[7 ... (7 + dataLength)])
             
         } else {
             
-            self.data = Data()
+            self.data = ReportData()
         }
         
         self.syncHandle = syncHandle

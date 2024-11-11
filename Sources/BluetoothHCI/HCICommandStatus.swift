@@ -19,9 +19,9 @@ public struct HCICommandStatus: HCIEventParameter {
     public var ncmd: UInt8
     public var opcode: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let statusByte = data[0]

@@ -21,9 +21,9 @@ public struct HCILEPeriodicAdvertisingSyncLost: HCIEventParameter {
     
     public let syncHandle: UInt16 // Sync_Handle
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let syncHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))

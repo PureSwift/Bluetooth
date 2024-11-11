@@ -92,7 +92,7 @@ public struct HCILinkKeyRequestReplyReturn: HCICommandReturnParameter {
     /// BD_ADDR of the Device of which the Link Key request reply has completed.
     public var address: BluetoothAddress
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCILinkKeyRequestReplyReturn.length
             else { return nil }

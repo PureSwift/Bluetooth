@@ -40,7 +40,7 @@ public struct HCIWriteLocalName: HCICommandParameter {
     
     public init?(localName: String) {
         
-        guard localName.utf8.count <= type(of: self).length
+        guard localName.utf8.count <= Self.length
             else { return nil }
         
         self.localName = localName
@@ -48,7 +48,7 @@ public struct HCIWriteLocalName: HCICommandParameter {
     
     public var data: Data {
         
-        let maxLength = type(of: self).length
+        let maxLength = Self.length
         
         var data = Data(localName.utf8)
         

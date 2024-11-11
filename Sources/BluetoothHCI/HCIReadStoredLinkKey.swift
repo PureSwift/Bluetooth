@@ -90,7 +90,7 @@ public struct HCIReadStoredLinkKeyReturn: HCICommandReturnParameter {
     /// Range: 0x0000 – 0xFFFF
     public var numberKeysRead: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIReadStoredLinkKeyReturn.length
             else { return nil }

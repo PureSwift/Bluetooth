@@ -28,13 +28,13 @@ public struct ConnectionAcceptTimeout: RawRepresentable, Equatable, Hashable {
     
     public init?(rawValue: UInt16) {
         
-        guard rawValue >= type(of: self).min.rawValue,
-            rawValue <= type(of: self).max.rawValue
+        guard rawValue >= Self.min.rawValue,
+            rawValue <= Self.max.rawValue
             else { return nil }
         
         self.rawValue = rawValue
         
-        assert((type(of: self).min.rawValue ... type(of: self).max.rawValue).contains(rawValue))
+        assert((Self.min.rawValue ... Self.max.rawValue).contains(rawValue))
     }
     
     /// Time = N * 0.625 ms

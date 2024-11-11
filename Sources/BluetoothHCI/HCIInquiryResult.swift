@@ -20,9 +20,9 @@ public struct HCIInquiryResult: HCIEventParameter {
     
     public let reports: [Report]
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Self.length
             else { return nil }
         
         let reportCount = Int(data[2])
@@ -63,7 +63,7 @@ extension HCIInquiryResult {
         
         public let clockOffset: ClockOffset
         
-        public init?(data: Data) {
+        public init?<Data: DataContainer>(data: Data) {
             
             let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
             
@@ -71,7 +71,7 @@ extension HCIInquiryResult {
             
             self.pageScanRepetitionMode = PageScanRepetitionMode(rawValue: data[6])
             
-            guard let classOfDevice = ClassOfDevice(data: data.subdataNoCopy(in: 9 ..< 12))
+            guard let classOfDevice = ClassOfDevice(data: data.subdata(in: 9 ..< 12))
                 else { return nil }
             
             let clockOffset = ClockOffset(rawValue: UInt16(littleEndian: UInt16(bytes: (data[12], data[13]))))

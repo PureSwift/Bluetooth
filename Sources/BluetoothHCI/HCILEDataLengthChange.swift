@@ -46,9 +46,9 @@ public struct HCILEDataLengthChange: HCIEventParameter {
     /// and equal to connEffectiveMaxRxTimeCoded while the connection is on the LE Coded PHY.
     public let maxRxTime: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))

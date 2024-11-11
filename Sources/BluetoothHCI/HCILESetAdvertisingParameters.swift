@@ -83,23 +83,21 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
     }
 }
 
-public extension HCILESetAdvertisingParameters {
+// MARK: - Data Convertible
+
+extension HCILESetAdvertisingParameters {
     
     static var length: Int { return 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1 }
     
-    var data: Data {
-        
-        return Data(self)
+    public var data: Data {
+        var data = Data()
+        data.reserveCapacity(Self.length)
+        data += self
+        return data
     }
-}
 
-// MARK: - Data Convertible
-
-extension HCILESetAdvertisingParameters: DataConvertible {
-    
     var dataLength: Int {
-        
-        return type(of: self).length
+        return Self.length
     }
     
     static func += <T: DataContainer> (data: inout T, value: HCILESetAdvertisingParameters) {

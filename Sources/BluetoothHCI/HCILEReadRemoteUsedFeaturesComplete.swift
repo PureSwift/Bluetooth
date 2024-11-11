@@ -33,9 +33,9 @@ public struct HCILEReadRemoteUsedFeaturesComplete: HCIEventParameter {
     /// LE features of the remote controller.
     public let features: LowEnergyFeatureSet
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let statusByte = data[0]

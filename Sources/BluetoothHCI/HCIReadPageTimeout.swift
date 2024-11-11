@@ -35,7 +35,7 @@ public struct HCIReadPageTimeoutReturn: HCICommandReturnParameter {
     
     public var pageTimeout: PageTimeout
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIReadPageTimeoutReturn.length
             else { return nil }

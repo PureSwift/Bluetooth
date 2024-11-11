@@ -37,9 +37,9 @@ public struct HCILEReadTransmitPower: HCICommandReturnParameter {
     
     public let maxTxPower: TxPower
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let minTxPower = TxPower(rawValue: Int8(bitPattern: data[0]))

@@ -41,8 +41,8 @@ public struct HCILEReadMaximumAdvertisingDataLength: HCICommandReturnParameter {
     /// Maximum supported advertising data length
     public let maximumAdvertisingDataLength: UInt16
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         maximumAdvertisingDataLength = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))

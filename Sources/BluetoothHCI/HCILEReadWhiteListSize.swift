@@ -37,9 +37,9 @@ public struct HCILEReadWhiteListSize: HCICommandReturnParameter { // HCI_LE_Read
     /// The white list size.
     public let size: UInt8 // White_List_Size
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.size = data[0]

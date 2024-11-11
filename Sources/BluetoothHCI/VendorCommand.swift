@@ -28,6 +28,6 @@ public extension VendorCommand {
     static var names = [VendorCommand: String]()
     
     var name: String {
-        return type(of: self).names[self] ?? rawValue.toHexadecimal()
+        return Self.names[self] ?? rawValue.toHexadecimal()
     }
 }

@@ -66,7 +66,7 @@ public struct HCIUserConfirmationRequestReplyReturn: HCICommandReturnParameter {
     
     public let address: BluetoothAddress
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         guard data.count == HCIUserConfirmationRequestReplyReturn.length
             else { return nil }
         let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))

@@ -108,7 +108,7 @@ public struct HCIWriteLinkSupervisionTimeoutReturn: HCICommandReturnParameter {
     
     public var handle: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIWriteLinkSupervisionTimeoutReturn.length
             else { return nil }

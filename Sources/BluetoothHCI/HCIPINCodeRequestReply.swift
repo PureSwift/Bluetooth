@@ -127,7 +127,7 @@ public struct HCIPINCodeRequestReplyReturn: HCICommandReturnParameter {
     
     public let address: BluetoothAddress
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIPINCodeRequestReplyReturn.length
             else { return nil }

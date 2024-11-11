@@ -68,7 +68,7 @@ public struct HCIReadLMPHandleReturn: HCICommandReturnParameter {
     
     public let lmpHandle: UInt8
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIEncryptionChange.length
             else { return nil }

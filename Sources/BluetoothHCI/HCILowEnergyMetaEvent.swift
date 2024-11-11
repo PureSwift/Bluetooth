@@ -6,19 +6,20 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// HCI Low Energy Meta Event
 @frozen
-public struct HCILowEnergyMetaEvent: HCIEventParameter {
+public struct HCILowEnergyMetaEvent<EventData: DataContainer>: HCIEventParameter {
     
-    public static let event = HCIGeneralEvent.lowEnergyMeta
-    public static let length = 1 // 1 ... HCI.maximumEventSize
+    public static var event: HCIGeneralEvent { .lowEnergyMeta }
+    
+    public static var length: Int { 1 } // 1 ... HCI.maximumEventSize
     
     public let subevent: LowEnergyEvent
-    public let eventData: Data
+    public let eventData: EventData
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= HCILowEnergyMetaEvent.length,
             let subevent = LowEnergyEvent(rawValue: data[0])
@@ -28,11 +29,11 @@ public struct HCILowEnergyMetaEvent: HCIEventParameter {
         
         if data.count > 1 {
             
-            self.eventData = Data(data.suffix(from: 1))
+            self.eventData = EventData(data.suffix(from: 1))
             
         } else {
             
-            self.eventData = Data()
+            self.eventData = EventData()
         }
     }
 }

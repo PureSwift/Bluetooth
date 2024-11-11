@@ -29,9 +29,9 @@ public struct HCIDisconnectionComplete: HCIEventParameter {
     /// Reason for disconnection.
     public let error: HCIError
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let status = HCIStatus(rawValue: data[0])

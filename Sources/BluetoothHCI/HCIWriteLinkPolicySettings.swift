@@ -98,7 +98,7 @@ public struct HCIWriteLinkPolicySettingsReturn: HCICommandReturnParameter {
     
     public var connectionHandle: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIWriteLinkPolicySettingsReturn.length
             else { return nil }

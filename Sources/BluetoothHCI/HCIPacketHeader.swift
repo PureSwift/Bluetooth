@@ -14,7 +14,7 @@ public protocol HCIPacketHeader {
     
     static var length: Int { get }
     
-    init?(data: Data)
+    init?<Data: DataContainer>(data: Data)
     
     var data: Data { get }
 }
@@ -56,9 +56,9 @@ public struct HCICommandHeader: HCIPacketHeader { // hci_command_hdr (packed)
         return (header, parameterData)
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.opcode = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
@@ -91,9 +91,9 @@ public struct HCIEventHeader: HCIPacketHeader {
         self.parameterLength = parameterLength
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let eventByte = data[0]

@@ -45,8 +45,8 @@ public struct HCILEReadNumberOfSupportedAdvertisingSets: HCICommandReturnParamet
     /// Number of advertising sets supported at the same time
     public let numSupportedAdvertisingSets: UInt8 //Num_Supported_Advertising_Sets
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         numSupportedAdvertisingSets = data[0]

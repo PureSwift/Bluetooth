@@ -58,16 +58,18 @@ public struct HCILERemoveDeviceToPeriodicAdvertiserList: HCICommandParameter {
         self.address = address
         self.advertisingSID = advertisingSID
     }
-    
-    public var data: Data {
-        
-        return Data(self)
-    }
 }
 
 // MARK: - DataConvertible
 
-extension HCILERemoveDeviceToPeriodicAdvertiserList: DataConvertible {
+extension HCILERemoveDeviceToPeriodicAdvertiserList {
+    
+    public var data: Data {
+        var data = Data()
+        data.reserveCapacity(self.dataLength)
+        data += self
+        return data
+    }
     
     var dataLength: Int { return 1 + BluetoothAddress.length + 1 }
     

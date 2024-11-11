@@ -84,7 +84,7 @@ public struct HCIDeleteStoredLinkKeyReturn: HCICommandReturnParameter {
     
     public var numberKeysDeleted: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIDeleteStoredLinkKeyReturn.length
             else { return nil }
