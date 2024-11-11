@@ -69,7 +69,7 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
     
     public var characteristic: GATTAttribute<Data>.Characteristic {
         
-        return GATTAttribute.Characteristic(uuid: Self.uuid,
+        return GATTAttribute<Data>.Characteristic(uuid: Self.uuid,
                                    value: data,
                                    permissions: [.read],
                                    properties: [.notify],
