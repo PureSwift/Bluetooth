@@ -7,7 +7,7 @@
 //
 
 @frozen
-public struct UInt48: ByteValue, Hashable, Comparable, Sendable {
+public struct UInt48: ByteValue, Comparable, Sendable {
  
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
@@ -30,6 +30,15 @@ public extension UInt48 {
     
     /// The value with all bits set to zero.
     static var zero: UInt48 { return .min }
+}
+
+// MARK: - Hashable
+
+extension UInt48: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
+    }
 }
 
 // MARK: - Data Convertible

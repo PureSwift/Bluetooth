@@ -69,15 +69,6 @@ extension ByteValue where Self: Equatable {
     }
 }
 
-// MARK: - Hashable
-
-extension ByteValue where Self: Hashable {
-    
-    public func hash(into hasher: inout Hasher) {
-        Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
-    }
-}
-
 // MARK: - Comparable
 
 extension ByteValue where Self: Comparable {

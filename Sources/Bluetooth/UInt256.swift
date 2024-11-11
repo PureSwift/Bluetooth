@@ -8,7 +8,7 @@
 
 /// A 256 bit number stored according to host endianness.
 @frozen
-public struct UInt256: ByteValue, Hashable, Comparable, Sendable {
+public struct UInt256: ByteValue, Comparable, Sendable {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
@@ -31,6 +31,15 @@ public extension UInt256 {
     
     /// The value with all bits set to zero.
     static var zero: UInt256 { return .min }
+}
+
+// MARK: - Hashable
+
+extension UInt256: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
+    }
 }
 
 // MARK: - Data Convertible

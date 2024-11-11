@@ -8,7 +8,7 @@
 
 /// Bluetooth address.
 @frozen
-public struct BluetoothAddress: Hashable, Comparable, Sendable {
+public struct BluetoothAddress: Comparable, Sendable {
     
     // MARK: - Properties
     
@@ -33,6 +33,15 @@ public extension BluetoothAddress {
     
     /// A zero address.
     static var zero: BluetoothAddress { BluetoothAddress(bytes: (.zero, .zero, .zero, .zero, .zero, .zero)) }
+}
+
+// MARK: - Hashable
+
+extension BluetoothAddress: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
+    }
 }
 
 // MARK: - ByteValue
