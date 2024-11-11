@@ -16,7 +16,7 @@ final class UUIDTests: XCTestCase {
         
         let uuid = UUID()
         
-        XCTAssertEqual(uuid.data.count, UUID.length)
+        XCTAssertEqual(Data(uuid).count, UUID.length)
         XCTAssertEqual(uuid.uuidString.utf8.count, UUID.stringLength)
         XCTAssertEqual(uuid.uuidString.replacingOccurrences(of: "-", with: "").utf8.count, UUID.unformattedStringLength)
     }
@@ -53,8 +53,8 @@ final class UUIDTests: XCTestCase {
         
         let uuid = UUID()
         
-        XCTAssertEqual(uuid.data.count, UUID.length)
-        XCTAssertEqual(UUID(data: uuid.data), uuid)
+        XCTAssertEqual(Data(uuid).count, UUID.length)
+        XCTAssertEqual(UUID(data: Data(uuid)), uuid)
     }
     
     func testEquality() {
