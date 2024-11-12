@@ -29,8 +29,8 @@ internal func _memcmp(
 ) -> Int32
 #else
 internal func _memcmp(
-    _ p1: UnsafeRawPointer?,
-    _ p2: UnsafeRawPointer?,
+    _ p1: UnsafeRawPointer,
+    _ p2: UnsafeRawPointer,
     _ size: Int
 ) -> Int32 {
     memcmp(p1, p2, size)

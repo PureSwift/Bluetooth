@@ -77,8 +77,8 @@ extension ByteValue where Self: Comparable {
         lhs.withUnsafeBytes { (b1) in
             rhs.withUnsafeBytes { (b2) in
                 _memcmp(
-                    UnsafeRawPointer(b1.baseAddress),
-                    UnsafeRawPointer(b2.baseAddress),
+                    b1.baseAddress.flatMap { UnsafeRawPointer($0) }!,
+                    b2.baseAddress.flatMap { UnsafeRawPointer($0) }!,
                     Self.length
                 ) < 0
             }
@@ -89,8 +89,8 @@ extension ByteValue where Self: Comparable {
         lhs.withUnsafeBytes { (b1) in
             rhs.withUnsafeBytes { (b2) in
                 _memcmp(
-                    UnsafeRawPointer(b1.baseAddress),
-                    UnsafeRawPointer(b2.baseAddress),
+                    b1.baseAddress.flatMap { UnsafeRawPointer($0) }!,
+                    b2.baseAddress.flatMap { UnsafeRawPointer($0) }!,
                     Self.length
                 ) > 0
             }
