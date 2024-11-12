@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Alert Category ID Bit Mask
@@ -28,7 +29,7 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable 
     /// This field shows the category of the new alert.
     public var categories: BitMaskOptionSet<Category>
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard let bitmask = Category.RawValue(bitmaskArray: data)
             else { return nil }
@@ -38,7 +39,7 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable 
     
     public var data: Data {
         
-        return categories.rawValue.bitmaskArray
+        return Data(categories.rawValue.bitmaskArray)
     }
 }
 
@@ -70,7 +71,7 @@ public extension GATTAlertCategoryBitMask {
         
         case instantMessage = 0b1000000000
         
-        public static let allCases: [Category] = [
+        public static var allCases: [Category] { [
             .simpleAlert,
             .email,
             .news,
@@ -81,6 +82,6 @@ public extension GATTAlertCategoryBitMask {
             .schedule,
             .highPrioritized,
             .instantMessage
-        ]
+        ] }
     }
 }

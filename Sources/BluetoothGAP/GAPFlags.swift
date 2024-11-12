@@ -43,29 +43,22 @@ public struct GAPFlags: GAPData, Equatable, Hashable, OptionSet, Sendable {
     }
 }
 
-public extension GAPFlags {
+// MARK: - DataConvertible
+
+extension GAPFlags: DataConvertible {
     
-    init?<Data>(data: Data) where Data : Bluetooth.DataContainer {
+    public init?<Data>(data: Data) where Data : Bluetooth.DataContainer {
         guard data.count == 1
             else { return nil }
         self.init(rawValue: data[0])
     }
     
-    func append<Data>(to data: inout Data) where Data : Bluetooth.DataContainer {
-        data += self
+    public func append<Data>(to data: inout Data) where Data : Bluetooth.DataContainer {
+        data += self.rawValue
     }
     
-    var dataLength: Int {
+    public var dataLength: Int {
         1
-    }
-}
-
-// MARK: - DataConvertible
-
-extension GAPFlags: DataConvertible {
-    
-    static func += <T: DataContainer> (data: inout T, value: GAPFlags) {
-        data += value.rawValue
     }
 }
 
@@ -122,7 +115,7 @@ extension GAPFlags: CustomStringConvertible, CustomDebugStringConvertible {
     
     #if hasFeature(Embedded)
     public var description: String {
-        rawValue.description
+        "0x" + rawValue.toHexadecimal()
     }
     #else
     @inline(never)

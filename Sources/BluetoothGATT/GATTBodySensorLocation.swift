@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Body Sensor Location
@@ -41,9 +42,9 @@ public enum GATTBodySensorLocation: UInt8, GATTCharacteristic {
     /// Foot
     case foot = 0x06
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(rawValue: data[0])

@@ -20,9 +20,9 @@ public struct HCIUserConfirmationRequest: HCIEventParameter {
     
     public let numericValue: NumericValue
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
@@ -37,25 +37,22 @@ public struct HCIUserConfirmationRequest: HCIEventParameter {
 
 extension HCIUserConfirmationRequest {
     
-    public struct NumericValue: RawRepresentable {
+    public struct NumericValue: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = NumericValue(0x00000000)
+        public static var min: NumericValue { NumericValue(0x00000000) }
         
-        public static let max = NumericValue(0x000F423F)
+        public static var max: NumericValue { NumericValue(0x000F423F) }
         
         public let rawValue: UInt32
         
         public init?(rawValue: UInt32) {
-            
             guard rawValue <= NumericValue.max.rawValue,
                 rawValue >= NumericValue.min.rawValue
                 else { return nil }
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt32) {
-            
             self.rawValue = unsafe
         }
     }

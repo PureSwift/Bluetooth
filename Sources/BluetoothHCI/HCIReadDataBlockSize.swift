@@ -46,9 +46,9 @@ public struct HCIReadDataBlockSizeReturn: HCICommandReturnParameter {
     /// Total number of data block buffers available in the Controller for the storage of data packets scheduled for transmission.
     public let dataBlocksTotalNumber: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let status = HCIStatus(rawValue: data[0])

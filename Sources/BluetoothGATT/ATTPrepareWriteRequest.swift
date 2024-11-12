@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Prepare Write Request
 ///
@@ -14,9 +14,9 @@ import Foundation
 /// The server will respond to this request with a *Prepare Write Response*,
 /// so that the client can verify that the value was received correctly.
 @frozen
-public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
+public struct ATTPrepareWriteRequest<Value: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .preparedWriteRequest }
+    public static var attributeOpcode: ATTOpcode { .preparedWriteRequest }
     
     /// The handle of the attribute to be written.
     public var handle: UInt16
@@ -25,11 +25,11 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
     public var offset: UInt16
     
     /// The value of the attribute to be written.
-    public var partValue: Data
+    public var partValue: Value
     
     public init(handle: UInt16,
                 offset: UInt16,
-                partValue: Data) {
+                partValue: Value) {
         
         self.handle = handle
         self.offset = offset
@@ -37,12 +37,14 @@ public struct ATTPrepareWriteRequest: ATTProtocolDataUnit, Equatable {
     }
 }
 
-public extension ATTPrepareWriteRequest {
+// MARK: - DataConvertible
+
+extension ATTPrepareWriteRequest: DataConvertible {
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= 5,
-            type(of: self).validateOpcode(data)
+            Self.validateOpcode(data)
             else { return nil }
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
@@ -50,26 +52,14 @@ public extension ATTPrepareWriteRequest {
         self.partValue = data.suffixCheckingBounds(from: 5)
     }
     
-    var data: Data {
-        
-        return Data(self)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.handle.littleEndian
+        data += self.offset.littleEndian
+        data += self.partValue
     }
-}
-
-// MARK: - DataConvertible
-
-extension ATTPrepareWriteRequest: DataConvertible {
     
-    var dataLength: Int {
-        
+    public var dataLength: Int {
         return 5 + partValue.count
-    }
-    
-    static func += <T: DataContainer> (data: inout T, value: ATTPrepareWriteRequest) {
-        
-        data += attributeOpcode.rawValue
-        data += value.handle.littleEndian
-        data += value.offset.littleEndian
-        data += value.partValue
     }
 }

@@ -6,28 +6,20 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 // MARK: - Protocol Definition
 
 /// Data packet for the ATT protocol.
-public protocol ATTProtocolDataUnit {
+public protocol ATTProtocolDataUnit: DataConvertible {
     
     /// The PDU's attribute opcode.
     static var attributeOpcode: ATTOpcode { get }
-    
-    /// Converts PDU to raw bytes (little-endian).
-    var data: Data { get }
-    
-    /// Initializes PDU from raw bytes (little-endian).
-    init?(data: Data)
 }
 
 internal extension ATTProtocolDataUnit {
     
-    @inline(__always)
-    static func validateOpcode(_ data: Data) -> Bool {
-        
+    static func validateOpcode<Data: DataContainer>(_ data: Data) -> Bool {
         return data.first == attributeOpcode.rawValue
     }
 }
@@ -41,10 +33,7 @@ internal protocol ATTAttributeDataList: ATTProtocolDataUnit {
     static var headerLength: Int { get }
 }
 
-internal protocol ATTAttributeData {
-    
-    init?(data: Data)
-}
+internal protocol ATTAttributeData: DataConvertible { }
 
 extension ATTAttributeDataList {
     
@@ -60,32 +49,28 @@ internal extension ATTAttributeDataList where AttributeData: DataConvertible {
             else { return false }
         
         for attributeData in attributeData {
-            
             // all items must have same length
             guard attributeData.dataLength == valueLength
                 else { return false }
         }
-        
         return true
     }
     
     static func dataLength <T: Collection> (for attributes: T) -> Int where T.Element == AttributeData {
-        
         assert(attributes.isEmpty == false)
         return attributes.reduce(headerLength, { $0 + $1.dataLength })
     }
     
-    static func append <T: DataContainer> (_ data: inout T, _ attributeData: [AttributeData]) {
-        
+    static func append <Data: DataContainer> (_ data: inout Data, _ attributeData: [AttributeData]) {
         data += attributeOpcode.rawValue
         data += UInt8(attributeData[0].dataLength)
-        attributeData.forEach { data += $0 }
+        data += attributeData
     }
 }
 
 internal extension ATTAttributeDataList {
-    
-    static func from(data: Data) -> [AttributeData]? {
+
+    static func from<Data: DataContainer>(data: Data) -> [AttributeData]? {
         
         guard data.count > headerLength,
             validateOpcode(data)
@@ -110,7 +95,7 @@ internal extension ATTAttributeDataList {
             
             let byteIndex = headerLength + (index * attributeDataLength)
             
-            let attributeBytes = data.subdataNoCopy(in: byteIndex ..< byteIndex + attributeDataLength)
+            let attributeBytes = data.subdata(in: byteIndex ..< byteIndex + attributeDataLength)
             
             guard let attribute = AttributeData(data: attributeBytes)
                 else { return nil }

@@ -208,7 +208,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([17, 6, 1, 0, 5, 0, 0, 24, 6, 0, 9, 0, 1, 24, 16, 0, 20, 0, 10, 24])
             
-            guard let pdu = ATTReadByGroupTypeResponse(data: data)
+            guard let pdu = ATTReadByGroupTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssert(pdu.attributeData.isEmpty == false)
@@ -223,7 +223,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([17, 20, 40, 0, 48, 0, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96])
             
-            guard let pdu = ATTReadByGroupTypeResponse(data: data)
+            guard let pdu = ATTReadByGroupTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -246,7 +246,7 @@ final class AttributeProtocolTests: XCTestCase {
             // find C7A8D570-E023-4FB8-E511-72F9E24FF160
             let data = Data([6, 1, 0, 255, 255, 0, 40, 96, 241, 79, 226, 249, 114, 17, 229, 184, 79, 35, 224, 112, 213, 168, 199])
             
-            guard let pdu = ATTFindByTypeRequest(data: data)
+            guard let pdu = ATTFindByTypeRequest<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -261,7 +261,7 @@ final class AttributeProtocolTests: XCTestCase {
             // find 60F14FE2-F972-11E5-B84F-23E070D5A8C7
             let data = Data([6, 1, 0, 255, 255, 0, 40, 199, 168, 213, 112, 224, 35, 79, 184, 229, 17, 114, 249, 226, 79, 241, 96])
             
-            guard let pdu = ATTFindByTypeRequest(data: data)
+            guard let pdu = ATTFindByTypeRequest<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -295,20 +295,20 @@ final class AttributeProtocolTests: XCTestCase {
     
     func testReadByType() {
         
-        typealias DeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute
+        typealias DeclarationAttribute = GATTDatabase<Data>.CharacteristicDeclarationAttribute
         
-        typealias Attribute = GATTDatabase.Attribute
+        typealias Attribute = GATTDatabase<Data>.Attribute
         
         do {
             
             let data = Data([9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231])
             
-            guard let pdu = ATTReadByTypeResponse(data: data)
+            guard let pdu = ATTReadByTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.dataLength, data.count)
-            XCTAssertEqual(ATTReadByTypeResponse(attributeData: pdu.attributeData), pdu)
+            XCTAssertEqual(ATTReadByTypeResponse<Data>(attributeData: pdu.attributeData), pdu)
             
             guard let foundCharacteristicData = pdu.attributeData.first,
                 pdu.attributeData.count == 1
@@ -322,7 +322,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([9, 21, 41, 0, 2, 42, 0, 199, 168, 213, 112, 224, 35, 224, 128, 229, 17, 111, 249, 76, 38, 125, 231])
             
-            guard let pdu = ATTReadByTypeResponse(data: data)
+            guard let pdu = ATTReadByTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -367,7 +367,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([0x1D, 0x08, 0x00, 0x0A, 0x00, 0xFF, 0xFF])
             
-            guard let pdu = ATTHandleValueIndication(data: data)
+            guard let pdu = ATTHandleValueIndication<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1d)
@@ -388,7 +388,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([0x1D, 0x08, 0x00])
             
-            guard let pdu = ATTHandleValueIndication(data: data)
+            guard let pdu = ATTHandleValueIndication<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x1D)
@@ -436,7 +436,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([0x1B, 0x16, 0x00, 0x64])
             
-            guard let pdu = ATTHandleValueNotification(data: data)
+            guard let pdu = ATTHandleValueNotification<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -484,7 +484,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([0x0B, 0x64])
             
-            guard let pdu = ATTReadResponse(data: data)
+            guard let pdu = ATTReadResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x0b)
@@ -523,7 +523,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([0x12, 0x17, 0x00, 0x01, 0x00])
             
-            guard let pdu = ATTWriteRequest(data: data)
+            guard let pdu = ATTWriteRequest<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x12)
@@ -599,7 +599,6 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(type(of: pdu).attributeOpcode.rawValue, 0x05)
             XCTAssertEqual(pdu.data, data)
             XCTAssertEqual(pdu.dataLength, data.count)
-            XCTAssertEqual(Data(pdu.attributeData), Data(foundData))
             XCTAssertEqual("\(pdu.attributeData)", "\(foundData)")
             XCTAssertEqual(pdu.attributeData.count, 1)
         }
@@ -678,7 +677,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([18, 4, 0, 1, 0])
             
-            guard let pdu = ATTWriteRequest(data: data)
+            guard let pdu = ATTWriteRequest<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -689,10 +688,10 @@ final class AttributeProtocolTests: XCTestCase {
             guard let clientConfiguration = GATTClientCharacteristicConfiguration(data: Data(pdu.value))
                 else { XCTFail("Could not parse"); return }
             
-            XCTAssertEqual(clientConfiguration.data, Data(pdu.value))
-            XCTAssertEqual(clientConfiguration.configuration, [.notify])
-            XCTAssertNotEqual(clientConfiguration.configuration, [.notify, .indicate])
-            XCTAssertNotEqual(clientConfiguration.configuration, [])
+            XCTAssertEqual(Data(clientConfiguration), Data(pdu.value))
+            XCTAssertEqual(clientConfiguration, [.notify])
+            XCTAssertNotEqual(clientConfiguration, [.notify, .indicate])
+            XCTAssertNotEqual(clientConfiguration, [])
         }
         
         do {
@@ -752,7 +751,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([17, 20, 1, 0, 6, 0, 231, 207, 159, 173, 34, 222, 166, 180, 145, 78, 37, 213, 23, 49, 212, 52, 7, 0, 12, 0, 251, 52, 155, 95, 128, 0, 0, 128, 0, 16, 0, 0, 169, 254, 0, 0, 13, 0, 18, 0, 178, 26, 190, 138, 180, 130, 146, 145, 222, 73, 117, 102, 201, 67, 100, 139])
             
-            guard let pdu = ATTReadByGroupTypeResponse(data: data)
+            guard let pdu = ATTReadByGroupTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
                         
             XCTAssertEqual(pdu.data, data)
@@ -822,7 +821,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([9, 21, 2, 0, 16, 3, 0, 153, 234, 51, 69, 164, 205, 80, 147, 177, 76, 242, 125, 196, 139, 229, 43, 5, 0, 8, 6, 0, 174, 253, 204, 198, 23, 135, 52, 155, 155, 75, 219, 59, 176, 229, 202, 148])
             
-            guard let pdu = ATTReadByTypeResponse(data: data)
+            guard let pdu = ATTReadByTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -833,12 +832,12 @@ final class AttributeProtocolTests: XCTestCase {
             
             do {
                 
-                let attribute = GATTDatabase.Attribute(handle: pdu.attributeData[0].handle,
+                let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[0].handle,
                                                        uuid: .characteristic,
                                                        value: Data(pdu.attributeData[0].value),
                                                        permissions: [.read])
                 
-                guard let declaration = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                guard let declaration = GATTDatabase<Data>.CharacteristicDeclarationAttribute(attribute: attribute)
                     else { XCTFail(); return }
                 
                 XCTAssertEqual(declaration.attribute.value, attribute.value)
@@ -849,12 +848,12 @@ final class AttributeProtocolTests: XCTestCase {
             
             do {
                 
-                let attribute = GATTDatabase.Attribute(handle: pdu.attributeData[1].handle,
+                let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[1].handle,
                                                        uuid: .characteristic,
                                                        value: Data(pdu.attributeData[1].value),
                                                        permissions: [.read])
                 
-                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                guard let characteristicDeclarationAttribute = GATTDatabase<Data>.CharacteristicDeclarationAttribute(attribute: attribute)
                     else { XCTFail(); return }
                 
                 XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
@@ -883,7 +882,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([9, 21, 8, 0, 18, 9, 0, 1, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204, 11, 0, 8, 12, 0, 2, 0, 0, 87, 39, 220, 216, 142, 254, 77, 227, 3, 128, 24, 131, 204])
             
-            guard let pdu = ATTReadByTypeResponse(data: data)
+            guard let pdu = ATTReadByTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -894,12 +893,12 @@ final class AttributeProtocolTests: XCTestCase {
             
             do {
                 
-                let attribute = GATTDatabase.Attribute(handle: pdu.attributeData[0].handle,
+                let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[0].handle,
                                                        uuid: .characteristic,
                                                        value: Data(pdu.attributeData[0].value),
                                                        permissions: [.read])
                 
-                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                guard let characteristicDeclarationAttribute = GATTDatabase<Data>.CharacteristicDeclarationAttribute(attribute: attribute)
                     else { XCTFail(); return }
                 
                 XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
@@ -909,12 +908,12 @@ final class AttributeProtocolTests: XCTestCase {
             
             do {
                 
-                let attribute = GATTDatabase.Attribute(handle: pdu.attributeData[1].handle,
+                let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[1].handle,
                                                        uuid: .characteristic,
                                                        value: pdu.attributeData[1].value,
                                                        permissions: [.read])
                 
-                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                guard let characteristicDeclarationAttribute = GATTDatabase<Data>.CharacteristicDeclarationAttribute(attribute: attribute)
                     else { XCTFail(); return }
                 
                 XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
@@ -942,7 +941,7 @@ final class AttributeProtocolTests: XCTestCase {
             
             let data = Data([9, 21, 14, 0, 16, 15, 0, 148, 89, 241, 12, 105, 23, 110, 137, 175, 75, 151, 213, 45, 106, 139, 210, 17, 0, 8, 18, 0, 231, 116, 224, 184, 128, 249, 130, 161, 110, 70, 164, 15, 236, 148, 235, 104])
             
-            guard let pdu = ATTReadByTypeResponse(data: data)
+            guard let pdu = ATTReadByTypeResponse<Data>(data: data)
                 else { XCTFail("Could not parse"); return }
             
             XCTAssertEqual(pdu.data, data)
@@ -953,12 +952,12 @@ final class AttributeProtocolTests: XCTestCase {
             
             do {
                 
-                let attribute = GATTDatabase.Attribute(handle: pdu.attributeData[0].handle,
+                let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[0].handle,
                                                        uuid: .characteristic,
                                                        value: pdu.attributeData[0].value,
                                                        permissions: [.read])
                 
-                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                guard let characteristicDeclarationAttribute = GATTDatabase<Data>.CharacteristicDeclarationAttribute(attribute: attribute)
                     else { XCTFail(); return }
                 
                 XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
@@ -968,12 +967,12 @@ final class AttributeProtocolTests: XCTestCase {
             
             do {
                 
-                let attribute = GATTDatabase.Attribute(handle: pdu.attributeData[1].handle,
+                let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[1].handle,
                                                        uuid: .characteristic,
                                                        value: Data(pdu.attributeData[1].value),
                                                        permissions: [.read])
                 
-                guard let characteristicDeclarationAttribute = GATTDatabase.CharacteristicDeclarationAttribute(attribute: attribute)
+                guard let characteristicDeclarationAttribute = GATTDatabase<Data>.CharacteristicDeclarationAttribute(attribute: attribute)
                     else { XCTFail(); return }
                 
                 XCTAssertEqual(characteristicDeclarationAttribute.attribute.value, attribute.value)
@@ -983,4 +982,12 @@ final class AttributeProtocolTests: XCTestCase {
         }
     }
 }
+
+internal extension ATTProtocolDataUnit {
+    
+    var data: Data {
+        Data(self)
+    }
+}
+
 #endif

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Secondary Time Zone
@@ -35,9 +36,9 @@ public struct GATTSecondaryTimeZone: GATTCharacteristic, Equatable {
         self.localTimeInformation = localTimeInformation
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let timeZone = TimeZone(rawValue: (data[0] << 1) >> 1)
@@ -48,7 +49,7 @@ public struct GATTSecondaryTimeZone: GATTCharacteristic, Equatable {
         
         let rangeLocalTime = 1 ..< GATTLocalTimeInformation.length + 1
         
-        guard let localTimeInformation = GATTLocalTimeInformation(data: data.subdataNoCopy(in: rangeLocalTime))
+        guard let localTimeInformation = GATTLocalTimeInformation(data: data.subdata(in: rangeLocalTime))
             else { return nil }
         
         self.init(timeZone: timeZone,

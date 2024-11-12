@@ -38,9 +38,9 @@ public struct HCILEReadAdvertisingChannelTxPower: HCICommandReturnParameter { //
     
     public let transmitPowerLevel: TransmitPowerLevel
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let transmitPowerLevel = TransmitPowerLevel(rawValue: Int8(bitPattern: data[0]))
@@ -55,9 +55,9 @@ public struct HCILEReadAdvertisingChannelTxPower: HCICommandReturnParameter { //
     /// Accuracy: +/- 4 dB
     public struct TransmitPowerLevel: RawRepresentable, Equatable, Hashable, Comparable {
         
-        public static let min = TransmitPowerLevel(-20)
+        public static var min: TransmitPowerLevel { TransmitPowerLevel(-20) }
         
-        public static let max = TransmitPowerLevel(10)
+        public static var max: TransmitPowerLevel { TransmitPowerLevel(10) }
         
         public let rawValue: Int8
         
@@ -79,8 +79,11 @@ public struct HCILEReadAdvertisingChannelTxPower: HCICommandReturnParameter { //
         
         // Comparable
         public static func < (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
+        }
+        
+        public static func > (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
+            return lhs.rawValue > rhs.rawValue
         }
     }
 }

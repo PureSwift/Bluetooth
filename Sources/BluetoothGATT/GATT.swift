@@ -6,7 +6,6 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import Foundation
 @_exported import Bluetooth
 
 /**
@@ -32,59 +31,4 @@ internal enum GATTUUID: UInt16 {
     public var uuid: BluetoothUUID {
         return .bit16(rawValue)
     }
-}
-
-// MARK: - Characteristic Property
-
-/// GATT Characteristic Properties Bitfield valuess
-@frozen
-public enum GATTCharacteristicProperty: UInt8, BitMaskOption {
-    
-    case broadcast              = 0x01
-    case read                   = 0x02
-    case writeWithoutResponse   = 0x04
-    case write                  = 0x08
-    case notify                 = 0x10
-    case indicate               = 0x20
-    
-    /// Characteristic supports write with signature
-    case signedWrite            = 0x40 // BT_GATT_CHRC_PROP_AUTH
-    
-    case extendedProperties     = 0x80
-}
-
-// MARK: CustomStringConvertible
-
-extension GATTCharacteristicProperty: CustomStringConvertible {
-    
-    public var description: String {
-        
-        switch self {
-        case .broadcast:                return "Broadcast"
-        case .read:                     return "Read"
-        case .write:                    return "Write"
-        case .writeWithoutResponse:     return "Write without Response"
-        case .notify:                   return "Notify"
-        case .indicate:                 return "Indicate"
-        case .signedWrite:              return "Signed Write"
-        case .extendedProperties:       return "Extended Properties"
-        }
-    }
-}
-
-// MARK: - Characteristic Extended Property
-
-/// GATT Characteristic Extended Properties Bitfield values.
-///
-/// The Characteristic Extended Properties bit field describes additional
-/// properties on how the Characteristic Value can be used, or how the characteristic
-/// descriptors can be accessed.
-@frozen
-public enum GATTCharacteristicExtendedProperty: UInt8 {
-    
-    /// If set, permits reliable writes of the Characteristic Value.
-    case reliableWrite          = 0x01
-    
-    ///
-    case writableAuxiliaries    = 0x02
 }

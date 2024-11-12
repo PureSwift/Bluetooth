@@ -6,75 +6,72 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-
 /// L2CAP Socket protocol.
 public protocol L2CAPSocket {
+    
+    associatedtype Data: DataContainer
+    
+    associatedtype Error: Swift.Error
     
     /// Socket address
     var address: BluetoothAddress { get }
     
-    var event: L2CAPSocketEventStream { get }
-    
-    /// Write to the socket.
-    func send(_ data: Data) async throws
-    
-    /// Reads from the socket.
-    func receive(_ bufferSize: Int) async throws -> Data
-    
-    /// Attempt to accept an incoming connection.
-    func accept() async throws -> Self
-    
-    /// Attempts to change the socket's security level.
-    func setSecurityLevel(_ securityLevel: SecurityLevel) async throws
-    
-    /// Get security level
-    var securityLevel: SecurityLevel { get async throws }
+    /// Socket status
+    var status: L2CAPSocketStatus<Error> { get }
     
     /// Close socket.
-    func close() async
+    func close()
+}
+
+public protocol L2CAPServer: L2CAPSocket {
     
-    /// Creates a new socket connected to the remote address specified.
-    static func lowEnergyClient(
-        address: BluetoothAddress,
-        destination: BluetoothAddress,
-        isRandom: Bool
-    ) async throws -> Self
+    associatedtype Connection: L2CAPConnection
     
     /// Creates a new server,
     static func lowEnergyServer(
         address: BluetoothAddress,
         isRandom: Bool,
         backlog: Int
-    ) async throws -> Self
+    ) throws(Self.Error) -> Self
+    
+    func accept() throws(Self.Error) -> Connection
 }
 
-/// Bluetooth L2CAP Socket Event
-public enum L2CAPSocketEvent {
+public protocol L2CAPConnection: L2CAPSocket {
     
-    /// New connection
-    case connection
+    /// Creates a new socket connected to the remote address specified.
+    static func lowEnergyClient(
+        address: BluetoothAddress,
+        destination: BluetoothAddress,
+        isRandom: Bool
+    ) throws(Self.Error) -> Self
     
-    /// Pending read
-    case read
+    /// Write to the socket.
+    func send(_ data: Data) throws(Self.Error)
     
-    /// Pending Write
-    case write
+    /// Reads from the socket.
+    func receive(_ bufferSize: Int) throws(Self.Error) -> Self.Data
+        
+    /// Attempts to change the socket's security level.
+    func setSecurityLevel(_ securityLevel: SecurityLevel) throws(Self.Error)
     
-    /// Did read
-    case didRead(Int)
-    
-    /// Did write
-    case didWrite(Int)
-    
-    /// Error ocurred
-    case error(Error)
-    
-    /// Socket closed
-    case close
+    /// Get security level
+    //var securityLevel: SecurityLevel { get throws(Self.Error) }
+    func securityLevel() throws(Self.Error) -> SecurityLevel
 }
 
-public typealias L2CAPSocketEventStream = AsyncStream<L2CAPSocketEvent>
-
-#endif
+/// L2CAP Socket Status
+public struct L2CAPSocketStatus<Error: Swift.Error>: Sendable {
+    
+    /// Socket is ready for a write operation.
+    public var send: Bool
+    
+    /// Socket is ready for a read operation.
+    public var recieve: Bool
+    
+    /// Socket has a pending new connection.
+    public var accept: Bool
+    
+    /// Socket encountered an error.
+    public var error: Error?
+}

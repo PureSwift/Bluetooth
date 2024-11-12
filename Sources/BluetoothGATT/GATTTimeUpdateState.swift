@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Time Update State
@@ -30,9 +31,9 @@ public struct GATTTimeUpdateState: GATTCharacteristic, Equatable {
         self.result = result
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let currentState = CurrentState(rawValue: data[0])

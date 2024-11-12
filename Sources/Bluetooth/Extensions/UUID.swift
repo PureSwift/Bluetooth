@@ -12,7 +12,6 @@ import Foundation
 
 internal extension UUID {
     
-    static var length: Int { return 16 }
     static var stringLength: Int { return 36 }
     static var unformattedStringLength: Int { return 32 }
 }
@@ -31,22 +30,21 @@ extension UUID: ByteValue {
     }
 }
 
+// MARK: - DataConvertible
+
+extension UUID: DataConvertible {
+    
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == UUID.length
+            else { return nil }
+        self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
+    }
+}
+
 #if canImport(Foundation)
 public extension Foundation.UUID {
     
     typealias ByteValue = uuid_t
-}
-
-internal extension Foundation.UUID {
-    
-    init?(data: Foundation.Data) {
-        guard data.count == UUID.length else { return nil }
-        self.init(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
-    }
-    
-    var data: Foundation.Data {
-        return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7, bytes.8, bytes.9, bytes.10, bytes.11, bytes.12, bytes.13, bytes.14, bytes.15])
-    }
 }
 
 /// Internal UUID type.
@@ -63,6 +61,8 @@ internal struct _UUID: Sendable {
 }
 
 #else
+
+// MARK: - Embedded Swift Support
 
 /// Represents UUID strings, which can be used to uniquely identify types, interfaces, and other items.
 public struct UUID: Sendable {
@@ -116,7 +116,7 @@ extension _UUID {
     @inline(__always)
     internal func withUUIDBytes<R>(_ work: (UnsafeBufferPointer<UInt8>) throws -> R) rethrows -> R {
         return try withExtendedLifetime(self) {
-            try withUnsafeBytes(of: uuid) { rawBuffer in
+            try Swift.withUnsafeBytes(of: uuid) { rawBuffer in
                 return try rawBuffer.withMemoryRebound(to: UInt8.self) { buffer in
                     return try work(buffer)
                 }
@@ -143,8 +143,8 @@ extension _UUID {
 extension _UUID: Equatable {
     
     public static func ==(lhs: _UUID, rhs: _UUID) -> Bool {
-        withUnsafeBytes(of: lhs) { lhsPtr in
-            withUnsafeBytes(of: rhs) { rhsPtr in
+        Swift.withUnsafeBytes(of: lhs) { lhsPtr in
+            Swift.withUnsafeBytes(of: rhs) { rhsPtr in
                 let lhsTuple = lhsPtr.loadUnaligned(as: (UInt64, UInt64).self)
                 let rhsTuple = rhsPtr.loadUnaligned(as: (UInt64, UInt64).self)
                 return (lhsTuple.0 ^ rhsTuple.0) | (lhsTuple.1 ^ rhsTuple.1) == 0
@@ -156,7 +156,7 @@ extension _UUID: Equatable {
 extension _UUID: Hashable {
     
     public func hash(into hasher: inout Hasher) {
-        withUnsafeBytes(of: uuid) { buffer in
+        Swift.withUnsafeBytes(of: uuid) { buffer in
             hasher.combine(bytes: buffer)
         }
     }
@@ -211,8 +211,8 @@ extension _UUID : Comparable {
         var rightUUID = rhs.uuid
         var result: Int = 0
         var diff: Int = 0
-        withUnsafeBytes(of: &leftUUID) { leftPtr in
-            withUnsafeBytes(of: &rightUUID) { rightPtr in
+        Swift.withUnsafeBytes(of: &leftUUID) { leftPtr in
+            Swift.withUnsafeBytes(of: &rightUUID) { rightPtr in
                 for offset in (0 ..< MemoryLayout<ByteValue>.size).reversed() {
                     diff = Int(leftPtr.load(fromByteOffset: offset, as: UInt8.self)) -
                         Int(rightPtr.load(fromByteOffset: offset, as: UInt8.self))
@@ -228,6 +228,8 @@ extension _UUID : Comparable {
         return result < 0
     }
 }
+
+// MARK: - UUID String
 
 fileprivate extension UInt128 {
     

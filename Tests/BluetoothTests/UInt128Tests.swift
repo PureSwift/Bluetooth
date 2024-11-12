@@ -28,7 +28,7 @@ final class UInt128Tests: XCTestCase {
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
             XCTAssertEqual(number.description, "128858851431381903469711580150894012615")
         } else {
-            XCTAssertEqual(number.description, "60F14FE2F97211E5B84F23E070D5A8C7")
+            XCTAssertEqual(number.description, "0x60F14FE2F97211E5B84F23E070D5A8C7")
         }
     }
     

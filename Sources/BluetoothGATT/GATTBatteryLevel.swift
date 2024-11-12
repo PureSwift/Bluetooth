@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /// Battery Level
 ///
@@ -32,9 +33,9 @@ public struct GATTBatteryLevel: GATTCharacteristic, Equatable, Hashable {
 
 public extension GATTBatteryLevel {
     
-    init?(data: Data) {
+    init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let level = Percentage(rawValue: data[0])

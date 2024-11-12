@@ -63,7 +63,7 @@ public struct HCICreateConnectionCancelReturn: HCICommandReturnParameter {
     
     public var address: BluetoothAddress
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard let status = HCIStatus(rawValue: data[0])
             else { return nil }

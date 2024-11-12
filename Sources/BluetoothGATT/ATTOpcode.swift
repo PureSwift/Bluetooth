@@ -1,17 +1,12 @@
 //
-//  ATT.swift
+//  ATTOpcode.swift
 //  Bluetooth
 //
 //  Created by Alsey Coleman Miller on 2/29/16.
-//  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import Foundation
-
-// MARK: - Protocol Definitions
-
 /// ATT protocol opcodes.
-public enum ATTOpcode: UInt8 {
+public enum ATTOpcode: UInt8, Sendable, CaseIterable {
     
     /// Error response
     case errorResponse                              = 0x01
@@ -70,9 +65,26 @@ public enum ATTOpcode: UInt8 {
     case handleValueNotification                    = 0x1B
     case handleValueIndication                      = 0x1D
     case handleValueConfirmation                    = 0x1E
+}
+
+// MARK: - Opcode Type
+
+/// ATT protocol opcode categories.
+@frozen
+public enum ATTOpcodeType {
+    
+    case request
+    case response
+    case command
+    case indication
+    case notification
+    case confirmation
+}
+
+public extension ATTOpcode {
     
     /// Specifies the opcode category.
-    public var type: ATTOpcodeType {
+    var type: ATTOpcodeType {
         
         switch self {
         case .errorResponse:                    return .response
@@ -106,8 +118,21 @@ public enum ATTOpcode: UInt8 {
         }
     }
     
+    /// Get the equivalent response for the current request opcode (if applicable).
+    var response: ATTOpcode? {
+        return Self.responsesByRequest[self]
+    }
+    
+    /// Get the equivalent request for the current response opcode (if applicable).
+    var request: ATTOpcode? {
+        return Self.requestsByResponse[self]
+    }
+}
+
+private extension ATTOpcode {
+    
     // swiftlint:disable comma
-    private static let requestResponseMap: [(request: ATTOpcode,  response: ATTOpcode)] = [
+    static let requestResponseMap: [(request: ATTOpcode,  response: ATTOpcode)] = [
         (maximumTransmissionUnitRequest,     maximumTransmissionUnitResponse),
         (findInformationRequest,             findInformationResponse),
         (findByTypeRequest,                  findByTypeResponse),
@@ -122,97 +147,15 @@ public enum ATTOpcode: UInt8 {
     ]
     // swiftlint:enable comma
     
-    private static let responsesByRequest: [ATTOpcode: ATTOpcode] = {
-        
+    static let responsesByRequest: [ATTOpcode: ATTOpcode] = {
         var dictionary = [ATTOpcode: ATTOpcode](minimumCapacity: requestResponseMap.count)
         requestResponseMap.forEach { dictionary[$0.request] = $0.response }
         return dictionary
     }()
     
-    private static let requestsByResponse: [ATTOpcode: ATTOpcode] = {
-        
+    static let requestsByResponse: [ATTOpcode: ATTOpcode] = {
         var dictionary = [ATTOpcode: ATTOpcode](minimumCapacity: requestResponseMap.count)
         requestResponseMap.forEach { dictionary[$0.response] = $0.request }
         return dictionary
     }()
-    
-    /// Get the equivalent response for the current request opcode (if applicable).
-    public var response: ATTOpcode? {
-        
-        return ATTOpcode.responsesByRequest[self]
-    }
-    
-    /// Get the equivalent request for the current response opcode (if applicable).
-    public var request: ATTOpcode? {
-        
-        return ATTOpcode.requestsByResponse[self]
-    }
-}
-
-/// ATT protocol opcode categories.
-@frozen
-public enum ATTOpcodeType {
-    
-    case request
-    case response
-    case command
-    case indication
-    case notification
-    case confirmation
-}
-
-// MARK: - Attribute Permission
-
-/// ATT attribute permission bitfield values. Permissions are grouped as
-/// "Access", "Encryption", "Authentication", and "Authorization". A bitmask of
-/// permissions is a byte that encodes a combination of these.
-@frozen
-public enum ATTAttributePermission: UInt8, BitMaskOption {
-    
-    // Access
-    case read                                       = 0x01
-    case write                                      = 0x02
-    
-    // Encryption
-    public static let encrypt                       = BitMaskOptionSet<ATTAttributePermission>([.readEncrypt, .writeEncrypt])
-    case readEncrypt                                = 0x04
-    case writeEncrypt                               = 0x08
-    
-    // The following have no effect on Darwin
-    
-    // Authentication
-    public static let  authentication               = BitMaskOptionSet<ATTAttributePermission>([.readAuthentication, .writeAuthentication])
-    case readAuthentication                         = 0x10
-    case writeAuthentication                        = 0x20
-    
-    // Authorization
-    case authorized                                 = 0x40
-    case noAuthorization                            = 0x80
-}
-
-public extension ATTAttributePermission {
-    
-    var name: String {
-        
-        switch self {
-        case .read: return "Read"
-        case .write: return "Write"
-        case .readEncrypt: return "Read Encrypt"
-        case .writeEncrypt: return "Write Encrypt"
-        case .readAuthentication: return "Read Authentication"
-        case .writeAuthentication: return "Write Authentication"
-        case .authorized: return "Authorized"
-        case .noAuthorization: return "No Authorization"
-        }
-    }
-}
-
-// MARK: CustomStringConvertible
-
-extension ATTAttributePermission: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return name
-    }
 }

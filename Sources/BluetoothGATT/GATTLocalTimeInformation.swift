@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Local Time Information
@@ -30,15 +31,15 @@ public struct GATTLocalTimeInformation: GATTCharacteristic, Equatable {
         self.dstOffset = dstOffset
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let timeZone = GATTTimeZone(data: data.subdataNoCopy(in: (0 ..< GATTTimeZone.length)))
+        guard let timeZone = GATTTimeZone(data: data.subdata(in: (0 ..< GATTTimeZone.length)))
             else { return nil }
         
-        guard let dstOffset = GATTDstOffset(data: data.subdataNoCopy(in: (GATTTimeZone.length ..< 2)))
+        guard let dstOffset = GATTDstOffset(data: data.subdata(in: (GATTTimeZone.length ..< 2)))
             else { return nil }
         
         self.init(timeZone: timeZone, dstOffset: dstOffset)

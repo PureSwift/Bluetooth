@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Current Time
@@ -30,12 +31,12 @@ public struct GATTCurrentTime: GATTCharacteristic, Equatable {
         self.adjustReason = adjustReason
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let exactTime = GATTExactTime256(data: data.subdataNoCopy(in: (0 ..< GATTExactTime256.length)))
+        guard let exactTime = GATTExactTime256(data: data.subdata(in: (0 ..< GATTExactTime256.length)))
             else { return nil }
         
         let adjustReason = BitMaskOptionSet<Flag>(rawValue: data[GATTExactTime256.length])
@@ -65,12 +66,12 @@ extension GATTCurrentTime {
         /// Change of DST (daylight savings time)
         case dstChange = 0b1000
         
-        public static let allCases: [Flag] = [
+        public static var allCases: [Flag] { [
             .manualTimeUpdate,
             .externalReference,
             .timeZoneChange,
             .dstChange
-        ]
+        ] }
     }
     
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  PnP ID
@@ -44,9 +45,9 @@ public struct GATTPnPID: GATTCharacteristic {
         self.productVersion = productVersion
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let vendorIdSource = VendorIDSource(rawValue: data[0])

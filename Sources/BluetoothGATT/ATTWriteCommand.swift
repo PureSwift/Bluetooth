@@ -6,45 +6,28 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Write Command
 ///
 /// The *Write Command* is used to request the server to write the value of an attribute, typically into a control-point attribute.
 @frozen
-public struct ATTWriteCommand: ATTProtocolDataUnit, Equatable {
+public struct ATTWriteCommand<Value: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .writeCommand }
+    public static var attributeOpcode: ATTOpcode { .writeCommand }
     
     /// The handle of the attribute to be set.
     public var handle: UInt16
     
     /// The value of be written to the attribute.
-    public var value: Data
+    public var value: Value
     
-    public init(handle: UInt16,
-                value: Data) {
-        
+    public init(
+        handle: UInt16,
+        value: Value
+    ) {
         self.handle = handle
         self.value = value
-    }
-}
-
-public extension ATTWriteCommand {
-    
-    init?(data: Data) {
-        
-        guard data.count >= 3,
-            type(of: self).validateOpcode(data)
-            else { return nil }
-        
-        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        self.value = data.suffixCheckingBounds(from: 3)
-    }
-    
-    var data: Data {
-        
-        return Data(self)
     }
 }
 
@@ -52,15 +35,23 @@ public extension ATTWriteCommand {
 
 extension ATTWriteCommand: DataConvertible {
     
-    var dataLength: Int {
+    public init?<Data: DataContainer>(data: Data) {
         
-        return 3 + value.count
+        guard data.count >= 3,
+            Self.validateOpcode(data)
+            else { return nil }
+        
+        self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
+        self.value = data.suffixCheckingBounds(from: 3)
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTWriteCommand) {
-        
-        data += attributeOpcode.rawValue
-        data += value.handle.littleEndian
-        data += value.value
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.handle.littleEndian
+        data += self.value
+    }
+    
+    public var dataLength: Int {
+        return 3 + value.count
     }
 }

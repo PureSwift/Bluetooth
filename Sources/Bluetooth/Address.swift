@@ -6,13 +6,9 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 /// Bluetooth address.
 @frozen
-public struct BluetoothAddress: Sendable {
+public struct BluetoothAddress: Comparable, Sendable {
     
     // MARK: - Properties
     
@@ -30,13 +26,22 @@ public struct BluetoothAddress: Sendable {
 public extension BluetoothAddress {
     
     /// The minimum representable value in this type.
-    static var min: BluetoothAddress { return BluetoothAddress(bytes: (.min, .min, .min, .min, .min, .min)) }
+    static var min: BluetoothAddress { BluetoothAddress(bytes: (.min, .min, .min, .min, .min, .min)) }
     
     /// The maximum representable value in this type.
-    static var max: BluetoothAddress { return BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
+    static var max: BluetoothAddress { BluetoothAddress(bytes: (.max, .max, .max, .max, .max, .max)) }
     
     /// A zero address.
-    static var zero: BluetoothAddress { return .min }
+    static var zero: BluetoothAddress { BluetoothAddress(bytes: (.zero, .zero, .zero, .zero, .zero, .zero)) }
+}
+
+// MARK: - Hashable
+
+extension BluetoothAddress: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
+    }
 }
 
 // MARK: - ByteValue
@@ -46,32 +51,7 @@ extension BluetoothAddress: ByteValue {
     /// Raw Bluetooth Address 6 byte (48 bit) value.
     public typealias ByteValue = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    public static var bitWidth: Int { return 48 }
-    
-    public static var length: Int { return 6 }
-}
-
-// MARK: - Equatable
-
-extension BluetoothAddress: Equatable {
-    
-    public static func == (lhs: BluetoothAddress, rhs: BluetoothAddress) -> Bool {
-        return lhs.bytes.0 == rhs.bytes.0
-            && lhs.bytes.1 == rhs.bytes.1
-            && lhs.bytes.2 == rhs.bytes.2
-            && lhs.bytes.3 == rhs.bytes.3
-            && lhs.bytes.4 == rhs.bytes.4
-            && lhs.bytes.5 == rhs.bytes.5
-    }
-}
-
-// MARK: - Hashable
-
-extension BluetoothAddress: Hashable {
-    
-    public func hash(into hasher: inout Hasher) {
-        withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
-    }
+    public static var bitWidth: Int { 48 }
 }
 
 // MARK: - Byte Swap
@@ -146,10 +126,10 @@ extension BluetoothAddress: CustomStringConvertible {
 
 // MARK: - Data
 
-public extension BluetoothAddress {
+extension BluetoothAddress: DataConvertible {
         
-    init?<Data: DataContainer>(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
     }

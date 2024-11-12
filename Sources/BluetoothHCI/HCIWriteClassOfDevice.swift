@@ -43,6 +43,6 @@ public struct HCIWriteClassOfDevice: HCICommandParameter {
     
     public var data: Data {
         
-        return classOfDevice.data
+        return Data(classOfDevice)
     }
 }

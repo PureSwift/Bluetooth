@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Unread Alert Status
@@ -40,9 +41,9 @@ public struct GATTUnreadAlertStatus: GATTCharacteristic {
         self.unreadCount = unreadCount
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let category = GATTAlertCategory(rawValue: data[0])
@@ -56,24 +57,5 @@ public struct GATTUnreadAlertStatus: GATTCharacteristic {
     public var data: Data {
         
         return Data([category.rawValue, unreadCount])
-    }
-    
-    public var characteristic: GATTAttribute.Characteristic {
-        
-        return GATTAttribute.Characteristic(uuid: type(of: self).uuid,
-                                   value: data,
-                                   permissions: [.read],
-                                   properties: [.read, .notify],
-                                   descriptors: [])
-    }
-}
-
-extension GATTUnreadAlertStatus: Equatable {
-    
-    public static func == (lhs: GATTUnreadAlertStatus,
-                           rhs: GATTUnreadAlertStatus) -> Bool {
-        
-        return lhs.category == rhs.category
-            && lhs.unreadCount == rhs.unreadCount
     }
 }

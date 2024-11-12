@@ -16,17 +16,8 @@ Generic Access Profile
 - SeeAlso:
 [Generic Access Profile](https://www.bluetooth.com/specifications/assigned-numbers/generic-access-profile)
 */
-public protocol GAPData {
+public protocol GAPData: DataConvertible {
     
     /// Generic Access Profile data type.
     static var dataType: GAPDataType { get }
-    
-    /// Initialize from data.
-    init?<Data: DataContainer>(data: Data)
-    
-    /// Append data representation into buffer.
-    func append<Data: DataContainer>(to data: inout Data)
-    
-    /// Length of value when encoded into data.
-    var dataLength: Int { get }
 }

@@ -462,7 +462,7 @@ extension HCIError: CustomStringConvertible {
     
     public var name: String {
         
-        return type(of: self).names[Int(rawValue)]
+        return Self.names[Int(rawValue)]
     }
     
     internal static let names = [

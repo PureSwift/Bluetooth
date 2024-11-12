@@ -118,110 +118,110 @@ public extension GAPAppearance {
     /// GAP Appearance Unknown
     enum Unknown {
         
-        public static let category: GAPAppearance.Category = .unknown
+        public static var category: GAPAppearance.Category { .unknown }
         
-        public static let unknown: GAPAppearance = 0
+        public static var unknown: GAPAppearance { 0 }
     }
     
     /// GAP Appearance Phone
     enum Phone {
         
-        public static let category: GAPAppearance.Category = .phone
+        public static var category: GAPAppearance.Category { .phone }
         
-        public static let generic: GAPAppearance = 64
+        public static var generic: GAPAppearance { 64 }
     }
     
     /// GAP Appearance Computer
     enum Computer {
         
-        public static let category: GAPAppearance.Category = .computer
+        public static var category: GAPAppearance.Category { .computer }
         
-        public static let generic: GAPAppearance = 128
+        public static var generic: GAPAppearance { 128 }
     }
     
     /// GAP Appearance Watch category namepace
     enum Watch {
         
         /// GAP Appearance Watch category
-        public static let category: GAPAppearance.Category = .watch
+        public static var category: GAPAppearance.Category { .watch }
         
         /// Generic Watch
-        public static let generic: GAPAppearance = 192
+        public static var generic: GAPAppearance { 192 }
         
         /// Watch: Sports Watch
-        public static let sports: GAPAppearance = 193
+        public static var sports: GAPAppearance { 193 }
     }
     
     /// GAP Appearance Clock category namepace
     enum Clock {
         
-        public static let category: GAPAppearance.Category = .clock
+        public static var category: GAPAppearance.Category { .clock }
         
-        public static let generic: GAPAppearance = 256
+        public static var generic: GAPAppearance { 256 }
     }
     
     enum Display {
         
-        public static let category: GAPAppearance.Category = .display
+        public static var category: GAPAppearance.Category { .display }
         
-        public static let generic: GAPAppearance = 320
+        public static var generic: GAPAppearance { 320 }
     }
     
     enum RemoteControl {
         
-        public static let category: GAPAppearance.Category = 6
+        public static var category: GAPAppearance.Category { 6 }
         
         /// Generic Remote Control
-        public static let generic: GAPAppearance = 384
+        public static var generic: GAPAppearance { 384 }
     }
     
     enum EyeGlasses {
         
-        public static let category: GAPAppearance.Category = 7
+        public static var category: GAPAppearance.Category { 7 }
         
-        public static let generic: GAPAppearance = 448
+        public static var generic: GAPAppearance { 448 }
     }
     
     enum Tag {
         
-        public static let category: GAPAppearance.Category = 8
+        public static var category: GAPAppearance.Category { 8 }
         
-        public static let generic: GAPAppearance = 512
+        public static var generic: GAPAppearance { 512 }
     }
     
     enum Keyring {
         
-        public static let category: GAPAppearance.Category = 9
+        public static var category: GAPAppearance.Category { 9 }
         
-        public static let generic: GAPAppearance = 576
+        public static var generic: GAPAppearance { 576 }
     }
     
     enum MediaPlayer {
         
-        public static let category: GAPAppearance.Category = 10
+        public static var category: GAPAppearance.Category { 10 }
         
-        public static let generic: GAPAppearance = 640
+        public static var generic: GAPAppearance { 640 }
     }
     
     enum BarcodeScanner {
         
-        public static let category: GAPAppearance.Category = 11
+        public static var category: GAPAppearance.Category { 11 }
         
-        public static let generic: GAPAppearance = 704
+        public static var generic: GAPAppearance { 704 }
     }
     
     enum Thermometer {
         
-        public static let category: GAPAppearance.Category = 12
+        public static var category: GAPAppearance.Category { 12 }
         
-        public static let generic: GAPAppearance = 768
+        public static var generic: GAPAppearance { 768 }
     }
     
     enum HeartrateSensor {
         
-        public static let category: GAPAppearance.Category = 13
+        public static var category: GAPAppearance.Category { 13 }
         
-        public static let generic: GAPAppearance = 832
+        public static var generic: GAPAppearance { 832 }
     }
 }
 

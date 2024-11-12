@@ -6,17 +6,13 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 /// A 24 bit number stored according to host endianness.
 @frozen
-public struct UInt24: ByteValue, Sendable {
+public struct UInt24: ByteValue, Comparable, Sendable {
     
     public typealias ByteValue = (UInt8, UInt8, UInt8)
     
-    public static var bitWidth: Int { return 24 }
+    public static var bitWidth: Int { 24 }
     
     public var bytes: ByteValue
     
@@ -38,71 +34,24 @@ public extension UInt24 {
     static var zero: UInt24 { return .min }
 }
 
-// MARK: - Comparable
-
-extension UInt24: Comparable {
-    
-    public static func > (lhs: UInt24, rhs: UInt24) -> Bool {
-        return UInt32(lhs) > UInt32(rhs)
-    }
-    
-    public static func < (lhs: UInt24, rhs: UInt24) -> Bool {
-        return UInt32(lhs) < UInt32(rhs)
-    }
-    
-    public static func >= (lhs: UInt24, rhs: UInt24) -> Bool {
-        return UInt32(lhs) >= UInt32(rhs)
-    }
-    
-    public static func <= (lhs: UInt24, rhs: UInt24) -> Bool {
-        return UInt32(lhs) <= UInt32(rhs)
-    }
-    
-    public static func == (lhs: UInt24, rhs: UInt24) -> Bool {
-        return lhs.bytes.0 == rhs.bytes.0
-            && lhs.bytes.1 == rhs.bytes.1
-            && lhs.bytes.2 == rhs.bytes.2
-    }
-}
-
 // MARK: - Hashable
 
 extension UInt24: Hashable {
     
     public func hash(into hasher: inout Hasher) {
-        UInt32(self).hash(into: &hasher)
-    }
-}
-
-// MARK: - CustomStringConvertible
-
-extension UInt24: CustomStringConvertible {
-    
-    public var description: String {
-        let bytes = self.bigEndian.bytes
-        return bytes.0.toHexadecimal()
-             + bytes.1.toHexadecimal()
-             + bytes.2.toHexadecimal()
+        Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
     }
 }
 
 // MARK: - Data Convertible
 
-#if canImport(Foundation)
-public extension UInt24 {
-    
-    internal static var length: Int { return 3 }
-    
-    init?(data: Data) {
+extension UInt24: DataConvertible {
+        
+    public init?<Data: DataContainer>(data: Data) {
         guard data.count == UInt24.length else { return nil }
         self.init(bytes: (data[0], data[1], data[2]))
     }
-    
-    var data: Data {
-        return Data([bytes.0, bytes.1, bytes.2])
-    }
 }
-#endif
 
 // MARK: - Byte Swap
 
@@ -120,6 +69,15 @@ extension UInt24: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt32) {
         self = UInt24(value)
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension UInt24: CustomStringConvertible {
+    
+    public var description: String {
+        UInt32(self).description
     }
 }
 

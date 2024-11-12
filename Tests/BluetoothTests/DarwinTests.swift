@@ -90,7 +90,7 @@ final class DarwinTests: XCTestCase {
     
     func testCoreBluetoothPerformanceDataParseUUID() {
         
-        let uuids = randomUUIDs.map { $0.data }
+        let uuids = randomUUIDs.map { Data($0) }
         
         measure { uuids.forEach { _ = CBUUID(data: $0) } }
     }

@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /**
  Manufacturer Name String
@@ -16,43 +16,30 @@ import Foundation
  [Manufacturer Name String](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.manufacturer_name_string.xml)
  */
 @frozen
-public struct GATTManufacturerNameString: GATTCharacteristic {
+public struct GATTManufacturerNameString: GATTCharacteristic, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { return .manufacturerNameString }
+    public static var uuid: BluetoothUUID { .manufacturerNameString }
     
-    public let rawValue: String
+    public var rawValue: String
     
     public init(rawValue: String) {
-        
         self.rawValue = rawValue
     }
     
-    public init?(data: Data) {
-        
-        guard let rawValue = String(data: data, encoding: .utf8)
+    public init?<Data: DataContainer>(data: Data) {
+        guard let rawValue = String(utf8: data)
             else { return nil }
-        
         self.init(rawValue: rawValue)
     }
     
-    public var data: Data {
-        
-        return Data(rawValue.utf8)
-    }
-}
-
-extension GATTManufacturerNameString: Equatable {
-    
-    public static func == (lhs: GATTManufacturerNameString, rhs: GATTManufacturerNameString) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.utf8
     }
 }
 
 extension GATTManufacturerNameString: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue
     }
 }
@@ -60,17 +47,6 @@ extension GATTManufacturerNameString: CustomStringConvertible {
 extension GATTManufacturerNameString: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
-        
-        self.init(rawValue: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(rawValue: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
-        
         self.init(rawValue: value)
     }
 }

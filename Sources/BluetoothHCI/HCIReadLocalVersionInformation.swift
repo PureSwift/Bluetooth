@@ -54,9 +54,9 @@ public struct HCILocalVersionInformation: HCICommandReturnParameter {
     /// - Note: This value is implementation dependent.
     public let lmpSubversion: UInt16
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let hciVersion = HCIVersion(rawValue: data[0])

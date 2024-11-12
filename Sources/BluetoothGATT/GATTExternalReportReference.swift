@@ -6,40 +6,36 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
-// MARK: - External Report Reference
 /// GATT External Report Reference Descriptor
 ///
 /// The External Report Reference characteristic descriptor allows a HID Host to map information from the Report Map characteristic value for Input Report, Output Report or Feature Report data to the Characteristic UUID of external service characteristics used to transfer the associated data.
 @frozen
-public struct GATTExternalReportReference: GATTDescriptor {
+public struct GATTExternalReportReference: GATTDescriptor, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .externalReportReference
+    public static var uuid: BluetoothUUID { .externalReportReference }
     
-    public let uuid: BluetoothUUID
+    public var uuid: BluetoothUUID
     
     public init(uuid: BluetoothUUID) {
-        
         self.uuid = uuid
     }
+}
+
+extension GATTExternalReportReference: DataConvertible {
     
-    public init?(data: Data) {
-        
+    public init?<Data: DataContainer>(data: Data) {
         guard let uuid = BluetoothUUID(data: data)
             else { return nil }
-        
         self.init(uuid: BluetoothUUID(littleEndian: uuid))
     }
     
-    public var data: Data {
-        return Data(uuid)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += uuid
     }
     
-    public var descriptor: GATTAttribute.Descriptor {
-        
-        return GATTAttribute.Descriptor(uuid: type(of: self).uuid,
-                               value: data,
-                               permissions: [.read])
+    public var dataLength: Int {
+        uuid.dataLength
     }
 }

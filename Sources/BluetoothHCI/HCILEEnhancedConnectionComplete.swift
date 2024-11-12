@@ -62,8 +62,8 @@ public struct HCILEEnhancedConnectionComplete: HCIEventParameter {
     
     public let masterClockAccuracy: LowEnergyClockAccuracy
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         guard let status = HCIStatus(rawValue: data[0])

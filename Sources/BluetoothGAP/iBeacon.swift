@@ -16,18 +16,18 @@ public extension AppleBeacon {
         
         let data = manufacturerData.additionalData
         
-        guard manufacturerData.companyIdentifier == type(of: self).companyIdentifier,
-            data.count == type(of: self).additionalDataLength
+        guard manufacturerData.companyIdentifier == Self.companyIdentifier,
+            data.count == Self.additionalDataLength
             else { return nil }
         
         let dataType = data[0]
         
-        guard dataType == type(of: self).appleDataType
+        guard dataType == Self.appleDataType
             else { return nil }
         
         let length = data[1]
         
-        guard length == type(of: self).length
+        guard length == Self.length
             else { return nil }
         
         let uuid = UUID(UInt128(bigEndian: UInt128(data: data.subdata(in: 2 ..< 18))!))
@@ -70,8 +70,8 @@ internal extension AppleBeacon {
     
     func appendAdditionalManufacturerData <T: DataContainer> (to data: inout T) {
         
-        data += type(of: self).appleDataType // tlvPrefix
-        data += type(of: self).length
+        data += Self.appleDataType // tlvPrefix
+        data += Self.length
         data += BluetoothUUID(uuid: uuid).bigEndian // uuidBytes
         data += major.bigEndian
         data += minor.bigEndian

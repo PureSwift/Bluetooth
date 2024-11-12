@@ -142,25 +142,23 @@ public struct HCILECreateConnection: HCICommandParameter { // LE_Create_Connecti
         self.supervisionTimeout = supervisionTimeout
         self.connectionLength = connectionLength
     }
-    
-    public var data: Data {
-        
-        return Data(self)
-    }
-}
-
-public extension HCILECreateConnection {
-    
-    static var length: Int { return 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2 }
 }
 
 // MARK: - DataConvertible
 
-extension HCILECreateConnection: DataConvertible {
+extension HCILECreateConnection {
+    
+    static var length: Int { return 2 + 2 + 1 + 1 + 6 + 1 + 2 + 2 + 2 + 2 + 2 + 2 }
+    
+    public var data: Data {
+        var data = Data()
+        data.reserveCapacity(Self.length)
+        data += self
+        return data
+    }
     
     var dataLength: Int {
-        
-        return type(of: self).length
+        return Self.length
     }
     
     static func += <T: DataContainer> (data: inout T, value: HCILECreateConnection) {

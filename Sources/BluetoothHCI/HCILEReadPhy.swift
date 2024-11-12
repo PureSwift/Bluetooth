@@ -75,8 +75,8 @@ public struct HCILEReadPHYReturn: HCICommandReturnParameter {
     
     public let rxPhy: LowEnergyRxPhy
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))

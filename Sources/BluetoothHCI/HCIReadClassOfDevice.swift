@@ -35,7 +35,7 @@ public struct HCIReadClassOfDeviceReturn: HCICommandReturnParameter {
     
     public var classOfDevice: ClassOfDevice
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIReadClassOfDeviceReturn.length
             else { return nil }

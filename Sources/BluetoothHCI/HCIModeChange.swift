@@ -26,9 +26,9 @@ public struct HCIModeChange: HCIEventParameter {
     
     public let interval: Interval
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let status = HCIStatus(rawValue: data[0])
@@ -69,16 +69,15 @@ extension HCIModeChange {
 
 extension HCIModeChange {
     
-    public struct Interval: RawRepresentable {
+    public struct Interval: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = Interval(0x0002)
+        public static var min: Interval { Interval(0x0002) }
         
-        public static let max = Interval(0xFFFE)
+        public static var max: Interval { Interval(0xFFFE) }
         
         public let rawValue: UInt16
         
         public var duration: Double {
-            
             return Double(rawValue) * 0.625
         }
         
@@ -92,7 +91,6 @@ extension HCIModeChange {
         }
         
         private init(_ unsafe: UInt16) {
-            
             self.rawValue = unsafe
         }
     }

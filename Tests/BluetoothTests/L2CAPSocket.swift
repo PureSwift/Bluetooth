@@ -11,59 +11,104 @@ import Foundation
 @testable import Bluetooth
 @testable import BluetoothGATT
 
-/// Test L2CAP socket
-@preconcurrency
-internal actor TestL2CAPSocket: L2CAPSocket {
-            
-    private actor Cache {
+internal final class TestL2CAPServer: L2CAPServer {
+    
+    typealias Data = Foundation.Data
+    
+    typealias Error = POSIXError
+    
+    enum Cache {
         
-        static let shared = Cache()
+        static let lock = NSLock()
         
-        private init() { }
+        nonisolated(unsafe) static var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
         
-        var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
-        
-        func queue(client socket: TestL2CAPSocket, server: BluetoothAddress) {
+        static func queue(client socket: TestL2CAPSocket, server: BluetoothAddress) {
+            lock.lock()
+            defer { lock.unlock() }
             pendingClients[server, default: []].append(socket)
         }
         
-        func dequeue(server: BluetoothAddress) -> TestL2CAPSocket? {
+        static func dequeue(server: BluetoothAddress) -> TestL2CAPSocket? {
+            lock.lock()
+            defer { lock.unlock() }
             guard let socket = pendingClients[server]?.first else {
                 return nil
             }
             pendingClients[server]?.removeFirst()
             return socket
         }
+        
+        static func canAccept(server: BluetoothAddress) -> Bool {
+            lock.lock()
+            defer { lock.unlock() }
+            return pendingClients[server, default: []].isEmpty
+        }
     }
     
-    static func lowEnergyClient(
-        address: BluetoothAddress,
-        destination: BluetoothAddress,
-        isRandom: Bool
-    ) async throws -> TestL2CAPSocket {
-        let socket = TestL2CAPSocket(
-            address: address,
-            name: "Client"
+    let name: String
+    
+    let address: BluetoothAddress
+    
+    var status: L2CAPSocketStatus<POSIXError> {
+        .init(
+            send: false,
+            recieve: false,
+            accept: Cache.canAccept(server: address)
         )
-        print("Client \(address) will connect to \(destination)")
-        // append to pending clients
-        await Cache.shared.queue(client: socket, server: destination)
-        // wait until client has connected
-        while await (Cache.shared.pendingClients[destination] ?? []).contains(where: { $0 === socket }) {
-            try await Task.sleep(nanoseconds: 10_000_000)
-        }
-        return socket
+    }
+    
+    init(name: String, address: BluetoothAddress) {
+        self.name = name
+        self.address = address
     }
     
     static func lowEnergyServer(
         address: BluetoothAddress,
         isRandom: Bool,
         backlog: Int
-    ) async throws -> TestL2CAPSocket {
-        return TestL2CAPSocket(
-            address: address,
-            name: "Server"
+    ) throws(POSIXError) -> TestL2CAPServer {
+        return TestL2CAPServer(
+            name: "Server",
+            address: address
         )
+    }
+    
+    func accept() throws(POSIXError) -> TestL2CAPSocket {
+        // dequeue socket
+        guard let client = Cache.dequeue(server: address) else {
+            throw POSIXError(.EAGAIN)
+        }
+        let newConnection = TestL2CAPSocket(address: client.address, name: "Server connection")
+        // connect sockets
+        newConnection.connect(to: client)
+        client.connect(to: newConnection)
+        return newConnection
+    }
+    
+    func close() {
+        
+    }
+}
+
+/// Test L2CAP socket
+internal final class TestL2CAPSocket: L2CAPConnection {
+    
+    typealias Data = Foundation.Data
+        
+    typealias Error = POSIXError
+    
+    static func lowEnergyClient(
+        address: BluetoothAddress,
+        destination: BluetoothAddress,
+        isRandom: Bool
+    ) throws(POSIXError) -> TestL2CAPSocket {
+        let socket = TestL2CAPSocket(
+            address: address,
+            name: "Client"
+        )
+        TestL2CAPServer.Cache.queue(client: socket, server: destination)
+        return socket
     }
     
     // MARK: - Properties
@@ -72,92 +117,81 @@ internal actor TestL2CAPSocket: L2CAPSocket {
     
     let address: BluetoothAddress
     
-    public let event: L2CAPSocketEventStream
+    var status: L2CAPSocketStatus<POSIXError> {
+        .init(
+            send: target != nil,
+            recieve: target != nil && receivedData.isEmpty == false,
+            accept: false,
+            error: nil
+        )
+    }
     
-    private var eventContinuation: L2CAPSocketEventStream.Continuation!
+    func securityLevel() throws(POSIXError) -> Bluetooth.SecurityLevel {
+        _securityLevel
+    }
     
-    /// The socket's security level.
-    private(set) var securityLevel: SecurityLevel = .sdp
-    
+    private var _securityLevel: Bluetooth.SecurityLevel = .sdp
+
     /// Attempts to change the socket's security level.
-    func setSecurityLevel(_ securityLevel: SecurityLevel) async throws {
-        self.securityLevel = securityLevel
+    func setSecurityLevel(_ securityLevel: SecurityLevel) throws(POSIXError) {
+        _securityLevel = securityLevel
     }
     
     /// Target socket.
     private weak var target: TestL2CAPSocket?
     
-    fileprivate(set) var receivedData = [Data]()
+    fileprivate(set) var receivedData = [Foundation.Data]()
     
-    private(set) var cache = [Data]()
+    private(set) var cache = [Foundation.Data]()
     
     // MARK: - Initialization
     
-    private init(
+    init(
         address: BluetoothAddress = .zero,
         name: String
     ) {
         self.address = address
         self.name = name
-        var continuation: L2CAPSocketEventStream.Continuation!
-        self.event = L2CAPSocketEventStream {
-            continuation = $0
-        }
-        self.eventContinuation = continuation
     }
     
     // MARK: - Methods
     
-    func close() async {
-        
-    }
-    
-    func accept() async throws -> TestL2CAPSocket {
-        // sleep until a client socket is created
-        while (await Cache.shared.pendingClients[address] ?? []).isEmpty {
-            try await Task.sleep(nanoseconds: 10_000_000)
-        }
-        let client = await Cache.shared.dequeue(server: address)!
-        let newConnection = TestL2CAPSocket(address: client.address, name: "Server connection")
-        // connect sockets
-        await newConnection.connect(to: client)
-        await client.connect(to: newConnection)
-        return newConnection
+    func close() {
+        target = nil
+        target?.target = nil
     }
     
     /// Write to the socket.
-    func send(_ data: Data) async throws {
+    func send(_ data: Data) throws(POSIXError) {
         
         print("L2CAP Socket: \(name) will send \(data.count) bytes")
         
         guard let target = self.target
             else { throw POSIXError(.ECONNRESET) }
         
-        await target.receive(data)
-        eventContinuation.yield(.didWrite(data.count))
+        target.receive(data)
     }
     
     /// Reads from the socket.
-    func receive(_ bufferSize: Int) async throws -> Data {
+    func receive(_ bufferSize: Int) throws(POSIXError) -> Data {
         
         print("L2CAP Socket: \(name) will read \(bufferSize) bytes")
         
-        while self.receivedData.isEmpty {
-            guard self.target != nil
-                else { throw POSIXError(.ECONNRESET) }
-            try await Task.sleep(nanoseconds: 100_000_000)
+        guard self.target != nil
+            else { throw POSIXError(.ECONNRESET) }
+        
+        guard self.receivedData.isEmpty == false else {
+            throw POSIXError(.EAGAIN)
         }
         
         let data = self.receivedData.removeFirst()
         cache.append(data)
-        eventContinuation.yield(.didRead(data.count))
         return data
     }
     
     fileprivate func receive(_ data: Data) {
         receivedData.append(data)
         print("L2CAP Socket: \(name) received \([UInt8](data))")
-        eventContinuation.yield(.read)
     }
     
     internal func connect(to socket: TestL2CAPSocket) {

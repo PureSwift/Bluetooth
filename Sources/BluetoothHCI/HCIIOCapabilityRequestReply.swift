@@ -142,7 +142,7 @@ public struct HCIIOCapabilityRequestReplyReturn: HCICommandReturnParameter {
     
     public let address: BluetoothAddress
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIIOCapabilityRequestReplyReturn.length
             else { return nil }

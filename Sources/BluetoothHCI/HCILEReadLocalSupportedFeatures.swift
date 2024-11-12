@@ -37,9 +37,9 @@ public struct HCILEReadLocalSupportedFeatures: HCICommandReturnParameter {
     
     public let features: LowEnergyFeatureSet
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let featuresRawValue = UInt64(littleEndian: UInt64(bytes: (data[0],

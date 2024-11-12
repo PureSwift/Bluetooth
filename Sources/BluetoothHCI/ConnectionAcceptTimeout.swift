@@ -19,22 +19,22 @@ public struct ConnectionAcceptTimeout: RawRepresentable, Equatable, Hashable {
     public static let length = MemoryLayout<UInt16>.size
     
     /// 0.625 ms
-    public static let min = ConnectionAcceptTimeout(0x0001)
+    public static var min: Self { ConnectionAcceptTimeout(0x0001) }
     
     /// 29 seconds
-    public static let max = ConnectionAcceptTimeout(0xB540)
+    public static var max: Self { ConnectionAcceptTimeout(0xB540) }
     
     public let rawValue: UInt16
     
     public init?(rawValue: UInt16) {
         
-        guard rawValue >= type(of: self).min.rawValue,
-            rawValue <= type(of: self).max.rawValue
+        guard rawValue >= Self.min.rawValue,
+            rawValue <= Self.max.rawValue
             else { return nil }
         
         self.rawValue = rawValue
         
-        assert((type(of: self).min.rawValue ... type(of: self).max.rawValue).contains(rawValue))
+        assert((Self.min.rawValue ... Self.max.rawValue).contains(rawValue))
     }
     
     /// Time = N * 0.625 ms

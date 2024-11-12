@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Blood Pressure Feature
@@ -29,9 +30,9 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
         self.features = features
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Self.length
             else { return nil }
         
         let features = BitMaskOptionSet<Feature>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
@@ -69,13 +70,13 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
         /// Multiple Bond Support
         case multipleBond = 0b100000
         
-        public static let allCases: [Feature] = [
+        public static var allCases: [Feature] { [
             .bodyMovement,
             .cuttFit,
             .irregularPulse,
             .pulseRateRage,
             .measurementPosition,
             .multipleBond
-        ]
+        ] }
     }
 }

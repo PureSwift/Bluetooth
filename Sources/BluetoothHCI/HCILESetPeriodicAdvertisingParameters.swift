@@ -88,12 +88,12 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
             ])
     }
     
-    public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable {
+    public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable, Hashable, Sendable {
         
         public typealias RawValue = CountableClosedRange<UInt16>
         
         /// Maximum interval range.
-        public static let full = PeriodicAdvertisingInterval(rawValue: .min ... .max)
+        public static var full: PeriodicAdvertisingInterval { PeriodicAdvertisingInterval(rawValue: .min ... .max) }
         
         public let rawValue: RawValue
         
@@ -128,8 +128,8 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
         /// Include TxPower in the extended header of the advertising PDU
         case includeTxPower = 0b100000
         
-        public static let allCases: [HCILESetPeriodicAdvertisingParameters.AdvertisingEventProperties] = [
+        public static var allCases: [HCILESetPeriodicAdvertisingParameters.AdvertisingEventProperties] { [
             .includeTxPower
-        ]
+        ] }
     }
 }

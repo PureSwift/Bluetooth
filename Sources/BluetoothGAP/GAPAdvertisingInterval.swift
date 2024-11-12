@@ -35,7 +35,7 @@ public extension GAPAdvertisingInterval {
     
     var miliseconds: Double {
         
-        return Double(interval) * type(of: self).units
+        return Double(interval) * Self.units
     }
 }
 

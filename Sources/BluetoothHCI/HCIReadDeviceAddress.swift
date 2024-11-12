@@ -39,9 +39,9 @@ public struct HCIReadDeviceAddress: HCICommandReturnParameter {
     /// The Bluetooth address of the device.
     public let address: BluetoothAddress
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))

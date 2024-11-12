@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Indoor Positioning Configuration
@@ -29,9 +30,9 @@ public struct GATTIndoorPositioningConfiguration: GATTCharacteristic {
         self.configurations = configurations
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(configurations: BitMaskOptionSet<Configuration>(rawValue: data[0]))
@@ -65,14 +66,14 @@ extension GATTIndoorPositioningConfiguration {
         //Location Name available in the GATT database
         case locationName = 0b100000
         
-        public static let allCases: [Configuration] = [
+        public static var allCases: [Configuration] { [
             .coordinates,
             .coordinateSystemUsed,
             .txPowerField,
             .altitudeField,
             .floorNumber,
             .locationName
-        ]
+        ] }
     }
     
 }

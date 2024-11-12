@@ -118,9 +118,9 @@ public struct HCILERemoteConnectionParameterRequestReplyReturn: HCICommandReturn
     /// Range 0x0000-0x0EFF (all other values reserved for future use)
     public let connectionHandle: UInt16 // Connection_Handle
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))

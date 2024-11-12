@@ -19,7 +19,7 @@ import Bluetooth
  - SeeAlso: [Indoor Positioning Service Specification](https://www.bluetooth.org/docman/handlers/downloaddoc.ashx?doc_id=302114)
  */
 @frozen
-public struct GAPIndoorPositioning: GAPData, Equatable {
+public struct GAPIndoorPositioning: GAPData, Equatable, Hashable, Sendable {
     
     public static var dataType: GAPDataType { return .indoorPositioning }
     
@@ -241,7 +241,7 @@ public extension GAPIndoorPositioning {
 
 public extension GAPIndoorPositioning {
     
-    enum Coordinates: Equatable {
+    enum Coordinates: Equatable, Hashable, Sendable {
         
         /// WGS84 coordinate system
         case global(latitude: UInt16, longitude: UInt16)
@@ -251,15 +251,15 @@ public extension GAPIndoorPositioning {
     }
 }
 
-extension GAPIndoorPositioning.Coordinates: DataConvertible {
+extension GAPIndoorPositioning.Coordinates {
     
-    var dataLength: Int {
-        
-        return 4
+    public static var length: Int { 4 }
+    
+    public var dataLength: Int {
+        return Self.length
     }
     
-    static func += <T: DataContainer> (data: inout T, value: GAPIndoorPositioning.Coordinates) {
-        
+    static func += <T: DataContainer> (data: inout T, value: Self) {
         switch value {
         case let .global(latitude, longitude):
             data += latitude.littleEndian

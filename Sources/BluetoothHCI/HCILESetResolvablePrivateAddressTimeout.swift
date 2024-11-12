@@ -38,14 +38,14 @@ public struct HCILESetResolvablePrivateAddressTimeout: HCICommandParameter {
     public static let command = HCILowEnergyCommand.setResolvablePrivateAddressTimeout //0x002E
     
     /// Default: N= 0x0384 (900 s or 15 minutes)
-    public static let defaultRpaTimeout = RPATimeout(0x0384)
+    public static var defaultRpaTimeout: RPATimeout { RPATimeout(0x0384) }
     
     /// RPA_Timeout measured in s
     /// Range for N: 0x0001 – 0xA1B8 (1 s – approximately 11.5 hours)
     /// Default: N= 0x0384 (900 s or 15 minutes)
     public let rpaTimeout: RPATimeout //RPA_Timeout
     
-    public init(rpaTimeout: RPATimeout = defaultRpaTimeout) {
+    public init(rpaTimeout: RPATimeout = Self.defaultRpaTimeout) {
         self.rpaTimeout = rpaTimeout
     }
     
@@ -59,13 +59,13 @@ public struct HCILESetResolvablePrivateAddressTimeout: HCICommandParameter {
     
     /// RPA_Timeout measured in s
     /// Range for N: 0x0001 – 0xA1B8 (1 s – approximately 11.5 hours)
-    public struct RPATimeout: RawRepresentable, Equatable, Comparable, Hashable {
+    public struct RPATimeout: RawRepresentable, Equatable, Comparable, Hashable, Sendable {
         
         /// 2.5 msec
-        public static let min = RPATimeout(0x0001)
+        public static var min: RPATimeout { RPATimeout(0x0001) }
         
         /// 10.24 seconds
-        public static let max = RPATimeout(0xA1B8)
+        public static var max: RPATimeout { RPATimeout(0xA1B8) }
         
         public let rawValue: UInt16
         
@@ -85,8 +85,11 @@ public struct HCILESetResolvablePrivateAddressTimeout: HCICommandParameter {
         
         // Comparable
         public static func < (lhs: RPATimeout, rhs: RPATimeout) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
+        }
+        
+        public static func > (lhs: RPATimeout, rhs: RPATimeout) -> Bool {
+            return lhs.rawValue > rhs.rawValue
         }
     }
 }

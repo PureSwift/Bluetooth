@@ -6,10 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-#if canImport(Foundation)
-import Foundation
-#endif
-
 #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
 @available(iOS 14.0, watchOS 7.0, tvOS 14.0, *)
 @available(macOS, unavailable)

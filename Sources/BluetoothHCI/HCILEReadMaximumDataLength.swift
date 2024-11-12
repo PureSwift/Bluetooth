@@ -55,8 +55,8 @@ public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_R
     /// a single Link Layer packet on a data connection.
     public let supportedMaxRxTime: SupportedMaxRxTime
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         guard let supportedMaxTxOctets = LowEnergyMaxTxOctets(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
@@ -80,11 +80,11 @@ public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_R
     /// Maximum time, in microseconds, that the local Controller supports for reception of
     /// a single Link Layer packet on a data connection.
     /// Range 0x0148-0x4290
-    public struct SupportedMaxRxTime: RawRepresentable, Equatable, Hashable, Comparable {
+    public struct SupportedMaxRxTime: RawRepresentable, Equatable, Hashable, Comparable, Sendable {
         
-        public static let min = SupportedMaxRxTime(0x0148)
+        public static var min: SupportedMaxRxTime { SupportedMaxRxTime(0x0148) }
         
-        public static let max = SupportedMaxRxTime(0x4290)
+        public static var max: SupportedMaxRxTime { SupportedMaxRxTime(0x4290) }
         
         public let rawValue: UInt16
         
@@ -114,11 +114,11 @@ public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_R
     /// Maximum number of payload octets that the local Controller supports for reception of
     /// a single Link Layer packet on a data connection.
     /// Range 0x001B-0x00FB
-    public struct SupportedMaxRxOctets: RawRepresentable, Equatable, Hashable, Comparable {
+    public struct SupportedMaxRxOctets: RawRepresentable, Equatable, Hashable, Comparable, Sendable {
         
-        public static let min = SupportedMaxRxOctets(0x001B)
+        public static var min: SupportedMaxRxOctets { SupportedMaxRxOctets(0x001B) }
         
-        public static let max = SupportedMaxRxOctets(0x00FB)
+        public static var max: SupportedMaxRxOctets { SupportedMaxRxOctets(0x00FB) }
         
         public let rawValue: UInt16
         
@@ -140,7 +140,6 @@ public struct HCILEReadMaximumDataLength: HCICommandReturnParameter { //HCI_LE_R
         
         // Comparable
         public static func < (lhs: SupportedMaxRxOctets, rhs: SupportedMaxRxOctets) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
         }
     }

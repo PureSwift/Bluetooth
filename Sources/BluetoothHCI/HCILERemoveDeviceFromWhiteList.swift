@@ -43,22 +43,22 @@ public struct HCILERemoveDeviceFromWhiteList: HCICommandParameter { // HCI_LE_Re
     public var device: LowEnergyWhiteListDevice
     
     public init(device: LowEnergyWhiteListDevice) {
-        
         self.device = device
-    }
-    
-    public var data: Data {
-        
-        return Data(self)
     }
 }
 
 // MARK: - DataConvertible
 
-extension HCILERemoveDeviceFromWhiteList: DataConvertible {
+extension HCILERemoveDeviceFromWhiteList {
+    
+    public var data: Data {
+        var data = Data()
+        data.reserveCapacity(self.dataLength)
+        data += self
+        return data
+    }
     
     var dataLength: Int {
-        
         return 1 + BluetoothAddress.length
     }
     

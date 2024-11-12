@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// LE Extended Advertising Report Event
 ///
@@ -16,17 +16,17 @@ import Foundation
 /// into a single LE Extended Advertising Report event, provided all the parameters from all the advertising reports
 /// fit in a single HCI event.
 @frozen
-public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
+public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEventParameter {
     
-    public static let event = LowEnergyEvent.extendedAdvertisingReport // 0x0D
+    public static var event: LowEnergyEvent { .extendedAdvertisingReport } // 0x0D
     
-    public static let length = 1 + Report.length // must have at least one report
+    public static var length: Int { 1 + Report.length } // must have at least one report
     
     public let reports: [Report]
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Self.length
             else { return nil }
         
         // Number of responses in event.
@@ -43,7 +43,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         var offset = 1
         for _ in 0 ..< reportCount {
             
-            let reportBytes = data.suffixNoCopy(from: offset)
+            let reportBytes = ReportData(data.suffix(from: offset))
             
             guard let report = Report(data: reportBytes)
                 else { return nil }
@@ -57,7 +57,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
     
     public struct Report {
         
-        public static let length = 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1
+        public static var length: Int { 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1 }
         
         public let eventType: BitMaskOptionSet<EventType>
         
@@ -81,9 +81,9 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
         
         public let directAddress: BluetoothAddress
         
-        public let responseData: Data //Data
+        public let responseData: ReportData //Data
         
-        internal init?(data: Data) {
+        internal init?<Data: DataContainer>(data: Data) {
             
             guard data.count >= Report.length
                 else { return nil }
@@ -123,7 +123,7 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
             
             let dataLength = Int(data[23])
             
-            let responseData = Data(data[24 ..< (24 + dataLength)])
+            let responseData = ReportData(data[24 ..< (24 + dataLength)])
             assert(responseData.count == dataLength)
             
             self.eventType = eventType
@@ -148,10 +148,10 @@ public struct HCILEExtendedAdvertisingReport: HCIEventParameter {
     public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
         
         /// 7.5 msec
-        public static let min = PeriodicAdvertisingInterval(0x0006)
+        public static var min: PeriodicAdvertisingInterval { PeriodicAdvertisingInterval(0x0006) }
         
         /// 81,918.75 sec
-        public static let max = PeriodicAdvertisingInterval(0xFFFF)
+        public static var max: PeriodicAdvertisingInterval { PeriodicAdvertisingInterval(0xFFFF) }
         
         public let rawValue: UInt16
         

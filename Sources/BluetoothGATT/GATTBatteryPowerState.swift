@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Battery Power State
@@ -39,9 +40,9 @@ public struct GATTBatteryPowerState: GATTCharacteristic {
         self.levelState = levelState
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let bit2 = data[0].bit2()

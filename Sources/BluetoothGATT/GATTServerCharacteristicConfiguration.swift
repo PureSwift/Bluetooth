@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 // MARK: - Server Characteristic Configuration
 /// GATT Server Characteristic Configuration Descriptor
@@ -18,50 +18,73 @@ import Foundation
 /// There is a single instantiation of this descriptor for all clients.
 /// Authentication and authorization may be required by the server to write this descriptor.
 @frozen
-public struct GATTServerCharacteristicConfiguration: GATTDescriptor {
+public struct GATTServerCharacteristicConfiguration: GATTDescriptor, OptionSet, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .serverCharacteristicConfiguration
+    public static var uuid: BluetoothUUID { .serverCharacteristicConfiguration }
     
-    public static let length = 1
+    public var rawValue: UInt8
     
-    public var serverConfiguration: BitMaskOptionSet<ServerConfiguration>
-    
-    public init(serverConfiguration: BitMaskOptionSet<ServerConfiguration> = []) {
-        
-        self.serverConfiguration = serverConfiguration
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        let rawValue = data[0]
-        
-        self.serverConfiguration = BitMaskOptionSet<ServerConfiguration>(rawValue: rawValue)
-    }
-    
-    public var data: Data {
-        
-        return Data([serverConfiguration.rawValue])
-    }
-    
-    public var descriptor: GATTAttribute.Descriptor {
-        
-        return GATTAttribute.Descriptor(uuid: type(of: self).uuid,
-                               value: data,
-                               permissions: [.read, .write])
+    public init(rawValue: UInt8) {
+        self.rawValue = rawValue
     }
 }
 
-extension GATTServerCharacteristicConfiguration {
+// MARK: - ExpressibleByIntegerLiteral
+
+extension GATTServerCharacteristicConfiguration: ExpressibleByIntegerLiteral {
     
-    /// GATT Server Characteristics Configuration Options
-    public enum ServerConfiguration: UInt8, BitMaskOption {
-        
-        /// Broadcasts enabled
-        case broadcasts = 0b01
-        
-        public static let allCases: [ServerConfiguration] = [.broadcasts]
+    public init(integerLiteral rawValue: RawValue) {
+        self.init(rawValue: rawValue)
     }
+}
+
+// MARK: - DataConvertible
+
+extension GATTServerCharacteristicConfiguration: DataConvertible {
+    
+    public static var length: Int { 1 }
+    
+    public init?<Data: DataContainer>(data: Data) {
+        
+        guard data.count == Self.length
+            else { return nil }
+        
+        self.init(rawValue: data[0])
+    }
+    
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue
+    }
+    
+    public var dataLength: Int { Self.length }
+}
+
+// MARK: - CustomStringConvertible
+
+extension GATTServerCharacteristicConfiguration: CustomStringConvertible, CustomDebugStringConvertible {
+    
+    #if hasFeature(Embedded)
+    public var description: String {
+        "0x" + rawValue.toHexadecimal()
+    }
+    #else
+    @inline(never)
+    public var description: String {
+        let descriptions: [(GATTServerCharacteristicConfiguration, StaticString)] = [
+            (.broadcasts, ".broadcasts")
+        ]
+        return buildDescription(descriptions)
+    }
+    #endif
+
+    /// A textual representation of the file permissions, suitable for debugging.
+    public var debugDescription: String { self.description }
+}
+
+// MARK: - Options
+
+public extension GATTServerCharacteristicConfiguration {
+    
+    /// Broadcasts enabled
+    static var broadcasts: GATTServerCharacteristicConfiguration { 0b01 }
 }

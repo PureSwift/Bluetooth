@@ -24,9 +24,9 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
     
     public let reports: [Report]
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Self.length
             else { return nil }
         
         // Number of responses in event.
@@ -43,7 +43,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         var offset = 1
         for _ in 0 ..< reportCount {
             
-            let reportBytes = data.suffixNoCopy(from: offset)
+            let reportBytes = Data(data.suffix(from: offset))
             
             guard let report = Report(data: reportBytes)
                 else { return nil }
@@ -75,7 +75,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         /// Units: dBm
         public let rssi: RSSI? // RSSI
         
-        public init?(data: Data) {
+        public init?<Data: DataContainer>(data: Data) {
             
             guard data.count >= Report.length
                 else { return nil }
@@ -102,7 +102,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
             guard data.count >= (9 + length)
                 else { return nil }
             
-            let responseData = data.subdataNoCopy(in: 9 ..< (9 + length))
+            let responseData = data.subdata(in: 9 ..< (9 + length))
             assert(responseData.count == length)
             
             assert(responseData.count <= LowEnergyAdvertisingData.capacity)

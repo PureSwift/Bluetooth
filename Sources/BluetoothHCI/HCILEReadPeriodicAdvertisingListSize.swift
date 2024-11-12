@@ -39,8 +39,8 @@ public struct HCILEReadPeriodicAdvertisingListSize: HCICommandReturnParameter {
     /// Total number of Periodic Advertiser list entries that can be stored in the Controller
     public let periodicAdvertiserListSize: UInt8
     
-    public init?(data: Data) {
-        guard data.count == type(of: self).length
+    public init?<Data: DataContainer>(data: Data) {
+        guard data.count == Self.length
             else { return nil }
         
         periodicAdvertiserListSize = data[0]

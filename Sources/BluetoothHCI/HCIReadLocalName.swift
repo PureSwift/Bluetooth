@@ -39,7 +39,7 @@ public struct HCIReadLocalName: HCICommandReturnParameter {
     
     public let localName: String
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         var data = unsafeBitCast([UInt8](data), to: [Int8].self)
         

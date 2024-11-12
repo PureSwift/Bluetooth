@@ -30,9 +30,9 @@ public struct HCIConnectionComplete: HCIEventParameter {
     
     public let encryption: Encryption
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let status = HCIStatus(rawValue: data[0])

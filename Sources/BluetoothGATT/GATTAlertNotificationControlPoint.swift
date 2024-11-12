@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Alert Notification Control Point
@@ -47,9 +48,9 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
         self.category = category
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let command = Command(rawValue: data[0])
@@ -66,9 +67,9 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
         return Data([command.rawValue, category.rawValue])
     }
     
-    public var characteristic: GATTAttribute.Characteristic {
+    public var characteristic: GATTAttribute<Data>.Characteristic {
         
-        return GATTAttribute.Characteristic(uuid: type(of: self).uuid,
+        return GATTAttribute<Data>.Characteristic(uuid: Self.uuid,
                                    value: data,
                                    permissions: [.read],
                                    properties: [.notify],

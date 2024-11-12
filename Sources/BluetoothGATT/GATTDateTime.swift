@@ -6,7 +6,10 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
+import Bluetooth
 
 /**
  Date Time
@@ -18,12 +21,10 @@ import Foundation
  - SeeAlso: [Date Time](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.date_time.xml)
  */
 @frozen
-public struct GATTDateTime: GATTCharacteristic {
+public struct GATTDateTime: GATTCharacteristic, Equatable, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { return .dateTime }
-    
-    internal static let length = 7
-    
+    public static var uuid: BluetoothUUID { .dateTime }
+        
     public var year: Year
     
     public var month: Month
@@ -50,10 +51,17 @@ public struct GATTDateTime: GATTCharacteristic {
         self.minute = minute
         self.second = second
     }
+}
+
+// MARK: - DataConvertible
+
+extension GATTDateTime: DataConvertible {
     
-   public init?(data: Data) {
+    public static var length: Int { 7 }
+
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let year = Year(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))),
@@ -67,36 +75,42 @@ public struct GATTDateTime: GATTCharacteristic {
         self.init(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
     }
     
-    public var data: Data {
-        
-        let yearBytes = year.rawValue.littleEndian.bytes
-        
-        return Data([yearBytes.0, yearBytes.1, month.rawValue, day.rawValue, hour.rawValue, minute.rawValue, second.rawValue])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += year.rawValue.littleEndian
+        data += month.rawValue
+        data += day.rawValue
+        data += hour.rawValue
+        data += minute.rawValue
+        data += second.rawValue
+    }
+    
+    public var dataLength: Int {
+        Self.length
     }
 }
+
+#if canImport(Foundation)
 
 // MARK: - Date conversion
 
 public extension GATTDateTime {
     
     /// Default calender to use for `Date` conversion.
-    private static var calendar: Calendar {
-        
+    static let calendar: Calendar = {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "UTC")!
         return calendar
-    }
+    }()
     
     /// Initialize with the current date.
     init() {
-        
         self.init(date: Date())
     }
     
     /// Initialize with the specified date.
     init(date: Date) {
         
-        let calendar = type(of: self).calendar
+        let calendar = Self.calendar
         
         let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second],
                                                      from: date)
@@ -129,7 +143,7 @@ public extension GATTDateTime {
     /// Date components for the date time.
     var dateComponents: DateComponents {
         
-        let calendar = type(of: self).calendar
+        let calendar = Self.calendar
         
         return DateComponents(calendar: calendar,
                               timeZone: calendar.timeZone,
@@ -154,20 +168,7 @@ public extension Date {
     }
 }
 
-// MARK: - Equatable
-
-extension GATTDateTime: Equatable {
-    
-    public static func == (lhs: GATTDateTime, rhs: GATTDateTime) -> Bool {
-        
-        return lhs.year == rhs.year
-            && lhs.month == rhs.month
-            && lhs.day == rhs.day
-            && lhs.hour == lhs.hour
-            && lhs.minute == lhs.minute
-            && lhs.second == rhs.second
-    }
-}
+#endif
 
 // MARK: - Supporting Types
 
@@ -176,7 +177,7 @@ public extension GATTDateTime {
     /// Year as defined by the Gregorian calendar.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    struct Year: BluetoothUnit {
+    struct Year: BluetoothUnit, Equatable, Hashable, Sendable {
         
         public static var unitType: UnitIdentifier { return .year }
         
@@ -199,24 +200,15 @@ public extension GATTDateTime {
         }
         
         private init(_ unsafe: UInt16) {
-            
             self.rawValue = unsafe
         }
     }
 }
 
-extension GATTDateTime.Year: Equatable {
-    
-    public static func == (lhs: GATTDateTime.Year, rhs: GATTDateTime.Year) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
 
 extension GATTDateTime.Year: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }
@@ -226,7 +218,7 @@ public extension GATTDateTime {
     /// Month of the year as defined by the Gregorian calendar.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    enum Month: UInt8, BluetoothUnit {
+    enum Month: UInt8, BluetoothUnit, Sendable {
         
         public static var unitType: UnitIdentifier { return .month }
         
@@ -258,62 +250,43 @@ public extension GATTDateTime {
     }
 }
 
-extension GATTDateTime.Month: Equatable {
-    
-    public static func == (lhs: GATTDateTime.Month, rhs: GATTDateTime.Month) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 public extension GATTDateTime {
     
     /// Day of the month as defined by the Gregorian calendar.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    struct Day: BluetoothUnit {
+    struct Day: BluetoothUnit, Equatable, Hashable, Sendable {
         
         public static var unitType: UnitIdentifier { return .day }
         
         /// Day of Month is not known.
-        public static let unknown = Day(0)
+        public static var unknown: Day { Day(0) }
         
         /// The minimum value
-        public static let min = Day(1)
+        public static var min: Day { Day(1) }
         
         /// The maximum value.
-        public static let max = Day(31)
+        public static var max: Day { Day(31) }
         
         public let rawValue: UInt8
         
         public init?(rawValue: UInt8) {
-            
             guard rawValue == Day.unknown.rawValue
                 || (rawValue <= Day.max.rawValue && rawValue >= Day.min.rawValue)
                 else { return nil }
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt8) {
-            
             self.rawValue = unsafe
         }
     }
 }
 
-extension GATTDateTime.Day: Equatable {
-    
-    public static func == (lhs: GATTDateTime.Day, rhs: GATTDateTime.Day) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
 
 extension GATTDateTime.Day: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }
@@ -323,15 +296,15 @@ public extension GATTDateTime {
     /// Number of hours past midnight.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    struct Hour: BluetoothUnit {
+    struct Hour: BluetoothUnit, Equatable, Hashable, Sendable {
         
         public static var unitType: UnitIdentifier { return .hour }
         
         /// The minimum value.
-        public static let min = Hour(0)
+        public static var min: Hour { Hour(0) }
         
         /// The maximum value.
-        public static let max = Hour(23)
+        public static var max: Hour { Hour(23) }
         
         public let rawValue: UInt8
         
@@ -345,25 +318,14 @@ public extension GATTDateTime {
         }
         
         private init(_ unsafe: UInt8) {
-            
             self.rawValue = unsafe
         }
     }
 }
 
-extension GATTDateTime.Hour: Equatable {
-    
-    public static func == (lhs: GATTDateTime.Hour, rhs: GATTDateTime.Hour) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
-}
-
 extension GATTDateTime.Hour: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }
@@ -373,15 +335,15 @@ public extension GATTDateTime {
     /// Number of minutes since the start of the hour.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    struct Minute: BluetoothUnit {
+    struct Minute: BluetoothUnit, Equatable, Hashable, Sendable {
         
         public static var unitType: UnitIdentifier { return .minute }
         
         /// The minimum value.
-        public static let min = Minute(0)
+        public static var min: Minute { Minute(0) }
         
         /// The maximum value.
-        public static let max = Minute(59)
+        public static var max: Minute { Minute(59) }
         
         public let rawValue: UInt8
         
@@ -401,18 +363,9 @@ public extension GATTDateTime {
     }
 }
 
-extension GATTDateTime.Minute: Equatable {
-    
-    public static func == (lhs: GATTDateTime.Minute, rhs: GATTDateTime.Minute) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 extension GATTDateTime.Minute: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }
@@ -422,15 +375,15 @@ public extension GATTDateTime {
     /// Number of seconds since the start of the minute.
     ///
     /// - SeeAlso: [Units](https://www.bluetooth.com/specifications/assigned-numbers/units)
-    struct Second: BluetoothUnit {
+    struct Second: BluetoothUnit, Equatable, Hashable, Sendable {
         
         public static var unitType: UnitIdentifier { return .second }
         
         /// The minimum value.
-        public static let min = Second(0)
+        public static var min: Second { Second(0) }
         
         /// The maximum value.
-        public static let max = Second(59)
+        public static var max: Second { Second(59) }
         
         public let rawValue: UInt8
         
@@ -450,19 +403,9 @@ public extension GATTDateTime {
     }
 }
 
-extension GATTDateTime.Second: Equatable {
-    
-    public static func == (lhs: GATTDateTime.Second, rhs: GATTDateTime.Second) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-    
-}
-
 extension GATTDateTime.Second: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }

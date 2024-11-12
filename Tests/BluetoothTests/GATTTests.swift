@@ -14,10 +14,6 @@ import Bluetooth
 
 final class GATTTests: XCTestCase {
     
-    func testCharacteristicProperty() {
-        GATTCharacteristicProperty.allCases.forEach { XCTAssertFalse($0.description.isEmpty) }
-    }
-    
     func testMTUExchange() async throws {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 512)
@@ -36,24 +32,14 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: mtu,
-                maximumPreparedWrites: .max,
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -63,12 +49,30 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: mtu,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: mtu,
+            maximumPreparedWrites: .max,
+            log: { print("GATTServer:", $0) }
+        )
         
-        // request
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try server.run()
+            }
+        }
         try await client.exchangeMTU() // force MTU exchange
         
-        let serverMTU = await server.maximumTransmissionUnit
+        let serverMTU = server.maximumTransmissionUnit
         let clientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(serverMTU, clientMTU)
         XCTAssertEqual(serverMTU, mtu)
@@ -78,8 +82,8 @@ final class GATTTests: XCTestCase {
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
-        let clientCache = await clientSocket.cache
+        let serverCache = server.connection.socket.cache
+        let clientCache = clientSocket.cache
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)
     }
@@ -88,18 +92,18 @@ final class GATTTests: XCTestCase {
         
         // If MTU is not negociated, then make sure all PDUs respect the MTU limit
         
-        let profiles: [[GATTAttribute.Service]] = [
+        let profiles: [[GATTAttribute<Data>.Service]] = [
             ProximityProfile.services,
             [
                 ProximityProfile.Apple1Service,
                 ProximityProfile.Apple2Service,
                 ProximityProfile.AppleNotificationService,
                 ProximityProfile.Apple4Service,
-                GATTAttribute.Service(uuid: BluetoothUUID(rawValue: "A6BEA019-D82A-46AA-B612-0304BB884423")!,
-                             primary: true,
+                GATTAttribute<Data>.Service(uuid: BluetoothUUID(rawValue: "A6BEA019-D82A-46AA-B612-0304BB884423")!,
+                             isPrimary: true,
                              characteristics: []),
-                GATTAttribute.Service(uuid: BluetoothUUID(rawValue: "23627A36-4F81-49F9-9501-8B8A49FBA529")!,
-                             primary: true,
+                GATTAttribute<Data>.Service(uuid: BluetoothUUID(rawValue: "23627A36-4F81-49F9-9501-8B8A49FBA529")!,
+                             isPrimary: true,
                              characteristics: [])
             ]
         ]
@@ -109,25 +113,14 @@ final class GATTTests: XCTestCase {
             // server
             let serverAddress = BluetoothAddress.min
             let clientAddress = BluetoothAddress.max
-            let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            let serverSocket = try TestL2CAPServer.lowEnergyServer(
                 address: serverAddress,
                 isRandom: false,
                 backlog: 1
             )
-            let serverAcceptTask = Task<GATTServer, Error> {
-                let newConnection = try await serverSocket.accept()
-                print("GATTServer: New connection")
-                return await GATTServer(
-                    socket: newConnection,
-                    maximumTransmissionUnit: .max,
-                    maximumPreparedWrites: .max,
-                    database: GATTDatabase(services: profile),
-                    log: { print("GATTServer:", $0) }
-                )
-            }
             
             // client
-            let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            let clientSocket = try TestL2CAPSocket.lowEnergyClient(
                 address: clientAddress,
                 destination: serverAddress,
                 isRandom: false
@@ -137,15 +130,37 @@ final class GATTTests: XCTestCase {
                 maximumTransmissionUnit: .default,
                 log: { print("GATTClient:", $0) }
             )
-            let server = try await serverAcceptTask.value
+            
+            let newConnection = try serverSocket.accept()
+            print("GATTServer: New connection")
+            let server = GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: .max,
+                maximumPreparedWrites: .max,
+                database: GATTDatabase(services: profile),
+                log: { print("GATTServer:", $0) }
+            )
+            
+            Task { [weak client] in
+                while let client {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try await client.run()
+                }
+            }
+            Task { [weak server] in
+                while let server {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try server.run()
+                }
+            }
             
             // request
             let services = try await client.discoverAllPrimaryServices()
             XCTAssertEqual(services.map { $0.uuid }, profile.map { $0.uuid })
             
             // validate MTU
-            let serverMTU = await server.maximumTransmissionUnit
-            let serverPreferredMTU = await server.preferredMaximumTransmissionUnit
+            let serverMTU = server.maximumTransmissionUnit
+            let serverPreferredMTU = server.preferredMaximumTransmissionUnit
             let clientMTU = await client.maximumTransmissionUnit
             let clientPreferredMTU = await client.preferredMaximumTransmissionUnit
             XCTAssertEqual(serverMTU, clientMTU)
@@ -424,25 +439,14 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: mtu,
-                maximumPreparedWrites: .max,
-                database: GATTDatabase(services: ProximityProfile.services),
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -452,14 +456,35 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: mtu,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: mtu,
+            maximumPreparedWrites: .max,
+            database: GATTDatabase(services: ProximityProfile.services),
+            log: { print("GATTServer:", $0) }
+        )
+        
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try server.run()
+            }
+        }
         
         // request
         let services = try await client.discoverAllPrimaryServices()
         XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
         
         // validate MTU
-        let serverMTU = await server.maximumTransmissionUnit
+        let serverMTU = server.maximumTransmissionUnit
         let clientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(serverMTU, clientMTU)
         XCTAssertEqual(serverMTU, mtu)
@@ -544,39 +569,28 @@ final class GATTTests: XCTestCase {
         let batteryLevel = GATTBatteryLevel(level: .min)
         
         let characteristics = [
-            GATTAttribute.Characteristic(uuid: type(of: batteryLevel).uuid,
+            GATTAttribute<Data>.Characteristic(uuid: type(of: batteryLevel).uuid,
                                 value: batteryLevel.data,
                                 permissions: [.read],
                                 properties: [.read, .notify],
-                                descriptors: [GATTClientCharacteristicConfiguration().descriptor])
+                                descriptors: [.init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write])])
         ]
         
-        let service = GATTAttribute.Service(uuid: .batteryService,
-                                   primary: true,
+        let service = GATTAttribute<Data>.Service(uuid: .batteryService,
+                                   isPrimary: true,
                                    characteristics: characteristics)
         
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: serverMTU,
-                maximumPreparedWrites: .max,
-                database: GATTDatabase(services: [service]),
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -586,37 +600,59 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: clientMTU,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: serverMTU,
+            maximumPreparedWrites: .max,
+            database: GATTDatabase(services: [service]),
+            log: { print("GATTServer:", $0) }
+        )
+        
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try server.run()
+            }
+        }
         
         // request
         let services = try await client.discoverAllPrimaryServices()
         XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, finalMTU)
         XCTAssertEqual(finalClientMTU, finalMTU)
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
-        let clientCache = await clientSocket.cache
+        let serverCache = server.connection.socket.cache
+        let clientCache = clientSocket.cache
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)
     }
     
     func testDiscoverServiceByUUID() async throws {
         
-        let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
+        let characteristic = GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                  value: Data(),
                                                  permissions: [.read],
                                                  properties: [.read],
                                                  descriptors: [])
         
         let services = (0 ..< 6).map {
-            GATTAttribute.Service(uuid: BluetoothUUID(),
-                         primary: $0 == 0 || $0 % 2 == 0, // true if even number or zero
+            GATTAttribute<Data>.Service(uuid: BluetoothUUID(),
+                         isPrimary: $0 == 0 || $0 % 2 == 0, // true if even number or zero
                          characteristics: [characteristic])
         }
         
@@ -625,25 +661,14 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: .default,
-                maximumPreparedWrites: .max,
-                database: database,
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -653,7 +678,27 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: .default,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: .default,
+            maximumPreparedWrites: .max,
+            database: database,
+            log: { print("GATTServer:", $0) }
+        )
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try server.run()
+            }
+        }
         
         // discover service
         let foundServices = try await client.discoverPrimaryServices(by: services[0].uuid)
@@ -676,7 +721,7 @@ final class GATTTests: XCTestCase {
         //XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
@@ -684,7 +729,7 @@ final class GATTTests: XCTestCase {
     
     func testDiscoverCharacteristicByUUID() async throws {
         
-        let characteristic = GATTAttribute.Characteristic(
+        let characteristic = GATTAttribute<Data>.Characteristic(
             uuid: BluetoothUUID(),
             value: Data(),
             permissions: [.read],
@@ -692,9 +737,9 @@ final class GATTTests: XCTestCase {
             descriptors: []
         )
         
-        let service = GATTAttribute.Service(
+        let service = GATTAttribute<Data>.Service(
             uuid: BluetoothUUID(),
-            primary: true,
+            isPrimary: true,
             characteristics: [characteristic]
         )
         
@@ -703,25 +748,14 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: .default,
-                maximumPreparedWrites: .max,
-                database: database,
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -731,7 +765,28 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: .default,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: .default,
+            maximumPreparedWrites: .max,
+            database: database,
+            log: { print("GATTServer:", $0) }
+        )
+        
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try server.run()
+            }
+        }
         
         // discover service
         let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
@@ -755,7 +810,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
@@ -764,52 +819,41 @@ final class GATTTests: XCTestCase {
     func testDescriptors() async throws {
         
         let descriptors = [
-            GATTClientCharacteristicConfiguration().descriptor,
-            GATTAttribute.Descriptor(uuid: BluetoothUUID(),
+            .init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write]),
+            GATTAttribute<Data>.Descriptor(uuid: BluetoothUUID(),
                                      value: Data("UInt128 Descriptor".utf8),
                                      permissions: [.read, .write]),
-            GATTAttribute.Descriptor(uuid: .savantSystems,
+            GATTAttribute<Data>.Descriptor(uuid: .savantSystems,
                                          value: Data("Savant".utf8),
                                          permissions: [.read]),
-            GATTAttribute.Descriptor(uuid: .savantSystems2,
+            GATTAttribute<Data>.Descriptor(uuid: .savantSystems2,
                                          value: Data("Savant2".utf8),
                                          permissions: [.write])
         ]
         
-        let characteristic = GATTAttribute.Characteristic(uuid: BluetoothUUID(),
+        let characteristic = GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                  value: Data(),
                                                  permissions: [.read],
                                                  properties: [.read],
                                                  descriptors: descriptors)
         
-        let service = GATTAttribute.Service.init(uuid: BluetoothUUID(),
-                                        primary: true,
+        let service = GATTAttribute<Data>.Service.init(uuid: BluetoothUUID(),
+                                        isPrimary: true,
                                         characteristics: [characteristic])
         
-        let database = GATTDatabase(services: [service])
+        let database = GATTDatabase<Data>(services: [service])
         
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: .default,
-                maximumPreparedWrites: .max,
-                database: database,
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -819,7 +863,28 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: .default,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: .default,
+            maximumPreparedWrites: .max,
+            database: database,
+            log: { print("GATTServer:", $0) }
+        )
+        
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try server.run()
+            }
+        }
         
         // discover service
         let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
@@ -830,7 +895,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(foundService.uuid, service.uuid)
         XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
         XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
+        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == BluetoothUUID.primaryService)
         
         let characteristics = try await client.discoverAllCharacteristics(of: foundService)
         
@@ -859,13 +924,13 @@ final class GATTTests: XCTestCase {
             if descriptorPermissions.contains(.write) {
                 let newValue = Data("new value".utf8)
                 try await client.writeDescriptor(descriptor, data: newValue)
-                let newServerValue = await server.database[handle: descriptor.handle].value
+                let newServerValue = server.database[handle: descriptor.handle].value
                 XCTAssertEqual(newValue, newServerValue)
             }
         }
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
@@ -873,11 +938,11 @@ final class GATTTests: XCTestCase {
     
     func testNotification() async throws {
         
-        func test(with characteristics: [GATTAttribute.Characteristic], newData: [Data]) async throws {
+        func test(with characteristics: [GATTAttribute<Data>.Characteristic], newData: [Data]) async throws {
             
-            let service = GATTAttribute.Service(
+            let service = GATTAttribute<Data>.Service(
                 uuid: BluetoothUUID(),
-                primary: true,
+                isPrimary: true,
                 characteristics: characteristics
             )
             
@@ -886,25 +951,14 @@ final class GATTTests: XCTestCase {
             // server
             let serverAddress = BluetoothAddress.min
             let clientAddress = BluetoothAddress.max
-            let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            let serverSocket = try TestL2CAPServer.lowEnergyServer(
                 address: serverAddress,
                 isRandom: false,
                 backlog: 1
             )
-            let serverAcceptTask = Task<GATTServer, Error> {
-                let newConnection = try await serverSocket.accept()
-                print("GATTServer: New connection")
-                return await GATTServer(
-                    socket: newConnection,
-                    maximumTransmissionUnit: .default,
-                    maximumPreparedWrites: .max,
-                    database: database,
-                    log: { print("GATTServer:", $0) }
-                )
-            }
             
             // client
-            let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            let clientSocket = try TestL2CAPSocket.lowEnergyClient(
                 address: clientAddress,
                 destination: serverAddress,
                 isRandom: false
@@ -914,7 +968,28 @@ final class GATTTests: XCTestCase {
                 maximumTransmissionUnit: .default,
                 log: { print("GATTClient:", $0) }
             )
-            let server = try await serverAcceptTask.value
+            let newConnection = try serverSocket.accept()
+            print("GATTServer: New connection")
+            let server = GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: .default,
+                maximumPreparedWrites: .max,
+                database: database,
+                log: { print("GATTServer:", $0) }
+            )
+            
+            Task { [weak client] in
+                while let client {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try await client.run()
+                }
+            }
+            Task { [weak server] in
+                while let server {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try server.run()
+                }
+            }
             
             // discover service
             let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
@@ -955,10 +1030,10 @@ final class GATTTests: XCTestCase {
             )
             
             for data in newData {
-                await server.writeValue(data, forCharacteristic: notificationCharacteristic.uuid)
+                server.writeValue(data, forCharacteristic: notificationCharacteristic.uuid)
             }
             
-            try await Task.sleep(nanoseconds: 1_000_000_000)
+            try await Task.sleep(nanoseconds: 1_000_000)
             
             // stop notifications
             try await client.clientCharacteristicConfiguration(
@@ -1079,7 +1154,7 @@ fileprivate extension ATTOpcodeType {
 
 struct ProximityProfile {
     
-    static let services: [GATTAttribute.Service] = [
+    static let services: [GATTAttribute<Data>.Service] = [
         
         GenericAccessService,
         GenericAttributeService,
@@ -1099,37 +1174,37 @@ struct ProximityProfile {
         ImmediateAlertService
     ]
     
-    static let GenericAccessService = GATTAttribute.Service(uuid: .bit16(0x1800),
-                                                   primary: true,
+    static let GenericAccessService = GATTAttribute<Data>.Service(uuid: .bit16(0x1800),
+                                                   isPrimary: true,
                                                    characteristics: [
                                                     
         ]
     )
     
-    static let GenericAttributeService = GATTAttribute.Service(uuid: .bit16(0x1801),
-                                                      primary: true,
+    static let GenericAttributeService = GATTAttribute<Data>.Service(uuid: .bit16(0x1801),
+                                                      isPrimary: true,
                                                       characteristics: [
-                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
                                                                             descriptors: []),
-                                                        GATTAttribute.Characteristic(uuid: BluetoothUUID(),
+                                                        GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                                             value: Data(),
                                                                             permissions: [.read],
                                                                             properties: [.read],
@@ -1137,62 +1212,62 @@ struct ProximityProfile {
         ]
     )
     
-    static let BatteryService = GATTAttribute.Service(uuid: .bit16(0x180F),
-                                             primary: true,
+    static let BatteryService = GATTAttribute<Data>.Service(uuid: .bit16(0x180F),
+                                             isPrimary: true,
                                              characteristics: [
         ]
     )
     
-    static let CurrentTimeService = GATTAttribute.Service(uuid: .bit16(0x1805),
-                                                 primary: true,
+    static let CurrentTimeService = GATTAttribute<Data>.Service(uuid: .bit16(0x1805),
+                                                 isPrimary: true,
                                                  characteristics: [
         ]
     )
     
-    static let DeviceInformationService = GATTAttribute.Service(uuid: .bit16(0x180A),
-                                                       primary: true,
+    static let DeviceInformationService = GATTAttribute<Data>.Service(uuid: .bit16(0x180A),
+                                                       isPrimary: true,
                                                        characteristics: [
         ]
     )
     
-    static let LinkLossService = GATTAttribute.Service(uuid: .bit16(0x1803),
-                                              primary: true,
+    static let LinkLossService = GATTAttribute<Data>.Service(uuid: .bit16(0x1803),
+                                              isPrimary: true,
                                               characteristics: [
         ]
     )
     
-    static let TXPowerService = GATTAttribute.Service(uuid: .bit16(0x1804),
-                                             primary: true,
+    static let TXPowerService = GATTAttribute<Data>.Service(uuid: .bit16(0x1804),
+                                             isPrimary: true,
                                              characteristics: [
         ]
     )
     
-    static let ImmediateAlertService = GATTAttribute.Service(uuid: .bit16(0x1802),
-                                                    primary: true,
+    static let ImmediateAlertService = GATTAttribute<Data>.Service(uuid: .bit16(0x1802),
+                                                    isPrimary: true,
                                                     characteristics: [
         ]
     )
     
-    static let Apple1Service = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!),
-                                            primary: true,
+    static let Apple1Service = GATTAttribute<Data>.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "D0611E78-BBB4-4591-A5F8-487910AE4366")!),
+                                            isPrimary: true,
                                             characteristics: [
         ]
     )
     
-    static let Apple2Service = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!),
-                                            primary: true,
+    static let Apple2Service = GATTAttribute<Data>.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "9FA480E0-4967-4542-9390-D343DC5D04AE")!),
+                                            isPrimary: true,
                                             characteristics: [
         ]
     )
     
-    static let AppleNotificationService = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
-                                                       primary: true,
+    static let AppleNotificationService = GATTAttribute<Data>.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "7905F431-B5CE-4E99-A40F-4B1E122D00D0")!),
+                                                       isPrimary: true,
                                                        characteristics: [
         ]
     )
     
-    static let Apple4Service = GATTAttribute.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!),
-                                            primary: true,
+    static let Apple4Service = GATTAttribute<Data>.Service(uuid: BluetoothUUID(uuid: UUID(uuidString: "89D3502B-0F36-433A-8EF4-C502AD55F8DC")!),
+                                            isPrimary: true,
                                             characteristics: [
         ]
     )

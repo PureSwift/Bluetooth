@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 /**
  Cross Trainer Data
  
@@ -189,9 +190,9 @@ public struct GATTCrossTrainerData {
     }
     
     // swiftlint:disable:next cyclomatic_complexity
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength
+        guard data.count >= Self.minimumLength
             else { return nil }
         
         let flags = BitMaskOptionSet<Flag>(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], 0))))

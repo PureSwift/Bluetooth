@@ -36,9 +36,9 @@ public struct HCILEReadRfPathCompensation: HCICommandReturnParameter {
     public let rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue
     public let rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let rfTxPathCompensationValue = LowEnergyRfTxPathCompensationValue(rawValue: Int16(bitPattern: UInt16(bytes: (data[0], data[1]))))

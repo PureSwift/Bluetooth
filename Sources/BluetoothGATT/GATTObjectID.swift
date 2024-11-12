@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Object ID
@@ -20,9 +21,9 @@ public struct GATTObjectID: Equatable, RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .objectId }
     
-    internal static var min = UInt48(256)
+    internal static var min: UInt48 { UInt48(256) }
     
-    internal static var max = UInt48(281474976710655)
+    internal static var max: UInt48 { UInt48(281474976710655) }
     
     public let rawValue: UInt48
     
@@ -35,9 +36,9 @@ public struct GATTObjectID: Equatable, RawRepresentable, GATTCharacteristic {
         self.rawValue = rawValue
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let rawValue = UInt48(littleEndian: UInt48(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
@@ -56,7 +57,6 @@ public struct GATTObjectID: Equatable, RawRepresentable, GATTCharacteristic {
 extension GATTObjectID: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }

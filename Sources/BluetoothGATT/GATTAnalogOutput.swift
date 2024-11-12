@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Analog Output
@@ -29,9 +30,9 @@ public struct GATTAnalogOutput: GATTCharacteristic, Equatable, Hashable {
         self.output = output
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(output: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))

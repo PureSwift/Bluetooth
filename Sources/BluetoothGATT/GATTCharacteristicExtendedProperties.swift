@@ -6,9 +6,8 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
-// MARK: - Characteristic Extended Properties
 /// GATT Characteristic Extended Properties Descriptor
 ///
 /// The Characteristic Extended Properties descriptor defines additional Characteristic Properties.
@@ -17,55 +16,78 @@ import Foundation
 /// The Characteristic Extended Properties descriptor is a bit field defining Reliable Write and Writeable Auxiliaries are enabled for the Characteristic.
 /// This descriptor is readable without authentication and authorization being required.
 @frozen
-public struct GATTCharacteristicExtendedProperties: GATTDescriptor {
+public struct GATTCharacteristicExtendedProperties: GATTDescriptor, OptionSet, Hashable, Sendable {
     
-    public static let uuid: BluetoothUUID = .characteristicExtendedProperties
+    public static var uuid: BluetoothUUID { .characteristicExtendedProperties }
     
-    public static let length = 2
+    public var rawValue: UInt16
     
-    public var properties: BitMaskOptionSet<Property>
-    
-    public init(properties: BitMaskOptionSet<Property> = []) {
-        
-        self.properties = properties
-    }
-    
-    public init?(data: Data) {
-        
-        guard data.count == type(of: self).length
-            else { return nil }
-        
-        let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
-        self.properties = BitMaskOptionSet<Property>(rawValue: rawValue)
-    }
-    
-    public var data: Data {
-        
-        let bytes = properties.rawValue.littleEndian.bytes
-        
-        return Data([bytes.0, bytes.1])
-    }
-    
-    public var descriptor: GATTAttribute.Descriptor {
-        
-        return GATTAttribute.Descriptor(uuid: type(of: self).uuid,
-                               value: data,
-                               permissions: [.read])
+    public init(rawValue: UInt16) {
+        self.rawValue = rawValue
     }
 }
 
+// MARK: - ExpressibleByIntegerLiteral
+
+extension GATTCharacteristicExtendedProperties: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral rawValue: RawValue) {
+        self.init(rawValue: rawValue)
+    }
+}
+
+// MARK: - DataConvertible
+
+extension GATTCharacteristicExtendedProperties: DataConvertible {
+    
+    public static var length: Int { 2 }
+    
+    public init?<Data: DataContainer>(data: Data) {
+        
+        guard data.count == Self.length
+            else { return nil }
+        
+        let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        self.init(rawValue: rawValue)
+    }
+    
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += rawValue.littleEndian
+    }
+    
+    public var dataLength: Int { Self.length }
+}
+
+// MARK: - CustomStringConvertible
+
+extension GATTCharacteristicExtendedProperties: CustomStringConvertible, CustomDebugStringConvertible {
+    
+    #if hasFeature(Embedded)
+    public var description: String {
+        "0x" + rawValue.toHexadecimal()
+    }
+    #else
+    @inline(never)
+    public var description: String {
+        let descriptions: [(GATTCharacteristicExtendedProperties, StaticString)] = [
+            (.reliableWrite, ".reliableWrite"),
+            (.writableAuxiliaries, ".writableAuxiliaries")
+        ]
+        return buildDescription(descriptions)
+    }
+    #endif
+
+    /// A textual representation of the file permissions, suitable for debugging.
+    public var debugDescription: String { self.description }
+}
+
+// MARK: - Options
+
 public extension GATTCharacteristicExtendedProperties {
     
-    /// GATT Characteristic Extended Properties Options
-    enum Property: UInt16, BitMaskOption {
-        
-        /// Reliable Write enabled
-        case reliableWrite = 0b01
-        
-        /// Writable Auxiliaries enabled
-        case writableAuxiliaries = 0b10
-        
-        public static let allCases: [Property] = [.reliableWrite, .writableAuxiliaries]
-    }
+    /// Reliable Write enabled
+    static var reliableWrite: GATTCharacteristicExtendedProperties          { 0b01 }
+    
+    /// Writable Auxiliaries enabled
+    static var writableAuxiliaries: GATTCharacteristicExtendedProperties    { 0b10 }
 }

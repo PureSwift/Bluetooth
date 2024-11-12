@@ -83,9 +83,9 @@ public struct HCILEConnectionComplete: HCIEventParameter {
     /// On a master, this parameter shall be set to 0x00.
     public let masterClockAccuracy: LowEnergyClockAccuracy // Master_Clock_Accuracy
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         let statusByte = data[0]

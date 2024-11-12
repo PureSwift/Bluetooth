@@ -6,16 +6,16 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// The Error Response is used to state that a given request cannot be performed,
 /// and to provide the reason.
 ///
 /// - Note: The Write Command does not generate an Error Response.
 @frozen
-public struct ATTErrorResponse: ATTProtocolDataUnit, Error, Equatable {
+public struct ATTErrorResponse: ATTProtocolDataUnit, Error, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .errorResponse }
+    public static var attributeOpcode: ATTOpcode { .errorResponse }
     
     /// The request that generated this error response
     public var request: ATTOpcode
@@ -26,24 +26,27 @@ public struct ATTErrorResponse: ATTProtocolDataUnit, Error, Equatable {
     /// The reason why the request has generated an error response.
     public var error: ATTError
     
-    public init(request: ATTOpcode,
-                attributeHandle: UInt16,
-                error: ATTError) {
-        
+    public init(
+        request: ATTOpcode,
+        attributeHandle: UInt16,
+        error: ATTError
+    ) {
         self.request = request
         self.attributeHandle = attributeHandle
         self.error = error
     }
 }
 
-public extension ATTErrorResponse {
+// MARK: - DataConvertible
+
+extension ATTErrorResponse: DataConvertible {
     
-    internal static var length: Int { return 5 }
+    public static var length: Int { 5 }
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length,
-            type(of: self).validateOpcode(data),
+        guard data.count == Self.length,
+            Self.validateOpcode(data),
             let request = ATTOpcode(rawValue: data[1]),
             let error = ATTError(rawValue: data[4])
             else { return nil }
@@ -53,26 +56,14 @@ public extension ATTErrorResponse {
         self.init(request: request, attributeHandle: attributeHandle, error: error)
     }
     
-    var data: Data {
-        
-        return Data(self)
-    }
-}
-
-// MARK: - DataConvertible
-
-extension ATTErrorResponse: DataConvertible {
-    
-    var dataLength: Int {
-        
-        return type(of: self).length
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += self.request.rawValue
+        data += self.attributeHandle.littleEndian
+        data += self.error.rawValue
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTErrorResponse) {
-        
-        data += attributeOpcode.rawValue
-        data += value.request.rawValue
-        data += value.attributeHandle.littleEndian
-        data += value.error.rawValue
+    public var dataLength: Int {
+        return Self.length
     }
 }

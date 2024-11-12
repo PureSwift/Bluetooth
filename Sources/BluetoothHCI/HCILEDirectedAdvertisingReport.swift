@@ -22,9 +22,9 @@ public struct HCILEDirectedAdvertisingReport: HCIEventParameter {
     
     public let reports: [Report]
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Self.length
             else { return nil }
         
         // Number of responses in event.
@@ -77,7 +77,7 @@ public struct HCILEDirectedAdvertisingReport: HCIEventParameter {
         /// Units: dBm
         public let rssi: RSSI // RSSI
         
-        public init?(data: Data) {
+        public init?<Data: DataContainer>(data: Data) {
             
             guard data.count >= Report.length
                 else { return nil }

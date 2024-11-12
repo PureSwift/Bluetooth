@@ -6,47 +6,30 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Read By Type Response
 ///
 /// The *Read By Type Response* is sent in reply to a received *Read By Type Request*
 /// and contains the handles and values of the attributes that have been read.
 @frozen
-public struct ATTReadByTypeResponse: ATTProtocolDataUnit, Equatable {
+public struct ATTReadByTypeResponse <Value: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .readByTypeResponse }
+    public static var attributeOpcode: ATTOpcode { .readByTypeResponse }
     
     /// A list of Attribute Data.
     public let attributeData: [AttributeData]
     
     public init?(attributeData: [AttributeData]) {
         
-        guard type(of: self).validate(attributeData)
+        guard Self.validate(attributeData)
             else { return nil }
         
         self.attributeData = attributeData
     }
     
     internal init(_ unsafe: [AttributeData]) {
-        
         self.attributeData = unsafe
-    }
-}
-
-public extension ATTReadByTypeResponse {
-    
-    init?(data: Data) {
-        
-        guard let attributeData = ATTReadByTypeResponse.from(data: data)
-            else { return nil }
-        
-        self.attributeData = attributeData
-    }
-    
-    var data: Data {
-        
-        return Data(self)
     }
 }
 
@@ -56,14 +39,18 @@ extension ATTReadByTypeResponse: ATTAttributeDataList { }
 
 extension ATTReadByTypeResponse: DataConvertible {
     
-    var dataLength: Int {
-        
-        return type(of: self).dataLength(for: attributeData)
+    public init?<Data: DataContainer>(data: Data) {
+        guard let attributeData = ATTReadByTypeResponse.from(data: data)
+            else { return nil }
+        self.attributeData = attributeData
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTReadByTypeResponse) {
-        
-        append(&data, value.attributeData)
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        Self.append(&data, self.attributeData)
+    }
+    
+    public var dataLength: Int {
+        Self.dataLength(for: attributeData)
     }
 }
 
@@ -72,19 +59,24 @@ extension ATTReadByTypeResponse: DataConvertible {
 public extension ATTReadByTypeResponse {
     
     /// Attribute handle and value pair.
-    struct AttributeData: Equatable {
+    struct AttributeData: Equatable, Hashable, Sendable, ATTAttributeData {
         
         /// Attribute Handle
         public let handle: UInt16
         
         /// Attribute Value
-        public let value: Data
+        public let value: Value
+        
+        public init(handle: UInt16, value: Value) {
+            self.handle = handle
+            self.value = value
+        }
     }
 }
 
-extension ATTReadByTypeResponse.AttributeData: ATTAttributeData {
+extension ATTReadByTypeResponse.AttributeData: DataConvertible {
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count >= 2
             else { return nil }
@@ -92,18 +84,13 @@ extension ATTReadByTypeResponse.AttributeData: ATTAttributeData {
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.value = data.suffixCheckingBounds(from: 2)
     }
-}
-
-extension ATTReadByTypeResponse.AttributeData: DataConvertible {
     
-    var dataLength: Int {
-        
-        return 2 + value.count
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += handle.littleEndian
+        data += value
     }
     
-    static func += <T: DataContainer> (data: inout T, value: ATTReadByTypeResponse.AttributeData) {
-        
-        data += value.handle.littleEndian
-        data += value.value
+    public var dataLength: Int {
+        2 + value.count
     }
 }

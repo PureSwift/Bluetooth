@@ -92,9 +92,9 @@ extension BluetoothUUID: RawRepresentable {
 
 // MARK: - Data
 
-public extension BluetoothUUID {
+extension BluetoothUUID: DataConvertible {
     
-    init?<Data: DataContainer>(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
     
         guard let length = Length(rawValue: data.count)
             else { return nil }
@@ -118,6 +118,41 @@ public extension BluetoothUUID {
             
             let value = UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]))
             self = .bit128(value)
+        }
+    }
+    
+    public var dataLength: Int {
+        length.rawValue
+    }
+    
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        switch self {
+        case let .bit16(value):
+            data += value
+        case let .bit32(value):
+            data += value
+        case let .bit128(value):
+            data += value
+        }
+    }
+}
+
+internal extension BluetoothUUID {
+    
+    /// Number of bytes to represent Bluetooth UUID.
+    enum Length: Int {
+        
+        case bit16 = 2
+        case bit32 = 4
+        case bit128 = 16
+    }
+    
+    private var length: Length {
+        
+        switch self {
+        case .bit16: return .bit16
+        case .bit32: return .bit32
+        case .bit128: return .bit128
         }
     }
 }

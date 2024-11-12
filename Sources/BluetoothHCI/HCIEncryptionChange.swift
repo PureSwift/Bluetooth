@@ -37,7 +37,7 @@ public struct HCIEncryptionChange: HCIEventParameter {
     /// to 0x01 when encryption is on and using E0 and to 0x02 when encryption is on and using AES-CCM.
     public let encryptionEnabled: EncryptionEnabled
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == HCIEncryptionChange.length
             else { return nil }

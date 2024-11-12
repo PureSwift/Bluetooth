@@ -75,18 +75,18 @@ public extension HCIHoldMode {
      
      Mandatory Range: 0x0014 to 0x8000
      */
-    struct Interval: RawRepresentable, Equatable {
+    struct Interval: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let length = MemoryLayout<UInt16>.size + MemoryLayout<UInt16>.size
+        public static var length: Int { MemoryLayout<UInt16>.size + MemoryLayout<UInt16>.size }
         
         public typealias RawValue = CountableClosedRange<UInt16>
         
-        public static let min: UInt16 = 0x0014
+        public static var min: UInt16 { 0x0014 }
         
-        public static let max: UInt16 = 0x8000
+        public static var max: UInt16 { 0x8000 }
         
         /// Maximum interval range.
-        public static let full = Interval(Interval.min ... Interval.max)
+        public static var full: Interval { Interval(Interval.min ... Interval.max) }
         
         public let rawValue: RawValue
         
@@ -107,7 +107,6 @@ public extension HCIHoldMode {
         
         // private API, unsafe
         private init(_ unchecked: RawValue) {
-            
             self.rawValue = unchecked
         }
         
@@ -116,21 +115,12 @@ public extension HCIHoldMode {
         public var miliseconds: ClosedRange<Double> {
             
             func toMiliseconds(_ value: UInt16) -> Double {
-                
                 return Double(value) * Double(0.625)
             }
             
             let min = toMiliseconds(rawValue.lowerBound)
-            
             let max = toMiliseconds(rawValue.upperBound)
-            
             return min ... max
-        }
-        
-        // Equatable
-        public static func == (lhs: Interval, rhs: Interval) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
         }
     }
 }

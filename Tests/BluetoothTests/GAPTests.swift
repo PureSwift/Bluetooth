@@ -55,7 +55,7 @@ final class GAPTests: XCTestCase {
             guard let list = GAPUUIDList<UInt16>(data: data)
                 else { XCTFail("Could not parse from data"); return }
             
-            XCTAssertEqual(list.data, data)
+            XCTAssertEqual(Data(list), data)
             XCTAssertEqual(list.uuids, [0x1803, 0x1804, 0x1802])
             XCTAssertEqual(list.uuids.map { BluetoothUUID.bit16($0) }, [.linkLoss, .txPower, .immediateAlert])
         }
@@ -74,7 +74,7 @@ final class GAPTests: XCTestCase {
         guard let list = GAPUUIDList<UInt32>(data: data)
             else { XCTFail("Could not parse from data"); return }
         
-        XCTAssertEqual(list.data, data)
+        XCTAssertEqual(Data(list), data)
         XCTAssertEqual(list.uuids, [0x18041803, 0x06041802])
     }
     
@@ -91,7 +91,7 @@ final class GAPTests: XCTestCase {
         guard let list = GAPUUIDList<UInt128>(data: data)
             else { XCTFail("Could not parse from data"); return }
         
-        XCTAssertEqual(list.data, data)
+        XCTAssertEqual(Data(list), data)
         //XCTAssertEqual(list.uuids.map { $0.description }, [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))])
     }
     
@@ -950,13 +950,6 @@ internal extension GAPData {
         var data = Data(capacity: dataLength)
         append(to: &data)
         return data
-    }
-}
-
-internal extension GAPUUIDList {
-    
-    var data: Data {
-        return Data(self)
     }
 }
 

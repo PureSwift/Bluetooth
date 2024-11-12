@@ -6,25 +6,31 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// The *Execute Write Response* is sent in response to a received *Execute Write Request*.
 @frozen
-public struct ATTExecuteWriteResponse: ATTProtocolDataUnit {
+public struct ATTExecuteWriteResponse: ATTProtocolDataUnit, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .executeWriteResponse }
+    public static var attributeOpcode: ATTOpcode { .executeWriteResponse }
     
     public init() { }
+}
+
+extension ATTExecuteWriteResponse: DataConvertible {
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 1,
-            type(of: self).validateOpcode(data)
+            Self.validateOpcode(data)
             else { return nil }
     }
     
-    public var data: Data {
-        
-        return Data([type(of: self).attributeOpcode.rawValue])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+    }
+    
+    public var dataLength: Int {
+        1
     }
 }

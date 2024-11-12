@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  DST Offset
@@ -35,9 +36,9 @@ public enum GATTDstOffset: UInt8, GATTCharacteristic {
     /// DST is not known
     case unknown = 255
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.init(rawValue: data[0])

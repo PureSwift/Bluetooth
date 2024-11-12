@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 // MARK: - Method
 
@@ -38,21 +39,15 @@ public extension BluetoothHostControllerInterface {
 ///
 /// Address is ignored when Address Type is set to 0xFF.
 @frozen
-public struct HCILEAddDeviceToWhiteList: HCICommandParameter { //HCI_LE_Add_Device_To_White_List
+public struct HCILEAddDeviceToWhiteList: HCICommandParameter, Sendable { //HCI_LE_Add_Device_To_White_List
     
-    public static let command = HCILowEnergyCommand.addDeviceToWhiteList //0x0011
+    public static var command: HCILowEnergyCommand { .addDeviceToWhiteList } //0x0011
     
     /// The white list device.
     public var device: LowEnergyWhiteListDevice
     
     public init(device: LowEnergyWhiteListDevice) {
-        
         self.device = device
-    }
-    
-    public var data: Data {
-        
-        return Data(self)
     }
 }
 
@@ -60,14 +55,36 @@ public struct HCILEAddDeviceToWhiteList: HCICommandParameter { //HCI_LE_Add_Devi
 
 extension HCILEAddDeviceToWhiteList: DataConvertible {
     
-    var dataLength: Int {
-        
-        return 1 + BluetoothAddress.length
+    public static var length: Int { 1 + BluetoothAddress.length }
+    
+    public init?<Data>(data: Data) where Data : DataContainer {
+        guard data.count == Self.length else {
+            return nil
+        }
+        guard let addressType = LowEnergyWhiteListAddressType(rawValue: data[0]) else {
+            return nil
+        }
+        let address = BluetoothAddress(littleEndian: BluetoothAddress(data: Data(data.subdata(in: 1 ..< 7)))!)
+        switch addressType {
+        case .public:
+            self.init(device: .public(address))
+        case .random:
+            self.init(device: .random(address))
+        case .anonymous:
+            self.init(device: .anonymous)
+        }
     }
     
-    static func += <T: DataContainer> (data: inout T, value: HCILEAddDeviceToWhiteList) {
-        
-        data += value.device.addressType.rawValue
-        data += value.device.address?.littleEndian ?? .zero
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += device.addressType.rawValue
+        data += (device.address ?? .zero).littleEndian
+    }
+    
+    public var dataLength: Int {
+        Self.length
+    }
+    
+    public var data: Data {
+        return Data(self)
     }
 }

@@ -37,9 +37,9 @@ public struct HCILEReadTransmitPower: HCICommandReturnParameter {
     
     public let maxTxPower: TxPower
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         guard let minTxPower = TxPower(rawValue: Int8(bitPattern: data[0]))
@@ -54,9 +54,9 @@ public struct HCILEReadTransmitPower: HCICommandReturnParameter {
     
     public struct TxPower: RawRepresentable, Equatable, Hashable, Comparable {
         
-        public static let min = TxPower(-127)
+        public static var min: TxPower { TxPower(-127) }
         
-        public static let max = TxPower(126)
+        public static var max: TxPower { TxPower(126) }
         
         public let rawValue: Int8
         
@@ -78,8 +78,11 @@ public struct HCILEReadTransmitPower: HCICommandReturnParameter {
         
         // Comparable
         public static func < (lhs: TxPower, rhs: TxPower) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
+        }
+        
+        public static func > (lhs: TxPower, rhs: TxPower) -> Bool {
+            return lhs.rawValue > rhs.rawValue
         }
     }
 }

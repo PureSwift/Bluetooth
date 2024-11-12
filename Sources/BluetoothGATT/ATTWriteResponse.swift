@@ -6,28 +6,32 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Write Response
 ///
 /// The *Write Response* is sent in reply to a valid *Write Request*
 /// and acknowledges that the attribute has been successfully written.
 @frozen
-public struct ATTWriteResponse: ATTProtocolDataUnit {
+public struct ATTWriteResponse: ATTProtocolDataUnit, Sendable {
     
-    public static var attributeOpcode: ATTOpcode { return .writeResponse }
+    public static var attributeOpcode: ATTOpcode { .writeResponse }
     
     public init() { }
+}
+
+extension ATTWriteResponse: DataConvertible {
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
         guard data.count == 1,
-            type(of: self).validateOpcode(data)
+            Self.validateOpcode(data)
             else { return nil }
     }
     
-    public var data: Data {
-        
-        return Data([type(of: self).attributeOpcode.rawValue])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
     }
+    
+    public var dataLength: Int { 1 }
 }

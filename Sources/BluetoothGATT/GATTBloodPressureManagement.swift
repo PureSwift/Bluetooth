@@ -8,6 +8,8 @@
 
 import Foundation
 import Bluetooth
+import Foundation
+import Bluetooth
 
 /**
  Blood Pressure Measurement
@@ -85,9 +87,9 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         self.measurementStatus = measurementStatus
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).length
+        guard data.count >= Self.length
             else { return nil }
         
         let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
@@ -105,7 +107,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             guard index + GATTDateTime.length < data.count
                 else { return nil }
             
-            let timestampData = data.subdataNoCopy(in: index + 1 ..< index + 1 + GATTDateTime.length)
+            let timestampData = data.subdata(in: index + 1 ..< index + 1 + GATTDateTime.length)
             
             assert(timestampData.count == GATTDateTime.length)
             
@@ -312,12 +314,12 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         
         case measurementPosition = 0b10000
         
-        public static let allCases: [MeasurementStatus] = [
+        public static var allCases: [MeasurementStatus] { [
             .bodyMovement,
             .cuffFit,
             .irregularPulse,
             .pulseRate,
             .measurementPosition
-        ]
+        ] }
     }
 }

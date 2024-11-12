@@ -37,5 +37,5 @@ public protocol HCIEventParameter {
     static var length: Int { get }
     
     /// Attempt to initialize event parameter from data. 
-    init?(data: Data)
+    init?<Data: DataContainer>(data: Data)
 }

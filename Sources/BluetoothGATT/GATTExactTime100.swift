@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /**
  Exact Time 100
@@ -30,12 +31,12 @@ public struct GATTExactTime100: GATTCharacteristic {
         self.fraction100 = fraction100
     }
     
-    public init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
-        guard let dayDateTime = GATTDayDateTime(data: data.subdataNoCopy(in: (0 ..< GATTDayDateTime.length)))
+        guard let dayDateTime = GATTDayDateTime(data: data.subdata(in: (0 ..< GATTDayDateTime.length)))
             else { return nil }
         
         guard let fraction100 = Second(rawValue: data[GATTDayDateTime.length])
@@ -57,10 +58,10 @@ extension GATTExactTime100 {
         public static var unitType: UnitIdentifier { return .second }
         
         /// The minimum value.
-        public static let min = Second(0)
+        public static var min: Second { Second(0) }
         
         /// The maximum value.
-        public static let max = Second(99)
+        public static var max: Second { Second(99) }
         
         public let rawValue: UInt8
         

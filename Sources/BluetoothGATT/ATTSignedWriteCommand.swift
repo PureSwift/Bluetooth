@@ -6,58 +6,57 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
+import Bluetooth
 
 /// Signed Write Command
 ///
 /// The Signed Write Command is used to request the server to write the value of an attribute with an authentication signature,
 /// typically into a control-point attribute.
 @frozen
-public struct ATTSignedWriteCommand: ATTProtocolDataUnit {
+public struct ATTSignedWriteCommand<Value: DataContainer>: ATTProtocolDataUnit {
     
     public typealias Signature = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
-    public static var attributeOpcode: ATTOpcode { return .signedWriteCommand }
+    public static var attributeOpcode: ATTOpcode { .signedWriteCommand }
     
     /// The handle of the attribute to be set.
     public var handle: UInt16
     
     /// The value to be written to the attribute
-    public var value: Data
+    public var value: Value
     
     /// Authentication signature for the Attribute Upload, Attribute Handle and Attribute Value Parameters.
     public var signature: Signature
     
-    public init(handle: UInt16,
-                value: Data,
-                signature: Signature) {
-        
+    public init(
+        handle: UInt16,
+        value: Value,
+        signature: Signature
+    ) {
         self.handle = handle
         self.value = value
         self.signature = signature
     }
 }
 
-public extension ATTSignedWriteCommand {
+extension ATTSignedWriteCommand: DataConvertible {
     
     /// Minimum length
-    private static var minimumLength: Int { return 1 + 2 + 0 + 12 }
+    internal static var minimumLength: Int { 15 }
     
-    init?(data: Data) {
+    public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= type(of: self).minimumLength,
-            type(of: self).validateOpcode(data)
+        guard data.count >= Self.minimumLength,
+            Self.validateOpcode(data)
             else { return nil }
         
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         
-        if data.count > type(of: self).minimumLength {
-            
-            self.value = Data(data[3 ..< data.count - 12])
+        if data.count > Self.minimumLength {
+            self.value = Value(data[3 ..< data.count - 12])
             
         } else {
-            
-            self.value = Data()
+            self.value = Value()
         }
         
         self.signature = (data[data.count - 12],
@@ -74,12 +73,14 @@ public extension ATTSignedWriteCommand {
                           data[data.count - 1])
     }
     
-    var data: Data {
-        
-        let handleBytes = handle.littleEndian.bytes
-        
-        return Data([ATTSignedWriteCommand.attributeOpcode.rawValue, handleBytes.0, handleBytes.1])
-            + value
-            + Data([signature.0, signature.1, signature.2, signature.3, signature.4, signature.5, signature.6, signature.7, signature.8, signature.9, signature.10, signature.11])
+    public func append<Data>(to data: inout Data) where Data : DataContainer {
+        data += Self.attributeOpcode.rawValue
+        data += handle.littleEndian
+        data += value
+        data += signature
+    }
+    
+    public var dataLength: Int {
+        Self.minimumLength + value.count
     }
 }
