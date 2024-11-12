@@ -21,8 +21,12 @@ public protocol L2CAPSocket {
     /// Write to the socket.
     func send(_ data: Data) throws(Self.Error)
     
+    var canSend: Bool { get }
+    
     /// Reads from the socket.
     func receive(_ bufferSize: Int) throws(Self.Error) -> Self.Data
+    
+    var canRecieve: Bool { get }
     
     /// Attempts to change the socket's security level.
     func setSecurityLevel(_ securityLevel: SecurityLevel) throws(Self.Error)

@@ -8,8 +8,7 @@
 
 import Bluetooth
 
-/// GATT Server
-public final class GATTServer <Socket: L2CAPSocket> {
+public actor GATTServer <Socket: L2CAPSocket> {
     
     public typealias Data = Socket.Data
     
@@ -43,7 +42,7 @@ public final class GATTServer <Socket: L2CAPSocket> {
         maximumPreparedWrites: Int = 50,
         database: GATTDatabase<Data> = GATTDatabase<Data>(),
         log: ((String) -> ())?
-    ) {
+    ) async {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
@@ -57,7 +56,15 @@ public final class GATTServer <Socket: L2CAPSocket> {
         self.registerATTHandlers()
     }
     
+    deinit {
+        connection.socket.close()
+    }
+    
     // MARK: - Methods
+    
+    public func run() throws(ATTConnectionError<Socket.Error, Socket.Data>) {
+        try connection.run()
+    }
     
     /// Update the value of a characteristic attribute.
     public func writeValue(_ value: Data, forCharacteristic handle: UInt16) {
@@ -77,40 +84,44 @@ public final class GATTServer <Socket: L2CAPSocket> {
     private func registerATTHandlers() {
         
         // Exchange MTU
-        connection.register { [weak self] in self?.exchangeMTU($0) }
+        connection.register { [weak self] request in
+            Task {
+                await self?.exchangeMTU(request)
+            }
+        }
         
         // Read By Group Type
-        connection.register { [weak self] in self?.readByGroupType($0) }
+        connection.register { [weak self] request in Task { await self?.readByGroupType(request) } }
         
         // Read By Type
-        connection.register { [weak self] in self?.readByType($0) }
+        connection.register { [weak self] request in Task { await self?.readByType(request) } }
         
         // Find Information
-        connection.register { [weak self] in self?.findInformation($0) }
+        connection.register { [weak self] request in Task { await self?.findInformation(request) } }
         
         // Find By Type Value
-        connection.register { [weak self] in self?.findByTypeValue($0) }
+        connection.register { [weak self] request in Task { await self?.findByTypeValue(request) } }
         
         // Write Request
-        connection.register { [weak self] in self?.writeRequest($0) }
+        connection.register { [weak self] request in Task { await self?.writeRequest(request) } }
         
         // Write Command
-        connection.register { [weak self] in self?.writeCommand($0) }
+        connection.register { [weak self] request in Task { await self?.writeCommand(request) } }
         
         // Read Request
-        connection.register { [weak self] in self?.readRequest($0) }
+        connection.register { [weak self] request in Task { await self?.readRequest(request) } }
         
         // Read Blob Request
-        connection.register { [weak self] in self?.readBlobRequest($0) }
+        connection.register { [weak self] request in Task { await self?.readBlobRequest(request) } }
         
         // Read Multiple Request
-        connection.register { [weak self] in self?.readMultipleRequest($0) }
+        connection.register { [weak self] request in Task { await self?.readMultipleRequest(request) } }
         
         // Prepare Write Request
-        connection.register { [weak self] in self?.prepareWriteRequest($0) }
+        connection.register { [weak self] request in Task { await self?.prepareWriteRequest(request) } }
         
         // Execute Write Request
-        connection.register { [weak self] in self?.executeWriteRequest($0) }
+        connection.register { [weak self] request in Task { await self?.executeWriteRequest(request) } }
     }
     
     private func errorResponse(_ opcode: ATTOpcode, _ error: ATTError, _ handle: UInt16 = 0) {

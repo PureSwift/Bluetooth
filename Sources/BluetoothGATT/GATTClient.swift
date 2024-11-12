@@ -66,9 +66,21 @@ public actor GATTClient <Socket: L2CAPSocket> {
         }
         connection.register { indication in
             Task {
-                self.indication(indication)
+                do {
+                    try self.indication(indication)
+                }
+                catch {
+                    self.log?("Error sending confirmation: \(error)")
+                }
             }
         }
+    }
+    
+    // MARK: - Methods
+    
+    /// Write pending PDU and read
+    public func run() throws {
+        try connection.run()
     }
     
     // MARK: Requests
@@ -352,7 +364,7 @@ public actor GATTClient <Socket: L2CAPSocket> {
                 self.sendContinuations[id] = nil
                 switch result {
                 case let .failure(errorResponse):
-                    self.log?("Response: \(response)")
+                    self.log?("Response: \(errorResponse)")
                 case let .success(response):
                     self.log?("Response: \(response)")
                 }
@@ -361,7 +373,7 @@ public actor GATTClient <Socket: L2CAPSocket> {
         }
     }
     
-    private func send<Request: ATTProtocolDataUnit>(_ request: Request) {
+    private func send<Request: ATTProtocolDataUnit>(_ request: Request) throws {
         log?("Request: \(request)")
         assert(Request.attributeOpcode.type != .response)
         connection.queue(request)
@@ -540,7 +552,7 @@ public actor GATTClient <Socket: L2CAPSocket> {
         let length = Int(maximumTransmissionUnit.rawValue) - 3
         let data = Data(data.prefix(length))
         let command = ATTWriteCommand(handle: attribute, value: data)
-        send(command)
+        try send(command)
     }
     
     /// Write attribute request.
@@ -613,7 +625,7 @@ public actor GATTClient <Socket: L2CAPSocket> {
     private func writeSignedCharacteristicCommand(
         _ characteristic: Characteristic,
         data: Data
-    ) {
+    ) throws {
         // This sub-procedure only writes the first (ATT_MTU – 15) octets of an Attribute Value.
         // This sub-procedure cannot be used to write a long Attribute.
         
@@ -631,7 +643,7 @@ public actor GATTClient <Socket: L2CAPSocket> {
         // TODO: Sign Data
         
         let pdu = ATTWriteCommand(handle: characteristic.handle.value, value: data)
-        send(pdu)
+        try send(pdu)
     }
     
     // MARK: - Callbacks
@@ -1045,10 +1057,10 @@ public actor GATTClient <Socket: L2CAPSocket> {
         handler(notification.value)
     }
     
-    private func indication(_ indication: ATTHandleValueIndication<Data>) {
+    private func indication(_ indication: ATTHandleValueIndication<Data>) throws {
         let confirmation = ATTHandleValueConfirmation()
         // send acknowledgement
-        send(confirmation)
+        try send(confirmation)
         // callback
         guard let handler = indications[indication.handle] else {
             log?("Received indication for unregistered handle \(indication.handle)")

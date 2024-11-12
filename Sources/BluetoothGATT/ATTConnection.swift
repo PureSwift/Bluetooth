@@ -54,10 +54,6 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     
     // MARK: - Initialization
     
-    deinit {
-        socket.close()
-    }
-    
     public init(
         socket: Socket,
         log: ((String) -> ())? = nil
@@ -67,6 +63,18 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     }
     
     // MARK: - Methods
+    
+    public mutating func run() throws(Self.Error) {
+        // read pending packets
+        while socket.canRecieve {
+            try read()
+        }
+        var didWrite = true
+        // write pending packets
+        while socket.canSend, didWrite {
+            didWrite = try write()
+        }
+    }
     
     /// Performs the actual IO for recieving data.
     internal mutating func read() throws(Self.Error) {
@@ -155,8 +163,9 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     }
     
     // write all pending PDUs
-    private mutating func writePending(){
+    private mutating func writePending() {
         // TODO: Wakeup writer
+        
     }
     
     /// Registers a callback for an opcode and returns the ID associated with that callback.
