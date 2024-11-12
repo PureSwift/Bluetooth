@@ -18,13 +18,19 @@ internal final class TestL2CAPSocket: L2CAPSocket {
         
     private enum Cache {
         
+        static let lock = NSLock()
+        
         static var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
         
         static func queue(client socket: TestL2CAPSocket, server: BluetoothAddress) {
+            lock.lock()
+            defer { lock.unlock() }
             pendingClients[server, default: []].append(socket)
         }
         
         static func dequeue(server: BluetoothAddress) -> TestL2CAPSocket? {
+            lock.lock()
+            defer { lock.unlock() }
             guard let socket = pendingClients[server]?.first else {
                 return nil
             }
@@ -65,6 +71,14 @@ internal final class TestL2CAPSocket: L2CAPSocket {
     
     var event: ((L2CAPSocketEvent<POSIXError>) -> ())?
     
+    var canRecieve: Bool {
+        target != nil && receivedData.isEmpty == false
+    }
+    
+    var canSend: Bool {
+        target != nil
+    }
+    
     func securityLevel() throws(POSIXError) -> Bluetooth.SecurityLevel {
         _securityLevel
     }
@@ -96,11 +110,14 @@ internal final class TestL2CAPSocket: L2CAPSocket {
     // MARK: - Methods
     
     func close() {
-        
+        target = nil
+        event?(.close)
+        target?.target = nil
+        target?.event?(.close)
     }
     
     func accept() throws(POSIXError) -> TestL2CAPSocket {
-        // sleep until a client socket is created
+        // dequeue socket 
         guard let client = Cache.dequeue(server: address) else {
             throw POSIXError(.EAGAIN)
         }
@@ -128,9 +145,11 @@ internal final class TestL2CAPSocket: L2CAPSocket {
         
         print("L2CAP Socket: \(name) will read \(bufferSize) bytes")
         
-        while self.receivedData.isEmpty {
-            guard self.target != nil
-                else { throw POSIXError(.ECONNRESET) }
+        guard self.target != nil
+            else { throw POSIXError(.ECONNRESET) }
+        
+        guard self.receivedData.isEmpty == false else {
+            throw POSIXError(.EAGAIN)
         }
         
         let data = self.receivedData.removeFirst()
