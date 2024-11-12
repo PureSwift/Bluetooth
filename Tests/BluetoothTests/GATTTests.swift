@@ -67,12 +67,12 @@ final class GATTTests: XCTestCase {
         Task { [weak server] in
             while let server {
                 try await Task.sleep(nanoseconds: 10_000)
-                try await server.run()
+                try server.run()
             }
         }
         try await client.exchangeMTU() // force MTU exchange
         
-        let serverMTU = await server.maximumTransmissionUnit
+        let serverMTU = server.maximumTransmissionUnit
         let clientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(serverMTU, clientMTU)
         XCTAssertEqual(serverMTU, mtu)
@@ -82,7 +82,7 @@ final class GATTTests: XCTestCase {
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        let serverCache = await server.connection.socket.cache
+        let serverCache = server.connection.socket.cache
         let clientCache = clientSocket.cache
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)
@@ -152,7 +152,7 @@ final class GATTTests: XCTestCase {
             Task { [weak server] in
                 while let server {
                     try await Task.sleep(nanoseconds: 10_000)
-                    try await server.run()
+                    try server.run()
                 }
             }
             
@@ -161,8 +161,8 @@ final class GATTTests: XCTestCase {
             XCTAssertEqual(services.map { $0.uuid }, profile.map { $0.uuid })
             
             // validate MTU
-            let serverMTU = await server.maximumTransmissionUnit
-            let serverPreferredMTU = await server.preferredMaximumTransmissionUnit
+            let serverMTU = server.maximumTransmissionUnit
+            let serverPreferredMTU = server.preferredMaximumTransmissionUnit
             let clientMTU = await client.maximumTransmissionUnit
             let clientPreferredMTU = await client.preferredMaximumTransmissionUnit
             XCTAssertEqual(serverMTU, clientMTU)
@@ -480,7 +480,7 @@ final class GATTTests: XCTestCase {
         Task { [weak server] in
             while let server {
                 try await Task.sleep(nanoseconds: 10_000)
-                try await server.run()
+                try server.run()
             }
         }
         
@@ -489,7 +489,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
         
         // validate MTU
-        let serverMTU = await server.maximumTransmissionUnit
+        let serverMTU = server.maximumTransmissionUnit
         let clientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(serverMTU, clientMTU)
         XCTAssertEqual(serverMTU, mtu)
@@ -627,7 +627,7 @@ final class GATTTests: XCTestCase {
         Task { [weak server] in
             while let server {
                 try await Task.sleep(nanoseconds: 10_000)
-                try await server.run()
+                try server.run()
             }
         }
         
@@ -636,14 +636,14 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, finalMTU)
         XCTAssertEqual(finalClientMTU, finalMTU)
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        let serverCache = await server.connection.socket.cache
+        let serverCache = server.connection.socket.cache
         let clientCache = clientSocket.cache
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)
@@ -707,7 +707,7 @@ final class GATTTests: XCTestCase {
         Task { [weak server] in
             while let server {
                 try await Task.sleep(nanoseconds: 10_000)
-                try await server.run()
+                try server.run()
             }
         }
         
@@ -732,7 +732,7 @@ final class GATTTests: XCTestCase {
         //XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
@@ -798,7 +798,7 @@ final class GATTTests: XCTestCase {
         Task { [weak server] in
             while let server {
                 try await Task.sleep(nanoseconds: 10_000)
-                try await server.run()
+                try server.run()
             }
         }
         
@@ -824,7 +824,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
@@ -899,7 +899,7 @@ final class GATTTests: XCTestCase {
         Task { [weak server] in
             while let server {
                 try await Task.sleep(nanoseconds: 10_000)
-                try await server.run()
+                try server.run()
             }
         }
         
@@ -941,13 +941,13 @@ final class GATTTests: XCTestCase {
             if descriptorPermissions.contains(.write) {
                 let newValue = Data("new value".utf8)
                 try await client.writeDescriptor(descriptor, data: newValue)
-                let newServerValue = await server.database[handle: descriptor.handle].value
+                let newServerValue = server.database[handle: descriptor.handle].value
                 XCTAssertEqual(newValue, newServerValue)
             }
         }
         
         // validate MTU
-        let finalServerMTU = await server.maximumTransmissionUnit
+        let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
@@ -1007,7 +1007,7 @@ final class GATTTests: XCTestCase {
             Task { [weak server] in
                 while let server {
                     try await Task.sleep(nanoseconds: 10_000)
-                    try await server.run()
+                    try server.run()
                 }
             }
             
@@ -1050,7 +1050,7 @@ final class GATTTests: XCTestCase {
             )
             
             for data in newData {
-                await server.writeValue(data, forCharacteristic: notificationCharacteristic.uuid)
+                server.writeValue(data, forCharacteristic: notificationCharacteristic.uuid)
             }
             
             try await Task.sleep(nanoseconds: 1_000_000)
