@@ -9,12 +9,13 @@
 import Bluetooth
 
 /// GATT Client
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public actor GATTClient <Socket: L2CAPConnection> {
     
     // MARK: - Properties
     
     public let log: (@Sendable (String) -> ())?
-        
+    
     public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
         self.connection.maximumTransmissionUnit
     }
@@ -1077,6 +1078,7 @@ public actor GATTClient <Socket: L2CAPConnection> {
 
 // MARK: - Supporting Types
 
+@available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13, *)
 public extension GATTClient {
             
     typealias Notification = (Data) -> ()
@@ -1131,6 +1133,7 @@ public extension GATTClient {
     }
 }
 
+@available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13, *)
 internal extension GATTClient {
     
     struct ServiceDiscoveryOperation: Equatable, Hashable, Sendable  {
