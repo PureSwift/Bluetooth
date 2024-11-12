@@ -40,7 +40,7 @@ internal extension String {
         #if hasFeature(Embedded) || (canImport(Darwin) && DEBUG)
         self.init(format: "%02X", length: length, byte)!
         #else
-        self.init(self, radix: 16, uppercase: true)
+        self.init(byte, radix: 16, uppercase: true)
         // Add Zero padding
         while self.utf8.count < length {
             self = "0" + self
