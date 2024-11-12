@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Bluetooth
 
 /// Bluetooth HCI controller.
 public protocol BluetoothHostControllerInterface: AnyObject {
@@ -44,7 +45,7 @@ public protocol BluetoothHostControllerInterface: AnyObject {
 
 /// Bluetooth HCI errors
 @frozen
-public enum BluetoothHostControllerError: Error {
+public enum BluetoothHostControllerError: Error, Sendable {
     
     /// The specified adapter could not be found.
     case adapterNotFound
