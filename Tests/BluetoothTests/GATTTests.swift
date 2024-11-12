@@ -58,7 +58,6 @@ final class GATTTests: XCTestCase {
             log: { print("GATTServer:", $0) }
         )
         
-        // request
         Task { [weak client] in
             while let client {
                 try await Task.sleep(nanoseconds: 10_000)
@@ -143,6 +142,19 @@ final class GATTTests: XCTestCase {
                 log: { print("GATTClient:", $0) }
             )
             let server = try await serverAcceptTask.value
+            
+            Task { [weak client] in
+                while let client {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try await client.run()
+                }
+            }
+            Task { [weak server] in
+                while let server {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try await server.run()
+                }
+            }
             
             // request
             let services = try await client.discoverAllPrimaryServices()
@@ -459,6 +471,19 @@ final class GATTTests: XCTestCase {
         )
         let server = try await serverAcceptTask.value
         
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await server.run()
+            }
+        }
+        
         // request
         let services = try await client.discoverAllPrimaryServices()
         XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
@@ -593,6 +618,19 @@ final class GATTTests: XCTestCase {
         )
         let server = try await serverAcceptTask.value
         
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await server.run()
+            }
+        }
+        
         // request
         let services = try await client.discoverAllPrimaryServices()
         XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
@@ -659,6 +697,19 @@ final class GATTTests: XCTestCase {
             log: { print("GATTClient:", $0) }
         )
         let server = try await serverAcceptTask.value
+        
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await server.run()
+            }
+        }
         
         // discover service
         let foundServices = try await client.discoverPrimaryServices(by: services[0].uuid)
@@ -737,6 +788,19 @@ final class GATTTests: XCTestCase {
             log: { print("GATTClient:", $0) }
         )
         let server = try await serverAcceptTask.value
+        
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await server.run()
+            }
+        }
         
         // discover service
         let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
@@ -825,6 +889,19 @@ final class GATTTests: XCTestCase {
             log: { print("GATTClient:", $0) }
         )
         let server = try await serverAcceptTask.value
+        
+        Task { [weak client] in
+            while let client {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await client.run()
+            }
+        }
+        Task { [weak server] in
+            while let server {
+                try await Task.sleep(nanoseconds: 10_000)
+                try await server.run()
+            }
+        }
         
         // discover service
         let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
