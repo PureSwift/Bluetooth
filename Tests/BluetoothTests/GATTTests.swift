@@ -32,7 +32,7 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
@@ -113,7 +113,7 @@ final class GATTTests: XCTestCase {
             // server
             let serverAddress = BluetoothAddress.min
             let clientAddress = BluetoothAddress.max
-            let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+            let serverSocket = try TestL2CAPServer.lowEnergyServer(
                 address: serverAddress,
                 isRandom: false,
                 backlog: 1
@@ -441,12 +441,12 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
+        let serverAcceptTask = Task<GATTServer<TestL2CAPSocket>, Error> {
             let newConnection = try serverSocket.accept()
             print("GATTServer: New connection")
             return await GATTServer(
@@ -588,7 +588,7 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
@@ -668,7 +668,7 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
@@ -759,7 +759,7 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
@@ -860,7 +860,7 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPServer.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
@@ -968,7 +968,7 @@ final class GATTTests: XCTestCase {
             // server
             let serverAddress = BluetoothAddress.min
             let clientAddress = BluetoothAddress.max
-            let serverSocket = try TestL2CAPSocket.lowEnergyServer(
+            let serverSocket = try TestL2CAPServer.lowEnergyServer(
                 address: serverAddress,
                 isRandom: false,
                 backlog: 1

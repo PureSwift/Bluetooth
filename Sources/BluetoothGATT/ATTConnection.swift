@@ -9,19 +9,17 @@
 import Bluetooth
 
 /// Manages a Bluetooth connection using the ATT protocol.
-internal final class ATTConnection <Socket: L2CAPSocket> {
+internal final class ATTConnection <Socket: L2CAPConnection> {
     
     public typealias Data = Socket.Data
     
     public typealias Error = ATTConnectionError<Socket.Error, Socket.Data>
-    
-    public typealias Event = L2CAPSocketEvent<Socket.Error>
-    
+        
     // MARK: - Properties
     
     /// Actual number of bytes for PDU ATT exchange.
     public var maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default
-        
+    
     internal var socket: Socket
     
     internal let log: ((String) -> ())?
@@ -69,13 +67,17 @@ internal final class ATTConnection <Socket: L2CAPSocket> {
     // MARK: - Methods
     
     public func run() throws(Error) {
+        // throw underlying error
+        if let error = socket.status.error {
+            throw .socket(error)
+        }
         // read pending packets
-        while socket.canRecieve {
+        while socket.status.recieve {
             try read()
         }
         var didWrite = true
         // write pending packets
-        while socket.canSend, didWrite {
+        while socket.status.send, didWrite {
             didWrite = try write()
         }
     }
@@ -139,7 +141,7 @@ internal final class ATTConnection <Socket: L2CAPSocket> {
             try socket.send(sendOperation.data)
         }
         catch {
-            throw Self.Error.socket(error)
+            throw .socket(error)
         }
         let opcode = sendOperation.opcode
         

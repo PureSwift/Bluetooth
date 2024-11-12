@@ -9,7 +9,7 @@
 import Bluetooth
 
 /// GATT Client
-public actor GATTClient <Socket: L2CAPSocket> {
+public actor GATTClient <Socket: L2CAPConnection> {
     
     // MARK: - Properties
     

@@ -11,12 +11,13 @@ import Foundation
 @testable import Bluetooth
 @testable import BluetoothGATT
 
-/// Test L2CAP socket
-internal final class TestL2CAPSocket: L2CAPSocket {
+internal final class TestL2CAPServer: L2CAPServer {
     
     typealias Data = Foundation.Data
-        
-    private enum Cache {
+    
+    typealias Error = POSIXError
+    
+    enum Cache {
         
         static let lock = NSLock()
         
@@ -37,7 +38,65 @@ internal final class TestL2CAPSocket: L2CAPSocket {
             pendingClients[server]?.removeFirst()
             return socket
         }
+        
+        static func canAccept(server: BluetoothAddress) -> Bool {
+            lock.lock()
+            defer { lock.unlock() }
+            return pendingClients[server, default: []].isEmpty
+        }
     }
+    
+    let name: String
+    
+    let address: BluetoothAddress
+    
+    var status: L2CAPSocketStatus<POSIXError> {
+        .init(
+            send: false,
+            recieve: false,
+            accept: Cache.canAccept(server: address)
+        )
+    }
+    
+    init(name: String, address: BluetoothAddress) {
+        self.name = name
+        self.address = address
+    }
+    
+    static func lowEnergyServer(
+        address: BluetoothAddress,
+        isRandom: Bool,
+        backlog: Int
+    ) throws(POSIXError) -> TestL2CAPServer {
+        return TestL2CAPServer(
+            name: "Server",
+            address: address
+        )
+    }
+    
+    func accept() throws(POSIXError) -> TestL2CAPSocket {
+        // dequeue socket
+        guard let client = Cache.dequeue(server: address) else {
+            throw POSIXError(.EAGAIN)
+        }
+        let newConnection = TestL2CAPSocket(address: client.address, name: "Server connection")
+        // connect sockets
+        newConnection.connect(to: client)
+        client.connect(to: newConnection)
+        return newConnection
+    }
+    
+    func close() {
+        
+    }
+}
+
+/// Test L2CAP socket
+internal final class TestL2CAPSocket: L2CAPConnection {
+    
+    typealias Data = Foundation.Data
+        
+    typealias Error = POSIXError
     
     static func lowEnergyClient(
         address: BluetoothAddress,
@@ -48,19 +107,8 @@ internal final class TestL2CAPSocket: L2CAPSocket {
             address: address,
             name: "Client"
         )
-        Cache.queue(client: socket, server: destination)
+        TestL2CAPServer.Cache.queue(client: socket, server: destination)
         return socket
-    }
-    
-    static func lowEnergyServer(
-        address: BluetoothAddress,
-        isRandom: Bool,
-        backlog: Int
-    ) throws(POSIXError) -> TestL2CAPSocket {
-        return TestL2CAPSocket(
-            address: address,
-            name: "Server"
-        )
     }
     
     // MARK: - Properties
@@ -69,14 +117,13 @@ internal final class TestL2CAPSocket: L2CAPSocket {
     
     let address: BluetoothAddress
     
-    var event: ((L2CAPSocketEvent<POSIXError>) -> ())?
-    
-    var canRecieve: Bool {
-        target != nil && receivedData.isEmpty == false
-    }
-    
-    var canSend: Bool {
-        target != nil
+    var status: L2CAPSocketStatus<POSIXError> {
+        .init(
+            send: target != nil,
+            recieve: target != nil && receivedData.isEmpty == false,
+            accept: false,
+            error: nil
+        )
     }
     
     func securityLevel() throws(POSIXError) -> Bluetooth.SecurityLevel {
@@ -99,7 +146,7 @@ internal final class TestL2CAPSocket: L2CAPSocket {
     
     // MARK: - Initialization
     
-    private init(
+    init(
         address: BluetoothAddress = .zero,
         name: String
     ) {
@@ -111,21 +158,7 @@ internal final class TestL2CAPSocket: L2CAPSocket {
     
     func close() {
         target = nil
-        event?(.close)
         target?.target = nil
-        target?.event?(.close)
-    }
-    
-    func accept() throws(POSIXError) -> TestL2CAPSocket {
-        // dequeue socket 
-        guard let client = Cache.dequeue(server: address) else {
-            throw POSIXError(.EAGAIN)
-        }
-        let newConnection = TestL2CAPSocket(address: client.address, name: "Server connection")
-        // connect sockets
-        newConnection.connect(to: client)
-        client.connect(to: newConnection)
-        return newConnection
     }
     
     /// Write to the socket.
@@ -137,7 +170,6 @@ internal final class TestL2CAPSocket: L2CAPSocket {
             else { throw POSIXError(.ECONNRESET) }
         
         target.receive(data)
-        event?(.didWrite(data.count))
     }
     
     /// Reads from the socket.
@@ -154,19 +186,16 @@ internal final class TestL2CAPSocket: L2CAPSocket {
         
         let data = self.receivedData.removeFirst()
         cache.append(data)
-        event?(.didRead(data.count))
         return data
     }
     
     fileprivate func receive(_ data: Data) {
         receivedData.append(data)
         print("L2CAP Socket: \(name) received \([UInt8](data))")
-        event?(.read)
     }
     
     internal func connect(to socket: TestL2CAPSocket) {
         self.target = socket
-        event?(.connection)
     }
 }
 #endif
