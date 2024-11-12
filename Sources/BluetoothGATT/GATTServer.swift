@@ -8,7 +8,7 @@
 
 import Bluetooth
 
-public actor GATTServer <Socket: L2CAPSocket> {
+public final class GATTServer <Socket: L2CAPSocket> {
     
     public typealias Data = Socket.Data
     

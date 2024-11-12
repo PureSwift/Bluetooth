@@ -9,7 +9,7 @@
 import Bluetooth
 
 /// Manages a Bluetooth connection using the ATT protocol.
-internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
+internal final class ATTConnection <Socket: L2CAPSocket> {
     
     public typealias Data = Socket.Data
     
@@ -50,7 +50,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     private var writeQueue = [SendOperation]()
     
     /// List of registered callbacks.
-    private var notifyList = [ATTOpcode: Self.Notification]()
+    private var notifyList = [ATTOpcode: Notification]()
     
     // MARK: - Initialization
     
@@ -62,9 +62,13 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
         self.log = log
     }
     
+    deinit {
+        socket.close()
+    }
+    
     // MARK: - Methods
     
-    public mutating func run() throws(Self.Error) {
+    public func run() throws(Error) {
         // read pending packets
         while socket.canRecieve {
             try read()
@@ -77,7 +81,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     }
     
     /// Performs the actual IO for recieving data.
-    internal mutating func read() throws(Self.Error) {
+    internal func read() throws(Error) {
         
         //log?("Attempt read")
         
@@ -122,7 +126,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     
     /// Performs the actual IO for sending data.
     @discardableResult
-    internal mutating func write() throws(Self.Error) -> Bool {
+    internal func write() throws(Error) -> Bool {
         
         //log?("Attempt write")
         
@@ -163,13 +167,13 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     }
     
     // write all pending PDUs
-    private mutating func writePending() {
+    private func writePending() {
         // TODO: Wakeup writer
         
     }
     
     /// Registers a callback for an opcode and returns the ID associated with that callback.
-    public mutating func register <T: ATTProtocolDataUnit> (_ callback: @escaping (T) -> ()) {
+    public func register <T: ATTProtocolDataUnit> (_ callback: @escaping (T) -> ()) {
                 
         // create notification
         let opcode = T.attributeOpcode
@@ -183,7 +187,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     ///
     /// - Returns: Whether the callback was unregistered.
     @discardableResult
-    public mutating func unregister<T: ATTProtocolDataUnit>(_ type: T.Type) -> Bool {
+    public func unregister<T: ATTProtocolDataUnit>(_ type: T.Type) -> Bool {
         
         guard let index = notifyList.index(forKey: type.attributeOpcode)
             else { return false }
@@ -192,7 +196,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     }
     
     /// Registers all callbacks.
-    public mutating func unregisterAll() {
+    public func unregisterAll() {
         notifyList.removeAll()
     }
     
@@ -200,7 +204,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     ///
     /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
     @discardableResult
-    public mutating func queue <Request: ATTProtocolDataUnit> (
+    public func queue <Request: ATTProtocolDataUnit> (
         _ pdu: Request
     ) -> UInt {
         let attributeOpcode = Request.attributeOpcode
@@ -227,7 +231,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     ///
     /// - Returns: Identifier of queued send operation or `nil` if the PDU cannot be sent.
     @discardableResult
-    public mutating func queue <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
+    public func queue <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
         _ request: Request,
         response: @escaping ((Result<Response, ATTErrorResponse>) -> ())
     ) -> UInt {
@@ -254,7 +258,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     
     // MARK: - Private Methods
     
-    private mutating func queue (
+    private func queue (
         _ operation: SendOperation
     ) -> UInt {
         // increment ID
@@ -292,7 +296,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
         return data
     }
     
-    private mutating func handle(response data: Data, opcode: ATTOpcode) throws(Error) {
+    private func handle(response data: Data, opcode: ATTOpcode) throws(Error) {
         
         // If no request is pending, then the response is unexpected. Disconnect the bearer.
         guard let sendOperation = self.pendingRequest else {
@@ -342,7 +346,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
         writePending()
     }
     
-    private mutating func handle(confirmation data: Data, opcode: ATTOpcode) throws(Error) {
+    private func handle(confirmation data: Data, opcode: ATTOpcode) throws(Error) {
         
         // Disconnect the bearer if the confirmation is unexpected or the PDU is invalid.
         guard let sendOperation = pendingIndication
@@ -359,7 +363,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
         }
     }
     
-    private mutating func handle(request data: Data, opcode: ATTOpcode) throws(Error) {
+    private func handle(request data: Data, opcode: ATTOpcode) throws(Error) {
         
         /*
         * If a request is currently pending, then the sequential
@@ -377,7 +381,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
         try handle(notify: data, opcode: opcode)
     }
     
-    private mutating func handle(notify data: Data, opcode: ATTOpcode) throws(Error) {
+    private func handle(notify data: Data, opcode: ATTOpcode) throws(Error) {
         // handle notification
         if let notification = self.notifyList[opcode] {
             try notification.notification(data)
@@ -398,7 +402,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     ///
     /// - Returns: The opcode of the request that errored 
     /// and whether the request will be sent again.
-    private mutating func handle(errorResponse: ATTErrorResponse) -> (opcode: ATTOpcode, didRetry: Bool) {
+    private func handle(errorResponse: ATTErrorResponse) -> (opcode: ATTOpcode, didRetry: Bool) {
         
         let opcode = errorResponse.request
         
@@ -419,7 +423,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
         return (opcode, true)
     }
     
-    private mutating func pickNextSendOpcode() -> SendOperation? {
+    private func pickNextSendOpcode() -> SendOperation? {
         
         // See if any operations are already in the write queue
         if let sendOpcode = writeQueue.popFirst() {
@@ -445,7 +449,7 @@ internal struct ATTConnection <Socket: L2CAPSocket>: ~Copyable {
     }
     
     /// Attempts to change security level based on an error response.
-    private mutating func changeSecurity(for error: ATTError) -> Bool {
+    private func changeSecurity(for error: ATTError) -> Bool {
         
         let securityLevel: Bluetooth.SecurityLevel
         do { securityLevel = try socket.securityLevel() }
