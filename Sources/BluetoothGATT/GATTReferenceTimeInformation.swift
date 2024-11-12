@@ -110,11 +110,11 @@ extension GATTReferenceTimeInformation {
         
         public static var unitType: UnitIdentifier { return .hour }
         
-        public static let min = Hour(0)
+        public static var min: Hour { Hour(0) }
         
-        public static let max = Hour(23)
+        public static var max: Hour { Hour(23) }
         
-        public static let moreHours = Hour(255)
+        public static var moreHours: Hour { Hour(255) }
         
         public let rawValue: UInt8
         
@@ -128,7 +128,6 @@ extension GATTReferenceTimeInformation {
         }
         
         fileprivate init(_ unsafe: UInt8) {
-            
             self.rawValue = unsafe
         }
     }
@@ -137,7 +136,6 @@ extension GATTReferenceTimeInformation {
 extension GATTReferenceTimeInformation.Hour: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }

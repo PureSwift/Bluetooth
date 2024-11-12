@@ -71,7 +71,7 @@ public extension GATTAlertCategoryBitMask {
         
         case instantMessage = 0b1000000000
         
-        public static let allCases: [Category] = [
+        public static var allCases: [Category] { [
             .simpleAlert,
             .email,
             .news,
@@ -82,6 +82,6 @@ public extension GATTAlertCategoryBitMask {
             .schedule,
             .highPrioritized,
             .instantMessage
-        ]
+        ] }
     }
 }

@@ -53,7 +53,7 @@ public struct HCIInquiry: HCICommandParameter {
     
     public static let command = LinkControlCommand.inquiry
     
-    internal static let length = 3 + 1 + 1
+    internal static var length: Int { 3 + 1 + 1 }
     
     /// This is the LAP from which the inquiry access code should be derived when the inquiry procedure is made
     public var lap: LAP
@@ -86,11 +86,11 @@ public struct HCIInquiry: HCICommandParameter {
 public extension HCIInquiry {
     
     /// This is the LAP from which the inquiry access code should be derived when the inquiry procedure is made
-    struct LAP: RawRepresentable {
+    struct LAP: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = LAP(0x9E8B00)
+        public static var min: LAP { LAP(0x9E8B00) }
         
-        public static let max = LAP(0x9E8B3F)
+        public static var max: LAP { LAP(0x9E8B3F) }
         
         public let rawValue: UInt24
         
@@ -114,11 +114,11 @@ public extension HCIInquiry {
     
     /// Maximum amount of time specified before the Inquiry is halted. Size: 1 octet
     /// Range: 0x01 – 0x30
-    struct Duration: RawRepresentable {
+    struct Duration: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = Duration(0x01)
+        public static var min: Duration { Duration(0x01) }
         
-        public static let max = Duration(0x30)
+        public static var max: Duration { Duration(0x30) }
         
         public let rawValue: UInt8
         
@@ -149,13 +149,13 @@ public extension HCIInquiry {
     
     /// Maximum number of responses from the Inquiry before the Inquiry is halted.
     /// Range: 0x01 – 0xFF
-    struct Responses: RawRepresentable {
+    struct Responses: RawRepresentable, Equatable, Hashable, Sendable {
 
-        public static let min = Responses(rawValue: 0x01)
+        public static var min: Responses { Responses(rawValue: 0x01) }
         
-        public static let max = Responses(rawValue: 0xFF)
+        public static var max: Responses { Responses(rawValue: 0xFF) }
         
-        public static let unlimited = Responses(rawValue: 0x00)
+        public static var unlimited: Responses { Responses(rawValue: 0x00) }
         
         public let rawValue: UInt8
         

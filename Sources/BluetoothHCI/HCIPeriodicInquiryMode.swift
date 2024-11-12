@@ -105,25 +105,22 @@ public struct HCIPeriodicInquiryMode: HCICommandParameter {
 public extension HCIPeriodicInquiryMode {
     
     /// This is the LAP from which the inquiry access code should be derived when the inquiry procedure is made
-    struct LAP: RawRepresentable {
+    struct LAP: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = LAP(0x9E8B00)
+        public static var min: LAP { LAP(0x9E8B00) }
         
-        public static let max = LAP(0x9E8B3F)
+        public static var max: LAP { LAP(0x9E8B3F) }
         
         public let rawValue: UInt24
         
         public init?(rawValue: UInt24) {
-            
             guard rawValue <= LAP.max.rawValue,
                 rawValue >= LAP.min.rawValue
                 else { return nil }
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt24) {
-            
             self.rawValue = unsafe
         }
     }
@@ -133,31 +130,27 @@ public extension HCIPeriodicInquiryMode {
     
     /// Minimum amount of time specified between consecutive inquiries. Size: 2 octets
     /// Range: 0x02 – 0xFFFE
-    struct MinDuration: RawRepresentable {
+    struct MinDuration: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = MinDuration(0x0002)
+        public static var min: MinDuration { MinDuration(0x0002) }
         
-        public static let max = MinDuration(0xFFFE)
+        public static var max: MinDuration { MinDuration(0xFFFE) }
         
         public let rawValue: UInt16
         
         /// Time = N * 1.28 sec
         /// Range: 2.56 – 83883.52 Sec 0.0 – 23.3 hours
         public var seconds: Double {
-            
             return Double(rawValue) * 1.28
         }
         
         public init?(rawValue: UInt16) {
-            
             guard rawValue <= MinDuration.max.rawValue, rawValue >= MinDuration.min.rawValue
                 else { return nil }
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt16) {
-            
             self.rawValue = unsafe
         }
     }
@@ -167,32 +160,28 @@ public extension HCIPeriodicInquiryMode {
     
     /// Maximum amount of time specified between consecutive inquiries. Size: 2 octets
     /// Range: 0x03 – 0xFFFF
-    struct MaxDuration: RawRepresentable {
+    struct MaxDuration: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = MaxDuration(0x0003)
+        public static var min: MaxDuration { MaxDuration(0x0003) }
         
-        public static let max = MaxDuration(0xFFFF)
+        public static var max: MaxDuration { MaxDuration(0xFFFF) }
         
         public let rawValue: UInt16
         
         /// Time = N * 1.28 sec
         /// Range: 3.84 – 83884.8 Sec 0.0 – 23.3 hours
         public var seconds: Double {
-            
             return Double(rawValue) * 1.28
         }
         
         public init?(rawValue: UInt16) {
-            
             guard rawValue <= MaxDuration.max.rawValue,
                 rawValue >= MaxDuration.min.rawValue
                 else { return nil }
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt16) {
-            
             self.rawValue = unsafe
         }
     }
@@ -204,11 +193,11 @@ public extension HCIPeriodicInquiryMode {
     /// Range: 0x01 – 0x30
     /// Time = N * 1.28 sec
     /// Range: 1.28 – 61.44 Sec
-    struct Duration: RawRepresentable {
+    struct Duration: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = Duration(0x01)
+        public static var min: Duration { Duration(0x01) }
         
-        public static let max = Duration(0x30)
+        public static var max: Duration { Duration(0x30) }
         
         public let rawValue: UInt8
         
@@ -239,23 +228,21 @@ public extension HCIPeriodicInquiryMode {
     
     /// Maximum number of responses from the Inquiry before the Inquiry is halted.
     /// Range: 0x01 – 0xFF
-    struct Responses: RawRepresentable {
+    struct Responses: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = Responses(0x01)
+        public static var min: Responses { Responses(0x01) }
         
-        public static let max = Responses(0xFF)
+        public static var max: Responses { Responses(0xFF) }
         
-        public static let unlimited = Responses(0x00)
+        public static var unlimited: Responses { Responses(0x00) }
         
         public let rawValue: UInt8
         
         public init(rawValue: UInt8) {
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt8) {
-            
             self.rawValue = unsafe
         }
     }

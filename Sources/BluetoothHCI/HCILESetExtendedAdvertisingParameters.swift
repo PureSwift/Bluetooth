@@ -260,43 +260,32 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
         /// Channel 39 shall be used
         case channel39 = 0b100
         
-        public static let allCases: [PrimaryAdvertisingChannelMap] = [
+        public static var allCases: [PrimaryAdvertisingChannelMap] { [
             .channel37,
             .channel38,
             .channel39
-        ]
+        ] }
     }
     
-    public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable {
+    public struct PrimaryAdvertisingInterval: RawRepresentable, Equatable, Hashable, Sendable {
         
         public typealias RawValue = CountableClosedRange<UInt32>
         
         /// Maximum interval range.
-        public static let full = PrimaryAdvertisingInterval(rawValue: .min ... .max)
+        public static var full: PrimaryAdvertisingInterval { PrimaryAdvertisingInterval(rawValue: .min ... .max) }
         
         public let rawValue: RawValue
         
         public init(rawValue: RawValue) {
-            
             self.rawValue = rawValue
         }
         
         /// Time = N * 0.625 msec.
         public var miliseconds: ClosedRange<Double> {
-            
             let miliseconds = Double(0.625)
-            
             let min = Double(rawValue.lowerBound) * miliseconds
-            
             let max = Double(rawValue.upperBound) * miliseconds
-            
             return min ... max
-        }
-        
-        // Equatable
-        public static func == (lhs: PrimaryAdvertisingInterval, rhs: PrimaryAdvertisingInterval) -> Bool {
-            
-            return lhs.rawValue == rhs.rawValue
         }
     }
     
@@ -325,7 +314,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
         /// Include TxPower in the extended header of the advertising PDU
         case includeTxPower                                 = 0b1000000
         
-        public static let allCases: [HCILESetExtendedAdvertisingParameters.AdvertisingEventProperties] = [
+        public static var allCases: [HCILESetExtendedAdvertisingParameters.AdvertisingEventProperties] { [
             .connectableAdvertising,
             .scannableAdvertising,
             .directedAdvertising,
@@ -333,7 +322,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter { //HCI
             .useLegacyAdvertisingPDUs,
             .omitAdvertisingAddress,
             .includeTxPower
-        ]
+        ] }
     }
 }
 

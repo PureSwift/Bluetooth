@@ -51,7 +51,7 @@ final class GATTTests: XCTestCase {
         )
         let newConnection = try serverSocket.accept()
         print("GATTServer: New connection")
-        let server = await GATTServer(
+        let server = GATTServer(
             socket: newConnection,
             maximumTransmissionUnit: mtu,
             maximumPreparedWrites: .max,
@@ -118,17 +118,6 @@ final class GATTTests: XCTestCase {
                 isRandom: false,
                 backlog: 1
             )
-            let serverAcceptTask = Task<GATTServer, Error> {
-                let newConnection = try serverSocket.accept()
-                print("GATTServer: New connection")
-                return await GATTServer(
-                    socket: newConnection,
-                    maximumTransmissionUnit: .max,
-                    maximumPreparedWrites: .max,
-                    database: GATTDatabase(services: profile),
-                    log: { print("GATTServer:", $0) }
-                )
-            }
             
             // client
             let clientSocket = try TestL2CAPSocket.lowEnergyClient(
@@ -141,7 +130,16 @@ final class GATTTests: XCTestCase {
                 maximumTransmissionUnit: .default,
                 log: { print("GATTClient:", $0) }
             )
-            let server = try await serverAcceptTask.value
+            
+            let newConnection = try serverSocket.accept()
+            print("GATTServer: New connection")
+            let server = GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: .max,
+                maximumPreparedWrites: .max,
+                database: GATTDatabase(services: profile),
+                log: { print("GATTServer:", $0) }
+            )
             
             Task { [weak client] in
                 while let client {
@@ -446,17 +444,6 @@ final class GATTTests: XCTestCase {
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer<TestL2CAPSocket>, Error> {
-            let newConnection = try serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: mtu,
-                maximumPreparedWrites: .max,
-                database: GATTDatabase(services: ProximityProfile.services),
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
         let clientSocket = try TestL2CAPSocket.lowEnergyClient(
@@ -469,7 +456,15 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: mtu,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: mtu,
+            maximumPreparedWrites: .max,
+            database: GATTDatabase(services: ProximityProfile.services),
+            log: { print("GATTServer:", $0) }
+        )
         
         Task { [weak client] in
             while let client {
@@ -593,17 +588,6 @@ final class GATTTests: XCTestCase {
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: serverMTU,
-                maximumPreparedWrites: .max,
-                database: GATTDatabase(services: [service]),
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
         let clientSocket = try TestL2CAPSocket.lowEnergyClient(
@@ -616,7 +600,16 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: clientMTU,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: serverMTU,
+            maximumPreparedWrites: .max,
+            database: GATTDatabase(services: [service]),
+            log: { print("GATTServer:", $0) }
+        )
         
         Task { [weak client] in
             while let client {
@@ -673,17 +666,6 @@ final class GATTTests: XCTestCase {
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: .default,
-                maximumPreparedWrites: .max,
-                database: database,
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
         let clientSocket = try TestL2CAPSocket.lowEnergyClient(
@@ -696,8 +678,15 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: .default,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
-        
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: .default,
+            maximumPreparedWrites: .max,
+            database: database,
+            log: { print("GATTServer:", $0) }
+        )
         Task { [weak client] in
             while let client {
                 try await Task.sleep(nanoseconds: 10_000)
@@ -764,17 +753,6 @@ final class GATTTests: XCTestCase {
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: .default,
-                maximumPreparedWrites: .max,
-                database: database,
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
         let clientSocket = try TestL2CAPSocket.lowEnergyClient(
@@ -787,7 +765,15 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: .default,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: .default,
+            maximumPreparedWrites: .max,
+            database: database,
+            log: { print("GATTServer:", $0) }
+        )
         
         Task { [weak client] in
             while let client {
@@ -865,17 +851,6 @@ final class GATTTests: XCTestCase {
             isRandom: false,
             backlog: 1
         )
-        let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try serverSocket.accept()
-            print("GATTServer: New connection")
-            return await GATTServer(
-                socket: newConnection,
-                maximumTransmissionUnit: .default,
-                maximumPreparedWrites: .max,
-                database: database,
-                log: { print("GATTServer:", $0) }
-            )
-        }
         
         // client
         let clientSocket = try TestL2CAPSocket.lowEnergyClient(
@@ -888,7 +863,15 @@ final class GATTTests: XCTestCase {
             maximumTransmissionUnit: .default,
             log: { print("GATTClient:", $0) }
         )
-        let server = try await serverAcceptTask.value
+        let newConnection = try serverSocket.accept()
+        print("GATTServer: New connection")
+        let server = GATTServer(
+            socket: newConnection,
+            maximumTransmissionUnit: .default,
+            maximumPreparedWrites: .max,
+            database: database,
+            log: { print("GATTServer:", $0) }
+        )
         
         Task { [weak client] in
             while let client {
@@ -973,17 +956,6 @@ final class GATTTests: XCTestCase {
                 isRandom: false,
                 backlog: 1
             )
-            let serverAcceptTask = Task<GATTServer, Error> {
-                let newConnection = try serverSocket.accept()
-                print("GATTServer: New connection")
-                return await GATTServer(
-                    socket: newConnection,
-                    maximumTransmissionUnit: .default,
-                    maximumPreparedWrites: .max,
-                    database: database,
-                    log: { print("GATTServer:", $0) }
-                )
-            }
             
             // client
             let clientSocket = try TestL2CAPSocket.lowEnergyClient(
@@ -996,7 +968,15 @@ final class GATTTests: XCTestCase {
                 maximumTransmissionUnit: .default,
                 log: { print("GATTClient:", $0) }
             )
-            let server = try await serverAcceptTask.value
+            let newConnection = try serverSocket.accept()
+            print("GATTServer: New connection")
+            let server = GATTServer(
+                socket: newConnection,
+                maximumTransmissionUnit: .default,
+                maximumPreparedWrites: .max,
+                database: database,
+                log: { print("GATTServer:", $0) }
+            )
             
             Task { [weak client] in
                 while let client {

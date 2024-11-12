@@ -100,10 +100,10 @@ public protocol GAPMeshBeaconProtocol {
  • URI Hash: Hash of the associated URI advertised with the URI AD Type (optional field). Size is 4 octets
  */
 @frozen
-public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
+public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable, Hashable, Sendable {
     
     /// Unprovisioned Device beacon type (0x00).
-    public static var beaconType: GAPBeaconType = .unprovisionedDevice
+    public static var beaconType: GAPBeaconType { .unprovisionedDevice }
     
     /// Device UUID uniquely identifying this device.
     public let deviceUUID: UUID
@@ -150,18 +150,18 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
         self.init(deviceUUID: deviceUUID, oobInformationFlags: oobInformationFlags, uriHash: uriHash)
     }
     
-    struct DataLength: RawRepresentable {
+    struct DataLength: RawRepresentable, Equatable, Hashable, Sendable {
         
-        static let minimum = DataLength(19)
+        static var min: DataLength { DataLength(19) }
         
-        static let maximum = DataLength(23)
+        static var max: DataLength { DataLength(23) }
         
         let rawValue: Int
         
         init?(rawValue: Int) {
             
-            guard rawValue >= DataLength.minimum.rawValue,
-                rawValue <= DataLength.maximum.rawValue
+            guard rawValue >= DataLength.min.rawValue,
+                rawValue <= DataLength.max.rawValue
                 else { return nil }
             
             self.rawValue = rawValue
@@ -169,7 +169,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
         
         init(uriHash: Bool) {
             
-            var length = DataLength.minimum.rawValue
+            var length = DataLength.min.rawValue
             
             if uriHash {
                 
@@ -180,13 +180,11 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable {
         }
         
         private init(_ unsafe: Int) {
-            
             self.rawValue = unsafe
         }
         
         var uriHash: Bool {
-            
-            return rawValue >= DataLength.minimum.rawValue + 4
+            return rawValue >= DataLength.min.rawValue + 4
         }
     }
 }

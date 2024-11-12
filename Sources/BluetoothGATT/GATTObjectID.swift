@@ -21,9 +21,9 @@ public struct GATTObjectID: Equatable, RawRepresentable, GATTCharacteristic {
     
     public static var uuid: BluetoothUUID { return .objectId }
     
-    internal static var min = UInt48(256)
+    internal static var min: UInt48 { UInt48(256) }
     
-    internal static var max = UInt48(281474976710655)
+    internal static var max: UInt48 { UInt48(281474976710655) }
     
     public let rawValue: UInt48
     

@@ -105,9 +105,9 @@ extension ClassOfDevice {
     
     public struct FormatType: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = FormatType(0b00)
+        public static var min: FormatType { FormatType(0b00) }
         
-        public static let max = FormatType(0b11)
+        public static var max: FormatType { FormatType(0b11) }
         
         public let rawValue: UInt8
         

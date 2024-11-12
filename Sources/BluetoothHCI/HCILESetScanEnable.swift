@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+    /*
     /// Scan LE devices.
     func lowEnergyScan(
         filterDuplicates: Bool = true,
@@ -68,7 +68,7 @@ public extension BluetoothHostControllerInterface {
             }
         }
     }
-    
+    */
     private func enableLowEnergyScan(
         _ isEnabled: Bool = true,
         filterDuplicates: Bool = true,
@@ -81,32 +81,6 @@ public extension BluetoothHostControllerInterface {
         )
         
         try await self.deviceRequest(scanEnableCommand, timeout: timeout)
-    }
-}
-
-/// Bluetooth LE Scan Stream
-public final class AsyncLowEnergyScanStream: AsyncSequence {
-        
-    public typealias Element = HCILEAdvertisingReport.Report
-    
-    public typealias AsyncIterator = AsyncIndefiniteStream<Element>.AsyncIterator
-    
-    let stream: AsyncIndefiniteStream<Element>
-    
-    internal init(bufferSize: Int = 100, _ build: @escaping ((Element) -> ()) async throws -> ()) {
-        self.stream = .init(bufferSize: bufferSize, build)
-    }
-    
-    public func makeAsyncIterator() -> AsyncIndefiniteStream<Element>.AsyncIterator {
-        stream.makeAsyncIterator()
-    }
-    
-    public var isScanning: Bool {
-        stream.isExecuting
-    }
-    
-    public func stop() {
-        stream.stop()
     }
 }
 

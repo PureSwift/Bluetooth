@@ -140,7 +140,7 @@ public extension HCILESetEventMask {
         /// LE Channel Selection Algorithm Event
         case channelSelectionAlgorithm                  = 0b1000000000000000000
         
-        public static let allCases: [Event] = [
+        public static var allCases: [Event] { [
             .connectionComplete,
             .advertisingReport,
             .connectionUpdateComplete,
@@ -161,7 +161,7 @@ public extension HCILESetEventMask {
             .extendedAdvertisingSetTerminated,
             .scanRequestReceived,
             .channelSelectionAlgorithm
-        ]
+        ] }
         
         public var event: LowEnergyEvent {
             

@@ -19,10 +19,10 @@ public struct ConnectionAcceptTimeout: RawRepresentable, Equatable, Hashable {
     public static let length = MemoryLayout<UInt16>.size
     
     /// 0.625 ms
-    public static let min = ConnectionAcceptTimeout(0x0001)
+    public static var min: Self { ConnectionAcceptTimeout(0x0001) }
     
     /// 29 seconds
-    public static let max = ConnectionAcceptTimeout(0xB540)
+    public static var max: Self { ConnectionAcceptTimeout(0xB540) }
     
     public let rawValue: UInt16
     

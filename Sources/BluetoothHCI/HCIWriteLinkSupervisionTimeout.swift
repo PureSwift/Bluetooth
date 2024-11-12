@@ -74,9 +74,9 @@ extension HCIWriteLinkSupervisionTimeout {
     /// Default: N = 0x7D00
     /// Link_Supervision_Timeout = 20 sec
     /// Mandatory Range for Controller: 0x0190 to 0xFFFF; plus 0 for infinite timeout
-    public struct LinkSupervisionTimeout: RawRepresentable {
+    public struct LinkSupervisionTimeout: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let infinite = LinkSupervisionTimeout(0)
+        public static var infinite: LinkSupervisionTimeout { LinkSupervisionTimeout(0) }
             
         public var rawValue: UInt16
         

@@ -58,10 +58,10 @@ extension GATTExactTime100 {
         public static var unitType: UnitIdentifier { return .second }
         
         /// The minimum value.
-        public static let min = Second(0)
+        public static var min: Second { Second(0) }
         
         /// The maximum value.
-        public static let max = Second(99)
+        public static var max: Second { Second(99) }
         
         public let rawValue: UInt8
         

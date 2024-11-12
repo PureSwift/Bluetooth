@@ -59,16 +59,15 @@ public struct HCIWritePageScanActivity: HCICommandParameter {
 extension HCIWritePageScanActivity {
     
     /// The Page_Scan_Interval configuration parameter defines the amount of time between consecutive page scans. This time interval is defined from when the Controller started its last page scan until it begins the next page scan.
-    public struct PageScanInterval: RawRepresentable {
+    public struct PageScanInterval: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = PageScanInterval(0x0012)
+        public static var min: PageScanInterval { PageScanInterval(0x0012) }
         
-        public static let max = PageScanInterval(0x1000)
+        public static var max: PageScanInterval { PageScanInterval(0x1000) }
         
         public let rawValue: UInt16
         
         public var duration: Double {
-            
             return Double(rawValue) * 0.625
         }
         
@@ -85,13 +84,12 @@ extension HCIWritePageScanActivity {
         }
         
         private init(_ unsafe: UInt16) {
-            
             self.rawValue = unsafe
         }
     }
     
     /// The Page_Scan_Window configuration parameter defines the amount of time for the duration of the page scan. The Page_Scan_Window can only be less than or equal to the Page_Scan_Interval.
-    public struct PageScanWindow: RawRepresentable {
+    public struct PageScanWindow: RawRepresentable, Equatable, Hashable, Sendable {
         
         public static let min = PageScanWindow(0x0011)
         

@@ -90,24 +90,22 @@ public struct HCILEPeriodicAdvertisingSyncEstablished: HCIEventParameter {
         case coded      = 0x03
     }
     
-    public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable {
+    public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable, Hashable, Comparable, Sendable {
         
         /// 7.5 msec
-        public static let min = PeriodicAdvertisingInterval(0x0006)
+        public static var min: PeriodicAdvertisingInterval { PeriodicAdvertisingInterval(0x0006) }
         
         /// 4000 msec
-        public static let max = PeriodicAdvertisingInterval(0xFFFF)
+        public static var max: PeriodicAdvertisingInterval { PeriodicAdvertisingInterval(0xFFFF) }
         
         public let rawValue: UInt16
         
         public init(rawValue: UInt16) {
-            
             self.rawValue = rawValue
         }
         
         /// Time = N * 1.25 msec
         public var miliseconds: Double {
-            
             return Double(rawValue) * 1.25
         }
         
@@ -118,8 +116,11 @@ public struct HCILEPeriodicAdvertisingSyncEstablished: HCIEventParameter {
         
         // Comparable
         public static func < (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
+        }
+        
+        public static func > (lhs: PeriodicAdvertisingInterval, rhs: PeriodicAdvertisingInterval) -> Bool {
+            return lhs.rawValue > rhs.rawValue
         }
     }
 }

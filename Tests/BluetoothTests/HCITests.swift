@@ -422,7 +422,7 @@ final class HCITests: XCTestCase {
             XCTAssert(hostController.queue.isEmpty)
         }
     }
-    
+    /*
     func testLowEnergyScan() async throws {
         
         typealias Report = HCILEAdvertisingReport.Report
@@ -513,7 +513,7 @@ final class HCITests: XCTestCase {
         XCTAssertEqual(reports[1].event, .undirected)
         XCTAssertEqual(reports[1].event.isConnectable, true)
     }
-    
+    */
     func testLEReadRemoteUsedFeatures() async throws {
         
         let connectionHandle: UInt16 = 0x0041

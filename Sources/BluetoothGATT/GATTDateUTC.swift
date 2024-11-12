@@ -56,11 +56,11 @@ extension GATTDateUTC {
         
         public static var unitType: UnitIdentifier { return .day }
         
-        public static let unknown = Day(0)
+        public static var unknown: Day { Day(0) }
         
-        public static let min = Day(1)
+        public static var min: Day { Day(1) }
         
-        public static let max = Day(16777214)
+        public static var max: Day { Day(16777214) }
         
         public let rawValue: UInt24
         

@@ -21,7 +21,7 @@ internal final class TestL2CAPServer: L2CAPServer {
         
         static let lock = NSLock()
         
-        static var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
+        nonisolated(unsafe) static var pendingClients = [BluetoothAddress: [TestL2CAPSocket]]()
         
         static func queue(client socket: TestL2CAPSocket, server: BluetoothAddress) {
             lock.lock()

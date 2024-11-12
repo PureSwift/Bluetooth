@@ -79,12 +79,12 @@ extension HCIWriteLinkPolicySettings {
         /// Enable Park State.
         case enableParkState = 0x0008
         
-        public static let allCases: [LinkPolicySettings] = [
+        public static var allCases: [LinkPolicySettings] { [
             .enableRoleSwitch,
             .enableHoldMode,
             .enableSniffMode,
             .enableParkState
-        ]
+        ] }
     }
 }
 

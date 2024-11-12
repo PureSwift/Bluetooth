@@ -8,6 +8,10 @@
 
 import Bluetooth
 
+/// GATT Server
+///
+/// - Note: Doesn't support concurrency to enable building for Embedded Swift.
+@preconcurrency
 public final class GATTServer <Socket: L2CAPConnection> {
     
     public typealias Data = Socket.Data
@@ -42,7 +46,7 @@ public final class GATTServer <Socket: L2CAPConnection> {
         maximumPreparedWrites: Int = 50,
         database: GATTDatabase<Data> = GATTDatabase<Data>(),
         log: ((String) -> ())?
-    ) async {
+    ) {
         // set initial MTU and register handlers
         self.maximumPreparedWrites = maximumPreparedWrites
         self.preferredMaximumTransmissionUnit = maximumTransmissionUnit
@@ -84,44 +88,40 @@ public final class GATTServer <Socket: L2CAPConnection> {
     private func registerATTHandlers() {
         
         // Exchange MTU
-        connection.register { [weak self] request in
-            Task {
-                await self?.exchangeMTU(request)
-            }
-        }
+        connection.register { [weak self] in self?.exchangeMTU($0) }
         
         // Read By Group Type
-        connection.register { [weak self] request in Task { await self?.readByGroupType(request) } }
+        connection.register { [weak self] in self?.readByGroupType($0) }
         
         // Read By Type
-        connection.register { [weak self] request in Task { await self?.readByType(request) } }
+        connection.register { [weak self] in self?.readByType($0) }
         
         // Find Information
-        connection.register { [weak self] request in Task { await self?.findInformation(request) } }
+        connection.register { [weak self] in self?.findInformation($0) }
         
         // Find By Type Value
-        connection.register { [weak self] request in Task { await self?.findByTypeValue(request) } }
+        connection.register { [weak self] in self?.findByTypeValue($0) }
         
         // Write Request
-        connection.register { [weak self] request in Task { await self?.writeRequest(request) } }
+        connection.register { [weak self] in self?.writeRequest($0) }
         
         // Write Command
-        connection.register { [weak self] request in Task { await self?.writeCommand(request) } }
+        connection.register { [weak self] in self?.writeCommand($0) }
         
         // Read Request
-        connection.register { [weak self] request in Task { await self?.readRequest(request) } }
+        connection.register { [weak self] in self?.readRequest($0) }
         
         // Read Blob Request
-        connection.register { [weak self] request in Task { await self?.readBlobRequest(request) } }
+        connection.register { [weak self] in self?.readBlobRequest($0) }
         
         // Read Multiple Request
-        connection.register { [weak self] request in Task { await self?.readMultipleRequest(request) } }
+        connection.register { [weak self] in self?.readMultipleRequest($0) }
         
         // Prepare Write Request
-        connection.register { [weak self] request in Task { await self?.prepareWriteRequest(request) } }
+        connection.register { [weak self] in self?.prepareWriteRequest($0) }
         
         // Execute Write Request
-        connection.register { [weak self] request in Task { await self?.executeWriteRequest(request) } }
+        connection.register { [weak self] in self?.executeWriteRequest($0) }
     }
     
     private func errorResponse(_ opcode: ATTOpcode, _ error: ATTError, _ handle: UInt16 = 0) {

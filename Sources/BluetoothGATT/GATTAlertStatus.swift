@@ -77,6 +77,6 @@ extension GATTAlertStatus {
         // Display Alert state
         case displayAlert = 0b100
         
-        public static let allCases: [State] = [.ringer, .vibrate, .displayAlert]
+        public static var allCases: [State] { [.ringer, .vibrate, .displayAlert] }
     }
 }

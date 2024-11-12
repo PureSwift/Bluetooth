@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:6.0
 import PackageDescription
 import class Foundation.ProcessInfo
 
@@ -43,26 +43,30 @@ var package = Package(
     ],
     targets: [
         .target(
-            name: "Bluetooth"
+            name: "Bluetooth",
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .target(
             name: "BluetoothGAP",
             dependencies: [
                 "Bluetooth"
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .target(
             name: "BluetoothGATT",
             dependencies: [
                 "Bluetooth",
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .target(
             name: "BluetoothHCI",
             dependencies: [
                 "Bluetooth",
                 "BluetoothGAP"
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(
             name: "BluetoothTests",
@@ -80,7 +84,8 @@ var package = Package(
                     name: "BluetoothHCI", 
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 )
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v5)]
         )
     ]
 )

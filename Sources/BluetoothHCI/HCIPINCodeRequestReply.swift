@@ -92,11 +92,11 @@ public struct HCIPINCodeRequestReply: HCICommandParameter {
 
 extension HCIPINCodeRequestReply {
     
-    public struct PINCodeLength: RawRepresentable {
+    public struct PINCodeLength: RawRepresentable, Equatable, Hashable, Sendable {
         
-        public static let min = PINCodeLength(0x00)
+        public static var min: PINCodeLength { PINCodeLength(0x00) }
         
-        public static let max = PINCodeLength(0x10)
+        public static var max: PINCodeLength { PINCodeLength(0x10) }
         
         public let rawValue: UInt8
         

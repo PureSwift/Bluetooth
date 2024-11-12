@@ -110,7 +110,7 @@ extension HCICreateConnection {
         
         case valid = 0b10000000_00000000
         
-        public static let allCases: [ClockOffset] = [.valid]
+        public static var allCases: [ClockOffset] { [.valid] }
     }
 }
 

@@ -66,14 +66,14 @@ extension GATTIndoorPositioningConfiguration {
         //Location Name available in the GATT database
         case locationName = 0b100000
         
-        public static let allCases: [Configuration] = [
+        public static var allCases: [Configuration] { [
             .coordinates,
             .coordinateSystemUsed,
             .txPowerField,
             .altitudeField,
             .floorNumber,
             .locationName
-        ]
+        ] }
     }
     
 }

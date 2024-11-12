@@ -13,7 +13,7 @@ public actor GATTClient <Socket: L2CAPConnection> {
     
     // MARK: - Properties
     
-    public let log: ((String) -> ())?
+    public let log: (@Sendable (String) -> ())?
         
     public var maximumTransmissionUnit: ATTMaximumTransmissionUnit {
         self.connection.maximumTransmissionUnit
@@ -50,7 +50,7 @@ public actor GATTClient <Socket: L2CAPConnection> {
     public init(
         socket: Socket,
         maximumTransmissionUnit: ATTMaximumTransmissionUnit = .default,
-        log: ((String) -> ())? = nil
+        log: (@Sendable (String) -> ())? = nil
     ) async {
         self.connection = ATTConnection(
             socket: socket,
@@ -343,17 +343,22 @@ public actor GATTClient <Socket: L2CAPConnection> {
     
     // MARK: - Private Methods
     
+    private func newSendID() -> UInt {
+        sendID += 1
+        return sendID
+    }
+    
     private func send <Request: ATTProtocolDataUnit, Response: ATTProtocolDataUnit> (
         _ request: Request,
         response: Response.Type
-    ) async throws -> ATTResponse<Response> {
+    ) async throws -> ATTResponse<Response> where Request: Sendable, Response: Sendable {
         assert(Response.attributeOpcode != .errorResponse)
         assert(Response.attributeOpcode.type == .response)
         assert(Request.attributeOpcode.type != .response)
         // queue request
+        let log = self.log
         log?("Request: \(request)")
-        sendID += 1
-        let id = sendID
+        let id = newSendID()
         return try await withCheckedThrowingContinuation { continuation in
             // store continuation in case it doesnt get called
             self.sendContinuations[id] = { error in
@@ -364,9 +369,9 @@ public actor GATTClient <Socket: L2CAPConnection> {
                 self.sendContinuations[id] = nil
                 switch result {
                 case let .failure(errorResponse):
-                    self.log?("Response: \(errorResponse)")
+                    log?("Response: \(errorResponse)")
                 case let .success(response):
-                    self.log?("Response: \(response)")
+                    log?("Response: \(response)")
                 }
                 continuation.resume(returning: result)
             }

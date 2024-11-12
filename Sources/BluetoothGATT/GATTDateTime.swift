@@ -260,27 +260,24 @@ public extension GATTDateTime {
         public static var unitType: UnitIdentifier { return .day }
         
         /// Day of Month is not known.
-        public static let unknown = Day(0)
+        public static var unknown: Day { Day(0) }
         
         /// The minimum value
-        public static let min = Day(1)
+        public static var min: Day { Day(1) }
         
         /// The maximum value.
-        public static let max = Day(31)
+        public static var max: Day { Day(31) }
         
         public let rawValue: UInt8
         
         public init?(rawValue: UInt8) {
-            
             guard rawValue == Day.unknown.rawValue
                 || (rawValue <= Day.max.rawValue && rawValue >= Day.min.rawValue)
                 else { return nil }
-            
             self.rawValue = rawValue
         }
         
         private init(_ unsafe: UInt8) {
-            
             self.rawValue = unsafe
         }
     }
@@ -343,10 +340,10 @@ public extension GATTDateTime {
         public static var unitType: UnitIdentifier { return .minute }
         
         /// The minimum value.
-        public static let min = Minute(0)
+        public static var min: Minute { Minute(0) }
         
         /// The maximum value.
-        public static let max = Minute(59)
+        public static var max: Minute { Minute(59) }
         
         public let rawValue: UInt8
         
@@ -383,10 +380,10 @@ public extension GATTDateTime {
         public static var unitType: UnitIdentifier { return .second }
         
         /// The minimum value.
-        public static let min = Second(0)
+        public static var min: Second { Second(0) }
         
         /// The maximum value.
-        public static let max = Second(59)
+        public static var max: Second { Second(59) }
         
         public let rawValue: UInt8
         

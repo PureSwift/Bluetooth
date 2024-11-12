@@ -92,13 +92,13 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
             ])
     }
     
-    public struct SyncTimeout: RawRepresentable, Equatable, Hashable, Comparable {
+    public struct SyncTimeout: RawRepresentable, Equatable, Hashable, Comparable, Sendable {
         
         /// 100 msec
-        public static let min = SyncTimeout(0x000A)
+        public static var min: SyncTimeout { SyncTimeout(0x000A) }
         
         /// 163.84 seconds
-        public static let max = SyncTimeout(0x4000)
+        public static var max: SyncTimeout { SyncTimeout(0x4000) }
         
         public let rawValue: UInt16
         
@@ -115,7 +115,6 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
         
         /// Time = N * 10 msec
         public var miliseconds: Double {
-            
             return Double(rawValue) * 10
         }
         
@@ -126,7 +125,6 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
         
         // Comparable
         public static func < (lhs: SyncTimeout, rhs: SyncTimeout) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
         }
     }

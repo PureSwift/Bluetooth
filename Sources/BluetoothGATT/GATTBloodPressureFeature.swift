@@ -70,13 +70,13 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
         /// Multiple Bond Support
         case multipleBond = 0b100000
         
-        public static let allCases: [Feature] = [
+        public static var allCases: [Feature] { [
             .bodyMovement,
             .cuttFit,
             .irregularPulse,
             .pulseRateRage,
             .measurementPosition,
             .multipleBond
-        ]
+        ] }
     }
 }

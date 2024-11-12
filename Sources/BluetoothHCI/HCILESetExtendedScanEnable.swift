@@ -98,13 +98,13 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
     /// Range: 0x0001 – 0xFFFF
     /// Time = N * 10 ms
     /// Time Range: 10 ms to 655.35 s
-    public struct Duration: RawRepresentable, Equatable, Comparable, Hashable {
+    public struct Duration: RawRepresentable, Equatable, Comparable, Hashable, Sendable {
         
         /// 10 ms
-        public static let min = Duration(0x0001)
+        public static var min: Duration { Duration(0x0001) }
         
         /// 655.35 s
-        public static let max = Duration(0xFFFF)
+        public static var max: Duration { Duration(0xFFFF) }
         
         public let rawValue: UInt16
         
@@ -124,13 +124,11 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
         
         /// Time = N * 10 ms
         public var miliseconds: Double {
-            
             return Double(rawValue) * 10
         }
         
         // Comparable
         public static func < (lhs: Duration, rhs: Duration) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
         }
     }
@@ -140,13 +138,13 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
     /// Range: 0x0001 – 0xFFFF
     /// Time = N * 1.28 sec
     /// Time Range: 1.28 s to 83,884.8 s
-    public struct Period: RawRepresentable, Equatable, Comparable, Hashable {
+    public struct Period: RawRepresentable, Equatable, Comparable, Hashable, Sendable {
         
         /// 1.28 s
-        public static let min = Duration(0x0001)
+        public static var min: Duration { Duration(0x0001) }
         
         /// 83,884.8 s
-        public static let max = Duration(0xFFFF)
+        public static var max: Duration { Duration(0xFFFF) }
         
         public let rawValue: UInt16
         
@@ -166,13 +164,11 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
         
         /// Time = N * 1.28 ms
         public var miliseconds: Double {
-            
             return Double(rawValue) * 1.28
         }
         
         // Comparable
         public static func < (lhs: Period, rhs: Period) -> Bool {
-            
             return lhs.rawValue < rhs.rawValue
         }
     }

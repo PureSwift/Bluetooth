@@ -15,10 +15,10 @@
 public struct LowEnergyScanTimeInterval: RawRepresentable, Equatable, Comparable, Hashable, Sendable {
     
     /// 2.5 msec
-    public static let min = LowEnergyScanTimeInterval(0x0004)
+    public static var min: LowEnergyScanTimeInterval { LowEnergyScanTimeInterval(0x0004) }
     
     /// 10.24 seconds
-    public static let max = LowEnergyScanTimeInterval(0x4000)
+    public static var max: LowEnergyScanTimeInterval { LowEnergyScanTimeInterval(0x4000) }
     
     public let rawValue: UInt16
     
