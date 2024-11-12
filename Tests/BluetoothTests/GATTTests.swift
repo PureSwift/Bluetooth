@@ -113,13 +113,13 @@ final class GATTTests: XCTestCase {
             // server
             let serverAddress = BluetoothAddress.min
             let clientAddress = BluetoothAddress.max
-            let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            let serverSocket = try TestL2CAPSocket.lowEnergyServer(
                 address: serverAddress,
                 isRandom: false,
                 backlog: 1
             )
             let serverAcceptTask = Task<GATTServer, Error> {
-                let newConnection = try await serverSocket.accept()
+                let newConnection = try serverSocket.accept()
                 print("GATTServer: New connection")
                 return await GATTServer(
                     socket: newConnection,
@@ -131,7 +131,7 @@ final class GATTTests: XCTestCase {
             }
             
             // client
-            let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            let clientSocket = try TestL2CAPSocket.lowEnergyClient(
                 address: clientAddress,
                 destination: serverAddress,
                 isRandom: false
@@ -441,13 +441,13 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
         let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
+            let newConnection = try serverSocket.accept()
             print("GATTServer: New connection")
             return await GATTServer(
                 socket: newConnection,
@@ -459,7 +459,7 @@ final class GATTTests: XCTestCase {
         }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -594,7 +594,7 @@ final class GATTTests: XCTestCase {
             backlog: 1
         )
         let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
+            let newConnection = try serverSocket.accept()
             print("GATTServer: New connection")
             return await GATTServer(
                 socket: newConnection,
@@ -643,8 +643,8 @@ final class GATTTests: XCTestCase {
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
-        let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
-        let clientCache = await clientSocket.cache
+        let serverCache = await server.connection.socket.cache
+        let clientCache = clientSocket.cache
         XCTAssertEqual(serverCache, mockData.server)
         XCTAssertEqual(clientCache, mockData.client)
     }
@@ -668,13 +668,13 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
         let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
+            let newConnection = try serverSocket.accept()
             print("GATTServer: New connection")
             return await GATTServer(
                 socket: newConnection,
@@ -686,7 +686,7 @@ final class GATTTests: XCTestCase {
         }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -759,13 +759,13 @@ final class GATTTests: XCTestCase {
         // server
         let serverAddress = BluetoothAddress.min
         let clientAddress = BluetoothAddress.max
-        let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+        let serverSocket = try TestL2CAPSocket.lowEnergyServer(
             address: serverAddress,
             isRandom: false,
             backlog: 1
         )
         let serverAcceptTask = Task<GATTServer, Error> {
-            let newConnection = try await serverSocket.accept()
+            let newConnection = try serverSocket.accept()
             print("GATTServer: New connection")
             return await GATTServer(
                 socket: newConnection,
@@ -777,7 +777,7 @@ final class GATTTests: XCTestCase {
         }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -878,7 +878,7 @@ final class GATTTests: XCTestCase {
         }
         
         // client
-        let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+        let clientSocket = try TestL2CAPSocket.lowEnergyClient(
             address: clientAddress,
             destination: serverAddress,
             isRandom: false
@@ -952,7 +952,7 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(finalServerMTU, .default)
         XCTAssertEqual(finalClientMTU, .default)
     }
-    /*
+    
     func testNotification() async throws {
         
         func test(with characteristics: [GATTAttribute<Data>.Characteristic], newData: [Data]) async throws {
@@ -968,13 +968,13 @@ final class GATTTests: XCTestCase {
             // server
             let serverAddress = BluetoothAddress.min
             let clientAddress = BluetoothAddress.max
-            let serverSocket = try await TestL2CAPSocket.lowEnergyServer(
+            let serverSocket = try TestL2CAPSocket.lowEnergyServer(
                 address: serverAddress,
                 isRandom: false,
                 backlog: 1
             )
             let serverAcceptTask = Task<GATTServer, Error> {
-                let newConnection = try await serverSocket.accept()
+                let newConnection = try serverSocket.accept()
                 print("GATTServer: New connection")
                 return await GATTServer(
                     socket: newConnection,
@@ -986,7 +986,7 @@ final class GATTTests: XCTestCase {
             }
             
             // client
-            let clientSocket = try await TestL2CAPSocket.lowEnergyClient(
+            let clientSocket = try TestL2CAPSocket.lowEnergyClient(
                 address: clientAddress,
                 destination: serverAddress,
                 isRandom: false
@@ -997,6 +997,19 @@ final class GATTTests: XCTestCase {
                 log: { print("GATTClient:", $0) }
             )
             let server = try await serverAcceptTask.value
+            
+            Task { [weak client] in
+                while let client {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try await client.run()
+                }
+            }
+            Task { [weak server] in
+                while let server {
+                    try await Task.sleep(nanoseconds: 10_000)
+                    try await server.run()
+                }
+            }
             
             // discover service
             let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
@@ -1040,7 +1053,7 @@ final class GATTTests: XCTestCase {
                 await server.writeValue(data, forCharacteristic: notificationCharacteristic.uuid)
             }
             
-            try await Task.sleep(nanoseconds: 1_000_000_000)
+            try await Task.sleep(nanoseconds: 1_000_000)
             
             // stop notifications
             try await client.clientCharacteristicConfiguration(
@@ -1069,7 +1082,7 @@ final class GATTTests: XCTestCase {
         //try await test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: 20)])
         //try await test(with: [TestProfile.Notify], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
         //try await test(with: [TestProfile.Indicate], newData: [Data(repeating: 1, count: Int(ATTMaximumTransmissionUnit.max.rawValue))])
-    }*/
+    }
 }
 
 private extension GATTTests {
