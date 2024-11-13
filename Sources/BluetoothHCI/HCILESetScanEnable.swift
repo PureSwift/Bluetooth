@@ -10,8 +10,9 @@ import Foundation
 
 // MARK: - Method
 
-public extension BluetoothHostControllerInterface {
-    /*
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+public extension BluetoothHostControllerInterface where Self: Sendable {
+    
     /// Scan LE devices.
     func lowEnergyScan(
         filterDuplicates: Bool = true,
@@ -21,20 +22,16 @@ public extension BluetoothHostControllerInterface {
     ) async throws -> AsyncLowEnergyScanStream {
         assert(bufferSize >= 1)
         
-        // macro for enabling / disabling scan
-        func enableScan(_ isEnabled: Bool = true) async throws {
-            do { try await self.enableLowEnergyScan(isEnabled, filterDuplicates: filterDuplicates, timeout: timeout) }
-            catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
-        }
-        
         // disable scanning first
-        try await enableScan(false)
+        do { try await enableLowEnergyScan(false, filterDuplicates: filterDuplicates, timeout: timeout) }
+        catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
         
         // set parameters
         try await self.deviceRequest(parameters, timeout: timeout)
         
         // enable scanning
-        try await enableScan()
+        do { try await enableLowEnergyScan(true, filterDuplicates: filterDuplicates, timeout: timeout) }
+        catch HCIError.commandDisallowed { /* ignore, means already turned on or off */ }
         
         return AsyncLowEnergyScanStream { [weak self] continuation in
             guard let self = self else { return }
@@ -59,17 +56,19 @@ public extension BluetoothHostControllerInterface {
                     }
                 }
                 
-                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+                do { try await enableLowEnergyScan(false, filterDuplicates: filterDuplicates, timeout: timeout) }
+                catch { /* ignore all errors disabling scanning */ }
             }
             catch {
                 // disable scanning
-                do { try await enableScan(false) } catch { /* ignore all errors disabling scanning */ }
+                do { try await enableLowEnergyScan(false, filterDuplicates: filterDuplicates, timeout: timeout) }
+                catch { /* ignore all errors disabling scanning */ }
                 throw error
             }
         }
     }
-    */
-    func enableLowEnergyScan(
+    
+    private func enableLowEnergyScan(
         _ isEnabled: Bool = true,
         filterDuplicates: Bool = true,
         timeout: HCICommandTimeout = .default
@@ -81,6 +80,33 @@ public extension BluetoothHostControllerInterface {
         )
         
         try await self.deviceRequest(scanEnableCommand, timeout: timeout)
+    }
+}
+
+/// Bluetooth LE Scan Stream
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+public struct AsyncLowEnergyScanStream: AsyncSequence {
+        
+    public typealias Element = HCILEAdvertisingReport.Report
+    
+    public typealias AsyncIterator = AsyncIndefiniteStream<Element>.AsyncIterator
+    
+    let stream: AsyncIndefiniteStream<Element>
+    
+    internal init(bufferSize: Int = 100, _ build: @escaping @Sendable ((Element) -> ()) async throws -> ()) {
+        self.stream = .init(bufferSize: bufferSize, build)
+    }
+    
+    public func makeAsyncIterator() -> AsyncIndefiniteStream<Element>.AsyncIterator {
+        stream.makeAsyncIterator()
+    }
+    
+    public var isScanning: Bool {
+        stream.isExecuting
+    }
+    
+    public func stop() {
+        stream.stop()
     }
 }
 
