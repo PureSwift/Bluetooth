@@ -6,11 +6,13 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 import Foundation
+#endif
 
 /// The duration of an HCI command.
 @frozen
-public struct HCICommandTimeout: RawRepresentable, Equatable, Hashable {
+public struct HCICommandTimeout: RawRepresentable, Equatable, Hashable, Sendable {
     
     /// The duration of the timeout in miliseconds.
     public var rawValue: UInt
@@ -20,14 +22,13 @@ public struct HCICommandTimeout: RawRepresentable, Equatable, Hashable {
     }
     
     /// Default timeout of HCI commands in miliseconds.
-    public static let `default`: HCICommandTimeout = 1000
+    public static var `default`: HCICommandTimeout { 1000 }
 }
 
 public extension HCICommandTimeout {
     
     /// Duration in seconds.
     var duration: TimeInterval {
-        
         return TimeInterval(rawValue) / 1000.0
     }
 }
@@ -37,7 +38,6 @@ public extension HCICommandTimeout {
 extension HCICommandTimeout: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt) {
-        
         self.init(rawValue: value)
     }
 }
@@ -47,7 +47,6 @@ extension HCICommandTimeout: ExpressibleByIntegerLiteral {
 extension HCICommandTimeout: CustomStringConvertible {
     
     public var description: String {
-        
-        return "\(duration) seconds"
+        return "\(duration)s"
     }
 }
