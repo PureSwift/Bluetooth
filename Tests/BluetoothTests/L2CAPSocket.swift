@@ -12,9 +12,7 @@ import Foundation
 @testable import BluetoothGATT
 
 internal final class TestL2CAPServer: L2CAPServer {
-    
-    typealias Data = Foundation.Data
-    
+        
     typealias Error = POSIXError
     
     enum Cache {
@@ -63,6 +61,10 @@ internal final class TestL2CAPServer: L2CAPServer {
         self.address = address
     }
     
+    deinit {
+        close()
+    }
+    
     static func lowEnergyServer(
         address: BluetoothAddress,
         isRandom: Bool,
@@ -79,7 +81,11 @@ internal final class TestL2CAPServer: L2CAPServer {
         guard let client = Cache.dequeue(server: address) else {
             throw POSIXError(.EAGAIN)
         }
-        let newConnection = TestL2CAPSocket(address: client.address, name: "Server connection")
+        let newConnection = TestL2CAPSocket(
+            address: client.address,
+            destination: self.address,
+            name: "Server connection"
+        )
         // connect sockets
         newConnection.connect(to: client)
         client.connect(to: newConnection)
@@ -105,6 +111,7 @@ internal final class TestL2CAPSocket: L2CAPConnection {
     ) throws(POSIXError) -> TestL2CAPSocket {
         let socket = TestL2CAPSocket(
             address: address,
+            destination: destination,
             name: "Client"
         )
         TestL2CAPServer.Cache.queue(client: socket, server: destination)
@@ -116,6 +123,8 @@ internal final class TestL2CAPSocket: L2CAPConnection {
     let name: String
     
     let address: BluetoothAddress
+    
+    let destination: Bluetooth.BluetoothAddress
     
     var status: L2CAPSocketStatus<POSIXError> {
         .init(
@@ -148,10 +157,16 @@ internal final class TestL2CAPSocket: L2CAPConnection {
     
     init(
         address: BluetoothAddress = .zero,
+        destination: Bluetooth.BluetoothAddress,
         name: String
     ) {
         self.address = address
+        self.destination = destination
         self.name = name
+    }
+    
+    deinit {
+        close()
     }
     
     // MARK: - Methods

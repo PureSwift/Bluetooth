@@ -8,9 +8,7 @@
 
 /// L2CAP Socket protocol.
 public protocol L2CAPSocket {
-    
-    associatedtype Data: DataContainer
-    
+        
     associatedtype Error: Swift.Error
     
     /// Socket address
@@ -39,12 +37,16 @@ public protocol L2CAPServer: L2CAPSocket {
 
 public protocol L2CAPConnection: L2CAPSocket {
     
+    associatedtype Data: DataContainer
+    
     /// Creates a new socket connected to the remote address specified.
     static func lowEnergyClient(
         address: BluetoothAddress,
         destination: BluetoothAddress,
         isRandom: Bool
     ) throws(Self.Error) -> Self
+    
+    var destination: BluetoothAddress { get }
     
     /// Write to the socket.
     func send(_ data: Data) throws(Self.Error)
