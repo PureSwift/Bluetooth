@@ -8,7 +8,7 @@
 
 /// ATT Maximum Transmission Unit
 @frozen
-public struct ATTMaximumTransmissionUnit: RawRepresentable, Equatable, Hashable {
+public struct ATTMaximumTransmissionUnit: RawRepresentable, Equatable, Hashable, Sendable {
     
     public let rawValue: UInt16
     
@@ -29,26 +29,24 @@ public struct ATTMaximumTransmissionUnit: RawRepresentable, Equatable, Hashable 
 private extension ATTMaximumTransmissionUnit {
     
     var isValid: Bool {
-        
         return (ATTMaximumTransmissionUnit.min.rawValue ... ATTMaximumTransmissionUnit.max.rawValue).contains(rawValue)
     }
 }
 
 public extension ATTMaximumTransmissionUnit {
     
-    static var `default`: ATTMaximumTransmissionUnit { return ATTMaximumTransmissionUnit(23) }
+    static var `default`: ATTMaximumTransmissionUnit { ATTMaximumTransmissionUnit(23) }
     
-    static var min: ATTMaximumTransmissionUnit { return .default }
+    static var min: ATTMaximumTransmissionUnit { .default }
     
-    static var max: ATTMaximumTransmissionUnit { return ATTMaximumTransmissionUnit(517) }
+    static var max: ATTMaximumTransmissionUnit { ATTMaximumTransmissionUnit(517) }
     
-    init(server: UInt16,
-         client: UInt16) {
-        
+    init(
+        server: UInt16,
+        client: UInt16
+    ) {
         let mtu = Swift.min(Swift.max(Swift.min(client, server), ATTMaximumTransmissionUnit.default.rawValue), ATTMaximumTransmissionUnit.max.rawValue)
-        
         self.init(mtu)
-        
         assert(isValid)
     }
 }
@@ -58,7 +56,6 @@ public extension ATTMaximumTransmissionUnit {
 extension ATTMaximumTransmissionUnit: CustomStringConvertible {
     
     public var description: String {
-        
         return rawValue.description
     }
 }
@@ -68,7 +65,6 @@ extension ATTMaximumTransmissionUnit: CustomStringConvertible {
 extension ATTMaximumTransmissionUnit: Comparable {
     
     public static func < (lhs: ATTMaximumTransmissionUnit, rhs: ATTMaximumTransmissionUnit) -> Bool {
-        
         return lhs.rawValue < rhs.rawValue
     }
 }
