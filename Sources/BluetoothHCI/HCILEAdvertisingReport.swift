@@ -16,17 +16,20 @@ import Foundation
 /// The Controller may queue these advertising reports and send
 /// information from multiple devices in one LE Advertising Report event.
 @frozen
-public struct HCILEAdvertisingReport: HCIEventParameter {
+public struct HCILEAdvertisingReport: HCIEventParameter, Equatable, Hashable, Sendable {
     
-    public static let event = LowEnergyEvent.advertisingReport // 0x02
+    public static var event: LowEnergyEvent { .advertisingReport } // 0x02
     
-    public static let length = 1 + Report.length // must have at least one report
+    internal static var minLength: Int { 1 + Report.length } // must have at least one report
+    
+    // TODO: Allow variable size
+    public static var length: Int { Self.minLength }
     
     public let reports: [Report]
     
     public init?<Data: DataContainer>(data: Data) {
         
-        guard data.count >= Self.length
+        guard data.count >= Self.minLength
             else { return nil }
         
         // Number of responses in event.
@@ -55,9 +58,9 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         self.reports = reports
     }
     
-    public struct Report {
+    public struct Report: Equatable, Hashable, Sendable {
         
-        public static let length = 1 + 1 + 6 + 1 + /* 0 - 31 */ 0 + 1
+        public static var length: Int { 1 + 1 + 6 + 1 + /* 0 - 31 */ 0 + 1 }
         
         public let event: Event
         
@@ -118,7 +121,7 @@ public struct HCILEAdvertisingReport: HCIEventParameter {
         }
         
         /// Low Energy Advertising Event
-        public enum Event: UInt8 { // Event_Type
+        public enum Event: UInt8, Sendable { // Event_Type
             
             /// Connectable undirected advertising event
             case undirected         = 0x00 // ADV_IND
