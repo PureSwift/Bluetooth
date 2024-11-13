@@ -5,7 +5,7 @@
 //  Created by Alsey Coleman Miller on 11/7/24.
 //
 
-/// GATT Characteristic Properties Bitfield valuess
+/// GATT Characteristic Properties Bitfield values
 public struct GATTCharacteristicProperties: OptionSet, Hashable, Sendable {
     
     public var rawValue: UInt8
