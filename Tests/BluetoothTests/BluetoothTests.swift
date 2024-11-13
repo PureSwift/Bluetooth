@@ -79,7 +79,7 @@ final class BluetoothTests: XCTestCase {
         XCTAssertEqual(timeout.duration, 1.0)
         XCTAssertEqual(timeout.rawValue, 1000)
         XCTAssertNotEqual(timeout, 2000)
-        XCTAssertEqual(timeout.description, "1.0 seconds")
+        XCTAssertEqual(timeout.description, "1.0s")
     }
     
     func testHCIVersion() {
