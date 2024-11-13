@@ -69,7 +69,7 @@ public extension BluetoothHostControllerInterface {
         }
     }
     */
-    private func enableLowEnergyScan(
+    func enableLowEnergyScan(
         _ isEnabled: Bool = true,
         filterDuplicates: Bool = true,
         timeout: HCICommandTimeout = .default
