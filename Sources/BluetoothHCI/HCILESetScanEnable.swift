@@ -85,7 +85,7 @@ public extension BluetoothHostControllerInterface where Self: Sendable {
 
 /// Bluetooth LE Scan Stream
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-public struct AsyncLowEnergyScanStream: AsyncSequence {
+public struct AsyncLowEnergyScanStream: AsyncSequence, Sendable {
         
     public typealias Element = HCILEAdvertisingReport.Report
     

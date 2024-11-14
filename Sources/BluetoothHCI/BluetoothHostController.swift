@@ -10,7 +10,7 @@ import Foundation
 import Bluetooth
 
 /// Bluetooth HCI controller.
-public protocol BluetoothHostControllerInterface: AnyObject {
+public protocol BluetoothHostControllerInterface: AnyObject, Sendable {
     
     /// All controllers on the host.
     static var controllers: [Self] { get async }

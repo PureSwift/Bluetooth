@@ -10,7 +10,7 @@ import Foundation
 
 /// Async Stream that will produce values until `stop()` is called or task is cancelled.
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-public struct AsyncIndefiniteStream <Element: Sendable>: AsyncSequence {
+public struct AsyncIndefiniteStream <Element: Sendable>: AsyncSequence, Sendable {
     
     let storage: Storage
     
