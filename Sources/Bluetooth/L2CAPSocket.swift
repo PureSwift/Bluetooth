@@ -76,4 +76,20 @@ public struct L2CAPSocketStatus<Error: Swift.Error>: Sendable {
     
     /// Socket encountered an error.
     public var error: Error?
+    
+    public init(
+        send: Bool = false,
+        recieve: Bool = false,
+        accept: Bool = false,
+        error: Error? = nil
+    ) {
+        self.send = send
+        self.recieve = recieve
+        self.accept = accept
+        self.error = error
+    }
 }
+
+extension L2CAPSocketStatus: Equatable where Error: Equatable { }
+
+extension L2CAPSocketStatus: Hashable where Error: Hashable { }

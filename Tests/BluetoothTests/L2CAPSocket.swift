@@ -8,8 +8,7 @@
 
 #if canImport(BluetoothGATT)
 import Foundation
-@testable import Bluetooth
-@testable import BluetoothGATT
+import Bluetooth
 
 internal final class TestL2CAPServer: L2CAPServer {
         
