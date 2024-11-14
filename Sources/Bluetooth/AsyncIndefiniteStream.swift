@@ -104,7 +104,7 @@ public extension AsyncIndefiniteStream {
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public extension AsyncIndefiniteStream {
     
-    struct Continuation {
+    struct Continuation: Sendable {
         
         let continuation: AsyncThrowingStream<Element, Error>.Continuation
         
