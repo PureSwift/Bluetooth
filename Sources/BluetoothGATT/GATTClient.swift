@@ -10,7 +10,7 @@ import Bluetooth
 
 /// GATT Client
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-public actor GATTClient <Socket: L2CAPConnection> {
+public actor GATTClient <Socket: L2CAPConnection>: Sendable {
     
     // MARK: - Properties
     
@@ -1081,7 +1081,7 @@ public actor GATTClient <Socket: L2CAPConnection> {
 @available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13, *)
 public extension GATTClient {
             
-    typealias Notification = (Data) -> ()
+    typealias Notification = @Sendable (Data) -> ()
     
     typealias Data = Socket.Data
     

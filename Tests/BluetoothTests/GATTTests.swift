@@ -1014,11 +1014,11 @@ final class GATTTests: XCTestCase {
             var receivedNotifications = [Data]()
             var receivedIndications = [Data]()
             
-            func notification(_ data: Data) {
+            @Sendable func notification(_ data: Data) {
                 receivedNotifications.append(data)
             }
             
-            func indication(_ data: Data) {
+            @Sendable func indication(_ data: Data) {
                 receivedIndications.append(data)
             }
             

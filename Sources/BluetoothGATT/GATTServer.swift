@@ -11,7 +11,6 @@ import Bluetooth
 /// GATT Server
 ///
 /// - Note: Doesn't support concurrency to enable building for Embedded Swift.
-@preconcurrency
 public final class GATTServer <Socket: L2CAPConnection> {
     
     public typealias Data = Socket.Data
