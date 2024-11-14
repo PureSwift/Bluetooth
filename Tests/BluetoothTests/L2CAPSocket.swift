@@ -39,7 +39,7 @@ internal final class TestL2CAPServer: L2CAPServer {
         static func canAccept(server: BluetoothAddress) -> Bool {
             lock.lock()
             defer { lock.unlock() }
-            return pendingClients[server, default: []].isEmpty
+            return pendingClients[server, default: []].isEmpty == false
         }
     }
     
