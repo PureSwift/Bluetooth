@@ -51,9 +51,9 @@ Documentation can be generated with [DocC](https://github.com/apple/swift-docc).
 
 ## Platforms
 
-| Platform | Roles | Backend | Library
-| ---- | -------- | --- | ----------- | ----- |
-| macOS, iOS, watchOS, tvOS, visionOS | Central, Peripheral | [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) | [DarwinGATT](https://github.com/PureSwift/GATT)
+| Platform | Roles | Backend | Library |
+| ---- | -------- | --- | ----------- | 
+| macOS, iOS, watchOS, tvOS, visionOS | Central, Peripheral | [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) | [DarwinGATT](https://github.com/PureSwift/GATT) |
 | Linux | Central, Peripheral | [BlueZ](https://www.bluez.org) | [BluetoothLinux](https://github.com/PureSwift/BluetoothLinux), [GATT](https://github.com/PureSwift/GATT)
 | Android | Central | [Java Native Interface](https://developer.android.com/training/articles/perf-jni) | [AndroidBluetooth](https://github.com/PureSwift/AndroidBluetooth)
 | WebAssembly | Central | [Bluetooth Web API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API) | [BluetoothWeb](https://github.com/PureSwift/BluetoothWeb)
