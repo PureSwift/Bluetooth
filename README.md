@@ -49,20 +49,24 @@ let package = Package(
 Read the documentation [here](http://pureswift.github.io/Bluetooth/documentation/bluetooth/).
 Documentation can be generated with [DocC](https://github.com/apple/swift-docc).
 
-## See Also
+## Platforms
 
-- [BluetoothLinux](https://github.com/PureSwift/BluetoothLinux) - Pure Swift Linux Bluetooth Stack
-- [GATT](https://github.com/PureSwift/GATT) - Bluetooth Generic Attribute Profile (GATT) for Swift
-- [Netlink](https://github.com/PureSwift/Netlink) - Swift library for communicating with Linux Kernel Netlink subsystem (Linux Only) 
-- [Predicate](https://github.com/PureSwift/Predicate) - Pure Swift Predicate implementation 
-- [TLVCoding](https://github.com/PureSwift/TLVCoding) - Swift TLV8 (Type-Length-Value) Encoding library
+| Platform | Roles | Backend | Library
+| ---- | -------- | --- | ----------- | ----- |
+| macOS, iOS, watchOS, tvOS, visionOS | Central, Peripheral | [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) | [DarwinGATT](https://github.com/PureSwift/GATT)
+| Linux | Central, Peripheral | [BlueZ](https://www.bluez.org) | [BluetoothLinux](https://github.com/PureSwift/BluetoothLinux), [GATT](https://github.com/PureSwift/GATT)
+| Android | Central | [Java Native Interface](https://developer.android.com/training/articles/perf-jni) | [AndroidBluetooth](https://github.com/PureSwift/AndroidBluetooth)
+| WebAssembly | Central | [Bluetooth Web API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API) | [BluetoothWeb](https://github.com/PureSwift/BluetoothWeb)
+| Pi Pico W | Peripheral | [BTStack](https://bluekitchen-gmbh.com/btstack/#quick_start/index.html) | [BTStack](https://github.com/MillerTechnologyPeru/BTStack)
+| ESP32 | Peripheral | [Apache NimBLE](https://mynewt.apache.org/latest/network/index.html) | [NimBLE](https://github.com/MillerTechnologyPeru/NimBLE)
+| nRF52840 | Peripheral | [Zephyr SDK](https://zephyrproject.org) | [Zephyr](https://github.com/MillerTechnologyPeru/Zephyr-Swift)
 
 License
 -------
 
 **Bluetooth** is released under the MIT license. See LICENSE for details.
 
-[swift-badge]: https://img.shields.io/badge/swift-5.7-F05138.svg "Swift 5.7"
+[swift-badge]: https://img.shields.io/badge/swift-6.0-F05138.svg "Swift 6.0"
 [swift-url]: https://swift.org
 [platform-badge]: https://img.shields.io/badge/platform-macOS%20%7C%20iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20Linux%20%7C%20Android-lightgrey.svg
 [platform-url]: https://swift.org
