@@ -5,8 +5,7 @@
 [![Release][release-badge]][release-url]
 [![License][mit-badge]][mit-url]
 
-Pure Swift Bluetooth Definitions.
-
+Bluetooth is a Swift package with multiple libraries supporting the Bluetooth SIG specifications and protocols, including GAP, GATT, HCI, L2CAP, Classic (BR/EDR) and Low Energy support.
 
 ## Usage
 
@@ -18,38 +17,19 @@ let uuid16bit = BluetoothUUID(rawValue: "FEA9")
 let address = BluetoothAddress(rawValue: "00:1A:7D:DA:71:13")
 ```
 
-## Installation
+## Installation 
 
-### Swift Package Manager
+Bluetooth is available as a Swift Package Manager package. To use it, add the following dependency in your `Package.swift`:
 
 ```swift
-import PackageDescription
-
-let package = Package(
-    name: "hcitool",
-    products: [
-        .executable(name: "hcitool", targets: ["hcitool"])
-    ],
-    dependencies: [
-        .package(url: "https://github.com/PureSwift/Bluetooth.git", .branch("master"))
-    ],
-    targets: [
-        .target(
-            name: "hcitool",
-            dependencies: [
-                "Bluetooth"
-            ]
-        )
-    ]
-)
+.package(url: "https://github.com/PureSwift/Bluetooth.git", branch: "master"),
 ```
 
-## Documentation
-
-Read the documentation [here](http://pureswift.github.io/Bluetooth/documentation/bluetooth/).
-Documentation can be generated with [DocC](https://github.com/apple/swift-docc).
+and to your target, add `Bluetooth` to your dependencies. You can then `import Bluetooth` to get access to Bluetooth functionality.
 
 ## Platforms
+
+Support for different operating systems and platforms is spread across a suite of Swift packages supporting each which all depend on this package as a foundation. It currently supports WebAssembly (Chrome, Edge), Android, Embedded Swift, desktop Linux (Debian, Fedora, Arch), Buildroot and Yocto Linux.
 
 | Platform | Roles | Backend | Library |
 | ---- | -------- | --- | ----------- | 
@@ -60,6 +40,11 @@ Documentation can be generated with [DocC](https://github.com/apple/swift-docc).
 | Pi Pico W | Peripheral | [BlueKitchen BTStack](https://bluekitchen-gmbh.com/btstack/#quick_start/index.html) | [BTStack](https://github.com/MillerTechnologyPeru/BTStack)
 | ESP32 | Peripheral | [Apache NimBLE](https://mynewt.apache.org/latest/network/index.html) | [NimBLE](https://github.com/MillerTechnologyPeru/NimBLE)
 | nRF52840 | Peripheral | [Zephyr SDK](https://zephyrproject.org) | [Zephyr](https://github.com/MillerTechnologyPeru/Zephyr-Swift)
+
+## Documentation
+
+Read the documentation [here](http://pureswift.github.io/Bluetooth/documentation/bluetooth/).
+Documentation can be generated with [DocC](https://github.com/apple/swift-docc).
 
 License
 -------
