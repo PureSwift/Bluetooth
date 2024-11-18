@@ -21,6 +21,7 @@ final class GATTDatabaseTests: XCTestCase {
         
         XCTAssertEqual(database.attributeGroups.count, TestProfile.services.count)
         XCTAssertEqual(database.attributes[0x01].uuid, .characteristic)
+        XCTAssertEqual(Array(database), database.attributes)
         
         database.removeAll()
         
