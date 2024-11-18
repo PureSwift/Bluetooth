@@ -178,14 +178,18 @@ public struct GATTDatabase<Data: DataContainer>: Equatable, Hashable, Sendable {
     public mutating func remove(service handle: UInt16) {
         
         guard let serviceIndex = attributeGroups.firstIndex(where: { $0.serviceAttribute.handle == handle })
-            else { fatalError("Service with handle \(handle) doesnt exist") }
+            else { fatalError("Invalid service handle") }
         
         attributeGroups.remove(at: serviceIndex)
     }
     
     /// Write the value to attribute specified by the handle.
     public mutating func write(_ value: Data, forAttribute handle: UInt16) {
-        self[handle: handle].value = value
+        var attribute = self[handle: handle]
+        attribute.value = value
+        guard self.setAttribute(attribute, for: handle) else {
+            fatalError("Invalid attribute index")
+        }
     }
     
     /// The handle of the service at the specified index.
@@ -209,35 +213,16 @@ public struct GATTDatabase<Data: DataContainer>: Equatable, Hashable, Sendable {
                 return attribute
             }
         }
-        fatalError("Invalid attribute index \(index)")
+        fatalError("Invalid attribute index")
     }
     
     /// The attribute with the specified handle.
-    public private(set) subscript(handle handle: UInt16) -> GATTDatabase.Attribute {
-        
+    public subscript(handle handle: UInt16) -> GATTDatabase.Attribute {
         get {
-            for group in attributeGroups {
-                for attribute in group.attributes {
-                    guard attribute.handle != handle
-                        else { return attribute }
-                }
+            guard let attribute = attribute(for: handle) else {
+                fatalError("Invalid handle")
             }
-            
-            fatalError("Invalid handle \(handle)")
-        }
-        
-        mutating set {
-            
-            for (groupIndex, group) in attributeGroups.enumerated() {
-                for (attributeIndex, attribute) in group.attributes.enumerated() {
-                    guard attribute.handle != handle else {
-                        attributeGroups[groupIndex].attributes[attributeIndex] = newValue
-                        return
-                    }
-                }
-            }
-            
-            fatalError("Invalid handle \(handle)")
+            return attribute
         }
     }
     
@@ -247,6 +232,29 @@ public struct GATTDatabase<Data: DataContainer>: Equatable, Hashable, Sendable {
         // starts at 0x0001
         lastHandle += 1
         return lastHandle
+    }
+    
+    private func attribute(for handle: UInt16) -> Self.Attribute? {
+        for group in attributeGroups {
+            for attribute in group.attributes {
+                guard attribute.handle != handle
+                    else { return attribute }
+            }
+        }
+        return nil
+    }
+    
+    @discardableResult
+    private mutating func setAttribute(_ newValue: Self.Attribute, for handle: UInt16) -> Bool {
+        for (groupIndex, group) in attributeGroups.enumerated() {
+            for (attributeIndex, attribute) in group.attributes.enumerated() {
+                guard attribute.handle != handle else {
+                    attributeGroups[groupIndex].attributes[attributeIndex] = newValue
+                    return true
+                }
+            }
+        }
+        return false
     }
 }
 
