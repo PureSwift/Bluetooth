@@ -152,7 +152,25 @@ final class AttributeProtocolTests: XCTestCase {
         }
     }
     
-    func testReadByGroupType() {
+    func testReadByGroupTypeRequest() {
+        
+        do {
+            
+            let data = Data([0x10, 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x28])
+            
+            guard let pdu = ATTReadByGroupTypeRequest(data: data)
+                else { XCTFail("Could not parse"); return }
+            
+            XCTAssert(pdu.startHandle == 0x0001)
+            XCTAssert(pdu.endHandle == 0xFFFF)
+            XCTAssert(pdu.type == .bit16(0x2800))
+            XCTAssert(pdu.data == data)
+            XCTAssertEqual(pdu.dataLength, data.count)
+            
+            // correct values
+            XCTAssertEqual(pdu.type, BluetoothUUID.primaryService)
+            XCTAssertEqual(pdu.type, .bit16(0x2800))
+        }
         
         do {
             
@@ -167,10 +185,6 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssert(pdu.type == .bit16(0x0028))
             XCTAssert(pdu.data == data)
             XCTAssertEqual(pdu.dataLength, data.count)
-            
-            // correct values
-            //XCTAssert(pdu.type == GATTUUID.PrimaryService.uuid, "\(pdu.type)")
-            //XCTAssert(pdu.type == .bit16(0x2800))
         }
         
         do {
@@ -203,6 +217,9 @@ final class AttributeProtocolTests: XCTestCase {
             XCTAssertEqual(decoded.data, pdu.data)
             XCTAssertEqual(decoded.dataLength, data.count)
         }
+    }
+    
+    func testReadByGroupTypeResponse() {
         
         do {
             
@@ -293,7 +310,23 @@ final class AttributeProtocolTests: XCTestCase {
         }
     }
     
-    func testReadByType() {
+    func testReadByTypeRequest() {
+        
+        // GATT database hash
+        // Read by Type (2B2A) (1 - 65535)
+        let data = Data([0x08, 0x01, 0x00, 0xFF, 0xFF, 0x2A, 0x2B])
+        
+        guard let value = ATTReadByTypeRequest(data: data) else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(value.startHandle, 1)
+        XCTAssertEqual(value.endHandle, 0xFFFF)
+        XCTAssertEqual(value.attributeType, .bit16(0x2B2A))
+    }
+    
+    func testReadByTypeResponse() {
         
         typealias DeclarationAttribute = GATTDatabase<Data>.CharacteristicDeclarationAttribute
         

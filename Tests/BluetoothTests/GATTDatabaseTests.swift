@@ -39,7 +39,7 @@ extension GATTDatabase {
         for attribute in self {
             
             let value: String = BluetoothUUID(data: attribute.value)?.littleEndian.description
-                ?? String(utf8: attribute.value)
+                ?? ((attribute.value.count > 1) ? String(utf8: attribute.value) : attribute.value.toHexadecimal())
                 ?? attribute.value.toHexadecimal()
             
             print("\(attribute.handle) - \(attribute.uuid)")
