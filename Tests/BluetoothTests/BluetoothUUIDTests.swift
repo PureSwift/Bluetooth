@@ -226,6 +226,25 @@ final class BluetoothUUIDTests: XCTestCase {
         }
     }
     
+    func testLosslessStringConvertible() {
+        
+        let data: [(BluetoothUUID, String)] = [
+            (.bit16(0x1800), "1800"),
+            (.bit16(0x1800), "1800 (Generic Access Profile)"),
+            (.bit16(0xFEA9), "FEA9"),
+            (.bit16(0xFEA9), "FEA9 (Savant Systems LLC)"),
+            (.bit32(0x12345678).bit128, "12345678-0000-1000-8000-00805F9B34FB")
+        ]
+        
+        for (uuid, string) in data {
+            guard let parsed = BluetoothUUID(string) else {
+                XCTFail("Unable to parse: \(string)")
+                continue
+            }
+            XCTAssertEqual(parsed, uuid)
+        }
+    }
+    
     func testPerformanceStringParse() {
         
         let uuids = randomUUIDs.map { $0.uuidString }
