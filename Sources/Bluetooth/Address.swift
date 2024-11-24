@@ -88,7 +88,7 @@ extension BluetoothAddress: RawRepresentable {
     }
     
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
-    internal init?<S: StringProtocol>(_ rawValue: S) {
+    internal static func parse<S: StringProtocol>(_ rawValue: S) -> Self? {
         
         // verify string length
         let characters = rawValue.utf8
@@ -116,7 +116,7 @@ extension BluetoothAddress: RawRepresentable {
             }
         }
         
-        self.init(bigEndian: BluetoothAddress(bytes: bytes))
+        return BluetoothAddress(bigEndian: BluetoothAddress(bytes: bytes))
     }
     
     /// Convert a Bluetooth Address to its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
@@ -136,6 +136,18 @@ extension BluetoothAddress: RawRepresentable {
 extension BluetoothAddress: CustomStringConvertible {
     
     public var description: String { rawValue }
+}
+
+// MARK: - LosslessStringConvertible
+
+extension BluetoothAddress: LosslessStringConvertible {
+    
+    public init?(_ string: String) {
+        guard let value = BluetoothAddress.parse(string) else {
+            return nil
+        }
+        self = value
+    }
 }
 
 // MARK: - Data
