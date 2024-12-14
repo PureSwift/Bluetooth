@@ -9,7 +9,7 @@ jobs:
       - name: Install Swift
         uses: slashmo/install-swift@v0.3.0
         with:
-          version: swift-DEVELOPMENT-SNAPSHOT-2024-10-30-a
+          version: swift-DEVELOPMENT-SNAPSHOT-2024-12-12-a
       - name: Checkout
         uses: actions/checkout@v2
       - name: Swift Version
