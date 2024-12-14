@@ -1,5 +1,5 @@
 # [Choice] Swift version: 
-ARG VARIANT=6.0.2-jammy
+ARG VARIANT=6.0.3-jammy
 FROM swift:${VARIANT}
 
 # [Option] Install zsh
