@@ -22,12 +22,12 @@ struct BluetoothAddressMacro: ExpressionMacro {
           case .stringSegment(let literalSegment)? = segments.first else {
             throw .requiresStaticStringLiteral
         }
-
-        guard let _ = Self.parse(literalSegment.content.text) else {
+        
+        guard let bytes = parse(literalSegment.content.text) else {
             throw .invalidString("\(argument)")
         }
         
-        return "BluetoothAddress(rawValue: \(argument))!"
+        return expression(for: bytes)
     }
     
     /// Initialize a Bluetooth Address from its big endian string representation (e.g. `00:1A:7D:DA:71:13`).
@@ -60,6 +60,10 @@ struct BluetoothAddressMacro: ExpressionMacro {
         }
         
         return bytes
+    }
+    
+    static func expression(for bytes: ByteValue) -> ExprSyntax {
+        "BluetoothAddress(bigEndian: BluetoothAddress(bytes: (0x\(raw: bytes.0.toHexadecimal()), 0x\(raw: bytes.1.toHexadecimal()), 0x\(raw: bytes.2.toHexadecimal()), 0x\(raw: bytes.3.toHexadecimal()), 0x\(raw: bytes.4.toHexadecimal()), 0x\(raw: bytes.5.toHexadecimal()))))"
     }
 }
 
