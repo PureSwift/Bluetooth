@@ -166,3 +166,10 @@ extension BluetoothAddress: DataConvertible {
 #if !hasFeature(Embedded)
 extension BluetoothAddress: Codable { }
 #endif
+
+// MARK: - Macro
+
+#if !hasFeature(Embedded)
+@freestanding(expression)
+public macro BluetoothAddress(_ string: String) -> BluetoothAddress = #externalMacro(module: "BluetoothMacros", type: "BluetoothAddressMacro")
+#endif
