@@ -1,5 +1,6 @@
 // swift-tools-version:6.0
 import PackageDescription
+import CompilerPluginSupport
 import class Foundation.ProcessInfo
 
 // get environment variables
@@ -13,6 +14,12 @@ let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrar
 
 var package = Package(
     name: "Bluetooth",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .watchOS(.v6),
+        .tvOS(.v13),
+    ],
     products: [
         .library(
             name: "Bluetooth",
@@ -35,32 +42,50 @@ var package = Package(
             targets: ["BluetoothHCI"]
         )
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/swiftlang/swift-syntax.git",
+            from: "600.0.1"
+        )
+    ],
     targets: [
         .target(
             name: "Bluetooth",
-            swiftSettings: [.swiftLanguageMode(.v6)]
+            dependencies: [
+                "BluetoothMacros"
+            ]
         ),
         .target(
             name: "BluetoothGAP",
             dependencies: [
                 "Bluetooth"
-            ],
-            swiftSettings: [.swiftLanguageMode(.v6)]
+            ]
         ),
         .target(
             name: "BluetoothGATT",
             dependencies: [
                 "Bluetooth",
-            ],
-            swiftSettings: [.swiftLanguageMode(.v6)]
+            ]
         ),
         .target(
             name: "BluetoothHCI",
             dependencies: [
                 "Bluetooth",
                 "BluetoothGAP"
-            ],
-            swiftSettings: [.swiftLanguageMode(.v6)]
+            ]
+        ),
+        .macro(
+            name: "BluetoothMacros",
+            dependencies: [
+              .product(
+                name: "SwiftSyntaxMacros",
+                package: "swift-syntax"
+              ),
+              .product(
+                name: "SwiftCompilerPlugin",
+                package: "swift-syntax"
+              )
+            ]
         ),
         .testTarget(
             name: "BluetoothTests",
