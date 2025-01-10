@@ -7,36 +7,36 @@
 //
 
 
-import XCTest
+import Testing
 import Foundation
 @testable import Bluetooth
 
-final class UInt24Tests: XCTestCase {
+@Suite struct UInt24Tests {
     
-    func testBitWidth() {
+    @Test func bitWidth() {
         
-        XCTAssertEqual(UInt24.bitWidth, MemoryLayout<UInt24.ByteValue>.size * 8)
-        XCTAssertEqual(UInt24.bitWidth, 24)
+        #expect(UInt24.bitWidth == MemoryLayout<UInt24.ByteValue>.size * 8)
+        #expect(UInt24.bitWidth == 24)
     }
     
-    func testComparable() {
+    @Test func comparable() {
         
-        XCTAssertEqual(UInt24.zero, 0)
-        XCTAssertEqual(UInt24.min, 0)
-        XCTAssertEqual(UInt24.max, 16777215)
-        XCTAssertEqual(UInt24.max, 0xFFFFFF)
-        XCTAssert(0xFFFFFF <= UInt24.max)
-        XCTAssert(0xFFFFFE < UInt24.max)
-        XCTAssert(0xFFFFFF >= UInt24.max)
-        XCTAssert(UInt24.max > 0xFFFFFE)
+        #expect(UInt24.zero == 0)
+        #expect(UInt24.min == 0)
+        #expect(UInt24.max == 16777215)
+        #expect(UInt24.max == 0xFFFFFF)
+        #expect(0xFFFFFF <= UInt24.max)
+        #expect(0xFFFFFE < UInt24.max)
+        #expect(0xFFFFFF >= UInt24.max)
+        #expect(UInt24.max > 0xFFFFFE)
     }
     
-    func testHashable() {
+    @Test func hashable() {
         
-        XCTAssertNotEqual(UInt24.max.hashValue, 0)
+        #expect(UInt24.max.hashValue != 0)
     }
     
-    func testHexadecimal() {
+    @Test func hexadecimal() {
         
         let testData: [(UInt24, String)] = [
             (.zero,     "000000"),
@@ -50,13 +50,13 @@ final class UInt24Tests: XCTestCase {
         ]
         
         for (value, hexadecimal) in testData {
-            XCTAssertEqual(String(UInt32(value).toHexadecimal().suffix(6)), hexadecimal)
-            XCTAssertEqual(UInt32(hexadecimal, radix: 16), UInt32(value))
-            XCTAssertEqual(UInt32(parse: hexadecimal, radix: 16), UInt32(value))
+            #expect(String(UInt32(value).toHexadecimal().suffix(6)) == hexadecimal)
+            #expect(UInt32(hexadecimal, radix: 16) == UInt32(value))
+            #expect(UInt32(parse: hexadecimal, radix: 16) == UInt32(value))
         }
     }
     
-    func testExpressibleByIntegerLiteral() {
+    @Test func expressibleByIntegerLiteral() {
         
         let values: [(UInt24, String)] = [
             (.zero,     "0"),
@@ -68,18 +68,18 @@ final class UInt24Tests: XCTestCase {
             (0xFFFFFF,  "16777215")
         ]
         
-        values.forEach { XCTAssertEqual($0.description, $1) }
+        values.forEach { #expect($0.description == $1)  }
     }
     
-    func testData() {
+    @Test func data() {
         
         let data = Data([0xFF, 0xFF, 0xFF])
         
-        XCTAssertEqual(UInt24(data: data), 16777215)
-        XCTAssertEqual(Data(UInt24.max), data)
+        #expect(UInt24(data: data) == 16777215)
+        #expect(Data(UInt24.max) == data)
     }
     
-    func testCodable() throws {
+    @Test func codable() throws {
         
         struct Value: Equatable, Hashable, Codable {
             let id: UInt24
@@ -88,9 +88,9 @@ final class UInt24Tests: XCTestCase {
         let value = Value(id: UInt24.max)
         let encoder = JSONEncoder()
         let data = try encoder.encode(value)
-        XCTAssertEqual(String(data: data, encoding: .utf8), #"{"id":16777215}"#)
+        #expect(String(data: data, encoding: .utf8) == #"{"id":16777215}"#)
         let decoder = JSONDecoder()
         let decodedValue = try decoder.decode(Value.self, from: data)
-        XCTAssertEqual(value, decodedValue)
+        #expect(value == decodedValue)
     }
 }

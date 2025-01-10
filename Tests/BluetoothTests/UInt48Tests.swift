@@ -6,36 +6,36 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import XCTest
+import Testing
 import Foundation
 @testable import Bluetooth
 
-final class UInt48Tests: XCTestCase {
+@Suite struct UInt48Tests {
     
-    func testBitWidth() {
+    @Test func bitWidth() {
         
-        XCTAssertEqual(UInt48.bitWidth, MemoryLayout<UInt48.ByteValue>.size * 8)
-        XCTAssertEqual(UInt48.bitWidth, 48)
+        #expect(UInt48.bitWidth == MemoryLayout<UInt48.ByteValue>.size * 8)
+        #expect(UInt48.bitWidth == 48)
     }
     
-    func testComparable() {
+    @Test func comparable() {
         
-        XCTAssertEqual(UInt48.zero, 0)
-        XCTAssertEqual(UInt48.min, 0)
-        XCTAssertEqual(UInt48.max, 281474976710655)
-        XCTAssertEqual(UInt48.max, 0xFFFFFFFFFFFF)
-        XCTAssert(0xFFFFFFFFFFFF <= UInt48.max)
-        XCTAssert(0xFFFFFFFFFFFE < UInt48.max)
-        XCTAssert(0xFFFFFFFFFFFF >= UInt48.max)
-        XCTAssert(UInt48.max > 0xFFFFFFFFFFFE)
+        #expect(UInt48.zero == 0)
+        #expect(UInt48.min == 0)
+        #expect(UInt48.max == 281474976710655)
+        #expect(UInt48.max == 0xFFFFFFFFFFFF)
+        #expect(0xFFFFFFFFFFFF <= UInt48.max)
+        #expect(0xFFFFFFFFFFFE < UInt48.max)
+        #expect(0xFFFFFFFFFFFF >= UInt48.max)
+        #expect(UInt48.max > 0xFFFFFFFFFFFE)
     }
     
-    func testHashable() {
+    @Test func hashable() {
         
-        XCTAssertNotEqual(UInt48.max.hashValue, 0)
+        #expect(UInt48.max.hashValue != 0)
     }
     
-    func testExpressibleByIntegerLiteral() {
+    @Test func expressibleByIntegerLiteral() {
         
         let values: [(UInt48, String)] = [
             (.zero,             "0"),
@@ -47,14 +47,14 @@ final class UInt48Tests: XCTestCase {
             (0xFFFFFFFFFFFF,    "281474976710655")
         ]
         
-        values.forEach { XCTAssertEqual($0.description, $1) }
+        values.forEach { #expect($0.description == $1)  }
     }
     
-    func testData() {
+    @Test func data() {
         
         let data = Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
         
-        XCTAssertEqual(UInt48(data: data), 281474976710655)
-        XCTAssertEqual(Data(UInt48.max), data)
+        #expect(UInt48(data: data) == 281474976710655)
+        #expect(Data(UInt48.max) == data)
     }
 }

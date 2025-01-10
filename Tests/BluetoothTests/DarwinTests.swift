@@ -7,7 +7,7 @@
 //
 
 #if os(macOS)
-import XCTest
+import Testing
 import Foundation
 @testable import Bluetooth
 import BluetoothGAP
@@ -15,318 +15,64 @@ import CoreBluetooth
 import IOKit
 import Darwin
 
-final class DarwinTests: XCTestCase {
+@Suite struct DarwinTests {
     
     // MARK: - Assigned Numbers
     
-    func testGAPAppearance() {
+    @Test func gapAppearance() {
         
-        XCTAssertEqual(GAPAppearance.Unknown.unknown.rawValue, IOKitBluetoothGAPAppearance.Unknown.rawValue)
-        XCTAssertEqual(GAPAppearance.Phone.generic.rawValue, IOKitBluetoothGAPAppearance.GenericPhone.rawValue)
-        XCTAssertEqual(GAPAppearance.Computer.generic.rawValue, IOKitBluetoothGAPAppearance.GenericComputer.rawValue)
+        #expect(GAPAppearance.Unknown.unknown.rawValue == IOKitBluetoothGAPAppearance.Unknown.rawValue)
+        #expect(GAPAppearance.Phone.generic.rawValue == IOKitBluetoothGAPAppearance.GenericPhone.rawValue)
+        #expect(GAPAppearance.Computer.generic.rawValue == IOKitBluetoothGAPAppearance.GenericComputer.rawValue)
     }
     
-    func testCompanyIdentifiers() {
+    @Test func companyIdentifiers() {
         
-        XCTAssertEqual(CompanyIdentifier.ericsson.rawValue, IOKitBluetoothCompanyIdentifers.EricssonTechnologyLicensing.rawValue)
-        XCTAssertEqual(CompanyIdentifier.nokiaMobilePhones.rawValue, IOKitBluetoothCompanyIdentifers.NokiaMobilePhones.rawValue)
-        XCTAssertEqual(CompanyIdentifier.ibm.rawValue, IOKitBluetoothCompanyIdentifers.IBM.rawValue)
-        XCTAssertEqual(CompanyIdentifier.intel.rawValue, IOKitBluetoothCompanyIdentifers.Intel.rawValue)
-        XCTAssertEqual(CompanyIdentifier.apple.rawValue, IOKitBluetoothCompanyIdentifers.Apple.rawValue)
-        XCTAssertEqual(CompanyIdentifier.google.rawValue, IOKitBluetoothCompanyIdentifers.Google.rawValue)
-        XCTAssertEqual(CompanyIdentifier.microsoft.rawValue, IOKitBluetoothCompanyIdentifers.Microsoft.rawValue)
+        #expect(CompanyIdentifier.ericsson.rawValue == IOKitBluetoothCompanyIdentifers.EricssonTechnologyLicensing.rawValue)
+        #expect(CompanyIdentifier.nokiaMobilePhones.rawValue == IOKitBluetoothCompanyIdentifers.NokiaMobilePhones.rawValue)
+        #expect(CompanyIdentifier.ibm.rawValue == IOKitBluetoothCompanyIdentifers.IBM.rawValue)
+        #expect(CompanyIdentifier.intel.rawValue == IOKitBluetoothCompanyIdentifers.Intel.rawValue)
+        #expect(CompanyIdentifier.apple.rawValue == IOKitBluetoothCompanyIdentifers.Apple.rawValue)
+        #expect(CompanyIdentifier.google.rawValue == IOKitBluetoothCompanyIdentifers.Google.rawValue)
+        #expect(CompanyIdentifier.microsoft.rawValue == IOKitBluetoothCompanyIdentifers.Microsoft.rawValue)
     }
     
     // MARK: - BluetoothUUID
     
-    func testCoreBluetoothUUID() {
+    @Test func coreBluetoothUUID() {
         
         do {
             
             let uuid = BluetoothUUID.bit16(0xFEA9)
             let coreBluetoothUUID = CBUUID(uuid)
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
+            #expect(coreBluetoothUUID.uuidString == uuid.rawValue)
+            #expect(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
         
         do {
             
             let uuid = BluetoothUUID() // 128 bit
             let coreBluetoothUUID = CBUUID(uuid)
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
+            #expect(coreBluetoothUUID.uuidString == uuid.rawValue)
+            #expect(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
         
         do {
             
             let coreBluetoothUUID = CBUUID(string: "FEA9")
             let uuid = BluetoothUUID(coreBluetoothUUID)
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
+            #expect(coreBluetoothUUID.uuidString == uuid.rawValue)
+            #expect(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
         
         do {
             
             let coreBluetoothUUID = CBUUID(string: "68753A44-4D6F-1226-9C60-0050E4C00067")
             let uuid = BluetoothUUID(coreBluetoothUUID)
-            XCTAssert(coreBluetoothUUID.uuidString == uuid.rawValue)
-            XCTAssert(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
+            #expect(coreBluetoothUUID.uuidString == uuid.rawValue)
+            #expect(Data(uuid.bigEndian) == coreBluetoothUUID.data, "\(Data(uuid)) == \(coreBluetoothUUID.data)")
         }
     }
-    
-    func testCoreBluetoothPerfomanceStringParseUUID() {
-        
-        let uuids = randomUUIDs.map { $0.uuidString }
-        
-        measure { uuids.forEach { _ = CBUUID(string: $0) } }
-    }
-    
-    func testCoreBluetoothPerfomanceStringUUID() {
-        
-        let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
-        
-        measure { uuids.forEach { let _ = $0.uuidString } }
-    }
-    
-    func testCoreBluetoothPerformanceDataParseUUID() {
-        
-        let uuids = randomUUIDs.map { Data($0) }
-        
-        measure { uuids.forEach { _ = CBUUID(data: $0) } }
-    }
-    
-    func testCoreBluetoothPerformanceDataUUID() {
-        
-        let uuids = randomUUIDs.map { CBUUID(nsuuid: $0) }
-        
-        measure { uuids.forEach { let _ = $0.data } }
-    }
-    
-    // MARK: - Code Generators
-    
-    func testGenerateDefinedUUID() {
-        
-        let uuids = definedUUIDs.sorted(by: { $0.key < $1.key })
-        
-        var generatedCode = ""
-        
-        var memberNameCache = [UInt16: String]()
-        
-        func 🖨(_ text: String) {
-            
-            generatedCode += text + "\n"
-        }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .none
-        
-        let fileDate = dateFormatter.string(from: Date())
-        
-        🖨("//")
-        🖨("//  DefinedUUIDExtension.swift")
-        🖨("//  Bluetooth")
-        🖨("//")
-        🖨("//  Generated by Alsey Coleman Miller on \(fileDate).")
-        🖨("//")
-        🖨("")
-        🖨("public extension BluetoothUUID {")
-        🖨("")
-        
-        for (uuidValue, name) in uuids {
-            
-            let uuid = BluetoothUUID.bit16(uuidValue)
-            
-            let sanitizedName = sanitize(name: name)
-            
-            let llamaCaseName = llamaCase(sanitizedName)
-            
-            var memberName = llamaCaseName
-            
-            // prevent duplicate entries
-            var duplicateNumber = 1
-            while memberNameCache.values.contains(memberName) {
-                
-                duplicateNumber += 1
-                memberName = llamaCaseName + "\(duplicateNumber)"
-            }
-            
-            let comment = name + " " + "(`0x\(uuid.rawValue)`)"
-            
-            🖨("    /// " + comment)
-            🖨("    static var " + memberName + ": BluetoothUUID {")
-            🖨("        return .bit16(0x" + uuid.rawValue + ")")
-            🖨("    }")
-            🖨("")
-            
-            memberNameCache[uuidValue] = memberName
-        }
-        
-        🖨("}")
-        
-        var filename = NSTemporaryDirectory() + "DefinedUUIDExtension.swift"
-        XCTAssertNoThrow(try generatedCode.write(toFile: filename, atomically: true, encoding: .utf8))
-        
-        print("Generated code \(filename)")
-        
-        // generate unit test for extensions
-        generatedCode = ""
-        
-        🖨("//")
-        🖨("//  DefinedUUIDTests.swift")
-        🖨("//  Bluetooth")
-        🖨("//")
-        🖨("//  Generated by Alsey Coleman Miller on \(fileDate).")
-        🖨("//")
-        🖨("")
-        🖨("import XCTest")
-        🖨("import Foundation")
-        🖨("@testable import Bluetooth")
-        🖨("")
-        🖨("// swiftlint:disable type_body_length")
-        🖨("final class DefinedUUIDTests: XCTestCase {")
-        🖨("")
-        🖨("    static let allTests = [")
-        🖨("        (\"testDefinedUUID\", testDefinedUUID)")
-        🖨("    ]")
-        🖨("")
-        🖨("    func testDefinedUUID() {")
-        🖨("")
-        
-        
-        // generate test methods
-        
-        for (uuidValue, name) in uuids {
-            
-            let uuid = BluetoothUUID.bit16(uuidValue)
-            
-            guard let memberName = memberNameCache[uuidValue]
-                else { XCTFail("No extension generated for \(uuid)"); return }
-            
-            
-            🖨("        /// \(name)")
-            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName).rawValue, \"\(uuid.rawValue)\")")
-            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(0x\(uuid.rawValue)))")
-            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName), .bit16(\(uuidValue)))")
-            🖨("        XCTAssertEqual(BluetoothUUID.\(memberName).name, \"\(name)\")")
-            🖨("        XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(\(uuidValue)))")
-            🖨("        XCTAssertNotEqual(BluetoothUUID.\(memberName), .bit32(0x\(uuid.rawValue)))")
-            🖨("")
-        }
-        
-        🖨("    }")
-        🖨("")
-        🖨("}")
-        🖨("// swiftlint:enable type_body_length")
-        
-        filename = NSTemporaryDirectory() + "DefinedUUIDTests.swift"
-        XCTAssertNoThrow(try generatedCode.write(toFile: filename, atomically: true, encoding: .utf8))
-        
-        print("Generated code \(filename)")
-    }
-}
-
-// MARK: - Utilities
-
-// https://gist.github.com/AmitaiB/bbfcba3a21411ee6d3f972320bcd1ecd
-func camelCase(_ string: String) -> String {
-    return string.components(separatedBy: CharacterSet.alphanumerics.inverted)
-        .filter { !$0.isEmpty }
-        .map { $0.capitalized }
-        .joined()
-}
-
-func llamaCase(_ string: String) -> String {
-    var result = camelCase(string)
-    if let firstLetterCharacter = result.first {
-        result = String(result.dropFirst())
-        let firstLetter = String(firstLetterCharacter)
-        result = firstLetter.lowercased() + result
-    }
-    return result
-}
-
-func uppercaseFirstLetter(_ string: String) -> String {
-    var result = string
-    if let firstLetterCharacter = result.first {
-        result = String(result.dropFirst())
-        let firstLetter = String(firstLetterCharacter)
-        result = firstLetter.uppercased() + result
-    }
-    return result
-}
-
-func sanitize(name: String) -> String {
-    
-    let blackList = ["ASSA ABLOY"]
-    
-    guard blackList.contains(name) == false
-        else { return name }
-    
-    var name = name
-        .replacingOccurrences(of: "LLC \"", with: "")
-        .replacingOccurrences(of: "\"", with: "")
-        .replacingOccurrences(of: "3D ", with: "uuid3D")
-        .replacingOccurrences(of: "IF, LLC", with: "ifLLC")
-        .replacingOccurrences(of: "WHERE, Inc.", with: "whereInc")
-        .replacingOccurrences(of: "Amazon.com Services, Inc.", with: "Amazon")
-        .replacingOccurrences(of: ", Ltd. (QTIL)", with: "")
-        .replacingOccurrences(of: "The ", with: "")
-        .replacingOccurrences(of: "A/V", with: "av")
-        .replacingOccurrences(of: " Incorporated", with: "")
-        .replacingOccurrences(of: " Corporation", with: "")
-        .replacingOccurrences(of: " Limited", with: "")
-        .replacingOccurrences(of: " Pvt.", with: "")
-        .replacingOccurrences(of: "GmbH & Co. KG", with: "")
-        .replacingOccurrences(of: "GmbH & Co KG", with: "")
-        .replacingOccurrences(of: "AG & Co. KGaA", with: "")
-        .replacingOccurrences(of: "AG & Co. KG", with: "")
-        .replacingOccurrences(of: "AG & Co.", with: "")
-        .replacingOccurrences(of: " Corp.", with: "")
-        .replacingOccurrences(of: " Corp", with: "")
-        .replacingOccurrences(of: "Co.,Ltd", with: "")
-        .replacingOccurrences(of: ",Co.Ltd", with: "")
-        .replacingOccurrences(of: "CO.,LTD.", with: "")
-        .replacingOccurrences(of: "Co.,", with: "")
-        .replacingOccurrences(of: "Co.", with: "")
-        .replacingOccurrences(of: " Sp. z o.o.", with: "")
-        .replacingOccurrences(of: " ASA", with: "")
-        .replacingOccurrences(of: " AS", with: "")
-        .replacingOccurrences(of: " SA", with: "")
-        .replacingOccurrences(of: " AB", with: "")
-        .replacingOccurrences(of: " BV", with: "")
-        .replacingOccurrences(of: " AG", with: "")
-        .replacingOccurrences(of: " d.o.o.", with: "")
-        .replacingOccurrences(of: " D.O.O.", with: "")
-        .replacingOccurrences(of: " Oy", with: "")
-        .replacingOccurrences(of: " gmbh", with: "")
-        .replacingOccurrences(of: " GmbH", with: "")
-        .replacingOccurrences(of: " B.V.", with: "")
-        .replacingOccurrences(of: " b.v.", with: "")
-        .replacingOccurrences(of: ",Inc.", with: "")
-        .replacingOccurrences(of: ", inc.", with: "")
-        .replacingOccurrences(of: " Inc", with: "")
-        .replacingOccurrences(of: " INC", with: "")
-        .replacingOccurrences(of: " LLC", with: "")
-        .replacingOccurrences(of: " LTD", with: "")
-        .replacingOccurrences(of: " Ltd", with: "")
-        .replacingOccurrences(of: " ltd", with: "")
-        .replacingOccurrences(of: " Ltd", with: "")
-        .replacingOccurrences(of: " A/S", with: "")
-        .replacingOccurrences(of: " S.A.", with: "")
-        .replacingOccurrences(of: " S.L.", with: "")
-        .replacingOccurrences(of: " ApS", with: "")
-        .replacingOccurrences(of: " s.r.o.", with: "")
-        .replacingOccurrences(of: " Srl", with: "")
-    
-    // if first letter is a number, add prefix
-    if let firstCharacter = name.first,
-        let _ = Int(String(firstCharacter)) {
-        
-        name = "uuid" + name
-    }
-    
-    return name
 }
 
 #endif

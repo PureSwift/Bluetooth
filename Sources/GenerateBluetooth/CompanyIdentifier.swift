@@ -153,14 +153,15 @@ extension GenerateTool {
         //  Bluetooth
         //
         
-        import XCTest
         import Foundation
+        import Testing
         @testable import Bluetooth
         
         // swiftlint:disable type_body_length
-        final class CompanyIdentifierTests: XCTestCase {
+        @Suite
+        struct CompanyIdentifierTests {
         
-            func testCompanies() {
+            @Test func companies() {
         
         
         """
@@ -171,9 +172,9 @@ extension GenerateTool {
                         
             🖨("""
                     // \(name)
-                    XCTAssertEqual(CompanyIdentifier.\(memberName).rawValue, \(id))
-                    XCTAssertEqual(CompanyIdentifier.\(memberName).name, #\"\(name)\"#)
-                    XCTAssertEqual(CompanyIdentifier.\(memberName).description, #\"\(name)\"#)
+                    #expect(CompanyIdentifier.\(memberName).rawValue == \(id))
+                    #expect(CompanyIdentifier.\(memberName).name == #\"\(name)\"#)
+                    #expect(CompanyIdentifier.\(memberName).description == #\"\(name)\"#)
                 
             """)
         }

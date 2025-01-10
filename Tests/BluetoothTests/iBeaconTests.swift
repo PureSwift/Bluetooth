@@ -7,33 +7,33 @@
 //
 
 #if canImport(BluetoothGAP) && canImport(BluetoothHCI)
-import XCTest
+import Testing
 import Foundation
 import Bluetooth
 @testable import BluetoothGAP
 import BluetoothHCI
 
-final class iBeaconTests: XCTestCase {
+@Suite struct iBeaconTests {
     
-    func testInvalid() {
+    @Test func invalid() throws {
         
-        XCTAssertNil(try? AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x1a, 0x4c, 0x00]))
-        XCTAssertNil(try? AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x03, 0xff]))
+        #expect((try? AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x1a, 0x4c, 0x00])) == nil)
+        #expect((try? AppleBeacon.from(advertisingData: [0x02, 0x01, 0x1a, 0x03, 0xff])) == nil)
         do {
             let data: LowEnergyAdvertisingData = [0x02, 0x01, 0x1a, 0x03, 0xff, 0x4c, 0x00]
             let decoder = GAPDataDecoder<LowEnergyAdvertisingData>()
             let manufacturerData = GAPManufacturerSpecificData<LowEnergyAdvertisingData>(companyIdentifier: .apple)
             var decoded = [GAPData]()
-            XCTAssertNoThrow(decoded = try decoder.decode(from: data))
+            decoded = try decoder.decode(from: data)
             guard decoded.count == 2
-                else { XCTFail(); return }
-            XCTAssertEqual(decoded[0] as? GAPFlags, 0x1a)
-            XCTAssertEqual(decoded[1] as? GAPManufacturerSpecificData<LowEnergyAdvertisingData>, manufacturerData)
-            XCTAssertNil(try? AppleBeacon.from(advertisingData: data))
+                else { Issue.record(); return }
+            #expect(decoded[0] as? GAPFlags == 0x1a)
+            #expect(decoded[1] as? GAPManufacturerSpecificData<LowEnergyAdvertisingData> == manufacturerData)
+            #expect((try? AppleBeacon.from(advertisingData: data)) == nil)
         }
     }
     
-    func testData() throws {
+    @Test func data() throws {
         
         let flags: GAPFlags = 0x1a
         
@@ -77,20 +77,20 @@ final class iBeaconTests: XCTestCase {
             0xb3 , //   Signal power (calibrated RSSI@1m)    signal power value
             0x00))
         
-        XCTAssertEqual(advertisingData, testData)
-        XCTAssertEqual(advertisingData.description, "02011A1AFF4C000215F7826DA64FA24E988024BC5B71E0893E00AA00BBB3")
-        advertisingData.withUnsafeData { XCTAssertEqual($0, Data(testData)) }
+        #expect(advertisingData == testData)
+        #expect(advertisingData.description == "02011A1AFF4C000215F7826DA64FA24E988024BC5B71E0893E00AA00BBB3")
+        advertisingData.withUnsafeData { #expect($0 == Data(testData))  }
         
         let decoded = try AppleBeacon.from(advertisingData: testData)
         
-        XCTAssertEqual(decoded.flags, flags)
-        XCTAssertEqual(decoded.beacon.uuid, beacon.uuid)
-        XCTAssertEqual(decoded.beacon.major, beacon.major)
-        XCTAssertEqual(decoded.beacon.minor, beacon.minor)
-        XCTAssertEqual(decoded.beacon.rssi, beacon.rssi)
+        #expect(decoded.flags == flags)
+        #expect(decoded.beacon.uuid == beacon.uuid)
+        #expect(decoded.beacon.major == beacon.major)
+        #expect(decoded.beacon.minor == beacon.minor)
+        #expect(decoded.beacon.rssi == beacon.rssi)
     }
-    /*
-    func testEstimoteBeacon() {
+    
+    @Test func estimoteBeacon() throws {
         
         let expectedData = Data([0x4c, 0x00, 0x02, 0x15, 0xb9, 0x40, 0x7f, 0x30, 0xf5, 0xf8, 0x46, 0x6e, 0xaf, 0xf9, 0x25, 0x55, 0x6b, 0x57, 0xfe, 0x6d, 0x29, 0x4c, 0x90, 0x39, 0x74])
         
@@ -102,25 +102,25 @@ final class iBeaconTests: XCTestCase {
         
         let rssi: Int8 = 116
         
-        let beacon = AppleBeacon(uuid: uuid, major: major, minor: minor, rssi: rssi)
+        let beacon = AppleBeacon(
+            uuid: uuid,
+            major: major,
+            minor: minor,
+            rssi: rssi
+        )
         
-        guard let manufacturerData = GAPManufacturerSpecificData(data: expectedData)
-            else { XCTFail(); return }
+        let manufacturerData = try #require(GAPManufacturerSpecificData<Data>(data: expectedData))
+        #expect(manufacturerData.companyIdentifier == .apple)
         
-        XCTAssertEqual(beacon.manufacturerData, manufacturerData)
-
-        XCTAssertEqual(manufacturerData.companyIdentifier, .apple)
+        let decodedBeacon = try #require(AppleBeacon(manufacturerData: manufacturerData))
         
-        guard let decodedBeacon = AppleBeacon(manufacturerData: manufacturerData)
-            else { XCTFail(); return }
-        
-        XCTAssertEqual(decodedBeacon.uuid, uuid)
-        XCTAssertEqual(decodedBeacon.major, major)
-        XCTAssertEqual(decodedBeacon.minor, minor)
-        XCTAssertEqual(decodedBeacon.rssi, rssi)
+        #expect(decodedBeacon.uuid == beacon.uuid)
+        #expect(decodedBeacon.major == beacon.major)
+        #expect(decodedBeacon.minor == beacon.minor)
+        #expect(decodedBeacon.rssi == beacon.rssi)
     }
     
-    func testCommand() {
+    @Test func command() async throws {
         
         let uuid = UUID(uuidString: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!
         
@@ -210,9 +210,8 @@ final class iBeaconTests: XCTestCase {
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x08, 0x20, 0x00]))
         
-        XCTAssertNoThrow(try hostController.iBeacon(beacon,
-                                                    flags: 0x1A,
-                                                    interval: AdvertisingInterval(rawValue: 100)!))
-    }*/
+        let interval = try #require(AdvertisingInterval(rawValue: 100))
+        try await hostController.iBeacon(beacon, flags: 0x1A, interval: interval)
+    }
 }
 #endif

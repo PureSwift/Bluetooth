@@ -3,7 +3,7 @@
 //  Bluetooth
 //
 
-#if (swift(<5.6) || !SWIFTPM_ENABLE_PLUGINS) && !os(WASI) && !hasFeature(Embedded)
+#if !SWIFTPM_ENABLE_PLUGINS && !os(WASI) && !hasFeature(Embedded)
 internal extension CompanyIdentifier {
 
     static let companyIdentifiers: [UInt16: String] = {

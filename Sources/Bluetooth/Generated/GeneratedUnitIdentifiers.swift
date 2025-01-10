@@ -3,7 +3,7 @@
 //  Bluetooth
 //
 
-#if (swift(<5.6) || !SWIFTPM_ENABLE_PLUGINS) && !os(WASI)
+#if !SWIFTPM_ENABLE_PLUGINS && !os(WASI)
 public extension UnitIdentifier {
 
     /// unitless (`0x2700`)
