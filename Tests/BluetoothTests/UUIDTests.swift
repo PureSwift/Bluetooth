@@ -105,30 +105,31 @@ import Foundation
         let uuid = _UUID(uuidString: "89E90DC6-5EBA-41A8-A64D-81D3576EE46E")!
         #expect(String(reflecting: uuid) == "89E90DC6-5EBA-41A8-A64D-81D3576EE46E")
     }
-    /*
+    
     @Test func comparable() throws {
+        
         var uuid1 = try #require(_UUID(uuidString: "00000000-0000-0000-0000-000000000001"))
         var uuid2 = try #require(_UUID(uuidString: "00000000-0000-0000-0000-000000000002"))
-        #expect(uuid1 < uuid2)
-        #expect(!uuid2 < uuid1)
-        #expect(!uuid2 == uuid1)
+        #expect((uuid1 < uuid2))
+        #expect(!(uuid2 < uuid1))
+        #expect(uuid2 != uuid1)
         
         uuid1 = try #require(_UUID(uuidString: "9707CE8D-251F-4858-8BF9-C9EC3D690FCE"))
         uuid2 = try #require(_UUID(uuidString: "9807CE8D-251F-4858-8BF9-C9EC3D690FCE"))
         #expect(uuid1 < uuid2)
-        #expect(!uuid2 < uuid1)
-        #expect(!uuid2 == uuid1)
+        #expect(!(uuid2 < uuid1))
+        #expect(uuid2 != uuid1)
         
         uuid1 = try #require(_UUID(uuidString: "9707CE8D-261F-4858-8BF9-C9EC3D690FCE"))
         uuid2 = try #require(_UUID(uuidString: "9707CE8D-251F-4858-8BF9-C9EC3D690FCE"))
         #expect(uuid1 > uuid2)
-        #expect(!uuid2 > uuid1)
-        #expect(!uuid2 == uuid1)
+        #expect(!(uuid2 > uuid1))
+        #expect(uuid2 != uuid1)
         
         uuid1 = try #require(_UUID(uuidString: "9707CE8D-251F-4858-8BF9-C9EC3D690FCE"))
         uuid2 = try #require(_UUID(uuidString: "9707CE8D-251F-4858-8BF9-C9EC3D690FCE"))
-        #expect(!uuid1 > uuid2)
-        #expect(!uuid2 > uuid1)
+        #expect(!(uuid1 > uuid2))
+        #expect(!(uuid2 > uuid1))
         #expect(uuid2 == uuid1)
-    }*/
+    }
 }
