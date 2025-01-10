@@ -6,38 +6,38 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import XCTest
+import Testing
 import Foundation
 @testable import Bluetooth
 
-final class UInt128Tests: XCTestCase {
+@Suite struct UInt128Tests {
     
-    func testBitWidth() {
+    @Test func bitWidth() {
         
-        XCTAssertEqual(Bluetooth.UInt128.bitWidth, MemoryLayout<Bluetooth.UInt128.ByteValue>.size * 8)
-        XCTAssertEqual(Bluetooth.UInt128.bitWidth, 128)
+        #expect(Bluetooth.UInt128.bitWidth == MemoryLayout<Bluetooth.UInt128.ByteValue>.size * 8)
+        #expect(Bluetooth.UInt128.bitWidth == 128)
     }
     
-    func testUUID() {
+    @Test func uUID() {
         
         let uuid = UUID(uuidString: "60F14FE2-F972-11E5-B84F-23E070D5A8C7")!
         let number = Bluetooth.UInt128(uuid: uuid)
         
-        XCTAssertEqual(UUID(number), uuid)
-        XCTAssertEqual(number.uuidString, uuid.uuidString)
+        #expect(UUID(number) == uuid)
+        #expect(number.uuidString == uuid.uuidString)
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
-            XCTAssertEqual(number.description, "128858851431381903469711580150894012615")
+            #expect(number.description == "128858851431381903469711580150894012615")
         } else {
-            XCTAssertEqual(number.description, "0x60F14FE2F97211E5B84F23E070D5A8C7")
+            #expect(number.description == "0x60F14FE2F97211E5B84F23E070D5A8C7")
         }
     }
     
-    func testHashable() {
+    @Test func hashable() {
         
-        XCTAssertNotEqual(Bluetooth.UInt128.max.hashValue, 0)
+        #expect(Bluetooth.UInt128.max.hashValue != 0)
     }
     
-    func testHexadecimal() {
+    @Test func hexadecimal() {
         
         var testData: [(UInt128, String)] = [
             (.min,     "00000000000000000000000000000000"),
@@ -51,14 +51,14 @@ final class UInt128Tests: XCTestCase {
         }
         
         for (value, hexadecimal) in testData {
-            XCTAssertEqual(value.hexadecimal, hexadecimal)
+            #expect(value.hexadecimal == hexadecimal)
             if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
-                XCTAssertEqual(UInt128(parse: hexadecimal, radix: 16), value)
+                #expect(UInt128(parse: hexadecimal, radix: 16) == value)
             }
         }
     }
     
-    func testExpressibleByIntegerLiteral() {
+    @Test func expressibleByIntegerLiteral() {
         
         guard #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) else {
             print("Skipping \(#function), requires macOS 15")
@@ -72,10 +72,10 @@ final class UInt128Tests: XCTestCase {
             (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,    "340282366920938463463374607431768211455")
         ]
         
-        values.forEach { XCTAssertEqual($0.description, $1) }
+        values.forEach { #expect($0.description == $1)  }
         
-        XCTAssertEqual(UInt128.zero, 0)
-        XCTAssertEqual(UInt128.min, 0)
-        XCTAssertEqual(UInt128.max, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
+        #expect(UInt128.zero == 0)
+        #expect(UInt128.min == 0)
+        #expect(UInt128.max == 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
     }
 }

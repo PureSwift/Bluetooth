@@ -7,56 +7,56 @@
 //
 
 #if canImport(BluetoothGATT)
-import XCTest
+import Testing
 import Foundation
 import Bluetooth
 @testable import BluetoothGATT
 
-final class GATTCharacteristicTests: XCTestCase {
+@Suite struct GATTCharacteristicTests {
     
-    func testDateTime() {
+    @Test func dateTime() {
         
         /// remove subsecond precision
         let date = Date(timeIntervalSinceReferenceDate: TimeInterval(Int(Date.timeIntervalSinceReferenceDate)))
         
         // Date conversion
-        XCTAssertNotEqual(GATTDateTime().year, .unknown)
-        XCTAssertNotEqual(GATTDateTime().month, .unknown)
-        XCTAssertNotEqual(GATTDateTime().day, .unknown)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).year.rawValue, 2001)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).month, .january)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).day.rawValue, 1)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 3600)).hour.rawValue, 1)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 60)).minute.rawValue, 1)
-        XCTAssertEqual(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).second.rawValue, 30)
+        #expect(GATTDateTime().year != .unknown)
+        #expect(GATTDateTime().month != .unknown)
+        #expect(GATTDateTime().day != .unknown)
+        #expect(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).year.rawValue == 2001)
+        #expect(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).month == .january)
+        #expect(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 0)).day.rawValue == 1)
+        #expect(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 3600)).hour.rawValue == 1)
+        #expect(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 60)).minute.rawValue == 1)
+        #expect(GATTDateTime(date: Date(timeIntervalSinceReferenceDate: 30)).second.rawValue == 30)
         
         // Crashes on Linux
         // fatal error: copy(with:) is not yet implemented: file Foundation/NSCalendar.swift, line 1434
         #if os(macOS)
-        XCTAssertEqual(Date(dateTime: GATTDateTime(date: date)), date)
+        #expect(Date(dateTime: GATTDateTime(date: date)) == date)
         #endif
         
         // create valid values
-        (1582...9999).forEach { XCTAssertNotNil(GATTDateTime.Year(rawValue: $0)) }
-        XCTAssertEqual(GATTDateTime.Year(rawValue: 0), .unknown)
-        (1...12).forEach { XCTAssertNotNil(GATTDateTime.Month(rawValue: $0)) }
-        XCTAssertEqual(GATTDateTime.Month(rawValue: 0), .unknown)
-        (1...31).forEach { XCTAssertNotNil(GATTDateTime.Day(rawValue: $0)) }
-        XCTAssertEqual(GATTDateTime.Day(rawValue: 0), .unknown)
-        (0...23).forEach { XCTAssertNotNil(GATTDateTime.Hour(rawValue: $0)) }
-        (0...59).forEach { XCTAssertNotNil(GATTDateTime.Minute(rawValue: $0)) } 
-        (0...59).forEach { XCTAssertNotNil(GATTDateTime.Second(rawValue: $0)) }
+        (1582...9999).forEach { #expect(GATTDateTime.Year(rawValue: $0) != nil)  }
+        #expect(GATTDateTime.Year(rawValue: 0) == .unknown)
+        (1...12).forEach { #expect(GATTDateTime.Month(rawValue: $0) != nil)  }
+        #expect(GATTDateTime.Month(rawValue: 0) == .unknown)
+        (1...31).forEach { #expect(GATTDateTime.Day(rawValue: $0) != nil)  }
+        #expect(GATTDateTime.Day(rawValue: 0) == .unknown)
+        (0...23).forEach { #expect(GATTDateTime.Hour(rawValue: $0) != nil)  }
+        (0...59).forEach { #expect(GATTDateTime.Minute(rawValue: $0) != nil)  } 
+        (0...59).forEach { #expect(GATTDateTime.Second(rawValue: $0) != nil)  }
         
         // test decoding
-        XCTAssertNil(GATTDateTime(data: Data()), "Invalid length")
-        XCTAssertNil(GATTDateTime(data: Data([0x00])), "Invalid length")
-        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00])), "Invalid length")
-        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00])), "Invalid length")
-        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00])), "Invalid length")
-        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
-        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid values")
-        XCTAssertNil(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF])), "Invalid values")
-        XCTAssertNil(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), "Invalid length")
+        #expect(GATTDateTime(data: Data()) == nil, "Invalid length")
+        #expect(GATTDateTime(data: Data([0x00])) == nil, "Invalid length")
+        #expect(GATTDateTime(data: Data([0x00, 0x00])) == nil, "Invalid length")
+        #expect(GATTDateTime(data: Data([0x00, 0x00, 0x00])) == nil, "Invalid length")
+        #expect(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00])) == nil, "Invalid length")
+        #expect(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF])) == nil, "Invalid length")
+        #expect(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])) == nil, "Invalid values")
+        #expect(GATTDateTime(data: Data([0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF])) == nil, "Invalid values")
+        #expect(GATTDateTime(data: Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])) == nil, "Invalid length")
         
         // encoding
         do {
@@ -64,15 +64,15 @@ final class GATTCharacteristicTests: XCTestCase {
             let data = Data([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
             
             guard let characteristic = GATTDateTime(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.year, .unknown)
-            XCTAssertEqual(characteristic.month, .unknown)
-            XCTAssertEqual(characteristic.day, .unknown)
-            XCTAssertEqual(characteristic.hour, .min)
-            XCTAssertEqual(characteristic.minute, .min)
-            XCTAssertEqual(characteristic.second, .min)
+            #expect(characteristic.data == data)
+            #expect(characteristic.year == .unknown)
+            #expect(characteristic.month == .unknown)
+            #expect(characteristic.day == .unknown)
+            #expect(characteristic.hour == .min)
+            #expect(characteristic.minute == .min)
+            #expect(characteristic.second == .min)
         }
         
         // encoding
@@ -81,153 +81,153 @@ final class GATTCharacteristicTests: XCTestCase {
             let data = Data([203, 7, 4, 24, 12, 5, 30])
             
             guard let characteristic = GATTDateTime(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.year.rawValue, 1995)
-            XCTAssertEqual(characteristic.month, .april)
-            XCTAssertEqual(characteristic.day.rawValue, 24)
-            XCTAssertEqual(characteristic.hour.rawValue, 12)
-            XCTAssertEqual(characteristic.minute.rawValue, 5)
-            XCTAssertEqual(characteristic.second.rawValue, 30)
+            #expect(characteristic.data == data)
+            #expect(characteristic.year.rawValue == 1995)
+            #expect(characteristic.month == .april)
+            #expect(characteristic.day.rawValue == 24)
+            #expect(characteristic.hour.rawValue == 12)
+            #expect(characteristic.minute.rawValue == 5)
+            #expect(characteristic.second.rawValue == 30)
         }
     }
     
-    func testBatteryLevel() {
+    @Test func batteryLevel() {
         
         let data = Data([0x22])
         
         guard let characteristic = GATTBatteryLevel(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
         guard let percentage = GATTBatteryPercentage(rawValue: 34)
-            else { XCTFail("Could not init Percentage"); return }
+            else { Issue.record("Could not init Percentage"); return }
         
         // test characteristic
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.level, percentage)
-        XCTAssertEqual(characteristic.description, "34%")
-        XCTAssertNotNil(GATTBatteryLevel(level: percentage)) 
-        XCTAssertEqual(GATTBatteryLevel.uuid, .batteryLevel)
-        XCTAssertEqual(GATTBatteryLevel(data: data), GATTBatteryLevel(data: data))
-        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryLevel(data: Data([$0]))) }
-        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryLevel(data: Data([$0]))) }
+        #expect(characteristic.data == data)
+        #expect(characteristic.level == percentage)
+        #expect(characteristic.description == "34%")
+        #expect(GATTBatteryLevel(level: percentage) != nil)  
+        #expect(GATTBatteryLevel.uuid == .batteryLevel)
+        #expect(GATTBatteryLevel(data: data) == GATTBatteryLevel(data: data))
+        (0 ... 100).forEach { #expect(GATTBatteryLevel(data: Data([$0])) != nil)  }
+        (101 ... UInt8.max).forEach { #expect(GATTBatteryLevel(data: Data([$0])) == nil)  }
         
         // test percentage
-        XCTAssertEqual(GATTBatteryPercentage.unitType.description, "0x27AD (percentage)")
-        XCTAssertEqual(GATTBatteryPercentage.unitType.type, "org.bluetooth.unit.percentage")
-        XCTAssertEqual(GATTBatteryPercentage.unitType, .percentage)
-        (0 ... 100).forEach { XCTAssertNotNil(GATTBatteryPercentage(rawValue: $0)) }
-        (101 ... UInt8.max).forEach { XCTAssertNil(GATTBatteryPercentage(rawValue: $0)) }
+        #expect(GATTBatteryPercentage.unitType.description == "0x27AD (percentage)")
+        #expect(GATTBatteryPercentage.unitType.type == "org.bluetooth.unit.percentage")
+        #expect(GATTBatteryPercentage.unitType == .percentage)
+        (0 ... 100).forEach { #expect(GATTBatteryPercentage(rawValue: $0) != nil)  }
+        (101 ... UInt8.max).forEach { #expect(GATTBatteryPercentage(rawValue: $0) == nil)  }
     }
     
-    func testSupportedNewAlertCategory() {
+    @Test func supportedNewAlertCategory() {
         
         let data = Data([0x0a])
         
         guard let characteristic = GATTSupportedNewAlertCategory(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.categories, [.call, .email], "The value 0x0a is interpreted that this server supports “Call” and “Email” categories.")
+        #expect(characteristic.data == data)
+        #expect(characteristic.categories == [.call, .email], "The value 0x0a is interpreted that this server supports “Call” and “Email” categories.")
     }
     
-    func testAlertCategoryIdBitMask() {
+    @Test func alertCategoryIdBitMask() {
         
         let data = Data([0x03])
         
         guard let characteristic = GATTAlertCategoryBitMask(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.categories, [.simpleAlert, .email], "The value 0x03 is interpreted as “Simple Alert and Email bits set")
+        #expect(characteristic.data == data)
+        #expect(characteristic.categories == [.simpleAlert, .email], "The value 0x03 is interpreted as “Simple Alert and Email bits set")
     }
     
-    func testNewAlert() {
+    @Test func newAlert() {
         
         typealias Information = GATTNewAlert.Information
         
         let data = Data([0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64])
         
         guard let characteristic = GATTNewAlert(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
+        #expect(characteristic.data == data)
         
         // The value 0x01, 0x04, 0x52, 0x69, 0x63, 0x68, 0x61, 0x72, 0x64 are interpreted that the server has 4 new email messages and the last message was sent by “Richard”.
-        XCTAssertEqual(characteristic.category, .email)
-        XCTAssertEqual(characteristic.newAlertsCount, 4)
-        XCTAssertEqual(characteristic.information.rawValue, "Richard")
+        #expect(characteristic.category == .email)
+        #expect(characteristic.newAlertsCount == 4)
+        #expect(characteristic.information.rawValue == "Richard")
         
-        XCTAssertNil(Information(rawValue: "Alsey Coleman Miller ABCDEFGHIJKLMNOP"))
-        XCTAssertNotNil(Information(rawValue: ""))
-        XCTAssertNotNil(Information(rawValue: "Alsey Coleman"))
+        #expect(Information(rawValue: "Alsey Coleman Miller ABCDEFGHIJKLMNOP") == nil)
+        #expect(Information(rawValue: "") != nil)
+        #expect(Information(rawValue: "Alsey Coleman") != nil)
     }
     
-    func testAlertCategoryID() {
+    @Test func alertCategoryID() {
         
         let data = Data([0x01])
         
         guard let characteristic = GATTAlertCategory(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
+        #expect(characteristic.data == data)
         
-        XCTAssertEqual(characteristic, .email, "The value 0x01 is interpreted as “Email”")
+        #expect(characteristic == .email, "The value 0x01 is interpreted as “Email”")
     }
     
-    func testSupportedUnreadAlertCategory() {
+    @Test func supportedUnreadAlertCategory() {
         
         let data = Data([0x03])
         
         guard let characteristic = GATTSupportedUnreadAlertCategory(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic, GATTSupportedUnreadAlertCategory(data: Data([0x03, 0x00])))
-        XCTAssertEqual(characteristic.categories, [.email, .simpleAlert], "The value 0x03 is interpreted that this server supports “Simple Alert” and “Email” categories for unread alert.")
+        #expect(characteristic.data == data)
+        #expect(characteristic == GATTSupportedUnreadAlertCategory(data: Data([0x03, 0x00])))
+        #expect(characteristic.categories == [.email, .simpleAlert], "The value 0x03 is interpreted that this server supports “Simple Alert” and “Email” categories for unread alert.")
         
     }
     
-    func testUnreadAlertStatus() {
+    @Test func unreadAlertStatus() {
         
         let data = Data([0x01, 0x04])
         
         guard let characteristic = GATTUnreadAlertStatus(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
+        #expect(characteristic.data == data)
         
         // The value 0x01, 0x04 are interpreted that the server has 4 unread messages in Email category.
-        XCTAssertEqual(characteristic.category, .email)
-        XCTAssertEqual(characteristic.unreadCount, 4)
+        #expect(characteristic.category == .email)
+        #expect(characteristic.unreadCount == 4)
     }
     
-    func testAlertNotificationControlPoint() {
+    @Test func alertNotificationControlPoint() {
         
         let data = Data([0x02, 0x01])
         
         guard let characteristic = GATTAlertNotificationControlPoint(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
+        #expect(characteristic.data == data)
         
         // The data 0x02 0x01 interprets “Disable New Incoming Notification for Email Category”.
-        XCTAssertEqual(characteristic.command, .disableNewIncomingAlertNotification)
-        XCTAssertEqual(characteristic.category, .email)
+        #expect(characteristic.command == .disableNewIncomingAlertNotification)
+        #expect(characteristic.category == .email)
     }
     
-    func testBloodPressureMeasurement() {
+    @Test func bloodPressureMeasurement() {
         
         typealias Unit = GATTBloodPressureMeasurement.Unit
         typealias CompoundValue = GATTBloodPressureMeasurement.CompoundValue
         typealias MeasurementStatus = GATTBloodPressureMeasurement.MeasurementStatus
         
-        XCTAssertEqual(Unit.mmHg.unit, .millimetreOfMercury)
-        XCTAssertEqual(Unit.kPa.unit, .pascalPressure)
-        XCTAssertEqual(.mmHg, Unit(unit: .millimetreOfMercury))
-        XCTAssertEqual(.kPa, Unit(unit: .pascalPressure))
+        #expect(Unit.mmHg.unit == .millimetreOfMercury)
+        #expect(Unit.kPa.unit == .pascalPressure)
+        #expect(.mmHg == Unit(unit: .millimetreOfMercury))
+        #expect(.kPa == Unit(unit: .pascalPressure))
         
         let characteristic = GATTBloodPressureMeasurement(compoundValue:
             CompoundValue(unit: .kPa,
@@ -238,340 +238,340 @@ final class GATTCharacteristicTests: XCTestCase {
             measurementStatus: .all
         )
         
-        XCTAssertEqual(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()), Array(characteristic.data))
+        #expect(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()) == Array(characteristic.data))
     }
     
-    func testAltitude() {
+    @Test func altitude() {
         
         let data = Data([0x00, 0x00])
         let altitude = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
         guard let characteristic = GATTAltitude(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic, 0)
-        XCTAssertEqual(characteristic.rawValue, altitude)
-        XCTAssertEqual(characteristic.description, "0")
-        XCTAssertEqual(GATTAltitude.uuid, .altitude)
-        XCTAssert(GATTAltitude(data: data) == GATTAltitude(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic == 0)
+        #expect(characteristic.rawValue == altitude)
+        #expect(characteristic.description == "0")
+        #expect(GATTAltitude.uuid == .altitude)
+        #expect(GATTAltitude(data: data) == GATTAltitude(data: data))
     }
     
-    func testAerobicHeartRateLowerLimit() {
+    @Test func aerobicHeartRateLowerLimit() {
         
         typealias BeatsPerMinute = GATTAerobicHeartRateLowerLimit.BeatsPerMinute
         
-        XCTAssertNil(GATTAerobicHeartRateLowerLimit(data: Data([0x3d, 0x72])))
+        #expect(GATTAerobicHeartRateLowerLimit(data: Data([0x3d, 0x72])) == nil)
         
         let data = Data([0x22])
         
         let beats: BeatsPerMinute = 34
         
         guard let characteristic = GATTAerobicHeartRateLowerLimit(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.beats, beats)
-        XCTAssertEqual(characteristic.description, "34")
-        XCTAssertEqual(beats.description, "34")
-        XCTAssertEqual(GATTAerobicHeartRateLowerLimit.uuid, .aerobicHeartRateLowerLimit)
-        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+        #expect(characteristic.data == data)
+        #expect(characteristic.beats == beats)
+        #expect(characteristic.description == "34")
+        #expect(beats.description == "34")
+        #expect(GATTAerobicHeartRateLowerLimit.uuid == .aerobicHeartRateLowerLimit)
+        #expect(BeatsPerMinute.unitType == .beatsPerMinute)
     }
     
-    func testAerobicHeartRateUpperLimit() {
+    @Test func aerobicHeartRateUpperLimit() {
         
         typealias BeatsPerMinute = GATTAerobicHeartRateUpperLimit.BeatsPerMinute
         
-        XCTAssertNil(GATTAerobicHeartRateUpperLimit(data: Data([0x3d, 0x72])))
+        #expect(GATTAerobicHeartRateUpperLimit(data: Data([0x3d, 0x72])) == nil)
         
         let data = Data([0x22])
         
         let beats: BeatsPerMinute = 34
         
         guard let characteristic = GATTAerobicHeartRateUpperLimit(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.beats, beats)
-        XCTAssertEqual(characteristic.description, "34")
-        XCTAssertEqual(beats.description, "34")
-        XCTAssertEqual(GATTAerobicHeartRateUpperLimit.uuid, .aerobicHeartRateUpperLimit)
-        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+        #expect(characteristic.data == data)
+        #expect(characteristic.beats == beats)
+        #expect(characteristic.description == "34")
+        #expect(beats.description == "34")
+        #expect(GATTAerobicHeartRateUpperLimit.uuid == .aerobicHeartRateUpperLimit)
+        #expect(BeatsPerMinute.unitType == .beatsPerMinute)
     }
     
-    func testAlertLevel() {
+    @Test func alertLevel() {
         
         let data = Data([0x01])
         
         guard let characteristic = GATTAlertLevel(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic, .mild, "The value 0x01 should be interpreted as mild Alert")
-        XCTAssertEqual(GATTAlertLevel.uuid, .alertLevel)
+        #expect(characteristic.data == data)
+        #expect(characteristic == .mild, "The value 0x01 should be interpreted as mild Alert")
+        #expect(GATTAlertLevel.uuid == .alertLevel)
     }
     
-    func testAerobicThreshold() {
+    @Test func aerobicThreshold() {
         
         typealias BeatsPerMinute = GATTAerobicThreshold.BeatsPerMinute
         
-        XCTAssertNil(GATTAerobicThreshold(data: Data([0x4f, 0x45])))
+        #expect(GATTAerobicThreshold(data: Data([0x4f, 0x45])) == nil)
         
         let data = Data([0x32])
         
         let beats: BeatsPerMinute = 50
         
         guard let characteristic = GATTAerobicThreshold(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.beats, beats)
-        XCTAssertEqual(characteristic.description, "50")
-        XCTAssertEqual(beats.description, "50")
-        XCTAssertEqual(GATTAerobicThreshold.uuid, .aerobicThreshold)
-        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
+        #expect(characteristic.data == data)
+        #expect(characteristic.beats == beats)
+        #expect(characteristic.description == "50")
+        #expect(beats.description == "50")
+        #expect(GATTAerobicThreshold.uuid == .aerobicThreshold)
+        #expect(BeatsPerMinute.unitType == .beatsPerMinute)
     }
     
-    func testAge() {
+    @Test func age() {
         
         typealias Year = GATTAge.Year
         
-        XCTAssertNil(GATTAge(data: Data([0x4f, 0x45])))
+        #expect(GATTAge(data: Data([0x4f, 0x45])) == nil)
         
         let data = Data([0x32])
         
         let year: Year = 50
         
         guard let characteristic = GATTAge(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.year, year)
-        XCTAssertEqual(characteristic.description, "50")
-        XCTAssertEqual(year.description, "50")
-        XCTAssertEqual(GATTAge.uuid, .age)
-        XCTAssertEqual(Year.unitType, .year)
+        #expect(characteristic.data == data)
+        #expect(characteristic.year == year)
+        #expect(characteristic.description == "50")
+        #expect(year.description == "50")
+        #expect(GATTAge.uuid == .age)
+        #expect(Year.unitType == .year)
     }
     
-    func testAlertStatus() {
+    @Test func alertStatus() {
         
         let data = Data([0x37])
         
         guard let characteristic = GATTAlertStatus(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssert(characteristic.states.contains(.ringer))
-        XCTAssert(characteristic.states.contains(.displayAlert))
-        XCTAssert(characteristic.states.contains(.vibrate))
-        XCTAssert(characteristic.states.contains(GATTAlertStatus.State.allCases))
-        XCTAssertEqual(characteristic.description, "55")
-        XCTAssertEqual(GATTAlertStatus.uuid, .alertStatus)
-        XCTAssert(GATTAlertStatus(data: data) == GATTAlertStatus(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.states.contains(.ringer))
+        #expect(characteristic.states.contains(.displayAlert))
+        #expect(characteristic.states.contains(.vibrate))
+        #expect(characteristic.states.contains(GATTAlertStatus.State.allCases))
+        #expect(characteristic.description == "55")
+        #expect(GATTAlertStatus.uuid == .alertStatus)
+        #expect(GATTAlertStatus(data: data) == GATTAlertStatus(data: data))
     }
 
-    func testAnaerobicHeartRateLowerLimit() {
+    @Test func anaerobicHeartRateLowerLimit() {
         
         typealias BeatsPerMinute = GATTAnaerobicHeartRateLowerLimit.BeatsPerMinute
         
-        XCTAssertNil(GATTAnaerobicHeartRateLowerLimit(data: Data([0x3d, 0x72])))
+        #expect(GATTAnaerobicHeartRateLowerLimit(data: Data([0x3d, 0x72])) == nil)
         
         let data = Data([0x22])
         
         let beats: BeatsPerMinute = 34
         
         guard let characteristic = GATTAnaerobicHeartRateLowerLimit(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.beats, beats)
-        XCTAssertEqual(characteristic.description, "34")
-        XCTAssertEqual(beats.description, "34")
-        XCTAssertEqual(GATTAnaerobicHeartRateLowerLimit.uuid, .anaerobicHeartRateLowerLimit)
-        XCTAssertEqual(GATTAnaerobicHeartRateLowerLimit(data: data), GATTAnaerobicHeartRateLowerLimit(data: data))
-        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
-        XCTAssertNotEqual(GATTAnaerobicHeartRateLowerLimit(data: Data([0x4f])), GATTAnaerobicHeartRateLowerLimit(data: Data([0x5e])))
+        #expect(characteristic.data == data)
+        #expect(characteristic.beats == beats)
+        #expect(characteristic.description == "34")
+        #expect(beats.description == "34")
+        #expect(GATTAnaerobicHeartRateLowerLimit.uuid == .anaerobicHeartRateLowerLimit)
+        #expect(GATTAnaerobicHeartRateLowerLimit(data: data) == GATTAnaerobicHeartRateLowerLimit(data: data))
+        #expect(BeatsPerMinute.unitType == .beatsPerMinute)
+        #expect(GATTAnaerobicHeartRateLowerLimit(data: Data([0x4f])) != GATTAnaerobicHeartRateLowerLimit(data: Data([0x5e])))
     }
     
-    func testAnaerobicHeartRateUpperLimit() {
+    @Test func anaerobicHeartRateUpperLimit() {
         
         typealias BeatsPerMinute = GATTAnaerobicHeartRateUpperLimit.BeatsPerMinute
         
-        XCTAssertNil(GATTAnaerobicHeartRateUpperLimit(data: Data([0x3d, 0x72])))
+        #expect(GATTAnaerobicHeartRateUpperLimit(data: Data([0x3d, 0x72])) == nil)
         
         let data = Data([0x22])
         
         let beats: BeatsPerMinute = 34
         
         guard let characteristic = GATTAnaerobicHeartRateUpperLimit(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.beats, beats)
-        XCTAssertEqual(characteristic.description, "34")
-        XCTAssertEqual(beats.description, "34")
-        XCTAssertEqual(GATTAnaerobicHeartRateUpperLimit.uuid, .anaerobicHeartRateUpperLimit)
-        XCTAssertEqual(GATTAnaerobicHeartRateUpperLimit(data: data), GATTAnaerobicHeartRateUpperLimit(data: data))
-        XCTAssertEqual(BeatsPerMinute.unitType, .beatsPerMinute)
-        XCTAssertNotEqual(GATTAnaerobicHeartRateUpperLimit(data: Data([0x4f])), GATTAnaerobicHeartRateUpperLimit(data: Data([0x5e])))
+        #expect(characteristic.data == data)
+        #expect(characteristic.beats == beats)
+        #expect(characteristic.description == "34")
+        #expect(beats.description == "34")
+        #expect(GATTAnaerobicHeartRateUpperLimit.uuid == .anaerobicHeartRateUpperLimit)
+        #expect(GATTAnaerobicHeartRateUpperLimit(data: data) == GATTAnaerobicHeartRateUpperLimit(data: data))
+        #expect(BeatsPerMinute.unitType == .beatsPerMinute)
+        #expect(GATTAnaerobicHeartRateUpperLimit(data: Data([0x4f])) != GATTAnaerobicHeartRateUpperLimit(data: Data([0x5e])))
     }
     
-    func testBarometricPressureTrend() {
+    @Test func barometricPressureTrend() {
         
-        XCTAssertNil(GATTBarometricPressureTrend(data: Data([0x3d, 0x72])))
-        XCTAssertNil(GATTBarometricPressureTrend(data: Data([0xFF])))
+        #expect(GATTBarometricPressureTrend(data: Data([0x3d, 0x72])) == nil)
+        #expect(GATTBarometricPressureTrend(data: Data([0xFF])) == nil)
         
         let data = Data([0x01])
         
         guard let characteristic = GATTBarometricPressureTrend(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(GATTBarometricPressureTrend(data: Data([0x01])), GATTBarometricPressureTrend.continuouslyFalling)
-        XCTAssertEqual(GATTBarometricPressureTrend.uuid, .barometricPressureTrend)
-        XCTAssertEqual(GATTBarometricPressureTrend.unitType, .unitless)
-        XCTAssertEqual(GATTBarometricPressureTrend(data: data), GATTBarometricPressureTrend(data: data))
+        #expect(characteristic.data == data)
+        #expect(GATTBarometricPressureTrend(data: Data([0x01])) == GATTBarometricPressureTrend.continuouslyFalling)
+        #expect(GATTBarometricPressureTrend.uuid == .barometricPressureTrend)
+        #expect(GATTBarometricPressureTrend.unitType == .unitless)
+        #expect(GATTBarometricPressureTrend(data: data) == GATTBarometricPressureTrend(data: data))
     }
     
-    func testAnalogOutput() {
+    @Test func analogOutput() {
         
         let data = Data([0x00, 0x00])
         let output = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
         guard let characteristics = GATTAnalogOutput(data: data)
-        else { XCTFail("Could not decode from bytes"); return }
+        else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.output, output)
-        XCTAssertEqual(characteristics.description, "0")
-        XCTAssertEqual(GATTAnalogOutput.uuid, .analogOutput)
-        XCTAssertEqual(GATTAnalogOutput(data: data), GATTAnalogOutput(data: data))
+        #expect(characteristics.data == data)
+        #expect(characteristics.output == output)
+        #expect(characteristics.description == "0")
+        #expect(GATTAnalogOutput.uuid == .analogOutput)
+        #expect(GATTAnalogOutput(data: data) == GATTAnalogOutput(data: data))
     }
     
-    func testAnalog() {
+    @Test func analog() {
         
         let data = Data([0x00, 0x00])
         let analog = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         
         guard let characteristics = GATTAnalog(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.analog, analog)
-        XCTAssertEqual(characteristics.description, "0")
-        XCTAssertEqual(GATTAnalog.uuid, .analog)
-        XCTAssertEqual(GATTAnalog(data: data), GATTAnalog(data: data))
+        #expect(characteristics.data == data)
+        #expect(characteristics.analog == analog)
+        #expect(characteristics.description == "0")
+        #expect(GATTAnalog.uuid == .analog)
+        #expect(GATTAnalog(data: data) == GATTAnalog(data: data))
     }
     
-    func testBootMouseInputReport() {
+    @Test func bootMouseInputReport() {
         
-        XCTAssertNil(GATTBootMouseInputReport(data: Data([0x3d, 0x72])))
+        #expect(GATTBootMouseInputReport(data: Data([0x3d, 0x72])) == nil)
         
         let data = Data([0x01])
         
         guard let characteristic = GATTBootMouseInputReport(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.description, "1")
-        XCTAssertEqual(characteristic, 1)
-        XCTAssertEqual(GATTBootMouseInputReport.uuid, .bootMouseInputReport)
+        #expect(characteristic.data == data)
+        #expect(characteristic.description == "1")
+        #expect(characteristic == 1)
+        #expect(GATTBootMouseInputReport.uuid == .bootMouseInputReport)
     }
     
-    func testBootKeyboardInputReport() {
+    @Test func bootKeyboardInputReport() {
         
-        XCTAssertNil(GATTBootKeyboardInputReport(data: Data([0x3d, 0x72])))
+        #expect(GATTBootKeyboardInputReport(data: Data([0x3d, 0x72])) == nil)
         
         let data = Data([0x01])
         
         guard let characteristic = GATTBootKeyboardInputReport(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.description, "1")
-        XCTAssertEqual(characteristic, 1)
-        XCTAssertEqual(GATTBootKeyboardInputReport.uuid, .bootKeyboardInputReport)
+        #expect(characteristic.data == data)
+        #expect(characteristic.description == "1")
+        #expect(characteristic == 1)
+        #expect(GATTBootKeyboardInputReport.uuid == .bootKeyboardInputReport)
     }
     
-    func testBootKeyboardOutputReport() {
+    @Test func bootKeyboardOutputReport() {
         
-        XCTAssertNil(GATTBootKeyboardOutputReport(data: Data([0x3d, 0x72])))
+        #expect(GATTBootKeyboardOutputReport(data: Data([0x3d, 0x72])) == nil)
         
         let data = Data([0x01])
         
         guard let characteristic = GATTBootKeyboardOutputReport(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.description, "1")
-        XCTAssertEqual(characteristic, 1)
-        XCTAssertEqual(GATTBootKeyboardOutputReport.uuid, .bootKeyboardOutputReport)
+        #expect(characteristic.data == data)
+        #expect(characteristic.description == "1")
+        #expect(characteristic == 1)
+        #expect(GATTBootKeyboardOutputReport.uuid == .bootKeyboardOutputReport)
     }
     
-    func testBatteryPowerState() {
+    @Test func batteryPowerState() {
         
         let data = Data([0b00_01_10_11])
         
         guard let characteristic = GATTBatteryPowerState(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.presentState, .unknown)
-        XCTAssertEqual(characteristic.dischargeState, .notSupported)
-        XCTAssertEqual(characteristic.chargeState, .notCharging)
-        XCTAssertEqual(characteristic.levelState, .criticallyLow)
-        XCTAssertEqual(GATTBatteryPowerState.uuid, .batteryPowerState)
-        XCTAssertEqual(GATTBatteryPowerState(data: data), GATTBatteryPowerState(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.presentState == .unknown)
+        #expect(characteristic.dischargeState == .notSupported)
+        #expect(characteristic.chargeState == .notCharging)
+        #expect(characteristic.levelState == .criticallyLow)
+        #expect(GATTBatteryPowerState.uuid == .batteryPowerState)
+        #expect(GATTBatteryPowerState(data: data) == GATTBatteryPowerState(data: data))
     }
     
-    func testBodySensorLocation() {
+    @Test func bodySensorLocation() {
         
         let data = Data([0x01])
         
         guard let characteristic = GATTBodySensorLocation(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
+        #expect(characteristic.data == data, "Encoded data does not match expected encoded data")
         
         // enum values
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00])), .other, "The value 0x00 should be interpreted as Other")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01])), .chest, "The value 0x01 should be interpreted as Chest")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02])), .wrist, "The value 0x02 should be interpreted as Wrist")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03])), .finger, "The value 0x03 should be interpreted as Finger")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04])), .hand, "The value 0x04 should be interpreted as Hand")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05])), .earLobe, "The value 0x05 should be interpreted as Ear Lobe")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06])), .foot, "The value 0x06 should be interpreted as Foot")
+        #expect(GATTBodySensorLocation(data: Data([0x00])) == .other, "The value 0x00 should be interpreted as Other")
+        #expect(GATTBodySensorLocation(data: Data([0x01])) == .chest, "The value 0x01 should be interpreted as Chest")
+        #expect(GATTBodySensorLocation(data: Data([0x02])) == .wrist, "The value 0x02 should be interpreted as Wrist")
+        #expect(GATTBodySensorLocation(data: Data([0x03])) == .finger, "The value 0x03 should be interpreted as Finger")
+        #expect(GATTBodySensorLocation(data: Data([0x04])) == .hand, "The value 0x04 should be interpreted as Hand")
+        #expect(GATTBodySensorLocation(data: Data([0x05])) == .earLobe, "The value 0x05 should be interpreted as Ear Lobe")
+        #expect(GATTBodySensorLocation(data: Data([0x06])) == .foot, "The value 0x06 should be interpreted as Foot")
         
         // text values
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x00]))?.description, "Other", "The value 0x00 should be interpreted as Other")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x01]))?.description, "Chest", "The value 0x01 should be interpreted as Chest")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x02]))?.description, "Wrist", "The value 0x02 should be interpreted as Wrist")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x03]))?.description, "Finger", "The value 0x03 should be interpreted as Finger")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x04]))?.description, "Hand", "The value 0x04 should be interpreted as Hand")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x05]))?.description, "Ear Lobe", "The value 0x05 should be interpreted as Ear Lobe")
-        XCTAssertEqual(GATTBodySensorLocation(data: Data([0x06]))?.description, "Foot", "The value 0x06 should be interpreted as Foot")
+        #expect(GATTBodySensorLocation(data: Data([0x00]))?.description == "Other", "The value 0x00 should be interpreted as Other")
+        #expect(GATTBodySensorLocation(data: Data([0x01]))?.description == "Chest", "The value 0x01 should be interpreted as Chest")
+        #expect(GATTBodySensorLocation(data: Data([0x02]))?.description == "Wrist", "The value 0x02 should be interpreted as Wrist")
+        #expect(GATTBodySensorLocation(data: Data([0x03]))?.description == "Finger", "The value 0x03 should be interpreted as Finger")
+        #expect(GATTBodySensorLocation(data: Data([0x04]))?.description == "Hand", "The value 0x04 should be interpreted as Hand")
+        #expect(GATTBodySensorLocation(data: Data([0x05]))?.description == "Ear Lobe", "The value 0x05 should be interpreted as Ear Lobe")
+        #expect(GATTBodySensorLocation(data: Data([0x06]))?.description == "Foot", "The value 0x06 should be interpreted as Foot")
         
         // GATT characteristic UUID
-        XCTAssertEqual(GATTBodySensorLocation.uuid, .bodySensorLocation)
+        #expect(GATTBodySensorLocation.uuid == .bodySensorLocation)
         
         // equality
-        XCTAssertEqual(GATTBodySensorLocation(data: data), GATTBodySensorLocation(data: data))
+        #expect(GATTBodySensorLocation(data: data) == GATTBodySensorLocation(data: data))
     }
     
-    func testCentralAddressResolution() {
+    @Test func centralAddressResolution() {
         
         let data = Data([0x01])
         
         guard let characteristic = GATTCentralAddressResolution(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data, "Encoded data does not match expected encoded data")
-        XCTAssertEqual(characteristic, true, "The value 0x01 should be interpreted as Supported")
-        XCTAssertEqual(GATTCentralAddressResolution.uuid, .centralAddressResolution)
-        XCTAssertEqual(GATTCentralAddressResolution(data: Data([0x00])), false, "The value 0x00 should be interpreted as Not Supported")
+        #expect(characteristic.data == data, "Encoded data does not match expected encoded data")
+        #expect(characteristic == true, "The value 0x01 should be interpreted as Supported")
+        #expect(GATTCentralAddressResolution.uuid == .centralAddressResolution)
+        #expect(GATTCentralAddressResolution(data: Data([0x00])) == false, "The value 0x00 should be interpreted as Not Supported")
     }
     
-    func testBodyCompositionMeasurement() {
+    @Test func bodyCompositionMeasurement() {
         
         let emptyUnit16 = UInt16(littleEndian: UInt16(bytes: (0x00, 0x00)))
         let data = Data([0x00, 0x00, 0x00, 0x00])
@@ -587,13 +587,13 @@ final class GATTCharacteristicTests: XCTestCase {
         let inc = Length(unit: .inch)
         
         guard let kilogram = kg
-            else { XCTFail("Could not init mass"); return }
+            else { Issue.record("Could not init mass"); return }
         guard let metre = mt
-            else { XCTFail("Could not init mass"); return }
+            else { Issue.record("Could not init mass"); return }
         guard let pound = lb
-            else { XCTFail("Could not init mass"); return }
+            else { Issue.record("Could not init mass"); return }
         guard let inch = inc
-            else { XCTFail("Could not init mass"); return }
+            else { Issue.record("Could not init mass"); return }
         
         let siMass = BodyMass(rawValue: emptyUnit16, unit: kilogram)
         let imperialMass = BodyMass(rawValue: emptyUnit16, unit: pound)
@@ -616,187 +616,187 @@ final class GATTCharacteristicTests: XCTestCase {
         let complexData = complexCharacteristic.data
         let complexFlag = complexCharacteristic.flags
         
-        XCTAssertEqual(complexFlag, complexCharacteristic.flags)
-        XCTAssertEqual(complexData, complexCharacteristic.data)
+        #expect(complexFlag == complexCharacteristic.flags)
+        #expect(complexData == complexCharacteristic.data)
         
         guard let complexCharacteristic2 = GATTBodyCompositionMeasurement(data: complexData)
-            else { XCTFail("Could not decode from bytes"); return }
-        XCTAssertEqual(complexCharacteristic2.data, complexData)
+            else { Issue.record("Could not decode from bytes"); return }
+        #expect(complexCharacteristic2.data == complexData)
         
-        XCTAssertEqual(Mass(unit: .kilogram), siMass.unit)
-        XCTAssertNil(Mass(unit: .absorbedDose))
-        XCTAssertEqual(kilogram.unit, UnitIdentifier.kilogram)
+        #expect(Mass(unit: .kilogram) == siMass.unit)
+        #expect(Mass(unit: .absorbedDose) == nil)
+        #expect(kilogram.unit == UnitIdentifier.kilogram)
         
-        XCTAssertEqual(Length(unit: .metre), siLenght.unit)
-        XCTAssertNil(Length(unit: .absorbedDose))
-        XCTAssertEqual(inch.unit, UnitIdentifier.inch)
+        #expect(Length(unit: .metre) == siLenght.unit)
+        #expect(Length(unit: .absorbedDose) == nil)
+        #expect(inch.unit == UnitIdentifier.inch)
         
-        XCTAssertEqual(Mass.kilogram, siMass.unit)
-        XCTAssertEqual(Mass.pound, imperialMass.unit)
+        #expect(Mass.kilogram == siMass.unit)
+        #expect(Mass.pound == imperialMass.unit)
         
-        XCTAssertEqual(Length.metre, siLenght.unit)
-        XCTAssertEqual(Length.inch, imperialLenght.unit)
+        #expect(Length.metre == siLenght.unit)
+        #expect(Length.inch == imperialLenght.unit)
         
-        XCTAssert(GATTBodyPercentage(rawValue: emptyUnit16) == GATTBodyPercentage(rawValue: emptyUnit16))
-        XCTAssertEqual(GATTBodyPercentage(rawValue: emptyUnit16).description, "0%")
-        XCTAssertEqual(GATTBodyPercentage.unitType, .percentage)
+        #expect(GATTBodyPercentage(rawValue: emptyUnit16) == GATTBodyPercentage(rawValue: emptyUnit16))
+        #expect(GATTBodyPercentage(rawValue: emptyUnit16).description == "0%")
+        #expect(GATTBodyPercentage.unitType == .percentage)
         
-        XCTAssert(GATTBodyResistance(rawValue: emptyUnit16) == GATTBodyResistance(rawValue: emptyUnit16))
-        XCTAssertEqual(GATTBodyResistance(rawValue: emptyUnit16).description, "0")
-        XCTAssertEqual(GATTBodyResistance.unitType, .electricResistance)
+        #expect(GATTBodyResistance(rawValue: emptyUnit16) == GATTBodyResistance(rawValue: emptyUnit16))
+        #expect(GATTBodyResistance(rawValue: emptyUnit16).description == "0")
+        #expect(GATTBodyResistance.unitType == .electricResistance)
         
-        XCTAssert(GATTBodyEnergy(rawValue: emptyUnit16) == GATTBodyEnergy(rawValue: emptyUnit16))
-        XCTAssertEqual(GATTBodyEnergy(rawValue: emptyUnit16).description, "0")
-        XCTAssertEqual(GATTBodyEnergy.unitType, .energy)
+        #expect(GATTBodyEnergy(rawValue: emptyUnit16) == GATTBodyEnergy(rawValue: emptyUnit16))
+        #expect(GATTBodyEnergy(rawValue: emptyUnit16).description == "0")
+        #expect(GATTBodyEnergy.unitType == .energy)
         
-        XCTAssert(BodyMass(rawValue: emptyUnit16, unit: kilogram) == BodyMass(rawValue: emptyUnit16, unit: kilogram))
-        XCTAssertEqual(BodyMass(rawValue: emptyUnit16, unit: kilogram).description, "0")
+        #expect(BodyMass(rawValue: emptyUnit16, unit: kilogram) == BodyMass(rawValue: emptyUnit16, unit: kilogram))
+        #expect(BodyMass(rawValue: emptyUnit16, unit: kilogram).description == "0")
         
-        XCTAssert(BodyLength(rawValue: emptyUnit16, unit: inch) == BodyLength(rawValue: emptyUnit16, unit: inch))
-        XCTAssertEqual(BodyLength(rawValue: emptyUnit16, unit: inch).description, "0")
+        #expect(BodyLength(rawValue: emptyUnit16, unit: inch) == BodyLength(rawValue: emptyUnit16, unit: inch))
+        #expect(BodyLength(rawValue: emptyUnit16, unit: inch).description == "0")
         
         guard let characteristic = GATTBodyCompositionMeasurement(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertNil(GATTBodyCompositionMeasurement(data: Data([0x00, 0x00])))
-        XCTAssertNil(GATTBodyCompositionMeasurement(data: Data([0x00, 0x00, 0x00])))
+        #expect(GATTBodyCompositionMeasurement(data: Data([0x00, 0x00])) == nil)
+        #expect(GATTBodyCompositionMeasurement(data: Data([0x00, 0x00, 0x00])) == nil)
         
-        XCTAssertEqual(characteristic.data, data)
+        #expect(characteristic.data == data)
         
-        XCTAssertEqual(GATTBodyCompositionMeasurement.uuid, .bodyCompositionMeasurement)
+        #expect(GATTBodyCompositionMeasurement.uuid == .bodyCompositionMeasurement)
     }
     
-    func testCGMSessionRunTime() {
+    @Test func cGMSessionRunTime() {
         
         let data = Data([0x1f, 0xe5, 0x81, 0xa2])
         
         guard let characteristic = GATTCGMSessionRunTime(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.sessionRunTime, 0xe51f)
-        XCTAssertEqual(characteristic.sessionRunTime.description, "58655")
-        XCTAssertEqual(characteristic.description, "58655 41601")
+        #expect(characteristic.data == data)
+        #expect(characteristic.sessionRunTime == 0xe51f)
+        #expect(characteristic.sessionRunTime.description == "58655")
+        #expect(characteristic.description == "58655 41601")
         
-        XCTAssertEqual(GATTCGMSessionRunTime.uuid, .cgmSessionRunTime)
-        XCTAssertEqual(GATTCGMSessionRunTime.Hour.unitType, .hour)
-        XCTAssertEqual(GATTCGMSessionRunTime(data: data), GATTCGMSessionRunTime(data: data))
+        #expect(GATTCGMSessionRunTime.uuid == .cgmSessionRunTime)
+        #expect(GATTCGMSessionRunTime.Hour.unitType == .hour)
+        #expect(GATTCGMSessionRunTime(data: data) == GATTCGMSessionRunTime(data: data))
         
-        XCTAssertEqual(GATTE2ecrc(rawValue: 470), 470)
-        XCTAssertEqual(GATTE2ecrc(rawValue: 470).description, "470")
+        #expect(GATTE2ecrc(rawValue: 470) == 470)
+        #expect(GATTE2ecrc(rawValue: 470).description == "470")
     }
     
-    func testModelNumberString() {
+    @Test func modelNumberString() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristic = GATTModelNumber(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, "bluetooth")
-        XCTAssertEqual(characteristic.description, "bluetooth")
-        XCTAssertEqual(GATTModelNumber.uuid, .modelNumberString)
-        XCTAssertEqual(GATTModelNumber(data: data), "bluetooth")
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == "bluetooth")
+        #expect(characteristic.description == "bluetooth")
+        #expect(GATTModelNumber.uuid == .modelNumberString)
+        #expect(GATTModelNumber(data: data) == "bluetooth")
     }
     
-    func testFirmwareRevisionString() {
+    @Test func firmwareRevisionString() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristic = GATTFirmwareRevisionString(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, "bluetooth")
-        XCTAssertEqual(characteristic.description, "bluetooth")
-        XCTAssertEqual(GATTFirmwareRevisionString.uuid, .firmwareRevisionString)
-        XCTAssertEqual(GATTFirmwareRevisionString(data: data), "bluetooth")
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == "bluetooth")
+        #expect(characteristic.description == "bluetooth")
+        #expect(GATTFirmwareRevisionString.uuid == .firmwareRevisionString)
+        #expect(GATTFirmwareRevisionString(data: data) == "bluetooth")
     }
     
-    func testSoftwareRevisionString() {
+    @Test func softwareRevisionString() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristic = GATTSoftwareRevisionString(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, "bluetooth")
-        XCTAssertEqual(characteristic.description, "bluetooth")
-        XCTAssertEqual(GATTSoftwareRevisionString.uuid, .softwareRevisionString)
-        XCTAssertEqual(GATTSoftwareRevisionString(data: data), "bluetooth")
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == "bluetooth")
+        #expect(characteristic.description == "bluetooth")
+        #expect(GATTSoftwareRevisionString.uuid == .softwareRevisionString)
+        #expect(GATTSoftwareRevisionString(data: data) == "bluetooth")
     }
     
-    func testHardwareRevisionString() {
+    @Test func hardwareRevisionString() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristic = GATTHardwareRevisionString(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, "bluetooth")
-        XCTAssertEqual(characteristic.description, "bluetooth")
-        XCTAssertEqual(GATTHardwareRevisionString.uuid, .hardwareRevisionString)
-        XCTAssertEqual(GATTHardwareRevisionString(data: data), "bluetooth")
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == "bluetooth")
+        #expect(characteristic.description == "bluetooth")
+        #expect(GATTHardwareRevisionString.uuid == .hardwareRevisionString)
+        #expect(GATTHardwareRevisionString(data: data) == "bluetooth")
     }
     
-    func testSerialNumberString() {
+    @Test func serialNumberString() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristic = GATTSerialNumberString(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, "bluetooth")
-        XCTAssertEqual(characteristic.description, "bluetooth")
-        XCTAssertEqual(GATTSerialNumberString.uuid, .serialNumberString)
-        XCTAssertEqual(GATTSerialNumberString(data: data), "bluetooth")
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == "bluetooth")
+        #expect(characteristic.description == "bluetooth")
+        #expect(GATTSerialNumberString.uuid == .serialNumberString)
+        #expect(GATTSerialNumberString(data: data) == "bluetooth")
     }
     
-    func testManufacturerNameString() {
+    @Test func manufacturerNameString() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristic = GATTManufacturerNameString(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, "bluetooth")
-        XCTAssertEqual(characteristic.description, "bluetooth")
-        XCTAssertEqual(GATTManufacturerNameString.uuid, .manufacturerNameString)
-        XCTAssertEqual(GATTManufacturerNameString(data: data), "bluetooth")
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == "bluetooth")
+        #expect(characteristic.description == "bluetooth")
+        #expect(GATTManufacturerNameString.uuid == .manufacturerNameString)
+        #expect(GATTManufacturerNameString(data: data) == "bluetooth")
     }
     
-    func testPnPID() {
+    @Test func pnPID() {
         
         let data = Data([0x02, 0x01, 0x5f, 0x01, 0x5f, 0x01, 0x5f])
         
         guard let characteristic = GATTPnPID(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.vendorIdSource, .fromVendorIDValue)
-        XCTAssertEqual(characteristic.description, "2 24321 24321 24321")
-        XCTAssertEqual(GATTPnPID.uuid, .pnpId)
-        XCTAssertEqual(GATTPnPID(data: data), GATTPnPID(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.vendorIdSource == .fromVendorIDValue)
+        #expect(characteristic.description == "2 24321 24321 24321")
+        #expect(GATTPnPID.uuid == .pnpId)
+        #expect(GATTPnPID(data: data) == GATTPnPID(data: data))
         
-        XCTAssertEqual(characteristic.vendorIdSource.description, "2")
-        XCTAssertEqual(characteristic.vendorId, 24321)
-        XCTAssertEqual(characteristic.productId, 24321)
-        XCTAssertEqual(characteristic.productId, 24321)
+        #expect(characteristic.vendorIdSource.description == "2")
+        #expect(characteristic.vendorId == 24321)
+        #expect(characteristic.productId == 24321)
+        #expect(characteristic.productId == 24321)
     }
     
-    func testSystemID() {
+    @Test func systemID() {
         
-        XCTAssertEqual(GATTSystemID.uuid, .systemId)
+        #expect(GATTSystemID.uuid == .systemId)
         
-        XCTAssertNil(GATTSystemID(data: Data([])))
-        XCTAssertNil(GATTSystemID(data: Data([0xff])))
-        XCTAssertNil(GATTSystemID(data: Data([0xff, 0xff])))
-        XCTAssertNil(GATTSystemID(data: Data([0xff, 0xff, 0xff])))
+        #expect(GATTSystemID(data: Data([])) == nil)
+        #expect(GATTSystemID(data: Data([0xff])) == nil)
+        #expect(GATTSystemID(data: Data([0xff, 0xff])) == nil)
+        #expect(GATTSystemID(data: Data([0xff, 0xff, 0xff])) == nil)
         
         do {
             
@@ -813,310 +813,310 @@ final class GATTCharacteristicTests: XCTestCase {
             let characteristic = GATTSystemID(manufacturerIdentifier: manufacturerIdentifier,
                                               organizationallyUniqueIdentifier: organizationallyUniqueIdentifier)
                         
-            XCTAssertEqual(characteristic.manufacturerIdentifier, manufacturerIdentifier)
-            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, organizationallyUniqueIdentifier)
-            XCTAssertEqual(characteristic.description, "123456FFFE9ABCDE")
-            XCTAssertEqual(characteristic.rawValue, 0x123456FFFE9ABCDE)
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic, GATTSystemID(data: data))
-            XCTAssertEqual(characteristic, GATTSystemID(address: address))
+            #expect(characteristic.manufacturerIdentifier == manufacturerIdentifier)
+            #expect(characteristic.organizationallyUniqueIdentifier == organizationallyUniqueIdentifier)
+            #expect(characteristic.description == "123456FFFE9ABCDE")
+            #expect(characteristic.rawValue == 0x123456FFFE9ABCDE)
+            #expect(characteristic.data == data)
+            #expect(characteristic == GATTSystemID(data: data))
+            #expect(characteristic == GATTSystemID(address: address))
         }
         
         do {
             let data = Data([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
             
             guard let characteristic = GATTSystemID(data: data)
-                else { XCTFail("Could not decode from bytes"); return }
+                else { Issue.record("Could not decode from bytes"); return }
             
-            XCTAssertEqual(characteristic.manufacturerIdentifier, 0x0000000000000000)
-            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 0x0000000000000000)
-            XCTAssertEqual(characteristic.description, "0000000000000000")
-            XCTAssertEqual(characteristic.rawValue, 0x0000000000000000)
-            XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
+            #expect(characteristic.manufacturerIdentifier == 0x0000000000000000)
+            #expect(characteristic.organizationallyUniqueIdentifier == 0x0000000000000000)
+            #expect(characteristic.description == "0000000000000000")
+            #expect(characteristic.rawValue == 0x0000000000000000)
+            #expect(GATTSystemID(data: data) == GATTSystemID(data: data))
         }
         
         do {
             let data = Data([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
             
             guard let characteristic = GATTSystemID(data: data)
-                else { XCTFail("Could not decode from bytes"); return }
+                else { Issue.record("Could not decode from bytes"); return }
             
-            XCTAssertEqual(characteristic.manufacturerIdentifier, 1099511627775)
-            XCTAssertEqual(characteristic.organizationallyUniqueIdentifier, 16777215)
-            XCTAssertEqual(characteristic.description, "FFFFFFFFFFFFFFFF")
-            XCTAssertEqual(characteristic.rawValue, 0xFFFFFFFFFFFFFFFF)
-            XCTAssertEqual(GATTSystemID(data: data), GATTSystemID(data: data))
+            #expect(characteristic.manufacturerIdentifier == 1099511627775)
+            #expect(characteristic.organizationallyUniqueIdentifier == 16777215)
+            #expect(characteristic.description == "FFFFFFFFFFFFFFFF")
+            #expect(characteristic.rawValue == 0xFFFFFFFFFFFFFFFF)
+            #expect(GATTSystemID(data: data) == GATTSystemID(data: data))
         }
     }
     
-    func testIndoorPositioningConfiguration() {
+    @Test func indoorPositioningConfiguration() {
         
         typealias Configuration = GATTIndoorPositioningConfiguration.Configuration
         
         let data = Data([0b00111111])
         
         guard let characteristic = GATTIndoorPositioningConfiguration(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
         let configurations: BitMaskOptionSet<Configuration> = [.coordinates, .coordinateSystemUsed, .txPowerField, .altitudeField, .floorNumber, .locationName]
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.configurations, configurations, "The value 0x03 is interpreted as “Simple Alert and Email bits set")
-        XCTAssertEqual(GATTIndoorPositioningConfiguration.uuid, .indoorPositioningConfiguration)
+        #expect(characteristic.data == data)
+        #expect(characteristic.configurations == configurations, "The value 0x03 is interpreted as “Simple Alert and Email bits set")
+        #expect(GATTIndoorPositioningConfiguration.uuid == .indoorPositioningConfiguration)
     }
     
-    func testLatitude() {
+    @Test func latitude() {
         
         let data = Data([0xEA, 0x00, 0x00, 0x00])
         let latitude = Int32(bitPattern: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3]))))
         
         guard let characteristic = GATTLatitude(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic, 234)
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, latitude)
-        XCTAssertEqual(characteristic.description, "234")
-        XCTAssertEqual(GATTLatitude.uuid, .latitude)
-        XCTAssertEqual(GATTLatitude(data: data), GATTLatitude(data: data))
+        #expect(characteristic == 234)
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == latitude)
+        #expect(characteristic.description == "234")
+        #expect(GATTLatitude.uuid == .latitude)
+        #expect(GATTLatitude(data: data) == GATTLatitude(data: data))
     }
     
-    func testLongitude() {
+    @Test func longitude() {
         
         let data = Data([0xEA, 0x00, 0x00, 0x00])
         let longitude = Int32(bitPattern: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3]))))
         
         guard let characteristic = GATTLongitude(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic, 234)
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, longitude)
-        XCTAssertEqual(characteristic.description, "234")
-        XCTAssertEqual(GATTLongitude.uuid, .longitude)
-        XCTAssertEqual(GATTLongitude(data: data), GATTLongitude(data: data))
+        #expect(characteristic == 234)
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == longitude)
+        #expect(characteristic.description == "234")
+        #expect(GATTLongitude.uuid == .longitude)
+        #expect(GATTLongitude(data: data) == GATTLongitude(data: data))
     }
     
-    func testLocalNorthCoordinate() {
+    @Test func localNorthCoordinate() {
         
         let data = Data([0xEA, 0x00])
         let localNorthCoordinate = Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
         guard let characteristic = GATTLocalNorthCoordinate(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic, 234)
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, localNorthCoordinate)
-        XCTAssertEqual(characteristic.description, "234")
-        XCTAssertEqual(GATTLocalNorthCoordinate.uuid, .localNorthCoordinate)
-        XCTAssertEqual(GATTLocalNorthCoordinate(data: data), GATTLocalNorthCoordinate(data: data))
+        #expect(characteristic == 234)
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == localNorthCoordinate)
+        #expect(characteristic.description == "234")
+        #expect(GATTLocalNorthCoordinate.uuid == .localNorthCoordinate)
+        #expect(GATTLocalNorthCoordinate(data: data) == GATTLocalNorthCoordinate(data: data))
     }
     
-    func testLocalEastCoordinate() {
+    @Test func localEastCoordinate() {
         
         let data = Data([0xEA, 0x00])
         let localEastCoordinate = Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
         
         guard let characteristic = GATTLocalEastCoordinate(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic, 234)
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, localEastCoordinate)
-        XCTAssertEqual(characteristic.description, "234")
-        XCTAssertEqual(GATTLocalEastCoordinate.uuid, .localEastCoordinate)
-        XCTAssertEqual(GATTLocalEastCoordinate(data: data), GATTLocalEastCoordinate(data: data))
+        #expect(characteristic == 234)
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == localEastCoordinate)
+        #expect(characteristic.description == "234")
+        #expect(GATTLocalEastCoordinate.uuid == .localEastCoordinate)
+        #expect(GATTLocalEastCoordinate(data: data) == GATTLocalEastCoordinate(data: data))
     }
     
-    func testFloorNumber() {
+    @Test func floorNumber() {
         
         let data = Data([0xEA])
         
         guard let characteristic = GATTFloorNumber(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic, 234)
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, data[0])
-        XCTAssertEqual(characteristic.description, "234")
-        XCTAssertEqual(GATTFloorNumber.uuid, .floorNumber)
-        XCTAssertEqual(GATTFloorNumber(data: data), GATTFloorNumber(data: data))
+        #expect(characteristic == 234)
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == data[0])
+        #expect(characteristic.description == "234")
+        #expect(GATTFloorNumber.uuid == .floorNumber)
+        #expect(GATTFloorNumber(data: data) == GATTFloorNumber(data: data))
     }
     
-    func testUncertainty() {
+    @Test func uncertainty() {
         
         let data = Data([0b0111_1111])
         
         guard let characteristic = GATTUncertainty(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.stationary, .mobile)
-        XCTAssertEqual(characteristic.updateTime, .upTo3541s)
-        XCTAssertEqual(characteristic.precision, .unknown)
-        XCTAssertEqual(GATTUncertainty.uuid, .uncertainty)
-        XCTAssertEqual(GATTUncertainty(data: data), GATTUncertainty(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.stationary == .mobile)
+        #expect(characteristic.updateTime == .upTo3541s)
+        #expect(characteristic.precision == .unknown)
+        #expect(GATTUncertainty.uuid == .uncertainty)
+        #expect(GATTUncertainty(data: data) == GATTUncertainty(data: data))
     }
     
-    func testLocationName() {
+    @Test func locationName() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristic = GATTLocationName(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.rawValue, "bluetooth")
-        XCTAssertEqual(characteristic.description, "bluetooth")
-        XCTAssertEqual(GATTLocationName.uuid, .locationName)
-        XCTAssertEqual(GATTLocationName(data: data), "bluetooth")
+        #expect(characteristic.data == data)
+        #expect(characteristic.rawValue == "bluetooth")
+        #expect(characteristic.description == "bluetooth")
+        #expect(GATTLocationName.uuid == .locationName)
+        #expect(GATTLocationName(data: data) == "bluetooth")
     }
     
-    func testDayOfWeek() {
+    @Test func dayOfWeek() {
         
         let data = Data([7])
         
         guard let characteristic = GATTDayOfWeek(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.day, .sunday)
-        XCTAssertEqual(characteristic.description, "7")
-        XCTAssertEqual(GATTDayOfWeek.uuid, .dayOfWeek)
-        XCTAssertEqual(GATTDayOfWeek.Day.unitType, .day)
-        XCTAssertEqual(GATTDayOfWeek(data: data), GATTDayOfWeek(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.day == .sunday)
+        #expect(characteristic.description == "7")
+        #expect(GATTDayOfWeek.uuid == .dayOfWeek)
+        #expect(GATTDayOfWeek.Day.unitType == .day)
+        #expect(GATTDayOfWeek(data: data) == GATTDayOfWeek(data: data))
     }
     
-    func testDayDateTime() {
+    @Test func dayDateTime() {
         
         do {
             let data = Data([203, 7, 4, 24, 12, 5, 30, 7])
             
             guard let characteristic = GATTDayDateTime(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.dateTime.data, Data([203, 7, 4, 24, 12, 5, 30]))
-            XCTAssertEqual(characteristic.dayOfWeek, GATTDayOfWeek(day: .sunday))
-            XCTAssertEqual(characteristic.dayOfWeek.day, .sunday)
-            XCTAssertEqual(GATTDayDateTime.uuid, .dayDateTime)
-            XCTAssertEqual(GATTDayDateTime(data: data), GATTDayDateTime(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.dateTime.data == Data([203, 7, 4, 24, 12, 5, 30]))
+            #expect(characteristic.dayOfWeek == GATTDayOfWeek(day: .sunday))
+            #expect(characteristic.dayOfWeek.day == .sunday)
+            #expect(GATTDayDateTime.uuid == .dayDateTime)
+            #expect(GATTDayDateTime(data: data) == GATTDayDateTime(data: data))
         }
     }
     
-    func testExactTime100() {
+    @Test func exactTime100() {
         
         do {
             let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 45])
             
             guard let characteristic = GATTExactTime100(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.dayDateTime.data, Data([203, 7, 4, 24, 12, 5, 30, 7]))
-            XCTAssertEqual(characteristic.fraction100, GATTExactTime100.Second(rawValue: 45))
-            XCTAssertEqual(GATTExactTime100.uuid, .exactTime100)
-            XCTAssertEqual(GATTExactTime100(data: data), GATTExactTime100(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.dayDateTime.data == Data([203, 7, 4, 24, 12, 5, 30, 7]))
+            #expect(characteristic.fraction100 == GATTExactTime100.Second(rawValue: 45))
+            #expect(GATTExactTime100.uuid == .exactTime100)
+            #expect(GATTExactTime100(data: data) == GATTExactTime100(data: data))
         }
     }
     
-    func testExactTime256() {
+    @Test func exactTime256() {
         
         do {
             let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245])
             
             guard let characteristic = GATTExactTime256(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.dayDateTime.data, Data([203, 7, 4, 24, 12, 5, 30, 7]))
-            XCTAssertEqual(characteristic.fractions256, 245)
-            XCTAssertEqual(GATTExactTime256.uuid, .exactTime256)
-            XCTAssertEqual(GATTExactTime256(data: data), GATTExactTime256(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.dayDateTime.data == Data([203, 7, 4, 24, 12, 5, 30, 7]))
+            #expect(characteristic.fractions256 == 245)
+            #expect(GATTExactTime256.uuid == .exactTime256)
+            #expect(GATTExactTime256(data: data) == GATTExactTime256(data: data))
         }
     }
     
-    func testTimeZone() {
+    @Test func timeZone() {
         
-        XCTAssertNil(GATTTimeZone(rawValue: -50))
-        XCTAssertNil(GATTTimeZone(rawValue: 70))
-        XCTAssertNotNil(GATTTimeZone(rawValue: -128))
+        #expect(GATTTimeZone(rawValue: -50) == nil)
+        #expect(GATTTimeZone(rawValue: 70) == nil)
+        #expect(GATTTimeZone(rawValue: -128) != nil)
         
         do {
             let data = Data([0x0c])
             
             guard let characteristic = GATTTimeZone(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.rawValue, 12)
-            XCTAssertEqual(GATTTimeZone.uuid, .timeZone)
-            XCTAssertEqual(GATTTimeZone(data: data), GATTTimeZone(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.rawValue == 12)
+            #expect(GATTTimeZone.uuid == .timeZone)
+            #expect(GATTTimeZone(data: data) == GATTTimeZone(data: data))
         }
     }
     
-    func testDstOffset() {
+    @Test func dstOffset() {
         
         let data = Data([4])
         
         guard let characteristic = GATTDstOffset(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic, .daylightTime)
-        XCTAssertEqual(characteristic.description, "4")
-        XCTAssertEqual(GATTDstOffset.uuid, .dstOffset)
-        XCTAssertEqual(GATTDstOffset(data: data), GATTDstOffset(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic == .daylightTime)
+        #expect(characteristic.description == "4")
+        #expect(GATTDstOffset.uuid == .dstOffset)
+        #expect(GATTDstOffset(data: data) == GATTDstOffset(data: data))
     }
     
-    func testLocalTimeInformation() {
+    @Test func localTimeInformation() {
         
         do {
             let data = Data([0x0c, 4])
             
             guard let characteristic = GATTLocalTimeInformation(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.timeZone.data, Data([0x0c]))
-            XCTAssertEqual(characteristic.dstOffset, .daylightTime)
-            XCTAssertEqual(GATTLocalTimeInformation.uuid, .localTimeInformation)
-            XCTAssertEqual(GATTLocalTimeInformation(data: data), GATTLocalTimeInformation(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.timeZone.data == Data([0x0c]))
+            #expect(characteristic.dstOffset == .daylightTime)
+            #expect(GATTLocalTimeInformation.uuid == .localTimeInformation)
+            #expect(GATTLocalTimeInformation(data: data) == GATTLocalTimeInformation(data: data))
         }
     }
     
-    func testTimeSource() {
+    @Test func timeSource() {
         
         let data = Data([1])
         
         guard let characteristic = GATTTimeSource(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic, .networkTimeProtocol)
-        XCTAssertEqual(characteristic.description, "1")
-        XCTAssertEqual(GATTTimeSource.uuid, .timeSource)
-        XCTAssertEqual(GATTTimeSource(data: data), GATTTimeSource(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic == .networkTimeProtocol)
+        #expect(characteristic.description == "1")
+        #expect(GATTTimeSource.uuid == .timeSource)
+        #expect(GATTTimeSource(data: data) == GATTTimeSource(data: data))
     }
     
-    func testTimeAccuracy() {
+    @Test func timeAccuracy() {
         
         do {
             let data = Data([0x0c])
             
             guard let characteristic = GATTTimeAccuracy(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.rawValue, 12)
-            XCTAssertEqual(characteristic.description, "12")
-            XCTAssertEqual(characteristic, 12)
-            XCTAssertEqual(GATTTimeAccuracy.uuid, .timeAccuracy)
-            XCTAssertEqual(GATTTimeAccuracy(data: data), GATTTimeAccuracy(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.rawValue == 12)
+            #expect(characteristic.description == "12")
+            #expect(characteristic == 12)
+            #expect(GATTTimeAccuracy.uuid == .timeAccuracy)
+            #expect(GATTTimeAccuracy(data: data) == GATTTimeAccuracy(data: data))
         }
     }
     
-    func testReferenceTimeInfomation() {
+    @Test func referenceTimeInfomation() {
         
         do {
             typealias Day = GATTReferenceTimeInformation.Day
@@ -1125,37 +1125,37 @@ final class GATTCharacteristicTests: XCTestCase {
             let data = Data([0x03, 0x0b, 5, 6])
             
             guard let characteristic = GATTReferenceTimeInformation(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.timeSource, .radioTimeSignal)
-            XCTAssertEqual(characteristic.timeAccuracy.rawValue, 0x0b)
-            XCTAssertEqual(characteristic.daysSinceUpdate, 5)
-            XCTAssertEqual(characteristic.daysSinceUpdate.description, "5")
-            XCTAssertEqual(characteristic.hoursSinceUpdate.rawValue , 6)
-            XCTAssertEqual(characteristic.hoursSinceUpdate.description , "6")
-            XCTAssertEqual(Day.unitType, .day)
-            XCTAssertEqual(Hour.unitType, .hour)
-            XCTAssertEqual(GATTReferenceTimeInformation.uuid, .referenceTimeInformation)
-            XCTAssertEqual(GATTReferenceTimeInformation(data: data), GATTReferenceTimeInformation(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.timeSource == .radioTimeSignal)
+            #expect(characteristic.timeAccuracy.rawValue == 0x0b)
+            #expect(characteristic.daysSinceUpdate == 5)
+            #expect(characteristic.daysSinceUpdate.description == "5")
+            #expect(characteristic.hoursSinceUpdate.rawValue == 6)
+            #expect(characteristic.hoursSinceUpdate.description == "6")
+            #expect(Day.unitType == .day)
+            #expect(Hour.unitType == .hour)
+            #expect(GATTReferenceTimeInformation.uuid == .referenceTimeInformation)
+            #expect(GATTReferenceTimeInformation(data: data) == GATTReferenceTimeInformation(data: data))
         }
     }
     
-    func testTimeBroadcast() {
+    @Test func timeBroadcast() {
         let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245, 0x0c, 4, 0x03, 0x0b, 5, 6])
         
         guard let characteristic = GATTTimeBroadcast(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.time, GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
-        XCTAssertEqual(characteristic.localTime, GATTLocalTimeInformation(data: Data([0x0c, 4])))
-        XCTAssertEqual(characteristic.referenceTime, GATTReferenceTimeInformation(data: Data([0x03, 0x0b, 5, 6])))
-        XCTAssertEqual(GATTTimeBroadcast.uuid, .timeBroadcast)
-        XCTAssertEqual(GATTTimeBroadcast(data: data), GATTTimeBroadcast(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.time == GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
+        #expect(characteristic.localTime == GATTLocalTimeInformation(data: Data([0x0c, 4])))
+        #expect(characteristic.referenceTime == GATTReferenceTimeInformation(data: Data([0x03, 0x0b, 5, 6])))
+        #expect(GATTTimeBroadcast.uuid == .timeBroadcast)
+        #expect(GATTTimeBroadcast(data: data) == GATTTimeBroadcast(data: data))
     }
     
-    func testCrossTrainerData() {
+    @Test func crossTrainerData() {
         
         typealias KilometerPerHour = GATTCrossTrainerData.KilometerPerHour
         typealias MetreBit24 = GATTCrossTrainerData.Metre.Bit24
@@ -1170,11 +1170,11 @@ final class GATTCharacteristicTests: XCTestCase {
         typealias MetabolicEquivalent = GATTCrossTrainerData.MetabolicEquivalent
         typealias Time = GATTCrossTrainerData.Time
         
-        XCTAssertNil(GATTCrossTrainerData(data: Data([0x00, 0x00])))
+        #expect(GATTCrossTrainerData(data: Data([0x00, 0x00])) == nil)
         
         do {
             let data = Data([0b00000000, 0b00000000, 0b00000000])
-            XCTAssertNotNil(GATTCrossTrainerData(data: data))
+            #expect(GATTCrossTrainerData(data: data) != nil)
         }
         
         do {
@@ -1196,46 +1196,46 @@ final class GATTCharacteristicTests: XCTestCase {
                              0x05, 0x05 // remainingTime
                 ])
             guard let characteristic = GATTCrossTrainerData(data: data)
-                else { XCTFail("Could not decode from bytes"); return }
+                else { Issue.record("Could not decode from bytes"); return }
             
-            XCTAssertNotNil(characteristic)
-            XCTAssertEqual(GATTCrossTrainerData.uuid, .crossTrainerData)
-            XCTAssertEqual(characteristic.instantaneousSpeed, KilometerPerHour(rawValue: 1285))
-            XCTAssertEqual(characteristic.averageSpeed, KilometerPerHour(rawValue: 1285))
-            XCTAssertEqual(characteristic.totalDistance, MetreBit24(rawValue: 328965))
-            XCTAssertEqual(characteristic.stepPerMinute, StepPerMinute(rawValue: 1285))
-            XCTAssertEqual(characteristic.averageStepRate, StepPerMinute(rawValue: 1285))
-            XCTAssertEqual(characteristic.strideCount, UnitlessUnsigned(rawValue: 1285))
-            XCTAssertEqual(characteristic.positiveElevationGain, MetreBit16(rawValue: 1285))
-            XCTAssertEqual(characteristic.negativeElevationGain, MetreBit16(rawValue: 1285))
-            XCTAssertEqual(characteristic.inclination, Percentage(rawValue: 1285))
-            XCTAssertEqual(characteristic.rampAngleSetting, PlainAngleDegree(rawValue: 1285))
-            XCTAssertEqual(characteristic.resistanceLevel, UnitlessSigned(rawValue: 1285))
-            XCTAssertEqual(characteristic.instantaneousPower, Power(rawValue: 1285))
-            XCTAssertEqual(characteristic.averagePower, Power(rawValue: 1285))
-            XCTAssertEqual(characteristic.totalEnergy, GATTKilogramCalorie.Bits16(rawValue: 1285))
-            XCTAssertEqual(characteristic.energyPerHour, GATTKilogramCalorie.Bits16(rawValue: 1285))
-            XCTAssertEqual(characteristic.energyPerMinute, GATTKilogramCalorie.Byte(rawValue: 5))
-            XCTAssertEqual(characteristic.heartRate, GATTBeatsPerMinute.Byte(rawValue: 5))
-            XCTAssertEqual(characteristic.metabolicEquivalent, MetabolicEquivalent(rawValue: 5))
-            XCTAssertEqual(characteristic.elapsedTime, Time(rawValue: 1285))
-            XCTAssertEqual(characteristic.remainingTime, Time(rawValue: 1285))
+            #expect(characteristic != nil)
+            #expect(GATTCrossTrainerData.uuid == .crossTrainerData)
+            #expect(characteristic.instantaneousSpeed == KilometerPerHour(rawValue: 1285))
+            #expect(characteristic.averageSpeed == KilometerPerHour(rawValue: 1285))
+            #expect(characteristic.totalDistance == MetreBit24(rawValue: 328965))
+            #expect(characteristic.stepPerMinute == StepPerMinute(rawValue: 1285))
+            #expect(characteristic.averageStepRate == StepPerMinute(rawValue: 1285))
+            #expect(characteristic.strideCount == UnitlessUnsigned(rawValue: 1285))
+            #expect(characteristic.positiveElevationGain == MetreBit16(rawValue: 1285))
+            #expect(characteristic.negativeElevationGain == MetreBit16(rawValue: 1285))
+            #expect(characteristic.inclination == Percentage(rawValue: 1285))
+            #expect(characteristic.rampAngleSetting == PlainAngleDegree(rawValue: 1285))
+            #expect(characteristic.resistanceLevel == UnitlessSigned(rawValue: 1285))
+            #expect(characteristic.instantaneousPower == Power(rawValue: 1285))
+            #expect(characteristic.averagePower == Power(rawValue: 1285))
+            #expect(characteristic.totalEnergy == GATTKilogramCalorie.Bits16(rawValue: 1285))
+            #expect(characteristic.energyPerHour == GATTKilogramCalorie.Bits16(rawValue: 1285))
+            #expect(characteristic.energyPerMinute == GATTKilogramCalorie.Byte(rawValue: 5))
+            #expect(characteristic.heartRate == GATTBeatsPerMinute.Byte(rawValue: 5))
+            #expect(characteristic.metabolicEquivalent == MetabolicEquivalent(rawValue: 5))
+            #expect(characteristic.elapsedTime == Time(rawValue: 1285))
+            #expect(characteristic.remainingTime == Time(rawValue: 1285))
             
-            XCTAssertEqual(KilometerPerHour.unitType, .kilometrePerHour)
-            XCTAssertEqual(StepPerMinute.unitType, .step)
-            XCTAssertEqual(MetreBit24.unitType, .metre)
-            XCTAssertEqual(MetreBit16.unitType, .metre)
-            XCTAssertEqual(UnitlessUnsigned.unitType, .unitless)
-            XCTAssertEqual(UnitlessSigned.unitType, .unitless)
-            XCTAssertEqual(Percentage.unitType, .percentage)
-            XCTAssertEqual(PlainAngleDegree.unitType, .degree)
-            XCTAssertEqual(Power.unitType, .power)
-            XCTAssertEqual(GATTKilogramCalorie.Bits16.unitType, .kilogramCalorie)
-            XCTAssertEqual(GATTKilogramCalorie.Byte.unitType, .kilogramCalorie)
-            XCTAssertEqual(MetabolicEquivalent.unitType, .metabolicEquivalent)
-            XCTAssertEqual(Time.unitType, .second)
+            #expect(KilometerPerHour.unitType == .kilometrePerHour)
+            #expect(StepPerMinute.unitType == .step)
+            #expect(MetreBit24.unitType == .metre)
+            #expect(MetreBit16.unitType == .metre)
+            #expect(UnitlessUnsigned.unitType == .unitless)
+            #expect(UnitlessSigned.unitType == .unitless)
+            #expect(Percentage.unitType == .percentage)
+            #expect(PlainAngleDegree.unitType == .degree)
+            #expect(Power.unitType == .power)
+            #expect(GATTKilogramCalorie.Bits16.unitType == .kilogramCalorie)
+            #expect(GATTKilogramCalorie.Byte.unitType == .kilogramCalorie)
+            #expect(MetabolicEquivalent.unitType == .metabolicEquivalent)
+            #expect(Time.unitType == .second)
             
-            XCTAssertEqual(GATTCrossTrainerData(instantaneousSpeed: 1285,
+            #expect(GATTCrossTrainerData(instantaneousSpeed: 1285,
                                                 averageSpeed: 1285,
                                                 totalDistance: MetreBit24(rawValue: 328965),
                                                 stepPerMinute: 1285,
@@ -1254,79 +1254,79 @@ final class GATTCharacteristicTests: XCTestCase {
                                                 heartRate: 5,
                                                 metabolicEquivalent: 5,
                                                 elapsedTime: 1285,
-                                                remainingTime: 1285), characteristic)
+                                                remainingTime: 1285) == characteristic)
             
-            XCTAssertEqual(characteristic.flags, BitMaskOptionSet<GATTCrossTrainerData.Flag>(rawValue: UInt32(bytes: (0b11111111, 0b01111111, 0x00, 0x00))))
-            XCTAssertEqual(characteristic.data, data)
+            #expect(characteristic.flags == BitMaskOptionSet<GATTCrossTrainerData.Flag>(rawValue: UInt32(bytes: (0b11111111, 0b01111111, 0x00, 0x00))))
+            #expect(characteristic.data == data)
         }
     }
     
-    func testTimeUpdateControlPoint() {
+    @Test func timeUpdateControlPoint() {
         
         let data = Data([1])
         
         do {
             guard let characteristic = GATTTimeUpdateControlPoint(data: data)
-                else { XCTFail("Could not decode from bytes"); return }
+                else { Issue.record("Could not decode from bytes"); return }
             
-            XCTAssertEqual(characteristic.data, data)
+            #expect(characteristic.data == data)
         }
         
-        XCTAssertEqual(GATTTimeUpdateControlPoint(data: Data([1])), .getReferenceUpdate)
-        XCTAssertEqual(GATTTimeUpdateControlPoint(data: Data([2])), .cancelReferenceUpdate)
-        XCTAssertEqual(GATTTimeUpdateControlPoint.uuid, .timeUpdateControlPoint)
-        XCTAssertEqual(GATTTimeUpdateControlPoint(data: data), GATTTimeUpdateControlPoint(data: data))
+        #expect(GATTTimeUpdateControlPoint(data: Data([1])) == .getReferenceUpdate)
+        #expect(GATTTimeUpdateControlPoint(data: Data([2])) == .cancelReferenceUpdate)
+        #expect(GATTTimeUpdateControlPoint.uuid == .timeUpdateControlPoint)
+        #expect(GATTTimeUpdateControlPoint(data: data) == GATTTimeUpdateControlPoint(data: data))
     }
     
-    func testTimeUpdateState() {
+    @Test func timeUpdateState() {
         
         let data = Data([0x00, 0x02])
         
         guard let characteristic = GATTTimeUpdateState(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.currentState, .idle)
-        XCTAssertEqual(characteristic.result, .noConnectionToReference)
-        XCTAssertEqual(GATTTimeUpdateState.uuid, .timeUpdateState)
-        XCTAssertEqual(GATTTimeUpdateState(data: data), GATTTimeUpdateState(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.currentState == .idle)
+        #expect(characteristic.result == .noConnectionToReference)
+        #expect(GATTTimeUpdateState.uuid == .timeUpdateState)
+        #expect(GATTTimeUpdateState(data: data) == GATTTimeUpdateState(data: data))
     }
     
-    func testTimeWithDst() {
+    @Test func timeWithDst() {
         
         do {
             let data = Data([203, 7, 4, 24, 12, 5, 30, 8])
             
             guard let characteristic = GATTTimeWithDst(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.datetime, GATTDateTime(data: Data([203, 7, 4, 24, 12, 5, 30])))
-            XCTAssertEqual(characteristic.dstOffset, GATTDstOffset(data: Data([8])))
-            XCTAssertEqual(GATTTimeWithDst.uuid, .timeWithDst)
-            XCTAssertEqual(GATTTimeWithDst(data: data), GATTTimeWithDst(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.datetime == GATTDateTime(data: Data([203, 7, 4, 24, 12, 5, 30])))
+            #expect(characteristic.dstOffset == GATTDstOffset(data: Data([8])))
+            #expect(GATTTimeWithDst.uuid == .timeWithDst)
+            #expect(GATTTimeWithDst(data: data) == GATTTimeWithDst(data: data))
         }
     }
     
-    func testCurrentTime() {
+    @Test func currentTime() {
         let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245, 0b00001111])
         
         guard let characteristic = GATTCurrentTime(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.exactTime, GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
-        XCTAssertEqual(characteristic.adjustReason, BitMaskOptionSet<GATTCurrentTime.Flag>(rawValue: 0b00001111))
-        XCTAssertEqual(GATTCurrentTime.uuid, .currentTime)
-        XCTAssertEqual(GATTCurrentTime(data: data), GATTCurrentTime(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.exactTime == GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
+        #expect(characteristic.adjustReason == BitMaskOptionSet<GATTCurrentTime.Flag>(rawValue: 0b00001111))
+        #expect(GATTCurrentTime.uuid == .currentTime)
+        #expect(GATTCurrentTime(data: data) == GATTCurrentTime(data: data))
         
-        XCTAssertTrue(characteristic.adjustReason.contains(.manualTimeUpdate))
-        XCTAssertTrue(characteristic.adjustReason.contains(.externalReference))
-        XCTAssertTrue(characteristic.adjustReason.contains(.timeZoneChange))
-        XCTAssertTrue(characteristic.adjustReason.contains(.dstChange))
+        #expect(characteristic.adjustReason.contains(.manualTimeUpdate))
+        #expect(characteristic.adjustReason.contains(.externalReference))
+        #expect(characteristic.adjustReason.contains(.timeZoneChange))
+        #expect(characteristic.adjustReason.contains(.dstChange))
     }
     
-    func testSecondaryTimeZone() {
+    @Test func secondaryTimeZone() {
         
         typealias TimeZone = GATTSecondaryTimeZone.TimeZone
         typealias RelativeInformation = GATTSecondaryTimeZone.RelativeInformation
@@ -1334,120 +1334,120 @@ final class GATTCharacteristicTests: XCTestCase {
         let data = Data([0b10000011, 0x0c, 4])
         
         guard let characteristic = GATTSecondaryTimeZone(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.timeZone, .atDestination)
-        XCTAssertEqual(characteristic.relativeInformation, .localTime)
-        XCTAssertEqual(GATTSecondaryTimeZone.uuid, .secondaryTimeZone)
-        XCTAssertEqual(GATTSecondaryTimeZone(data: data), GATTSecondaryTimeZone(data: data))
+        #expect(characteristic.data == data)
+        #expect(characteristic.timeZone == .atDestination)
+        #expect(characteristic.relativeInformation == .localTime)
+        #expect(GATTSecondaryTimeZone.uuid == .secondaryTimeZone)
+        #expect(GATTSecondaryTimeZone(data: data) == GATTSecondaryTimeZone(data: data))
     }
     
-    func testDateUTC() {
+    @Test func dateUTC() {
         
-        XCTAssertNil(GATTDateUTC.Day(rawValue: 16777215))
-        XCTAssertNotNil(GATTDateUTC.Day(rawValue: 0))
+        #expect(GATTDateUTC.Day(rawValue: 16777215) == nil)
+        #expect(GATTDateUTC.Day(rawValue: 0) != nil)
         
         do {
             let data = Data([0xFE, 0xFF, 0xFF])
             
             guard let characteristic = GATTDateUTC(data: data)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(characteristic.data, data)
-            XCTAssertEqual(characteristic.date, GATTDateUTC.Day(rawValue: 16777214))
-            XCTAssertEqual(characteristic.description, "16777214")
-            XCTAssertEqual(GATTDateUTC.uuid, .dateUtc)
-            XCTAssertEqual(GATTDateUTC.Day.unitType, .day)
-            XCTAssertEqual(GATTDateUTC(data: data), GATTDateUTC(data: data))
+            #expect(characteristic.data == data)
+            #expect(characteristic.date == GATTDateUTC.Day(rawValue: 16777214))
+            #expect(characteristic.description == "16777214")
+            #expect(GATTDateUTC.uuid == .dateUtc)
+            #expect(GATTDateUTC.Day.unitType == .day)
+            #expect(GATTDateUTC(data: data) == GATTDateUTC(data: data))
         }
     }
     
-    func testScanRefresh() {
+    @Test func scanRefresh() {
         
-        XCTAssertNil(GATTScanRefresh(data: Data([1])))
+        #expect(GATTScanRefresh(data: Data([1])) == nil)
         
         let data = Data([0x00])
         
         guard let characteristic = GATTScanRefresh(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(GATTScanRefresh.uuid, .scanRefresh)
-        XCTAssertEqual(characteristic.data, data)
-        XCTAssertEqual(characteristic.description, "0")
-        XCTAssertEqual(characteristic, .serverRequiredRefresh)
+        #expect(GATTScanRefresh.uuid == .scanRefresh)
+        #expect(characteristic.data == data)
+        #expect(characteristic.description == "0")
+        #expect(characteristic == .serverRequiredRefresh)
     }
     
-    func testScanIntervalWindow() {
+    @Test func scanIntervalWindow() {
         
         let data = Data([0x0, 0x40, 0x0, 0x40])
         
         guard let characteristics = GATTScanIntervalWindow(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.scanInterval, LowEnergyScanTimeInterval(rawValue: 16384))
-        XCTAssertEqual(characteristics.scanWindow, LowEnergyScanTimeInterval(rawValue: 16384))
-        XCTAssertEqual(GATTScanIntervalWindow.uuid, .scanIntervalWindow)
-        XCTAssertEqual(GATTScanIntervalWindow(data: data), GATTScanIntervalWindow(data: data))
+        #expect(characteristics.data == data)
+        #expect(characteristics.scanInterval == LowEnergyScanTimeInterval(rawValue: 16384))
+        #expect(characteristics.scanWindow == LowEnergyScanTimeInterval(rawValue: 16384))
+        #expect(GATTScanIntervalWindow.uuid == .scanIntervalWindow)
+        #expect(GATTScanIntervalWindow(data: data) == GATTScanIntervalWindow(data: data))
     }
     
-    func testObjectType() {
+    @Test func objectType() {
         
         let data = Data([0x0, 0x40])
         
         guard let characteristics = GATTObjectType(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.rawValue, 16384)
-        XCTAssertEqual(characteristics.description, "4000")
-        XCTAssertEqual(GATTObjectType.uuid, .objectType)
-        XCTAssertEqual(GATTObjectType(data: data), GATTObjectType(data: data))
+        #expect(characteristics.data == data)
+        #expect(characteristics.rawValue == 16384)
+        #expect(characteristics.description == "4000")
+        #expect(GATTObjectType.uuid == .objectType)
+        #expect(GATTObjectType(data: data) == GATTObjectType(data: data))
     }
     
-    func testObjectSize() {
+    @Test func objectSize() {
         
         typealias Size = GATTObjectSize.Size
         
         let data = Data([0x0A, 0x40, 0x00, 0x00, 0x0A, 0x40, 0x00, 0x00])
         
         guard let characteristics = GATTObjectSize(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.currentSize, Size(rawValue: 16394))
-        XCTAssertEqual(characteristics.allocatedSize, Size(rawValue: 16394))
-        XCTAssertEqual(GATTObjectSize.uuid, .objectSize)
-        XCTAssertEqual(GATTObjectSize(data: data), GATTObjectSize(data: data))
+        #expect(characteristics.data == data)
+        #expect(characteristics.currentSize == Size(rawValue: 16394))
+        #expect(characteristics.allocatedSize == Size(rawValue: 16394))
+        #expect(GATTObjectSize.uuid == .objectSize)
+        #expect(GATTObjectSize(data: data) == GATTObjectSize(data: data))
     }
     
-    func testObjectName() {
+    @Test func objectName() {
         
         let data = Data([0x62, 0x6c, 0x75, 0x65, 0x74, 0x6f, 0x6f, 0x74, 0x68])
         
         guard let characteristics = GATTObjectName(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(characteristics.rawValue, "bluetooth")
-        XCTAssertEqual(characteristics.description, "bluetooth")
-        XCTAssertEqual(GATTObjectName.uuid, .objectName)
-        XCTAssertEqual(GATTObjectName(data: data), GATTObjectName(data: data))
+        #expect(characteristics.data == data)
+        #expect(characteristics.rawValue == "bluetooth")
+        #expect(characteristics.description == "bluetooth")
+        #expect(GATTObjectName.uuid == .objectName)
+        #expect(GATTObjectName(data: data) == GATTObjectName(data: data))
     }
     
-    func testObjectID() {
+    @Test func objectID() {
         
         let data = Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
         
         guard let characteristics = GATTObjectID(data: data)
-            else { XCTFail("Could not decode from bytes"); return }
+            else { Issue.record("Could not decode from bytes"); return }
         
-        XCTAssertEqual(characteristics.data, data)
-        XCTAssertEqual(UInt64(characteristics.rawValue), 281474976710655)
-        XCTAssertEqual(characteristics.description, "281474976710655")
-        XCTAssertEqual(GATTObjectID.uuid, .objectId)
-        XCTAssertEqual(GATTObjectID(data: data), GATTObjectID(data: data))
+        #expect(characteristics.data == data)
+        #expect(UInt64(characteristics.rawValue) == 281474976710655)
+        #expect(characteristics.description == "281474976710655")
+        #expect(GATTObjectID.uuid == .objectId)
+        #expect(GATTObjectID(data: data) == GATTObjectID(data: data))
     }
 }
 

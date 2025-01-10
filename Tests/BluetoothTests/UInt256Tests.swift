@@ -6,24 +6,24 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import XCTest
+import Testing
 import Foundation
 @testable import Bluetooth
 
-final class UInt256Tests: XCTestCase {
+@Suite struct UInt256Tests {
     
-    func testBitWidth() {
+    @Test func bitWidth() {
         
-        XCTAssertEqual(UInt256.bitWidth, MemoryLayout<UInt256.ByteValue>.size * 8)
-        XCTAssertEqual(UInt256.bitWidth, 256)
+        #expect(UInt256.bitWidth == MemoryLayout<UInt256.ByteValue>.size * 8)
+        #expect(UInt256.bitWidth == 256)
     }
     
-    func testHashable() {
+    @Test func hashable() {
         
-        XCTAssertNotEqual(UInt256.max.hashValue, 0)
+        #expect(UInt256.max.hashValue != 0)
     }
     
-    func testExpressibleByIntegerLiteral() {
+    @Test func expressibleByIntegerLiteral() {
         
         let values: [(UInt256, String)] = [
             (UInt256.zero, "0x0000000000000000000000000000000000000000000000000000000000000000"),
@@ -33,8 +33,8 @@ final class UInt256Tests: XCTestCase {
             (0x000000000000000000000000000000000000000000000000DCBABEBAAFDE0001, "0x000000000000000000000000000000000000000000000000DCBABEBAAFDE0001")
         ]
         
-        values.forEach { XCTAssertEqual($0.description, $1) }
+        values.forEach { #expect($0.description == $1)  }
         
-        XCTAssertEqual(UInt256.zero, 0)
+        #expect(UInt256.zero == 0)
     }
 }

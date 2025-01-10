@@ -7,27 +7,27 @@
 //
 
 #if canImport(BluetoothGAP)
-import XCTest
+import Testing
 import Foundation
 import Bluetooth
 @testable import BluetoothGAP
 
-final class GAPTests: XCTestCase {
+@Suite struct GAPTests {
     
-    func testDataType() {
+    @Test func dataType() {
         
-        XCTAssertEqual(GAPDataType.flags.description, "Flags")
-        XCTAssertEqual(GAPDataType.incompleteListOf16BitServiceClassUUIDs.description, "Incomplete List of 16-bit Service Class UUIDs")
-        XCTAssertEqual(GAPDataType(rawValue: 0).description, "GAP Data Type (0)")
+        #expect(GAPDataType.flags.description == "Flags")
+        #expect(GAPDataType.incompleteListOf16BitServiceClassUUIDs.description == "Incomplete List of 16-bit Service Class UUIDs")
+        #expect(GAPDataType(rawValue: 0).description == "GAP Data Type (0)")
     }
     
-    func testFlags() {
+    @Test func flags() {
         
         let flags: GAPFlags = [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]
         
-        XCTAssertEqual(flags, 0b00000110)
-        XCTAssertEqual(flags, [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR])
-        XCTAssertEqual(flags.description, "[.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]")
+        #expect(flags == 0b00000110)
+        #expect(flags == [.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR])
+        #expect(flags.description == "[.lowEnergyGeneralDiscoverableMode, .notSupportedBREDR]")
         
         let allCases: [GAPFlags] = [
             .lowEnergyLimitedDiscoverableMode,
@@ -38,64 +38,64 @@ final class GAPTests: XCTestCase {
         ]
         
         let allFlags = allCases.sorted(by: { $0.rawValue < $1.rawValue })
-        allFlags.forEach { XCTAssertFalse($0.description.isEmpty) }
+        allFlags.forEach { #expect(!$0.description.isEmpty)  }
     }
     
-    func testBit16UUIDList() {
+    @Test func bit16UUIDList() {
         
-        XCTAssertNil(GAPUUIDList<UInt16>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
+        #expect(GAPUUIDList<UInt16>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])) == nil, 
                      "Can only initialize from multiples of 2 bytes")
         
-        XCTAssertEqual(GAPUUIDList<UInt16>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
+        #expect(GAPUUIDList<UInt16>(data: Data())?.uuids ?? [] == [], "Should initialize from empty data")
         
         do {
             // 16 bit UUIDs: 0X1803 0X1804 0X1802
             let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18])
             
             guard let list = GAPUUIDList<UInt16>(data: data)
-                else { XCTFail("Could not parse from data"); return }
+                else { Issue.record("Could not parse from data"); return }
             
-            XCTAssertEqual(Data(list), data)
-            XCTAssertEqual(list.uuids, [0x1803, 0x1804, 0x1802])
-            XCTAssertEqual(list.uuids.map { BluetoothUUID.bit16($0) }, [.linkLoss, .txPower, .immediateAlert])
+            #expect(Data(list) == data)
+            #expect(list.uuids == [0x1803, 0x1804, 0x1802])
+            #expect(list.uuids.map { BluetoothUUID.bit16($0) } == [.linkLoss, .txPower, .immediateAlert])
         }
     }
     
-    func testBit32UUIDList() {
+    @Test func bit32UUIDList() {
         
-        XCTAssertNil(GAPUUIDList<UInt32>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])),
+        #expect(GAPUUIDList<UInt32>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02])) == nil, 
                      "Can only initialize from multiples of 4 bytes")
         
-        XCTAssertEqual(GAPUUIDList<UInt32>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
+        #expect(GAPUUIDList<UInt32>(data: Data())?.uuids ?? [] == [], "Should initialize from empty data")
         
         // 32 bit UUIDs: 0x18041803 0x06041802
         let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06])
         
         guard let list = GAPUUIDList<UInt32>(data: data)
-            else { XCTFail("Could not parse from data"); return }
+            else { Issue.record("Could not parse from data"); return }
         
-        XCTAssertEqual(Data(list), data)
-        XCTAssertEqual(list.uuids, [0x18041803, 0x06041802])
+        #expect(Data(list) == data)
+        #expect(list.uuids == [0x18041803, 0x06041802])
     }
     
-    func testBit128UUIDList() {
+    @Test func bit128UUIDList() {
         
-        XCTAssertNil(GAPUUIDList<UInt128>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06])),
+        #expect(GAPUUIDList<UInt128>(data: Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06])) == nil, 
                      "Can only initialize from multiples of 16 bytes")
         
-        XCTAssertEqual(GAPUUIDList<UInt128>(data: Data())?.uuids ?? [], [], "Should initialize from empty data")
+        #expect(GAPUUIDList<UInt128>(data: Data())?.uuids ?? [] == [], "Should initialize from empty data")
         
         // 128 bit UUIDs: 0x18041803 0x06041802 0x18041803 0x18030602
         let data = Data([0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18])
         
         guard let list = GAPUUIDList<UInt128>(data: data)
-            else { XCTFail("Could not parse from data"); return }
+            else { Issue.record("Could not parse from data"); return }
         
-        XCTAssertEqual(Data(list), data)
+        #expect(Data(list) == data)
         //XCTAssertEqual(list.uuids.map { $0.description }, [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))])
     }
     
-    func testShortLocalName() {
+    @Test func shortLocalName() throws {
         
         /**
          Length Data: 0X0C
@@ -104,24 +104,24 @@ final class GAPTests: XCTestCase {
          */
         let data = Data([0x0B, 0x08, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
         let name: GAPShortLocalName = "BlueZ 5.43"
-        XCTAssertEqual(data.count, 0x0C)
-        XCTAssertEqual(data.count, 12)
-        XCTAssertEqual(name.description, "BlueZ 5.43")
+        #expect(data.count == 0x0C)
+        #expect(data.count == 12)
+        #expect(name.description == "BlueZ 5.43")
         
         var decoded = [GAPData]()
-        XCTAssertNoThrow(decoded = try GAPDataDecoder.decode(data, types: [GAPShortLocalName.self], ignoreUnknownType: false))
+        decoded = try GAPDataDecoder.decode(data, types: [GAPShortLocalName.self], ignoreUnknownType: false)
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 1)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 1)
         
         guard let nameData = decoded.first as? GAPShortLocalName
-            else { XCTFail(); return }
+            else { Issue.record(); return }
         
-        XCTAssertEqual(nameData, name)
-        XCTAssertEqual(GAPDataEncoder.encode([name]), data)
+        #expect(nameData == name)
+        #expect(GAPDataEncoder.encode([name]) == data)
     }
     
-    func testCompleteLocalName() {
+    @Test func completeLocalName() throws {
         
         /**
          Length Data: 0X0C
@@ -130,24 +130,23 @@ final class GAPTests: XCTestCase {
          */
         let data = Data([0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
         let name: GAPCompleteLocalName = "BlueZ 5.43"
-        XCTAssertEqual(data.count, 0x0C)
-        XCTAssertEqual(data.count, 12)
-        XCTAssertEqual(name.description, "BlueZ 5.43")
+        #expect(data.count == 0x0C)
+        #expect(data.count == 12)
+        #expect(name.description == "BlueZ 5.43")
         
         var decoded = [GAPData]()
-        XCTAssertNoThrow(decoded = try GAPDataDecoder.decode(data, types: [GAPCompleteLocalName.self], ignoreUnknownType: false))
+        decoded = try GAPDataDecoder.decode(data, types: [GAPCompleteLocalName.self], ignoreUnknownType: false)
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 1)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 1)
         
-        guard let nameData = decoded.first as? GAPCompleteLocalName
-            else { XCTFail(); return }
+        let nameData = try #require(decoded.first as? GAPCompleteLocalName)
         
-        XCTAssertEqual(nameData, name)
-        XCTAssertEqual(GAPDataEncoder.encode([name]), data)
+        #expect(nameData == name)
+        #expect(GAPDataEncoder.encode([name]) == data)
     }
     
-    func testCompleteListOf16BitServiceClassUUIDs() {
+    @Test func completeListOf16BitServiceClassUUIDs() {
         
         /**
          Length Data: 0X16
@@ -158,30 +157,30 @@ final class GAPTests: XCTestCase {
          */
         
         let data = Data([0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79])
-        XCTAssertEqual(data.count, 0x16)
+        #expect(data.count == 0x16)
         
         let flags: GAPFlags = 0x1A
         let uuidList: GAPCompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
         let localName: GAPCompleteLocalName = "Proximity"
         
-        XCTAssertEqual(uuidList.description, "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
+        #expect(uuidList.description == "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
         
         let expectedData: [GAPData] = [flags, uuidList, localName]
         let types = expectedData.map { type(of: $0) }
         
         guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
-            else { XCTFail("Could not decode"); return }
+            else { Issue.record("Could not decode"); return }
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 3)
-        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 3)
+        #expect(GAPDataEncoder.encode(expectedData) == data)
         
-        XCTAssertEqual(decoded[0] as! GAPFlags, flags)
-        XCTAssertEqual(decoded[1] as! GAPCompleteListOf16BitServiceClassUUIDs, uuidList)
-        XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+        #expect(decoded[0] as! GAPFlags == flags)
+        #expect(decoded[1] as! GAPCompleteListOf16BitServiceClassUUIDs == uuidList)
+        #expect(decoded[2] as! GAPCompleteLocalName == localName)
     }
     
-    func testIncompleteListOf16BitServiceClassUUIDs() {
+    @Test func incompleteListOf16BitServiceClassUUIDs() {
         
         /**
          Length Data: 0X16
@@ -192,30 +191,30 @@ final class GAPTests: XCTestCase {
          */
         
         let data = Data([0x02, 0x01, 0x1A, 0x07, 0x02, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79])
-        XCTAssertEqual(data.count, 0x16)
+        #expect(data.count == 0x16)
         
         let flags: GAPFlags = 0x1A
         let uuidList: GAPIncompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
         let localName: GAPCompleteLocalName = "Proximity"
         
-        XCTAssertEqual(uuidList.description, "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
+        #expect(uuidList.description == "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
         
         let expectedData: [GAPData] = [flags, uuidList, localName]
         let types = expectedData.map { type(of: $0) }
         
         guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
-            else { XCTFail("Could not decode"); return }
+            else { Issue.record("Could not decode"); return }
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 3)
-        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 3)
+        #expect(GAPDataEncoder.encode(expectedData) == data)
         
-        XCTAssertEqual(decoded[0] as! GAPFlags, flags)
-        XCTAssertEqual(decoded[1] as! GAPIncompleteListOf16BitServiceClassUUIDs, uuidList)
-        XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+        #expect(decoded[0] as! GAPFlags == flags)
+        #expect(decoded[1] as! GAPIncompleteListOf16BitServiceClassUUIDs == uuidList)
+        #expect(decoded[2] as! GAPCompleteLocalName == localName)
     }
     
-    func testCompleteListOf32BitServiceClassUUIDs() {
+    @Test func completeListOf32BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x2E
@@ -226,7 +225,7 @@ final class GAPTests: XCTestCase {
          */
         
         let data = Data([0x02, 0x01, 0x1A, 0x21, 0x05, 0x03, 0x18, 0x00, 0x00, 0x04, 0x18, 0x00, 0x00, 0x02, 0x18, 0x00, 0x00, 0x07, 0x01, 0x00, 0x00, 0xF4, 0x01, 0x00, 0x00, 0xF5, 0x01, 0x00, 0x00, 0xF6, 0x01, 0x00, 0x00, 0xF7, 0x01, 0x00, 0x00, 0x08, 0x09, 0x46, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x6d])
-        XCTAssertEqual(data.count, 0x2E)
+        #expect(data.count == 0x2E)
         
         let flags: GAPFlags = 0x1A
         let uuidList: GAPCompleteListOf32BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802, 0x0107, 0x01F4, 0x01F5, 0x01F6, 0x01F7]
@@ -236,18 +235,18 @@ final class GAPTests: XCTestCase {
         let types = expectedData.map { type(of: $0) }
         
         guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
-            else { XCTFail("Could not decode"); return }
+            else { Issue.record("Could not decode"); return }
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 3)
-        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 3)
+        #expect(GAPDataEncoder.encode(expectedData) == data)
         
-        XCTAssertEqual(decoded[0] as! GAPFlags, flags)
-        XCTAssertEqual(decoded[1] as! GAPCompleteListOf32BitServiceClassUUIDs, uuidList)
-        XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+        #expect(decoded[0] as! GAPFlags == flags)
+        #expect(decoded[1] as! GAPCompleteListOf32BitServiceClassUUIDs == uuidList)
+        #expect(decoded[2] as! GAPCompleteLocalName == localName)
     }
     
-    func testIncompleteListOf32BitServiceClassUUIDs() {
+    @Test func incompleteListOf32BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x2E
@@ -258,7 +257,7 @@ final class GAPTests: XCTestCase {
          */
         
         let data = Data([0x02, 0x01, 0x1A, 0x21, 0x04, 0x03, 0x18, 0x00, 0x00, 0x04, 0x18, 0x00, 0x00, 0x02, 0x18, 0x00, 0x00, 0x07, 0x01, 0x00, 0x00, 0xF4, 0x01, 0x00, 0x00, 0xF5, 0x01, 0x00, 0x00, 0xF6, 0x01, 0x00, 0x00, 0xF7, 0x01, 0x00, 0x00, 0x08, 0x09, 0x46, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x6d])
-        XCTAssertEqual(data.count, 0x2E)
+        #expect(data.count == 0x2E)
         
         let flags: GAPFlags = 0x1A
         let uuidList: GAPIncompleteListOf32BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802, 0x0107, 0x01F4, 0x01F5, 0x01F6, 0x01F7]
@@ -268,18 +267,18 @@ final class GAPTests: XCTestCase {
         let types = expectedData.map { type(of: $0) }
         
         guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
-            else { XCTFail("Could not decode"); return }
+            else { Issue.record("Could not decode"); return }
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 3)
-        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 3)
+        #expect(GAPDataEncoder.encode(expectedData) == data)
         
-        XCTAssertEqual(decoded[0] as! GAPFlags, flags)
-        XCTAssertEqual(decoded[1] as! GAPIncompleteListOf32BitServiceClassUUIDs, uuidList)
-        XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
+        #expect(decoded[0] as! GAPFlags == flags)
+        #expect(decoded[1] as! GAPIncompleteListOf32BitServiceClassUUIDs == uuidList)
+        #expect(decoded[2] as! GAPCompleteLocalName == localName)
     }
     
-    func testCompleteListOf128BitServiceClassUUIDs() {
+    @Test func completeListOf128BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x23
@@ -290,7 +289,7 @@ final class GAPTests: XCTestCase {
          */
         
         let data = Data([0x02, 0x01, 0x1a, 0x11, 0x07, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18, 0x0d, 0x09, 0x54, 0x65, 0x73, 0x74, 0x20, 0x31, 0x32, 0x38, 0x62, 0x69, 0x74, 0x73])
-        XCTAssertEqual(data.count, 0x23)
+        #expect(data.count == 0x23)
         
         let flags: GAPFlags = 0x1A
         let uuidList: GAPCompleteListOf128BitServiceClassUUIDs = [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))]
@@ -300,10 +299,10 @@ final class GAPTests: XCTestCase {
         let types = expectedData.map { type(of: $0) }
         
         guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
-            else { XCTFail("Could not decode"); return }
+            else { Issue.record("Could not decode"); return }
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 3)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 3)
         //            XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
         //
         //            XCTAssertEqual(decoded[0] as! GAPFlags, flags)
@@ -311,7 +310,7 @@ final class GAPTests: XCTestCase {
         //            XCTAssertEqual(decoded[2] as! GAPCompleteLocalName, localName)
     }
     
-    func testIncompleteListOf128BitServiceClassUUIDs() {
+    @Test func incompleteListOf128BitServiceClassUUIDs() {
         
         /**
          Length Data: 0x23
@@ -322,7 +321,7 @@ final class GAPTests: XCTestCase {
          */
         
         let data = Data([0x02, 0x01, 0x1a, 0x11, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18, 0x0d, 0x09, 0x54, 0x65, 0x73, 0x74, 0x20, 0x31, 0x32, 0x38, 0x62, 0x69, 0x74, 0x73])
-        XCTAssertEqual(data.count, 0x23)
+        #expect(data.count == 0x23)
         
         let flags: GAPFlags = 0x1A
         let uuidList: GAPIncompleteListOf128BitServiceClassUUIDs = [UUID(bytes: (0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0x18))]
@@ -332,17 +331,17 @@ final class GAPTests: XCTestCase {
         let types = expectedData.map { type(of: $0) }
         
         guard let decoded = try? GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
-            else { XCTFail("Could not decode"); return }
+            else { Issue.record("Could not decode"); return }
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 3)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 3)
     }
     
-    func testTxPowerLevel() throws {
+    @Test func txPowerLevel() throws {
         
         let data = Data([0x02, 0x0A, 0x7F])
         
-        XCTAssertEqual(data.count, 3)
+        #expect(data.count == 3)
         
         let decoder = GAPDataDecoder<Data>()
         
@@ -350,16 +349,16 @@ final class GAPTests: XCTestCase {
         
         let decoded = try decoder.decode(from: data)
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 1)
-        XCTAssertEqual(GAPDataEncoder.encode(txPowerLevel), data)
-        XCTAssertEqual(decoded[0] as? GAPTxPowerLevel, txPowerLevel)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 1)
+        #expect(GAPDataEncoder.encode(txPowerLevel) == data)
+        #expect(decoded[0] as? GAPTxPowerLevel == txPowerLevel)
     }
     
-    func testClassOfDevice() throws {
+    @Test func classOfDevice() throws {
         
         let data = Data([0x04, 0x0d, 0x18, 0xf3, 0xff])
-        XCTAssertEqual(data.count, 5)
+        #expect(data.count == 5)
         
         let encoder = GAPDataEncoder<Data>.self
         let decoder = GAPDataDecoder<Data>()
@@ -368,280 +367,277 @@ final class GAPTests: XCTestCase {
         
         let decoded = try decoder.decode(from: data)
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 1)
-        XCTAssertEqual(encoder.encode(device), data)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 1)
+        #expect(encoder.encode(device) == data)
         
-        XCTAssertEqual(decoded[0] as? GAPClassOfDevice, device)
+        #expect(decoded[0] as? GAPClassOfDevice == device)
     }
     
-    func testSlaveConnectionIntervalRange() {
+    @Test func slaveConnectionIntervalRange() {
         
         let data = Data([0x05, 0x12, 0x06, 0x00, 0x80, 0x0c])
-        XCTAssertEqual(data.count, 0x06)
+        #expect(data.count == 0x06)
         
         let encoder = GAPDataEncoder<Data>.self
         let decoder = GAPDataDecoder<Data>()
         
-        XCTAssertNil(GAPSlaveConnectionIntervalRange(range: (0xFFF4, 0xFFF1)))
-        XCTAssertNotNil(GAPSlaveConnectionIntervalRange(range: (GAPSlaveConnectionIntervalRange.min, GAPSlaveConnectionIntervalRange.min)))
-        XCTAssertNotNil(GAPSlaveConnectionIntervalRange(range: (GAPSlaveConnectionIntervalRange.max, GAPSlaveConnectionIntervalRange.max)))
+        #expect(GAPSlaveConnectionIntervalRange(range: (0xFFF4, 0xFFF1)) == nil)
+        #expect(GAPSlaveConnectionIntervalRange(range: (GAPSlaveConnectionIntervalRange.min, GAPSlaveConnectionIntervalRange.min)) != nil)
+        #expect(GAPSlaveConnectionIntervalRange(range: (GAPSlaveConnectionIntervalRange.max, GAPSlaveConnectionIntervalRange.max)) != nil)
         
         let intervalRange = GAPSlaveConnectionIntervalRange(range: (GAPSlaveConnectionIntervalRange.min, GAPSlaveConnectionIntervalRange.max))!
         
         guard let decoded = try? decoder.decode(from: data)
-            else { XCTFail("Could not decode"); return }
+            else { Issue.record("Could not decode"); return }
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 1)
-        XCTAssertEqual(encoder.encode(intervalRange), data)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 1)
+        #expect(encoder.encode(intervalRange) == data)
         
-        XCTAssertEqual(decoded[0] as? GAPSlaveConnectionIntervalRange, intervalRange)
+        #expect(decoded[0] as? GAPSlaveConnectionIntervalRange == intervalRange)
     }
     
-    func testServiceData16BitUUID() {
+    @Test func serviceData16BitUUID() {
         
-        XCTAssertNil(GAPServiceData16BitUUID<Data>(data: Data([0x4f])))
+        #expect(GAPServiceData16BitUUID<Data>(data: Data([0x4f])) == nil)
         
         do {
             let data = Data([0x4f, 0x30])
             let serviceData = GAPServiceData16BitUUID<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 2)
-            XCTAssertEqual(serviceData.serviceData.count, 0)
-            XCTAssertEqual(serviceData.data, data)
-            XCTAssertEqual(serviceData.data.count, 2)
+            #expect(MemoryLayout.size(ofValue: serviceData.uuid) == 2)
+            #expect(serviceData.serviceData.count == 0)
+            #expect(serviceData.data == data)
+            #expect(serviceData.data.count == 2)
         }
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
             let serviceData = GAPServiceData16BitUUID<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 2)
-            XCTAssertEqual(serviceData.serviceData.count, 3)
-            XCTAssertEqual(serviceData.data, data)
-            XCTAssertEqual(serviceData.data.count, 5)
+            #expect(MemoryLayout.size(ofValue: serviceData.uuid) == 2)
+            #expect(serviceData.serviceData.count == 3)
+            #expect(serviceData.data == data)
+            #expect(serviceData.data.count == 5)
         }
         
-        XCTAssertEqual(GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x45, 0xff])),
-                       GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x45, 0xff])))
+        #expect(GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x45, 0xff])) == GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x45, 0xff])))
     }
     
-    func testServiceData32BitUUID() {
+    @Test func serviceData32BitUUID() {
         
-        XCTAssertNil(GAPServiceData32BitUUID<Data>(data: Data([0x4f])))
+        #expect(GAPServiceData32BitUUID<Data>(data: Data([0x4f])) == nil)
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30])
             let serviceData = GAPServiceData32BitUUID<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
-            XCTAssertEqual(serviceData.serviceData.count, 0)
-            XCTAssertEqual(serviceData.data, data)
-            XCTAssertEqual(serviceData.data.count, 4)
+            #expect(MemoryLayout.size(ofValue: serviceData.uuid) == 4)
+            #expect(serviceData.serviceData.count == 0)
+            #expect(serviceData.data == data)
+            #expect(serviceData.data.count == 4)
         }
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
             let serviceData = GAPServiceData32BitUUID<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 4)
-            XCTAssertEqual(serviceData.serviceData.count, 1)
-            XCTAssertEqual(serviceData.data, data)
-            XCTAssertEqual(serviceData.data.count, 5)
+            #expect(MemoryLayout.size(ofValue: serviceData.uuid) == 4)
+            #expect(serviceData.serviceData.count == 1)
+            #expect(serviceData.data == data)
+            #expect(serviceData.data.count == 5)
         }
         
-        XCTAssertEqual(GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])),
-                       GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
+        #expect(GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])) == GAPServiceData16BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
     }
     
-    func testServiceData128BitUUID() {
+    @Test func serviceData128BitUUID() {
         
-        XCTAssertNil(GAPServiceData128BitUUID<Data>(data: Data([0x4f])))
+        #expect(GAPServiceData128BitUUID<Data>(data: Data([0x4f])) == nil)
 
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56])
             let serviceData = GAPServiceData128BitUUID<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
-            XCTAssertEqual(serviceData.serviceData.count, 0)
-            XCTAssertEqual(serviceData.data, data)
-            XCTAssertEqual(serviceData.data.count, 16)
+            #expect(MemoryLayout.size(ofValue: serviceData.uuid) == 16)
+            #expect(serviceData.serviceData.count == 0)
+            #expect(serviceData.data == data)
+            #expect(serviceData.data.count == 16)
         }
 
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])
             let serviceData = GAPServiceData128BitUUID<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: serviceData.uuid), 16)
-            XCTAssertEqual(serviceData.serviceData.count, 4)
-            XCTAssertEqual(serviceData.data, data)
-            XCTAssertEqual(serviceData.data.count, 20)
+            #expect(MemoryLayout.size(ofValue: serviceData.uuid) == 16)
+            #expect(serviceData.serviceData.count == 4)
+            #expect(serviceData.data == data)
+            #expect(serviceData.data.count == 20)
         }
 
-        XCTAssertEqual(GAPServiceData128BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])),
-                       GAPServiceData128BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])))
+        #expect(GAPServiceData128BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])) == GAPServiceData128BitUUID<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x56, 0x4f, 0x30, 0x4f, 0x56])))
     }
     
-    func testAppearance() {
+    @Test func appearance() {
         
-        XCTAssertNil(GAPAppearanceData(data: Data([])))
-        XCTAssertNil(GAPAppearanceData(data: Data([0x00])))
-        XCTAssertNil(GAPAppearanceData(data: Data([0x00, 0x00, 0x00])))
-        XCTAssertNil(GAPAppearanceData(data: Data([0x4f, 0x4f, 0x4f])))
-        XCTAssertNil(GAPAppearanceData(data: Data([0x00, 0x00, 0x00, 0x00])))
+        #expect(GAPAppearanceData(data: Data([])) == nil)
+        #expect(GAPAppearanceData(data: Data([0x00])) == nil)
+        #expect(GAPAppearanceData(data: Data([0x00, 0x00, 0x00])) == nil)
+        #expect(GAPAppearanceData(data: Data([0x4f, 0x4f, 0x4f])) == nil)
+        #expect(GAPAppearanceData(data: Data([0x00, 0x00, 0x00, 0x00])) == nil)
         
         do {
             let data = Data([0x4f, 0xf8])
             let appearance = GAPAppearanceData(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: appearance), 2)
-            XCTAssertEqual(appearance.data, data)
-            XCTAssertEqual(appearance.data.count, 2)
+            #expect(MemoryLayout.size(ofValue: appearance) == 2)
+            #expect(appearance.data == data)
+            #expect(appearance.data.count == 2)
         }
         
-        XCTAssertEqual(GAPAppearanceData(data: Data([0x4f, 0xf8])), GAPAppearanceData(data: Data([0x4f, 0xf8])))
-        XCTAssertEqual(GAPAppearanceData(appearance: 0xf5).data.count, 2)
+        #expect(GAPAppearanceData(data: Data([0x4f, 0xf8])) == GAPAppearanceData(data: Data([0x4f, 0xf8])))
+        #expect(GAPAppearanceData(appearance: 0xf5).data.count == 2)
         
-        XCTAssertEqual(GAPAppearanceData(appearance: 0).data, Data([0x00, 0x00]))
-        XCTAssertEqual(GAPAppearanceData(appearance: GAPAppearance.Unknown.unknown).data, Data([0x00, 0x00]))
-        XCTAssertEqual(GAPAppearanceData(data: Data([0x00, 0x00]))?.appearance, GAPAppearance.Unknown.unknown)
+        #expect(GAPAppearanceData(appearance: 0).data == Data([0x00, 0x00]))
+        #expect(GAPAppearanceData(appearance: GAPAppearance.Unknown.unknown).data == Data([0x00, 0x00]))
+        #expect(GAPAppearanceData(data: Data([0x00, 0x00]))?.appearance == GAPAppearance.Unknown.unknown)
         
-        XCTAssertEqual(GAPAppearanceData(appearance: 64).data.map { $0 }, Data([64, 0]).map { $0 })
-        XCTAssertEqual(GAPAppearanceData(appearance: GAPAppearance.Phone.generic).data, Data([64, 0]))
-        XCTAssertEqual(GAPAppearanceData(data: Data([64, 0]))?.appearance, GAPAppearance.Phone.generic)
+        #expect(GAPAppearanceData(appearance: 64).data.map { $0 } == Data([64, 0]).map { $0 })
+        #expect(GAPAppearanceData(appearance: GAPAppearance.Phone.generic).data == Data([64, 0]))
+        #expect(GAPAppearanceData(data: Data([64, 0]))?.appearance == GAPAppearance.Phone.generic)
         
-        XCTAssertEqual(GAPAppearance(category: .unknown), GAPAppearance.Unknown.unknown)
-        XCTAssertEqual(GAPAppearance.Unknown.unknown.category, GAPAppearance.Unknown.category)
-        XCTAssertEqual(GAPAppearance.Unknown.unknown.category, .unknown)
-        XCTAssertEqual(GAPAppearance.Unknown.unknown.category, 0)
-        XCTAssertEqual(GAPAppearance.Unknown.unknown.subcategory, 0)
+        #expect(GAPAppearance(category: .unknown) == GAPAppearance.Unknown.unknown)
+        #expect(GAPAppearance.Unknown.unknown.category == GAPAppearance.Unknown.category)
+        #expect(GAPAppearance.Unknown.unknown.category == .unknown)
+        #expect(GAPAppearance.Unknown.unknown.category == 0)
+        #expect(GAPAppearance.Unknown.unknown.subcategory == 0)
         
-        XCTAssertEqual(GAPAppearance(category: .phone), GAPAppearance.Phone.generic)
-        XCTAssertEqual(GAPAppearance.Phone.generic.category, GAPAppearance.Phone.category)
-        XCTAssertEqual(GAPAppearance.Phone.generic.category, .phone)
-        XCTAssertEqual(GAPAppearance.Phone.generic.category, 1)
-        XCTAssertEqual(GAPAppearance.Phone.generic.subcategory, 0)
+        #expect(GAPAppearance(category: .phone) == GAPAppearance.Phone.generic)
+        #expect(GAPAppearance.Phone.generic.category == GAPAppearance.Phone.category)
+        #expect(GAPAppearance.Phone.generic.category == .phone)
+        #expect(GAPAppearance.Phone.generic.category == 1)
+        #expect(GAPAppearance.Phone.generic.subcategory == 0)
         
-        XCTAssertEqual(GAPAppearance(category: .computer), GAPAppearance.Computer.generic)
-        XCTAssertEqual(GAPAppearance.Computer.generic.category, .computer)
-        XCTAssertEqual(GAPAppearance.Computer.generic.category, GAPAppearance.Computer.category)
-        XCTAssertEqual(GAPAppearance.Computer.generic.category, 2)
-        XCTAssertEqual(GAPAppearance.Computer.generic.subcategory, 0)
+        #expect(GAPAppearance(category: .computer) == GAPAppearance.Computer.generic)
+        #expect(GAPAppearance.Computer.generic.category == .computer)
+        #expect(GAPAppearance.Computer.generic.category == GAPAppearance.Computer.category)
+        #expect(GAPAppearance.Computer.generic.category == 2)
+        #expect(GAPAppearance.Computer.generic.subcategory == 0)
         
-        XCTAssertEqual(GAPAppearance(category: .watch), GAPAppearance.Watch.generic)
-        XCTAssertEqual(GAPAppearance.Watch.generic.category, .watch)
-        XCTAssertEqual(GAPAppearance.Watch.generic.category, GAPAppearance.Watch.category)
-        XCTAssertEqual(GAPAppearance.Watch.generic.category, 3)
-        XCTAssertEqual(GAPAppearance.Watch.generic.subcategory, 0)
+        #expect(GAPAppearance(category: .watch) == GAPAppearance.Watch.generic)
+        #expect(GAPAppearance.Watch.generic.category == .watch)
+        #expect(GAPAppearance.Watch.generic.category == GAPAppearance.Watch.category)
+        #expect(GAPAppearance.Watch.generic.category == 3)
+        #expect(GAPAppearance.Watch.generic.subcategory == 0)
         
-        XCTAssertEqual(GAPAppearance(category: .watch, subcategory: 1), GAPAppearance.Watch.sports)
-        XCTAssertEqual(GAPAppearance.Watch.sports.category, .watch)
-        XCTAssertEqual(GAPAppearance.Watch.sports.category, GAPAppearance.Watch.category)
-        XCTAssertEqual(GAPAppearance.Watch.sports.category, 3)
-        XCTAssertEqual(GAPAppearance.Watch.sports.subcategory, 1)
+        #expect(GAPAppearance(category: .watch, subcategory: 1) == GAPAppearance.Watch.sports)
+        #expect(GAPAppearance.Watch.sports.category == .watch)
+        #expect(GAPAppearance.Watch.sports.category == GAPAppearance.Watch.category)
+        #expect(GAPAppearance.Watch.sports.category == 3)
+        #expect(GAPAppearance.Watch.sports.subcategory == 1)
     }
     
-    func testPublicTargetAddress() {
+    @Test func publicTargetAddress() {
         
-        XCTAssertNil(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])))
-        XCTAssertNil(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])))
+        #expect(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])) == nil)
+        #expect(GAPPublicTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])) == nil)
         
         do {
             let data = Data([0xf8, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0xf8, 0x91, 0x7e])
             let targetAddress = GAPPublicTargetAddress(data: data)!
             
-            XCTAssertEqual(targetAddress.data, data)
-            XCTAssertEqual(targetAddress.addresses.count, 2)
-            XCTAssertEqual(targetAddress.data.count, 12)
+            #expect(targetAddress.data == data)
+            #expect(targetAddress.addresses.count == 2)
+            #expect(targetAddress.data.count == 12)
         }
         
     }
     
-    func testRandomTargetAddress() {
+    @Test func randomTargetAddress() {
         
-        XCTAssertNil(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])))
-        XCTAssertNil(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])))
+        #expect(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b])) == nil)
+        #expect(GAPRandomTargetAddress(data: Data([0x4f, 0xf8, 0x91, 0x7e, 0x8b, 0xf8, 0xf8])) == nil)
         
         do {
             let data = Data([0xf8, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0xf8, 0x91, 0x7e])
             let targetAddress = GAPRandomTargetAddress(data: data)!
             
-            XCTAssertEqual(targetAddress.data, data)
-            XCTAssertEqual(targetAddress.addresses.count, 2)
-            XCTAssertEqual(targetAddress.data.count, 12)
+            #expect(targetAddress.data == data)
+            #expect(targetAddress.addresses.count == 2)
+            #expect(targetAddress.data.count == 12)
         }
     }
     
-    func testAdvertisingInterval() {
+    @Test func advertisingInterval() {
     
-        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x00])))
-        XCTAssertNil(GAPAdvertisingInterval(data: Data([0x00, 0x00, 0x00])))
+        #expect(GAPAdvertisingInterval(data: Data([0x00])) == nil)
+        #expect(GAPAdvertisingInterval(data: Data([0x00, 0x00, 0x00])) == nil)
         
         let data = Data([0x01, 0x00])
         guard let advertisingInterval = GAPAdvertisingInterval(data: data)
-            else { XCTFail(); return }
+            else { Issue.record(); return }
         
-        XCTAssertEqual(advertisingInterval.data, data)
-        XCTAssertEqual(advertisingInterval.data.count, advertisingInterval.dataLength)
-        XCTAssertEqual(MemoryLayout.size(ofValue: advertisingInterval), 2)
-        XCTAssertEqual(advertisingInterval, 1)
-        XCTAssertEqual(advertisingInterval.miliseconds, 0.0625)
-        XCTAssertEqual(advertisingInterval.description, "0.0625ms")
+        #expect(advertisingInterval.data == data)
+        #expect(advertisingInterval.data.count == advertisingInterval.dataLength)
+        #expect(MemoryLayout.size(ofValue: advertisingInterval) == 2)
+        #expect(advertisingInterval == 1)
+        #expect(advertisingInterval.miliseconds == 0.0625)
+        #expect(advertisingInterval.description == "0.0625ms")
     }
     
-    func testLEDeviceAddress() {
+    @Test func lEDeviceAddress() {
         
-        XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x30, 0xff])))
-        XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0xf8, 0x30])))
-        XCTAssertNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x02])))
-        XCTAssertNotNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x01])))
-        XCTAssertNotNil(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x00])))
+        #expect(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x30, 0xff])) == nil)
+        #expect(GAPLEDeviceAddress(data: Data([0x4f, 0xf8, 0x30])) == nil)
+        #expect(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x02])) == nil)
+        #expect(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x01])) != nil)
+        #expect(GAPLEDeviceAddress(data: Data([0x4f, 0x4f, 0xf8, 0x30, 0x4f, 0xf8, 0x00])) != nil)
         
         do {
             let data = Data([0x4f, 0x4f, 0xf8, 0x30, 0xf8, 0x30, 0x01])
             let deviceAddress = GAPLEDeviceAddress(data: data)!
             
-            XCTAssertEqual(deviceAddress.data, data)
-            XCTAssertEqual(deviceAddress.data.count, GAPLEDeviceAddress.length)
-            XCTAssertEqual(deviceAddress.type, .random)
+            #expect(deviceAddress.data == data)
+            #expect(deviceAddress.data.count == GAPLEDeviceAddress.length)
+            #expect(deviceAddress.type == .random)
         }
         
         do {
             let data = Data([0x4f, 0x4f, 0xf8, 0x30, 0xf8, 0x30, 0x00])
             let deviceAddress = GAPLEDeviceAddress(data: data)!
             
-            XCTAssertEqual(deviceAddress.data, data)
-            XCTAssertEqual(deviceAddress.data.count, GAPLEDeviceAddress.length)
-            XCTAssertEqual(deviceAddress.type, .public)
+            #expect(deviceAddress.data == data)
+            #expect(deviceAddress.data.count == GAPLEDeviceAddress.length)
+            #expect(deviceAddress.type == .public)
         }
         
-        XCTAssertEqual(GAPLEDeviceAddress(address: .zero, type: .public).data.count, GAPLEDeviceAddress.length)
-        XCTAssertEqual(GAPLEDeviceAddress(address: .zero, type: .random).data.count, GAPLEDeviceAddress.length)
+        #expect(GAPLEDeviceAddress(address: .zero, type: .public).data.count == GAPLEDeviceAddress.length)
+        #expect(GAPLEDeviceAddress(address: .zero, type: .random).data.count == GAPLEDeviceAddress.length)
     }
     
-    func testLERole() {
+    @Test func lERole() {
         
-        XCTAssertNil(GAPLERole(data: Data([])))
-        XCTAssertNil(GAPLERole(data: Data([0x4f])))
-        XCTAssertNil(GAPLERole(data: Data([0x04])))
-        XCTAssertNil(GAPLERole(data: Data([0xFF])))
+        #expect(GAPLERole(data: Data([])) == nil)
+        #expect(GAPLERole(data: Data([0x4f])) == nil)
+        #expect(GAPLERole(data: Data([0x04])) == nil)
+        #expect(GAPLERole(data: Data([0xFF])) == nil)
         
-        XCTAssertEqual(GAPLERole(data: Data([0x00])), .onlyPeripheralRoleSupported)
-        XCTAssertEqual(GAPLERole(data: Data([0x01])), .onlyCentralRoleSupported)
-        XCTAssertEqual(GAPLERole(data: Data([0x02])), .bothSupportedPeripheralPreferred)
-        XCTAssertEqual(GAPLERole(data: Data([0x03])), .bothSupportedCentralPreferred)
+        #expect(GAPLERole(data: Data([0x00])) == .onlyPeripheralRoleSupported)
+        #expect(GAPLERole(data: Data([0x01])) == .onlyCentralRoleSupported)
+        #expect(GAPLERole(data: Data([0x02])) == .bothSupportedPeripheralPreferred)
+        #expect(GAPLERole(data: Data([0x03])) == .bothSupportedCentralPreferred)
         
-        XCTAssertEqual(GAPLERole.onlyPeripheralRoleSupported.data, Data([0x00]))
-        XCTAssertEqual(GAPLERole.onlyCentralRoleSupported.data, Data([0x01]))
-        XCTAssertEqual(GAPLERole.bothSupportedPeripheralPreferred.data, Data([0x02]))
-        XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.data, Data([0x03]))
+        #expect(GAPLERole.onlyPeripheralRoleSupported.data == Data([0x00]))
+        #expect(GAPLERole.onlyCentralRoleSupported.data == Data([0x01]))
+        #expect(GAPLERole.bothSupportedPeripheralPreferred.data == Data([0x02]))
+        #expect(GAPLERole.bothSupportedCentralPreferred.data == Data([0x03]))
         
-        XCTAssertEqual(GAPLERole.onlyPeripheralRoleSupported.supported, [.peripheral])
-        XCTAssertEqual(GAPLERole.onlyCentralRoleSupported.supported, [.central])
-        XCTAssertEqual(GAPLERole.bothSupportedPeripheralPreferred.supported, [.central, .peripheral])
-        XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.supported, [.central, .peripheral])
+        #expect(GAPLERole.onlyPeripheralRoleSupported.supported == [.peripheral])
+        #expect(GAPLERole.onlyCentralRoleSupported.supported == [.central])
+        #expect(GAPLERole.bothSupportedPeripheralPreferred.supported == [.central, .peripheral])
+        #expect(GAPLERole.bothSupportedCentralPreferred.supported == [.central, .peripheral])
         
-        XCTAssertEqual(GAPLERole.onlyPeripheralRoleSupported.preferred, .peripheral)
-        XCTAssertEqual(GAPLERole.onlyCentralRoleSupported.preferred, .central)
-        XCTAssertEqual(GAPLERole.bothSupportedPeripheralPreferred.preferred, .peripheral)
-        XCTAssertEqual(GAPLERole.bothSupportedCentralPreferred.preferred, .central)
+        #expect(GAPLERole.onlyPeripheralRoleSupported.preferred == .peripheral)
+        #expect(GAPLERole.onlyCentralRoleSupported.preferred == .central)
+        #expect(GAPLERole.bothSupportedPeripheralPreferred.preferred == .peripheral)
+        #expect(GAPLERole.bothSupportedCentralPreferred.preferred == .central)
     }
     
-    func testURI() throws {
+    @Test func uRI() throws {
         
         let uriString = "/my/uri/string"
         let data = Data([15, 0x24, 47, 109, 121, 47, 117, 114, 105, 47, 115, 116, 114, 105, 110, 103])
@@ -651,17 +647,17 @@ final class GAPTests: XCTestCase {
         
         let decoded = try GAPDataDecoder.decode(data, types: types, ignoreUnknownType: false)
         
-        XCTAssert(decoded.isEmpty == false)
-        XCTAssertEqual(decoded.count, 1)
-        XCTAssertEqual(GAPDataEncoder.encode(expectedData), data)
+        #expect(decoded.isEmpty == false)
+        #expect(decoded.count == 1)
+        #expect(GAPDataEncoder.encode(expectedData) == data)
         
-        XCTAssertEqual(decoded[0] as! GAPURI, uri)
-        XCTAssertEqual((decoded[0] as! GAPURI).description, uriString)
+        #expect(decoded[0] as! GAPURI == uri)
+        #expect((decoded[0] as! GAPURI).description == uriString)
     }
     
-    func testIndoorPositioning() {
+    @Test func indoorPositioning() {
         
-        XCTAssertEqual(GAPIndoorPositioning.dataType.rawValue, 0x25)
+        #expect(GAPIndoorPositioning.dataType.rawValue == 0x25)
         
         let values: [GAPIndoorPositioning] = [
             GAPIndoorPositioning(),
@@ -689,15 +685,15 @@ final class GAPTests: XCTestCase {
         
         for indoorPositioning in values {
             
-            XCTAssertEqual(indoorPositioning.data.count, indoorPositioning.dataLength)
+            #expect(indoorPositioning.data.count == indoorPositioning.dataLength)
             
             guard let decoded = GAPIndoorPositioning(data: indoorPositioning.data)
-                else { XCTFail("Could not decode"); return }
+                else { Issue.record("Could not decode"); return }
             
-            XCTAssertEqual(decoded, indoorPositioning)
+            #expect(decoded == indoorPositioning)
             
             if let coordinate = indoorPositioning.coordinates {
-                XCTAssertEqual(coordinate.dataLength, 4)
+                #expect(coordinate.dataLength == 4)
             }
         }
     }
@@ -730,215 +726,213 @@ final class GAPTests: XCTestCase {
         }
     }
     */
-    func testLESecureConnectionsConfirmation() {
+    @Test func lESecureConnectionsConfirmation() {
         
-        XCTAssertNil(GAPLESecureConnectionsConfirmation(data: Data([0x4f])))
-        XCTAssertNil(GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0x4f, 0x4f])))
+        #expect(GAPLESecureConnectionsConfirmation(data: Data([0x4f])) == nil)
+        #expect(GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0x4f, 0x4f])) == nil)
         
         do {
             let data = Data([0x4f, 0xf8])
             let confirmation = GAPLESecureConnectionsConfirmation(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: confirmation), 2)
-            XCTAssertEqual(confirmation.data, data)
-            XCTAssertEqual(confirmation.data.count, 2)
-            XCTAssertEqual(confirmation.data.count, confirmation.dataLength)
+            #expect(MemoryLayout.size(ofValue: confirmation) == 2)
+            #expect(confirmation.data == data)
+            #expect(confirmation.data.count == 2)
+            #expect(confirmation.data.count == confirmation.dataLength)
         }
         
-        XCTAssertEqual(GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0xf8])), GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0xf8])))
-        XCTAssertEqual(GAPLESecureConnectionsConfirmation(confirmation: 0xf5).data.count, 2)
+        #expect(GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0xf8])) == GAPLESecureConnectionsConfirmation(data: Data([0x4f, 0xf8])))
+        #expect(GAPLESecureConnectionsConfirmation(confirmation: 0xf5).data.count == 2)
     }
     
-    func testLESecureConnectionsRandom() {
+    @Test func lESecureConnectionsRandom() {
         
-        XCTAssertNil(GAPLESecureConnectionsRandom(data: Data([0x4f])))
-        XCTAssertNil(GAPLESecureConnectionsRandom(data: Data([0x4f, 0x4f, 0x4f])))
+        #expect(GAPLESecureConnectionsRandom(data: Data([0x4f])) == nil)
+        #expect(GAPLESecureConnectionsRandom(data: Data([0x4f, 0x4f, 0x4f])) == nil)
         
         do {
             let data = Data([0x4f, 0xf8])
             let random = GAPLESecureConnectionsRandom(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: random), 2)
-            XCTAssertEqual(random.data, data)
-            XCTAssertEqual(random.data.count, 2)
-            XCTAssertEqual(random.data.count, random.dataLength)
+            #expect(MemoryLayout.size(ofValue: random) == 2)
+            #expect(random.data == data)
+            #expect(random.data.count == 2)
+            #expect(random.data.count == random.dataLength)
         }
         
-        XCTAssertEqual(GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])), GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])))
-        XCTAssertEqual(GAPLESecureConnectionsRandom(random: 0xf5).data.count, 2)
+        #expect(GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])) == GAPLESecureConnectionsRandom(data: Data([0x4f, 0xf8])))
+        #expect(GAPLESecureConnectionsRandom(random: 0xf5).data.count == 2)
     }
     
-    func testChannelMapUpdateIndication() {
+    @Test func channelMapUpdateIndication() {
         
         do {
             let data = Data([0x4d, 0x3e, 0x12, 0x3a, 0x18, 0x4d, 0x3e])
             let channelMap = GAPChannelMapUpdateIndication(channelMap: (0x4d, 0x3e, 0x12, 0x3a, 0x18), instant: (0x4d, 0x3e))
-            XCTAssertEqual(channelMap.data.count, GAPChannelMapUpdateIndication.length)
-            XCTAssertEqual(channelMap.data, data)
+            #expect(channelMap.data.count == GAPChannelMapUpdateIndication.length)
+            #expect(channelMap.data == data)
         }
     }
     
-    func testTransportDiscoveryData() {
+    @Test func transportDiscoveryData() {
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
             let transport = GAPTransportDiscoveryData<Data>(data: data)
-            XCTAssertEqual(transport!.data, data)
+            #expect(transport!.data == data)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01, 0x4d, 0b1011, 0x04, 0x02, 0x02, 0x02, 0x02])
             let transport = GAPTransportDiscoveryData<Data>(data: data)
-            XCTAssertEqual(transport!.data, data)
+            #expect(transport!.data == data)
         }
         
         do {
             let data = Data([0x05])
             let transport = GAPTransportDiscoveryData<Data>(data: data)
-            XCTAssertNil(transport)
+            #expect(transport == nil)
         }
         
         do {
             let data = Data([])
             let transport = GAPTransportDiscoveryData<Data>(data: data)
-            XCTAssertNil(transport)
+            #expect(transport == nil)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01])
             let transport = GAPTransportDiscoveryData<Data>(data: data)
-            XCTAssertNil(transport)
+            #expect(transport == nil)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000])
             let transport = GAPTransportDiscoveryData<Data>(data: data)
-            XCTAssertNil(transport)
+            #expect(transport == nil)
         }
         
         do {
             let data = Data([0x05, 0x4d, 0b10000, 0x03, 0x01, 0x01, 0x01])
-            XCTAssertEqual(GAPTransportDiscoveryData<Data>(data: data), GAPTransportDiscoveryData<Data>(data: data))
+            #expect(GAPTransportDiscoveryData<Data>(data: data) == GAPTransportDiscoveryData<Data>(data: data))
         }
     }
     
-    func testMeshMessage() {
+    @Test func meshMessage() {
         
-        XCTAssertNil(GAPMeshMessage(data: Data([])))
-        XCTAssertNil(GAPMeshMessage(data: Data([0x4f])))
-        XCTAssertNil(GAPMeshMessage(data: Data([0x4f, 0xf8, 0x30])))
+        #expect(GAPMeshMessage(data: Data([])) == nil)
+        #expect(GAPMeshMessage(data: Data([0x4f])) == nil)
+        #expect(GAPMeshMessage(data: Data([0x4f, 0xf8, 0x30])) == nil)
         
         do {
             let data = Data([0xf8, 0x30])
             let message = GAPMeshMessage(data: data)!
             
-            XCTAssertEqual(message.data, data)
-            XCTAssertEqual(message.data.count, 2)
-            XCTAssertEqual(message.data.count, message.dataLength)
-            XCTAssertEqual(MemoryLayout.size(ofValue: message), 2)
+            #expect(message.data == data)
+            #expect(message.data.count == 2)
+            #expect(message.data.count == message.dataLength)
+            #expect(MemoryLayout.size(ofValue: message) == 2)
         }
     }
     
-    func testMeshBeacon() {
+    @Test func meshBeacon() {
         
-        XCTAssertNil(GAPMeshBeacon(data: Data([])))
-        XCTAssertNil(GAPMeshBeacon(data: Data([0x02, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])))
-        XCTAssertNil(GAPMeshBeacon(data: Data([0x02, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10])))
+        #expect(GAPMeshBeacon(data: Data([])) == nil)
+        #expect(GAPMeshBeacon(data: Data([0x02, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])) == nil)
+        #expect(GAPMeshBeacon(data: Data([0x02, 0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10])) == nil)
         
         // Unprovisioned Device
         do {
             let data = Data([0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30, 0x45])
             let beacon = GAPMeshBeacon(data: data)!
-            XCTAssertEqual(beacon.data, data)
+            #expect(beacon.data == data)
         }
         
         do {
             let data = Data([0x00, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10])
             let beacon = GAPMeshBeacon(data: data)!
-            XCTAssertEqual(beacon.data, data)
+            #expect(beacon.data == data)
         }
         
         // Secure Network
         do {
             let data = Data([0x01, 0xFF, 0x18, 0x04, 0x18, 0x02, 0x18, 0x04, 0x06, 0x03, 0x18, 0x04, 0x18, 0x02, 0x06, 0x03, 0xFF, 0b00, 0b10, 0x4f, 0xf8, 0x30])
             let beacon = GAPMeshBeacon(data: data)!
-            XCTAssertEqual(beacon.data, data)
+            #expect(beacon.data == data)
         }
         
     }
     
-    func testManufacturerSpecificData() {
+    @Test func manufacturerSpecificData() {
         
-        XCTAssertNil(GAPManufacturerSpecificData<Data>(data: Data()))
-        XCTAssertNil(GAPManufacturerSpecificData<Data>(data: Data([0x4f])))
+        #expect(GAPManufacturerSpecificData<Data>(data: Data()) == nil)
+        #expect(GAPManufacturerSpecificData<Data>(data: Data([0x4f])) == nil)
         
         do {
             let data = Data([0x4f, 0x30])
             let manufacturerData = GAPManufacturerSpecificData<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier), 2)
-            XCTAssertEqual(manufacturerData.data, data)
-            XCTAssertEqual(manufacturerData.data.count, 2)
+            #expect(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier) == 2)
+            #expect(manufacturerData.data == data)
+            #expect(manufacturerData.data.count == 2)
         }
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])
             let manufacturerData = GAPManufacturerSpecificData<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier), 2)
-            XCTAssertEqual(manufacturerData.additionalData.count, 3)
-            XCTAssertEqual(manufacturerData.data, data)
-            XCTAssertEqual(manufacturerData.data.count, 5)
+            #expect(MemoryLayout.size(ofValue: manufacturerData.companyIdentifier) == 2)
+            #expect(manufacturerData.additionalData.count == 3)
+            #expect(manufacturerData.data == data)
+            #expect(manufacturerData.data.count == 5)
         }
         
-        XCTAssertEqual(GAPManufacturerSpecificData<Data>(data: Data([0x4f, 0x45, 0xff])),
-                       GAPManufacturerSpecificData<Data>(data: Data([0x4f, 0x45, 0xff])))
+        #expect(GAPManufacturerSpecificData<Data>(data: Data([0x4f, 0x45, 0xff])) == GAPManufacturerSpecificData<Data>(data: Data([0x4f, 0x45, 0xff])))
     }
     
-    func testPBADV() {
+    @Test func pBADV() {
         
-        XCTAssertNil(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x12])))
-        XCTAssertNil(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])))
-        XCTAssertNil(GAPPBADV<Data>(data: Data([])))
+        #expect(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x4f, 0x30, 0x4f, 0x30, 0x12])) == nil)
+        #expect(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f])) == nil)
+        #expect(GAPPBADV<Data>(data: Data([])) == nil)
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])
             let pbadv = GAPPBADV<Data>(data: data)!
-            XCTAssertEqual(MemoryLayout.size(ofValue: pbadv.linkID), 4)
-            XCTAssertEqual(pbadv.data, data)
-            XCTAssertEqual(pbadv.data.count, 6)
+            #expect(MemoryLayout.size(ofValue: pbadv.linkID) == 4)
+            #expect(pbadv.data == data)
+            #expect(pbadv.data.count == 6)
         }
         
         do {
             let data = Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38, 0x4f, 0x30, 0x4f, 0x30, 0x4f])
             let pbadv = GAPPBADV<Data>(data: data)!
-            XCTAssertEqual(pbadv.genericProvisioningPDU.count, 6)
-            XCTAssertEqual(pbadv.data, data)
-            XCTAssertEqual(pbadv.data.count, 11)
+            #expect(pbadv.genericProvisioningPDU.count == 6)
+            #expect(pbadv.data == data)
+            #expect(pbadv.data.count == 11)
         }
         
-        XCTAssertEqual(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])),
-                       GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])))
+        #expect(GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])) == GAPPBADV<Data>(data: Data([0x4f, 0x30, 0x4f, 0x30, 0x4f, 0x38])))
     }
     
-    func test3DInformation() {
+    @Test func test3DInformation() {
         
-        XCTAssertNil(GAP3DInformation(data: Data([])))
-        XCTAssertNil(GAP3DInformation(data: Data([0x00])))
-        XCTAssertNil(GAP3DInformation(data: Data([0x00, 0x00, 0x01])))
+        #expect(GAP3DInformation(data: Data([])) == nil)
+        #expect(GAP3DInformation(data: Data([0x00])) == nil)
+        #expect(GAP3DInformation(data: Data([0x00, 0x00, 0x01])) == nil)
         
         do {
             let data = Data([0b00, 0x00])
             guard let information = GAP3DInformation(data: data)
-                else { XCTFail(); return }
-            XCTAssertEqual(information.data, data)
-            XCTAssertEqual(information.flags, [])
-            XCTAssertEqual(information.pathLossThreshold, 0)
+                else { Issue.record(); return }
+            #expect(information.data == data)
+            #expect(information.flags == [])
+            #expect(information.pathLossThreshold == 0)
         }
         
         do {
             let data = Data([0b11, 0x01])
             guard let information = GAP3DInformation(data: data)
-                else { XCTFail(); return }
-            XCTAssertEqual(information.data, data)
-            XCTAssertEqual(information.flags, [.associationNotification, .batteryLevelReporting])
-            XCTAssertEqual(information.pathLossThreshold, 1)
+                else { Issue.record(); return }
+            #expect(information.data == data)
+            #expect(information.flags == [.associationNotification, .batteryLevelReporting])
+            #expect(information.pathLossThreshold == 1)
         }
     }
 }

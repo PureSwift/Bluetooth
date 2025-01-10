@@ -6,8 +6,9 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import XCTest
 import Foundation
+import Testing
+import XCTest
 #if canImport(BluetoothGATT)
 import Bluetooth
 @testable import BluetoothGATT
@@ -15,9 +16,9 @@ import Bluetooth
 @testable import Bluetooth
 #endif
 
-final class BluetoothUUIDTests: XCTestCase {
+@Suite struct BluetoothUUIDTests {
 
-    func testMalformed() {
+    @Test func malformed() {
         
         let malformed = [
             "0",
@@ -37,10 +38,10 @@ final class BluetoothUUIDTests: XCTestCase {
             "00001234-0000-1000-800G-00805F9B34FB"
         ]
         
-        malformed.forEach { XCTAssertNil(BluetoothUUID(rawValue: $0)) }
+        malformed.forEach { #expect(BluetoothUUID(rawValue: $0) == nil)  }
     }
     
-    func testFoundation() {
+    @Test func foundation() {
         
         struct TestData {
             
@@ -73,21 +74,21 @@ final class BluetoothUUIDTests: XCTestCase {
         
         for test in testData {
             let foundationUUID = UUID(bluetooth: test.bluetooth)
-            XCTAssertEqual(foundationUUID, test.foundation)
-            XCTAssertEqual(foundationUUID.uuidString, test.bluetooth.bit128.rawValue)
-            XCTAssertEqual(UInt128(bigEndian: UInt128(bytes: test.bytes)), UInt128(uuid: test.foundation))
+            #expect(foundationUUID == test.foundation)
+            #expect(foundationUUID.uuidString == test.bluetooth.bit128.rawValue)
+            #expect(UInt128(bigEndian: UInt128(bytes: test.bytes)) == UInt128(uuid: test.foundation))
             switch test.bluetooth {
             case .bit16:
-                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 4)
+                #expect(test.bluetooth.rawValue.utf8.count == 4)
             case .bit32:
-                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 8)
+                #expect(test.bluetooth.rawValue.utf8.count == 8)
             case .bit128:
-                XCTAssertEqual(test.bluetooth.rawValue.utf8.count, 36)
+                #expect(test.bluetooth.rawValue.utf8.count == 36)
             }
         }
     }
     
-    func testPrimaryServiceUUID() {
+    @Test func primaryServiceUUID() {
         
         let uuidString = "2800" // big endian representation
         #if canImport(BluetoothGATT)
@@ -97,107 +98,107 @@ final class BluetoothUUIDTests: XCTestCase {
         #endif
         let uuid = BluetoothUUID.bit16(uuidValue)
         
-        XCTAssert(uuid.rawValue == uuidString)
-        XCTAssert(BluetoothUUID(rawValue: uuidString)?.rawValue == uuidString)
-        XCTAssert(Data(uuid.littleEndian) == Data([0x00, 0x28]))
-        XCTAssert(Data(uuid.littleEndian) != Data([0x28, 0x00]))
-        XCTAssert(Data(uuid.bigEndian) == Data([0x28, 0x00]))
-        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
-        XCTAssertEqual(uuid, #BluetoothUUID("2800"))
+        #expect(uuid.rawValue == uuidString)
+        #expect(BluetoothUUID(rawValue: uuidString)?.rawValue == uuidString)
+        #expect(Data(uuid.littleEndian) == Data([0x00, 0x28]))
+        #expect(Data(uuid.littleEndian) != Data([0x28, 0x00]))
+        #expect(Data(uuid.bigEndian) == Data([0x28, 0x00]))
+        #expect(uuid == BluetoothUUID(data: Data(uuid)))
+        #expect(uuid == #BluetoothUUID("2800"))
     }
     
-    func test128BitUUID() {
+    @Test func test128BitUUID() {
         
         /// reversed == C7A8D570-E023-4FB8-E511-72F9E24FF160
         let uuidString = "60F14FE2-F972-11E5-B84F-23E070D5A8C7"
         let uuidValue = UInt128(bigEndian: UInt128(bytes: (0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7)))
         
         guard let uuid = BluetoothUUID(rawValue: uuidString)
-            else { XCTFail("Could not parse UUID string"); return }
+            else { Issue.record("Could not parse UUID string"); return }
         
-        XCTAssert(uuid.rawValue == uuidString)
-        XCTAssert(Data(uuid) == Data(uuidValue))
-        XCTAssert(Data(uuid.littleEndian) == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
-        XCTAssert(Data(uuid.bigEndian) == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
-        XCTAssert(uuid.bigEndian == .bit128(UInt128(bytes: (0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7))))
-        XCTAssert(Data(uuid.littleEndian) == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
-        XCTAssert(Data(uuid.bigEndian) == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
-        XCTAssert(BluetoothUUID.init(littleEndian: BluetoothUUID.init(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
-        XCTAssert(BluetoothUUID(littleEndian: BluetoothUUID(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
-        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
-        XCTAssertEqual(uuid, #BluetoothUUID("60F14FE2-F972-11E5-B84F-23E070D5A8C7"))
+        #expect(uuid.rawValue == uuidString)
+        #expect(Data(uuid) == Data(uuidValue))
+        #expect(Data(uuid.littleEndian) == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
+        #expect(Data(uuid.bigEndian) == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
+        #expect(uuid.bigEndian == .bit128(UInt128(bytes: (0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7))))
+        #expect(Data(uuid.littleEndian) == Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))
+        #expect(Data(uuid.bigEndian) == Data([0x60, 0xF1, 0x4F, 0xE2, 0xF9, 0x72, 0x11, 0xE5, 0xB8, 0x4F, 0x23, 0xE0, 0x70, 0xD5, 0xA8, 0xC7]))
+        #expect(BluetoothUUID.init(littleEndian: BluetoothUUID.init(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
+        #expect(BluetoothUUID(littleEndian: BluetoothUUID(data: Data([0xC7, 0xA8, 0xD5, 0x70, 0xE0, 0x23, 0x4F, 0xB8, 0xE5, 0x11, 0x72, 0xF9, 0xE2, 0x4F, 0xF1, 0x60]))!) == uuid)
+        #expect(uuid == BluetoothUUID(data: Data(uuid)))
+        #expect(uuid == #BluetoothUUID("60F14FE2-F972-11E5-B84F-23E070D5A8C7"))
     }
     
-    func testDefinedUUID() {
+    @Test func definedUUID() {
         
         let uuidString = "FEA9"
         let uuidValue: UInt16 = 0xFEA9 // 65193 Savant Systems LLC
         
         guard let uuid = BluetoothUUID(rawValue: uuidString)
-            else { XCTFail("Could not parse UUID string"); return }
+            else { Issue.record("Could not parse UUID string"); return }
         
         #if !os(WASI)
-        XCTAssertEqual(uuid, .savantSystems2)
-        XCTAssertEqual(uuid.name, "Savant Systems LLC")
-        XCTAssertEqual("\(uuid)", "FEA9 (Savant Systems LLC)", "\(uuid)")
+        #expect(uuid == .savantSystems2)
+        #expect(uuid.name == "Savant Systems LLC")
+        #expect("\(uuid)" == "FEA9 (Savant Systems LLC)", "\(uuid)")
         #endif
-        XCTAssertEqual(uuid.rawValue, uuidString)
-        XCTAssertNotEqual(uuid.hashValue, 0)
-        XCTAssertEqual(uuid, .bit16(uuidValue))
-        XCTAssertNotEqual(uuid, .bit16(0xFEAA))
+        #expect(uuid.rawValue == uuidString)
+        #expect(uuid.hashValue != 0)
+        #expect(uuid == .bit16(uuidValue))
+        #expect(uuid != .bit16(0xFEAA))
         if #available(macOS 15, iOS 18, *) {
-            XCTAssertNotEqual(uuid, .bit128(0x00))
+            #expect(uuid != .bit128(0x00))
         }
-        XCTAssertNotEqual(uuid, .bit32(0x12345678))
+        #expect(uuid != .bit32(0x12345678))
         
-        XCTAssertEqual(Data(uuid.littleEndian), Data([uuidValue.littleEndian.bytes.0,
+        #expect(Data(uuid.littleEndian) == Data([uuidValue.littleEndian.bytes.0,
                                                      uuidValue.littleEndian.bytes.1]))
         
-        XCTAssertEqual(Data(uuid.bigEndian), Data([uuidValue.bigEndian.bytes.0,
+        #expect(Data(uuid.bigEndian) == Data([uuidValue.bigEndian.bytes.0,
                                                   uuidValue.bigEndian.bytes.1]))
         
-        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
-        XCTAssertEqual(uuid, #BluetoothUUID("FEA9"))
+        #expect(uuid == BluetoothUUID(data: Data(uuid)))
+        #expect(uuid == #BluetoothUUID("FEA9"))
     }
     
-    func test32BitUUID() {
+    @Test func test32BitUUID() {
         
         let uuidString = "12345678"
         let uuidValue: UInt32 = 0x12345678
         
         guard let uuid = BluetoothUUID(rawValue: uuidString)
-            else { XCTFail("Could not parse UUID string"); return }
+            else { Issue.record("Could not parse UUID string"); return }
         
         #if !os(WASI)
-        XCTAssertNil(uuid.name)
+        #expect(uuid.name == nil)
         #endif
-        XCTAssertEqual(uuid.rawValue, uuidString)
-        XCTAssertEqual(uuid.description, uuidString)
-        XCTAssertEqual(uuid, uuid)
-        XCTAssertEqual(uuid, .bit32(uuidValue))
-        XCTAssertNotEqual(uuid, .bit32(0x1234))
-        XCTAssertNotEqual(uuid, .bit16(0xFEA9))
+        #expect(uuid.rawValue == uuidString)
+        #expect(uuid.description == uuidString)
+        #expect(uuid == uuid)
+        #expect(uuid == .bit32(uuidValue))
+        #expect(uuid != .bit32(0x1234))
+        #expect(uuid != .bit16(0xFEA9))
         if #available(macOS 15, iOS 18, *) {
-            XCTAssertNotEqual(uuid, .bit128(0x00))
+            #expect(uuid != .bit128(0x00))
         }
         
-        XCTAssertEqual(Data(uuid.littleEndian), Data([uuidValue.littleEndian.bytes.0,
+        #expect(Data(uuid.littleEndian) == Data([uuidValue.littleEndian.bytes.0,
                                                      uuidValue.littleEndian.bytes.1,
                                                      uuidValue.littleEndian.bytes.2,
                                                      uuidValue.littleEndian.bytes.3]))
         
-        XCTAssertEqual(Data(uuid.bigEndian), Data([uuidValue.bigEndian.bytes.0,
+        #expect(Data(uuid.bigEndian) == Data([uuidValue.bigEndian.bytes.0,
                                                   uuidValue.bigEndian.bytes.1,
                                                   uuidValue.bigEndian.bytes.2,
                                                   uuidValue.bigEndian.bytes.3]))
         
-        XCTAssertEqual(uuid, BluetoothUUID(data: Data(uuid)))
-        XCTAssertEqual(uuid, #BluetoothUUID("12345678"))
+        #expect(uuid == BluetoothUUID(data: Data(uuid)))
+        #expect(uuid == #BluetoothUUID("12345678"))
     }
     
-    func test16BitBaseUUID() {
+    @Test func test16BitBaseUUID() {
         
-        XCTAssertNil(UInt16(bluetooth: UUID()))
+        #expect(UInt16(bluetooth: UUID()) == nil)
         
         let uuids: [UInt16: UUID] = [
             0x1800: UUID(uuidString: "00001800-0000-1000-8000-00805F9B34FB")!,
@@ -206,14 +207,14 @@ final class BluetoothUUIDTests: XCTestCase {
         ]
         
         uuids.forEach {
-            XCTAssertEqual($0.key, UInt16(bluetooth: $0.value))
-            XCTAssertEqual(UInt128(.bit16($0.key)), UInt128(uuid: $0.value))
+            #expect($0.key == UInt16(bluetooth: $0.value))
+            #expect(UInt128(.bit16($0.key)) == UInt128(uuid: $0.value))
         }
     }
     
-    func test32BitBaseUUID() {
+    @Test func test32BitBaseUUID() {
         
-        XCTAssertNil(UInt32(bluetooth: UUID()))
+        #expect(UInt32(bluetooth: UUID()) == nil)
         
         let uuids: [UInt32: UUID] = [
             0x00001800: UUID(uuidString: "00001800-0000-1000-8000-00805F9B34FB")!,
@@ -224,12 +225,12 @@ final class BluetoothUUIDTests: XCTestCase {
         ]
         
         uuids.forEach {
-            XCTAssertEqual($0.key, UInt32(bluetooth: $0.value))
-            XCTAssertEqual(UInt128(.bit32($0.key)), UInt128(uuid: $0.value))
+            #expect($0.key == UInt32(bluetooth: $0.value))
+            #expect(UInt128(.bit32($0.key)) == UInt128(uuid: $0.value))
         }
     }
     
-    func testLosslessStringConvertible() {
+    @Test func losslessStringConvertible() throws {
         
         let data: [(BluetoothUUID, String)] = [
             (.bit16(0x1800), "1800"),
@@ -240,12 +241,20 @@ final class BluetoothUUIDTests: XCTestCase {
         ]
         
         for (uuid, string) in data {
-            guard let parsed = BluetoothUUID(string) else {
-                XCTFail("Unable to parse: \(string)")
-                continue
-            }
-            XCTAssertEqual(parsed, uuid)
+            let parsed = try #require(BluetoothUUID(string))
+            #expect(parsed == uuid)
         }
+    }
+}
+
+// MARK: - Performance Tests
+
+final class BluetoothUUIDPerformanceTests: XCTestCase {
+    
+    var randomUUIDs = [UUID]()
+    
+    override func setUp() {
+        randomUUIDs = (1 ... 100000).map { _ in UUID() }
     }
     
     func testPerformanceStringParse() {
@@ -276,7 +285,3 @@ final class BluetoothUUIDTests: XCTestCase {
         measure { uuids.forEach { let _ = Data($0) } }
     }
 }
-
-// MARK: - 
-
-let randomUUIDs = (1 ... 100000).map { _ in UUID() }

@@ -7,27 +7,27 @@
 //
 
 #if canImport(BluetoothGATT)
-import XCTest
+import Testing
 import Foundation
 import Bluetooth
 @testable import BluetoothGATT
 
-final class GATTDatabaseTests: XCTestCase {
+@Suite struct GATTDatabaseTests {
    
-    func testTestProfile() {
+    @Test func testProfile() {
         
         var database = GATTDatabase(services: TestProfile.services)
         database.dump()
         
-        XCTAssertEqual(database.attributeGroups.count, TestProfile.services.count)
-        XCTAssertEqual(database.attributes[0x01].uuid, .characteristic)
-        XCTAssertEqual(Array(database), database.attributes)
+        #expect(database.attributeGroups.count == TestProfile.services.count)
+        #expect(database.attributes[0x01].uuid == .characteristic)
+        #expect(Array(database) == database.attributes)
         
         database.removeAll()
         
-        XCTAssert(database.isEmpty)
-        XCTAssert(database.attributes.isEmpty)
-        XCTAssert(database.attributeGroups.isEmpty)
+        #expect(database.isEmpty)
+        #expect(database.attributes.isEmpty)
+        #expect(database.attributeGroups.isEmpty)
     }
 }
 

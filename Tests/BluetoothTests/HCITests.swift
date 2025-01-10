@@ -7,14 +7,14 @@
 //
 
 #if canImport(BluetoothHCI)
-import XCTest
+import Testing
 import Foundation
 @testable import Bluetooth
 @testable import BluetoothHCI
 
-final class HCITests: XCTestCase {
+@Suite struct HCITests {
     
-    func testSetAdvertiseEnableParameter() async throws {
+    @Test func setAdvertiseEnableParameter() async throws {
         
         let hostController = TestHostController()
         
@@ -40,7 +40,7 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x06, 0x20, 0x12]))
     }
     
-    func testReadBufferSize() async throws {
+    @Test func readBufferSize() async throws {
         
         let hostController = TestHostController()
         
@@ -66,13 +66,13 @@ final class HCITests: XCTestCase {
          */
         var readBufferSizeReturn: HCILEReadBufferSize!
         (readBufferSizeReturn = try await hostController.readBufferSize())
-        XCTAssert(hostController.queue.isEmpty)
+        #expect(hostController.queue.isEmpty)
         
-        XCTAssertEqual(readBufferSizeReturn.dataPacketLength, 0x00FB)
-        XCTAssertEqual(readBufferSizeReturn.dataPacket, 0x000F)
+        #expect(readBufferSizeReturn.dataPacketLength == 0x00FB)
+        #expect(readBufferSizeReturn.dataPacket == 0x000F)
     }
     
-    func testLEReadLocalSupportedFeatures() async throws {
+    @Test func lEReadLocalSupportedFeatures() async throws {
         
         let hostController = TestHostController()
         
@@ -104,32 +104,32 @@ final class HCITests: XCTestCase {
         
         var lowEnergyFeatureSet: LowEnergyFeatureSet!
         (lowEnergyFeatureSet = try await hostController.lowEnergyReadLocalSupportedFeatures())
-        XCTAssert(hostController.queue.isEmpty)
+        #expect(hostController.queue.isEmpty)
         
-        XCTAssertEqual(lowEnergyFeatureSet.rawValue, 0x000000000000003F)
+        #expect(lowEnergyFeatureSet.rawValue == 0x000000000000003F)
     }
     
-    func testName() async throws {
+    @Test func name() async throws {
         
         /// HCI command
-        XCTAssert(LinkControlCommand.acceptConnection.name == "Accept Connection Request")
-        XCTAssert(LinkPolicyCommand.holdMode.name == "Hold Mode")
-        XCTAssert(InformationalCommand.readLocalVersionInformation.name == "Read Local Version Information")
-        XCTAssert(HostControllerBasebandCommand.readLocalName.name == "Read Local Name")
-        XCTAssert(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
-        XCTAssert(HCILowEnergyCommand.createConnection.name == "LE Create Connection")
+        #expect(LinkControlCommand.acceptConnection.name == "Accept Connection Request")
+        #expect(LinkPolicyCommand.holdMode.name == "Hold Mode")
+        #expect(InformationalCommand.readLocalVersionInformation.name == "Read Local Version Information")
+        #expect(HostControllerBasebandCommand.readLocalName.name == "Read Local Name")
+        #expect(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
+        #expect(HCILowEnergyCommand.createConnection.name == "LE Create Connection")
         
-        func testCommand <T: HCICommand> (_ command: T.Type) {
+        func testCommand<T: HCICommand> (_ command: T.Type) {
             
             for rawValue in UInt16.min ... .max {
                 
                 guard let command = T.init(rawValue: rawValue)
                     else { continue }
                 
-                XCTAssert(command.opcode != .min)
-                XCTAssert(command.opcode != rawValue)
-                XCTAssert(command.name.isEmpty == false)
-                XCTAssert(command.description == command.name)
+                #expect(command.opcode != .min)
+                #expect(command.opcode != rawValue)
+                #expect(command.name.isEmpty == false)
+                #expect(command.description == command.name)
             }
         }
         
@@ -140,11 +140,11 @@ final class HCITests: XCTestCase {
         testCommand(StatusParametersCommand.self)
         testCommand(HCILowEnergyCommand.self)
         
-        func testCommandNames <T: HCICommand> (_ command: T.Type, names: [String], skip: String = "Unknown") {
+        func testCommandNames<T: HCICommand> (_ command: T.Type, names: [String], skip: String = "Unknown") {
             
             for (index, name) in names.enumerated().filter({ $1 != skip }) {
                 
-                XCTAssertEqual(T.init(rawValue: UInt16(index))?.name, name)
+                #expect(T.init(rawValue: UInt16(index))?.name == name)
             }
         }
         
@@ -198,18 +198,18 @@ final class HCITests: XCTestCase {
             ])
         
         // HCI event
-        XCTAssert(HCIGeneralEvent.commandComplete.name == "Command Complete")
-        XCTAssert(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
+        #expect(HCIGeneralEvent.commandComplete.name == "Command Complete")
+        #expect(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
         
-        func testEvent <T: HCIEvent> (_ command: T.Type) {
+        func testEvent<T: HCIEvent> (_ command: T.Type) {
             
             for rawValue in UInt8.min ... .max {
                 
                 guard let event = T.init(rawValue: rawValue)
                     else { continue }
                 
-                XCTAssert(event.name.isEmpty == false)
-                XCTAssert(event.description == event.name)
+                #expect(event.name.isEmpty == false)
+                #expect(event.description == event.name)
             }
         }
         
@@ -217,28 +217,28 @@ final class HCITests: XCTestCase {
         testEvent(LowEnergyEvent.self)
         
         // HCI error
-        XCTAssertTrue(HCIError.unknownCommand.description == "Unknown HCI Command")
+        #expect(HCIError.unknownCommand.description == "Unknown HCI Command")
         
         let errors = (UInt8.min ... .max).compactMap({ HCIError(rawValue: $0) })
         
         for error in errors {
             
-            XCTAssert(error.name.isEmpty == false)
-            XCTAssert(error.description == error.name)
+            #expect(error.name.isEmpty == false)
+            #expect(error.description == error.name)
             
             #if os(macOS)
             let nsError = error as NSError
-            XCTAssertEqual(nsError.code, Int(error.rawValue))
-            XCTAssertEqual(nsError.domain, "org.pureswift.Bluetooth.HCIError")
-            XCTAssertEqual(nsError.userInfo[NSLocalizedDescriptionKey] as? String, error.description)
-            XCTAssertEqual(nsError.userInfo[NSLocalizedDescriptionKey] as? String, error.name)
+            #expect(nsError.code == Int(error.rawValue))
+            #expect(nsError.domain == "org.pureswift.Bluetooth.HCIError")
+            #expect(nsError.userInfo[NSLocalizedDescriptionKey] as? String == error.description)
+            #expect(nsError.userInfo[NSLocalizedDescriptionKey] as? String == error.name)
             
             print(nsError)
             #endif
         }
     }
     
-    func testReadLocalVersionInformation() async throws {
+    @Test func readLocalVersionInformation() async throws {
         
         let hostController = TestHostController()
         
@@ -268,18 +268,18 @@ final class HCITests: XCTestCase {
         
         var localVersionInformation: HCILocalVersionInformation!
         (localVersionInformation = try await hostController.readLocalVersionInformation())
-        XCTAssert(hostController.queue.isEmpty)
+        #expect(hostController.queue.isEmpty)
         
-        XCTAssertEqual(localVersionInformation.hciVersion.rawValue, 0x08)
-        XCTAssertEqual(localVersionInformation.hciVersion, .v4_2)
-        XCTAssertEqual(localVersionInformation.hciRevision, 0x12C2)
-        XCTAssertEqual(localVersionInformation.lmpVersion, 0x08)
-        XCTAssertEqual(localVersionInformation.lmpSubversion, 0x219A)
-        XCTAssertEqual(localVersionInformation.manufacturer.rawValue, 0x000F)
-        XCTAssertEqual(localVersionInformation.manufacturer.description, "Broadcom Corporation")
+        #expect(localVersionInformation.hciVersion.rawValue == 0x08)
+        #expect(localVersionInformation.hciVersion == .v4_2)
+        #expect(localVersionInformation.hciRevision == 0x12C2)
+        #expect(localVersionInformation.lmpVersion == 0x08)
+        #expect(localVersionInformation.lmpSubversion == 0x219A)
+        #expect(localVersionInformation.manufacturer.rawValue == 0x000F)
+        #expect(localVersionInformation.manufacturer.description == "Broadcom Corporation")
     }
     
-    func testReadDeviceAddress() async throws {
+    @Test func readDeviceAddress() async throws {
         
         let hostController = TestHostController()
         
@@ -296,22 +296,22 @@ final class HCITests: XCTestCase {
         
         var address: BluetoothAddress = .zero
         (address = try await hostController.readDeviceAddress())
-        XCTAssert(hostController.queue.isEmpty)
-        XCTAssertNotEqual(address, .zero)
-        XCTAssertEqual(address.rawValue, "AC:BC:32:A6:67:42")
+        #expect(hostController.queue.isEmpty)
+        #expect(address != .zero)
+        #expect(address.rawValue == "AC:BC:32:A6:67:42")
     }
     
-    func testReadLocalName() async throws {
+    @Test func readLocalName() async throws {
         
         do {
             let data = Data([/*0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00,*/ 0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
             
             guard let readLocalNameParameter = HCIReadLocalName(data: data)
-                else { XCTFail("Bytes couldn't convert to String"); return  }
+                else { Issue.record("Bytes couldn't convert to String"); return  }
             
             let dataString = "Alsey’s MacBook Pro"
             
-            XCTAssert(readLocalNameParameter.localName == dataString, "Strings are not equal\n\(readLocalNameParameter.localName)\n\(dataString)")
+            #expect(readLocalNameParameter.localName == dataString, "Strings are not equal\n\(readLocalNameParameter.localName)\n\(dataString)")
         }
         
         do {
@@ -325,30 +325,30 @@ final class HCITests: XCTestCase {
             let eventData: [UInt8] = [0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00, 0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
             
             guard let hostController = await TestHostController.default
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
             hostController.queue = [.command(opcode, commandData), .event(eventData)]
             
             var returnedLocalName: String = ""
             (returnedLocalName = try await hostController.readLocalName())
-            XCTAssert(hostController.queue.isEmpty)
-            XCTAssert(localName == returnedLocalName, "\(localName) == \(returnedLocalName)")
+            #expect(hostController.queue.isEmpty)
+            #expect(localName == returnedLocalName, "\(localName) == \(returnedLocalName)")
         }
     }
     
-    func testWriteLocalName() async throws {
+    @Test func writeLocalName() async throws {
         
-        XCTAssert((HCIWriteLocalName(localName: "")?.data ?? Data()) == Data(repeating: 0x00, count: HCIWriteLocalName.length))
+        #expect((HCIWriteLocalName(localName: "")?.data ?? Data()) == Data(repeating: 0x00, count: HCIWriteLocalName.length))
         
         // test local name lenght == 248
         do {
             let localNameParameter = String(repeating: "M", count: HCIWriteLocalName.length) //248
             
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localNameParameter)
-                else { XCTFail(); return  }
+                else { Issue.record(); return  }
             
-            XCTAssert(writeLocalNameParameter.data.isEmpty == false)
-            XCTAssertEqual(writeLocalNameParameter.data.count, HCIWriteLocalName.length)
+            #expect(writeLocalNameParameter.data.isEmpty == false)
+            #expect(writeLocalNameParameter.data.count == HCIWriteLocalName.length)
         }
         
         // test local name shorter than 248 octets
@@ -359,9 +359,9 @@ final class HCITests: XCTestCase {
             let data = Data(localName.utf8) + Data(repeating: 0x00, count: HCIWriteLocalName.length - 10)
             
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(writeLocalNameParameter.data, data)
+            #expect(writeLocalNameParameter.data == data)
         }
         
         // test local name longer than 248
@@ -370,7 +370,7 @@ final class HCITests: XCTestCase {
             
             let writeLocalNameParameter = HCIWriteLocalName(localName: localNameParameter)
             
-            XCTAssertNil(writeLocalNameParameter, "HCIWriteLocalName was created with local name longer than 248")
+            #expect(writeLocalNameParameter == nil, "HCIWriteLocalName was created with local name longer than 248")
         }
         
         // compare byte localname
@@ -379,35 +379,35 @@ final class HCITests: XCTestCase {
             let localName = String(repeating: "M", count: 248)
             
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
-                else { XCTFail(); return  }
+                else { Issue.record(); return  }
             
-            XCTAssertEqual(writeLocalNameParameter.localName, localName)
-            XCTAssert(writeLocalNameParameter.data.isEmpty == false)
+            #expect(writeLocalNameParameter.localName == localName)
+            #expect(writeLocalNameParameter.data.isEmpty == false)
             
             let data = Data([UInt8](repeating: 77, count: 248))
             
-            XCTAssertEqual(writeLocalNameParameter.data, data, "Local Name is not generating correct bytes")
+            #expect(writeLocalNameParameter.data == data, "Local Name is not generating correct bytes")
         }
         
         do {
             let localName = "Test"
             
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
-                else { XCTFail(); return  }
+                else { Issue.record(); return  }
             
-            XCTAssertEqual(writeLocalNameParameter.localName, localName)
-            XCTAssert(writeLocalNameParameter.data.isEmpty == false)
+            #expect(writeLocalNameParameter.localName == localName)
+            #expect(writeLocalNameParameter.data.isEmpty == false)
             
             let data = Data([/* 0x13, 0x0C, 0xF8, */ 0x54, 0x65, 0x73, 0x74, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
             
-            XCTAssertEqual(writeLocalNameParameter.data, data, "\(HCIWriteLocalName.self) is not generating valid data")
+            #expect(writeLocalNameParameter.data == data, "\(HCIWriteLocalName.self) is not generating valid data")
         }
         
         do {
             
             let opcode: UInt16 = 0x0C13
             
-            XCTAssertEqual(opcode, HostControllerBasebandCommand.writeLocalName.opcode)
+            #expect(opcode == HostControllerBasebandCommand.writeLocalName.opcode)
             
             let localName = "ColemanCDA"
             
@@ -419,11 +419,11 @@ final class HCITests: XCTestCase {
             hostController.queue = [.command(opcode, commandData), .event(eventData)]
             
             (try await hostController.writeLocalName(localName))
-            XCTAssert(hostController.queue.isEmpty)
+            #expect(hostController.queue.isEmpty)
         }
     }
     
-    func testLowEnergyScan() async throws {
+    @Test func lowEnergyScan() async throws {
         
         typealias Report = HCILEAdvertisingReport.Report
         typealias ScanParameters = HCILESetScanParameters
@@ -495,26 +495,26 @@ final class HCITests: XCTestCase {
             reports.append(report)
         }
         
-        XCTAssert(hostController.queue.isEmpty)
-        XCTAssert(reports.isEmpty == false)
+        #expect(hostController.queue.isEmpty)
+        #expect(reports.isEmpty == false)
         
         guard reports.count == 2
-            else { XCTFail(); return }
+            else { Issue.record(); return }
         
-        XCTAssertEqual(reports[0].address, BluetoothAddress(rawValue: "02:E4:72:17:FD:E2"))
-        XCTAssertEqual(reports[0].addressType, .random)
-        XCTAssertEqual(reports[0].rssi?.rawValue, -55)
-        XCTAssertEqual(reports[0].event, .nonConnectable)
-        XCTAssertEqual(reports[0].event.isConnectable, false)
+        #expect(reports[0].address == BluetoothAddress(rawValue: "02:E4:72:17:FD:E2"))
+        #expect(reports[0].addressType == .random)
+        #expect(reports[0].rssi?.rawValue == -55)
+        #expect(reports[0].event == .nonConnectable)
+        #expect(reports[0].event.isConnectable == false)
         
-        XCTAssertEqual(reports[1].address, BluetoothAddress(rawValue: "C8:69:CD:46:0B:5D"))
-        XCTAssertEqual(reports[1].addressType, .public)
-        XCTAssertEqual(reports[1].rssi?.rawValue, -54)
-        XCTAssertEqual(reports[1].event, .undirected)
-        XCTAssertEqual(reports[1].event.isConnectable, true)
+        #expect(reports[1].address == BluetoothAddress(rawValue: "C8:69:CD:46:0B:5D"))
+        #expect(reports[1].addressType == .public)
+        #expect(reports[1].rssi?.rawValue == -54)
+        #expect(reports[1].event == .undirected)
+        #expect(reports[1].event.isConnectable == true)
     }
     
-    func testLEReadRemoteUsedFeatures() async throws {
+    @Test func lEReadRemoteUsedFeatures() async throws {
         
         let connectionHandle: UInt16 = 0x0041
         
@@ -561,14 +561,14 @@ final class HCITests: XCTestCase {
         var features = LowEnergyFeatureSet()
         (features = try await hostController.lowEnergyReadRemoteUsedFeatures(connectionHandle: connectionHandle))
         
-        XCTAssert(hostController.queue.isEmpty)
-        XCTAssert(features.isEmpty == false, "Empty features")
-        XCTAssertEqual(features, [.encryption, .extendedRejectIndication, .slaveInitiatedFeaturesExchange, .ping])
-        XCTAssertNotEqual(features, [.encryption])
-        XCTAssertNotEqual(features, .all)
+        #expect(hostController.queue.isEmpty)
+        #expect(features.isEmpty == false, "Empty features")
+        #expect(features == [.encryption, .extendedRejectIndication, .slaveInitiatedFeaturesExchange, .ping])
+        #expect(features != [.encryption])
+        #expect(features != .all)
     }
     
-    func testAdvertisingReport() async throws {
+    @Test func advertisingReport() async throws {
         
         typealias Report = HCILEAdvertisingReport.Report
         
@@ -577,12 +577,12 @@ final class HCITests: XCTestCase {
             let eventData = Data(data[3 ..< readBytes])
             
             guard let meta = HCILowEnergyMetaEvent<Data>(data: eventData)
-                else { XCTFail("Could not parse"); return [] }
+                else { Issue.record("Could not parse"); return [] }
             
-            XCTAssert(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
+            #expect(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
             
             guard let advertisingReport = HCILEAdvertisingReport(data: meta.eventData)
-                else { XCTFail("Could not parse \(eventData)"); return [] }
+                else { Issue.record("Could not parse \(eventData)"); return [] }
             
             return advertisingReport.reports
         }
@@ -597,7 +597,7 @@ final class HCITests: XCTestCase {
             let readBytes = 26
             let data: [UInt8] = [4, 62, 23, 2, 1, 0, 0, 66, 103, 166, 50, 188, 172, 11, 2, 1, 6, 7, 255, 76, 0, 16, 2, 11, 0, 186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [BluetoothAddress(rawValue: "AC:BC:32:A6:67:42")!])
+            #expect(parseAdvertisingReportAddress(readBytes, data) == [BluetoothAddress(rawValue: "AC:BC:32:A6:67:42")!])
         }
         
         do {
@@ -605,7 +605,7 @@ final class HCITests: XCTestCase {
             let readBytes = 38
             let data: [UInt8] = [4, 62, 35, 2, 1, 0, 1, 53, 238, 129, 237, 128, 89, 23, 2, 1, 6, 19, 255, 76, 0, 12, 14, 8, 69, 6, 92, 128, 96, 83, 24, 163, 199, 32, 154, 91, 3, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
-            XCTAssertEqual(parseAdvertisingReportAddress(readBytes, data), [BluetoothAddress(rawValue: "59:80:ED:81:EE:35")!])
+            #expect(parseAdvertisingReportAddress(readBytes, data) == [BluetoothAddress(rawValue: "59:80:ED:81:EE:35")!])
         }
         
         do {
@@ -630,21 +630,21 @@ final class HCITests: XCTestCase {
             
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
             
-            XCTAssertEqual(advertisingReports.count, 0x01)
+            #expect(advertisingReports.count == 0x01)
             
             guard let report = advertisingReports.first
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(report.address, BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
-            XCTAssertEqual(report.addressType, .public)
-            XCTAssertEqual(report.event, .undirected)
-            XCTAssertEqual(report.event.isConnectable, true)
-            XCTAssertEqual(report.rssi?.rawValue, -45)
-            XCTAssertEqual(report.responseData.count, 0x16)
+            #expect(report.address == BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
+            #expect(report.addressType == .public)
+            #expect(report.event == .undirected)
+            #expect(report.event.isConnectable == true)
+            #expect(report.rssi?.rawValue == -45)
+            #expect(report.responseData.count == 0x16)
             
             let advertisingData: LowEnergyAdvertisingData = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
             
-            XCTAssertEqual(report.responseData, advertisingData)
+            #expect(report.responseData == advertisingData)
         }
         
         do {
@@ -665,17 +665,17 @@ final class HCITests: XCTestCase {
             
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
             
-            XCTAssertEqual(advertisingReports.count, 0x01)
+            #expect(advertisingReports.count == 0x01)
             
             guard let report = advertisingReports.first
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(report.address, BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
-            XCTAssertEqual(report.addressType, .public)
-            XCTAssertEqual(report.event, .scanResponse)
-            XCTAssertEqual(report.event.isConnectable, true)
-            XCTAssertEqual(report.rssi?.rawValue, -44)
-            XCTAssertEqual(Data(report.responseData), Data())
+            #expect(report.address == BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
+            #expect(report.addressType == .public)
+            #expect(report.event == .scanResponse)
+            #expect(report.event.isConnectable == true)
+            #expect(report.rssi?.rawValue == -44)
+            #expect(Data(report.responseData) == Data())
         }
         
         do {
@@ -698,18 +698,18 @@ final class HCITests: XCTestCase {
             
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
             
-            XCTAssertEqual(advertisingReports.count, 0x01)
+            #expect(advertisingReports.count == 0x01)
             
             guard let report = advertisingReports.first
-                else { XCTFail(); return }
+                else { Issue.record(); return }
             
-            XCTAssertEqual(report.address, BluetoothAddress(rawValue: "00:1A:AE:06:EF:9E")!)
-            XCTAssertEqual(report.addressType, .public)
-            XCTAssertEqual(report.event, .scanResponse)
-            XCTAssertEqual(report.event.isConnectable, true)
-            XCTAssertEqual(report.rssi?.rawValue, -70)
-            XCTAssertEqual(report.responseData.count, 0x0C)
-            XCTAssertEqual(report.responseData, [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
+            #expect(report.address == BluetoothAddress(rawValue: "00:1A:AE:06:EF:9E")!)
+            #expect(report.addressType == .public)
+            #expect(report.event == .scanResponse)
+            #expect(report.event.isConnectable == true)
+            #expect(report.rssi?.rawValue == -70)
+            #expect(report.responseData.count == 0x0C)
+            #expect(report.responseData == [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
         }
         
         do {
@@ -810,17 +810,17 @@ final class HCITests: XCTestCase {
             
             for data in testData {
                 guard let report = HCILEAdvertisingReport(data: data) else {
-                    XCTFail("Unable to parse")
+                    Issue.record("Unable to parse")
                     return
                 }
                 reports.append(report)
             }
             
-            XCTAssertEqual(reports[0].reports[0].address.rawValue, "7A:00:A1:6B:03:8A")
+            #expect(reports[0].reports[0].address.rawValue == "7A:00:A1:6B:03:8A")
         }
     }
     
-    func testExtendedAdvertisingReport() throws {
+    @Test func extendedAdvertisingReport() throws {
         
         /*
          Mar 15 10:52:55.671  HCI Event        0x0000  A4:C1:38:2D:7A:27
@@ -856,26 +856,26 @@ final class HCITests: XCTestCase {
               event.subevent == .extendedAdvertisingReport,
               let reportEvent = HCILEExtendedAdvertisingReport<Data>(data: event.eventData),
               let report = reportEvent.reports.first else {
-            XCTFail("Unable to parse event")
+            Issue.record("Unable to parse event")
             return
         }
         
-        XCTAssertEqual(reportEvent.reports.count, 1)
-        XCTAssertEqual(report.eventType.map { $0 }, [.connectableAdvertising, .scannableAdvertising, .legacyAdvertisingPDU])
-        XCTAssertEqual(report.addressType, .publicDeviceAddress)
-        XCTAssertEqual(report.address.description, "A4:C1:38:2D:7A:27")
-        XCTAssertEqual(report.primaryPHY, .le1M)
-        XCTAssertEqual(report.secondaryPHY, .noPackets)
-        XCTAssertNil(report.advertisingSID)
-        XCTAssertNil(report.txPower)
-        XCTAssertEqual(report.rssi?.rawValue, -37)
-        XCTAssertEqual(report.periodicAdvertisingInterval.rawValue, 0)
-        XCTAssertEqual(report.directAddress.description, "00:00:00:00:00:00")
-        XCTAssertEqual(report.directAddressType, .publicDeviceAddress)
-        XCTAssertEqual(report.responseData, Data([0x0D, 0x09, 0x47, 0x56, 0x48, 0x35, 0x30, 0x37, 0x32, 0x5F, 0x37, 0x41, 0x32, 0x37, 0x03, 0x03, 0x88, 0xEC, 0x02, 0x01, 0x05, 0x09, 0xFF, 0x88, 0xEC, 0x00, 0x03, 0x94, 0x90, 0x64, 0x00]))
+        #expect(reportEvent.reports.count == 1)
+        #expect(report.eventType.map { $0 } == [.connectableAdvertising, .scannableAdvertising, .legacyAdvertisingPDU])
+        #expect(report.addressType == .publicDeviceAddress)
+        #expect(report.address.description == "A4:C1:38:2D:7A:27")
+        #expect(report.primaryPHY == .le1M)
+        #expect(report.secondaryPHY == .noPackets)
+        #expect(report.advertisingSID == nil)
+        #expect(report.txPower == nil)
+        #expect(report.rssi?.rawValue == -37)
+        #expect(report.periodicAdvertisingInterval.rawValue == 0)
+        #expect(report.directAddress.description == "00:00:00:00:00:00")
+        #expect(report.directAddressType == .publicDeviceAddress)
+        #expect(report.responseData == Data([0x0D, 0x09, 0x47, 0x56, 0x48, 0x35, 0x30, 0x37, 0x32, 0x5F, 0x37, 0x41, 0x32, 0x37, 0x03, 0x03, 0x88, 0xEC, 0x02, 0x01, 0x05, 0x09, 0xFF, 0x88, 0xEC, 0x00, 0x03, 0x94, 0x90, 0x64, 0x00]))
     }
     
-    func testCommandStatusEvent() async throws {
+    @Test func commandStatusEvent() async throws {
         
         func parseEvent(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> HCICommandStatus? {
             
@@ -885,10 +885,10 @@ final class HCITests: XCTestCase {
             guard let eventHeader = HCIEventHeader(data: headerData)
                 else { return nil }
             
-            XCTAssert(eventHeader.event.rawValue == headerData[0])
-            XCTAssert(eventHeader.parameterLength == headerData[1])
+            #expect(eventHeader.event.rawValue == headerData[0])
+            #expect(eventHeader.parameterLength == headerData[1])
             
-            XCTAssert(eventHeader.event == .commandStatus)
+            #expect(eventHeader.event == .commandStatus)
             
             guard let event = HCICommandStatus(data: eventData)
                 else { return nil }
@@ -902,9 +902,9 @@ final class HCITests: XCTestCase {
             let data: [UInt8] = [4, 15, 4, 11, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
             guard let event = parseEvent(readBytes, data)
-                else { XCTFail("Could not parse"); return }
+                else { Issue.record("Could not parse"); return }
             
-            XCTAssertEqual(event.status.error, .aclConnectionExists)
+            #expect(event.status.error == .aclConnectionExists)
         }
         
         do {
@@ -913,13 +913,13 @@ final class HCITests: XCTestCase {
             let data: [UInt8] = [4, 15, 4, 12, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
             guard let event = parseEvent(readBytes, data)
-                else { XCTFail("Could not parse"); return }
+                else { Issue.record("Could not parse"); return }
             
-            XCTAssertEqual(event.status.error, .commandDisallowed)
+            #expect(event.status.error == .commandDisallowed)
         }
     }
     
-    func testLEConnectionEvent() async throws {
+    @Test func lEConnectionEvent() async throws {
         
         do {
             
@@ -927,9 +927,9 @@ final class HCITests: XCTestCase {
             let data: [UInt8] = [4, 15, 4, 0, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
             guard let event: HCICommandStatus = parseEvent(readBytes, data)
-                else { XCTFail("Could not parse"); return }
+                else { Issue.record("Could not parse"); return }
             
-            XCTAssert(event.status == .success)
+            #expect(event.status == .success)
         }
         
         do {
@@ -938,19 +938,19 @@ final class HCITests: XCTestCase {
             let data: [UInt8] = [4, 62, 19, 1, 0, 71, 0, 0, 0, 66, 103, 166, 50, 188, 172, 15, 0, 0, 0, 128, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             
             guard let metaEvent: HCILowEnergyMetaEvent<Data> = parseEvent(readBytes, data)
-                else { XCTFail("Could not parse"); return }
+                else { Issue.record("Could not parse"); return }
             
-            XCTAssert(metaEvent.subevent == .connectionComplete)
+            #expect(metaEvent.subevent == .connectionComplete)
             
             guard let event = HCILEConnectionComplete(data: metaEvent.eventData)
-                else { XCTFail("Could not parse"); return }
+                else { Issue.record("Could not parse"); return }
             
-            XCTAssert(event.status == .success)
-            XCTAssert(event.handle == 71)
+            #expect(event.status == .success)
+            #expect(event.handle == 71)
         }
     }
     
-    func testLEConnectionCreate() async throws {
+    @Test func lEConnectionCreate() async throws {
         
         typealias CommandParameter = HCILECreateConnection
         
@@ -967,13 +967,13 @@ final class HCITests: XCTestCase {
                                           supervisionTimeout: LowEnergySupervisionTimeout(rawValue: 0x00C8)!,
                                           connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
         
-        XCTAssertEqual(parameters.data.count, 0x19)
-        XCTAssertEqual(parameters.scanInterval.miliseconds, 60)
-        XCTAssertEqual(parameters.scanWindow.miliseconds, 30)
-        XCTAssertEqual(parameters.connectionInterval.miliseconds, 7.5 ... 15)
-        XCTAssertEqual(parameters.connectionLatency.rawValue, 0)
-        XCTAssertEqual(parameters.supervisionTimeout.miliseconds, 2000)
-        XCTAssertEqual(parameters.connectionLength.miliseconds, 2.5 ... 3.75)
+        #expect(parameters.data.count == 0x19)
+        #expect(parameters.scanInterval.miliseconds == 60)
+        #expect(parameters.scanWindow.miliseconds == 30)
+        #expect(parameters.connectionInterval.miliseconds == 7.5 ... 15)
+        #expect(parameters.connectionLatency.rawValue == 0)
+        #expect(parameters.supervisionTimeout.miliseconds == 2000)
+        #expect(parameters.connectionLength.miliseconds == 2.5 ... 3.75)
         
         /**
          SEND  [200D] LE Create Connection - 00:00:00:00:00:00, Scan Window/Interval: 30ms/60ms, Min/Max Conn Interval: 7.5ms/15ms
@@ -1019,21 +1019,21 @@ final class HCITests: XCTestCase {
         
         var connection: HCILEConnectionComplete!
         (connection = try await hostController.lowEnergyCreateConnection(parameters: parameters))
-        XCTAssert(hostController.queue.isEmpty)
-        XCTAssertEqual(connection.status.rawValue, 0x00)
-        XCTAssertEqual(connection.handle, 0x0041)
-        XCTAssertEqual(connection.role, .master)
-        XCTAssertEqual(connection.peerAddressType, .public)
-        XCTAssertEqual(connection.peerAddress.rawValue, "58:E2:8F:7C:0B:B3")
-        XCTAssertEqual(connection.interval.rawValue, 0x0009)
-        XCTAssertEqual(connection.interval.miliseconds, 11.25)
-        XCTAssertEqual(connection.latency.rawValue, 0)
-        XCTAssertEqual(connection.supervisionTimeout.rawValue, 0x00C8)
-        XCTAssertEqual(connection.supervisionTimeout.miliseconds, 2000)
-        XCTAssertEqual(connection.masterClockAccuracy.rawValue, 0x05)
+        #expect(hostController.queue.isEmpty)
+        #expect(connection.status.rawValue == 0x00)
+        #expect(connection.handle == 0x0041)
+        #expect(connection.role == .master)
+        #expect(connection.peerAddressType == .public)
+        #expect(connection.peerAddress.rawValue == "58:E2:8F:7C:0B:B3")
+        #expect(connection.interval.rawValue == 0x0009)
+        #expect(connection.interval.miliseconds == 11.25)
+        #expect(connection.latency.rawValue == 0)
+        #expect(connection.supervisionTimeout.rawValue == 0x00C8)
+        #expect(connection.supervisionTimeout.miliseconds == 2000)
+        #expect(connection.masterClockAccuracy.rawValue == 0x05)
     }
     
-    func testLEConnectionCancel() async throws {
+    @Test func lEConnectionCancel() async throws {
         
         let hostController = TestHostController()
         
@@ -1066,14 +1066,14 @@ final class HCITests: XCTestCase {
             caughtError = error
         }
         catch {
-            XCTFail("Expected HCIError.commandDisallowed, instead got \(error)")
+            Issue.record("Expected HCIError.commandDisallowed, instead got \(error)")
         }
-        XCTAssertEqual(caughtError, .commandDisallowed)
+        #expect(caughtError == .commandDisallowed)
         
-        XCTAssert(hostController.queue.isEmpty)
+        #expect(hostController.queue.isEmpty)
     }
     
-    func testLEAddDeviceToWhiteList() async throws {
+    @Test func lEAddDeviceToWhiteList() async throws {
         
         let hostController = TestHostController()
         
@@ -1088,10 +1088,10 @@ final class HCITests: XCTestCase {
         
         (try await hostController.lowEnergyAddDeviceToWhiteList(.public(BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)))
         
-        XCTAssert(hostController.queue.isEmpty)
+        #expect(hostController.queue.isEmpty)
     }
     
-    func testLERemoveDeviceFromWhiteList() async throws {
+    @Test func lERemoveDeviceFromWhiteList() async throws {
         
         let hostController = TestHostController()
         
@@ -1120,10 +1120,10 @@ final class HCITests: XCTestCase {
         
         (try await hostController.lowEnergyRemoveDeviceFromWhiteList(.public(BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)))
         
-        XCTAssert(hostController.queue.isEmpty)
+        #expect(hostController.queue.isEmpty)
     }
     
-    func testLEStartEncryption() async throws {
+    @Test func lEStartEncryption() async throws {
         
         let hostController = TestHostController()
         let connectionHandle: UInt16 = 0x0041
@@ -1131,9 +1131,9 @@ final class HCITests: XCTestCase {
         let encryptedDiversifier: UInt16 = 0x0000
         let longTermKey = UInt128(bigEndian: UInt128(bytes: (0x23, 0x57, 0xEB, 0x0D, 0x0C, 0x24, 0xD8, 0x5A, 0x98, 0x57, 0x64, 0xEC, 0xCB, 0xEC, 0xEC, 0x05)))
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
-            XCTAssertEqual(longTermKey.description, "46979477079145919533008304147725609989")
+            #expect(longTermKey.description == "46979477079145919533008304147725609989")
         } else {
-            XCTAssertEqual(longTermKey.description, "0x2357EB0D0C24D85A985764ECCBECEC05")
+            #expect(longTermKey.description == "0x2357EB0D0C24D85A985764ECCBECEC05")
         }
         
         do {
@@ -1145,7 +1145,7 @@ final class HCITests: XCTestCase {
                                                encryptedDiversifier: encryptedDiversifier,
                                                longTermKey: longTermKey)
             
-            XCTAssertEqual(command.data, data)
+            #expect(command.data == data)
         }
         
         do {
@@ -1157,7 +1157,7 @@ final class HCITests: XCTestCase {
                                                encryptedDiversifier: encryptedDiversifier,
                                                longTermKey: longTermKey)
             
-            XCTAssertNotEqual(command.data, data)
+            #expect(command.data != data)
         }
         
         /**
@@ -1206,28 +1206,28 @@ final class HCITests: XCTestCase {
         //XCTAssertEqual(encryptionChange?.rawValue, 0x01)
     }
     
-    func testEncryptionChangeEvent() async throws {
+    @Test func encryptionChangeEvent() async throws {
         
         let data = Data([/* 0x08, 0x04, */ 0x00, 0x41, 0x00, 0x01])
         
         guard let event = HCIEncryptionChange(data: data)
-            else { XCTFail("Could not parse HCI Event"); return }
+            else { Issue.record("Could not parse HCI Event"); return }
         
-        XCTAssertEqual(event.status.rawValue, 0x00)
-        XCTAssertEqual(event.handle, 0x0041)
-        XCTAssertEqual(event.encryptionEnabled, .e0)
-        XCTAssertEqual(event.encryptionEnabled.rawValue, 0x01)
+        #expect(event.status.rawValue == 0x00)
+        #expect(event.handle == 0x0041)
+        #expect(event.encryptionEnabled == .e0)
+        #expect(event.encryptionEnabled.rawValue == 0x01)
     }
     
-    func testLowEnergyEncrypt() async throws {
+    @Test func lowEnergyEncrypt() async throws {
         
         let hostController = TestHostController()
         
         let key = UInt128(bigEndian: UInt128(bytes: (0x4C, 0x68, 0x38, 0x41, 0x39, 0xF5, 0x74, 0xD8, 0x36, 0xBC, 0xF3, 0x4E, 0x9D, 0xFB, 0x01, 0xBF)))
-        XCTAssertEqual(key.hexadecimal, "4C68384139F574D836BCF34E9DFB01BF")
+        #expect(key.hexadecimal == "4C68384139F574D836BCF34E9DFB01BF")
         
         let plainTextData = UInt128(bigEndian: UInt128(bytes: (0x02, 0x13, 0x24, 0x35, 0x46, 0x57, 0x68, 0x79, 0xac, 0xbd, 0xce, 0xdf, 0xe0, 0xf1, 0x02, 0x13)))
-        XCTAssertEqual(plainTextData.hexadecimal, "0213243546576879ACBDCEDFE0F10213")
+        #expect(plainTextData.hexadecimal == "0213243546576879ACBDCEDFE0F10213")
         
         /**
          HCI_LE_Encrypt (length 0x20) – command
@@ -1240,7 +1240,7 @@ final class HCITests: XCTestCase {
         let commandHeader = HCICommandHeader(command: HCILowEnergyCommand.encrypt,
                                              parameterLength: 0x20)
         
-        XCTAssertEqual(commandHeader.data, Data([23, 32, 32]))
+        #expect(commandHeader.data == Data([23, 32, 32]))
         
         hostController.queue.append(
             .command(commandHeader.opcode,
@@ -1248,8 +1248,7 @@ final class HCITests: XCTestCase {
             )
         )
         
-        XCTAssertEqual(HCILEEncrypt(key: key, plainText: plainTextData).data,
-                       Data([0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]))
+        #expect(HCILEEncrypt(key: key, plainText: plainTextData).data == Data([0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]))
         
         /**
          HCI_Command_Complete (length 0x14) – event
@@ -1264,17 +1263,17 @@ final class HCITests: XCTestCase {
         
         hostController.queue.append(.event(eventHeader.data + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
         
-        XCTAssertEqual(HCILEEncryptReturn(data: Data([/* 0x02, 0x17, 0x20, 0x00, */ 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.hexadecimal, "99AD1B5226A37E3E058E3B8E27C2C666")
+        #expect(HCILEEncryptReturn(data: Data([/* 0x02, 0x17, 0x20, 0x00, */ 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.hexadecimal == "99AD1B5226A37E3E058E3B8E27C2C666")
         
         var encryptedData: UInt128 = .zero
         (encryptedData = try await hostController.lowEnergyEncrypt(key: key, data: plainTextData))
         
-        XCTAssert(hostController.queue.isEmpty)
-        XCTAssertNotEqual(encryptedData, .zero)
-        XCTAssertEqual(encryptedData.hexadecimal, "99AD1B5226A37E3E058E3B8E27C2C666")
+        #expect(hostController.queue.isEmpty)
+        #expect(encryptedData != .zero)
+        #expect(encryptedData.hexadecimal == "99AD1B5226A37E3E058E3B8E27C2C666")
     }
     
-    func testSetLERandomAddress() async throws {
+    @Test func setLERandomAddress() async throws {
         
         let hostController = TestHostController()
         
@@ -1303,10 +1302,10 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x05, 0x20, 0x00]))
         
         (try await hostController.lowEnergySetRandomAddress(randomAddress))
-        XCTAssert(hostController.queue.isEmpty)
+        #expect(hostController.queue.isEmpty)
     }
     
-    func testRemoteNameRequest() async throws {
+    @Test func remoteNameRequest() async throws {
         
         let hostController = TestHostController()
         
@@ -1355,7 +1354,7 @@ final class HCITests: XCTestCase {
         }
         
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         let pscanRepMode = PageScanRepetitionMode(rawValue: 0x01)
         
@@ -1366,27 +1365,27 @@ final class HCITests: XCTestCase {
             pscanRepMode: pscanRepMode,
             clockOffset: clockOffset
         )
-        XCTAssertEqual(completionEvent.address, address)
-        XCTAssertEqual(completionEvent.status, .success)
+        #expect(completionEvent.address == address)
+        #expect(completionEvent.status == .success)
     }
     
-    func testInquiry() async throws {
+    @Test func inquiry() async throws {
         
-        XCTAssertEqual(HCIInquiry.Duration.min.seconds, 1.28, "Range: 1.28 – 61.44 Sec")
-        XCTAssertEqual(HCIInquiry.Duration.max.seconds, 61.44, "Range: 1.28 – 61.44 Sec")
-        (0x01 ... 0x30).forEach { XCTAssertNotNil(HCIInquiry.Duration(rawValue: UInt8($0)), "Could not initialize") }
-        XCTAssertNil(HCIInquiry.Duration(rawValue: 0))
-        (UInt8(0x31) ..< .max).forEach { XCTAssertNil(HCIInquiry.Duration(rawValue: $0), "Should not initialize") }
+        #expect(HCIInquiry.Duration.min.seconds == 1.28, "Range: 1.28 – 61.44 Sec")
+        #expect(HCIInquiry.Duration.max.seconds == 61.44, "Range: 1.28 – 61.44 Sec")
+        (0x01 ... 0x30).forEach { #expect(HCIInquiry.Duration(rawValue: UInt8($0)) != nil, "Could not initialize")  }
+        #expect(HCIInquiry.Duration(rawValue: 0) == nil)
+        (UInt8(0x31) ..< .max).forEach { #expect(HCIInquiry.Duration(rawValue: $0) == nil, "Should not initialize")  }
         
         guard let lap = HCIInquiry.LAP(rawValue: UInt24(bytes: (0x33, 0x8b, 0x9e)))
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         guard let duration = HCIInquiry.Duration(rawValue: 0x0A)
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         let responses = HCIInquiry.Responses(rawValue: 0xFF)
         
-        XCTAssertNotNil(HCIInquiry(lap: lap, duration: duration, responses: responses))
+        #expect(HCIInquiry(lap: lap, duration: duration, responses: responses) != nil)
         
         let hostController = TestHostController()
         
@@ -1435,7 +1434,7 @@ final class HCITests: XCTestCase {
                                                     foundDevice: { _ in }))
     }
     
-    func testInquiryResult() async throws {
+    @Test func inquiryResult() async throws {
         
         do {
             /**
@@ -1458,14 +1457,14 @@ final class HCITests: XCTestCase {
             let data = Data([0x2F, 0xFF, 0x01, 0xED, 0xF4, 0x1D, 0x67, 0xB1, 0x04, 0x01, 0x00, 0x0C, 0x02, 0x5A, 0x52, 0x1E, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
             
             guard let event = HCIInquiryResult(data: data)
-                else { XCTFail("Could not parse"); return }
+                else { Issue.record("Could not parse"); return }
             
-            XCTAssertEqual(event.reports[0].classOfDevice.majorDeviceClass, .miscellaneous)
-            XCTAssertEqual(event.reports[0].address, BluetoothAddress(rawValue: "04:B1:67:1D:F4:ED"))
+            #expect(event.reports[0].classOfDevice.majorDeviceClass == .miscellaneous)
+            #expect(event.reports[0].address == BluetoothAddress(rawValue: "04:B1:67:1D:F4:ED"))
         }
     }
     
-    func testInquiryCancel() async throws {
+    @Test func inquiryCancel() async throws {
         
         let hostController = TestHostController()
         
@@ -1492,33 +1491,33 @@ final class HCITests: XCTestCase {
         (try await hostController.inquiryCancel())
     }
     
-    func testPeriodicInquiryModeAndCancel() async throws {
+    @Test func periodicInquiryModeAndCancel() async throws {
         
-        XCTAssertEqual(HCIPeriodicInquiryMode.Duration.min.seconds, 1.28, "Range: 1.28 – 61.44 Sec")
-        XCTAssertEqual(HCIPeriodicInquiryMode.Duration.max.seconds, 61.44, "Range: 1.28 – 61.44 Sec")
-        (0x01 ... 0x30).forEach { XCTAssertNotNil(HCIPeriodicInquiryMode.Duration(rawValue: UInt8($0)), "Could not initialize") }
-        XCTAssertNil(HCIPeriodicInquiryMode.Duration(rawValue: 0))
-        (UInt8(0x31) ..< .max).forEach { XCTAssertNil(HCIPeriodicInquiryMode.Duration(rawValue: $0), "Should not initialize") }
+        #expect(HCIPeriodicInquiryMode.Duration.min.seconds == 1.28, "Range: 1.28 – 61.44 Sec")
+        #expect(HCIPeriodicInquiryMode.Duration.max.seconds == 61.44, "Range: 1.28 – 61.44 Sec")
+        (0x01 ... 0x30).forEach { #expect(HCIPeriodicInquiryMode.Duration(rawValue: UInt8($0)) != nil, "Could not initialize")  }
+        #expect(HCIPeriodicInquiryMode.Duration(rawValue: 0) == nil)
+        (UInt8(0x31) ..< .max).forEach { #expect(HCIPeriodicInquiryMode.Duration(rawValue: $0) == nil, "Should not initialize")  }
         
-        XCTAssertEqual(HCIPeriodicInquiryMode.MaxDuration.min.seconds, 3.84)
-        XCTAssertEqual(HCIPeriodicInquiryMode.MaxDuration.max.seconds, 83884.8)
-        XCTAssertEqual(HCIPeriodicInquiryMode.MinDuration.min.seconds, 2.56)
-        XCTAssertEqual(HCIPeriodicInquiryMode.MinDuration.max.seconds, 83883.52)
-        XCTAssertEqual(HCIPeriodicInquiryMode.Responses.unlimited.rawValue, 0x00)
+        #expect(HCIPeriodicInquiryMode.MaxDuration.min.seconds == 3.84)
+        #expect(HCIPeriodicInquiryMode.MaxDuration.max.seconds == 83884.8)
+        #expect(HCIPeriodicInquiryMode.MinDuration.min.seconds == 2.56)
+        #expect(HCIPeriodicInquiryMode.MinDuration.max.seconds == 83883.52)
+        #expect(HCIPeriodicInquiryMode.Responses.unlimited.rawValue == 0x00)
         
         let hostController = TestHostController()
         
         guard let maxDuration = HCIPeriodicInquiryMode.MaxDuration(rawValue: 0x09)
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         guard let minDuration = HCIPeriodicInquiryMode.MinDuration(rawValue: 0x05)
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         guard let lap = HCIPeriodicInquiryMode.LAP(rawValue: UInt24(bytes: (0x00, 0x8b, 0x9e)))
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         guard let duration = HCIPeriodicInquiryMode.Duration(rawValue: 0x03)
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         let responses = HCIPeriodicInquiryMode.Responses(rawValue: 0x20)
         
@@ -1555,7 +1554,7 @@ final class HCITests: XCTestCase {
                                                                 responses: responses))
     }
     
-    func testExitPeriodicInquiryMode() async throws {
+    @Test func exitPeriodicInquiryMode() async throws {
         
         /**
          [0404] Opcode: 0x0404 (OGF: 0x01    OCF: 0x04)
@@ -1582,7 +1581,7 @@ final class HCITests: XCTestCase {
         (try await hostController.exitPeriodicInquiry())
     }
     
-    func testCreateConnection() async throws {
+    @Test func createConnection() async throws {
         
         typealias ClockOffset = HCICreateConnection.ClockOffset
         typealias AllowRoleSwitch = HCICreateConnection.AllowRoleSwitch
@@ -1631,12 +1630,12 @@ final class HCITests: XCTestCase {
         }
         
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: 0x01)
         
         guard let allowSwitchRole = AllowRoleSwitch(rawValue: 0x00)
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
 
         let event = try await hostController.createConnection(address: address,
                                                              packetType: 0xCC18,
@@ -1644,11 +1643,11 @@ final class HCITests: XCTestCase {
                                                              clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
                                                              allowRoleSwitch: allowSwitchRole)
         
-        XCTAssertEqual(event.address, address)
-        XCTAssertEqual(event.status, .success)
+        #expect(event.address == address)
+        #expect(event.status == .success)
     }
     
-    func testCreateConnectionCancel() async throws {
+    @Test func createConnectionCancel() async throws {
         
         let hostController = TestHostController()
         
@@ -1669,12 +1668,12 @@ final class HCITests: XCTestCase {
         }
         
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         (try await hostController.cancelConnection(address: address))
     }
     
-    func testConnectionComplete() async throws {
+    @Test func connectionComplete() async throws {
         
         /**
          Parameter Length: 11 (0x0B)
@@ -1688,20 +1687,20 @@ final class HCITests: XCTestCase {
         let data = Data([0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00])
         
         guard let event = HCIConnectionComplete(data: data)
-            else { XCTFail("Could not parse"); return }
+            else { Issue.record("Could not parse"); return }
         
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
-        XCTAssertEqual(event.status.rawValue, HCIStatus.success.rawValue)
-        XCTAssertEqual(event.linkType, HCIConnectionComplete.LinkType(rawValue: 0x01))
-        XCTAssertEqual(event.encryption, HCIConnectionComplete.Encryption(rawValue: 0x00))
+        #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
+        #expect(event.status.rawValue == HCIStatus.success.rawValue)
+        #expect(event.linkType == HCIConnectionComplete.LinkType(rawValue: 0x01))
+        #expect(event.encryption == HCIConnectionComplete.Encryption(rawValue: 0x00))
     }
     
-    func testConnectionRequest() async throws {
+    @Test func connectionRequest() async throws {
         
         
     }
     
-    func testAcceptConnectionRequest() async throws {
+    @Test func acceptConnectionRequest() async throws {
         
         /**
          [0409] Opcode: 0x0409 (OGF: 0x01    OCF: 0x09)
@@ -1729,15 +1728,15 @@ final class HCITests: XCTestCase {
         }
         
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         guard let role = HCIAcceptConnectionRequest.Role(rawValue: 0x00)
-        else { XCTFail("Unable to init Role"); return }
+        else { Issue.record("Unable to init Role"); return }
         
         (try await hostController.acceptConnection(address: address, role: role))
     }
     
-    func testDisconnect() async throws {
+    @Test func disconnect() async throws {
         
         let hostController = TestHostController()
         
@@ -1779,12 +1778,12 @@ final class HCITests: XCTestCase {
         }
         
         let event = try await hostController.disconnect(connectionHandle: 0x000D, error: .remoteUserEndedConnection)
-        XCTAssertEqual(event.handle, 0x000D)
-        XCTAssertEqual(event.error, .connectionTerminated)
-        XCTAssertEqual(event.status, .success)
+        #expect(event.handle == 0x000D)
+        #expect(event.error == .connectionTerminated)
+        #expect(event.status == .success)
     }
     
-    func testLinkKeyRequestReply() async throws {
+    @Test func linkKeyRequestReply() async throws {
         
         let hostController = TestHostController()
         
@@ -1814,7 +1813,7 @@ final class HCITests: XCTestCase {
         }
         
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         let linkKey = UInt128(littleEndian: UInt128(bytes: (0x3b, 0xf5, 0xfc, 0xa0, 0x63, 0x7c, 0x6d, 0xc2,
                                                             0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e)))
@@ -1822,7 +1821,7 @@ final class HCITests: XCTestCase {
         (try await hostController.linkKeyRequestReply(address: address, linkKey: linkKey))
     }
     
-    func testLinkKeyRequest() async throws {
+    @Test func linkKeyRequest() async throws {
         
         /**
          Parameter Length: 6 (0x06)
@@ -1832,12 +1831,12 @@ final class HCITests: XCTestCase {
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
         
         guard let event = HCILinkKeyRequest(data: data)
-            else { XCTFail("Could not parse"); return }
+            else { Issue.record("Could not parse"); return }
         
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
+        #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
     }
     
-    func testReadDataBlockSize() async throws {
+    @Test func readDataBlockSize() async throws {
         
         let hostController = TestHostController()
         
@@ -1863,7 +1862,7 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x04, 0x00, 0x0a, 0x10, 0x01]))
     }
     
-    func testSetConnectionencryption() async throws {
+    @Test func setConnectionencryption() async throws {
         
         let hostController = TestHostController()
         
@@ -1899,12 +1898,12 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x08, 0x04, 0x00, 0x0d, 0x00, 0x01]))
         
         let event = try await hostController.setConnectionEncryption(handle: 0x000D, encryption: .enable)
-        XCTAssertEqual(event.status, .success)
-        XCTAssertEqual(event.handle, 0x000D)
-        XCTAssertEqual(event.encryptionEnabled, .e0)
+        #expect(event.status == .success)
+        #expect(event.handle == 0x000D)
+        #expect(event.encryptionEnabled == .e0)
     }
     
-    func testReadRemoteSupportedFeatures() async throws {
+    @Test func readRemoteSupportedFeatures() async throws {
         
         let hostController = TestHostController()
         
@@ -1943,10 +1942,10 @@ final class HCITests: XCTestCase {
         
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
         (lmpFeatures = try await hostController.readRemoteSupportedFeatures(handle: 0x000D))
-        XCTAssertEqual(lmpFeatures, features)
+        #expect(lmpFeatures == features)
     }
     
-    func testReadRemoteExtendedFeatures() async throws {
+    @Test func readRemoteExtendedFeatures() async throws {
         
         let hostController = TestHostController()
         
@@ -1956,10 +1955,10 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x23, 0x0D, 0x00, 0x0c, 0x00, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
         
         let features = try await hostController.readRemoteExtendedFeatures(handle: 0x000D, pageNumber: 01)
-        XCTAssert(features.isEmpty)
+        #expect(features.isEmpty)
     }
     
-    func testReadRemoteVersionInformation() async throws {
+    @Test func readRemoteVersionInformation() async throws {
         
         let hostController = TestHostController()
         
@@ -1997,12 +1996,12 @@ final class HCITests: XCTestCase {
         
         var versionInformation: HCIReadRemoteVersionInformationComplete?
         (versionInformation = try await hostController.readRemoteVersionInformation(handle: 0x000D))
-        XCTAssertEqual(versionInformation?.version, 0x03)
-        XCTAssertEqual(versionInformation?.companyId, 0x004c)
-        XCTAssertEqual(versionInformation?.subversion, 0x031c)
+        #expect(versionInformation?.version == 0x03)
+        #expect(versionInformation?.companyId == 0x004c)
+        #expect(versionInformation?.subversion == 0x031c)
     }
     
-    func testAuthenticationRequested() async throws {
+    @Test func authenticationRequested() async throws {
         
         let hostController = TestHostController()
         
@@ -2036,11 +2035,11 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x06, 0x03, 0x00, 0x0d, 0x00]))
         
         let event = try await hostController.authenticationRequested(handle: 0x000D)
-        XCTAssertEqual(event.status, .success)
-        XCTAssertEqual(event.handle, 0x000D)
+        #expect(event.status == .success)
+        #expect(event.handle == 0x000D)
     }
     
-    func testChangeConnectionPacketType() async throws {
+    @Test func changeConnectionPacketType() async throws {
         
         let hostController = TestHostController()
         
@@ -2069,10 +2068,10 @@ final class HCITests: XCTestCase {
         var caughtError: Error?
         do { let _ = try await hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType) }
         catch { caughtError = error }
-        XCTAssertNotNil(caughtError)
+        #expect(caughtError != nil)
     }
     
-    func testLinkKeyRequestNegativeReply() async throws {
+    @Test func linkKeyRequestNegativeReply() async throws {
         
         let hostController = TestHostController()
         
@@ -2098,13 +2097,13 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0c, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
         
         guard let address = BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         let eventAddress = try await hostController.linkKeyRequestNegativeReply(address: address)
-        XCTAssertEqual(eventAddress, address)
+        #expect(eventAddress == address)
     }
     
-    func testPINCodeRequestReply() async throws {
+    @Test func pINCodeRequestReply() async throws {
         
         let hostController = TestHostController()
         
@@ -2133,10 +2132,10 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0d, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
         
         guard let address = BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         guard let length = HCIPINCodeRequestReply.PINCodeLength(rawValue: 0x04)
-            else { XCTFail("Unable to init variable"); return }
+            else { Issue.record("Unable to init variable"); return }
         
         let data = Data([0x30, 0x30, 0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
         let pinCode = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
@@ -2147,10 +2146,10 @@ final class HCITests: XCTestCase {
             pinCodeLength: length,
             pinCode: pinCode
         )
-        XCTAssertEqual(eventAddress, address)
+        #expect(eventAddress == address)
     }
     
-    func testPINCodeRequest() async throws {
+    @Test func pINCodeRequest() async throws {
         
         /**
          Aug 09 17:22:43.298  HCI Event        0x0000  Carlos Duclos’s M  PIN code request - 84:FC:FE:F3:F4:75
@@ -2161,12 +2160,12 @@ final class HCITests: XCTestCase {
         let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84])
         
         guard let event = HCIPINCodeRequest(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
+        #expect(event.address == BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
     }
     
-    func testLinkKeyNotification() async throws {
+    @Test func linkKeyNotification() async throws {
         
         /**
          Aug 09 17:22:43.380  HCI Event        0x0000  Carlos Duclos’s M  Link Key Notification - 84:FC:FE:F3:F4:75
@@ -2178,12 +2177,12 @@ final class HCITests: XCTestCase {
         let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84, 0x0f, 0x30, 0x55, 0xec, 0x83, 0x9f, 0x14, 0x3c, 0xd4, 0x53, 0xfd, 0xf2, 0x1b, 0xe5, 0xe5, 0xcc, 0x00])
         
         guard let event = HCILinkKeyNotification(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
+        #expect(event.address == BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
     }
     
-    func testModeChange() async throws {
+    @Test func modeChange() async throws {
         
         /**
          Aug 09 17:22:45.417  HCI Event        0x000D  Carlos Duclos’s M  Mode Change - Sniff Mode - 0.011250 seconds -  - Handle: 0x000D
@@ -2197,14 +2196,14 @@ final class HCITests: XCTestCase {
         let data = Data([0x00, 0x0d, 0x00, 0x02, 0x12, 0x00])
         
         guard let event = HCIModeChange(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.status.rawValue, HCIStatus(rawValue: 0x00)?.rawValue)
-        XCTAssertEqual(event.handle, 0x000D)
-        XCTAssertEqual(event.currentMode, HCIModeChange.Mode(rawValue: 0x02)!)
+        #expect(event.status.rawValue == HCIStatus(rawValue: 0x00)?.rawValue)
+        #expect(event.handle == 0x000D)
+        #expect(event.currentMode == HCIModeChange.Mode(rawValue: 0x02)!)
     }
     
-    func testWriteLinkPolicySettings() async throws {
+    @Test func writeLinkPolicySettings() async throws {
         
         let hostController = TestHostController()
         
@@ -2236,10 +2235,10 @@ final class HCITests: XCTestCase {
         let event = try await hostController.writeLinkPolicySettings(
             connectionHandle: 0x000D,
             settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F))
-        XCTAssertEqual(event.connectionHandle, 0x000D)
+        #expect(event.connectionHandle == 0x000D)
     }
     
-    func testQoSSetup() async throws {
+    @Test func qoSSetup() async throws {
         
         let hostController = TestHostController()
         
@@ -2286,7 +2285,7 @@ final class HCITests: XCTestCase {
                                             0x00, 0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]))
         
         guard let serviceType = HCIQoSSetup.ServiceType(rawValue: 0x02)
-            else { XCTFail("Unable to parse service type"); return }
+            else { Issue.record("Unable to parse service type"); return }
         
         let event = try await hostController.qosSetup(connectionHandle: 0x000D,
                                                      serviceType: serviceType,
@@ -2294,11 +2293,11 @@ final class HCITests: XCTestCase {
                                                      peakBandWidth: 0x00000000,
                                                      latency: 0x00002BF2,
                                                      delayVariation: 0xFFFFFFFF)
-        XCTAssertEqual(event.connectionHandle, 0x000D)
-        XCTAssertEqual(event.serviceType, serviceType)
+        #expect(event.connectionHandle == 0x000D)
+        #expect(event.serviceType == serviceType)
     }
     
-    func testReadPageTimeout() async throws {
+    @Test func readPageTimeout() async throws {
         
         let hostController = TestHostController()
         
@@ -2322,11 +2321,11 @@ final class HCITests: XCTestCase {
         
         var readPageTimeout: HCIReadPageTimeoutReturn?
         (readPageTimeout = try await hostController.readPageTimeout())
-        XCTAssertEqual(readPageTimeout?.pageTimeout.rawValue, 0x4000)
-        XCTAssertEqual(readPageTimeout?.pageTimeout.duration, 10.24)
+        #expect(readPageTimeout?.pageTimeout.rawValue == 0x4000)
+        #expect(readPageTimeout?.pageTimeout.duration == 10.24)
     }
     
-    func testWriteLinkSupervisionTimeout() async throws {
+    @Test func writeLinkSupervisionTimeout() async throws {
         
         let hostController = TestHostController()
         
@@ -2358,10 +2357,10 @@ final class HCITests: XCTestCase {
         var writeTimeout: HCIWriteLinkSupervisionTimeoutReturn?
         (writeTimeout = try await hostController.writeLinkSupervisionTimeout(handle: 0x000D,
                                                                                        linkSupervisionTimeout: timeout))
-        XCTAssertEqual(writeTimeout?.handle, 0x000D)
+        #expect(writeTimeout?.handle == 0x000D)
     }
     
-    func testNumberOfCompletedPackets() async throws {
+    @Test func numberOfCompletedPackets() async throws {
         
         /**
          Aug 09 17:22:45.343  HCI Event        0x000D  Carlos Duclos’s M  Number of Completed Packets - Handle: 0x000D - Packets: 0x0001
@@ -2374,14 +2373,14 @@ final class HCITests: XCTestCase {
         let data = Data([0x01, 0x0d, 0x00, 0x01, 0x00])
         
         guard let event = HCINumberOfCompletedPackets(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.numberOfHandles, 0x01)
-        XCTAssertEqual(event.connectionHandle, 0x000D)
-        XCTAssertEqual(event.numberOfCompletedPackets, 0x0001)
+        #expect(event.numberOfHandles == 0x01)
+        #expect(event.connectionHandle == 0x000D)
+        #expect(event.numberOfCompletedPackets == 0x0001)
     }
     
-    func testReset() async throws {
+    @Test func reset() async throws {
         
         let hostController = TestHostController()
         
@@ -2407,7 +2406,7 @@ final class HCITests: XCTestCase {
         (try await hostController.reset())
     }
     
-    func testReadStoredLinkKey() async throws {
+    @Test func readStoredLinkKey() async throws {
     
         let hostController = TestHostController()
         
@@ -2439,11 +2438,11 @@ final class HCITests: XCTestCase {
             address: BluetoothAddress(rawValue: "8C:85:90:94:8A:7E")!,
             readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!
         )
-        XCTAssertEqual(event.maxNumberKeys, 7)
-        XCTAssertEqual(event.numberKeysRead, 0)
+        #expect(event.maxNumberKeys == 7)
+        #expect(event.numberKeysRead == 0)
     }
     
-    func testReadLocalSupportedFeatures() async throws {
+    @Test func readLocalSupportedFeatures() async throws {
         
         let hostController = TestHostController()
         
@@ -2481,10 +2480,10 @@ final class HCITests: XCTestCase {
 
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
         (lmpFeatures = try await hostController.readLocalSupportedFeatures())
-        XCTAssertEqual(lmpFeatures, features)
+        #expect(lmpFeatures == features)
     }
     
-    func testWriteClassOfDevice() async throws {
+    @Test func writeClassOfDevice() async throws {
         
         let hostController = TestHostController()
         
@@ -2517,12 +2516,12 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x24, 0x0c, 0x00]))
         
         guard let classOfDevice = ClassOfDevice(data: Data([0x0C, 0x01, 0x38]))
-            else { XCTFail("Failed to init class of device"); return }
+            else { Issue.record("Failed to init class of device"); return }
         
         (try await hostController.writeClassOfDevice(classOfDevice: classOfDevice))
     }
     
-    func testReadClassOfDevice() async throws {
+    @Test func readClassOfDevice() async throws {
         
         let hostController = TestHostController()
         
@@ -2558,20 +2557,20 @@ final class HCITests: XCTestCase {
         (readClassOfDevice = try await hostController.readClassOfDevice())
         
         guard let classOfDevice = readClassOfDevice
-            else { XCTFail("Failed to init class of device"); return }
+            else { Issue.record("Failed to init class of device"); return }
         
-        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.capturing))
-        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.objectTransfer))
-        XCTAssertTrue(classOfDevice.majorServiceClass.contains(.audio))
+        #expect(classOfDevice.majorServiceClass.contains(.capturing))
+        #expect(classOfDevice.majorServiceClass.contains(.objectTransfer))
+        #expect(classOfDevice.majorServiceClass.contains(.audio))
         
         guard case let .computer(computer) = classOfDevice.majorDeviceClass
-            else { XCTFail("Incorrect major device class"); return }
+            else { Issue.record("Incorrect major device class"); return }
         
         guard computer == .laptop
-            else { XCTFail("minor device class is wrong"); return }
+            else { Issue.record("minor device class is wrong"); return }
     }
     
-    func testWriteScanEnable() async throws {
+    @Test func writeScanEnable() async throws {
         
         let hostController = TestHostController()
         
@@ -2601,7 +2600,7 @@ final class HCITests: XCTestCase {
         (try await hostController.writeScanEnable(scanEnable: scanEnable!))
     }
     
-    func testWritePageScanType() async throws {
+    @Test func writePageScanType() async throws {
         
         let hostController = TestHostController()
         
@@ -2630,7 +2629,7 @@ final class HCITests: XCTestCase {
         (try await hostController.writePageScanType(pageScanType: pageScanType!))
     }
     
-    func testWritePageScanActivity() async throws {
+    @Test func writePageScanActivity() async throws {
         
         let hostController = TestHostController()
         
@@ -2662,7 +2661,7 @@ final class HCITests: XCTestCase {
                                                                   scanWindow: scanWindow!))
     }
     
-    func testIOCapabilityRequestReply() async throws {
+    @Test func iOCapabilityRequestReply() async throws {
         
         let hostController = TestHostController()
         
@@ -2690,16 +2689,16 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
         
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { XCTFail("Cannot init address"); return }
+            else { Issue.record("Cannot init address"); return }
         
         guard let ioCapability = HCIIOCapabilityRequestReply.IOCapability(rawValue: 0x01)
-            else { XCTFail("Cannot init ioCapability"); return }
+            else { Issue.record("Cannot init ioCapability"); return }
         
         guard let dataPresent = HCIIOCapabilityRequestReply.OBBDataPresent(rawValue: 0x00)
-            else { XCTFail("Cannot init daatPresent"); return }
+            else { Issue.record("Cannot init daatPresent"); return }
         
         guard let authenticationRequeriments = HCIIOCapabilityRequestReply.AuthenticationRequirements(rawValue: 0x02)
-            else { XCTFail("Cannot init daatPresent"); return }
+            else { Issue.record("Cannot init daatPresent"); return }
         
         let eventAddress = try await hostController.ioCapabilityRequestReply(
             address: address,
@@ -2707,10 +2706,10 @@ final class HCITests: XCTestCase {
             obbDataPresent: dataPresent,
             authenticationRequirements: authenticationRequeriments
         )
-        XCTAssertEqual(eventAddress, address)
+        #expect(eventAddress == address)
     }
     
-    func testIOCapabilityRequest() async throws {
+    @Test func iOCapabilityRequest() async throws {
         
         /**
          Aug 16 17:57:32.829  HCI Event        0x0000  iPhone             IO Capability Request - B0:70:2D:06:D2:AF
@@ -2721,12 +2720,12 @@ final class HCITests: XCTestCase {
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
         
         guard let event = HCIIOCapabilityRequest(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
     
-    func testIOCapabilityResponse() async throws {
+    @Test func iOCapabilityResponse() async throws {
         
         /**
          Aug 17 09:58:05.836  HCI Event        0x0000  iPhone             IO Capability Response - B0:70:2D:06:D2:AF
@@ -2740,12 +2739,12 @@ final class HCITests: XCTestCase {
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x03])
         
         guard let event = HCIIOCapabilityResponse(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
     
-    func testUserConfirmationRequestReply() async throws {
+    @Test func userConfirmationRequestReply() async throws {
         
         let hostController = TestHostController()
         
@@ -2770,13 +2769,13 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2c, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
         
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { XCTFail("Unable to init address"); return }
+            else { Issue.record("Unable to init address"); return }
         
         let eventAddress = try await hostController.userConfirmationRequestReply(address: address)
-        XCTAssertEqual(eventAddress, address)
+        #expect(eventAddress == address)
     }
     
-    func testUserConfirmationRequest() async throws {
+    @Test func userConfirmationRequest() async throws {
         
         /**
          Aug 17 09:58:05.935  HCI Event        0x0000  iPhone             User Confirmation Request - B0:70:2D:06:D2:AF
@@ -2788,12 +2787,12 @@ final class HCITests: XCTestCase {
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0xae, 0xea, 0x0a, 0x00])
         
         guard let event = HCIUserConfirmationRequest(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
     
-    func testConnectionPacketTypeChange() async throws {
+    @Test func connectionPacketTypeChange() async throws {
         
         /**
          Aug 17 09:58:05.811  HCI Event        0x000B  iPhone             Connection Packet Type Changed
@@ -2806,14 +2805,14 @@ final class HCITests: XCTestCase {
         let data = Data([0x00, 0x0b, 0x00, 0x18, 0xcc])
         
         guard let event = HCIConnectionPacketTypeChange(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.status.rawValue, 0x00)
-        XCTAssertEqual(event.connectionHandle, 0x000B)
-        XCTAssertEqual(event.packetType, 0xCC18)
+        #expect(event.status.rawValue == 0x00)
+        #expect(event.connectionHandle == 0x000B)
+        #expect(event.packetType == 0xCC18)
     }
     
-    func testMaxSlotsChange() async throws {
+    @Test func maxSlotsChange() async throws {
         
         /**
          Aug 17 09:58:05.806  HCI Event        0x000B  iPhone             Max slots change - Max slots: 0x05 -
@@ -2826,13 +2825,13 @@ final class HCITests: XCTestCase {
         let data = Data([0x0b, 0x00, 0x05])
         
         guard let event = HCIMaxSlotsChange(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.connectionHandle, 0x000B)
-        XCTAssertEqual(event.maxSlotsLMP, 0x05)
+        #expect(event.connectionHandle == 0x000B)
+        #expect(event.maxSlotsLMP == 0x05)
     }
     
-    func testWritePageTimeout() async throws {
+    @Test func writePageTimeout() async throws {
         
         let hostController = TestHostController()
         
@@ -2857,12 +2856,12 @@ final class HCITests: XCTestCase {
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x18, 0x0c, 0x00]))
         
         guard let pageTimeout = HCIWritePageTimeout.PageTimeout(rawValue: 0x4000)
-            else { XCTFail("Unable to init pageTimeout"); return }
+            else { Issue.record("Unable to init pageTimeout"); return }
         
         (try await hostController.writePageTimeout(pageTimeout: pageTimeout))
     }
     
-    func testSimplePairingComplete() async throws {
+    @Test func simplePairingComplete() async throws {
         
         /**
          Aug 17 09:58:58.511  HCI Event        0x0000  iPhone             Simple Pairing Complete - B0:70:2D:06:D2:AF
@@ -2874,10 +2873,10 @@ final class HCITests: XCTestCase {
         let data = Data([0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
         
         guard let event = HCISimplePairingComplete(data: data)
-            else { XCTFail("Unable to parse event"); return }
+            else { Issue.record("Unable to parse event"); return }
         
-        XCTAssertEqual(event.status.rawValue, 0x00)
-        XCTAssertEqual(event.address, BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.status.rawValue == 0x00)
+        #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
 }
 
@@ -2890,7 +2889,7 @@ fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ ev
     guard let eventHeader = HCIEventHeader(data: headerData)
         else { return nil }
     
-    XCTAssert(eventHeader.event.rawValue == T.event.rawValue)
+    #expect(eventHeader.event.rawValue == T.event.rawValue)
     
     guard let event = T(data: eventData)
         else { return nil }

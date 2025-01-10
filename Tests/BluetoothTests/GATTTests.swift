@@ -7,17 +7,18 @@
 //
 
 #if canImport(BluetoothGATT)
-import XCTest
+import Testing
 import Foundation
 import Bluetooth
 @testable import BluetoothGATT
 
-final class GATTTests: XCTestCase {
+@Suite(.serialized)
+struct GATTTests {
     
-    func testMTUExchange() async throws {
+    @Test func mtuExchange() async throws {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 512)
-            else { XCTFail(); return }
+            else { Issue.record(); return }
         
         let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
             (ATTMaximumTransmissionUnitRequest(clientMTU: mtu.rawValue),
@@ -74,21 +75,21 @@ final class GATTTests: XCTestCase {
         
         let serverMTU = server.maximumTransmissionUnit
         let clientMTU = await client.maximumTransmissionUnit
-        XCTAssertEqual(serverMTU, clientMTU)
-        XCTAssertEqual(serverMTU, mtu)
-        XCTAssertNotEqual(serverMTU, .default)
-        XCTAssertEqual(clientMTU, mtu)
-        XCTAssertNotEqual(clientMTU, .default)
+        #expect(serverMTU == clientMTU)
+        #expect(serverMTU == mtu)
+        #expect(serverMTU != .default)
+        #expect(clientMTU == mtu)
+        #expect(clientMTU != .default)
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
         let serverCache = server.connection.socket.cache
         let clientCache = clientSocket.cache
-        XCTAssertEqual(serverCache, mockData.server)
-        XCTAssertEqual(clientCache, mockData.client)
+        #expect(serverCache == mockData.server)
+        #expect(clientCache == mockData.client)
     }
     
-    func testDiscoverPrimaryServicesNoMTUExchange() async throws {
+    @Test func discoverPrimaryServicesNoMTUExchange() async throws {
         
         // If MTU is not negociated, then make sure all PDUs respect the MTU limit
         
@@ -156,18 +157,18 @@ final class GATTTests: XCTestCase {
             
             // request
             let services = try await client.discoverAllPrimaryServices()
-            XCTAssertEqual(services.map { $0.uuid }, profile.map { $0.uuid })
+            #expect(services.map { $0.uuid } == profile.map { $0.uuid })
             
             // validate MTU
             let serverMTU = server.maximumTransmissionUnit
             let serverPreferredMTU = server.preferredMaximumTransmissionUnit
             let clientMTU = await client.maximumTransmissionUnit
             let clientPreferredMTU = await client.preferredMaximumTransmissionUnit
-            XCTAssertEqual(serverMTU, clientMTU)
-            XCTAssertEqual(serverMTU, .default)
-            XCTAssertEqual(clientMTU, .default)
-            XCTAssertEqual(serverPreferredMTU, .max)
-            XCTAssertEqual(clientPreferredMTU, .default)
+            #expect(serverMTU == clientMTU)
+            #expect(serverMTU == .default)
+            #expect(clientMTU == .default)
+            #expect(serverPreferredMTU == .max)
+            #expect(clientPreferredMTU == .default)
             /*
             // validate GATT MTU
             let serverCache = await (server.connection.socket as! TestL2CAPSocket).cache
@@ -181,10 +182,10 @@ final class GATTTests: XCTestCase {
         }
     }
     
-    func testDiscoverPrimaryServicesApple() async throws {
+    @Test func discoverPrimaryServicesApple() async throws {
         
         guard let mtu = ATTMaximumTransmissionUnit(rawValue: 104)
-            else { XCTFail(); return }
+            else { Issue.record(); return }
         
         let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
             
@@ -481,14 +482,14 @@ final class GATTTests: XCTestCase {
         
         // request
         let services = try await client.discoverAllPrimaryServices()
-        XCTAssertEqual(services.map { $0.uuid }, ProximityProfile.services.map { $0.uuid })
+        #expect(services.map { $0.uuid } == ProximityProfile.services.map { $0.uuid })
         
         // validate MTU
         let serverMTU = server.maximumTransmissionUnit
         let clientMTU = await client.maximumTransmissionUnit
-        XCTAssertEqual(serverMTU, clientMTU)
-        XCTAssertEqual(serverMTU, mtu)
-        XCTAssertEqual(clientMTU, mtu)
+        #expect(serverMTU == clientMTU)
+        #expect(serverMTU == mtu)
+        #expect(clientMTU == mtu)
         
         // validate GATT PDUs
         /*
@@ -499,12 +500,12 @@ final class GATTTests: XCTestCase {
         XCTAssertEqual(clientCache, mockData.client)*/
     }
     
-    func testDiscoverPrimaryServices() async throws {
+    @Test func discoverPrimaryServices() async throws {
         
         let clientMTU = ATTMaximumTransmissionUnit(rawValue: 104)! // 0x0068
         let serverMTU = ATTMaximumTransmissionUnit.default // 23
         let finalMTU = serverMTU
-        XCTAssertEqual(ATTMaximumTransmissionUnit(server: clientMTU.rawValue, client: serverMTU.rawValue), finalMTU)
+        #expect(ATTMaximumTransmissionUnit(server: clientMTU.rawValue, client: serverMTU.rawValue) == finalMTU)
         
         let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
             /**
@@ -626,23 +627,23 @@ final class GATTTests: XCTestCase {
         
         // request
         let services = try await client.discoverAllPrimaryServices()
-        XCTAssertEqual(services.map { $0.uuid }, [service].map { $0.uuid })
+        #expect(services.map { $0.uuid } == [service].map { $0.uuid })
         
         // validate MTU
         let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
-        XCTAssertEqual(finalServerMTU, finalMTU)
-        XCTAssertEqual(finalClientMTU, finalMTU)
+        #expect(finalServerMTU == finalMTU)
+        #expect(finalClientMTU == finalMTU)
         
         // validate GATT PDUs
         let mockData = split(pdu: testPDUs.map { $1 })
         let serverCache = server.connection.socket.cache
         let clientCache = clientSocket.cache
-        XCTAssertEqual(serverCache, mockData.server)
-        XCTAssertEqual(clientCache, mockData.client)
+        #expect(serverCache == mockData.server)
+        #expect(clientCache == mockData.client)
     }
     
-    func testDiscoverServiceByUUID() async throws {
+    @Test func discoverServiceByUUID() async throws {
         
         let characteristic = GATTAttribute<Data>.Characteristic(uuid: BluetoothUUID(),
                                                  value: Data(),
@@ -704,30 +705,30 @@ final class GATTTests: XCTestCase {
         let foundServices = try await client.discoverPrimaryServices(by: services[0].uuid)
         guard foundServices.count == 1,
             let foundService = foundServices.first
-            else { XCTFail("Service not found"); return }
+            else { Issue.record("Service not found"); return }
         
-        XCTAssertEqual(foundService.uuid, services[0].uuid)
-        XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
-        XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
+        #expect(foundService.uuid == services[0].uuid)
+        #expect(foundService.handle == database.serviceHandles(at: 0).start)
+        #expect(foundService.end == database.serviceHandles(at: 0).end)
+        #expect(foundService.isPrimary == (database.first!.uuid == .primaryService))
         
         let characteristics = try await client.discoverAllCharacteristics(of: foundService)
         guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
-            else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
+            else { Issue.record("Characteristic \(characteristic.uuid) not found"); return }
         
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, BluetoothUUID.characteristic)
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
+        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == BluetoothUUID.characteristic)
+        #expect(database[handle: foundCharacteristic.handle.value].uuid == characteristic.uuid)
+        #expect(database[handle: foundCharacteristic.handle.value].permissions == characteristic.permissions)
         //XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
         
         // validate MTU
         let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
-        XCTAssertEqual(finalServerMTU, .default)
-        XCTAssertEqual(finalClientMTU, .default)
+        #expect(finalServerMTU == .default)
+        #expect(finalClientMTU == .default)
     }
     
-    func testDiscoverCharacteristicByUUID() async throws {
+    @Test func discoverCharacteristicByUUID() async throws {
         
         let characteristic = GATTAttribute<Data>.Characteristic(
             uuid: BluetoothUUID(),
@@ -792,31 +793,31 @@ final class GATTTests: XCTestCase {
         let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
         guard foundServices.count == 1,
             let foundService = foundServices.first
-            else { XCTFail("Service not found"); return }
+            else { Issue.record("Service not found"); return }
         
-        XCTAssertEqual(foundService.uuid, service.uuid)
-        XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
-        XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
+        #expect(foundService.uuid == service.uuid)
+        #expect(foundService.handle == database.serviceHandles(at: 0).start)
+        #expect(foundService.end == database.serviceHandles(at: 0).end)
+        #expect(foundService.isPrimary == (database.first!.uuid == .primaryService))
         
         let foundCharacteristics = try await client.discoverCharacteristics(of: foundService, by: characteristic.uuid)
         
         guard foundCharacteristics.count == 1,
             let foundCharacteristic = foundCharacteristics.first
-            else { XCTFail("Characteristic not found"); return }
+            else { Issue.record("Characteristic not found"); return }
         
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, .characteristic)
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
+        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == .characteristic)
+        #expect(database[handle: foundCharacteristic.handle.value].uuid == characteristic.uuid)
+        #expect(database[handle: foundCharacteristic.handle.value].permissions == characteristic.permissions)
         
         // validate MTU
         let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
-        XCTAssertEqual(finalServerMTU, .default)
-        XCTAssertEqual(finalClientMTU, .default)
+        #expect(finalServerMTU == .default)
+        #expect(finalClientMTU == .default)
     }
     
-    func testDescriptors() async throws {
+    @Test func descriptors() async throws {
         
         let descriptors = [
             .init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write]),
@@ -890,53 +891,53 @@ final class GATTTests: XCTestCase {
         let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
         guard foundServices.count == 1,
             let foundService = foundServices.first
-            else { XCTFail("Service not found"); return }
+            else { Issue.record("Service not found"); return }
         
-        XCTAssertEqual(foundService.uuid, service.uuid)
-        XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
-        XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-        XCTAssertEqual(foundService.isPrimary, database.first!.uuid == BluetoothUUID.primaryService)
+        #expect(foundService.uuid == service.uuid)
+        #expect(foundService.handle == database.serviceHandles(at: 0).start)
+        #expect(foundService.end == database.serviceHandles(at: 0).end)
+        #expect(foundService.isPrimary == (database.first!.uuid == BluetoothUUID.primaryService))
         
         let characteristics = try await client.discoverAllCharacteristics(of: foundService)
         
         guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
-            else { XCTFail("Characteristic \(characteristic.uuid) not found"); return }
+            else { Issue.record("Characteristic \(characteristic.uuid) not found"); return }
         
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.declaration].uuid, BluetoothUUID.characteristic)
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].uuid, characteristic.uuid)
-        XCTAssertEqual(database[handle: foundCharacteristic.handle.value].permissions, characteristic.permissions)
+        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == BluetoothUUID.characteristic)
+        #expect(database[handle: foundCharacteristic.handle.value].uuid == characteristic.uuid)
+        #expect(database[handle: foundCharacteristic.handle.value].permissions == characteristic.permissions)
         let endHandle = await client.endHandle(for: foundCharacteristic, service: (foundService, characteristics))
-        XCTAssertEqual(endHandle, foundService.end)
+        #expect(endHandle == foundService.end)
         
         let foundDescriptors = try await client.discoverDescriptors(of: foundCharacteristic, service: (foundService, characteristics))
         
-        XCTAssert(foundDescriptors.isEmpty == false, "No descriptors found")
-        XCTAssertEqual(foundDescriptors.count, descriptors.count)
-        XCTAssertEqual(foundDescriptors.map({ $0.uuid }), descriptors.map({ $0.uuid }))
+        #expect(foundDescriptors.isEmpty == false, "No descriptors found")
+        #expect(foundDescriptors.count == descriptors.count)
+        #expect(foundDescriptors.map({ $0.uuid }) == descriptors.map({ $0.uuid }))
         
         for (index, descriptor) in foundDescriptors.enumerated() {
             let expectedValue = descriptors[index].value
             let descriptorPermissions = descriptors[index].permissions
             if descriptorPermissions.contains(.read) {
                 let readValue = try await client.readDescriptor(descriptor)
-                XCTAssertEqual(readValue, expectedValue)
+                #expect(readValue == expectedValue)
             }
             if descriptorPermissions.contains(.write) {
                 let newValue = Data("new value".utf8)
                 try await client.writeDescriptor(descriptor, data: newValue)
                 let newServerValue = server.database[handle: descriptor.handle].value
-                XCTAssertEqual(newValue, newServerValue)
+                #expect(newValue == newServerValue)
             }
         }
         
         // validate MTU
         let finalServerMTU = server.maximumTransmissionUnit
         let finalClientMTU = await client.maximumTransmissionUnit
-        XCTAssertEqual(finalServerMTU, .default)
-        XCTAssertEqual(finalClientMTU, .default)
+        #expect(finalServerMTU == .default)
+        #expect(finalClientMTU == .default)
     }
     
-    func testNotification() async throws {
+    @Test func notification() async throws {
         
         func test(with characteristics: [GATTAttribute<Data>.Characteristic], newData: [Data]) async throws {
             
@@ -995,20 +996,20 @@ final class GATTTests: XCTestCase {
             let foundServices = try await client.discoverPrimaryServices(by: service.uuid)
             guard foundServices.count == 1,
                 let foundService = foundServices.first
-                else { XCTFail("Service not found"); return }
+                else { Issue.record("Service not found"); return }
             
-            XCTAssertEqual(foundService.uuid, service.uuid)
-            XCTAssertEqual(foundService.handle, database.serviceHandles(at: 0).start)
-            XCTAssertEqual(foundService.end, database.serviceHandles(at: 0).end)
-            XCTAssertEqual(foundService.isPrimary, database.first!.uuid == .primaryService)
+            #expect(foundService.uuid == service.uuid)
+            #expect(foundService.handle == database.serviceHandles(at: 0).start)
+            #expect(foundService.end == database.serviceHandles(at: 0).end)
+            #expect(foundService.isPrimary == (database.first!.uuid == .primaryService))
             
             let characteristics = try await client.discoverAllCharacteristics(of: foundService)
             
             guard let notificationCharacteristic = characteristics.first(where: { $0.properties.contains(.notify) || $0.properties.contains(.indicate) })
-                else { XCTFail("Characteristic not found"); return }
+                else { Issue.record("Characteristic not found"); return }
             
             let descriptors = try await client.discoverDescriptors(of: notificationCharacteristic, service: (foundService, characteristics))
-            XCTAssert(descriptors.isEmpty == false, "No descriptors found")
+            #expect(descriptors.isEmpty == false, "No descriptors found")
             
             // notifications
             var receivedNotifications = [Data]()
@@ -1046,10 +1047,10 @@ final class GATTTests: XCTestCase {
             let maxLength = 20 //MTU-3
             let expectedNotificationValues = newData.map { Data($0.prefix(maxLength)) }
             if notificationCharacteristic.properties.contains(.notify) {
-                XCTAssertEqual(receivedNotifications, expectedNotificationValues)
+                #expect(receivedNotifications == expectedNotificationValues)
             }
             if notificationCharacteristic.properties.contains(.indicate) {
-                XCTAssertEqual(receivedIndications, expectedNotificationValues)
+                #expect(receivedIndications == expectedNotificationValues)
             }
         }
         
@@ -1077,13 +1078,13 @@ private extension GATTTests {
         for (testPDU, testData) in testPDUs {
             
             guard let decodedPDU = type(of: testPDU).init(data: Data(testData)) else {
-                XCTFail("Could not decode \(type(of: testPDU))", file: file, line: line)
+                Issue.record("Could not decode \(type(of: testPDU))")
                 return
             }
             
             //dump(decodedPDU)
             
-            XCTAssertEqual(decodedPDU.data, Data(testData), file: file, line: line)
+            #expect(decodedPDU.data == Data(testData))
             
             var decodedDump = ""
             dump(decodedPDU, to: &decodedDump)

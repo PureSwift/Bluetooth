@@ -6,32 +6,32 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import XCTest
+import Testing
 import Foundation
 @testable import Bluetooth
 
-final class UInt40Tests: XCTestCase {
+@Suite struct UInt40Tests {
     
-    func testBitWidth() {
+    @Test func bitWidth() {
         
-        XCTAssertEqual(UInt40.bitWidth, MemoryLayout<UInt40.ByteValue>.size * 8)
-        XCTAssertEqual(UInt40.bitWidth, 40)
+        #expect(UInt40.bitWidth == MemoryLayout<UInt40.ByteValue>.size * 8)
+        #expect(UInt40.bitWidth == 40)
     }
     
-    func testEquatable() {
+    @Test func equatable() {
         
-        XCTAssertEqual(UInt40.zero, 0)
-        XCTAssertEqual(UInt40.min, 0)
-        XCTAssertEqual(UInt40.max, 1099511627775)
-        XCTAssertEqual(UInt40.max, 0xFFFFFFFFFF)
+        #expect(UInt40.zero == 0)
+        #expect(UInt40.min == 0)
+        #expect(UInt40.max == 1099511627775)
+        #expect(UInt40.max == 0xFFFFFFFFFF)
     }
 
-    func testHashable() {
+    @Test func hashable() {
         
-        XCTAssertNotEqual(UInt40.max.hashValue, UInt64.max.hashValue)
+        #expect(UInt40.max.hashValue != UInt64.max.hashValue)
     }
     
-    func testExpressibleByIntegerLiteral() {
+    @Test func expressibleByIntegerLiteral() {
         
         let values: [(UInt40, String)] = [
             (UInt40.zero,   "0"),
@@ -43,6 +43,6 @@ final class UInt40Tests: XCTestCase {
             (0xFFFFFFFFFF,  "1099511627775")
         ]
         
-        values.forEach { XCTAssertEqual($0.description, $1) }
+        values.forEach { #expect($0.description == $1)  }
     }
 }
