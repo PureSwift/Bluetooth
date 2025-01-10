@@ -89,8 +89,8 @@ import BluetoothHCI
         #expect(decoded.beacon.minor == beacon.minor)
         #expect(decoded.beacon.rssi == beacon.rssi)
     }
-    /*
-    func testEstimoteBeacon() {
+    
+    @Test func estimoteBeacon() throws {
         
         let expectedData = Data([0x4c, 0x00, 0x02, 0x15, 0xb9, 0x40, 0x7f, 0x30, 0xf5, 0xf8, 0x46, 0x6e, 0xaf, 0xf9, 0x25, 0x55, 0x6b, 0x57, 0xfe, 0x6d, 0x29, 0x4c, 0x90, 0x39, 0x74])
         
@@ -102,25 +102,25 @@ import BluetoothHCI
         
         let rssi: Int8 = 116
         
-        let beacon = AppleBeacon(uuid: uuid, major: major, minor: minor, rssi: rssi)
+        let beacon = AppleBeacon(
+            uuid: uuid,
+            major: major,
+            minor: minor,
+            rssi: rssi
+        )
         
-        guard let manufacturerData = GAPManufacturerSpecificData(data: expectedData)
-            else { XCTFail(); return }
+        let manufacturerData = try #require(GAPManufacturerSpecificData<Data>(data: expectedData))
+        #expect(manufacturerData.companyIdentifier == .apple)
         
-        XCTAssertEqual(beacon.manufacturerData, manufacturerData)
-
-        XCTAssertEqual(manufacturerData.companyIdentifier, .apple)
+        let decodedBeacon = try #require(AppleBeacon(manufacturerData: manufacturerData))
         
-        guard let decodedBeacon = AppleBeacon(manufacturerData: manufacturerData)
-            else { XCTFail(); return }
-        
-        XCTAssertEqual(decodedBeacon.uuid, uuid)
-        XCTAssertEqual(decodedBeacon.major, major)
-        XCTAssertEqual(decodedBeacon.minor, minor)
-        XCTAssertEqual(decodedBeacon.rssi, rssi)
+        #expect(decodedBeacon.uuid == beacon.uuid)
+        #expect(decodedBeacon.major == beacon.major)
+        #expect(decodedBeacon.minor == beacon.minor)
+        #expect(decodedBeacon.rssi == beacon.rssi)
     }
     
-    func testCommand() {
+    @Test func command() async throws {
         
         let uuid = UUID(uuidString: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!
         
@@ -210,9 +210,8 @@ import BluetoothHCI
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x08, 0x20, 0x00]))
         
-        XCTAssertNoThrow(try hostController.iBeacon(beacon,
-                                                    flags: 0x1A,
-                                                    interval: AdvertisingInterval(rawValue: 100)!))
-    }*/
+        let interval = try #require(AdvertisingInterval(rawValue: 100))
+        try await hostController.iBeacon(beacon, flags: 0x1A, interval: interval)
+    }
 }
 #endif
