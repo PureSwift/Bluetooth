@@ -8,7 +8,6 @@
 
 import Foundation
 import Testing
-import XCTest
 #if canImport(BluetoothGATT)
 import Bluetooth
 @testable import BluetoothGATT
@@ -249,13 +248,12 @@ import Bluetooth
 
 // MARK: - Performance Tests
 
+#if canImport(XCTest) && ENABLE_PERFORMANCE_TESTS
+import XCTest
+
 final class BluetoothUUIDPerformanceTests: XCTestCase {
     
-    var randomUUIDs = [UUID]()
-    
-    override func setUp() {
-        randomUUIDs = (1 ... 100000).map { _ in UUID() }
-    }
+    let randomUUIDs = (1 ... 100000).map { _ in UUID() }
     
     func testPerformanceStringParse() {
         
@@ -285,3 +283,4 @@ final class BluetoothUUIDPerformanceTests: XCTestCase {
         measure { uuids.forEach { let _ = Data($0) } }
     }
 }
+#endif
