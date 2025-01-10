@@ -6,30 +6,31 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import XCTest
 import Foundation
+import Testing
 @testable import Bluetooth
 
-final class AddressTests: XCTestCase {
+@Suite("Bluetooth Address Tests")
+struct BluetoothAddressTests {
     
-    func testProperties() {
+    @Test func properties() throws {
         
-        XCTAssertEqual(BluetoothAddress.bitWidth, MemoryLayout<BluetoothAddress.ByteValue>.size * 8)
-        XCTAssertEqual(BluetoothAddress.bitWidth, 48)
+        #expect(BluetoothAddress.bitWidth == MemoryLayout<BluetoothAddress.ByteValue>.size * 8)
+        #expect(BluetoothAddress.bitWidth == 48)
         
-        Data(BluetoothAddress.min).forEach { XCTAssertEqual($0, .min) }
-        Data(BluetoothAddress.max).forEach { XCTAssertEqual($0, .max) }
-        Data(BluetoothAddress.zero).forEach { XCTAssertEqual($0, 0) }
-        XCTAssertEqual(BluetoothAddress.zero, BluetoothAddress.min)
+        Data(BluetoothAddress.min).forEach { #expect($0 == .min) }
+        Data(BluetoothAddress.max).forEach { #expect($0 == .max) }
+        Data(BluetoothAddress.zero).forEach { #expect($0 == 0) }
+        #expect(BluetoothAddress.zero == BluetoothAddress.min)
         
-        guard let address = BluetoothAddress(rawValue: "00:1A:7D:DA:71:13")
-            else { XCTFail("Could not parse"); return }
+        let address = try #require(BluetoothAddress(rawValue: "00:1A:7D:DA:71:13"))
         
-        XCTAssertNotEqual(address.hashValue, 0)
-        XCTAssertEqual(address.description, "00:1A:7D:DA:71:13")
+        #expect(address.hashValue != 0)
+        #expect(address.description == "00:1A:7D:DA:71:13")
+        #expect(address == #BluetoothAddress("00:1A:7D:DA:71:13"))
     }
     
-    func testBytes() {
+    @Test func bytes() throws {
         
         let testData: [(rawValue: String, bytes: BluetoothAddress.ByteValue)] = [
             ("00:1A:7D:DA:71:13", (0x00, 0x1A, 0x7D, 0xDA, 0x71, 0x13)),
@@ -39,22 +40,22 @@ final class AddressTests: XCTestCase {
         
         for test in testData {
             
-            guard let address = BluetoothAddress(rawValue: test.rawValue)
-                else { XCTFail("Could not parse"); continue }
+            let address = try #require(BluetoothAddress(rawValue: test.rawValue))
             
-            XCTAssertEqual(address.rawValue, test.rawValue)
-            XCTAssertEqual(address, BluetoothAddress(bigEndian: BluetoothAddress(bytes: test.bytes)))
+            #expect(address.rawValue == test.rawValue)
+            #expect(address == BluetoothAddress(bigEndian: BluetoothAddress(bytes: test.bytes)))
             
-            XCTAssertEqual(address.bigEndian.bytes.0, test.bytes.0)
-            XCTAssertEqual(address.bigEndian.bytes.1, test.bytes.1)
-            XCTAssertEqual(address.bigEndian.bytes.2, test.bytes.2)
-            XCTAssertEqual(address.bigEndian.bytes.3, test.bytes.3)
-            XCTAssertEqual(address.bigEndian.bytes.4, test.bytes.4)
-            XCTAssertEqual(address.bigEndian.bytes.5, test.bytes.5)
+            #expect(address.bigEndian.bytes.0 == test.bytes.0)
+            #expect(address.bigEndian.bytes.1 == test.bytes.1)
+            #expect(address.bigEndian.bytes.2 == test.bytes.2)
+            #expect(address.bigEndian.bytes.3 == test.bytes.3)
+            #expect(address.bigEndian.bytes.4 == test.bytes.4)
+            #expect(address.bigEndian.bytes.5 == test.bytes.5)
         }
     }
     
-    func testMalformedString() {
+    @Test func malformedString() throws {
+        
         
         let malformed = [
             "0",
@@ -79,21 +80,25 @@ final class AddressTests: XCTestCase {
             "00:1A:7D:DA:71;13"
         ]
         
-        malformed.forEach { XCTAssertNil(BluetoothAddress(rawValue: $0), $0) }
+        for string in malformed {
+            #expect(BluetoothAddress(rawValue: string) == nil)
+        }
     }
     
-    func testString() {
+    func validString() {
         
         let rawValues = [
             "00:1A:7D:DA:71:13",
             "59:80:ED:81:EE:35",
             "AC:BC:32:A6:67:42"
         ]
-        
-        rawValues.forEach { XCTAssertEqual(BluetoothAddress(rawValue: $0)?.rawValue, $0) }
+                
+        for string in rawValues {
+            #expect(BluetoothAddress(rawValue: string)?.rawValue == string)
+        }
     }
     
-    func testData() {
+    func validData() throws {
         
         let testData: [(rawValue: String, data: Data)] = [
             ("00:1A:7D:DA:71:13", Data([0x00, 0x1A, 0x7D, 0xDA, 0x71, 0x13])),
@@ -103,16 +108,15 @@ final class AddressTests: XCTestCase {
         
         for test in testData {
             
-            guard let address = BluetoothAddress(rawValue: test.rawValue)
-                else { XCTFail("Could not parse"); continue }
+            let address = try #require(BluetoothAddress(rawValue: test.rawValue))
             
-            XCTAssertEqual(address.rawValue, test.rawValue)
-            XCTAssertEqual(address, BluetoothAddress(bigEndian: BluetoothAddress(data: test.data)!))
-            XCTAssertEqual(Data(address.bigEndian), test.data)
+            #expect(address.rawValue == test.rawValue)
+            #expect(address == BluetoothAddress(bigEndian: BluetoothAddress(data: test.data)!))
+            #expect(Data(address.bigEndian) == test.data)
         }
     }
     
-    func testMalformedData() {
+    func malformedData() {
         
         let malformed = [
             Data(),
@@ -124,6 +128,8 @@ final class AddressTests: XCTestCase {
             Data([0x00, 0x1A, 0x7D, 0xDA, 0x71, 0x13, 0xAA])
         ]
         
-        malformed.forEach { XCTAssertNil(BluetoothAddress(data: $0)) }
+        for data in malformed {
+            #expect(BluetoothAddress(data: data) == nil)
+        }
     }
 }
