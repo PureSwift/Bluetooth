@@ -154,14 +154,15 @@ extension GenerateTool {
         //  Bluetooth
         //
         
-        import XCTest
         import Foundation
+        import Testing
         @testable import Bluetooth
         
         // swiftlint:disable type_body_length
-        final class UnitIdentifierTests: XCTestCase {
+        @Suite
+        struct UnitIdentifierTests {
         
-            func testUnits() {
+            @Test func units() {
         
         
         """
@@ -173,10 +174,10 @@ extension GenerateTool {
             let description = hexLiteral + " " + "(" + name + ")"
             🖨("""
                     // \(name)
-                    XCTAssertEqual(UnitIdentifier.\(memberName).rawValue, \(hexLiteral))
-                    XCTAssertEqual(UnitIdentifier.\(memberName).type, #\"\(type)\"#)
-                    XCTAssertEqual(UnitIdentifier.\(memberName).name, #\"\(name)\"#)
-                    XCTAssertEqual(UnitIdentifier.\(memberName).description, #\"\(description)\"#)
+                    #expect(UnitIdentifier.\(memberName).rawValue == \(hexLiteral))
+                    #expect(UnitIdentifier.\(memberName).type == #\"\(type)\"#)
+                    #expect(UnitIdentifier.\(memberName).name == #\"\(name)\"#)
+                    #expect(UnitIdentifier.\(memberName).description == #\"\(description)\"#)
                 
             """)
         }
