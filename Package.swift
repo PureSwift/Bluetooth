@@ -8,6 +8,7 @@ let environment = ProcessInfo.processInfo.environment
 let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] != nil
 let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != nil
 let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] != nil
+let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0" // enabled by default
 
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
@@ -42,18 +43,9 @@ var package = Package(
             targets: ["BluetoothHCI"]
         )
     ],
-    dependencies: [
-        .package(
-            url: "https://github.com/swiftlang/swift-syntax.git",
-            from: "600.0.1"
-        )
-    ],
     targets: [
         .target(
-            name: "Bluetooth",
-            dependencies: [
-                "BluetoothMacros"
-            ]
+            name: "Bluetooth"
         ),
         .target(
             name: "BluetoothGAP",
@@ -72,19 +64,6 @@ var package = Package(
             dependencies: [
                 "Bluetooth",
                 "BluetoothGAP"
-            ]
-        ),
-        .macro(
-            name: "BluetoothMacros",
-            dependencies: [
-              .product(
-                name: "SwiftSyntaxMacros",
-                package: "swift-syntax"
-              ),
-              .product(
-                name: "SwiftCompilerPlugin",
-                package: "swift-syntax"
-              )
             ]
         ),
         .testTarget(
@@ -109,12 +88,17 @@ var package = Package(
     ]
 )
 
-// SwiftPM command plugins are only supported by Swift version 5.6 and later.
+// SwiftPM plugins
+
 if buildDocs {
     package.dependencies += [
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
+        .package(
+            url: "https://github.com/apple/swift-docc-plugin",
+            from: "1.0.0"
+        )
     ]
 }
+
 if generateCode {
     for (index, _) in package.targets.enumerated() {
         package.targets[index].swiftSettings = [
@@ -139,5 +123,35 @@ if generateCode {
     ]
     package.targets[4].plugins = [
         "GenerateBluetoothDefinitions"
+    ]
+}
+
+if enableMacros {
+    package.targets[0].swiftSettings = [
+        .define("SWIFTPM_ENABLE_MACROS")
+    ]
+    package.dependencies += [
+        .package(
+            url: "https://github.com/swiftlang/swift-syntax.git",
+            from: "600.0.1"
+        )
+    ]
+    package.targets += [
+        .macro(
+            name: "BluetoothMacros",
+            dependencies: [
+              .product(
+                name: "SwiftSyntaxMacros",
+                package: "swift-syntax"
+              ),
+              .product(
+                name: "SwiftCompilerPlugin",
+                package: "swift-syntax"
+              )
+            ]
+        )
+    ]
+    package.targets[0].dependencies += [
+        "BluetoothMacros"
     ]
 }
