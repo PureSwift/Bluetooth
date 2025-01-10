@@ -12,6 +12,7 @@ import SwiftSyntaxMacros
 @main
 struct Plugins: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-        BluetoothAddressMacro.self
+        BluetoothAddressMacro.self,
+        BluetoothUUIDMacro.self
     ]
 }
