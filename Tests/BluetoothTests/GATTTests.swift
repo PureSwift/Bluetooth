@@ -17,8 +17,7 @@ struct GATTTests {
     
     @Test func mtuExchange() async throws {
         
-        guard let mtu = ATTMaximumTransmissionUnit(rawValue: 512)
-            else { Issue.record(); return }
+        let mtu = try #require(ATTMaximumTransmissionUnit(rawValue: 512))
         
         let testPDUs: [(ATTProtocolDataUnit, [UInt8])] = [
             (ATTMaximumTransmissionUnitRequest(clientMTU: mtu.rawValue),
@@ -1012,21 +1011,43 @@ struct GATTTests {
             #expect(descriptors.isEmpty == false, "No descriptors found")
             
             // notifications
-            var receivedNotifications = [Data]()
-            var receivedIndications = [Data]()
-            
-            @Sendable func notification(_ data: Data) {
-                receivedNotifications.append(data)
+            actor NotificationData {
+                var receivedNotifications = [Data]()
+                var receivedIndications = [Data]()
+                func notification(_ data: Data) {
+                    receivedNotifications.append(data)
+                }
+                func indication(_ data: Data) {
+                    receivedIndications.append(data)
+                }
             }
             
-            @Sendable func indication(_ data: Data) {
-                receivedIndications.append(data)
+            let notificationData = NotificationData()
+            let notification: GATTClient<TestL2CAPSocket>.Notification?
+            if notificationCharacteristic.properties.contains(.notify) {
+                notification = { data in
+                    Task {
+                        await notificationData.notification(data)
+                    }
+                }
+            } else {
+                notification = nil
+            }
+            let indication: GATTClient<TestL2CAPSocket>.Notification?
+            if notificationCharacteristic.properties.contains(.indicate)  {
+                indication = { data in
+                    Task {
+                        await notificationData.indication(data)
+                    }
+                }
+            } else {
+                indication = nil
             }
             
             try await client.clientCharacteristicConfiguration(
                 notificationCharacteristic,
-                notification: notificationCharacteristic.properties.contains(.notify) ? notification : nil,
-                indication: notificationCharacteristic.properties.contains(.indicate) ? indication : nil,
+                notification: notification,
+                indication: indication,
                 descriptors: descriptors
             )
             
@@ -1047,10 +1068,10 @@ struct GATTTests {
             let maxLength = 20 //MTU-3
             let expectedNotificationValues = newData.map { Data($0.prefix(maxLength)) }
             if notificationCharacteristic.properties.contains(.notify) {
-                #expect(receivedNotifications == expectedNotificationValues)
+                await #expect(notificationData.receivedNotifications == expectedNotificationValues)
             }
             if notificationCharacteristic.properties.contains(.indicate) {
-                #expect(receivedIndications == expectedNotificationValues)
+                await #expect(notificationData.receivedIndications == expectedNotificationValues)
             }
         }
         

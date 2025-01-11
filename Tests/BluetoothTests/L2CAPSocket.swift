@@ -10,7 +10,7 @@
 import Foundation
 import Bluetooth
 
-internal final class TestL2CAPServer: L2CAPServer {
+internal final class TestL2CAPServer: L2CAPServer, Sendable {
         
     typealias Error = POSIXError
     
@@ -97,7 +97,7 @@ internal final class TestL2CAPServer: L2CAPServer {
 }
 
 /// Test L2CAP socket
-internal final class TestL2CAPSocket: L2CAPConnection {
+internal final class TestL2CAPSocket: L2CAPConnection, @unchecked Sendable {
     
     typealias Data = Foundation.Data
         
