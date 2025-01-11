@@ -5,10 +5,10 @@ import class Foundation.ProcessInfo
 
 // get environment variables
 let environment = ProcessInfo.processInfo.environment
-let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] != nil
-let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != nil
-let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] != nil
-let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0" // enabled by default
+let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] == "1"
+let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
+let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0"
+let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
 
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
