@@ -82,8 +82,7 @@ var package = Package(
                     name: "BluetoothHCI", 
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 )
-            ],
-            swiftSettings: [.swiftLanguageMode(.v5)]
+            ]
         )
     ]
 )
