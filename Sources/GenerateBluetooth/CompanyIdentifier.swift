@@ -158,6 +158,7 @@ extension GenerateTool {
         @testable import Bluetooth
         
         // swiftlint:disable type_body_length
+        #if !canImport(Darwin)
         @Suite
         struct CompanyIdentifierTests {
         
@@ -183,6 +184,7 @@ extension GenerateTool {
                 }
             
             }
+            #endif
             // swiftlint:enable type_body_length
             """)
         
