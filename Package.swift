@@ -50,7 +50,12 @@ var package = Package(
     ],
     targets: [
         .target(
-            name: "Bluetooth"
+            name: "Bluetooth",
+            dependencies: [
+                .targetItem(name: "BluetoothMetadata", condition: .when(platforms: [
+                    .macOS, .iOS, .macCatalyst, .watchOS, .tvOS, .visionOS, .linux, .android, .windows
+                ]))
+            ]
         ),
         .target(
             name: "BluetoothMetadata",
@@ -87,6 +92,10 @@ var package = Package(
             name: "BluetoothTests",
             dependencies: [
                 "Bluetooth",
+                .target(
+                    name: "BluetoothMetadata",
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                ),
                 .target(
                     name: "BluetoothGAP", 
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
