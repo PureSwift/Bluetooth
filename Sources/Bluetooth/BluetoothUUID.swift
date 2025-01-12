@@ -50,15 +50,7 @@ extension BluetoothUUID: Equatable {
 extension BluetoothUUID: CustomStringConvertible {
     
     public var description: String {
-        #if !os(WASI) && !hasFeature(Embedded)
-        if let name = self.name {
-            return "\(rawValue) (\(name))"
-        } else {
-            return rawValue
-        }
-        #else
-        return rawValue
-        #endif
+        rawValue
     }
 }
 
@@ -67,34 +59,7 @@ extension BluetoothUUID: CustomStringConvertible {
 extension BluetoothUUID: LosslessStringConvertible {
     
     public init?(_ string: String) {
-        #if !os(WASI) && !hasFeature(Embedded)
-        var rawValue = string
-        var name: String?
-        // Find UUID name
-        let components = string.split(
-            maxSplits: 1,
-            omittingEmptySubsequences: true,
-            whereSeparator: { $0 == " " }
-        )
-        if components.count == 2 {
-            rawValue = String(components[0])
-            name = String(components[1])
-            // remove parenthesis
-            if name?.first == "(", name?.last == ")" {
-                name?.removeFirst()
-                name?.removeLast()
-            }
-        }
-        self.init(rawValue: rawValue)
-        // validate name
-        if let name {
-            guard name == self.name else {
-                return nil
-            }
-        }
-        #else
         self.init(rawValue: string)
-        #endif
     }
 }
 
