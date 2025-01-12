@@ -171,5 +171,5 @@ extension BluetoothAddress: Codable { }
 
 #if !hasFeature(Embedded) && SWIFTPM_ENABLE_MACROS
 @freestanding(expression)
-public macro BluetoothAddress(_ string: String) -> BluetoothAddress = #externalMacro(module: "BluetoothMacros", type: "BluetoothAddressMacro")
+public macro BluetoothAddress(_ string: StaticString) -> BluetoothAddress = #externalMacro(module: "BluetoothMacros", type: "BluetoothAddressMacro")
 #endif

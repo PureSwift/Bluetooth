@@ -387,5 +387,5 @@ public extension CBUUID {
 
 #if !hasFeature(Embedded) && SWIFTPM_ENABLE_MACROS
 @freestanding(expression)
-public macro BluetoothUUID(_ string: String) -> BluetoothUUID = #externalMacro(module: "BluetoothMacros", type: "BluetoothUUIDMacro")
+public macro BluetoothUUID(_ string: StaticString) -> BluetoothUUID = #externalMacro(module: "BluetoothMacros", type: "BluetoothUUIDMacro")
 #endif
