@@ -5,6 +5,7 @@
 //  Created by Alsey Coleman Miller on 11/5/24.
 //
 
+#if !hasFeature(Embedded)
 extension OptionSet {
   @inline(never)
   internal func buildDescription(
@@ -28,3 +29,4 @@ extension OptionSet {
     return result
   }
 }
+#endif
