@@ -71,7 +71,7 @@ import BluetoothGATT
         #expect(ChannelIdentifier.att.description == "4")
     }
     
-    @Test func hCICommandTimeout() {
+    @Test func hciommandTimeout() {
         
         let timeout: HCICommandTimeout = 1000
         
@@ -82,7 +82,7 @@ import BluetoothGATT
         #expect(timeout.description == "1.0s")
     }
     
-    @Test func hCIVersion() {
+    @Test func hciVersion() {
         
         #expect(HCIVersion.v4_2.rawValue == 0x8, "HCI Version: 4.2 (0x8)")
         

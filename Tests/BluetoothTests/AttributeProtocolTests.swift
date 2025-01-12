@@ -14,7 +14,7 @@ import Foundation
 
 @Suite struct AttributeProtocolTests {
     
-    @Test func aTTOpcode() {
+    @Test func opcode() {
         
         #expect(ATTOpcode.maximumTransmissionUnitRequest.request == nil)
         #expect(ATTOpcode.maximumTransmissionUnitRequest.response == .maximumTransmissionUnitResponse)
@@ -25,7 +25,7 @@ import Foundation
         #expect(ATTOpcode.maximumTransmissionUnitResponse.type == .response)
     }
     
-    @Test func aTTError() {
+    @Test func error() {
         
         #expect(ATTError.invalidHandle.name == "Invalid Handle")
         #expect(ATTError.invalidHandle.errorDescription == "The attribute handle given was not valid on this server.")
@@ -100,7 +100,7 @@ import Foundation
         }
     }
     
-    @Test func mTU() {
+    @Test func mtu() {
         
         do {
             
@@ -168,7 +168,7 @@ import Foundation
             #expect(pdu.dataLength == data.count)
             
             // correct values
-            #expect(pdu.type == BluetoothUUID.primaryService)
+            #expect(pdu.type == BluetoothUUID.Declaration.primaryService)
             #expect(pdu.type == .bit16(0x2800))
         }
         
@@ -370,7 +370,7 @@ import Foundation
             #expect(characteristicData.value.isEmpty == false)
             
             let attribute = Attribute(handle: characteristicData.handle,
-                                      uuid: .characteristic,
+                                      uuid: BluetoothUUID.Declaration.characteristic,
                                       value: Data(characteristicData.value),
                                       permissions: [.read])
             
@@ -669,7 +669,7 @@ import Foundation
             
             #expect(attributeData.count == 1)
             #expect(attributeData[0].handle == 0x0004)
-            #expect(BluetoothUUID.bit16(attributeData[0].uuid) == .clientCharacteristicConfiguration)
+            #expect(BluetoothUUID.bit16(attributeData[0].uuid) == BluetoothUUID.Descriptor.clientCharacteristicConfiguration)
         }
     }
     
@@ -775,7 +775,7 @@ import Foundation
             
             #expect(pdu.data == data)
             #expect(pdu.dataLength == data.count)
-            #expect(pdu.type == BluetoothUUID.primaryService)
+            #expect(pdu.type == BluetoothUUID.Declaration.primaryService)
             #expect(pdu.startHandle == 0x0001)
             #expect(pdu.endHandle == .max)
         }
@@ -813,7 +813,7 @@ import Foundation
             
             #expect(pdu.data == data)
             #expect(pdu.dataLength == data.count)
-            #expect(pdu.type == BluetoothUUID.primaryService)
+            #expect(pdu.type == BluetoothUUID.Declaration.primaryService)
             #expect(pdu.startHandle == 19)
             #expect(pdu.endHandle == .max)
         }
@@ -844,7 +844,7 @@ import Foundation
             #expect(pdu.dataLength == data.count)
             #expect(pdu.startHandle == 1)
             #expect(pdu.endHandle == 6)
-            #expect(pdu.attributeType == .characteristic)
+            #expect(pdu.attributeType == BluetoothUUID.Declaration.characteristic)
         }
         
         do {
@@ -863,7 +863,7 @@ import Foundation
             do {
                 
                 let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[0].handle,
-                                                       uuid: .characteristic,
+                                                       uuid: BluetoothUUID.Declaration.characteristic,
                                                        value: Data(pdu.attributeData[0].value),
                                                        permissions: [.read])
                 
@@ -879,7 +879,7 @@ import Foundation
             do {
                 
                 let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[1].handle,
-                                                       uuid: .characteristic,
+                                                       uuid: BluetoothUUID.Declaration.characteristic,
                                                        value: Data(pdu.attributeData[1].value),
                                                        permissions: [.read])
                 
@@ -905,7 +905,7 @@ import Foundation
             #expect(pdu.dataLength == data.count)
             #expect(pdu.startHandle == 7)
             #expect(pdu.endHandle == 12)
-            #expect(pdu.attributeType == .characteristic)
+            #expect(pdu.attributeType == BluetoothUUID.Declaration.characteristic)
         }
         
         do {
@@ -924,7 +924,7 @@ import Foundation
             do {
                 
                 let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[0].handle,
-                                                       uuid: .characteristic,
+                                                       uuid: BluetoothUUID.Declaration.characteristic,
                                                        value: Data(pdu.attributeData[0].value),
                                                        permissions: [.read])
                 
@@ -939,7 +939,7 @@ import Foundation
             do {
                 
                 let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[1].handle,
-                                                       uuid: .characteristic,
+                                                       uuid: BluetoothUUID.Declaration.characteristic,
                                                        value: pdu.attributeData[1].value,
                                                        permissions: [.read])
                 
@@ -964,7 +964,7 @@ import Foundation
             #expect(pdu.dataLength == data.count)
             #expect(pdu.startHandle == 13)
             #expect(pdu.endHandle == 18)
-            #expect(pdu.attributeType == .characteristic)
+            #expect(pdu.attributeType == BluetoothUUID.Declaration.characteristic)
         }
         
         do {
@@ -983,7 +983,7 @@ import Foundation
             do {
                 
                 let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[0].handle,
-                                                       uuid: .characteristic,
+                                                       uuid: BluetoothUUID.Declaration.characteristic,
                                                        value: pdu.attributeData[0].value,
                                                        permissions: [.read])
                 
@@ -998,7 +998,7 @@ import Foundation
             do {
                 
                 let attribute = GATTDatabase<Data>.Attribute(handle: pdu.attributeData[1].handle,
-                                                       uuid: .characteristic,
+                                                       uuid: BluetoothUUID.Declaration.characteristic,
                                                        value: Data(pdu.attributeData[1].value),
                                                        permissions: [.read])
                 

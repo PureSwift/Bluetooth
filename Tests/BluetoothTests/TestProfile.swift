@@ -80,7 +80,7 @@ public struct TestProfile {
                                               properties: [.read, .indicate],
                                               descriptors: [.init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write])])
     
-    public static let TestDefinedService = Service(uuid: .savantSystems2,
+    public static let TestDefinedService = Service(uuid: BluetoothUUID.Member.savantSystems2,
                                                    isPrimary: true,
                                                    characteristics: [
                                                     TestProfile.Read,

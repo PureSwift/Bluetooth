@@ -528,7 +528,7 @@ struct GATTTests {
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x0001, endHandle: 0xffff, type: .primaryService),
+            (ATTReadByGroupTypeRequest(startHandle: 0x0001, endHandle: 0xffff, type: BluetoothUUID.Declaration.primaryService),
              [0x10, 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             /**
              Read By Group Type Response
@@ -539,7 +539,7 @@ struct GATTTests {
             (ATTReadByGroupTypeResponse(attributeData: [
                 ATTReadByGroupTypeResponse.AttributeData(attributeHandle: 0x001,
                                                          endGroupHandle: 0x0004,
-                                                         value: Data(BluetoothUUID.batteryService.littleEndian))
+                                                         value: Data(BluetoothUUID.Service.battery.littleEndian))
                 ])!,
              [0x11, 0x06, 0x01, 0x00, 0x04, 0x00, 0x0F, 0x18]),
             /**
@@ -549,7 +549,7 @@ struct GATTTests {
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
              */
-            (ATTReadByGroupTypeRequest(startHandle: 0x0005, endHandle: 0xffff, type: .primaryService),
+            (ATTReadByGroupTypeRequest(startHandle: 0x0005, endHandle: 0xffff, type: BluetoothUUID.Declaration.primaryService),
              [0x10, 0x05, 0x00, 0xFF, 0xFF, 0x00, 0x28]),
             /**
              Error Response - Attribute Handle: 0x0005 - Error Code: 0x0A - Attribute Not Found
@@ -576,7 +576,7 @@ struct GATTTests {
                                 descriptors: [.init(GATTClientCharacteristicConfiguration(), permissions: [.read, .write])])
         ]
         
-        let service = GATTAttribute<Data>.Service(uuid: .batteryService,
+        let service = GATTAttribute<Data>.Service(uuid: BluetoothUUID.Service.battery,
                                    isPrimary: true,
                                    characteristics: characteristics)
         
@@ -709,13 +709,13 @@ struct GATTTests {
         #expect(foundService.uuid == services[0].uuid)
         #expect(foundService.handle == database.serviceHandles(at: 0).start)
         #expect(foundService.end == database.serviceHandles(at: 0).end)
-        #expect(foundService.isPrimary == (database.first!.uuid == .primaryService))
+        #expect(foundService.isPrimary == (database.first!.uuid == BluetoothUUID.Declaration.primaryService))
         
         let characteristics = try await client.discoverAllCharacteristics(of: foundService)
         guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
             else { Issue.record("Characteristic \(characteristic.uuid) not found"); return }
         
-        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == BluetoothUUID.characteristic)
+        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == BluetoothUUID.Declaration.characteristic)
         #expect(database[handle: foundCharacteristic.handle.value].uuid == characteristic.uuid)
         #expect(database[handle: foundCharacteristic.handle.value].permissions == characteristic.permissions)
         //XCTAssertEqual(client.endHandle(for: foundCharacteristic, service: (foundService, characteristics)), foundService.end)
@@ -797,7 +797,7 @@ struct GATTTests {
         #expect(foundService.uuid == service.uuid)
         #expect(foundService.handle == database.serviceHandles(at: 0).start)
         #expect(foundService.end == database.serviceHandles(at: 0).end)
-        #expect(foundService.isPrimary == (database.first!.uuid == .primaryService))
+        #expect(foundService.isPrimary == (database.first!.uuid == BluetoothUUID.Declaration.primaryService))
         
         let foundCharacteristics = try await client.discoverCharacteristics(of: foundService, by: characteristic.uuid)
         
@@ -805,7 +805,7 @@ struct GATTTests {
             let foundCharacteristic = foundCharacteristics.first
             else { Issue.record("Characteristic not found"); return }
         
-        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == .characteristic)
+        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == BluetoothUUID.Declaration.characteristic)
         #expect(database[handle: foundCharacteristic.handle.value].uuid == characteristic.uuid)
         #expect(database[handle: foundCharacteristic.handle.value].permissions == characteristic.permissions)
         
@@ -823,10 +823,10 @@ struct GATTTests {
             GATTAttribute<Data>.Descriptor(uuid: BluetoothUUID(),
                                      value: Data("UInt128 Descriptor".utf8),
                                      permissions: [.read, .write]),
-            GATTAttribute<Data>.Descriptor(uuid: .savantSystems,
+            GATTAttribute<Data>.Descriptor(uuid: BluetoothUUID.Member.savantSystems,
                                          value: Data("Savant".utf8),
                                          permissions: [.read]),
-            GATTAttribute<Data>.Descriptor(uuid: .savantSystems2,
+            GATTAttribute<Data>.Descriptor(uuid: BluetoothUUID.Member.savantSystems2,
                                          value: Data("Savant2".utf8),
                                          permissions: [.write])
         ]
@@ -895,14 +895,14 @@ struct GATTTests {
         #expect(foundService.uuid == service.uuid)
         #expect(foundService.handle == database.serviceHandles(at: 0).start)
         #expect(foundService.end == database.serviceHandles(at: 0).end)
-        #expect(foundService.isPrimary == (database.first!.uuid == BluetoothUUID.primaryService))
+        #expect(foundService.isPrimary == (database.first!.uuid == BluetoothUUID.Declaration.primaryService))
         
         let characteristics = try await client.discoverAllCharacteristics(of: foundService)
         
         guard let foundCharacteristic = characteristics.first(where: { $0.uuid == characteristic.uuid })
             else { Issue.record("Characteristic \(characteristic.uuid) not found"); return }
         
-        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == BluetoothUUID.characteristic)
+        #expect(database[handle: foundCharacteristic.handle.declaration].uuid == BluetoothUUID.Declaration.characteristic)
         #expect(database[handle: foundCharacteristic.handle.value].uuid == characteristic.uuid)
         #expect(database[handle: foundCharacteristic.handle.value].permissions == characteristic.permissions)
         let endHandle = await client.endHandle(for: foundCharacteristic, service: (foundService, characteristics))
@@ -1000,7 +1000,7 @@ struct GATTTests {
             #expect(foundService.uuid == service.uuid)
             #expect(foundService.handle == database.serviceHandles(at: 0).start)
             #expect(foundService.end == database.serviceHandles(at: 0).end)
-            #expect(foundService.isPrimary == (database.first!.uuid == .primaryService))
+            #expect(foundService.isPrimary == (database.first!.uuid == BluetoothUUID.Declaration.primaryService))
             
             let characteristics = try await client.discoverAllCharacteristics(of: foundService)
             

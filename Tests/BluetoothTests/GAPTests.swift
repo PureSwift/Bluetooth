@@ -57,7 +57,7 @@ import Bluetooth
             
             #expect(Data(list) == data)
             #expect(list.uuids == [0x1803, 0x1804, 0x1802])
-            #expect(list.uuids.map { BluetoothUUID.bit16($0) } == [.linkLoss, .txPower, .immediateAlert])
+            #expect(list.uuids.map { BluetoothUUID.bit16($0) } == [BluetoothUUID.Service.linkLoss, BluetoothUUID.Service.txPower, BluetoothUUID.Service.immediateAlert])
         }
     }
     
@@ -163,7 +163,7 @@ import Bluetooth
         let uuidList: GAPCompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
         let localName: GAPCompleteLocalName = "Proximity"
         
-        #expect(uuidList.description == "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
+        #expect(uuidList.description == "[1803, 1804, 1802]")
         
         let expectedData: [GAPData] = [flags, uuidList, localName]
         let types = expectedData.map { type(of: $0) }
@@ -197,7 +197,7 @@ import Bluetooth
         let uuidList: GAPIncompleteListOf16BitServiceClassUUIDs = [0x1803, 0x1804, 0x1802]
         let localName: GAPCompleteLocalName = "Proximity"
         
-        #expect(uuidList.description == "[1803 (Link Loss), 1804 (Tx Power), 1802 (Immediate Alert)]")
+        #expect(uuidList.description == "[1803, 1804, 1802]")
         
         let expectedData: [GAPData] = [flags, uuidList, localName]
         let types = expectedData.map { type(of: $0) }

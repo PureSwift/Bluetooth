@@ -217,16 +217,16 @@ import Bluetooth
         #expect(GATTExternalReportReference(data: Data()) == nil)
         #expect(GATTExternalReportReference(data: Data([0x00])) == nil)
         
-        let aerobicHeartRateLowerLimit = Data(BluetoothUUID.aerobicHeartRateLowerLimit)
+        let aerobicHeartRateLowerLimit = Data(BluetoothUUID.Characteristic.aerobicHeartRateLowerLimit)
         var externalReportReference = GATTExternalReportReference(data: aerobicHeartRateLowerLimit)
         #expect(externalReportReference?.data == aerobicHeartRateLowerLimit)
         
-        let batteryLevel = Data(BluetoothUUID.batteryLevel)
+        let batteryLevel = Data(BluetoothUUID.Characteristic.batteryLevel)
         externalReportReference = GATTExternalReportReference(data: Data([0x19, 0x2A]))
         #expect(externalReportReference?.data == batteryLevel)
         
-        externalReportReference = GATTExternalReportReference(uuid: .batteryService)
-        #expect(externalReportReference?.data == Data(BluetoothUUID.batteryService.littleEndian))
+        externalReportReference = GATTExternalReportReference(uuid: BluetoothUUID.Service.battery)
+        #expect(externalReportReference?.data == Data(BluetoothUUID.Service.battery.littleEndian))
     }
     
     @Test func numberOfDigitalsDescritor() {
