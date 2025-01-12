@@ -136,9 +136,9 @@ import Bluetooth
         let uuid = try #require(BluetoothUUID(rawValue: uuidString))
         
         #if !os(WASI)
-        //#expect(uuid == .savantSystems2)
-        //#expect(uuid.name == "Savant Systems LLC")
-        //#expect("\(uuid)" == "FEA9 (Savant Systems LLC)", "\(uuid)")
+        #expect(uuid == BluetoothUUID.Member.savantSystems2)
+        #expect(uuid.metadata?.name == "Savant Systems LLC")
+        #expect("\(uuid)" == "FEA9 (Savant Systems LLC)")
         #endif
         #expect(uuid.rawValue == uuidString)
         #expect(uuid.hashValue != 0)
@@ -167,7 +167,7 @@ import Bluetooth
         let uuid = try #require(BluetoothUUID(rawValue: uuidString))
         
         #if !os(WASI)
-        //#expect(uuid.name == nil)
+        #expect(uuid.metadata == nil)
         #endif
         #expect(uuid.rawValue == uuidString)
         #expect(uuid.description == uuidString)

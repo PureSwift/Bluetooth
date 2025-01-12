@@ -114,7 +114,8 @@ import Bluetooth
         (101 ... UInt8.max).forEach { #expect(GATTBatteryLevel(data: Data([$0])) == nil)  }
         
         // test percentage
-        #expect(GATTBatteryPercentage.unitType.description == "0x27AD (percentage)")
+        #expect(GATTBatteryPercentage.unitType.description == "percentage")
+        #expect(GATTBatteryPercentage.unitType.name == "percentage")
         #expect(GATTBatteryPercentage.unitType.type == "org.bluetooth.unit.percentage")
         #expect(GATTBatteryPercentage.unitType == .percentage)
         (0 ... 100).forEach { #expect(GATTBatteryPercentage(rawValue: $0) != nil)  }
