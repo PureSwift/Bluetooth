@@ -115,17 +115,17 @@ public extension BluetoothUUID.File {
         .init()
     }
     
-    static func load(_ name: BluetoothUUID.Category) throws -> Self {
-        guard let fileName = Self.fileNames[name] else {
+    init(_ type: BluetoothUUID.Category) throws {
+        guard let fileName = Self.fileNames[type] else {
             throw CocoaError(.fileNoSuchFile)
         }
         guard let fileURL = Bundle.module.url(
             forResource: fileName,
-            withExtension: fileExtension
+            withExtension: Self.fileExtension
         ) else {
             throw CocoaError(.fileNoSuchFile)
         }
-        return try self.init(url: fileURL)
+        try self.init(url: fileURL)
     }
     
     static func load() throws -> [BluetoothUUID.Category: Self] {
@@ -133,7 +133,7 @@ public extension BluetoothUUID.File {
         var files = [BluetoothUUID.Category: Self]()
         files.reserveCapacity(types.count)
         for type in types {
-            let file = try load(type)
+            let file = try self.init(type)
             files[type] = file
         }
         assert(files.count == types.count)

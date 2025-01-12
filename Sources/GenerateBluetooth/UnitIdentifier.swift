@@ -12,7 +12,7 @@ extension GenerateTool {
     
     static func parseUnitIdentifiersFile(
     ) throws -> [UInt16: (id: String, name: String)] {
-        let file = try BluetoothMetadata.BluetoothUUID.File.load(.unit)
+        let file = try BluetoothMetadata.BluetoothUUID.File(.unit)
         var output = [UInt16: (id: String, name: String)]()
         output.reserveCapacity(file.uuids.count)
         for element in file.uuids {

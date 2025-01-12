@@ -21,7 +21,7 @@ extension GenerateTool {
     static func parseUUIDFile(
         type: BluetoothMetadata.BluetoothUUID.Category
     ) throws -> [UInt16: BluetoothMetadata.BluetoothUUID] {
-        let file = try BluetoothMetadata.BluetoothUUID.File.load(type)
+        let file = try BluetoothMetadata.BluetoothUUID.File(type)
         var output = [UInt16: BluetoothMetadata.BluetoothUUID]()
         output.reserveCapacity(file.uuids.count)
         for element in file.uuids {
