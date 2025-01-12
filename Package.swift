@@ -6,6 +6,7 @@ import class Foundation.ProcessInfo
 // get environment variables
 let environment = ProcessInfo.processInfo.environment
 let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] == "1"
+let buildMetadata = environment["SWIFTPM_BLUETOOTH_METADATA"] != "0"
 let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
 let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0"
 let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
@@ -50,12 +51,7 @@ var package = Package(
     ],
     targets: [
         .target(
-            name: "Bluetooth",
-            dependencies: [
-                .targetItem(name: "BluetoothMetadata", condition: .when(platforms: [
-                    .macOS, .iOS, .macCatalyst, .watchOS, .tvOS, .visionOS, .linux, .android, .windows
-                ]))
-            ]
+            name: "Bluetooth"
         ),
         .target(
             name: "BluetoothMetadata",
@@ -113,8 +109,14 @@ var package = Package(
     ]
 )
 
-// SwiftPM plugins
+// Optional dependencies
+if buildMetadata {
+    package.targets[0].dependencies += [
+        "BluetoothMetadata"
+    ]
+}
 
+// SwiftPM plugins
 if buildDocs {
     package.dependencies += [
         .package(

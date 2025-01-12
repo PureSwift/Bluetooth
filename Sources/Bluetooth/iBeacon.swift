@@ -22,9 +22,9 @@ import Foundation
 @frozen
 public struct AppleBeacon: Equatable, Hashable, Sendable {
     
-    #if !os(WASI)
+    #if !os(WASI) && !hasFeature(Embedded)
     /// The company that created this specification.
-    public static var companyIdentifier: CompanyIdentifier { return .apple }
+    public static var companyIdentifier: CompanyIdentifier { .apple }
     #endif
     
     /// The unique ID of the beacons being targeted.
