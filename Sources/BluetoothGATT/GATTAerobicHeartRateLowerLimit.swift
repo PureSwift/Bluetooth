@@ -17,13 +17,13 @@ import Bluetooth
  - SeeAlso: [Aerobic Heart Rate Lower Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_lower_limit.xml)
  */
 @frozen
-public struct GATTAerobicHeartRateLowerLimit: GATTCharacteristic {
+public struct GATTAerobicHeartRateLowerLimit: GATTCharacteristic, Equatable, Hashable, Sendable {
     
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .aerobicHeartRateLowerLimit }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.aerobicHeartRateLowerLimit }
     
     public var beats: BeatsPerMinute
     
@@ -47,15 +47,6 @@ public struct GATTAerobicHeartRateLowerLimit: GATTCharacteristic {
         return Data([beats.rawValue])
     }
     
-}
-
-extension GATTAerobicHeartRateLowerLimit: Equatable {
-    
-    public static func == (lhs: GATTAerobicHeartRateLowerLimit,
-                           rhs: GATTAerobicHeartRateLowerLimit) -> Bool {
-        
-        return lhs.beats == rhs.beats
-    }
 }
 
 extension GATTAerobicHeartRateLowerLimit: CustomStringConvertible {

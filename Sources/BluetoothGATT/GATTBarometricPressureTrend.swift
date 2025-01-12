@@ -19,7 +19,7 @@ public enum GATTBarometricPressureTrend: UInt8, GATTCharacteristic, BluetoothUni
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .barometricPressureTrend }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.barometricPressureTrend }
     
     public static var unitType: UnitIdentifier { return .unitless }
     

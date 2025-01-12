@@ -14,8 +14,8 @@ import Bluetooth
 @frozen
 public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable, Equatable, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .numberOfDigitals }
-        
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.numberOfDigitals }
+    
     public var rawValue: UInt8
     
     public init(rawValue: UInt8) {

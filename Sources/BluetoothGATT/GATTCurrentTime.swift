@@ -19,7 +19,7 @@ public struct GATTCurrentTime: GATTCharacteristic, Equatable {
     
     internal static let length = GATTExactTime256.length + MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .currentTime }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.currentTime }
     
     public var exactTime: GATTExactTime256
     

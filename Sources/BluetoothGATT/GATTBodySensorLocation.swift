@@ -17,7 +17,7 @@ import Bluetooth
 @frozen
 public enum GATTBodySensorLocation: UInt8, GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .bodySensorLocation }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bodySensorLocation }
     
     internal static let length = MemoryLayout<UInt8>.size
     

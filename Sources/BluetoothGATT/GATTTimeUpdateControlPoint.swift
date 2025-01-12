@@ -19,7 +19,7 @@ public enum GATTTimeUpdateControlPoint: UInt8, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .timeUpdateControlPoint }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.timeUpdateControlPoint }
     
     /// Get Reference Update
     case getReferenceUpdate = 1

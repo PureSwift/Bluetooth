@@ -19,7 +19,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     
     internal static let minimumLength = MemoryLayout<UInt32>.size
     
-    public static var uuid: BluetoothUUID { return .bodyCompositionMeasurement }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bodyCompositionMeasurement }
     
     internal var flags: BitMaskOptionSet<Flag> {
         

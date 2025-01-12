@@ -26,7 +26,7 @@ public struct GATTSupportedUnreadAlertCategory: GATTCharacteristic {
     
     public typealias Category = GATTAlertCategoryBitMask.Category
     
-    public static var uuid: BluetoothUUID { return .supportedUnreadAlertCategory }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.supportedUnreadAlertCategory }
     
     public var categories: BitMaskOptionSet<Category>
     

@@ -15,7 +15,7 @@ import Bluetooth
 @frozen
 public enum GATTTimeTriggerSetting: GATTDescriptor, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .timeTriggerSetting }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.timeTriggerSetting }
         
     case valueC1(UInt8)
     

@@ -19,7 +19,7 @@ public struct GATTTimeWithDst: GATTCharacteristic, Equatable {
     
     internal static let length = GATTDateTime.length + GATTDstOffset.length
     
-    public static var uuid: BluetoothUUID { return .timeWithDst }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.timeWithDst }
     
     public var datetime: GATTDateTime
     

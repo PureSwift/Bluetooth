@@ -26,7 +26,7 @@ public struct GATTUnreadAlertStatus: GATTCharacteristic {
     
     internal static let length = 2
     
-    public static var uuid: BluetoothUUID { return .unreadAlertStatus }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.unreadAlertStatus }
     
     /// Category ID.
     public var category: GATTAlertCategory

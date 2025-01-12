@@ -23,7 +23,7 @@ public struct GATTScanIntervalWindow: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt16>.size * 2
     
-    public static var uuid: BluetoothUUID { return .scanIntervalWindow }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.scanIntervalWindow }
     
     public var scanInterval: LowEnergyScanTimeInterval
     

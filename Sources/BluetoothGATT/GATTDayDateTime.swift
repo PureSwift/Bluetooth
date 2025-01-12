@@ -19,7 +19,7 @@ public struct GATTDayDateTime: GATTCharacteristic {
     
     internal static let length = GATTDateTime.length + GATTDayOfWeek.length
     
-    public static var uuid: BluetoothUUID { return .dayDateTime }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.dayDateTime }
     
     public var dateTime: GATTDateTime
     

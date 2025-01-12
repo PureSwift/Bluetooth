@@ -22,7 +22,7 @@ import Bluetooth
 @frozen
 public struct GATTCGMSessionRunTime: GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .cgmSessionRunTime }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.cgmSessionRunTime }
     
     internal static let length = MemoryLayout<UInt16>.size
     

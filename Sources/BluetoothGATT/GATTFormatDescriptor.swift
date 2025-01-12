@@ -29,8 +29,8 @@ import Bluetooth
 @frozen
 public struct GATTFormatDescriptor: GATTDescriptor, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .characteristicFormat }
-        
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.characteristicPresentationFormat }
+    
     public let format: GATTCharacteristicFormatType
     
     public let exponent: Int8

@@ -21,7 +21,7 @@ public struct GATTBatteryLevel: GATTCharacteristic, Equatable, Hashable {
     
     internal static let length = 1
     
-    public static var uuid: BluetoothUUID { return .batteryLevel }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.batteryLevel }
     
     public var level: Percentage
     

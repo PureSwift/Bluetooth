@@ -19,7 +19,7 @@ public struct GATTTimeUpdateState: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt8>.size * 2
     
-    public static var uuid: BluetoothUUID { return .timeUpdateState }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.timeUpdateState }
     
     public var currentState: CurrentState
     

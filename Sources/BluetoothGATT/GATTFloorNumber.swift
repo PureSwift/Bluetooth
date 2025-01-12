@@ -21,7 +21,7 @@ public struct GATTFloorNumber: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .floorNumber }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.floorNumber }
     
     public let rawValue: UInt8
     

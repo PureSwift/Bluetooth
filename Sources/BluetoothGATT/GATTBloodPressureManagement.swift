@@ -21,7 +21,7 @@ import Bluetooth
 @frozen
 public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .bloodPressureMeasurement }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bloodPressureMeasurement }
     
     internal static let length = MemoryLayout<UInt8>.size
     

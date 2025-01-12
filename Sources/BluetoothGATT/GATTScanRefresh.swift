@@ -21,7 +21,7 @@ public enum GATTScanRefresh: UInt8, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .scanRefresh }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.scanRefresh }
     
     case serverRequiredRefresh = 0
     

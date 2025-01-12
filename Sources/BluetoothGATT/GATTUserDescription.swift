@@ -19,7 +19,7 @@ import Bluetooth
 @frozen
 public struct GATTUserDescription: GATTDescriptor, RawRepresentable, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .characteristicUserDescription }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.characteristicUserDescription }
     
     public var rawValue: String
     

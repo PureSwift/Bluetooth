@@ -21,7 +21,7 @@ public struct GATTUncertainty: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .uncertainty }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.uncertainty }
     
     public var stationary: Stationary
     

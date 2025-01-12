@@ -17,7 +17,7 @@ import Bluetooth
 @frozen
 public struct GATTDayOfWeek: GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .dayOfWeek }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.dayOfWeek }
     
     internal static let length = MemoryLayout<UInt8>.size
     

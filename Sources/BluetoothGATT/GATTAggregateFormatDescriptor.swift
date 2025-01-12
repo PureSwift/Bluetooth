@@ -25,7 +25,7 @@ import Bluetooth
 @frozen
 public struct GATTAggregateFormatDescriptor: GATTDescriptor, Equatable, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .characteristicAggregateFormat }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.characteristicAggregateFormat }
     
     public var handles: [UInt16]
     

@@ -21,7 +21,7 @@ public struct GATTTimeAccuracy: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .timeAccuracy }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.timeAccuracy }
     
     public static let outOfRange: GATTTimeAccuracy = 254
     

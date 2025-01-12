@@ -29,7 +29,7 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
     
     internal static let length = 2
     
-    public static var uuid: BluetoothUUID { return .alertNotificationControlPoint }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertNotificationControlPoint }
     
     /// Command ID
     ///

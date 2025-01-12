@@ -19,7 +19,7 @@ public struct GATTReferenceTimeInformation: GATTCharacteristic, Equatable {
     
     internal static let length = GATTTimeSource.length + GATTTimeAccuracy.length + 1 + 1
     
-    public static var uuid: BluetoothUUID { return .referenceTimeInformation }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.referenceTimeInformation }
     
     public var timeSource: GATTTimeSource
     

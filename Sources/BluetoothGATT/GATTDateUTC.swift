@@ -14,7 +14,7 @@ public struct GATTDateUTC: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt24>.size
     
-    public static var uuid: BluetoothUUID { return .dateUtc }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.dateUtc }
     
     public let date: Day
     

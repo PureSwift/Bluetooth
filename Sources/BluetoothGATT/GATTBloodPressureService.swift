@@ -14,5 +14,5 @@
 @frozen
 public struct GATTBloodPressureService: GATTService {
     
-    public static var uuid: BluetoothUUID { return .bloodPressure }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Service.bloodPressure }
 }

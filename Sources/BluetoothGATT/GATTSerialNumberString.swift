@@ -19,7 +19,7 @@ import Bluetooth
 @frozen
 public struct GATTSerialNumberString: RawRepresentable, GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .serialNumberString }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.serialNumberString }
     
     public let rawValue: String
     

@@ -19,7 +19,7 @@ public enum GATTDstOffset: UInt8, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .dstOffset }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.dstOffset }
     
     /// Standard Time
     case standardTime = 0

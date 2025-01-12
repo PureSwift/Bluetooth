@@ -376,7 +376,7 @@ internal extension GATTDatabase {
             
             for attribute in attributes.suffix(from: 1) {
                 
-                if attribute.uuid == .include {
+                if attribute.uuid == BluetoothUUID.Declaration.include {
                     
                     guard let includeAttribute = IncludedServiceAttribute(attribute: attribute)
                         else { return nil }
@@ -387,7 +387,7 @@ internal extension GATTDatabase {
                     
                     service.includedServices.append(include)
                     
-                } else if attribute.uuid == .characteristic {
+                } else if attribute.uuid == BluetoothUUID.Declaration.characteristic {
                     
                     guard let characteristicAttribute = CharacteristicDeclarationAttribute(attribute: attribute)
                         else { return nil }
@@ -463,9 +463,9 @@ internal extension GATTDatabase {
             let isPrimary: Bool
             
             switch attribute.uuid {
-            case .primaryService:
+            case BluetoothUUID.Declaration.primaryService:
                 isPrimary = true
-            case .secondaryService:
+            case BluetoothUUID.Declaration.secondaryService:
                 isPrimary = false
             default:
                 return nil // invalid uuid
@@ -478,7 +478,7 @@ internal extension GATTDatabase {
         
         var attribute: Attribute {
             
-            let serviceUUID: BluetoothUUID = isPrimary ? .primaryService : .secondaryService
+            let serviceUUID: BluetoothUUID = isPrimary ? BluetoothUUID.Declaration.primaryService : BluetoothUUID.Declaration.secondaryService
             
             return Attribute(
                 handle: handle,
@@ -491,7 +491,7 @@ internal extension GATTDatabase {
     
     struct IncludedServiceAttribute {
         
-        static var uuid: BluetoothUUID { .include }
+        static var uuid: BluetoothUUID { BluetoothUUID.Declaration.include }
         
         /// Attribute Handle
         var handle: UInt16
@@ -562,7 +562,7 @@ internal extension GATTDatabase {
     
     struct CharacteristicDeclarationAttribute: Equatable, Hashable, Sendable {
         
-        static var uuid: BluetoothUUID { .characteristic }
+        static var uuid: BluetoothUUID { BluetoothUUID.Declaration.characteristic }
         
         typealias Properties = GATTAttribute<Data>.Characteristic.Properties
         

@@ -23,7 +23,7 @@ public struct GATTAerobicThreshold: GATTCharacteristic, Equatable, Hashable, Sen
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .aerobicThreshold }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.aerobicThreshold }
     
     public var beats: BeatsPerMinute
     

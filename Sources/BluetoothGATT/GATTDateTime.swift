@@ -23,8 +23,8 @@ import Bluetooth
 @frozen
 public struct GATTDateTime: GATTCharacteristic, Equatable, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .dateTime }
-        
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.dateTime }
+    
     public var year: Year
     
     public var month: Month

@@ -19,7 +19,7 @@ public struct GATTObjectSize: GATTCharacteristic, Equatable {
     
     internal static let length = MemoryLayout<UInt32>.size * 2
     
-    public static var uuid: BluetoothUUID { return .objectSize }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.objectSize }
     
     public var currentSize: Size
     

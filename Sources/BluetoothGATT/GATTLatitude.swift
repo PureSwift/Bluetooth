@@ -21,7 +21,7 @@ public struct GATTLatitude: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<Int32>.size
     
-    public static var uuid: BluetoothUUID { return .latitude }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.latitude }
     
     public let rawValue: Int32
     

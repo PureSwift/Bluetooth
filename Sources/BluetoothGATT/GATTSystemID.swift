@@ -19,7 +19,7 @@ import Bluetooth
 @frozen
 public struct GATTSystemID: GATTCharacteristic, RawRepresentable, Equatable, Hashable {
     
-    public static var uuid: BluetoothUUID { return .systemId }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.systemId }
     
     internal static let length = MemoryLayout<UInt64>.size
     

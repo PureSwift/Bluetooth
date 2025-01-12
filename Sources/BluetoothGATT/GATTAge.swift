@@ -21,7 +21,7 @@ public struct GATTAge: GATTCharacteristic, Equatable {
     
     internal static var length: Int { return MemoryLayout<UInt8>.size }
     
-    public static var uuid: BluetoothUUID { return .age }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.age }
     
     public var year: Year
     

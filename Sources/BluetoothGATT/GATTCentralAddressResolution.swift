@@ -25,7 +25,7 @@ The Peripheral checks if the peer device supports address resolution by reading 
 @frozen
 public struct GATTCentralAddressResolution: GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .centralAddressResolution }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.centralAddressResolution }
     
     internal static let length = MemoryLayout<UInt8>.size
     
