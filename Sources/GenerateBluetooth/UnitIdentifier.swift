@@ -16,7 +16,7 @@ extension GenerateTool {
         var output = [UInt16: (id: String, name: String)]()
         output.reserveCapacity(file.uuids.count)
         for element in file.uuids {
-            guard let namespace = element.namespace else {
+            guard let namespace = element.type else {
                 throw CocoaError(.coderValueNotFound)
             }
             output[element.uuid] = (namespace, element.name)

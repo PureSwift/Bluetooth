@@ -12,16 +12,19 @@ public struct BluetoothUUID: Equatable, Hashable, Codable, Sendable, Identifiabl
     
     public var id: UInt16 { uuid }
     
+    /// The assigned number of the UUID.
     public let uuid: UInt16
     
+    /// The name of the defined UUID.
     public let name: String
     
-    public let namespace: String?
+    /// The Bluetooth type namespace of the UUID.
+    public let type: String?
     
     public enum CodingKeys: String, CodingKey {
         
         case uuid
-        case namespace = "id"
+        case type = "id"
         case name
     }
 }
@@ -76,6 +79,18 @@ public extension BluetoothUUID {
         public init(from data: Data) throws {
             self = try Self.decoder.decode(File.self, from: data)
         }
+    }
+}
+
+public extension BluetoothUUID.File {
+    
+    subscript(uuid: UInt16) -> BluetoothMetadata.BluetoothUUID? {
+        for metadata in uuids {
+            if metadata.id == uuid {
+                return metadata
+            }
+        }
+        return nil
     }
 }
 
