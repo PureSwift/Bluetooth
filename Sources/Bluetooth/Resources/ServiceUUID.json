@@ -1,0 +1,359 @@
+﻿{
+  "uuids": [
+    {
+      "uuid": 6144,
+      "name": "GAP",
+      "id": "org.bluetooth.service.gap"
+    },
+    {
+      "uuid": 6145,
+      "name": "GATT",
+      "id": "org.bluetooth.service.gatt"
+    },
+    {
+      "uuid": 6146,
+      "name": "Immediate Alert",
+      "id": "org.bluetooth.service.immediate_alert"
+    },
+    {
+      "uuid": 6147,
+      "name": "Link Loss",
+      "id": "org.bluetooth.service.link_loss"
+    },
+    {
+      "uuid": 6148,
+      "name": "Tx Power",
+      "id": "org.bluetooth.service.tx_power"
+    },
+    {
+      "uuid": 6149,
+      "name": "Current Time",
+      "id": "org.bluetooth.service.current_time"
+    },
+    {
+      "uuid": 6150,
+      "name": "Reference Time Update",
+      "id": "org.bluetooth.service.reference_time_update"
+    },
+    {
+      "uuid": 6151,
+      "name": "Next DST Change",
+      "id": "org.bluetooth.service.next_dst_change"
+    },
+    {
+      "uuid": 6152,
+      "name": "Glucose",
+      "id": "org.bluetooth.service.glucose"
+    },
+    {
+      "uuid": 6153,
+      "name": "Health Thermometer",
+      "id": "org.bluetooth.service.health_thermometer"
+    },
+    {
+      "uuid": 6154,
+      "name": "Device Information",
+      "id": "org.bluetooth.service.device_information"
+    },
+    {
+      "uuid": 6157,
+      "name": "Heart Rate",
+      "id": "org.bluetooth.service.heart_rate"
+    },
+    {
+      "uuid": 6158,
+      "name": "Phone Alert Status",
+      "id": "org.bluetooth.service.phone_alert_status"
+    },
+    {
+      "uuid": 6159,
+      "name": "Battery",
+      "id": "org.bluetooth.service.battery_service"
+    },
+    {
+      "uuid": 6160,
+      "name": "Blood Pressure",
+      "id": "org.bluetooth.service.blood_pressure"
+    },
+    {
+      "uuid": 6161,
+      "name": "Alert Notification",
+      "id": "org.bluetooth.service.alert_notification"
+    },
+    {
+      "uuid": 6162,
+      "name": "Human Interface Device",
+      "id": "org.bluetooth.service.human_interface_device"
+    },
+    {
+      "uuid": 6163,
+      "name": "Scan Parameters",
+      "id": "org.bluetooth.service.scan_parameters"
+    },
+    {
+      "uuid": 6164,
+      "name": "Running Speed and Cadence",
+      "id": "org.bluetooth.service.running_speed_and_cadence"
+    },
+    {
+      "uuid": 6165,
+      "name": "Automation IO",
+      "id": "org.bluetooth.service.automation_io"
+    },
+    {
+      "uuid": 6166,
+      "name": "Cycling Speed and Cadence",
+      "id": "org.bluetooth.service.cycling_speed_and_cadence"
+    },
+    {
+      "uuid": 6168,
+      "name": "Cycling Power",
+      "id": "org.bluetooth.service.cycling_power"
+    },
+    {
+      "uuid": 6169,
+      "name": "Location and Navigation",
+      "id": "org.bluetooth.service.location_and_navigation"
+    },
+    {
+      "uuid": 6170,
+      "name": "Environmental Sensing",
+      "id": "org.bluetooth.service.environmental_sensing"
+    },
+    {
+      "uuid": 6171,
+      "name": "Body Composition",
+      "id": "org.bluetooth.service.body_composition"
+    },
+    {
+      "uuid": 6172,
+      "name": "User Data",
+      "id": "org.bluetooth.service.user_data"
+    },
+    {
+      "uuid": 6173,
+      "name": "Weight Scale",
+      "id": "org.bluetooth.service.weight_scale"
+    },
+    {
+      "uuid": 6174,
+      "name": "Bond Management",
+      "id": "org.bluetooth.service.bond_management"
+    },
+    {
+      "uuid": 6175,
+      "name": "Continuous Glucose Monitoring",
+      "id": "org.bluetooth.service.continuous_glucose_monitoring"
+    },
+    {
+      "uuid": 6176,
+      "name": "Internet Protocol Support",
+      "id": "org.bluetooth.service.internet_protocol_support"
+    },
+    {
+      "uuid": 6177,
+      "name": "Indoor Positioning",
+      "id": "org.bluetooth.service.indoor_positioning"
+    },
+    {
+      "uuid": 6178,
+      "name": "Pulse Oximeter",
+      "id": "org.bluetooth.service.pulse_oximeter"
+    },
+    {
+      "uuid": 6179,
+      "name": "HTTP Proxy",
+      "id": "org.bluetooth.service.http_proxy"
+    },
+    {
+      "uuid": 6180,
+      "name": "Transport Discovery",
+      "id": "org.bluetooth.service.transport_discovery"
+    },
+    {
+      "uuid": 6181,
+      "name": "Object Transfer",
+      "id": "org.bluetooth.service.object_transfer"
+    },
+    {
+      "uuid": 6182,
+      "name": "Fitness Machine",
+      "id": "org.bluetooth.service.fitness_machine"
+    },
+    {
+      "uuid": 6183,
+      "name": "Mesh Provisioning",
+      "id": "org.bluetooth.service.mesh_provisioning"
+    },
+    {
+      "uuid": 6184,
+      "name": "Mesh Proxy",
+      "id": "org.bluetooth.service.mesh_proxy"
+    },
+    {
+      "uuid": 6185,
+      "name": "Reconnection Configuration",
+      "id": "org.bluetooth.service.reconnection_configuration"
+    },
+    {
+      "uuid": 6202,
+      "name": "Insulin Delivery",
+      "id": "org.bluetooth.service.insulin_delivery"
+    },
+    {
+      "uuid": 6203,
+      "name": "Binary Sensor",
+      "id": "org.bluetooth.service.binary_sensor"
+    },
+    {
+      "uuid": 6204,
+      "name": "Emergency Configuration",
+      "id": "org.bluetooth.service.emergency_configuration"
+    },
+    {
+      "uuid": 6205,
+      "name": "Authorization Control",
+      "id": "org.bluetooth.service.authorization_control"
+    },
+    {
+      "uuid": 6206,
+      "name": "Physical Activity Monitor",
+      "id": "org.bluetooth.service.physical_activity_monitor"
+    },
+    {
+      "uuid": 6207,
+      "name": "Elapsed Time",
+      "id": "org.bluetooth.service.elapsed_time"
+    },
+    {
+      "uuid": 6208,
+      "name": "Generic Health Sensor",
+      "id": "org.bluetooth.service.generic_health_sensor"
+    },
+    {
+      "uuid": 6211,
+      "name": "Audio Input Control",
+      "id": "org.bluetooth.service.audio_input_control"
+    },
+    {
+      "uuid": 6212,
+      "name": "Volume Control",
+      "id": "org.bluetooth.service.volume_control"
+    },
+    {
+      "uuid": 6213,
+      "name": "Volume Offset Control",
+      "id": "org.bluetooth.service.volume_offset"
+    },
+    {
+      "uuid": 6214,
+      "name": "Coordinated Set Identification",
+      "id": "org.bluetooth.service.coordinated_set_identification"
+    },
+    {
+      "uuid": 6215,
+      "name": "Device Time",
+      "id": "org.bluetooth.service.device_time"
+    },
+    {
+      "uuid": 6216,
+      "name": "Media Control",
+      "id": "org.bluetooth.service.media_control"
+    },
+    {
+      "uuid": 6217,
+      "name": "Generic Media Control",
+      "id": "org.bluetooth.service.generic_media_control"
+    },
+    {
+      "uuid": 6218,
+      "name": "Constant Tone Extension",
+      "id": "org.bluetooth.service.constant_tone_extension"
+    },
+    {
+      "uuid": 6219,
+      "name": "Telephone Bearer",
+      "id": "org.bluetooth.service.telephone_bearer"
+    },
+    {
+      "uuid": 6220,
+      "name": "Generic Telephone Bearer",
+      "id": "org.bluetooth.service.generic_telephone_bearer"
+    },
+    {
+      "uuid": 6221,
+      "name": "Microphone Control",
+      "id": "org.bluetooth.service.microphone_control"
+    },
+    {
+      "uuid": 6222,
+      "name": "Audio Stream Control",
+      "id": "org.bluetooth.service.audio_stream_control"
+    },
+    {
+      "uuid": 6223,
+      "name": "Broadcast Audio Scan",
+      "id": "org.bluetooth.service.broadcast_audio_scan"
+    },
+    {
+      "uuid": 6224,
+      "name": "Published Audio Capabilities",
+      "id": "org.bluetooth.service.published_audio_capabilities"
+    },
+    {
+      "uuid": 6225,
+      "name": "Basic Audio Announcement",
+      "id": "org.bluetooth.service.basic_audio_announcement"
+    },
+    {
+      "uuid": 6226,
+      "name": "Broadcast Audio Announcement",
+      "id": "org.bluetooth.service.broadcast_audio_announcement"
+    },
+    {
+      "uuid": 6227,
+      "name": "Common Audio",
+      "id": "org.bluetooth.service.common_audio"
+    },
+    {
+      "uuid": 6228,
+      "name": "Hearing Access",
+      "id": "org.bluetooth.service.hearing_access"
+    },
+    {
+      "uuid": 6229,
+      "name": "Telephony and Media Audio",
+      "id": "org.bluetooth.service.telephony_and_media_audio"
+    },
+    {
+      "uuid": 6230,
+      "name": "Public Broadcast Announcement",
+      "id": "org.bluetooth.service.public_broadcast_announcement"
+    },
+    {
+      "uuid": 6231,
+      "name": "Electronic Shelf Label",
+      "id": "org.bluetooth.service.electronic_shelf_label"
+    },
+    {
+      "uuid": 6232,
+      "name": "Gaming Audio",
+      "id": "org.bluetooth.service.gaming_audio"
+    },
+    {
+      "uuid": 6233,
+      "name": "Mesh Proxy Solicitation",
+      "id": "org.bluetooth.service.mesh_proxy_solicitation"
+    },
+    {
+      "uuid": 6234,
+      "name": "Industrial Measurement Device",
+      "id": "org.bluetooth.service.industrial_measurement_device"
+    },
+    {
+      "uuid": 6235,
+      "name": "Ranging",
+      "id": "org.bluetooth.service.ranging"
+    }
+  ]
+}
