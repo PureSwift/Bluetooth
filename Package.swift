@@ -55,7 +55,13 @@ var package = Package(
         .target(
             name: "BluetoothMetadata",
             resources: [
-                .copy("Resources")
+                .copy("Resources/CompanyIdentifier.json"),
+                .copy("Resources/CharacteristicUUID.json"),
+                .copy("Resources/DeclarationUUID.json"),
+                .copy("Resources/DescriptorUUID.json"),
+                .copy("Resources/ServiceUUID.json"),
+                .copy("Resources/MemberUUID.json"),
+                .copy("Resources/UnitIdentifier.json")
             ]
         ),
         .target(
