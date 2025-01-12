@@ -28,6 +28,11 @@ var package = Package(
             targets: ["Bluetooth"]
         ),
         .library(
+            name: "BluetoothMetadata",
+            type: libraryType,
+            targets: ["BluetoothMetadata"]
+        ),
+        .library(
             name: "BluetoothGAP",
             type: libraryType,
             targets: ["BluetoothGAP"]
@@ -46,6 +51,12 @@ var package = Package(
     targets: [
         .target(
             name: "Bluetooth"
+        ),
+        .target(
+            name: "BluetoothMetadata",
+            resources: [
+                .copy("Resources")
+            ]
         ),
         .target(
             name: "BluetoothGAP",
@@ -107,7 +118,9 @@ if generateCode {
     package.targets += [
         .executableTarget(
             name: "GenerateBluetooth",
-            dependencies: []
+            dependencies: [
+                "BluetoothMetadata"
+            ]
         ),
         .plugin(
             name: "GenerateBluetoothDefinitions",

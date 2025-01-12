@@ -20,18 +20,15 @@ struct GenerateTool {
         switch commandType {
         case .companyIdentifier:
             // parse arguments
-            guard arguments.count == 5 else {
+            guard arguments.count == 4 else {
                 throw CommandError.invalidArguments(arguments)
             }
             let inputFile = URL(fileURLWithPath: arguments[2])
-            let outputFiles = [
-                URL(fileURLWithPath: arguments[3]),
-                URL(fileURLWithPath: arguments[4])
-            ]
+            let outputFile = URL(fileURLWithPath: arguments[3])
             // generate files
             try generateCompanyIdentifiers(
                 input: inputFile,
-                output: outputFiles
+                output: outputFile
             )
         case .companyIdentifierTests:
             // parse arguments

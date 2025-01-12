@@ -6,23 +6,7 @@
 //
 
 import Foundation
-
-struct BluetoothUUIDFile: Equatable, Hashable, Codable, Sendable {
-    
-    var uuids: [Element]
-}
-
-extension BluetoothUUIDFile {
-    
-    struct Element: Equatable, Hashable, Codable, Sendable {
-        
-        var id: String?
-        
-        let uuid: UInt16
-        
-        let name: String
-    }
-}
+import BluetoothMetadata
 
 extension GenerateTool {
     
@@ -38,11 +22,11 @@ extension GenerateTool {
     static func parseUUIDFile(
         type: String,
         input: URL
-    ) throws -> [UInt16: BluetoothUUIDFile.Element] {
+    ) throws -> [UInt16: BluetoothMetadata.BluetoothUUID] {
         let data = try Data(contentsOf: input, options: [.mappedIfSafe])
         let decoder = JSONDecoder()
-        let file = try decoder.decode(BluetoothUUIDFile.self, from: data)
-        var output = [UInt16: BluetoothUUIDFile.Element]()
+        let file = try decoder.decode(BluetoothMetadata.BluetoothUUID.File.self, from: data)
+        var output = [UInt16: BluetoothMetadata.BluetoothUUID]()
         output.reserveCapacity(file.uuids.count)
         for element in file.uuids {
             output[element.uuid] = element
@@ -51,7 +35,7 @@ extension GenerateTool {
     }
     
     static func UUIDs(
-        from data: [UInt16: BluetoothUUIDFile.Element]
+        from data: [UInt16: BluetoothMetadata.BluetoothUUID]
     ) -> [(id: UInt16, name: String, member: String)] {
         let blacklist: [UInt16] = [
             .max // remove internal use identifier
@@ -76,7 +60,7 @@ extension GenerateTool {
     }
     
     static func generateBluetoothUUIDExtensions(
-        for data: [UInt16: BluetoothUUIDFile.Element],
+        for data: [UInt16: BluetoothMetadata.BluetoothUUID],
         type: String,
         output: URL
     ) throws {

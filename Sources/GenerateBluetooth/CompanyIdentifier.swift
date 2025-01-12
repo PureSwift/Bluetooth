@@ -6,23 +6,7 @@
 //
 
 import Foundation
-
-struct CompanyIdentifiersFile: Equatable, Hashable, Codable, Sendable {
-    
-    var companyIdentifiers: [Element]
-}
-
-extension CompanyIdentifiersFile {
-    
-    struct Element: Equatable, Hashable, Codable, Sendable, Identifiable {
-        
-        var id: UInt16 { value }
-        
-        let value: UInt16
-        
-        let name: String
-    }
-}
+import BluetoothMetadata
 
 extension GenerateTool {
     
@@ -62,10 +46,9 @@ extension GenerateTool {
         return companies.map { ($0, $1, memberNames[$0]!) }
     }
     
-    static func generateCompanyIdentifiers(input: URL, output: [URL]) throws {
+    static func generateCompanyIdentifiers(input: URL, output: URL) throws {
         let data = try parseCompanyIdentifiersFile(input: input)
-        try generateCompanyIdentifierExtensions(data, output: output[0])
-        try generateCompanyIdentifierNames(data, output: output[1])
+        try generateCompanyIdentifierExtensions(data, output: output)
     }
     
     static func generateCompanyIdentifierExtensions(_ data: [UInt16: String], output: URL) throws {
@@ -95,40 +78,6 @@ extension GenerateTool {
             🖨("")
         }
         
-        🖨("}")
-        
-        try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
-        print("Generated \(output.path)")
-    }
-    
-    static func generateCompanyIdentifierNames(_ data: [UInt16: String], output: URL) throws {
-        
-        var generatedCode = ""
-        let companies = companyIdentifiers(from: data)
-        
-        func 🖨(_ text: String) {
-            generatedCode += text + "\n"
-        }
-        
-        🖨("//")
-        🖨("//  CompanyIdentifierNames.swift")
-        🖨("//  Bluetooth")
-        🖨("//")
-        🖨("")
-        🖨("internal extension CompanyIdentifier {")
-        🖨("")
-        🖨("    static let companyIdentifiers: [UInt16: String] = {")
-        🖨("")
-        🖨("        var companyIdentifiers = [UInt16: String]()")
-        🖨("        companyIdentifiers.reserveCapacity(\(companies.count))")
-        🖨("")
-        
-        for (id, name, _) in companies {
-            🖨("        companyIdentifiers[\(id)] = #\"\(name)\"#")
-        }
-        
-        🖨("        return companyIdentifiers")
-        🖨("    }()")
         🖨("}")
         
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)

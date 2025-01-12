@@ -31,8 +31,7 @@ extension GenerateBluetoothDefinitionsPlugin {
         }
         let outputDirectory = context.pluginWorkDirectoryURL
         let outputURLs = [
-            outputDirectory.appending(component: "UnitIdentifiers.swift"),
-            outputDirectory.appending(component: "UnitIdentifierMetadata.swift")
+            outputDirectory.appending(component: "UnitIdentifiers.swift")
         ]
         let command = Command.buildCommand(
             displayName: "Generate Bluetooth Unit Identifier Definitions",
