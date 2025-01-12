@@ -27,7 +27,7 @@ extension GenerateBluetoothDefinitionsPlugin {
             .map { $0.url }
         guard let inputURL else {
             Diagnostics.error("Missing \(inputFileName)")
-            throw CocoaError(CocoaError.fileNoSuchFile)
+            throw CocoaError(.fileNoSuchFile)
         }
         let outputDirectory = context.pluginWorkDirectoryURL
         let outputURLs = [
@@ -64,7 +64,7 @@ extension GenerateBluetoothDefinitionsPlugin {
             .map { $0.url }
         guard let inputURL else {
             Diagnostics.error("Missing \(inputFileName)")
-            throw CocoaError(CocoaError.fileNoSuchFile)
+            throw CocoaError(.fileNoSuchFile)
         }
         let outputDirectory = context.pluginWorkDirectoryURL
         let outputURL = outputDirectory.appending(component: "UnitIdentifierTests.swift")

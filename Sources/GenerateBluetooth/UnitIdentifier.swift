@@ -7,23 +7,6 @@
 
 import Foundation
 
-struct UnitIdentifiersFile: Equatable, Hashable, Codable, Sendable {
-    
-    var uuids: [Element]
-}
-
-extension UnitIdentifiersFile {
-    
-    struct Element: Equatable, Hashable, Codable, Sendable, Identifiable {
-        
-        var id: String
-        
-        let uuid: UInt16
-        
-        let name: String
-    }
-}
-
 extension GenerateTool {
     
     static func parseUnitIdentifiersFile(
@@ -31,11 +14,14 @@ extension GenerateTool {
     ) throws -> [UInt16: (id: String, name: String)] {
         let data = try Data(contentsOf: input, options: [.mappedIfSafe])
         let decoder = JSONDecoder()
-        let file = try decoder.decode(UnitIdentifiersFile.self, from: data)
+        let file = try decoder.decode(BluetoothUUIDFile.self, from: data)
         var output = [UInt16: (id: String, name: String)]()
         output.reserveCapacity(file.uuids.count)
         for element in file.uuids {
-            output[element.uuid] = (element.id, element.name)
+            guard let id = element.id else {
+                throw CocoaError(.coderValueNotFound)
+            }
+            output[element.uuid] = (id, element.name)
         }
         return output
     }

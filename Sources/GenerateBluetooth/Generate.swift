@@ -13,7 +13,8 @@ struct GenerateTool {
     static func main() throws {
         // parse arguments
         let arguments = CommandLine.arguments
-        guard arguments.count > 1, let commandType = CommandType(rawValue: arguments[1]) else {
+        guard arguments.count > 1,
+            let commandType = CommandType(rawValue: arguments[1]) else {
             throw CommandError.invalidArguments(arguments)
         }
         switch commandType {
@@ -71,6 +72,20 @@ struct GenerateTool {
                 input: inputFile,
                 output: outputFile
             )
+        case .uuid:
+            // parse arguments
+            guard arguments.count == 5 else {
+                throw CommandError.invalidArguments(arguments)
+            }
+            let uuidType = arguments[2]
+            let inputFile = URL(fileURLWithPath: arguments[3])
+            let outputFile = URL(fileURLWithPath: arguments[4])
+            // generate files
+            try generateBluetoothUUIDs(
+                type: uuidType,
+                input: inputFile,
+                output: outputFile
+            )
         }
     }
 }
@@ -81,6 +96,7 @@ enum CommandType: String {
     case companyIdentifierTests
     case unitIdentifier
     case unitIdentifierTests
+    case uuid
 }
 
 enum CommandError: Error {
