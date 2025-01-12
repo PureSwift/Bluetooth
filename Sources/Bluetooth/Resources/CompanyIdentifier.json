@@ -1,6 +1,266 @@
 {
   "companyIdentifiers": [
     {
+      "value": 3715,
+      "name": "SPRiNTUS GmbH"
+    },
+    {
+      "value": 3714,
+      "name": "CHEVALIER TECH LIMITED"
+    },
+    {
+      "value": 3713,
+      "name": "Guangdong Hengqin Xingtong Technology Co.,ltd."
+    },
+    {
+      "value": 3712,
+      "name": "IQNEXXT Solutions GmbH"
+    },
+    {
+      "value": 3711,
+      "name": "SZR-Dev UG"
+    },
+    {
+      "value": 3710,
+      "name": "Archon Controls LLC"
+    },
+    {
+      "value": 3709,
+      "name": "Jiangsu XinTongda Electric Technology Co.,Ltd."
+    },
+    {
+      "value": 3708,
+      "name": "final Inc."
+    },
+    {
+      "value": 3707,
+      "name": "Circular"
+    },
+    {
+      "value": 3706,
+      "name": "Vivago Oy"
+    },
+    {
+      "value": 3705,
+      "name": "Neptune First OU"
+    },
+    {
+      "value": 3704,
+      "name": "HONG KONG COMMUNICATIONS COMPANY LIMITED"
+    },
+    {
+      "value": 3703,
+      "name": "MOBILE TECH, INC."
+    },
+    {
+      "value": 3702,
+      "name": "Guangdong Nanguang Photo&Video Systems Co., Ltd."
+    },
+    {
+      "value": 3701,
+      "name": "Le Touch (Shenzhen) Electronics Co., Ltd."
+    },
+    {
+      "value": 3700,
+      "name": "Rocky Radios LLC"
+    },
+    {
+      "value": 3699,
+      "name": "Adventures of the Persistently Impaired (and other tales) Limited"
+    },
+    {
+      "value": 3698,
+      "name": "TOR.AI LIMITED"
+    },
+    {
+      "value": 3697,
+      "name": "ENABLEWEAR LLC"
+    },
+    {
+      "value": 3696,
+      "name": "Powerstick.com"
+    },
+    {
+      "value": 3695,
+      "name": "OpConnect, Inc."
+    },
+    {
+      "value": 3694,
+      "name": "I.M.LAB Inc"
+    },
+    {
+      "value": 3693,
+      "name": "FEVOS LIMITED"
+    },
+    {
+      "value": 3692,
+      "name": "RIGH, INC."
+    },
+    {
+      "value": 3691,
+      "name": "Shenzhen Goodocom Information Technology Co., Ltd."
+    },
+    {
+      "value": 3690,
+      "name": "Hyena Inc."
+    },
+    {
+      "value": 3689,
+      "name": "Megatronix (Beijing) Technology Co., Ltd"
+    },
+    {
+      "value": 3688,
+      "name": "EarTex Ltd"
+    },
+    {
+      "value": 3687,
+      "name": "NEXT DEVICES LTDA"
+    },
+    {
+      "value": 3686,
+      "name": "Shenzhen Baseus Technology Co., Ltd."
+    },
+    {
+      "value": 3685,
+      "name": "Daikin Industries, LTD"
+    },
+    {
+      "value": 3684,
+      "name": "HuiTong intelligence Company Limited"
+    },
+    {
+      "value": 3683,
+      "name": "LAST LOCK INC."
+    },
+    {
+      "value": 3682,
+      "name": "GOKI PTY LTD"
+    },
+    {
+      "value": 3681,
+      "name": "Queclink Wireless Solutions Co., Ltd."
+    },
+    {
+      "value": 3680,
+      "name": "Ant Group Co., Ltd."
+    },
+    {
+      "value": 3679,
+      "name": "Ruptela"
+    },
+    {
+      "value": 3678,
+      "name": "SHAPER TOOLS, INC."
+    },
+    {
+      "value": 3677,
+      "name": "L.T.H. Electronics Limited"
+    },
+    {
+      "value": 3676,
+      "name": "Amimon Ltd."
+    },
+    {
+      "value": 3675,
+      "name": "Wuhu Hongjing Electronic Co.,Ltd"
+    },
+    {
+      "value": 3674,
+      "name": "OmniWave Microelectronics Shanghai Co., Ltd"
+    },
+    {
+      "value": 3673,
+      "name": "Loewe Technology GmbH"
+    },
+    {
+      "value": 3672,
+      "name": "Urban Armor Gear, LLC"
+    },
+    {
+      "value": 3671,
+      "name": "Altina Inc."
+    },
+    {
+      "value": 3670,
+      "name": "INEPRO Metering B.V."
+    },
+    {
+      "value": 3669,
+      "name": "New Cosmos Electric Co., Ltd."
+    },
+    {
+      "value": 3668,
+      "name": "Relief Technologies AS"
+    },
+    {
+      "value": 3667,
+      "name": "MINIRIG"
+    },
+    {
+      "value": 3666,
+      "name": "Aquana, LLC"
+    },
+    {
+      "value": 3665,
+      "name": "Dyaco International Inc."
+    },
+    {
+      "value": 3664,
+      "name": "Zhejiang Desman Intelligent Technology Co., Ltd."
+    },
+    {
+      "value": 3663,
+      "name": "eBet Gaming Sytems Pty Limited"
+    },
+    {
+      "value": 3662,
+      "name": "QSC, LLC"
+    },
+    {
+      "value": 3661,
+      "name": "Brooksee, Inc."
+    },
+    {
+      "value": 3660,
+      "name": "Luxshare Precision Industry Co., Ltd."
+    },
+    {
+      "value": 3659,
+      "name": "PUDSEY DIAMOND ENGINEERING LIMITED"
+    },
+    {
+      "value": 3658,
+      "name": "Nitto Denko Corporation"
+    },
+    {
+      "value": 3657,
+      "name": "Deone (Shanghai) Communication & Technology Co., Ltd"
+    },
+    {
+      "value": 3656,
+      "name": "KARLUNA MUHENDISLIK SANAYI VE TICARET ANONIM SIRKETI"
+    },
+    {
+      "value": 3655,
+      "name": "Hosiden Besson Limited"
+    },
+    {
+      "value": 3654,
+      "name": "SOUNDUCT"
+    },
+    {
+      "value": 3653,
+      "name": "Filo Srl"
+    },
+    {
+      "value": 3652,
+      "name": "QUANTATEC"
+    },
+    {
+      "value": 3651,
+      "name": "InnoVision Medical Technologies, LLC"
+    },
+    {
       "value": 3650,
       "name": "Z-ONE Technology Co., Ltd."
     },
@@ -13746,7 +14006,7 @@
     },
     {
       "value": 210,
-      "name": "Dialog Semiconductor B.V."
+      "name": "Renesas Design Netherlands B.V."
     },
     {
       "value": 209,
