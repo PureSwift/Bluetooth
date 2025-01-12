@@ -10,10 +10,8 @@ import BluetoothMetadata
 
 extension GenerateTool {
     
-    static func parseCompanyIdentifiersFile(input: URL) throws -> [UInt16: String] {
-        let data = try Data(contentsOf: input, options: [.mappedIfSafe])
-        let decoder = JSONDecoder()
-        let file = try decoder.decode(CompanyIdentifiersFile.self, from: data)
+    static func parseCompanyIdentifiersFile() throws -> [UInt16: String] {
+        let file = try BluetoothMetadata.CompanyIdentifier.File.load()
         var output = [UInt16: String]()
         output.reserveCapacity(file.companyIdentifiers.count)
         for element in file.companyIdentifiers {
@@ -46,8 +44,8 @@ extension GenerateTool {
         return companies.map { ($0, $1, memberNames[$0]!) }
     }
     
-    static func generateCompanyIdentifiers(input: URL, output: URL) throws {
-        let data = try parseCompanyIdentifiersFile(input: input)
+    static func generateCompanyIdentifiers(output: URL) throws {
+        let data = try parseCompanyIdentifiersFile()
         try generateCompanyIdentifierExtensions(data, output: output)
     }
     
@@ -84,9 +82,9 @@ extension GenerateTool {
         print("Generated \(output.path)")
     }
     
-    static func generateCompanyIdentifierTests(input: URL, output: URL) throws {
+    static func generateCompanyIdentifierTests(output: URL) throws {
         
-        let data = try parseCompanyIdentifiersFile(input: input)
+        let data = try parseCompanyIdentifiersFile()
         
         var generatedCode = ""
         let companies = companyIdentifiers(from: data)

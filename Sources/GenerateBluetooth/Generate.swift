@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BluetoothMetadata
 
 @main
 struct GenerateTool {
@@ -20,67 +21,54 @@ struct GenerateTool {
         switch commandType {
         case .companyIdentifier:
             // parse arguments
-            guard arguments.count == 4 else {
+            guard arguments.count == 3 else {
                 throw CommandError.invalidArguments(arguments)
             }
-            let inputFile = URL(fileURLWithPath: arguments[2])
-            let outputFile = URL(fileURLWithPath: arguments[3])
+            let outputFile = URL(fileURLWithPath: arguments[2])
             // generate files
             try generateCompanyIdentifiers(
-                input: inputFile,
                 output: outputFile
             )
         case .companyIdentifierTests:
             // parse arguments
-            guard arguments.count == 4 else {
+            guard arguments.count == 3 else {
                 throw CommandError.invalidArguments(arguments)
             }
-            let inputFile = URL(fileURLWithPath: arguments[2])
-            let outputFile = URL(fileURLWithPath: arguments[3])
+            let outputFile = URL(fileURLWithPath: arguments[2])
             // generate files
             try generateCompanyIdentifierTests(
-                input: inputFile,
                 output: outputFile
             )
         case .unitIdentifier:
             // parse arguments
-            guard arguments.count == 5 else {
+            guard arguments.count == 3 else {
                 throw CommandError.invalidArguments(arguments)
             }
-            let inputFile = URL(fileURLWithPath: arguments[2])
-            let outputFiles = [
-                URL(fileURLWithPath: arguments[3]),
-                URL(fileURLWithPath: arguments[4])
-            ]
+            let outputFile = URL(fileURLWithPath: arguments[2])
             // generate files
             try generateUnitIdentifiers(
-                input: inputFile,
-                output: outputFiles
+                output: outputFile
             )
         case .unitIdentifierTests:
             // parse arguments
-            guard arguments.count == 4 else {
+            guard arguments.count == 3 else {
                 throw CommandError.invalidArguments(arguments)
             }
-            let inputFile = URL(fileURLWithPath: arguments[2])
             let outputFile = URL(fileURLWithPath: arguments[3])
             // generate files
             try generateUnitIdentifierTests(
-                input: inputFile,
                 output: outputFile
             )
         case .uuid:
             // parse arguments
-            guard arguments.count == 5 else {
+            guard arguments.count == 4 else {
                 throw CommandError.invalidArguments(arguments)
             }
-            let uuidType = arguments[2]
-            let inputFile = URL(fileURLWithPath: arguments[3])
-            let outputFile = URL(fileURLWithPath: arguments[4])
+            let uuidType = BluetoothUUID.Category(rawValue: arguments[2])
+            let outputFile = URL(fileURLWithPath: arguments[3])
             // generate files
             try generateBluetoothUUIDs(
                 type: uuidType,
-                input: inputFile,
                 output: outputFile
             )
         }

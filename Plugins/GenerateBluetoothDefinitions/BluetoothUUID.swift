@@ -21,32 +21,20 @@ extension GenerateBluetoothDefinitionsPlugin {
             return
         }
         // Generate Bluetooth UUID Definitions
-        let inputFileNames = [
-            fileName + ".json"
-        ]
-        let inputURLs = inputFileNames.compactMap { inputFileName in
-            target
-                .sourceFiles(withSuffix: "json")
-                .filter { $0.type == .unknown }
-                .first { $0.url.lastPathComponent == inputFileName }
-                .flatMap { $0.url }
-        }
-        assert(inputFileNames.count == inputURLs.count)
         let outputDirectory = context.pluginWorkDirectoryURL
         let outputURLs = [
             outputDirectory.appending(component: fileName + ".swift")
         ]
         let arguments = ["uuid", type]
-            + inputURLs.map { $0.path() }
             + outputURLs.map { $0.path() }
         let command = Command.buildCommand(
             displayName: "Generate Bluetooth \(type) UUID Definitions",
             executable: try context.tool(named: "GenerateBluetooth").url,
             arguments: arguments,
-            inputFiles: inputURLs,
+            inputFiles: [],
             outputFiles: outputURLs
         )
-        assert(arguments.count == 4)
+        assert(arguments.count == 3)
         commands.append(command)
     }
 }

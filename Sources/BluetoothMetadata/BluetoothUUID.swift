@@ -99,20 +99,29 @@ public extension BluetoothUUID.File {
     static var decoder: JSONDecoder {
         .init()
     }
-        
+    
+    static func load(_ name: BluetoothUUID.Category) throws -> Self {
+        guard let fileName = Self.fileNames[name] else {
+            throw CocoaError(.fileNoSuchFile)
+        }
+        guard let fileURL = Bundle.module.url(
+            forResource: fileName,
+            withExtension: fileExtension
+        ) else {
+            throw CocoaError(.fileNoSuchFile)
+        }
+        return try self.init(url: fileURL)
+    }
+    
     static func load() throws -> [BluetoothUUID.Category: Self] {
-        try Self.fileNames
-        .mapValues { (fileName) in
-            guard let fileURL = Bundle.module.url(
-                forResource: fileName,
-                withExtension: fileExtension
-            ) else {
-                throw CocoaError(.fileNoSuchFile)
-            }
-            return fileURL
+        let types = Self.fileNames.keys
+        var files = [BluetoothUUID.Category: Self]()
+        files.reserveCapacity(types.count)
+        for type in types {
+            let file = try load(type)
+            files[type] = file
         }
-        .mapValues { fileURL in
-            try self.init(url: fileURL)
-        }
+        assert(files.count == types.count)
+        return files
     }
 }

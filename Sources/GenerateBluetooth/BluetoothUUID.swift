@@ -11,21 +11,17 @@ import BluetoothMetadata
 extension GenerateTool {
     
     static func generateBluetoothUUIDs(
-        type: String,
-        input: URL,
+        type: BluetoothMetadata.BluetoothUUID.Category,
         output: URL
     ) throws {
-        let data = try parseUUIDFile(type: type, input: input)
+        let data = try parseUUIDFile(type: type)
         try generateBluetoothUUIDExtensions(for: data, type: type, output: output)
     }
     
     static func parseUUIDFile(
-        type: String,
-        input: URL
+        type: BluetoothMetadata.BluetoothUUID.Category
     ) throws -> [UInt16: BluetoothMetadata.BluetoothUUID] {
-        let data = try Data(contentsOf: input, options: [.mappedIfSafe])
-        let decoder = JSONDecoder()
-        let file = try decoder.decode(BluetoothMetadata.BluetoothUUID.File.self, from: data)
+        let file = try BluetoothMetadata.BluetoothUUID.File.load(type)
         var output = [UInt16: BluetoothMetadata.BluetoothUUID]()
         output.reserveCapacity(file.uuids.count)
         for element in file.uuids {
@@ -61,7 +57,7 @@ extension GenerateTool {
     
     static func generateBluetoothUUIDExtensions(
         for data: [UInt16: BluetoothMetadata.BluetoothUUID],
-        type: String,
+        type: BluetoothMetadata.BluetoothUUID.Category,
         output: URL
     ) throws {
         
@@ -79,7 +75,7 @@ extension GenerateTool {
         🖨("")
         🖨("public extension BluetoothUUID {")
         🖨("")
-        🖨("    enum \(type) {") // Namespace
+        🖨("    enum \(type.rawValue) {") // Namespace
         🖨("")
         
         for (id, name, memberName) in uuids {
