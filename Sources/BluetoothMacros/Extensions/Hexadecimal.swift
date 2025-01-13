@@ -7,7 +7,7 @@
 //
 
 internal extension FixedWidthInteger {
-    
+
     func toHexadecimal() -> String {
         let length = MemoryLayout<Self>.size * 2
         var string: String
@@ -25,7 +25,7 @@ internal extension FixedWidthInteger {
 }
 
 internal extension String {
-    
+
     /// Converts a byte to its uppercase hexadecimal representation.
     init(hexadecimal byte: UInt8) {
         let length = 2
@@ -42,7 +42,7 @@ internal extension String {
 }
 
 internal extension Collection where Element: FixedWidthInteger {
-    
+
     func toHexadecimal() -> String {
         let length = count * MemoryLayout<Element>.size * 2
         var string = ""
@@ -54,21 +54,21 @@ internal extension Collection where Element: FixedWidthInteger {
 }
 
 internal extension FixedWidthInteger {
-    
+
     init?<S: StringProtocol>(parse string: S, radix: Self) {
         #if !hasFeature(Embedded)
         let string = string.uppercased()
         #endif
         self.init(utf8: string.utf8, radix: radix)
     }
-    
+
     init?<S: StringProtocol>(hexadecimal string: S) {
         guard string.utf8.count == MemoryLayout<Self>.size * 2 else {
             return nil
         }
         self.init(string, radix: 16)
     }
-    
+
     init?<C>(hexadecimal utf8: C) where C: Collection, C.Element == UInt8 {
         guard utf8.count == MemoryLayout<Self>.size * 2 else {
             return nil
@@ -78,7 +78,7 @@ internal extension FixedWidthInteger {
         }
         self.init(value)
     }
-    
+
     /// Expects uppercase UTF8 data.
     init?<C>(utf8: C, radix: Self) where C: Collection, C.Element == UInt8 {
         #if !hasFeature(Embedded)
@@ -103,16 +103,16 @@ internal extension FixedWidthInteger {
 
 #if !hasFeature(Embedded)
 internal extension String.UTF16View.Element {
-    
+
     // Convert 0 ... 9, a ... f, A ...F to their decimal value,
     // return nil for all other input characters
     func decodeHexNibble() -> UInt8? {
         switch self {
-        case 0x30 ... 0x39:
+        case 0x30...0x39:
             return UInt8(self - 0x30)
-        case 0x41 ... 0x46:
+        case 0x41...0x46:
             return UInt8(self - 0x41 + 10)
-        case 0x61 ... 0x66:
+        case 0x61...0x66:
             return UInt8(self - 0x61 + 10)
         default:
             return nil
@@ -121,39 +121,39 @@ internal extension String.UTF16View.Element {
 }
 
 internal extension [UInt8] {
-    
+
     init?<S: StringProtocol>(hexadecimal string: S) {
-        
+
         let str = String(string)
         let utf16: String.UTF16View
-        if (str.count % 2 == 1) {
+        if str.count % 2 == 1 {
             utf16 = ("0" + str).utf16
         } else {
             utf16 = str.utf16
         }
         var data = [UInt8]()
         data.reserveCapacity(utf16.count / 2)
-        
+
         var i = utf16.startIndex
         while i != utf16.endIndex {
             guard let hi = utf16[i].decodeHexNibble(),
-                  let nxt = utf16.index(i, offsetBy:1, limitedBy: utf16.endIndex),
-                  let lo = utf16[nxt].decodeHexNibble()
+                let nxt = utf16.index(i, offsetBy: 1, limitedBy: utf16.endIndex),
+                let lo = utf16[nxt].decodeHexNibble()
             else {
                 return nil
             }
-            
+
             let value = hi << 4 + lo
             data.append(value)
-            
-            guard let next = utf16.index(i, offsetBy:2, limitedBy: utf16.endIndex) else {
+
+            guard let next = utf16.index(i, offsetBy: 2, limitedBy: utf16.endIndex) else {
                 break
             }
             i = next
         }
-        
+
         self = data
-        
+
     }
 }
 #endif

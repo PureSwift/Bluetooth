@@ -16,12 +16,14 @@ public extension BluetoothHostControllerInterface {
     ///
     /// This command is used to remove one device from the list of address translations used to resolve
     /// Resolvable Private Addresses in the Controller.
-    func lowEnergyRemoveDeviceFromResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
-                                                peerIdentifyAddress: UInt64,
-                                                timeout: HCICommandTimeout = .default) async throws {
-        
+    func lowEnergyRemoveDeviceFromResolvingList(
+        peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
+        peerIdentifyAddress: UInt64,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
         let parameters = HCILERemoveDeviceFromResolvingList(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress)
-        
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -49,24 +51,26 @@ public extension BluetoothHostControllerInterface {
 /// Unknown Connection Identifier (0x02).
 @frozen
 public struct HCILERemoveDeviceFromResolvingList: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.removeDeviceFromResolvedList //0x0028
-    
-    public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
-    
-    public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
-    
-    public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
-                peerIdentifyAddress: UInt64) {
-        
+
+    public static let command = HCILowEnergyCommand.removeDeviceFromResolvedList  //0x0028
+
+    public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType  //Peer_Identity_Address_Type
+
+    public let peerIdentifyAddress: UInt64  //Peer_Identity_Address
+
+    public init(
+        peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType,
+        peerIdentifyAddress: UInt64
+    ) {
+
         self.peerIdentifyAddressType = peerIdentifyAddressType
         self.peerIdentifyAddress = peerIdentifyAddress
     }
-    
+
     public var data: Data {
-        
+
         let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
-        
+
         return Data([
             peerIdentifyAddressType.rawValue,
             peerIdentifyAddressBytes.0,
@@ -76,7 +80,7 @@ public struct HCILERemoveDeviceFromResolvingList: HCICommandParameter {
             peerIdentifyAddressBytes.4,
             peerIdentifyAddressBytes.5,
             peerIdentifyAddressBytes.6,
-            peerIdentifyAddressBytes.7
-            ])
+            peerIdentifyAddressBytes.7,
+        ])
     }
 }

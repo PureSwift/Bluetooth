@@ -15,33 +15,33 @@ import Foundation
 /// - Note: When a physical link fails, one Disconnection Complete event will be returned for each logical channel on the physical link with the corresponding Connection_Handle as a parameter.
 @frozen
 public struct HCIDisconnectionComplete: HCIEventParameter {
-    
+
     public static let event = HCIGeneralEvent.disconnectionComplete
-    
+
     public static let length: Int = 4
-    
+
     public let status: HCIStatus
-    
+
     /// Connection_Handle which was disconnected.
     /// Range: 0x0000-0x0EFF (0x0F00 - 0x0FFF Reserved for future use)
     public let handle: UInt16
-    
+
     /// Reason for disconnection.
     public let error: HCIError
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         guard let status = HCIStatus(rawValue: data[0])
-            else { return nil }
-        
+        else { return nil }
+
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
+
         guard let error = HCIError(rawValue: data[3])
-            else { return nil }
-        
+        else { return nil }
+
         self.status = status
         self.handle = handle
         self.error = error

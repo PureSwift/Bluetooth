@@ -17,16 +17,16 @@ import Foundation
 /// Note: This event shall not be generated if encryption is paused or resumed; during a role switch, for example.
 @frozen
 public struct HCIEncryptionChange: HCIEventParameter {
-    
+
     public static let event = HCIGeneralEvent.encryptionChange
-    
+
     public static let length: Int = 4
-    
+
     public let status: HCIStatus
-    
+
     /// The Connection_Handle will be a Connection_Handle for an ACL connection and is used to identify the remote device.
-    public let handle: UInt16 // Connection_Handle
-    
+    public let handle: UInt16  // Connection_Handle
+
     /// The Encryption_Enabled event parameter specifies the new Encryption_Enabled parameter
     /// for the Connection_Handle specified by the Connection_Handle event parameter.
     ///
@@ -36,39 +36,39 @@ public struct HCIEncryptionChange: HCIEventParameter {
     /// the Connection_Handle refers to a BR/EDR link, the Controller shall set Encryption_Enabled to 0x00 when encryption is off,
     /// to 0x01 when encryption is on and using E0 and to 0x02 when encryption is on and using AES-CCM.
     public let encryptionEnabled: EncryptionEnabled
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == HCIEncryptionChange.length
-            else { return nil }
-        
+        else { return nil }
+
         let statusByte = data[0]
-        
+
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
+
         let encryptionEnabledByte = data[3]
-        
+
         guard let status = HCIStatus(rawValue: statusByte)
-            else { return nil }
-        
+        else { return nil }
+
         guard let encryptionEnabled = EncryptionEnabled(rawValue: encryptionEnabledByte)
-            else { return nil }
-        
+        else { return nil }
+
         self.status = status
         self.handle = handle
         self.encryptionEnabled = encryptionEnabled
     }
-    
-    public enum EncryptionEnabled: UInt8 { // Encryption_Enabled
-        
+
+    public enum EncryptionEnabled: UInt8 {  // Encryption_Enabled
+
         /// Link Level Encryption is OFF.
-        case off         = 0x00
-        
+        case off = 0x00
+
         /// Link Level Encryption is ON with E0 for BR/EDR.
         /// Link Level Encryption is ON with AES-CCM for LE.
-        case e0          = 0x01
-        
+        case e0 = 0x01
+
         /// Link Level Encryption is ON with AES-CCM for BR/EDR.
-        case aes         = 0x02
+        case aes = 0x02
     }
 }

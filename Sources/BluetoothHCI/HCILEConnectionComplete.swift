@@ -23,21 +23,21 @@ import Foundation
 /// On a master, this parameter shall be set to 0x00.
 @frozen
 public struct HCILEConnectionComplete: HCIEventParameter {
-    
-    public static let event = LowEnergyEvent.connectionComplete // 0x01
+
+    public static let event = LowEnergyEvent.connectionComplete  // 0x01
     public static let length = 18
-    
+
     /// Connection supervision timeout.
     ///
     /// Range: 0x000A to 0x0C80
     /// Time = N * 10 msec
     /// Time Range: 100 msec to 32 seconds
     public typealias SupervisionTimeout = LowEnergySupervisionTimeout
-        
+
     /// `0x00` if Connection successfully completed.
     /// `HCIError` value otherwise.
     public let status: HCIStatus
-    
+
     /// Connection Handle
     ///
     /// Connection Handle to be used to identify a connection between two Bluetooth devices.
@@ -46,80 +46,84 @@ public struct HCILEConnectionComplete: HCIEventParameter {
     /// Range: 0x0000-0x0EFF (0x0F00 - 0x0FFF Reserved for future use)
     ///
     /// Size: 2 Octets (12 bits meaningful)
-    public let handle: UInt16 // Connection_Handle
-    
+    public let handle: UInt16  // Connection_Handle
+
     /// Connection role (master or slave).
-    public let role: LowEnergyRole // Role
-    
+    public let role: LowEnergyRole  // Role
+
     /// Peer Bluetooth address type.
-    public let peerAddressType: LowEnergyAddressType // Peer_Address_Type
-    
+    public let peerAddressType: LowEnergyAddressType  // Peer_Address_Type
+
     /// Public Device Address or Random Device Address of the peer device.
     public let peerAddress: BluetoothAddress
-    
+
     /// Connection interval used on this connection.
     ///
     /// Range: 0x0006 to 0x0C80
     /// Time = N * 1.25 msec
     /// Time Range: 7.5 msec to 4000 msec.
     public let interval: LowEnergyConnectionInterval
-    
+
     /// Connection latency for this connection.
     ///
     /// Range: 0x0006 to 0x0C80
     /// Time = N * 1.25 msec
     /// Time Range: 7.5 msec to 4000 msec.
     public let latency: LowEnergyConnectionInterval
-    
+
     /// Connection supervision timeout.
     ///
     /// Range: 0x000A to 0x0C80
     /// Time = N * 10 msec
     /// Time Range: 100 msec to 32 seconds
     public let supervisionTimeout: SupervisionTimeout
-    
+
     /// The `masterClockAccuracy` parameter is only valid for a slave.
     ///
     /// On a master, this parameter shall be set to 0x00.
-    public let masterClockAccuracy: LowEnergyClockAccuracy // Master_Clock_Accuracy
-    
+    public let masterClockAccuracy: LowEnergyClockAccuracy  // Master_Clock_Accuracy
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let statusByte = data[0]
-        
+
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
+
         let roleByte = data[3]
-        
+
         let peerAddressTypeByte = data[4]
-        
-        let peerAddress = BluetoothAddress(littleEndian:
-            BluetoothAddress(bytes: (data[5],
-                                     data[6],
-                                     data[7],
-                                     data[8],
-                                     data[9],
-                                     data[10])))
-        
+
+        let peerAddress = BluetoothAddress(
+            littleEndian:
+                BluetoothAddress(
+                    bytes: (
+                        data[5],
+                        data[6],
+                        data[7],
+                        data[8],
+                        data[9],
+                        data[10]
+                    )))
+
         let intervalRawValue = UInt16(littleEndian: UInt16(bytes: (data[11], data[12])))
-        
+
         let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (data[13], data[14])))
-        
+
         let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (data[15], data[16])))
-        
+
         let masterClockAccuracyByte = data[17]
-        
+
         // Parse enums and values ranges
         guard let status = HCIStatus(rawValue: statusByte),
             let role = LowEnergyRole(rawValue: roleByte),
             let peerAddressType = LowEnergyAddressType(rawValue: peerAddressTypeByte),
             let supervisionTimeout = SupervisionTimeout(rawValue: supervisionTimeoutRaw),
             let masterClockAccuracy = LowEnergyClockAccuracy(rawValue: masterClockAccuracyByte)
-            else { return nil }
-        
+        else { return nil }
+
         self.status = status
         self.handle = handle
         self.role = role

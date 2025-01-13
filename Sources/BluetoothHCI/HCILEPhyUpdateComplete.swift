@@ -20,37 +20,37 @@ import Foundation
 /// change as a result, it issues this event immediately.
 @frozen
 public struct HCILEPhyUpdateComplete: HCIEventParameter {
-    
-    public static let event = LowEnergyEvent.phyUpdateComplete // 0x0C
-    
+
+    public static let event = LowEnergyEvent.phyUpdateComplete  // 0x0C
+
     public static let length: Int = 5
-    
+
     public let status: HCIStatus
-    
-    public let handle: UInt16 // Connection_Handle
-    
+
+    public let handle: UInt16  // Connection_Handle
+
     public let txPhy: LowEnergyTxPhy
-    
+
     public let rxPhy: LowEnergyRxPhy
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let statusByte = data[0]
-        
+
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
+
         guard let status = HCIStatus(rawValue: statusByte)
-            else { return nil }
-        
+        else { return nil }
+
         guard let txPhy = LowEnergyTxPhy(rawValue: data[3])
-            else { return nil }
-        
+        else { return nil }
+
         guard let rxPhy = LowEnergyRxPhy(rawValue: data[4])
-            else { return nil }
-        
+        else { return nil }
+
         self.status = status
         self.handle = handle
         self.txPhy = txPhy

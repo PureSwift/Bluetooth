@@ -9,249 +9,249 @@
 /// Bluetooth Low Energy Command opcode
 @frozen
 public enum HCILowEnergyCommand: UInt16, HCICommand {
-    
+
     public static let opcodeGroupField = HCIOpcodeGroupField.lowEnergy
-    
+
     /// LE Set Event Mask
-    case setEventMask                   = 0x0001
-    
+    case setEventMask = 0x0001
+
     /// LE Read Buffer Size
-    case readBufferSize                 = 0x0002
-    
+    case readBufferSize = 0x0002
+
     /// LE Read Local Supported Features
-    case readLocalSupportedFeatures     = 0x0003
-    
+    case readLocalSupportedFeatures = 0x0003
+
     /// LE Set Random Address
-    case setRandomAddress               = 0x0005
-    
+    case setRandomAddress = 0x0005
+
     /// LE Set Advertising Parameters
-    case setAdvertisingParameters       = 0x0006
-    
+    case setAdvertisingParameters = 0x0006
+
     /// LE Read Advertising Channel Tx Power
-    case readAdvertisingChannelTXPower  = 0x0007
-    
+    case readAdvertisingChannelTXPower = 0x0007
+
     /// LE Set Advertising Data
-    case setAdvertisingData             = 0x0008
-    
+    case setAdvertisingData = 0x0008
+
     /// LE Set Scan Response Data
-    case setScanResponseData            = 0x0009
-    
+    case setScanResponseData = 0x0009
+
     /// LE Set Advertise Enable
-    case setAdvertiseEnable             = 0x000A
-    
+    case setAdvertiseEnable = 0x000A
+
     /// LE Set Scan Parameters
-    case setScanParameters              = 0x000B
-    
+    case setScanParameters = 0x000B
+
     /// LE Set Scan Enable
-    case setScanEnable                  = 0x000C
-    
+    case setScanEnable = 0x000C
+
     /// LE Create Connection
-    case createConnection               = 0x000D
-    
+    case createConnection = 0x000D
+
     /// LE Create Connection Cancel
-    case createConnectionCancel         = 0x000E
-    
+    case createConnectionCancel = 0x000E
+
     /// LE Read White List Size
-    case readWhiteListSize              = 0x000F
-    
+    case readWhiteListSize = 0x000F
+
     /// LE Clear White List
-    case clearWhiteList                 = 0x0010
-    
+    case clearWhiteList = 0x0010
+
     /// LE Add Device To White List
-    case addDeviceToWhiteList           = 0x0011
-    
+    case addDeviceToWhiteList = 0x0011
+
     /// LE Remove Device From White List
-    case removeDeviceFromWhiteList      = 0x0012
-    
+    case removeDeviceFromWhiteList = 0x0012
+
     /// LE Connection Update
-    case connectionUpdate               = 0x0013
-    
+    case connectionUpdate = 0x0013
+
     /// LE Set Host Channel Classification
-    case setHostChannelClassification   = 0x0014
-    
+    case setHostChannelClassification = 0x0014
+
     /// LE Read Channel Map
-    case readChannelMap                 = 0x0015
-    
+    case readChannelMap = 0x0015
+
     /// LE Read Remote Used Features
-    case readRemoteUsedFeatures         = 0x0016
-    
+    case readRemoteUsedFeatures = 0x0016
+
     /// LE Encrypt
-    case encrypt                        = 0x0017
-    
+    case encrypt = 0x0017
+
     /// LE Rand
-    case random                         = 0x0018
-    
+    case random = 0x0018
+
     /// LE Start Encryption
-    case startEncryption                = 0x0019
-    
+    case startEncryption = 0x0019
+
     /// LE Remote Connection Parameter Request Reply
     case remoteConnectionParameterRequestReply = 0x0020
-    
+
     /// LE Remote Connection Parameter Request Negative Reply Command
     case remoteConnectionParameterRequestNegativeReply = 0x0021
-    
+
     /// LE Set Data Length Command
-    case setDataLengthCommand   = 0x0022
-    
+    case setDataLengthCommand = 0x0022
+
     /// LE Read Suggested Default Data Length Command
     case readSuggestedDefaultDataLengthCommand = 0x0023
-    
+
     /// LE Write Suggested Default Data Length Command
     case writeSuggestedDefaultDataLengthCommand = 0x0024
-    
+
     /// LE Read Local P-256 Public Key Command
-    case readLocalP256PublicKeyCommand  = 0x0025
-    
+    case readLocalP256PublicKeyCommand = 0x0025
+
     /// LE Generate DHKey Command
-    case generateDHKeyCommand           = 0x0026
-    
+    case generateDHKeyCommand = 0x0026
+
     /// LE Long Term Key Request Reply
-    case longTermKeyReply               = 0x001A
-    
+    case longTermKeyReply = 0x001A
+
     /// LE Long Term Key Request Negative Reply
-    case longTermKeyNegativeReply       = 0x001B
-    
+    case longTermKeyNegativeReply = 0x001B
+
     /// LE Read Supported States
-    case readSupportedStates            = 0x001C
-    
+    case readSupportedStates = 0x001C
+
     /// LE Receiver Test
-    case receiverTest                   = 0x001D
-    
+    case receiverTest = 0x001D
+
     /// LE Transmitter Test
-    case transmitterTest                = 0x001E
-    
+    case transmitterTest = 0x001E
+
     /// LE Test End
-    case testEnd                        = 0x001F
-    
+    case testEnd = 0x001F
+
     /// LE Add Device To Resolved List
-    case addDeviceToResolvedList        = 0x0027
-    
+    case addDeviceToResolvedList = 0x0027
+
     /// LE Remove Device From Resolved List
-    case removeDeviceFromResolvedList   = 0x0028
-    
+    case removeDeviceFromResolvedList = 0x0028
+
     /// LE Clear Resolved List
-    case clearResolvedList              = 0x0029
-    
+    case clearResolvedList = 0x0029
+
     /// LE Read Resolved List Size
-    case readResolvedListSize           = 0x002A
-    
+    case readResolvedListSize = 0x002A
+
     /// LE Read Peer Resolvable Address
-    case readPeerResolvableAddress      = 0x002B
-    
+    case readPeerResolvableAddress = 0x002B
+
     /// LE Read Local Resolvable Address
-    case readLocalResolvableAddress     = 0x002C
-    
+    case readLocalResolvableAddress = 0x002C
+
     /// LE Set Address Resolution Enable
-    case setAddressResolutionEnable     = 0x002D
-    
+    case setAddressResolutionEnable = 0x002D
+
     /// LE Set Resolvable Private Address Timeout
     case setResolvablePrivateAddressTimeout = 0x002E
-    
+
     /// LE Read Maximum Data Length
-    case readMaximumDataLength          = 0x002F
-    
+    case readMaximumDataLength = 0x002F
+
     /// LE Read PHY
-    case readPhy                        = 0x0030
-    
+    case readPhy = 0x0030
+
     /// LE Set Default PHY
-    case setDefaultPhy                  = 0x0031
-    
+    case setDefaultPhy = 0x0031
+
     /// LE Set Phy
-    case setPhy                         = 0x0032
-    
+    case setPhy = 0x0032
+
     /// LE Enhanced Receiver Test
-    case enhancedReceiverTest           = 0x0033
-    
+    case enhancedReceiverTest = 0x0033
+
     /// LE Enhanced Transmitter Test
-    case enhancedTransmitterTest           = 0x0034
-    
+    case enhancedTransmitterTest = 0x0034
+
     /// LE Set Advertising Set Random Address
-    case setAdvertisingSetRandomAddress    = 0x0035
-    
+    case setAdvertisingSetRandomAddress = 0x0035
+
     /// LE Set Extended Advertising Parameters
-    case setExtendedAdvertisingParameters  = 0x0036
-    
+    case setExtendedAdvertisingParameters = 0x0036
+
     /// LE Set Extended Advertising Data
-    case setExtendedAdvertisingData        = 0x0037
-    
+    case setExtendedAdvertisingData = 0x0037
+
     /// LE Set Extended Scan Response Data
-    case setExtendedScanResponseData       = 0x0038
-    
+    case setExtendedScanResponseData = 0x0038
+
     /// LE Read Maximum Advertising Data Length Command
-    case readMaximumAdvertisingDataLength       = 0x003A
-    
+    case readMaximumAdvertisingDataLength = 0x003A
+
     /// LE Read Number of Supported Advertising Sets Command
-    case readNumberOfSupportedAdvertisingSets   = 0x003B
-    
+    case readNumberOfSupportedAdvertisingSets = 0x003B
+
     /// LE Remove Advertising Set Command
-    case removeAdvertisingSet                   = 0x003C
-    
+    case removeAdvertisingSet = 0x003C
+
     /// LE Clear Advertising Sets Command
-    case clearAdvertisingSets                   = 0x003D
-    
+    case clearAdvertisingSets = 0x003D
+
     /// LE Set Periodic Advertising Parameters Command
-    case setPeriodicAdvertisingParameters       = 0x003E
-    
+    case setPeriodicAdvertisingParameters = 0x003E
+
     /// LE Set Periodic Advertising Data Command
-    case setPeriodicAdvertisingData             = 0x003F
-    
+    case setPeriodicAdvertisingData = 0x003F
+
     /// LE Set Extended Advertising Enable Command
-    case setExtendedAdvertisingEnable           = 0x0039
-    
+    case setExtendedAdvertisingEnable = 0x0039
+
     /// LE Set Periodic Advertising Enable Command
-    case setPeriodicAdvertisingEnable           = 0x0040
-    
+    case setPeriodicAdvertisingEnable = 0x0040
+
     /// LE Set Extended Scan Parameters Command
-    case setExtendedScanParameters              = 0x0041
-    
+    case setExtendedScanParameters = 0x0041
+
     /// LE Set Extended Scan Enable Command
-    case setExtendedScanEnable                  = 0x0042
-    
+    case setExtendedScanEnable = 0x0042
+
     /// LE Extended Create Connection Command
-    case extendedCreateConnection               = 0x0043
-    
+    case extendedCreateConnection = 0x0043
+
     /// LE Periodic Advertising Create Sync Command
-    case periodicAdvertisingCreateSync          = 0x0044
-    
+    case periodicAdvertisingCreateSync = 0x0044
+
     /// LE Periodic Advertising Create Sync Cancel Command
-    case periodicAdvertisingCreateSyncCancel    = 0x0045
-    
+    case periodicAdvertisingCreateSyncCancel = 0x0045
+
     /// LE Periodic Advertising Terminate Sync Command
-    case periodicAdvertisingTerminateSync       = 0x0046
-    
+    case periodicAdvertisingTerminateSync = 0x0046
+
     /// LE Add Device To Periodic Advertiser List Command
-    case addDeviceToPeriodicAdvertiserList      = 0x0047
-    
+    case addDeviceToPeriodicAdvertiserList = 0x0047
+
     /// LE Remove Device From Periodic Advertiser List Command
     case removeDeviceFromPeriodicAdvertiserList = 0x0048
-    
+
     /// LE Clear Periodic Advertiser List Command
-    case clearPeriodicAdvertiserList            = 0x0049
-    
+    case clearPeriodicAdvertiserList = 0x0049
+
     /// LE Read Periodic Advertiser List Size Command
-    case readPeriodicAdvertiserListSize         = 0x004A
-    
+    case readPeriodicAdvertiserListSize = 0x004A
+
     /// LE Read Transmit Power Command
-    case readTransmitPower                      = 0x004B
-    
+    case readTransmitPower = 0x004B
+
     /// LE Read RF Path Compensation Command
-    case readRFPathCompensation                 = 0x004C
-    
+    case readRFPathCompensation = 0x004C
+
     /// LE Write RF Path Compensation Command
-    case writeRFPathCompensation                = 0x004D
-    
+    case writeRFPathCompensation = 0x004D
+
     /// LE Set Privacy Mode Command
-    case setPrivacyMode                         = 0x004E
+    case setPrivacyMode = 0x004E
 }
 
 // MARK: - Name
 
 public extension HCILowEnergyCommand {
-    
+
     var name: String {
-        
+
         switch self {
-            
+
         case .setEventMask: return "LE Set Event Mask"
         case .readBufferSize: return "LE Read Buffer Size"
         case .readLocalSupportedFeatures: return "LE Read Local Supported Features"
@@ -328,7 +328,7 @@ public extension HCILowEnergyCommand {
         case .readSuggestedDefaultDataLengthCommand: return "LE Read Suggested Default Data Length Command"
         case .readLocalP256PublicKeyCommand: return "LE Read Local P-256 Public Key Command"
         case .writeSuggestedDefaultDataLengthCommand: return "LE Write Suggested Default Data Length Command"
-        case .generateDHKeyCommand : return "LE Generate DHKey Command"
+        case .generateDHKeyCommand: return "LE Generate DHKey Command"
         }
     }
 }

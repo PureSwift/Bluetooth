@@ -19,39 +19,39 @@ import Bluetooth
 /// The Random Target Address value shall be the enumerated value as defined by Bluetooth Assigned Numbers.
 @frozen
 public struct GAPRandomTargetAddress: GAPData, Equatable, Hashable, Sendable {
-    
+
     public typealias ByteValue = (UInt8, UInt8, UInt8)
-    
+
     public static var dataType: GAPDataType { .randomTargetAddress }
-    
+
     public let addresses: [BluetoothAddress]
-    
+
     public init(addresses: [BluetoothAddress]) {
         self.addresses = addresses
     }
 }
 
 public extension GAPRandomTargetAddress {
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count % BluetoothAddress.length == 0
-            else { return nil }
-        
+        else { return nil }
+
         let count = data.count / BluetoothAddress.length
-        
-        let addresses: [BluetoothAddress] = (0 ..< count).map {
+
+        let addresses: [BluetoothAddress] = (0..<count).map {
             let index = $0 * BluetoothAddress.length
-            return BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5])))
+            return BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index + 1], data[index + 2], data[index + 3], data[index + 4], data[index + 5])))
         }
-        
+
         self.init(addresses: addresses)
     }
-    
+
     var dataLength: Int {
         return addresses.count * BluetoothAddress.length
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
         addresses.forEach { data += $0.littleEndian }
     }
@@ -61,7 +61,7 @@ public extension GAPRandomTargetAddress {
 
 #if !hasFeature(Embedded)
 extension GAPRandomTargetAddress: CustomStringConvertible {
-    
+
     public var description: String {
         return addresses.description
     }
@@ -71,9 +71,9 @@ extension GAPRandomTargetAddress: CustomStringConvertible {
 // MARK: - ExpressibleByArrayLiteral
 
 extension GAPRandomTargetAddress: ExpressibleByArrayLiteral {
-    
+
     public init(arrayLiteral elements: BluetoothAddress...) {
-        
+
         self.init(addresses: elements)
     }
 }

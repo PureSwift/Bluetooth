@@ -7,6 +7,6 @@
 //
 
 public protocol GATTService {
-    
+
     static var uuid: BluetoothUUID { get }
 }

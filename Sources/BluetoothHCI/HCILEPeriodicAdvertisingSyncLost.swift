@@ -14,20 +14,20 @@ import Foundation
 /// by Sync_Handle within the timeout period.
 @frozen
 public struct HCILEPeriodicAdvertisingSyncLost: HCIEventParameter {
-    
-    public static let event = LowEnergyEvent.periodicAdvertisingSyncLost // 0x10
-    
+
+    public static let event = LowEnergyEvent.periodicAdvertisingSyncLost  // 0x10
+
     public static let length = 2
-    
-    public let syncHandle: UInt16 // Sync_Handle
-    
+
+    public let syncHandle: UInt16  // Sync_Handle
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let syncHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
+
         self.syncHandle = syncHandle
     }
 }

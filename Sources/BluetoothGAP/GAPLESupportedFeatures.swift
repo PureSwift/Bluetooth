@@ -19,12 +19,12 @@ import Bluetooth
 /// This allows the LE Supported Features to be represented while using
 /// the minimum number of octets within the data packet.
 public struct GAPLESupportedFeatures: GAPData {
-    
+
     public static var dataType: GAPDataType { return .lowEnergySupportedFeatures }
 }
 
 public extension GAPLESupportedFeatures {
-    
-    
+
+
 }
 */

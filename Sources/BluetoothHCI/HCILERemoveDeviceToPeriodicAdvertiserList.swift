@@ -11,20 +11,23 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Remove Device From Periodic Advertiser List Command
     ///
     /// The LE_Remove_Device_From_Periodic_Advertiser_List command is used to remove one device from the list of Periodic
     /// Advertisers stored in the Controller. Removals from the Periodic Advertisers List take effect immediately.
-    func lowEnergyRemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                                       address: BluetoothAddress,
-                                                       advertisingSID: UInt8,
-                                                       timeout: HCICommandTimeout = .default) async throws {
-        
-        let parameters = HCILERemoveDeviceToPeriodicAdvertiserList(advertiserAddressType: advertiserAddressType,
-                                                                   address: address,
-                                                                   advertisingSID: advertisingSID)
-        
+    func lowEnergyRemoveDeviceToPeriodicAdvertiserList(
+        advertiserAddressType: LowEnergyAdvertiserAddressType,
+        address: BluetoothAddress,
+        advertisingSID: UInt8,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
+        let parameters = HCILERemoveDeviceToPeriodicAdvertiserList(
+            advertiserAddressType: advertiserAddressType,
+            address: address,
+            advertisingSID: advertisingSID)
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -43,17 +46,19 @@ public extension BluetoothHostControllerInterface {
 /// the Controller shall return the error code Unknown Advertising Identifier (0x42).
 @frozen
 public struct HCILERemoveDeviceToPeriodicAdvertiserList: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.removeDeviceFromPeriodicAdvertiserList //0x0048
-    
+
+    public static let command = HCILowEnergyCommand.removeDeviceFromPeriodicAdvertiserList  //0x0048
+
     public let advertiserAddressType: LowEnergyAdvertiserAddressType
     public let address: BluetoothAddress
     public let advertisingSID: UInt8
-    
-    public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                address: BluetoothAddress,
-                advertisingSID: UInt8) {
-        
+
+    public init(
+        advertiserAddressType: LowEnergyAdvertiserAddressType,
+        address: BluetoothAddress,
+        advertisingSID: UInt8
+    ) {
+
         self.advertiserAddressType = advertiserAddressType
         self.address = address
         self.advertisingSID = advertisingSID
@@ -63,18 +68,18 @@ public struct HCILERemoveDeviceToPeriodicAdvertiserList: HCICommandParameter {
 // MARK: - DataConvertible
 
 extension HCILERemoveDeviceToPeriodicAdvertiserList {
-    
+
     public var data: Data {
         var data = Data()
         data.reserveCapacity(self.dataLength)
         data += self
         return data
     }
-    
+
     var dataLength: Int { return 1 + BluetoothAddress.length + 1 }
-    
-    static func += <T: DataContainer> (data: inout T, value: HCILERemoveDeviceToPeriodicAdvertiserList) {
-        
+
+    static func += <T: DataContainer>(data: inout T, value: HCILERemoveDeviceToPeriodicAdvertiserList) {
+
         data += value.advertiserAddressType.rawValue
         data += value.address.littleEndian
         data += value.advertisingSID

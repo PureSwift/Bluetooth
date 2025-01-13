@@ -9,33 +9,33 @@
 /// Bluetooth LE Tx Power Channel
 @frozen
 public struct LowEnergyTxChannel: RawRepresentable, Equatable, Hashable, Comparable {
-    
+
     /// 100 msec
     public static let min = LowEnergyTxChannel(0x00)
-    
+
     /// 32 seconds
     public static let max = LowEnergyTxChannel(0x27)
-    
+
     public let rawValue: UInt8
-    
+
     public init?(rawValue: UInt8) {
         guard rawValue >= LowEnergyTxChannel.min.rawValue,
             rawValue <= LowEnergyTxChannel.max.rawValue
-            else { return nil }
-        
-        assert((LowEnergyTxChannel.min.rawValue ... LowEnergyTxChannel.max.rawValue).contains(rawValue))
-        
+        else { return nil }
+
+        assert((LowEnergyTxChannel.min.rawValue...LowEnergyTxChannel.max.rawValue).contains(rawValue))
+
         self.rawValue = rawValue
     }
-    
+
     // Private, unsafe
     private init(_ rawValue: UInt8) {
         self.rawValue = rawValue
     }
-    
+
     // Comparable
     public static func < (lhs: LowEnergyTxChannel, rhs: LowEnergyTxChannel) -> Bool {
-        
+
         return lhs.rawValue < rhs.rawValue
     }
 }

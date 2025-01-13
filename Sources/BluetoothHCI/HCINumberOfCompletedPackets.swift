@@ -13,26 +13,26 @@ import Foundation
 /// - Note: Number Of Completed Packets events will not report on synchronous Connection Handles if synchronous Flow Control is disabled.
 @frozen
 public struct HCINumberOfCompletedPackets: HCIEventParameter {
-    
+
     public static let event = HCIGeneralEvent.numberOfCompletedPackets
-    
+
     public static let length: Int = 5
-    
+
     public let numberOfHandles: UInt8
-    
+
     public let connectionHandle: UInt16
-    
+
     public let numberOfCompletedPackets: UInt16
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
+
         let numberOfCompletedPackets = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
-        
+
         self.numberOfHandles = data[0]
         self.connectionHandle = connectionHandle
         self.numberOfCompletedPackets = numberOfCompletedPackets

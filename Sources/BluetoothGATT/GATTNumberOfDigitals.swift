@@ -13,11 +13,11 @@ import Bluetooth
 /// The Characteristic Number of Digitals descriptor is used for defining the number of digitals in a characteristic.
 @frozen
 public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable, Equatable, Hashable, Sendable {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.numberOfDigitals }
-    
+
     public var rawValue: UInt8
-    
+
     public init(rawValue: UInt8) {
         self.rawValue = rawValue
     }
@@ -26,26 +26,26 @@ public struct GATTNumberOfDigitals: GATTDescriptor, RawRepresentable, Equatable,
 // MARK: - DataConvertible
 
 extension GATTNumberOfDigitals: DataConvertible {
-    
+
     public static var length: Int { 1 }
-    
+
     public init?<Data: DataContainer>(data: Data) {
         guard data.count == Self.length
-            else { return nil }
+        else { return nil }
         self.init(rawValue: data[0])
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += rawValue
     }
-    
+
     public var dataLength: Int { Self.length }
 }
 
 // MARK: - CustomStringConvertible
 
 extension GATTNumberOfDigitals: CustomStringConvertible {
-    
+
     public var description: String {
         return rawValue.description
     }
@@ -54,7 +54,7 @@ extension GATTNumberOfDigitals: CustomStringConvertible {
 // MARK: - ExpressibleByIntegerLiteral
 
 extension GATTNumberOfDigitals: ExpressibleByIntegerLiteral {
-    
+
     public init(integerLiteral value: UInt8) {
         self.init(rawValue: value)
     }

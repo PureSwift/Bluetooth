@@ -16,39 +16,39 @@ import Bluetooth
 /// - Note: The *Read Blob Request* would be used to read the remaining octets of a long attribute value.
 @frozen
 public struct ATTReadByGroupTypeResponse<Value: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
-    
+
     public static var attributeOpcode: ATTOpcode { .readByGroupTypeResponse }
-    
+
     /// A list of Attribute Data
     public let attributeData: [AttributeData]
-    
+
     public init?(attributeData: [AttributeData]) {
         guard Self.validate(attributeData)
-            else { return nil }
+        else { return nil }
         self.attributeData = attributeData
     }
-    
+
     internal init(_ unsafe: [AttributeData]) {
         self.attributeData = unsafe
     }
 }
 
-extension ATTReadByGroupTypeResponse: ATTAttributeDataList { }
+extension ATTReadByGroupTypeResponse: ATTAttributeDataList {}
 
 // MARK: - DataConvertible
 
 extension ATTReadByGroupTypeResponse: DataConvertible {
-        
+
     public init?<Data: DataContainer>(data: Data) {
         guard let attributeData = ATTReadByGroupTypeResponse.from(data: data)
-            else { return nil }
+        else { return nil }
         self.attributeData = attributeData
     }
-    
-    public func append<Data>(to data: inout Data) where Data : Bluetooth.DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: Bluetooth.DataContainer {
         Self.append(&data, self.attributeData)
     }
-    
+
     public var dataLength: Int {
         Self.dataLength(for: attributeData)
     }
@@ -57,18 +57,18 @@ extension ATTReadByGroupTypeResponse: DataConvertible {
 // MARK: - Supporting Types
 
 public extension ATTReadByGroupTypeResponse {
-    
+
     struct AttributeData: Equatable, Hashable, Sendable, ATTAttributeData {
-        
+
         /// Attribute Handle
         public var attributeHandle: UInt16
-        
+
         /// End Group Handle
         public var endGroupHandle: UInt16
-        
+
         /// Attribute Value
         public var value: Value
-        
+
         public init(
             attributeHandle: UInt16,
             endGroupHandle: UInt16,
@@ -82,23 +82,23 @@ public extension ATTReadByGroupTypeResponse {
 }
 
 extension ATTReadByGroupTypeResponse.AttributeData: DataConvertible {
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count >= 4
-            else { return nil }
-        
+        else { return nil }
+
         self.attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.endGroupHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
         self.value = data.suffixCheckingBounds(from: 4)
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += attributeHandle.littleEndian
         data += endGroupHandle.littleEndian
         data += value
     }
-    
+
     public var dataLength: Int {
         4 + value.count
     }

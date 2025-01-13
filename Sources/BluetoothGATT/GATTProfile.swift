@@ -7,6 +7,6 @@
 //
 
 protocol GATTProfile {
-    
+
     static var services: [GATTService.Type] { get }
 }

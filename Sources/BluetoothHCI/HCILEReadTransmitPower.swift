@@ -11,12 +11,12 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Read Transmit Power Command
     ///
     /// The command is used to read the minimum and maximum transmit powers supported by the Controller.ReadTransmitPowerReturnParameter
     func lowEnergyReadTransmitPower(timeout: HCICommandTimeout = .default) async throws -> HCILEReadTransmitPower {
-        
+
         return try await deviceRequest(HCILEReadTransmitPower.self, timeout: timeout)
     }
 }
@@ -28,59 +28,59 @@ public extension BluetoothHostControllerInterface {
 /// The command is used to read the minimum and maximum transmit powers supported by the Controller.
 @frozen
 public struct HCILEReadTransmitPower: HCICommandReturnParameter {
-    
-    public static let command = HCILowEnergyCommand.readTransmitPower //0x004B
-    
+
+    public static let command = HCILowEnergyCommand.readTransmitPower  //0x004B
+
     public static let length: Int = 2
-    
+
     public let minTxPower: TxPower
-    
+
     public let maxTxPower: TxPower
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         guard let minTxPower = TxPower(rawValue: Int8(bitPattern: data[0]))
-            else { return nil }
-        
+        else { return nil }
+
         guard let maxTxPower = TxPower(rawValue: Int8(bitPattern: data[1]))
-            else { return nil }
-        
+        else { return nil }
+
         self.minTxPower = minTxPower
         self.maxTxPower = maxTxPower
     }
-    
+
     public struct TxPower: RawRepresentable, Equatable, Hashable, Comparable {
-        
+
         public static var min: TxPower { TxPower(-127) }
-        
+
         public static var max: TxPower { TxPower(126) }
-        
+
         public let rawValue: Int8
-        
+
         public init?(rawValue: Int8) {
-            
+
             guard rawValue >= TxPower.min.rawValue,
                 rawValue <= TxPower.max.rawValue
-                else { return nil }
-            
-            assert((TxPower.min.rawValue ... TxPower.max.rawValue).contains(rawValue))
-            
+            else { return nil }
+
+            assert((TxPower.min.rawValue...TxPower.max.rawValue).contains(rawValue))
+
             self.rawValue = rawValue
         }
-        
+
         // Private, unsafe
         private init(_ rawValue: Int8) {
             self.rawValue = rawValue
         }
-        
+
         // Comparable
         public static func < (lhs: TxPower, rhs: TxPower) -> Bool {
             return lhs.rawValue < rhs.rawValue
         }
-        
+
         public static func > (lhs: TxPower, rhs: TxPower) -> Bool {
             return lhs.rawValue > rhs.rawValue
         }

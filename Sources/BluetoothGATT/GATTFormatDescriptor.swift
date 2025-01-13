@@ -28,25 +28,27 @@ import Bluetooth
 /// For a Characteristic Value of 3892 and an Exponent of -3, the actual value is 3.892
 @frozen
 public struct GATTFormatDescriptor: GATTDescriptor, Hashable, Sendable {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.characteristicPresentationFormat }
-    
+
     public let format: GATTCharacteristicFormatType
-    
+
     public let exponent: Int8
-    
+
     public let unit: UInt16
-    
+
     public let namespace: UInt8
-    
+
     public let description: UInt16
-    
-    public init(format: GATTCharacteristicFormatType,
-                exponent: Int8,
-                unit: UInt16,
-                namespace: UInt8,
-                description: UInt16) {
-        
+
+    public init(
+        format: GATTCharacteristicFormatType,
+        exponent: Int8,
+        unit: UInt16,
+        namespace: UInt8,
+        description: UInt16
+    ) {
+
         self.format = format
         self.exponent = exponent
         self.unit = unit
@@ -56,32 +58,33 @@ public struct GATTFormatDescriptor: GATTDescriptor, Hashable, Sendable {
 }
 
 extension GATTFormatDescriptor: DataConvertible {
-    
+
     public static var length: Int { 7 }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         guard let format = GATTCharacteristicFormatType(rawValue: data[0])
-            else { return nil }
-        
-        self.init(format: format,
-                  exponent: Int8(bitPattern: data[1]),
-                  unit: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))),
-                  namespace: data[4],
-                  description: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
+        else { return nil }
+
+        self.init(
+            format: format,
+            exponent: Int8(bitPattern: data[1]),
+            unit: UInt16(littleEndian: UInt16(bytes: (data[2], data[3]))),
+            namespace: data[4],
+            description: UInt16(littleEndian: UInt16(bytes: (data[5], data[6]))))
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += format.rawValue
         data += UInt8(bitPattern: exponent)
         data += unit.littleEndian
         data += namespace
         data += description.littleEndian
     }
-    
+
     public var dataLength: Int {
         Self.length
     }

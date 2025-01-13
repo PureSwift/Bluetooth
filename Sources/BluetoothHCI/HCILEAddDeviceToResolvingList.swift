@@ -11,15 +11,15 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Add Device To Resolving List Command
     ///
     /// The command is used to add one device to the list of address translations
     /// used to resolve Resolvable Private Addresses in the Controller.
     func lowEnergyAddDeviceToResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128, timeout: HCICommandTimeout = .default) async throws {
-        
+
         let parameters = HCILEAddDeviceToResolvingList(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress, peerIrk: peerIrk, localIrk: localIrk)
-        
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -48,31 +48,31 @@ public extension BluetoothHostControllerInterface {
 /// Memory Capacity Exceeded (0x07).
 @frozen
 public struct HCILEAddDeviceToResolvingList: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.addDeviceToResolvedList //0x0027
-    
-    public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType //Peer_Identity_Address_Type
-    
-    public let peerIdentifyAddress: UInt64 //Peer_Identity_Address
-    
-    public let peerIrk: UInt128 //Peer_IRK
-    
-    public let localIrk: UInt128 //Local_IRK
-    
+
+    public static let command = HCILowEnergyCommand.addDeviceToResolvedList  //0x0027
+
+    public let peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType  //Peer_Identity_Address_Type
+
+    public let peerIdentifyAddress: UInt64  //Peer_Identity_Address
+
+    public let peerIrk: UInt128  //Peer_IRK
+
+    public let localIrk: UInt128  //Local_IRK
+
     public init(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128) {
-        
+
         self.peerIdentifyAddressType = peerIdentifyAddressType
         self.peerIdentifyAddress = peerIdentifyAddress
         self.peerIrk = peerIrk
         self.localIrk = localIrk
     }
-    
+
     public var data: Data {
-        
+
         let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
         let peerIrkBytes = peerIrk.littleEndian.bytes
         let localIrkBytes = localIrk.littleEndian.bytes
-        
+
         return Data([
             peerIdentifyAddressType.rawValue,
             peerIdentifyAddressBytes.0,
@@ -114,7 +114,7 @@ public struct HCILEAddDeviceToResolvingList: HCICommandParameter {
             localIrkBytes.12,
             localIrkBytes.13,
             localIrkBytes.14,
-            localIrkBytes.15
-            ])
+            localIrkBytes.15,
+        ])
     }
 }

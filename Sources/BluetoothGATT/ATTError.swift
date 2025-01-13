@@ -10,106 +10,104 @@
 import Foundation
 #endif
 
-/**
- The possible errors returned by a GATT server (a remote peripheral) during Bluetooth low energy ATT transactions.
- 
- These error constants are based on the Bluetooth ATT error codes, defined in the Bluetooth 4.0 specification.
- For more information about these errors, see the Bluetooth 4.0 specification, Volume 3, Part F, Section 3.4.1.1.
- */
+/// The possible errors returned by a GATT server (a remote peripheral) during Bluetooth low energy ATT transactions.
+///
+/// These error constants are based on the Bluetooth ATT error codes, defined in the Bluetooth 4.0 specification.
+/// For more information about these errors, see the Bluetooth 4.0 specification, Volume 3, Part F, Section 3.4.1.1.
 @frozen
 public enum ATTError: UInt8, Error {
-    
+
     /// Invalid Handle
     ///
     /// The attribute handle given was not valid on this server.
-    case invalidHandle                              = 0x01
-    
+    case invalidHandle = 0x01
+
     /// Read Not Permitted
     ///
     /// The attribute cannot be read.
-    case readNotPermitted                           = 0x02
-    
+    case readNotPermitted = 0x02
+
     /// Write Not Permitted
     ///
     /// The attribute cannot be written.
-    case writeNotPermitted                          = 0x03
-    
+    case writeNotPermitted = 0x03
+
     /// Invalid PDU
     ///
     /// The attribute PDU was invalid.
-    case invalidPDU                                 = 0x04
-    
+    case invalidPDU = 0x04
+
     /// Insufficient Authentication
     ///
     /// The attribute requires authentication before it can be read or written.
-    case insufficientAuthentication                 = 0x05
-    
+    case insufficientAuthentication = 0x05
+
     /// Request Not Supported
     ///
     /// Attribute server does not support the request received from the client.
-    case requestNotSupported                        = 0x06
-    
+    case requestNotSupported = 0x06
+
     /// Invalid Offset
     ///
     /// Offset specified was past the end of the attribute.
-    case invalidOffset                              = 0x07
-    
+    case invalidOffset = 0x07
+
     /// Insufficient Authorization
     ///
     /// The attribute requires authorization before it can be read or written.
-    case insufficientAuthorization                  = 0x08
-    
+    case insufficientAuthorization = 0x08
+
     /// Prepare Queue Full
     ///
     /// Too many prepare writes have been queued.
-    case prepareQueueFull                           = 0x09
-    
+    case prepareQueueFull = 0x09
+
     /// Attribute Not Found
     ///
     /// No attribute found within the given attribute handle range.
-    case attributeNotFound                          = 0x0A
-    
+    case attributeNotFound = 0x0A
+
     /// Attribute Not Long
     ///
     /// The attribute cannot be read or written using the *Read Blob Request*.
-    case attributeNotLong                           = 0x0B
-    
+    case attributeNotLong = 0x0B
+
     /// Insufficient Encryption Key Size
     ///
     /// The *Encryption Key Size* used for encrypting this link is insufficient.
-    case insufficientEncryptionKeySize              = 0x0C
-    
+    case insufficientEncryptionKeySize = 0x0C
+
     /// Invalid Attribute Value Length
     ///
     /// The attribute value length is invalid for the operation.
-    case invalidAttributeValueLength                = 0x0D
-    
+    case invalidAttributeValueLength = 0x0D
+
     /// Unlikely Error
     ///
     /// The attribute request that was requested has encountered an error that was unlikely,
     /// and therefore could not be completed as requested.
-    case unlikelyError                              = 0x0E
-    
+    case unlikelyError = 0x0E
+
     /// Insufficient Encryption
     ///
     /// The attribute requires encryption before it can be read or written.
-    case insufficientEncryption                     = 0x0F
-    
+    case insufficientEncryption = 0x0F
+
     /// Unsupported Group Type
     ///
     /// The attribute type is not a supported grouping attribute as defined by a higher layer specification.
-    case unsupportedGroupType                       = 0x10
-    
+    case unsupportedGroupType = 0x10
+
     /// Insufficient Resources
     ///
     /// Insufficient Resources to complete the request.
-    case insufficientResources                      = 0x11
+    case insufficientResources = 0x11
 }
 
 // MARK: - CustomStringConvertible
 
 extension ATTError: CustomStringConvertible {
-    
+
     public var description: String {
         return name
     }
@@ -118,9 +116,9 @@ extension ATTError: CustomStringConvertible {
 // MARK: - Description Values
 
 public extension ATTError {
-    
+
     var name: String {
-        
+
         switch self {
         case .invalidHandle:
             return "Invalid Handle"
@@ -158,10 +156,10 @@ public extension ATTError {
             return "Insufficient Resources"
         }
     }
-    
+
     #if !hasFeature(Embedded)
     var errorDescription: String {
-        
+
         switch self {
         case .invalidHandle:
             return "The attribute handle given was not valid on this server."
@@ -206,20 +204,20 @@ public extension ATTError {
 
 #if canImport(Foundation)
 extension ATTError: CustomNSError {
-    
+
     public static var errorDomain: String {
         return "org.pureswift.Bluetooth.ATTError"
     }
-    
+
     public var errorCode: Int {
         return Int(rawValue)
     }
-    
+
     public var errorUserInfo: [String: Any] {
-        
+
         return [
             NSLocalizedDescriptionKey: name,
-            NSLocalizedFailureReasonErrorKey: errorDescription
+            NSLocalizedFailureReasonErrorKey: errorDescription,
         ]
     }
 }

@@ -11,7 +11,7 @@ import Foundation
 // MARK: - BluetoothHostControllerInterface
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Clear Advertising Sets Command
     ///
     /// The command is used to remove all existing advertising sets from the Controller.
@@ -21,10 +21,10 @@ public extension BluetoothHostControllerInterface {
     ///
     /// Note: All advertising sets are cleared on HCI reset.
     func lowEnergyClearAdvertisingSets(timeout: HCICommandTimeout = .default) async throws {
-        
+
         try await deviceRequest(HCILowEnergyCommand.clearAdvertisingSets, timeout: timeout)
     }
-    
+
     /// LE Periodic Advertising Create Sync Cancel Command
     ///
     /// ommand is used to cancel the LE_Periodic_Advertising_Create_Sync command while it is pending.
@@ -32,10 +32,10 @@ public extension BluetoothHostControllerInterface {
     /// If the Host issues this command while no LE_Periodic_Advertising_Create_Sync command is pending,
     /// the Controller shall return the error code Command Disallowed (0x0C).
     func lowEnergyPeriodicAdvertisingCreateSyncCancel(timeout: HCICommandTimeout = .default) async throws {
-        
+
         try await deviceRequest(HCILowEnergyCommand.periodicAdvertisingCreateSyncCancel, timeout: timeout)
     }
-    
+
     /// LE Clear Periodic Advertiser List Command
     ///
     /// The LE_Clear_Periodic_Advertiser_List command is used to remove all devices from the list of Periodic Advertisers
@@ -44,8 +44,8 @@ public extension BluetoothHostControllerInterface {
     /// If this command is used when an LE_Periodic_Advertising_Create_Sync command is pending,
     /// the Controller shall return the error code Command Disallowed (0x0C).
     func lowEnergyClearPeriodicAdvertiserList(timeout: HCICommandTimeout = .default) async throws {
-        
-        try await deviceRequest(HCILowEnergyCommand.clearPeriodicAdvertiserList, timeout: timeout) //0x0049
+
+        try await deviceRequest(HCILowEnergyCommand.clearPeriodicAdvertiserList, timeout: timeout)  //0x0049
     }
-    
+
 }

@@ -8,11 +8,11 @@
 
 /// Bluetooth LE Fragment Preference
 @frozen
-public enum LowEnergyFragmentPreference: UInt8 { //Fragment_Preference
-    
+public enum LowEnergyFragmentPreference: UInt8 {  //Fragment_Preference
+
     /// The Controller may fragment all Host advertising data
     case fragmentAllHostAdvertisingData = 0x00
-    
+
     /// The Controller should not fragment or should minimize fragmentation of Host advertising data
     case shouldNotFragmentHostAdvertisingData = 0x01
 }

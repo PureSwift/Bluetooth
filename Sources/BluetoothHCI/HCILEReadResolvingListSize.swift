@@ -11,16 +11,17 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Read Resolving List Size Command
     ///
     /// This command is used to read the total number of address translation
     /// entries in the resolving list that can be stored in the Controller.
     func lowEnergyReadResolvingListSize(timeout: HCICommandTimeout = .default) async throws -> UInt8 {
-        
-        let value = try await deviceRequest(HCILEReadResolvingListSize.self,
-                                      timeout: timeout)
-        
+
+        let value = try await deviceRequest(
+            HCILEReadResolvingListSize.self,
+            timeout: timeout)
+
         return value.resolvingListSize
     }
 }
@@ -36,18 +37,18 @@ public extension BluetoothHostControllerInterface {
 /// used to store the list can also be used for other purposes).
 @frozen
 public struct HCILEReadResolvingListSize: HCICommandReturnParameter {
-    
-    public static let command = HCILowEnergyCommand.readResolvedListSize //0x002A
-    
+
+    public static let command = HCILowEnergyCommand.readResolvedListSize  //0x002A
+
     public static let length: Int = 1
-    
-    public let resolvingListSize: UInt8 //Resolving_List_Size
-    
+
+    public let resolvingListSize: UInt8  //Resolving_List_Size
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         self.resolvingListSize = data[0]
     }
 }

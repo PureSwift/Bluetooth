@@ -11,19 +11,19 @@
 //// the TX_PHYS parameter is ignored; otherwise at least one bit shall be set to 1.
 @frozen
 public enum LowEnergyTxPhys: UInt8, BitMaskOption {
-    
+
     /// The Host prefers to use the LE 1M transmitter PHY (possibly among others)
-    case hostUseLe1MTransmitterPhy      = 0b001
-    
+    case hostUseLe1MTransmitterPhy = 0b001
+
     /// The Host prefers to use the LE 2M transmitter PHY (possibly among others)
-    case hostUseLe2MTransmitterPhy      = 0b010
-    
+    case hostUseLe2MTransmitterPhy = 0b010
+
     /// The Host prefers to use the LE Coded transmitter PHY (possibly among others)
-    case hostUseLeCodedTransmitterPhy   = 0b100
-    
+    case hostUseLeCodedTransmitterPhy = 0b100
+
     public static let allCases: [LowEnergyTxPhys] = [
         .hostUseLe1MTransmitterPhy,
         .hostUseLe2MTransmitterPhy,
-        .hostUseLeCodedTransmitterPhy
+        .hostUseLeCodedTransmitterPhy,
     ]
 }

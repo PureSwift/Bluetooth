@@ -19,11 +19,11 @@ import Bluetooth
 /// Authentication and authorization may be required by the server to write this descriptor.
 @frozen
 public struct GATTServerCharacteristicConfiguration: GATTDescriptor, OptionSet, Hashable, Sendable {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.serverCharacteristicConfiguration }
-    
+
     public var rawValue: UInt8
-    
+
     public init(rawValue: UInt8) {
         self.rawValue = rawValue
     }
@@ -32,7 +32,7 @@ public struct GATTServerCharacteristicConfiguration: GATTDescriptor, OptionSet, 
 // MARK: - ExpressibleByIntegerLiteral
 
 extension GATTServerCharacteristicConfiguration: ExpressibleByIntegerLiteral {
-    
+
     public init(integerLiteral rawValue: RawValue) {
         self.init(rawValue: rawValue)
     }
@@ -41,28 +41,28 @@ extension GATTServerCharacteristicConfiguration: ExpressibleByIntegerLiteral {
 // MARK: - DataConvertible
 
 extension GATTServerCharacteristicConfiguration: DataConvertible {
-    
+
     public static var length: Int { 1 }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         self.init(rawValue: data[0])
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += rawValue
     }
-    
+
     public var dataLength: Int { Self.length }
 }
 
 // MARK: - CustomStringConvertible
 
 extension GATTServerCharacteristicConfiguration: CustomStringConvertible, CustomDebugStringConvertible {
-    
+
     #if hasFeature(Embedded)
     public var description: String {
         "0x" + rawValue.toHexadecimal()
@@ -84,7 +84,7 @@ extension GATTServerCharacteristicConfiguration: CustomStringConvertible, Custom
 // MARK: - Options
 
 public extension GATTServerCharacteristicConfiguration {
-    
+
     /// Broadcasts enabled
     static var broadcasts: GATTServerCharacteristicConfiguration { 0b01 }
 }

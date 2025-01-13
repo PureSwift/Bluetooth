@@ -11,18 +11,21 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Write RF Path Compensation Command
     ///
     /// The command is used to indicate the RF path gain or loss between the RF transceiver and
     /// the antenna contributed by intermediate components.
-    func lowEnergyWriteRfPathCompensation(rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
-                                          rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
-                                          timeout: HCICommandTimeout = .default) async throws {
-        
-        let parameters = HCILEWriteRfPathCompensation(rfTxPathCompensationValue: rfTxPathCompensationValue,
-                                                      rfRxPathCompensationValue: rfRxPathCompensationValue)
-        
+    func lowEnergyWriteRfPathCompensation(
+        rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
+        rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
+        let parameters = HCILEWriteRfPathCompensation(
+            rfTxPathCompensationValue: rfTxPathCompensationValue,
+            rfRxPathCompensationValue: rfRxPathCompensationValue)
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -46,26 +49,30 @@ public extension BluetoothHostControllerInterface {
 /// the RSSI value reported to the Host.
 @frozen
 public struct HCILEWriteRfPathCompensation: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.writeRFPathCompensation // 0x004D
-    
+
+    public static let command = HCILowEnergyCommand.writeRFPathCompensation  // 0x004D
+
     public var rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue
     public var rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue
-    
-    public init(rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
-                rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue) {
+
+    public init(
+        rfTxPathCompensationValue: LowEnergyRfTxPathCompensationValue,
+        rfRxPathCompensationValue: LowEnergyRfTxPathCompensationValue
+    ) {
         self.rfTxPathCompensationValue = rfTxPathCompensationValue
         self.rfRxPathCompensationValue = rfRxPathCompensationValue
     }
-    
+
     public var data: Data {
         let rfTxPathCompensationValueBytes = UInt16.init(bitPattern: rfTxPathCompensationValue.rawValue).littleEndian.bytes
-        
+
         let rfRxPathCompensationValueBytes = UInt16.init(bitPattern: rfRxPathCompensationValue.rawValue).littleEndian.bytes
-        
-        return Data([rfTxPathCompensationValueBytes.0,
-                     rfTxPathCompensationValueBytes.1,
-                     rfRxPathCompensationValueBytes.0,
-                     rfRxPathCompensationValueBytes.1])
+
+        return Data([
+            rfTxPathCompensationValueBytes.0,
+            rfTxPathCompensationValueBytes.1,
+            rfRxPathCompensationValueBytes.0,
+            rfRxPathCompensationValueBytes.1,
+        ])
     }
 }

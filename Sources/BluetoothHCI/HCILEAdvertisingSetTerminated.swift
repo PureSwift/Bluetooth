@@ -13,33 +13,33 @@ import Foundation
 /// The event indicates that the Controller has terminated advertising in the advertising sets specified by the Advertising_Handle parameter.
 @frozen
 public struct HCILEAdvertisingSetTerminated: HCIEventParameter {
-    
-    public static let event = LowEnergyEvent.advertisingSetTerminated // 0x12
-    
+
+    public static let event = LowEnergyEvent.advertisingSetTerminated  // 0x12
+
     public static let length: Int = 5
-    
+
     public let status: HCIStatus
-    
+
     public let advertisingHandle: UInt8
-    
-    public let connectionHandle: UInt16 // Connection_Handle
-    
+
+    public let connectionHandle: UInt16  // Connection_Handle
+
     public let numCompletedExtendedAdvertisingEvents: UInt8
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         guard let status = HCIStatus(rawValue: data[0])
-            else { return nil }
-        
-        let advertisingHandle =  data[1]
-        
+        else { return nil }
+
+        let advertisingHandle = data[1]
+
         let connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
-        
+
         let numCompletedExtendedAdvertisingEvents = data[4]
-        
+
         self.status = status
         self.advertisingHandle = advertisingHandle
         self.connectionHandle = connectionHandle

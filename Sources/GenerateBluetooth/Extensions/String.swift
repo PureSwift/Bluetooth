@@ -1,6 +1,6 @@
 //
 //  String.swift
-//  
+//
 //
 //  Created by Alsey Coleman Miller on 6/12/22.
 //
@@ -8,13 +8,14 @@
 import Foundation
 
 public extension String {
-    
+
     func firstMatch(of regex: NSRegularExpression) -> Range<String.Index>? {
-        return regex
+        return
+            regex
             .firstMatch(in: self, range: NSRange(location: 0, length: self.utf16.count))
             .flatMap { Range($0.range, in: self) }
     }
-    
+
     // https://gist.github.com/AmitaiB/bbfcba3a21411ee6d3f972320bcd1ecd
     func camelCase() -> String {
         return self.components(separatedBy: CharacterSet.alphanumerics.inverted)
@@ -42,14 +43,14 @@ public extension String {
         }
         return result
     }
-    
+
     func sanitizeName(prefix: String) -> String {
-        
+
         var name = self
         let blackList = ["ASSA ABLOY"]
         guard blackList.contains(name) == false
-            else { return name }
-        
+        else { return name }
+
         // remove diacritics
         name = name.applyingTransform(.stripDiacritics, reverse: false)!
         // remove company name suffixes
@@ -145,13 +146,14 @@ public extension String {
         name = name.replacingOccurrences(of: " mbH", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Kft.", with: "", options: .caseInsensitive)
         name = name.replacingOccurrences(of: " Kft", with: "", options: .caseInsensitive)
-        
+
         // if first letter is a number, add prefix
         if let firstCharacter = name.first,
-            let _ = Int(String(firstCharacter)) {
+            Int(String(firstCharacter)) != nil
+        {
             name = prefix + name
         }
-        
+
         return name
     }
 }

@@ -6,13 +6,11 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-/**
- Blood Pressure Service
- 
- This service exposes blood pressure and other data from a blood pressure monitor for use in consumer and professional healthcare applications.
- */
+/// Blood Pressure Service
+///
+/// This service exposes blood pressure and other data from a blood pressure monitor for use in consumer and professional healthcare applications.
 @frozen
 public struct GATTBloodPressureService: GATTService {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Service.bloodPressure }
 }

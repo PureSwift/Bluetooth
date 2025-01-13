@@ -11,15 +11,16 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Test End Command
     ///
     /// This command is used to stop any test which is in progress.
     func lowEnergyTestEnd(timeout: HCICommandTimeout = .default) async throws -> UInt16 {
-        
-        let value = try await deviceRequest(HCILETestEnd.self,
-                                      timeout: timeout)
-        
+
+        let value = try await deviceRequest(
+            HCILETestEnd.self,
+            timeout: timeout)
+
         return value.numberOfPackets
     }
 }
@@ -33,18 +34,18 @@ public extension BluetoothHostControllerInterface {
 /// and contains the number of received packets.
 @frozen
 public struct HCILETestEnd: HCICommandReturnParameter {
-    
-    public static let command = HCILowEnergyCommand.testEnd //0x001F
-    
+
+    public static let command = HCILowEnergyCommand.testEnd  //0x001F
+
     public static let length: Int = 2
-    
+
     public let numberOfPackets: UInt16
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         numberOfPackets = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
     }
 }

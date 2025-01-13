@@ -17,15 +17,15 @@ import Bluetooth
 /// The knowledge of whether attributes have a known fixed size is defined in a higher layer specification.
 @frozen
 public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
-    
+
     public static var attributeOpcode: ATTOpcode { .readMultipleRequest }
-    
+
     /// The handles of the attributes to read.
     public let handles: [UInt16]
-    
+
     public init?(handles: [UInt16]) {
         guard handles.count >= 2
-            else { return nil }
+        else { return nil }
         self.handles = handles
     }
 }
@@ -33,32 +33,32 @@ public struct ATTReadMultipleRequest: ATTProtocolDataUnit, Equatable, Hashable, 
 // MARK: - DataConvertible
 
 extension ATTReadMultipleRequest: DataConvertible {
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count >= 5,
             Self.validateOpcode(data)
-            else { return nil }
-        
+        else { return nil }
+
         let handleCount = (data.count - 1) / 2
-        
+
         guard (data.count - 1) % 2 == 0
-            else { return nil }
-        
+        else { return nil }
+
         // preallocate handle buffer
-        let handles = (0 ..< handleCount).map { index in
+        let handles = (0..<handleCount).map { index in
             let handleIndex = 1 + (index * 2)
             return UInt16(littleEndian: UInt16(bytes: (data[handleIndex], data[handleIndex + 1])))
         }
-        
+
         self.init(handles: handles)
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += Self.attributeOpcode.rawValue
         data += self.handles
     }
-    
+
     public var dataLength: Int {
         1 + (2 * handles.count)
     }

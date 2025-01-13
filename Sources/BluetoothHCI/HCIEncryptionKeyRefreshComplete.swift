@@ -24,27 +24,27 @@ import Foundation
 /// the Encryption Key Refresh Complete event shall be sent prior to the Role Change event.
 @frozen
 public struct HCIEncryptionKeyRefreshComplete: HCIEventParameter {
-    
-    public static let event = HCIGeneralEvent.encryptionKeyRefreshComplete // 0x30
-    
+
+    public static let event = HCIGeneralEvent.encryptionKeyRefreshComplete  // 0x30
+
     public static let length: Int = 3
-    
+
     public let status: HCIStatus
-    
-    public let handle: UInt16 // Connection_Handle
-    
+
+    public let handle: UInt16  // Connection_Handle
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let statusByte = data[0]
-        
+
         let handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
-        
+
         guard let status = HCIStatus(rawValue: statusByte)
-            else { return nil }
-        
+        else { return nil }
+
         self.status = status
         self.handle = handle
     }

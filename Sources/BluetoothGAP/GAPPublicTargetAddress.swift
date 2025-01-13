@@ -22,38 +22,38 @@ import Bluetooth
 /// company_id field is contained in the 24 most significant bits
 @frozen
 public struct GAPPublicTargetAddress: GAPData, Equatable {
-    
+
     public static let dataType: GAPDataType = .publicTargetAddress
-    
+
     public let addresses: [BluetoothAddress]
-    
+
     public init(addresses: [BluetoothAddress]) {
-        
+
         self.addresses = addresses
     }
 }
 
 public extension GAPPublicTargetAddress {
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count % BluetoothAddress.length == 0
-            else { return nil }
-        
+        else { return nil }
+
         let count = data.count / BluetoothAddress.length
-        
-        let addresses: [BluetoothAddress] = (0 ..< count).map {
+
+        let addresses: [BluetoothAddress] = (0..<count).map {
             let index = $0 * BluetoothAddress.length
-            return BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index+1], data[index+2], data[index+3], data[index+4], data[index+5])))
+            return BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[index], data[index + 1], data[index + 2], data[index + 3], data[index + 4], data[index + 5])))
         }
-        
+
         self.init(addresses: addresses)
     }
-    
+
     var dataLength: Int {
         return addresses.count * BluetoothAddress.length
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
         addresses.forEach { data += $0.littleEndian }
     }
@@ -63,7 +63,7 @@ public extension GAPPublicTargetAddress {
 
 #if !hasFeature(Embedded)
 extension GAPPublicTargetAddress: CustomStringConvertible {
-    
+
     public var description: String {
         return addresses.description
     }
@@ -73,9 +73,9 @@ extension GAPPublicTargetAddress: CustomStringConvertible {
 // MARK: - ExpressibleByArrayLiteral
 
 extension GAPPublicTargetAddress: ExpressibleByArrayLiteral {
-    
+
     public init(arrayLiteral elements: BluetoothAddress...) {
-        
+
         self.init(addresses: elements)
     }
 }

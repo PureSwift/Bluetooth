@@ -11,19 +11,22 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Add Device To Periodic Advertiser List Command
     ///
     /// The command is used to add a single device to the Periodic Advertiser list stored in the Controller.
-    func addDeviceToPeriodicAdvertiserList(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                                           address: BluetoothAddress,
-                                           advertisingSid: UInt8,
-                                           timeout: HCICommandTimeout = .default) async throws {
-        
-        let parameters = HCILEAddDeviceToPeriodicAdvertiserList(advertiserAddressType: advertiserAddressType,
-                                                                address: address,
-                                                                advertisingSid: advertisingSid)
-        
+    func addDeviceToPeriodicAdvertiserList(
+        advertiserAddressType: LowEnergyAdvertiserAddressType,
+        address: BluetoothAddress,
+        advertisingSid: UInt8,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
+        let parameters = HCILEAddDeviceToPeriodicAdvertiserList(
+            advertiserAddressType: advertiserAddressType,
+            address: address,
+            advertisingSid: advertisingSid)
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -43,25 +46,27 @@ public extension BluetoothHostControllerInterface {
 /// the Controller shall return the error code Memory Capacity Exceeded (0x07).
 @frozen
 public struct HCILEAddDeviceToPeriodicAdvertiserList: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.addDeviceToPeriodicAdvertiserList //0x0047
-    
+
+    public static let command = HCILowEnergyCommand.addDeviceToPeriodicAdvertiserList  //0x0047
+
     public let advertiserAddressType: LowEnergyAdvertiserAddressType
     public let address: BluetoothAddress
     public let advertisingSid: UInt8
-    
-    public init(advertiserAddressType: LowEnergyAdvertiserAddressType,
-                address: BluetoothAddress,
-                advertisingSid: UInt8) {
+
+    public init(
+        advertiserAddressType: LowEnergyAdvertiserAddressType,
+        address: BluetoothAddress,
+        advertisingSid: UInt8
+    ) {
         self.advertiserAddressType = advertiserAddressType
         self.address = address
         self.advertisingSid = advertisingSid
     }
-    
+
     public var data: Data {
-        
+
         let addressBytes = address.littleEndian.bytes
-        
+
         return Data([
             advertiserAddressType.rawValue,
             addressBytes.0,
@@ -70,7 +75,7 @@ public struct HCILEAddDeviceToPeriodicAdvertiserList: HCICommandParameter {
             addressBytes.3,
             addressBytes.4,
             addressBytes.5,
-            advertisingSid
-            ])
+            advertisingSid,
+        ])
     }
 }

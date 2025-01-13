@@ -12,32 +12,32 @@
 /// - Note: Range 0x0148-0x4290
 @frozen
 public struct LowEnergyMaxTxTime: RawRepresentable, Equatable, Hashable, Comparable {
-    
+
     public static let min = LowEnergyMaxTxTime(0x0148)
-    
+
     public static let max = LowEnergyMaxTxTime(0x4290)
-    
+
     public let rawValue: UInt16
-    
+
     public init?(rawValue: UInt16 = 0x001B) {
-        
+
         guard rawValue >= LowEnergyMaxTxTime.min.rawValue,
             rawValue <= LowEnergyMaxTxTime.max.rawValue
-            else { return nil }
-        
-        assert((LowEnergyMaxTxTime.min.rawValue ... LowEnergyMaxTxTime.max.rawValue).contains(rawValue))
-        
+        else { return nil }
+
+        assert((LowEnergyMaxTxTime.min.rawValue...LowEnergyMaxTxTime.max.rawValue).contains(rawValue))
+
         self.rawValue = rawValue
     }
-    
+
     // Private, unsafe
     private init(_ rawValue: UInt16) {
         self.rawValue = rawValue
     }
-    
+
     // Comparable
     public static func < (lhs: LowEnergyMaxTxTime, rhs: LowEnergyMaxTxTime) -> Bool {
-        
+
         return lhs.rawValue < rhs.rawValue
     }
 }

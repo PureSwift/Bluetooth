@@ -8,27 +8,25 @@
 
 import Foundation
 
-/**
- Write Connection Accept Timeout Command
- 
- This command writes the value for the Connection Accept Timeout configuration parameter.
- */
+/// Write Connection Accept Timeout Command
+///
+/// This command writes the value for the Connection Accept Timeout configuration parameter.
 @frozen
 public struct HCIWriteConnectionAcceptTimeout: HCICommandParameter {
-    
+
     public static let command = HostControllerBasebandCommand.writeConnectionAcceptTimeout
-    
+
     public var timeout: ConnectionAcceptTimeout
-    
+
     public init(timeout: ConnectionAcceptTimeout) {
-        
+
         self.timeout = timeout
     }
-    
+
     public var data: Data {
-        
+
         let timeoutBytes = timeout.rawValue.littleEndian.bytes
-        
+
         return Data([timeoutBytes.0, timeoutBytes.1])
     }
 }

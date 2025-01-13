@@ -9,49 +9,47 @@
 import Foundation
 import Bluetooth
 
-/**
- Body Sensor Location
- 
- [Body Sensor Location](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.body_sensor_location.xml)
- */
+/// Body Sensor Location
+///
+/// [Body Sensor Location](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.body_sensor_location.xml)
 @frozen
 public enum GATTBodySensorLocation: UInt8, GATTCharacteristic {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bodySensorLocation }
-    
+
     internal static let length = MemoryLayout<UInt8>.size
-    
+
     /// Other
     case other = 0x00
-    
+
     /// Chest
     case chest = 0x01
-    
+
     /// Wrist
     case wrist = 0x02
-    
+
     /// Finger
     case finger = 0x03
-    
+
     /// Hand
     case hand = 0x04
-    
+
     /// Ear Lobe
     case earLobe = 0x05
-    
+
     /// Foot
     case foot = 0x06
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         self.init(rawValue: data[0])
     }
-    
+
     public var data: Data {
-        
+
         return Data([rawValue])
     }
 }
@@ -59,11 +57,11 @@ public enum GATTBodySensorLocation: UInt8, GATTCharacteristic {
 // MARK: - CustomStringConvertible
 
 extension GATTBodySensorLocation: CustomStringConvertible {
-    
+
     public var name: String {
-        
+
         switch self {
-            
+
         case .other: return "Other"
         case .chest: return "Chest"
         case .wrist: return "Wrist"
@@ -73,9 +71,9 @@ extension GATTBodySensorLocation: CustomStringConvertible {
         case .foot: return "Foot"
         }
     }
-    
+
     public var description: String {
-        
+
         return name
     }
 }

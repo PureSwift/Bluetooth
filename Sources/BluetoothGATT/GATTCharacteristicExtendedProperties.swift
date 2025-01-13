@@ -17,11 +17,11 @@ import Bluetooth
 /// This descriptor is readable without authentication and authorization being required.
 @frozen
 public struct GATTCharacteristicExtendedProperties: GATTDescriptor, OptionSet, Hashable, Sendable {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.characteristicExtendedProperties }
-    
+
     public var rawValue: UInt16
-    
+
     public init(rawValue: UInt16) {
         self.rawValue = rawValue
     }
@@ -30,7 +30,7 @@ public struct GATTCharacteristicExtendedProperties: GATTDescriptor, OptionSet, H
 // MARK: - ExpressibleByIntegerLiteral
 
 extension GATTCharacteristicExtendedProperties: ExpressibleByIntegerLiteral {
-    
+
     public init(integerLiteral rawValue: RawValue) {
         self.init(rawValue: rawValue)
     }
@@ -39,29 +39,29 @@ extension GATTCharacteristicExtendedProperties: ExpressibleByIntegerLiteral {
 // MARK: - DataConvertible
 
 extension GATTCharacteristicExtendedProperties: DataConvertible {
-    
+
     public static var length: Int { 2 }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.init(rawValue: rawValue)
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += rawValue.littleEndian
     }
-    
+
     public var dataLength: Int { Self.length }
 }
 
 // MARK: - CustomStringConvertible
 
 extension GATTCharacteristicExtendedProperties: CustomStringConvertible, CustomDebugStringConvertible {
-    
+
     #if hasFeature(Embedded)
     public var description: String {
         "0x" + rawValue.toHexadecimal()
@@ -71,7 +71,7 @@ extension GATTCharacteristicExtendedProperties: CustomStringConvertible, CustomD
     public var description: String {
         let descriptions: [(GATTCharacteristicExtendedProperties, StaticString)] = [
             (.reliableWrite, ".reliableWrite"),
-            (.writableAuxiliaries, ".writableAuxiliaries")
+            (.writableAuxiliaries, ".writableAuxiliaries"),
         ]
         return buildDescription(descriptions)
     }
@@ -84,10 +84,10 @@ extension GATTCharacteristicExtendedProperties: CustomStringConvertible, CustomD
 // MARK: - Options
 
 public extension GATTCharacteristicExtendedProperties {
-    
+
     /// Reliable Write enabled
-    static var reliableWrite: GATTCharacteristicExtendedProperties          { 0b01 }
-    
+    static var reliableWrite: GATTCharacteristicExtendedProperties { 0b01 }
+
     /// Writable Auxiliaries enabled
-    static var writableAuxiliaries: GATTCharacteristicExtendedProperties    { 0b10 }
+    static var writableAuxiliaries: GATTCharacteristicExtendedProperties { 0b10 }
 }

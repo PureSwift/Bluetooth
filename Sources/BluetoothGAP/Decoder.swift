@@ -11,57 +11,57 @@ import Foundation
 import Bluetooth
 
 /// GAP Data Decoder
-public struct GAPDataDecoder <Data: DataContainer> {
-    
+public struct GAPDataDecoder<Data: DataContainer> {
+
     // MARK: - Properties
-        
+
     #if !hasFeature(Embedded)
     /// Ignore unknown types.
     public var ignoreUnknownType: Bool = false
-    
+
     public var types = [GAPData.Type]() {
         didSet {
             dataTypes = [GAPDataType: GAPData.Type](minimumCapacity: types.count)
             types.forEach { dataTypes[$0.dataType] = $0 }
         }
     }
-    
+
     internal private(set) var dataTypes: [GAPDataType: GAPData.Type] = [:]
     #endif
-    
+
     // MARK: - Initialization
-    
+
     /// Initialize with default data types.
     public init() {
-        
+
         #if !hasFeature(Embedded)
         /// initialize with default precomputed values
         self.types = Self.defaultTypes
         self.dataTypes = Self.defaultDataTypes
         #endif
     }
-    
+
     // MARK: - Methods
-    
+
     #if !hasFeature(Embedded)
     public func decode(from data: Data) throws(GAPDataDecoderError) -> [GAPData] {
         return try decode(data: data, reserveCapacity: 3)
     }
-    
+
     @usableFromInline
     internal func decode(data: Data, reserveCapacity capacity: Int) throws(GAPDataDecoderError) -> [GAPData] {
-        
+
         guard data.isEmpty == false
-            else { return [] }
-        
+        else { return [] }
+
         var elements = [GAPData]()
         elements.reserveCapacity(capacity)
-        
+
         var offset = 0
         try Self.decode(data: data, offset: &offset) { (type, slice, offset) throws(GAPDataDecoderError) in
             if let gapType = dataTypes[type] {
                 guard let decodable = gapType.init(data: slice)
-                    else { throw .cannotDecode(type, offset: offset) }
+                else { throw .cannotDecode(type, offset: offset) }
                 elements.append(decodable)
                 return true
             } else if ignoreUnknownType {
@@ -70,66 +70,66 @@ public struct GAPDataDecoder <Data: DataContainer> {
                 throw .unknownType(type, offset: offset)
             }
         }
-        
+
         return elements
     }
-    
+
     @usableFromInline
     internal static func decode(data: Data, reserveCapacity capacity: Int = 3) throws(GAPDataDecoderError) -> [(GAPDataType, Data)] {
-        
+
         guard data.isEmpty == false
-            else { return [] }
-        
+        else { return [] }
+
         var elements = [(GAPDataType, Data)]()
         elements.reserveCapacity(capacity)
-        
+
         var offset = 0
         try decode(data: data, offset: &offset) { (type, data, offset) in
             elements.append((type, data))
             return true
         }
-        
+
         return elements
     }
     #endif
-    
+
     @usableFromInline
     internal static func decode(data: Data, offset: inout Int, _ block: (GAPDataType, Data, Int) throws(GAPDataDecoderError) -> (Bool)) throws(GAPDataDecoderError) {
-        
+
         while offset < data.count {
-            
+
             // get length
-            let length = Int(data[offset]) // 0
+            let length = Int(data[offset])  // 0
             offset += 1
             guard offset < data.count else {
                 if length == 0 {
-                    break // EOF
+                    break  // EOF
                 } else {
                     throw .insufficientBytes(expected: offset + 1, actual: data.count)
                 }
             }
-            
+
             // get type
-            let type = GAPDataType(rawValue: data[offset]) // 1
-            
+            let type = GAPDataType(rawValue: data[offset])  // 1
+
             // ignore zeroed bytes
             guard (type.rawValue == 0 && length == 0) == false
-                else { break }
-            
+            else { break }
+
             // get value
             let slice: Data
-            
+
             if length > 0 {
-                let dataRange = offset + 1 ..< offset + length // 2 ..< 2 + length
+                let dataRange = offset + 1..<offset + length  // 2 ..< 2 + length
                 offset = dataRange.upperBound
                 guard offset <= data.count
-                    else { throw .insufficientBytes(expected: offset + 1, actual: data.count) }
-                
+                else { throw .insufficientBytes(expected: offset + 1, actual: data.count) }
+
                 slice = data.subdata(in: dataRange)
             } else {
                 slice = Data()
             }
-            
+
             // process and continue
             guard try block(type, slice, offset) else { return }
         }
@@ -137,9 +137,9 @@ public struct GAPDataDecoder <Data: DataContainer> {
 }
 
 internal extension GAPDataDecoder {
-    
+
     static func decodeFirst<T: GAPData>(_ type: T.Type, _ offset: inout Int, _ data: Data) throws(GAPDataDecoderError) -> T? {
-        
+
         var offset = 0
         var value: T?
         try decode(data: data, offset: &offset) { (dataType, slice, offset) throws(GAPDataDecoderError) in
@@ -152,27 +152,27 @@ internal extension GAPDataDecoder {
         }
         return value
     }
-    
+
     static func decodeFirst<T: GAPData>(_ type: T.Type, from data: Data) throws(GAPDataDecoderError) -> T? {
-        
+
         var offset = 0
         return try decodeFirst(type, &offset, data)
     }
 }
 
 public extension GAPDataDecoder {
-    
+
     static func decode<T: GAPData>(_ type: T.Type, from data: Data) throws(GAPDataDecoderError) -> T {
-        
+
         var offset = 0
         guard let value = try decodeFirst(type, &offset, data) else {
             throw .notFound(T.dataType)
         }
         return value
     }
-    
+
     static func decode<T0: GAPData, T1: GAPData>(_ type0: T0.Type, _ type1: T1.Type, from data: Data) throws(GAPDataDecoderError) -> (T0, T1) {
-        
+
         var offset = 0
         guard let value0 = try decodeFirst(type0, &offset, data) else {
             throw .notFound(T0.dataType)
@@ -182,9 +182,9 @@ public extension GAPDataDecoder {
         }
         return (value0, value1)
     }
-    
+
     static func decode<T0: GAPData, T1: GAPData, T2: GAPData>(_ type0: T0.Type, _ type1: T1.Type, _ type2: T2.Type, from data: Data) throws(GAPDataDecoderError) -> (T0, T1, T2) {
-        
+
         var offset = 0
         guard let value0 = try decodeFirst(type0, &offset, data) else {
             throw .notFound(T0.dataType)
@@ -197,9 +197,9 @@ public extension GAPDataDecoder {
         }
         return (value0, value1, value2)
     }
-    
+
     static func decode<T0: GAPData, T1: GAPData, T2: GAPData, T3: GAPData>(_ type0: T0.Type, _ type1: T1.Type, _ type2: T2.Type, _ type3: T3.Type, from data: Data) throws(GAPDataDecoderError) -> (T0, T1, T2, T3) {
-        
+
         var offset = 0
         guard let value0 = try decodeFirst(type0, &offset, data) else {
             throw .notFound(T0.dataType)
@@ -221,7 +221,7 @@ public extension GAPDataDecoder {
 
 /// GAP Data Decoder Error
 public enum GAPDataDecoderError: Swift.Error, Sendable {
-    
+
     case insufficientBytes(expected: Int, actual: Int)
     case cannotDecode(GAPDataType, offset: Int)
     case unknownType(GAPDataType, offset: Int)
@@ -232,14 +232,14 @@ public enum GAPDataDecoderError: Swift.Error, Sendable {
 
 #if !hasFeature(Embedded)
 internal extension GAPDataDecoder {
-    
+
     static var defaultDataTypes: [GAPDataType: GAPData.Type] {
         let defaultTypes = self.defaultTypes
         var types = [GAPDataType: GAPData.Type](minimumCapacity: defaultTypes.count)
         defaultTypes.forEach { types[$0.dataType] = $0 }
         return types
     }
-    
+
     static var defaultTypes: [GAPData.Type] {
         [
             GAP3DInformation.self,
@@ -281,9 +281,8 @@ internal extension GAPDataDecoder {
             GAPSlaveConnectionIntervalRange.self,
             GAPTransportDiscoveryData<Data>.self,
             GAPTxPowerLevel.self,
-            GAPURI.self
+            GAPURI.self,
         ]
     }
 }
 #endif
-

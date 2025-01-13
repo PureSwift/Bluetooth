@@ -21,11 +21,11 @@ import Bluetooth
 /// Upon connection of non-binded clients, this descriptor is set to the default value.
 @frozen
 public struct GATTClientCharacteristicConfiguration: GATTDescriptor, OptionSet, Hashable, Sendable {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.clientCharacteristicConfiguration }
-    
+
     public var rawValue: UInt16
-    
+
     public init(rawValue: UInt16) {
         self.rawValue = rawValue
     }
@@ -34,7 +34,7 @@ public struct GATTClientCharacteristicConfiguration: GATTDescriptor, OptionSet, 
 // MARK: - ExpressibleByIntegerLiteral
 
 extension GATTClientCharacteristicConfiguration: ExpressibleByIntegerLiteral {
-    
+
     public init(integerLiteral rawValue: RawValue) {
         self.init(rawValue: rawValue)
     }
@@ -43,32 +43,32 @@ extension GATTClientCharacteristicConfiguration: ExpressibleByIntegerLiteral {
 // MARK: - DataConvertible
 
 extension GATTClientCharacteristicConfiguration: DataConvertible {
-    
+
     public static var length: Int { 2 }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let rawValue = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
         self.init(rawValue: rawValue)
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += rawValue.littleEndian
     }
-    
+
     public var dataLength: Int { Self.length }
 }
 
 // MARK: - Options
 
 public extension GATTClientCharacteristicConfiguration {
-    
+
     /// Notifications enabled
     static var notify: GATTClientCharacteristicConfiguration { 0b01 }
-    
+
     /// Indications enabled
     static var indicate: GATTClientCharacteristicConfiguration { 0b10 }
 }
@@ -76,7 +76,7 @@ public extension GATTClientCharacteristicConfiguration {
 // MARK: - CustomStringConvertible
 
 extension GATTClientCharacteristicConfiguration: CustomStringConvertible, CustomDebugStringConvertible {
-    
+
     #if hasFeature(Embedded)
     public var description: String {
         "0x" + rawValue.toHexadecimal()
@@ -86,7 +86,7 @@ extension GATTClientCharacteristicConfiguration: CustomStringConvertible, Custom
     public var description: String {
         let descriptions: [(GATTClientCharacteristicConfiguration, StaticString)] = [
             (.notify, ".notify"),
-            (.indicate, ".indicate")
+            (.indicate, ".indicate"),
         ]
         return buildDescription(descriptions)
     }

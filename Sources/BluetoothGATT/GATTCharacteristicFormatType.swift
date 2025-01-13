@@ -15,7 +15,7 @@
 /// If the Characteristic Value is less than an octet, it occupies an entire octet.
 @frozen
 public enum GATTCharacteristicFormatType: UInt8 {
-    
+
     case rfu = 0x00
     case boolean = 0x01
     case bit2 = 0x02
@@ -49,14 +49,14 @@ public enum GATTCharacteristicFormatType: UInt8 {
 // MARK: - CustomStringConvertible
 
 extension GATTCharacteristicFormatType: CustomStringConvertible {
-    
+
     public var name: String? {
-        
+
         return characteristicFormatTypeNames[self]
     }
-    
+
     public var description: String {
-        
+
         return characteristicFormatTypeDescription[self] ?? rawValue.description
     }
 }
@@ -89,7 +89,7 @@ internal let characteristicFormatTypeNames: [GATTCharacteristicFormatType: Strin
     .duint16: "duint16",
     .utf8s: "utf8s",
     .utf16s: "utf16s",
-    .struct: "struct"
+    .struct: "struct",
 ]
 
 internal let characteristicFormatTypeDescription: [GATTCharacteristicFormatType: String] = [
@@ -120,5 +120,5 @@ internal let characteristicFormatTypeDescription: [GATTCharacteristicFormatType:
     .duint16: "IEEE-20601 format",
     .utf8s: "UTF-8 string",
     .utf16s: "UTF-16 string",
-    .struct: "Opaque structure"
+    .struct: "Opaque structure",
 ]

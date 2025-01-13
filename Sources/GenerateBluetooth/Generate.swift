@@ -1,6 +1,6 @@
 //
 //  Generate.swift
-//  
+//
 //
 //  Created by Alsey Coleman Miller on 6/12/22.
 //
@@ -10,12 +10,13 @@ import BluetoothMetadata
 
 @main
 struct GenerateTool {
-    
+
     static func main() throws {
         // parse arguments
         let arguments = CommandLine.arguments
         guard arguments.count > 1,
-            let commandType = CommandType(rawValue: arguments[1]) else {
+            let commandType = CommandType(rawValue: arguments[1])
+        else {
             throw CommandError.invalidArguments(arguments)
         }
         switch commandType {
@@ -76,7 +77,7 @@ struct GenerateTool {
 }
 
 enum CommandType: String {
-    
+
     case companyIdentifier
     case companyIdentifierTests
     case unitIdentifier
@@ -85,6 +86,6 @@ enum CommandType: String {
 }
 
 enum CommandError: Error {
-    
+
     case invalidArguments([String])
 }
