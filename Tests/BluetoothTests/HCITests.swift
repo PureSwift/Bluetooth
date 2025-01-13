@@ -67,7 +67,7 @@ import Foundation
          HC Total Num LE Data Packets: 0x000F
          */
         var readBufferSizeReturn: HCILEReadBufferSize!
-        (readBufferSizeReturn = try await hostController.readBufferSize())
+        readBufferSizeReturn = try await hostController.readBufferSize()
         #expect(hostController.queue.isEmpty)
 
         #expect(readBufferSizeReturn.dataPacketLength == 0x00FB)
@@ -106,7 +106,7 @@ import Foundation
          */
 
         var lowEnergyFeatureSet: LowEnergyFeatureSet!
-        (lowEnergyFeatureSet = try await hostController.lowEnergyReadLocalSupportedFeatures())
+        lowEnergyFeatureSet = try await hostController.lowEnergyReadLocalSupportedFeatures()
         #expect(hostController.queue.isEmpty)
 
         #expect(lowEnergyFeatureSet.rawValue == 0x0000_0000_0000_003F)
@@ -275,7 +275,7 @@ import Foundation
         hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x01, 0x10, 0x00, 0x08, 0xC2, 0x12, 0x08, 0x0F, 0x00, 0x9A, 0x21]))
 
         var localVersionInformation: HCILocalVersionInformation!
-        (localVersionInformation = try await hostController.readLocalVersionInformation())
+        localVersionInformation = try await hostController.readLocalVersionInformation()
         #expect(hostController.queue.isEmpty)
 
         #expect(localVersionInformation.hciVersion.rawValue == 0x08)
@@ -304,7 +304,7 @@ import Foundation
         )
 
         var address: BluetoothAddress = .zero
-        (address = try await hostController.readDeviceAddress())
+        address = try await hostController.readDeviceAddress()
         #expect(hostController.queue.isEmpty)
         #expect(address != .zero)
         #expect(address.rawValue == "AC:BC:32:A6:67:42")
@@ -351,7 +351,7 @@ import Foundation
             hostController.queue = [.command(opcode, commandData), .event(eventData)]
 
             var returnedLocalName: String = ""
-            (returnedLocalName = try await hostController.readLocalName())
+            returnedLocalName = try await hostController.readLocalName()
             #expect(hostController.queue.isEmpty)
             #expect(localName == returnedLocalName, "\(localName) == \(returnedLocalName)")
         }
@@ -605,7 +605,7 @@ import Foundation
         hostController.queue.append(.event([0x3E, 0x0C, 0x04, 0x00, 0x41, 0x00, 0x1D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
 
         var features = LowEnergyFeatureSet()
-        (features = try await hostController.lowEnergyReadRemoteUsedFeatures(connectionHandle: connectionHandle))
+        features = try await hostController.lowEnergyReadRemoteUsedFeatures(connectionHandle: connectionHandle)
 
         #expect(hostController.queue.isEmpty)
         #expect(features.isEmpty == false, "Empty features")
@@ -1097,7 +1097,7 @@ import Foundation
         hostController.queue.append(.event([0x3E, 0x13, 0x01, 0x00, 0x41, 0x00, 0x00, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x09, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x05]))
 
         var connection: HCILEConnectionComplete!
-        (connection = try await hostController.lowEnergyCreateConnection(parameters: parameters))
+        connection = try await hostController.lowEnergyCreateConnection(parameters: parameters)
         #expect(hostController.queue.isEmpty)
         #expect(connection.status.rawValue == 0x00)
         #expect(connection.handle == 0x0041)
@@ -1356,7 +1356,7 @@ import Foundation
         #expect(HCILEEncryptReturn(data: Data([ /* 0x02, 0x17, 0x20, 0x00, */0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.hexadecimal == "99AD1B5226A37E3E058E3B8E27C2C666")
 
         var encryptedData: UInt128 = .zero
-        (encryptedData = try await hostController.lowEnergyEncrypt(key: key, data: plainTextData))
+        encryptedData = try await hostController.lowEnergyEncrypt(key: key, data: plainTextData)
 
         #expect(hostController.queue.isEmpty)
         #expect(encryptedData != .zero)
@@ -2113,7 +2113,7 @@ import Foundation
         let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
 
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
-        (lmpFeatures = try await hostController.readRemoteSupportedFeatures(handle: 0x000D))
+        lmpFeatures = try await hostController.readRemoteSupportedFeatures(handle: 0x000D)
         #expect(lmpFeatures == features)
     }
 
@@ -2171,7 +2171,7 @@ import Foundation
         hostController.queue.append(.event([0x0c, 0x08, 0x00, 0x0d, 0x00, 0x03, 0x4c, 0x00, 0x1c, 0x03]))
 
         var versionInformation: HCIReadRemoteVersionInformationComplete?
-        (versionInformation = try await hostController.readRemoteVersionInformation(handle: 0x000D))
+        versionInformation = try await hostController.readRemoteVersionInformation(handle: 0x000D)
         #expect(versionInformation?.version == 0x03)
         #expect(versionInformation?.companyId == 0x004c)
         #expect(versionInformation?.subversion == 0x031c)
@@ -2540,7 +2540,7 @@ import Foundation
         hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x17, 0x0c, 0x00, 0x00, 0x40]))
 
         var readPageTimeout: HCIReadPageTimeoutReturn?
-        (readPageTimeout = try await hostController.readPageTimeout())
+        readPageTimeout = try await hostController.readPageTimeout()
         #expect(readPageTimeout?.pageTimeout.rawValue == 0x4000)
         #expect(readPageTimeout?.pageTimeout.duration == 10.24)
     }
@@ -2577,9 +2577,10 @@ import Foundation
         let timeout = HCIWriteLinkSupervisionTimeout.LinkSupervisionTimeout(rawValue: 0x1F40)
 
         var writeTimeout: HCIWriteLinkSupervisionTimeoutReturn?
-        (writeTimeout = try await hostController.writeLinkSupervisionTimeout(
+        writeTimeout = try await hostController.writeLinkSupervisionTimeout(
             handle: 0x000D,
-            linkSupervisionTimeout: timeout))
+            linkSupervisionTimeout: timeout
+        )
         #expect(writeTimeout?.handle == 0x000D)
     }
 
@@ -2714,7 +2715,7 @@ import Foundation
         let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
 
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
-        (lmpFeatures = try await hostController.readLocalSupportedFeatures())
+        lmpFeatures = try await hostController.readLocalSupportedFeatures()
         #expect(lmpFeatures == features)
     }
 
@@ -2796,7 +2797,7 @@ import Foundation
         hostController.queue.append(.event([0x0e, 0x07, 0x01, 0x23, 0x0c, 0x00, 0x0c, 0x01, 0x38]))
 
         var readClassOfDevice: ClassOfDevice?
-        (readClassOfDevice = try await hostController.readClassOfDevice())
+        readClassOfDevice = try await hostController.readClassOfDevice()
 
         guard let classOfDevice = readClassOfDevice
         else {
