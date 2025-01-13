@@ -59,13 +59,13 @@ import Foundation
     @Test func expressibleByIntegerLiteral() {
         
         let values: [(UInt24, String)] = [
-            (.zero,     "0"),
-            (0x000000,  "0"),
-            (0x000001,  "1"),
-            (0x000020,  "32"),
-            (0xABCDEF,  "11259375"),
-            (16777215,  "16777215"),
-            (0xFFFFFF,  "16777215")
+            (.zero, "0"),
+            (0x000000, "0"),
+            (0x000001, "1"),
+            (0x000020, "32"),
+            (0xABCDEF, "11259375"),
+            (16777215, "16777215"),
+            (0xFFFFFF, "16777215")
         ]
         
         values.forEach { #expect($0.description == $1)  }

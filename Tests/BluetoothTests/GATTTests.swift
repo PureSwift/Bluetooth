@@ -1034,7 +1034,7 @@ struct GATTTests {
                 notification = nil
             }
             let indication: GATTClient<TestL2CAPSocket>.Notification?
-            if notificationCharacteristic.properties.contains(.indicate)  {
+            if notificationCharacteristic.properties.contains(.indicate) {
                 indication = { data in
                     Task {
                         await notificationData.indication(data)

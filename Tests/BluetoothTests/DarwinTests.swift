@@ -84,8 +84,7 @@ import Darwin
  https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers
  */
 
-enum IOKitBluetoothCompanyIdentifers: UInt16
-{
+enum IOKitBluetoothCompanyIdentifers: UInt16 {
     case EricssonTechnologyLicensing                        =    0
     case NokiaMobilePhones                                    =    1
     case Intel                                                =    2
@@ -352,7 +351,7 @@ enum IOKitBluetoothCompanyIdentifers: UInt16
     case WilliamDemantHolding                                =    263
     
     case InteropIdentifier                                    =    65535
-};
+}
 
 enum IOKitBluetoothGAPAppearance: UInt16 {
     

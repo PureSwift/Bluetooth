@@ -8,7 +8,6 @@
 
 import Foundation
 import Testing
-import Foundation
 @testable import Bluetooth
 
 @Suite struct IntegerTests {

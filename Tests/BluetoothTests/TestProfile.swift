@@ -30,12 +30,12 @@ public struct TestProfile {
                                                 TestProfile.Write,
                                                 TestProfile.WriteBlob,
                                                 TestProfile.WriteWithoutResponse,
-                                                TestProfile.WriteBlobWithoutResponse,
+                                                TestProfile.WriteBlobWithoutResponse
                                                 //TestProfile.Notify
         ])
     
     public static let Read = Characteristic(uuid: BluetoothUUID(rawValue: "E77D264C-F96F-11E5-80E0-23E070D5A8C7")!,
-                                            value: "Test Read-Only".data(using: .utf8)!,
+                                            value: Data("Test Read-Only".utf8),
                                             permissions: [.read],
                                             properties: [.read])
     
@@ -49,7 +49,7 @@ public struct TestProfile {
                                              permissions: [.write],
                                              properties: [.write])
     
-    public static let WriteValue = "Test Write".data(using: .utf8)!
+    public static let WriteValue = Data("Test Write".utf8)
     
     public static let WriteWithoutResponse = Characteristic(uuid: BluetoothUUID(rawValue: "AFE458FE-55BE-4D99-8C22-82FACE077D86")!,
                                                             value: Data(),

@@ -60,7 +60,7 @@ import Foundation
     @Test func equality() {
         let uuidA = _UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")
         let uuidB = _UUID(uuidString: "e621e1f8-c36c-495a-93fc-0c247a3e6e5f")
-        let uuidC = _UUID(uuid: (0xe6,0x21,0xe1,0xf8,0xc3,0x6c,0x49,0x5a,0x93,0xfc,0x0c,0x24,0x7a,0x3e,0x6e,0x5f))
+        let uuidC = _UUID(uuid: (0xe6, 0x21, 0xe1, 0xf8, 0xc3, 0x6c, 0x49, 0x5a, 0x93, 0xfc, 0x0c, 0x24, 0x7a, 0x3e, 0x6e, 0x5f))
         let uuidD = _UUID()
 
         #expect(uuidA == uuidB, "String case must not matter.")
@@ -76,7 +76,7 @@ import Foundation
     // `uuidString` should return an uppercase string
     // See: https://bugs.swift.org/browse/SR-865
     @Test func string() {
-        let uuid = _UUID(uuid: (0xe6,0x21,0xe1,0xf8,0xc3,0x6c,0x49,0x5a,0x93,0xfc,0x0c,0x24,0x7a,0x3e,0x6e,0x5f))
+        let uuid = _UUID(uuid: (0xe6, 0x21, 0xe1, 0xf8, 0xc3, 0x6c, 0x49, 0x5a, 0x93, 0xfc, 0x0c, 0x24, 0x7a, 0x3e, 0x6e, 0x5f))
         #expect(uuid.uuidString == "E621E1F8-C36C-495A-93FC-0C247A3E6E5F", "The uuidString representation must be uppercase.")
     }
 
@@ -91,7 +91,7 @@ import Foundation
         let values: [_UUID] = [
             _UUID(uuidString: "e621e1f8-c36c-495a-93fc-0c247a3e6e5f")!,
             _UUID(uuidString: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6")!,
-            _UUID(uuidString: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6")!,
+            _UUID(uuidString: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6")!
         ]
         let anyHashables = values.map(AnyHashable.init)
         #expect(_UUID.self == type(of: anyHashables[0].base))

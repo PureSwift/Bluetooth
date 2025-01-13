@@ -33,7 +33,7 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
             ("Characteristic", "CharacteristicUUID"),
             ("Descriptor", "DescriptorUUID"),
             ("Member", "MemberUUID"),
-            ("Declaration", "DeclarationUUID"),
+            ("Declaration", "DeclarationUUID")
         ]
         for (type, fileName) in uuidFiles {
             try bluetoothUUIDBuildCommands(

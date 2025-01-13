@@ -13,7 +13,7 @@ import Bluetooth
 @testable import BluetoothGAP
 import BluetoothHCI
 
-@Suite struct iBeaconTests {
+@Suite struct AppleBeaconTests {
     
     @Test func invalid() throws {
         
@@ -74,7 +74,7 @@ import BluetoothHCI
             0xAA, //    Major 2nd byte    set major value
             0x00, //    Minor 1st byte    set minor value
             0xBB, //    Minor 2nd byte    set minor value
-            0xb3 , //   Signal power (calibrated RSSI@1m)    signal power value
+            0xb3, //   Signal power (calibrated RSSI@1m)    signal power value
             0x00))
         
         #expect(advertisingData == testData)

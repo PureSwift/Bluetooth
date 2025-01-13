@@ -38,4 +38,3 @@ import Foundation
         #expect(UInt512.zero == 0)
     }
 }
-

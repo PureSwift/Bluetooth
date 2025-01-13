@@ -20,7 +20,7 @@ var package = Package(
         .macOS(.v10_15),
         .iOS(.v13),
         .watchOS(.v6),
-        .tvOS(.v13),
+        .tvOS(.v13)
     ],
     products: [
         .library(
@@ -74,7 +74,7 @@ var package = Package(
         .target(
             name: "BluetoothGATT",
             dependencies: [
-                "Bluetooth",
+                "Bluetooth"
             ]
         ),
         .target(
@@ -127,7 +127,7 @@ if buildDocs {
 }
 
 if generateCode {
-    for (index, _) in package.targets.enumerated() {
+    for index in package.targets.indices {
         package.targets[index].swiftSettings = [
             .define("SWIFTPM_ENABLE_PLUGINS")
         ]

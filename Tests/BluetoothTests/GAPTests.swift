@@ -637,7 +637,7 @@ import Bluetooth
         #expect(GAPLERole.bothSupportedCentralPreferred.preferred == .central)
     }
     
-    @Test func uRI() throws {
+    @Test func url() throws {
         
         let uriString = "/my/uri/string"
         let data = Data([15, 0x24, 47, 109, 121, 47, 117, 114, 105, 47, 115, 116, 114, 105, 110, 103])
@@ -651,8 +651,8 @@ import Bluetooth
         #expect(decoded.count == 1)
         #expect(GAPDataEncoder.encode(expectedData) == data)
         
-        #expect(decoded[0] as! GAPURI == uri)
-        #expect((decoded[0] as! GAPURI).description == uriString)
+        #expect(decoded[0] as? GAPURI == uri)
+        #expect((decoded[0] as? GAPURI)?.description == uriString)
     }
     
     @Test func indoorPositioning() {
@@ -949,10 +949,11 @@ internal extension GAPData {
 
 internal extension GAPDataDecoder {
     
-    static func decode(_ data: Data,
-                        types: [GAPData.Type],
-                        ignoreUnknownType: Bool = true) throws -> [GAPData] {
-        
+    static func decode(
+        _ data: Data,
+        types: [GAPData.Type],
+        ignoreUnknownType: Bool = true
+        ) throws -> [GAPData] {
         var decoder = GAPDataDecoder<Data>()
         decoder.types = types
         decoder.ignoreUnknownType = ignoreUnknownType

@@ -180,7 +180,7 @@ import Foundation
             "LE Read Supported States",
             "LE Receiver Test",
             "LE Transmitter Test",
-            "LE Test End",
+            "LE Test End"
             ])
         
         testCommandNames(InformationalCommand.self, names: [
@@ -352,7 +352,7 @@ import Foundation
         }
         
         // test local name shorter than 248 octets
-        do{
+        do {
             
             let localName = String(repeating: "M", count: 10)
             
@@ -1198,7 +1198,7 @@ import Foundation
         //var encryptionChange: TestHostController.LowEnergyEncryptionChange?
         (/* encryptionChange = */ try await hostController.lowEnergyStartEncryption(connectionHandle: connectionHandle,
                                                                                               randomNumber: randomNumber,
-                                                                                              encryptedDiversifier:      encryptedDiversifier,
+                                                                                              encryptedDiversifier: encryptedDiversifier,
                                                                                               longTermKey: longTermKey))
         
         //XCTAssert(hostController.queue.isEmpty)

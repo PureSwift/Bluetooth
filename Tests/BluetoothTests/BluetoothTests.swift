@@ -339,4 +339,3 @@ import BluetoothGATT
         }
     }
 }
-
