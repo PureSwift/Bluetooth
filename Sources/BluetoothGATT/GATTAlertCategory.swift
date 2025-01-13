@@ -26,7 +26,7 @@ public enum GATTAlertCategory: UInt8, GATTCharacteristic {
     
     internal static let length = 1
     
-    public static var uuid: BluetoothUUID { return .alertCategoryId }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertCategoryId }
     
     /// Simple Alert: General text alert or non-text alert
     case simpleAlert = 0

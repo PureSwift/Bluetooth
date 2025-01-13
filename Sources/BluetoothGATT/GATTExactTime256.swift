@@ -19,7 +19,7 @@ public struct GATTExactTime256: GATTCharacteristic {
     
     internal static let length = GATTDayDateTime.length + MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .exactTime256 }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.exactTime256 }
     
     public var dayDateTime: GATTDayDateTime
     

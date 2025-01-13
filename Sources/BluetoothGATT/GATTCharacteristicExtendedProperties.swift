@@ -18,7 +18,7 @@ import Bluetooth
 @frozen
 public struct GATTCharacteristicExtendedProperties: GATTDescriptor, OptionSet, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .characteristicExtendedProperties }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.characteristicExtendedProperties }
     
     public var rawValue: UInt16
     

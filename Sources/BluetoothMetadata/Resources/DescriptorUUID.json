@@ -1,0 +1,114 @@
+﻿{
+  "uuids": [
+    {
+      "uuid": 10496,
+      "name": "Characteristic Extended Properties",
+      "id": "org.bluetooth.descriptor.gatt.characteristic_extended_properties"
+    },
+    {
+      "uuid": 10497,
+      "name": "Characteristic User Description",
+      "id": "org.bluetooth.descriptor.gatt.characteristic_user_description"
+    },
+    {
+      "uuid": 10498,
+      "name": "Client Characteristic Configuration",
+      "id": "org.bluetooth.descriptor.gatt.client_characteristic_configuration"
+    },
+    {
+      "uuid": 10499,
+      "name": "Server Characteristic Configuration",
+      "id": "org.bluetooth.descriptor.gatt.server_characteristic_configuration"
+    },
+    {
+      "uuid": 10500,
+      "name": "Characteristic Presentation Format",
+      "id": "org.bluetooth.descriptor.gatt.characteristic_presentation_format"
+    },
+    {
+      "uuid": 10501,
+      "name": "Characteristic Aggregate Format",
+      "id": "org.bluetooth.descriptor.gatt.characteristic_aggregate_format"
+    },
+    {
+      "uuid": 10502,
+      "name": "Valid Range",
+      "id": "org.bluetooth.descriptor.valid_range"
+    },
+    {
+      "uuid": 10503,
+      "name": "External Report Reference",
+      "id": "org.bluetooth.descriptor.external_report_reference"
+    },
+    {
+      "uuid": 10504,
+      "name": "Report Reference",
+      "id": "org.bluetooth.descriptor.report_reference"
+    },
+    {
+      "uuid": 10505,
+      "name": "Number of Digitals",
+      "id": "org.bluetooth.descriptor.number_of_digitals"
+    },
+    {
+      "uuid": 10506,
+      "name": "Value Trigger Setting",
+      "id": "org.bluetooth.descriptor.value_trigger_setting"
+    },
+    {
+      "uuid": 10507,
+      "name": "Environmental Sensing Configuration",
+      "id": "org.bluetooth.descriptor.es_configuration"
+    },
+    {
+      "uuid": 10508,
+      "name": "Environmental Sensing Measurement",
+      "id": "org.bluetooth.descriptor.es_measurement"
+    },
+    {
+      "uuid": 10509,
+      "name": "Environmental Sensing Trigger Setting",
+      "id": "org.bluetooth.descriptor.es_trigger_setting"
+    },
+    {
+      "uuid": 10510,
+      "name": "Time Trigger Setting",
+      "id": "org.bluetooth.descriptor.time_trigger_setting"
+    },
+    {
+      "uuid": 10511,
+      "name": "Complete BR-EDR Transport Block Data",
+      "id": "org.bluetooth.descriptor.complete_br_edr_transport_block_data"
+    },
+    {
+      "uuid": 10512,
+      "name": "Observation Schedule",
+      "id": "org.bluetooth.descriptor.observation_schedule"
+    },
+    {
+      "uuid": 10513,
+      "name": "Valid Range and Accuracy",
+      "id": "org.bluetooth.descriptor.valid_range_accuracy"
+    },
+    {
+      "uuid": 10514,
+      "name": "Measurement Description",
+      "id": "org.bluetooth.descriptor.measurement_description"
+    },
+    {
+      "uuid": 10515,
+      "name": "Manufacturer Limits",
+      "id": "org.bluetooth.descriptor.manufacturer_limits"
+    },
+    {
+      "uuid": 10516,
+      "name": "Process Tolerances",
+      "id": "org.bluetooth.descriptor.process_tolerances"
+    },
+    {
+      "uuid": 10517,
+      "name": "IMD Trigger Setting",
+      "id": "org.bluetooth.descriptor.imd_trigger_setting"
+    }
+  ]
+}

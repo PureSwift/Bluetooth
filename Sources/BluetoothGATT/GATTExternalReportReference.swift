@@ -14,7 +14,7 @@ import Bluetooth
 @frozen
 public struct GATTExternalReportReference: GATTDescriptor, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .externalReportReference }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.externalReportReference }
     
     public var uuid: BluetoothUUID
     

@@ -23,7 +23,7 @@ public struct GATTAnaerobicHeartRateUpperLimit: GATTCharacteristic, Equatable, H
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .anaerobicHeartRateUpperLimit }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.anaerobicHeartRateUpperLimit }
     
     public var beats: BeatsPerMinute
     

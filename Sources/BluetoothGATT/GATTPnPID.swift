@@ -25,7 +25,7 @@ import Bluetooth
 @frozen
 public struct GATTPnPID: GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .pnpId }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.pnpId }
     
     internal static let length = 7
     

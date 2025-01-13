@@ -31,7 +31,7 @@ import Bluetooth
 @frozen
 public enum GATTAlertLevel: UInt8, GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .alertLevel }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertLevel }
     
     internal static let length = MemoryLayout<UInt8>.size
     

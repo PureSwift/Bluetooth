@@ -19,7 +19,7 @@ import Bluetooth
 @frozen
 public struct GATTIndoorPositioningConfiguration: GATTCharacteristic {
     
-    public static var uuid: BluetoothUUID { return .indoorPositioningConfiguration }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.indoorPositioningConfiguration }
     
     internal static let length = MemoryLayout<UInt8>.size
     

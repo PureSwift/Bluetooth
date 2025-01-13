@@ -323,7 +323,7 @@ public actor GATTClient <Socket: L2CAPConnection>: Sendable {
         descriptors: [Descriptor]
     ) async throws {
         
-        guard let descriptor = descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration })
+        guard let descriptor = descriptors.first(where: { $0.uuid == BluetoothUUID.Descriptor.clientCharacteristicConfiguration })
             else { throw Error.clientCharacteristicConfigurationNotAllowed(characteristic) }
         
         var clientConfiguration = GATTClientCharacteristicConfiguration()
@@ -875,7 +875,7 @@ public actor GATTClient <Socket: L2CAPConnection>: Sendable {
                 
                 let attribute = Attribute(
                     handle: handle,
-                    uuid: .characteristic,
+                    uuid: BluetoothUUID.Declaration.characteristic,
                     value: Data(characteristicData.value),
                     permissions: [.read]
                 )

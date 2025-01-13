@@ -108,13 +108,14 @@ import Bluetooth
         #expect(characteristic.level == percentage)
         #expect(characteristic.description == "34%")
         #expect(GATTBatteryLevel(level: percentage) != nil)  
-        #expect(GATTBatteryLevel.uuid == .batteryLevel)
+        #expect(GATTBatteryLevel.uuid == BluetoothUUID.Characteristic.batteryLevel)
         #expect(GATTBatteryLevel(data: data) == GATTBatteryLevel(data: data))
         (0 ... 100).forEach { #expect(GATTBatteryLevel(data: Data([$0])) != nil)  }
         (101 ... UInt8.max).forEach { #expect(GATTBatteryLevel(data: Data([$0])) == nil)  }
         
         // test percentage
-        #expect(GATTBatteryPercentage.unitType.description == "0x27AD (percentage)")
+        #expect(GATTBatteryPercentage.unitType.description == "percentage")
+        #expect(GATTBatteryPercentage.unitType.name == "percentage")
         #expect(GATTBatteryPercentage.unitType.type == "org.bluetooth.unit.percentage")
         #expect(GATTBatteryPercentage.unitType == .percentage)
         (0 ... 100).forEach { #expect(GATTBatteryPercentage(rawValue: $0) != nil)  }
@@ -253,7 +254,7 @@ import Bluetooth
         #expect(characteristic == 0)
         #expect(characteristic.rawValue == altitude)
         #expect(characteristic.description == "0")
-        #expect(GATTAltitude.uuid == .altitude)
+        #expect(GATTAltitude.uuid == BluetoothUUID.Characteristic.altitude)
         #expect(GATTAltitude(data: data) == GATTAltitude(data: data))
     }
     
@@ -274,7 +275,7 @@ import Bluetooth
         #expect(characteristic.beats == beats)
         #expect(characteristic.description == "34")
         #expect(beats.description == "34")
-        #expect(GATTAerobicHeartRateLowerLimit.uuid == .aerobicHeartRateLowerLimit)
+        #expect(GATTAerobicHeartRateLowerLimit.uuid == BluetoothUUID.Characteristic.aerobicHeartRateLowerLimit)
         #expect(BeatsPerMinute.unitType == .beatsPerMinute)
     }
     
@@ -295,7 +296,7 @@ import Bluetooth
         #expect(characteristic.beats == beats)
         #expect(characteristic.description == "34")
         #expect(beats.description == "34")
-        #expect(GATTAerobicHeartRateUpperLimit.uuid == .aerobicHeartRateUpperLimit)
+        #expect(GATTAerobicHeartRateUpperLimit.uuid == BluetoothUUID.Characteristic.aerobicHeartRateUpperLimit)
         #expect(BeatsPerMinute.unitType == .beatsPerMinute)
     }
     
@@ -308,7 +309,7 @@ import Bluetooth
         
         #expect(characteristic.data == data)
         #expect(characteristic == .mild, "The value 0x01 should be interpreted as mild Alert")
-        #expect(GATTAlertLevel.uuid == .alertLevel)
+        #expect(GATTAlertLevel.uuid == BluetoothUUID.Characteristic.alertLevel)
     }
     
     @Test func aerobicThreshold() {
@@ -328,7 +329,7 @@ import Bluetooth
         #expect(characteristic.beats == beats)
         #expect(characteristic.description == "50")
         #expect(beats.description == "50")
-        #expect(GATTAerobicThreshold.uuid == .aerobicThreshold)
+        #expect(GATTAerobicThreshold.uuid == BluetoothUUID.Characteristic.aerobicThreshold)
         #expect(BeatsPerMinute.unitType == .beatsPerMinute)
     }
     
@@ -349,7 +350,7 @@ import Bluetooth
         #expect(characteristic.year == year)
         #expect(characteristic.description == "50")
         #expect(year.description == "50")
-        #expect(GATTAge.uuid == .age)
+        #expect(GATTAge.uuid == BluetoothUUID.Characteristic.age)
         #expect(Year.unitType == .year)
     }
     
@@ -366,7 +367,7 @@ import Bluetooth
         #expect(characteristic.states.contains(.vibrate))
         #expect(characteristic.states.contains(GATTAlertStatus.State.allCases))
         #expect(characteristic.description == "55")
-        #expect(GATTAlertStatus.uuid == .alertStatus)
+        #expect(GATTAlertStatus.uuid == BluetoothUUID.Characteristic.alertStatus)
         #expect(GATTAlertStatus(data: data) == GATTAlertStatus(data: data))
     }
 
@@ -387,7 +388,7 @@ import Bluetooth
         #expect(characteristic.beats == beats)
         #expect(characteristic.description == "34")
         #expect(beats.description == "34")
-        #expect(GATTAnaerobicHeartRateLowerLimit.uuid == .anaerobicHeartRateLowerLimit)
+        #expect(GATTAnaerobicHeartRateLowerLimit.uuid == BluetoothUUID.Characteristic.anaerobicHeartRateLowerLimit)
         #expect(GATTAnaerobicHeartRateLowerLimit(data: data) == GATTAnaerobicHeartRateLowerLimit(data: data))
         #expect(BeatsPerMinute.unitType == .beatsPerMinute)
         #expect(GATTAnaerobicHeartRateLowerLimit(data: Data([0x4f])) != GATTAnaerobicHeartRateLowerLimit(data: Data([0x5e])))
@@ -410,7 +411,7 @@ import Bluetooth
         #expect(characteristic.beats == beats)
         #expect(characteristic.description == "34")
         #expect(beats.description == "34")
-        #expect(GATTAnaerobicHeartRateUpperLimit.uuid == .anaerobicHeartRateUpperLimit)
+        #expect(GATTAnaerobicHeartRateUpperLimit.uuid == BluetoothUUID.Characteristic.anaerobicHeartRateUpperLimit)
         #expect(GATTAnaerobicHeartRateUpperLimit(data: data) == GATTAnaerobicHeartRateUpperLimit(data: data))
         #expect(BeatsPerMinute.unitType == .beatsPerMinute)
         #expect(GATTAnaerobicHeartRateUpperLimit(data: Data([0x4f])) != GATTAnaerobicHeartRateUpperLimit(data: Data([0x5e])))
@@ -428,39 +429,9 @@ import Bluetooth
         
         #expect(characteristic.data == data)
         #expect(GATTBarometricPressureTrend(data: Data([0x01])) == GATTBarometricPressureTrend.continuouslyFalling)
-        #expect(GATTBarometricPressureTrend.uuid == .barometricPressureTrend)
+        #expect(GATTBarometricPressureTrend.uuid == BluetoothUUID.Characteristic.barometricPressureTrend)
         #expect(GATTBarometricPressureTrend.unitType == .unitless)
         #expect(GATTBarometricPressureTrend(data: data) == GATTBarometricPressureTrend(data: data))
-    }
-    
-    @Test func analogOutput() {
-        
-        let data = Data([0x00, 0x00])
-        let output = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
-        guard let characteristics = GATTAnalogOutput(data: data)
-        else { Issue.record("Could not decode from bytes"); return }
-        
-        #expect(characteristics.data == data)
-        #expect(characteristics.output == output)
-        #expect(characteristics.description == "0")
-        #expect(GATTAnalogOutput.uuid == .analogOutput)
-        #expect(GATTAnalogOutput(data: data) == GATTAnalogOutput(data: data))
-    }
-    
-    @Test func analog() {
-        
-        let data = Data([0x00, 0x00])
-        let analog = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
-        guard let characteristics = GATTAnalog(data: data)
-            else { Issue.record("Could not decode from bytes"); return }
-        
-        #expect(characteristics.data == data)
-        #expect(characteristics.analog == analog)
-        #expect(characteristics.description == "0")
-        #expect(GATTAnalog.uuid == .analog)
-        #expect(GATTAnalog(data: data) == GATTAnalog(data: data))
     }
     
     @Test func bootMouseInputReport() {
@@ -475,7 +446,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.description == "1")
         #expect(characteristic == 1)
-        #expect(GATTBootMouseInputReport.uuid == .bootMouseInputReport)
+        #expect(GATTBootMouseInputReport.uuid == BluetoothUUID.Characteristic.bootMouseInputReport)
     }
     
     @Test func bootKeyboardInputReport() {
@@ -490,7 +461,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.description == "1")
         #expect(characteristic == 1)
-        #expect(GATTBootKeyboardInputReport.uuid == .bootKeyboardInputReport)
+        #expect(GATTBootKeyboardInputReport.uuid == BluetoothUUID.Characteristic.bootKeyboardInputReport)
     }
     
     @Test func bootKeyboardOutputReport() {
@@ -505,7 +476,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.description == "1")
         #expect(characteristic == 1)
-        #expect(GATTBootKeyboardOutputReport.uuid == .bootKeyboardOutputReport)
+        #expect(GATTBootKeyboardOutputReport.uuid == BluetoothUUID.Characteristic.bootKeyboardOutputReport)
     }
     
     @Test func batteryPowerState() {
@@ -520,7 +491,7 @@ import Bluetooth
         #expect(characteristic.dischargeState == .notSupported)
         #expect(characteristic.chargeState == .notCharging)
         #expect(characteristic.levelState == .criticallyLow)
-        #expect(GATTBatteryPowerState.uuid == .batteryPowerState)
+        #expect(GATTBatteryPowerState.uuid == BluetoothUUID.Characteristic.batteryEnergyStatus)
         #expect(GATTBatteryPowerState(data: data) == GATTBatteryPowerState(data: data))
     }
     
@@ -552,7 +523,7 @@ import Bluetooth
         #expect(GATTBodySensorLocation(data: Data([0x06]))?.description == "Foot", "The value 0x06 should be interpreted as Foot")
         
         // GATT characteristic UUID
-        #expect(GATTBodySensorLocation.uuid == .bodySensorLocation)
+        #expect(GATTBodySensorLocation.uuid == BluetoothUUID.Characteristic.bodySensorLocation)
         
         // equality
         #expect(GATTBodySensorLocation(data: data) == GATTBodySensorLocation(data: data))
@@ -567,7 +538,7 @@ import Bluetooth
         
         #expect(characteristic.data == data, "Encoded data does not match expected encoded data")
         #expect(characteristic == true, "The value 0x01 should be interpreted as Supported")
-        #expect(GATTCentralAddressResolution.uuid == .centralAddressResolution)
+        #expect(GATTCentralAddressResolution.uuid == BluetoothUUID.Characteristic.centralAddressResolution)
         #expect(GATTCentralAddressResolution(data: Data([0x00])) == false, "The value 0x00 should be interpreted as Not Supported")
     }
     
@@ -663,7 +634,7 @@ import Bluetooth
         
         #expect(characteristic.data == data)
         
-        #expect(GATTBodyCompositionMeasurement.uuid == .bodyCompositionMeasurement)
+        #expect(GATTBodyCompositionMeasurement.uuid == BluetoothUUID.Characteristic.bodyCompositionMeasurement)
     }
     
     @Test func cGMSessionRunTime() {
@@ -678,7 +649,7 @@ import Bluetooth
         #expect(characteristic.sessionRunTime.description == "58655")
         #expect(characteristic.description == "58655 41601")
         
-        #expect(GATTCGMSessionRunTime.uuid == .cgmSessionRunTime)
+        #expect(GATTCGMSessionRunTime.uuid == BluetoothUUID.Characteristic.cgmSessionRunTime)
         #expect(GATTCGMSessionRunTime.Hour.unitType == .hour)
         #expect(GATTCGMSessionRunTime(data: data) == GATTCGMSessionRunTime(data: data))
         
@@ -696,7 +667,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == "bluetooth")
         #expect(characteristic.description == "bluetooth")
-        #expect(GATTModelNumber.uuid == .modelNumberString)
+        #expect(GATTModelNumber.uuid == BluetoothUUID.Characteristic.modelNumberString)
         #expect(GATTModelNumber(data: data) == "bluetooth")
     }
     
@@ -710,7 +681,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == "bluetooth")
         #expect(characteristic.description == "bluetooth")
-        #expect(GATTFirmwareRevisionString.uuid == .firmwareRevisionString)
+        #expect(GATTFirmwareRevisionString.uuid == BluetoothUUID.Characteristic.firmwareRevisionString)
         #expect(GATTFirmwareRevisionString(data: data) == "bluetooth")
     }
     
@@ -724,7 +695,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == "bluetooth")
         #expect(characteristic.description == "bluetooth")
-        #expect(GATTSoftwareRevisionString.uuid == .softwareRevisionString)
+        #expect(GATTSoftwareRevisionString.uuid == BluetoothUUID.Characteristic.softwareRevisionString)
         #expect(GATTSoftwareRevisionString(data: data) == "bluetooth")
     }
     
@@ -738,7 +709,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == "bluetooth")
         #expect(characteristic.description == "bluetooth")
-        #expect(GATTHardwareRevisionString.uuid == .hardwareRevisionString)
+        #expect(GATTHardwareRevisionString.uuid == BluetoothUUID.Characteristic.hardwareRevisionString)
         #expect(GATTHardwareRevisionString(data: data) == "bluetooth")
     }
     
@@ -752,7 +723,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == "bluetooth")
         #expect(characteristic.description == "bluetooth")
-        #expect(GATTSerialNumberString.uuid == .serialNumberString)
+        #expect(GATTSerialNumberString.uuid == BluetoothUUID.Characteristic.serialNumberString)
         #expect(GATTSerialNumberString(data: data) == "bluetooth")
     }
     
@@ -766,7 +737,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == "bluetooth")
         #expect(characteristic.description == "bluetooth")
-        #expect(GATTManufacturerNameString.uuid == .manufacturerNameString)
+        #expect(GATTManufacturerNameString.uuid == BluetoothUUID.Characteristic.manufacturerNameString)
         #expect(GATTManufacturerNameString(data: data) == "bluetooth")
     }
     
@@ -780,7 +751,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.vendorIdSource == .fromVendorIDValue)
         #expect(characteristic.description == "2 24321 24321 24321")
-        #expect(GATTPnPID.uuid == .pnpId)
+        #expect(GATTPnPID.uuid == BluetoothUUID.Characteristic.pnpId)
         #expect(GATTPnPID(data: data) == GATTPnPID(data: data))
         
         #expect(characteristic.vendorIdSource.description == "2")
@@ -791,7 +762,7 @@ import Bluetooth
     
     @Test func systemID() {
         
-        #expect(GATTSystemID.uuid == .systemId)
+        #expect(GATTSystemID.uuid == BluetoothUUID.Characteristic.systemId)
         
         #expect(GATTSystemID(data: Data([])) == nil)
         #expect(GATTSystemID(data: Data([0xff])) == nil)
@@ -861,7 +832,7 @@ import Bluetooth
         let configurations: BitMaskOptionSet<Configuration> = [.coordinates, .coordinateSystemUsed, .txPowerField, .altitudeField, .floorNumber, .locationName]
         #expect(characteristic.data == data)
         #expect(characteristic.configurations == configurations, "The value 0x03 is interpreted as “Simple Alert and Email bits set")
-        #expect(GATTIndoorPositioningConfiguration.uuid == .indoorPositioningConfiguration)
+        #expect(GATTIndoorPositioningConfiguration.uuid == BluetoothUUID.Characteristic.indoorPositioningConfiguration)
     }
     
     @Test func latitude() {
@@ -876,7 +847,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == latitude)
         #expect(characteristic.description == "234")
-        #expect(GATTLatitude.uuid == .latitude)
+        #expect(GATTLatitude.uuid == BluetoothUUID.Characteristic.latitude)
         #expect(GATTLatitude(data: data) == GATTLatitude(data: data))
     }
     
@@ -892,7 +863,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == longitude)
         #expect(characteristic.description == "234")
-        #expect(GATTLongitude.uuid == .longitude)
+        #expect(GATTLongitude.uuid == BluetoothUUID.Characteristic.longitude)
         #expect(GATTLongitude(data: data) == GATTLongitude(data: data))
     }
     
@@ -908,7 +879,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == localNorthCoordinate)
         #expect(characteristic.description == "234")
-        #expect(GATTLocalNorthCoordinate.uuid == .localNorthCoordinate)
+        #expect(GATTLocalNorthCoordinate.uuid == BluetoothUUID.Characteristic.localNorthCoordinate)
         #expect(GATTLocalNorthCoordinate(data: data) == GATTLocalNorthCoordinate(data: data))
     }
     
@@ -924,7 +895,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == localEastCoordinate)
         #expect(characteristic.description == "234")
-        #expect(GATTLocalEastCoordinate.uuid == .localEastCoordinate)
+        #expect(GATTLocalEastCoordinate.uuid == BluetoothUUID.Characteristic.localEastCoordinate)
         #expect(GATTLocalEastCoordinate(data: data) == GATTLocalEastCoordinate(data: data))
     }
     
@@ -939,7 +910,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == data[0])
         #expect(characteristic.description == "234")
-        #expect(GATTFloorNumber.uuid == .floorNumber)
+        #expect(GATTFloorNumber.uuid == BluetoothUUID.Characteristic.floorNumber)
         #expect(GATTFloorNumber(data: data) == GATTFloorNumber(data: data))
     }
     
@@ -954,7 +925,7 @@ import Bluetooth
         #expect(characteristic.stationary == .mobile)
         #expect(characteristic.updateTime == .upTo3541s)
         #expect(characteristic.precision == .unknown)
-        #expect(GATTUncertainty.uuid == .uncertainty)
+        #expect(GATTUncertainty.uuid == BluetoothUUID.Characteristic.uncertainty)
         #expect(GATTUncertainty(data: data) == GATTUncertainty(data: data))
     }
     
@@ -968,7 +939,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.rawValue == "bluetooth")
         #expect(characteristic.description == "bluetooth")
-        #expect(GATTLocationName.uuid == .locationName)
+        #expect(GATTLocationName.uuid == BluetoothUUID.Characteristic.locationName)
         #expect(GATTLocationName(data: data) == "bluetooth")
     }
     
@@ -982,7 +953,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.day == .sunday)
         #expect(characteristic.description == "7")
-        #expect(GATTDayOfWeek.uuid == .dayOfWeek)
+        #expect(GATTDayOfWeek.uuid == BluetoothUUID.Characteristic.dayOfWeek)
         #expect(GATTDayOfWeek.Day.unitType == .day)
         #expect(GATTDayOfWeek(data: data) == GATTDayOfWeek(data: data))
     }
@@ -999,24 +970,8 @@ import Bluetooth
             #expect(characteristic.dateTime.data == Data([203, 7, 4, 24, 12, 5, 30]))
             #expect(characteristic.dayOfWeek == GATTDayOfWeek(day: .sunday))
             #expect(characteristic.dayOfWeek.day == .sunday)
-            #expect(GATTDayDateTime.uuid == .dayDateTime)
+            #expect(GATTDayDateTime.uuid == BluetoothUUID.Characteristic.dayDateTime)
             #expect(GATTDayDateTime(data: data) == GATTDayDateTime(data: data))
-        }
-    }
-    
-    @Test func exactTime100() {
-        
-        do {
-            let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 45])
-            
-            guard let characteristic = GATTExactTime100(data: data)
-                else { Issue.record(); return }
-            
-            #expect(characteristic.data == data)
-            #expect(characteristic.dayDateTime.data == Data([203, 7, 4, 24, 12, 5, 30, 7]))
-            #expect(characteristic.fraction100 == GATTExactTime100.Second(rawValue: 45))
-            #expect(GATTExactTime100.uuid == .exactTime100)
-            #expect(GATTExactTime100(data: data) == GATTExactTime100(data: data))
         }
     }
     
@@ -1031,7 +986,7 @@ import Bluetooth
             #expect(characteristic.data == data)
             #expect(characteristic.dayDateTime.data == Data([203, 7, 4, 24, 12, 5, 30, 7]))
             #expect(characteristic.fractions256 == 245)
-            #expect(GATTExactTime256.uuid == .exactTime256)
+            #expect(GATTExactTime256.uuid == BluetoothUUID.Characteristic.exactTime256)
             #expect(GATTExactTime256(data: data) == GATTExactTime256(data: data))
         }
     }
@@ -1050,7 +1005,7 @@ import Bluetooth
             
             #expect(characteristic.data == data)
             #expect(characteristic.rawValue == 12)
-            #expect(GATTTimeZone.uuid == .timeZone)
+            #expect(GATTTimeZone.uuid == BluetoothUUID.Characteristic.timeZone)
             #expect(GATTTimeZone(data: data) == GATTTimeZone(data: data))
         }
     }
@@ -1065,7 +1020,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic == .daylightTime)
         #expect(characteristic.description == "4")
-        #expect(GATTDstOffset.uuid == .dstOffset)
+        #expect(GATTDstOffset.uuid == BluetoothUUID.Characteristic.dstOffset)
         #expect(GATTDstOffset(data: data) == GATTDstOffset(data: data))
     }
     
@@ -1080,7 +1035,7 @@ import Bluetooth
             #expect(characteristic.data == data)
             #expect(characteristic.timeZone.data == Data([0x0c]))
             #expect(characteristic.dstOffset == .daylightTime)
-            #expect(GATTLocalTimeInformation.uuid == .localTimeInformation)
+            #expect(GATTLocalTimeInformation.uuid == BluetoothUUID.Characteristic.localTimeInformation)
             #expect(GATTLocalTimeInformation(data: data) == GATTLocalTimeInformation(data: data))
         }
     }
@@ -1095,7 +1050,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic == .networkTimeProtocol)
         #expect(characteristic.description == "1")
-        #expect(GATTTimeSource.uuid == .timeSource)
+        #expect(GATTTimeSource.uuid == BluetoothUUID.Characteristic.timeSource)
         #expect(GATTTimeSource(data: data) == GATTTimeSource(data: data))
     }
     
@@ -1111,7 +1066,7 @@ import Bluetooth
             #expect(characteristic.rawValue == 12)
             #expect(characteristic.description == "12")
             #expect(characteristic == 12)
-            #expect(GATTTimeAccuracy.uuid == .timeAccuracy)
+            #expect(GATTTimeAccuracy.uuid == BluetoothUUID.Characteristic.timeAccuracy)
             #expect(GATTTimeAccuracy(data: data) == GATTTimeAccuracy(data: data))
         }
     }
@@ -1136,23 +1091,9 @@ import Bluetooth
             #expect(characteristic.hoursSinceUpdate.description == "6")
             #expect(Day.unitType == .day)
             #expect(Hour.unitType == .hour)
-            #expect(GATTReferenceTimeInformation.uuid == .referenceTimeInformation)
+            #expect(GATTReferenceTimeInformation.uuid == BluetoothUUID.Characteristic.referenceTimeInformation)
             #expect(GATTReferenceTimeInformation(data: data) == GATTReferenceTimeInformation(data: data))
         }
-    }
-    
-    @Test func timeBroadcast() {
-        let data = Data([203, 7, 4, 24, 12, 5, 30, 7, 245, 0x0c, 4, 0x03, 0x0b, 5, 6])
-        
-        guard let characteristic = GATTTimeBroadcast(data: data)
-            else { Issue.record("Could not decode from bytes"); return }
-        
-        #expect(characteristic.data == data)
-        #expect(characteristic.time == GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
-        #expect(characteristic.localTime == GATTLocalTimeInformation(data: Data([0x0c, 4])))
-        #expect(characteristic.referenceTime == GATTReferenceTimeInformation(data: Data([0x03, 0x0b, 5, 6])))
-        #expect(GATTTimeBroadcast.uuid == .timeBroadcast)
-        #expect(GATTTimeBroadcast(data: data) == GATTTimeBroadcast(data: data))
     }
     
     @Test func crossTrainerData() {
@@ -1199,7 +1140,7 @@ import Bluetooth
                 else { Issue.record("Could not decode from bytes"); return }
             
             #expect(characteristic != nil)
-            #expect(GATTCrossTrainerData.uuid == .crossTrainerData)
+            #expect(GATTCrossTrainerData.uuid == BluetoothUUID.Characteristic.crossTrainerData)
             #expect(characteristic.instantaneousSpeed == KilometerPerHour(rawValue: 1285))
             #expect(characteristic.averageSpeed == KilometerPerHour(rawValue: 1285))
             #expect(characteristic.totalDistance == MetreBit24(rawValue: 328965))
@@ -1274,7 +1215,7 @@ import Bluetooth
         
         #expect(GATTTimeUpdateControlPoint(data: Data([1])) == .getReferenceUpdate)
         #expect(GATTTimeUpdateControlPoint(data: Data([2])) == .cancelReferenceUpdate)
-        #expect(GATTTimeUpdateControlPoint.uuid == .timeUpdateControlPoint)
+        #expect(GATTTimeUpdateControlPoint.uuid == BluetoothUUID.Characteristic.timeUpdateControlPoint)
         #expect(GATTTimeUpdateControlPoint(data: data) == GATTTimeUpdateControlPoint(data: data))
     }
     
@@ -1288,7 +1229,7 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.currentState == .idle)
         #expect(characteristic.result == .noConnectionToReference)
-        #expect(GATTTimeUpdateState.uuid == .timeUpdateState)
+        #expect(GATTTimeUpdateState.uuid == BluetoothUUID.Characteristic.timeUpdateState)
         #expect(GATTTimeUpdateState(data: data) == GATTTimeUpdateState(data: data))
     }
     
@@ -1303,7 +1244,7 @@ import Bluetooth
             #expect(characteristic.data == data)
             #expect(characteristic.datetime == GATTDateTime(data: Data([203, 7, 4, 24, 12, 5, 30])))
             #expect(characteristic.dstOffset == GATTDstOffset(data: Data([8])))
-            #expect(GATTTimeWithDst.uuid == .timeWithDst)
+            #expect(GATTTimeWithDst.uuid == BluetoothUUID.Characteristic.timeWithDst)
             #expect(GATTTimeWithDst(data: data) == GATTTimeWithDst(data: data))
         }
     }
@@ -1317,30 +1258,13 @@ import Bluetooth
         #expect(characteristic.data == data)
         #expect(characteristic.exactTime == GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
         #expect(characteristic.adjustReason == BitMaskOptionSet<GATTCurrentTime.Flag>(rawValue: 0b00001111))
-        #expect(GATTCurrentTime.uuid == .currentTime)
+        #expect(GATTCurrentTime.uuid == BluetoothUUID.Characteristic.currentTime)
         #expect(GATTCurrentTime(data: data) == GATTCurrentTime(data: data))
         
         #expect(characteristic.adjustReason.contains(.manualTimeUpdate))
         #expect(characteristic.adjustReason.contains(.externalReference))
         #expect(characteristic.adjustReason.contains(.timeZoneChange))
         #expect(characteristic.adjustReason.contains(.dstChange))
-    }
-    
-    @Test func secondaryTimeZone() {
-        
-        typealias TimeZone = GATTSecondaryTimeZone.TimeZone
-        typealias RelativeInformation = GATTSecondaryTimeZone.RelativeInformation
-        
-        let data = Data([0b10000011, 0x0c, 4])
-        
-        guard let characteristic = GATTSecondaryTimeZone(data: data)
-            else { Issue.record("Could not decode from bytes"); return }
-        
-        #expect(characteristic.data == data)
-        #expect(characteristic.timeZone == .atDestination)
-        #expect(characteristic.relativeInformation == .localTime)
-        #expect(GATTSecondaryTimeZone.uuid == .secondaryTimeZone)
-        #expect(GATTSecondaryTimeZone(data: data) == GATTSecondaryTimeZone(data: data))
     }
     
     @Test func dateUTC() {
@@ -1357,7 +1281,7 @@ import Bluetooth
             #expect(characteristic.data == data)
             #expect(characteristic.date == GATTDateUTC.Day(rawValue: 16777214))
             #expect(characteristic.description == "16777214")
-            #expect(GATTDateUTC.uuid == .dateUtc)
+            #expect(GATTDateUTC.uuid == BluetoothUUID.Characteristic.dateUtc)
             #expect(GATTDateUTC.Day.unitType == .day)
             #expect(GATTDateUTC(data: data) == GATTDateUTC(data: data))
         }
@@ -1372,7 +1296,7 @@ import Bluetooth
         guard let characteristic = GATTScanRefresh(data: data)
             else { Issue.record("Could not decode from bytes"); return }
         
-        #expect(GATTScanRefresh.uuid == .scanRefresh)
+        #expect(GATTScanRefresh.uuid == BluetoothUUID.Characteristic.scanRefresh)
         #expect(characteristic.data == data)
         #expect(characteristic.description == "0")
         #expect(characteristic == .serverRequiredRefresh)
@@ -1388,7 +1312,7 @@ import Bluetooth
         #expect(characteristics.data == data)
         #expect(characteristics.scanInterval == LowEnergyScanTimeInterval(rawValue: 16384))
         #expect(characteristics.scanWindow == LowEnergyScanTimeInterval(rawValue: 16384))
-        #expect(GATTScanIntervalWindow.uuid == .scanIntervalWindow)
+        #expect(GATTScanIntervalWindow.uuid == BluetoothUUID.Characteristic.scanIntervalWindow)
         #expect(GATTScanIntervalWindow(data: data) == GATTScanIntervalWindow(data: data))
     }
     
@@ -1402,7 +1326,7 @@ import Bluetooth
         #expect(characteristics.data == data)
         #expect(characteristics.rawValue == 16384)
         #expect(characteristics.description == "4000")
-        #expect(GATTObjectType.uuid == .objectType)
+        #expect(GATTObjectType.uuid == BluetoothUUID.Characteristic.objectType)
         #expect(GATTObjectType(data: data) == GATTObjectType(data: data))
     }
     
@@ -1418,7 +1342,7 @@ import Bluetooth
         #expect(characteristics.data == data)
         #expect(characteristics.currentSize == Size(rawValue: 16394))
         #expect(characteristics.allocatedSize == Size(rawValue: 16394))
-        #expect(GATTObjectSize.uuid == .objectSize)
+        #expect(GATTObjectSize.uuid == BluetoothUUID.Characteristic.objectSize)
         #expect(GATTObjectSize(data: data) == GATTObjectSize(data: data))
     }
     
@@ -1432,7 +1356,7 @@ import Bluetooth
         #expect(characteristics.data == data)
         #expect(characteristics.rawValue == "bluetooth")
         #expect(characteristics.description == "bluetooth")
-        #expect(GATTObjectName.uuid == .objectName)
+        #expect(GATTObjectName.uuid == BluetoothUUID.Characteristic.objectName)
         #expect(GATTObjectName(data: data) == GATTObjectName(data: data))
     }
     
@@ -1446,7 +1370,7 @@ import Bluetooth
         #expect(characteristics.data == data)
         #expect(UInt64(characteristics.rawValue) == 281474976710655)
         #expect(characteristics.description == "281474976710655")
-        #expect(GATTObjectID.uuid == .objectId)
+        #expect(GATTObjectID.uuid == BluetoothUUID.Characteristic.objectId)
         #expect(GATTObjectID(data: data) == GATTObjectID(data: data))
     }
 }

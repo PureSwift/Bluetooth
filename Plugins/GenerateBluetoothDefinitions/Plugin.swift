@@ -23,13 +23,27 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
         try companyIdentifiersBuildCommands(for: context, target: target, commands: &commands)
         // Generate Bluetooth Company Identifier Unit Tests
         try companyIdentifierTestsBuildCommands(for: context, target: target, commands: &commands)
-        
         // Generate Bluetooth Unit Identifier Definitions
         try unitIdentifiersBuildCommands(for: context, target: target, commands: &commands)
         // Generate Bluetooth Unit Identifier Unit Tests
         try unitIdentifierTestsBuildCommands(for: context, target: target, commands: &commands)
-        
-        
+        // Generate Bluetooth UUID Definitions
+        let uuidFiles = [
+            ("Service", "ServiceUUID"),
+            ("Characteristic", "CharacteristicUUID"),
+            ("Descriptor", "DescriptorUUID"),
+            ("Member", "MemberUUID"),
+            ("Declaration", "DeclarationUUID"),
+        ]
+        for (type, fileName) in uuidFiles {
+            try bluetoothUUIDBuildCommands(
+                type: type,
+                fileName: fileName,
+                for: context,
+                target: target,
+                commands: &commands
+            )
+        }
         
         return commands
     }

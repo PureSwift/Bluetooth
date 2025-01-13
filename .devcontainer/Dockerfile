@@ -1,6 +1,6 @@
 # [Choice] Swift version: 
 ARG VARIANT=6.0.3-jammy
-FROM swift:${VARIANT}
+FROM swiftlang/swift:${VARIANT}
 
 # [Option] Install zsh
 ARG INSTALL_ZSH="true"

@@ -20,7 +20,7 @@ import Bluetooth
         database.dump()
         
         #expect(database.attributeGroups.count == TestProfile.services.count)
-        #expect(database.attributes[0x01].uuid == .characteristic)
+        #expect(database.attributes[0x01].uuid == BluetoothUUID.Declaration.characteristic)
         #expect(Array(database) == database.attributes)
         
         database.removeAll()

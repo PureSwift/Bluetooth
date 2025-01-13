@@ -23,5 +23,5 @@
 @frozen
 public struct GATTAlertNotificationService: GATTService {
     
-    public static var uuid: BluetoothUUID { return .alertNotificationService }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Service.alertNotification }
 }

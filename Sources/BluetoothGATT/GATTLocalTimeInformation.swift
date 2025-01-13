@@ -19,7 +19,7 @@ public struct GATTLocalTimeInformation: GATTCharacteristic, Equatable {
     
     internal static let length = GATTTimeZone.length + GATTDstOffset.length
     
-    public static var uuid: BluetoothUUID { return .localTimeInformation }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.localTimeInformation }
     
     public var timeZone: GATTTimeZone
     

@@ -28,7 +28,7 @@ public struct GATTNewAlert: GATTCharacteristic, Equatable {
     
     internal static let minLength = 2
     
-    public static var uuid: BluetoothUUID { return .newAlert }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.newAlert }
     
     /// Alert category.
     public var category: GATTAlertCategory

@@ -20,7 +20,7 @@ public struct GATTCrossTrainerData {
     
     internal static let minimumLength = MemoryLayout<UInt24>.size
     
-    public static var uuid: BluetoothUUID { return .crossTrainerData }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.crossTrainerData }
     
     internal var flags: BitMaskOptionSet<Flag> {
         

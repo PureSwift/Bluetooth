@@ -21,7 +21,7 @@ public struct GATTObjectType: Equatable, Hashable, RawRepresentable, GATTCharact
     
     internal static let length = MemoryLayout<UInt16>.size
 
-    public static var uuid: BluetoothUUID { return .objectType }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.objectType }
     
     public let rawValue: UInt16
     

@@ -24,7 +24,7 @@ import Bluetooth
 @frozen
 public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable {
     
-    public static var uuid: BluetoothUUID { return .alertCategoryIdBitMask }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertCategoryIdBitMask }
     
     /// This field shows the category of the new alert.
     public var categories: BitMaskOptionSet<Category>

@@ -167,9 +167,9 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     
     // MARK: - Properties
     
-    var log: (String) -> ()
+    nonisolated(unsafe) var log: (String) -> ()
     
-    var queue = [HCIMessage]()
+    nonisolated(unsafe) var queue = [HCIMessage]()
     
     // MARK: - Private
     

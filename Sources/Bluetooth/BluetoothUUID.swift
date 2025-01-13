@@ -50,8 +50,8 @@ extension BluetoothUUID: Equatable {
 extension BluetoothUUID: CustomStringConvertible {
     
     public var description: String {
-        #if !os(WASI) && !hasFeature(Embedded)
-        if let name = self.name {
+        #if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
+        if let name = self.metadata?.name {
             return "\(rawValue) (\(name))"
         } else {
             return rawValue
@@ -67,7 +67,7 @@ extension BluetoothUUID: CustomStringConvertible {
 extension BluetoothUUID: LosslessStringConvertible {
     
     public init?(_ string: String) {
-        #if !os(WASI) && !hasFeature(Embedded)
+        #if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
         var rawValue = string
         var name: String?
         // Find UUID name
@@ -88,7 +88,7 @@ extension BluetoothUUID: LosslessStringConvertible {
         self.init(rawValue: rawValue)
         // validate name
         if let name {
-            guard name == self.name else {
+            guard name == self.metadata?.name else {
                 return nil
             }
         }
@@ -387,5 +387,5 @@ public extension CBUUID {
 
 #if !hasFeature(Embedded) && SWIFTPM_ENABLE_MACROS
 @freestanding(expression)
-public macro BluetoothUUID(_ string: String) -> BluetoothUUID = #externalMacro(module: "BluetoothMacros", type: "BluetoothUUIDMacro")
+public macro BluetoothUUID(_ string: StaticString) -> BluetoothUUID = #externalMacro(module: "BluetoothMacros", type: "BluetoothUUIDMacro")
 #endif

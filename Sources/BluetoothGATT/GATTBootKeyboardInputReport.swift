@@ -21,7 +21,7 @@ public struct GATTBootKeyboardInputReport: RawRepresentable, GATTCharacteristic 
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .bootKeyboardInputReport }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bootKeyboardInputReport }
     
     public var rawValue: UInt8
     

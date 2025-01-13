@@ -21,7 +21,7 @@ public struct GATTAltitude: RawRepresentable, GATTCharacteristic, Equatable, Has
     
     internal static let length = MemoryLayout<UInt16>.size
     
-    public static var uuid: BluetoothUUID { return .altitude }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.altitude }
     
     public let rawValue: UInt16
     

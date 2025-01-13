@@ -19,28 +19,19 @@ extension GenerateBluetoothDefinitionsPlugin {
             return
         }
         // Generate Bluetooth Company Identifier Definitions
-        let inputFileName = "CompanyIdentifier.json"
-        let inputPath = target
-            .sourceFiles(withSuffix: "json")
-            .filter { $0.type == .unknown }
-            .first { $0.path.lastComponent == inputFileName }
-            .map { $0.path }
-        guard let inputPath = inputPath else {
-            Diagnostics.error("Missing \(inputFileName)")
-            throw CocoaError(CocoaError.fileNoSuchFile)
-        }
-        let outputDirectory = context.pluginWorkDirectory
-        let outputPaths = [
-            outputDirectory.appending("CompanyIdentifiers.swift"),
-            outputDirectory.appending("CompanyIdentifierNames.swift")
+        let outputDirectory = context.pluginWorkDirectoryURL
+        let outputURLs = [
+            outputDirectory.appending(component: "CompanyIdentifiers.swift")
         ]
+        let arguments = ["companyIdentifier"] + outputURLs.map { $0.path() }
         let command = Command.buildCommand(
             displayName: "Generate Bluetooth Company Identifier Definitions",
-            executable: try context.tool(named: "GenerateBluetooth").path,
-            arguments: ["companyIdentifier", inputPath] + outputPaths,
-            inputFiles: [inputPath],
-            outputFiles: outputPaths
+            executable: try context.tool(named: "GenerateBluetooth").url,
+            arguments: arguments,
+            inputFiles: [],
+            outputFiles: outputURLs
         )
+        assert(arguments.count == 2)
         commands.append(command)
     }
     
@@ -53,28 +44,17 @@ extension GenerateBluetoothDefinitionsPlugin {
         guard target.name == "BluetoothTests" else {
             return
         }
-        let inputFileName = "CompanyIdentifier.json"
-        guard let bluetoothTarget = try context.package.targets(named: ["Bluetooth"]).first as? SwiftSourceModuleTarget else {
-            fatalError("Missing Bluetooth target")
-        }
-        let inputPath = bluetoothTarget
-            .sourceFiles(withSuffix: "json")
-            .filter { $0.type == .unknown }
-            .first { $0.path.lastComponent == inputFileName }
-            .map { $0.path }
-        guard let inputPath = inputPath else {
-            Diagnostics.error("Missing \(inputFileName)")
-            throw CocoaError(CocoaError.fileNoSuchFile)
-        }
-        let outputDirectory = context.pluginWorkDirectory
-        let outputPath = outputDirectory.appending("CompanyIdentifierTests.swift")
+        let outputDirectory = context.pluginWorkDirectoryURL
+        let outputURL = outputDirectory.appending(component: "CompanyIdentifierTests.swift")
+        let arguments = ["companyIdentifierTests", outputURL.path()]
         let command = Command.buildCommand(
             displayName: "Generate Bluetooth Company Identifier Unit Tests",
-            executable: try context.tool(named: "GenerateBluetooth").path,
-            arguments: ["companyIdentifierTests", inputPath, outputPath],
-            inputFiles: [inputPath],
-            outputFiles: [outputPath]
+            executable: try context.tool(named: "GenerateBluetooth").url,
+            arguments: arguments,
+            inputFiles: [],
+            outputFiles: [outputURL]
         )
+        assert(arguments.count == 2)
         commands.append(command)
     }
 }

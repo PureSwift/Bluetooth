@@ -18,7 +18,7 @@ import Bluetooth
 @frozen
 public struct GATTManufacturerNameString: GATTCharacteristic, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .manufacturerNameString }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.manufacturerNameString }
     
     public var rawValue: String
     

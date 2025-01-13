@@ -1,0 +1,2668 @@
+﻿{
+  "uuids": [
+    {
+      "uuid": 65279,
+      "name": "GN Netcom"
+    },
+    {
+      "uuid": 65278,
+      "name": "GN Hearing A/S"
+    },
+    {
+      "uuid": 65277,
+      "name": "Gimbal, Inc."
+    },
+    {
+      "uuid": 65276,
+      "name": "Gimbal, Inc."
+    },
+    {
+      "uuid": 65275,
+      "name": "Telit Wireless Solutions (Formerly Stollmann E+V GmbH)"
+    },
+    {
+      "uuid": 65274,
+      "name": "PayPal, Inc."
+    },
+    {
+      "uuid": 65273,
+      "name": "PayPal, Inc."
+    },
+    {
+      "uuid": 65272,
+      "name": "Aplix Corporation"
+    },
+    {
+      "uuid": 65271,
+      "name": "Aplix Corporation"
+    },
+    {
+      "uuid": 65270,
+      "name": "Wicentric, Inc."
+    },
+    {
+      "uuid": 65269,
+      "name": "Dialog Semiconductor GmbH"
+    },
+    {
+      "uuid": 65268,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65267,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65266,
+      "name": "CSR"
+    },
+    {
+      "uuid": 65265,
+      "name": "CSR"
+    },
+    {
+      "uuid": 65264,
+      "name": "Intel"
+    },
+    {
+      "uuid": 65263,
+      "name": "Polar Electro Oy"
+    },
+    {
+      "uuid": 65262,
+      "name": "Polar Electro Oy"
+    },
+    {
+      "uuid": 65261,
+      "name": "Tile, Inc."
+    },
+    {
+      "uuid": 65260,
+      "name": "Tile, Inc."
+    },
+    {
+      "uuid": 65259,
+      "name": "Swirl Networks, Inc."
+    },
+    {
+      "uuid": 65258,
+      "name": "Swirl Networks, Inc."
+    },
+    {
+      "uuid": 65257,
+      "name": "Quintic Corp."
+    },
+    {
+      "uuid": 65256,
+      "name": "Quintic Corp."
+    },
+    {
+      "uuid": 65255,
+      "name": "Tencent Holdings Limited."
+    },
+    {
+      "uuid": 65254,
+      "name": "Silvair, Inc."
+    },
+    {
+      "uuid": 65253,
+      "name": "Nordic Semiconductor ASA"
+    },
+    {
+      "uuid": 65252,
+      "name": "Nordic Semiconductor ASA"
+    },
+    {
+      "uuid": 65251,
+      "name": "Anki, Inc."
+    },
+    {
+      "uuid": 65250,
+      "name": "Anki, Inc."
+    },
+    {
+      "uuid": 65249,
+      "name": "Anhui Huami Information Technology Co., Ltd."
+    },
+    {
+      "uuid": 65248,
+      "name": "Anhui Huami Information Technology Co., Ltd."
+    },
+    {
+      "uuid": 65247,
+      "name": "Design SHIFT"
+    },
+    {
+      "uuid": 65246,
+      "name": "Coin, Inc."
+    },
+    {
+      "uuid": 65245,
+      "name": "Jawbone"
+    },
+    {
+      "uuid": 65244,
+      "name": "Jawbone"
+    },
+    {
+      "uuid": 65243,
+      "name": "Perka, Inc."
+    },
+    {
+      "uuid": 65242,
+      "name": "ISSC Technologies Corp."
+    },
+    {
+      "uuid": 65241,
+      "name": "Pebble Technology Corporation"
+    },
+    {
+      "uuid": 65240,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65239,
+      "name": "Broadcom"
+    },
+    {
+      "uuid": 65238,
+      "name": "Broadcom"
+    },
+    {
+      "uuid": 65237,
+      "name": "Plantronics Inc."
+    },
+    {
+      "uuid": 65236,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65235,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65234,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65233,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65232,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65231,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65230,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65229,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65228,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65227,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65226,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65225,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65224,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65223,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65222,
+      "name": "Kocomojo, LLC"
+    },
+    {
+      "uuid": 65221,
+      "name": "Realtek Semiconductor Corp."
+    },
+    {
+      "uuid": 65220,
+      "name": "PLUS Location Systems"
+    },
+    {
+      "uuid": 65219,
+      "name": "360fly, Inc."
+    },
+    {
+      "uuid": 65218,
+      "name": "Blue Spark Technologies, Inc."
+    },
+    {
+      "uuid": 65217,
+      "name": "KDDI Corporation"
+    },
+    {
+      "uuid": 65216,
+      "name": "KDDI Corporation"
+    },
+    {
+      "uuid": 65215,
+      "name": "Nod, Inc."
+    },
+    {
+      "uuid": 65214,
+      "name": "Bose Corporation"
+    },
+    {
+      "uuid": 65213,
+      "name": "Clover Network, Inc"
+    },
+    {
+      "uuid": 65212,
+      "name": "Dexcom Inc"
+    },
+    {
+      "uuid": 65211,
+      "name": "adafruit industries"
+    },
+    {
+      "uuid": 65210,
+      "name": "Tencent Holdings Limited"
+    },
+    {
+      "uuid": 65209,
+      "name": "LG Electronics"
+    },
+    {
+      "uuid": 65208,
+      "name": "Meta Platforms, Inc."
+    },
+    {
+      "uuid": 65207,
+      "name": "Meta Platforms, Inc."
+    },
+    {
+      "uuid": 65206,
+      "name": "Vencer Co., Ltd"
+    },
+    {
+      "uuid": 65205,
+      "name": "WiSilica Inc."
+    },
+    {
+      "uuid": 65204,
+      "name": "WiSilica Inc."
+    },
+    {
+      "uuid": 65203,
+      "name": "Taobao"
+    },
+    {
+      "uuid": 65202,
+      "name": "Microsoft Corporation"
+    },
+    {
+      "uuid": 65201,
+      "name": "Electronics Tomorrow Limited"
+    },
+    {
+      "uuid": 65200,
+      "name": "Nest Labs Inc"
+    },
+    {
+      "uuid": 65199,
+      "name": "Nest Labs Inc"
+    },
+    {
+      "uuid": 65198,
+      "name": "Nokia"
+    },
+    {
+      "uuid": 65197,
+      "name": "Nokia"
+    },
+    {
+      "uuid": 65196,
+      "name": "Nokia"
+    },
+    {
+      "uuid": 65195,
+      "name": "Nokia"
+    },
+    {
+      "uuid": 65194,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65193,
+      "name": "Savant Systems LLC"
+    },
+    {
+      "uuid": 65192,
+      "name": "Savant Systems LLC"
+    },
+    {
+      "uuid": 65191,
+      "name": "UTC Fire and Security"
+    },
+    {
+      "uuid": 65190,
+      "name": "GoPro, Inc."
+    },
+    {
+      "uuid": 65189,
+      "name": "GoPro, Inc."
+    },
+    {
+      "uuid": 65188,
+      "name": "Paxton Access Ltd"
+    },
+    {
+      "uuid": 65187,
+      "name": "ITT Industries"
+    },
+    {
+      "uuid": 65186,
+      "name": "Intrepid Control Systems, Inc."
+    },
+    {
+      "uuid": 65185,
+      "name": "Intrepid Control Systems, Inc."
+    },
+    {
+      "uuid": 65184,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65183,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65182,
+      "name": "Renesas Design Netherlands B.V."
+    },
+    {
+      "uuid": 65181,
+      "name": "Mobiquity Networks Inc"
+    },
+    {
+      "uuid": 65180,
+      "name": "GSI Laboratories, Inc."
+    },
+    {
+      "uuid": 65179,
+      "name": "Samsara Networks, Inc"
+    },
+    {
+      "uuid": 65178,
+      "name": "Estimote"
+    },
+    {
+      "uuid": 65177,
+      "name": "Currant Inc"
+    },
+    {
+      "uuid": 65176,
+      "name": "Currant Inc"
+    },
+    {
+      "uuid": 65175,
+      "name": "Tesla Motors Inc."
+    },
+    {
+      "uuid": 65174,
+      "name": "Tesla Motors Inc."
+    },
+    {
+      "uuid": 65173,
+      "name": "Xiaomi Inc."
+    },
+    {
+      "uuid": 65172,
+      "name": "OttoQ In"
+    },
+    {
+      "uuid": 65171,
+      "name": "OttoQ In"
+    },
+    {
+      "uuid": 65170,
+      "name": "Jarden Safety & Security"
+    },
+    {
+      "uuid": 65169,
+      "name": "Shanghai Imilab Technology Co.,Ltd"
+    },
+    {
+      "uuid": 65168,
+      "name": "JUMA"
+    },
+    {
+      "uuid": 65167,
+      "name": "CSR"
+    },
+    {
+      "uuid": 65166,
+      "name": "ARM Ltd"
+    },
+    {
+      "uuid": 65165,
+      "name": "Interaxon Inc."
+    },
+    {
+      "uuid": 65164,
+      "name": "TRON Forum"
+    },
+    {
+      "uuid": 65163,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65162,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65161,
+      "name": "B&O Play A/S"
+    },
+    {
+      "uuid": 65160,
+      "name": "SALTO SYSTEMS S.L."
+    },
+    {
+      "uuid": 65159,
+      "name": "Qingdao Yeelink Information Technology Co., Ltd. ( 青岛亿联客信息技术有限公司 )"
+    },
+    {
+      "uuid": 65158,
+      "name": "HUAWEI Technologies Co., Ltd"
+    },
+    {
+      "uuid": 65157,
+      "name": "RF Digital Corp"
+    },
+    {
+      "uuid": 65156,
+      "name": "RF Digital Corp"
+    },
+    {
+      "uuid": 65155,
+      "name": "Blue Bite"
+    },
+    {
+      "uuid": 65154,
+      "name": "Medtronic Inc."
+    },
+    {
+      "uuid": 65153,
+      "name": "Medtronic Inc."
+    },
+    {
+      "uuid": 65152,
+      "name": "Doppler Lab"
+    },
+    {
+      "uuid": 65151,
+      "name": "Doppler Lab"
+    },
+    {
+      "uuid": 65150,
+      "name": "Awear Solutions Ltd"
+    },
+    {
+      "uuid": 65149,
+      "name": "Aterica Health Inc."
+    },
+    {
+      "uuid": 65148,
+      "name": "Telit Wireless Solutions (Formerly Stollmann E+V GmbH)"
+    },
+    {
+      "uuid": 65147,
+      "name": "Orion Labs, Inc."
+    },
+    {
+      "uuid": 65146,
+      "name": "Bragi GmbH"
+    },
+    {
+      "uuid": 65145,
+      "name": "Zebra Technologies"
+    },
+    {
+      "uuid": 65144,
+      "name": "Hewlett-Packard Company"
+    },
+    {
+      "uuid": 65143,
+      "name": "Hewlett-Packard Company"
+    },
+    {
+      "uuid": 65142,
+      "name": "TangoMe"
+    },
+    {
+      "uuid": 65141,
+      "name": "TangoMe"
+    },
+    {
+      "uuid": 65140,
+      "name": "unwire"
+    },
+    {
+      "uuid": 65139,
+      "name": "Abbott (formerly St. Jude Medical, Inc.)"
+    },
+    {
+      "uuid": 65138,
+      "name": "Abbott (formerly St. Jude Medical, Inc.)"
+    },
+    {
+      "uuid": 65137,
+      "name": "Plume Design Inc"
+    },
+    {
+      "uuid": 65136,
+      "name": "Beijing Jingdong Century Trading Co., Ltd."
+    },
+    {
+      "uuid": 65135,
+      "name": "LINE Corporation"
+    },
+    {
+      "uuid": 65134,
+      "name": "The University of Tokyo"
+    },
+    {
+      "uuid": 65133,
+      "name": "The University of Tokyo"
+    },
+    {
+      "uuid": 65132,
+      "name": "TASER International, Inc."
+    },
+    {
+      "uuid": 65131,
+      "name": "TASER International, Inc."
+    },
+    {
+      "uuid": 65130,
+      "name": "Kontakt Micro-Location Sp. z o.o."
+    },
+    {
+      "uuid": 65129,
+      "name": "Capsle Technologies Inc."
+    },
+    {
+      "uuid": 65128,
+      "name": "Capsle Technologies Inc."
+    },
+    {
+      "uuid": 65127,
+      "name": "Lab Sensor Solutions"
+    },
+    {
+      "uuid": 65126,
+      "name": "Intel Corporation"
+    },
+    {
+      "uuid": 65125,
+      "name": "CHIPOLO d.o.o."
+    },
+    {
+      "uuid": 65124,
+      "name": "Siemens AG"
+    },
+    {
+      "uuid": 65123,
+      "name": "Connected Yard, Inc."
+    },
+    {
+      "uuid": 65122,
+      "name": "Indagem Tech LLC"
+    },
+    {
+      "uuid": 65121,
+      "name": "Logitech International SA"
+    },
+    {
+      "uuid": 65120,
+      "name": "Lierda Science & Technology Group Co., Ltd."
+    },
+    {
+      "uuid": 65119,
+      "name": "Eyefi, Inc."
+    },
+    {
+      "uuid": 65118,
+      "name": "Plastc Corporation"
+    },
+    {
+      "uuid": 65117,
+      "name": "Grundfos A/S"
+    },
+    {
+      "uuid": 65116,
+      "name": "million hunters GmbH"
+    },
+    {
+      "uuid": 65115,
+      "name": "GT-tronics HK Ltd"
+    },
+    {
+      "uuid": 65114,
+      "name": "Cronologics Corporation"
+    },
+    {
+      "uuid": 65113,
+      "name": "Nordic Semiconductor ASA"
+    },
+    {
+      "uuid": 65112,
+      "name": "Nordic Semiconductor ASA"
+    },
+    {
+      "uuid": 65111,
+      "name": "Dotted Labs"
+    },
+    {
+      "uuid": 65110,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65109,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65108,
+      "name": "Motiv, Inc."
+    },
+    {
+      "uuid": 65107,
+      "name": "3M"
+    },
+    {
+      "uuid": 65106,
+      "name": "SetPoint Medical"
+    },
+    {
+      "uuid": 65105,
+      "name": "SRAM"
+    },
+    {
+      "uuid": 65104,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65103,
+      "name": "Molekule, Inc."
+    },
+    {
+      "uuid": 65102,
+      "name": "NTT docomo"
+    },
+    {
+      "uuid": 65101,
+      "name": "Casambi Technologies Oy"
+    },
+    {
+      "uuid": 65100,
+      "name": "Volkswagen AG"
+    },
+    {
+      "uuid": 65099,
+      "name": "Signify Netherlands B.V. (formerly Philips Lighting B.V.)"
+    },
+    {
+      "uuid": 65098,
+      "name": "OMRON HEALTHCARE Co., Ltd."
+    },
+    {
+      "uuid": 65097,
+      "name": "SenionLab AB"
+    },
+    {
+      "uuid": 65096,
+      "name": "General Motors"
+    },
+    {
+      "uuid": 65095,
+      "name": "General Motors"
+    },
+    {
+      "uuid": 65094,
+      "name": "B&O Play A/S"
+    },
+    {
+      "uuid": 65093,
+      "name": "Snapchat Inc"
+    },
+    {
+      "uuid": 65092,
+      "name": "SK Telecom"
+    },
+    {
+      "uuid": 65091,
+      "name": "Andreas Stihl AG & Co. KG"
+    },
+    {
+      "uuid": 65090,
+      "name": "Nets A/S"
+    },
+    {
+      "uuid": 65089,
+      "name": "Inugo Systems Limited"
+    },
+    {
+      "uuid": 65088,
+      "name": "Inugo Systems Limited"
+    },
+    {
+      "uuid": 65087,
+      "name": "Friday Labs Limited"
+    },
+    {
+      "uuid": 65086,
+      "name": "BD Medical"
+    },
+    {
+      "uuid": 65085,
+      "name": "BD Medical"
+    },
+    {
+      "uuid": 65084,
+      "name": "alibaba"
+    },
+    {
+      "uuid": 65083,
+      "name": "Dolby Laboratories"
+    },
+    {
+      "uuid": 65082,
+      "name": "TTS Tooltechnic Systems AG & Co. KG"
+    },
+    {
+      "uuid": 65081,
+      "name": "TTS Tooltechnic Systems AG & Co. KG"
+    },
+    {
+      "uuid": 65080,
+      "name": "Spaceek LTD"
+    },
+    {
+      "uuid": 65079,
+      "name": "Spaceek LTD"
+    },
+    {
+      "uuid": 65078,
+      "name": "HUAWEI Technologies Co., Ltd"
+    },
+    {
+      "uuid": 65077,
+      "name": "HUAWEI Technologies Co., Ltd"
+    },
+    {
+      "uuid": 65076,
+      "name": "SmallLoop LLC"
+    },
+    {
+      "uuid": 65075,
+      "name": "CHIPOLO d.o.o."
+    },
+    {
+      "uuid": 65074,
+      "name": "Pro-Mark, Inc."
+    },
+    {
+      "uuid": 65073,
+      "name": "Volkswagen AG"
+    },
+    {
+      "uuid": 65072,
+      "name": "Volkswagen AG"
+    },
+    {
+      "uuid": 65071,
+      "name": "CRESCO Wireless, Inc"
+    },
+    {
+      "uuid": 65070,
+      "name": "ERi,Inc."
+    },
+    {
+      "uuid": 65069,
+      "name": "LAMPLIGHT Co., Ltd."
+    },
+    {
+      "uuid": 65068,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65067,
+      "name": "ITT Industries"
+    },
+    {
+      "uuid": 65066,
+      "name": "DaisyWorks, Inc."
+    },
+    {
+      "uuid": 65065,
+      "name": "Gibson Innovations"
+    },
+    {
+      "uuid": 65064,
+      "name": "Ayla Networks"
+    },
+    {
+      "uuid": 65063,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65062,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65061,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 65060,
+      "name": "August Home Inc"
+    },
+    {
+      "uuid": 65059,
+      "name": "Zoll Medical Corporation"
+    },
+    {
+      "uuid": 65058,
+      "name": "Zoll Medical Corporation"
+    },
+    {
+      "uuid": 65057,
+      "name": "Bose Corporation"
+    },
+    {
+      "uuid": 65056,
+      "name": "Emerson"
+    },
+    {
+      "uuid": 65055,
+      "name": "Garmin International, Inc."
+    },
+    {
+      "uuid": 65054,
+      "name": "LAMPLIGHT Co., Ltd."
+    },
+    {
+      "uuid": 65053,
+      "name": "Illuminati Instrument Corporation"
+    },
+    {
+      "uuid": 65052,
+      "name": "NetMedia, Inc."
+    },
+    {
+      "uuid": 65051,
+      "name": "Tyto Life LLC"
+    },
+    {
+      "uuid": 65050,
+      "name": "Tyto Life LLC"
+    },
+    {
+      "uuid": 65049,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65048,
+      "name": "Runtime, Inc."
+    },
+    {
+      "uuid": 65047,
+      "name": "Telit Wireless Solutions GmbH"
+    },
+    {
+      "uuid": 65046,
+      "name": "Footmarks, Inc."
+    },
+    {
+      "uuid": 65045,
+      "name": "Amazon.com Services, Inc.."
+    },
+    {
+      "uuid": 65044,
+      "name": "Flextronics International USA Inc."
+    },
+    {
+      "uuid": 65043,
+      "name": "Apple Inc."
+    },
+    {
+      "uuid": 65042,
+      "name": "M-Way Solutions GmbH"
+    },
+    {
+      "uuid": 65041,
+      "name": "GMC-I Messtechnik GmbH"
+    },
+    {
+      "uuid": 65040,
+      "name": "LAPIS Technology Co., Ltd."
+    },
+    {
+      "uuid": 65039,
+      "name": "Signify Netherlands B.V. (formerly Philips Lighting B.V.)"
+    },
+    {
+      "uuid": 65038,
+      "name": "Setec Pty Ltd"
+    },
+    {
+      "uuid": 65037,
+      "name": "Procter & Gamble"
+    },
+    {
+      "uuid": 65036,
+      "name": "Procter & Gamble"
+    },
+    {
+      "uuid": 65035,
+      "name": "ruwido austria gmbh"
+    },
+    {
+      "uuid": 65034,
+      "name": "ruwido austria gmbh"
+    },
+    {
+      "uuid": 65033,
+      "name": "Pillsy, Inc."
+    },
+    {
+      "uuid": 65032,
+      "name": "Microsoft"
+    },
+    {
+      "uuid": 65031,
+      "name": "Sonos, Inc."
+    },
+    {
+      "uuid": 65030,
+      "name": "Qualcomm Technologies, Inc."
+    },
+    {
+      "uuid": 65029,
+      "name": "CORE Transport Technologies NZ Limited"
+    },
+    {
+      "uuid": 65028,
+      "name": "Motorola Solutions, Inc."
+    },
+    {
+      "uuid": 65027,
+      "name": "Amazon.com Services, Inc."
+    },
+    {
+      "uuid": 65026,
+      "name": "Robert Bosch GmbH"
+    },
+    {
+      "uuid": 65025,
+      "name": "Duracell U.S. Operations Inc."
+    },
+    {
+      "uuid": 65024,
+      "name": "Amazon.com Services, Inc."
+    },
+    {
+      "uuid": 65023,
+      "name": "OSRAM GmbH"
+    },
+    {
+      "uuid": 65022,
+      "name": "ADHERIUM(NZ) LIMITED"
+    },
+    {
+      "uuid": 65021,
+      "name": "RecursiveSoft Inc."
+    },
+    {
+      "uuid": 65020,
+      "name": "Optrel AG"
+    },
+    {
+      "uuid": 65019,
+      "name": "Tandem Diabetes Care"
+    },
+    {
+      "uuid": 65018,
+      "name": "Tandem Diabetes Care"
+    },
+    {
+      "uuid": 65017,
+      "name": "INIA"
+    },
+    {
+      "uuid": 65016,
+      "name": "Onvocal"
+    },
+    {
+      "uuid": 65015,
+      "name": "HP Inc."
+    },
+    {
+      "uuid": 65014,
+      "name": "AIAIAI ApS"
+    },
+    {
+      "uuid": 65013,
+      "name": "Milwaukee Electric Tools"
+    },
+    {
+      "uuid": 65012,
+      "name": "O. E. M. Controls, Inc."
+    },
+    {
+      "uuid": 65011,
+      "name": "Amersports"
+    },
+    {
+      "uuid": 65010,
+      "name": "AMICCOM Electronics Corporation"
+    },
+    {
+      "uuid": 65009,
+      "name": "LAMPLIGHT Co.,Ltd"
+    },
+    {
+      "uuid": 65008,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 65007,
+      "name": "ART AND PROGRAM, INC."
+    },
+    {
+      "uuid": 65006,
+      "name": "Huawei Technologies Co., Ltd."
+    },
+    {
+      "uuid": 65005,
+      "name": "Pole Star"
+    },
+    {
+      "uuid": 65004,
+      "name": "Mannkind Corporation"
+    },
+    {
+      "uuid": 65003,
+      "name": "Syntronix Corporation"
+    },
+    {
+      "uuid": 65002,
+      "name": "SeeScan, Inc"
+    },
+    {
+      "uuid": 65001,
+      "name": "Spacesaver Corporation"
+    },
+    {
+      "uuid": 65000,
+      "name": "Robert Bosch GmbH"
+    },
+    {
+      "uuid": 64999,
+      "name": "SECOM Co., LTD"
+    },
+    {
+      "uuid": 64998,
+      "name": "Intelletto Technologies Inc"
+    },
+    {
+      "uuid": 64997,
+      "name": "SMK Corporation"
+    },
+    {
+      "uuid": 64996,
+      "name": "JUUL Labs, Inc."
+    },
+    {
+      "uuid": 64995,
+      "name": "Abbott Diabetes Care"
+    },
+    {
+      "uuid": 64994,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64993,
+      "name": "Fortin Electronic Systems"
+    },
+    {
+      "uuid": 64992,
+      "name": "John Deere"
+    },
+    {
+      "uuid": 64991,
+      "name": "Harman International"
+    },
+    {
+      "uuid": 64990,
+      "name": "Noodle Technology Inc."
+    },
+    {
+      "uuid": 64989,
+      "name": "Arch Systems Inc"
+    },
+    {
+      "uuid": 64988,
+      "name": "4iiii Innovations Inc."
+    },
+    {
+      "uuid": 64987,
+      "name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "uuid": 64986,
+      "name": "MHCS"
+    },
+    {
+      "uuid": 64985,
+      "name": "Jiangsu Teranovo Tech Co., Ltd."
+    },
+    {
+      "uuid": 64984,
+      "name": "Jiangsu Teranovo Tech Co., Ltd."
+    },
+    {
+      "uuid": 64983,
+      "name": "Emerson"
+    },
+    {
+      "uuid": 64982,
+      "name": "Ministry of Supply"
+    },
+    {
+      "uuid": 64981,
+      "name": "Brompton Bicycle Ltd"
+    },
+    {
+      "uuid": 64980,
+      "name": "LX Solutions Pty Limited"
+    },
+    {
+      "uuid": 64979,
+      "name": "FUBA Automotive Electronics GmbH"
+    },
+    {
+      "uuid": 64978,
+      "name": "Bose Corporation"
+    },
+    {
+      "uuid": 64977,
+      "name": "Huawei Technologies Co., Ltd"
+    },
+    {
+      "uuid": 64976,
+      "name": "Huawei Technologies Co., Ltd"
+    },
+    {
+      "uuid": 64975,
+      "name": "Nalu Medical, Inc"
+    },
+    {
+      "uuid": 64974,
+      "name": "SENNHEISER electronic GmbH & Co. KG"
+    },
+    {
+      "uuid": 64973,
+      "name": "Qingping Technology (Beijing) Co., Ltd."
+    },
+    {
+      "uuid": 64972,
+      "name": "Shoof Technologies"
+    },
+    {
+      "uuid": 64971,
+      "name": "Meggitt SA"
+    },
+    {
+      "uuid": 64970,
+      "name": "Fortin Electronic Systems"
+    },
+    {
+      "uuid": 64969,
+      "name": "Busch-Jaeger Elektro GmbH"
+    },
+    {
+      "uuid": 64968,
+      "name": "Hach – Danaher"
+    },
+    {
+      "uuid": 64967,
+      "name": "Eli Lilly and Company"
+    },
+    {
+      "uuid": 64966,
+      "name": "Eli Lilly and Company"
+    },
+    {
+      "uuid": 64965,
+      "name": "Automatic Labs"
+    },
+    {
+      "uuid": 64964,
+      "name": "Simavita (Aust) Pty Ltd"
+    },
+    {
+      "uuid": 64963,
+      "name": "Baidu Online Network Technology (Beijing) Co., Ltd"
+    },
+    {
+      "uuid": 64962,
+      "name": "Baidu Online Network Technology (Beijing) Co., Ltd"
+    },
+    {
+      "uuid": 64961,
+      "name": "Hunter Douglas"
+    },
+    {
+      "uuid": 64960,
+      "name": "Hunter Douglas"
+    },
+    {
+      "uuid": 64959,
+      "name": "California Things Inc."
+    },
+    {
+      "uuid": 64958,
+      "name": "California Things Inc."
+    },
+    {
+      "uuid": 64957,
+      "name": "Clover Network, Inc."
+    },
+    {
+      "uuid": 64956,
+      "name": "Emerson"
+    },
+    {
+      "uuid": 64955,
+      "name": "Profoto"
+    },
+    {
+      "uuid": 64954,
+      "name": "Comcast Cable Corporation"
+    },
+    {
+      "uuid": 64953,
+      "name": "Comcast Cable Corporation"
+    },
+    {
+      "uuid": 64952,
+      "name": "LivaNova USA Inc."
+    },
+    {
+      "uuid": 64951,
+      "name": "LivaNova USA Inc."
+    },
+    {
+      "uuid": 64950,
+      "name": "GWA Hygiene GmbH"
+    },
+    {
+      "uuid": 64949,
+      "name": "ECSG"
+    },
+    {
+      "uuid": 64948,
+      "name": "HP Inc"
+    },
+    {
+      "uuid": 64947,
+      "name": "Audiodo AB"
+    },
+    {
+      "uuid": 64946,
+      "name": "Portable Multimedia Ltd"
+    },
+    {
+      "uuid": 64945,
+      "name": "Oura Health Ltd"
+    },
+    {
+      "uuid": 64944,
+      "name": "Oura Health Ltd"
+    },
+    {
+      "uuid": 64943,
+      "name": "Wiliot LTD"
+    },
+    {
+      "uuid": 64942,
+      "name": "Houwa System Design, k.k."
+    },
+    {
+      "uuid": 64941,
+      "name": "Houwa System Design, k.k."
+    },
+    {
+      "uuid": 64940,
+      "name": "Tentacle Sync GmbH"
+    },
+    {
+      "uuid": 64939,
+      "name": "Xiaomi Inc."
+    },
+    {
+      "uuid": 64938,
+      "name": "Xiaomi Inc."
+    },
+    {
+      "uuid": 64937,
+      "name": "Rhombus Systems, Inc."
+    },
+    {
+      "uuid": 64936,
+      "name": "PSA Peugeot Citroën"
+    },
+    {
+      "uuid": 64935,
+      "name": "WWZN Information Technology Company Limited"
+    },
+    {
+      "uuid": 64934,
+      "name": "WWZN Information Technology Company Limited"
+    },
+    {
+      "uuid": 64933,
+      "name": "Neurostim OAB, Inc."
+    },
+    {
+      "uuid": 64932,
+      "name": "Inseego Corp."
+    },
+    {
+      "uuid": 64931,
+      "name": "Inseego Corp."
+    },
+    {
+      "uuid": 64930,
+      "name": "Groove X, Inc"
+    },
+    {
+      "uuid": 64929,
+      "name": "Groove X, Inc"
+    },
+    {
+      "uuid": 64928,
+      "name": "Secugen Corporation"
+    },
+    {
+      "uuid": 64927,
+      "name": "VitalTech Affiliates LLC"
+    },
+    {
+      "uuid": 64926,
+      "name": "The Coca-Cola Company"
+    },
+    {
+      "uuid": 64925,
+      "name": "Gastec Corporation"
+    },
+    {
+      "uuid": 64924,
+      "name": "Huawei Technologies Co., Ltd."
+    },
+    {
+      "uuid": 64923,
+      "name": "Huawei Technologies Co., Ltd."
+    },
+    {
+      "uuid": 64922,
+      "name": "Huawei Technologies Co., Ltd."
+    },
+    {
+      "uuid": 64921,
+      "name": "ABB Oy"
+    },
+    {
+      "uuid": 64920,
+      "name": "Disney Worldwide Services, Inc."
+    },
+    {
+      "uuid": 64919,
+      "name": "June Life, Inc."
+    },
+    {
+      "uuid": 64918,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64917,
+      "name": "Rigado"
+    },
+    {
+      "uuid": 64916,
+      "name": "Hewlett Packard Enterprise"
+    },
+    {
+      "uuid": 64915,
+      "name": "Bayerische Motoren Werke AG"
+    },
+    {
+      "uuid": 64914,
+      "name": "Qualcomm Technologies International, Ltd. (QTIL)"
+    },
+    {
+      "uuid": 64913,
+      "name": "Groove X, Inc."
+    },
+    {
+      "uuid": 64912,
+      "name": "Guangzhou SuperSound Information Technology Co.,Ltd"
+    },
+    {
+      "uuid": 64911,
+      "name": "Matrix ComSec Pvt. Ltd."
+    },
+    {
+      "uuid": 64910,
+      "name": "Motorola Solutions"
+    },
+    {
+      "uuid": 64909,
+      "name": "quip NYC Inc."
+    },
+    {
+      "uuid": 64908,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64907,
+      "name": "Jigowatts Inc."
+    },
+    {
+      "uuid": 64906,
+      "name": "Signify Netherlands B.V."
+    },
+    {
+      "uuid": 64905,
+      "name": "Urbanminded LTD"
+    },
+    {
+      "uuid": 64904,
+      "name": "Urbanminded LTD"
+    },
+    {
+      "uuid": 64903,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64902,
+      "name": "Abbott"
+    },
+    {
+      "uuid": 64901,
+      "name": "Husqvarna AB"
+    },
+    {
+      "uuid": 64900,
+      "name": "Tile, Inc."
+    },
+    {
+      "uuid": 64899,
+      "name": "iNFORM Technology GmbH"
+    },
+    {
+      "uuid": 64898,
+      "name": "Sony Corporation"
+    },
+    {
+      "uuid": 64897,
+      "name": "CANDY HOUSE, Inc."
+    },
+    {
+      "uuid": 64896,
+      "name": "Phindex Technologies, Inc"
+    },
+    {
+      "uuid": 64895,
+      "name": "Husqvarna AB"
+    },
+    {
+      "uuid": 64894,
+      "name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "uuid": 64893,
+      "name": "Center for Advanced Research Wernher Von Braun"
+    },
+    {
+      "uuid": 64892,
+      "name": "Toshiba Information Systems(Japan) Corporation"
+    },
+    {
+      "uuid": 64891,
+      "name": "WYZE LABS, INC."
+    },
+    {
+      "uuid": 64890,
+      "name": "Withings"
+    },
+    {
+      "uuid": 64889,
+      "name": "Withings"
+    },
+    {
+      "uuid": 64888,
+      "name": "Withings"
+    },
+    {
+      "uuid": 64887,
+      "name": "Withings"
+    },
+    {
+      "uuid": 64886,
+      "name": "Insulet Corporation"
+    },
+    {
+      "uuid": 64885,
+      "name": "Insulet Corporation"
+    },
+    {
+      "uuid": 64884,
+      "name": "BRControls Products BV"
+    },
+    {
+      "uuid": 64883,
+      "name": "BRControls Products BV"
+    },
+    {
+      "uuid": 64882,
+      "name": "Logitech International SA"
+    },
+    {
+      "uuid": 64881,
+      "name": "GN Hearing A/S"
+    },
+    {
+      "uuid": 64880,
+      "name": "GuangDong Oppo Mobile Telecommunications Corp., Ltd"
+    },
+    {
+      "uuid": 64879,
+      "name": "Apple, Inc."
+    },
+    {
+      "uuid": 64878,
+      "name": "Polidea sp. z o.o."
+    },
+    {
+      "uuid": 64877,
+      "name": "Sigma Elektro GmbH"
+    },
+    {
+      "uuid": 64876,
+      "name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "uuid": 64875,
+      "name": "rapitag GmbH"
+    },
+    {
+      "uuid": 64874,
+      "name": "Emerson"
+    },
+    {
+      "uuid": 64873,
+      "name": "Samsung Electronics Co., Ltd"
+    },
+    {
+      "uuid": 64872,
+      "name": "Ubique Innovation AG"
+    },
+    {
+      "uuid": 64871,
+      "name": "Montblanc Simplo GmbH"
+    },
+    {
+      "uuid": 64870,
+      "name": "Zebra Technologies Corporation"
+    },
+    {
+      "uuid": 64869,
+      "name": "Razer Inc."
+    },
+    {
+      "uuid": 64868,
+      "name": "INRIA"
+    },
+    {
+      "uuid": 64867,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64866,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64865,
+      "name": "Arendi AG"
+    },
+    {
+      "uuid": 64864,
+      "name": "Sercomm Corporation"
+    },
+    {
+      "uuid": 64863,
+      "name": "Meta Platforms Technologies, LLC"
+    },
+    {
+      "uuid": 64862,
+      "name": "Tapkey GmbH"
+    },
+    {
+      "uuid": 64861,
+      "name": "maxon motor ltd."
+    },
+    {
+      "uuid": 64860,
+      "name": "React Mobile"
+    },
+    {
+      "uuid": 64859,
+      "name": "V2SOFT INC."
+    },
+    {
+      "uuid": 64858,
+      "name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "uuid": 64857,
+      "name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "uuid": 64856,
+      "name": "Volvo Car Corporation"
+    },
+    {
+      "uuid": 64855,
+      "name": "Volvo Car Corporation"
+    },
+    {
+      "uuid": 64854,
+      "name": "Resmed Ltd"
+    },
+    {
+      "uuid": 64853,
+      "name": "Braveheart Wireless, Inc."
+    },
+    {
+      "uuid": 64852,
+      "name": "Qingdao Haier Technology Co., Ltd."
+    },
+    {
+      "uuid": 64851,
+      "name": "PCI Private Limited"
+    },
+    {
+      "uuid": 64850,
+      "name": "UTC Fire and Security"
+    },
+    {
+      "uuid": 64849,
+      "name": "UTC Fire and Security"
+    },
+    {
+      "uuid": 64848,
+      "name": "Hangzhou Tuya Information  Technology Co., Ltd"
+    },
+    {
+      "uuid": 64847,
+      "name": "SONITOR TECHNOLOGIES AS"
+    },
+    {
+      "uuid": 64846,
+      "name": "70mai Co.,Ltd."
+    },
+    {
+      "uuid": 64845,
+      "name": "70mai Co.,Ltd."
+    },
+    {
+      "uuid": 64844,
+      "name": "Adolf Wuerth GmbH & Co KG"
+    },
+    {
+      "uuid": 64843,
+      "name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "uuid": 64842,
+      "name": "Sigma Elektro GmbH"
+    },
+    {
+      "uuid": 64841,
+      "name": "Panasonic Corporation"
+    },
+    {
+      "uuid": 64840,
+      "name": "Geberit International AG"
+    },
+    {
+      "uuid": 64839,
+      "name": "Liberty Global Inc."
+    },
+    {
+      "uuid": 64838,
+      "name": "Lemco IKE"
+    },
+    {
+      "uuid": 64837,
+      "name": "GB Solution co.,Ltd"
+    },
+    {
+      "uuid": 64836,
+      "name": "Apple Inc."
+    },
+    {
+      "uuid": 64835,
+      "name": "Apple Inc."
+    },
+    {
+      "uuid": 64834,
+      "name": "Globe (Jiangsu) Co.,Ltd"
+    },
+    {
+      "uuid": 64833,
+      "name": "Amazon Lab126"
+    },
+    {
+      "uuid": 64832,
+      "name": "Beflex Inc."
+    },
+    {
+      "uuid": 64831,
+      "name": "Cognosos, Inc"
+    },
+    {
+      "uuid": 64830,
+      "name": "Pure Watercraft, inc."
+    },
+    {
+      "uuid": 64829,
+      "name": "Woan Technology (Shenzhen) Co., Ltd."
+    },
+    {
+      "uuid": 64828,
+      "name": "Redline Communications Inc."
+    },
+    {
+      "uuid": 64827,
+      "name": "Verkada Inc."
+    },
+    {
+      "uuid": 64826,
+      "name": "Verkada Inc."
+    },
+    {
+      "uuid": 64825,
+      "name": "PREDIKTAS"
+    },
+    {
+      "uuid": 64824,
+      "name": "Danfoss A/S"
+    },
+    {
+      "uuid": 64823,
+      "name": "TireCheck GmbH"
+    },
+    {
+      "uuid": 64822,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64821,
+      "name": "Transsion Holdings Limited"
+    },
+    {
+      "uuid": 64820,
+      "name": "Aerosens LLC."
+    },
+    {
+      "uuid": 64819,
+      "name": "DashLogic, Inc."
+    },
+    {
+      "uuid": 64818,
+      "name": "Gemalto Holding BV"
+    },
+    {
+      "uuid": 64817,
+      "name": "LG Electronics Inc."
+    },
+    {
+      "uuid": 64816,
+      "name": "Sesam Solutions BV"
+    },
+    {
+      "uuid": 64815,
+      "name": "Bitstrata Systems Inc."
+    },
+    {
+      "uuid": 64814,
+      "name": "Bitstrata Systems Inc."
+    },
+    {
+      "uuid": 64813,
+      "name": "Xiaomi Inc."
+    },
+    {
+      "uuid": 64812,
+      "name": "The Access Technologies"
+    },
+    {
+      "uuid": 64811,
+      "name": "The Access Technologies"
+    },
+    {
+      "uuid": 64810,
+      "name": "Sony Corporation"
+    },
+    {
+      "uuid": 64809,
+      "name": "Asahi Kasei Corporation"
+    },
+    {
+      "uuid": 64808,
+      "name": "Julius Blum GmbH"
+    },
+    {
+      "uuid": 64807,
+      "name": "Integrated Illumination Systems, Inc."
+    },
+    {
+      "uuid": 64806,
+      "name": "Novo Nordisk A/S"
+    },
+    {
+      "uuid": 64805,
+      "name": "GD Midea Air-Conditioning Equipment Co., Ltd."
+    },
+    {
+      "uuid": 64804,
+      "name": "GD Midea Air-Conditioning Equipment Co., Ltd."
+    },
+    {
+      "uuid": 64803,
+      "name": "DOM Sicherheitstechnik GmbH & Co. KG"
+    },
+    {
+      "uuid": 64802,
+      "name": "Huawei Technologies Co., Ltd."
+    },
+    {
+      "uuid": 64801,
+      "name": "Huawei Technologies Co., Ltd."
+    },
+    {
+      "uuid": 64800,
+      "name": "GN Hearing A/S"
+    },
+    {
+      "uuid": 64799,
+      "name": "3M"
+    },
+    {
+      "uuid": 64798,
+      "name": "Plume Design Inc."
+    },
+    {
+      "uuid": 64797,
+      "name": "Samsung Electronics Co., Ltd"
+    },
+    {
+      "uuid": 64796,
+      "name": "Brady Worldwide Inc."
+    },
+    {
+      "uuid": 64795,
+      "name": "Helios Sports, Inc."
+    },
+    {
+      "uuid": 64794,
+      "name": "CSIRO"
+    },
+    {
+      "uuid": 64793,
+      "name": "Smith & Nephew Medical Limited"
+    },
+    {
+      "uuid": 64792,
+      "name": "LEGIC Identsystems AG"
+    },
+    {
+      "uuid": 64791,
+      "name": "LEGIC Identsystems AG"
+    },
+    {
+      "uuid": 64790,
+      "name": "Sensitech, Inc."
+    },
+    {
+      "uuid": 64789,
+      "name": "Panasonic Corporation"
+    },
+    {
+      "uuid": 64788,
+      "name": "BRG Sports, Inc."
+    },
+    {
+      "uuid": 64787,
+      "name": "BRG Sports, Inc."
+    },
+    {
+      "uuid": 64786,
+      "name": "AEON MOTOR CO.,LTD."
+    },
+    {
+      "uuid": 64785,
+      "name": "AEON MOTOR CO.,LTD."
+    },
+    {
+      "uuid": 64784,
+      "name": "AEON MOTOR CO.,LTD."
+    },
+    {
+      "uuid": 64783,
+      "name": "AEON MOTOR CO.,LTD."
+    },
+    {
+      "uuid": 64782,
+      "name": "HerdDogg, Inc"
+    },
+    {
+      "uuid": 64781,
+      "name": "Blecon Ltd"
+    },
+    {
+      "uuid": 64780,
+      "name": "OSM HK Limited"
+    },
+    {
+      "uuid": 64779,
+      "name": "Luminostics, Inc."
+    },
+    {
+      "uuid": 64778,
+      "name": "Luminostics, Inc."
+    },
+    {
+      "uuid": 64777,
+      "name": "Cousins and Sears LLC"
+    },
+    {
+      "uuid": 64776,
+      "name": "Bull Group Incorporated Company"
+    },
+    {
+      "uuid": 64775,
+      "name": "Swedlock AB"
+    },
+    {
+      "uuid": 64774,
+      "name": "RACE-AI LLC"
+    },
+    {
+      "uuid": 64773,
+      "name": "Qualcomm Technologies, Inc."
+    },
+    {
+      "uuid": 64772,
+      "name": "Shure Inc."
+    },
+    {
+      "uuid": 64771,
+      "name": "Quuppa Oy"
+    },
+    {
+      "uuid": 64770,
+      "name": "LEGO System A/S"
+    },
+    {
+      "uuid": 64769,
+      "name": "Sanvita Medical Corporation"
+    },
+    {
+      "uuid": 64768,
+      "name": "FUTEK Advanced Sensor Technology, Inc."
+    },
+    {
+      "uuid": 64767,
+      "name": "701x"
+    },
+    {
+      "uuid": 64766,
+      "name": "Sonova Consumer Hearing GmbH"
+    },
+    {
+      "uuid": 64765,
+      "name": "Barrot Technology Co.,Ltd."
+    },
+    {
+      "uuid": 64764,
+      "name": "Barrot Technology Co.,Ltd."
+    },
+    {
+      "uuid": 64763,
+      "name": "Shenzhen Benwei Media Co., Ltd."
+    },
+    {
+      "uuid": 64762,
+      "name": "Leupold & Stevens, Inc."
+    },
+    {
+      "uuid": 64761,
+      "name": "Leupold & Stevens, Inc."
+    },
+    {
+      "uuid": 64760,
+      "name": "Honor Device Co., Ltd."
+    },
+    {
+      "uuid": 64759,
+      "name": "Honor Device Co., Ltd."
+    },
+    {
+      "uuid": 64758,
+      "name": "The Linux Foundation"
+    },
+    {
+      "uuid": 64757,
+      "name": "Trident Communication Technology, LLC"
+    },
+    {
+      "uuid": 64756,
+      "name": "Allegion"
+    },
+    {
+      "uuid": 64755,
+      "name": "Armatura LLC"
+    },
+    {
+      "uuid": 64754,
+      "name": "Bitwards Oy"
+    },
+    {
+      "uuid": 64753,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64752,
+      "name": "Security Enhancement Systems, LLC"
+    },
+    {
+      "uuid": 64751,
+      "name": "Divesoft s.r.o."
+    },
+    {
+      "uuid": 64750,
+      "name": "Velentium, LLC"
+    },
+    {
+      "uuid": 64749,
+      "name": "Workaround Gmbh"
+    },
+    {
+      "uuid": 64748,
+      "name": "Griffwerk GmbH"
+    },
+    {
+      "uuid": 64747,
+      "name": "Avi-On"
+    },
+    {
+      "uuid": 64746,
+      "name": "Chess Wise B.V."
+    },
+    {
+      "uuid": 64745,
+      "name": "MindRhythm, Inc."
+    },
+    {
+      "uuid": 64744,
+      "name": "ITT Industries"
+    },
+    {
+      "uuid": 64743,
+      "name": "TKH Security B.V."
+    },
+    {
+      "uuid": 64742,
+      "name": "Guard RFID Solutions Inc."
+    },
+    {
+      "uuid": 64741,
+      "name": "Samsara Networks, Inc"
+    },
+    {
+      "uuid": 64740,
+      "name": "Samsara Networks, Inc"
+    },
+    {
+      "uuid": 64739,
+      "name": "Smith & Nephew Medical Limited"
+    },
+    {
+      "uuid": 64738,
+      "name": "Baracoda Daily Healthtech"
+    },
+    {
+      "uuid": 64737,
+      "name": "Sony Group Corporation"
+    },
+    {
+      "uuid": 64736,
+      "name": "Akciju sabiedriba \"SAF TEHNIKA\""
+    },
+    {
+      "uuid": 64735,
+      "name": "NIO USA, Inc."
+    },
+    {
+      "uuid": 64734,
+      "name": "ARCTOP, INC."
+    },
+    {
+      "uuid": 64733,
+      "name": "Mobilaris AB"
+    },
+    {
+      "uuid": 64732,
+      "name": "Amazon.com Services, LLC"
+    },
+    {
+      "uuid": 64731,
+      "name": "aconno GmbH"
+    },
+    {
+      "uuid": 64730,
+      "name": "Draeger"
+    },
+    {
+      "uuid": 64729,
+      "name": "Huso, INC"
+    },
+    {
+      "uuid": 64728,
+      "name": "Appex Factory S.L."
+    },
+    {
+      "uuid": 64727,
+      "name": "PowerPal Pty Ltd"
+    },
+    {
+      "uuid": 64726,
+      "name": "SWISSINNO SOLUTIONS AG"
+    },
+    {
+      "uuid": 64725,
+      "name": "Nortek Security & Control"
+    },
+    {
+      "uuid": 64724,
+      "name": "OMRON HEALTHCARE"
+    },
+    {
+      "uuid": 64723,
+      "name": "Fisher & Paykel Healthcare"
+    },
+    {
+      "uuid": 64722,
+      "name": "Allterco Robotics ltd"
+    },
+    {
+      "uuid": 64721,
+      "name": "Shenzhen Benwei Media Co.,Ltd."
+    },
+    {
+      "uuid": 64720,
+      "name": "Laerdal Medical AS"
+    },
+    {
+      "uuid": 64719,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64718,
+      "name": "Luna Health, Inc."
+    },
+    {
+      "uuid": 64717,
+      "name": "Zound Industries International AB"
+    },
+    {
+      "uuid": 64715,
+      "name": "TOTO LTD."
+    },
+    {
+      "uuid": 64714,
+      "name": "Cosmed s.r.l."
+    },
+    {
+      "uuid": 64713,
+      "name": "SkyHawke Technologies"
+    },
+    {
+      "uuid": 64712,
+      "name": "Allthenticate, Inc."
+    },
+    {
+      "uuid": 64711,
+      "name": "PB INC."
+    },
+    {
+      "uuid": 64710,
+      "name": "Wiliot LTD."
+    },
+    {
+      "uuid": 64709,
+      "name": "OMRON(DALIAN) CO,.LTD."
+    },
+    {
+      "uuid": 64708,
+      "name": "OMRON(DALIAN) CO,.LTD."
+    },
+    {
+      "uuid": 64707,
+      "name": "HP Inc."
+    },
+    {
+      "uuid": 64706,
+      "name": "Qualcomm Technologies, Inc."
+    },
+    {
+      "uuid": 64705,
+      "name": "TIMECODE SYSTEMS LIMITED"
+    },
+    {
+      "uuid": 64704,
+      "name": "Xiaomi Inc."
+    },
+    {
+      "uuid": 64703,
+      "name": "ASSA ABLOY Opening Solutions Sweden AB"
+    },
+    {
+      "uuid": 64702,
+      "name": "Musen Connect, Inc."
+    },
+    {
+      "uuid": 64701,
+      "name": "Toshiba Corporation"
+    },
+    {
+      "uuid": 64700,
+      "name": "Drowsy Digital, Inc."
+    },
+    {
+      "uuid": 64699,
+      "name": "SharkNinja Operating LLC"
+    },
+    {
+      "uuid": 64698,
+      "name": "BlueID GmbH"
+    },
+    {
+      "uuid": 64697,
+      "name": "Lumi United Technology Co., Ltd"
+    },
+    {
+      "uuid": 64696,
+      "name": "Ribbiot, INC."
+    },
+    {
+      "uuid": 64695,
+      "name": "T-Mobile USA"
+    },
+    {
+      "uuid": 64694,
+      "name": "OMRON HEALTHCARE Co., Ltd."
+    },
+    {
+      "uuid": 64693,
+      "name": "OMRON HEALTHCARE Co., Ltd."
+    },
+    {
+      "uuid": 64692,
+      "name": "OMRON HEALTHCARE Co., Ltd."
+    },
+    {
+      "uuid": 64691,
+      "name": "SWEEN"
+    },
+    {
+      "uuid": 64690,
+      "name": "Apple Inc."
+    },
+    {
+      "uuid": 64689,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64688,
+      "name": "Ford Motor Company"
+    },
+    {
+      "uuid": 64687,
+      "name": "AltoBeam Inc."
+    },
+    {
+      "uuid": 64686,
+      "name": "Imagine Marketing Limited"
+    },
+    {
+      "uuid": 64685,
+      "name": "Beijing 99help Safety Technology Co., Ltd"
+    },
+    {
+      "uuid": 64684,
+      "name": "IRISS INC."
+    },
+    {
+      "uuid": 64683,
+      "name": "IRISS INC."
+    },
+    {
+      "uuid": 64682,
+      "name": "Spintly, Inc."
+    },
+    {
+      "uuid": 64681,
+      "name": "Medtronic Inc."
+    },
+    {
+      "uuid": 64680,
+      "name": "Medtronic Inc."
+    },
+    {
+      "uuid": 64679,
+      "name": "Hubble Network Inc."
+    },
+    {
+      "uuid": 64678,
+      "name": "Hubble Network Inc."
+    },
+    {
+      "uuid": 64677,
+      "name": "HAYWARD INDUSTRIES, INC."
+    },
+    {
+      "uuid": 64676,
+      "name": "HP Inc."
+    },
+    {
+      "uuid": 64675,
+      "name": "Gunnebo Aktiebolag"
+    },
+    {
+      "uuid": 64674,
+      "name": "Meizu Technology Co., Ltd."
+    },
+    {
+      "uuid": 64673,
+      "name": "PF SCHWEISSTECHNOLOGIE GMBH"
+    },
+    {
+      "uuid": 64672,
+      "name": "Apple Inc."
+    },
+    {
+      "uuid": 64671,
+      "name": "Delta Development Team, Inc"
+    },
+    {
+      "uuid": 64670,
+      "name": "Dell Computer Corporation"
+    },
+    {
+      "uuid": 64669,
+      "name": "Lenovo (Singapore) Pte Ltd."
+    },
+    {
+      "uuid": 64668,
+      "name": "Binary Power, Inc."
+    },
+    {
+      "uuid": 64667,
+      "name": "Merry Electronics (S) Pte Ltd"
+    },
+    {
+      "uuid": 64666,
+      "name": "Plockat Solutions AB"
+    },
+    {
+      "uuid": 64665,
+      "name": "Badger Meter"
+    },
+    {
+      "uuid": 64664,
+      "name": "Ruuvi Innovations Ltd."
+    },
+    {
+      "uuid": 64663,
+      "name": "Japan Display Inc."
+    },
+    {
+      "uuid": 64662,
+      "name": "LEGO System A/S"
+    },
+    {
+      "uuid": 64661,
+      "name": "Hippo Camp Software Ltd."
+    },
+    {
+      "uuid": 64660,
+      "name": "Apple Inc."
+    },
+    {
+      "uuid": 64659,
+      "name": "Komatsu Ltd."
+    },
+    {
+      "uuid": 64658,
+      "name": "Furuno Electric Co., Ltd."
+    },
+    {
+      "uuid": 64657,
+      "name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "uuid": 64656,
+      "name": "Wiliot LTD."
+    },
+    {
+      "uuid": 64655,
+      "name": "Bose Corporation"
+    },
+    {
+      "uuid": 64654,
+      "name": "Blue Iris Labs, Inc."
+    },
+    {
+      "uuid": 64653,
+      "name": "Caire Inc."
+    },
+    {
+      "uuid": 64652,
+      "name": "SES-Imagotag"
+    },
+    {
+      "uuid": 64651,
+      "name": "Kaspersky Lab Middle East FZ-LLC"
+    },
+    {
+      "uuid": 64650,
+      "name": "Intel Corporation"
+    },
+    {
+      "uuid": 64649,
+      "name": "Intel Corporation"
+    },
+    {
+      "uuid": 64648,
+      "name": "CCC del Uruguay"
+    },
+    {
+      "uuid": 64647,
+      "name": "Samsara Networks, Inc"
+    },
+    {
+      "uuid": 64646,
+      "name": "Samsara Networks, Inc"
+    },
+    {
+      "uuid": 64645,
+      "name": "Zhejiang Huanfu Technology Co., LTD"
+    },
+    {
+      "uuid": 64644,
+      "name": "NINGBO FOTILE KITCHENWARE CO., LTD."
+    },
+    {
+      "uuid": 64643,
+      "name": "iHealth Labs, Inc."
+    },
+    {
+      "uuid": 64642,
+      "name": "Zwift, Inc."
+    },
+    {
+      "uuid": 64641,
+      "name": "Axon Enterprise, Inc."
+    },
+    {
+      "uuid": 64640,
+      "name": "TELE System Communications Pte. Ltd."
+    },
+    {
+      "uuid": 64639,
+      "name": "Southco"
+    },
+    {
+      "uuid": 64638,
+      "name": "Harman International"
+    },
+    {
+      "uuid": 64637,
+      "name": "MML US, Inc"
+    },
+    {
+      "uuid": 64636,
+      "name": "Motorola Mobility, LLC"
+    },
+    {
+      "uuid": 64635,
+      "name": "Testo SE & Co. KGaA"
+    },
+    {
+      "uuid": 64634,
+      "name": "Outshiny India Private Limited"
+    },
+    {
+      "uuid": 64633,
+      "name": "LG Electronics Inc."
+    },
+    {
+      "uuid": 64632,
+      "name": "DHL"
+    },
+    {
+      "uuid": 64631,
+      "name": "SING SUN TECHNOLOGY (INTERNATIONAL) LIMITED"
+    },
+    {
+      "uuid": 64630,
+      "name": "Weber-Stephen Products LLC"
+    },
+    {
+      "uuid": 64629,
+      "name": "Xiaomi Inc."
+    },
+    {
+      "uuid": 64628,
+      "name": "EMBEINT INC"
+    },
+    {
+      "uuid": 64627,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64626,
+      "name": "iodyne, LLC"
+    },
+    {
+      "uuid": 64625,
+      "name": "Hive-Zox International SA"
+    },
+    {
+      "uuid": 64624,
+      "name": "MOTIVE TECHNOLOGIES, INC."
+    },
+    {
+      "uuid": 64623,
+      "name": "NextSense, Inc."
+    },
+    {
+      "uuid": 64622,
+      "name": "stryker"
+    },
+    {
+      "uuid": 64621,
+      "name": "MOTIVE TECHNOLOGIES, INC."
+    },
+    {
+      "uuid": 64620,
+      "name": "Powerstick.com"
+    },
+    {
+      "uuid": 64619,
+      "name": "Sonos Inc"
+    },
+    {
+      "uuid": 64618,
+      "name": "Sonos Inc"
+    },
+    {
+      "uuid": 64617,
+      "name": "Harman International"
+    },
+    {
+      "uuid": 64616,
+      "name": "RIGH, INC."
+    },
+    {
+      "uuid": 64615,
+      "name": "Guangdong Hengqin Xingtong Technology Co.,ltd."
+    },
+    {
+      "uuid": 64614,
+      "name": "Xiaomi Inc."
+    },
+    {
+      "uuid": 64613,
+      "name": "Robor Electronics B.V."
+    }
+  ]
+}

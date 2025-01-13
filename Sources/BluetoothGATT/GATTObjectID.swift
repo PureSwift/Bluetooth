@@ -19,7 +19,7 @@ public struct GATTObjectID: Equatable, RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt48>.size
     
-    public static var uuid: BluetoothUUID { return .objectId }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.objectId }
     
     internal static var min: UInt48 { UInt48(256) }
     

@@ -1,0 +1,2359 @@
+﻿{
+  "uuids": [
+    {
+      "uuid": 10752,
+      "name": "Device Name",
+      "id": "org.bluetooth.characteristic.gap.device_name"
+    },
+    {
+      "uuid": 10753,
+      "name": "Appearance",
+      "id": "org.bluetooth.characteristic.gap.appearance"
+    },
+    {
+      "uuid": 10754,
+      "name": "Peripheral Privacy Flag",
+      "id": "org.bluetooth.characteristic.gap.peripheral_privacy_flag"
+    },
+    {
+      "uuid": 10755,
+      "name": "Reconnection Address",
+      "id": "org.bluetooth.characteristic.gap.reconnection_address"
+    },
+    {
+      "uuid": 10756,
+      "name": "Peripheral Preferred Connection Parameters",
+      "id": "org.bluetooth.characteristic.gap.peripheral_preferred_connection_parameters"
+    },
+    {
+      "uuid": 10757,
+      "name": "Service Changed",
+      "id": "org.bluetooth.characteristic.gatt.service_changed"
+    },
+    {
+      "uuid": 10758,
+      "name": "Alert Level",
+      "id": "org.bluetooth.characteristic.alert_level"
+    },
+    {
+      "uuid": 10759,
+      "name": "Tx Power Level",
+      "id": "org.bluetooth.characteristic.tx_power_level"
+    },
+    {
+      "uuid": 10760,
+      "name": "Date Time",
+      "id": "org.bluetooth.characteristic.date_time"
+    },
+    {
+      "uuid": 10761,
+      "name": "Day of Week",
+      "id": "org.bluetooth.characteristic.day_of_week"
+    },
+    {
+      "uuid": 10762,
+      "name": "Day Date Time",
+      "id": "org.bluetooth.characteristic.day_date_time"
+    },
+    {
+      "uuid": 10764,
+      "name": "Exact Time 256",
+      "id": "org.bluetooth.characteristic.exact_time_256"
+    },
+    {
+      "uuid": 10765,
+      "name": "DST Offset",
+      "id": "org.bluetooth.characteristic.dst_offset"
+    },
+    {
+      "uuid": 10766,
+      "name": "Time Zone",
+      "id": "org.bluetooth.characteristic.time_zone"
+    },
+    {
+      "uuid": 10767,
+      "name": "Local Time Information",
+      "id": "org.bluetooth.characteristic.local_time_information"
+    },
+    {
+      "uuid": 10769,
+      "name": "Time with DST",
+      "id": "org.bluetooth.characteristic.time_with_dst"
+    },
+    {
+      "uuid": 10770,
+      "name": "Time Accuracy",
+      "id": "org.bluetooth.characteristic.time_accuracy"
+    },
+    {
+      "uuid": 10771,
+      "name": "Time Source",
+      "id": "org.bluetooth.characteristic.time_source"
+    },
+    {
+      "uuid": 10772,
+      "name": "Reference Time Information",
+      "id": "org.bluetooth.characteristic.reference_time_information"
+    },
+    {
+      "uuid": 10774,
+      "name": "Time Update Control Point",
+      "id": "org.bluetooth.characteristic.time_update_control_point"
+    },
+    {
+      "uuid": 10775,
+      "name": "Time Update State",
+      "id": "org.bluetooth.characteristic.time_update_state"
+    },
+    {
+      "uuid": 10776,
+      "name": "Glucose Measurement",
+      "id": "org.bluetooth.characteristic.glucose_measurement"
+    },
+    {
+      "uuid": 10777,
+      "name": "Battery Level",
+      "id": "org.bluetooth.characteristic.battery_level"
+    },
+    {
+      "uuid": 10780,
+      "name": "Temperature Measurement",
+      "id": "org.bluetooth.characteristic.temperature_measurement"
+    },
+    {
+      "uuid": 10781,
+      "name": "Temperature Type",
+      "id": "org.bluetooth.characteristic.temperature_type"
+    },
+    {
+      "uuid": 10782,
+      "name": "Intermediate Temperature",
+      "id": "org.bluetooth.characteristic.intermediate_temperature"
+    },
+    {
+      "uuid": 10785,
+      "name": "Measurement Interval",
+      "id": "org.bluetooth.characteristic.measurement_interval"
+    },
+    {
+      "uuid": 10786,
+      "name": "Boot Keyboard Input Report",
+      "id": "org.bluetooth.characteristic.boot_keyboard_input_report"
+    },
+    {
+      "uuid": 10787,
+      "name": "System ID",
+      "id": "org.bluetooth.characteristic.system_id"
+    },
+    {
+      "uuid": 10788,
+      "name": "Model Number String",
+      "id": "org.bluetooth.characteristic.model_number_string"
+    },
+    {
+      "uuid": 10789,
+      "name": "Serial Number String",
+      "id": "org.bluetooth.characteristic.serial_number_string"
+    },
+    {
+      "uuid": 10790,
+      "name": "Firmware Revision String",
+      "id": "org.bluetooth.characteristic.firmware_revision_string"
+    },
+    {
+      "uuid": 10791,
+      "name": "Hardware Revision String",
+      "id": "org.bluetooth.characteristic.hardware_revision_string"
+    },
+    {
+      "uuid": 10792,
+      "name": "Software Revision String",
+      "id": "org.bluetooth.characteristic.software_revision_string"
+    },
+    {
+      "uuid": 10793,
+      "name": "Manufacturer Name String",
+      "id": "org.bluetooth.characteristic.manufacturer_name_string"
+    },
+    {
+      "uuid": 10794,
+      "name": "IEEE 11073-20601 Regulatory Certification Data List",
+      "id": "org.bluetooth.characteristic.ieee_11073-20601_regulatory_certification_data_list"
+    },
+    {
+      "uuid": 10795,
+      "name": "Current Time",
+      "id": "org.bluetooth.characteristic.current_time"
+    },
+    {
+      "uuid": 10796,
+      "name": "Magnetic Declination",
+      "id": "org.bluetooth.characteristic.magnetic_declination"
+    },
+    {
+      "uuid": 10801,
+      "name": "Scan Refresh",
+      "id": "org.bluetooth.characteristic.scan_refresh"
+    },
+    {
+      "uuid": 10802,
+      "name": "Boot Keyboard Output Report",
+      "id": "org.bluetooth.characteristic.boot_keyboard_output_report"
+    },
+    {
+      "uuid": 10803,
+      "name": "Boot Mouse Input Report",
+      "id": "org.bluetooth.characteristic.boot_mouse_input_report"
+    },
+    {
+      "uuid": 10804,
+      "name": "Glucose Measurement Context",
+      "id": "org.bluetooth.characteristic.glucose_measurement_context"
+    },
+    {
+      "uuid": 10805,
+      "name": "Blood Pressure Measurement",
+      "id": "org.bluetooth.characteristic.blood_pressure_measurement"
+    },
+    {
+      "uuid": 10806,
+      "name": "Intermediate Cuff Pressure",
+      "id": "org.bluetooth.characteristic.intermediate_cuff_pressure"
+    },
+    {
+      "uuid": 10807,
+      "name": "Heart Rate Measurement",
+      "id": "org.bluetooth.characteristic.heart_rate_measurement"
+    },
+    {
+      "uuid": 10808,
+      "name": "Body Sensor Location",
+      "id": "org.bluetooth.characteristic.body_sensor_location"
+    },
+    {
+      "uuid": 10809,
+      "name": "Heart Rate Control Point",
+      "id": "org.bluetooth.characteristic.heart_rate_control_point"
+    },
+    {
+      "uuid": 10815,
+      "name": "Alert Status",
+      "id": "org.bluetooth.characteristic.alert_status"
+    },
+    {
+      "uuid": 10816,
+      "name": "Ringer Control Point",
+      "id": "org.bluetooth.characteristic.ringer_control_point"
+    },
+    {
+      "uuid": 10817,
+      "name": "Ringer Setting",
+      "id": "org.bluetooth.characteristic.ringer_setting"
+    },
+    {
+      "uuid": 10818,
+      "name": "Alert Category ID Bit Mask",
+      "id": "org.bluetooth.characteristic.alert_category_id_bit_mask"
+    },
+    {
+      "uuid": 10819,
+      "name": "Alert Category ID",
+      "id": "org.bluetooth.characteristic.alert_category_id"
+    },
+    {
+      "uuid": 10820,
+      "name": "Alert Notification Control Point",
+      "id": "org.bluetooth.characteristic.alert_notification_control_point"
+    },
+    {
+      "uuid": 10821,
+      "name": "Unread Alert Status",
+      "id": "org.bluetooth.characteristic.unread_alert_status"
+    },
+    {
+      "uuid": 10822,
+      "name": "New Alert",
+      "id": "org.bluetooth.characteristic.new_alert"
+    },
+    {
+      "uuid": 10823,
+      "name": "Supported New Alert Category",
+      "id": "org.bluetooth.characteristic.supported_new_alert_category"
+    },
+    {
+      "uuid": 10824,
+      "name": "Supported Unread Alert Category",
+      "id": "org.bluetooth.characteristic.supported_unread_alert_category"
+    },
+    {
+      "uuid": 10825,
+      "name": "Blood Pressure Feature",
+      "id": "org.bluetooth.characteristic.blood_pressure_feature"
+    },
+    {
+      "uuid": 10826,
+      "name": "HID Information",
+      "id": "org.bluetooth.characteristic.hid_information"
+    },
+    {
+      "uuid": 10827,
+      "name": "Report Map",
+      "id": "org.bluetooth.characteristic.report_map"
+    },
+    {
+      "uuid": 10828,
+      "name": "HID Control Point",
+      "id": "org.bluetooth.characteristic.hid_control_point"
+    },
+    {
+      "uuid": 10829,
+      "name": "Report",
+      "id": "org.bluetooth.characteristic.report"
+    },
+    {
+      "uuid": 10830,
+      "name": "Protocol Mode",
+      "id": "org.bluetooth.characteristic.protocol_mode"
+    },
+    {
+      "uuid": 10831,
+      "name": "Scan Interval Window",
+      "id": "org.bluetooth.characteristic.scan_interval_window"
+    },
+    {
+      "uuid": 10832,
+      "name": "PnP ID",
+      "id": "org.bluetooth.characteristic.pnp_id"
+    },
+    {
+      "uuid": 10833,
+      "name": "Glucose Feature",
+      "id": "org.bluetooth.characteristic.glucose_feature"
+    },
+    {
+      "uuid": 10834,
+      "name": "Record Access Control Point",
+      "id": "org.bluetooth.characteristic.record_access_control_point"
+    },
+    {
+      "uuid": 10835,
+      "name": "RSC Measurement",
+      "id": "org.bluetooth.characteristic.rsc_measurement"
+    },
+    {
+      "uuid": 10836,
+      "name": "RSC Feature",
+      "id": "org.bluetooth.characteristic.rsc_feature"
+    },
+    {
+      "uuid": 10837,
+      "name": "SC Control Point",
+      "id": "org.bluetooth.characteristic.sc_control_point"
+    },
+    {
+      "uuid": 10842,
+      "name": "Aggregate",
+      "id": "org.bluetooth.characteristic.aggregate"
+    },
+    {
+      "uuid": 10843,
+      "name": "CSC Measurement",
+      "id": "org.bluetooth.characteristic.csc_measurement"
+    },
+    {
+      "uuid": 10844,
+      "name": "CSC Feature",
+      "id": "org.bluetooth.characteristic.csc_feature"
+    },
+    {
+      "uuid": 10845,
+      "name": "Sensor Location",
+      "id": "org.bluetooth.characteristic.sensor_location"
+    },
+    {
+      "uuid": 10846,
+      "name": "PLX Spot-Check Measurement",
+      "id": "org.bluetooth.characteristic.plx_spot_check_measurement"
+    },
+    {
+      "uuid": 10847,
+      "name": "PLX Continuous Measurement",
+      "id": "org.bluetooth.characteristic.plx_continuous_measurement"
+    },
+    {
+      "uuid": 10848,
+      "name": "PLX Features",
+      "id": "org.bluetooth.characteristic.plx_features"
+    },
+    {
+      "uuid": 10851,
+      "name": "Cycling Power Measurement",
+      "id": "org.bluetooth.characteristic.cycling_power_measurement"
+    },
+    {
+      "uuid": 10852,
+      "name": "Cycling Power Vector",
+      "id": "org.bluetooth.characteristic.cycling_power_vector"
+    },
+    {
+      "uuid": 10853,
+      "name": "Cycling Power Feature",
+      "id": "org.bluetooth.characteristic.cycling_power_feature"
+    },
+    {
+      "uuid": 10854,
+      "name": "Cycling Power Control Point",
+      "id": "org.bluetooth.characteristic.cycling_power_control_point"
+    },
+    {
+      "uuid": 10855,
+      "name": "Location and Speed",
+      "id": "org.bluetooth.characteristic.location_and_speed"
+    },
+    {
+      "uuid": 10856,
+      "name": "Navigation",
+      "id": "org.bluetooth.characteristic.navigation"
+    },
+    {
+      "uuid": 10857,
+      "name": "Position Quality",
+      "id": "org.bluetooth.characteristic.position_quality"
+    },
+    {
+      "uuid": 10858,
+      "name": "LN Feature",
+      "id": "org.bluetooth.characteristic.ln_feature"
+    },
+    {
+      "uuid": 10859,
+      "name": "LN Control Point",
+      "id": "org.bluetooth.characteristic.ln_control_point"
+    },
+    {
+      "uuid": 10860,
+      "name": "Elevation",
+      "id": "org.bluetooth.characteristic.elevation"
+    },
+    {
+      "uuid": 10861,
+      "name": "Pressure",
+      "id": "org.bluetooth.characteristic.pressure"
+    },
+    {
+      "uuid": 10862,
+      "name": "Temperature",
+      "id": "org.bluetooth.characteristic.temperature"
+    },
+    {
+      "uuid": 10863,
+      "name": "Humidity",
+      "id": "org.bluetooth.characteristic.humidity"
+    },
+    {
+      "uuid": 10864,
+      "name": "True Wind Speed",
+      "id": "org.bluetooth.characteristic.true_wind_speed"
+    },
+    {
+      "uuid": 10865,
+      "name": "True Wind Direction",
+      "id": "org.bluetooth.characteristic.true_wind_direction"
+    },
+    {
+      "uuid": 10866,
+      "name": "Apparent Wind Speed",
+      "id": "org.bluetooth.characteristic.apparent_wind_speed"
+    },
+    {
+      "uuid": 10867,
+      "name": "Apparent Wind Direction",
+      "id": "org.bluetooth.characteristic.apparent_wind_direction"
+    },
+    {
+      "uuid": 10868,
+      "name": "Gust Factor",
+      "id": "org.bluetooth.characteristic.gust_factor"
+    },
+    {
+      "uuid": 10869,
+      "name": "Pollen Concentration",
+      "id": "org.bluetooth.characteristic.pollen_concentration"
+    },
+    {
+      "uuid": 10870,
+      "name": "UV Index",
+      "id": "org.bluetooth.characteristic.uv_index"
+    },
+    {
+      "uuid": 10871,
+      "name": "Irradiance",
+      "id": "org.bluetooth.characteristic.irradiance"
+    },
+    {
+      "uuid": 10872,
+      "name": "Rainfall",
+      "id": "org.bluetooth.characteristic.rainfall"
+    },
+    {
+      "uuid": 10873,
+      "name": "Wind Chill",
+      "id": "org.bluetooth.characteristic.wind_chill"
+    },
+    {
+      "uuid": 10874,
+      "name": "Heat Index",
+      "id": "org.bluetooth.characteristic.heat_index"
+    },
+    {
+      "uuid": 10875,
+      "name": "Dew Point",
+      "id": "org.bluetooth.characteristic.dew_point"
+    },
+    {
+      "uuid": 10877,
+      "name": "Descriptor Value Changed",
+      "id": "org.bluetooth.characteristic.descriptor_value_changed"
+    },
+    {
+      "uuid": 10878,
+      "name": "Aerobic Heart Rate Lower Limit",
+      "id": "org.bluetooth.characteristic.aerobic_heart_rate_lower_limit"
+    },
+    {
+      "uuid": 10879,
+      "name": "Aerobic Threshold",
+      "id": "org.bluetooth.characteristic.aerobic_threshold"
+    },
+    {
+      "uuid": 10880,
+      "name": "Age",
+      "id": "org.bluetooth.characteristic.age"
+    },
+    {
+      "uuid": 10881,
+      "name": "Anaerobic Heart Rate Lower Limit",
+      "id": "org.bluetooth.characteristic.anaerobic_heart_rate_lower_limit"
+    },
+    {
+      "uuid": 10882,
+      "name": "Anaerobic Heart Rate Upper Limit",
+      "id": "org.bluetooth.characteristic.anaerobic_heart_rate_upper_limit"
+    },
+    {
+      "uuid": 10883,
+      "name": "Anaerobic Threshold",
+      "id": "org.bluetooth.characteristic.anaerobic_threshold"
+    },
+    {
+      "uuid": 10884,
+      "name": "Aerobic Heart Rate Upper Limit",
+      "id": "org.bluetooth.characteristic.aerobic_heart_rate_upper_limit"
+    },
+    {
+      "uuid": 10885,
+      "name": "Date of Birth",
+      "id": "org.bluetooth.characteristic.date_of_birth"
+    },
+    {
+      "uuid": 10886,
+      "name": "Date of Threshold Assessment",
+      "id": "org.bluetooth.characteristic.date_of_threshold_assessment"
+    },
+    {
+      "uuid": 10887,
+      "name": "Email Address",
+      "id": "org.bluetooth.characteristic.email_address"
+    },
+    {
+      "uuid": 10888,
+      "name": "Fat Burn Heart Rate Lower Limit",
+      "id": "org.bluetooth.characteristic.fat_burn_heart_rate_lower_limit"
+    },
+    {
+      "uuid": 10889,
+      "name": "Fat Burn Heart Rate Upper Limit",
+      "id": "org.bluetooth.characteristic.fat_burn_heart_rate_upper_limit"
+    },
+    {
+      "uuid": 10890,
+      "name": "First Name",
+      "id": "org.bluetooth.characteristic.first_name"
+    },
+    {
+      "uuid": 10891,
+      "name": "Five Zone Heart Rate Limits",
+      "id": "org.bluetooth.characteristic.five_zone_heart_rate_limits"
+    },
+    {
+      "uuid": 10892,
+      "name": "Gender",
+      "id": "org.bluetooth.characteristic.gender"
+    },
+    {
+      "uuid": 10893,
+      "name": "Heart Rate Max",
+      "id": "org.bluetooth.characteristic.heart_rate_max"
+    },
+    {
+      "uuid": 10894,
+      "name": "Height",
+      "id": "org.bluetooth.characteristic.height"
+    },
+    {
+      "uuid": 10895,
+      "name": "Hip Circumference",
+      "id": "org.bluetooth.characteristic.hip_circumference"
+    },
+    {
+      "uuid": 10896,
+      "name": "Last Name",
+      "id": "org.bluetooth.characteristic.last_name"
+    },
+    {
+      "uuid": 10897,
+      "name": "Maximum Recommended Heart Rate",
+      "id": "org.bluetooth.characteristic.maximum_recommended_heart_rate"
+    },
+    {
+      "uuid": 10898,
+      "name": "Resting Heart Rate",
+      "id": "org.bluetooth.characteristic.resting_heart_rate"
+    },
+    {
+      "uuid": 10899,
+      "name": "Sport Type for Aerobic and Anaerobic Thresholds",
+      "id": "org.bluetooth.characteristic.sport_type_for_aerobic_and_anaerobic_thresholds"
+    },
+    {
+      "uuid": 10900,
+      "name": "Three Zone Heart Rate Limits",
+      "id": "org.bluetooth.characteristic.three_zone_heart_rate_limits"
+    },
+    {
+      "uuid": 10901,
+      "name": "Two Zone Heart Rate Limits",
+      "id": "org.bluetooth.characteristic.two_zone_heart_rate_limits"
+    },
+    {
+      "uuid": 10902,
+      "name": "VO2 Max",
+      "id": "org.bluetooth.characteristic.vo2_max"
+    },
+    {
+      "uuid": 10903,
+      "name": "Waist Circumference",
+      "id": "org.bluetooth.characteristic.waist_circumference"
+    },
+    {
+      "uuid": 10904,
+      "name": "Weight",
+      "id": "org.bluetooth.characteristic.weight"
+    },
+    {
+      "uuid": 10905,
+      "name": "Database Change Increment",
+      "id": "org.bluetooth.characteristic.database_change_increment"
+    },
+    {
+      "uuid": 10906,
+      "name": "User Index",
+      "id": "org.bluetooth.characteristic.user_index"
+    },
+    {
+      "uuid": 10907,
+      "name": "Body Composition Feature",
+      "id": "org.bluetooth.characteristic.body_composition_feature"
+    },
+    {
+      "uuid": 10908,
+      "name": "Body Composition Measurement",
+      "id": "org.bluetooth.characteristic.body_composition_measurement"
+    },
+    {
+      "uuid": 10909,
+      "name": "Weight Measurement",
+      "id": "org.bluetooth.characteristic.weight_measurement"
+    },
+    {
+      "uuid": 10910,
+      "name": "Weight Scale Feature",
+      "id": "org.bluetooth.characteristic.weight_scale_feature"
+    },
+    {
+      "uuid": 10911,
+      "name": "User Control Point",
+      "id": "org.bluetooth.characteristic.user_control_point"
+    },
+    {
+      "uuid": 10912,
+      "name": "Magnetic Flux Density - 2D",
+      "id": "org.bluetooth.characteristic.magnetic_flux_density_2d"
+    },
+    {
+      "uuid": 10913,
+      "name": "Magnetic Flux Density - 3D",
+      "id": "org.bluetooth.characteristic.magnetic_flux_density_3d"
+    },
+    {
+      "uuid": 10914,
+      "name": "Language",
+      "id": "org.bluetooth.characteristic.language"
+    },
+    {
+      "uuid": 10915,
+      "name": "Barometric Pressure Trend",
+      "id": "org.bluetooth.characteristic.barometric_pressure_trend"
+    },
+    {
+      "uuid": 10916,
+      "name": "Bond Management Control Point",
+      "id": "org.bluetooth.characteristic.bond_management_control_point"
+    },
+    {
+      "uuid": 10917,
+      "name": "Bond Management Feature",
+      "id": "org.bluetooth.characteristic.bond_management_feature"
+    },
+    {
+      "uuid": 10918,
+      "name": "Central Address Resolution",
+      "id": "org.bluetooth.characteristic.gap.central_address_resolution"
+    },
+    {
+      "uuid": 10919,
+      "name": "CGM Measurement",
+      "id": "org.bluetooth.characteristic.cgm_measurement"
+    },
+    {
+      "uuid": 10920,
+      "name": "CGM Feature",
+      "id": "org.bluetooth.characteristic.cgm_feature"
+    },
+    {
+      "uuid": 10921,
+      "name": "CGM Status",
+      "id": "org.bluetooth.characteristic.cgm_status"
+    },
+    {
+      "uuid": 10922,
+      "name": "CGM Session Start Time",
+      "id": "org.bluetooth.characteristic.cgm_session_start_time"
+    },
+    {
+      "uuid": 10923,
+      "name": "CGM Session Run Time",
+      "id": "org.bluetooth.characteristic.cgm_session_run_time"
+    },
+    {
+      "uuid": 10924,
+      "name": "CGM Specific Ops Control Point",
+      "id": "org.bluetooth.characteristic.cgm_specific_ops_control_point"
+    },
+    {
+      "uuid": 10925,
+      "name": "Indoor Positioning Configuration",
+      "id": "org.bluetooth.characteristic.indoor_positioning_configuration"
+    },
+    {
+      "uuid": 10926,
+      "name": "Latitude",
+      "id": "org.bluetooth.characteristic.latitude"
+    },
+    {
+      "uuid": 10927,
+      "name": "Longitude",
+      "id": "org.bluetooth.characteristic.longitude"
+    },
+    {
+      "uuid": 10928,
+      "name": "Local North Coordinate",
+      "id": "org.bluetooth.characteristic.local_north_coordinate"
+    },
+    {
+      "uuid": 10929,
+      "name": "Local East Coordinate",
+      "id": "org.bluetooth.characteristic.local_east_coordinate"
+    },
+    {
+      "uuid": 10930,
+      "name": "Floor Number",
+      "id": "org.bluetooth.characteristic.floor_number"
+    },
+    {
+      "uuid": 10931,
+      "name": "Altitude",
+      "id": "org.bluetooth.characteristic.altitude"
+    },
+    {
+      "uuid": 10932,
+      "name": "Uncertainty",
+      "id": "org.bluetooth.characteristic.uncertainty"
+    },
+    {
+      "uuid": 10933,
+      "name": "Location Name",
+      "id": "org.bluetooth.characteristic.location_name"
+    },
+    {
+      "uuid": 10934,
+      "name": "URI",
+      "id": "org.bluetooth.characteristic.uri"
+    },
+    {
+      "uuid": 10935,
+      "name": "HTTP Headers",
+      "id": "org.bluetooth.characteristic.http_headers"
+    },
+    {
+      "uuid": 10936,
+      "name": "HTTP Status Code",
+      "id": "org.bluetooth.characteristic.http_status_code"
+    },
+    {
+      "uuid": 10937,
+      "name": "HTTP Entity Body",
+      "id": "org.bluetooth.characteristic.http_entity_body"
+    },
+    {
+      "uuid": 10938,
+      "name": "HTTP Control Point",
+      "id": "org.bluetooth.characteristic.http_control_point"
+    },
+    {
+      "uuid": 10939,
+      "name": "HTTPS Security",
+      "id": "org.bluetooth.characteristic.https_security"
+    },
+    {
+      "uuid": 10940,
+      "name": "TDS Control Point",
+      "id": "org.bluetooth.characteristic.tds_control_point"
+    },
+    {
+      "uuid": 10941,
+      "name": "OTS Feature",
+      "id": "org.bluetooth.characteristic.ots_feature"
+    },
+    {
+      "uuid": 10942,
+      "name": "Object Name",
+      "id": "org.bluetooth.characteristic.object_name"
+    },
+    {
+      "uuid": 10943,
+      "name": "Object Type",
+      "id": "org.bluetooth.characteristic.object_type"
+    },
+    {
+      "uuid": 10944,
+      "name": "Object Size",
+      "id": "org.bluetooth.characteristic.object_size"
+    },
+    {
+      "uuid": 10945,
+      "name": "Object First-Created",
+      "id": "org.bluetooth.characteristic.object_first_created"
+    },
+    {
+      "uuid": 10946,
+      "name": "Object Last-Modified",
+      "id": "org.bluetooth.characteristic.object_last_modified"
+    },
+    {
+      "uuid": 10947,
+      "name": "Object ID",
+      "id": "org.bluetooth.characteristic.object_id"
+    },
+    {
+      "uuid": 10948,
+      "name": "Object Properties",
+      "id": "org.bluetooth.characteristic.object_properties"
+    },
+    {
+      "uuid": 10949,
+      "name": "Object Action Control Point",
+      "id": "org.bluetooth.characteristic.object_action_control_point"
+    },
+    {
+      "uuid": 10950,
+      "name": "Object List Control Point",
+      "id": "org.bluetooth.characteristic.object_list_control_point"
+    },
+    {
+      "uuid": 10951,
+      "name": "Object List Filter",
+      "id": "org.bluetooth.characteristic.object_list_filter"
+    },
+    {
+      "uuid": 10952,
+      "name": "Object Changed",
+      "id": "org.bluetooth.characteristic.object_changed"
+    },
+    {
+      "uuid": 10953,
+      "name": "Resolvable Private Address Only",
+      "id": "org.bluetooth.characteristic.resolvable_private_address_only"
+    },
+    {
+      "uuid": 10956,
+      "name": "Fitness Machine Feature",
+      "id": "org.bluetooth.characteristic.fitness_machine_feature"
+    },
+    {
+      "uuid": 10957,
+      "name": "Treadmill Data",
+      "id": "org.bluetooth.characteristic.treadmill_data"
+    },
+    {
+      "uuid": 10958,
+      "name": "Cross Trainer Data",
+      "id": "org.bluetooth.characteristic.cross_trainer_data"
+    },
+    {
+      "uuid": 10959,
+      "name": "Step Climber Data",
+      "id": "org.bluetooth.characteristic.step_climber_data"
+    },
+    {
+      "uuid": 10960,
+      "name": "Stair Climber Data",
+      "id": "org.bluetooth.characteristic.stair_climber_data"
+    },
+    {
+      "uuid": 10961,
+      "name": "Rower Data",
+      "id": "org.bluetooth.characteristic.rower_data"
+    },
+    {
+      "uuid": 10962,
+      "name": "Indoor Bike Data",
+      "id": "org.bluetooth.characteristic.indoor_bike_data"
+    },
+    {
+      "uuid": 10963,
+      "name": "Training Status",
+      "id": "org.bluetooth.characteristic.training_status"
+    },
+    {
+      "uuid": 10964,
+      "name": "Supported Speed Range",
+      "id": "org.bluetooth.characteristic.supported_speed_range"
+    },
+    {
+      "uuid": 10965,
+      "name": "Supported Inclination Range",
+      "id": "org.bluetooth.characteristic.supported_inclination_range"
+    },
+    {
+      "uuid": 10966,
+      "name": "Supported Resistance Level Range",
+      "id": "org.bluetooth.characteristic.supported_resistance_level_range"
+    },
+    {
+      "uuid": 10967,
+      "name": "Supported Heart Rate Range",
+      "id": "org.bluetooth.characteristic.supported_heart_rate_range"
+    },
+    {
+      "uuid": 10968,
+      "name": "Supported Power Range",
+      "id": "org.bluetooth.characteristic.supported_power_range"
+    },
+    {
+      "uuid": 10969,
+      "name": "Fitness Machine Control Point",
+      "id": "org.bluetooth.characteristic.fitness_machine_control_point"
+    },
+    {
+      "uuid": 10970,
+      "name": "Fitness Machine Status",
+      "id": "org.bluetooth.characteristic.fitness_machine_status"
+    },
+    {
+      "uuid": 10971,
+      "name": "Mesh Provisioning Data In",
+      "id": "org.bluetooth.characteristic.mesh_provisioning_data_in"
+    },
+    {
+      "uuid": 10972,
+      "name": "Mesh Provisioning Data Out",
+      "id": "org.bluetooth.characteristic.mesh_provisioning_data_out"
+    },
+    {
+      "uuid": 10973,
+      "name": "Mesh Proxy Data In",
+      "id": "org.bluetooth.characteristic.mesh_proxy_data_in"
+    },
+    {
+      "uuid": 10974,
+      "name": "Mesh Proxy Data Out",
+      "id": "org.bluetooth.characteristic.mesh_proxy_data_out"
+    },
+    {
+      "uuid": 10976,
+      "name": "Average Current",
+      "id": "org.bluetooth.characteristic.average_current"
+    },
+    {
+      "uuid": 10977,
+      "name": "Average Voltage",
+      "id": "org.bluetooth.characteristic.average_voltage"
+    },
+    {
+      "uuid": 10978,
+      "name": "Boolean",
+      "id": "org.bluetooth.characteristic.boolean"
+    },
+    {
+      "uuid": 10979,
+      "name": "Chromatic Distance from Planckian",
+      "id": "org.bluetooth.characteristic.chromatic_distance_from_planckian"
+    },
+    {
+      "uuid": 10980,
+      "name": "Chromaticity Coordinates",
+      "id": "org.bluetooth.characteristic.chromaticity_coordinates"
+    },
+    {
+      "uuid": 10981,
+      "name": "Chromaticity in CCT and Duv Values",
+      "id": "org.bluetooth.characteristic.chromaticity_in_cct_and_duv_values"
+    },
+    {
+      "uuid": 10982,
+      "name": "Chromaticity Tolerance",
+      "id": "org.bluetooth.characteristic.chromaticity_tolerance"
+    },
+    {
+      "uuid": 10983,
+      "name": "CIE 13.3-1995 Color Rendering Index",
+      "id": "org.bluetooth.characteristic.cie_13_3_1995_color_rendering_index"
+    },
+    {
+      "uuid": 10984,
+      "name": "Coefficient",
+      "id": "org.bluetooth.characteristic.coefficient"
+    },
+    {
+      "uuid": 10985,
+      "name": "Correlated Color Temperature",
+      "id": "org.bluetooth.characteristic.correlated_color_temperature"
+    },
+    {
+      "uuid": 10986,
+      "name": "Count 16",
+      "id": "org.bluetooth.characteristic.count_16"
+    },
+    {
+      "uuid": 10987,
+      "name": "Count 24",
+      "id": "org.bluetooth.characteristic.count_24"
+    },
+    {
+      "uuid": 10988,
+      "name": "Country Code",
+      "id": "org.bluetooth.characteristic.country_code"
+    },
+    {
+      "uuid": 10989,
+      "name": "Date UTC",
+      "id": "org.bluetooth.characteristic.date_utc"
+    },
+    {
+      "uuid": 10990,
+      "name": "Electric Current",
+      "id": "org.bluetooth.characteristic.electric_current"
+    },
+    {
+      "uuid": 10991,
+      "name": "Electric Current Range",
+      "id": "org.bluetooth.characteristic.electric_current_range"
+    },
+    {
+      "uuid": 10992,
+      "name": "Electric Current Specification",
+      "id": "org.bluetooth.characteristic.electric_current_specification"
+    },
+    {
+      "uuid": 10993,
+      "name": "Electric Current Statistics",
+      "id": "org.bluetooth.characteristic.electric_current_statistics"
+    },
+    {
+      "uuid": 10994,
+      "name": "Energy",
+      "id": "org.bluetooth.characteristic.energy"
+    },
+    {
+      "uuid": 10995,
+      "name": "Energy in a Period of Day",
+      "id": "org.bluetooth.characteristic.energy_in_a_period_of_day"
+    },
+    {
+      "uuid": 10996,
+      "name": "Event Statistics",
+      "id": "org.bluetooth.characteristic.event_statistics"
+    },
+    {
+      "uuid": 10997,
+      "name": "Fixed String 16",
+      "id": "org.bluetooth.characteristic.fixed_string_16"
+    },
+    {
+      "uuid": 10998,
+      "name": "Fixed String 24",
+      "id": "org.bluetooth.characteristic.fixed_string_24"
+    },
+    {
+      "uuid": 10999,
+      "name": "Fixed String 36",
+      "id": "org.bluetooth.characteristic.fixed_string_36"
+    },
+    {
+      "uuid": 11000,
+      "name": "Fixed String 8",
+      "id": "org.bluetooth.characteristic.fixed_string_8"
+    },
+    {
+      "uuid": 11001,
+      "name": "Generic Level",
+      "id": "org.bluetooth.characteristic.generic_level"
+    },
+    {
+      "uuid": 11002,
+      "name": "Global Trade Item Number",
+      "id": "org.bluetooth.characteristic.global_trade_item_number"
+    },
+    {
+      "uuid": 11003,
+      "name": "Illuminance",
+      "id": "org.bluetooth.characteristic.illuminance"
+    },
+    {
+      "uuid": 11004,
+      "name": "Luminous Efficacy",
+      "id": "org.bluetooth.characteristic.luminous_efficacy"
+    },
+    {
+      "uuid": 11005,
+      "name": "Luminous Energy",
+      "id": "org.bluetooth.characteristic.luminous_energy"
+    },
+    {
+      "uuid": 11006,
+      "name": "Luminous Exposure",
+      "id": "org.bluetooth.characteristic.luminous_exposure"
+    },
+    {
+      "uuid": 11007,
+      "name": "Luminous Flux",
+      "id": "org.bluetooth.characteristic.luminous_flux"
+    },
+    {
+      "uuid": 11008,
+      "name": "Luminous Flux Range",
+      "id": "org.bluetooth.characteristic.luminous_flux_range"
+    },
+    {
+      "uuid": 11009,
+      "name": "Luminous Intensity",
+      "id": "org.bluetooth.characteristic.luminous_intensity"
+    },
+    {
+      "uuid": 11010,
+      "name": "Mass Flow",
+      "id": "org.bluetooth.characteristic.mass_flow"
+    },
+    {
+      "uuid": 11011,
+      "name": "Perceived Lightness",
+      "id": "org.bluetooth.characteristic.perceived_lightness"
+    },
+    {
+      "uuid": 11012,
+      "name": "Percentage 8",
+      "id": "org.bluetooth.characteristic.percentage_8"
+    },
+    {
+      "uuid": 11013,
+      "name": "Power",
+      "id": "org.bluetooth.characteristic.power"
+    },
+    {
+      "uuid": 11014,
+      "name": "Power Specification",
+      "id": "org.bluetooth.characteristic.power_specification"
+    },
+    {
+      "uuid": 11015,
+      "name": "Relative Runtime in a Current Range",
+      "id": "org.bluetooth.characteristic.relative_runtime_in_a_current_range"
+    },
+    {
+      "uuid": 11016,
+      "name": "Relative Runtime in a Generic Level Range",
+      "id": "org.bluetooth.characteristic.relative_runtime_in_a_generic_level_range"
+    },
+    {
+      "uuid": 11017,
+      "name": "Relative Value in a Voltage Range",
+      "id": "org.bluetooth.characteristic.relative_value_in_a_voltage_range"
+    },
+    {
+      "uuid": 11018,
+      "name": "Relative Value in an Illuminance Range",
+      "id": "org.bluetooth.characteristic.relative_value_in_an_illuminance_range"
+    },
+    {
+      "uuid": 11019,
+      "name": "Relative Value in a Period of Day",
+      "id": "org.bluetooth.characteristic.relative_value_in_a_period_of_day"
+    },
+    {
+      "uuid": 11020,
+      "name": "Relative Value in a Temperature Range",
+      "id": "org.bluetooth.characteristic.relative_value_in_a_temperature_range"
+    },
+    {
+      "uuid": 11021,
+      "name": "Temperature 8",
+      "id": "org.bluetooth.characteristic.temperature_8"
+    },
+    {
+      "uuid": 11022,
+      "name": "Temperature 8 in a Period of Day",
+      "id": "org.bluetooth.characteristic.temperature_8_in_a_period_of_day"
+    },
+    {
+      "uuid": 11023,
+      "name": "Temperature 8 Statistics",
+      "id": "org.bluetooth.characteristic.temperature_8_statistics"
+    },
+    {
+      "uuid": 11024,
+      "name": "Temperature Range",
+      "id": "org.bluetooth.characteristic.temperature_range"
+    },
+    {
+      "uuid": 11025,
+      "name": "Temperature Statistics",
+      "id": "org.bluetooth.characteristic.temperature_statistics"
+    },
+    {
+      "uuid": 11026,
+      "name": "Time Decihour 8",
+      "id": "org.bluetooth.characteristic.time_decihour_8"
+    },
+    {
+      "uuid": 11027,
+      "name": "Time Exponential 8",
+      "id": "org.bluetooth.characteristic.time_exponential_8"
+    },
+    {
+      "uuid": 11028,
+      "name": "Time Hour 24",
+      "id": "org.bluetooth.characteristic.time_hour_24"
+    },
+    {
+      "uuid": 11029,
+      "name": "Time Millisecond 24",
+      "id": "org.bluetooth.characteristic.time_millisecond_24"
+    },
+    {
+      "uuid": 11030,
+      "name": "Time Second 16",
+      "id": "org.bluetooth.characteristic.time_second_16"
+    },
+    {
+      "uuid": 11031,
+      "name": "Time Second 8",
+      "id": "org.bluetooth.characteristic.time_second_8"
+    },
+    {
+      "uuid": 11032,
+      "name": "Voltage",
+      "id": "org.bluetooth.characteristic.voltage"
+    },
+    {
+      "uuid": 11033,
+      "name": "Voltage Specification",
+      "id": "org.bluetooth.characteristic.voltage_specification"
+    },
+    {
+      "uuid": 11034,
+      "name": "Voltage Statistics",
+      "id": "org.bluetooth.characteristic.voltage_statistics"
+    },
+    {
+      "uuid": 11035,
+      "name": "Volume Flow",
+      "id": "org.bluetooth.characteristic.volume_flow"
+    },
+    {
+      "uuid": 11036,
+      "name": "Chromaticity Coordinate",
+      "id": "org.bluetooth.characteristic.chromaticity_coordinate"
+    },
+    {
+      "uuid": 11037,
+      "name": "RC Feature",
+      "id": "org.bluetooth.characteristic.rc_feature"
+    },
+    {
+      "uuid": 11038,
+      "name": "RC Settings",
+      "id": "org.bluetooth.characteristic.rc_settings"
+    },
+    {
+      "uuid": 11039,
+      "name": "Reconnection Configuration Control Point",
+      "id": "org.bluetooth.characteristic.reconnection_configuration_control_point"
+    },
+    {
+      "uuid": 11040,
+      "name": "IDD Status Changed",
+      "id": "org.bluetooth.characteristic.idd_status_changed"
+    },
+    {
+      "uuid": 11041,
+      "name": "IDD Status",
+      "id": "org.bluetooth.characteristic.idd_status"
+    },
+    {
+      "uuid": 11042,
+      "name": "IDD Annunciation Status",
+      "id": "org.bluetooth.characteristic.idd_annunciation_status"
+    },
+    {
+      "uuid": 11043,
+      "name": "IDD Features",
+      "id": "org.bluetooth.characteristic.idd_features"
+    },
+    {
+      "uuid": 11044,
+      "name": "IDD Status Reader Control Point",
+      "id": "org.bluetooth.characteristic.idd_status_reader_control_point"
+    },
+    {
+      "uuid": 11045,
+      "name": "IDD Command Control Point",
+      "id": "org.bluetooth.characteristic.idd_command_control_point"
+    },
+    {
+      "uuid": 11046,
+      "name": "IDD Command Data",
+      "id": "org.bluetooth.characteristic.idd_command_data"
+    },
+    {
+      "uuid": 11047,
+      "name": "IDD Record Access Control Point",
+      "id": "org.bluetooth.characteristic.idd_record_access_control_point"
+    },
+    {
+      "uuid": 11048,
+      "name": "IDD History Data",
+      "id": "org.bluetooth.characteristic.idd_history_data"
+    },
+    {
+      "uuid": 11049,
+      "name": "Client Supported Features",
+      "id": "org.bluetooth.characteristic.client_supported_features"
+    },
+    {
+      "uuid": 11050,
+      "name": "Database Hash",
+      "id": "org.bluetooth.characteristic.database_hash"
+    },
+    {
+      "uuid": 11051,
+      "name": "BSS Control Point",
+      "id": "org.bluetooth.characteristic.bss_control_point"
+    },
+    {
+      "uuid": 11052,
+      "name": "BSS Response",
+      "id": "org.bluetooth.characteristic.bss_response"
+    },
+    {
+      "uuid": 11053,
+      "name": "Emergency ID",
+      "id": "org.bluetooth.characteristic.emergency_id"
+    },
+    {
+      "uuid": 11054,
+      "name": "Emergency Text",
+      "id": "org.bluetooth.characteristic.emergency_text"
+    },
+    {
+      "uuid": 11055,
+      "name": "ACS Status",
+      "id": "org.bluetooth.characteristic.acs_status"
+    },
+    {
+      "uuid": 11056,
+      "name": "ACS Data In",
+      "id": "org.bluetooth.characteristic.acs_data_in"
+    },
+    {
+      "uuid": 11057,
+      "name": "ACS Data Out Notify",
+      "id": "org.bluetooth.characteristic.acs_data_out_notify"
+    },
+    {
+      "uuid": 11058,
+      "name": "ACS Data Out Indicate",
+      "id": "org.bluetooth.characteristic.acs_data_out_indicate"
+    },
+    {
+      "uuid": 11059,
+      "name": "ACS Control Point",
+      "id": "org.bluetooth.characteristic.acs_control_point"
+    },
+    {
+      "uuid": 11060,
+      "name": "Enhanced Blood Pressure Measurement",
+      "id": "org.bluetooth.characteristic.enhanced_blood_pressure_measurement"
+    },
+    {
+      "uuid": 11061,
+      "name": "Enhanced Intermediate Cuff Pressure",
+      "id": "org.bluetooth.characteristic.enhanced_intermediate_cuff_pressure"
+    },
+    {
+      "uuid": 11062,
+      "name": "Blood Pressure Record",
+      "id": "org.bluetooth.characteristic.blood_pressure_record"
+    },
+    {
+      "uuid": 11063,
+      "name": "Registered User",
+      "id": "org.bluetooth.characteristic.registered_user"
+    },
+    {
+      "uuid": 11064,
+      "name": "BR-EDR Handover Data",
+      "id": "org.bluetooth.characteristic.br_edr_handover_data"
+    },
+    {
+      "uuid": 11065,
+      "name": "Bluetooth SIG Data",
+      "id": "org.bluetooth.characteristic.bluetooth_sig_data"
+    },
+    {
+      "uuid": 11066,
+      "name": "Server Supported Features",
+      "id": "org.bluetooth.characteristic.server_supported_features"
+    },
+    {
+      "uuid": 11067,
+      "name": "Physical Activity Monitor Features",
+      "id": "org.bluetooth.characteristic.physical_activity_monitor_features"
+    },
+    {
+      "uuid": 11068,
+      "name": "General Activity Instantaneous Data",
+      "id": "org.bluetooth.characteristic.general_activity_instantaneous_data"
+    },
+    {
+      "uuid": 11069,
+      "name": "General Activity Summary Data",
+      "id": "org.bluetooth.characteristic.general_activity_summary_data"
+    },
+    {
+      "uuid": 11070,
+      "name": "CardioRespiratory Activity Instantaneous Data",
+      "id": "org.bluetooth.characteristic.cardiorespiratory_activity_instantaneous_data"
+    },
+    {
+      "uuid": 11071,
+      "name": "CardioRespiratory Activity Summary Data",
+      "id": "org.bluetooth.characteristic.cardiorespiratory_activity_summary_data"
+    },
+    {
+      "uuid": 11072,
+      "name": "Step Counter Activity Summary Data",
+      "id": "org.bluetooth.characteristic.step_counter_activity_summary_data"
+    },
+    {
+      "uuid": 11073,
+      "name": "Sleep Activity Instantaneous Data",
+      "id": "org.bluetooth.characteristic.sleep_activity_instantaneous_data"
+    },
+    {
+      "uuid": 11074,
+      "name": "Sleep Activity Summary Data",
+      "id": "org.bluetooth.characteristic.sleep_activity_summary_data"
+    },
+    {
+      "uuid": 11075,
+      "name": "Physical Activity Monitor Control Point",
+      "id": "org.bluetooth.characteristic.physical_activity_monitor_control_point"
+    },
+    {
+      "uuid": 11076,
+      "name": "Physical Activity Current Session",
+      "id": "org.bluetooth.characteristic.physical_activity_current_session"
+    },
+    {
+      "uuid": 11077,
+      "name": "Physical Activity Session Descriptor",
+      "id": "org.bluetooth.characteristic.physical_activity_session_descriptor"
+    },
+    {
+      "uuid": 11078,
+      "name": "Preferred Units",
+      "id": "org.bluetooth.characteristic.preferred_units"
+    },
+    {
+      "uuid": 11079,
+      "name": "High Resolution Height",
+      "id": "org.bluetooth.characteristic.high_resolution_height"
+    },
+    {
+      "uuid": 11080,
+      "name": "Middle Name",
+      "id": "org.bluetooth.characteristic.middle_name"
+    },
+    {
+      "uuid": 11081,
+      "name": "Stride Length",
+      "id": "org.bluetooth.characteristic.stride_length"
+    },
+    {
+      "uuid": 11082,
+      "name": "Handedness",
+      "id": "org.bluetooth.characteristic.handedness"
+    },
+    {
+      "uuid": 11083,
+      "name": "Device Wearing Position",
+      "id": "org.bluetooth.characteristic.device_wearing_position"
+    },
+    {
+      "uuid": 11084,
+      "name": "Four Zone Heart Rate Limits",
+      "id": "org.bluetooth.characteristic.four_zone_heart_rate_limits"
+    },
+    {
+      "uuid": 11085,
+      "name": "High Intensity Exercise Threshold",
+      "id": "org.bluetooth.characteristic.high_intensity_exercise_threshold"
+    },
+    {
+      "uuid": 11086,
+      "name": "Activity Goal",
+      "id": "org.bluetooth.characteristic.activity_goal"
+    },
+    {
+      "uuid": 11087,
+      "name": "Sedentary Interval Notification",
+      "id": "org.bluetooth.characteristic.sedentary_interval_notification"
+    },
+    {
+      "uuid": 11088,
+      "name": "Caloric Intake",
+      "id": "org.bluetooth.characteristic.caloric_intake"
+    },
+    {
+      "uuid": 11089,
+      "name": "TMAP Role",
+      "id": "org.bluetooth.characteristic.tmap_role"
+    },
+    {
+      "uuid": 11127,
+      "name": "Audio Input State",
+      "id": "org.bluetooth.characteristic.audio_input_state"
+    },
+    {
+      "uuid": 11128,
+      "name": "Gain Settings Attribute",
+      "id": "org.bluetooth.characteristic.gain_settings_attribute"
+    },
+    {
+      "uuid": 11129,
+      "name": "Audio Input Type",
+      "id": "org.bluetooth.characteristic.audio_input_type"
+    },
+    {
+      "uuid": 11130,
+      "name": "Audio Input Status",
+      "id": "org.bluetooth.characteristic.audio_input_status"
+    },
+    {
+      "uuid": 11131,
+      "name": "Audio Input Control Point",
+      "id": "org.bluetooth.characteristic.audio_input_control_point"
+    },
+    {
+      "uuid": 11132,
+      "name": "Audio Input Description",
+      "id": "org.bluetooth.characteristic.audio_input_description"
+    },
+    {
+      "uuid": 11133,
+      "name": "Volume State",
+      "id": "org.bluetooth.characteristic.volume_state"
+    },
+    {
+      "uuid": 11134,
+      "name": "Volume Control Point",
+      "id": "org.bluetooth.characteristic.volume_control_point"
+    },
+    {
+      "uuid": 11135,
+      "name": "Volume Flags",
+      "id": "org.bluetooth.characteristic.volume_flags"
+    },
+    {
+      "uuid": 11136,
+      "name": "Volume Offset State",
+      "id": "org.bluetooth.characteristic.volume_offset_state"
+    },
+    {
+      "uuid": 11137,
+      "name": "Audio Location",
+      "id": "org.bluetooth.characteristic.audio_location"
+    },
+    {
+      "uuid": 11138,
+      "name": "Volume Offset Control Point",
+      "id": "org.bluetooth.characteristic.volume_offset_control_point"
+    },
+    {
+      "uuid": 11139,
+      "name": "Audio Output Description",
+      "id": "org.bluetooth.characteristic.audio_output_description"
+    },
+    {
+      "uuid": 11140,
+      "name": "Set Identity Resolving Key",
+      "id": "org.bluetooth.characteristic.set_identity_resolving_key"
+    },
+    {
+      "uuid": 11141,
+      "name": "Coordinated Set Size",
+      "id": "org.bluetooth.characteristic.size_characteristic"
+    },
+    {
+      "uuid": 11142,
+      "name": "Set Member Lock",
+      "id": "org.bluetooth.characteristic.lock_characteristic"
+    },
+    {
+      "uuid": 11143,
+      "name": "Set Member Rank",
+      "id": "org.bluetooth.characteristic.rank_characteristic"
+    },
+    {
+      "uuid": 11144,
+      "name": "Encrypted Data Key Material",
+      "id": "org.bluetooth.characteristic.encrypted_data_key_material"
+    },
+    {
+      "uuid": 11145,
+      "name": "Apparent Energy 32",
+      "id": "org.bluetooth.characteristic.apparent_energy_32"
+    },
+    {
+      "uuid": 11146,
+      "name": "Apparent Power",
+      "id": "org.bluetooth.characteristic.apparent_power"
+    },
+    {
+      "uuid": 11147,
+      "name": "Live Health Observations",
+      "id": "org.bluetooth.characteristic.live_health_observations"
+    },
+    {
+      "uuid": 11148,
+      "name": "CO\\textsubscript{2} Concentration",
+      "id": "org.bluetooth.characteristic.co2_concentration"
+    },
+    {
+      "uuid": 11149,
+      "name": "Cosine of the Angle",
+      "id": "org.bluetooth.characteristic.cosine_of_the_angle"
+    },
+    {
+      "uuid": 11150,
+      "name": "Device Time Feature",
+      "id": "org.bluetooth.characteristic.device_time_feature"
+    },
+    {
+      "uuid": 11151,
+      "name": "Device Time Parameters",
+      "id": "org.bluetooth.characteristic.device_time_parameters"
+    },
+    {
+      "uuid": 11152,
+      "name": "Device Time",
+      "id": "org.bluetooth.characteristic.device_time"
+    },
+    {
+      "uuid": 11153,
+      "name": "Device Time Control Point",
+      "id": "org.bluetooth.characteristic.device_time_control_point"
+    },
+    {
+      "uuid": 11154,
+      "name": "Time Change Log Data",
+      "id": "org.bluetooth.characteristic.time_change_log_data"
+    },
+    {
+      "uuid": 11155,
+      "name": "Media Player Name",
+      "id": "org.bluetooth.characteristic.media_player_name"
+    },
+    {
+      "uuid": 11156,
+      "name": "Media Player Icon Object ID",
+      "id": "org.bluetooth.characteristic.media_player_icon_object_id"
+    },
+    {
+      "uuid": 11157,
+      "name": "Media Player Icon URL",
+      "id": "org.bluetooth.characteristic.media_player_icon_url"
+    },
+    {
+      "uuid": 11158,
+      "name": "Track Changed",
+      "id": "org.bluetooth.characteristic.track_changed"
+    },
+    {
+      "uuid": 11159,
+      "name": "Track Title",
+      "id": "org.bluetooth.characteristic.track_title"
+    },
+    {
+      "uuid": 11160,
+      "name": "Track Duration",
+      "id": "org.bluetooth.characteristic.track_duration"
+    },
+    {
+      "uuid": 11161,
+      "name": "Track Position",
+      "id": "org.bluetooth.characteristic.track_position"
+    },
+    {
+      "uuid": 11162,
+      "name": "Playback Speed",
+      "id": "org.bluetooth.characteristic.playback_speed"
+    },
+    {
+      "uuid": 11163,
+      "name": "Seeking Speed",
+      "id": "org.bluetooth.characteristic.seeking_speed"
+    },
+    {
+      "uuid": 11164,
+      "name": "Current Track Segments Object ID",
+      "id": "org.bluetooth.characteristic.current_track_segments_object_id"
+    },
+    {
+      "uuid": 11165,
+      "name": "Current Track Object ID",
+      "id": "org.bluetooth.characteristic.current_track_object_id"
+    },
+    {
+      "uuid": 11166,
+      "name": "Next Track Object ID",
+      "id": "org.bluetooth.characteristic.next_track_object_id"
+    },
+    {
+      "uuid": 11167,
+      "name": "Parent Group Object ID",
+      "id": "org.bluetooth.characteristic.parent_group_object_id"
+    },
+    {
+      "uuid": 11168,
+      "name": "Current Group Object ID",
+      "id": "org.bluetooth.characteristic.current_group_object_id"
+    },
+    {
+      "uuid": 11169,
+      "name": "Playing Order",
+      "id": "org.bluetooth.characteristic.playing_order"
+    },
+    {
+      "uuid": 11170,
+      "name": "Playing Orders Supported",
+      "id": "org.bluetooth.characteristic.playing_orders_supported"
+    },
+    {
+      "uuid": 11171,
+      "name": "Media State",
+      "id": "org.bluetooth.characteristic.media_state"
+    },
+    {
+      "uuid": 11172,
+      "name": "Media Control Point",
+      "id": "org.bluetooth.characteristic.media_control_point"
+    },
+    {
+      "uuid": 11173,
+      "name": "Media Control Point Opcodes Supported",
+      "id": "org.bluetooth.characteristic.media_control_point_opcodes_supported"
+    },
+    {
+      "uuid": 11174,
+      "name": "Search Results Object ID",
+      "id": "org.bluetooth.characteristic.search_results_object_id"
+    },
+    {
+      "uuid": 11175,
+      "name": "Search Control Point",
+      "id": "org.bluetooth.characteristic.search_control_point"
+    },
+    {
+      "uuid": 11176,
+      "name": "Energy 32",
+      "id": "org.bluetooth.characteristic.energy_32"
+    },
+    {
+      "uuid": 11181,
+      "name": "Constant Tone Extension Enable",
+      "id": "org.bluetooth.characteristic.constant_tone_extension_enable"
+    },
+    {
+      "uuid": 11182,
+      "name": "Advertising Constant Tone Extension Minimum Length",
+      "id": "org.bluetooth.characteristic.advertising_constant_tone_extension_minimum_length"
+    },
+    {
+      "uuid": 11183,
+      "name": "Advertising Constant Tone Extension Minimum Transmit Count",
+      "id": "org.bluetooth.characteristic.advertising_constant_tone_extension_minimum_transmit_count"
+    },
+    {
+      "uuid": 11184,
+      "name": "Advertising Constant Tone Extension Transmit Duration",
+      "id": "org.bluetooth.characteristic.advertising_constant_tone_extension_transmit_duration"
+    },
+    {
+      "uuid": 11185,
+      "name": "Advertising Constant Tone Extension Interval",
+      "id": "org.bluetooth.characteristic.advertising_constant_tone_extension_interval"
+    },
+    {
+      "uuid": 11186,
+      "name": "Advertising Constant Tone Extension PHY",
+      "id": "org.bluetooth.characteristic.advertising_constant_tone_extension_phy"
+    },
+    {
+      "uuid": 11187,
+      "name": "Bearer Provider Name",
+      "id": "org.bluetooth.characteristic.bearer_provider_name"
+    },
+    {
+      "uuid": 11188,
+      "name": "Bearer UCI",
+      "id": "org.bluetooth.characteristic.bearer_uci"
+    },
+    {
+      "uuid": 11189,
+      "name": "Bearer Technology",
+      "id": "org.bluetooth.characteristic.bearer_technology"
+    },
+    {
+      "uuid": 11190,
+      "name": "Bearer URI Schemes Supported List",
+      "id": "org.bluetooth.characteristic.bearer_uri_schemes_supported_list"
+    },
+    {
+      "uuid": 11191,
+      "name": "Bearer Signal Strength",
+      "id": "org.bluetooth.characteristic.bearer_signal_strength"
+    },
+    {
+      "uuid": 11192,
+      "name": "Bearer Signal Strength Reporting Interval",
+      "id": "org.bluetooth.characteristic.bearer_signal_strength_reporting_interval"
+    },
+    {
+      "uuid": 11193,
+      "name": "Bearer List Current Calls",
+      "id": "org.bluetooth.characteristic.bearer_list_current_calls"
+    },
+    {
+      "uuid": 11194,
+      "name": "Content Control ID",
+      "id": "org.bluetooth.characteristic.content_control_id"
+    },
+    {
+      "uuid": 11195,
+      "name": "Status Flags",
+      "id": "org.bluetooth.characteristic.status_flags"
+    },
+    {
+      "uuid": 11196,
+      "name": "Incoming Call Target Bearer URI",
+      "id": "org.bluetooth.characteristic.incoming_call_target_bearer_uri"
+    },
+    {
+      "uuid": 11197,
+      "name": "Call State",
+      "id": "org.bluetooth.characteristic.call_state"
+    },
+    {
+      "uuid": 11198,
+      "name": "Call Control Point",
+      "id": "org.bluetooth.characteristic.call_control_point"
+    },
+    {
+      "uuid": 11199,
+      "name": "Call Control Point Optional Opcodes",
+      "id": "org.bluetooth.characteristic.call_control_point_optional_opcodes"
+    },
+    {
+      "uuid": 11200,
+      "name": "Termination Reason",
+      "id": "org.bluetooth.characteristic.termination_reason"
+    },
+    {
+      "uuid": 11201,
+      "name": "Incoming Call",
+      "id": "org.bluetooth.characteristic.incoming_call"
+    },
+    {
+      "uuid": 11202,
+      "name": "Call Friendly Name",
+      "id": "org.bluetooth.characteristic.call_friendly_name"
+    },
+    {
+      "uuid": 11203,
+      "name": "Mute",
+      "id": "org.bluetooth.characteristic.mute"
+    },
+    {
+      "uuid": 11204,
+      "name": "Sink ASE",
+      "id": "org.bluetooth.characteristic.sink_ase"
+    },
+    {
+      "uuid": 11205,
+      "name": "Source ASE",
+      "id": "org.bluetooth.characteristic.source_ase"
+    },
+    {
+      "uuid": 11206,
+      "name": "ASE Control Point",
+      "id": "org.bluetooth.characteristic.ase_control_point"
+    },
+    {
+      "uuid": 11207,
+      "name": "Broadcast Audio Scan Control Point",
+      "id": "org.bluetooth.characteristic.broadcast_audio_scan_control_point"
+    },
+    {
+      "uuid": 11208,
+      "name": "Broadcast Receive State",
+      "id": "org.bluetooth.characteristic.broadcast_receive_state"
+    },
+    {
+      "uuid": 11209,
+      "name": "Sink PAC",
+      "id": "org.bluetooth.characteristic.sink_pac"
+    },
+    {
+      "uuid": 11210,
+      "name": "Sink Audio Locations",
+      "id": "org.bluetooth.characteristic.sink_audio_locations"
+    },
+    {
+      "uuid": 11211,
+      "name": "Source PAC",
+      "id": "org.bluetooth.characteristic.source_pac"
+    },
+    {
+      "uuid": 11212,
+      "name": "Source Audio Locations",
+      "id": "org.bluetooth.characteristic.source_audio_locations"
+    },
+    {
+      "uuid": 11213,
+      "name": "Available Audio Contexts",
+      "id": "org.bluetooth.characteristic.available_audio_contexts"
+    },
+    {
+      "uuid": 11214,
+      "name": "Supported Audio Contexts",
+      "id": "org.bluetooth.characteristic.supported_audio_contexts"
+    },
+    {
+      "uuid": 11215,
+      "name": "Ammonia Concentration",
+      "id": "org.bluetooth.characteristic.ammonia_concentration"
+    },
+    {
+      "uuid": 11216,
+      "name": "Carbon Monoxide Concentration",
+      "id": "org.bluetooth.characteristic.carbon_monoxide_concentration"
+    },
+    {
+      "uuid": 11217,
+      "name": "Methane Concentration",
+      "id": "org.bluetooth.characteristic.methane_concentration"
+    },
+    {
+      "uuid": 11218,
+      "name": "Nitrogen Dioxide Concentration",
+      "id": "org.bluetooth.characteristic.nitrogen_dioxide_concentration"
+    },
+    {
+      "uuid": 11219,
+      "name": "Non-Methane Volatile Organic Compounds Concentration",
+      "id": "org.bluetooth.characteristic.non-methane_volatile_organic_compounds_concentration"
+    },
+    {
+      "uuid": 11220,
+      "name": "Ozone Concentration",
+      "id": "org.bluetooth.characteristic.ozone_concentration"
+    },
+    {
+      "uuid": 11221,
+      "name": "Particulate Matter - PM1 Concentration",
+      "id": "org.bluetooth.characteristic.particulate_matter_pm1_concentration"
+    },
+    {
+      "uuid": 11222,
+      "name": "Particulate Matter - PM2.5 Concentration",
+      "id": "org.bluetooth.characteristic.particulate_matter_pm2_5_concentration"
+    },
+    {
+      "uuid": 11223,
+      "name": "Particulate Matter - PM10 Concentration",
+      "id": "org.bluetooth.characteristic.particulate_matter_pm10_concentration"
+    },
+    {
+      "uuid": 11224,
+      "name": "Sulfur Dioxide Concentration",
+      "id": "org.bluetooth.characteristic.sulfur_dioxide_concentration"
+    },
+    {
+      "uuid": 11225,
+      "name": "Sulfur Hexafluoride Concentration",
+      "id": "org.bluetooth.characteristic.sulfur_hexafluoride_concentration"
+    },
+    {
+      "uuid": 11226,
+      "name": "Hearing Aid Features",
+      "id": "org.bluetooth.characteristic.hearing_aid_features"
+    },
+    {
+      "uuid": 11227,
+      "name": "Hearing Aid Preset Control Point",
+      "id": "org.bluetooth.characteristic.hearing_aid_preset_control_point"
+    },
+    {
+      "uuid": 11228,
+      "name": "Active Preset Index",
+      "id": "org.bluetooth.characteristic.active_preset_index"
+    },
+    {
+      "uuid": 11229,
+      "name": "Stored Health Observations",
+      "id": "org.bluetooth.characteristic.stored_health_observations"
+    },
+    {
+      "uuid": 11230,
+      "name": "Fixed String 64",
+      "id": "org.bluetooth.characteristic.fixed_string_64"
+    },
+    {
+      "uuid": 11231,
+      "name": "High Temperature",
+      "id": "org.bluetooth.characteristic.high_temperature"
+    },
+    {
+      "uuid": 11232,
+      "name": "High Voltage",
+      "id": "org.bluetooth.characteristic.high_voltage"
+    },
+    {
+      "uuid": 11233,
+      "name": "Light Distribution",
+      "id": "org.bluetooth.characteristic.light_distribution"
+    },
+    {
+      "uuid": 11234,
+      "name": "Light Output",
+      "id": "org.bluetooth.characteristic.light_output"
+    },
+    {
+      "uuid": 11235,
+      "name": "Light Source Type",
+      "id": "org.bluetooth.characteristic.light_source_type"
+    },
+    {
+      "uuid": 11236,
+      "name": "Noise",
+      "id": "org.bluetooth.characteristic.noise"
+    },
+    {
+      "uuid": 11237,
+      "name": "Relative Runtime in a Correlated Color Temperature Range",
+      "id": "org.bluetooth.characteristic.relative_runtime_in_a_correlated_color_temperature_range"
+    },
+    {
+      "uuid": 11238,
+      "name": "Time Second 32",
+      "id": "org.bluetooth.characteristic.time_second_32"
+    },
+    {
+      "uuid": 11239,
+      "name": "VOC Concentration",
+      "id": "org.bluetooth.characteristic.voc_concentration"
+    },
+    {
+      "uuid": 11240,
+      "name": "Voltage Frequency",
+      "id": "org.bluetooth.characteristic.voltage_frequency"
+    },
+    {
+      "uuid": 11241,
+      "name": "Battery Critical Status",
+      "id": "org.bluetooth.characteristic.battery_critical_status"
+    },
+    {
+      "uuid": 11242,
+      "name": "Battery Health Status",
+      "id": "org.bluetooth.characteristic.battery_health_status"
+    },
+    {
+      "uuid": 11243,
+      "name": "Battery Health Information",
+      "id": "org.bluetooth.characteristic.battery_health_information"
+    },
+    {
+      "uuid": 11244,
+      "name": "Battery Information",
+      "id": "org.bluetooth.characteristic.battery_information"
+    },
+    {
+      "uuid": 11245,
+      "name": "Battery Level Status",
+      "id": "org.bluetooth.characteristic.battery_level_status"
+    },
+    {
+      "uuid": 11246,
+      "name": "Battery Time Status",
+      "id": "org.bluetooth.characteristic.battery_time_status"
+    },
+    {
+      "uuid": 11247,
+      "name": "Estimated Service Date",
+      "id": "org.bluetooth.characteristic.estimated_service_date"
+    },
+    {
+      "uuid": 11248,
+      "name": "Battery Energy Status",
+      "id": "org.bluetooth.characteristic.battery_energy_status"
+    },
+    {
+      "uuid": 11249,
+      "name": "Observation Schedule Changed",
+      "id": "org.bluetooth.characteristic.observation_schedule_changed"
+    },
+    {
+      "uuid": 11250,
+      "name": "Current Elapsed Time",
+      "id": "org.bluetooth.characteristic.current_elapsed_time"
+    },
+    {
+      "uuid": 11251,
+      "name": "Health Sensor Features",
+      "id": "org.bluetooth.characteristic.health_sensor_features"
+    },
+    {
+      "uuid": 11252,
+      "name": "GHS Control Point",
+      "id": "org.bluetooth.characteristic.ghs_control_point"
+    },
+    {
+      "uuid": 11253,
+      "name": "LE GATT Security Levels",
+      "id": "org.bluetooth.characteristic.le_gatt_security_levels"
+    },
+    {
+      "uuid": 11254,
+      "name": "ESL Address",
+      "id": "org.bluetooth.characteristic.esl_address"
+    },
+    {
+      "uuid": 11255,
+      "name": "AP Sync Key Material",
+      "id": "org.bluetooth.characteristic.ap_sync_key_material"
+    },
+    {
+      "uuid": 11256,
+      "name": "ESL Response Key Material",
+      "id": "org.bluetooth.characteristic.esl_response_key_material"
+    },
+    {
+      "uuid": 11257,
+      "name": "ESL Current Absolute Time",
+      "id": "org.bluetooth.characteristic.esl_current_absolute_time"
+    },
+    {
+      "uuid": 11258,
+      "name": "ESL Display Information",
+      "id": "org.bluetooth.characteristic.esl_display_information"
+    },
+    {
+      "uuid": 11259,
+      "name": "ESL Image Information",
+      "id": "org.bluetooth.characteristic.esl_image_information"
+    },
+    {
+      "uuid": 11260,
+      "name": "ESL Sensor Information",
+      "id": "org.bluetooth.characteristic.esl_sensor_information"
+    },
+    {
+      "uuid": 11261,
+      "name": "ESL LED Information",
+      "id": "org.bluetooth.characteristic.esl_led_information"
+    },
+    {
+      "uuid": 11262,
+      "name": "ESL Control Point",
+      "id": "org.bluetooth.characteristic.esl_control_point"
+    },
+    {
+      "uuid": 11263,
+      "name": "UDI for Medical Devices",
+      "id": "org.bluetooth.characteristic.medical_devices"
+    },
+    {
+      "uuid": 11264,
+      "name": "GMAP Role",
+      "id": "org.bluetooth.characteristic.gmap_role"
+    },
+    {
+      "uuid": 11265,
+      "name": "UGG Features",
+      "id": "org.bluetooth.characteristic.ugg_features"
+    },
+    {
+      "uuid": 11266,
+      "name": "UGT Features",
+      "id": "org.bluetooth.characteristic.ugt_features"
+    },
+    {
+      "uuid": 11267,
+      "name": "BGS Features",
+      "id": "org.bluetooth.characteristic.bgs_features"
+    },
+    {
+      "uuid": 11268,
+      "name": "BGR Features",
+      "id": "org.bluetooth.characteristic.bgr_features"
+    },
+    {
+      "uuid": 11269,
+      "name": "Percentage 8 Steps",
+      "id": "org.bluetooth.characteristic.percentage_8_steps"
+    },
+    {
+      "uuid": 11270,
+      "name": "Acceleration",
+      "id": "org.bluetooth.characteristic.acceleration"
+    },
+    {
+      "uuid": 11271,
+      "name": "Force",
+      "id": "org.bluetooth.characteristic.force"
+    },
+    {
+      "uuid": 11272,
+      "name": "Linear Position",
+      "id": "org.bluetooth.characteristic.linear_position"
+    },
+    {
+      "uuid": 11273,
+      "name": "Rotational Speed",
+      "id": "org.bluetooth.characteristic.rotational_speed"
+    },
+    {
+      "uuid": 11274,
+      "name": "Length",
+      "id": "org.bluetooth.characteristic.length"
+    },
+    {
+      "uuid": 11275,
+      "name": "Torque",
+      "id": "org.bluetooth.characteristic.torque"
+    },
+    {
+      "uuid": 11276,
+      "name": "IMD Status",
+      "id": "org.bluetooth.characteristic.imd_status"
+    },
+    {
+      "uuid": 11277,
+      "name": "IMDS Descriptor Value Changed",
+      "id": "org.bluetooth.characteristic.imds_descriptor_value_changed"
+    },
+    {
+      "uuid": 11278,
+      "name": "First Use Date",
+      "id": "org.bluetooth.characteristic.first_use_date"
+    },
+    {
+      "uuid": 11279,
+      "name": "Life Cycle Data",
+      "id": "org.bluetooth.characteristic.life_cycle_data"
+    },
+    {
+      "uuid": 11280,
+      "name": "Work Cycle Data",
+      "id": "org.bluetooth.characteristic.work_cycle_data"
+    },
+    {
+      "uuid": 11281,
+      "name": "Service Cycle Data",
+      "id": "org.bluetooth.characteristic.service_cycle_data"
+    },
+    {
+      "uuid": 11282,
+      "name": "IMD Control",
+      "id": "org.bluetooth.characteristic.imd_control"
+    },
+    {
+      "uuid": 11283,
+      "name": "IMD Historical Data",
+      "id": "org.bluetooth.characteristic.imd_historical_data"
+    },
+    {
+      "uuid": 11284,
+      "name": "RAS Features",
+      "id": "org.bluetooth.characteristic.ras_features"
+    },
+    {
+      "uuid": 11285,
+      "name": "Real-time Ranging Data",
+      "id": "org.bluetooth.characteristic.real-time_ranging_data"
+    },
+    {
+      "uuid": 11286,
+      "name": "On-demand Ranging Data",
+      "id": "org.bluetooth.characteristic.on-demand_ranging_data"
+    },
+    {
+      "uuid": 11287,
+      "name": "RAS Control Point",
+      "id": "org.bluetooth.characteristic.ras_control_point"
+    },
+    {
+      "uuid": 11288,
+      "name": "Ranging Data Ready",
+      "id": "org.bluetooth.characteristic.ranging_data_ready"
+    },
+    {
+      "uuid": 11289,
+      "name": "Ranging Data Overwritten",
+      "id": "org.bluetooth.characteristic.ranging_data_overwritten"
+    }
+  ]
+}

@@ -5,10 +5,11 @@ import class Foundation.ProcessInfo
 
 // get environment variables
 let environment = ProcessInfo.processInfo.environment
-let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] != nil
-let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != nil
-let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] != nil
-let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0" // enabled by default
+let dynamicLibrary = environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] == "1"
+let buildMetadata = environment["SWIFTPM_BLUETOOTH_METADATA"] != "0"
+let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
+let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0"
+let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
 
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
@@ -26,6 +27,11 @@ var package = Package(
             name: "Bluetooth",
             type: libraryType,
             targets: ["Bluetooth"]
+        ),
+        .library(
+            name: "BluetoothMetadata",
+            type: libraryType,
+            targets: ["BluetoothMetadata"]
         ),
         .library(
             name: "BluetoothGAP",
@@ -46,6 +52,18 @@ var package = Package(
     targets: [
         .target(
             name: "Bluetooth"
+        ),
+        .target(
+            name: "BluetoothMetadata",
+            resources: [
+                .copy("Resources/CompanyIdentifier.json"),
+                .copy("Resources/CharacteristicUUID.json"),
+                .copy("Resources/DeclarationUUID.json"),
+                .copy("Resources/DescriptorUUID.json"),
+                .copy("Resources/ServiceUUID.json"),
+                .copy("Resources/MemberUUID.json"),
+                .copy("Resources/UnitIdentifier.json")
+            ]
         ),
         .target(
             name: "BluetoothGAP",
@@ -71,6 +89,10 @@ var package = Package(
             dependencies: [
                 "Bluetooth",
                 .target(
+                    name: "BluetoothMetadata",
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                ),
+                .target(
                     name: "BluetoothGAP", 
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 ),
@@ -82,14 +104,19 @@ var package = Package(
                     name: "BluetoothHCI", 
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 )
-            ],
-            swiftSettings: [.swiftLanguageMode(.v5)]
+            ]
         )
     ]
 )
 
-// SwiftPM plugins
+// Optional dependencies
+if buildMetadata {
+    package.targets[0].dependencies += [
+        "BluetoothMetadata"
+    ]
+}
 
+// SwiftPM plugins
 if buildDocs {
     package.dependencies += [
         .package(
@@ -108,7 +135,9 @@ if generateCode {
     package.targets += [
         .executableTarget(
             name: "GenerateBluetooth",
-            dependencies: []
+            dependencies: [
+                "BluetoothMetadata"
+            ]
         ),
         .plugin(
             name: "GenerateBluetoothDefinitions",

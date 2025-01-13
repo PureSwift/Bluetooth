@@ -1,0 +1,24 @@
+﻿{
+  "uuids": [
+    {
+      "uuid": 10240,
+      "name": "Primary Service",
+      "id": "org.bluetooth.attribute.gatt.primary_service_declaration"
+    },
+    {
+      "uuid": 10241,
+      "name": "Secondary Service",
+      "id": "org.bluetooth.attribute.gatt.secondary_service_declaration"
+    },
+    {
+      "uuid": 10242,
+      "name": "Include",
+      "id": "org.bluetooth.attribute.gatt.include_declaration"
+    },
+    {
+      "uuid": 10243,
+      "name": "Characteristic",
+      "id": "org.bluetooth.attribute.gatt.characteristic_declaration"
+    }
+  ]
+}

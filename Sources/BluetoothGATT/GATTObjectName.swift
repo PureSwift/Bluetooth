@@ -23,7 +23,7 @@ public struct GATTObjectName: Equatable, Hashable, RawRepresentable, GATTCharact
     
     internal static let length = 120
     
-    public static var uuid: BluetoothUUID { return .objectName }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.objectName }
     
     public let rawValue: String
     

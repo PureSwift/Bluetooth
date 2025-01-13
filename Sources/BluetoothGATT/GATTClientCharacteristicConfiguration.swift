@@ -22,7 +22,7 @@ import Bluetooth
 @frozen
 public struct GATTClientCharacteristicConfiguration: GATTDescriptor, OptionSet, Hashable, Sendable {
     
-    public static var uuid: BluetoothUUID { .clientCharacteristicConfiguration }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.clientCharacteristicConfiguration }
     
     public var rawValue: UInt16
     

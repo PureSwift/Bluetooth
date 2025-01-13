@@ -36,18 +36,6 @@ public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable, Sendable
 extension CompanyIdentifier: Codable { }
 #endif
 
-#if !os(WASI) && !hasFeature(Embedded)
-public extension CompanyIdentifier {
-    
-    /// Bluetooth Company name.
-    ///
-    /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
-    var name: String? {
-        return Self.companyIdentifiers[rawValue]
-    }
-}
-#endif
-
 // MARK: - ExpressibleByIntegerLiteral
 
 extension CompanyIdentifier: ExpressibleByIntegerLiteral {
@@ -62,7 +50,7 @@ extension CompanyIdentifier: ExpressibleByIntegerLiteral {
 extension CompanyIdentifier: CustomStringConvertible {
     
     public var description: String {
-        #if !os(WASI) && !hasFeature(Embedded)
+        #if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
         return name ?? rawValue.description
         #else
         return rawValue.description

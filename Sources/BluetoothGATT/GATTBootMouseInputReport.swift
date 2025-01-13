@@ -21,7 +21,7 @@ public struct GATTBootMouseInputReport: RawRepresentable, GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .bootMouseInputReport }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bootMouseInputReport }
     
     public var rawValue: UInt8
     

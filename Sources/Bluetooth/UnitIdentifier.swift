@@ -30,32 +30,14 @@ extension UnitIdentifier: ExpressibleByIntegerLiteral {
 extension UnitIdentifier: CustomStringConvertible {
     
     public var description: String {
-        let valueString = "0x" + rawValue.toHexadecimal()
-        #if !os(WASI) && !hasFeature(Embedded)
-        if let name = self.name {
-            return valueString + " " + "(" + name + ")"
-        } else {
-            return valueString
-        }
+        #if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
+        return self.name ?? rawValueDescription
         #else
-        return valueString
+        return rawValueDescription
         #endif
     }
-}
-
-// MARK: - Definitions
-
-#if !os(WASI) && !hasFeature(Embedded)
-public extension UnitIdentifier {
     
-    /// The name of the unit.
-    var name: String? {
-        return Self.unitIdentifiers[rawValue]?.name
-    }
-    
-    /// The Bluetooth type namespace of the unit.
-    var type: String? {
-        return Self.unitIdentifiers[rawValue]?.type
+    internal var rawValueDescription: String {
+        "0x" + rawValue.toHexadecimal()
     }
 }
-#endif

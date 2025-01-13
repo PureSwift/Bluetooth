@@ -25,7 +25,7 @@ public struct GATTAlertStatus: GATTCharacteristic {
     
     internal static let length = MemoryLayout<UInt8>.size
     
-    public static var uuid: BluetoothUUID { return .alertStatus }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertStatus }
     
     public var states: BitMaskOptionSet<State>
     

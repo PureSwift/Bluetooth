@@ -11,7 +11,7 @@ import Bluetooth
 /// GATT Server
 ///
 /// - Note: Doesn't support concurrency to enable building for Embedded Swift.
-public final class GATTServer <Socket: L2CAPConnection> {
+public final class GATTServer <Socket: L2CAPConnection>: @unchecked Sendable {
     
     public typealias Data = Socket.Data
     
@@ -264,7 +264,7 @@ public final class GATTServer <Socket: L2CAPConnection> {
         if isLocalWrite {
             
             // Client configuration
-            if let clientConfigurationDescriptor = characteristic.descriptors.first(where: { $0.uuid == .clientCharacteristicConfiguration }) {
+            if let clientConfigurationDescriptor = characteristic.descriptors.first(where: { $0.uuid == BluetoothUUID.Descriptor.clientCharacteristicConfiguration }) {
                 
                 guard let descriptor = GATTClientCharacteristicConfiguration(data: clientConfigurationDescriptor.value)
                     else { return }
@@ -396,7 +396,7 @@ public final class GATTServer <Socket: L2CAPConnection> {
         }
         // GATT defines that only the Primary Service and Secondary Service group types
         // can be used for the "Read By Group Type" request. Return an error if any other group type is given.
-        guard pdu.type == .primaryService || pdu.type == .secondaryService else {
+        guard pdu.type == BluetoothUUID.Declaration.primaryService || pdu.type == BluetoothUUID.Declaration.secondaryService else {
             errorResponse(ATTReadByGroupTypeRequest.attributeOpcode, .unsupportedGroupType, pdu.startHandle)
             return
         }

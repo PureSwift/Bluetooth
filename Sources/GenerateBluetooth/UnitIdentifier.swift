@@ -6,36 +6,20 @@
 //
 
 import Foundation
-
-struct UnitIdentifiersFile: Equatable, Hashable, Codable, Sendable {
-    
-    var uuids: [Element]
-}
-
-extension UnitIdentifiersFile {
-    
-    struct Element: Equatable, Hashable, Codable, Sendable, Identifiable {
-        
-        var id: String
-        
-        let uuid: UInt16
-        
-        let name: String
-    }
-}
+import BluetoothMetadata
 
 extension GenerateTool {
     
     static func parseUnitIdentifiersFile(
-        input: URL
     ) throws -> [UInt16: (id: String, name: String)] {
-        let data = try Data(contentsOf: input, options: [.mappedIfSafe])
-        let decoder = JSONDecoder()
-        let file = try decoder.decode(UnitIdentifiersFile.self, from: data)
+        let file = try BluetoothMetadata.BluetoothUUID.File(.unit)
         var output = [UInt16: (id: String, name: String)]()
         output.reserveCapacity(file.uuids.count)
         for element in file.uuids {
-            output[element.uuid] = (element.id, element.name)
+            guard let namespace = element.type else {
+                throw CocoaError(.coderValueNotFound)
+            }
+            output[element.uuid] = (namespace, element.name)
         }
         return output
     }
@@ -61,10 +45,9 @@ extension GenerateTool {
         return units.map { ($0, $1.name, $1.id, memberNames[$0]!) }
     }
     
-    static func generateUnitIdentifiers(input: URL, output: [URL]) throws {
-        let data = try parseUnitIdentifiersFile(input: input)
-        try generateUnitIdentifierExtensions(data, output: output[0])
-        try generateUnitIdentifierNames(data, output: output[1])
+    static func generateUnitIdentifiers(output: URL) throws {
+        let data = try parseUnitIdentifiersFile()
+        try generateUnitIdentifierExtensions(data, output: output)
     }
     
     static func generateUnitIdentifierExtensions(_ data: [UInt16: (id: String, name: String)], output: URL) throws {
@@ -101,44 +84,9 @@ extension GenerateTool {
         print("Generated \(output.path)")
     }
     
-    static func generateUnitIdentifierNames(_ data: [UInt16: (id: String, name: String)], output: URL) throws {
+    static func generateUnitIdentifierTests(output: URL) throws {
         
-        var generatedCode = ""
-        let units = unitIdentifiers(from: data)
-        
-        func 🖨(_ text: String) {
-            generatedCode += text + "\n"
-        }
-        
-        🖨("//")
-        🖨("//  UnitIdentifierNames.swift")
-        🖨("//  Bluetooth")
-        🖨("//")
-        🖨("")
-        🖨("internal extension UnitIdentifier {")
-        🖨("")
-        🖨("    static let unitIdentifiers: [UInt16: (name: String, type: String)] = {")
-        🖨("")
-        🖨("        var unitIdentifiers = [UInt16: (name: String, type: String)]()")
-        🖨("        unitIdentifiers.reserveCapacity(\(units.count))")
-        🖨("")
-        
-        for (id, name, type, _) in units {
-            let hexLiteral = "0x" + id.toHexadecimal()
-            🖨("        unitIdentifiers[\(hexLiteral)] = (#\"\(name)\"#, #\"\(type)\"#)")
-        }
-        
-        🖨("        return unitIdentifiers")
-        🖨("    }()")
-        🖨("}")
-        
-        try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
-        print("Generated \(output.path)")
-    }
-    
-    static func generateUnitIdentifierTests(input: URL, output: URL) throws {
-        
-        let data = try parseUnitIdentifiersFile(input: input)
+        let data = try parseUnitIdentifiersFile()
         
         var generatedCode = ""
         let units = unitIdentifiers(from: data)

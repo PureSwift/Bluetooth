@@ -57,7 +57,7 @@ import Bluetooth
             
             #expect(Data(list) == data)
             #expect(list.uuids == [0x1803, 0x1804, 0x1802])
-            #expect(list.uuids.map { BluetoothUUID.bit16($0) } == [.linkLoss, .txPower, .immediateAlert])
+            #expect(list.uuids.map { BluetoothUUID.bit16($0) } == [BluetoothUUID.Service.linkLoss, BluetoothUUID.Service.txPower, BluetoothUUID.Service.immediateAlert])
         }
     }
     

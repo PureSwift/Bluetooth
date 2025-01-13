@@ -28,7 +28,7 @@ public struct GATTTimeZone: RawRepresentable, GATTCharacteristic, Equatable, Has
     
     internal static let unknown = GATTTimeZone(-128)
     
-    public static var uuid: BluetoothUUID { return .timeZone }
+    public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.timeZone }
     
     public let rawValue: Int8
     
