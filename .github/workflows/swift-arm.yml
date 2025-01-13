@@ -2,7 +2,7 @@ name: Swift ARM
 on: [push]
 jobs:
 
-    macos:
+    armv6m-apple-none-macho:
       name: Baremetal Embedded ARM 
       runs-on: ubuntu-latest
       container: swiftlang/swift:nightly-jammy
@@ -17,3 +17,27 @@ jobs:
         run: SWIFTPM_ENABLE_MACROS=0 SWIFTPM_ENABLE_PLUGINS=0 SWIFTPM_BLUETOOTH_METADATA=0 swift build --triple armv6m-apple-none-macho --configuration release --verbose -Xswiftc -enable-experimental-feature -Xswiftc Embedded -Xswiftc -disable-stack-protector -Xcc -D__MACH__ -Xcc -ffreestanding -Xcc -mcpu=cortex-m0plus -Xcc -mthumb --target Bluetooth
       - name: Build BluetoothGAP
         run: SWIFTPM_ENABLE_MACROS=0 SWIFTPM_ENABLE_PLUGINS=0 SWIFTPM_BLUETOOTH_METADATA=0 swift build --triple armv6m-apple-none-macho --configuration release --verbose -Xswiftc -enable-experimental-feature -Xswiftc Embedded -Xswiftc -disable-stack-protector -Xcc -D__MACH__ -Xcc -ffreestanding -Xcc -mcpu=cortex-m0plus -Xcc -mthumb --target BluetoothGAP
+
+    armv7-bookworm:
+      name: Armv7 Debian Bookworm
+      runs-on: ubuntu-latest
+      container: swift:6.0.3
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Install dependencies
+          run: apt update -y; apt install wget -y
+        - name: Install SDK
+          run: |
+            wget https://github.com/xtremekforever/swift-armv7/releases/download/6.0.3/swift-6.0.3-RELEASE-debian-bookworm-armv7-sdk.tar.gz
+            tar -xvf swift-6.0.3-RELEASE-debian-bookworm-armv7-sdk.tar.gz
+            mv swift-6.0.3-RELEASE-debian-bookworm-armv7 /opt/swift-6.0.3-RELEASE-debian-bookworm-armv7
+        - name: Swift Version
+          run: swift --version
+        - name: Build
+          run: swift build --build-tests --destination /opt/swift-6.0.3-RELEASE-debian-bookworm-armv7/debian-bookworm.json
+        - name: Upload artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: "armv7-bookworm"
+            path: .build/armv7-unknown-linux-gnueabihf/debug/BluetoothPackageTests.xctest
