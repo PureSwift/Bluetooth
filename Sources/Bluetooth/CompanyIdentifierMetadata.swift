@@ -5,7 +5,7 @@
 //  Created by Alsey Coleman Miller on 1/12/25.
 //
 
-#if canImport(Foundation) && !os(WASI) && !hasFeature(Embedded)
+#if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
 import Foundation
 import BluetoothMetadata
 
