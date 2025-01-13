@@ -9,10 +9,10 @@
 /// Bluetooth LE Connection role
 @frozen
 public enum LowEnergyRole: UInt8 {
-    
+
     /// Connection is master.
     case master = 0x00
-    
+
     /// Connection is slave
     case slave = 0x01
 }

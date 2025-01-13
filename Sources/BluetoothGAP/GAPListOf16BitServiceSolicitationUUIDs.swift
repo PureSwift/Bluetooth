@@ -18,34 +18,34 @@ import Bluetooth
 /// GAP List of 16 bit Service Solicitation UUIDs
 @frozen
 public struct GAPListOf16BitServiceSolicitationUUIDs: GAPData, Equatable {
-    
+
     public static let dataType: GAPDataType = .listOf16BitServiceSolicitationUUIDs
-    
+
     public let uuids: [UInt16]
-    
+
     public init(uuids: [UInt16] = []) {
-        
+
         self.uuids = uuids
     }
 }
 
 public extension GAPListOf16BitServiceSolicitationUUIDs {
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard let list = GAPUUIDList<ArrayLiteralElement>(data: data)
-            else { return nil }
-        
+        else { return nil }
+
         self.uuids = list.uuids
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
-        
+
         data += GAPUUIDList(uuids: uuids)
     }
-    
+
     var dataLength: Int {
-        
+
         return MemoryLayout<UInt16>.size * uuids.count
     }
 }
@@ -53,9 +53,9 @@ public extension GAPListOf16BitServiceSolicitationUUIDs {
 // MARK: - ExpressibleByArrayLiteral
 
 extension GAPListOf16BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
-    
+
     public init(arrayLiteral elements: UInt16...) {
-        
+
         self.init(uuids: elements)
     }
 }
@@ -64,7 +64,7 @@ extension GAPListOf16BitServiceSolicitationUUIDs: ExpressibleByArrayLiteral {
 
 #if !hasFeature(Embedded)
 extension GAPListOf16BitServiceSolicitationUUIDs: CustomStringConvertible {
-    
+
     public var description: String {
         return uuids.map { BluetoothUUID.bit16($0) }.description
     }

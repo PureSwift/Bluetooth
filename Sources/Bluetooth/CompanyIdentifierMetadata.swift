@@ -10,7 +10,7 @@ import Foundation
 import BluetoothMetadata
 
 public extension CompanyIdentifier {
-    
+
     /// Bluetooth Company name.
     ///
     /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
@@ -28,8 +28,7 @@ internal let companyIdentifiers: [UInt16: String] = {
         }
         assert(companyIdentifiers.count == file.companyIdentifiers.count)
         return companyIdentifiers
-    }
-    catch {
+    } catch {
         assertionFailure("Unable to load metadata: \(error)")
         return [:]
     }

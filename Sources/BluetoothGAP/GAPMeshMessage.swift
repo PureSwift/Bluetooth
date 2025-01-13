@@ -22,36 +22,36 @@ import Bluetooth
 /// it is recommended to randomize the gap between consecutive packets within an Advertising Event.
 @frozen
 public struct GAPMeshMessage: GAPData, Equatable, Hashable {
-    
+
     public static var dataType: GAPDataType { return .meshMessage }
-    
+
     public var message: UInt16
-    
+
     public init(message: UInt16) {
-        
+
         self.message = message
     }
 }
 
 public extension GAPMeshMessage {
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == MemoryLayout<UInt16>.size
-            else { return nil }
-        
+        else { return nil }
+
         let message = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
+
         self.init(message: message)
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
-        
+
         data += message.littleEndian
     }
-    
+
     var dataLength: Int {
-        
+
         return MemoryLayout<UInt16>.size
     }
 }
@@ -59,9 +59,9 @@ public extension GAPMeshMessage {
 // MARK: - CustomStringConvertible
 
 extension GAPMeshMessage: CustomStringConvertible {
-    
+
     public var description: String {
-        
+
         return message.description
     }
 }

@@ -24,22 +24,22 @@
 /// - SeeAlso: [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers)
 @frozen
 public struct CompanyIdentifier: RawRepresentable, Equatable, Hashable, Sendable {
-    
+
     public var rawValue: UInt16
-    
+
     public init(rawValue: UInt16) {
         self.rawValue = rawValue
     }
 }
 
 #if !hasFeature(Embedded)
-extension CompanyIdentifier: Codable { }
+extension CompanyIdentifier: Codable {}
 #endif
 
 // MARK: - ExpressibleByIntegerLiteral
 
 extension CompanyIdentifier: ExpressibleByIntegerLiteral {
-    
+
     public init(integerLiteral value: UInt16) {
         self.init(rawValue: value)
     }
@@ -48,7 +48,7 @@ extension CompanyIdentifier: ExpressibleByIntegerLiteral {
 // MARK: - CustomStringConvertible
 
 extension CompanyIdentifier: CustomStringConvertible {
-    
+
     public var description: String {
         #if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
         return name ?? rawValue.description

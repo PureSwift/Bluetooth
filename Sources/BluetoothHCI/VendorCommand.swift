@@ -10,11 +10,11 @@ import Foundation
 
 @frozen
 public struct VendorCommand: HCICommand, Equatable, Hashable {
-    
+
     public static let opcodeGroupField = HCIOpcodeGroupField.vendor
-    
+
     public let rawValue: HCIOpcodeCommandField
-    
+
     public init(rawValue: HCIOpcodeCommandField) {
         self.rawValue = rawValue
     }
@@ -23,10 +23,10 @@ public struct VendorCommand: HCICommand, Equatable, Hashable {
 // MARK: - Name
 
 public extension VendorCommand {
-    
+
     /// The names of the registered vendor commands.
     nonisolated(unsafe) static var names = [VendorCommand: String]()
-    
+
     var name: String {
         return Self.names[self] ?? rawValue.toHexadecimal()
     }

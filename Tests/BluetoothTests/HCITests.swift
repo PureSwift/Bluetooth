@@ -13,11 +13,11 @@ import Foundation
 @testable import BluetoothHCI
 
 @Suite struct HCITests {
-    
+
     @Test func setAdvertiseEnableParameter() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          SEND [2006] Opcode: 0x2006 (OGF: 0x08    OCF: 0x06) 06 20 0f 14 00 1e 00 01 01 00 77 d8 47 a3 39 54 01 00
          Parameter Length: 15 (0x0F)
@@ -32,29 +32,31 @@ import Foundation
 
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.setAdvertisingParameters.opcode,
-                     [0x06, 0x20, 0x0f, 0x14, 0x00, 0x1E, 0x00, 0x01, 0x01, 0x00, 0x77, 0xD8, 0x47, 0xA3, 0x39, 0x54, 0x01, 0x00])
+            .command(
+                HCILowEnergyCommand.setAdvertisingParameters.opcode,
+                [0x06, 0x20, 0x0f, 0x14, 0x00, 0x1E, 0x00, 0x01, 0x01, 0x00, 0x77, 0xD8, 0x47, 0xA3, 0x39, 0x54, 0x01, 0x00])
         )
-        
+
         ///    0e 04 01 06 20 12
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x06, 0x20, 0x12]))
     }
-    
+
     @Test func readBufferSize() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          SEND  [1001] Read Buffer Size 02 20 00
          [2002] Opcode: 0x2002 (OGF: 0x08    OCF: 0x02)
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.readBufferSize.opcode,
-                     [0x02, 0x20, 0x00])
+            .command(
+                HCILowEnergyCommand.readBufferSize.opcode,
+                [0x02, 0x20, 0x00])
         )
-        
+
         hostController.queue.append(.event([0x0E, 0x07, 0x01, 0x02, 0x20, 0x00, 0xFB, 0x00, 0x0F]))
-        
+
         /**
          Command Complete [2002] - LE Read Buffer Size - Num LE Data Packets: 0x000F    0e 07 01 02 20 00 fb 00 0f
          Parameter Length: 7 (0x07)
@@ -65,28 +67,29 @@ import Foundation
          HC Total Num LE Data Packets: 0x000F
          */
         var readBufferSizeReturn: HCILEReadBufferSize!
-        (readBufferSizeReturn = try await hostController.readBufferSize())
+        readBufferSizeReturn = try await hostController.readBufferSize()
         #expect(hostController.queue.isEmpty)
-        
+
         #expect(readBufferSizeReturn.dataPacketLength == 0x00FB)
         #expect(readBufferSizeReturn.dataPacket == 0x000F)
     }
-    
+
     @Test func lEReadLocalSupportedFeatures() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          SEND  [1001] Read Local Supported Features  03 20 00
          [2003] Opcode: 0x2003 (OGF: 0x08    OCF: 0x03)
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.readLocalSupportedFeatures.opcode,
-                     [0x03, 0x20, 0x00])
+            .command(
+                HCILowEnergyCommand.readLocalSupportedFeatures.opcode,
+                [0x03, 0x20, 0x00])
         )
-        
+
         hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x03, 0x20, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
-        
+
         /**
          Command Complete [2003] - LE Read Local Supported Features     0e 0c 01 03 20 00 3f 00 00 00 00 00 00 00
          Parameter Length: 12 (0x0C)
@@ -101,16 +104,16 @@ import Foundation
          LE Ping
          LE Data Packet Length Extension
          */
-        
+
         var lowEnergyFeatureSet: LowEnergyFeatureSet!
-        (lowEnergyFeatureSet = try await hostController.lowEnergyReadLocalSupportedFeatures())
+        lowEnergyFeatureSet = try await hostController.lowEnergyReadLocalSupportedFeatures()
         #expect(hostController.queue.isEmpty)
-        
-        #expect(lowEnergyFeatureSet.rawValue == 0x000000000000003F)
+
+        #expect(lowEnergyFeatureSet.rawValue == 0x0000_0000_0000_003F)
     }
-    
+
     @Test func name() async throws {
-        
+
         /// HCI command
         #expect(LinkControlCommand.acceptConnection.name == "Accept Connection Request")
         #expect(LinkPolicyCommand.holdMode.name == "Hold Mode")
@@ -118,142 +121,147 @@ import Foundation
         #expect(HostControllerBasebandCommand.readLocalName.name == "Read Local Name")
         #expect(StatusParametersCommand.readFailedContactCounter.name == "Read Failed Contact Counter")
         #expect(HCILowEnergyCommand.createConnection.name == "LE Create Connection")
-        
-        func testCommand<T: HCICommand> (_ command: T.Type) {
-            
+
+        func testCommand<T: HCICommand>(_ command: T.Type) {
+
             for rawValue in UInt16.min ... .max {
-                
+
                 guard let command = T.init(rawValue: rawValue)
-                    else { continue }
-                
+                else { continue }
+
                 #expect(command.opcode != .min)
                 #expect(command.opcode != rawValue)
                 #expect(command.name.isEmpty == false)
                 #expect(command.description == command.name)
             }
         }
-        
+
         testCommand(LinkControlCommand.self)
         testCommand(LinkPolicyCommand.self)
         testCommand(InformationalCommand.self)
         testCommand(HostControllerBasebandCommand.self)
         testCommand(StatusParametersCommand.self)
         testCommand(HCILowEnergyCommand.self)
-        
-        func testCommandNames<T: HCICommand> (_ command: T.Type, names: [String], skip: String = "Unknown") {
-            
+
+        func testCommandNames<T: HCICommand>(_ command: T.Type, names: [String], skip: String = "Unknown") {
+
             for (index, name) in names.enumerated().filter({ $1 != skip }) {
-                
+
                 #expect(T.init(rawValue: UInt16(index))?.name == name)
             }
         }
-        
-        testCommandNames(HCILowEnergyCommand.self, names: [
-            "Unknown",
-            "LE Set Event Mask",
-            "LE Read Buffer Size",
-            "LE Read Local Supported Features",
-            "Unknown",
-            "LE Set Random Address",
-            "LE Set Advertising Parameters",
-            "LE Read Advertising Channel Tx Power",
-            "LE Set Advertising Data",
-            "LE Set Scan Response Data",
-            "LE Set Advertise Enable",
-            "LE Set Scan Parameters",
-            "LE Set Scan Enable",
-            "LE Create Connection",
-            "LE Create Connection Cancel",
-            "LE Read White List Size",
-            "LE Clear White List",
-            "LE Add Device To White List",
-            "LE Remove Device From White List",
-            "LE Connection Update",
-            "LE Set Host Channel Classification",
-            "LE Read Channel Map",
-            "LE Read Remote Used Features",
-            "LE Encrypt",
-            "LE Rand",
-            "LE Start Encryption",
-            "LE Long Term Key Request Reply",
-            "LE Long Term Key Request Negative Reply",
-            "LE Read Supported States",
-            "LE Receiver Test",
-            "LE Transmitter Test",
-            "LE Test End",
+
+        testCommandNames(
+            HCILowEnergyCommand.self,
+            names: [
+                "Unknown",
+                "LE Set Event Mask",
+                "LE Read Buffer Size",
+                "LE Read Local Supported Features",
+                "Unknown",
+                "LE Set Random Address",
+                "LE Set Advertising Parameters",
+                "LE Read Advertising Channel Tx Power",
+                "LE Set Advertising Data",
+                "LE Set Scan Response Data",
+                "LE Set Advertise Enable",
+                "LE Set Scan Parameters",
+                "LE Set Scan Enable",
+                "LE Create Connection",
+                "LE Create Connection Cancel",
+                "LE Read White List Size",
+                "LE Clear White List",
+                "LE Add Device To White List",
+                "LE Remove Device From White List",
+                "LE Connection Update",
+                "LE Set Host Channel Classification",
+                "LE Read Channel Map",
+                "LE Read Remote Used Features",
+                "LE Encrypt",
+                "LE Rand",
+                "LE Start Encryption",
+                "LE Long Term Key Request Reply",
+                "LE Long Term Key Request Negative Reply",
+                "LE Read Supported States",
+                "LE Receiver Test",
+                "LE Transmitter Test",
+                "LE Test End"
             ])
-        
-        testCommandNames(InformationalCommand.self, names: [
-            "Unknown",
-            "Read Local Version Information",
-            "Read Local Supported Commands",
-            "Read Local Supported Features",
-            "Read Local Extended Features",
-            "Read Buffer Size",
-            "Unknown",
-            "Unknown", // "Read Country Code",
-            "Unknown",
-            "Read Device Address", //"Read BD ADDR",
-            "Read Data Block Size"
+
+        testCommandNames(
+            InformationalCommand.self,
+            names: [
+                "Unknown",
+                "Read Local Version Information",
+                "Read Local Supported Commands",
+                "Read Local Supported Features",
+                "Read Local Extended Features",
+                "Read Buffer Size",
+                "Unknown",
+                "Unknown",  // "Read Country Code",
+                "Unknown",
+                "Read Device Address",  //"Read BD ADDR",
+                "Read Data Block Size"
             ])
-        
+
         // HCI event
         #expect(HCIGeneralEvent.commandComplete.name == "Command Complete")
         #expect(LowEnergyEvent.connectionComplete.name == "LE Connection Complete")
-        
-        func testEvent<T: HCIEvent> (_ command: T.Type) {
-            
+
+        func testEvent<T: HCIEvent>(_ command: T.Type) {
+
             for rawValue in UInt8.min ... .max {
-                
+
                 guard let event = T.init(rawValue: rawValue)
-                    else { continue }
-                
+                else { continue }
+
                 #expect(event.name.isEmpty == false)
                 #expect(event.description == event.name)
             }
         }
-        
+
         testEvent(HCIGeneralEvent.self)
         testEvent(LowEnergyEvent.self)
-        
+
         // HCI error
         #expect(HCIError.unknownCommand.description == "Unknown HCI Command")
-        
+
         let errors = (UInt8.min ... .max).compactMap({ HCIError(rawValue: $0) })
-        
+
         for error in errors {
-            
+
             #expect(error.name.isEmpty == false)
             #expect(error.description == error.name)
-            
+
             #if os(macOS)
             let nsError = error as NSError
             #expect(nsError.code == Int(error.rawValue))
             #expect(nsError.domain == "org.pureswift.Bluetooth.HCIError")
             #expect(nsError.userInfo[NSLocalizedDescriptionKey] as? String == error.description)
             #expect(nsError.userInfo[NSLocalizedDescriptionKey] as? String == error.name)
-            
+
             print(nsError)
             #endif
         }
     }
-    
+
     @Test func readLocalVersionInformation() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          SEND  [1001] Read Local Version Information  01 10 00
          [1001] Opcode: 0x1001 (OGF: 0x04    OCF: 0x01)
          */
         hostController.queue.append(
-            .command(InformationalCommand.readLocalVersionInformation.opcode,
-                     [0x01, 0x10, 0x00])
+            .command(
+                InformationalCommand.readLocalVersionInformation.opcode,
+                [0x01, 0x10, 0x00])
         )
-        
+
         /**
          RECV  Command Complete [1001] - Read Local Version Information - HCI Version: 0x08 (Core Spec v 4.2)  0E 0C 01 01 10 00 08 C2 12 08 0F 00 9A 21
-         
+
          Parameter Length: 12 (0x0C)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
@@ -265,11 +273,11 @@ import Foundation
          LMP Subversion: 0x219A
          */
         hostController.queue.append(.event([0x0E, 0x0C, 0x01, 0x01, 0x10, 0x00, 0x08, 0xC2, 0x12, 0x08, 0x0F, 0x00, 0x9A, 0x21]))
-        
+
         var localVersionInformation: HCILocalVersionInformation!
-        (localVersionInformation = try await hostController.readLocalVersionInformation())
+        localVersionInformation = try await hostController.readLocalVersionInformation()
         #expect(hostController.queue.isEmpty)
-        
+
         #expect(localVersionInformation.hciVersion.rawValue == 0x08)
         #expect(localVersionInformation.hciVersion == .v4_2)
         #expect(localVersionInformation.hciRevision == 0x12C2)
@@ -278,156 +286,187 @@ import Foundation
         #expect(localVersionInformation.manufacturer.rawValue == 0x000F)
         #expect(localVersionInformation.manufacturer.description == "Broadcom Corporation")
     }
-    
+
     @Test func readDeviceAddress() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         // SEND  [1009] Read Device Address  09 10 00
         hostController.queue.append(
-            .command(InformationalCommand.readDeviceAddress.opcode,
-                     [0x09, 0x10, 0x00])
+            .command(
+                InformationalCommand.readDeviceAddress.opcode,
+                [0x09, 0x10, 0x00])
         )
-        
+
         // RECV  Command Complete [1009] - Read Device Address - AC:BC:32:A6:67:42  0E 0A 01 09 10 00 42 67 A6 32 BC AC
         hostController.queue.append(
             .event([0x0E, 0x0A, 0x01, 0x09, 0x10, 0x00, 0x42, 0x67, 0xA6, 0x32, 0xBC, 0xAC])
         )
-        
+
         var address: BluetoothAddress = .zero
-        (address = try await hostController.readDeviceAddress())
+        address = try await hostController.readDeviceAddress()
         #expect(hostController.queue.isEmpty)
         #expect(address != .zero)
         #expect(address.rawValue == "AC:BC:32:A6:67:42")
     }
-    
+
     @Test func readLocalName() async throws {
-        
+
         do {
-            let data = Data([/*0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00,*/ 0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
-            
+            let data = Data([ /*0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00,*/
+                0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ])
+
             guard let readLocalNameParameter = HCIReadLocalName(data: data)
-                else { Issue.record("Bytes couldn't convert to String"); return  }
-            
+            else {
+                Issue.record("Bytes couldn't convert to String")
+                return
+            }
+
             let dataString = "Alsey’s MacBook Pro"
-            
+
             #expect(readLocalNameParameter.localName == dataString, "Strings are not equal\n\(readLocalNameParameter.localName)\n\(dataString)")
         }
-        
+
         do {
-            
+
             let opcode: UInt16 = 0x0C14
-            
+
             let localName = "Alsey’s MacBook Pro"
-            
+
             let commandData: [UInt8] = [0x14, 0x0C, 0x00]
-            
-            let eventData: [UInt8] = [0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00, 0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
-            
+
+            let eventData: [UInt8] = [
+                0x0E, 0xFC, 0x01, 0x14, 0x0C, 0x00, 0x41, 0x6C, 0x73, 0x65, 0x79, 0xE2, 0x80, 0x99, 0x73, 0x20, 0x4D, 0x61, 0x63, 0x42, 0x6F, 0x6F, 0x6B, 0x20, 0x50, 0x72, 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ]
+
             guard let hostController = await TestHostController.default
-                else { Issue.record(); return }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             hostController.queue = [.command(opcode, commandData), .event(eventData)]
-            
+
             var returnedLocalName: String = ""
-            (returnedLocalName = try await hostController.readLocalName())
+            returnedLocalName = try await hostController.readLocalName()
             #expect(hostController.queue.isEmpty)
             #expect(localName == returnedLocalName, "\(localName) == \(returnedLocalName)")
         }
     }
-    
+
     @Test func writeLocalName() async throws {
-        
+
         #expect((HCIWriteLocalName(localName: "")?.data ?? Data()) == Data(repeating: 0x00, count: HCIWriteLocalName.length))
-        
+
         // test local name lenght == 248
         do {
-            let localNameParameter = String(repeating: "M", count: HCIWriteLocalName.length) //248
-            
+            let localNameParameter = String(repeating: "M", count: HCIWriteLocalName.length)  //248
+
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localNameParameter)
-                else { Issue.record(); return  }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             #expect(writeLocalNameParameter.data.isEmpty == false)
             #expect(writeLocalNameParameter.data.count == HCIWriteLocalName.length)
         }
-        
+
         // test local name shorter than 248 octets
-        do{
-            
+        do {
+
             let localName = String(repeating: "M", count: 10)
-            
+
             let data = Data(localName.utf8) + Data(repeating: 0x00, count: HCIWriteLocalName.length - 10)
-            
+
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
-                else { Issue.record(); return }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             #expect(writeLocalNameParameter.data == data)
         }
-        
+
         // test local name longer than 248
         do {
             let localNameParameter = String(repeating: "M", count: 260)
-            
+
             let writeLocalNameParameter = HCIWriteLocalName(localName: localNameParameter)
-            
+
             #expect(writeLocalNameParameter == nil, "HCIWriteLocalName was created with local name longer than 248")
         }
-        
+
         // compare byte localname
         do {
-            
+
             let localName = String(repeating: "M", count: 248)
-            
+
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
-                else { Issue.record(); return  }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             #expect(writeLocalNameParameter.localName == localName)
             #expect(writeLocalNameParameter.data.isEmpty == false)
-            
+
             let data = Data([UInt8](repeating: 77, count: 248))
-            
+
             #expect(writeLocalNameParameter.data == data, "Local Name is not generating correct bytes")
         }
-        
+
         do {
             let localName = "Test"
-            
+
             guard let writeLocalNameParameter = HCIWriteLocalName(localName: localName)
-                else { Issue.record(); return  }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             #expect(writeLocalNameParameter.localName == localName)
             #expect(writeLocalNameParameter.data.isEmpty == false)
-            
-            let data = Data([/* 0x13, 0x0C, 0xF8, */ 0x54, 0x65, 0x73, 0x74, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
-            
+
+            let data = Data([ /* 0x13, 0x0C, 0xF8, */
+                0x54, 0x65, 0x73, 0x74, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ])
+
             #expect(writeLocalNameParameter.data == data, "\(HCIWriteLocalName.self) is not generating valid data")
         }
-        
+
         do {
-            
+
             let opcode: UInt16 = 0x0C13
-            
+
             #expect(opcode == HostControllerBasebandCommand.writeLocalName.opcode)
-            
+
             let localName = "ColemanCDA"
-            
-            let commandData: [UInt8] = [0x13, 0x0C, 0xF8, 0x43, 0x6F, 0x6C, 0x65, 0x6D, 0x61, 0x6E, 0x43, 0x44, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
-            
+
+            let commandData: [UInt8] = [
+                0x13, 0x0C, 0xF8, 0x43, 0x6F, 0x6C, 0x65, 0x6D, 0x61, 0x6E, 0x43, 0x44, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ]
+
             let eventData: [UInt8] = [0x0E, 0x04, 0x01, 0x13, 0x0C, 0x00]
-            
+
             let hostController = TestHostController()
             hostController.queue = [.command(opcode, commandData), .event(eventData)]
-            
+
             (try await hostController.writeLocalName(localName))
             #expect(hostController.queue.isEmpty)
         }
     }
-    
+
     @Test func lowEnergyScan() async throws {
-        
+
         typealias Report = HCILEAdvertisingReport.Report
         typealias ScanParameters = HCILESetScanParameters
-        
+
         let scanParameters = ScanParameters(
             type: .active,
             interval: LowEnergyScanTimeInterval(rawValue: 0x01E0)!,
@@ -435,56 +474,59 @@ import Foundation
             addressType: .public,
             filterPolicy: .accept
         )
-        
+
         let hostController = TestHostController()
-        
+
         // SEND  [200C] LE Set Scan Enable - 0x00, Filter duplicates: 0  0C 20 02 00 01
         hostController.queue.append(
-            .command(HCILowEnergyCommand.setScanEnable.opcode,
-                     [0x0C, 0x20, 0x02, 0x00, 0x01])
+            .command(
+                HCILowEnergyCommand.setScanEnable.opcode,
+                [0x0C, 0x20, 0x02, 0x00, 0x01])
         )
-        
+
         // RECV  Command Complete [200C] - LE Set Scan Enable  0E 04 01 0C 20 00
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x0C, 0x20, 0x00]))
-        
+
         // SEND  [200B] LE Set Scan Parameters - Active - 30/300 (ms)  0B 20 07 01 E0 01 30 00 00 00
         hostController.queue.append(
             .command(
                 HCILowEnergyCommand.setScanParameters.opcode,
                 [0x0B, 0x20, 0x07, 0x01, 0xE0, 0x01, 0x30, 0x00, 0x00, 0x00])
-            )
-        
+        )
+
         // RECV  Command Complete [200B] - LE Set Scan Parameters  0E 04 01 0B 20 00
         hostController.queue.append(
             .event([0x0E, 0x04, 0x01, 0x0B, 0x20, 0x00])
         )
-        
+
         // SEND  [200C] LE Set Scan Enable - 0x01, Filter duplicates: 1  0C 20 02 01 00
         hostController.queue.append(
-            .command(HCILowEnergyCommand.setScanEnable.opcode,
-                     [0x0C, 0x20, 0x02, 0x01, 0x01])
-            )
-        
+            .command(
+                HCILowEnergyCommand.setScanEnable.opcode,
+                [0x0C, 0x20, 0x02, 0x01, 0x01])
+        )
+
         // RECV  Command Complete [200C] - LE Set Scan Enable  0E 04 01 0C 20 00
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x0C, 0x20, 0x00]))
-            
+
         // RECV  LE Meta Event - LE Advertising Report - 1 - 02:E4:72:17:FD:E2  -55 dBm - Type 9
         // 3E 1B 02 01 03 01 E2 FD 17 72 E4 02 0F 02 01 1B 0B FF 4C 00 09 06 03 1A C0 A8 01 02 C9
         hostController.queue.append(.event([0x3E, 0x1B, 0x02, 0x01, 0x03, 0x01, 0xE2, 0xFD, 0x17, 0x72, 0xE4, 0x02, 0x0F, 0x02, 0x01, 0x1B, 0x0B, 0xFF, 0x4C, 0x00, 0x09, 0x06, 0x03, 0x1A, 0xC0, 0xA8, 0x01, 0x02, 0xC9]))
-            
+
         // RECV  LE Meta Event - LE Advertising Report - 0 - C8:69:CD:46:0B:5D  -54 dBm - Type 16
         // 3E 1A 02 01 00 00 5D 0B 46 CD 69 C8 0E 02 01 1A 0A FF 4C 00 10 05 01 10 C3 14 DD CA
         hostController.queue.append(.event([0x3E, 0x1A, 0x02, 0x01, 0x00, 0x00, 0x5D, 0x0B, 0x46, 0xCD, 0x69, 0xC8, 0x0E, 0x02, 0x01, 0x1A, 0x0A, 0xFF, 0x4C, 0x00, 0x10, 0x05, 0x01, 0x10, 0xC3, 0x14, 0xDD, 0xCA]))
-            
+
         // SEND  [200C] LE Set Scan Enable - 0x00, Filter duplicates: 1  0C 20 02 00 01
         hostController.queue.append(
-            .command(HCILowEnergyCommand.setScanEnable.opcode,
-                     [0x0C, 0x20, 0x02, 0x00, 0x01])
-            )
-            
+            .command(
+                HCILowEnergyCommand.setScanEnable.opcode,
+                [0x0C, 0x20, 0x02, 0x00, 0x01])
+        )
+
         // Command Complete [200C] - LE Set Scan Enable  0E 04 01 0C 20 00
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x0C, 0x20, 0x00]))
-        
+
         let scan = try await hostController.lowEnergyScan(filterDuplicates: true, parameters: scanParameters)
         Task {
             try await Task.sleep(nanoseconds: 1_000_000_000)
@@ -494,62 +536,66 @@ import Foundation
         for try await report in scan {
             reports.append(report)
         }
-        
+
         #expect(hostController.queue.isEmpty)
         #expect(reports.isEmpty == false)
-        
+
         guard reports.count == 2
-            else { Issue.record(); return }
-        
+        else {
+            Issue.record()
+            return
+        }
+
         #expect(reports[0].address == BluetoothAddress(rawValue: "02:E4:72:17:FD:E2"))
         #expect(reports[0].addressType == .random)
         #expect(reports[0].rssi?.rawValue == -55)
         #expect(reports[0].event == .nonConnectable)
         #expect(reports[0].event.isConnectable == false)
-        
+
         #expect(reports[1].address == BluetoothAddress(rawValue: "C8:69:CD:46:0B:5D"))
         #expect(reports[1].addressType == .public)
         #expect(reports[1].rssi?.rawValue == -54)
         #expect(reports[1].event == .undirected)
         #expect(reports[1].event.isConnectable == true)
     }
-    
+
     @Test func lEReadRemoteUsedFeatures() async throws {
-        
+
         let connectionHandle: UInt16 = 0x0041
-        
+
         let hostController = TestHostController()
-        
+
         /**
          SEND  [2016] LE Read Remote Used Features - Connection Handle: 0x0041  16 20 02 41 00
-         
+
          [2016] Opcode: 0x2016 (OGF: 0x08    OCF: 0x16)
          Parameter Length: 2 (0x02)
          Connection Handle: 0041
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.readRemoteUsedFeatures.opcode,
-                     [0x16, 0x20, 0x02, 0x41, 0x00])
+            .command(
+                HCILowEnergyCommand.readRemoteUsedFeatures.opcode,
+                [0x16, 0x20, 0x02, 0x41, 0x00])
         )
-        
+
         /**
          RECV  Command Status - LE Read Remote Used Features  0F 04 00 01 16 20
-         
+
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
-         
+
          Opcode: 0x2016 (OGF: 0x08    OCF: 0x16) - [Low Energy] LE Read Remote Used Features
          */
         hostController.queue.append(.event([0x0F, 0x04, 0x00, 0x01, 0x16, 0x20]))
-        
+
         /**
          RECV  LE Meta Event - LE Read Remote Used Features Complete. DPLE Unsupported  3E 0C 04 00 41 00 1D 00 00 00 00 00 00 00
-         
+
          Parameter Length: 12 (0x0C)
          Status: 0x00 - Success
          Connection Handle: 0x0041
-         
+
          LE Features:               0X1D
             LE Encryption
             Extended Reject Indication
@@ -557,62 +603,68 @@ import Foundation
             LE Ping
          */
         hostController.queue.append(.event([0x3E, 0x0C, 0x04, 0x00, 0x41, 0x00, 0x1D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
-        
+
         var features = LowEnergyFeatureSet()
-        (features = try await hostController.lowEnergyReadRemoteUsedFeatures(connectionHandle: connectionHandle))
-        
+        features = try await hostController.lowEnergyReadRemoteUsedFeatures(connectionHandle: connectionHandle)
+
         #expect(hostController.queue.isEmpty)
         #expect(features.isEmpty == false, "Empty features")
         #expect(features == [.encryption, .extendedRejectIndication, .slaveInitiatedFeaturesExchange, .ping])
         #expect(features != [.encryption])
         #expect(features != .all)
     }
-    
+
     @Test func advertisingReport() async throws {
-        
+
         typealias Report = HCILEAdvertisingReport.Report
-        
+
         func parseAdvertisingReport(_ readBytes: Int, _ data: [UInt8]) -> [Report] {
-            
-            let eventData = Data(data[3 ..< readBytes])
-            
+
+            let eventData = Data(data[3..<readBytes])
+
             guard let meta = HCILowEnergyMetaEvent<Data>(data: eventData)
-                else { Issue.record("Could not parse"); return [] }
-            
+            else {
+                Issue.record("Could not parse")
+                return []
+            }
+
             #expect(meta.subevent == .advertisingReport, "Invalid event type \(meta.subevent)")
-            
+
             guard let advertisingReport = HCILEAdvertisingReport(data: meta.eventData)
-                else { Issue.record("Could not parse \(eventData)"); return [] }
-            
+            else {
+                Issue.record("Could not parse \(eventData)")
+                return []
+            }
+
             return advertisingReport.reports
         }
-        
+
         func parseAdvertisingReportAddress(_ readBytes: Int, _ data: [UInt8]) -> [BluetoothAddress] {
-            
+
             return parseAdvertisingReport(readBytes, data).map { $0.address }
         }
-        
+
         do {
-            
+
             let readBytes = 26
             let data: [UInt8] = [4, 62, 23, 2, 1, 0, 0, 66, 103, 166, 50, 188, 172, 11, 2, 1, 6, 7, 255, 76, 0, 16, 2, 11, 0, 186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            
+
             #expect(parseAdvertisingReportAddress(readBytes, data) == [BluetoothAddress(rawValue: "AC:BC:32:A6:67:42")!])
         }
-        
+
         do {
-            
+
             let readBytes = 38
             let data: [UInt8] = [4, 62, 35, 2, 1, 0, 1, 53, 238, 129, 237, 128, 89, 23, 2, 1, 6, 19, 255, 76, 0, 12, 14, 8, 69, 6, 92, 128, 96, 83, 24, 163, 199, 32, 154, 91, 3, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            
+
             #expect(parseAdvertisingReportAddress(readBytes, data) == [BluetoothAddress(rawValue: "59:80:ED:81:EE:35")!])
         }
-        
+
         do {
-            
+
             /**
              RECV  LE Meta Event - LE Advertising Report - 0 - 58:E2:8F:7C:0B:B3  -45 dBm - Proximity
-             
+
              Parameter Length: 34 (0x22)
              Num Reports: 0X01
              Event Type: Connectable undirected advertising (ADV_IND)
@@ -625,30 +677,33 @@ import Foundation
              Data: 02 01 1A 07 03 03 18 04 18 02 18 0A 09 50 72 6F 78 69 6D 69 74 79
              RSSI: -45 dBm
              */
-            
+
             let data: [UInt8] = [0x3E, 0x22, 0x02, 0x01, 0x00, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x16, 0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79, 0xD3]
-            
+
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
-            
+
             #expect(advertisingReports.count == 0x01)
-            
+
             guard let report = advertisingReports.first
-                else { Issue.record(); return }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             #expect(report.address == BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
             #expect(report.addressType == .public)
             #expect(report.event == .undirected)
             #expect(report.event.isConnectable == true)
             #expect(report.rssi?.rawValue == -45)
             #expect(report.responseData.count == 0x16)
-            
+
             let advertisingData: LowEnergyAdvertisingData = [0x02, 0x01, 0x1A, 0x07, 0x03, 0x03, 0x18, 0x04, 0x18, 0x02, 0x18, 0x0A, 0x09, 0x50, 0x72, 0x6F, 0x78, 0x69, 0x6D, 0x69, 0x74, 0x79]
-            
+
             #expect(report.responseData == advertisingData)
         }
-        
+
         do {
-            
+
             /**
              LE Meta Event - LE Advertising Report - 0 - 58:E2:8F:7C:0B:B3  -44 dBm  3E 0C 02 01 04 00 B3 0B 7C 8F E2 58 00 D4
              Parameter Length: 12 (0x0C)
@@ -660,16 +715,19 @@ import Foundation
              Data:
              RSSI: -44 dBm
              */
-            
+
             let data = Data([0x3E, 0x0C, 0x02, 0x01, 0x04, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x00, 0xD4])
-            
+
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
-            
+
             #expect(advertisingReports.count == 0x01)
-            
+
             guard let report = advertisingReports.first
-                else { Issue.record(); return }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             #expect(report.address == BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)
             #expect(report.addressType == .public)
             #expect(report.event == .scanResponse)
@@ -677,12 +735,12 @@ import Foundation
             #expect(report.rssi?.rawValue == -44)
             #expect(Data(report.responseData) == Data())
         }
-        
+
         do {
-            
+
             /**
              LE Meta Event - LE Advertising Report - 0 - 00:1A:AE:06:EF:9E  -70 dBm - BlueZ 5.43  3E 18 02 01 04 00 9E EF 06 AE 1A 00 0C 0B 09 42 6C 75 65 5A 20 35 2E 34 33 BA
-             
+
              Parameter Length: 24 (0x18)
              Num Reports: 0X01
              Event Type: Scan Response (SCAN_RSP)
@@ -693,16 +751,19 @@ import Foundation
              Data: 0B 09 42 6C 75 65 5A 20 35 2E 34 33
              RSSI: -70 dBm
              */
-            
+
             let data = Data([0x3E, 0x18, 0x02, 0x01, 0x04, 0x00, 0x9E, 0xEF, 0x06, 0xAE, 0x1A, 0x00, 0x0C, 0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33, 0xBA])
-            
+
             let advertisingReports = parseAdvertisingReport(1 + data.count, [4] + data)
-            
+
             #expect(advertisingReports.count == 0x01)
-            
+
             guard let report = advertisingReports.first
-                else { Issue.record(); return }
-            
+            else {
+                Issue.record()
+                return
+            }
+
             #expect(report.address == BluetoothAddress(rawValue: "00:1A:AE:06:EF:9E")!)
             #expect(report.addressType == .public)
             #expect(report.event == .scanResponse)
@@ -711,7 +772,7 @@ import Foundation
             #expect(report.responseData.count == 0x0C)
             #expect(report.responseData == [0x0B, 0x09, 0x42, 0x6C, 0x75, 0x65, 0x5A, 0x20, 0x35, 0x2E, 0x34, 0x33])
         }
-        
+
         do {
             var testData = [Data]()
             testData.append(
@@ -804,10 +865,10 @@ import Foundation
             testData.append(
                 Data([0x01, 0x00, 0x01, 0x87, 0xca, 0x14, 0x8c, 0xcf, 0x7e, 0x0e, 0x02, 0x01, 0x06, 0x0a, 0xff, 0x4c, 0x00, 0x10, 0x05, 0x07, 0x18, 0x99, 0x83, 0x1e, 0x80])
             )
-            
+
             var reports = [HCILEAdvertisingReport]()
             reports.reserveCapacity(reports.count)
-            
+
             for data in testData {
                 guard let report = HCILEAdvertisingReport(data: data) else {
                     Issue.record("Unable to parse")
@@ -815,18 +876,18 @@ import Foundation
                 }
                 reports.append(report)
             }
-            
+
             #expect(reports[0].reports[0].address.rawValue == "7A:00:A1:6B:03:8A")
         }
     }
-    
+
     @Test func extendedAdvertisingReport() throws {
-        
+
         /*
          Mar 15 10:52:55.671  HCI Event        0x0000  A4:C1:38:2D:7A:27
          LE - Ext ADV - 1 Report - Normal - Public - A4:C1:38:2D:7A:27
          -37 dBm - GVH5072_7A27 - Manufacturer Specific Data - Channel 38
-         
+
          Parameter Length: 57 (0x39)
          Num Reports: 0X01
          Report 0
@@ -849,17 +910,18 @@ import Foundation
                  BR/EDR Not Supported
              Data: 0D 09 47 56 48 35 30 37 32 5F 37 41 32 37 03 03 88 EC 02 01 05 09 FF 88 EC 00 03 94 90 64 00
          */
-        
+
         let data = Data([0x3E, 0x39, 0x0D, 0x01, 0x13, 0xA6, 0x00, 0x27, 0x7A, 0x2D, 0x38, 0xC1, 0xA4, 0x81, 0x00, 0xFF, 0x7F, 0xDB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x0D, 0x09, 0x47, 0x56, 0x48, 0x35, 0x30, 0x37, 0x32, 0x5F, 0x37, 0x41, 0x32, 0x37, 0x03, 0x03, 0x88, 0xEC, 0x02, 0x01, 0x05, 0x09, 0xFF, 0x88, 0xEC, 0x00, 0x03, 0x94, 0x90, 0x64, 0x00])
-        
+
         guard let event = HCILowEnergyMetaEvent<Data>(data: data.advanced(by: 2)),
-              event.subevent == .extendedAdvertisingReport,
-              let reportEvent = HCILEExtendedAdvertisingReport<Data>(data: event.eventData),
-              let report = reportEvent.reports.first else {
+            event.subevent == .extendedAdvertisingReport,
+            let reportEvent = HCILEExtendedAdvertisingReport<Data>(data: event.eventData),
+            let report = reportEvent.reports.first
+        else {
             Issue.record("Unable to parse event")
             return
         }
-        
+
         #expect(reportEvent.reports.count == 1)
         #expect(report.eventType.map { $0 } == [.connectableAdvertising, .scannableAdvertising, .legacyAdvertisingPDU])
         #expect(report.addressType == .publicDeviceAddress)
@@ -874,110 +936,126 @@ import Foundation
         #expect(report.directAddressType == .publicDeviceAddress)
         #expect(report.responseData == Data([0x0D, 0x09, 0x47, 0x56, 0x48, 0x35, 0x30, 0x37, 0x32, 0x5F, 0x37, 0x41, 0x32, 0x37, 0x03, 0x03, 0x88, 0xEC, 0x02, 0x01, 0x05, 0x09, 0xFF, 0x88, 0xEC, 0x00, 0x03, 0x94, 0x90, 0x64, 0x00]))
     }
-    
+
     @Test func commandStatusEvent() async throws {
-        
+
         func parseEvent(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> HCICommandStatus? {
-            
-            let headerData = Data(eventBuffer[1 ..< 1 + HCIEventHeader.length])
-            let eventData = Data(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
-            
+
+            let headerData = Data(eventBuffer[1..<1 + HCIEventHeader.length])
+            let eventData = Data(eventBuffer[(1 + HCIEventHeader.length)..<actualBytesRead])
+
             guard let eventHeader = HCIEventHeader(data: headerData)
-                else { return nil }
-            
+            else { return nil }
+
             #expect(eventHeader.event.rawValue == headerData[0])
             #expect(eventHeader.parameterLength == headerData[1])
-            
+
             #expect(eventHeader.event == .commandStatus)
-            
+
             guard let event = HCICommandStatus(data: eventData)
-                else { return nil }
-            
+            else { return nil }
+
             return event
         }
-        
+
         do {
-            
+
             let readBytes = 7
             let data: [UInt8] = [4, 15, 4, 11, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            
+
             guard let event = parseEvent(readBytes, data)
-                else { Issue.record("Could not parse"); return }
-            
+            else {
+                Issue.record("Could not parse")
+                return
+            }
+
             #expect(event.status.error == .aclConnectionExists)
         }
-        
+
         do {
-            
+
             let readBytes = 7
             let data: [UInt8] = [4, 15, 4, 12, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            
+
             guard let event = parseEvent(readBytes, data)
-                else { Issue.record("Could not parse"); return }
-            
+            else {
+                Issue.record("Could not parse")
+                return
+            }
+
             #expect(event.status.error == .commandDisallowed)
         }
     }
-    
+
     @Test func lEConnectionEvent() async throws {
-        
+
         do {
-            
+
             let readBytes = 7
             let data: [UInt8] = [4, 15, 4, 0, 1, 13, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            
+
             guard let event: HCICommandStatus = parseEvent(readBytes, data)
-                else { Issue.record("Could not parse"); return }
-            
+            else {
+                Issue.record("Could not parse")
+                return
+            }
+
             #expect(event.status == .success)
         }
-        
+
         do {
-            
+
             let readBytes = 22
             let data: [UInt8] = [4, 62, 19, 1, 0, 71, 0, 0, 0, 66, 103, 166, 50, 188, 172, 15, 0, 0, 0, 128, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            
+
             guard let metaEvent: HCILowEnergyMetaEvent<Data> = parseEvent(readBytes, data)
-                else { Issue.record("Could not parse"); return }
-            
+            else {
+                Issue.record("Could not parse")
+                return
+            }
+
             #expect(metaEvent.subevent == .connectionComplete)
-            
+
             guard let event = HCILEConnectionComplete(data: metaEvent.eventData)
-                else { Issue.record("Could not parse"); return }
-            
+            else {
+                Issue.record("Could not parse")
+                return
+            }
+
             #expect(event.status == .success)
             #expect(event.handle == 71)
         }
     }
-    
+
     @Test func lEConnectionCreate() async throws {
-        
+
         typealias CommandParameter = HCILECreateConnection
-        
+
         let hostController = TestHostController()
-        
-        let parameters = CommandParameter(scanInterval: LowEnergyScanTimeInterval(rawValue: 0x0060)!,
-                                          scanWindow: LowEnergyScanTimeInterval(rawValue: 0x0030)!,
-                                          initiatorFilterPolicy: .whiteList,
-                                          peerAddressType: .public,
-                                          peerAddress: .zero,
-                                          ownAddressType: .public,
-                                          connectionInterval: LowEnergyConnectionIntervalRange(rawValue: 0x0006 ... 0x000C)!,
-                                          connectionLatency: .zero,
-                                          supervisionTimeout: LowEnergySupervisionTimeout(rawValue: 0x00C8)!,
-                                          connectionLength: LowEnergyConnectionLength(rawValue: 0x0004 ... 0x0006))
-        
+
+        let parameters = CommandParameter(
+            scanInterval: LowEnergyScanTimeInterval(rawValue: 0x0060)!,
+            scanWindow: LowEnergyScanTimeInterval(rawValue: 0x0030)!,
+            initiatorFilterPolicy: .whiteList,
+            peerAddressType: .public,
+            peerAddress: .zero,
+            ownAddressType: .public,
+            connectionInterval: LowEnergyConnectionIntervalRange(rawValue: 0x0006...0x000C)!,
+            connectionLatency: .zero,
+            supervisionTimeout: LowEnergySupervisionTimeout(rawValue: 0x00C8)!,
+            connectionLength: LowEnergyConnectionLength(rawValue: 0x0004...0x0006))
+
         #expect(parameters.data.count == 0x19)
         #expect(parameters.scanInterval.miliseconds == 60)
         #expect(parameters.scanWindow.miliseconds == 30)
-        #expect(parameters.connectionInterval.miliseconds == 7.5 ... 15)
+        #expect(parameters.connectionInterval.miliseconds == 7.5...15)
         #expect(parameters.connectionLatency.rawValue == 0)
         #expect(parameters.supervisionTimeout.miliseconds == 2000)
-        #expect(parameters.connectionLength.miliseconds == 2.5 ... 3.75)
-        
+        #expect(parameters.connectionLength.miliseconds == 2.5...3.75)
+
         /**
          SEND  [200D] LE Create Connection - 00:00:00:00:00:00, Scan Window/Interval: 30ms/60ms, Min/Max Conn Interval: 7.5ms/15ms
-         
+
          [200D] Opcode: 0x200D (OGF: 0x08    OCF: 0x0D)
          Parameter Length: 25 (0x19)
          LE Scan Interval: 0X0060 (60 ms)
@@ -994,16 +1072,17 @@ import Foundation
          Maximum CE Length: 0x0006 (3.75 ms)
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.createConnection.opcode,
-            [0x0D, 0x20, 0x19, 0x60, 0x00, 0x30, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x0C, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x04, 0x00, 0x06, 0x00])
+            .command(
+                HCILowEnergyCommand.createConnection.opcode,
+                [0x0D, 0x20, 0x19, 0x60, 0x00, 0x30, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x0C, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x04, 0x00, 0x06, 0x00])
         )
-        
+
         // RECV  Command Status - LE Create Connection  0F 04 00 01 0D 20
         hostController.queue.append(.event([0x0F, 0x04, 0x00, 0x01, 0x0D, 0x20]))
-        
+
         /**
          RECV  LE Meta Event - LE Connection Complete - Master - Public - 58:E2:8F:7C:0B:B3 - Conn Interval: 11.25 ms  3E 13 01 00 41 00 00 00 B3 0B 7C 8F E2 58 09 00 00 00 C8 00 05
-         
+
          Parameter Length: 19 (0x13)
          Status: 0x00 - Success
          Connection Handle: 0x0041
@@ -1016,9 +1095,9 @@ import Foundation
          Master Clock Accuracy: 0X05
          */
         hostController.queue.append(.event([0x3E, 0x13, 0x01, 0x00, 0x41, 0x00, 0x00, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58, 0x09, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x05]))
-        
+
         var connection: HCILEConnectionComplete!
-        (connection = try await hostController.lowEnergyCreateConnection(parameters: parameters))
+        connection = try await hostController.lowEnergyCreateConnection(parameters: parameters)
         #expect(hostController.queue.isEmpty)
         #expect(connection.status.rawValue == 0x00)
         #expect(connection.handle == 0x0041)
@@ -1032,102 +1111,103 @@ import Foundation
         #expect(connection.supervisionTimeout.miliseconds == 2000)
         #expect(connection.masterClockAccuracy.rawValue == 0x05)
     }
-    
+
     @Test func lEConnectionCancel() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          SEND  [200E] LE Create Connection Cancel  0E 20 00
-         
+
          [200E] Opcode: 0x200E (OGF: 0x08    OCF: 0x0E)
          Parameter Length: 0 (0x00)
          */
-        
+
         hostController.queue.append(
-            .command(HCILowEnergyCommand.createConnectionCancel.opcode,
-                     [0x0E, 0x20, 0x00])
+            .command(
+                HCILowEnergyCommand.createConnectionCancel.opcode,
+                [0x0E, 0x20, 0x00])
         )
-        
+
         /**
          Command Complete [200E] - LE Create Connection Cancel - Command Disallowed (0xC)  0E 04 01 0E 20 0C
-         
+
          Parameter Length: 4 (0x04)
          Status: 0x0C - Command Disallowed
          Num HCI Command Packets: 0x01
          Opcode: 0x200E (OGF: 0x08    OCF: 0x0E) - [Low Energy] LE Create Connection Cancel
          */
-        
+
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x0E, 0x20, 0x0C]))
-        
+
         var caughtError: HCIError?
-        do { try await hostController.lowEnergyCreateConnectionCancel() }
-        catch let error as HCIError {
+        do { try await hostController.lowEnergyCreateConnectionCancel() } catch let error as HCIError {
             caughtError = error
-        }
-        catch {
+        } catch {
             Issue.record("Expected HCIError.commandDisallowed, instead got \(error)")
         }
         #expect(caughtError == .commandDisallowed)
-        
+
         #expect(hostController.queue.isEmpty)
     }
-    
+
     @Test func lEAddDeviceToWhiteList() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         // SEND  [2011] LE Add Device To White List - 0 - 58:E2:8F:7C:0B:B3  11 20 07 00 B3 0B 7C 8F E2 58
         hostController.queue.append(
-            .command(HCILowEnergyCommand.addDeviceToWhiteList.opcode,
-                     [0x11, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
+            .command(
+                HCILowEnergyCommand.addDeviceToWhiteList.opcode,
+                [0x11, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
         )
-        
+
         // RECV  Command Complete [2011] - LE Add Device To White List  0E 04 01 11 20 00
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x11, 0x20, 0x00]))
-        
+
         (try await hostController.lowEnergyAddDeviceToWhiteList(.public(BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)))
-        
+
         #expect(hostController.queue.isEmpty)
     }
-    
+
     @Test func lERemoveDeviceFromWhiteList() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          SEND  [2012] LE Remove Device From White List - 0 - 58:E2:8F:7C:0B:B3  12 20 07 00 B3 0B 7C 8F E2 58
-         
+
          [2012] Opcode: 0x2012 (OGF: 0x08    OCF: 0x12)
          Parameter Length: 7 (0x07)
          Address Type: Public
          Address: 58:E2:8F:7C:0B:B3
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.removeDeviceFromWhiteList.opcode,
-                     [0x12, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
+            .command(
+                HCILowEnergyCommand.removeDeviceFromWhiteList.opcode,
+                [0x12, 0x20, 0x07, 0x00, 0xB3, 0x0B, 0x7C, 0x8F, 0xE2, 0x58])
         )
-        
+
         /**
          RECV  Command Complete [2012] - LE Remove Device From White List  0E 04 01 12 20 00
-         
+
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
          Opcode: 0x2012 (OGF: 0x08    OCF: 0x12) - [Low Energy] LE Remove Device From White List
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x12, 0x20, 0x00]))
-        
+
         (try await hostController.lowEnergyRemoveDeviceFromWhiteList(.public(BluetoothAddress(rawValue: "58:E2:8F:7C:0B:B3")!)))
-        
+
         #expect(hostController.queue.isEmpty)
     }
-    
+
     @Test func lEStartEncryption() async throws {
-        
+
         let hostController = TestHostController()
         let connectionHandle: UInt16 = 0x0041
-        let randomNumber: UInt64 = 0x0000000000000000
+        let randomNumber: UInt64 = 0x0000_0000_0000_0000
         let encryptedDiversifier: UInt16 = 0x0000
         let longTermKey = UInt128(bigEndian: UInt128(bytes: (0x23, 0x57, 0xEB, 0x0D, 0x0C, 0x24, 0xD8, 0x5A, 0x98, 0x57, 0x64, 0xEC, 0xCB, 0xEC, 0xEC, 0x05)))
         if #available(macOS 15, iOS 18, watchOS 11, tvOS 18, visionOS 2, *) {
@@ -1135,34 +1215,36 @@ import Foundation
         } else {
             #expect(longTermKey.description == "0x2357EB0D0C24D85A985764ECCBECEC05")
         }
-        
+
         do {
-            
+
             let data = Data([0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23])
-            
-            let command = HCILEStartEncryption(connectionHandle: connectionHandle,
-                                               randomNumber: randomNumber,
-                                               encryptedDiversifier: encryptedDiversifier,
-                                               longTermKey: longTermKey)
-            
+
+            let command = HCILEStartEncryption(
+                connectionHandle: connectionHandle,
+                randomNumber: randomNumber,
+                encryptedDiversifier: encryptedDiversifier,
+                longTermKey: longTermKey)
+
             #expect(command.data == data)
         }
-        
+
         do {
-            
+
             let data = Data([0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23])
-            
+
             // random number
-            let command = HCILEStartEncryption(connectionHandle: connectionHandle,
-                                               encryptedDiversifier: encryptedDiversifier,
-                                               longTermKey: longTermKey)
-            
+            let command = HCILEStartEncryption(
+                connectionHandle: connectionHandle,
+                encryptedDiversifier: encryptedDiversifier,
+                longTermKey: longTermKey)
+
             #expect(command.data != data)
         }
-        
+
         /**
          SEND  [2019] LE Start Encryption - Connection Handle: 0x0041  19 20 1C 41 00 00 00 00 00 00 00 00 00 00 00 05 EC EC CB EC 64 57 98 5A D8 24 0C 0D EB 57 23
-         
+
          [2019] Opcode: 0x2019 (OGF: 0x08    OCF: 0x19)
          Parameter Length: 28 (0x1C)
          Connection Handle: 0041
@@ -1171,64 +1253,70 @@ import Foundation
          Long Term Key: 2357EB0D0C24D85A985764ECCBECEC05
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.startEncryption.opcode,
-                     [0x19, 0x20, 0x1C, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23]))
-        
+            .command(
+                HCILowEnergyCommand.startEncryption.opcode,
+                [0x19, 0x20, 0x1C, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xEC, 0xEC, 0xCB, 0xEC, 0x64, 0x57, 0x98, 0x5A, 0xD8, 0x24, 0x0C, 0x0D, 0xEB, 0x57, 0x23]))
+
         /**
          RECV  Command Status - LE Start Encryption  0F 04 00 01 19 20
-         
+
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
          Opcode: 0x2019 (OGF: 0x08    OCF: 0x19) - [Low Energy] LE Start Encryption
          */
         hostController.queue.append(.event([0x0F, 0x04, 0x00, 0x01, 0x19, 0x20]))
-        
+
         /**
          RECV  Encryption Change Complete - Encryption Enabled  08 04 00 41 00 01
-         
+
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Connection Handle: 0x0041
          Encryption Enable: 0x01
          */
         hostController.queue.append(.event([0x08, 0x04, 0x00, 0x41, 0x00, 0x01]))
-        
+
         // FIXME: Implement LE Encryption
         //var encryptionChange: TestHostController.LowEnergyEncryptionChange?
-        (/* encryptionChange = */ try await hostController.lowEnergyStartEncryption(connectionHandle: connectionHandle,
-                                                                                              randomNumber: randomNumber,
-                                                                                              encryptedDiversifier:      encryptedDiversifier,
-                                                                                              longTermKey: longTermKey))
-        
+        ( /* encryptionChange = */
+        try await hostController.lowEnergyStartEncryption(
+            connectionHandle: connectionHandle,
+            randomNumber: randomNumber,
+            encryptedDiversifier: encryptedDiversifier,
+            longTermKey: longTermKey))
+
         //XCTAssert(hostController.queue.isEmpty)
         //XCTAssertEqual(encryptionChange, .e0)
         //XCTAssertEqual(encryptionChange?.rawValue, 0x01)
     }
-    
+
     @Test func encryptionChangeEvent() async throws {
-        
-        let data = Data([/* 0x08, 0x04, */ 0x00, 0x41, 0x00, 0x01])
-        
+
+        let data = Data([ /* 0x08, 0x04, */0x00, 0x41, 0x00, 0x01])
+
         guard let event = HCIEncryptionChange(data: data)
-            else { Issue.record("Could not parse HCI Event"); return }
-        
+        else {
+            Issue.record("Could not parse HCI Event")
+            return
+        }
+
         #expect(event.status.rawValue == 0x00)
         #expect(event.handle == 0x0041)
         #expect(event.encryptionEnabled == .e0)
         #expect(event.encryptionEnabled.rawValue == 0x01)
     }
-    
+
     @Test func lowEnergyEncrypt() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         let key = UInt128(bigEndian: UInt128(bytes: (0x4C, 0x68, 0x38, 0x41, 0x39, 0xF5, 0x74, 0xD8, 0x36, 0xBC, 0xF3, 0x4E, 0x9D, 0xFB, 0x01, 0xBF)))
         #expect(key.hexadecimal == "4C68384139F574D836BCF34E9DFB01BF")
-        
+
         let plainTextData = UInt128(bigEndian: UInt128(bytes: (0x02, 0x13, 0x24, 0x35, 0x46, 0x57, 0x68, 0x79, 0xac, 0xbd, 0xce, 0xdf, 0xe0, 0xf1, 0x02, 0x13)))
         #expect(plainTextData.hexadecimal == "0213243546576879ACBDCEDFE0F10213")
-        
+
         /**
          HCI_LE_Encrypt (length 0x20) – command
          Pars (LSO to MSO) bf 01 fb 9d 4e f3 bc 36 d8 74 f5 39 41 38 68 4c 13 02 f1 e0 df
@@ -1236,20 +1324,22 @@ import Foundation
          Key (16-octet value MSO to LSO): 0x4C68384139F574D836BCF34E9DFB01BF
          Plaintext_Data (16-octet value MSO to LSO): 0x0213243546576879acbdcedfe0f10213
          */
-        
-        let commandHeader = HCICommandHeader(command: HCILowEnergyCommand.encrypt,
-                                             parameterLength: 0x20)
-        
+
+        let commandHeader = HCICommandHeader(
+            command: HCILowEnergyCommand.encrypt,
+            parameterLength: 0x20)
+
         #expect(commandHeader.data == Data([23, 32, 32]))
-        
+
         hostController.queue.append(
-            .command(commandHeader.opcode,
-                     commandHeader.data + [0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]
+            .command(
+                commandHeader.opcode,
+                commandHeader.data + [0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]
             )
         )
-        
+
         #expect(HCILEEncrypt(key: key, plainText: plainTextData).data == Data([0xbf, 0x01, 0xfb, 0x9d, 0x4e, 0xf3, 0xbc, 0x36, 0xd8, 0x74, 0xf5, 0x39, 0x41, 0x38, 0x68, 0x4c, 0x13, 0x02, 0xf1, 0xe0, 0xdf, 0xce, 0xbd, 0xac, 0x79, 0x68, 0x57, 0x46, 0x35, 0x24, 0x13, 0x02]))
-        
+
         /**
          HCI_Command_Complete (length 0x14) – event
          Pars (LSO to MSO) 02 17 20 00 66 c6 c2 27 8e 3b 8e 05 3e 7e a3 26 52 1b ad 99
@@ -1258,57 +1348,58 @@ import Foundation
          Status: 0x00
          Encrypted_Data (16-octet value MSO to LSO): 0x99ad1b5226a37e3e058e3b8e27c2c666
          */
-        
+
         let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x14)
-        
+
         hostController.queue.append(.event(eventHeader.data + [0x02, 0x17, 0x20, 0x00, 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))
-        
-        #expect(HCILEEncryptReturn(data: Data([/* 0x02, 0x17, 0x20, 0x00, */ 0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.hexadecimal == "99AD1B5226A37E3E058E3B8E27C2C666")
-        
+
+        #expect(HCILEEncryptReturn(data: Data([ /* 0x02, 0x17, 0x20, 0x00, */0x66, 0xc6, 0xc2, 0x27, 0x8e, 0x3b, 0x8e, 0x05, 0x3e, 0x7e, 0xa3, 0x26, 0x52, 0x1b, 0xad, 0x99]))?.encryptedData.hexadecimal == "99AD1B5226A37E3E058E3B8E27C2C666")
+
         var encryptedData: UInt128 = .zero
-        (encryptedData = try await hostController.lowEnergyEncrypt(key: key, data: plainTextData))
-        
+        encryptedData = try await hostController.lowEnergyEncrypt(key: key, data: plainTextData)
+
         #expect(hostController.queue.isEmpty)
         #expect(encryptedData != .zero)
         #expect(encryptedData.hexadecimal == "99AD1B5226A37E3E058E3B8E27C2C666")
     }
-    
+
     @Test func setLERandomAddress() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         let randomAddress = BluetoothAddress(rawValue: "68:60:B2:29:26:8D")!
-        
+
         /**
          SEND  [2005] LE Set Random Address - 68:60:B2:29:26:8D  05 20 06 8D 26 29 B2 60 68
-         
+
          [2005] Opcode: 0x2005 (OGF: 0x08    OCF: 0x05)
          Parameter Length: 6 (0x06)
          Random Address: 68:60:B2:29:26:8D
          */
         hostController.queue.append(
-            .command(HCILowEnergyCommand.setRandomAddress.opcode,
-                     [0x05, 0x20, 0x06, 0x8D, 0x26, 0x29, 0xB2, 0x60, 0x68])
+            .command(
+                HCILowEnergyCommand.setRandomAddress.opcode,
+                [0x05, 0x20, 0x06, 0x8D, 0x26, 0x29, 0xB2, 0x60, 0x68])
         )
-        
+
         /**
          RECV  Command Complete [2005] - LE Set Random Address  0E 04 01 05 20 00
-         
+
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
          Opcode: 0x2005 (OGF: 0x08    OCF: 0x05) - [Low Energy] LE Set Random Address
          */
         hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x05, 0x20, 0x00]))
-        
+
         (try await hostController.lowEnergySetRandomAddress(randomAddress))
         #expect(hostController.queue.isEmpty)
     }
-    
+
     @Test func remoteNameRequest() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          [0419] Opcode: 0x0419 (OGF: 0x01    OCF: 0x19)
          Parameter Length: 10 (0x0A)
@@ -1319,10 +1410,11 @@ import Foundation
          Aug 02 17:19:16.588  HCI Command 19 04 0a af d2 06 2d 70 b0 01 00 5a 1b
         */
         hostController.queue.append(
-            .command(LinkControlCommand.remoteNameRequest.opcode,
-                     [0x19, 0x04, 0x0a, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x5a, 0x1b])
+            .command(
+                LinkControlCommand.remoteNameRequest.opcode,
+                [0x19, 0x04, 0x0a, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x5a, 0x1b])
         )
-        
+
         do {
             /**
              Aug 02 17:19:16.589  HCI Event        0x0000                     Command Status - Remote Name Request
@@ -1333,10 +1425,10 @@ import Foundation
              Aug 02 17:19:16.589  HCI Event  0f 04 00 01 19 04
             */
             let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x19, 0x04]))
         }
-        
+
         do {
             /**
              Aug 02 17:19:16.595  HCI Event        0x0000  iPhone             Remote Name Request Complete - B0:70:2D:06:D2:AF - iPhone
@@ -1346,20 +1438,26 @@ import Foundation
              Remote Name: iPhone
              Aug 02 17:19:16.595  HCI Event 07 FF 00 AF D2 06 2D 70 B0 69 50 68 6F 6E 65 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00                                      .
             */
-            let buffer: [UInt8] = [0x00, 0xAF, 0xD2, 0x06, 0x2D, 0x70, 0xB0, 0x69, 0x50, 0x68, 0x6F, 0x6E, 0x65, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
-            
+            let buffer: [UInt8] = [
+                0x00, 0xAF, 0xD2, 0x06, 0x2D, 0x70, 0xB0, 0x69, 0x50, 0x68, 0x6F, 0x6E, 0x65, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ]
+
             let eventHeader = HCIEventHeader(event: .remoteNameRequestComplete, parameterLength: 0xFF)
-            
+
             hostController.queue.append(.event(eventHeader.data + buffer))
         }
-        
+
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         let pscanRepMode = PageScanRepetitionMode(rawValue: 0x01)
-        
+
         let clockOffset = HCIRemoteNameRequest.ClockOffset(rawValue: 0x1B5A)
-        
+
         let completionEvent = try await hostController.remoteNameRequest(
             address: address,
             pscanRepMode: pscanRepMode,
@@ -1368,27 +1466,33 @@ import Foundation
         #expect(completionEvent.address == address)
         #expect(completionEvent.status == .success)
     }
-    
+
     @Test func inquiry() async throws {
-        
+
         #expect(HCIInquiry.Duration.min.seconds == 1.28, "Range: 1.28 – 61.44 Sec")
         #expect(HCIInquiry.Duration.max.seconds == 61.44, "Range: 1.28 – 61.44 Sec")
-        (0x01 ... 0x30).forEach { #expect(HCIInquiry.Duration(rawValue: UInt8($0)) != nil, "Could not initialize")  }
+        (0x01...0x30).forEach { #expect(HCIInquiry.Duration(rawValue: UInt8($0)) != nil, "Could not initialize") }
         #expect(HCIInquiry.Duration(rawValue: 0) == nil)
-        (UInt8(0x31) ..< .max).forEach { #expect(HCIInquiry.Duration(rawValue: $0) == nil, "Should not initialize")  }
-        
+        (UInt8(0x31) ..< .max).forEach { #expect(HCIInquiry.Duration(rawValue: $0) == nil, "Should not initialize") }
+
         guard let lap = HCIInquiry.LAP(rawValue: UInt24(bytes: (0x33, 0x8b, 0x9e)))
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         guard let duration = HCIInquiry.Duration(rawValue: 0x0A)
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         let responses = HCIInquiry.Responses(rawValue: 0xFF)
-        
+
         #expect(HCIInquiry(lap: lap, duration: duration, responses: responses) != nil)
-        
+
         let hostController = TestHostController()
-        
+
         /**
          [0401] Opcode: 0x0401 (OGF: 0x01    OCF: 0x01)
          Parameter Length: 5 (0x05)
@@ -1401,7 +1505,7 @@ import Foundation
         hostController.queue.append(
             .command(LinkControlCommand.inquiry.opcode, [0x01, 0x04, 0x05, 0x33, 0x8b, 0x9e, 0x0a, 0xff])
         )
-        
+
         do {
             /**
              Jul 26 15:27:21.774  HCI Event
@@ -1412,10 +1516,10 @@ import Foundation
              Jul 26 15:27:21.774  HCI Event  0f 04 00 01 01 04
              */
             let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x01, 0x04]))
         }
-        
+
         do {
             /**
              Parameter Length: 1 (0x01)
@@ -1423,19 +1527,20 @@ import Foundation
              Jul 26 21:39:41.741  HCI Event 01 01 00                                  ...
              */
             let eventHeader = HCIEventHeader(event: .inquiryComplete, parameterLength: 0x01)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00]))
         }
-        
-        (try await hostController.inquiry(lap: lap,
-                                                    duration: duration,
-                                                    responses: responses,
-                                                    timeout: 10000,
-                                                    foundDevice: { _ in }))
+
+        (try await hostController.inquiry(
+            lap: lap,
+            duration: duration,
+            responses: responses,
+            timeout: 10000,
+            foundDevice: { _ in }))
     }
-    
+
     @Test func inquiryResult() async throws {
-        
+
         do {
             /**
              Jul 26 21:39:43.265  HCI Event
@@ -1453,28 +1558,34 @@ import Foundation
              Clock Offset: 0x1E52
              RSSI: 0xB8 (-72 dBm)
              */
-            
-            let data = Data([0x2F, 0xFF, 0x01, 0xED, 0xF4, 0x1D, 0x67, 0xB1, 0x04, 0x01, 0x00, 0x0C, 0x02, 0x5A, 0x52, 0x1E, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
-            
+
+            let data = Data([
+                0x2F, 0xFF, 0x01, 0xED, 0xF4, 0x1D, 0x67, 0xB1, 0x04, 0x01, 0x00, 0x0C, 0x02, 0x5A, 0x52, 0x1E, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ])
+
             guard let event = HCIInquiryResult(data: data)
-                else { Issue.record("Could not parse"); return }
-            
+            else {
+                Issue.record("Could not parse")
+                return
+            }
+
             #expect(event.reports[0].classOfDevice.majorDeviceClass == .miscellaneous)
             #expect(event.reports[0].address == BluetoothAddress(rawValue: "04:B1:67:1D:F4:ED"))
         }
     }
-    
+
     @Test func inquiryCancel() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          [0402] Opcode: 0x0402 (OGF: 0x01    OCF: 0x02)
          Parameter Length: 0 (0x00)
          Jul 26 21:39:51.983  HCI Command   02 04 00s
          */
         hostController.queue.append(.command(LinkControlCommand.inquiryCancel.opcode, [0x02, 0x04, 0x00]))
-        
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1484,43 +1595,55 @@ import Foundation
              Jul 26 21:39:51.986  HCI Event  0e 04 01 02 04 00
             */
             let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x01, 0x02, 0x04, 0x00]))
         }
-        
+
         (try await hostController.inquiryCancel())
     }
-    
+
     @Test func periodicInquiryModeAndCancel() async throws {
-        
+
         #expect(HCIPeriodicInquiryMode.Duration.min.seconds == 1.28, "Range: 1.28 – 61.44 Sec")
         #expect(HCIPeriodicInquiryMode.Duration.max.seconds == 61.44, "Range: 1.28 – 61.44 Sec")
-        (0x01 ... 0x30).forEach { #expect(HCIPeriodicInquiryMode.Duration(rawValue: UInt8($0)) != nil, "Could not initialize")  }
+        (0x01...0x30).forEach { #expect(HCIPeriodicInquiryMode.Duration(rawValue: UInt8($0)) != nil, "Could not initialize") }
         #expect(HCIPeriodicInquiryMode.Duration(rawValue: 0) == nil)
-        (UInt8(0x31) ..< .max).forEach { #expect(HCIPeriodicInquiryMode.Duration(rawValue: $0) == nil, "Should not initialize")  }
-        
+        (UInt8(0x31) ..< .max).forEach { #expect(HCIPeriodicInquiryMode.Duration(rawValue: $0) == nil, "Should not initialize") }
+
         #expect(HCIPeriodicInquiryMode.MaxDuration.min.seconds == 3.84)
         #expect(HCIPeriodicInquiryMode.MaxDuration.max.seconds == 83884.8)
         #expect(HCIPeriodicInquiryMode.MinDuration.min.seconds == 2.56)
         #expect(HCIPeriodicInquiryMode.MinDuration.max.seconds == 83883.52)
         #expect(HCIPeriodicInquiryMode.Responses.unlimited.rawValue == 0x00)
-        
+
         let hostController = TestHostController()
-        
+
         guard let maxDuration = HCIPeriodicInquiryMode.MaxDuration(rawValue: 0x09)
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         guard let minDuration = HCIPeriodicInquiryMode.MinDuration(rawValue: 0x05)
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         guard let lap = HCIPeriodicInquiryMode.LAP(rawValue: UInt24(bytes: (0x00, 0x8b, 0x9e)))
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         guard let duration = HCIPeriodicInquiryMode.Duration(rawValue: 0x03)
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         let responses = HCIPeriodicInquiryMode.Responses(rawValue: 0x20)
-        
+
         /**
          [0403] Opcode: 0x0403 (OGF: 0x01 OCF: 0x03)
          Parameter Length: 9 (0x09)
@@ -1531,9 +1654,11 @@ import Foundation
          Number of Responses: 0x20
          Jul 27 10:46:57.461  HCI Command  00000000: 03 04 09 09 00 05 00 00 8b 9e 03 20
          */
-        hostController.queue.append(.command(LinkControlCommand.periodicInquiry.opcode,
-                                             [0x03, 0x04, 0x09, 0x09, 0x00, 0x05, 0x00, 0x00, 0x8b, 0x9e, 0x03, 0x20]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.periodicInquiry.opcode,
+                [0x03, 0x04, 0x09, 0x09, 0x00, 0x05, 0x00, 0x00, 0x8b, 0x9e, 0x03, 0x20]))
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1543,28 +1668,29 @@ import Foundation
              Jul 27 10:46:57.462  HCI Event  0e 04 01 03 04 00
              */
             let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x01, 0x03, 0x04, 0x00]))
         }
-        
-        (try await hostController.periodicInquiryMode(maxDuration: maxDuration,
-                                                                minDuration: minDuration,
-                                                                lap: lap,
-                                                                length: duration,
-                                                                responses: responses))
+
+        (try await hostController.periodicInquiryMode(
+            maxDuration: maxDuration,
+            minDuration: minDuration,
+            lap: lap,
+            length: duration,
+            responses: responses))
     }
-    
+
     @Test func exitPeriodicInquiryMode() async throws {
-        
+
         /**
          [0404] Opcode: 0x0404 (OGF: 0x01    OCF: 0x04)
          Parameter Length: 0 (0x00)
-         Jul 31 11:19:59.716  HCI Command  04 04 00 
+         Jul 31 11:19:59.716  HCI Command  04 04 00
         */
         let hostController = TestHostController()
-        
+
         hostController.queue.append(.command(LinkControlCommand.exitPeriodicInquiry.opcode, [0x04, 0x04, 0x00]))
-        
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1574,15 +1700,15 @@ import Foundation
              Jul 31 11:19:59.716  HCI Event 0e 04 01 04 04 00
              */
             let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x01, 0x04, 0x04, 0x00]))
         }
-        
+
         (try await hostController.exitPeriodicInquiry())
     }
-    
+
     @Test func createConnection() async throws {
-        
+
         typealias ClockOffset = HCICreateConnection.ClockOffset
         typealias AllowRoleSwitch = HCICreateConnection.AllowRoleSwitch
         /**
@@ -1597,10 +1723,12 @@ import Foundation
          Jul 31 12:06:31.407  HCI Command  0504 0daf d206 2d70 b018 cc01 0000 0000
         */
         let hostController = TestHostController()
-        
-        hostController.queue.append(.command(LinkControlCommand.createConnection.opcode,
-                                             [0x05, 0x04, 0x0d, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x18, 0xcc, 0x01, 0x00, 0x00, 0x00, 0x00]))
-        
+
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.createConnection.opcode,
+                [0x05, 0x04, 0x0d, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x18, 0xcc, 0x01, 0x00, 0x00, 0x00, 0x00]))
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1610,10 +1738,10 @@ import Foundation
              Jul 31 12:06:31.408  HCI Event 0f04 0001 0504
              */
             let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x05, 0x04]))
         }
-        
+
         do {
             /**
              Parameter Length: 11 (0x0B)
@@ -1625,35 +1753,44 @@ import Foundation
              Jul 31 12:06:31.943  HCI Event 030b 000d 00af d206 2d70 b001 00
             */
             let eventHeader = HCIEventHeader(event: .connectionComplete, parameterLength: 0x0b)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00]))
         }
-        
-        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { Issue.record("Unable to init variable"); return }
-        
-        let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: 0x01)
-        
-        guard let allowSwitchRole = AllowRoleSwitch(rawValue: 0x00)
-            else { Issue.record("Unable to init variable"); return }
 
-        let event = try await hostController.createConnection(address: address,
-                                                             packetType: 0xCC18,
-                                                             pageScanRepetitionMode: pageScanRepetitionMode,
-                                                             clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
-                                                             allowRoleSwitch: allowSwitchRole)
-        
+        guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
+        let pageScanRepetitionMode = PageScanRepetitionMode(rawValue: 0x01)
+
+        guard let allowSwitchRole = AllowRoleSwitch(rawValue: 0x00)
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
+        let event = try await hostController.createConnection(
+            address: address,
+            packetType: 0xCC18,
+            pageScanRepetitionMode: pageScanRepetitionMode,
+            clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
+            allowRoleSwitch: allowSwitchRole)
+
         #expect(event.address == address)
         #expect(event.status == .success)
     }
-    
+
     @Test func createConnectionCancel() async throws {
-        
+
         let hostController = TestHostController()
-        
-        hostController.queue.append(.command(LinkControlCommand.createConnectionCancel.opcode,
-                                             [0x08, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
-        
+
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.createConnectionCancel.opcode,
+                [0x08, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1663,18 +1800,21 @@ import Foundation
              Aug 02 10:46:57.462  HCI Event  0e 04 01 08 04 00
              */
             let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x01, 0x08, 0x04, 0x00]))
         }
-        
+
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         (try await hostController.cancelConnection(address: address))
     }
-    
+
     @Test func connectionComplete() async throws {
-        
+
         /**
          Parameter Length: 11 (0x0B)
          Status: 0x00 - Success
@@ -1685,23 +1825,25 @@ import Foundation
          Jul 31 12:06:31.943  HCI Event 030b 000d 00af d206 2d70 b001 00
          */
         let data = Data([0x00, 0x0d, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00])
-        
+
         guard let event = HCIConnectionComplete(data: data)
-            else { Issue.record("Could not parse"); return }
-        
+        else {
+            Issue.record("Could not parse")
+            return
+        }
+
         #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
         #expect(event.status.rawValue == HCIStatus.success.rawValue)
         #expect(event.linkType == HCIConnectionComplete.LinkType(rawValue: 0x01))
         #expect(event.encryption == HCIConnectionComplete.Encryption(rawValue: 0x00))
     }
-    
+
     @Test func connectionRequest() async throws {
-        
-        
+
     }
-    
+
     @Test func acceptConnectionRequest() async throws {
-        
+
         /**
          [0409] Opcode: 0x0409 (OGF: 0x01    OCF: 0x09)
          Parameter Length: 7 (0x07)
@@ -1710,10 +1852,12 @@ import Foundation
          Aug 02 17:19:16.408  HCI Command  09 04 07 af d2 06 2d 70 b0 00
         */
         let hostController = TestHostController()
-        
-        hostController.queue.append(.command(LinkControlCommand.acceptConnection.opcode,
-                                             [0x09, 0x04, 0x07, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
-        
+
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.acceptConnection.opcode,
+                [0x09, 0x04, 0x07, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1723,23 +1867,29 @@ import Foundation
              Aug 02 17:19:16.408  HCI Event  0f 04 00 01 09 04
              */
             let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x09, 0x04]))
         }
-        
+
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         guard let role = HCIAcceptConnectionRequest.Role(rawValue: 0x00)
-        else { Issue.record("Unable to init Role"); return }
-        
+        else {
+            Issue.record("Unable to init Role")
+            return
+        }
+
         (try await hostController.acceptConnection(address: address, role: role))
     }
-    
+
     @Test func disconnect() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          [0406] Opcode: 0x0406 (OGF: 0x01    OCF: 0x06)
          Parameter Length: 3 (0x03)
@@ -1747,10 +1897,12 @@ import Foundation
          Reason: 0x13 - Remote User Terminated Connection
          Jul 31 14:55:59.134  HCI Command  06 04 03 0d 00 13
          */
-        
-        hostController.queue.append(.command(LinkControlCommand.disconnect.opcode,
-                                             [0x06, 0x04, 0x03, 0x0d, 0x00, 0x13]))
-        
+
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.disconnect.opcode,
+                [0x06, 0x04, 0x03, 0x0d, 0x00, 0x13]))
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1760,10 +1912,10 @@ import Foundation
              Jul 31 14:55:59.134  HCI Event  0f 04 00 01 06 04
              */
             let eventHeader = HCIEventHeader(event: .commandStatus, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x01, 0x06, 0x04]))
         }
-        
+
         do {
             /**
              Parameter Length: 4 (0x04)
@@ -1773,20 +1925,20 @@ import Foundation
              Jul 31 14:55:59.296  HCI Event 05 04 00 0d 00 16
             */
             let eventHeader = HCIEventHeader(event: .disconnectionComplete, parameterLength: 0x04)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x00, 0x0d, 0x00, 0x16]))
         }
-        
+
         let event = try await hostController.disconnect(connectionHandle: 0x000D, error: .remoteUserEndedConnection)
         #expect(event.handle == 0x000D)
         #expect(event.error == .connectionTerminated)
         #expect(event.status == .success)
     }
-    
+
     @Test func linkKeyRequestReply() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          [040B] Opcode: 0x040B (OGF: 0x01    OCF: 0x0B)
          Parameter Length: 22 (0x16)
@@ -1794,10 +1946,14 @@ import Foundation
          Link Key: 0x2E95A8135CA3F466C26D7C63A0FCF53B
          Aug 02 17:19:16.713  HCI Command  0b 04 16 af d2 06 2d 70 b0 3b f5 fc a0 63 7c 6d c2 66 f4 a3 5c 13 a8 95 2e
          */
-        hostController.queue.append(.command(LinkControlCommand.linkKeyReply.opcode,
-                                             [0x0b, 0x04, 0x16, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x3b, 0xf5, 0xfc, 0xa0,
-                                              0x63, 0x7c, 0x6d, 0xc2, 0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.linkKeyReply.opcode,
+                [
+                    0x0b, 0x04, 0x16, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x3b, 0xf5, 0xfc, 0xa0,
+                    0x63, 0x7c, 0x6d, 0xc2, 0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e
+                ]))
+
         do {
             /**
              Parameter Length: 10 (0x0A)
@@ -1808,47 +1964,59 @@ import Foundation
              Aug 02 17:19:16.714  HCI Event  0e 0a 01 0b 04 00 af d2 06 2d 70 b0
              */
             let eventHeader = HCIEventHeader(event: .commandComplete, parameterLength: 0x0a)
-            
+
             hostController.queue.append(.event(eventHeader.data + [0x01, 0x0b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x00]))
         }
-        
+
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { Issue.record("Unable to init variable"); return }
-        
-        let linkKey = UInt128(littleEndian: UInt128(bytes: (0x3b, 0xf5, 0xfc, 0xa0, 0x63, 0x7c, 0x6d, 0xc2,
-                                                            0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e)))
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
+        let linkKey = UInt128(
+            littleEndian: UInt128(
+                bytes: (
+                    0x3b, 0xf5, 0xfc, 0xa0, 0x63, 0x7c, 0x6d, 0xc2,
+                    0x66, 0xf4, 0xa3, 0x5c, 0x13, 0xa8, 0x95, 0x2e
+                )))
+
         (try await hostController.linkKeyRequestReply(address: address, linkKey: linkKey))
     }
-    
+
     @Test func linkKeyRequest() async throws {
-        
+
         /**
          Parameter Length: 6 (0x06)
          Bluetooth Device Address: B0:70:2D:06:D2:AF
          Aug 02 17:19:16.713  HCI Event  17 06 af d2 06 2d 70 b0
         */
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
-        
+
         guard let event = HCILinkKeyRequest(data: data)
-            else { Issue.record("Could not parse"); return }
-        
+        else {
+            Issue.record("Could not parse")
+            return
+        }
+
         #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF"))
     }
-    
+
     @Test func readDataBlockSize() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 06 10:44:06.657  HCI Command      0x0000                     [100A] Read Data Block Size
          [100A] Opcode: 0x100A (OGF: 0x04    OCF: 0x0A)
          Parameter Length: 0 (0x00)
          Aug 06 10:44:06.657  HCI Command  0a 10 00
         */
-        hostController.queue.append(.command(InformationalCommand.readDataBlockSize.opcode,
-                                             [0x0a, 0x10, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                InformationalCommand.readDataBlockSize.opcode,
+                [0x0a, 0x10, 0x00]))
+
         /**
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
@@ -1861,11 +2029,11 @@ import Foundation
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x00, 0x0a, 0x10, 0x01]))
     }
-    
+
     @Test func setConnectionencryption() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 06 16:15:52.560  HCI Command      0x000D  00:00:00:00:00:00  [0413] Set Connection Encryption - 0x01 - Connection Handle: 0x000D
          [0413] Opcode: 0x0413 (OGF: 0x01    OCF: 0x13)
@@ -1874,9 +2042,11 @@ import Foundation
          Encryption: 0x01
          Aug 06 16:15:52.560  HCI Command  13 04 03 0d 00 01
         */
-        hostController.queue.append(.command(LinkControlCommand.setConnectionEncryption.opcode,
-                                             [0x13, 0x04, 0x03, 0x0d, 0x00, 0x01]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.setConnectionEncryption.opcode,
+                [0x13, 0x04, 0x03, 0x0d, 0x00, 0x01]))
+
         /**
          Aug 06 16:15:52.561  HCI Event  0x0000  Command Status - Set Connection Encryption
          Parameter Length: 4 (0x04)
@@ -1886,7 +2056,7 @@ import Foundation
          Aug 06 16:15:52.561  HCI Event  0f 04 00 01 13 04
          */
         hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x13, 0x04]))
-        
+
         /**
          Aug 06 16:15:52.577  HCI Event  0x000D  00:00:00:00:00:00  Encryption Change Complete - Encryption Enabled
          Parameter Length: 4 (0x04)
@@ -1896,17 +2066,17 @@ import Foundation
          Aug 06 16:15:52.577  HCI Event  0x0000 08 04 00 0d 00 01
         */
         hostController.queue.append(.event([0x08, 0x04, 0x00, 0x0d, 0x00, 0x01]))
-        
+
         let event = try await hostController.setConnectionEncryption(handle: 0x000D, encryption: .enable)
         #expect(event.status == .success)
         #expect(event.handle == 0x000D)
         #expect(event.encryptionEnabled == .e0)
     }
-    
+
     @Test func readRemoteSupportedFeatures() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 06 19:30:32.896  HCI Command      0x000D  Carlos Duclos’s M  [041B] Read Remote Supported Features - Connection Handle: 0x000D
          [041B] Opcode: 0x041B (OGF: 0x01    OCF: 0x1B)
@@ -1914,9 +2084,11 @@ import Foundation
          Connection Handle: 0x000D
          Aug 06 19:30:32.896  HCI Command  1b 04 02 0d 00
          */
-        hostController.queue.append(.command(LinkControlCommand.readRemoteFeatures.opcode,
-                                             [0x1b, 0x04, 0x02, 0x0d, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.readRemoteFeatures.opcode,
+                [0x1b, 0x04, 0x02, 0x0d, 0x00]))
+
         /**
          Aug 06 19:30:32.896  HCI Event     0x0000    Command Status - Read Remote Supported Features
          Parameter Length: 4 (0x04)
@@ -1926,7 +2098,7 @@ import Foundation
          Aug 06 19:30:32.896  HCI Event   0f 04 00 01 1b 04
          */
         hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x1b, 0x04]))
-        
+
         /**
          Aug 06 19:30:32.896  HCI Event        0x000D  Carlos Duclos’s M  Read Remote Supported Features Complete
          Parameter Length: 11 (0x0B)
@@ -1936,32 +2108,34 @@ import Foundation
          Aug 06 19:30:32.896  HCI Event        0x0000   0b 0b 00 0d 00 bd 02 04 38 08 00 00 00
          */
         hostController.queue.append(.event([0x0b, 0x0b, 0x00, 0x0d, 0x00, 0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00]))
-        
-        let value: UInt64 = 0x00000008380402bd
+
+        let value: UInt64 = 0x0000_0008_3804_02bd
         let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
-        
+
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
-        (lmpFeatures = try await hostController.readRemoteSupportedFeatures(handle: 0x000D))
+        lmpFeatures = try await hostController.readRemoteSupportedFeatures(handle: 0x000D)
         #expect(lmpFeatures == features)
     }
-    
+
     @Test func readRemoteExtendedFeatures() async throws {
-        
+
         let hostController = TestHostController()
-        
-        hostController.queue.append(.command(LinkControlCommand.readRemoteExtendedFeatures.opcode,
-                                             [0x1c, 0x04, 0x03, 0x0d, 0x00, 0x01]))
-     
+
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.readRemoteExtendedFeatures.opcode,
+                [0x1c, 0x04, 0x03, 0x0d, 0x00, 0x01]))
+
         hostController.queue.append(.event([0x23, 0x0D, 0x00, 0x0c, 0x00, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
-        
+
         let features = try await hostController.readRemoteExtendedFeatures(handle: 0x000D, pageNumber: 01)
         #expect(features.isEmpty)
     }
-    
+
     @Test func readRemoteVersionInformation() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 06 19:30:32.895  HCI Command      0x000D  Carlos Duclos’s M  [041D] Read Remote Version Information - Connection Handle: 0x000D
          [041D] Opcode: 0x041D (OGF: 0x01    OCF: 0x1D)
@@ -1969,9 +2143,11 @@ import Foundation
          Connection Handle: 0x000D
          Aug 06 19:30:32.895  HCI Command      0x0000  1d 04 02 0d 00
          */
-        hostController.queue.append(.command(LinkControlCommand.readRemoteVersion.opcode,
-                                             [0x1d, 0x04, 0x02, 0x0d, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.readRemoteVersion.opcode,
+                [0x1d, 0x04, 0x02, 0x0d, 0x00]))
+
         /**
          Aug 06 19:30:32.895  HCI Event  0x0000   Command Status - Read Remote Version Information
          Parameter Length: 4 (0x04)
@@ -1981,7 +2157,7 @@ import Foundation
          Aug 06 19:30:32.895  HCI Event   0x0000   0f 04 00 01 1d 04
          */
         hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x1d, 0x04]))
-        
+
         /**
          Aug 06 19:30:32.895  HCI Event        0x000D  Carlos Duclos’s M  Read Remote Version Information Complete
          Parameter Length: 8 (0x08)
@@ -1993,18 +2169,18 @@ import Foundation
          Aug 06 19:30:32.895  HCI Event   0x0000   0c 08 00 0d 00 03 4c 00 1c 03
          */
         hostController.queue.append(.event([0x0c, 0x08, 0x00, 0x0d, 0x00, 0x03, 0x4c, 0x00, 0x1c, 0x03]))
-        
+
         var versionInformation: HCIReadRemoteVersionInformationComplete?
-        (versionInformation = try await hostController.readRemoteVersionInformation(handle: 0x000D))
+        versionInformation = try await hostController.readRemoteVersionInformation(handle: 0x000D)
         #expect(versionInformation?.version == 0x03)
         #expect(versionInformation?.companyId == 0x004c)
         #expect(versionInformation?.subversion == 0x031c)
     }
-    
+
     @Test func authenticationRequested() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 06 19:30:33.031  HCI Command      0x000D  Carlos Duclos’s M  [0411] Authentication Requested - Connection Handle: 0x000D
          [0411] Opcode: 0x0411 (OGF: 0x01    OCF: 0x11)
@@ -2012,9 +2188,11 @@ import Foundation
          Connection Handle: 0x000D
          Aug 06 19:30:33.031  HCI Command      0x0000     11 04 02 0d 00
          */
-        hostController.queue.append(.command(LinkControlCommand.authenticationRequested.opcode,
-                                             [0x11, 0x04, 0x02, 0x0d, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.authenticationRequested.opcode,
+                [0x11, 0x04, 0x02, 0x0d, 0x00]))
+
         /**
          Aug 06 19:30:33.032  HCI Event        0x0000                     Command Status - Authentication Requested
          Parameter Length: 4 (0x04)
@@ -2024,7 +2202,7 @@ import Foundation
          Aug 06 19:30:33.032  HCI Event  0x0000  0f 04 00 01 11 04
          */
         hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x11, 0x04]))
-        
+
         /**
          Aug 06 19:30:33.134  HCI Event        0x000D  Carlos Duclos’s M  Authentication Complete
          Parameter Length: 3 (0x03)
@@ -2033,16 +2211,16 @@ import Foundation
          Aug 06 19:30:33.134  HCI Event    0x0000   06 03 00 0d 00
          */
         hostController.queue.append(.event([0x06, 0x03, 0x00, 0x0d, 0x00]))
-        
+
         let event = try await hostController.authenticationRequested(handle: 0x000D)
         #expect(event.status == .success)
         #expect(event.handle == 0x000D)
     }
-    
+
     @Test func changeConnectionPacketType() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 06 19:30:32.896  HCI Command      0x000D  Carlos Duclos’s M  [040F] Change Connection Packet Type - Connection Handle: 0x000D
          [040F] Opcode: 0x040F (OGF: 0x01    OCF: 0x0F)
@@ -2051,9 +2229,11 @@ import Foundation
          Packet Type: 0xCC18
          Aug 06 19:30:32.896  HCI Command    0x0000   0f 04 04 0d 00 18 cc                        .......
         */
-        hostController.queue.append(.command(LinkControlCommand.authenticationRequested.opcode,
-                                             [0x0f, 0x04, 0x04, 0x0d, 0x00, 0x18, 0xcc]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.authenticationRequested.opcode,
+                [0x0f, 0x04, 0x04, 0x0d, 0x00, 0x18, 0xcc]))
+
         /**
          Aug 06 19:30:32.896  HCI Event        0x0000                     Command Status - Change Connection Packet Type
          Parameter Length: 4 (0x04)
@@ -2063,18 +2243,17 @@ import Foundation
          Aug 06 19:30:32.896  HCI Event    0x0000    0f 04 00 01 0f 04                           ......
         */
         hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x0f, 0x04]))
-        
+
         let packetType: PacketType = .acl(BitMaskOptionSet<ACLPacketType>(rawValue: 0xcc18))
         var caughtError: Error?
-        do { let _ = try await hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType) }
-        catch { caughtError = error }
+        do { let _ = try await hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType) } catch { caughtError = error }
         #expect(caughtError != nil)
     }
-    
+
     @Test func linkKeyRequestNegativeReply() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 09 17:22:43.298  HCI Command      0x0000  Carlos Duclos’s M  [040C] Link Key Request Negative Reply - 84:FC:FE:F3:F4:75
          [040C] Opcode: 0x040C (OGF: 0x01    OCF: 0x0C)
@@ -2082,9 +2261,11 @@ import Foundation
          Bluetooth Device Address: 84:FC:FE:F3:F4:75
          Aug 09 17:22:43.298  HCI Command    0x0000    0c 04 06 75 f4 f3 fe fc 84
          */
-        hostController.queue.append(.command(LinkControlCommand.linkKeyNegativeReply.opcode,
-                                             [0x0c, 0x04, 0x06, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.linkKeyNegativeReply.opcode,
+                [0x0c, 0x04, 0x06, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
+
         /**
          Aug 09 17:22:43.298  HCI Event        0x0000  Carlos Duclos’s M  Command Complete [040C] - Link Key Request Negative Reply - 84:FC:FE:F3:F4:75
          Parameter Length: 10 (0x0A)
@@ -2095,18 +2276,21 @@ import Foundation
          Aug 09 17:22:43.298  HCI Event        0x0000   0e 0a 01 0c 04 00 75 f4 f3 fe fc 84
          */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0c, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
-        
+
         guard let address = BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         let eventAddress = try await hostController.linkKeyRequestNegativeReply(address: address)
         #expect(eventAddress == address)
     }
-    
+
     @Test func pINCodeRequestReply() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 09 17:22:43.300  HCI Command      0x0000  Carlos Duclos’s M  [040D] PIN Code Request Reply - 84:FC:FE:F3:F4:75
          [040D] Opcode: 0x040D (OGF: 0x01    OCF: 0x0D)
@@ -2116,10 +2300,14 @@ import Foundation
          PIN Code: 0000 (0x30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 00)
          Aug 09 17:22:43.300  HCI Command      0x0000  0d 04 17 75 f4 f3 fe fc 84 04 30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 00
          */
-        hostController.queue.append(.command(LinkControlCommand.pinCodeReply.opcode,
-                                             [0x0d, 0x04, 0x17, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84, 0x04, 0x30, 0x30, 0x30,
-                                              0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.pinCodeReply.opcode,
+                [
+                    0x0d, 0x04, 0x17, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84, 0x04, 0x30, 0x30, 0x30,
+                    0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                ]))
+
         /**
          Aug 09 17:22:43.302  HCI Event        0x0000  Carlos Duclos’s M  Command Complete [040D] - PIN Code Request Reply - 84:FC:FE:F3:F4:75
          Parameter Length: 10 (0x0A)
@@ -2130,17 +2318,27 @@ import Foundation
          Aug 09 17:22:43.302  HCI Event        0x0000    0e 0a 01 0d 04 00 75 f4 f3 fe fc 84
         */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x0d, 0x04, 0x00, 0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84]))
-        
+
         guard let address = BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         guard let length = HCIPINCodeRequestReply.PINCodeLength(rawValue: 0x04)
-            else { Issue.record("Unable to init variable"); return }
-        
+        else {
+            Issue.record("Unable to init variable")
+            return
+        }
+
         let data = Data([0x30, 0x30, 0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
-        let pinCode = UInt128(littleEndian: UInt128(bytes: (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
-                                                            data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])))
-        
+        let pinCode = UInt128(
+            littleEndian: UInt128(
+                bytes: (
+                    data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
+                    data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]
+                )))
+
         let eventAddress = try await hostController.pinCodeRequestReply(
             address: address,
             pinCodeLength: length,
@@ -2148,9 +2346,9 @@ import Foundation
         )
         #expect(eventAddress == address)
     }
-    
+
     @Test func pINCodeRequest() async throws {
-        
+
         /**
          Aug 09 17:22:43.298  HCI Event        0x0000  Carlos Duclos’s M  PIN code request - 84:FC:FE:F3:F4:75
          Parameter Length: 6 (0x06)
@@ -2158,15 +2356,18 @@ import Foundation
          Aug 09 17:22:43.298  HCI Event        0x0000  16 06 75 f4 f3 fe fc 84
         */
         let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84])
-        
+
         guard let event = HCIPINCodeRequest(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.address == BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
     }
-    
+
     @Test func linkKeyNotification() async throws {
-        
+
         /**
          Aug 09 17:22:43.380  HCI Event        0x0000  Carlos Duclos’s M  Link Key Notification - 84:FC:FE:F3:F4:75
          Parameter Length: 23 (0x17)
@@ -2175,15 +2376,18 @@ import Foundation
          Key Type: 0x00
          */
         let data = Data([0x75, 0xf4, 0xf3, 0xfe, 0xfc, 0x84, 0x0f, 0x30, 0x55, 0xec, 0x83, 0x9f, 0x14, 0x3c, 0xd4, 0x53, 0xfd, 0xf2, 0x1b, 0xe5, 0xe5, 0xcc, 0x00])
-        
+
         guard let event = HCILinkKeyNotification(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.address == BluetoothAddress(rawValue: "84:FC:FE:F3:F4:75")!)
     }
-    
+
     @Test func modeChange() async throws {
-        
+
         /**
          Aug 09 17:22:45.417  HCI Event        0x000D  Carlos Duclos’s M  Mode Change - Sniff Mode - 0.011250 seconds -  - Handle: 0x000D
          Parameter Length: 6 (0x06)
@@ -2194,19 +2398,22 @@ import Foundation
          Aug 09 17:22:45.417  HCI Event        0x0000  14 06 00 0d 00 02 12 00
          */
         let data = Data([0x00, 0x0d, 0x00, 0x02, 0x12, 0x00])
-        
+
         guard let event = HCIModeChange(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.status.rawValue == HCIStatus(rawValue: 0x00)?.rawValue)
         #expect(event.handle == 0x000D)
         #expect(event.currentMode == HCIModeChange.Mode(rawValue: 0x02)!)
     }
-    
+
     @Test func writeLinkPolicySettings() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 09 17:22:43.293  HCI Command      0x000D  Carlos Duclos’s M  [080D] Write Link Policy Settings - Connection Handle: 0x000D
          [080D] Opcode: 0x080D (OGF: 0x02    OCF: 0x0D)
@@ -2219,8 +2426,10 @@ import Foundation
          Park Mode:           Enabled
          Aug 09 17:22:43.293  HCI Command      0x0000  0d 08 04 0d 00 0f 00
          */
-        hostController.queue.append(.command(LinkPolicyCommand.writeLinkPolicySettings.opcode,
-                                             [0x0d, 0x08, 0x04, 0x0d, 0x00, 0x0f, 0x00]))
+        hostController.queue.append(
+            .command(
+                LinkPolicyCommand.writeLinkPolicySettings.opcode,
+                [0x0d, 0x08, 0x04, 0x0d, 0x00, 0x0f, 0x00]))
         /**
          Aug 09 17:22:43.293  HCI Event        0x0000                     Command Complete [080D] - Write Link Policy Settings
          Parameter Length: 6 (0x06)
@@ -2231,17 +2440,17 @@ import Foundation
          Aug 09 17:22:43.293  HCI Event        0x0000   0e 06 01 0d 08 00 0d 00
          */
         hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x0d, 0x08, 0x00, 0x0d, 0x00]))
-        
+
         let event = try await hostController.writeLinkPolicySettings(
             connectionHandle: 0x000D,
             settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F))
         #expect(event.connectionHandle == 0x000D)
     }
-    
+
     @Test func qoSSetup() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 09 17:22:45.336  HCI Command      0x000D  Carlos Duclos’s M  [0807] QoS Setup - Connection Handle: 0x000D
          [0807] Opcode: 0x0807 (OGF: 0x02    OCF: 0x07)
@@ -2253,12 +2462,16 @@ import Foundation
          Peak Bandwidth: 0x00000000
          Latency: 0x00002BF2
          Delay Variation: 0xFFFFFFFF
-         
+
          */
-        hostController.queue.append(.command(LinkPolicyCommand.qosSetup.opcode,
-                                             [0x07, 0x08, 0x14, 0x0d, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                              0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]))
-        
+        hostController.queue.append(
+            .command(
+                LinkPolicyCommand.qosSetup.opcode,
+                [
+                    0x07, 0x08, 0x14, 0x0d, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff
+                ]))
+
         /**
          Aug 09 17:22:45.337  HCI Event        0x0000                     Command Status - QoS Setup
          Parameter Length: 4 (0x04)
@@ -2268,7 +2481,7 @@ import Foundation
          Aug 09 17:22:45.337  HCI Event        0x0000  0f 04 00 01 07 08
          */
         hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x07, 0x08]))
-        
+
         /**
          Aug 09 17:22:45.345  HCI Event        0x000D  Carlos Duclos’s M  QoS Setup Complete
          Parameter Length: 21 (0x15)
@@ -2281,33 +2494,40 @@ import Foundation
          Latency: 0x00002BF2
          Delay Variation: 0xFFFFFFFFx
         */
-        hostController.queue.append(.event([0x0d, 0x15, 0x00, 0x0d, 0x00, 0x00, 0x02, 0x01, 0x00, 0x00, 0x00,
-                                            0x00, 0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]))
-        
+        hostController.queue.append(
+            .event([
+                0x0d, 0x15, 0x00, 0x0d, 0x00, 0x00, 0x02, 0x01, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0xf2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff
+            ]))
+
         guard let serviceType = HCIQoSSetup.ServiceType(rawValue: 0x02)
-            else { Issue.record("Unable to parse service type"); return }
-        
-        let event = try await hostController.qosSetup(connectionHandle: 0x000D,
-                                                     serviceType: serviceType,
-                                                     tokenRate: 0x00000000,
-                                                     peakBandWidth: 0x00000000,
-                                                     latency: 0x00002BF2,
-                                                     delayVariation: 0xFFFFFFFF)
+        else {
+            Issue.record("Unable to parse service type")
+            return
+        }
+
+        let event = try await hostController.qosSetup(
+            connectionHandle: 0x000D,
+            serviceType: serviceType,
+            tokenRate: 0x0000_0000,
+            peakBandWidth: 0x0000_0000,
+            latency: 0x0000_2BF2,
+            delayVariation: 0xFFFF_FFFF)
         #expect(event.connectionHandle == 0x000D)
         #expect(event.serviceType == serviceType)
     }
-    
+
     @Test func readPageTimeout() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          [0C17] Opcode: 0x0C17 (OGF: 0x03    OCF: 0x17)
          Parameter Length: 0 (0x00)
          Aug 09 17:22:36.898  HCI Command      0x0000    17 0c 00
          */
         hostController.queue.append(.command(HostControllerBasebandCommand.readPageTimeout.opcode, [0x17, 0x0c, 0x00]))
-        
+
         /**
          Aug 09 17:22:36.899  HCI Event        0x0000  Command Complete [0C17] - Read Page Timeout - Page Timeout: 0x4000 (10.24 s)
          Parameter Length: 6 (0x06)
@@ -2318,17 +2538,17 @@ import Foundation
          Aug 09 17:22:36.899  HCI Event        0x0000  0e 06 01 17 0c 00 00 40
          */
         hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x17, 0x0c, 0x00, 0x00, 0x40]))
-        
+
         var readPageTimeout: HCIReadPageTimeoutReturn?
-        (readPageTimeout = try await hostController.readPageTimeout())
+        readPageTimeout = try await hostController.readPageTimeout()
         #expect(readPageTimeout?.pageTimeout.rawValue == 0x4000)
         #expect(readPageTimeout?.pageTimeout.duration == 10.24)
     }
-    
+
     @Test func writeLinkSupervisionTimeout() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 09 17:22:45.318  HCI Command      0x000D  Carlos Duclos’s M  [0C37] Write Link Supervision Timeout - Connection Handle: 0x000D
          [0C37] Opcode: 0x0C37 (OGF: 0x03    OCF: 0x37)
@@ -2338,9 +2558,11 @@ import Foundation
          5000.000000 ms
          Aug 09 17:22:45.318  HCI Command      0x0000   37 0c 04 0d 00 40 1f
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.writeLinkSupervisionTimeout.opcode,
-                                             [0x37, 0x0c, 0x04, 0x0d, 0x00, 0x40, 0x1f]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.writeLinkSupervisionTimeout.opcode,
+                [0x37, 0x0c, 0x04, 0x0d, 0x00, 0x40, 0x1f]))
+
         /**
          Aug 09 17:22:45.318  HCI Event        0x0000                     Command Complete [0C37] - Write Link Supervision Timeout - Connection Handle: 0x000D
          Parameter Length: 6 (0x06)
@@ -2351,17 +2573,19 @@ import Foundation
          Aug 09 17:22:45.318  HCI Event        0x0000   0e 06 01 37 0c 00 0d 00
          */
         hostController.queue.append(.event([0x0e, 0x06, 0x01, 0x37, 0x0c, 0x00, 0x0d, 0x00]))
-        
+
         let timeout = HCIWriteLinkSupervisionTimeout.LinkSupervisionTimeout(rawValue: 0x1F40)
-        
+
         var writeTimeout: HCIWriteLinkSupervisionTimeoutReturn?
-        (writeTimeout = try await hostController.writeLinkSupervisionTimeout(handle: 0x000D,
-                                                                                       linkSupervisionTimeout: timeout))
+        writeTimeout = try await hostController.writeLinkSupervisionTimeout(
+            handle: 0x000D,
+            linkSupervisionTimeout: timeout
+        )
         #expect(writeTimeout?.handle == 0x000D)
     }
-    
+
     @Test func numberOfCompletedPackets() async throws {
-        
+
         /**
          Aug 09 17:22:45.343  HCI Event        0x000D  Carlos Duclos’s M  Number of Completed Packets - Handle: 0x000D - Packets: 0x0001
          Parameter Length: 5 (0x05)
@@ -2371,28 +2595,33 @@ import Foundation
          Aug 09 17:22:45.343  HCI Event        0x0000   13 05 01 0d 00 01 00
          */
         let data = Data([0x01, 0x0d, 0x00, 0x01, 0x00])
-        
+
         guard let event = HCINumberOfCompletedPackets(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.numberOfHandles == 0x01)
         #expect(event.connectionHandle == 0x000D)
         #expect(event.numberOfCompletedPackets == 0x0001)
     }
-    
+
     @Test func reset() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:08.054  HCI Command      0x0000                     [0C03] Reset
          [0C03] Opcode: 0x0C03 (OGF: 0x03    OCF: 0x03)
          Parameter Length: 0 (0x00)
          Aug 02 17:18:08.054  HCI Command      0x0000   03 0c 00
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.reset.opcode,
-                                             [0x03, 0x0c, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.reset.opcode,
+                [0x03, 0x0c, 0x00]))
+
         /**
          Aug 02 17:18:08.550  HCI Event        0x0000                     Command Complete [0C03] - Reset
          Parameter Length: 4 (0x04)
@@ -2402,14 +2631,14 @@ import Foundation
          Aug 02 17:18:08.550  HCI Event        0x0000   0e 04 01 03 0c 00
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x03, 0x0c, 0x00]))
-        
+
         (try await hostController.reset())
     }
-    
+
     @Test func readStoredLinkKey() async throws {
-    
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:10.102  HCI Command      0x0000                     [0C0D] Read Stored Link Key
          [0C0D] Opcode: 0x0C0D (OGF: 0x03    OCF: 0x0D)
@@ -2419,9 +2648,11 @@ import Foundation
          Return link key for Device Address.
          Aug 02 17:18:10.102  HCI Command      0x0000  0d 0c 07 7e 8a 94 90 85 8c 01
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.readStoredLinkKey.opcode,
-                                             [0x0d, 0x0c, 0x07, 0x7e, 0x8a, 0x94, 0x90, 0x85, 0x8c, 0x01]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.readStoredLinkKey.opcode,
+                [0x0d, 0x0c, 0x07, 0x7e, 0x8a, 0x94, 0x90, 0x85, 0x8c, 0x01]))
+
         /**
          Aug 02 17:18:10.102  HCI Event        0x0000                     Command Complete [0C0D] - Read Stored Link Key - Num Keys Read: 0x0000
          Parameter Length: 8 (0x08)
@@ -2433,7 +2664,7 @@ import Foundation
          Aug 02 17:18:10.102  HCI Event        0x0000   0e 08 01 0d 0c 00 07 00 00 00
          */
         hostController.queue.append(.event([0x0e, 0x08, 0x01, 0x0d, 0x0c, 0x00, 0x07, 0x00, 0x00, 0x00]))
-        
+
         let event = try await hostController.readStoredLinkKey(
             address: BluetoothAddress(rawValue: "8C:85:90:94:8A:7E")!,
             readFlag: HCIReadStoredLinkKey.ReadFlag(rawValue: 0x01)!
@@ -2441,20 +2672,22 @@ import Foundation
         #expect(event.maxNumberKeys == 7)
         #expect(event.numberKeysRead == 0)
     }
-    
+
     @Test func readLocalSupportedFeatures() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:10.101  HCI Command      0x0000                     [1003] Read Local Supported Features
          [1003] Opcode: 0x1003 (OGF: 0x04    OCF: 0x03)
          Parameter Length: 0 (0x00)
          Aug 02 17:18:10.101  HCI Command      0x0000   03 10 00
          */
-        hostController.queue.append(.command(InformationalCommand.readLocalSupportedFeatures.opcode,
-                                             [0x03, 0x10, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                InformationalCommand.readLocalSupportedFeatures.opcode,
+                [0x03, 0x10, 0x00]))
+
         /**
          Aug 02 17:18:10.102  HCI Event        0x0000                     Command Complete [1003] - Read Local Supported Features
          Parameter Length: 12 (0x0C)
@@ -2472,21 +2705,24 @@ import Foundation
          7, 87 1 1 1 0 0 0 0 1
          Aug 02 17:18:10.102  HCI Event        0x0000  0e 0c 01 03 10 00 bf fe cf fe db ff 7b 87
          */
-        hostController.queue.append(.event([0x0e, 0x0c, 0x01, 0x03, 0x10, 0x00, 0xbf,
-                                            0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87]))
-        
-        let value: UInt64 = 0x877bffdbfecffebf
+        hostController.queue.append(
+            .event([
+                0x0e, 0x0c, 0x01, 0x03, 0x10, 0x00, 0xbf,
+                0xfe, 0xcf, 0xfe, 0xdb, 0xff, 0x7b, 0x87
+            ]))
+
+        let value: UInt64 = 0x877b_ffdb_fecf_febf
         let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
 
         var lmpFeatures: BitMaskOptionSet<LMPFeature>?
-        (lmpFeatures = try await hostController.readLocalSupportedFeatures())
+        lmpFeatures = try await hostController.readLocalSupportedFeatures()
         #expect(lmpFeatures == features)
     }
-    
+
     @Test func writeClassOfDevice() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:10.112  HCI Command      0x0000                     [0C24] Write Class of Device
          [0C24] Opcode: 0x0C24 (OGF: 0x03    OCF: 0x24)
@@ -2502,9 +2738,11 @@ import Foundation
          Laptop
          Aug 02 17:18:10.112  HCI Command      0x0000   24 0c 03 0c 01 38
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.writeClassOfDevice.opcode,
-                                             [0x24, 0x0c, 0x03, 0x0c, 0x01, 0x38]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.writeClassOfDevice.opcode,
+                [0x24, 0x0c, 0x03, 0x0c, 0x01, 0x38]))
+
         /**
          Aug 02 17:18:10.112  HCI Event        0x0000                     Command Complete [0C24] - Write Class of Device
          Parameter Length: 4 (0x04)
@@ -2514,26 +2752,31 @@ import Foundation
          Aug 02 17:18:10.112  HCI Event        0x0000  0e 04 01 24 0c 00
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x24, 0x0c, 0x00]))
-        
+
         guard let classOfDevice = ClassOfDevice(data: Data([0x0C, 0x01, 0x38]))
-            else { Issue.record("Failed to init class of device"); return }
-        
+        else {
+            Issue.record("Failed to init class of device")
+            return
+        }
+
         (try await hostController.writeClassOfDevice(classOfDevice: classOfDevice))
     }
-    
+
     @Test func readClassOfDevice() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:10.124  HCI Command      0x0000                     [0C23] Read Class of Device
          [0C23] Opcode: 0x0C23 (OGF: 0x03    OCF: 0x23)
          Parameter Length: 0 (0x00)
          Aug 02 17:18:10.124  HCI Command      0x0000   23 0c 00
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.readClassOfDevice.opcode,
-                                             [0x23, 0x0c, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.readClassOfDevice.opcode,
+                [0x23, 0x0c, 0x00]))
+
         /**
          Aug 02 17:18:10.124  HCI Event        0x0000                     Command Complete [0C23] - Read Class of Device
          Parameter Length: 7 (0x07)
@@ -2552,28 +2795,37 @@ import Foundation
          Aug 02 17:18:10.124  HCI Event        0x0000   0e 07 01 23 0c 00 0c 01 38
          */
         hostController.queue.append(.event([0x0e, 0x07, 0x01, 0x23, 0x0c, 0x00, 0x0c, 0x01, 0x38]))
-        
+
         var readClassOfDevice: ClassOfDevice?
-        (readClassOfDevice = try await hostController.readClassOfDevice())
-        
+        readClassOfDevice = try await hostController.readClassOfDevice()
+
         guard let classOfDevice = readClassOfDevice
-            else { Issue.record("Failed to init class of device"); return }
-        
+        else {
+            Issue.record("Failed to init class of device")
+            return
+        }
+
         #expect(classOfDevice.majorServiceClass.contains(.capturing))
         #expect(classOfDevice.majorServiceClass.contains(.objectTransfer))
         #expect(classOfDevice.majorServiceClass.contains(.audio))
-        
+
         guard case let .computer(computer) = classOfDevice.majorDeviceClass
-            else { Issue.record("Incorrect major device class"); return }
-        
+        else {
+            Issue.record("Incorrect major device class")
+            return
+        }
+
         guard computer == .laptop
-            else { Issue.record("minor device class is wrong"); return }
+        else {
+            Issue.record("minor device class is wrong")
+            return
+        }
     }
-    
+
     @Test func writeScanEnable() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:10.227  HCI Command      0x0000                     [0C1A] Write Scan Enable - Requesting Scan State: 0x03
          [0C1A] Opcode: 0x0C1A (OGF: 0x03    OCF: 0x1A)
@@ -2582,9 +2834,11 @@ import Foundation
          Inquiry Scan Enabled, Page Scan Enabled
          Aug 02 17:18:10.227  HCI Command      0x0000   1a 0c 01 03
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.writeScanEnable.opcode,
-                                             [0x1a, 0x0c, 0x01, 0x03]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.writeScanEnable.opcode,
+                [0x1a, 0x0c, 0x01, 0x03]))
+
         /**
          Aug 02 17:18:10.227  HCI Event        0x0000                     Command Complete [0C1A] - Write Scan Enable
          Parameter Length: 4 (0x04)
@@ -2595,15 +2849,15 @@ import Foundation
 
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1a, 0x0c, 0x00]))
-        
+
         let scanEnable = HCIWriteScanEnable.ScanEnable(rawValue: 0x03)
         (try await hostController.writeScanEnable(scanEnable: scanEnable!))
     }
-    
+
     @Test func writePageScanType() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:10.128  HCI Command      0x0000                     [0C47] Write Page Scan Type
          [0C47] Opcode: 0x0C47 (OGF: 0x03    OCF: 0x47)
@@ -2612,9 +2866,11 @@ import Foundation
          Interlaced Page Scan Type. Optional
          Aug 02 17:18:10.128  HCI Command      0x0000  47 0c 01 01
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.writePageScanType.opcode,
-                                             [0x47, 0x0c, 0x01, 0x01]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.writePageScanType.opcode,
+                [0x47, 0x0c, 0x01, 0x01]))
+
         /**
          Aug 02 17:18:10.128  HCI Event        0x0000                     Command Complete [0C47] - Write Page Scan Type
          Parameter Length: 4 (0x04)
@@ -2624,15 +2880,15 @@ import Foundation
          Aug 02 17:18:10.128  HCI Event        0x0000  0e 04 01 47 0c 00
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x47, 0x0c, 0x00]))
-        
+
         let pageScanType = HCIWritePageScanType.PageScanType(rawValue: 0x01)
         (try await hostController.writePageScanType(pageScanType: pageScanType!))
     }
-    
+
     @Test func writePageScanActivity() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 02 17:18:10.128  HCI Command      0x0000                     [0C1C] Write Page Scan Activity - 11.25/640 (ms)
          [0C1C] Opcode: 0x0C1C (OGF: 0x03    OCF: 0x1C)
@@ -2641,9 +2897,11 @@ import Foundation
          Page Scan Window: 0x0012 (11.25 ms)
          Aug 02 17:18:10.128  HCI Command      0x0000   1c 0c 04 00 04 12 00
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.writePageScanActivity.opcode,
-                                             [0x1c, 0x0c, 0x04, 0x00, 0x04, 0x12, 0x00]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.writePageScanActivity.opcode,
+                [0x1c, 0x0c, 0x04, 0x00, 0x04, 0x12, 0x00]))
+
         /**
          Aug 02 17:18:10.129  HCI Event        0x0000                     Command Complete [0C1C] - Write Page Scan Activity
          Parameter Length: 4 (0x04)
@@ -2653,18 +2911,19 @@ import Foundation
          Aug 02 17:18:10.129  HCI Event        0x0000   0e 04 01 1c 0c 00
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1c, 0x0c, 0x00]))
-        
+
         let scanInterval = HCIWritePageScanActivity.PageScanInterval(rawValue: 0x0400)
         let scanWindow = HCIWritePageScanActivity.PageScanWindow(rawValue: 0x0012)
-        
-        (try await hostController.writePageScanActivity(scanInterval: scanInterval!,
-                                                                  scanWindow: scanWindow!))
+
+        (try await hostController.writePageScanActivity(
+            scanInterval: scanInterval!,
+            scanWindow: scanWindow!))
     }
-    
+
     @Test func iOCapabilityRequestReply() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 16 17:57:32.832  HCI Command      0x0000  iPhone             [042B] IO Capability Request Reply - B0:70:2D:06:D2:AF
          [042B] Opcode: 0x042B (OGF: 0x01    OCF: 0x2B)
@@ -2675,9 +2934,11 @@ import Foundation
          Authentication Requirements: 0x02 (MITM protection not required and dedicated bonding required)
          Aug 16 17:57:32.832  HCI Command      0x0000   2b 04 09 af d2 06 2d 70 b0 01 00 02
          */
-        hostController.queue.append(.command(LinkControlCommand.ioCapabilityRequestReply.opcode,
-                                             [0x2b, 0x04, 0x09, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x02]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.ioCapabilityRequestReply.opcode,
+                [0x2b, 0x04, 0x09, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x02]))
+
         /**
          Aug 16 17:57:32.832  HCI Event        0x0000                     Command Complete [042B] - IO Capability Request Reply
          Parameter Length: 10 (0x0A)
@@ -2687,19 +2948,31 @@ import Foundation
          Aug 16 17:57:32.832  HCI Event        0x0000   0e 0a 01 2b 04 00 af d2 06 2d 70 b0
          */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2b, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
-        
+
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { Issue.record("Cannot init address"); return }
-        
+        else {
+            Issue.record("Cannot init address")
+            return
+        }
+
         guard let ioCapability = HCIIOCapabilityRequestReply.IOCapability(rawValue: 0x01)
-            else { Issue.record("Cannot init ioCapability"); return }
-        
+        else {
+            Issue.record("Cannot init ioCapability")
+            return
+        }
+
         guard let dataPresent = HCIIOCapabilityRequestReply.OBBDataPresent(rawValue: 0x00)
-            else { Issue.record("Cannot init daatPresent"); return }
-        
+        else {
+            Issue.record("Cannot init daatPresent")
+            return
+        }
+
         guard let authenticationRequeriments = HCIIOCapabilityRequestReply.AuthenticationRequirements(rawValue: 0x02)
-            else { Issue.record("Cannot init daatPresent"); return }
-        
+        else {
+            Issue.record("Cannot init daatPresent")
+            return
+        }
+
         let eventAddress = try await hostController.ioCapabilityRequestReply(
             address: address,
             ioCapability: ioCapability,
@@ -2708,9 +2981,9 @@ import Foundation
         )
         #expect(eventAddress == address)
     }
-    
+
     @Test func iOCapabilityRequest() async throws {
-        
+
         /**
          Aug 16 17:57:32.829  HCI Event        0x0000  iPhone             IO Capability Request - B0:70:2D:06:D2:AF
          Parameter Length: 6 (0x06)
@@ -2718,15 +2991,18 @@ import Foundation
          Aug 16 17:57:32.829  HCI Event        0x0000  31 06 af d2 06 2d 70 b0
          */
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
-        
+
         guard let event = HCIIOCapabilityRequest(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
-    
+
     @Test func iOCapabilityResponse() async throws {
-        
+
         /**
          Aug 17 09:58:05.836  HCI Event        0x0000  iPhone             IO Capability Response - B0:70:2D:06:D2:AF
          Parameter Length: 9 (0x09)
@@ -2737,17 +3013,20 @@ import Foundation
          Aug 17 09:58:05.836  HCI Event        0x0000                     00000000: 32 09 af d2 06 2d 70 b0 01 00 03
          */
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0x01, 0x00, 0x03])
-        
+
         guard let event = HCIIOCapabilityResponse(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
-    
+
     @Test func userConfirmationRequestReply() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 17 09:58:05.937  HCI Command      0x0000  iPhone             [042C] User Confirmation Request Reply - B0:70:2D:06:D2:AF
          [042C] Opcode: 0x042C (OGF: 0x01    OCF: 0x2C)
@@ -2755,9 +3034,11 @@ import Foundation
          Bluetooth Device Address: B0:70:2D:06:D2:AF
          Aug 17 09:58:05.937  HCI Command      0x0000                     00000000: 2c 04 06 af d2 06 2d 70 b0
          */
-        hostController.queue.append(.command(LinkControlCommand.userConfirmationRequestReply.opcode,
-                                             [0x2c, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
-        
+        hostController.queue.append(
+            .command(
+                LinkControlCommand.userConfirmationRequestReply.opcode,
+                [0x2c, 0x04, 0x06, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
+
         /**
          Aug 17 09:58:05.939  HCI Event        0x0000                     Command Complete [042C] - User Confirmation Request Reply
          Parameter Length: 10 (0x0A)
@@ -2767,16 +3048,19 @@ import Foundation
          Aug 17 09:58:05.939  HCI Event        0x0000                     00000000: 0e 0a 01 2c 04 00 af d2 06 2d 70 b0
          */
         hostController.queue.append(.event([0x0e, 0x0a, 0x01, 0x2c, 0x04, 0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]))
-        
+
         guard let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")
-            else { Issue.record("Unable to init address"); return }
-        
+        else {
+            Issue.record("Unable to init address")
+            return
+        }
+
         let eventAddress = try await hostController.userConfirmationRequestReply(address: address)
         #expect(eventAddress == address)
     }
-    
+
     @Test func userConfirmationRequest() async throws {
-        
+
         /**
          Aug 17 09:58:05.935  HCI Event        0x0000  iPhone             User Confirmation Request - B0:70:2D:06:D2:AF
          Parameter Length: 10 (0x0A)
@@ -2785,15 +3069,18 @@ import Foundation
          Aug 17 09:58:05.935  HCI Event        0x0000   33 0a af d2 06 2d 70 b0 ae ea 0a 00
          */
         let data = Data([0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0, 0xae, 0xea, 0x0a, 0x00])
-        
+
         guard let event = HCIUserConfirmationRequest(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
-    
+
     @Test func connectionPacketTypeChange() async throws {
-        
+
         /**
          Aug 17 09:58:05.811  HCI Event        0x000B  iPhone             Connection Packet Type Changed
          Parameter Length: 5 (0x05)
@@ -2803,17 +3090,20 @@ import Foundation
          Aug 17 09:58:05.811  HCI Event        0x0000                     00000000: 1d 05 00 0b 00 18 cc
          */
         let data = Data([0x00, 0x0b, 0x00, 0x18, 0xcc])
-        
+
         guard let event = HCIConnectionPacketTypeChange(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.status.rawValue == 0x00)
         #expect(event.connectionHandle == 0x000B)
         #expect(event.packetType == 0xCC18)
     }
-    
+
     @Test func maxSlotsChange() async throws {
-        
+
         /**
          Aug 17 09:58:05.806  HCI Event        0x000B  iPhone             Max slots change - Max slots: 0x05 -
          Parameter Length: 3 (0x03)
@@ -2823,18 +3113,21 @@ import Foundation
 
          */
         let data = Data([0x0b, 0x00, 0x05])
-        
+
         guard let event = HCIMaxSlotsChange(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.connectionHandle == 0x000B)
         #expect(event.maxSlotsLMP == 0x05)
     }
-    
+
     @Test func writePageTimeout() async throws {
-        
+
         let hostController = TestHostController()
-        
+
         /**
          Aug 17 09:58:04.840  HCI Command      0x0000                     [0C18] Write Page Timeout - 0x4000 (10.24 s)
          [0C18] Opcode: 0x0C18 (OGF: 0x03    OCF: 0x18)
@@ -2842,9 +3135,11 @@ import Foundation
          Page Timeout: 0x4000 (10240 ms)
          Aug 17 09:58:04.840  HCI Command      0x0000                     00000000: 18 0c 02 00 40
          */
-        hostController.queue.append(.command(HostControllerBasebandCommand.writePageTimeout.opcode,
-                                             [0x18, 0x0c, 0x02, 0x00, 0x40]))
-        
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.writePageTimeout.opcode,
+                [0x18, 0x0c, 0x02, 0x00, 0x40]))
+
         /**
          Aug 17 09:58:04.840  HCI Event        0x0000                     Command Complete [0C18] - Write Page Timeout
          Parameter Length: 4 (0x04)
@@ -2854,15 +3149,18 @@ import Foundation
          Aug 17 09:58:04.840  HCI Event        0x0000                     00000000: 0e 04 01 18 0c 00
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x18, 0x0c, 0x00]))
-        
+
         guard let pageTimeout = HCIWritePageTimeout.PageTimeout(rawValue: 0x4000)
-            else { Issue.record("Unable to init pageTimeout"); return }
-        
+        else {
+            Issue.record("Unable to init pageTimeout")
+            return
+        }
+
         (try await hostController.writePageTimeout(pageTimeout: pageTimeout))
     }
-    
+
     @Test func simplePairingComplete() async throws {
-        
+
         /**
          Aug 17 09:58:58.511  HCI Event        0x0000  iPhone             Simple Pairing Complete - B0:70:2D:06:D2:AF
          Parameter Length: 7 (0x07)
@@ -2871,29 +3169,32 @@ import Foundation
          Aug 17 09:58:58.511  HCI Event        0x0000                     00000000: 36 07 00 af d2 06 2d 70 b0
          */
         let data = Data([0x00, 0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0])
-        
+
         guard let event = HCISimplePairingComplete(data: data)
-            else { Issue.record("Unable to parse event"); return }
-        
+        else {
+            Issue.record("Unable to parse event")
+            return
+        }
+
         #expect(event.status.rawValue == 0x00)
         #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
 }
 
 @_silgen_name("swift_bluetooth_parse_event")
-fileprivate func parseEvent <T: HCIEventParameter> (_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> T? {
-    
-    let headerData = Data(eventBuffer[1 ..< 1 + HCIEventHeader.length])
-    let eventData = Data(eventBuffer[(1 + HCIEventHeader.length) ..< actualBytesRead])
-    
+private func parseEvent<T: HCIEventParameter>(_ actualBytesRead: Int, _ eventBuffer: [UInt8]) -> T? {
+
+    let headerData = Data(eventBuffer[1..<1 + HCIEventHeader.length])
+    let eventData = Data(eventBuffer[(1 + HCIEventHeader.length)..<actualBytesRead])
+
     guard let eventHeader = HCIEventHeader(data: headerData)
-        else { return nil }
-    
+    else { return nil }
+
     #expect(eventHeader.event.rawValue == T.event.rawValue)
-    
+
     guard let event = T(data: eventData)
-        else { return nil }
-    
+    else { return nil }
+
     return event
 }
 #endif

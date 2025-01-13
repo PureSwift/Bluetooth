@@ -16,13 +16,16 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command allows the Host to specify its suggested values for the Controller's maximum transmission number
     /// of payload octets and maximum packet transmission time to be used for new connections.
-    func lowEnergyWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: LowEnergyMaxTxOctets,
-                                                  suggestedMaxTxTime: LowEnergyMaxTxTime,
-                                                  timeout: HCICommandTimeout = .default) async throws {
-        
-        let parameters = HCILEWriteSuggestedDefaultDataLength(suggestedMaxTxOctets: suggestedMaxTxOctets,
-                                                                                  suggestedMaxTxTime: suggestedMaxTxTime)
-        
+    func lowEnergyWriteSuggestedDefaultDataLength(
+        suggestedMaxTxOctets: LowEnergyMaxTxOctets,
+        suggestedMaxTxTime: LowEnergyMaxTxTime,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
+        let parameters = HCILEWriteSuggestedDefaultDataLength(
+            suggestedMaxTxOctets: suggestedMaxTxOctets,
+            suggestedMaxTxTime: suggestedMaxTxTime)
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -35,28 +38,30 @@ public extension BluetoothHostControllerInterface {
 /// of payload octets and maximum packet transmission time to be used for new connections.
 @frozen
 public struct HCILEWriteSuggestedDefaultDataLength: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.writeSuggestedDefaultDataLengthCommand //0x0024
-    
+
+    public static let command = HCILowEnergyCommand.writeSuggestedDefaultDataLengthCommand  //0x0024
+
     public var suggestedMaxTxOctets: LowEnergyMaxTxOctets
-    
+
     public var suggestedMaxTxTime: LowEnergyMaxTxTime
-    
-    public init(suggestedMaxTxOctets: LowEnergyMaxTxOctets,
-                suggestedMaxTxTime: LowEnergyMaxTxTime) {
+
+    public init(
+        suggestedMaxTxOctets: LowEnergyMaxTxOctets,
+        suggestedMaxTxTime: LowEnergyMaxTxTime
+    ) {
         self.suggestedMaxTxOctets = suggestedMaxTxOctets
         self.suggestedMaxTxTime = suggestedMaxTxTime
     }
-    
+
     public var data: Data {
         let suggestedMaxTxOctetsBytes = suggestedMaxTxOctets.rawValue.littleEndian.bytes
         let suggestedMaxTxTimeBytes = suggestedMaxTxTime.rawValue.littleEndian.bytes
-        
+
         return Data([
             suggestedMaxTxOctetsBytes.0,
             suggestedMaxTxOctetsBytes.1,
             suggestedMaxTxTimeBytes.0,
             suggestedMaxTxTimeBytes.1
-            ])
+        ])
     }
 }

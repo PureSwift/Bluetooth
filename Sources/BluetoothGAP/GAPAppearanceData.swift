@@ -15,36 +15,36 @@ import Bluetooth
 /// This value shall be the same as the Appearance characteristic, as defined in Vol. 3, Part C, Section 12.2.
 @frozen
 public struct GAPAppearanceData: GAPData, Equatable {
-    
+
     public static let dataType: GAPDataType = .appearance
-    
+
     public let appearance: GAPAppearance
-    
+
     public init(appearance: GAPAppearance) {
-        
+
         self.appearance = appearance
     }
 }
 
 public extension GAPAppearanceData {
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == 2
-            else { return nil }
-        
+        else { return nil }
+
         let appearance = GAPAppearance(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
-        
+
         self.init(appearance: appearance)
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
-        
+
         data += appearance.rawValue.littleEndian
     }
-    
+
     var dataLength: Int {
-        
+
         return 2
     }
 }

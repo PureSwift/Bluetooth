@@ -11,15 +11,16 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Read Advertising Channel Tx Power Command
     ///
     /// The command is used by the Host to read the transmit power level used for LE advertising channel packets.
     func readAdvertisingChannelTxPower(timeout: HCICommandTimeout = .default) async throws -> HCILEReadAdvertisingChannelTxPower.TransmitPowerLevel {
-        
-        let value = try await deviceRequest(HCILEReadAdvertisingChannelTxPower.self,
-                                      timeout: timeout)
-        
+
+        let value = try await deviceRequest(
+            HCILEReadAdvertisingChannelTxPower.self,
+            timeout: timeout)
+
         return value.transmitPowerLevel
     }
 }
@@ -30,58 +31,58 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command is used by the Host to read the transmit power level used for LE advertising channel packets.
 @frozen
-public struct HCILEReadAdvertisingChannelTxPower: HCICommandReturnParameter { //HCI_LE_Read_Advertising_ Channel_Tx_Power
-    
-    public static let command = HCILowEnergyCommand.readAdvertisingChannelTXPower // 0x0007
-    
+public struct HCILEReadAdvertisingChannelTxPower: HCICommandReturnParameter {  //HCI_LE_Read_Advertising_ Channel_Tx_Power
+
+    public static let command = HCILowEnergyCommand.readAdvertisingChannelTXPower  // 0x0007
+
     public static let length = 1
-    
+
     public let transmitPowerLevel: TransmitPowerLevel
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         guard let transmitPowerLevel = TransmitPowerLevel(rawValue: Int8(bitPattern: data[0]))
-            else { return nil }
-        
+        else { return nil }
+
         self.transmitPowerLevel = transmitPowerLevel
     }
-    
+
     /// Size: 1 Octet (signed integer)
     /// Range: -20 ≤ N ≤ 10
     /// Units: dBm
     /// Accuracy: +/- 4 dB
     public struct TransmitPowerLevel: RawRepresentable, Equatable, Hashable, Comparable {
-        
+
         public static var min: TransmitPowerLevel { TransmitPowerLevel(-20) }
-        
+
         public static var max: TransmitPowerLevel { TransmitPowerLevel(10) }
-        
+
         public let rawValue: Int8
-        
+
         public init?(rawValue: Int8) {
-            
+
             guard rawValue >= TransmitPowerLevel.min.rawValue,
                 rawValue <= TransmitPowerLevel.max.rawValue
-                else { return nil }
-            
-            assert((TransmitPowerLevel.min.rawValue ... TransmitPowerLevel.max.rawValue).contains(rawValue))
-            
+            else { return nil }
+
+            assert((TransmitPowerLevel.min.rawValue...TransmitPowerLevel.max.rawValue).contains(rawValue))
+
             self.rawValue = rawValue
         }
-        
+
         // Private, unsafe
         private init(_ rawValue: Int8) {
             self.rawValue = rawValue
         }
-        
+
         // Comparable
         public static func < (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
             return lhs.rawValue < rhs.rawValue
         }
-        
+
         public static func > (lhs: TransmitPowerLevel, rhs: TransmitPowerLevel) -> Bool {
             return lhs.rawValue > rhs.rawValue
         }

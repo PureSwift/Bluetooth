@@ -18,46 +18,46 @@ import Bluetooth
 /// Units: 0.625 ms
 @frozen
 public struct GAPAdvertisingInterval: GAPData, Equatable, Hashable {
-    
+
     public static let dataType: GAPDataType = .advertisingInterval
-    
+
     public var interval: UInt16
-    
+
     public init(interval: UInt16) {
-        
+
         self.interval = interval
     }
 }
 
 public extension GAPAdvertisingInterval {
-    
+
     internal static var units: Double { return 0.0625 }
-    
+
     var miliseconds: Double {
-        
+
         return Double(interval) * Self.units
     }
 }
 
 public extension GAPAdvertisingInterval {
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == MemoryLayout<UInt16>.size
-            else { return nil }
-        
+        else { return nil }
+
         let interval = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
+
         self.init(interval: interval)
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
-        
+
         data += interval.littleEndian
     }
-    
+
     var dataLength: Int {
-        
+
         return MemoryLayout<UInt16>.size
     }
 }
@@ -65,9 +65,9 @@ public extension GAPAdvertisingInterval {
 // MARK: - CustomStringConvertible
 
 extension GAPAdvertisingInterval: CustomStringConvertible {
-    
+
     public var description: String {
-        
+
         return miliseconds.description + "ms"
     }
 }
@@ -75,9 +75,9 @@ extension GAPAdvertisingInterval: CustomStringConvertible {
 // MARK: - ExpressibleByIntegerLiteral
 
 extension GAPAdvertisingInterval: ExpressibleByIntegerLiteral {
-    
+
     public init(integerLiteral value: UInt16) {
-        
+
         self.init(interval: value)
     }
 }

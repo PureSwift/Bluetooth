@@ -14,24 +14,24 @@ import Bluetooth
 /// and confirms that the client has received an indication of the given attribute.
 @frozen
 public struct ATTHandleValueConfirmation: ATTProtocolDataUnit, Sendable {
-    
+
     public static var attributeOpcode: ATTOpcode { .handleValueConfirmation }
-    
-    public init() { }
+
+    public init() {}
 }
 
 extension ATTHandleValueConfirmation: DataConvertible {
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == 1,
             Self.validateOpcode(data)
-            else { return nil }
+        else { return nil }
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += Self.attributeOpcode.rawValue
     }
-    
+
     public var dataLength: Int { 1 }
 }

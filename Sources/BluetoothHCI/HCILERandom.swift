@@ -11,14 +11,14 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Rand Command
     ///
     /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
     func lowEnergyRandom(timeout: HCICommandTimeout = .default) async throws -> UInt64 {
-        
+
         let returnParameters = try await deviceRequest(HCILERandom.self, timeout: timeout)
-        
+
         return returnParameters.randomNumber
     }
 }
@@ -29,20 +29,20 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command is used to request the Controller to generate 8 octets of random data to be sent to the Host.
 @frozen
-public struct HCILERandom: HCICommandReturnParameter { // HCI_LE_Rand
-    
-    public static let command = HCILowEnergyCommand.random //0x0018
-    
+public struct HCILERandom: HCICommandReturnParameter {  // HCI_LE_Rand
+
+    public static let command = HCILowEnergyCommand.random  //0x0018
+
     public static let length: Int = 8
-    
+
     /// Random Number
-    public let randomNumber: UInt64 //Random_Number
-    
+    public let randomNumber: UInt64  //Random_Number
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         self.randomNumber = UInt64(littleEndian: UInt64(bytes: ((data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))))
     }
 }

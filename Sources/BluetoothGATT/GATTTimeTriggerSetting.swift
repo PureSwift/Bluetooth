@@ -14,57 +14,57 @@ import Bluetooth
 /// Part one is a condition field and occupies one octet, and part two is the comparison value (trigger point) that the characteristic value is checked against.
 @frozen
 public enum GATTTimeTriggerSetting: GATTDescriptor, Hashable, Sendable {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.timeTriggerSetting }
-        
+
     case valueC1(UInt8)
-    
+
     case valueC2(UInt8, UInt8, UInt8)
-    
+
     case valueC3(UInt16)
 }
 
 // MARK: - DataConvertible
 
 extension GATTTimeTriggerSetting: DataConvertible {
-    
+
     internal static var minimumLength: Int { 2 }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count >= Self.minimumLength
-            else { return nil }
-        
+        else { return nil }
+
         guard let condition = GATTTimeTriggerSettingCondition(rawValue: data[0])
-            else { return nil }
-        
+        else { return nil }
+
         switch condition {
-            
+
         case .none:
-            
+
             self = .valueC1(data[1])
-            
+
         case .indicateTimeInterval:
-            
+
             guard data.count == 4
-                else { return nil }
+            else { return nil }
             self = .valueC2(data[1], data[2], data[3])
-            
+
         case .timeInterval:
-            
+
             guard data.count == 4
-                else { return nil }
+            else { return nil }
             self = .valueC2(data[1], data[2], data[3])
-            
+
         case .count:
-            
+
             guard data.count == 3
-                else { return nil }
+            else { return nil }
             self = .valueC3(UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
         }
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {        
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         switch self {
         case let .valueC1(byte):
             let conditionByte = GATTTimeTriggerSettingCondition.none.rawValue
@@ -82,7 +82,7 @@ extension GATTTimeTriggerSetting: DataConvertible {
             data += value.littleEndian
         }
     }
-    
+
     public var dataLength: Int {
         switch self {
         case .valueC1:
@@ -100,7 +100,7 @@ extension GATTTimeTriggerSetting: DataConvertible {
 /// GATT Time Trigger Setting Condition
 @frozen
 public enum GATTTimeTriggerSettingCondition: UInt8, CaseIterable, Sendable {
-    
+
     case none = 0x00
     case indicateTimeInterval = 0x01
     case timeInterval = 0x02

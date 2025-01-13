@@ -8,7 +8,7 @@
 
 /// Type that represents a unit of measurement defined by Bluetooth.
 public protocol BluetoothUnit: RawRepresentable {
-    
+
     /// The unit of measurement type.
     static var unitType: UnitIdentifier { get }
 }

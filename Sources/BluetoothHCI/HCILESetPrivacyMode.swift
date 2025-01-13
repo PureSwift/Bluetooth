@@ -11,19 +11,22 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Set Privacy Mode Command
     ///
     /// The command is used to allow the Host to specify the privacy mode to be used for a given entry on the resolving list.
-    func lowEnergySetPrivacyMode(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
-                                 peerIdentityAddress: BluetoothAddress,
-                                 privacyMode: HCILESetPrivacyMode.PrivacyMode = HCILESetPrivacyMode.PrivacyMode.networkPrivacy,
-                                 timeout: HCICommandTimeout = .default) async throws {
-        
-        let parameters = HCILESetPrivacyMode(peerIdentityAddressType: peerIdentityAddressType,
-                                             peerIdentityAddress: peerIdentityAddress,
-                                             privacyMode: privacyMode)
-        
+    func lowEnergySetPrivacyMode(
+        peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
+        peerIdentityAddress: BluetoothAddress,
+        privacyMode: HCILESetPrivacyMode.PrivacyMode = HCILESetPrivacyMode.PrivacyMode.networkPrivacy,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
+        let parameters = HCILESetPrivacyMode(
+            peerIdentityAddressType: peerIdentityAddressType,
+            peerIdentityAddress: peerIdentityAddress,
+            privacyMode: privacyMode)
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -35,26 +38,28 @@ public extension BluetoothHostControllerInterface {
 /// The command is used to allow the Host to specify the privacy mode to be used for a given entry on the resolving list.
 @frozen
 public struct HCILESetPrivacyMode: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.setPrivacyMode // 0x004E
-    
+
+    public static let command = HCILowEnergyCommand.setPrivacyMode  // 0x004E
+
     public let peerIdentityAddressType: LowEnergyPeerIdentifyAddressType
     public let peerIdentityAddress: BluetoothAddress
     public let privacyMode: PrivacyMode
-    
-    public init(peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
-                peerIdentityAddress: BluetoothAddress,
-                privacyMode: PrivacyMode = PrivacyMode.networkPrivacy) {
-        
+
+    public init(
+        peerIdentityAddressType: LowEnergyPeerIdentifyAddressType,
+        peerIdentityAddress: BluetoothAddress,
+        privacyMode: PrivacyMode = PrivacyMode.networkPrivacy
+    ) {
+
         self.peerIdentityAddressType = peerIdentityAddressType
         self.peerIdentityAddress = peerIdentityAddress
         self.privacyMode = privacyMode
     }
-    
+
     public var data: Data {
-        
+
         let addressBytes = peerIdentityAddress.littleEndian.bytes
-        
+
         return Data([
             peerIdentityAddressType.rawValue,
             addressBytes.0,
@@ -64,15 +69,15 @@ public struct HCILESetPrivacyMode: HCICommandParameter {
             addressBytes.4,
             addressBytes.5,
             privacyMode.rawValue
-            ])
+        ])
     }
-    
+
     public enum PrivacyMode: UInt8 {
-        
+
         /// Use Network Privacy Mode for this peer device (default)
-        case networkPrivacy     = 0x00
-        
+        case networkPrivacy = 0x00
+
         /// Use Device Privacy Mode for this peer device
-        case devicePrivacy      = 0x01
+        case devicePrivacy = 0x01
     }
 }

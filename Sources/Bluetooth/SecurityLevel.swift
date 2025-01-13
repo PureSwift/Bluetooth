@@ -8,20 +8,20 @@
 
 /// Bluetooth security level.
 public enum SecurityLevel: UInt8, Sendable {
-    
-    case sdp        = 0
-    case low        = 1
-    case medium     = 2
-    case high       = 3
-    case fips       = 4
-    
+
+    case sdp = 0
+    case low = 1
+    case medium = 2
+    case high = 3
+    case fips = 4
+
     public init() { self = .sdp }
 }
 
 // MARK: - Comparable
 
 extension SecurityLevel: Comparable {
-    
+
     public static func < (lhs: SecurityLevel, rhs: SecurityLevel) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }

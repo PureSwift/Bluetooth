@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// Used by the Host to set the LE Random Device Address in the Controller.
     func lowEnergySetRandomAddress(_ address: BluetoothAddress, timeout: HCICommandTimeout = .default) async throws {
         // When the LE_Set_Random_Address command has completed, a Command Complete event shall be generated.
@@ -37,22 +37,22 @@ public extension BluetoothHostControllerInterface {
 /// If the Host issues this command when scanning or legacy advertising is enabled, the Controller shall return the error code Command Disallowed (`0x0C`).
 @frozen
 public struct HCILESetRandomAddress: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.setRandomAddress // 0x0005
-    
+
+    public static let command = HCILowEnergyCommand.setRandomAddress  // 0x0005
+
     public static let length = 6
-    
+
     public var address: BluetoothAddress
-    
+
     public init(address: BluetoothAddress) {
-        
+
         self.address = address
     }
-    
+
     public var data: Data {
-        
+
         let bytes = address.littleEndian.bytes
-        
+
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
     }
 }

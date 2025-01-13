@@ -11,15 +11,16 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// Write Local Name Command
     ///
     /// Provides the ability to modify the user- friendly name for the BR/EDR Controller.
     func readLocalName(timeout: HCICommandTimeout = .default) async throws -> String {
-        
-        let value = try await deviceRequest(HCIReadLocalName.self,
-                                      timeout: timeout)
-        
+
+        let value = try await deviceRequest(
+            HCIReadLocalName.self,
+            timeout: timeout)
+
         return value.localName
     }
 }
@@ -32,20 +33,20 @@ public extension BluetoothHostControllerInterface {
 /// for the BR/EDR Controller.
 @frozen
 public struct HCIReadLocalName: HCICommandReturnParameter {
-    
+
     public static let command = HostControllerBasebandCommand.readLocalName
-    
-    public static let length = HCI.maximumNameLength //248
-    
+
+    public static let length = HCI.maximumNameLength  //248
+
     public let localName: String
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         var data = unsafeBitCast([UInt8](data), to: [Int8].self)
-        
+
         guard let localName = String(validatingUTF8: &data)
-            else { return nil }
-        
+        else { return nil }
+
         self.localName = localName
     }
 }

@@ -7,7 +7,7 @@
 //
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Clear Resolving List Command
     ///
     /// The command is used to remove all devices from the list of address translations

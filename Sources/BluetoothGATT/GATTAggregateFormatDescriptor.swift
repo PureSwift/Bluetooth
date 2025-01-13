@@ -24,11 +24,11 @@ import Bluetooth
 /// the Characteris Aggregate Format Value is 0x405060.
 @frozen
 public struct GATTAggregateFormatDescriptor: GATTDescriptor, Equatable, Hashable, Sendable {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Descriptor.characteristicAggregateFormat }
-    
+
     public var handles: [UInt16]
-    
+
     public init(handles: [UInt16] = []) {
         self.handles = handles
     }
@@ -37,21 +37,21 @@ public struct GATTAggregateFormatDescriptor: GATTDescriptor, Equatable, Hashable
 // MARK: - DataConvertible
 
 extension GATTAggregateFormatDescriptor: DataConvertible {
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         // this is not actually UInt16 UUID, but handles
         // since the binary format is the same we can reuse code
         guard let list = GATTUUIDList<UInt16>(data: data)
-            else { return nil }
-        
+        else { return nil }
+
         self.handles = list.uuids
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += GATTUUIDList<UInt16>(uuids: handles)
     }
-    
+
     public var dataLength: Int {
         GATTUUIDList<UInt16>(uuids: handles).dataLength
     }

@@ -15,7 +15,7 @@
 /// If the Characteristic Value is less than an octet, it occupies an entire octet.
 @frozen
 public enum GATTCharacteristicFormatType: UInt8 {
-    
+
     case rfu = 0x00
     case boolean = 0x01
     case bit2 = 0x02
@@ -49,14 +49,14 @@ public enum GATTCharacteristicFormatType: UInt8 {
 // MARK: - CustomStringConvertible
 
 extension GATTCharacteristicFormatType: CustomStringConvertible {
-    
+
     public var name: String? {
-        
+
         return characteristicFormatTypeNames[self]
     }
-    
+
     public var description: String {
-        
+
         return characteristicFormatTypeDescription[self] ?? rawValue.description
     }
 }

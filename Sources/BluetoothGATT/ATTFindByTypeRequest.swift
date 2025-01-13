@@ -18,21 +18,21 @@ import Bluetooth
 /// - Note: Generic Attribute Profile defines grouping of attributes by attribute type.
 @frozen
 public struct ATTFindByTypeRequest<Value: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
-    
+
     public static var attributeOpcode: ATTOpcode { .findByTypeRequest }
-    
+
     /// First requested handle number
     public var startHandle: UInt16
-    
+
     /// Last requested handle number
     public var endHandle: UInt16
-    
+
     /// 2 octet UUID to find.
     public var attributeType: UInt16
-    
+
     /// Attribute value to find.
     public var attributeValue: Value
-    
+
     public init(
         startHandle: UInt16,
         endHandle: UInt16,
@@ -49,18 +49,18 @@ public struct ATTFindByTypeRequest<Value: DataContainer>: ATTProtocolDataUnit, E
 // MARK: - DataConvertible
 
 extension ATTFindByTypeRequest: DataConvertible {
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count >= 7,
             Self.validateOpcode(data)
-            else { return nil }
-        
+        else { return nil }
+
         let startHandle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
         let endHandle = UInt16(littleEndian: UInt16(bytes: (data[3], data[4])))
         let attributeType = UInt16(littleEndian: UInt16(bytes: (data[5], data[6])))
         let attributeValue: Value = data.suffixCheckingBounds(from: 7)
-        
+
         self.init(
             startHandle: startHandle,
             endHandle: endHandle,
@@ -68,15 +68,15 @@ extension ATTFindByTypeRequest: DataConvertible {
             attributeValue: attributeValue
         )
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += Self.attributeOpcode.rawValue
         data += self.startHandle.littleEndian
         data += self.endHandle.littleEndian
         data += self.attributeType.littleEndian
         data += self.attributeValue
     }
-    
+
     public var dataLength: Int {
         return 7 + attributeValue.count
     }

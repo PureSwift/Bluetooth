@@ -9,7 +9,7 @@ import Foundation
 import PackagePlugin
 
 extension GenerateBluetoothDefinitionsPlugin {
-    
+
     func bluetoothUUIDBuildCommands(
         type: String,
         fileName: String,
@@ -25,7 +25,8 @@ extension GenerateBluetoothDefinitionsPlugin {
         let outputURLs = [
             outputDirectory.appending(component: fileName + ".swift")
         ]
-        let arguments = ["uuid", type]
+        let arguments =
+            ["uuid", type]
             + outputURLs.map { $0.path() }
         let command = Command.buildCommand(
             displayName: "Generate Bluetooth \(type) UUID Definitions",

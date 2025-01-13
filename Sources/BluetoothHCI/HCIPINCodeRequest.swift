@@ -14,20 +14,20 @@ import Foundation
 /// When the BR/EDR Controller generates a PIN Code Request event in order for the local Link Manager to respond to the request from the remote Link Manager (as a result of a Create_Connection or Authentication_Requested com- mand from the remote Host), the local Host must respond with either a PIN_Code_Request_Reply or PIN_Code_Request_Negative_Reply com- mand before the remote Link Manager detects LMP response timeout
 @frozen
 public struct HCIPINCodeRequest: HCIEventParameter {
-    
+
     public static let event = HCIGeneralEvent.pinCodeRequest
-    
+
     public static let length: Int = 6
-    
+
     public let address: BluetoothAddress
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
-        
+
         self.address = address
     }
 }

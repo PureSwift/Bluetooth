@@ -24,40 +24,42 @@ import Bluetooth
 /// Bits 1 to 7 in the most significant octet are reserved for future use.
 @frozen
 public struct GAPLEDeviceAddress: GAPData {
-    
+
     public static var dataType: GAPDataType { return .lowEnergyDeviceAddress }
-    
+
     public let address: BluetoothAddress
-    
+
     public let type: GAPLEDeviceAddressType
-    
-    public init(address: BluetoothAddress,
-                type: GAPLEDeviceAddressType = .public) {
-        
+
+    public init(
+        address: BluetoothAddress,
+        type: GAPLEDeviceAddressType = .public
+    ) {
+
         self.address = address
         self.type = type
     }
 }
 
 public extension GAPLEDeviceAddress {
-    
+
     internal static var length: Int { return 7 }
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length,
             let type = GAPLEDeviceAddressType(rawValue: data[6])
-            else { return nil }
-        
+        else { return nil }
+
         let address = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[0], data[1], data[2], data[3], data[4], data[5])))
-        
+
         self.init(address: address, type: type)
     }
-    
+
     var dataLength: Int {
         return Self.length
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
         data += address.littleEndian
         data += type.rawValue
@@ -68,10 +70,10 @@ public extension GAPLEDeviceAddress {
 
 /// GAP LE Device Address Type.
 public enum GAPLEDeviceAddressType: UInt8 {
-    
+
     /// Public Device Address
     case `public` = 0x00
-    
+
     /// Random Device Address
     case random = 0x01
 }

@@ -14,12 +14,12 @@ import Bluetooth
 /// and return its value in a *Read Response*.
 @frozen
 public struct ATTReadRequest: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
-    
+
     public static var attributeOpcode: ATTOpcode { .readRequest }
-    
+
     /// The handle of the attribute to read.
     public var handle: UInt16
-    
+
     public init(handle: UInt16) {
         self.handle = handle
     }
@@ -28,23 +28,23 @@ public struct ATTReadRequest: ATTProtocolDataUnit, Equatable, Hashable, Sendable
 // MARK: - DataConvertible
 
 extension ATTReadRequest: DataConvertible {
-    
+
     public static var length: Int { 3 }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length,
             Self.validateOpcode(data)
-            else { return nil }
-        
+        else { return nil }
+
         self.handle = UInt16(littleEndian: UInt16(bytes: (data[1], data[2])))
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += Self.attributeOpcode.rawValue
         data += self.handle.littleEndian
     }
-    
+
     public var dataLength: Int {
         Self.length
     }

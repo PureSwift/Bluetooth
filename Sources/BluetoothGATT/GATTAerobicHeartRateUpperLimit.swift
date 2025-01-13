@@ -9,59 +9,59 @@
 import Foundation
 import Bluetooth
 
-/**
- Aerobic Heart Rate Upper Limit
- 
- Upper limit of the heart rate where the user enhances his endurance while exercising
- 
- - SeeAlso: [Aerobic Heart Rate Upper Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_upper_limit.xml)
- */
+/// Aerobic Heart Rate Upper Limit
+///
+/// Upper limit of the heart rate where the user enhances his endurance while exercising
+///
+/// - SeeAlso: [Aerobic Heart Rate Upper Limit](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.aerobic_heart_rate_upper_limit.xml)
 @frozen
 public struct GATTAerobicHeartRateUpperLimit: GATTCharacteristic {
-    
+
     public typealias BeatsPerMinute = GATTBeatsPerMinute.Byte
-    
+
     internal static let length = MemoryLayout<UInt8>.size
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.aerobicHeartRateUpperLimit }
-    
+
     public var beats: BeatsPerMinute
-    
+
     public init(beats: BeatsPerMinute) {
-        
+
         self.beats = beats
     }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let beats = BeatsPerMinute(rawValue: data[0])
-        
+
         self.init(beats: beats)
     }
-    
+
     public var data: Data {
-        
+
         return Data([beats.rawValue])
     }
-    
+
 }
 
 extension GATTAerobicHeartRateUpperLimit: Equatable {
-    
-    public static func == (lhs: GATTAerobicHeartRateUpperLimit,
-                           rhs: GATTAerobicHeartRateUpperLimit) -> Bool {
-        
+
+    public static func == (
+        lhs: GATTAerobicHeartRateUpperLimit,
+        rhs: GATTAerobicHeartRateUpperLimit
+    ) -> Bool {
+
         return lhs.beats == rhs.beats
     }
 }
 
 extension GATTAerobicHeartRateUpperLimit: CustomStringConvertible {
-    
+
     public var description: String {
-        
+
         return beats.description
     }
 }

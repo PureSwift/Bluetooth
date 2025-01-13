@@ -9,52 +9,52 @@
 import Foundation
 import Bluetooth
 
-/**
- Supported New Alert Category
- 
- Category that the server supports for new alert.
- 
- This characteristic uses the Alert Category ID Bit Mask Characteristic. If bit(s) is/are set, it means the server supports the corresponded categories for new incoming alert.
- 
- • Example:
- 
- The value 0x0a is interpreted that this server supports “Call” and “Email” categories.
- 
- - SeeAlso: [Supported New Alert Category](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.supported_new_alert_category.xml)
- */
+/// Supported New Alert Category
+///
+/// Category that the server supports for new alert.
+///
+/// This characteristic uses the Alert Category ID Bit Mask Characteristic. If bit(s) is/are set, it means the server supports the corresponded categories for new incoming alert.
+///
+/// • Example:
+///
+/// The value 0x0a is interpreted that this server supports “Call” and “Email” categories.
+///
+/// - SeeAlso: [Supported New Alert Category](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.supported_new_alert_category.xml)
 @frozen
 public struct GATTSupportedNewAlertCategory: GATTCharacteristic {
-    
+
     public typealias Category = GATTAlertCategoryBitMask.Category
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.supportedNewAlertCategory }
-    
+
     public var categories: BitMaskOptionSet<Category>
-    
+
     public init(categories: BitMaskOptionSet<Category> = []) {
-        
+
         self.categories = categories
     }
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard let bitmask = Category.RawValue(bitmaskArray: data)
-            else { return nil }
-        
+        else { return nil }
+
         self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
     }
-    
+
     public var data: Data {
-        
+
         return Data(categories.rawValue.bitmaskArray)
     }
 }
 
 extension GATTSupportedNewAlertCategory: Equatable {
-    
-    public static func == (lhs: GATTSupportedNewAlertCategory,
-                           rhs: GATTSupportedNewAlertCategory) -> Bool {
-        
+
+    public static func == (
+        lhs: GATTSupportedNewAlertCategory,
+        rhs: GATTSupportedNewAlertCategory
+    ) -> Bool {
+
         return lhs.categories == rhs.categories
     }
 }

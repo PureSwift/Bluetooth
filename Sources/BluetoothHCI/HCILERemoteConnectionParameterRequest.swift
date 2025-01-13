@@ -16,40 +16,40 @@ import Foundation
 /// Reply command.
 @frozen
 public struct HCILERemoteConnectionParameterRequest: HCIEventParameter {
-    
-    public static let event = LowEnergyEvent.remoteConnectionParameterRequest // 0x06
-    
+
+    public static let event = LowEnergyEvent.remoteConnectionParameterRequest  // 0x06
+
     public static let length: Int = 10
-    
-    public let handle: UInt16 // Connection_Handle
-    
+
+    public let handle: UInt16  // Connection_Handle
+
     public let interval: LowEnergyConnectionIntervalRange
-    
+
     public let connLatency: LowEnergyConnectionLatency
-    
+
     public let supervisionTimeout: LowEnergySupervisionTimeout
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
+
         let intervalMinRawValue = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
-        
+
         let intervalMaxRawValue = UInt16(littleEndian: UInt16(bytes: (data[4], data[5])))
-        
+
         let latencyRawValue = UInt16(littleEndian: UInt16(bytes: (data[6], data[7])))
-        
+
         let supervisionTimeoutRaw = UInt16(littleEndian: UInt16(bytes: (data[8], data[9])))
-        
+
         // Parse enums and values ranges
-        guard let interval = LowEnergyConnectionIntervalRange(rawValue: intervalMinRawValue ... intervalMaxRawValue),
+        guard let interval = LowEnergyConnectionIntervalRange(rawValue: intervalMinRawValue...intervalMaxRawValue),
             let connLatency = LowEnergyConnectionLatency(rawValue: latencyRawValue),
             let supervisionTimeout = LowEnergySupervisionTimeout(rawValue: supervisionTimeoutRaw)
-            else { return nil }
-        
+        else { return nil }
+
         self.handle = handle
         self.interval = interval
         self.connLatency = connLatency

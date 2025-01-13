@@ -8,11 +8,11 @@
 
 /// Bluetooth LE Advertiser Address Type
 @frozen
-public enum LowEnergyAdvertiserAddressType: UInt8 { //Advertiser_Address_Type
-    
+public enum LowEnergyAdvertiserAddressType: UInt8 {  //Advertiser_Address_Type
+
     /// Public Device Address or Public Identity Address
     case `public` = 0x00
-    
+
     /// Random Device Address or Random (static) Identity Address
     case random = 0x01
 }

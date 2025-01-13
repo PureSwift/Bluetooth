@@ -14,29 +14,29 @@ import Bluetooth
 /// contains the values of the attributes that have been read.
 @frozen
 public struct ATTReadMultipleResponse<Values: DataContainer>: ATTProtocolDataUnit, Equatable, Hashable, Sendable {
-    
+
     public static var attributeOpcode: ATTOpcode { return .readMultipleResponse }
-    
+
     public var values: Values
-    
+
     public init(values: Values) {
         self.values = values
     }
 }
 
 extension ATTReadMultipleResponse: DataConvertible {
-    
+
     public init?<Data: DataContainer>(data: Data) {
         guard Self.validateOpcode(data)
-            else { return nil }
+        else { return nil }
         self.values = data.suffixCheckingBounds(from: 1)
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += Self.attributeOpcode.rawValue
         data += self.values
     }
-    
+
     public var dataLength: Int {
         1 + values.count
     }

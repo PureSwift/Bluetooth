@@ -13,32 +13,32 @@
 /// Units: 0.1 dB
 @frozen
 public struct LowEnergyRfTxPathCompensationValue: RawRepresentable, Equatable, Hashable, Comparable {
-    
+
     public static let min = LowEnergyRfTxPathCompensationValue(-128)
-    
+
     public static let max = LowEnergyRfTxPathCompensationValue(128)
-    
+
     public let rawValue: Int16
-    
+
     public init?(rawValue: Int16) {
-        
+
         guard rawValue >= LowEnergyRfTxPathCompensationValue.min.rawValue,
             rawValue <= LowEnergyRfTxPathCompensationValue.max.rawValue
-            else { return nil }
-        
-        assert((LowEnergyRfTxPathCompensationValue.min.rawValue ... LowEnergyRfTxPathCompensationValue.max.rawValue).contains(rawValue))
-        
+        else { return nil }
+
+        assert((LowEnergyRfTxPathCompensationValue.min.rawValue...LowEnergyRfTxPathCompensationValue.max.rawValue).contains(rawValue))
+
         self.rawValue = rawValue
     }
-    
+
     // Private, unsafe
     private init(_ rawValue: Int16) {
         self.rawValue = rawValue
     }
-    
+
     // Comparable
     public static func < (lhs: LowEnergyRfTxPathCompensationValue, rhs: LowEnergyRfTxPathCompensationValue) -> Bool {
-        
+
         return lhs.rawValue < rhs.rawValue
     }
 }

@@ -7,7 +7,7 @@
 //
 
 internal extension DataContainer {
-    
+
     @usableFromInline
     func suffixCheckingBounds<Data: DataContainer>(from start: Int) -> Data {
         if count > start {
@@ -16,7 +16,7 @@ internal extension DataContainer {
             return Data()
         }
     }
-    
+
     static func += (data: inout Self, bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)) {
         let length = MemoryLayout<(UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)>.size
         withUnsafePointer(to: bytes) {

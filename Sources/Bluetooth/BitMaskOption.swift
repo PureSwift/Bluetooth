@@ -10,26 +10,24 @@
 ///
 /// Basically `Swift.OptionSet` for enums.
 @available(*, deprecated, message: "Use OptionSet instead")
-public protocol BitMaskOption: RawRepresentable, Hashable, CaseIterable where RawValue: FixedWidthInteger { }
+public protocol BitMaskOption: RawRepresentable, Hashable, CaseIterable where RawValue: FixedWidthInteger {}
 
 public extension Sequence where Element: BitMaskOption {
-    
+
     /// Convert Swift enums for bit mask options into their raw values OR'd.
     var rawValue: Element.RawValue {
-        
-        @inline(__always)
-        get { return reduce(0, { $0 | $1.rawValue }) }
+        return reduce(0, { $0 | $1.rawValue })
     }
 }
 
 public extension BitMaskOption {
-    
+
     /// Whether the enum case is present in the raw value.
     @inline(__always)
     func isContained(in rawValue: RawValue) -> Bool {
         return (self.rawValue & rawValue) != 0
     }
-    
+
     @inline(__always)
     static func from(rawValue: RawValue) -> [Self] {
         return Self.allCases.filter { $0.isContained(in: rawValue) }
@@ -42,65 +40,65 @@ public extension BitMaskOption {
 ///
 /// The elements are packed in the integer with bitwise math and stored on the stack.
 @available(*, deprecated, message: "Use OptionSet instead")
-public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
-    
+public struct BitMaskOptionSet<Element: BitMaskOption>: RawRepresentable {
+
     public typealias RawValue = Element.RawValue
-    
+
     public private(set) var rawValue: RawValue
-    
+
     @inline(__always)
     public init(rawValue: RawValue) {
         self.rawValue = rawValue
     }
-    
+
     @inline(__always)
     public init() {
         self.rawValue = 0
     }
-    
+
     public static var all: BitMaskOptionSet<Element> {
         return BitMaskOptionSet<Element>(rawValue: Element.allCases.rawValue)
     }
-    
+
     @inline(__always)
     public mutating func insert(_ element: Element) {
         rawValue = rawValue | element.rawValue
     }
-    
+
     @discardableResult
     public mutating func remove(_ element: Element) -> Bool {
-        
+
         guard contains(element) else { return false }
         rawValue = rawValue & ~element.rawValue
         return true
     }
-    
+
     @inline(__always)
     public mutating func removeAll() {
         self.rawValue = 0
     }
-    
+
     @inline(__always)
     public func contains(_ element: Element) -> Bool {
-        
+
         return element.isContained(in: rawValue)
     }
-    
-    public func contains <S: Sequence> (_ other: S) -> Bool where S.Iterator.Element == Element {
-        
+
+    public func contains<S: Sequence>(_ other: S) -> Bool where S.Iterator.Element == Element {
+
         for element in other {
-            
+
             guard element.isContained(in: rawValue)
-                else { return false }
+            else { return false }
         }
-        
+
         return true
     }
-    
+
     public var count: Int {
         return Element.allCases.reduce(0, { $0 + ($1.isContained(in: rawValue) ? 1 : 0) })
     }
-    
+
     public var isEmpty: Bool {
         return rawValue == 0
     }
@@ -108,12 +106,12 @@ public struct BitMaskOptionSet <Element: BitMaskOption>: RawRepresentable {
 
 // MARK: - Sendable
 
-extension BitMaskOptionSet: Sendable where RawValue: Sendable { }
+extension BitMaskOptionSet: Sendable where RawValue: Sendable {}
 
 // MARK: - Sequence Conversion
 
 public extension BitMaskOptionSet {
-    
+
     init<S: Sequence>(_ sequence: S) where S.Iterator.Element == Element {
         self.rawValue = sequence.rawValue
     }
@@ -122,7 +120,7 @@ public extension BitMaskOptionSet {
 // MARK: - Equatable
 
 extension BitMaskOptionSet: Equatable {
-    
+
     public static func == (lhs: BitMaskOptionSet, rhs: BitMaskOptionSet) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }
@@ -131,7 +129,7 @@ extension BitMaskOptionSet: Equatable {
 // MARK: - CustomStringConvertible
 
 extension BitMaskOptionSet: CustomStringConvertible {
-    
+
     public var description: String {
         #if hasFeature(Embedded)
         return rawValue.description
@@ -146,7 +144,7 @@ extension BitMaskOptionSet: CustomStringConvertible {
 // MARK: - Hashable
 
 extension BitMaskOptionSet: Hashable {
-    
+
     public func hash(into hasher: inout Hasher) {
         rawValue.hash(into: &hasher)
     }
@@ -155,7 +153,7 @@ extension BitMaskOptionSet: Hashable {
 // MARK: - ExpressibleByArrayLiteral
 
 extension BitMaskOptionSet: ExpressibleByArrayLiteral {
-    
+
     public init(arrayLiteral elements: Element...) {
         self.init(elements)
     }
@@ -164,7 +162,7 @@ extension BitMaskOptionSet: ExpressibleByArrayLiteral {
 // MARK: - ExpressibleByIntegerLiteral
 
 extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
-    
+
     public init(integerLiteral value: UInt64) {
         self.init(rawValue: numericCast(value))
     }
@@ -173,7 +171,7 @@ extension BitMaskOptionSet: ExpressibleByIntegerLiteral {
 // MARK: - Sequence
 
 extension BitMaskOptionSet: Sequence {
-    
+
     public func makeIterator() -> IndexingIterator<[Element]> {
         return Element.from(rawValue: rawValue).makeIterator()
     }
@@ -183,7 +181,7 @@ extension BitMaskOptionSet: Sequence {
 
 #if !hasFeature(Embedded)
 extension BitMaskOptionSet: Decodable where Self.RawValue: Decodable {
-    
+
     public init(from decoder: Decoder) throws {
         let rawValue = try RawValue.init(from: decoder)
         self.init(rawValue: rawValue)
@@ -191,7 +189,7 @@ extension BitMaskOptionSet: Decodable where Self.RawValue: Decodable {
 }
 
 extension BitMaskOptionSet: Encodable where Self.RawValue: Encodable {
-    
+
     public func encode(to encoder: Encoder) throws {
         try rawValue.encode(to: encoder)
     }

@@ -11,17 +11,17 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Read PHY Command
     ///
     /// This ommand is used to read the current transmitter PHY and receiver PHY
     /// on the connection identified by the Connection_Handle.
     func lowEnergyReadPhy(connectionHandle: UInt16, timeout: HCICommandTimeout = .default) async throws -> HCILEReadPHYReturn {
-        
+
         let parameters = HCILEReadPHY(connectionHandle: connectionHandle)
-        
+
         let value = try await deviceRequest(parameters, HCILEReadPHYReturn.self, timeout: timeout)
-        
+
         return value
     }
 }
@@ -34,25 +34,25 @@ public extension BluetoothHostControllerInterface {
 /// on the connection identified by the Connection_Handle.
 @frozen
 public struct HCILEReadPHY: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.readPhy //0x0030
-    
+
+    public static let command = HCILowEnergyCommand.readPhy  //0x0030
+
     /// Range 0x0000-0x0EFF (all other values reserved for future use)
-    public let connectionHandle: UInt16 //Connection_Handle
-    
+    public let connectionHandle: UInt16  //Connection_Handle
+
     public init(connectionHandle: UInt16) {
-        
+
         self.connectionHandle = connectionHandle
     }
-    
+
     public var data: Data {
-        
+
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
-        
+
         return Data([
             connectionHandleBytes.0,
             connectionHandleBytes.1
-            ])
+        ])
     }
 }
 
@@ -64,29 +64,29 @@ public struct HCILEReadPHY: HCICommandParameter {
 /// on the connection identified by the Connection_Handle.
 @frozen
 public struct HCILEReadPHYReturn: HCICommandReturnParameter {
-    
-    public static let command = HCILowEnergyCommand.readPhy //0x0030
-    
+
+    public static let command = HCILowEnergyCommand.readPhy  //0x0030
+
     public static let length: Int = 4
-    
+
     public let connectionHandle: UInt16
-    
+
     public let txPhy: LowEnergyTxPhy
-    
+
     public let rxPhy: LowEnergyRxPhy
-    
+
     public init?<Data: DataContainer>(data: Data) {
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
+
         guard let txPhy = LowEnergyTxPhy(rawValue: data[2])
-            else { return nil }
-        
+        else { return nil }
+
         guard let rxPhy = LowEnergyRxPhy(rawValue: data[3])
-            else { return nil }
-        
+        else { return nil }
+
         self.txPhy = txPhy
         self.rxPhy = rxPhy
     }

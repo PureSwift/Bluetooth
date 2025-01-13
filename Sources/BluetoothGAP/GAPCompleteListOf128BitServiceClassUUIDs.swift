@@ -14,34 +14,34 @@ import Bluetooth
 /// GAP Complete List of 128-bit Service Class UUIDs
 @frozen
 public struct GAPCompleteListOf128BitServiceClassUUIDs: GAPData, Equatable {
-    
+
     public static let dataType: GAPDataType = .completeListOf128BitServiceClassUUIDs
-    
+
     public var uuids: [UUID]
-    
+
     public init(uuids: [UUID] = []) {
-        
+
         self.uuids = uuids
     }
 }
 
 public extension GAPCompleteListOf128BitServiceClassUUIDs {
-    
+
     init?<Data: DataContainer>(data: Data) {
-        
+
         guard let list = GAPUUIDList<UInt128>(data: data)
-            else { return nil }
-        
+        else { return nil }
+
         self.uuids = list.uuids.map(UUID.init)
     }
-    
+
     func append<Data: DataContainer>(to data: inout Data) {
-        
+
         data += GAPUUIDList(uuids: uuids.map(UInt128.init))
     }
-    
+
     var dataLength: Int {
-        
+
         return UInt128.length * uuids.count
     }
 }
@@ -49,9 +49,9 @@ public extension GAPCompleteListOf128BitServiceClassUUIDs {
 // MARK: - ExpressibleByArrayLiteral
 
 extension GAPCompleteListOf128BitServiceClassUUIDs: ExpressibleByArrayLiteral {
-    
+
     public init(arrayLiteral elements: UUID...) {
-        
+
         self.init(uuids: elements)
     }
 }
@@ -60,7 +60,7 @@ extension GAPCompleteListOf128BitServiceClassUUIDs: ExpressibleByArrayLiteral {
 
 #if !hasFeature(Embedded)
 extension GAPCompleteListOf128BitServiceClassUUIDs: CustomStringConvertible {
-    
+
     public var description: String {
         return uuids.description
     }

@@ -11,18 +11,20 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Set Default PHY Command
     ///
     /// The command allows the Host to specify its preferred values for the transmitter PHY
     /// and receiver PHY to be used for all subsequent connections over the LE transport.
-    func lowEnergySetDefaultPhy(allPhys: LowEnergyAllPhys,
-                                txPhys: LowEnergyTxPhys,
-                                rxPhys: LowEnergyRxPhys,
-                                timeout: HCICommandTimeout = .default) async throws {
-        
+    func lowEnergySetDefaultPhy(
+        allPhys: LowEnergyAllPhys,
+        txPhys: LowEnergyTxPhys,
+        rxPhys: LowEnergyRxPhys,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
         let parameters = HCILESetDefaultPhy(allPhys: allPhys, txPhys: txPhys, rxPhys: rxPhys)
-        
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -36,22 +38,24 @@ public extension BluetoothHostControllerInterface {
 ///connections over the LE transport.
 @frozen
 public struct HCILESetDefaultPhy: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.readPhy //0x0031
-    
+
+    public static let command = HCILowEnergyCommand.readPhy  //0x0031
+
     public let allPhys: LowEnergyAllPhys
     public let txPhys: LowEnergyTxPhys
     public let rxPhys: LowEnergyRxPhys
-    
-    public init(allPhys: LowEnergyAllPhys,
-                txPhys: LowEnergyTxPhys,
-                rxPhys: LowEnergyRxPhys) {
-        
+
+    public init(
+        allPhys: LowEnergyAllPhys,
+        txPhys: LowEnergyTxPhys,
+        rxPhys: LowEnergyRxPhys
+    ) {
+
         self.allPhys = allPhys
         self.txPhys = txPhys
         self.rxPhys = rxPhys
     }
-    
+
     public var data: Data {
         return Data([allPhys.rawValue, txPhys.rawValue, rxPhys.rawValue])
     }

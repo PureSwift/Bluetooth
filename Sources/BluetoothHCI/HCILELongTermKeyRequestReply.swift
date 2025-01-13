@@ -11,18 +11,18 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Long Term Key Request Reply Command
     ///
     /// The LE_Long_Term_Key_Request Reply command is used to reply to an LE Long Term Key Request event
     /// from the Controller, and specifies the Long_Term_Key parameter that shall be used for
     /// this Connection_Handle.
     func lowEnergyLongTermKeyRequestReply(handle: UInt16, longTermKey: UInt128, timeout: HCICommandTimeout = .default) async throws -> UInt16 {
-        
+
         let parameters = HCILELongTermKeyRequestReply(connectionHandle: handle, longTermKey: longTermKey)
-        
+
         let returnParameters = try await deviceRequest(parameters, HCILELongTermKeyRequestReplyReturn.self, timeout: timeout)
-        
+
         return returnParameters.connectionHandle
     }
 }
@@ -35,26 +35,26 @@ public extension BluetoothHostControllerInterface {
 /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
 @frozen
 public struct HCILELongTermKeyRequestReply: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.longTermKeyReply //0x001A
-    
+
+    public static let command = HCILowEnergyCommand.longTermKeyReply  //0x001A
+
     /// Range 0x0000-0x0EFF (all other values reserved for future use)
-    public let connectionHandle: UInt16 //Connection_Handle
-    
+    public let connectionHandle: UInt16  //Connection_Handle
+
     /// 128 bit long term key for the given connection.
-    public let longTermKey: UInt128 //Long_Term_Key
-    
+    public let longTermKey: UInt128  //Long_Term_Key
+
     public init(connectionHandle: UInt16, longTermKey: UInt128) {
-        
+
         self.connectionHandle = connectionHandle
         self.longTermKey = longTermKey
     }
-    
+
     public var data: Data {
-        
+
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
         let longTermKeyBytes = longTermKey.littleEndian.bytes
-        
+
         return Data([
             connectionHandleBytes.0,
             connectionHandleBytes.1,
@@ -74,7 +74,7 @@ public struct HCILELongTermKeyRequestReply: HCICommandParameter {
             longTermKeyBytes.13,
             longTermKeyBytes.14,
             longTermKeyBytes.15
-            ])
+        ])
     }
 }
 
@@ -86,20 +86,20 @@ public struct HCILELongTermKeyRequestReply: HCICommandParameter {
 /// and specifies the Long_Term_Key parameter that shall be used for this Connection_Handle.
 @frozen
 public struct HCILELongTermKeyRequestReplyReturn: HCICommandReturnParameter {
-    
-    public static let command = HCILowEnergyCommand.longTermKeyReply //0x001A
-    
+
+    public static let command = HCILowEnergyCommand.longTermKeyReply  //0x001A
+
     public static let length: Int = 2
-    
+
     /// Connection_Handle
     /// Range 0x0000-0x0EFF (all other values reserved for future use)
-    public let connectionHandle: UInt16 // Connection_Handle
-    
+    public let connectionHandle: UInt16  // Connection_Handle
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
     }
 }

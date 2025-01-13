@@ -15,29 +15,29 @@ import Foundation
 /// The advertising set is identified by Advertising_Handle.
 @frozen
 public struct HCILEScanRequestReceived: HCIEventParameter {
-    
-    public static let event = LowEnergyEvent.scanRequestReceived // 0x13
-    
+
+    public static let event = LowEnergyEvent.scanRequestReceived  // 0x13
+
     public static let length: Int = 8
-    
+
     public let advertisingHandle: UInt8
-    
+
     public let scannerAddressType: LowEnergyAddressType
-    
+
     public let scannerAddress: BluetoothAddress
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
-        let advertisingHandle =  data[0]
-        
+        else { return nil }
+
+        let advertisingHandle = data[0]
+
         guard let scannerAddressType = LowEnergyAddressType(rawValue: data[1])
-            else { return nil }
-        
+        else { return nil }
+
         let scannerAddress = BluetoothAddress(littleEndian: BluetoothAddress(bytes: (data[2], data[3], data[4], data[5], data[6], data[7])))
-        
+
         self.advertisingHandle = advertisingHandle
         self.scannerAddressType = scannerAddressType
         self.scannerAddress = scannerAddress

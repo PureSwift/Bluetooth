@@ -9,9 +9,8 @@ import Foundation
 import BluetoothMetadata
 
 extension GenerateTool {
-    
-    static func parseUnitIdentifiersFile(
-    ) throws -> [UInt16: (id: String, name: String)] {
+
+    static func parseUnitIdentifiersFile() throws -> [UInt16: (id: String, name: String)] {
         let file = try BluetoothMetadata.BluetoothUUID.File(.unit)
         var output = [UInt16: (id: String, name: String)]()
         output.reserveCapacity(file.uuids.count)
@@ -23,20 +22,22 @@ extension GenerateTool {
         }
         return output
     }
-    
+
     static func unitIdentifiers(
         from data: [UInt16: (id: String, name: String)]
     ) -> [(id: UInt16, name: String, type: String, member: String)] {
         let blacklist: [UInt16] = [
-            .max // remove internal use identifier
+            .max  // remove internal use identifier
         ]
-        let units = data
+        let units =
+            data
             .sorted(by: { $0.key < $1.key })
             .filter { blacklist.contains($0.key) == false }
         var memberNames = [UInt16: String]()
         memberNames.reserveCapacity(units.count)
         for (id, metadata) in units {
-            let memberName = Self.unitMethodNames[id]
+            let memberName =
+                Self.unitMethodNames[id]
                 ?? metadata.name
                 .sanitizeName(prefix: "unit")
                 .llamaCase()
@@ -44,21 +45,21 @@ extension GenerateTool {
         }
         return units.map { ($0, $1.name, $1.id, memberNames[$0]!) }
     }
-    
+
     static func generateUnitIdentifiers(output: URL) throws {
         let data = try parseUnitIdentifiersFile()
         try generateUnitIdentifierExtensions(data, output: output)
     }
-    
+
     static func generateUnitIdentifierExtensions(_ data: [UInt16: (id: String, name: String)], output: URL) throws {
-        
+
         var generatedCode = ""
         let units = unitIdentifiers(from: data)
-        
+
         func 🖨(_ text: String) {
             generatedCode += text + "\n"
         }
-                
+
         🖨("//")
         🖨("//  UnitIdentifiers.swift")
         🖨("//  Bluetooth")
@@ -66,9 +67,9 @@ extension GenerateTool {
         🖨("")
         🖨("public extension UnitIdentifier {")
         🖨("")
-        
+
         for (id, name, _, memberName) in units {
-            
+
             let hexLiteral = "0x" + id.toHexadecimal()
             🖨("    /// " + name + " " + "(`\(hexLiteral)`)")
             🖨("    @_alwaysEmitIntoClient")
@@ -77,73 +78,75 @@ extension GenerateTool {
             🖨("    }")
             🖨("")
         }
-        
+
         🖨("}")
-        
+
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
         print("Generated \(output.path)")
     }
-    
+
     static func generateUnitIdentifierTests(output: URL) throws {
-        
+
         let data = try parseUnitIdentifiersFile()
-        
+
         var generatedCode = ""
         let units = unitIdentifiers(from: data)
-        
+
         func 🖨(_ text: String) {
             generatedCode += text + "\n"
         }
-        
+
         // generate unit test for extensions
         generatedCode = """
-        //
-        //  UnitIdentifierTests.swift
-        //  Bluetooth
-        //
-        
-        import Foundation
-        import Testing
-        @testable import Bluetooth
-        
-        // swiftlint:disable type_body_length
-        @Suite
-        struct UnitIdentifierTests {
-        
-            @Test func units() {
-        
-        
-        """
-        
+            //
+            //  UnitIdentifierTests.swift
+            //  Bluetooth
+            //
+
+            import Foundation
+            import Testing
+            @testable import Bluetooth
+
+            // swiftlint:disable type_body_length
+            @Suite
+            struct UnitIdentifierTests {
+
+                @Test func units() {
+
+
+            """
+
         // generate test methods
-        
+
         for (id, name, type, memberName) in units {
             let hexLiteral = "0x" + id.toHexadecimal()
             let description = hexLiteral + " " + "(" + name + ")"
-            🖨("""
-                    // \(name)
-                    #expect(UnitIdentifier.\(memberName).rawValue == \(hexLiteral))
-                    #expect(UnitIdentifier.\(memberName).type == #\"\(type)\"#)
-                    #expect(UnitIdentifier.\(memberName).name == #\"\(name)\"#)
-                    #expect(UnitIdentifier.\(memberName).description == #\"\(description)\"#)
-                
-            """)
+            🖨(
+                """
+                        // \(name)
+                        #expect(UnitIdentifier.\(memberName).rawValue == \(hexLiteral))
+                        #expect(UnitIdentifier.\(memberName).type == #\"\(type)\"#)
+                        #expect(UnitIdentifier.\(memberName).name == #\"\(name)\"#)
+                        #expect(UnitIdentifier.\(memberName).description == #\"\(description)\"#)
+                    
+                """)
         }
-        
-        🖨("""
+
+        🖨(
+            """
                 }
-            
+
             }
             // swiftlint:enable type_body_length
             """)
-        
+
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
         print("Generated \(output.path)")
     }
 }
 
 private extension GenerateTool {
-    
+
     static var unitMethodNames: [UInt16: String] {
         [
             0x2700: "unitless",

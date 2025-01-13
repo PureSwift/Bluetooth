@@ -12,32 +12,32 @@
 /// - Note: Range 0x001B-0x00FB
 @frozen
 public struct LowEnergyMaxTxOctets: RawRepresentable, Equatable, Hashable, Comparable {
-    
+
     public static let min = LowEnergyMaxTxOctets(0x001B)
-    
+
     public static let max = LowEnergyMaxTxOctets(0x00FB)
-    
+
     public let rawValue: UInt16
-    
+
     public init?(rawValue: UInt16 = 0x0148) {
-        
+
         guard rawValue >= LowEnergyMaxTxOctets.min.rawValue,
             rawValue <= LowEnergyMaxTxOctets.max.rawValue
-            else { return nil }
-        
-        assert((LowEnergyMaxTxOctets.min.rawValue ... LowEnergyMaxTxOctets.max.rawValue).contains(rawValue))
-        
+        else { return nil }
+
+        assert((LowEnergyMaxTxOctets.min.rawValue...LowEnergyMaxTxOctets.max.rawValue).contains(rawValue))
+
         self.rawValue = rawValue
     }
-    
+
     // Private, unsafe
     private init(_ rawValue: UInt16) {
         self.rawValue = rawValue
     }
-    
+
     // Comparable
     public static func < (lhs: LowEnergyMaxTxOctets, rhs: LowEnergyMaxTxOctets) -> Bool {
-        
+
         return lhs.rawValue < rhs.rawValue
     }
 }

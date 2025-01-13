@@ -11,14 +11,16 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Periodic Advertising Create Sync Command
     ///
     /// The command is used to synchronize with periodic advertising from an advertiser
     /// and begin receiving periodic advertising packets.
-    func setPeriodicAdvertisingCreateSyncParameters(_ parameters: HCILEPeriodicAdvertisingCreateSync,
-                                                    timeout: HCICommandTimeout = .default) async throws {
-        
+    func setPeriodicAdvertisingCreateSyncParameters(
+        _ parameters: HCILEPeriodicAdvertisingCreateSync,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -31,34 +33,36 @@ public extension BluetoothHostControllerInterface {
 /// and begin receiving periodic advertising packets.
 @frozen
 public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
-    
-    public static let command = HCILowEnergyCommand.periodicAdvertisingCreateSync //0x0044
-    
+
+    public static let command = HCILowEnergyCommand.periodicAdvertisingCreateSync  //0x0044
+
     public let filterPolicy: FilterPolicy
-    
+
     public let advertisingSid: UInt8
-    
+
     public let advertisingAddressType: AdvertisingAddressType
-    
+
     public let address: BluetoothAddress
-    
+
     /// The number of periodic advertising packets that can be skipped after
     /// a successful receive
     /// Range: 0x0000 to 0x01F3
     public let skip: UInt16
-    
+
     public let syncTimeout: SyncTimeout
-    
+
     /// This value must be used by the Host
     public let unused: UInt8
-    
-    public init(filterPolicy: FilterPolicy,
-                advertisingSid: UInt8,
-                advertisingAddressType: AdvertisingAddressType,
-                address: BluetoothAddress,
-                skip: UInt16,
-                syncTimeout: SyncTimeout,
-                unused: UInt8) {
+
+    public init(
+        filterPolicy: FilterPolicy,
+        advertisingSid: UInt8,
+        advertisingAddressType: AdvertisingAddressType,
+        address: BluetoothAddress,
+        skip: UInt16,
+        syncTimeout: SyncTimeout,
+        unused: UInt8
+    ) {
         self.filterPolicy = filterPolicy
         self.advertisingSid = advertisingSid
         self.advertisingAddressType = advertisingAddressType
@@ -67,13 +71,13 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
         self.syncTimeout = syncTimeout
         self.unused = unused
     }
-    
+
     public var data: Data {
-        
+
         let addressBytes = address.littleEndian.bytes
         let skipBytes = skip.littleEndian.bytes
         let syncTimeoutBytes = syncTimeout.rawValue.littleEndian.bytes
-        
+
         return Data([
             filterPolicy.rawValue,
             advertisingSid,
@@ -89,61 +93,61 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
             syncTimeoutBytes.0,
             syncTimeoutBytes.1,
             unused
-            ])
+        ])
     }
-    
+
     public struct SyncTimeout: RawRepresentable, Equatable, Hashable, Comparable, Sendable {
-        
+
         /// 100 msec
         public static var min: SyncTimeout { SyncTimeout(0x000A) }
-        
+
         /// 163.84 seconds
         public static var max: SyncTimeout { SyncTimeout(0x4000) }
-        
+
         public let rawValue: UInt16
-        
+
         public init?(rawValue: UInt16) {
-            
+
             guard rawValue >= SyncTimeout.min.rawValue,
                 rawValue <= SyncTimeout.max.rawValue
-                else { return nil }
-            
-            assert((SyncTimeout.min.rawValue ... SyncTimeout.max.rawValue).contains(rawValue))
-            
+            else { return nil }
+
+            assert((SyncTimeout.min.rawValue...SyncTimeout.max.rawValue).contains(rawValue))
+
             self.rawValue = rawValue
         }
-        
+
         /// Time = N * 10 msec
         public var miliseconds: Double {
             return Double(rawValue) * 10
         }
-        
+
         // Private, unsafe
         private init(_ rawValue: UInt16) {
             self.rawValue = rawValue
         }
-        
+
         // Comparable
         public static func < (lhs: SyncTimeout, rhs: SyncTimeout) -> Bool {
             return lhs.rawValue < rhs.rawValue
         }
     }
-    
-    public enum AdvertisingAddressType: UInt8 { //Advertising_Address_Type
-        
+
+    public enum AdvertisingAddressType: UInt8 {  //Advertising_Address_Type
+
         /// Public Device Address
         case publicDeviceAddress = 0x00
-        
+
         /// Random Device Address
         case randomDeviceAddress = 0x01
     }
-    
-    public enum FilterPolicy: UInt8 { //Filter_Policy
-        
+
+    public enum FilterPolicy: UInt8 {  //Filter_Policy
+
         /// Use the Advertising_SID, Advertising_Address_Type,
         /// and Advertising_Address parameters to determine which advertiser to listen to.
         case useAdvertisingSIDAndAddressTypeAndAddress = 0x00
-        
+
         /// Use the Periodic Advertiser List to determine which advertiser to listen to.
         case usePeriodicAdvertiserList = 0x01
     }

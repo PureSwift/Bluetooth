@@ -11,27 +11,27 @@
 /// Range: 0x0000 to 0x01F3
 @frozen
 public struct LowEnergyConnectionLatency: RawRepresentable, Equatable, Hashable, Comparable {
-    
+
     public static var zero: LowEnergyConnectionLatency { return LowEnergyConnectionLatency() }
-    
+
     public let rawValue: UInt16
-    
+
     public init() {
-        
+
         self.rawValue = 0
     }
-    
+
     public init?(rawValue: UInt16) {
-        
+
         guard rawValue <= 0x01F3
-            else { return nil }
-        
+        else { return nil }
+
         self.rawValue = rawValue
     }
-    
+
     // Comparable
     public static func < (lhs: LowEnergyConnectionLatency, rhs: LowEnergyConnectionLatency) -> Bool {
-        
+
         return lhs.rawValue < rhs.rawValue
     }
 }

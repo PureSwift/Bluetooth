@@ -12,10 +12,10 @@ import Foundation
 import Bluetooth
 
 /// GAP Data Encoder
-public struct GAPDataEncoder <Data: DataContainer> {
-    
+public struct GAPDataEncoder<Data: DataContainer> {
+
     // MARK: - Methods
-    
+
     #if !hasFeature(Embedded)
     public static func encode(_ encodables: [GAPData]) -> Data {
         let dataLengths = encodables.map { $0.dataLength }
@@ -30,13 +30,13 @@ public struct GAPDataEncoder <Data: DataContainer> {
         return data
     }
     #endif
-    
+
     internal static func encode<T>(
         _ value: T,
         length: Int? = nil,
         to data: inout Data
     ) where T: GAPData {
-        let length = length ?? value.dataLength // try to use precalculated length
+        let length = length ?? value.dataLength  // try to use precalculated length
         data += UInt8(length + 1)
         data += T.dataType.rawValue
         value.append(to: &data)
@@ -46,17 +46,18 @@ public struct GAPDataEncoder <Data: DataContainer> {
 // Generic specializations
 
 public extension GAPDataEncoder {
-    
+
     static func encode<T: GAPData>(_ value: T) -> Data {
         var data = Data()
         data.reserveCapacity(value.dataLength + 2)
         Self.encode(value, to: &data)
         return data
     }
-    
+
     static func encode<T0: GAPData, T1: GAPData>(_ value0: T0, _ value1: T1) -> Data {
         var data = Data()
-        let length = value0.dataLength
+        let length =
+            value0.dataLength
             + value1.dataLength
             + (2 * 2)
         data.reserveCapacity(length)
@@ -64,10 +65,11 @@ public extension GAPDataEncoder {
         Self.encode(value1, to: &data)
         return data
     }
-    
+
     static func encode<T0: GAPData, T1: GAPData, T2: GAPData>(_ value0: T0, _ value1: T1, _ value2: T2) -> Data {
         var data = Data()
-        let length = value0.dataLength
+        let length =
+            value0.dataLength
             + value1.dataLength
             + value2.dataLength
             + (2 * 3)
@@ -77,10 +79,11 @@ public extension GAPDataEncoder {
         Self.encode(value2, to: &data)
         return data
     }
-    
+
     static func encode<T0: GAPData, T1: GAPData, T2: GAPData, T3: GAPData>(_ value0: T0, _ value1: T1, _ value2: T2, _ value3: T3) -> Data {
         var data = Data()
-        let length = value0.dataLength
+        let length =
+            value0.dataLength
             + value1.dataLength
             + value2.dataLength
             + value3.dataLength

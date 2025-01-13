@@ -11,13 +11,13 @@
 /// or whether it has specified particular PHYs that it prefers in the TX_PHYS or RX_PHYS parameter.
 @frozen
 public enum LowEnergyAllPhys: UInt8, BitMaskOption {
-    
+
     /// The Host has no preference among the transmitter PHYs supported by the Controller
-    case hostHasNoPreferenceAmongTheTransmitterPhy  = 0b01
-    
+    case hostHasNoPreferenceAmongTheTransmitterPhy = 0b01
+
     /// The Host has no preference among the receiver PHYs supported by the Controller
-    case hostHasNoPreferenceAmongTheReceiverPhy     = 0b10
-    
+    case hostHasNoPreferenceAmongTheReceiverPhy = 0b10
+
     public static let allCases: [LowEnergyAllPhys] = [
         .hostHasNoPreferenceAmongTheTransmitterPhy,
         .hostHasNoPreferenceAmongTheReceiverPhy

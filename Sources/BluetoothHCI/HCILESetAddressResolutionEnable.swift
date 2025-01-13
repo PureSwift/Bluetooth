@@ -11,14 +11,14 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Set Address Resolution Enable Command
     ///
     /// The command is used to enable resolution of Resolvable Private Addresses in the Controller.
     func lowEnergySetAddressResolutionEnable(addressResolutionEnable: HCILESetAddressResolutionEnable.AddressResolutionEnable, timeout: HCICommandTimeout = .default) async throws {
-        
+
         let parameters = HCILESetAddressResolutionEnable(addressResolutionEnable: addressResolutionEnable)
-        
+
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
@@ -40,26 +40,26 @@ public extension BluetoothHostControllerInterface {
 /// Note: enabling address resolution when it is already enabled,
 /// or disabling it when it is already disabled, has no effect.
 @frozen
-public struct HCILESetAddressResolutionEnable: HCICommandParameter { //HCI_LE_Set_Address_Resolution_ Enable
-    
-    public static let command = HCILowEnergyCommand.setAddressResolutionEnable //0x002D
-    
+public struct HCILESetAddressResolutionEnable: HCICommandParameter {  //HCI_LE_Set_Address_Resolution_ Enable
+
+    public static let command = HCILowEnergyCommand.setAddressResolutionEnable  //0x002D
+
     public let addressResolutionEnable: AddressResolutionEnable
-    
+
     public init(addressResolutionEnable: AddressResolutionEnable) {
         self.addressResolutionEnable = addressResolutionEnable
     }
-    
+
     public var data: Data {
         return Data([addressResolutionEnable.rawValue])
     }
-    
+
     public enum AddressResolutionEnable: UInt8 {
-        
+
         /// Address Resolution in Controller disabled (default)
         case disabled = 0x00
-        
+
         /// Address Resolution in Controller enabled
-        case enabled  = 0x01
+        case enabled = 0x01
     }
 }

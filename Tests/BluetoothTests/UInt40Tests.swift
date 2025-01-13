@@ -11,38 +11,38 @@ import Foundation
 @testable import Bluetooth
 
 @Suite struct UInt40Tests {
-    
+
     @Test func bitWidth() {
-        
+
         #expect(UInt40.bitWidth == MemoryLayout<UInt40.ByteValue>.size * 8)
         #expect(UInt40.bitWidth == 40)
     }
-    
+
     @Test func equatable() {
-        
+
         #expect(UInt40.zero == 0)
         #expect(UInt40.min == 0)
-        #expect(UInt40.max == 1099511627775)
-        #expect(UInt40.max == 0xFFFFFFFFFF)
+        #expect(UInt40.max == 1_099_511_627_775)
+        #expect(UInt40.max == 0xFF_FFFF_FFFF)
     }
 
     @Test func hashable() {
-        
+
         #expect(UInt40.max.hashValue != UInt64.max.hashValue)
     }
-    
+
     @Test func expressibleByIntegerLiteral() {
-        
+
         let values: [(UInt40, String)] = [
-            (UInt40.zero,   "0"),
-            (0x0000000000,  "0"),
-            (0x0000000001,  "1"),
-            (0x0000000020,  "32"),
-            (12345678,      "12345678"),
-            (1099511627775, "1099511627775"),
-            (0xFFFFFFFFFF,  "1099511627775")
+            (UInt40.zero, "0"),
+            (0x00_0000_0000, "0"),
+            (0x00_0000_0001, "1"),
+            (0x00_0000_0020, "32"),
+            (12_345_678, "12345678"),
+            (1_099_511_627_775, "1099511627775"),
+            (0xFF_FFFF_FFFF, "1099511627775")
         ]
-        
-        values.forEach { #expect($0.description == $1)  }
+
+        values.forEach { #expect($0.description == $1) }
     }
 }

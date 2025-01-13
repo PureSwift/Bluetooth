@@ -11,25 +11,25 @@ import Bluetooth
 /// The *Execute Write Response* is sent in response to a received *Execute Write Request*.
 @frozen
 public struct ATTExecuteWriteResponse: ATTProtocolDataUnit, Sendable {
-    
+
     public static var attributeOpcode: ATTOpcode { .executeWriteResponse }
-    
-    public init() { }
+
+    public init() {}
 }
 
 extension ATTExecuteWriteResponse: DataConvertible {
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == 1,
             Self.validateOpcode(data)
-            else { return nil }
+        else { return nil }
     }
-    
-    public func append<Data>(to data: inout Data) where Data : DataContainer {
+
+    public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += Self.attributeOpcode.rawValue
     }
-    
+
     public var dataLength: Int {
         1
     }

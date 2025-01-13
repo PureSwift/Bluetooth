@@ -10,7 +10,7 @@ import Darwin
 #endif
 
 internal extension String {
-    
+
     /// Initialize from UTF8 data.
     init?<Data: DataContainer>(utf8 data: Data) {
         #if canImport(Darwin)
@@ -25,7 +25,7 @@ internal extension String {
         self.init(validating: data, as: UTF8.self)
         #endif
     }
-    
+
     #if hasFeature(Embedded)
     // Can't use `CVarArg` in Embedded Swift
     init?(format: String, length: Int, _ value: UInt8) {

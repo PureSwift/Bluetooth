@@ -11,14 +11,14 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Read White List Size Command
     ///
     /// Used to read the total number of white list entries that can be stored in the Controller.
     func lowEnergyReadWhiteListSize(timeout: HCICommandTimeout = .default) async throws -> Int {
-        
+
         let sizeReturnParameter = try await deviceRequest(HCILEReadWhiteListSize.self, timeout: timeout)
-        
+
         return Int(sizeReturnParameter.size)
     }
 }
@@ -29,19 +29,19 @@ public extension BluetoothHostControllerInterface {
 ///
 /// The command is used to read the total number of white list entries that can be stored in the Controller.
 @frozen
-public struct HCILEReadWhiteListSize: HCICommandReturnParameter { // HCI_LE_Read_White_List_Size
-    
-    public static let command = HCILowEnergyCommand.readWhiteListSize //0x000F
+public struct HCILEReadWhiteListSize: HCICommandReturnParameter {  // HCI_LE_Read_White_List_Size
+
+    public static let command = HCILowEnergyCommand.readWhiteListSize  //0x000F
     public static let length = 1
-    
+
     /// The white list size.
-    public let size: UInt8 // White_List_Size
-    
+    public let size: UInt8  // White_List_Size
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         self.size = data[0]
     }
 }

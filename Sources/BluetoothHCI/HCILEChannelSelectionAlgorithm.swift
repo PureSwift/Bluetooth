@@ -13,34 +13,34 @@ import Foundation
 /// The LE Channel Selection Algorithm Event indicates which channel selection algorithm is used on a data channel connection.
 @frozen
 public struct HCILEChannelSelectionAlgorithm: HCIEventParameter {
-    
-    public static let event = LowEnergyEvent.channelSelectionAlgorithm // 0x14
-    
+
+    public static let event = LowEnergyEvent.channelSelectionAlgorithm  // 0x14
+
     public static let length: Int = 3
-    
-    public let connectionHandle: UInt16 // Connection_Handle
-    
+
+    public let connectionHandle: UInt16  // Connection_Handle
+
     public let channelSelectionAlgorithm: ChannelSelectionAlgorithm
-    
+
     public init?<Data: DataContainer>(data: Data) {
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         let connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-        
+
         guard let channelSelectionAlgorithm = ChannelSelectionAlgorithm.init(rawValue: data[2])
-            else { return nil }
-        
+        else { return nil }
+
         self.connectionHandle = connectionHandle
         self.channelSelectionAlgorithm = channelSelectionAlgorithm
     }
-    
-    public enum ChannelSelectionAlgorithm: UInt8 { // Channel_Selection_Algorithm
-        
+
+    public enum ChannelSelectionAlgorithm: UInt8 {  // Channel_Selection_Algorithm
+
         /// LE Channel Selection Algorithm #1 is used
-        case algorithm1         = 0x00
-        
+        case algorithm1 = 0x00
+
         /// LE Channel Selection Algorithm #2 is used
-        case algorithm2         = 0x01
+        case algorithm2 = 0x01
     }
 }

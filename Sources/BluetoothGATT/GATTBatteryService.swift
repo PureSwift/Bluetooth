@@ -6,15 +6,13 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-/**
- The Battery Service exposes the state of a battery within a device.
- 
- The Battery Service exposes the Battery State and Battery Level of a single battery or set of batteries in a device.
- 
- This service has no dependencies on other GATT-based services.
- */
+/// The Battery Service exposes the state of a battery within a device.
+///
+/// The Battery Service exposes the Battery State and Battery Level of a single battery or set of batteries in a device.
+///
+/// This service has no dependencies on other GATT-based services.
 @frozen
 public struct GATTBatteryService: GATTService {
-    
+
     public static var uuid: BluetoothUUID { BluetoothUUID.Service.battery }
 }

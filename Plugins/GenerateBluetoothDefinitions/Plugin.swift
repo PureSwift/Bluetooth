@@ -1,6 +1,6 @@
 //
 //  Plugin.swift
-//  
+//
 //
 //  Created by Alsey Coleman Miller on 6/12/22.
 //
@@ -18,7 +18,7 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
         }
         var commands = [Command]()
         commands.reserveCapacity(10)
-        
+
         // Generate Bluetooth Company Identifier Definitions
         try companyIdentifiersBuildCommands(for: context, target: target, commands: &commands)
         // Generate Bluetooth Company Identifier Unit Tests
@@ -33,7 +33,7 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
             ("Characteristic", "CharacteristicUUID"),
             ("Descriptor", "DescriptorUUID"),
             ("Member", "MemberUUID"),
-            ("Declaration", "DeclarationUUID"),
+            ("Declaration", "DeclarationUUID")
         ]
         for (type, fileName) in uuidFiles {
             try bluetoothUUIDBuildCommands(
@@ -44,7 +44,7 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
                 commands: &commands
             )
         }
-        
+
         return commands
     }
 }

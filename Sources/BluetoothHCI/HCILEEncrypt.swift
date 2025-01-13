@@ -11,19 +11,21 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// LE Encrypt Command
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
     /// and returns the Encrypted_Data to the Host.
-    func lowEnergyEncrypt(key: UInt128,
-                          data: UInt128,
-                          timeout: HCICommandTimeout = .default) async throws -> UInt128 {
-        
+    func lowEnergyEncrypt(
+        key: UInt128,
+        data: UInt128,
+        timeout: HCICommandTimeout = .default
+    ) async throws -> UInt128 {
+
         let parameters = HCILEEncrypt(key: key, plainText: data)
-        
+
         let returnParameters = try await deviceRequest(parameters, HCILEEncryptReturn.self, timeout: timeout)
-        
+
         return returnParameters.encryptedData
     }
 }
@@ -37,38 +39,38 @@ public extension BluetoothHostControllerInterface {
 ///
 /// - Note: The AES-128 bit block cypher is defined in NIST Publication [FIPS-197](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
 @frozen
-public struct HCILEEncrypt: HCICommandParameter { // HCI_LE_Encrypt
-    
-    public static let command = HCILowEnergyCommand.encrypt //0x0017
-    
+public struct HCILEEncrypt: HCICommandParameter {  // HCI_LE_Encrypt
+
+    public static let command = HCILowEnergyCommand.encrypt  //0x0017
+
     /// 128 bit key for the encryption of the data given in the command.
     /// The most significant octet of the key corresponds to key[0] using the notation specified in FIPS 197.
-    public let key: UInt128 //Key
-    
+    public let key: UInt128  //Key
+
     /// 128 bit data block that is requested to be encrypted.
     /// The most significant octet of the PlainText_Data corresponds to in[0] using the notation specified in FIPS 197.
-    public let plainText: UInt128 //Plaintext_Data
-    
+    public let plainText: UInt128  //Plaintext_Data
+
     public init(key: UInt128, plainText: UInt128) {
-        
+
         self.key = key
         self.plainText = plainText
     }
 }
 
 extension HCILEEncrypt {
-    
+
     public var data: Data {
         var data = Data()
         data.reserveCapacity(self.dataLength)
         data += self
         return data
     }
-    
+
     var dataLength: Int { return 32 }
-    
-    static func += <T: DataContainer> (data: inout T, value: HCILEEncrypt) {
-        
+
+    static func += <T: DataContainer>(data: inout T, value: HCILEEncrypt) {
+
         data += value.key.littleEndian
         data += value.plainText.littleEndian
     }
@@ -83,23 +85,23 @@ extension HCILEEncrypt {
 /// The AES-128 bit block cypher is defined in NIST Publication [FIPS-197](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf).
 @frozen
 public struct HCILEEncryptReturn: HCICommandReturnParameter {
-    
-    public static let command = HCILowEnergyCommand.encrypt //0x0017
-    
+
+    public static let command = HCILowEnergyCommand.encrypt  //0x0017
+
     public static var length: Int { return UInt128.length }
-    
+
     /// 128 bit encrypted data block.
     /// The most significant octet of the Encrypted_Data corresponds to out[0] using the notation specified in FIPS 197.
     public let encryptedData: UInt128
-    
+
     public init?<Data: DataContainer>(data: Data) {
-        
+
         guard data.count == Self.length
-            else { return nil }
-        
+        else { return nil }
+
         guard let encryptedData = UInt128(data: data)
-            else { return nil }
-        
+        else { return nil }
+
         self.encryptedData = UInt128(littleEndian: encryptedData)
     }
 }

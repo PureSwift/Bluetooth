@@ -11,15 +11,17 @@ import Foundation
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
-    
+
     /// Write Class of Device Command
     ///
     /// This command writes the value for the Class_of_Device parameter.
-    func writeClassOfDevice(classOfDevice: ClassOfDevice,
-                            timeout: HCICommandTimeout = .default) async throws {
-        
+    func writeClassOfDevice(
+        classOfDevice: ClassOfDevice,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
         let command = HCIWriteClassOfDevice(classOfDevice: classOfDevice)
-        
+
         return try await deviceRequest(command, timeout: timeout)
     }
 }
@@ -31,18 +33,18 @@ public extension BluetoothHostControllerInterface {
 /// This command writes the value for the Class_of_Device parameter.
 @frozen
 public struct HCIWriteClassOfDevice: HCICommandParameter {
-    
+
     public static let command = HostControllerBasebandCommand.writeClassOfDevice
-    
+
     public var classOfDevice: ClassOfDevice
-    
+
     public init(classOfDevice: ClassOfDevice) {
-        
+
         self.classOfDevice = classOfDevice
     }
-    
+
     public var data: Data {
-        
+
         return Data(classOfDevice)
     }
 }
