@@ -13,3 +13,19 @@ jobs:
       - name: Lint
         run: swift format lint -r ./ --configuration .swift-format
   
+    swiftlint:
+      name: swiftlint 
+      runs-on: macos-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Swift
+        uses: slashmo/install-swift@v0.3.0
+        with:
+          version: 6.0.3
+      - name: Swift Version
+        run: swift --version
+      - name: Install SwiftLint
+        run: brew install swiftlint
+      - name: Lint
+        run: swiftlint
