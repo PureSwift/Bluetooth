@@ -4,12 +4,11 @@ jobs:
 
     macos:
       name: Baremetal Embedded ARM 
-      runs-on: macos-latest
+      runs-on: ubuntu-latest
+      container: swiftlang/swift:nightly-jammy
       steps:
-      - name: Install Swift
-        uses: slashmo/install-swift@v0.3.0
-        with:
-          version: swift-DEVELOPMENT-SNAPSHOT-2024-12-12-a
+      - name: Install dependencies
+        run: apt update -y; apt install libtool-bin -y;
       - name: Checkout
         uses: actions/checkout@v2
       - name: Swift Version

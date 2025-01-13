@@ -25,13 +25,10 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        swift: [6.0.3]
-    runs-on: ubuntu-20.04
+        container: ["swift:6.0.3", "swiftlang/swift:nightly"]
+    runs-on: ubuntu-latest
+    container: ${{ matrix.container }}-jammy
     steps:
-    - name: Install Swift
-      uses: slashmo/install-swift@v0.3.0
-      with:
-        version: ${{ matrix.swift }}
     - name: Checkout
       uses: actions/checkout@v2
     - name: Swift Version
