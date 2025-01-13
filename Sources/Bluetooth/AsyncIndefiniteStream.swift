@@ -10,10 +10,10 @@ import Foundation
 
 /// Async Stream that will produce values until `stop()` is called or task is cancelled.
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-public struct AsyncIndefiniteStream <Element: Sendable>: AsyncSequence, Sendable {
-    
+public struct AsyncIndefiniteStream<Element: Sendable>: AsyncSequence, Sendable {
+
     let storage: Storage
-    
+
     public init(
         bufferSize: Int = 100,
         _ build: @escaping @Sendable ((Element) -> ()) async throws -> ()
@@ -23,8 +23,7 @@ public struct AsyncIndefiniteStream <Element: Sendable>: AsyncSequence, Sendable
             let task = Task {
                 do {
                     try await build({ continuation.yield($0) })
-                }
-                catch _ as CancellationError { } // end
+                } catch _ as CancellationError {}  // end
                 catch {
                     continuation.finish(throwing: error)
                 }
@@ -46,7 +45,7 @@ public struct AsyncIndefiniteStream <Element: Sendable>: AsyncSequence, Sendable
         storage.stream = stream
         self.storage = storage
     }
-    
+
     public init(
         bufferSize: Int = 100,
         onTermination: @escaping () -> (),
@@ -69,15 +68,15 @@ public struct AsyncIndefiniteStream <Element: Sendable>: AsyncSequence, Sendable
         storage.stream = stream
         self.storage = storage
     }
-    
+
     public func makeAsyncIterator() -> AsyncIterator {
         return storage.makeAsyncIterator()
     }
-    
+
     public func stop() {
         storage.stop()
     }
-    
+
     public var isExecuting: Bool {
         storage.isExecuting
     }
@@ -85,15 +84,15 @@ public struct AsyncIndefiniteStream <Element: Sendable>: AsyncSequence, Sendable
 
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public extension AsyncIndefiniteStream {
-    
+
     struct AsyncIterator: AsyncIteratorProtocol {
-        
+
         private(set) var iterator: AsyncThrowingStream<Element, Error>.AsyncIterator
-        
+
         init(_ iterator: AsyncThrowingStream<Element, Error>.AsyncIterator) {
             self.iterator = iterator
         }
-        
+
         @inline(__always)
         public mutating func next() async throws -> Element? {
             return try await iterator.next()
@@ -103,19 +102,19 @@ public extension AsyncIndefiniteStream {
 
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public extension AsyncIndefiniteStream {
-    
+
     struct Continuation: Sendable {
-        
+
         let continuation: AsyncThrowingStream<Element, Error>.Continuation
-        
+
         init(_ continuation: AsyncThrowingStream<Element, Error>.Continuation) {
             self.continuation = continuation
         }
-        
+
         public func yield(_ value: Element) {
             continuation.yield(value)
         }
-        
+
         public func finish(throwing error: Error) {
             continuation.finish(throwing: error)
         }
@@ -124,9 +123,9 @@ public extension AsyncIndefiniteStream {
 
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 internal extension AsyncIndefiniteStream {
-    
+
     final class Storage: @unchecked Sendable {
-        
+
         var isExecuting: Bool {
             get {
                 lock.lock()
@@ -140,23 +139,23 @@ internal extension AsyncIndefiniteStream {
                 lock.unlock()
             }
         }
-        
+
         var _isExecuting = true
-        
+
         let lock = NSLock()
-        
+
         var stream: AsyncThrowingStream<Element, Error>!
-        
+
         var continuation: AsyncThrowingStream<Element, Error>.Continuation!
-        
+
         var onTermination: (() -> ())!
-        
+
         deinit {
             stop()
         }
-        
-        init() { }
-        
+
+        init() {}
+
         func stop() {
             // end stream
             continuation.finish()
@@ -167,7 +166,7 @@ internal extension AsyncIndefiniteStream {
             // cleanup / stop scanning / cancel child task
             onTermination()
         }
-        
+
         func makeAsyncIterator() -> AsyncIterator {
             return AsyncIterator(stream.makeAsyncIterator())
         }

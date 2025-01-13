@@ -13,28 +13,28 @@
 /// Units: dBm
 @frozen
 public struct RSSI: RawRepresentable, Equatable, Hashable, Sendable {
-    
+
     /// Units: dBm
     public let rawValue: Int8
-    
+
     public init?(rawValue: Int8) {
-        
+
         guard -127 <= rawValue,
             rawValue <= +20
-            else { return nil }
-        
+        else { return nil }
+
         self.rawValue = rawValue
     }
 }
 
 #if !hasFeature(Embedded)
-extension RSSI: Codable { }
+extension RSSI: Codable {}
 #endif
 
 // MARK: - CustomStringConvertible
 
 extension RSSI: CustomStringConvertible {
-    
+
     public var description: String {
         return "\(rawValue) dBm"
     }
@@ -43,7 +43,7 @@ extension RSSI: CustomStringConvertible {
 // MARK: - Comparable
 
 extension RSSI: Comparable {
-    
+
     public static func < (lhs: RSSI, rhs: RSSI) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }

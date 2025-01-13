@@ -11,7 +11,7 @@
 @available(macOS, unavailable)
 @available(macCatalyst, unavailable)
 public extension SFloat {
-    
+
     init(_ float: Float16) {
         self.init(bitPattern: float.bitPattern)
     }
@@ -29,20 +29,20 @@ public extension Float16 {
 /// IEEE-11073 16-bit SFLOAT
 @frozen
 public struct SFloat: Equatable, Hashable, Sendable {
-    
+
     /// The bit pattern of the value’s encoding.
     public private(set) var bitPattern: UInt16
-    
+
     /// Creates a new value with the given bit pattern.
     public init(bitPattern: UInt16) {
         self.bitPattern = bitPattern
     }
-    
+
     /// Creates a value initialized to zero.
     public init() {
         self.bitPattern = 0
     }
-    
+
     public init(_ value: Float) {
         #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
@@ -57,11 +57,11 @@ public struct SFloat: Equatable, Hashable, Sendable {
 }
 
 #if !hasFeature(Embedded)
-extension SFloat: Codable { }
+extension SFloat: Codable {}
 #endif
 
 public extension Float {
-    
+
     init(_ value: SFloat) {
         #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
@@ -78,23 +78,23 @@ public extension Float {
 /// Builtin Float16
 @usableFromInline
 internal struct BuiltinFloat16: Equatable, Hashable {
-    
+
     /// The bit pattern of the value’s encoding.
     @usableFromInline
     let bitPattern: UInt16
-    
+
     /// Creates a new value with the given bit pattern.
     @usableFromInline
     init(bitPattern: UInt16) {
         self.bitPattern = bitPattern
     }
-    
+
     /// Creates a value initialized to zero.
     @usableFromInline
     init() {
         self.bitPattern = 0
     }
-    
+
     @usableFromInline
     init(_ value: Float) {
         fatalError(#function)
@@ -102,25 +102,25 @@ internal struct BuiltinFloat16: Equatable, Hashable {
 }
 
 internal extension BuiltinFloat16 {
-    
+
     init(_ value: SFloat) {
         self.init(bitPattern: value.bitPattern)
     }
 }
 
 internal extension SFloat {
-    
+
     init(_ builtin: BuiltinFloat16) {
         self.init(bitPattern: builtin.bitPattern)
     }
-    
+
     var builtin: BuiltinFloat16 {
         return BuiltinFloat16(bitPattern: self.bitPattern)
     }
 }
 
 extension BuiltinFloat16: CustomStringConvertible {
-    
+
     @usableFromInline
     var description: String {
         return Float(self).description
@@ -128,7 +128,7 @@ extension BuiltinFloat16: CustomStringConvertible {
 }
 
 internal extension Float {
-    
+
     @usableFromInline
     init(_ value: BuiltinFloat16) {
         fatalError(#function)
@@ -138,7 +138,7 @@ internal extension Float {
 // MARK: - CustomStringConvertible
 
 extension SFloat: CustomStringConvertible {
-    
+
     public var description: String {
         #if !os(macOS) && !(os(iOS) && targetEnvironment(macCatalyst))
         if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
@@ -155,7 +155,7 @@ extension SFloat: CustomStringConvertible {
 // MARK: - Byte Swap
 
 extension SFloat: ByteSwap {
-    
+
     /// A representation of this float with the byte order swapped.
     public var byteSwapped: SFloat {
         return SFloat(bitPattern: bitPattern.byteSwapped)

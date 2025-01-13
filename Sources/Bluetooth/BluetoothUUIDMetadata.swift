@@ -10,7 +10,7 @@ import Foundation
 import BluetoothMetadata
 
 public extension BluetoothUUID {
-    
+
     /// Fetch the metadata for the UUID.
     var metadata: BluetoothMetadata.BluetoothUUID? {
         guard case let .bit16(rawValue) = self else {
@@ -28,8 +28,7 @@ public extension BluetoothUUID {
 internal let files: [BluetoothMetadata.BluetoothUUID.Category: BluetoothMetadata.BluetoothUUID.File] = {
     do {
         return try BluetoothMetadata.BluetoothUUID.File.load()
-    }
-    catch {
+    } catch {
         assertionFailure("Unable to load metadata: \(error)")
         return [:]
     }

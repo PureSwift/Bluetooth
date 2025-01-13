@@ -8,13 +8,13 @@
 
 /// A Bluetooth value that is stored in the CPU native endianess format.
 public protocol ByteSwap {
-    
+
     /// A representation of this integer with the byte order swapped.
     var byteSwapped: Self { get }
 }
 
 public extension ByteSwap {
-    
+
     /// Creates an instance from its little-endian representation, changing the
     /// byte order if necessary.
     ///
@@ -27,7 +27,7 @@ public extension ByteSwap {
         self = value.byteSwapped
         #endif
     }
-    
+
     /// Creates an instance from its big-endian representation, changing the byte
     /// order if necessary.
     ///
@@ -40,7 +40,7 @@ public extension ByteSwap {
         self = value.byteSwapped
         #endif
     }
-    
+
     /// The little-endian representation of this value.
     ///
     /// If necessary, the byte order of this value is reversed from the typical
@@ -53,7 +53,7 @@ public extension ByteSwap {
         return byteSwapped
         #endif
     }
-    
+
     /// The big-endian representation of this value.
     ///
     /// If necessary, the byte order of this value is reversed from the typical
