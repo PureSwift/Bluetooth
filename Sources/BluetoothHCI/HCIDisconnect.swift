@@ -73,7 +73,7 @@ extension HCIDisconnect {
         public static let otherEndTerminatedConnection: [HCIError] = [
             .remoteUserEndedConnection,
             .remoteLowResources,
-            .remotePowerOff,
+            .remotePowerOff
         ]
 
         /// Unsupported Remote Feature
@@ -87,7 +87,7 @@ extension HCIDisconnect {
             [
                 Reason.authenticationFailure,
                 Reason.unsupportedRemoteFeature,
-                Reason.pairingWithUnitKeyNotSupported,
+                Reason.pairingWithUnitKeyNotSupported
             ]
                 + Reason.otherEndTerminatedConnection)
     }

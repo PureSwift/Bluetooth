@@ -92,7 +92,7 @@ public enum ACLPacketType: UInt16, BitMaskOption {
         .packet2DH5mayBeUsed,
         .packet3DH5mayBeUsed,
         .packetDM5mayBeUsed,
-        .packetDH5mayBeUsed,
+        .packetDH5mayBeUsed
     ]
 }
 
@@ -112,6 +112,6 @@ public enum SCOPacketType: UInt16, BitMaskOption {
     public static let allCases: [SCOPacketType] = [
         .hv1,
         .hv2,
-        .hv3,
+        .hv3
     ]
 }

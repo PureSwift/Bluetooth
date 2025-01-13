@@ -100,7 +100,7 @@ public struct HCILERemoteConnectionParameterRequestReply: HCICommandParameter {
             connectionLengthMinBytes.0,
             connectionLengthMinBytes.1,
             connectionLengthMaxBytes.0,
-            connectionLengthMaxBytes.1,
+            connectionLengthMaxBytes.1
         ])
     }
 }

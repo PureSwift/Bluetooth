@@ -136,6 +136,6 @@ public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
         .provider,
         .dataIncomplete,
         .stateOn,
-        .temporalilyUnavailable,
+        .temporalilyUnavailable
     ]
 }

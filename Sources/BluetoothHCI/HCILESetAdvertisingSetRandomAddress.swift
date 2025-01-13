@@ -68,7 +68,7 @@ public struct HCILESetAdvertisingSetRandomAddress: HCICommandParameter {  //HCI_
             advertisingRandomAddressBytes.2,
             advertisingRandomAddressBytes.3,
             advertisingRandomAddressBytes.4,
-            advertisingRandomAddressBytes.5,
+            advertisingRandomAddressBytes.5
         ])
     }
 }

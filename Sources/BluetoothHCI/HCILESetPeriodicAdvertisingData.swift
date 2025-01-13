@@ -60,7 +60,7 @@ public struct HCILESetPeriodicAdvertisingData: HCICommandParameter {
         return Data([
             advertisingHandle,
             operation.rawValue,
-            advertisingDataLength,
+            advertisingDataLength
         ]) + advertisingData
     }
 

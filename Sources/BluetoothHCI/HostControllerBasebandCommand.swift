@@ -551,6 +551,6 @@ public extension HostControllerBasebandCommand {
         "Write Best Effort Flush Timeout",
         "Short Range Mode",
         "Read LE Host Supported",
-        "Write LE Host Supported",
+        "Write LE Host Supported"
     ]
 }

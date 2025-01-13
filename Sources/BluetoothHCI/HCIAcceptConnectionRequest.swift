@@ -68,7 +68,7 @@ public struct HCIAcceptConnectionRequest: HCICommandParameter {
             addressBytes.3,
             addressBytes.4,
             addressBytes.5,
-            role.rawValue,
+            role.rawValue
         ])
     }
 }

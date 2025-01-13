@@ -50,7 +50,7 @@ public struct HCILESetPeriodicAdvertisingEnable: HCICommandParameter {
     public var data: Data {
         return Data([
             enable.rawValue,
-            advertisingHandle,
+            advertisingHandle
         ])
     }
 

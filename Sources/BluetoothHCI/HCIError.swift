@@ -529,7 +529,7 @@ extension HCIError: CustomStringConvertible {
         "Directed Advertising Timeout",
         "Connection Terminated Due to MIC Failure",
         "Connection Failed to be Established",
-        "MAC Connection Failed",
+        "MAC Connection Failed"
     ]
 }
 

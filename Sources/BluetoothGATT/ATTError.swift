@@ -217,7 +217,7 @@ extension ATTError: CustomNSError {
 
         return [
             NSLocalizedDescriptionKey: name,
-            NSLocalizedFailureReasonErrorKey: errorDescription,
+            NSLocalizedFailureReasonErrorKey: errorDescription
         ]
     }
 }

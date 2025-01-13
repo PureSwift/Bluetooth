@@ -75,7 +75,7 @@ public struct HCILEAddDeviceToPeriodicAdvertiserList: HCICommandParameter {
             addressBytes.3,
             addressBytes.4,
             addressBytes.5,
-            advertisingSid,
+            advertisingSid
         ])
     }
 }

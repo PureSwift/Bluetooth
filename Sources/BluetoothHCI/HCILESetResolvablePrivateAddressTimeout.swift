@@ -55,7 +55,7 @@ public struct HCILESetResolvablePrivateAddressTimeout: HCICommandParameter {
 
         return Data([
             rpaTimeoutBytes.0,
-            rpaTimeoutBytes.1,
+            rpaTimeoutBytes.1
         ])
     }
 

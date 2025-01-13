@@ -115,7 +115,7 @@ public struct GATTSystemID: GATTCharacteristic, RawRepresentable, Equatable, Has
             bytes.4,
             bytes.5,
             bytes.6,
-            bytes.7,
+            bytes.7
         ])
     }
 }

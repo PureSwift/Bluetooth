@@ -54,7 +54,7 @@ public struct GATTObjectSize: GATTCharacteristic, Equatable {
             allocatedSizeBytes.0,
             allocatedSizeBytes.1,
             allocatedSizeBytes.2,
-            allocatedSizeBytes.3,
+            allocatedSizeBytes.3
         ])
     }
 }

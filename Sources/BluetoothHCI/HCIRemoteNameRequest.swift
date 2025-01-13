@@ -107,7 +107,7 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
             pscanRepMode.rawValue,
             reserved.rawValue,
             clockOffsetBytes.0,
-            clockOffsetBytes.1,
+            clockOffsetBytes.1
         ])
     }
 }

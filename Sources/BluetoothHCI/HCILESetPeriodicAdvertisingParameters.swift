@@ -88,7 +88,7 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
             periodicAdvertisingIntervalMaxBytes.0,
             periodicAdvertisingIntervalMaxBytes.1,
             advertisingEventPropertiesytes.0,
-            advertisingEventPropertiesytes.1,
+            advertisingEventPropertiesytes.1
         ])
     }
 

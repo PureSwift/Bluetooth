@@ -74,7 +74,7 @@ public struct HCILESetDataLength: HCICommandParameter {
             txOctetsBytes.0,
             txOctetsBytes.1,
             txTimeBytes.0,
-            txTimeBytes.1,
+            txTimeBytes.1
         ])
     }
 }

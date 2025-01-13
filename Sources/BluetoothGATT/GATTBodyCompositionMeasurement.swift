@@ -375,7 +375,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             flagBytes.0,
             flagBytes.1,
             bodyfatBytes.0,
-            bodyfatBytes.1,
+            bodyfatBytes.1
         ])
 
         data.reserveCapacity(totalBytes)
@@ -508,7 +508,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             .impedance,
             .weight,
             .height,
-            .multiplePacket,
+            .multiplePacket
         ]
     }
 

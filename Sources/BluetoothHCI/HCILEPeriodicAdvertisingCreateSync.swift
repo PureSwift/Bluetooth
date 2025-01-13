@@ -92,7 +92,7 @@ public struct HCILEPeriodicAdvertisingCreateSync: HCICommandParameter {
             skipBytes.1,
             syncTimeoutBytes.0,
             syncTimeoutBytes.1,
-            unused,
+            unused
         ])
     }
 

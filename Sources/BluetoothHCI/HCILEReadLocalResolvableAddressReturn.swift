@@ -75,7 +75,7 @@ public struct HCILEReadLocalResolvableAddress: HCICommandParameter {  //HCI_LE_R
             peerIdentifyAddressBytes.4,
             peerIdentifyAddressBytes.5,
             peerIdentifyAddressBytes.6,
-            peerIdentifyAddressBytes.7,
+            peerIdentifyAddressBytes.7
         ])
     }
 }

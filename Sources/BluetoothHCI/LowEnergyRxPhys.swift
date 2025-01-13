@@ -24,6 +24,6 @@ public enum LowEnergyRxPhys: UInt8, BitMaskOption {
     public static let allCases: [LowEnergyRxPhys] = [
         .hostUseLe1MReceiverPhy,
         .hostUseLe2MReceiverPhy,
-        .hostUseLeCodedReceiverPhy,
+        .hostUseLeCodedReceiverPhy
     ]
 }

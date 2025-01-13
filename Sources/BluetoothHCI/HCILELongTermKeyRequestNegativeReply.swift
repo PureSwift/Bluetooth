@@ -51,7 +51,7 @@ public struct HCILELongTermKeyRequestNegativeReply: HCICommandParameter {
 
         return Data([
             connectionHandleBytes.0,
-            connectionHandleBytes.1,
+            connectionHandleBytes.1
         ])
     }
 }

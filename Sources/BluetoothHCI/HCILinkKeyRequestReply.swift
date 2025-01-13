@@ -79,7 +79,7 @@ public struct HCILinkKeyRequestReply: HCICommandParameter {
             linkKeyBytes.12,
             linkKeyBytes.13,
             linkKeyBytes.14,
-            linkKeyBytes.15,
+            linkKeyBytes.15
         ])
     }
 }

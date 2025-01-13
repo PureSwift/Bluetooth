@@ -127,7 +127,7 @@ public struct HCILEUpdateConnection: HCICommandParameter {  // HCI_LE_Connection
             connectionLengthMinBytes.0,
             connectionLengthMinBytes.1,
             connectionLengthMaxBytes.0,
-            connectionLengthMaxBytes.1,
+            connectionLengthMaxBytes.1
         ])
     }
 }

@@ -114,7 +114,7 @@ public struct HCILEAddDeviceToResolvingList: HCICommandParameter {
             localIrkBytes.12,
             localIrkBytes.13,
             localIrkBytes.14,
-            localIrkBytes.15,
+            localIrkBytes.15
         ])
     }
 }

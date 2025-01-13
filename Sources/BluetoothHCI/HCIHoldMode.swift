@@ -54,7 +54,7 @@ public struct HCIHoldMode: HCICommandParameter {
             intervalMaxBytes.0,
             intervalMaxBytes.1,
             intervalMinBytes.0,
-            intervalMinBytes.1,
+            intervalMinBytes.1
         ])
     }
 }

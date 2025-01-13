@@ -85,7 +85,7 @@ public enum LowEnergyFeature: UInt64, BitMaskOption {
         .periodicAdvertising,
         .channelSelectionAlgorithm2,
         .powerClass1,
-        .minimumNumberofUsedChannelsProcedure,
+        .minimumNumberofUsedChannelsProcedure
     ]
 }
 
@@ -145,7 +145,7 @@ internal let featureSet: [LowEnergyFeature: (isValid: Bool, name: String)] = [
     .periodicAdvertising: (false, "LE Periodic Advertising"),
     .channelSelectionAlgorithm2: (true, "Channel Selection Algorithm #2"),
     .powerClass1: (true, "LE Power Class 1"),
-    .minimumNumberofUsedChannelsProcedure: (false, "Minimum Number of Used Channels Procedure"),
+    .minimumNumberofUsedChannelsProcedure: (false, "Minimum Number of Used Channels Procedure")
 ]
 // swiftlint:enable colon
 

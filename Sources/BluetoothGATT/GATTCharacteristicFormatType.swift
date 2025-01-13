@@ -89,7 +89,7 @@ internal let characteristicFormatTypeNames: [GATTCharacteristicFormatType: Strin
     .duint16: "duint16",
     .utf8s: "utf8s",
     .utf16s: "utf16s",
-    .struct: "struct",
+    .struct: "struct"
 ]
 
 internal let characteristicFormatTypeDescription: [GATTCharacteristicFormatType: String] = [
@@ -120,5 +120,5 @@ internal let characteristicFormatTypeDescription: [GATTCharacteristicFormatType:
     .duint16: "IEEE-20601 format",
     .utf8s: "UTF-8 string",
     .utf16s: "UTF-16 string",
-    .struct: "Opaque structure",
+    .struct: "Opaque structure"
 ]

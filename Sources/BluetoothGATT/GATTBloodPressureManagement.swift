@@ -203,7 +203,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             distolicBytes.0,
             distolicBytes.1,
             meanArterialPressureBytes.0,
-            meanArterialPressureBytes.1,
+            meanArterialPressureBytes.1
         ])
 
         data.reserveCapacity(totalBytes)
@@ -320,7 +320,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
                 .cuffFit,
                 .irregularPulse,
                 .pulseRate,
-                .measurementPosition,
+                .measurementPosition
             ]
         }
     }

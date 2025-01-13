@@ -123,7 +123,7 @@ extension GAPFlags: CustomStringConvertible, CustomDebugStringConvertible {
             (.lowEnergyGeneralDiscoverableMode, ".lowEnergyGeneralDiscoverableMode"),
             (.notSupportedBREDR, ".notSupportedBREDR"),
             (.simultaneousController, ".simultaneousController"),
-            (.simultaneousHost, ".simultaneousHost"),
+            (.simultaneousHost, ".simultaneousHost")
         ]
         return buildDescription(descriptions)
     }

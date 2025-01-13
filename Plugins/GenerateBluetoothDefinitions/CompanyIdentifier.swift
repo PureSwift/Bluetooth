@@ -9,7 +9,7 @@ import Foundation
 import PackagePlugin
 
 extension GenerateBluetoothDefinitionsPlugin {
-    
+
     func companyIdentifiersBuildCommands(
         for context: PluginContext,
         target: SwiftSourceModuleTarget,
@@ -34,7 +34,7 @@ extension GenerateBluetoothDefinitionsPlugin {
         assert(arguments.count == 2)
         commands.append(command)
     }
-    
+
     func companyIdentifierTestsBuildCommands(
         for context: PluginContext,
         target: SwiftSourceModuleTarget,

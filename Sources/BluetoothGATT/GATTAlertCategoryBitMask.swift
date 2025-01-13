@@ -80,7 +80,7 @@ public extension GATTAlertCategoryBitMask {
                 .voiceMail,
                 .schedule,
                 .highPrioritized,
-                .instantMessage,
+                .instantMessage
             ]
         }
     }

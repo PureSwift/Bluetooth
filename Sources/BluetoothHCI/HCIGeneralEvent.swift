@@ -293,6 +293,6 @@ public extension HCIGeneralEvent {
         "AMP Test End",
         "AMP Receiver Report",
         "Short Range Mode Change Complete",
-        "AMP Status Change",
+        "AMP Status Change"
     ]
 }

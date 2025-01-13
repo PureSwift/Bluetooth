@@ -217,6 +217,6 @@ public extension LinkControlCommand {
         "Accept Logical Link",
         "Disconnect Logical Link",
         "Logical Link Cancel",
-        "Flow Spec Modify",
+        "Flow Spec Modify"
     ]
 }

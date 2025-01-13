@@ -67,7 +67,7 @@ public struct HCILEReadRemoteUsedFeatures: HCICommandParameter {  //HCI_LE_Read_
 
         return Data([
             connectionHandleBytes.0,
-            connectionHandleBytes.1,
+            connectionHandleBytes.1
         ])
     }
 }

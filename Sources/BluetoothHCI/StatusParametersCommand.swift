@@ -83,6 +83,6 @@ public extension StatusParametersCommand {
         "Read Encryption Key Size",
         "Read Local AMP Info",
         "Read Local AMP ASSOC",
-        "Write Remote AMP ASSOC",
+        "Write Remote AMP ASSOC"
     ]
 }

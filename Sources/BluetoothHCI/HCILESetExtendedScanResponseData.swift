@@ -64,7 +64,7 @@ public struct HCILESetExtendedScanResponseData: HCICommandParameter {
 
         return Data([
             advertisingHandle, operation.rawValue,
-            fragmentPreference.rawValue, scanResponseDataLength,
+            fragmentPreference.rawValue, scanResponseDataLength
         ]) + scanResponseData
     }
 

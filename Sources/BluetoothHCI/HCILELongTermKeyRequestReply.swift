@@ -73,7 +73,7 @@ public struct HCILELongTermKeyRequestReply: HCICommandParameter {
             longTermKeyBytes.12,
             longTermKeyBytes.13,
             longTermKeyBytes.14,
-            longTermKeyBytes.15,
+            longTermKeyBytes.15
         ])
     }
 }

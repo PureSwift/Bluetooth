@@ -69,7 +69,7 @@ extension GATTCurrentTime {
                 .manualTimeUpdate,
                 .externalReference,
                 .timeZoneChange,
-                .dstChange,
+                .dstChange
             ]
         }
     }

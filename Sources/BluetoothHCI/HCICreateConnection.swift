@@ -96,7 +96,7 @@ public struct HCICreateConnection: HCICommandParameter {
             pageScanRepetitionMode.rawValue,  // page scan repetition mode
             reserved.rawValue,  // reserved
             clockOffsetBytes.0, clockOffsetBytes.1,  // clock offset
-            allowRoleSwitch.rawValue,
+            allowRoleSwitch.rawValue
         ])  // allow role switch
     }
 }

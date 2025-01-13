@@ -54,7 +54,7 @@ public struct HCILinkKeyRequestNegativeReply: HCICommandParameter {
             addressBytes.2,
             addressBytes.3,
             addressBytes.4,
-            addressBytes.5,
+            addressBytes.5
         ])
     }
 }

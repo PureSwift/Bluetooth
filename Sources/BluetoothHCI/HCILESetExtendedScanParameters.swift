@@ -102,7 +102,7 @@ public struct HCILESetExtendedScanParameters: HCICommandParameter {
                 scanWindowBytes.0.bytes.0,
                 scanWindowBytes.0.bytes.1,
                 scanWindowBytes.1.bytes.0,
-                scanWindowBytes.1.bytes.1,
+                scanWindowBytes.1.bytes.1
             ]
         }
 

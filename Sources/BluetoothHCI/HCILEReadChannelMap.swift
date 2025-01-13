@@ -52,7 +52,7 @@ public struct HCILEReadChannelMap: HCICommandParameter {  // HCI_LE_Read_Channel
 
         return Data([
             connectionHandleBytes.0,
-            connectionHandleBytes.1,
+            connectionHandleBytes.1
         ])
     }
 }

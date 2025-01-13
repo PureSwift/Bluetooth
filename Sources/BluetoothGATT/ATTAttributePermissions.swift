@@ -46,7 +46,7 @@ extension ATTAttributePermissions: CustomStringConvertible, CustomDebugStringCon
             (.readAuthentication, ".readAuthentication"),
             (.writeAuthentication, ".writeAuthentication"),
             (.authorized, ".authorized"),
-            (.noAuthorization, ".noAuthorization"),
+            (.noAuthorization, ".noAuthorization")
         ]
         return buildDescription(descriptions)
     }

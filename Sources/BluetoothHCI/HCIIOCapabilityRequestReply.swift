@@ -84,7 +84,7 @@ public struct HCIIOCapabilityRequestReply: HCICommandParameter {
             addressBytes.5,
             ioCapability.rawValue,
             obbDataPresent.rawValue,
-            authenticationRequirements.rawValue,
+            authenticationRequirements.rawValue
         ])
     }
 }

@@ -154,7 +154,7 @@ private extension ATTOpcode {
         (readByGroupTypeRequest, readByGroupTypeResponse),
         (writeRequest, writeResponse),
         (preparedWriteRequest, preparedWriteResponse),
-        (executeWriteRequest, executeWriteResponse),
+        (executeWriteRequest, executeWriteResponse)
     ]
     // swiftlint:enable comma
 

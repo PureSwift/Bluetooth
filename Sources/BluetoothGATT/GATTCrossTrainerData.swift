@@ -494,7 +494,7 @@ public struct GATTCrossTrainerData {
         var data = Data([
             flagBytes.0,
             flagBytes.1,
-            flagBytes.2,
+            flagBytes.2
         ])
 
         data.reserveCapacity(totalBytes)
@@ -703,7 +703,7 @@ public struct GATTCrossTrainerData {
             .metabolicEquivalent,
             .elapsedTime,
             .remainingTime,
-            .movementDirection,
+            .movementDirection
         ]
     }
 }

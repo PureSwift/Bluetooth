@@ -71,7 +71,7 @@ extension GATTIndoorPositioningConfiguration {
                 .txPowerField,
                 .altitudeField,
                 .floorNumber,
-                .locationName,
+                .locationName
             ]
         }
     }

@@ -91,7 +91,7 @@ public struct HCIPINCodeRequestReply: HCICommandParameter {
             pinCodeBytes.12,
             pinCodeBytes.13,
             pinCodeBytes.14,
-            pinCodeBytes.15,
+            pinCodeBytes.15
         ])
     }
 }

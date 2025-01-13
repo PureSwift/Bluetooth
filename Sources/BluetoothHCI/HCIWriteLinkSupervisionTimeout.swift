@@ -67,7 +67,7 @@ public struct HCIWriteLinkSupervisionTimeout: HCICommandParameter {
             handleBytes.0,
             handleBytes.1,
             timeoutBytes.0,
-            timeoutBytes.1,
+            timeoutBytes.1
         ])
     }
 }

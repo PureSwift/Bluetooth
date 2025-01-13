@@ -72,7 +72,7 @@ public struct HCILEWriteRfPathCompensation: HCICommandParameter {
             rfTxPathCompensationValueBytes.0,
             rfTxPathCompensationValueBytes.1,
             rfRxPathCompensationValueBytes.0,
-            rfRxPathCompensationValueBytes.1,
+            rfRxPathCompensationValueBytes.1
         ])
     }
 }

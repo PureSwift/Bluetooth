@@ -67,7 +67,7 @@ public struct HCILERemoteConnectionParameterRequestNegativeReply: HCICommandPara
         return Data([
             connectionHandleBytes.0,
             connectionHandleBytes.1,
-            reason,
+            reason
         ])
     }
 }

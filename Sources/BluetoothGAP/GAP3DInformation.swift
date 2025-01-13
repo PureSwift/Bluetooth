@@ -113,7 +113,7 @@ public extension GAP3DInformation {
                 .associationNotification,
                 .batteryLevelReporting,
                 .sendBatteryLevelOnStartUp,
-                .factoryTestMode,
+                .factoryTestMode
             ]
         }
     }

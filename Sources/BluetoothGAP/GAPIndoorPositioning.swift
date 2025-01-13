@@ -311,7 +311,7 @@ internal extension GAPIndoorPositioning {
             .altitude,
             .floorNumber,
             .uncertainty,
-            .locationName,
+            .locationName
         ]
     }
 }

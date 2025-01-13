@@ -72,7 +72,7 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
             durationBytes.0,
             durationBytes.1,
             periodBytes.0,
-            periodBytes.1,
+            periodBytes.1
         ])
     }
 

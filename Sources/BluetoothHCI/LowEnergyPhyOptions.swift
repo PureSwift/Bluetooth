@@ -24,6 +24,6 @@ public enum LowEnergyPhyOptions: UInt16, BitMaskOption {
     public static let allCases: [LowEnergyPhyOptions] = [
         .host,
         .s2,
-        .s3,
+        .s3
     ]
 }

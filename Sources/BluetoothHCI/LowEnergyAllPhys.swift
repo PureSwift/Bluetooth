@@ -20,6 +20,6 @@ public enum LowEnergyAllPhys: UInt8, BitMaskOption {
 
     public static let allCases: [LowEnergyAllPhys] = [
         .hostHasNoPreferenceAmongTheTransmitterPhy,
-        .hostHasNoPreferenceAmongTheReceiverPhy,
+        .hostHasNoPreferenceAmongTheReceiverPhy
     ]
 }

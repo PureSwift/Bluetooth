@@ -111,6 +111,6 @@ public extension LinkPolicyCommand {
         "Read Default Link Policy Settings",
         "Write Default Link Policy Settings",
         "Flow Specification",
-        "Sniff Subrating",
+        "Sniff Subrating"
     ]
 }

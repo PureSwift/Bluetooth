@@ -42,7 +42,7 @@ extension GATTCharacteristicProperties: CustomStringConvertible, CustomDebugStri
             (.notify, ".notify"),
             (.indicate, ".indicate"),
             (.signedWrite, ".signedWrite"),
-            (.extendedProperties, ".extendedProperties"),
+            (.extendedProperties, ".extendedProperties")
         ]
         return buildDescription(descriptions)
     }

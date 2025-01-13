@@ -103,7 +103,7 @@ public struct HCIPeriodicInquiryMode: HCICommandParameter {
             minDurationBytes.0, minDurationBytes.1,
             lapBytes.0, lapBytes.1, lapBytes.2,
             length.rawValue,
-            responses.rawValue,
+            responses.rawValue
         ])
     }
 }

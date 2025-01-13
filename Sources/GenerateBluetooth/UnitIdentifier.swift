@@ -274,7 +274,7 @@ private extension GenerateTool {
             0x27C5: "partsPerBillion",
             0x27C6: "massDensityRate",
             0x27C7: "kilovoltAmpereHour",
-            0x27C8: "voltAmpere",
+            0x27C8: "voltAmpere"
         ]
     }
 }

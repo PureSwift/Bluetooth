@@ -253,7 +253,7 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
         .insideBox,
         .onPieceOfPaper,
         .insideManual,
-        .onDevice,
+        .onDevice
     ]
 
 }
@@ -267,7 +267,7 @@ public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
 
     public static let allCases: [GAPSecureNetworkFlag] = [
         .keyRefresh,
-        .ivUpdate,
+        .ivUpdate
     ]
 
 }

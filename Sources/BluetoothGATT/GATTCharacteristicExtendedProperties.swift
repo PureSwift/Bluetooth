@@ -71,7 +71,7 @@ extension GATTCharacteristicExtendedProperties: CustomStringConvertible, CustomD
     public var description: String {
         let descriptions: [(GATTCharacteristicExtendedProperties, StaticString)] = [
             (.reliableWrite, ".reliableWrite"),
-            (.writableAuxiliaries, ".writableAuxiliaries"),
+            (.writableAuxiliaries, ".writableAuxiliaries")
         ]
         return buildDescription(descriptions)
     }

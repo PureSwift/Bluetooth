@@ -157,7 +157,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
             secondaryAdvertisingMaxSkip,
             secondaryAdvertisingPhy.rawValue,
             advertisingSid,
-            scanRequestNotificationEnable.rawValue,
+            scanRequestNotificationEnable.rawValue
         ])
     }
 
@@ -269,7 +269,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
             [
                 .channel37,
                 .channel38,
-                .channel39,
+                .channel39
             ]
         }
     }
@@ -329,7 +329,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
                 .highDutyCycleDirectedConnectableAdvertising,
                 .useLegacyAdvertisingPDUs,
                 .omitAdvertisingAddress,
-                .includeTxPower,
+                .includeTxPower
             ]
         }
     }

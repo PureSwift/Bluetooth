@@ -65,7 +65,7 @@ public struct HCILESetExtendedAdvertisingData: HCICommandParameter {
             advertisingHandle,
             operation.rawValue,
             fragmentPreference.rawValue,
-            advertisingDataLength,
+            advertisingDataLength
         ]) + advertisingData
     }
 

@@ -75,7 +75,7 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
                 .irregularPulse,
                 .pulseRateRage,
                 .measurementPosition,
-                .multipleBond,
+                .multipleBond
             ]
         }
     }

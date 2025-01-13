@@ -281,7 +281,7 @@ internal extension GAPDataDecoder {
             GAPSlaveConnectionIntervalRange.self,
             GAPTransportDiscoveryData<Data>.self,
             GAPTxPowerLevel.self,
-            GAPURI.self,
+            GAPURI.self
         ]
     }
 }

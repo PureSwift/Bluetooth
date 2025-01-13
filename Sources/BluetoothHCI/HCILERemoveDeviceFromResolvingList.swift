@@ -80,7 +80,7 @@ public struct HCILERemoveDeviceFromResolvingList: HCICommandParameter {
             peerIdentifyAddressBytes.4,
             peerIdentifyAddressBytes.5,
             peerIdentifyAddressBytes.6,
-            peerIdentifyAddressBytes.7,
+            peerIdentifyAddressBytes.7
         ])
     }
 }

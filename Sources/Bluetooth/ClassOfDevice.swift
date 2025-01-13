@@ -167,7 +167,7 @@ public extension ClassOfDevice {
             .objectTransfer,
             .audio,
             .telephony,
-            .information,
+            .information
         ]
     }
 }

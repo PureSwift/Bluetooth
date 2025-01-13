@@ -60,7 +60,7 @@ public struct HCIDeleteStoredLinkKey: HCICommandParameter {
             addressBytes.3,
             addressBytes.4,
             addressBytes.5,
-            deleteFlag.rawValue,
+            deleteFlag.rawValue
         ])
     }
 }

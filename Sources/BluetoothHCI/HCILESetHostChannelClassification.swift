@@ -37,7 +37,7 @@ public struct HCILESetHostChannelClassification: HCICommandParameter {  // HCI_L
             channelMap.1,
             channelMap.2,
             channelMap.3,
-            channelMap.4,
+            channelMap.4
         ])
     }
 }

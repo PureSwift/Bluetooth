@@ -68,7 +68,7 @@ public struct HCILESetPrivacyMode: HCICommandParameter {
             addressBytes.3,
             addressBytes.4,
             addressBytes.5,
-            privacyMode.rawValue,
+            privacyMode.rawValue
         ])
     }
 

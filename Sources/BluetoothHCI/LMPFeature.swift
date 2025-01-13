@@ -228,7 +228,7 @@ public enum LMPFeature: UInt64, BitMaskOption {
         .linkSupervisionTimeoutChangedEvent,
         .inquiryTXPowerLevel,
         .enhancedPowerControl,
-        .extendedFeatures,
+        .extendedFeatures
     ]
 }
 

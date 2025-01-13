@@ -231,7 +231,7 @@ extension GAPDataType: CustomStringConvertible {
             .meshMessage: "Mesh Message",
             .meshBeacon: "Mesh Beacon",
             .informationData3D: "3D Information Data",
-            .manufacturerSpecificData: "Manufacturer Specific Data",
+            .manufacturerSpecificData: "Manufacturer Specific Data"
         ]
         return names[self]
     }

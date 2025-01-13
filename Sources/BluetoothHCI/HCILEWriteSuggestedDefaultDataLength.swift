@@ -61,7 +61,7 @@ public struct HCILEWriteSuggestedDefaultDataLength: HCICommandParameter {
             suggestedMaxTxOctetsBytes.0,
             suggestedMaxTxOctetsBytes.1,
             suggestedMaxTxTimeBytes.0,
-            suggestedMaxTxTimeBytes.1,
+            suggestedMaxTxTimeBytes.1
         ])
     }
 }

@@ -117,7 +117,7 @@ public struct HCIQoSSetup: HCICommandParameter {
             delayVariationBytes.0,
             delayVariationBytes.1,
             delayVariationBytes.2,
-            delayVariationBytes.3,
+            delayVariationBytes.3
         ])
     }
 }

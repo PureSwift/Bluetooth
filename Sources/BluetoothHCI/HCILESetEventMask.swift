@@ -67,7 +67,7 @@ public struct HCILESetEventMask: HCICommandParameter {
             eventMaskBytes.4,
             eventMaskBytes.5,
             eventMaskBytes.6,
-            eventMaskBytes.7,
+            eventMaskBytes.7
         ])
     }
 }
@@ -163,7 +163,7 @@ public extension HCILESetEventMask {
                 .extendedScanTimeout,
                 .extendedAdvertisingSetTerminated,
                 .scanRequestReceived,
-                .channelSelectionAlgorithm,
+                .channelSelectionAlgorithm
             ]
         }
 

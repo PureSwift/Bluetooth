@@ -100,6 +100,6 @@ public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
         .oobFlagsField,
         .supportedLE,
         .simultaneousLEandBREDR,
-        .addressType,
+        .addressType
     ]
 }

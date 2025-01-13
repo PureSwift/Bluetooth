@@ -103,7 +103,7 @@ public extension BluetoothUUID.File {
             .characteristic: "CharacteristicUUID",
             .descriptor: "DescriptorUUID",
             .declaration: "DeclarationUUID",
-            .unit: "UnitIdentifier",
+            .unit: "UnitIdentifier"
         ]
     }
 

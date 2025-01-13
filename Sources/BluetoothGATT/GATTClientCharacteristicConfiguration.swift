@@ -86,7 +86,7 @@ extension GATTClientCharacteristicConfiguration: CustomStringConvertible, Custom
     public var description: String {
         let descriptions: [(GATTClientCharacteristicConfiguration, StaticString)] = [
             (.notify, ".notify"),
-            (.indicate, ".indicate"),
+            (.indicate, ".indicate")
         ]
         return buildDescription(descriptions)
     }

@@ -93,15 +93,15 @@ var package = Package(
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 ),
                 .target(
-                    name: "BluetoothGAP", 
+                    name: "BluetoothGAP",
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 ),
                 .target(
-                    name: "BluetoothGATT", 
+                    name: "BluetoothGATT",
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 ),
                 .target(
-                    name: "BluetoothHCI", 
+                    name: "BluetoothHCI",
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
                 )
             ]
@@ -169,14 +169,14 @@ if enableMacros {
         .macro(
             name: "BluetoothMacros",
             dependencies: [
-              .product(
-                name: "SwiftSyntaxMacros",
-                package: "swift-syntax"
-              ),
-              .product(
-                name: "SwiftCompilerPlugin",
-                package: "swift-syntax"
-              )
+                .product(
+                    name: "SwiftSyntaxMacros",
+                    package: "swift-syntax"
+                ),
+                .product(
+                    name: "SwiftCompilerPlugin",
+                    package: "swift-syntax"
+                )
             ]
         )
     ]

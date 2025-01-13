@@ -62,7 +62,7 @@ public struct HCIWriteLinkPolicySettings: HCICommandParameter {
             handleBytes.0,
             handleBytes.1,
             settingsBytes.0,
-            settingsBytes.1,
+            settingsBytes.1
         ])
     }
 }
@@ -89,7 +89,7 @@ extension HCIWriteLinkPolicySettings {
                 .enableRoleSwitch,
                 .enableHoldMode,
                 .enableSniffMode,
-                .enableParkState,
+                .enableParkState
             ]
         }
     }

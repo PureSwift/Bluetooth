@@ -44,7 +44,7 @@ public enum LowEnergyState: Int, BitMaskOption {
         .passiveScanning,
         .initiating,
         .connectionMaster,
-        .connectionSlave,
+        .connectionSlave
     ]
 }
 
@@ -173,7 +173,7 @@ internal let lowEnergyStates: [LowEnergyStateSet: (BitMaskOptionSet<LowEnergySta
     .state38: ([.connectableAdvertising, .connectionSlave]),
     .state39: ([.highDutyCycleDirectedAdvertising, .connectionSlave]),
     .state40: ([.lowDutyCycleDirectedAdvertising, .connectionSlave]),
-    .state41: ([.initiating, .connectionSlave]),
+    .state41: ([.initiating, .connectionSlave])
 
 ]
 
@@ -188,6 +188,6 @@ internal let lowEnergyStateNames: [LowEnergyState: String] = [
     .passiveScanning: "Passive Scanning State",
     .initiating: "Initiating State",
     .connectionMaster: "Connection State(Master Role)",
-    .connectionSlave: "Connection State(Slave Role)",
+    .connectionSlave: "Connection State(Slave Role)"
 ]
 // swiftlint:enable colon

@@ -96,7 +96,7 @@ public struct HCILESetPhy: HCICommandParameter {
             txPhys.rawValue,
             rxPhys.rawValue,
             phyOptionsBytes.0,
-            phyOptionsBytes.1,
+            phyOptionsBytes.1
         ])
     }
 }

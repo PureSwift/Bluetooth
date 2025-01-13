@@ -116,7 +116,7 @@ public struct HCILEGenerateDHKey: HCICommandParameter {
             remoteP256PublicKeyBytes.60,
             remoteP256PublicKeyBytes.61,
             remoteP256PublicKeyBytes.62,
-            remoteP256PublicKeyBytes.63,
+            remoteP256PublicKeyBytes.63
         ])
     }
 }
