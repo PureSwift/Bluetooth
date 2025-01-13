@@ -13,7 +13,7 @@
   "lineBreakBeforeEachGenericRequirement" : false,
   "lineLength" : 1000,
   "maximumBlankLines" : 1,
-  "multiElementCollectionTrailingCommas" : true,
+  "multiElementCollectionTrailingCommas" : false,
   "noAssignmentInExpressions" : {
     "allowedFunctions" : [
       "XCTAssertNoThrow"
