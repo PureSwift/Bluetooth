@@ -61,7 +61,7 @@ extension GAPLERole {
             case central = 0b01
             case peripheral = 0b10
         }
-        
+
         public static var allCases: [GAPLERole.Role] {
             [
                 .central,

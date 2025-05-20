@@ -70,10 +70,10 @@ extension GATTAlertStatus {
         private enum Options: UInt8 {
             // Ringer state
             case ringer = 0b01
-            
+
             // Vibrate state
             case vibrate = 0b10
-            
+
             // Display Alert state
             case displayAlert = 0b100
         }

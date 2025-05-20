@@ -47,37 +47,37 @@ public struct ACLPacketType: Sendable {
     private enum Options: UInt16 {
         /// 2-DH1 may not be used
         case packet2DH1mayNotBeUsed = 0x0002
-        
+
         /// 3-DH1 may not be used
         case packet3DH1mayNotBeUsed = 0x0004
-        
+
         /// DM1 may be used
         case packetDM1mayBeUsed = 0x0008
-        
+
         /// DH1 may be used
         case packetDH1mayBeUsed = 0x0010
-        
+
         /// 2-DH3 may not be used
         case packet2DH3mayNotBeUsed = 0x0100
-        
+
         /// 3-DH3 may not be used
         case packet3DH3mayNotBeUsed = 0x0200
-        
+
         /// DM3 may be used
         case packetDM3mayBeUsed = 0x0400
-        
+
         /// DH3 may be used
         case packetDH3mayBeUsed = 0x0800
-        
+
         /// 2-DH5 may not be used
         case packet2DH5mayBeUsed = 0x1000
-        
+
         /// 3-DH5 may not be used
         case packet3DH5mayBeUsed = 0x2000
-        
+
         /// DM5 may be used
         case packetDM5mayBeUsed = 0x4000
-        
+
         /// DH5 may be used
         case packetDH5mayBeUsed = 0x8000
     }
@@ -104,10 +104,10 @@ public struct SCOPacketType: Sendable {
     private enum Options: UInt16 {
         /// HV1
         case hv1 = 0x0020
-        
+
         /// HV2
         case hv2 = 0x0040
-        
+
         /// HV3
         case hv3 = 0x0080
     }

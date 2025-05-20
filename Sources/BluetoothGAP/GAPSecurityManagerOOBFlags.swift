@@ -80,17 +80,17 @@ public struct GAPSecurityManagerOOBFlag: Sendable, Hashable {
         ///
         /// 0 = OOB data not present, 1 = OOB data present
         case oobFlagsField = 0b01
-        
+
         /// LE supported (Host)
         ///
         /// bit 65 of LMP Extended Feature bits (Page 1)
         case supportedLE = 0b10
-        
+
         /// Simultaneous LE and BR/EDR to Same Device Capable (Host)
         ///
         /// bit 66 of LMP Extended Feature bits (Page 1)
         case simultaneousLEandBREDR = 0b100
-        
+
         /// Address type
         ///
         /// 0 = Public Address, 1 = Random Address

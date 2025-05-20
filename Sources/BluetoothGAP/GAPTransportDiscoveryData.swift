@@ -119,16 +119,16 @@ public struct GAPTransportDiscoveryDataFlag: Sendable, Hashable {
     private enum Options: UInt8 {
         /// Seeker
         case seeker = 0b01
-        
+
         /// Provider
         case provider = 0b10
-        
+
         /// Transport Data Incomplete
         case dataIncomplete = 0b100
-        
+
         /// Transport State
         case stateOn = 0b1000
-        
+
         /// Temporarily Unavailable
         case temporalilyUnavailable = 0b10000
     }

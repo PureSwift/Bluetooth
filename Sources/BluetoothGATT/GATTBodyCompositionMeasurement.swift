@@ -455,43 +455,43 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             /// Measurement Units
             /// SI
             case measurementUnitSI = 0b00
-            
+
             /// Imperial
             case measurementUnitImperial = 0b01
-            
+
             /// Time Stamp Present
             case timestamp = 0b10
-            
+
             /// User ID present
             case userID = 0b100
-            
+
             /// Basal Metabolism present
             case basalMetabolism = 0b1000
-            
+
             /// Muscle Percentage present
             case musclePercentage = 0b10000
-            
+
             /// Muscle Mass present
             case muscleMass = 0b100000
-            
+
             /// Fat Free Mass present
             case fatFreeMass = 0b1000000
-            
+
             /// Soft Lean Mass present
             case softLeanMass = 0b10000000
-            
+
             /// Body Water Mass present
             case bodyWaterMass = 0b100000000
-            
+
             /// Impedance present
             case impedance = 0b10_00000000
-            
+
             /// Weight present
             case weight = 0b100_00000000
-            
+
             /// Height present
             case height = 0b1000_00000000
-            
+
             /// Multiple Packet Measurement
             case multiplePacket = 0b10000_00000000
         }

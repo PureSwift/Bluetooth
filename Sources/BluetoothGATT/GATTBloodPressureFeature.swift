@@ -53,19 +53,19 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
         private enum Options: UInt16 {
             /// Body Movement Detection Support
             case bodyMovement = 0b01
-            
+
             /// Cuff Fit Detection Support
             case cuttFit = 0b10
-            
+
             /// Irregular Pulse Detection Support
             case irregularPulse = 0b100
-            
+
             /// Pulse Rate Range Detection Support
             case pulseRateRage = 0b1000
-            
+
             /// Measurement Position Detection Support
             case measurementPosition = 0b10000
-            
+
             /// Multiple Bond Support
             case multipleBond = 0b100000
         }

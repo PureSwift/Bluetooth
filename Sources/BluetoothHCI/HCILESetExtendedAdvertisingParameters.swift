@@ -259,10 +259,10 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
         private enum Options: UInt8 {
             /// Channel 37 shall be used
             case channel37 = 0b1
-            
+
             /// Channel 38 shall be used
             case channel38 = 0b10
-            
+
             /// Channel 39 shall be used
             case channel39 = 0b100
         }
@@ -305,22 +305,22 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
         private enum Options: UInt16 {
             /// Connectable advertising
             case connectableAdvertising = 0b1
-            
+
             /// Scannable advertising
             case scannableAdvertising = 0b10
-            
+
             /// Directed advertising
             case directedAdvertising = 0b100
-            
+
             /// High Duty Cycle Directed Connectable advertising (≤ 3.75 ms Advertis- ing Interval)
             case highDutyCycleDirectedConnectableAdvertising = 0b1000
-            
+
             /// Use legacy advertising PDUs
             case useLegacyAdvertisingPDUs = 0b10000
-            
+
             /// Omit advertiser's address from all PDUs ("anonymous advertising")
             case omitAdvertisingAddress = 0b100000
-            
+
             /// Include TxPower in the extended header of the advertising PDU
             case includeTxPower = 0b1000000
         }

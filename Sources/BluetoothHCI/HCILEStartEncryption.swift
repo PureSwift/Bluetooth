@@ -26,7 +26,7 @@ public extension BluetoothHostControllerInterface {
 
         /**
          When the Controller receives the LE_Start_Encryption command it shall send the Command Status event to the Host. If the connection is not encrypted when this command is issued, an Encryption Change event shall occur when encryption has been started for the connection. If the connection is encrypted when this command is issued, an Encryption Key Refresh Complete event shall occur when encryption has been resumed.
-
+        
          - Note: A Command Complete event is not sent by the Controller to indicate that this command has been completed. Instead, the Encryption Change or Encryption Key Refresh Complete events indicate that this command has been completed.
          */
 
@@ -46,47 +46,47 @@ public extension BluetoothHostControllerInterface {
         /*
          var encryptionChange: LowEnergyEncryptionChange?
          var eventFound = false
-
+        
          try pollEvent(HCILowEnergyMetaEvent.self, shouldContinue: { shouldContinue() && eventFound == false }, event: { (metaEvent) in
-
+        
          eventFound = true
-
+        
          switch metaEvent.subevent {
-
+        
          case .encryptionChange:
-
+        
          // parse LE Encryption Change
          guard let encryptionEvent = LowEnergyEvent.EncryptionChangeEventParameter(data: metaEvent.data)
          else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
-
+        
          if let error = encryptionEvent.status.error {
-
+        
          throw error
          }
-
+        
          assert(encryptionEvent.handle == connectionHandle)
-
+        
          encryptionChange = encryptionEvent.encryptionEnabled
-
+        
          case .encryptionKeyRefreshComplete:
-
+        
          // parse LE Key Refresh Complete
          guard let encryptionEvent = LowEnergyEvent.EncryptionKeyRefreshCompleteEventParameter(data: metaEvent.data)
          else { throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data)) }
-
+        
          if let error = encryptionEvent.status.error {
-
+        
          throw error
          }
-
+        
          assert(encryptionEvent.handle == connectionHandle)
-
+        
          default:
-
+        
          throw BluetoothHostControllerError.garbageResponse(Data(metaEvent.data))
          }
          })
-
+        
          return encryptionChange
          */
     }

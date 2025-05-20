@@ -144,10 +144,10 @@ extension HCILESetAdvertisingParameters {
         private enum Options: UInt8 {
             /// Enable channel 37 use
             case channel37 = 0b00000001
-            
+
             /// Enable channel 38 use
             case channel38 = 0b00000010
-            
+
             /// Enable channel 39 use
             case channel39 = 0b00000100
         }

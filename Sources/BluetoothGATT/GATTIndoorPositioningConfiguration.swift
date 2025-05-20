@@ -49,19 +49,19 @@ extension GATTIndoorPositioningConfiguration {
         private enum Options: UInt8 {
             /// Presence of coordinates in advertising packets
             case coordinates = 0b01
-            
+
             /// Coordinate system used in advertising packets
             case coordinateSystemUsed = 0b10
-            
+
             /// Presence of Tx Power field in advertising packets
             case txPowerField = 0b100
-            
+
             /// Presence of Altitude field in advertising packets
             case altitudeField = 0b1000
-            
+
             /// Presence of Floor Number in advertising packets
             case floorNumber = 0b10000
-            
+
             //Location Name available in the GATT database
             case locationName = 0b100000
         }

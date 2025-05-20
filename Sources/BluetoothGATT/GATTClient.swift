@@ -279,7 +279,7 @@ public actor GATTClient<Socket: L2CAPConnection>: Sendable {
 
         /**
          The Attribute Protocol Read Request is used for this sub-procedure. The Read Request is used with the Attribute Handle parameter set to the characteristic descriptor handle. The Read Response returns the characteristic descriptor value in the Attribute Value parameter.
-
+        
          An Error Response shall be sent by the server in response to the Read Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a read operation is not permitted on the Characteristic Value. The Error Code parameter is set accordingly.
          */
 
@@ -563,9 +563,9 @@ public actor GATTClient<Socket: L2CAPConnection>: Sendable {
         let _ = try await send(request, response: ATTWriteResponse.self)
         /**
          Write Response
-
+        
          A Write Response shall be sent by the server if the write of the Characteristic Value succeeded.
-
+        
          An Error Response shall be sent by the server in response to the Write Request if insufficient authentication, insufficient authorization, insufficient encryption key size is used by the client, or if a write operation is not permitted on the Characteristic Value. The Error Code parameter is set as specified in the Attribute Protocol. If the Characteristic Value that is written is the wrong size, or has an invalid value as defined by the profile, then the value shall not be written and an Error Response shall be sent with the Error Code set to Application Error by the server.
          */
     }
@@ -778,15 +778,15 @@ public actor GATTClient<Socket: L2CAPConnection>: Sendable {
 
         /**
          Two possible responses can be sent from the server for the Find Information Request: Find Information Response and Error Response.
-
+        
          Error Response is returned if an error occurred on the server.
-
+        
          Find Information Response returns a list of Attribute Handle and Attribute Value pairs corresponding to the characteristic descriptors in the characteristic definition. The Attribute Handle is the handle for the characteristic descriptor declaration. The Attribute Value is the Characteristic Descriptor UUID.
-
+        
          The Find Information Request shall be called again with the Starting Handle set to one greater than the last Attribute Handle in the Find Information Response.
-
+        
          The sub-procedure is complete when the Error Response is received and the Error Code is set to Attribute Not Found or the Find Information Response has an Attribute Handle that is equal to the Ending Handle of the request.
-
+        
          It is permitted to end the sub-procedure early if a desired Characteristic Descriptor is found prior to discovering all the characteristic descriptors of the specified characteristic.
          */
 

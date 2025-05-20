@@ -133,28 +133,28 @@ extension ClassOfDevice {
         private enum Options: UInt16 {
             /// Limited Discoverable Mode [Ref #1]
             case limitedDiscoverable = 0b01
-            
+
             /// Positioning (Location identification)
             case positioning = 0b1000
-            
+
             /// Networking (LAN, Ad hoc, ...)
             case networking = 0b10000
-            
+
             /// Rendering (Printing, Speakers, ...)
             case rendering = 0b100000
-            
+
             /// Capturing (Scanner, Microphone, ...)
             case capturing = 0b1000000
-            
+
             /// Object Transfer (v-Inbox, v-Folder, ...)
             case objectTransfer = 0b10000000
-            
+
             /// Audio (Speaker, Microphone, Headset service, ...)
             case audio = 0b1_00000000
-            
+
             /// Telephony (Cordless telephony, Modem, Headset service, ...)
             case telephony = 0b10_00000000
-            
+
             /// Information (WEB-server, WAP-server, ...)
             case information = 0b100_00000000
         }
@@ -529,16 +529,16 @@ extension ClassOfDevice.MinorDeviceClass {
         private enum Options: UInt8 {
             /// Uncategorized
             case uncategorized = 0b00
-            
+
             /// Display
             case display = 0b01
-            
+
             /// Camera
             case camera = 0b10
-            
+
             /// Scanner
             case scanner = 0b100
-            
+
             /// Printer
             case printer = 0b1000
         }

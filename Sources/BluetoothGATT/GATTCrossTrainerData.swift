@@ -642,49 +642,49 @@ public struct GATTCrossTrainerData {
         private enum Options: UInt32 {
             /// More Data
             case moreData = 0b01
-            
+
             /// Average Speed present
             case averageSpeed = 0b10
-            
+
             /// Total Distance Present
             case totalDistance = 0b100
-            
+
             /// Step Count present
             case stepCount = 0b1000
-            
+
             /// Stride Count present
             case strideCount = 0b10000
-            
+
             /// Elevation Gain present
             case elevationGain = 0b100000
-            
+
             /// Inclination and Ramp Angle Setting present
             case inclinationAndRampAngleSetting = 0b1000000
-            
+
             /// Resistance Level Present
             case resistanceLevel = 0b10000000
-            
+
             /// Instantaneous Power present
             case instantaneousPower = 0b100000000
-            
+
             /// Average Power present
             case averagePower = 0b10_00000000
-            
+
             /// Expended Energy present
             case expendedEnergy = 0b100_00000000
-            
+
             /// Heart Rate present
             case heartRate = 0b1000_00000000
-            
+
             /// Metabolic Equivalent present
             case metabolicEquivalent = 0b10000_00000000
-            
+
             // Elapsed Time present
             case elapsedTime = 0b100000_00000000
-            
+
             // Remaining Time present
             case remainingTime = 0b1000000_00000000
-            
+
             // Movement Direction
             case movementDirection = 0b10000000_00000000
         }

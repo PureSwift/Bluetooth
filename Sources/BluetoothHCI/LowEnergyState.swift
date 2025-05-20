@@ -13,26 +13,26 @@ public struct LowEnergyState: Sendable, Hashable {
     private enum Options: Int {
         /// Scannable Advertising State
         case scannableAdvertising = 0b01  // 0x0001  // LE_STATE_SCAN_ADV
-        
+
         /// Connectable Advertising State
         case connectableAdvertising = 0b10  // 0x0002  // LE_STATE_CONN_ADV
-        
+
         /// Non-Connectable Advertising State
         case nonConnectableAdvertising = 0b100  // 0x0004 // LE_STATE_NONCONN_ADV
-        
+
         /// High Duty Cycle Directed Advertising State
         case highDutyCycleDirectedAdvertising = 0b1000  // LE_STATE_HIGH_DIRECT_ADV 0x0008
-        
+
         case lowDutyCycleDirectedAdvertising = 0b10000  // LE_STATE_LOW_DIRECT_ADV 0x0010
-        
+
         case activeScanning = 0b100000  // LE_STATE_ACTIVE_SCAN 0x0020
-        
+
         case passiveScanning = 0b1000000  // LE_STATE_PASSIVE_SCAN 0x0040
-        
+
         case initiating = 0b10000000  // LE_STATE_INITIATING 0x0080
-        
+
         case connectionMaster = 0b100000000  // LE_STATE_MASTER_MASTER 0x0100
-        
+
         case connectionSlave = 0b10_00000000  // LE_STATE_SLAVE_SLAVE 0x0200
     }
     public static let allCases: [LowEnergyState] = [

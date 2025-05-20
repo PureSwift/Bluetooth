@@ -75,13 +75,13 @@ extension HCIWriteLinkPolicySettings {
         private enum Options: UInt16 {
             /// Enable Role Switch.
             case enableRoleSwitch = 0x0001
-            
+
             /// Enable Hold Mode.
             case enableHoldMode = 0x0002
-            
+
             /// Enable Sniff Mode.
             case enableSniffMode = 0x0004
-            
+
             /// Enable Park State.
             case enableParkState = 0x0008
         }

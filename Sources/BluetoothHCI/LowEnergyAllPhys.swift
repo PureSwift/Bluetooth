@@ -15,7 +15,7 @@ public struct LowEnergyAllPhys: Sendable {
     private enum Options: UInt8 {
         /// The Host has no preference among the transmitter PHYs supported by the Controller
         case hostHasNoPreferenceAmongTheTransmitterPhy = 0b01
-        
+
         /// The Host has no preference among the receiver PHYs supported by the Controller
         case hostHasNoPreferenceAmongTheReceiverPhy = 0b10
     }

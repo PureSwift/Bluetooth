@@ -47,25 +47,25 @@ extension GATTAlertCategoryBitMask {
         private enum Options: UInt64 {
             // 1st byte
             case simpleAlert = 0b01
-            
+
             case email = 0b10
-            
+
             case news = 0b100
-            
+
             case call = 0b1000
-            
+
             case missedCall = 0b10000
-            
+
             case sms = 0b100000
-            
+
             case voiceMail = 0b1000000
-            
+
             case schedule = 0b10000000
-            
+
             // 2nd byte
-            
+
             case highPrioritized = 0b100000000
-            
+
             case instantMessage = 0b10_00000000
         }
         public static var allCases: [Category] {

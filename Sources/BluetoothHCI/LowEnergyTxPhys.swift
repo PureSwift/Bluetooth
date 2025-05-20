@@ -15,10 +15,10 @@ public struct LowEnergyTxPhys {
     private enum Options: UInt8 {
         /// The Host prefers to use the LE 1M transmitter PHY (possibly among others)
         case hostUseLe1MTransmitterPhy = 0b001
-        
+
         /// The Host prefers to use the LE 2M transmitter PHY (possibly among others)
         case hostUseLe2MTransmitterPhy = 0b010
-        
+
         /// The Host prefers to use the LE Coded transmitter PHY (possibly among others)
         case hostUseLeCodedTransmitterPhy = 0b100
     }

@@ -65,14 +65,14 @@ public extension HCIHoldMode {
 
     /**
      Hold Mode Max Interval
-
+    
      Maximum / Minimum acceptable number of Baseband slots to wait in Hold Mode.
      Time Length of the Hold = N * 0.625 ms (1 Baseband slot)
-
+    
      Range for N: 0x0002-0xFFFE; only even values are valid.
-
+    
      Time Range: 1.25ms - 40.9 s
-
+    
      Mandatory Range: 0x0014 to 0x8000
      */
     struct Interval: RawRepresentable, Equatable, Hashable, Sendable {

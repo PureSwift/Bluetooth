@@ -15,10 +15,10 @@ public struct LowEnergyRxPhys: Sendable {
     private enum Options: UInt8 {
         /// The Host prefers to use the LE 1M receiver PHY (possibly among others)
         case hostUseLe1MReceiverPhy = 0b001
-        
+
         /// The Host prefers to use the LE 2M receiver PHY (possibly among others)
         case hostUseLe2MReceiverPhy = 0b010
-        
+
         /// The Host prefers to use the LE Coded receiver PHY (possibly among others)
         case hostUseLeCodedReceiverPhy = 0b100
     }

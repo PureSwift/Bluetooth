@@ -243,16 +243,16 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         private enum Options: UInt8 {
             /// Blood pressure for Systolic, Diastolic and MAP in units of kPa
             case bloodPressureUnits = 0b01
-            
+
             /// Time Stamp present
             case timestamp = 0b10
-            
+
             /// Pulse Rate present
             case pulseRate = 0b100
-            
+
             /// User ID present
             case userID = 0b1000
-            
+
             /// Measurement Status present
             case measurementStatus = 0b10000
         }
@@ -282,11 +282,11 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
 
     /**
      Blood Pressure Measurement Compound Value Field
-
+    
      This Blood Pressure Measurement Compound Value field is composed of three subfields: Systolic, Diastolic and Mean Arterial Pressure (MAP) and is included in the Blood Pressure Measurement characteristic.
-
+    
      If a value for Systolic, Diastolic or MAP subfields is unavailable (e.g. due to an invalid result from a computation step or missing data due to the hardware’s inability to provide a valid measurement), the special short float value NaN (see Section 4) defined in ISO/IEEE 11073-20601a [4] shall be used in each of the unavailable subfields.
-
+    
      If the unit of the Blood Pressure Measurement is in mmHg, bit 0 of the Flags field is set to 0. Otherwise, the unit is kPa and bit 0 of the Flags field is set to 1.
      */
     public struct CompoundValue {
@@ -308,13 +308,13 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     public struct MeasurementStatus: Sendable {
         private enum Options: UInt16 {
             case bodyMovement = 0b01
-            
+
             case cuffFit = 0b10
-            
+
             case irregularPulse = 0b100
-            
+
             case pulseRate = 0b1000
-            
+
             case measurementPosition = 0b10000
         }
         public static var allCases: MeasurementStatus {

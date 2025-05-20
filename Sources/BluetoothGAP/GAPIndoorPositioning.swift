@@ -280,27 +280,27 @@ internal extension GAPIndoorPositioning {
             /// Presence of coordinates in advertising packets
             /// (0 = coordinates are not present, 1 = coordinates are present)
             case coordinates = 0b00000001
-                
+
             /// Coordinate system used in advertising packets
             /// (0 = WGS84 coordinate system, 1 = Local coordinate system)
             case coordinateSystemUsed = 0b00000010
-                
+
             /// Presence of Tx Power field in advertising packets
             /// (0 = Tx Power is not present, 1 = Tx Power is present)
             case txPower = 0b00000100
-                
+
             /// Presence of Altitude field in advertising packets
             /// (0 = Altitude is not present, 1 = Altitude is present)
             case altitude = 0b00001000
-                
+
             /// Presence of Floor Number in advertising packets
             /// (0 = Floor Number is not present, 1 = Floor Number is present)
             case floorNumber = 0b00010000
-                
+
             /// Presence of Uncertainty in advertising packets
             /// (0 = Uncertainty is not present, 1 = Uncertainty is present)
             case uncertainty = 0b00100000
-                
+
             /// Location Name available in the GATT database.
             /// (0 = Location Name is not present, 1 = Location Name is present)
             case locationName = 0b01000000

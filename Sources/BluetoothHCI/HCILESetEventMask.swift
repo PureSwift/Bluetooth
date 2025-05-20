@@ -85,61 +85,61 @@ extension HCILESetEventMask {
         private enum Options: UInt64 {
             /// LE Connection Complete Event
             case connectionComplete = 0b00
-            
+
             /// LE Advertising Report Event
             case advertisingReport = 0b01
-            
+
             /// LE Connection Update Complete Event
             case connectionUpdateComplete = 0b10
-            
+
             /// LE Read Remote Features Complete Event
             case readRemoteFeaturesComplete = 0b100
-            
+
             /// LE Long Term Key Request Event
             case longTermKeyRequest = 0b1000
-            
+
             /// LE Remote Connection Parameter Request Event
             case remoteConnectionParameterRequest = 0b10000
-            
+
             /// LE Data Length Change Event
             case dataLengthChange = 0b100000
-            
+
             /// LE Read Local P-256 Public Key Complete Event
             case readLocalP256PublicKeyComplete = 0b1000000
-            
+
             /// LE Generate DHKey Complete Event
             case generateDHKeyComplete = 0b10000000
-            
+
             /// LE Enhanced Connection Complete Event
             case enhancedConnectionComplete = 0b100000000
-            
+
             /// LE Directed Advertising Report Event
             case directedAdvertisingReport = 0b10_00000000
-            
+
             /// LE PHY Update Complete Event
             case phyUpdateComplete = 0b100_00000000
-            
+
             /// LE Extended Advertising Report Event
             case extendedAdvertisingReport = 0b1000_00000000
-            
+
             /// LE Periodic Advertising Sync Established Event
             case periodicAdvertisingSyncEstablished = 0b10000_00000000
-            
+
             /// LE Periodic Advertising Report Event
             case periodicAdvertisingReport = 0b100000_00000000
-            
+
             /// LE Periodic Advertising Sync Lost Event
             case periodicAdvertisingSyncLost = 0b1000000_00000000
-            
+
             /// LE Extended Scan Timeout Event
             case extendedScanTimeout = 0b10000000_00000000
-            
+
             /// LE Extended Advertising Set Terminated Event
             case extendedAdvertisingSetTerminated = 0b1_00000000_00000000
-            
+
             /// LE Scan Request Received Event
             case scanRequestReceived = 0b10_00000000_00000000
-            
+
             /// LE Channel Selection Algorithm Event
             case channelSelectionAlgorithm = 0b100_00000000_00000000
         }

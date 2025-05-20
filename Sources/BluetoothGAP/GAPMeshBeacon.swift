@@ -219,30 +219,30 @@ public enum GAPBeaconType: UInt8 {
 public struct GAPOOBInformationFlag: Sendable, Hashable {
     private enum Options: UInt16 {
         case other = 0b01
-        
+
         case electronic = 0b10
-        
+
         case machineReadableCode = 0b100
-        
+
         case barCode = 0b1000
-        
+
         case nearFieldCommunication = 0b10000
-        
+
         case number = 0b100000
-        
+
         case string = 0b1000000
-        
+
         case onBox = 0b1000_00000000
-        
+
         case insideBox = 0b10000_00000000
-        
+
         case onPieceOfPaper = 0b100000_00000000
-        
+
         case insideManual = 0b1000000_00000000
-        
+
         case onDevice = 0b10000000_00000000
     }
-    
+
     public static let allCases: [GAPOOBInformationFlag] = [
         .other,
         .electronic,
@@ -265,7 +265,7 @@ public struct GAPOOBInformationFlag: Sendable, Hashable {
 public struct GAPSecureNetworkFlag: Sendable, Hashable {
     private enum Options: UInt8 {
         case keyRefresh = 0b01
-        
+
         case ivUpdate = 0b10
     }
 

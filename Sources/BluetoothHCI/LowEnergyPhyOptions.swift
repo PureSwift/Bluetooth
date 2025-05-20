@@ -15,10 +15,10 @@ public struct LowEnergyPhyOptions: Sendable {
     private enum Options: UInt16 {
         /// The Host has no preferred coding when transmitting on the LE Coded PHY
         case host = 0b01
-        
+
         /// The Host prefers that S=2 coding be used when transmitting on the LE Coded PHY
         case s2 = 0b10
-        
+
         /// The Host prefers that S=8 coding be used when transmitting on the LE Coded PHY
         case s3 = 0b100
     }

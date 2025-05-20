@@ -231,35 +231,34 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
     }
 }
 
-
 /// Event Type
 @OptionSet<UInt16>
-public struct EventType: Sendable {    
+public struct EventType: Sendable {
     private enum Options: UInt16 {
         /// Connectable advertising
         case connectableAdvertising = 0b00000000_00000001
-        
+
         /// Scannable advertising
         case scannableAdvertising = 0b00000000_00000010
-        
+
         /// Directed advertising
         case directedAdvertising = 0b00000000_00000100
-        
+
         /// Scan response
         case scanResponse = 0b00000000_00001000
-        
+
         /// Legacy advertising PDUs used
         case legacyAdvertisingPDU = 0b00000000_00010000
-        
+
         /// Data status: Complete
         case dataStatusComplete = 0b00000000_00000000
-        
+
         /// Data status: Incomplete, more data to come
         case dataStatusIncompleteMoreData = 0b00000000_00100000
-        
+
         /// Data status: Incomplete, data truncated, no more to come
         case dataStatusIncompleteTruncated = 0b00000000_01000000
-        
+
         /// Data status: Reserved for future use
         case dataStatusReserved = 0b00000000_01100000
     }

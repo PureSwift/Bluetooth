@@ -54,13 +54,13 @@ extension GATTCurrentTime {
         private enum Options: UInt8 {
             /// Manual time update
             case manualTimeUpdate = 0b01
-            
+
             /// External reference time update
             case externalReference = 0b10
-            
+
             /// Change of time zone
             case timeZoneChange = 0b100
-            
+
             /// Change of DST (daylight savings time)
             case dstChange = 0b1000
         }
