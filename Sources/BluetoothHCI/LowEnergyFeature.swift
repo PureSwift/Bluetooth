@@ -15,59 +15,60 @@
 ///
 /// The bit positions for each Link Layer Feature shall be as shown in Table 4.4. This table also shows if these bits are valid between Controllers. If a bit is shown as not valid, using ‘N’, then this bit shall be ignored upon receipt by the peer Controller.
 @frozen
-public enum LowEnergyFeature: UInt64, BitMaskOption {
-
-    /// LE Encryption
-    case encryption = 0b00000000_00000001
-
-    /// Connection Parameters Request Procedure
-    case connectionParametersRequestProcedure = 0b00000000_00000010
-
-    /// Extended Reject Indication
-    case extendedRejectIndication = 0b00000000_00000100
-
-    /// Slave-initiated Features Exchange
-    case slaveInitiatedFeaturesExchange = 0b00000000_00001000
-
-    /// LE Ping
-    case ping = 0b00000000_00010000
-
-    /// LE Data Packet Length Extension
-    case dataPacketLengthExtension = 0b00000000_00100000
-
-    /// LE Privacy
-    case privacy = 0b00000000_01000000
-
-    /// Extended Scanner Filter Policies
-    case extendedScannerFilterPolicies = 0b00000000_10000000
-
-    /// LE 2M PHY
-    case le2mPhy = 0b00000001_00000000
-
-    /// Stable Modulation Index - Transmitter
-    case stableModulationIndexTransmitter = 0b00000010_00000000
-
-    /// Stable Modulation Index - Receiver
-    case stableModulationIndexReceiver = 0b00000100_00000000
-
-    /// LE Coded PHY
-    case codedPhy = 0b00001000_00000000
-
-    /// LE Extended Advertising
-    case extendedAdvertising = 0b00010000_00000000
-
-    /// LE Periodic Advertising
-    case periodicAdvertising = 0b00100000_00000000
-
-    /// Channel Selection Algorithm #2
-    case channelSelectionAlgorithm2 = 0b01000000_00000000
-
-    /// LE Power Class 1
-    case powerClass1 = 0b10000000_00000000
-
-    /// Minimum Number of Used Channels Procedure
-    case minimumNumberofUsedChannelsProcedure = 0b1_00000000_00000000
-
+@OptionSet<UInt64>
+public struct LowEnergyFeature: Sendable, Hashable {
+    private enum Options: UInt64 {
+        /// LE Encryption
+        case encryption = 0b00000000_00000001
+        
+        /// Connection Parameters Request Procedure
+        case connectionParametersRequestProcedure = 0b00000000_00000010
+        
+        /// Extended Reject Indication
+        case extendedRejectIndication = 0b00000000_00000100
+        
+        /// Slave-initiated Features Exchange
+        case slaveInitiatedFeaturesExchange = 0b00000000_00001000
+        
+        /// LE Ping
+        case ping = 0b00000000_00010000
+        
+        /// LE Data Packet Length Extension
+        case dataPacketLengthExtension = 0b00000000_00100000
+        
+        /// LE Privacy
+        case privacy = 0b00000000_01000000
+        
+        /// Extended Scanner Filter Policies
+        case extendedScannerFilterPolicies = 0b00000000_10000000
+        
+        /// LE 2M PHY
+        case le2mPhy = 0b00000001_00000000
+        
+        /// Stable Modulation Index - Transmitter
+        case stableModulationIndexTransmitter = 0b00000010_00000000
+        
+        /// Stable Modulation Index - Receiver
+        case stableModulationIndexReceiver = 0b00000100_00000000
+        
+        /// LE Coded PHY
+        case codedPhy = 0b00001000_00000000
+        
+        /// LE Extended Advertising
+        case extendedAdvertising = 0b00010000_00000000
+        
+        /// LE Periodic Advertising
+        case periodicAdvertising = 0b00100000_00000000
+        
+        /// Channel Selection Algorithm #2
+        case channelSelectionAlgorithm2 = 0b01000000_00000000
+        
+        /// LE Power Class 1
+        case powerClass1 = 0b10000000_00000000
+        
+        /// Minimum Number of Used Channels Procedure
+        case minimumNumberofUsedChannelsProcedure = 0b1_00000000_00000000
+    }
     public static let allCases: [LowEnergyFeature] = [
         .encryption,
         .connectionParametersRequestProcedure,
@@ -151,4 +152,4 @@ internal let featureSet: [LowEnergyFeature: (isValid: Bool, name: String)] = [
 
 // MARK: - Supporting Types
 
-public typealias LowEnergyFeatureSet = BitMaskOptionSet<LowEnergyFeature>
+public typealias LowEnergyFeatureSet = LowEnergyFeature

@@ -13,13 +13,13 @@ public struct ClassOfDevice: Equatable, Sendable {
 
     public var formatType: FormatType
 
-    public var majorServiceClass: BitMaskOptionSet<MajorServiceClass>
+    public var majorServiceClass: MajorServiceClass
 
     public var majorDeviceClass: MajorDeviceClass
 
     public init(
         formatType: FormatType,
-        majorServiceClass: BitMaskOptionSet<MajorServiceClass>,
+        majorServiceClass: MajorServiceClass,
         majorDeviceClass: MajorDeviceClass
     ) {
 
@@ -43,7 +43,7 @@ extension ClassOfDevice: DataConvertible {
 
         let majorServiceValue = UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))) >> 5
 
-        self.majorServiceClass = BitMaskOptionSet<MajorServiceClass>(rawValue: majorServiceValue)
+        self.majorServiceClass = MajorServiceClass(rawValue: majorServiceValue)
 
         let majorDeviceClassType = MajorDeviceClassType(rawValue: (data[1] << 3) >> 3) ?? MajorDeviceClassType.miscellaneous
 
@@ -70,7 +70,7 @@ extension ClassOfDevice: DataConvertible {
                 PeripheralDevice(rawValue: (data[0] << 2) >> 4) ?? .uncategorized)
 
         case .imaging:
-            self.majorDeviceClass = .imaging(BitMaskOptionSet<Imaging>(rawValue: data[0] >> 4))
+            self.majorDeviceClass = .imaging(Imaging(rawValue: data[0] >> 4))
 
         case .wearable:
             self.majorDeviceClass = .wearable(Wearable(rawValue: data[0] >> 2) ?? .uncategorized)
@@ -127,37 +127,37 @@ extension ClassOfDevice {
     }
 }
 
-public extension ClassOfDevice {
-
-    enum MajorServiceClass: UInt16, BitMaskOption, Sendable {
-
-        /// Limited Discoverable Mode [Ref #1]
-        case limitedDiscoverable = 0b01
-
-        /// Positioning (Location identification)
-        case positioning = 0b1000
-
-        /// Networking (LAN, Ad hoc, ...)
-        case networking = 0b10000
-
-        /// Rendering (Printing, Speakers, ...)
-        case rendering = 0b100000
-
-        /// Capturing (Scanner, Microphone, ...)
-        case capturing = 0b1000000
-
-        /// Object Transfer (v-Inbox, v-Folder, ...)
-        case objectTransfer = 0b10000000
-
-        /// Audio (Speaker, Microphone, Headset service, ...)
-        case audio = 0b1_00000000
-
-        /// Telephony (Cordless telephony, Modem, Headset service, ...)
-        case telephony = 0b10_00000000
-
-        /// Information (WEB-server, WAP-server, ...)
-        case information = 0b100_00000000
-
+extension ClassOfDevice {
+    @OptionSet<UInt16>
+    public struct MajorServiceClass: Sendable {
+        private enum Options: UInt16 {
+            /// Limited Discoverable Mode [Ref #1]
+            case limitedDiscoverable = 0b01
+            
+            /// Positioning (Location identification)
+            case positioning = 0b1000
+            
+            /// Networking (LAN, Ad hoc, ...)
+            case networking = 0b10000
+            
+            /// Rendering (Printing, Speakers, ...)
+            case rendering = 0b100000
+            
+            /// Capturing (Scanner, Microphone, ...)
+            case capturing = 0b1000000
+            
+            /// Object Transfer (v-Inbox, v-Folder, ...)
+            case objectTransfer = 0b10000000
+            
+            /// Audio (Speaker, Microphone, Headset service, ...)
+            case audio = 0b1_00000000
+            
+            /// Telephony (Cordless telephony, Modem, Headset service, ...)
+            case telephony = 0b10_00000000
+            
+            /// Information (WEB-server, WAP-server, ...)
+            case information = 0b100_00000000
+        }
         public static let allCases: [MajorServiceClass] = [
             .limitedDiscoverable,
             .positioning,
@@ -195,7 +195,7 @@ public extension ClassOfDevice {
         case peripheral(PeripheralKeyboardPointing, PeripheralDevice)
 
         /// Imaging (printer, scanner, camera, display, ...)
-        case imaging(BitMaskOptionSet<Imaging>)
+        case imaging(Imaging)
 
         /// Wearable
         case wearable(Wearable)
@@ -522,24 +522,26 @@ public extension ClassOfDevice.MinorDeviceClass {
     }
 }
 
-public extension ClassOfDevice.MinorDeviceClass {
+extension ClassOfDevice.MinorDeviceClass {
 
-    enum Imaging: UInt8, BitMaskOption, Sendable, CaseIterable {
-
-        /// Uncategorized
-        case uncategorized = 0b00
-
-        /// Display
-        case display = 0b01
-
-        /// Camera
-        case camera = 0b10
-
-        /// Scanner
-        case scanner = 0b100
-
-        /// Printer
-        case printer = 0b1000
+    @OptionSet<UInt8>
+    public struct Imaging: Sendable {
+        private enum Options: UInt8 {
+            /// Uncategorized
+            case uncategorized = 0b00
+            
+            /// Display
+            case display = 0b01
+            
+            /// Camera
+            case camera = 0b10
+            
+            /// Scanner
+            case scanner = 0b100
+            
+            /// Printer
+            case printer = 0b1000
+        }
     }
 }
 

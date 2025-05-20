@@ -18,7 +18,7 @@ public extension BluetoothHostControllerInterface {
     func readRemoteSupportedFeatures(
         handle: UInt16,
         timeout: HCICommandTimeout = .default
-    ) async throws -> BitMaskOptionSet<LMPFeature> {
+    ) async throws -> LMPFeature {
 
         let readRemoteSupportedFeatures = HCIReadRemoteSupportedFeatures(handle: handle)
 

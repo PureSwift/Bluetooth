@@ -25,9 +25,9 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
 
     /// The Flags field is included in the Blood Pressure Measurement characteristic.
     /// Reserved for Future Use (RFU) bits in the Flags field shall be set to 0.
-    internal var flags: BitMaskOptionSet<Flag> {
+    internal var flags: Flag {
 
-        var flags = BitMaskOptionSet<Flag>()
+        var flags = Flag()
 
         if case .kPa = compoundValue.unit {
 
@@ -70,14 +70,14 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     public var userIdentifier: UInt8?
 
     /// Measurement Status
-    public var measurementStatus: BitMaskOptionSet<MeasurementStatus>?
+    public var measurementStatus: MeasurementStatus?
 
     public init(
         compoundValue: CompoundValue,
         timestamp: GATTDateTime? = nil,
         pulseRate: SFloat? = nil,
         userIdentifier: UInt8? = nil,
-        measurementStatus: BitMaskOptionSet<MeasurementStatus>? = nil
+        measurementStatus: MeasurementStatus? = nil
     ) {
 
         self.compoundValue = compoundValue
@@ -92,7 +92,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         guard data.count >= Self.length
         else { return nil }
 
-        let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
+        let flags = Flag(rawValue: data[0])
 
         let unit: Unit = flags.contains(.bloodPressureUnits) ? .kPa : .mmHg
         let systolic = SFloat(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
@@ -156,7 +156,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<MeasurementStatus.RawValue>.size < data.count
             else { return nil }
 
-            self.measurementStatus = BitMaskOptionSet<MeasurementStatus>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.measurementStatus = MeasurementStatus(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
 
             index += MemoryLayout<MeasurementStatus.RawValue>.size
 
@@ -238,22 +238,24 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     }
 
     /// These flags define which data fields are present in the Characteristic value.
-    internal enum Flag: UInt8, BitMaskOption {
-
-        /// Blood pressure for Systolic, Diastolic and MAP in units of kPa
-        case bloodPressureUnits = 0b01
-
-        /// Time Stamp present
-        case timestamp = 0b10
-
-        /// Pulse Rate present
-        case pulseRate = 0b100
-
-        /// User ID present
-        case userID = 0b1000
-
-        /// Measurement Status present
-        case measurementStatus = 0b10000
+    @OptionSet<UInt8>
+    internal struct Flag: Sendable {
+        private enum Options: UInt8 {
+            /// Blood pressure for Systolic, Diastolic and MAP in units of kPa
+            case bloodPressureUnits = 0b01
+            
+            /// Time Stamp present
+            case timestamp = 0b10
+            
+            /// Pulse Rate present
+            case pulseRate = 0b100
+            
+            /// User ID present
+            case userID = 0b1000
+            
+            /// Measurement Status present
+            case measurementStatus = 0b10000
+        }
 
         public static let allCases: [Flag] = [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus]
     }
@@ -302,18 +304,19 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         public var meanArterialPressure: SFloat
     }
 
-    public enum MeasurementStatus: UInt16, BitMaskOption {
-
-        case bodyMovement = 0b01
-
-        case cuffFit = 0b10
-
-        case irregularPulse = 0b100
-
-        case pulseRate = 0b1000
-
-        case measurementPosition = 0b10000
-
+    @OptionSet<UInt16>
+    public struct MeasurementStatus: Sendable {
+        private enum Options: UInt16 {
+            case bodyMovement = 0b01
+            
+            case cuffFit = 0b10
+            
+            case irregularPulse = 0b100
+            
+            case pulseRate = 0b1000
+            
+            case measurementPosition = 0b10000
+        }
         public static var allCases: [MeasurementStatus] {
             [
                 .bodyMovement,

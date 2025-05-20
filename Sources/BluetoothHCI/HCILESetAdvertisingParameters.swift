@@ -59,7 +59,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
     /// Public Device Address or Random Device Address of the device to be connected.
     public var directAddress: BluetoothAddress
 
-    public var channelMap: BitMaskOptionSet<ChannelMap>
+    public var channelMap: ChannelMap
 
     public var filterPolicy: FilterPolicy
 
@@ -69,7 +69,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
         ownAddressType: LowEnergyAddressType = .public,
         directAddresssType: LowEnergyAddressType = .public,
         directAddress: BluetoothAddress = .zero,
-        channelMap: BitMaskOptionSet<ChannelMap> = .all,
+        channelMap: ChannelMap = ChannelMap.allCases,
         filterPolicy: FilterPolicy = .any
     ) {
 
@@ -119,9 +119,9 @@ extension HCILESetAdvertisingParameters {
 
 // MARK: - Supporting Types
 
-public extension HCILESetAdvertisingParameters {
+extension HCILESetAdvertisingParameters {
 
-    enum AdvertisingType: UInt8 {
+    public enum AdvertisingType: UInt8 {
 
         /// Connectable undirected advertising event
         case undirected = 0x00
@@ -139,22 +139,24 @@ public extension HCILESetAdvertisingParameters {
     }
 
     /// Channel Map
-    enum ChannelMap: UInt8, BitMaskOption {
+    @OptionSet<UInt8>
+    public struct ChannelMap: Sendable {
+        private enum Options: UInt8 {
+            /// Enable channel 37 use
+            case channel37 = 0b00000001
+            
+            /// Enable channel 38 use
+            case channel38 = 0b00000010
+            
+            /// Enable channel 39 use
+            case channel39 = 0b00000100
+        }
 
-        /// Enable channel 37 use
-        case channel37 = 0b00000001
-
-        /// Enable channel 38 use
-        case channel38 = 0b00000010
-
-        /// Enable channel 39 use
-        case channel39 = 0b00000100
-
-        public static var allCases: [ChannelMap] { [.channel37, .channel38, .channel39] }
+        public static var allCases: ChannelMap { [.channel37, .channel38, .channel39] }
     }
 
     /// Filter Policy
-    enum FilterPolicy: UInt8 {
+    public enum FilterPolicy: UInt8 {
 
         /// Allow Scan Request from Any,
         /// Allow Connect Request from Any (default).

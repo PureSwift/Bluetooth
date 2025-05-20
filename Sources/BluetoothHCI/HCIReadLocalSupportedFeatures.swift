@@ -15,7 +15,7 @@ public extension BluetoothHostControllerInterface {
     /// LE Read Local Supported Features Command
     ///
     /// This command requests the list of the supported LE features for the Controller.
-    func readLocalSupportedFeatures(timeout: HCICommandTimeout = .default) async throws -> BitMaskOptionSet<LMPFeature> {
+    func readLocalSupportedFeatures(timeout: HCICommandTimeout = .default) async throws -> LMPFeature {
 
         let returValue = try await deviceRequest(HCIReadLocalSupportedFeaturesReturn.self, timeout: timeout)
 
@@ -35,7 +35,7 @@ public struct HCIReadLocalSupportedFeaturesReturn: HCICommandReturnParameter {
 
     public static let length = 8
 
-    public let features: BitMaskOptionSet<LMPFeature>
+    public let features: LMPFeature
 
     public init?<Data: DataContainer>(data: Data) {
 
@@ -55,6 +55,6 @@ public struct HCIReadLocalSupportedFeaturesReturn: HCICommandReturnParameter {
                     data[7]
                 )))
 
-        self.features = BitMaskOptionSet<LMPFeature>(rawValue: featuresValue)
+        self.features = LMPFeature(rawValue: featuresValue)
     }
 }

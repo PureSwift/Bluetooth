@@ -104,14 +104,14 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable, Ha
     public let deviceUUID: UUID
 
     /// OOB Information
-    public let oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>
+    public let oobInformationFlags: GAPOOBInformationFlag
 
     /// Hash of the associated URI advertised with the URI AD Type (optional field).
     public let uriHash: UInt32?
 
     public init(
         deviceUUID: UUID,
-        oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag> = 0,
+        oobInformationFlags: GAPOOBInformationFlag = .init(rawValue: 0),
         uriHash: UInt32? = nil
     ) {
 
@@ -131,7 +131,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable, Ha
 
         let deviceUUID = UUID(UInt128(littleEndian: UInt128(bytes: (data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16]))))
 
-        let oobInformationFlags = BitMaskOptionSet<GAPOOBInformationFlag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[17], data[18]))))
+        let oobInformationFlags = GAPOOBInformationFlag(rawValue: UInt16(littleEndian: UInt16(bytes: (data[17], data[18]))))
 
         let uriHash: UInt32?
 
@@ -215,32 +215,34 @@ public enum GAPBeaconType: UInt8 {
 }
 
 @frozen
-public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
-
-    case other = 0b01
-
-    case electronic = 0b10
-
-    case machineReadableCode = 0b100
-
-    case barCode = 0b1000
-
-    case nearFieldCommunication = 0b10000
-
-    case number = 0b100000
-
-    case string = 0b1000000
-
-    case onBox = 0b1000_00000000
-
-    case insideBox = 0b10000_00000000
-
-    case onPieceOfPaper = 0b100000_00000000
-
-    case insideManual = 0b1000000_00000000
-
-    case onDevice = 0b10000000_00000000
-
+@OptionSet<UInt16>
+public struct GAPOOBInformationFlag: Sendable, Hashable {
+    private enum Options: UInt16 {
+        case other = 0b01
+        
+        case electronic = 0b10
+        
+        case machineReadableCode = 0b100
+        
+        case barCode = 0b1000
+        
+        case nearFieldCommunication = 0b10000
+        
+        case number = 0b100000
+        
+        case string = 0b1000000
+        
+        case onBox = 0b1000_00000000
+        
+        case insideBox = 0b10000_00000000
+        
+        case onPieceOfPaper = 0b100000_00000000
+        
+        case insideManual = 0b1000000_00000000
+        
+        case onDevice = 0b10000000_00000000
+    }
+    
     public static let allCases: [GAPOOBInformationFlag] = [
         .other,
         .electronic,
@@ -259,11 +261,13 @@ public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
 }
 
 @frozen
-public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
-
-    case keyRefresh = 0b01
-
-    case ivUpdate = 0b10
+@OptionSet<UInt8>
+public struct GAPSecureNetworkFlag: Sendable, Hashable {
+    private enum Options: UInt8 {
+        case keyRefresh = 0b01
+        
+        case ivUpdate = 0b10
+    }
 
     public static let allCases: [GAPSecureNetworkFlag] = [
         .keyRefresh,
@@ -290,7 +294,7 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
 
     public static let beaconType: GAPBeaconType = .secureNetwork
 
-    public let flags: BitMaskOptionSet<GAPSecureNetworkFlag>
+    public let flags: GAPSecureNetworkFlag
 
     public let networkID: UInt64
 
@@ -299,7 +303,7 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
     public let authenticationValue: UInt64
 
     public init(
-        flags: BitMaskOptionSet<GAPSecureNetworkFlag>,
+        flags: GAPSecureNetworkFlag,
         networkID: UInt64,
         ivIndex: UInt32,
         authenticationValue: UInt64
@@ -320,7 +324,7 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
             beaconType == Self.beaconType
         else { return nil }
 
-        let flags = BitMaskOptionSet<GAPSecureNetworkFlag>(rawValue: data[1])
+        let flags = GAPSecureNetworkFlag(rawValue: data[1])
         let networkID = UInt64(littleEndian: UInt64(bytes: (data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9])))
         let ivIndex = UInt32(littleEndian: UInt32(bytes: (data[10], data[11], data[12], data[13])))
         let authenticationValue = UInt64(littleEndian: UInt64(bytes: (data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21])))

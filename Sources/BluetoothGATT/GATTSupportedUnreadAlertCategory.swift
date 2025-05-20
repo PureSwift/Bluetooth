@@ -26,9 +26,9 @@ public struct GATTSupportedUnreadAlertCategory: GATTCharacteristic {
 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.supportedUnreadAlertCategory }
 
-    public var categories: BitMaskOptionSet<Category>
+    public var categories: Category
 
-    public init(categories: BitMaskOptionSet<Category> = []) {
+    public init(categories: Category = []) {
 
         self.categories = categories
     }
@@ -38,7 +38,7 @@ public struct GATTSupportedUnreadAlertCategory: GATTCharacteristic {
         guard let bitmask = Category.RawValue(bitmaskArray: data)
         else { return nil }
 
-        self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
+        self.categories = Category(rawValue: bitmask)
     }
 
     public var data: Data {

@@ -44,7 +44,7 @@ public extension GAPTransportDiscoveryData {
             guard index + GAPTransportDiscoveryBlock<TransportData>.minLength < data.count
             else { return nil }
 
-            let flags = BitMaskOptionSet<GAPTransportDiscoveryDataFlag>(rawValue: data[index + 1])
+            let flags = GAPTransportDiscoveryDataFlag(rawValue: data[index + 1])
             let length = Int(data[index + 2])
 
             guard index + GAPTransportDiscoveryBlock<TransportData>.minLength + length < data.count
@@ -91,7 +91,7 @@ public struct GAPTransportDiscoveryBlock<TransportData: DataContainer>: Equatabl
 
     public let organizationID: UInt8
 
-    public let flags: BitMaskOptionSet<GAPTransportDiscoveryDataFlag>
+    public let flags: GAPTransportDiscoveryDataFlag
 
     public let transportData: TransportData
 }
@@ -114,22 +114,24 @@ extension GAPTransportDiscoveryBlock {
 
 /// GAP Transport Discovery Data Flag
 @frozen
-public enum GAPTransportDiscoveryDataFlag: UInt8, BitMaskOption {
-
-    /// Seeker
-    case seeker = 0b01
-
-    /// Provider
-    case provider = 0b10
-
-    /// Transport Data Incomplete
-    case dataIncomplete = 0b100
-
-    /// Transport State
-    case stateOn = 0b1000
-
-    /// Temporarily Unavailable
-    case temporalilyUnavailable = 0b10000
+@OptionSet<UInt8>
+public struct GAPTransportDiscoveryDataFlag: Sendable, Hashable {
+    private enum Options: UInt8 {
+        /// Seeker
+        case seeker = 0b01
+        
+        /// Provider
+        case provider = 0b10
+        
+        /// Transport Data Incomplete
+        case dataIncomplete = 0b100
+        
+        /// Transport State
+        case stateOn = 0b1000
+        
+        /// Temporarily Unavailable
+        case temporalilyUnavailable = 0b10000
+    }
 
     public static let allCases: [GAPTransportDiscoveryDataFlag] = [
         .seeker,
