@@ -29,7 +29,7 @@ import Foundation
          Direct Address: (null)
          Advertising Channel Map: 0x01
          Advertising Filter Policy: 0x00 - Allow Scan Request from Any, Allow Connect Request from Any
-
+        
          */
         hostController.queue.append(
             .command(
@@ -261,7 +261,7 @@ import Foundation
 
         /**
          RECV  Command Complete [1001] - Read Local Version Information - HCI Version: 0x08 (Core Spec v 4.2)  0E 0C 01 01 10 00 08 C2 12 08 0F 00 9A 21
-
+        
          Parameter Length: 12 (0x0C)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
@@ -567,7 +567,7 @@ import Foundation
 
         /**
          SEND  [2016] LE Read Remote Used Features - Connection Handle: 0x0041  16 20 02 41 00
-
+        
          [2016] Opcode: 0x2016 (OGF: 0x08    OCF: 0x16)
          Parameter Length: 2 (0x02)
          Connection Handle: 0041
@@ -580,22 +580,22 @@ import Foundation
 
         /**
          RECV  Command Status - LE Read Remote Used Features  0F 04 00 01 16 20
-
+        
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
-
+        
          Opcode: 0x2016 (OGF: 0x08    OCF: 0x16) - [Low Energy] LE Read Remote Used Features
          */
         hostController.queue.append(.event([0x0F, 0x04, 0x00, 0x01, 0x16, 0x20]))
 
         /**
          RECV  LE Meta Event - LE Read Remote Used Features Complete. DPLE Unsupported  3E 0C 04 00 41 00 1D 00 00 00 00 00 00 00
-
+        
          Parameter Length: 12 (0x0C)
          Status: 0x00 - Success
          Connection Handle: 0x0041
-
+        
          LE Features:               0X1D
             LE Encryption
             Extended Reject Indication
@@ -664,7 +664,7 @@ import Foundation
 
             /**
              RECV  LE Meta Event - LE Advertising Report - 0 - 58:E2:8F:7C:0B:B3  -45 dBm - Proximity
-
+            
              Parameter Length: 34 (0x22)
              Num Reports: 0X01
              Event Type: Connectable undirected advertising (ADV_IND)
@@ -740,7 +740,7 @@ import Foundation
 
             /**
              LE Meta Event - LE Advertising Report - 0 - 00:1A:AE:06:EF:9E  -70 dBm - BlueZ 5.43  3E 18 02 01 04 00 9E EF 06 AE 1A 00 0C 0B 09 42 6C 75 65 5A 20 35 2E 34 33 BA
-
+            
              Parameter Length: 24 (0x18)
              Num Reports: 0X01
              Event Type: Scan Response (SCAN_RSP)
@@ -887,7 +887,7 @@ import Foundation
          Mar 15 10:52:55.671  HCI Event        0x0000  A4:C1:38:2D:7A:27
          LE - Ext ADV - 1 Report - Normal - Public - A4:C1:38:2D:7A:27
          -37 dBm - GVH5072_7A27 - Manufacturer Specific Data - Channel 38
-
+        
          Parameter Length: 57 (0x39)
          Num Reports: 0X01
          Report 0
@@ -1055,7 +1055,7 @@ import Foundation
 
         /**
          SEND  [200D] LE Create Connection - 00:00:00:00:00:00, Scan Window/Interval: 30ms/60ms, Min/Max Conn Interval: 7.5ms/15ms
-
+        
          [200D] Opcode: 0x200D (OGF: 0x08    OCF: 0x0D)
          Parameter Length: 25 (0x19)
          LE Scan Interval: 0X0060 (60 ms)
@@ -1082,7 +1082,7 @@ import Foundation
 
         /**
          RECV  LE Meta Event - LE Connection Complete - Master - Public - 58:E2:8F:7C:0B:B3 - Conn Interval: 11.25 ms  3E 13 01 00 41 00 00 00 B3 0B 7C 8F E2 58 09 00 00 00 C8 00 05
-
+        
          Parameter Length: 19 (0x13)
          Status: 0x00 - Success
          Connection Handle: 0x0041
@@ -1118,7 +1118,7 @@ import Foundation
 
         /**
          SEND  [200E] LE Create Connection Cancel  0E 20 00
-
+        
          [200E] Opcode: 0x200E (OGF: 0x08    OCF: 0x0E)
          Parameter Length: 0 (0x00)
          */
@@ -1131,7 +1131,7 @@ import Foundation
 
         /**
          Command Complete [200E] - LE Create Connection Cancel - Command Disallowed (0xC)  0E 04 01 0E 20 0C
-
+        
          Parameter Length: 4 (0x04)
          Status: 0x0C - Command Disallowed
          Num HCI Command Packets: 0x01
@@ -1176,7 +1176,7 @@ import Foundation
 
         /**
          SEND  [2012] LE Remove Device From White List - 0 - 58:E2:8F:7C:0B:B3  12 20 07 00 B3 0B 7C 8F E2 58
-
+        
          [2012] Opcode: 0x2012 (OGF: 0x08    OCF: 0x12)
          Parameter Length: 7 (0x07)
          Address Type: Public
@@ -1190,7 +1190,7 @@ import Foundation
 
         /**
          RECV  Command Complete [2012] - LE Remove Device From White List  0E 04 01 12 20 00
-
+        
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
@@ -1244,7 +1244,7 @@ import Foundation
 
         /**
          SEND  [2019] LE Start Encryption - Connection Handle: 0x0041  19 20 1C 41 00 00 00 00 00 00 00 00 00 00 00 05 EC EC CB EC 64 57 98 5A D8 24 0C 0D EB 57 23
-
+        
          [2019] Opcode: 0x2019 (OGF: 0x08    OCF: 0x19)
          Parameter Length: 28 (0x1C)
          Connection Handle: 0041
@@ -1259,7 +1259,7 @@ import Foundation
 
         /**
          RECV  Command Status - LE Start Encryption  0F 04 00 01 19 20
-
+        
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
@@ -1269,7 +1269,7 @@ import Foundation
 
         /**
          RECV  Encryption Change Complete - Encryption Enabled  08 04 00 41 00 01
-
+        
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Connection Handle: 0x0041
@@ -1371,7 +1371,7 @@ import Foundation
 
         /**
          SEND  [2005] LE Set Random Address - 68:60:B2:29:26:8D  05 20 06 8D 26 29 B2 60 68
-
+        
          [2005] Opcode: 0x2005 (OGF: 0x08    OCF: 0x05)
          Parameter Length: 6 (0x06)
          Random Address: 68:60:B2:29:26:8D
@@ -1384,7 +1384,7 @@ import Foundation
 
         /**
          RECV  Command Complete [2005] - LE Set Random Address  0E 04 01 05 20 00
-
+        
          Parameter Length: 4 (0x04)
          Status: 0x00 - Success
          Num HCI Command Packets: 0x01
@@ -2462,7 +2462,7 @@ import Foundation
          Peak Bandwidth: 0x00000000
          Latency: 0x00002BF2
          Delay Variation: 0xFFFFFFFF
-
+        
          */
         hostController.queue.append(
             .command(
@@ -2846,7 +2846,7 @@ import Foundation
          Num HCI Command Packets: 0x01
          Opcode: 0x0C1A (OGF: 0x03    OCF: 0x1A) - [Host Controller] Write Scan Enable
          Aug 02 17:18:10.227  HCI Event        0x0000  0e 04 01 1a 0c 00
-
+        
          */
         hostController.queue.append(.event([0x0e, 0x04, 0x01, 0x1a, 0x0c, 0x00]))
 
@@ -3110,7 +3110,7 @@ import Foundation
          Connection Handle: 0x000B
          LMP Max Slots: 0x05
          Aug 17 09:58:05.806  HCI Event        0x0000                     00000000: 1b 03 0b 00 05
-
+        
          */
         let data = Data([0x0b, 0x00, 0x05])
 

@@ -202,7 +202,7 @@ struct GATTTests {
              Exchange MTU Request - MTU:104
              Opcode: 0x02
              Client Rx MTU: 0x0068
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0003 (03) [ 02 68 00 ]
              */
             (
@@ -215,7 +215,7 @@ struct GATTTests {
              Exchange MTU Response - MTU:104
              Opcode: 0x03
              Client Rx MTU: 0x0068
-
+            
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0003 (03) [ 03 68 00 ]
              */
             (
@@ -229,7 +229,7 @@ struct GATTTests {
              Starting Handle: 0x0001
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 01 00 FF FF 00 28 ]
              */
             (
@@ -243,7 +243,7 @@ struct GATTTests {
              List Length: 0006
              Attribute Handle: 0x0001 End Group Handle: 0x0005 UUID: 1800 (Generic Access)
              Attribute Handle: 0x0006 End Group Handle: 0x0009 UUID: 1801 (Generic Attribute)
-
+            
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x000E (14) [ 11 06 01 00 05 00 00 18 06 00 09 00 01 18 ]
              */
             (
@@ -269,7 +269,7 @@ struct GATTTests {
              Starting Handle: 0x000a
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 0A 00 FF FF 00 28 ]
              */
             (
@@ -283,7 +283,7 @@ struct GATTTests {
              List Length: 0014
              Attribute Handle: 0x000A End Group Handle: 0x000E UUID: D0611E78-BBB4-4591-A5F8-487910AE4366
              Attribute Handle: 0x000F End Group Handle: 0x0013 UUID: 9FA480E0-4967-4542-9390-D343DC5D04AE
-
+            
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x002A (42) [ 11 14 0A 00 0E 00 66 43 AE 10 79 48 F8 A5 91 45 ... ]
              */
             (
@@ -309,7 +309,7 @@ struct GATTTests {
              Starting Handle: 0x0014
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 14 00 FF FF 00 28 ]
              */
             (
@@ -324,7 +324,7 @@ struct GATTTests {
              Attribute Handle: 0x0014 End Group Handle: 0x0017 UUID: 180F (Battery Service)
              Attribute Handle: 0x0018 End Group Handle: 0x001D UUID: 1805 (Current Time Service)
              Attribute Handle: 0x001E End Group Handle: 0x0022 UUID: 180A (Device Information)
-
+            
             L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0014 (20) [ 11 06 14 00 17 00 0F 18 18 00 1D 00 05 18 1E 00 ... ]
              */
             (
@@ -355,7 +355,7 @@ struct GATTTests {
              Starting Handle: 0x0023
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 23 00 FF FF 00 28 ]
              */
             (
@@ -369,7 +369,7 @@ struct GATTTests {
              List Length: 0014
              Attribute Handle: 0x0023 End Group Handle: 0x002C UUID: 7905F431-B5CE-4E99-A40F-4B1E122D00D0 (Apple Notification Center Service)
              Attribute Handle: 0x002D End Group Handle: 0x0038 UUID: 89D3502B-0F36-433A-8EF4-C502AD55F8DC
-
+            
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x002A (42) [ 11 14 23 00 2C 00 D0 00 2D 12 1E 4B 0F A4 99 4E ... ]
              */
             (
@@ -395,7 +395,7 @@ struct GATTTests {
              Starting Handle: 0x0039
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 39 00 FF FF 00 28 ]
              */
             (
@@ -410,7 +410,7 @@ struct GATTTests {
              Attribute Handle: 0x0039 End Group Handle: 0x003C UUID: 1803 (Link Loss)
              Attribute Handle: 0x003D End Group Handle: 0x003F UUID: 1804 (Tx Power)
              Attribute Handle: 0x0040 End Group Handle: 0x0042 UUID: 1802 (Immediate Alert)
-
+            
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0014 (20) [ 11 06 39 00 3C 00 03 18 3D 00 3F 00 04 18 40 00 ... ]
              */
             (
@@ -441,7 +441,7 @@ struct GATTTests {
              Starting Handle: 0x0043
              Ending Handle: 0xffff
              Attribute Group Type: 2800 (GATT Primary Service Declaration)
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0007 (07) [ 10 43 00 FF FF 00 28 ]
              */
             (
@@ -455,7 +455,7 @@ struct GATTTests {
              Request Opcode In Error: 0x10 (Read By Group Type Request)
              Attribute Handle In Error: 0x0043 (67)
              Error Code: 0x0a (Attribute Not Found)
-
+            
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0005 (05) [ 01 10 43 00 0A ]
              */
             (
