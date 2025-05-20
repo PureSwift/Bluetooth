@@ -69,7 +69,7 @@ public struct LowEnergyFeature: Sendable, Hashable {
         /// Minimum Number of Used Channels Procedure
         case minimumNumberofUsedChannelsProcedure = 0b1_00000000_00000000
     }
-    public static let allCases: [LowEnergyFeature] = [
+    public static let allCases: LowEnergyFeature = [
         .encryption,
         .connectionParametersRequestProcedure,
         .extendedRejectIndication,
