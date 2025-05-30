@@ -7,7 +7,7 @@
 //
 
 /// Protocol/Service Multiplexer (PSM).
-public enum ProtocolServiceMultiplexer: UInt8 {
+public enum ProtocolServiceMultiplexer: UInt8, Sendable {
 
     /// SDP
     case sdp = 0x0001

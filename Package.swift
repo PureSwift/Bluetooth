@@ -120,7 +120,7 @@ if buildMetadata {
 if buildDocs {
     package.dependencies += [
         .package(
-            url: "https://github.com/apple/swift-docc-plugin",
+            url: "https://github.com/swiftlang/swift-docc-plugin.git",
             from: "1.0.0"
         )
     ]
