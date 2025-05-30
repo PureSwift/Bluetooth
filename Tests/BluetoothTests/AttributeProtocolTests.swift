@@ -456,7 +456,7 @@ import Foundation
              Opcode: 0x1d
              Attribute Handle: 0x0008 (8)
              Value: 0a 00 ff ff
-
+            
              L2CAP Receive    0x0041  RECV  Channel ID: 0x0004  Length: 0x0007 (07) [ 1D 08 00 0A 00 FF FF ]
              */
 
@@ -508,7 +508,7 @@ import Foundation
             /**
              Handle Value Confirmation
              Opcode: 0x1e
-
+            
              L2CAP Send       0x0041  SEND  Channel ID: 0x0004  Length: 0x0001 (01) [ 1E ]
              */
 
@@ -534,7 +534,7 @@ import Foundation
              Handle Value Notification - Handle:0x0016 - Value:64
              Opcode: 0x1b
              Attribute Handle: 0x0016 (22)
-
+            
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0004 (04) [ 1B 16 00 64 ]
              */
 
@@ -564,7 +564,7 @@ import Foundation
              Read Request - Handle:0x0016
              Opcode: 0x0a
              Attribute Handle: 0x0016 (22)
-
+            
              L2CAP Send       0x0042  SEND  Channel ID: 0x0004  Length: 0x0003 (03) [ 0A 16 00 ]
              */
             let data = Data([0x0A, 0x16, 0x00])
@@ -588,7 +588,7 @@ import Foundation
              Read Response - Value:64
              Opcode: 0x0b
              Value: 64
-
+            
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0002 (02) [ 0B 64 ]
              */
 
@@ -633,7 +633,7 @@ import Foundation
              Opcode: 0x12
              Attribute Handle: 0x0017 (23)
              Value: 01 00
-
+            
              L2CAP Send       0x0042  SEND  Channel ID: 0x0004  Length: 0x0005 (05) [ 12 17 00 01 00 ]
              */
 
@@ -657,7 +657,7 @@ import Foundation
             /**
              Write Response
              Opcode: 0x13
-
+            
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0001 (01) [ 13 ]
              */
 
@@ -708,7 +708,7 @@ import Foundation
              Opcode: 0x05
              Format: 1 (Handles and 16 byte UUIDs)
              Handle: 0x0017 UUID: 2902 (Client Characteristic Configuration)
-
+            
              L2CAP Receive    0x0042  RECV  Channel ID: 0x0004  Length: 0x0006 (06) [ 05 01 17 00 02 29 ]
              */
 

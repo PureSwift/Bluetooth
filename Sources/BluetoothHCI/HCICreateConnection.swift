@@ -19,7 +19,7 @@ public extension BluetoothHostControllerInterface {
         address: BluetoothAddress,
         packetType: UInt16,
         pageScanRepetitionMode: PageScanRepetitionMode,
-        clockOffset: BitMaskOptionSet<HCICreateConnection.ClockOffset>,
+        clockOffset: HCICreateConnection.ClockOffset,
         allowRoleSwitch: HCICreateConnection.AllowRoleSwitch,
         timeout: HCICommandTimeout = .default
     ) async throws -> HCIConnectionComplete {
@@ -61,7 +61,7 @@ public struct HCICreateConnection: HCICommandParameter {
     internal var reserved: Reserved
 
     /// The Clock_Offset parameter is the difference between its own clock and the clock of the remote device with BD_ADDR. Only bits 2 through 16 of the difference are used, and they are mapped to this parameter as bits 0 through 14 respectively.
-    public var clockOffset: BitMaskOptionSet<ClockOffset>
+    public var clockOffset: ClockOffset
 
     /// The Allow_Role_Switch parameter specifies if the local device accepts or rejects the request of a master-slave role switch when the remote device requests it at the connection setup (in the Role parameter of the Accept_Connection_Request command) (before the local Controller returns a Connection Complete event).
     public var allowRoleSwitch: AllowRoleSwitch
@@ -70,7 +70,7 @@ public struct HCICreateConnection: HCICommandParameter {
         address: BluetoothAddress,
         packetType: UInt16,
         pageScanRepetitionMode: PageScanRepetitionMode,
-        clockOffset: BitMaskOptionSet<ClockOffset>,
+        clockOffset: ClockOffset,
         allowRoleSwitch: AllowRoleSwitch
     ) {
 
@@ -113,9 +113,11 @@ extension HCICreateConnection {
 extension HCICreateConnection {
 
     /// The Clock_Offset parameter is the difference between its own clock and the clock of the remote device with BD_ADDR. Only bits 2 through 16 of the difference are used, and they are mapped to this parameter as bits 0 through 14 respectively.
-    public enum ClockOffset: UInt16, BitMaskOption {
-
-        case valid = 0b10000000_00000000
+    @OptionSet<UInt16>
+    public struct ClockOffset: Sendable {
+        private enum Options: UInt16 {
+            case valid = 0b10000000_00000000
+        }
 
         public static var allCases: [ClockOffset] { [.valid] }
     }

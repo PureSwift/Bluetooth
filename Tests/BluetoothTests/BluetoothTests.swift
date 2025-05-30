@@ -135,7 +135,7 @@ import BluetoothGATT
 
     @Test func lowEnergyState() {
 
-        var states = BitMaskOptionSet<LowEnergyState>.all
+        var states = LowEnergyState.allCases
         #expect(states.isEmpty == false)
         #expect(states.count == LowEnergyState.allCases.count)
         #expect(Array(states) == LowEnergyState.allCases)
@@ -168,7 +168,6 @@ import BluetoothGATT
         #expect(LowEnergyFeature.encryption.isValidControllerToController)
 
         var featureSet: LowEnergyFeatureSet = [.encryption, .connectionParametersRequestProcedure, .ping]
-        #expect(featureSet.count == 3)
         #expect(featureSet.isEmpty == false)
         #expect(featureSet.contains(.encryption))
         #expect(featureSet.contains(.connectionParametersRequestProcedure))
@@ -178,7 +177,6 @@ import BluetoothGATT
         #expect(featureSet.rawValue != LowEnergyFeature.encryption.rawValue)
         #expect(featureSet.rawValue != LowEnergyFeature.connectionParametersRequestProcedure.rawValue)
         #expect(featureSet.rawValue != LowEnergyFeature.ping.rawValue)
-        #expect(LowEnergyFeature(rawValue: featureSet.rawValue) == nil)
 
         #expect(LowEnergyFeature.RawValue.bitWidth == LowEnergyFeatureSet.RawValue.bitWidth)
         #expect(LowEnergyFeature.RawValue.bitWidth == MemoryLayout<LowEnergyFeature.RawValue>.size * 8)
@@ -187,10 +185,9 @@ import BluetoothGATT
         #expect(MemoryLayout<LowEnergyFeatureSet>.size == MemoryLayout<LowEnergyFeature.RawValue>.size)
         #expect(MemoryLayout<LowEnergyFeatureSet>.size == 8)  // 64 bit // 64 bit
 
-        featureSet = .all
+        featureSet = .allCases
         #expect(!featureSet.isEmpty)
-        #expect(featureSet.count == LowEnergyFeature.allCases.count)
-        #expect(Array(featureSet) == LowEnergyFeature.allCases)
+        #expect(featureSet == LowEnergyFeature.allCases)
 
         typealias Bit64 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
         let bigEndianByteValue: Bit64 = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01)
@@ -217,12 +214,8 @@ import BluetoothGATT
         #expect(rawValue.bigEndian.bytes.7 == bigEndianByteValue.7)
         #expect(UInt64(bigEndian: UInt64(bytes: bigEndianByteValue)) == rawValue)
 
-        featureSet.forEach { #expect(LowEnergyFeature.allCases.contains($0)) }
-
-        featureSet.removeAll()
-
+        featureSet = []
         #expect(featureSet.rawValue == 0)
-        #expect(featureSet.count == 0)
         #expect(featureSet.hashValue == featureSet.rawValue.hashValue)
     }
 
@@ -287,7 +280,7 @@ import BluetoothGATT
                 return
             }
 
-            let majorServiceClass = BitMaskOptionSet<ClassOfDevice.MajorServiceClass>(rawValue: 0b110_00010000)
+            let majorServiceClass = ClassOfDevice.MajorServiceClass(rawValue: 0b110_00010000)
             let majorDeviceClass = ClassOfDevice.MajorDeviceClass.computer(.laptop)
             let classOfDeviceManual = ClassOfDevice(
                 formatType: formatType,

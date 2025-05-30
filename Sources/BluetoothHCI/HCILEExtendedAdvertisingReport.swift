@@ -59,7 +59,7 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
 
         public static var length: Int { 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1 }
 
-        public let eventType: BitMaskOptionSet<EventType>
+        public let eventType: EventType
 
         public let addressType: AddressType
 
@@ -88,7 +88,7 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
             guard data.count >= Report.length
             else { return nil }
 
-            let eventType = BitMaskOptionSet<EventType>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+            let eventType = EventType(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
 
             guard let addressType = AddressType(rawValue: data[2])
             else { return nil }
@@ -229,10 +229,12 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
         /// No address provided (anonymous advertisement)
         case noAddressProvided = 0xFF
     }
+}
 
-    /// Event Type
-    public enum EventType: UInt16, BitMaskOption, CaseIterable {
-
+/// Event Type
+@OptionSet<UInt16>
+public struct EventType: Sendable {
+    private enum Options: UInt16 {
         /// Connectable advertising
         case connectableAdvertising = 0b00000000_00000001
 

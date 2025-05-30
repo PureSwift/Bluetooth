@@ -25,9 +25,9 @@ public struct GATTAlertStatus: GATTCharacteristic {
 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertStatus }
 
-    public var states: BitMaskOptionSet<State>
+    public var states: State
 
-    public init(states: BitMaskOptionSet<State>) {
+    public init(states: State) {
 
         self.states = states
     }
@@ -37,7 +37,7 @@ public struct GATTAlertStatus: GATTCharacteristic {
         guard data.count == Self.length
         else { return nil }
 
-        self.states = BitMaskOptionSet<State>(rawValue: data[0])
+        self.states = State(rawValue: data[0])
     }
 
     public var data: Data {
@@ -65,18 +65,19 @@ extension GATTAlertStatus: CustomStringConvertible {
 }
 
 extension GATTAlertStatus {
+    @OptionSet<UInt8>
+    public struct State: Sendable {
+        private enum Options: UInt8 {
+            // Ringer state
+            case ringer = 0b01
 
-    public enum State: UInt8, BitMaskOption {
+            // Vibrate state
+            case vibrate = 0b10
 
-        // Ringer state
-        case ringer = 0b01
+            // Display Alert state
+            case displayAlert = 0b100
+        }
 
-        // Vibrate state
-        case vibrate = 0b10
-
-        // Display Alert state
-        case displayAlert = 0b100
-
-        public static var allCases: [State] { [.ringer, .vibrate, .displayAlert] }
+        public static var allCases: State { [.ringer, .vibrate, .displayAlert] }
     }
 }

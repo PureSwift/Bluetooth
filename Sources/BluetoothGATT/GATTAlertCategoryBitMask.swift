@@ -25,14 +25,14 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertCategoryIdBitMask }
 
     /// This field shows the category of the new alert.
-    public var categories: BitMaskOptionSet<Category>
+    public var categories: Category
 
     public init?<Data: DataContainer>(data: Data) {
 
         guard let bitmask = Category.RawValue(bitmaskArray: data)
         else { return nil }
 
-        self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
+        self.categories = Category(rawValue: bitmask)
     }
 
     public var data: Data {
@@ -41,34 +41,33 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable 
     }
 }
 
-public extension GATTAlertCategoryBitMask {
+extension GATTAlertCategoryBitMask {
+    @OptionSet<UInt64>
+    public struct Category: Sendable, Hashable {
+        private enum Options: UInt64 {
+            // 1st byte
+            case simpleAlert = 0b01
 
-    enum Category: UInt64, BitMaskOption {
+            case email = 0b10
 
-        // 1st byte
+            case news = 0b100
 
-        case simpleAlert = 0b01
+            case call = 0b1000
 
-        case email = 0b10
+            case missedCall = 0b10000
 
-        case news = 0b100
+            case sms = 0b100000
 
-        case call = 0b1000
+            case voiceMail = 0b1000000
 
-        case missedCall = 0b10000
+            case schedule = 0b10000000
 
-        case sms = 0b100000
+            // 2nd byte
 
-        case voiceMail = 0b1000000
+            case highPrioritized = 0b100000000
 
-        case schedule = 0b10000000
-
-        // 2nd byte
-
-        case highPrioritized = 0b100000000
-
-        case instantMessage = 0b10_00000000
-
+            case instantMessage = 0b10_00000000
+        }
         public static var allCases: [Category] {
             [
                 .simpleAlert,

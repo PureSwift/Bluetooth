@@ -21,41 +21,41 @@ public struct GAP3DInformation: GAPData, Equatable {
 
     /**
      GAP 3D Information Flags
-
+    
      • Association Notification: (Byte 2, bit 0)
      0 – Not supported
      1 – Supported
-
+    
      • Battery Level Reporting: (Byte 2, bit 1)
      0 – Not supported
      1 – Supported
-
+    
      • Send Battery Level Report on Start-up Synchronization: (Byte 2, bit 2)
      0 – 3DD requests 3DG to not send a 3DG Connection Announcement Message with Battery Level Report on Start-up Synchronization.
      1 – 3DD requests 3DG to send a 3DG Connection Announcement Message with Battery Level Report on Start-up Synchronization.
-
+    
      - Note: The value shall be set to 0 if the Battery Level Reporting is set to 0.
-
+    
      • Factory Test Mode: (Byte 2, bit 7)
      0 – normal operating mode
      1 – vendor-defined factory test mode
-
+    
      • Path Loss Threshold
      In dB. Maximum allowable path attenuation from 3DD to 3DG.
      Greater attenuation than this number will inform the 3DG that it is too far away and to look for another 3DD.
     */
-    public var flags: BitMaskOptionSet<Flag>
+    public var flags: Flag
 
     /**
      Path Loss Threshold
-
+    
      In dB. Maximum allowable path attenuation from 3DD to 3DG.
      Greater attenuation than this number will inform the 3DG that it is too far away and to look for another 3DD.
      */
     public var pathLossThreshold: UInt8
 
     public init(
-        flags: BitMaskOptionSet<Flag> = 0,
+        flags: Flag = Flag(rawValue: 0),
         pathLossThreshold: UInt8 = 0
     ) {
 
@@ -71,7 +71,7 @@ public extension GAP3DInformation {
         guard data.count == 2
         else { return nil }
 
-        let flags = BitMaskOptionSet<Flag>(rawValue: data[data.startIndex])
+        let flags = Flag(rawValue: data[data.startIndex])
         let pathLossThreshold = data[1]
 
         self.init(flags: flags, pathLossThreshold: pathLossThreshold)
@@ -91,23 +91,24 @@ public extension GAP3DInformation {
 
 // MARK: - Supporting Types
 
-public extension GAP3DInformation {
+extension GAP3DInformation {
 
     /// GAP 3D Information Flag
-    enum Flag: UInt8, BitMaskOption {
+    @OptionSet<UInt8>
+    public struct Flag: Sendable {
+        private enum Options: UInt8 {
+            /// Association Notification
+            case associationNotification = 0b01
 
-        /// Association Notification
-        case associationNotification = 0b01
+            /// Battery Level Reporting
+            case batteryLevelReporting = 0b10
 
-        /// Battery Level Reporting
-        case batteryLevelReporting = 0b10
+            /// Send Battery Level Report on Start-up Synchronization
+            case sendBatteryLevelOnStartUp = 0b100
 
-        /// Send Battery Level Report on Start-up Synchronization
-        case sendBatteryLevelOnStartUp = 0b100
-
-        /// Factory Test Mode
-        case factoryTestMode = 0b10000000
-
+            /// Factory Test Mode
+            case factoryTestMode = 0b10000000
+        }
         public static var allCases: [Flag] {
             [
                 .associationNotification,

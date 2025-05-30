@@ -79,9 +79,9 @@ public extension GAPFlags {
 
     /**
     LE Limited Discoverable Mode
-
+    
      - Note: Limited Discoverable Mode is used to suggest that the device should have a high priority to scanning devices and often the advertising interval used when in this mode is faster than when in the General Discoverable Mode. A device will be in Limited Discoverable Mode for a limited time only and the core specification recommends this be no more than one minute. A device whose Flags field indicates it is not discoverable just means scanning devices should ignore it.
-
+    
      - SeeAlso: [Bluetooth Advertising Works](https://blog.bluetooth.com/advertising-works-part-2)
     */
     static var lowEnergyLimitedDiscoverableMode: GAPFlags { 0b00000001 }

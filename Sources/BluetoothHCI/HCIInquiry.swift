@@ -35,10 +35,10 @@ public extension BluetoothHostControllerInterface {
 
         /*
         var isComplete = false
-
+        
         try pollEvent(HCInquiryComplete.self, shouldContinue: shouldContinue) { (complete) in
-
-
+        
+        
         }*/
     }
 }

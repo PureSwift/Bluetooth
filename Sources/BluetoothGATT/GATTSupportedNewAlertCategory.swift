@@ -27,9 +27,9 @@ public struct GATTSupportedNewAlertCategory: GATTCharacteristic {
 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.supportedNewAlertCategory }
 
-    public var categories: BitMaskOptionSet<Category>
+    public var categories: Category
 
-    public init(categories: BitMaskOptionSet<Category> = []) {
+    public init(categories: Category = []) {
 
         self.categories = categories
     }
@@ -39,7 +39,7 @@ public struct GATTSupportedNewAlertCategory: GATTCharacteristic {
         guard let bitmask = Category.RawValue(bitmaskArray: data)
         else { return nil }
 
-        self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
+        self.categories = Category(rawValue: bitmask)
     }
 
     public var data: Data {
