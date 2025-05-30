@@ -10,7 +10,7 @@ jobs:
       - name: Install dependencies
         run: apt update -y; apt install libtool-bin -y;
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Swift Version
         run: swift --version
       - name: Build Bluetooth
@@ -24,7 +24,7 @@ jobs:
       container: swift:6.0.3
       steps:
         - name: Checkout
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
         - name: Install dependencies
           run: apt update -y; apt install wget -y
         - name: Install SDK
