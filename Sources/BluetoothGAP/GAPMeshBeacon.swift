@@ -214,62 +214,51 @@ public enum GAPBeaconType: UInt8 {
     case secureNetwork = 0x01
 }
 
-@frozen
-public enum GAPOOBInformationFlag: UInt16, BitMaskOption {
-
-    case other = 0b01
-
-    case electronic = 0b10
-
-    case machineReadableCode = 0b100
-
-    case barCode = 0b1000
-
-    case nearFieldCommunication = 0b10000
-
-    case number = 0b100000
-
-    case string = 0b1000000
-
-    case onBox = 0b1000_00000000
-
-    case insideBox = 0b10000_00000000
-
-    case onPieceOfPaper = 0b100000_00000000
-
-    case insideManual = 0b1000000_00000000
-
-    case onDevice = 0b10000000_00000000
-
-    public static let allCases: [GAPOOBInformationFlag] = [
-        .other,
-        .electronic,
-        .machineReadableCode,
-        .barCode,
-        .nearFieldCommunication,
-        .number,
-        .string,
-        .onBox,
-        .insideBox,
-        .onPieceOfPaper,
-        .insideManual,
-        .onDevice
-    ]
-
+public struct GAPOOBInformationFlag: OptionSet {
+    public let rawValue: UInt16
+    public init(rawValue: UInt16) { self.rawValue = rawValue }
+    public static var other: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b01) }
+    public static var electronic: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b10) }
+    public static var machineReadableCode: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b100) }
+    public static var barCode: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b1000) }
+    public static var nearFieldCommunication: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b10000) }
+    public static var number: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b100000) }
+    public static var string: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b1000000) }
+    public static var onBox: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b1000_00000000) }
+    public static var insideBox: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b10000_00000000) }
+    public static var onPieceOfPaper: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b100000_00000000) }
+    public static var insideManual: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b1000000_00000000) }
+    public static var onDevice: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b10000000_00000000) }
+    public static var allCases: [GAPOOBInformationFlag] {
+        [
+            .other,
+            .electronic,
+            .machineReadableCode,
+            .barCode,
+            .nearFieldCommunication,
+            .number,
+            .string,
+            .onBox,
+            .insideBox,
+            .onPieceOfPaper,
+            .insideManual,
+            .onDevice
+        ]
+    }
 }
 
-@frozen
-public enum GAPSecureNetworkFlag: UInt8, BitMaskOption {
+public struct GAPSecureNetworkFlag: OptionSet {
+    public let rawValue: UInt8
+    public init(rawValue: UInt8) { self.rawValue = rawValue }
+    public static var keyRefresh: GAPSecureNetworkFlag { GAPSecureNetworkFlag(rawValue: 0b01) }
+    public static var ivUpdate: GAPSecureNetworkFlag { GAPSecureNetworkFlag(rawValue: 0b10) }
 
-    case keyRefresh = 0b01
-
-    case ivUpdate = 0b10
-
-    public static let allCases: [GAPSecureNetworkFlag] = [
-        .keyRefresh,
-        .ivUpdate
-    ]
-
+    public static var allCases: [GAPSecureNetworkFlag] {
+        [
+            .keyRefresh,
+            .ivUpdate
+        ]
+    }
 }
 
 /// The Secure Network beacon is used by nodes to identify the subnet and its security state
@@ -350,3 +339,4 @@ extension GAPSecureNetworkBeacon: DataConvertible {
         Self.length
     }
 }
+
