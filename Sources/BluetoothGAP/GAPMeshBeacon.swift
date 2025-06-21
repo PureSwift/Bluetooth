@@ -104,14 +104,14 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable, Ha
     public let deviceUUID: UUID
 
     /// OOB Information
-    public let oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag>
+    public let oobInformationFlags: GAPOOBInformationFlag
 
     /// Hash of the associated URI advertised with the URI AD Type (optional field).
     public let uriHash: UInt32?
 
     public init(
         deviceUUID: UUID,
-        oobInformationFlags: BitMaskOptionSet<GAPOOBInformationFlag> = 0,
+        oobInformationFlags: GAPOOBInformationFlag = [],
         uriHash: UInt32? = nil
     ) {
 
@@ -131,7 +131,7 @@ public struct GAPUnprovisionedDeviceBeacon: GAPMeshBeaconProtocol, Equatable, Ha
 
         let deviceUUID = UUID(UInt128(littleEndian: UInt128(bytes: (data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16]))))
 
-        let oobInformationFlags = BitMaskOptionSet<GAPOOBInformationFlag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[17], data[18]))))
+        let oobInformationFlags = GAPOOBInformationFlag(rawValue: UInt16(littleEndian: UInt16(bytes: (data[17], data[18]))))
 
         let uriHash: UInt32?
 
@@ -214,7 +214,7 @@ public enum GAPBeaconType: UInt8 {
     case secureNetwork = 0x01
 }
 
-public struct GAPOOBInformationFlag: OptionSet {
+public struct GAPOOBInformationFlag: OptionSet, Equatable, Hashable, Sendable {
     public let rawValue: UInt16
     public init(rawValue: UInt16) { self.rawValue = rawValue }
     public static var other: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b01) }
@@ -229,7 +229,7 @@ public struct GAPOOBInformationFlag: OptionSet {
     public static var onPieceOfPaper: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b100000_00000000) }
     public static var insideManual: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b1000000_00000000) }
     public static var onDevice: GAPOOBInformationFlag { GAPOOBInformationFlag(rawValue: 0b10000000_00000000) }
-    public static var allCases: [GAPOOBInformationFlag] {
+    public static var allCases: GAPOOBInformationFlag {
         [
             .other,
             .electronic,
@@ -253,7 +253,7 @@ public struct GAPSecureNetworkFlag: OptionSet {
     public static var keyRefresh: GAPSecureNetworkFlag { GAPSecureNetworkFlag(rawValue: 0b01) }
     public static var ivUpdate: GAPSecureNetworkFlag { GAPSecureNetworkFlag(rawValue: 0b10) }
 
-    public static var allCases: [GAPSecureNetworkFlag] {
+    public static var allCases: GAPSecureNetworkFlag {
         [
             .keyRefresh,
             .ivUpdate
@@ -279,7 +279,7 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
 
     public static let beaconType: GAPBeaconType = .secureNetwork
 
-    public let flags: BitMaskOptionSet<GAPSecureNetworkFlag>
+    public let flags: GAPSecureNetworkFlag
 
     public let networkID: UInt64
 
@@ -288,12 +288,11 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
     public let authenticationValue: UInt64
 
     public init(
-        flags: BitMaskOptionSet<GAPSecureNetworkFlag>,
+        flags: GAPSecureNetworkFlag,
         networkID: UInt64,
         ivIndex: UInt32,
         authenticationValue: UInt64
     ) {
-
         self.flags = flags
         self.networkID = networkID
         self.ivIndex = ivIndex
@@ -309,7 +308,7 @@ public struct GAPSecureNetworkBeacon: GAPMeshBeaconProtocol, Equatable {
             beaconType == Self.beaconType
         else { return nil }
 
-        let flags = BitMaskOptionSet<GAPSecureNetworkFlag>(rawValue: data[1])
+        let flags = GAPSecureNetworkFlag(rawValue: data[1])
         let networkID = UInt64(littleEndian: UInt64(bytes: (data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9])))
         let ivIndex = UInt32(littleEndian: UInt32(bytes: (data[10], data[11], data[12], data[13])))
         let authenticationValue = UInt64(littleEndian: UInt64(bytes: (data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21])))
