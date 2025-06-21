@@ -238,24 +238,30 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     }
 
     /// These flags define which data fields are present in the Characteristic value.
-    internal enum Flag: UInt8, BitMaskOption {
+    internal struct Flag: OptionSet {
+
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
 
         /// Blood pressure for Systolic, Diastolic and MAP in units of kPa
-        case bloodPressureUnits = 0b01
+        public static var bloodPressureUnits: Flag { Flag(rawValue: 0b01) }
 
         /// Time Stamp present
-        case timestamp = 0b10
+        public static var timestamp: Flag { Flag(rawValue: 0b10) }
 
         /// Pulse Rate present
-        case pulseRate = 0b100
+        public static var pulseRate: Flag { Flag(rawValue: 0b100) }
 
         /// User ID present
-        case userID = 0b1000
+        public static var userID: Flag { Flag(rawValue: 0b1000) }
 
         /// Measurement Status present
-        case measurementStatus = 0b10000
+        public static var measurementStatus: Flag { Flag(rawValue: 0b10000) }
 
-        public static let allCases: [Flag] = [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus]
+        public static var allCases: [Flag] { [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus] }
     }
 
     /// Unit of measurement
