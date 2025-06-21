@@ -287,7 +287,7 @@ import BluetoothGATT
                 return
             }
 
-            let majorServiceClass = BitMaskOptionSet<ClassOfDevice.MajorServiceClass>(rawValue: 0b110_00010000)
+            let majorServiceClass = ClassOfDevice.MajorServiceClass(rawValue: 0b110_00010000)
             let majorDeviceClass = ClassOfDevice.MajorDeviceClass.computer(.laptop)
             let classOfDeviceManual = ClassOfDevice(
                 formatType: formatType,

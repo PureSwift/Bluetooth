@@ -270,7 +270,7 @@ import Bluetooth
                     diastolic: SFloat(bitPattern: 0xBB),
                     meanArterialPressure: SFloat(bitPattern: 0xCC)),
             userIdentifier: 0x1B,
-            measurementStatus: .all
+            measurementStatus: .allCases
         )
 
         #expect(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()) == Array(characteristic.data))
