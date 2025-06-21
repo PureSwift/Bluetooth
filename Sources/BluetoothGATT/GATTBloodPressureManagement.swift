@@ -92,7 +92,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         guard data.count >= Self.length
         else { return nil }
 
-        let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
+        let flags = Flag(rawValue: data[0])
 
         let unit: Unit = flags.contains(.bloodPressureUnits) ? .kPa : .mmHg
         let systolic = SFloat(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))))
@@ -156,7 +156,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             guard index + MemoryLayout<MeasurementStatus.RawValue>.size < data.count
             else { return nil }
 
-            self.measurementStatus = BitMaskOptionSet<MeasurementStatus>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
+            self.measurementStatus = MeasurementStatus(rawValue: UInt16(littleEndian: UInt16(bytes: (data[index + 1], data[index + 2]))))
 
             index += MemoryLayout<MeasurementStatus.RawValue>.size
 
