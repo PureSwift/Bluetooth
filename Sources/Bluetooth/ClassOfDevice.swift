@@ -532,7 +532,7 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
 
-    struct Imaging: OptionSet, Sendable, CaseIterable {
+    struct Imaging: OptionSet, Sendable {
 
         public let rawValue: UInt8
 
