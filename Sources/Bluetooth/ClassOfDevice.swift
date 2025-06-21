@@ -13,13 +13,13 @@ public struct ClassOfDevice: Equatable, Sendable {
 
     public var formatType: FormatType
 
-    public var majorServiceClass: BitMaskOptionSet<MajorServiceClass>
+    public var majorServiceClass: MajorServiceClass
 
     public var majorDeviceClass: MajorDeviceClass
 
     public init(
         formatType: FormatType,
-        majorServiceClass: BitMaskOptionSet<MajorServiceClass>,
+        majorServiceClass: MajorServiceClass,
         majorDeviceClass: MajorDeviceClass
     ) {
 
@@ -43,7 +43,7 @@ extension ClassOfDevice: DataConvertible {
 
         let majorServiceValue = UInt16(littleEndian: UInt16(bytes: (data[1], data[2]))) >> 5
 
-        self.majorServiceClass = BitMaskOptionSet<MajorServiceClass>(rawValue: majorServiceValue)
+        self.majorServiceClass = MajorServiceClass(rawValue: majorServiceValue)
 
         let majorDeviceClassType = MajorDeviceClassType(rawValue: (data[1] << 3) >> 3) ?? MajorDeviceClassType.miscellaneous
 
@@ -70,7 +70,7 @@ extension ClassOfDevice: DataConvertible {
                 PeripheralDevice(rawValue: (data[0] << 2) >> 4) ?? .uncategorized)
 
         case .imaging:
-            self.majorDeviceClass = .imaging(BitMaskOptionSet<Imaging>(rawValue: data[0] >> 4))
+            self.majorDeviceClass = .imaging(Imaging(rawValue: data[0] >> 4))
 
         case .wearable:
             self.majorDeviceClass = .wearable(Wearable(rawValue: data[0] >> 2) ?? .uncategorized)
@@ -129,46 +129,54 @@ extension ClassOfDevice {
 
 public extension ClassOfDevice {
 
-    enum MajorServiceClass: UInt16, BitMaskOption, Sendable {
+    struct MajorServiceClass: OptionSet, Sendable {
+
+        public let rawValue: UInt16
+
+        public init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
 
         /// Limited Discoverable Mode [Ref #1]
-        case limitedDiscoverable = 0b01
+        public static var limitedDiscoverable: MajorServiceClass { MajorServiceClass(rawValue: 0b01) }
 
         /// Positioning (Location identification)
-        case positioning = 0b1000
+        public static var positioning: MajorServiceClass { MajorServiceClass(rawValue: 0b1000) }
 
         /// Networking (LAN, Ad hoc, ...)
-        case networking = 0b10000
+        public static var networking: MajorServiceClass { MajorServiceClass(rawValue: 0b10000) }
 
         /// Rendering (Printing, Speakers, ...)
-        case rendering = 0b100000
+        public static var rendering: MajorServiceClass { MajorServiceClass(rawValue: 0b100000) }
 
         /// Capturing (Scanner, Microphone, ...)
-        case capturing = 0b1000000
+        public static var capturing: MajorServiceClass { MajorServiceClass(rawValue: 0b1000000) }
 
         /// Object Transfer (v-Inbox, v-Folder, ...)
-        case objectTransfer = 0b10000000
+        public static var objectTransfer: MajorServiceClass { MajorServiceClass(rawValue: 0b10000000) }
 
         /// Audio (Speaker, Microphone, Headset service, ...)
-        case audio = 0b1_00000000
+        public static var audio: MajorServiceClass { MajorServiceClass(rawValue: 0b1_00000000) }
 
         /// Telephony (Cordless telephony, Modem, Headset service, ...)
-        case telephony = 0b10_00000000
+        public static var telephony: MajorServiceClass { MajorServiceClass(rawValue: 0b10_00000000) }
 
         /// Information (WEB-server, WAP-server, ...)
-        case information = 0b100_00000000
+        public static var information: MajorServiceClass { MajorServiceClass(rawValue: 0b100_00000000) }
 
-        public static let allCases: [MajorServiceClass] = [
-            .limitedDiscoverable,
-            .positioning,
-            .networking,
-            .rendering,
-            .capturing,
-            .objectTransfer,
-            .audio,
-            .telephony,
-            .information
-        ]
+        public static var allCases: MajorServiceClass {
+            [
+                .limitedDiscoverable,
+                .positioning,
+                .networking,
+                .rendering,
+                .capturing,
+                .objectTransfer,
+                .audio,
+                .telephony,
+                .information
+            ]
+        }
     }
 }
 
@@ -195,7 +203,7 @@ public extension ClassOfDevice {
         case peripheral(PeripheralKeyboardPointing, PeripheralDevice)
 
         /// Imaging (printer, scanner, camera, display, ...)
-        case imaging(BitMaskOptionSet<Imaging>)
+        case imaging(Imaging)
 
         /// Wearable
         case wearable(Wearable)
@@ -524,22 +532,38 @@ public extension ClassOfDevice.MinorDeviceClass {
 
 public extension ClassOfDevice.MinorDeviceClass {
 
-    enum Imaging: UInt8, BitMaskOption, Sendable, CaseIterable {
+    struct Imaging: OptionSet, Sendable, CaseIterable {
+
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
 
         /// Uncategorized
-        case uncategorized = 0b00
+        public static var uncategorized: Imaging { Imaging(rawValue: 0b00) }
 
         /// Display
-        case display = 0b01
+        public static var display: Imaging { Imaging(rawValue: 0b01) }
 
         /// Camera
-        case camera = 0b10
+        public static var camera: Imaging { Imaging(rawValue: 0b10) }
 
         /// Scanner
-        case scanner = 0b100
+        public static var scanner: Imaging { Imaging(rawValue: 0b100) }
 
         /// Printer
-        case printer = 0b1000
+        public static var printer: Imaging { Imaging(rawValue: 0b1000) }
+
+        public static var allCases: Imaging {
+            [
+                .uncategorized,
+                .display,
+                .camera,
+                .scanner,
+                .printer
+            ]
+        }
     }
 }
 
