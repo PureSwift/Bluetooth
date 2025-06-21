@@ -25,9 +25,9 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
 
     /// The Flags field is included in the Blood Pressure Measurement characteristic.
     /// Reserved for Future Use (RFU) bits in the Flags field shall be set to 0.
-    internal var flags: BitMaskOptionSet<Flag> {
+    internal var flags: Flag {
 
-        var flags = BitMaskOptionSet<Flag>()
+        var flags = Flag()
 
         if case .kPa = compoundValue.unit {
 
@@ -70,14 +70,14 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
     public var userIdentifier: UInt8?
 
     /// Measurement Status
-    public var measurementStatus: BitMaskOptionSet<MeasurementStatus>?
+    public var measurementStatus: MeasurementStatus?
 
     public init(
         compoundValue: CompoundValue,
         timestamp: GATTDateTime? = nil,
         pulseRate: SFloat? = nil,
         userIdentifier: UInt8? = nil,
-        measurementStatus: BitMaskOptionSet<MeasurementStatus>? = nil
+        measurementStatus: MeasurementStatus? = nil
     ) {
 
         self.compoundValue = compoundValue
@@ -261,7 +261,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         /// Measurement Status present
         public static var measurementStatus: Flag { Flag(rawValue: 0b10000) }
 
-        public static var allCases: [Flag] { [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus] }
+        public static var allCases: Flag { [.bloodPressureUnits, .timestamp, .pulseRate, .userID, .measurementStatus] }
     }
 
     /// Unit of measurement
@@ -274,12 +274,10 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         case kPa = 0x2724
 
         public init?(unit: UnitIdentifier) {
-
             self.init(rawValue: unit.rawValue)
         }
 
         public var unit: UnitIdentifier {
-
             return UnitIdentifier(rawValue: rawValue)
         }
     }
@@ -326,7 +324,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
 
         public static var measurementPosition: MeasurementStatus { MeasurementStatus(rawValue: 0b10000) }
 
-        public static var allCases: [MeasurementStatus] {
+        public static var allCases: MeasurementStatus {
             [
                 .bodyMovement,
                 .cuffFit,
