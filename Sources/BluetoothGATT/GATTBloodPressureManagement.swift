@@ -308,17 +308,23 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         public var meanArterialPressure: SFloat
     }
 
-    public enum MeasurementStatus: UInt16, BitMaskOption {
+    public struct MeasurementStatus: OptionSet {
 
-        case bodyMovement = 0b01
+        public let rawValue: UInt16
 
-        case cuffFit = 0b10
+        public init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
 
-        case irregularPulse = 0b100
+        public static var bodyMovement: MeasurementStatus { MeasurementStatus(rawValue: 0b01) }
 
-        case pulseRate = 0b1000
+        public static var cuffFit: MeasurementStatus { MeasurementStatus(rawValue: 0b10) }
 
-        case measurementPosition = 0b10000
+        public static var irregularPulse: MeasurementStatus { MeasurementStatus(rawValue: 0b100) }
+
+        public static var pulseRate: MeasurementStatus { MeasurementStatus(rawValue: 0b1000) }
+
+        public static var measurementPosition: MeasurementStatus { MeasurementStatus(rawValue: 0b10000) }
 
         public static var allCases: [MeasurementStatus] {
             [
