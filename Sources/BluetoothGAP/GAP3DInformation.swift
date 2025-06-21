@@ -17,7 +17,7 @@ import Bluetooth
 @frozen
 public struct GAP3DInformation: GAPData, Equatable {
 
-    public static var dataType: GAPDataType { return .informationData3D }
+    public static var dataType: GAPDataType { .informationData3D }
 
     /**
      GAP 3D Information Flags
@@ -44,7 +44,7 @@ public struct GAP3DInformation: GAPData, Equatable {
      In dB. Maximum allowable path attenuation from 3DD to 3DG.
      Greater attenuation than this number will inform the 3DG that it is too far away and to look for another 3DD.
     */
-    public var flags: BitMaskOptionSet<Flag>
+    public var flags: Flags
 
     /**
      Path Loss Threshold
@@ -55,7 +55,7 @@ public struct GAP3DInformation: GAPData, Equatable {
     public var pathLossThreshold: UInt8
 
     public init(
-        flags: BitMaskOptionSet<Flag> = 0,
+        flags: Flags = [],
         pathLossThreshold: UInt8 = 0
     ) {
 
@@ -71,21 +71,19 @@ public extension GAP3DInformation {
         guard data.count == 2
         else { return nil }
 
-        let flags = BitMaskOptionSet<Flag>(rawValue: data[data.startIndex])
+        let flags = Flags(rawValue: data[data.startIndex])
         let pathLossThreshold = data[1]
 
         self.init(flags: flags, pathLossThreshold: pathLossThreshold)
     }
-
+    
     func append<Data: DataContainer>(to data: inout Data) {
-
         data += flags.rawValue
         data += pathLossThreshold
     }
 
     var dataLength: Int {
-
-        return 2
+        2
     }
 }
 
@@ -93,28 +91,38 @@ public extension GAP3DInformation {
 
 public extension GAP3DInformation {
 
-    /// GAP 3D Information Flag
-    enum Flag: UInt8, BitMaskOption {
+    /// GAP 3D Information Flags
+    struct Flags: OptionSet {
 
-        /// Association Notification
-        case associationNotification = 0b01
+        public let rawValue: UInt8
 
-        /// Battery Level Reporting
-        case batteryLevelReporting = 0b10
-
-        /// Send Battery Level Report on Start-up Synchronization
-        case sendBatteryLevelOnStartUp = 0b100
-
-        /// Factory Test Mode
-        case factoryTestMode = 0b10000000
-
-        public static var allCases: [Flag] {
-            [
-                .associationNotification,
-                .batteryLevelReporting,
-                .sendBatteryLevelOnStartUp,
-                .factoryTestMode
-            ]
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
         }
     }
+}
+
+public extension GAP3DInformation.Flags {
+
+    /// Association Notification: (Byte 2, bit 0)
+    /// 0 – Not supported
+    /// 1 – Supported
+    static var associationNotification: GAP3DInformation.Flags { GAP3DInformation.Flags(rawValue: 0b00000001) }
+
+    /// Battery Level Reporting: (Byte 2, bit 1)
+    /// 0 – Not supported
+    /// 1 – Supported
+    static var batteryLevelReporting: GAP3DInformation.Flags { GAP3DInformation.Flags(rawValue: 0b00000010) }
+
+    /// Send Battery Level Report on Start-up Synchronization: (Byte 2, bit 2)
+    /// 0 – 3DD requests 3DG to not send a 3DG Connection Announcement Message with Battery Level Report on Start-up Synchronization.
+    /// 1 – 3DD requests 3DG to send a 3DG Connection Announcement Message with Battery Level Report on Start-up Synchronization.
+    ///
+    /// - Note: The value shall be set to 0 if the Battery Level Reporting is set to 0.
+    static var sendBatteryLevelOnStartUp: GAP3DInformation.Flags { GAP3DInformation.Flags(rawValue: 0b00000100) }
+
+    /// Factory Test Mode: (Byte 2, bit 7)
+    /// 0 – normal operating mode
+    /// 1 – vendor-defined factory test mode
+    static var factoryTestMode: GAP3DInformation.Flags { GAP3DInformation.Flags(rawValue: 0b10000000) }
 }
