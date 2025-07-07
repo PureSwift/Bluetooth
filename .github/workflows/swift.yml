@@ -21,7 +21,7 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.0.3", "swiftlang/swift:nightly"]
+        container: ["swift:6.0.3", "swift:6.1.1", "swiftlang/swift:nightly"]
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}-jammy
     steps:
@@ -35,3 +35,21 @@ jobs:
       run: swift build -c release
     - name: Test (Debug)
       run: swift test -c debug
+
+  android:
+    name: Android
+    strategy:
+      fail-fast: false
+      matrix:
+        swift: ['6.1', 'nightly-6.2']
+        arch: ['x86_64']
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Build Swift Package for Android"
+        run: |
+          brew install skiptools/skip/skip || (brew update && brew install skiptools/skip/skip)
+          skip android sdk install --version ${{ matrix.swift }}
+          # https://github.com/swiftlang/swift-driver/pull/1879
+          ANDROID_NDK_ROOT="" skip android build
