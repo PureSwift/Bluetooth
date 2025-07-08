@@ -38,7 +38,7 @@ jobs:
     - name: Test
       run: ${{ matrix.options }} swift test -c ${{ matrix.config }}
 
-  android-arm:
+  android:
       name: Android
       strategy:
         fail-fast: false

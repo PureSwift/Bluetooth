@@ -103,3 +103,20 @@ jobs:
           with:
             name: "linux-armv7-bookworm-tests-${{ matrix.swift }}"
             path: .build/armv7-unknown-linux-gnueabihf/debug/BluetoothPackageTests.xctest
+
+    android-arm:
+      name: Android
+      strategy:
+        fail-fast: false
+        matrix:
+          swift: ['6.1', 'nightly-6.2']
+          arch: ["aarch64"]
+      runs-on: macos-15
+      timeout-minutes: 30
+      steps:
+        - uses: actions/checkout@v4
+        - name: "Build Swift Package for Android"
+          run: |
+              brew install skiptools/skip/skip || (brew update && brew install skiptools/skip/skip)
+              skip android sdk install --version ${{ matrix.swift }}
+              ANDROID_NDK_ROOT="" SWIFT_BLUETOOTH_C_SHIMS=0 skip android build --arch ${{ matrix.arch }}
