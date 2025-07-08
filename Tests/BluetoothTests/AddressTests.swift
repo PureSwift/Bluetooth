@@ -10,8 +10,10 @@ import Foundation
 import CoreFoundation
 import Testing
 import Bluetooth
+#if canImport(CBluetooth)
 import CBluetooth
 import CBluetoothShim
+#endif
 
 @Suite("Bluetooth Address Tests")
 struct BluetoothAddressTests {
@@ -116,14 +118,13 @@ struct BluetoothAddressTests {
             #expect(address == BluetoothAddress(bigEndian: BluetoothAddress(data: test.data)!))
             #expect(Data(address.bigEndian) == test.data)
             
+            #if canImport(CBluetooth)
             // C APIs
             var cValue = unsafeBitCast(address, to: BTAddress.self)
             var zero = unsafeBitCast(BluetoothAddress.zero, to: BTAddress.self)
             
             #expect(BTAddressEqual(&cValue, &zero) == true)
-            
-            // CoreFoundation
-            
+            #endif
         }
     }
 
