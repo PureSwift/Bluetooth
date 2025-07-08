@@ -10,6 +10,11 @@ let buildMetadata = environment["SWIFTPM_BLUETOOTH_METADATA"] != "0"
 let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
 let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0"
 let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
+#if canImport(Darwin)
+let buildCLib = environment["SWIFT_BLUETOOTH_C_SHIMS"] != "0"
+#else
+let buildCLib = environment["SWIFT_BLUETOOTH_C_SHIMS"] == "1"
+#endif
 
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
@@ -27,9 +32,7 @@ var package = Package(
             name: "Bluetooth",
             type: libraryType,
             targets: [
-                "Bluetooth",
-                "CBluetooth",
-                "CBluetoothShim"
+                "Bluetooth"
             ]
         ),
         .library(
@@ -56,17 +59,6 @@ var package = Package(
     targets: [
         .target(
             name: "Bluetooth"
-        ),
-        .target(
-            name: "CBluetooth",
-            dependencies: ["Bluetooth"] // actual implementation
-        ),
-        .target(
-            name: "CBluetoothShim",
-            dependencies: [
-                "CBluetooth",
-                "Bluetooth"
-            ]
         ),
         .target(
             name: "BluetoothMetadata",
@@ -103,8 +95,6 @@ var package = Package(
             name: "BluetoothTests",
             dependencies: [
                 "Bluetooth",
-                "CBluetooth",
-                "CBluetoothShim",
                 .target(
                     name: "BluetoothMetadata",
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
@@ -199,5 +189,52 @@ if enableMacros {
     ]
     package.targets[0].dependencies += [
         "BluetoothMacros"
+    ]
+}
+
+if buildCLib {
+    package.products[0] = .library(
+        name: "Bluetooth",
+        type: libraryType,
+        targets: [
+            "Bluetooth",
+            "CBluetooth",
+            "CBluetoothShim"
+        ]
+    )
+    package.targets[5] = .testTarget(
+            name: "BluetoothTests",
+            dependencies: [
+                "Bluetooth",
+                .target(
+                    name: "BluetoothMetadata",
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                ),
+                .target(
+                    name: "BluetoothGAP",
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                ),
+                .target(
+                    name: "BluetoothGATT",
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                ),
+                .target(
+                    name: "BluetoothHCI",
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                )
+            ]
+    )
+    package.targets += [
+        .target(
+            name: "CBluetooth",
+            dependencies: ["Bluetooth"] // actual implementation
+        ),
+        .target(
+            name: "CBluetoothShim", // C implementation
+            dependencies: [
+                "CBluetooth",
+                "Bluetooth"
+            ]
+        ),
     ]
 }
