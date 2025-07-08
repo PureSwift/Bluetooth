@@ -28,6 +28,7 @@ public protocol ByteValue: Equatable {
 public extension ByteValue {
 
     /// Size of value in bytes.
+    @_alwaysEmitIntoClient
     static var length: Int { bitWidth / 8 }
 
     @inline(__always)
@@ -45,12 +46,14 @@ public extension ByteValue {
 public extension ByteValue where Self: DataConvertible {
 
     /// Append data representation into buffer.
+    @_alwaysEmitIntoClient
     func append<Data: DataContainer>(to data: inout Data) {
         withUnsafeBytes { buffer in
             data += buffer
         }
     }
 
+    @_alwaysEmitIntoClient
     var dataLength: Int {
         Self.length
     }
@@ -60,6 +63,7 @@ public extension ByteValue where Self: DataConvertible {
 
 extension ByteValue where Self: Equatable {
 
+    @_alwaysEmitIntoClient
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.withUnsafeBytes { (b1) in
             rhs.withUnsafeBytes { (b2) in
@@ -72,7 +76,8 @@ extension ByteValue where Self: Equatable {
 // MARK: - Comparable
 
 extension ByteValue where Self: Comparable {
-
+    
+    @_alwaysEmitIntoClient
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.withUnsafeBytes { (b1) in
             rhs.withUnsafeBytes { (b2) in
@@ -85,6 +90,7 @@ extension ByteValue where Self: Comparable {
         }
     }
 
+    @_alwaysEmitIntoClient
     public static func > (lhs: Self, rhs: Self) -> Bool {
         lhs.withUnsafeBytes { (b1) in
             rhs.withUnsafeBytes { (b2) in
@@ -101,7 +107,7 @@ extension ByteValue where Self: Comparable {
 // MARK: - CustomStringConvertible
 
 extension ByteValue where Self: CustomStringConvertible, Self: ByteSwap {
-
+    
     public var description: String {
         bigEndian.withUnsafeBytes {
             "0x" + $0.toHexadecimal()

@@ -178,13 +178,9 @@ extension BluetoothAddress: DataConvertible {
     }
     
     public init?(data: UnsafePointer<UInt8>?, count: Int) {
-        var address = BluetoothAddress.zero
-        guard withUnsafeMutablePointer(to: &address, {
-            BTAddressCreateWithData(OpaquePointer($0), data, count)
-        }) else {
-            return nil
-        }
-        self = address
+        guard let data, count == BluetoothAddress.length
+            else { return nil }
+        self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
     }
 }
 
@@ -199,92 +195,4 @@ extension BluetoothAddress: Codable {}
 #if !hasFeature(Embedded) && SWIFTPM_ENABLE_MACROS
 @freestanding(expression)
 public macro BluetoothAddress(_ string: StaticString) -> BluetoothAddress = #externalMacro(module: "BluetoothMacros", type: "BluetoothAddressMacro")
-#endif
-
-// MARK: - C ABI
-
-@_cdecl("BTAddressEqual")
-internal func BTAddressEqual(_ lhs: OpaquePointer, _ rhs: OpaquePointer) -> Bool {
-    UnsafePointer<BluetoothAddress>(lhs).pointee == UnsafePointer<BluetoothAddress>(rhs).pointee
-}
-
-@_cdecl("BTAddressCreateWithString")
-internal func BTAddressCreateWithString(
-    _ address: OpaquePointer,
-    _ string: UnsafePointer<CChar>
-) -> Bool {
-    let pointer = UnsafeMutablePointer<BluetoothAddress>(address)
-    assert(pointer.pointee == .zero)
-    let string = String(cString: string)
-    guard let value = BluetoothAddress(string) else {
-        return false
-    }
-    pointer.pointee = value
-    return true
-}
-
-@_cdecl("BTAddressCreateWithData")
-@inline(never)
-internal func BTAddressCreateWithData(
-    _ address: OpaquePointer,
-    _ data: UnsafePointer<UInt8>?,
-    _ size: Int
-) -> Bool {
-    guard let data, size == BluetoothAddress.length
-        else { return false }
-    let pointer = UnsafeMutablePointer<BluetoothAddress>(address)
-    assert(pointer.pointee == .zero)
-    pointer.pointee.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
-    return false
-}
-
-// MARK: - CoreFoundation
-
-#if canImport(CoreFoundation)
-import CoreFoundation
-
-public extension BluetoothAddress {
-    
-    init?(_ string: CFString) {
-        var address = BluetoothAddress.zero
-        guard withUnsafeMutablePointer(to: &address, {
-            BTAddressCreateWithCFString(OpaquePointer($0), string)
-        }) else {
-            return nil
-        }
-        self = address
-    }
-}
-
-/// `BOOL BTAddressCreateWithCFString(*BTAddress address, CFStringRef string)`
-@_cdecl("BTAddressCreateWithCFString")
-internal func BTAddressCreateWithCFString(_ address: OpaquePointer, _ string: CFString) -> Bool {
-    // get C string
-    guard let cString = CFStringGetCStringPtr(string, CFStringBuiltInEncodings.UTF8.rawValue) else {
-        return false
-    }
-    return BTAddressCreateWithString(address, cString)
-}
-
-public extension BluetoothAddress {
-    
-    init?(data: CFData) {
-        var address = BluetoothAddress.zero
-        guard withUnsafeMutablePointer(to: &address, {
-            BTAddressCreateWithCFData(OpaquePointer($0), data)
-        }) else {
-            return nil
-        }
-        self = address
-    }
-}
-
-@_cdecl("BTAddressCreateWithCFData")
-internal func BTAddressCreateWithCFData(_ address: OpaquePointer, _ data: CFData) -> Bool {
-    // get byte pointer
-    let dataPointer = CFDataGetBytePtr(data)
-    let size = CFDataGetLength(data)
-    return BTAddressCreateWithData(address, dataPointer, size)
-}
-
 #endif

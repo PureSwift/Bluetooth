@@ -21,6 +21,7 @@ import Foundation
 public struct AppleBeacon: Equatable, Hashable, Sendable {
 
     /// The company that created this specification.
+    @_alwaysEmitIntoClient
     public static var companyIdentifier: CompanyIdentifier {
         #if !os(WASI) && !hasFeature(Embedded)
         .apple
@@ -48,13 +49,13 @@ public struct AppleBeacon: Equatable, Hashable, Sendable {
     /// The received signal strength indicator (RSSI) value (measured in decibels) for the device.
     public var rssi: Int8
 
+    @_alwaysEmitIntoClient
     public init(
         uuid: UUID,
         major: UInt16 = 0,
         minor: UInt16 = 0,
         rssi: Int8
     ) {
-
         self.uuid = uuid
         self.major = major
         self.minor = minor
