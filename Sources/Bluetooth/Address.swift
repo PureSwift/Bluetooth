@@ -43,8 +43,6 @@ public extension BluetoothAddress {
 
 extension BluetoothAddress: Equatable {
 
-    @_silgen_name("BTAddressEqual")
-    @inline(never)
     public static func == (lhs: BluetoothAddress, rhs: BluetoothAddress) -> Bool {
         return lhs.bytes.0 == rhs.bytes.0
             && lhs.bytes.1 == rhs.bytes.1
@@ -59,8 +57,6 @@ extension BluetoothAddress: Equatable {
 
 extension BluetoothAddress: Hashable {
 
-    @_silgen_name("BTAddressHash")
-    @inline(never)
     public func hash(into hasher: inout Hasher) {
         Swift.withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
     }
@@ -82,8 +78,6 @@ extension BluetoothAddress: ByteValue {
 extension BluetoothAddress: ByteSwap {
 
     /// A representation of this address with the byte order swapped.
-    @_silgen_name("BTAddressByteSwap")
-    @inline(never)
     public var byteSwapped: BluetoothAddress {
         return BluetoothAddress(bytes: (bytes.5, bytes.4, bytes.3, bytes.2, bytes.1, bytes.0))
     }
@@ -147,34 +141,19 @@ internal extension BluetoothAddress {
         }
         return BluetoothAddress(bigEndian: BluetoothAddress(bytes: bytes))
     }
-    
-    @_silgen_name("BTAddressCreateWithCString")
-    @inline(never)
-    static func parse(_ address: inout BluetoothAddress, _ string: UnsafePointer<CChar>) -> Bool {
-        assert(address == .zero)
-        let string = String(cString: string)
-        guard let value = BluetoothAddress.init(string) else {
-            return false
-        }
-        address = value
-        return true
-    }
 }
 
 // MARK: - CustomStringConvertible
 
 extension BluetoothAddress: CustomStringConvertible {
     
-    @_silgen_name("BTAddressDescription")
-    @inline(never)
     public var description: String { stringValue }
 }
 
 // MARK: - LosslessStringConvertible
 
 extension BluetoothAddress: LosslessStringConvertible {
-
-    @_silgen_name("BTAddressCreateWithString")
+    
     public init?(_ string: String) {
         guard let value = Self.parse(string) else {
             return nil
@@ -198,29 +177,14 @@ extension BluetoothAddress: DataConvertible {
         self = value
     }
     
-    @_alwaysEmitIntoClient
     public init?(data: UnsafePointer<UInt8>?, count: Int) {
         var address = BluetoothAddress.zero
-        guard Self.parse(&address, data, Int32(count)) else {
+        guard withUnsafeMutablePointer(to: &address, {
+            BTAddressCreateWithData(OpaquePointer($0), data, count)
+        }) else {
             return nil
         }
         self = address
-    }
-}
-
-public extension BluetoothAddress {
-    
-    @_silgen_name("BTAddressCreateWithData")
-    @inline(never)
-    static func parse(
-        _ address: inout BluetoothAddress,
-        _ data: UnsafePointer<UInt8>?,
-        _ count: Int32
-    ) -> Bool {
-        guard let data, count == BluetoothAddress.length
-            else { return false }
-        address.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
-        return false
     }
 }
 
@@ -237,6 +201,43 @@ extension BluetoothAddress: Codable {}
 public macro BluetoothAddress(_ string: StaticString) -> BluetoothAddress = #externalMacro(module: "BluetoothMacros", type: "BluetoothAddressMacro")
 #endif
 
+// MARK: - C ABI
+
+@_cdecl("BTAddressEqual")
+internal func BTAddressEqual(_ lhs: OpaquePointer, _ rhs: OpaquePointer) -> Bool {
+    UnsafePointer<BluetoothAddress>(lhs).pointee == UnsafePointer<BluetoothAddress>(rhs).pointee
+}
+
+@_cdecl("BTAddressCreateWithString")
+internal func BTAddressCreateWithString(
+    _ address: OpaquePointer,
+    _ string: UnsafePointer<CChar>
+) -> Bool {
+    let pointer = UnsafeMutablePointer<BluetoothAddress>(address)
+    assert(pointer.pointee == .zero)
+    let string = String(cString: string)
+    guard let value = BluetoothAddress(string) else {
+        return false
+    }
+    pointer.pointee = value
+    return true
+}
+
+@_cdecl("BTAddressCreateWithData")
+@inline(never)
+internal func BTAddressCreateWithData(
+    _ address: OpaquePointer,
+    _ data: UnsafePointer<UInt8>?,
+    _ size: Int
+) -> Bool {
+    guard let data, size == BluetoothAddress.length
+        else { return false }
+    let pointer = UnsafeMutablePointer<BluetoothAddress>(address)
+    assert(pointer.pointee == .zero)
+    pointer.pointee.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
+    return false
+}
+
 // MARK: - CoreFoundation
 
 #if canImport(CoreFoundation)
@@ -244,10 +245,11 @@ import CoreFoundation
 
 public extension BluetoothAddress {
     
-    @_alwaysEmitIntoClient
     init?(_ string: CFString) {
         var address = BluetoothAddress.zero
-        guard BTAddressCreateWithCFString(&address, string) else {
+        guard withUnsafeMutablePointer(to: &address, {
+            BTAddressCreateWithCFString(OpaquePointer($0), string)
+        }) else {
             return nil
         }
         self = address
@@ -255,36 +257,34 @@ public extension BluetoothAddress {
 }
 
 /// `BOOL BTAddressCreateWithCFString(*BTAddress address, CFStringRef string)`
-@_silgen_name("BTAddressCreateWithCFString")
-@inline(never)
-public func BTAddressCreateWithCFString(_ address: inout BluetoothAddress, _ string: CFString) -> Bool {
-    assert(address == .zero)
+@_cdecl("BTAddressCreateWithCFString")
+internal func BTAddressCreateWithCFString(_ address: OpaquePointer, _ string: CFString) -> Bool {
     // get C string
     guard let cString = CFStringGetCStringPtr(string, CFStringBuiltInEncodings.UTF8.rawValue) else {
         return false
     }
-    return BluetoothAddress.parse(&address, cString)
+    return BTAddressCreateWithString(address, cString)
 }
 
 public extension BluetoothAddress {
     
-    @_alwaysEmitIntoClient
     init?(data: CFData) {
         var address = BluetoothAddress.zero
-        guard BTAddressCreateWithCFData(&address, data) else {
+        guard withUnsafeMutablePointer(to: &address, {
+            BTAddressCreateWithCFData(OpaquePointer($0), data)
+        }) else {
             return nil
         }
         self = address
     }
 }
 
-@_silgen_name("BTAddressCreateWithCFData")
-@inline(never)
-public func BTAddressCreateWithCFData(_ address: inout BluetoothAddress, _ data: CFData) -> Bool {
+@_cdecl("BTAddressCreateWithCFData")
+internal func BTAddressCreateWithCFData(_ address: OpaquePointer, _ data: CFData) -> Bool {
     // get byte pointer
-    let pointer = CFDataGetBytePtr(data)
-    let length = CFDataGetLength(data)
-    return BluetoothAddress.parse(&address, pointer, Int32(length))
+    let dataPointer = CFDataGetBytePtr(data)
+    let size = CFDataGetLength(data)
+    return BTAddressCreateWithData(address, dataPointer, size)
 }
 
 #endif
