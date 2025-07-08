@@ -10,11 +10,7 @@ let buildMetadata = environment["SWIFTPM_BLUETOOTH_METADATA"] != "0"
 let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
 let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0"
 let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
-#if canImport(Darwin)
-let buildCLib = environment["SWIFT_BLUETOOTH_C_SHIMS"] != "0"
-#else
 let buildCLib = environment["SWIFT_BLUETOOTH_C_SHIMS"] == "1"
-#endif
 
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
