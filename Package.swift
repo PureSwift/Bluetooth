@@ -26,7 +26,11 @@ var package = Package(
         .library(
             name: "Bluetooth",
             type: libraryType,
-            targets: ["Bluetooth"]
+            targets: [
+                "Bluetooth",
+                "CBluetooth",
+                "CBluetoothShim"
+            ]
         ),
         .library(
             name: "BluetoothMetadata",
@@ -52,6 +56,17 @@ var package = Package(
     targets: [
         .target(
             name: "Bluetooth"
+        ),
+        .target(
+            name: "CBluetooth",
+            dependencies: ["Bluetooth"] // actual implementation
+        ),
+        .target(
+            name: "CBluetoothShim",
+            dependencies: [
+                "CBluetooth",
+                "Bluetooth"
+            ]
         ),
         .target(
             name: "BluetoothMetadata",
@@ -88,6 +103,8 @@ var package = Package(
             name: "BluetoothTests",
             dependencies: [
                 "Bluetooth",
+                "CBluetooth",
+                "CBluetoothShim",
                 .target(
                     name: "BluetoothMetadata",
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
