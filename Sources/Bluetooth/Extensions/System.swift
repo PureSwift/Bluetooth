@@ -28,7 +28,6 @@ internal func _memcmp(
     _ size: Int
 ) -> Int32
 #else
-@_alwaysEmitIntoClient
 internal func _memcmp(
     _ p1: UnsafeRawPointer,
     _ p2: UnsafeRawPointer,

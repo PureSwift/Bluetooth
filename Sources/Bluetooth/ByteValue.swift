@@ -77,7 +77,6 @@ extension ByteValue where Self: Equatable {
 
 extension ByteValue where Self: Comparable {
     
-    @_alwaysEmitIntoClient
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.withUnsafeBytes { (b1) in
             rhs.withUnsafeBytes { (b2) in
@@ -90,7 +89,6 @@ extension ByteValue where Self: Comparable {
         }
     }
 
-    @_alwaysEmitIntoClient
     public static func > (lhs: Self, rhs: Self) -> Bool {
         lhs.withUnsafeBytes { (b1) in
             rhs.withUnsafeBytes { (b2) in
