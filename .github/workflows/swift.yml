@@ -23,7 +23,7 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.0.3", "swift:6.1.2", "swiftlang/swift:nightly-jammy"]
+        container: ["swift:6.0.3", "swift:6.1.2", "swiftlang/swift:nightly"]
         config: ["debug", "release"]
         options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     runs-on: ubuntu-latest
