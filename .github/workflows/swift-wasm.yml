@@ -1,0 +1,19 @@
+name: Swift WASM
+on: [push]
+jobs:
+  build-wasm:
+    name: Build for WASM
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        swift: ["6.0.3"]
+        config: ["debug", "release"]
+    container: swift:${{ matrix.swift }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Swift Version
+        run: swift --version
+      - uses: swiftwasm/setup-swiftwasm@v2
+      - name: Build
+        run: SWIFTPM_BLUETOOTH_METADATA=0 SWIFTPM_ENABLE_PLUGINS=0 SWIFTPM_ENABLE_MACROS=0 swift build --target Bluetooth -c ${{ matrix.config }} --swift-sdk wasm32-unknown-wasi
