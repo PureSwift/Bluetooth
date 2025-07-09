@@ -20,15 +20,15 @@ jobs:
         run: SWIFTPM_ENABLE_MACROS=0 SWIFTPM_ENABLE_PLUGINS=0 SWIFTPM_BLUETOOTH_METADATA=0 SWIFT_BLUETOOTH_C_SHIMS=0 swift build --triple armv6m-apple-none-macho --configuration release --verbose -Xswiftc -enable-experimental-feature -Xswiftc Embedded -Xcc -D__MACH__ -Xcc -ffreestanding -Xcc -mcpu=cortex-m0plus -Xcc -mthumb --target ${{ matrix.target }}
   
     linux-arm-raspios-build:
-      name: Linux (Build)
+      name: Linux (Raspberry Pi OS)
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          config: ["debug" , "release"]
+          arch: ["armv6", "armv7"]
           swift: ["6.1.2"]
+          config: ["debug" , "release"]
           linux: ["raspios"]
           release: ["bookworm"]
-          arch: ["armv6", "armv7"]
       container: swift:${{ matrix.swift }}
       steps:
         - name: Checkout
@@ -46,15 +46,15 @@ jobs:
           run: SWIFT_BUILD_DYNAMIC_LIBRARY=1 swift build -c ${{ matrix.config }} --destination /opt/swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }}/${{ matrix.linux }}-${{ matrix.release }}.json
 
     linux-arm-debian-build:
-      name: Linux (Build)
+      name: Linux (Debian)
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          config: ["debug" , "release"]
+          arch: ["armv7"]
           swift: ["6.1.2"]
+          config: ["debug" , "release"]
           linux: ["debian"]
           release: ["bookworm", "bullseye"]
-          arch: ["armv7"]
       container: swift:${{ matrix.swift }}
       steps:
         - name: Checkout
@@ -76,13 +76,15 @@ jobs:
             name: "swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }}-bluetooth-${{ matrix.config }}"
             path: .build/armv7-unknown-linux-gnueabihf/${{ matrix.config }}/libBluetooth.so
 
-
-    linux-arm-test:
-      name: Linux (Test)
+    linux-arm-debian-test:
+      name: Linux Test
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          swift: ["6.0.3"]
+          arch: ["armv7"]
+          swift: ["6.1.2"]
+          linux: ["debian"]
+          release: ["bookworm", "bullseye"]
       container: swift:${{ matrix.swift }}
       steps:
         - name: Checkout
@@ -91,15 +93,15 @@ jobs:
           run: apt update -y; apt install wget -y
         - name: Install SDK
           run: |
-            wget https://github.com/xtremekforever/swift-armv7/releases/download/${{ matrix.swift }}/swift-${{ matrix.swift }}-RELEASE-debian-bookworm-armv7-sdk.tar.gz
-            tar -xvf swift-${{ matrix.swift }}-RELEASE-debian-bookworm-armv7-sdk.tar.gz
-            mv swift-${{ matrix.swift }}-RELEASE-debian-bookworm-armv7 /opt/swift-${{ matrix.swift }}-RELEASE-debian-bookworm-armv7
+            wget https://github.com/xtremekforever/swift-armv7/releases/download/${{ matrix.swift }}/swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }}-sdk.tar.gz
+            tar -xvf swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }}-sdk.tar.gz
+            mv swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }} /opt/swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }}
         - name: Swift Version
           run: swift --version
         - name: Build
-          run: SWIFT_BUILD_DYNAMIC_LIBRARY=0 swift build --build-tests --destination /opt/swift-${{ matrix.swift }}-RELEASE-debian-bookworm-armv7/debian-bookworm.json
+          run: SWIFT_BUILD_DYNAMIC_LIBRARY=0 swift build --build-tests --destination /opt/swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }}/${{ matrix.linux }}-${{ matrix.release }}.json
         - name: Upload artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: "linux-armv7-bookworm-tests-${{ matrix.swift }}"
-            path: .build/armv7-unknown-linux-gnueabihf/debug/BluetoothPackageTests.xctest
+            name: "swift-${{ matrix.swift }}-RELEASE-${{ matrix.linux }}-${{ matrix.release }}-${{ matrix.arch }}-bluetooth-test"
+            path: .build/armv7-unknown-linux-gnueabihf/${{ matrix.config }}/BluetoothPackageTests.xctest
