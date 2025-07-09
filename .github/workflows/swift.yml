@@ -5,23 +5,27 @@ jobs:
   macos:
     name: macOS
     runs-on: macos-15
+    strategy:
+      matrix:
+        config: ["debug", "release"]
+        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1", "SWIFT_BLUETOOTH_C_SHIMS=1"]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Swift Version
       run: swift --version
-    - name: Build (Debug)
-      run: swift build -c debug
-    - name: Build (Release)
-      run: swift build -c release
-    - name: Test (Debug)
-      run: swift test -c debug
+    - name: Build
+      run: ${{ matrix.options }} swift build -c ${{ matrix.config }}
+    - name: Test
+      run: ${{ matrix.options }} swift test -c ${{ matrix.config }}
   
   linux:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.0.3", "swift:6.1.1", "swiftlang/swift:nightly"]
+        container: ["swift:6.0.3", "swift:6.1.1"]
+        config: ["debug", "release"]
+        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1", "SWIFT_BLUETOOTH_C_SHIMS=1"]
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}-jammy
     steps:
@@ -29,27 +33,24 @@ jobs:
       uses: actions/checkout@v4
     - name: Swift Version
       run: swift --version
-    - name: Build (Debug)
-      run: swift build -c debug
-    - name: Build (Release)
-      run: swift build -c release
-    - name: Test (Debug)
-      run: swift test -c debug
+    - name: Build
+      run: ${{ matrix.options }} swift build -c ${{ matrix.config }}
+    - name: Test
+      run: ${{ matrix.options }} swift test -c ${{ matrix.config }}
 
-  android:
-    name: Android
-    strategy:
-      fail-fast: false
-      matrix:
-        swift: ['6.1', 'nightly-6.2']
-        arch: ['x86_64']
-    runs-on: macos-15
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-      - name: "Build Swift Package for Android"
-        run: |
-          brew install skiptools/skip/skip || (brew update && brew install skiptools/skip/skip)
-          skip android sdk install --version ${{ matrix.swift }}
-          # https://github.com/swiftlang/swift-driver/pull/1879
-          ANDROID_NDK_ROOT="" skip android build
+  android-arm:
+      name: Android
+      strategy:
+        fail-fast: false
+        matrix:
+          swift: ['6.1', 'nightly-6.2']
+          arch: ["aarch64", "x86_64"]
+      runs-on: macos-15
+      timeout-minutes: 30
+      steps:
+        - uses: actions/checkout@v4
+        - name: "Build Swift Package for Android"
+          run: |
+              brew install skiptools/skip/skip || (brew update && brew install skiptools/skip/skip)
+              skip android sdk install --version ${{ matrix.swift }}
+              ANDROID_NDK_ROOT="" SWIFT_BLUETOOTH_C_SHIMS=0 skip android build --arch ${{ matrix.arch }}
