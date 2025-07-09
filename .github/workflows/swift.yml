@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         config: ["debug", "release"]
-        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1", "SWIFT_BLUETOOTH_C_SHIMS=1"]
+        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -23,9 +23,9 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.0.3", "swift:6.1.1"]
+        container: ["swift:6.0.3", "swift:6.1.2", "swiftlang/swift:nightly"]
         config: ["debug", "release"]
-        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1", "SWIFT_BLUETOOTH_C_SHIMS=1"]
+        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}-jammy
     steps:
@@ -38,7 +38,7 @@ jobs:
     - name: Test
       run: ${{ matrix.options }} swift test -c ${{ matrix.config }}
 
-  android-arm:
+  android:
       name: Android
       strategy:
         fail-fast: false
