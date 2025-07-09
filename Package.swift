@@ -156,13 +156,19 @@ if generateCode {
 }
 
 if enableMacros {
+    let version: Version
+    #if swift(>=6.1)
+    version = "601.0.1"
+    #else
+    version = "600.0.1"
+    #endif
     package.targets[0].swiftSettings = [
         .define("SWIFTPM_ENABLE_MACROS")
     ]
     package.dependencies += [
         .package(
             url: "https://github.com/swiftlang/swift-syntax.git",
-            from: "600.0.1"
+            from: version
         )
     ]
     package.targets += [
