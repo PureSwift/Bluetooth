@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         config: ["debug", "release"]
-        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
+        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1", "SWIFT_JAVA=1"]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
