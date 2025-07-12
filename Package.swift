@@ -10,6 +10,7 @@ let buildMetadata = environment["SWIFTPM_BLUETOOTH_METADATA"] != "0"
 let generateCode = environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
 let enableMacros = environment["SWIFTPM_ENABLE_MACROS"] != "0"
 let buildDocs = environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
+let swiftJava = environment["SWIFT_JAVA"] == "1"
 
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
@@ -51,7 +52,10 @@ var package = Package(
     ],
     targets: [
         .target(
-            name: "Bluetooth"
+            name: "Bluetooth",
+            exclude: [
+                "swift-java.config"
+            ]
         ),
         .target(
             name: "BluetoothMetadata",
@@ -188,5 +192,26 @@ if enableMacros {
     ]
     package.targets[0].dependencies += [
         "BluetoothMacros"
+    ]
+}
+
+if swiftJava {
+    package.platforms = [
+        .macOS(.v15),
+        .iOS(.v13),
+        .watchOS(.v6),
+        .tvOS(.v13)
+    ]
+    package.dependencies += [
+        .package(
+            url: "https://github.com/swiftlang/swift-java.git",
+            branch: "main"
+        )
+    ]
+    package.targets[0].plugins = (package.targets[0].plugins ?? []) + [
+        .plugin(
+            name: "JExtractSwiftPlugin",
+            package: "swift-java"
+        )
     ]
 }
