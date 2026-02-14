@@ -23,7 +23,7 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.0.3", "swift:6.1.2", "swiftlang/swift:nightly"]
+        container: ["swift:6.0.3", "swift:6.1.2", "swift:6.2.3", "swiftlang/swift:nightly"]
         config: ["debug", "release"]
         options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
       strategy:
         fail-fast: false
         matrix:
-          swift: ['6.1', 'nightly-6.2']
+          swift: ['6.1', '6.2.3']
           arch: ["aarch64", "x86_64"]
       runs-on: macos-15
       timeout-minutes: 30
