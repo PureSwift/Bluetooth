@@ -47,10 +47,10 @@ extension ATTErrorResponse: DataConvertible {
 
         guard data.count == Self.length,
             Self.validateOpcode(data),
-            let request = ATTOpcode(rawValue: data[1]),
-            let error = ATTError(rawValue: data[4])
+            let request = ATTOpcode(rawValue: data[1])
         else { return nil }
 
+        let error = ATTError(rawValue: data[4])
         let attributeHandle = UInt16(littleEndian: UInt16(bytes: (data[2], data[3])))
 
         self.init(request: request, attributeHandle: attributeHandle, error: error)

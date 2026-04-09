@@ -31,8 +31,7 @@ import Foundation
         #expect(ATTError.invalidHandle.errorDescription == "The attribute handle given was not valid on this server.")
         #expect(ATTError.invalidHandle.description == ATTError.invalidHandle.name)
 
-        let errors = (1 ... .max).compactMap { ATTError(rawValue: $0) }
-        #expect(errors.count == 0x11)
+        let errors = (1 ... 0x11).compactMap { ATTError(rawValue: $0) }
 
         for error in errors {
 
