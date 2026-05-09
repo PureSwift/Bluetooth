@@ -14,94 +14,125 @@ import Foundation
 ///
 /// These error constants are based on the Bluetooth ATT error codes, defined in the Bluetooth 4.0 specification.
 /// For more information about these errors, see the Bluetooth 4.0 specification, Volume 3, Part F, Section 3.4.1.1.
-@frozen
-public enum ATTError: UInt8, Error {
+
+public struct ATTError: RawRepresentable, Equatable, Hashable, Error {
+    public typealias RawValue = UInt8
+
+    public var rawValue: UInt8
+
+    public init(rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
+
 
     /// Invalid Handle
     ///
     /// The attribute handle given was not valid on this server.
-    case invalidHandle = 0x01
+    public static var invalidHandle: ATTError { ATTError(rawValue: 0x01) }
 
     /// Read Not Permitted
     ///
     /// The attribute cannot be read.
-    case readNotPermitted = 0x02
+    public static var readNotPermitted: ATTError { ATTError(rawValue: 0x02) }
 
     /// Write Not Permitted
     ///
     /// The attribute cannot be written.
-    case writeNotPermitted = 0x03
+    public static var writeNotPermitted: ATTError { ATTError(rawValue: 0x03) }
 
     /// Invalid PDU
     ///
     /// The attribute PDU was invalid.
-    case invalidPDU = 0x04
+    public static var invalidPDU: ATTError { ATTError(rawValue: 0x04) }
 
     /// Insufficient Authentication
     ///
     /// The attribute requires authentication before it can be read or written.
-    case insufficientAuthentication = 0x05
+    public static var insufficientAuthentication: ATTError { ATTError(rawValue: 0x05) }
 
     /// Request Not Supported
     ///
     /// Attribute server does not support the request received from the client.
-    case requestNotSupported = 0x06
+    public static var requestNotSupported: ATTError { ATTError(rawValue: 0x06) }
 
     /// Invalid Offset
     ///
     /// Offset specified was past the end of the attribute.
-    case invalidOffset = 0x07
+    public static var invalidOffset: ATTError { ATTError(rawValue: 0x07) }
 
     /// Insufficient Authorization
     ///
     /// The attribute requires authorization before it can be read or written.
-    case insufficientAuthorization = 0x08
+    public static var insufficientAuthorization: ATTError { ATTError(rawValue: 0x08) }
 
     /// Prepare Queue Full
     ///
     /// Too many prepare writes have been queued.
-    case prepareQueueFull = 0x09
+    public static var prepareQueueFull: ATTError { ATTError(rawValue: 0x09) }
 
     /// Attribute Not Found
     ///
     /// No attribute found within the given attribute handle range.
-    case attributeNotFound = 0x0A
+    public static var attributeNotFound: ATTError { ATTError(rawValue: 0x0A) }
 
     /// Attribute Not Long
     ///
     /// The attribute cannot be read or written using the *Read Blob Request*.
-    case attributeNotLong = 0x0B
+    public static var attributeNotLong: ATTError { ATTError(rawValue: 0x0B) }
 
     /// Insufficient Encryption Key Size
     ///
     /// The *Encryption Key Size* used for encrypting this link is insufficient.
-    case insufficientEncryptionKeySize = 0x0C
+    public static var insufficientEncryptionKeySize: ATTError { ATTError(rawValue: 0x0C) }
 
     /// Invalid Attribute Value Length
     ///
     /// The attribute value length is invalid for the operation.
-    case invalidAttributeValueLength = 0x0D
+    public static var invalidAttributeValueLength: ATTError { ATTError(rawValue: 0x0D) }
 
     /// Unlikely Error
     ///
     /// The attribute request that was requested has encountered an error that was unlikely,
     /// and therefore could not be completed as requested.
-    case unlikelyError = 0x0E
+    public static var unlikelyError: ATTError { ATTError(rawValue: 0x0E) }
 
     /// Insufficient Encryption
     ///
     /// The attribute requires encryption before it can be read or written.
-    case insufficientEncryption = 0x0F
+    public static var insufficientEncryption: ATTError { ATTError(rawValue: 0x0F) }
 
     /// Unsupported Group Type
     ///
     /// The attribute type is not a supported grouping attribute as defined by a higher layer specification.
-    case unsupportedGroupType = 0x10
+    public static var unsupportedGroupType: ATTError { ATTError(rawValue: 0x10) }
 
     /// Insufficient Resources
     ///
     /// Insufficient Resources to complete the request.
-    case insufficientResources = 0x11
+    public static var insufficientResources: ATTError { ATTError(rawValue: 0x11) }
+
+
+    // Common Profile and Service Error Code Descriptions
+
+    /// Write Request Rejected
+    ///
+    /// The requested write operation cannot be fulfilled for reasons other than permissions.
+    public static var writeRequestRejected: ATTError { ATTError(rawValue: 0xFC) }
+
+    /// Client Characteristic Configuration Descriptor Improperly Configured
+    ///
+    /// Client Characteristic Configuration descriptor is not configured according to the requirements of the profile or service.
+    public static var cccdImproperlyConfigured: ATTError { ATTError(rawValue: 0xFD) }
+
+    /// Procedure Already in Progress
+    ///
+    /// The profile or service request cannot be serviced because an operation that has been previously triggered is still in progress.
+    public static var procedureAlreadyInProgress: ATTError { ATTError(rawValue: 0xFE) }
+
+    /// Out of Range
+    ///
+    /// The attribute value is out of range as defined by a profile or service specification.
+    public static var outOfRange: ATTError { ATTError(rawValue: 0xFF) }
 }
 
 // MARK: - CustomStringConvertible
@@ -154,6 +185,16 @@ public extension ATTError {
             return "Unsupported Group Type"
         case .insufficientResources:
             return "Insufficient Resources"
+        case .writeRequestRejected:
+            return "Write Request Rejected"
+        case .cccdImproperlyConfigured:
+            return "Client Characteristic Configuration Descriptor Improperly Configured"
+        case .procedureAlreadyInProgress:
+            return "Procedure Already in Progress"
+        case .outOfRange:
+            return "Out of Range"
+        default:
+            return "ATTError 0x\(String(self.rawValue, radix: 16))"
         }
     }
 
@@ -195,6 +236,16 @@ public extension ATTError {
             return "The attribute type is not a supported grouping attribute as defined by a higher layer specification."
         case .insufficientResources:
             return "Insufficient Resources to complete the request."
+        case .writeRequestRejected:
+            return "The requested write operation could not be completed."
+        case .cccdImproperlyConfigured:
+            return "The Client Characteristic Configuration Descriptor is not configured correctly."
+        case .procedureAlreadyInProgress:
+            return "An operation is already in progress."
+        case .outOfRange:
+            return "The attribute value is out of range."
+        default:
+            return "ATTError error code \(String(self.rawValue, radix: 16))"
         }
     }
     #endif
