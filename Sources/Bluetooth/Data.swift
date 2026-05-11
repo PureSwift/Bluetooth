@@ -18,7 +18,7 @@ public protocol DataContainer: RandomAccessCollection where Self.Index == Int, S
 
     mutating func reserveCapacity(_ capacity: Int)
 
-    subscript(index: Int) -> UInt8 { get }
+    subscript(index: Int) -> UInt8 { get mutating set }
 
     mutating func append(_ newElement: UInt8)
 
