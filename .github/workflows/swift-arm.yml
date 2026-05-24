@@ -2,23 +2,6 @@ name: Swift ARM
 on: [push]
 jobs:
 
-    armv6m-apple-none-macho:
-      name: Baremetal Embedded ARM 
-      runs-on: ubuntu-latest
-      container: swiftlang/swift:nightly-jammy
-      strategy:
-        matrix:
-          target: ["Bluetooth", "BluetoothGAP"]
-      steps:
-      - name: Install dependencies
-        run: apt update -y; apt install libtool-bin -y;
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Swift Version
-        run: swift --version
-      - name: Build Bluetooth
-        run: SWIFTPM_ENABLE_MACROS=0 SWIFTPM_ENABLE_PLUGINS=0 SWIFTPM_BLUETOOTH_METADATA=0 SWIFT_BLUETOOTH_C_SHIMS=0 swift build --triple armv6m-apple-none-macho --configuration release --verbose -Xswiftc -enable-experimental-feature -Xswiftc Embedded -Xcc -D__MACH__ -Xcc -ffreestanding -Xcc -mcpu=cortex-m0plus -Xcc -mthumb --target ${{ matrix.target }}
-  
     linux-arm-raspios-build:
       name: Linux (Raspberry Pi OS)
       runs-on: ubuntu-latest

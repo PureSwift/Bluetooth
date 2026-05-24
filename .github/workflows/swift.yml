@@ -4,7 +4,7 @@ jobs:
 
   macos:
     name: macOS
-    runs-on: macos-15
+    runs-on: macos-26
     strategy:
       matrix:
         config: ["debug", "release"]
@@ -23,7 +23,7 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.0.3", "swift:6.1.2", "swift:6.2.3", "swiftlang/swift:nightly"]
+        container: ["swift:6.0.3", "swift:6.1.2", "swift:6.2.3", "swift:6.3.2"]
         config: ["debug", "release"]
         options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     runs-on: ubuntu-latest
@@ -43,9 +43,9 @@ jobs:
       strategy:
         fail-fast: false
         matrix:
-          swift: ['6.1', '6.2.3']
+          swift: ['6.3.2']
           arch: ["aarch64", "x86_64"]
-      runs-on: macos-15
+      runs-on: macos-26
       timeout-minutes: 30
       steps:
         - uses: actions/checkout@v4
