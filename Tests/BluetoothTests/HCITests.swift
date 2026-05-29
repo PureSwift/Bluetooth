@@ -2961,7 +2961,7 @@ import Foundation
             return
         }
 
-        guard let dataPresent = HCIIOCapabilityRequestReply.OBBDataPresent(rawValue: 0x00)
+        guard let dataPresent = HCIIOCapabilityRequestReply.OOBDataPresent(rawValue: 0x00)
         else {
             Issue.record("Cannot init daatPresent")
             return
@@ -2976,7 +2976,7 @@ import Foundation
         let eventAddress = try await hostController.ioCapabilityRequestReply(
             address: address,
             ioCapability: ioCapability,
-            obbDataPresent: dataPresent,
+            oobDataPresent: dataPresent,
             authenticationRequirements: authenticationRequeriments
         )
         #expect(eventAddress == address)

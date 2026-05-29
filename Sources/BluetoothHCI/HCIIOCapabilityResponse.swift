@@ -13,7 +13,7 @@ import Foundation
 public struct HCIIOCapabilityResponse: HCIEventParameter {
 
     public typealias IOCapability = HCIIOCapabilityRequestReply.IOCapability
-    public typealias OBBDataPresent = HCIIOCapabilityRequestReply.OBBDataPresent
+    public typealias OOBDataPresent = HCIIOCapabilityRequestReply.OOBDataPresent
     public typealias AuthenticationRequirements = HCIIOCapabilityRequestReply.AuthenticationRequirements
 
     public static let event = HCIGeneralEvent.ioCapabilityResponse
@@ -24,7 +24,7 @@ public struct HCIIOCapabilityResponse: HCIEventParameter {
 
     public var ioCapability: IOCapability
 
-    public var obbDataPresent: OBBDataPresent
+    public var oobDataPresent: OOBDataPresent
 
     public var authenticationRequirements: AuthenticationRequirements
 
@@ -38,7 +38,7 @@ public struct HCIIOCapabilityResponse: HCIEventParameter {
         guard let ioCapability = IOCapability(rawValue: data[6])
         else { return nil }
 
-        guard let obbDataPresent = OBBDataPresent(rawValue: data[7])
+        guard let oobDataPresent = OOBDataPresent(rawValue: data[7])
         else { return nil }
 
         guard let authenticationRequirements = AuthenticationRequirements(rawValue: data[8])
@@ -46,7 +46,7 @@ public struct HCIIOCapabilityResponse: HCIEventParameter {
 
         self.address = address
         self.ioCapability = ioCapability
-        self.obbDataPresent = obbDataPresent
+        self.oobDataPresent = oobDataPresent
         self.authenticationRequirements = authenticationRequirements
     }
 }

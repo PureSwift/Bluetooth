@@ -22,7 +22,7 @@ public extension BluetoothHostControllerInterface {
     func ioCapabilityRequestReply(
         address: BluetoothAddress,
         ioCapability: HCIIOCapabilityRequestReply.IOCapability,
-        obbDataPresent: HCIIOCapabilityRequestReply.OBBDataPresent,
+        oobDataPresent: HCIIOCapabilityRequestReply.OOBDataPresent,
         authenticationRequirements: HCIIOCapabilityRequestReply.AuthenticationRequirements,
         timeout: HCICommandTimeout = .default
     ) async throws -> BluetoothAddress {
@@ -30,7 +30,7 @@ public extension BluetoothHostControllerInterface {
         let command = HCIIOCapabilityRequestReply(
             address: address,
             ioCapability: ioCapability,
-            obbDataPresent: obbDataPresent,
+            oobDataPresent: oobDataPresent,
             authenticationRequirements: authenticationRequirements)
 
         return try await deviceRequest(command, HCIIOCapabilityRequestReplyReturn.self, timeout: timeout).address
@@ -54,20 +54,20 @@ public struct HCIIOCapabilityRequestReply: HCICommandParameter {
 
     public var ioCapability: IOCapability
 
-    public var obbDataPresent: OBBDataPresent
+    public var oobDataPresent: OOBDataPresent
 
     public var authenticationRequirements: AuthenticationRequirements
 
     public init(
         address: BluetoothAddress,
         ioCapability: IOCapability,
-        obbDataPresent: OBBDataPresent,
+        oobDataPresent: OOBDataPresent,
         authenticationRequirements: AuthenticationRequirements
     ) {
 
         self.address = address
         self.ioCapability = ioCapability
-        self.obbDataPresent = obbDataPresent
+        self.oobDataPresent = oobDataPresent
         self.authenticationRequirements = authenticationRequirements
     }
 
@@ -83,7 +83,7 @@ public struct HCIIOCapabilityRequestReply: HCICommandParameter {
             addressBytes.4,
             addressBytes.5,
             ioCapability.rawValue,
-            obbDataPresent.rawValue,
+            oobDataPresent.rawValue,
             authenticationRequirements.rawValue
         ])
     }
@@ -106,7 +106,7 @@ extension HCIIOCapabilityRequestReply {
         case noInputNoOutput = 0x03
     }
 
-    public enum OBBDataPresent: UInt8 {
+    public enum OOBDataPresent: UInt8 {
 
         /// OOB authentication data not present
         case oobDataNotPresent = 0x00
