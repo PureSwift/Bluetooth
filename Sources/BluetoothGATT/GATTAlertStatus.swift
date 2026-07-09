@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Alert Status
@@ -40,9 +39,14 @@ public struct GATTAlertStatus: GATTCharacteristic {
         self.states = BitMaskOptionSet<State>(rawValue: data[0])
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([states.rawValue])
+        data += states.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 extension GATTAlertStatus: Equatable {

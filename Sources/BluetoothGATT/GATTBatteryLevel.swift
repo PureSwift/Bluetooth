@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Battery Level
@@ -44,9 +43,14 @@ public extension GATTBatteryLevel {
         self.init(level: level)
     }
 
-    var data: Data {
+    func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([level.rawValue])
+        data += level.rawValue
+    }
+
+    var dataLength: Int {
+
+        return Self.length
     }
 }
 

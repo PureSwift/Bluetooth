@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// CGM Session Run Time
@@ -51,14 +50,9 @@ public struct GATTCGMSessionRunTime: GATTCharacteristic {
         self.init(sessionRunTime: sessionRunTime, e2ecrc: e2ecrc)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let sessionRunTimeBytes = sessionRunTime.rawValue.littleEndian.bytes
-
-        let totalBytes = e2ecrc != nil ? Self.maxLength : Self.minLength
-
-        var data = Data()
-        data.reserveCapacity(totalBytes)
 
         data += [sessionRunTimeBytes.0, sessionRunTimeBytes.1]
 
@@ -66,8 +60,11 @@ public struct GATTCGMSessionRunTime: GATTCharacteristic {
 
             data += [e2ecrcBytes.0, e2ecrcBytes.1]
         }
+    }
 
-        return data
+    public var dataLength: Int {
+
+        return e2ecrc != nil ? Self.maxLength : Self.minLength
     }
 }
 

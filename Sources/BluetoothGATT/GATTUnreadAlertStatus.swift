@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Unread Alert Status
@@ -54,8 +53,14 @@ public struct GATTUnreadAlertStatus: GATTCharacteristic {
         self.init(category: category, unreadCount: unreadCount)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([category.rawValue, unreadCount])
+        data += category.rawValue
+        data += unreadCount
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }

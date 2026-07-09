@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Reference Time Information
@@ -63,9 +62,17 @@ public struct GATTReferenceTimeInformation: GATTCharacteristic, Equatable {
             hoursSinceUpdate: hoursSinceUpdate)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return timeSource.data + timeAccuracy.data + Data([daysSinceUpdate.rawValue]) + Data([hoursSinceUpdate.rawValue])
+        timeSource.append(to: &data)
+        timeAccuracy.append(to: &data)
+        data += daysSinceUpdate.rawValue
+        data += hoursSinceUpdate.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

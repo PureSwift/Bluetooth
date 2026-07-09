@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Exact Time 256
@@ -42,9 +41,15 @@ public struct GATTExactTime256: GATTCharacteristic {
         self.init(dayDateTime: dayDateTime, fractions256: fractions256)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return dayDateTime.data + Data([fractions256])
+        dayDateTime.append(to: &data)
+        data += fractions256
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Uncertainty
@@ -47,11 +46,14 @@ public struct GATTUncertainty: GATTCharacteristic {
         self.init(stationary: stationary, updateTime: updateTime, precision: precision)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        let byte = stationary.rawValue | (updateTime.rawValue << 1) | (precision.rawValue << 4)
+        data += stationary.rawValue | (updateTime.rawValue << 1) | (precision.rawValue << 4)
+    }
 
-        return Data([byte])
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

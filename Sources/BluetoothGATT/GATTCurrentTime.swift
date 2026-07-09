@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Current Time
@@ -42,9 +41,15 @@ public struct GATTCurrentTime: GATTCharacteristic, Equatable {
         self.init(exactTime: exactTime, adjustReason: adjustReason)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return exactTime.data + Data([adjustReason.rawValue])
+        exactTime.append(to: &data)
+        data += adjustReason.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

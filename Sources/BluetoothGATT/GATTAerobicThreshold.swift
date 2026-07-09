@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Aerobic Threshold
@@ -41,6 +40,10 @@ public struct GATTAerobicThreshold: GATTCharacteristic, Equatable, Hashable, Sen
 
     public func append<Data>(to data: inout Data) where Data: DataContainer {
         data.append(beats.rawValue)
+    }
+
+    public var dataLength: Int {
+        Self.length
     }
 }
 

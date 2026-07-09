@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// System ID
@@ -103,11 +102,11 @@ public struct GATTSystemID: GATTCharacteristic, RawRepresentable, Equatable, Has
         self.init(rawValue: rawValue)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let bytes = rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             bytes.0,
             bytes.1,
             bytes.2,
@@ -116,7 +115,12 @@ public struct GATTSystemID: GATTCharacteristic, RawRepresentable, Equatable, Has
             bytes.5,
             bytes.6,
             bytes.7
-        ])
+        ]
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

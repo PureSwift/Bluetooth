@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// PnP ID
@@ -60,7 +59,7 @@ public struct GATTPnPID: GATTCharacteristic {
         self.init(vendorIdSource: vendorIdSource, vendorId: vendorId, productId: productId, productVersion: productVersion)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let vendorIdBytes = vendorId.littleEndian.bytes
 
@@ -68,7 +67,12 @@ public struct GATTPnPID: GATTCharacteristic {
 
         let productVersionBytes = productVersion.littleEndian.bytes
 
-        return Data([vendorIdSource.rawValue, vendorIdBytes.0, vendorIdBytes.1, productIdBytes.0, productIdBytes.1, productVersionBytes.0, productVersionBytes.1])
+        data += [vendorIdSource.rawValue, vendorIdBytes.0, vendorIdBytes.1, productIdBytes.0, productIdBytes.1, productVersionBytes.0, productVersionBytes.1]
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

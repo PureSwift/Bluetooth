@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Indoor Positioning Configuration
@@ -36,9 +35,14 @@ public struct GATTIndoorPositioningConfiguration: GATTCharacteristic {
         self.init(configurations: BitMaskOptionSet<Configuration>(rawValue: data[0]))
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([configurations.rawValue])
+        data += configurations.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

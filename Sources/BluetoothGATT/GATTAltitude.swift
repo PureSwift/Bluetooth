@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Altitude
@@ -36,10 +35,16 @@ public struct GATTAltitude: RawRepresentable, GATTCharacteristic, Equatable, Has
         self.init(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let bytes = rawValue.littleEndian.bytes
-        return Data([bytes.0, bytes.1])
+        data += bytes.0
+        data += bytes.1
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

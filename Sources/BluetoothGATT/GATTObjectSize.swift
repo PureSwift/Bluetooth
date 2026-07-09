@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Object Size
@@ -41,12 +40,12 @@ public struct GATTObjectSize: GATTCharacteristic, Equatable {
         self.init(currentSize: currentSize, allocatedSize: allocatedSize)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let currentSizeBytes = currentSize.rawValue.littleEndian.bytes
         let allocatedSizeBytes = allocatedSize.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             currentSizeBytes.0,
             currentSizeBytes.1,
             currentSizeBytes.2,
@@ -55,7 +54,12 @@ public struct GATTObjectSize: GATTCharacteristic, Equatable {
             allocatedSizeBytes.1,
             allocatedSizeBytes.2,
             allocatedSizeBytes.3
-        ])
+        ]
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

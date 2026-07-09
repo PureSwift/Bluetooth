@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Day of Week
@@ -37,9 +36,14 @@ public struct GATTDayOfWeek: GATTCharacteristic {
         self.init(day: day)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([day.rawValue])
+        data += day.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 
