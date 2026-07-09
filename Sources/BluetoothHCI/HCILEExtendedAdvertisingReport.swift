@@ -198,7 +198,15 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
         case let2M = 0x02
 
         /// Advertiser PHY is LE Coded
+        ///
+        /// When the Controller supports Advertising Coding Selection (Bluetooth 5.4),
+        /// this value indicates LE Coded with S=8 coding.
         case coded = 0x03
+
+        /// Advertiser PHY is LE Coded with S=2 coding.
+        ///
+        /// Only used when the Controller supports Advertising Coding Selection (Bluetooth 5.4).
+        case codedS2 = 0x04
     }
 
     /// Primary_PHY
@@ -208,7 +216,15 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
         case le1M = 0x01
 
         /// Advertiser PHY is LE Coded
+        ///
+        /// When the Controller supports Advertising Coding Selection (Bluetooth 5.4),
+        /// this value indicates LE Coded with S=8 coding.
         case coded = 0x03
+
+        /// Advertiser PHY is LE Coded with S=2 coding.
+        ///
+        /// Only used when the Controller supports Advertising Coding Selection (Bluetooth 5.4).
+        case codedS2 = 0x04
     }
 
     /// Address_Type

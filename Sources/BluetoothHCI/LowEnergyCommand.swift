@@ -242,6 +242,9 @@ public enum HCILowEnergyCommand: UInt16, HCICommand {
 
     /// LE Set Privacy Mode Command
     case setPrivacyMode = 0x004E
+
+    /// LE Set Extended Advertising Parameters Command (v2)
+    case setExtendedAdvertisingParametersV2 = 0x007F
 }
 
 // MARK: - Name
@@ -322,6 +325,7 @@ public extension HCILowEnergyCommand {
         case .readRFPathCompensation: return "LE Read RF Path Compensation Command"
         case .writeRFPathCompensation: return "LE Write RF Path Compensation Command"
         case .setPrivacyMode: return "LE Set Privacy Mode Command"
+        case .setExtendedAdvertisingParametersV2: return "LE Set Extended Advertising Parameters V2"
         case .remoteConnectionParameterRequestReply: return "LE Remote Connection Parameter Request Reply"
         case .remoteConnectionParameterRequestNegativeReply: return "LE Remote Connection Parameter Request Negative Reply Command"
         case .setDataLengthCommand: return "LE Set Data Length Command"
