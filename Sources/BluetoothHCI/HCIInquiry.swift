@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -37,7 +35,6 @@ public extension BluetoothHostControllerInterface {
         var isComplete = false
 
         try pollEvent(HCInquiryComplete.self, shouldContinue: shouldContinue) { (complete) in
-
 
         }*/
     }
@@ -77,11 +74,11 @@ public struct HCIInquiry: HCICommandParameter {
         self.responses = responses
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let lapBytes = lap.rawValue.littleEndian.bytes
 
-        return Data([lapBytes.0, lapBytes.1, lapBytes.2, duration.rawValue, responses.rawValue])
+        data += [lapBytes.0, lapBytes.1, lapBytes.2, duration.rawValue, responses.rawValue]
     }
 }
 

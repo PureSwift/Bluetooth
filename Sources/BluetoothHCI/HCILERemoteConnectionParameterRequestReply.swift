@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -76,7 +74,7 @@ public struct HCILERemoteConnectionParameterRequestReply: HCICommandParameter {
         self.length = length
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
         let connectionIntervalMinBytes = interval.rawValue.lowerBound.littleEndian.bytes
@@ -86,7 +84,7 @@ public struct HCILERemoteConnectionParameterRequestReply: HCICommandParameter {
         let connectionLengthMinBytes = length.rawValue.lowerBound.littleEndian.bytes
         let connectionLengthMaxBytes = length.rawValue.upperBound.littleEndian.bytes
 
-        return Data([
+        data += [
             connectionHandleBytes.0,
             connectionHandleBytes.1,
             connectionIntervalMinBytes.0,
@@ -101,7 +99,7 @@ public struct HCILERemoteConnectionParameterRequestReply: HCICommandParameter {
             connectionLengthMinBytes.1,
             connectionLengthMaxBytes.0,
             connectionLengthMaxBytes.1
-        ])
+        ]
     }
 }
 

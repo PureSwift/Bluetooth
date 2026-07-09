@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -43,9 +41,9 @@ public struct HCIWritePageScanType: HCICommandParameter {
         self.pageScanType = pageScanType
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([pageScanType.rawValue])
+        data += [pageScanType.rawValue]
     }
 }
 

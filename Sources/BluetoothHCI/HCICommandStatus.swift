@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// HCI Command Status Event
 @frozen
 public struct HCICommandStatus: HCIEventParameter {

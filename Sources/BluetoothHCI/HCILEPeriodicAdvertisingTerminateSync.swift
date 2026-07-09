@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -48,9 +46,9 @@ public struct HCILEPeriodicAdvertisingTerminateSync: HCICommandParameter {
         self.syncHandle = syncHandle
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
         let syncHandleBytes = syncHandle.littleEndian.bytes
 
-        return Data([syncHandleBytes.0, syncHandleBytes.1])
+        data += [syncHandleBytes.0, syncHandleBytes.1]
     }
 }

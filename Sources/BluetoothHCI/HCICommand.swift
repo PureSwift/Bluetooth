@@ -6,8 +6,6 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// HCI Command.
 public protocol HCICommand: RawRepresentable, Hashable, CustomStringConvertible {
 
@@ -49,8 +47,17 @@ public protocol HCICommandParameter {
 
     static var command: Command { get }
 
-    /// Converts command parameter to raw bytes.
-    var data: Data { get }
+    /// Append the command parameter bytes into the buffer.
+    func append<Data: DataContainer>(to data: inout Data)
+}
+
+public extension DataContainer {
+
+    /// Initialize data with contents of command parameter.
+    init<T: HCICommandParameter>(_ value: T) {
+        self.init()
+        value.append(to: &self)
+    }
 }
 
 /// The return value (not event) returned by an HCI command.

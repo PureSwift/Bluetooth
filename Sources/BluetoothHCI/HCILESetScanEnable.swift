@@ -142,8 +142,8 @@ public struct HCILESetScanEnable: HCICommandParameter {  // HCI_LE_Set_Scan_Enab
         self.filterDuplicates = filterDuplicates
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([isEnabled.byteValue, filterDuplicates.byteValue])
+        data += [isEnabled.byteValue, filterDuplicates.byteValue]
     }
 }

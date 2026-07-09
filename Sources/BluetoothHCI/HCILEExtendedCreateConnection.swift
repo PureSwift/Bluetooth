@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -78,11 +76,11 @@ public struct HCILEExtendedCreateConnection: HCICommandParameter {
         self.initialingPHY = initialingPHY
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = peerAddress.littleEndian.bytes
 
-        return Data([
+        data += [
             initialingFilterPolicy.rawValue,
             ownAddressType.rawValue,
             peerAddressType.rawValue,
@@ -92,7 +90,7 @@ public struct HCILEExtendedCreateConnection: HCICommandParameter {
             addressBytes.3,
             addressBytes.4,
             addressBytes.5
-        ])
+        ]
     }
 
     public enum InitialingFilterPolicy: UInt8 {  // Initiating_Filter_Policy

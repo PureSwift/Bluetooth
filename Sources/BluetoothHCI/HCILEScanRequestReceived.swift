@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Scan Request Received Event
 ///
 /// The vent indicates that a SCAN_REQ PDU or an AUX_SCAN_REQ PDU has been received by the advertiser.

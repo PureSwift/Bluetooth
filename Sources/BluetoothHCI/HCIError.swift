@@ -6,6 +6,8 @@
 //  Copyright © 2017 PureSwift. All rights reserved.
 //
 
+import Foundation
+
 /// Bluetooth HCI Errors
 ///
 /// If an HCI Command that should generate a Command Complete event generates an error
@@ -536,8 +538,6 @@ extension HCIError: CustomStringConvertible {
 // MARK: - CustomNSError
 
 #if canImport(Darwin)
-
-import Foundation
 
 extension HCIError: CustomNSError {
 

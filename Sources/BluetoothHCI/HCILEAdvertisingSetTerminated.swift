@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Advertising Set Terminated Event
 ///
 /// The event indicates that the Controller has terminated advertising in the advertising sets specified by the Advertising_Handle parameter.

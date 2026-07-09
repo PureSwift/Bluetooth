@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Directed Advertising Report Event
 ///
 /// The event indicates that directed advertisements have been received where the advertiser

@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -53,17 +51,17 @@ public struct HCIWriteLinkPolicySettings: HCICommandParameter {
         self.settings = settings
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let handleBytes = connectionHandle.littleEndian.bytes
         let settingsBytes = settings.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             handleBytes.0,
             handleBytes.1,
             settingsBytes.0,
             settingsBytes.1
-        ])
+        ]
     }
 }
 

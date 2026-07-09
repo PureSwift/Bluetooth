@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Connection Complete Event
 ///
 /// The LE Connection Complete event indicates to both of the Hosts forming the connection

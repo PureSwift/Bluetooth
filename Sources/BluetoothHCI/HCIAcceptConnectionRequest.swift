@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 public extension BluetoothHostControllerInterface {
 
     /// Accept Connection Command
@@ -57,11 +55,11 @@ public struct HCIAcceptConnectionRequest: HCICommandParameter {
         self.role = role
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = address.littleEndian.bytes
 
-        return Data([
+        data += [
             addressBytes.0,
             addressBytes.1,
             addressBytes.2,
@@ -69,7 +67,7 @@ public struct HCIAcceptConnectionRequest: HCICommandParameter {
             addressBytes.4,
             addressBytes.5,
             role.rawValue
-        ])
+        ]
     }
 }
 

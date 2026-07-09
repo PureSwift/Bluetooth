@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Remote Connection Parameter Request Event
 ///
 /// This event indicates to the master’s Host or the slave’s Host that the remote device is requesting

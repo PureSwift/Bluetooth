@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -57,11 +55,11 @@ public struct HCILESetAdvertisingSetRandomAddress: HCICommandParameter {  //HCI_
         self.advertisingRandomAddress = advertisingRandomAddress
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let advertisingRandomAddressBytes = advertisingRandomAddress.littleEndian.bytes
 
-        return Data([
+        data += [
             advertisingHandle,
             advertisingRandomAddressBytes.0,
             advertisingRandomAddressBytes.1,
@@ -69,6 +67,6 @@ public struct HCILESetAdvertisingSetRandomAddress: HCICommandParameter {  //HCI_
             advertisingRandomAddressBytes.3,
             advertisingRandomAddressBytes.4,
             advertisingRandomAddressBytes.5
-        ])
+        ]
     }
 }

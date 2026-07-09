@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Enhanced Connection Complete Event
 ///
 /// The event indicates to both of the Hosts forming the connection that a new connection has been created.

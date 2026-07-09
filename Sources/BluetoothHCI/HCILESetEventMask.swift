@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - BluetoothHostControllerInterface
 
 public extension BluetoothHostControllerInterface {
@@ -55,11 +53,11 @@ public struct HCILESetEventMask: HCICommandParameter {
         self.eventMask = eventMask
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let eventMaskBytes = eventMask.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             eventMaskBytes.0,
             eventMaskBytes.1,
             eventMaskBytes.2,
@@ -68,7 +66,7 @@ public struct HCILESetEventMask: HCICommandParameter {
             eventMaskBytes.5,
             eventMaskBytes.6,
             eventMaskBytes.7
-        ])
+        ]
     }
 }
 

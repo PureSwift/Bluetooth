@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -58,11 +56,11 @@ public struct HCILEReadPeerResolvableAddress: HCICommandParameter {  //HCI_LE_Re
         self.peerIdentifyAddress = peerIdentifyAddress
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let peerIdentifyAddressBytes = peerIdentifyAddress.littleEndian.bytes
 
-        return Data([
+        data += [
             peerIdentifyAddressType.rawValue,
             peerIdentifyAddressBytes.0,
             peerIdentifyAddressBytes.1,
@@ -72,7 +70,7 @@ public struct HCILEReadPeerResolvableAddress: HCICommandParameter {  //HCI_LE_Re
             peerIdentifyAddressBytes.5,
             peerIdentifyAddressBytes.6,
             peerIdentifyAddressBytes.7
-        ])
+        ]
     }
 }
 

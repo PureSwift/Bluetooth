@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// The PIN Code Request event is used to indicate that a PIN code is required to create a new link key. The Host shall respond using either the PIN_Code_Request_Reply or the PIN_Code_Request_Negative_Reply command, depending on whether the Host can provide the Controller with a PIN code or not.
 ///
 /// - Note: If the PIN Code Request event is masked away, then the BR/EDR Controller will assume that the Host has no PIN Code.

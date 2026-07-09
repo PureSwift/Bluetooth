@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -62,13 +60,13 @@ public struct HCIPINCodeRequestReply: HCICommandParameter {
         self.pinCode = pinCode
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = address.littleEndian.bytes
 
         let pinCodeBytes = pinCode.littleEndian.bytes
 
-        return Data([
+        data += [
             addressBytes.0,
             addressBytes.1,
             addressBytes.2,
@@ -92,7 +90,7 @@ public struct HCIPINCodeRequestReply: HCICommandParameter {
             pinCodeBytes.13,
             pinCodeBytes.14,
             pinCodeBytes.15
-        ])
+        ]
     }
 }
 

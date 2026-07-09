@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -44,8 +42,8 @@ public struct HCILEReceiverTest: HCICommandParameter {
         self.rxChannel = rxChannel
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([rxChannel.rawValue])
+        data += [rxChannel.rawValue]
     }
 }

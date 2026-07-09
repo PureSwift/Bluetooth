@@ -5,7 +5,6 @@
 //  Created by Alsey Coleman Miller on 10/22/20.
 //
 
-import Foundation
 import Bluetooth
 import BluetoothGAP
 

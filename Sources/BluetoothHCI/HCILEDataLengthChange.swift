@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Data Length Change Event
 ///
 /// event notifies the Host of a change to either the maximum Payload length or the maximum transmission time of packets

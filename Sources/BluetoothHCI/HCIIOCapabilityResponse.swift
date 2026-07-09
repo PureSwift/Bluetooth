@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// The IO Capability Response event is used to indicate to the host that IO capa- bilities from a remote device specified by BD_ADDR have been received dur- ing a simple pairing process. This event will only be generated if simple pairing has been enabled with the Write_Simple_Pairing_Mode command.
 @frozen
 public struct HCIIOCapabilityResponse: HCIEventParameter {

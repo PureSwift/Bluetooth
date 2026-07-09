@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// Encryption Key Refresh Complete Event
 ///
 /// The Encryption Key Refresh Complete event is used to indicate to the Host that the encryption key was

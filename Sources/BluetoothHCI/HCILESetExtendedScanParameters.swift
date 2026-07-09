@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -55,7 +53,7 @@ public struct HCILESetExtendedScanParameters: HCICommandParameter {
         self.scanningPHY = scanningPHY
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let length: Int
 
@@ -69,8 +67,6 @@ public struct HCILESetExtendedScanParameters: HCICommandParameter {
 
             length = 3 + 10
         }
-
-        var data = Data()
         data.reserveCapacity(length)  // improve buffer performance
 
         // Own_Address_Type
@@ -107,8 +103,6 @@ public struct HCILESetExtendedScanParameters: HCICommandParameter {
         }
 
         assert(data.count == length, "Invalid number of bytes")
-
-        return data
     }
 
     public enum ScanningFilterPolicy: UInt8 {

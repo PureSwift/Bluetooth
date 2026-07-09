@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -82,7 +80,7 @@ public struct HCICreateConnection: HCICommandParameter {
         self.allowRoleSwitch = allowRoleSwitch
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = address.littleEndian.bytes
 
@@ -90,14 +88,14 @@ public struct HCICreateConnection: HCICommandParameter {
 
         let clockOffsetBytes = clockOffset.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             addressBytes.0, addressBytes.1, addressBytes.2, addressBytes.3, addressBytes.4, addressBytes.5,  // address
             packetTypeBytes.0, packetTypeBytes.1,  // packet type
             pageScanRepetitionMode.rawValue,  // page scan repetition mode
             reserved.rawValue,  // reserved
             clockOffsetBytes.0, clockOffsetBytes.1,  // clock offset
             allowRoleSwitch.rawValue
-        ])  // allow role switch
+        ]  // allow role switch
     }
 }
 

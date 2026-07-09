@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -63,11 +61,11 @@ public struct HCILEAddDeviceToPeriodicAdvertiserList: HCICommandParameter {
         self.advertisingSid = advertisingSid
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = address.littleEndian.bytes
 
-        return Data([
+        data += [
             advertiserAddressType.rawValue,
             addressBytes.0,
             addressBytes.1,
@@ -76,6 +74,6 @@ public struct HCILEAddDeviceToPeriodicAdvertiserList: HCICommandParameter {
             addressBytes.4,
             addressBytes.5,
             advertisingSid
-        ])
+        ]
     }
 }

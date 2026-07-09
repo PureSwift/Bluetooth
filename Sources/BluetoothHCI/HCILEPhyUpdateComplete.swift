@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE PHY Update Complete Event
 ///
 /// The LE PHY Update Complete Event is used to indicate that the Controller has changed

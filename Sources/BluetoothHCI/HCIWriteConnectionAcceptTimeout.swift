@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// Write Connection Accept Timeout Command
 ///
 /// This command writes the value for the Connection Accept Timeout configuration parameter.
@@ -23,10 +21,10 @@ public struct HCIWriteConnectionAcceptTimeout: HCICommandParameter {
         self.timeout = timeout
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let timeoutBytes = timeout.rawValue.littleEndian.bytes
 
-        return Data([timeoutBytes.0, timeoutBytes.1])
+        data += [timeoutBytes.0, timeoutBytes.1]
     }
 }

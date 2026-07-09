@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -93,11 +91,8 @@ extension HCILESetAdvertisingParameters {
 
     static var length: Int { return 2 + 2 + 1 + 1 + 1 + 6 + 1 + 1 }
 
-    public var data: Data {
-        var data = Data()
-        data.reserveCapacity(Self.length)
+    public func append<Data: DataContainer>(to data: inout Data) {
         data += self
-        return data
     }
 
     var dataLength: Int {

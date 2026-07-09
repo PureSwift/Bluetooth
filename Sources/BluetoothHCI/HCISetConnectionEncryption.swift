@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -47,11 +45,11 @@ public struct HCISetConnectionEncryption: HCICommandParameter {
         self.encryption = encryption
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let handleBytes = handle.littleEndian.bytes
 
-        return Data([handleBytes.0, handleBytes.1, encryption.rawValue])
+        data += [handleBytes.0, handleBytes.1, encryption.rawValue]
     }
 }
 

@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -45,10 +43,10 @@ public struct HCIWritePageTimeout: HCICommandParameter {
         self.pageTimeout = pageTimeout
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let pageTimeoutBytes = pageTimeout.rawValue.littleEndian.bytes
 
-        return Data([pageTimeoutBytes.0, pageTimeoutBytes.1])
+        data += [pageTimeoutBytes.0, pageTimeoutBytes.1]
     }
 }

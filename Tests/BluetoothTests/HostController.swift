@@ -365,4 +365,18 @@ extension Array {
         return first
     }
 }
+
+internal extension HCICommandParameter {
+
+    var data: Data {
+        Data(self)
+    }
+}
+
+internal extension HCIPacketHeader {
+
+    var data: Data {
+        Data(self)
+    }
+}
 #endif

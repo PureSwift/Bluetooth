@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -58,14 +56,15 @@ public struct HCILESetExtendedScanResponseData: HCICommandParameter {
         self.scanResponseData = scanResponseData
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let scanResponseDataLength = UInt8(scanResponseData.count)
 
-        return Data([
+        data += [
             advertisingHandle, operation.rawValue,
             fragmentPreference.rawValue, scanResponseDataLength
-        ]) + scanResponseData
+        ]
+        data += scanResponseData
     }
 
     public enum Operation: UInt8 {  //Operation

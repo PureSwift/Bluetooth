@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Set Scan Parameters Command
 ///
 /// Used to set the scan parameters.
@@ -55,7 +53,7 @@ public struct HCILESetScanParameters: HCICommandParameter {  // HCI_LE_Set_Scan_
         self.filterPolicy = filterPolicy
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let scanType = type.rawValue
         let scanInterval = interval.rawValue.littleEndian.bytes
@@ -63,7 +61,7 @@ public struct HCILESetScanParameters: HCICommandParameter {  // HCI_LE_Set_Scan_
         let ownAddressType = addressType.rawValue
         let filter = filterPolicy.rawValue
 
-        return Data([scanType, scanInterval.0, scanInterval.1, scanWindow.0, scanWindow.1, ownAddressType, filter])
+        data += [scanType, scanInterval.0, scanInterval.1, scanWindow.0, scanWindow.1, ownAddressType, filter]
     }
 }
 

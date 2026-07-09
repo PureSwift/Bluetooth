@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// Bluetooth LMP Feature
 @frozen
 public enum LMPFeature: UInt64, BitMaskOption {
