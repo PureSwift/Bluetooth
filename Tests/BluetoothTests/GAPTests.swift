@@ -983,6 +983,83 @@ import Bluetooth
             #expect(information.pathLossThreshold == 1)
         }
     }
+
+    @Test func encryptedAdvertisingData() {
+
+        // too short (less than randomizer + MIC)
+        #expect(GAPEncryptedAdvertisingData<Data>(data: Data([0x01, 0x02, 0x03])) == nil)
+        #expect(GAPEncryptedAdvertisingData<Data>(data: Data(repeating: 0x00, count: 8)) == nil)
+
+        // randomizer (5) + payload (3) + MIC (4)
+        let data = Data([
+            0x01, 0x02, 0x03, 0x04, 0x05,  // randomizer
+            0xAA, 0xBB, 0xCC,  // encrypted payload
+            0x10, 0x20, 0x30, 0x40  // MIC
+        ])
+
+        guard let encrypted = GAPEncryptedAdvertisingData<Data>(data: data)
+        else {
+            Issue.record()
+            return
+        }
+
+        #expect(encrypted.data == data)
+        #expect(encrypted.dataLength == data.count)
+        #expect(encrypted.randomizer == 0x05_0403_0201)
+        #expect(Array(encrypted.encryptedPayload) == [0xAA, 0xBB, 0xCC])
+        #expect(encrypted.mic == 0x4030_2010)
+        #expect(GAPEncryptedAdvertisingData<Data>.dataType == .encryptedAdvertisingData)
+
+        // empty payload
+        let minimal = Data([
+            0x01, 0x02, 0x03, 0x04, 0x05,
+            0x10, 0x20, 0x30, 0x40
+        ])
+        guard let minimalEncrypted = GAPEncryptedAdvertisingData<Data>(data: minimal)
+        else {
+            Issue.record()
+            return
+        }
+        #expect(minimalEncrypted.data == minimal)
+        #expect(minimalEncrypted.encryptedPayload.isEmpty)
+
+        // round trip through generic containers
+        #expect([UInt8](encrypted) == [UInt8](data))
+    }
+
+    @Test func periodicAdvertisingResponseTimingInformation() {
+
+        #expect(GAPPeriodicAdvertisingResponseTimingInformation(data: Data()) == nil)
+        #expect(GAPPeriodicAdvertisingResponseTimingInformation(data: Data(repeating: 0x00, count: 7)) == nil)
+        #expect(GAPPeriodicAdvertisingResponseTimingInformation(data: Data(repeating: 0x00, count: 9)) == nil)
+
+        let data = Data([
+            0x17, 0x51, 0x82, 0x91,  // RspAA
+            0x03,  // numSubevents
+            0x08,  // subeventInterval (10 ms)
+            0x02,  // responseSlotDelay (2.5 ms)
+            0x04  // responseSlotSpacing (0.5 ms)
+        ])
+
+        guard let timing = GAPPeriodicAdvertisingResponseTimingInformation(data: data)
+        else {
+            Issue.record()
+            return
+        }
+
+        #expect(timing.data == data)
+        #expect(timing.dataLength == 8)
+        #expect(timing.responseAccessAddress == 0x9182_5117)
+        #expect(timing.numberOfSubevents == 3)
+        #expect(timing.subeventInterval == 8)
+        #expect(timing.responseSlotDelay == 2)
+        #expect(timing.responseSlotSpacing == 4)
+        #expect(GAPPeriodicAdvertisingResponseTimingInformation.dataType == .periodicAdvertisingResponseTimingInformation)
+
+        // round trip through generic containers
+        #expect([UInt8](timing) == [UInt8](data))
+        #expect(GAPPeriodicAdvertisingResponseTimingInformation(data: [UInt8](data)) == timing)
+    }
 }
 
 internal extension GAPData {
