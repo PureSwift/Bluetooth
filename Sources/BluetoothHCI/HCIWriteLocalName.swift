@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -44,19 +42,18 @@ public struct HCIWriteLocalName: HCICommandParameter {
         self.localName = localName
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let maxLength = Self.length
+        let utf8 = localName.utf8
 
-        var data = Data(localName.utf8)
+        assert(utf8.count <= maxLength)
 
-        assert(data.count <= maxLength)
+        data += utf8
 
-        if data.count < maxLength {
+        if utf8.count < maxLength {
 
-            data += Data(repeating: 0x00, count: maxLength - data.count)
+            data += repeatElement(0x00, count: maxLength - utf8.count)
         }
-
-        return data
     }
 }

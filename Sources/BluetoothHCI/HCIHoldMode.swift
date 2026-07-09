@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// Hold Mode Command
 ///
 /// The Hold_Mode command is used to alter the behavior of the Link Manager, and have it place the ACL baseband connection associated by the specified Connection_Handle into the hold mode. The Hold_Mode_Max_Interval and Hold_Mode_Min_Interval command parameters specify the length of time the Host wants to put the connection into the hold mode. The local and remote devices will negotiate the length in the hold mode. The Hold_Mode_Max_ Interval parameter is used to specify the maximum length of the Hold interval for which the Host may actually enter into the hold mode after negotiation with the remote device. The Hold interval defines the amount of time between when the Hold Mode begins and when the Hold Mode is completed. The Hold_ Mode_Min_Interval parameter is used to specify the minimum length of the Hold interval for which the Host may actually enter into the hold mode after the negotiation with the remote device. Therefore the Hold_Mode_Min_Interval cannot be greater than the Hold_Mode_Max_Interval. The BR/EDR Controller will return the actual Hold interval in the Interval parameter of the Mode Change event, if the command is successful. This command enables the Host to support a low-power policy for itself or several other BR/EDR Controllers, and allows the devices to enter Inquiry Scan, Page Scan, and a number of other possible actions.
@@ -37,7 +35,7 @@ public struct HCIHoldMode: HCICommandParameter {
         self.interval = interval
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         // Connection_Handle
         let handleBytes = connectionHandle.littleEndian.bytes
@@ -48,14 +46,14 @@ public struct HCIHoldMode: HCICommandParameter {
         // Hold_Mode_Min_Interval
         let intervalMinBytes = interval.rawValue.lowerBound.littleEndian.bytes
 
-        return Data([
+        data += [
             handleBytes.0,
             handleBytes.1,
             intervalMaxBytes.0,
             intervalMaxBytes.1,
             intervalMinBytes.0,
             intervalMinBytes.1
-        ])
+        ]
     }
 }
 

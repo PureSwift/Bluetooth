@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -50,8 +48,8 @@ public struct HCILESetAddressResolutionEnable: HCICommandParameter {  //HCI_LE_S
         self.addressResolutionEnable = addressResolutionEnable
     }
 
-    public var data: Data {
-        return Data([addressResolutionEnable.rawValue])
+    public func append<Data: DataContainer>(to data: inout Data) {
+        data += [addressResolutionEnable.rawValue]
     }
 
     public enum AddressResolutionEnable: UInt8 {

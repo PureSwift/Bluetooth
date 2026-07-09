@@ -7,8 +7,6 @@
 //
 // swiftlint:disable function_parameter_count
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -85,7 +83,7 @@ public struct HCIQoSSetup: HCICommandParameter {
         self.delayVariation = delayVariation
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let handleBytes = connectionHandle.littleEndian.bytes
 
@@ -97,7 +95,7 @@ public struct HCIQoSSetup: HCICommandParameter {
 
         let delayVariationBytes = delayVariation.littleEndian.bytes
 
-        return Data([
+        data += [
             handleBytes.0,
             handleBytes.1,
             flags,
@@ -118,7 +116,7 @@ public struct HCIQoSSetup: HCICommandParameter {
             delayVariationBytes.1,
             delayVariationBytes.2,
             delayVariationBytes.3
-        ])
+        ]
     }
 }
 

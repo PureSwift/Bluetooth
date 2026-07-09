@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -60,11 +58,8 @@ public struct HCILEEncrypt: HCICommandParameter {  // HCI_LE_Encrypt
 
 extension HCILEEncrypt {
 
-    public var data: Data {
-        var data = Data()
-        data.reserveCapacity(self.dataLength)
+    public func append<Data: DataContainer>(to data: inout Data) {
         data += self
-        return data
     }
 
     var dataLength: Int { return 32 }

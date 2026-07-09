@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -91,13 +89,13 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
         self.clockOffset = ClockOffset(rawValue: UInt16(littleEndian: UInt16(bytes: (data[8], data[9]))))
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = address.littleEndian.bytes
 
         let clockOffsetBytes = clockOffset.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             addressBytes.0,
             addressBytes.1,
             addressBytes.2,
@@ -108,7 +106,7 @@ public struct HCIRemoteNameRequest: HCICommandParameter {
             reserved.rawValue,
             clockOffsetBytes.0,
             clockOffsetBytes.1
-        ])
+        ]
     }
 }
 

@@ -16,7 +16,18 @@ public protocol HCIPacketHeader {
 
     init?<Data: DataContainer>(data: Data)
 
-    var data: Data { get }
+    /// Append the header bytes into the buffer.
+    func append<Data: DataContainer>(to data: inout Data)
+}
+
+public extension DataContainer {
+
+    /// Initialize data with contents of packet header.
+    init<T: HCIPacketHeader>(_ value: T) {
+        self.init()
+        self.reserveCapacity(T.length)
+        value.append(to: &self)
+    }
 }
 
 // MARK: - Command Header
@@ -50,7 +61,7 @@ public struct HCICommandHeader: HCIPacketHeader {  // hci_command_hdr (packed)
     public static func from<T: HCICommandParameter>(_ commandParameter: T) -> (HCICommandHeader, Data) {
 
         let command = type(of: commandParameter).command
-        let parameterData = commandParameter.data
+        let parameterData = Data(commandParameter)
 
         let header = HCICommandHeader(
             command: command,
@@ -68,11 +79,11 @@ public struct HCICommandHeader: HCIPacketHeader {  // hci_command_hdr (packed)
         self.parameterLength = data[2]
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let opcodeBytes = opcode.littleEndian.bytes
 
-        return Data([opcodeBytes.0, opcodeBytes.1, parameterLength])
+        data += [opcodeBytes.0, opcodeBytes.1, parameterLength]
     }
 }
 
@@ -108,8 +119,8 @@ public struct HCIEventHeader: HCIPacketHeader {
         self.parameterLength = data[1]
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([event.rawValue, parameterLength])
+        data += [event.rawValue, parameterLength]
     }
 }

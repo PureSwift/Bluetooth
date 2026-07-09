@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -53,15 +51,15 @@ public struct HCILEWriteSuggestedDefaultDataLength: HCICommandParameter {
         self.suggestedMaxTxTime = suggestedMaxTxTime
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
         let suggestedMaxTxOctetsBytes = suggestedMaxTxOctets.rawValue.littleEndian.bytes
         let suggestedMaxTxTimeBytes = suggestedMaxTxTime.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             suggestedMaxTxOctetsBytes.0,
             suggestedMaxTxOctetsBytes.1,
             suggestedMaxTxTimeBytes.0,
             suggestedMaxTxTimeBytes.1
-        ])
+        ]
     }
 }

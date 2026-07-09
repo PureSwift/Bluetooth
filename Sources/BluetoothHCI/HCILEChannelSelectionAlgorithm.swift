@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Channel Selection Algorithm Event
 ///
 /// The LE Channel Selection Algorithm Event indicates which channel selection algorithm is used on a data channel connection.

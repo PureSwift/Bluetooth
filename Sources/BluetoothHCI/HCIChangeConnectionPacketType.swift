@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -56,12 +54,12 @@ public struct HCIChangeConnectionPacketType: HCICommandParameter {
         self.packetType = packetType
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let handleBytes = handle.littleEndian.bytes
 
         let packetTypeBytes = packetType.rawValue.littleEndian.bytes
 
-        return Data([handleBytes.0, handleBytes.1, packetTypeBytes.0, packetTypeBytes.1])
+        data += [handleBytes.0, handleBytes.1, packetTypeBytes.0, packetTypeBytes.1]
     }
 }

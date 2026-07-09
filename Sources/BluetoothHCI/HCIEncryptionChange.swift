@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// Encryption Change Event
 ///
 /// The Encryption Change event is used to indicate that the change of the encryption mode has been completed.

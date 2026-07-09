@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 // MARK: - Method
@@ -84,7 +83,4 @@ extension HCILEAddDeviceToWhiteList: DataConvertible {
         Self.length
     }
 
-    public var data: Data {
-        return Data(self)
-    }
 }

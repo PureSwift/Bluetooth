@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// HCI Remote Name Request Complete Event
 @frozen
 public struct HCIRemoteNameRequestComplete: HCIEventParameter {

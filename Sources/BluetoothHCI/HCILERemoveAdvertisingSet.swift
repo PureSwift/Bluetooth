@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -45,7 +43,7 @@ public struct HCILERemoveAdvertisingSet: HCICommandParameter {
         self.advertisingHandle = advertisingHandle
     }
 
-    public var data: Data {
-        return Data([advertisingHandle])
+    public func append<Data: DataContainer>(to data: inout Data) {
+        data += [advertisingHandle]
     }
 }

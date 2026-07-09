@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -47,11 +45,11 @@ public struct HCILEGenerateDHKey: HCICommandParameter {
         self.remoteP256PublicKey = remoteP256PublicKey
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let remoteP256PublicKeyBytes = remoteP256PublicKey.littleEndian.bytes
 
-        return Data([
+        data += [
             remoteP256PublicKeyBytes.0,
             remoteP256PublicKeyBytes.1,
             remoteP256PublicKeyBytes.2,
@@ -117,6 +115,6 @@ public struct HCILEGenerateDHKey: HCICommandParameter {
             remoteP256PublicKeyBytes.61,
             remoteP256PublicKeyBytes.62,
             remoteP256PublicKeyBytes.63
-        ])
+        ]
     }
 }

@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -121,7 +119,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
         self.scanRequestNotificationEnable = scanRequestNotificationEnable
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let advertisingEventPropertiesBytes = advertisingEventProperties.rawValue.littleEndian.bytes
 
@@ -132,7 +130,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
 
         let advertisingTxPowerByte = UInt8.init(bitPattern: advertisingTxPower.rawValue)
 
-        return Data([
+        data += [
             advertisingHandle,
             advertisingEventPropertiesBytes.0,
             advertisingEventPropertiesBytes.1,
@@ -158,7 +156,7 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
             secondaryAdvertisingPhy.rawValue,
             advertisingSid,
             scanRequestNotificationEnable.rawValue
-        ])
+        ]
     }
 
     /// The Scan_Request_Notification_Enable parameter indicates whether the Controller shall send

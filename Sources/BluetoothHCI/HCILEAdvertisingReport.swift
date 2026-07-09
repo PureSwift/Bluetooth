@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Advertising Report Event
 ///
 /// The LE Advertising Report event indicates that a Bluetooth device

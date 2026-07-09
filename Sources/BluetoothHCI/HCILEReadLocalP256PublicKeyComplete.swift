@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Read Local P-256 Public Key Complete Event
 ///
 /// This event is generated when local P-256 key generation is complete.

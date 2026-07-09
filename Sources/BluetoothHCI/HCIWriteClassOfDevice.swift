@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -43,8 +41,8 @@ public struct HCIWriteClassOfDevice: HCICommandParameter {
         self.classOfDevice = classOfDevice
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data(classOfDevice)
+        data += classOfDevice
     }
 }

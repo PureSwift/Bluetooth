@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Periodic Advertising Sync Established Event
 ///
 /// The event indicates that the Controller has received the first periodic advertising packet from an advertiser

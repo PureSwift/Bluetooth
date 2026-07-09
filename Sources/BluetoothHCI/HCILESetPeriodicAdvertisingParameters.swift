@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -76,12 +74,12 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
         self.advertisingEventProperties = advertisingEventProperties
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let periodicAdvertisingIntervalMinBytes = periodicAdvertisingInterval.rawValue.lowerBound.littleEndian.bytes
         let periodicAdvertisingIntervalMaxBytes = periodicAdvertisingInterval.rawValue.upperBound.littleEndian.bytes
         let advertisingEventPropertiesytes = advertisingEventProperties.rawValue.littleEndian.bytes
-        return Data([
+        data += [
             advertisingHandle,
             periodicAdvertisingIntervalMinBytes.0,
             periodicAdvertisingIntervalMinBytes.1,
@@ -89,7 +87,7 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
             periodicAdvertisingIntervalMaxBytes.1,
             advertisingEventPropertiesytes.0,
             advertisingEventPropertiesytes.1
-        ])
+        ]
     }
 
     public struct PeriodicAdvertisingInterval: RawRepresentable, Equatable, Hashable, Sendable {

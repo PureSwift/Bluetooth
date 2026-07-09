@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 @frozen
 public enum InformationalCommand: UInt16, HCICommand {
 

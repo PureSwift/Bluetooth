@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -53,11 +51,11 @@ public struct HCIDisconnect: HCICommandParameter {
         self.error = error
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let connectionBytes = connectionHandle.littleEndian.bytes
 
-        return Data([connectionBytes.0, connectionBytes.1, error.rawValue])
+        data += [connectionBytes.0, connectionBytes.1, error.rawValue]
     }
 }
 

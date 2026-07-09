@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -53,15 +51,16 @@ public struct HCILESetPeriodicAdvertisingData: HCICommandParameter {
         self.advertisingData = advertisingData
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let advertisingDataLength = UInt8(advertisingData.count)
 
-        return Data([
+        data += [
             advertisingHandle,
             operation.rawValue,
             advertisingDataLength
-        ]) + advertisingData
+        ]
+        data += advertisingData
     }
 
     public enum Operation: UInt8 {  //Operation

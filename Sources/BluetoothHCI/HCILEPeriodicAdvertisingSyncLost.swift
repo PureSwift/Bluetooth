@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Periodic Advertising Sync Lost Event
 ///
 /// The event indicates that the Controller has not received a Periodic Advertising packet identified

@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Command
 
 /// LE Set Host Channel Classification Command
@@ -31,13 +29,13 @@ public struct HCILESetHostChannelClassification: HCICommandParameter {  // HCI_L
         self.channelMap = channelMap
     }
 
-    public var data: Data {
-        return Data([
+    public func append<Data: DataContainer>(to data: inout Data) {
+        data += [
             channelMap.0,
             channelMap.1,
             channelMap.2,
             channelMap.3,
             channelMap.4
-        ])
+        ]
     }
 }

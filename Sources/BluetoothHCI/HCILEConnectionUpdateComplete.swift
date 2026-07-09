@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Connection Update Complete Event
 ///
 /// The event is used to indicate that the Controller process to update the connection has completed.

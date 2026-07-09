@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -49,13 +47,13 @@ public struct HCIWritePageScanActivity: HCICommandParameter {
         self.scanWindow = scanWindow
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let intervalBytes = scanInterval.rawValue.littleEndian.bytes
 
         let windowBytes = scanWindow.rawValue.littleEndian.bytes
 
-        return Data([intervalBytes.0, intervalBytes.1, windowBytes.0, windowBytes.1])
+        data += [intervalBytes.0, intervalBytes.1, windowBytes.0, windowBytes.1]
     }
 }
 

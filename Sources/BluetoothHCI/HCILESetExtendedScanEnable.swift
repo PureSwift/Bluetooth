@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -61,19 +59,19 @@ public struct HCILESetExtendedScanEnable: HCICommandParameter {
         self.period = period
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let durationBytes = duration.rawValue.littleEndian.bytes
         let periodBytes = period.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             enable.rawValue,
             filterDuplicates.rawValue,
             durationBytes.0,
             durationBytes.1,
             periodBytes.0,
             periodBytes.1
-        ])
+        ]
     }
 
     /// The Enable parameter determines whether scanning is enabled or disabled.

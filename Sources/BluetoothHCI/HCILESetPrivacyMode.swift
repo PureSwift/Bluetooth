@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -56,11 +54,11 @@ public struct HCILESetPrivacyMode: HCICommandParameter {
         self.privacyMode = privacyMode
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = peerIdentityAddress.littleEndian.bytes
 
-        return Data([
+        data += [
             peerIdentityAddressType.rawValue,
             addressBytes.0,
             addressBytes.1,
@@ -69,7 +67,7 @@ public struct HCILESetPrivacyMode: HCICommandParameter {
             addressBytes.4,
             addressBytes.5,
             privacyMode.rawValue
-        ])
+        ]
     }
 
     public enum PrivacyMode: UInt8 {

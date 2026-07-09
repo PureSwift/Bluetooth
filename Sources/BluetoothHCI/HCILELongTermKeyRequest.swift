@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Long Term Key Request Event
 ///
 /// The LE Long Term Key Request event indicates that the master device is attempting

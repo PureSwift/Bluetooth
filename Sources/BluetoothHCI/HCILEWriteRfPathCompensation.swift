@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -63,16 +61,16 @@ public struct HCILEWriteRfPathCompensation: HCICommandParameter {
         self.rfRxPathCompensationValue = rfRxPathCompensationValue
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
         let rfTxPathCompensationValueBytes = UInt16.init(bitPattern: rfTxPathCompensationValue.rawValue).littleEndian.bytes
 
         let rfRxPathCompensationValueBytes = UInt16.init(bitPattern: rfRxPathCompensationValue.rawValue).littleEndian.bytes
 
-        return Data([
+        data += [
             rfTxPathCompensationValueBytes.0,
             rfTxPathCompensationValueBytes.1,
             rfRxPathCompensationValueBytes.0,
             rfRxPathCompensationValueBytes.1
-        ])
+        ]
     }
 }

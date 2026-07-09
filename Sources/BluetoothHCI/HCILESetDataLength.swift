@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -62,20 +60,20 @@ public struct HCILESetDataLength: HCICommandParameter {
         self.txTime = txTime
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
         let txOctetsBytes = txOctets.rawValue.littleEndian.bytes
         let txTimeBytes = txTime.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             connectionHandleBytes.0,
             connectionHandleBytes.1,
             txOctetsBytes.0,
             txOctetsBytes.1,
             txTimeBytes.0,
             txTimeBytes.1
-        ])
+        ]
     }
 }
 

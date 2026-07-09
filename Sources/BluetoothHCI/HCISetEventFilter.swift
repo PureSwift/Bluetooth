@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Command
 
 /// Set Event Filter Command
@@ -49,7 +47,7 @@ public struct HCISetEventFilter: HCICommandParameter {
     ///
     public var filterType: FilterType  // Filter_Type
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         fatalError("\(#function) TODO")
     }

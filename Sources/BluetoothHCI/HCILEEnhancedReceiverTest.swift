@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -46,8 +44,8 @@ public struct HCILEEnhancedReceiverTest: HCICommandParameter {
         self.modulationIndex = modulationIndex
     }
 
-    public var data: Data {
-        return Data([rxChannel.rawValue, phy.rawValue, modulationIndex.rawValue])
+    public func append<Data: DataContainer>(to data: inout Data) {
+        data += [rxChannel.rawValue, phy.rawValue, modulationIndex.rawValue]
     }
 
     public enum Phy: UInt8 {

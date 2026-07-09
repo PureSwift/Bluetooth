@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -57,18 +55,18 @@ public struct HCIWriteLinkSupervisionTimeout: HCICommandParameter {
         self.linkSupervisionTimeout = linkSupervisionTimeout
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let handleBytes = handle.littleEndian.bytes
 
         let timeoutBytes = linkSupervisionTimeout.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             handleBytes.0,
             handleBytes.1,
             timeoutBytes.0,
             timeoutBytes.1
-        ])
+        ]
     }
 }
 

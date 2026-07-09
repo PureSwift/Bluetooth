@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -49,14 +47,14 @@ public struct HCILESetResolvablePrivateAddressTimeout: HCICommandParameter {
         self.rpaTimeout = rpaTimeout
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let rpaTimeoutBytes = rpaTimeout.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             rpaTimeoutBytes.0,
             rpaTimeoutBytes.1
-        ])
+        ]
     }
 
     /// RPA_Timeout measured in s

@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -51,13 +49,13 @@ public struct HCILinkKeyRequestReply: HCICommandParameter {
         self.linkKey = linkKey
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let addressBytes = address.littleEndian.bytes
 
         let linkKeyBytes = linkKey.littleEndian.bytes
 
-        return Data([
+        data += [
             addressBytes.0,
             addressBytes.1,
             addressBytes.2,
@@ -80,7 +78,7 @@ public struct HCILinkKeyRequestReply: HCICommandParameter {
             linkKeyBytes.13,
             linkKeyBytes.14,
             linkKeyBytes.15
-        ])
+        ]
     }
 }
 

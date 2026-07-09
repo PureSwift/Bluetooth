@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Read Remote Features Complete Event
 ///
 /// The event is used to indicate the completion of the process of the Controller

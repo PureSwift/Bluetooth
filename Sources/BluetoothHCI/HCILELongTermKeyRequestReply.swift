@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -50,12 +48,12 @@ public struct HCILELongTermKeyRequestReply: HCICommandParameter {
         self.longTermKey = longTermKey
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
         let longTermKeyBytes = longTermKey.littleEndian.bytes
 
-        return Data([
+        data += [
             connectionHandleBytes.0,
             connectionHandleBytes.1,
             longTermKeyBytes.0,
@@ -74,7 +72,7 @@ public struct HCILELongTermKeyRequestReply: HCICommandParameter {
             longTermKeyBytes.13,
             longTermKeyBytes.14,
             longTermKeyBytes.15
-        ])
+        ]
     }
 }
 

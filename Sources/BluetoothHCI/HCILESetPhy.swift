@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -84,12 +82,12 @@ public struct HCILESetPhy: HCICommandParameter {
         self.phyOptions = phyOptions
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let connectionHandleBytes = connectionHandle.littleEndian.bytes
         let phyOptionsBytes = phyOptions.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             connectionHandleBytes.0,
             connectionHandleBytes.1,
             allPhys.rawValue,
@@ -97,6 +95,6 @@ public struct HCILESetPhy: HCICommandParameter {
             rxPhys.rawValue,
             phyOptionsBytes.0,
             phyOptionsBytes.1
-        ])
+        ]
     }
 }

@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 /// LE Generate DHKey Complete Event
 ///
 /// This event indicates that LE Diffie Hellman key generation has been completed by the Controller.

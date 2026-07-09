@@ -6,8 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-
 // MARK: - Method
 
 public extension BluetoothHostControllerInterface {
@@ -90,7 +88,7 @@ public struct HCIPeriodicInquiryMode: HCICommandParameter {
         self.responses = responses
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let minDurationBytes = minDuration.rawValue.littleEndian.bytes
 
@@ -98,13 +96,13 @@ public struct HCIPeriodicInquiryMode: HCICommandParameter {
 
         let lapBytes = lap.rawValue.littleEndian.bytes
 
-        return Data([
+        data += [
             maxDurationBytes.0, maxDurationBytes.1,
             minDurationBytes.0, minDurationBytes.1,
             lapBytes.0, lapBytes.1, lapBytes.2,
             length.rawValue,
             responses.rawValue
-        ])
+        ]
     }
 }
 
