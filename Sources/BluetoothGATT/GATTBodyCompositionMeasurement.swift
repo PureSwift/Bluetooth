@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Body Composition Measurement
@@ -307,7 +306,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         }
     }
 
-    public var data: Data {
+    public var dataLength: Int {
 
         let flags = self.flags
 
@@ -368,84 +367,92 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
             totalBytes += MemoryLayout<UInt16>.size
         }
 
+        return totalBytes
+    }
+
+    public func append<Data: DataContainer>(to data: inout Data) {
+
         let flagBytes = flags.rawValue.littleEndian.bytes
         let bodyfatBytes = bodyFatPercentage.rawValue.littleEndian.bytes
 
-        var data = Data([
-            flagBytes.0,
-            flagBytes.1,
-            bodyfatBytes.0,
-            bodyfatBytes.1
-        ])
-
-        data.reserveCapacity(totalBytes)
+        data += flagBytes.0
+        data += flagBytes.1
+        data += bodyfatBytes.0
+        data += bodyfatBytes.1
 
         if let timestamp = self.timestamp {
 
-            data.append(timestamp.data)
+            timestamp.append(to: &data)
         }
 
         if let userIdentifier = self.userIdentifier {
 
-            data.append(userIdentifier)
+            data += userIdentifier
         }
 
         if let basalMetabolism = self.basalMetabolism {
 
             let bytes = basalMetabolism.rawValue.littleEndian.bytes
 
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let musclePercentage = self.musclePercentage {
 
             let bytes = musclePercentage.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let muscleMass = self.muscleMass {
 
             let bytes = muscleMass.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let fatFreeMass = self.fatFreeMass {
 
             let bytes = fatFreeMass.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let softleanMass = self.softLeanMass {
 
             let bytes = softleanMass.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let bodyWaterMass = self.bodyWaterMass {
 
             let bytes = bodyWaterMass.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let impedance = self.impedance {
 
             let bytes = impedance.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let weight = self.weight {
 
             let bytes = weight.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let height = self.height {
 
             let bytes = height.rawValue.littleEndian.bytes
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
-
-        return data
     }
 
     /// These flags define which data fields are present in the Characteristic value.

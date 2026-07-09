@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Longitude
@@ -36,10 +35,15 @@ public struct GATTLongitude: RawRepresentable, GATTCharacteristic {
         self.init(rawValue: Int32(bitPattern: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], data[3])))))
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let bytes = UInt32(bitPattern: rawValue).littleEndian.bytes
-        return Data([bytes.0, bytes.1, bytes.2, bytes.3])
+        data += [bytes.0, bytes.1, bytes.2, bytes.3]
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

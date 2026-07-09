@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Time Zone
@@ -55,11 +54,14 @@ public struct GATTTimeZone: RawRepresentable, GATTCharacteristic, Equatable, Has
         self.init(rawValue: level)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        let byteValue = UInt8(bitPattern: rawValue)
+        data += UInt8(bitPattern: rawValue)
+    }
 
-        return Data([byteValue])
+    public var dataLength: Int {
+
+        return Self.length
     }
 
 }

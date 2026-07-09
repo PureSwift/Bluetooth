@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Time with DST
@@ -43,8 +42,14 @@ public struct GATTTimeWithDst: GATTCharacteristic, Equatable {
         self.init(datetime: datetime, dstOffset: dstOffset)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return datetime.data + dstOffset.data
+        datetime.append(to: &data)
+        dstOffset.append(to: &data)
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }

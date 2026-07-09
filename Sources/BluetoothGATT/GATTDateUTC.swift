@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 @frozen
@@ -34,11 +33,17 @@ public struct GATTDateUTC: GATTCharacteristic, Equatable {
         self.init(date: date)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let bytes = date.rawValue.littleEndian.bytes
+        data += bytes.0
+        data += bytes.1
+        data += bytes.2
+    }
 
-        return Data([bytes.0, bytes.1, bytes.2])
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

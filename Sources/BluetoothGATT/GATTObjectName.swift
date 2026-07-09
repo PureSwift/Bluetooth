@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Object Name
@@ -43,6 +42,10 @@ public struct GATTObjectName: Equatable, Hashable, RawRepresentable, GATTCharact
 
     public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += rawValue.utf8
+    }
+
+    public var dataLength: Int {
+        rawValue.utf8.count
     }
 }
 

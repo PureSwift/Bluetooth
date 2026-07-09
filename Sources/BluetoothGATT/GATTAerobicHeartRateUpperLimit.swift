@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Aerobic Heart Rate Upper Limit
@@ -40,9 +39,14 @@ public struct GATTAerobicHeartRateUpperLimit: GATTCharacteristic {
         self.init(beats: beats)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([beats.rawValue])
+        data += beats.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 
 }

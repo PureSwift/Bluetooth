@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// New Alert
@@ -68,9 +67,16 @@ public struct GATTNewAlert: GATTCharacteristic, Equatable {
             information: information)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([category.rawValue, newAlertsCount]) + information.data
+        data += category.rawValue
+        data += newAlertsCount
+        information.append(to: &data)
+    }
+
+    public var dataLength: Int {
+
+        return Self.minLength + information.dataLength
     }
 }
 
@@ -108,12 +114,14 @@ public extension GATTNewAlert {
             self.init(rawValue: string)
         }
 
-        public var data: Data {
+        public func append<Data: DataContainer>(to data: inout Data) {
 
-            guard let data = rawValue.data(using: .utf8)
-            else { fatalError("Could not encode string") }
+            data += rawValue.utf8
+        }
 
-            return data
+        public var dataLength: Int {
+
+            return rawValue.utf8.count
         }
     }
 }

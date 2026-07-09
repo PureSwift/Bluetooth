@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Blood Pressure Measurement
@@ -164,7 +163,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
         }
     }
 
-    public var data: Data {
+    public var dataLength: Int {
 
         let flags = self.flags
 
@@ -190,49 +189,48 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
             totalBytes += MemoryLayout<MeasurementStatus.RawValue>.size  // 2
         }
 
+        return totalBytes
+    }
+
+    public func append<Data: DataContainer>(to data: inout Data) {
+
         let systolicBytes = compoundValue.systolic.littleEndian.bitPattern.bytes
         let distolicBytes = compoundValue.diastolic.littleEndian.bitPattern.bytes
-        let meanArterialPressureBytes = compoundValue.meanArterialPressure.bitPattern.bytes
+        let meanArterialPressureBytes = compoundValue.meanArterialPressure.littleEndian.bitPattern.bytes
 
-        var data = Data([
-            flags.rawValue,
-            systolicBytes.0,
-            systolicBytes.1,
-            distolicBytes.0,
-            distolicBytes.1,
-            meanArterialPressureBytes.0,
-            meanArterialPressureBytes.1
-        ])
-
-        data.reserveCapacity(totalBytes)
+        data += flags.rawValue
+        data += systolicBytes.0
+        data += systolicBytes.1
+        data += distolicBytes.0
+        data += distolicBytes.1
+        data += meanArterialPressureBytes.0
+        data += meanArterialPressureBytes.1
 
         if let timestamp = self.timestamp {
 
-            data.append(timestamp.data)
+            timestamp.append(to: &data)
         }
 
         if let pulseRate = self.pulseRate {
 
             let bytes = pulseRate.littleEndian.bitPattern.bytes
 
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let userIdentifier = self.userIdentifier {
 
-            data.append(userIdentifier)
+            data += userIdentifier
         }
 
         if let measurementStatus = self.measurementStatus {
 
             let bytes = measurementStatus.rawValue.littleEndian.bytes
 
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
-
-        assert(data.count == totalBytes, "Encoded data is \(data.count), expected is \(totalBytes)")
-
-        return data
     }
 
     /// These flags define which data fields are present in the Characteristic value.

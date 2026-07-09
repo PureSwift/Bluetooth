@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Blood Pressure Feature
@@ -38,11 +37,17 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
         self.init(features: features)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let bytes = features.rawValue.littleEndian.bytes
 
-        return Data([bytes.0, bytes.1])
+        data += bytes.0
+        data += bytes.1
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 
     /// Blood Pressure Feature

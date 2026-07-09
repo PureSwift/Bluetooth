@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Alert Level
@@ -50,8 +49,13 @@ public enum GATTAlertLevel: UInt8, GATTCharacteristic {
         self.init(rawValue: data[0])
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([rawValue])
+        data += rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }

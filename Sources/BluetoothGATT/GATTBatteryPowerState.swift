@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Battery Power State
@@ -60,7 +59,7 @@ public struct GATTBatteryPowerState: GATTCharacteristic {
             levelState: levelState)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let byte = UInt8.bit2(
             presentState.rawValue,
@@ -68,7 +67,12 @@ public struct GATTBatteryPowerState: GATTCharacteristic {
             chargeState.rawValue,
             levelState.rawValue)
 
-        return Data([byte])
+        data += byte
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

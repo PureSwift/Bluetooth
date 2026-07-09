@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Central Address Resolution
@@ -46,9 +45,14 @@ public struct GATTCentralAddressResolution: GATTCharacteristic {
         self.init(isSupported: booleanValue)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([isSupported.byteValue])
+        data += isSupported.byteValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

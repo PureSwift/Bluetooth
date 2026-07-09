@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 /// Cross Trainer Data
 ///
@@ -14,7 +13,7 @@ import Bluetooth
 ///
 /// - SeeAlso: [Cross Trainer Data](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.cross_trainer_data.xml)
 @frozen
-public struct GATTCrossTrainerData {
+public struct GATTCrossTrainerData: GATTCharacteristic {
 
     internal static let minimumLength = MemoryLayout<UInt24>.size
 
@@ -408,7 +407,7 @@ public struct GATTCrossTrainerData {
         }
     }
 
-    public var data: Data {
+    public var dataLength: Int {
 
         let flags = self.flags
 
@@ -466,7 +465,7 @@ public struct GATTCrossTrainerData {
 
         if flags.contains(.expendedEnergy) {
 
-            totalBytes += GATTKilogramCalorie.Byte.length
+            totalBytes += GATTKilogramCalorie.Bits16.length * 2 + GATTKilogramCalorie.Byte.length
         }
 
         if flags.contains(.heartRate) {
@@ -489,21 +488,23 @@ public struct GATTCrossTrainerData {
             totalBytes += Time.length
         }
 
+        return totalBytes
+    }
+
+    public func append<Data: DataContainer>(to data: inout Data) {
+
         let flagBytes = flags.rawValue.littleEndian.bytes
 
-        var data = Data([
-            flagBytes.0,
-            flagBytes.1,
-            flagBytes.2
-        ])
-
-        data.reserveCapacity(totalBytes)
+        data += flagBytes.0
+        data += flagBytes.1
+        data += flagBytes.2
 
         if let instantaneousSpeed = self.instantaneousSpeed {
 
             let bytes = instantaneousSpeed.rawValue.littleEndian.bytes
 
-            data += [bytes.0, bytes.1]
+            data += bytes.0
+            data += bytes.1
         }
 
         if let averageSpeed = self.averageSpeed {
@@ -632,8 +633,6 @@ public struct GATTCrossTrainerData {
 
             data += [bytes.0, bytes.1]
         }
-
-        return data
     }
 
     /// These flags define which data fields are present in the Characteristic value.

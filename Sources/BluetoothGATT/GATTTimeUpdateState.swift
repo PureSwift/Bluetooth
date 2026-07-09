@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Time Update State
@@ -43,9 +42,15 @@ public struct GATTTimeUpdateState: GATTCharacteristic, Equatable {
         self.init(currentState: currentState, result: result)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([currentState.rawValue, result.rawValue])
+        data += currentState.rawValue
+        data += result.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

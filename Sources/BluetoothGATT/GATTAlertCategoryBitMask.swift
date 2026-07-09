@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Alert Category ID Bit Mask
@@ -35,9 +34,14 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable 
         self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data(categories.rawValue.bitmaskArray)
+        data.append(contentsOf: categories.rawValue.bitmaskArray)
+    }
+
+    public var dataLength: Int {
+
+        return categories.rawValue.bitmaskArray.count
     }
 }
 

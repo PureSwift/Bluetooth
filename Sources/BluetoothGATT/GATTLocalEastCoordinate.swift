@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Local East Coordinate
@@ -36,10 +35,15 @@ public struct GATTLocalEastCoordinate: RawRepresentable, GATTCharacteristic {
         self.init(rawValue: Int16(bitPattern: UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))))
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let bytes = UInt16(bitPattern: rawValue).littleEndian.bytes
-        return Data([bytes.0, bytes.1])
+        data += [bytes.0, bytes.1]
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

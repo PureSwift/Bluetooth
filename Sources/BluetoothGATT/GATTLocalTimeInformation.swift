@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Local Time Information
@@ -43,8 +42,14 @@ public struct GATTLocalTimeInformation: GATTCharacteristic, Equatable {
         self.init(timeZone: timeZone, dstOffset: dstOffset)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return timeZone.data + dstOffset.data
+        timeZone.append(to: &data)
+        dstOffset.append(to: &data)
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }

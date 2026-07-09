@@ -33,6 +33,10 @@ public struct GATTManufacturerNameString: GATTCharacteristic, Hashable, Sendable
     public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += rawValue.utf8
     }
+
+    public var dataLength: Int {
+        rawValue.utf8.count
+    }
 }
 
 extension GATTManufacturerNameString: CustomStringConvertible {

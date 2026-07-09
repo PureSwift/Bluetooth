@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Age
@@ -38,9 +37,14 @@ public struct GATTAge: GATTCharacteristic, Equatable {
         self.init(year: year)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([year.rawValue])
+        data += year.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

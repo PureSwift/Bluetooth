@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Scan Interval Window
@@ -50,12 +49,17 @@ public struct GATTScanIntervalWindow: GATTCharacteristic {
         self.init(scanInterval: scanInterval, scanWindow: scanWindow)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
         let scanIntervalBytes = scanInterval.rawValue.littleEndian.bytes
         let scanWindowBytes = scanWindow.rawValue.littleEndian.bytes
 
-        return Data([scanIntervalBytes.0, scanIntervalBytes.1, scanWindowBytes.0, scanWindowBytes.1])
+        data += [scanIntervalBytes.0, scanIntervalBytes.1, scanWindowBytes.0, scanWindowBytes.1]
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 }
 

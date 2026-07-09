@@ -6,7 +6,6 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
 import Bluetooth
 
 /// Location Name
@@ -36,6 +35,10 @@ public struct GATTLocationName: RawRepresentable, GATTCharacteristic {
 
     public func append<Data>(to data: inout Data) where Data: DataContainer {
         data += rawValue.utf8
+    }
+
+    public var dataLength: Int {
+        rawValue.utf8.count
     }
 }
 

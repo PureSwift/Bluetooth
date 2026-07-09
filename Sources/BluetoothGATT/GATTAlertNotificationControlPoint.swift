@@ -62,16 +62,22 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
         self.init(command: command, category: category)
     }
 
-    public var data: Data {
+    public func append<Data: DataContainer>(to data: inout Data) {
 
-        return Data([command.rawValue, category.rawValue])
+        data += command.rawValue
+        data += category.rawValue
+    }
+
+    public var dataLength: Int {
+
+        return Self.length
     }
 
     public var characteristic: GATTAttribute<Data>.Characteristic {
 
         return GATTAttribute<Data>.Characteristic(
             uuid: Self.uuid,
-            value: data,
+            value: Data(self),
             permissions: [.read],
             properties: [.notify],
             descriptors: [])
