@@ -245,6 +245,18 @@ public enum HCILowEnergyCommand: UInt16, HCICommand {
 
     /// LE Set Extended Advertising Parameters Command (v2)
     case setExtendedAdvertisingParametersV2 = 0x007F
+
+    /// LE Set Periodic Advertising Subevent Data Command
+    case setPeriodicAdvertisingSubeventData = 0x0082
+
+    /// LE Set Periodic Advertising Response Data Command
+    case setPeriodicAdvertisingResponseData = 0x0083
+
+    /// LE Set Periodic Sync Subevent Command
+    case setPeriodicSyncSubevent = 0x0084
+
+    /// LE Set Periodic Advertising Parameters Command (v2)
+    case setPeriodicAdvertisingParametersV2 = 0x0086
 }
 
 // MARK: - Name
@@ -326,6 +338,10 @@ public extension HCILowEnergyCommand {
         case .writeRFPathCompensation: return "LE Write RF Path Compensation Command"
         case .setPrivacyMode: return "LE Set Privacy Mode Command"
         case .setExtendedAdvertisingParametersV2: return "LE Set Extended Advertising Parameters V2"
+        case .setPeriodicAdvertisingSubeventData: return "LE Set Periodic Advertising Subevent Data"
+        case .setPeriodicAdvertisingResponseData: return "LE Set Periodic Advertising Response Data"
+        case .setPeriodicSyncSubevent: return "LE Set Periodic Sync Subevent"
+        case .setPeriodicAdvertisingParametersV2: return "LE Set Periodic Advertising Parameters V2"
         case .remoteConnectionParameterRequestReply: return "LE Remote Connection Parameter Request Reply"
         case .remoteConnectionParameterRequestNegativeReply: return "LE Remote Connection Parameter Request Negative Reply Command"
         case .setDataLengthCommand: return "LE Set Data Length Command"
