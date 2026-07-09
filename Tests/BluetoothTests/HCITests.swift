@@ -3331,6 +3331,317 @@ import Foundation
         let rawValues = LowEnergyFeature.allCases.map { $0.rawValue }
         #expect(Set(rawValues).count == rawValues.count)
     }
+
+    @Test func periodicAdvertisingParametersV2() {
+
+        let parameters = HCILESetPeriodicAdvertisingParametersV2(
+            advertisingHandle: 0x01,
+            periodicAdvertisingInterval: .init(rawValue: 0x0080...0x0100),
+            advertisingEventProperties: .includeTxPower,
+            numberOfSubevents: 0x03,
+            subeventInterval: 0x08,
+            responseSlotDelay: 0x02,
+            responseSlotSpacing: 0x04,
+            numberOfResponseSlots: 0x05)
+
+        #expect(HCILESetPeriodicAdvertisingParametersV2.command.rawValue == 0x0086)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x01,  // Advertising_Handle
+                    0x80, 0x00,  // Periodic_Advertising_Interval_Min
+                    0x00, 0x01,  // Periodic_Advertising_Interval_Max
+                    0x20, 0x00,  // Periodic_Advertising_Properties
+                    0x03,  // Num_Subevents
+                    0x08,  // Subevent_Interval
+                    0x02,  // Response_Slot_Delay
+                    0x04,  // Response_Slot_Spacing
+                    0x05  // Num_Response_Slots
+                ]))
+    }
+
+    @Test func periodicAdvertisingSubeventData() {
+
+        let parameters = HCILESetPeriodicAdvertisingSubeventData<[UInt8]>(
+            advertisingHandle: 0x01,
+            subevents: [
+                .init(subevent: 0x00, responseSlotStart: 0x00, responseSlotCount: 0x02, data: [0xAA, 0xBB]),
+                .init(subevent: 0x01, responseSlotStart: 0x02, responseSlotCount: 0x01, data: [])
+            ])
+
+        #expect(HCILESetPeriodicAdvertisingSubeventData<[UInt8]>.command.rawValue == 0x0082)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x01,  // Advertising_Handle
+                    0x02,  // Num_Subevents
+                    0x00, 0x00, 0x02, 0x02, 0xAA, 0xBB,  // subevent 0
+                    0x01, 0x02, 0x01, 0x00  // subevent 1 (no data)
+                ]))
+    }
+
+    @Test func periodicAdvertisingResponseData() {
+
+        let parameters = HCILESetPeriodicAdvertisingResponseData<[UInt8]>(
+            syncHandle: 0x000A,
+            requestEvent: 0x0102,
+            requestSubevent: 0x03,
+            responseSubevent: 0x03,
+            responseSlot: 0x05,
+            responseData: [0xDE, 0xAD])
+
+        #expect(HCILESetPeriodicAdvertisingResponseData<[UInt8]>.command.rawValue == 0x0083)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x0A, 0x00,  // Sync_Handle
+                    0x02, 0x01,  // Request_Event
+                    0x03,  // Request_Subevent
+                    0x03,  // Response_Subevent
+                    0x05,  // Response_Slot
+                    0x02,  // Response_Data_Length
+                    0xDE, 0xAD  // Response_Data
+                ]))
+    }
+
+    @Test func periodicSyncSubevent() async throws {
+
+        let parameters = HCILESetPeriodicSyncSubevent(
+            syncHandle: 0x0002,
+            periodicAdvertisingProperties: [],
+            subevents: [0x01, 0x05])
+
+        #expect(HCILESetPeriodicSyncSubevent.command.rawValue == 0x0084)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x02, 0x00,  // Sync_Handle
+                    0x00, 0x00,  // Periodic_Advertising_Properties
+                    0x02,  // Num_Subevents
+                    0x01, 0x05  // Subevents
+                ]))
+
+        // mock host controller round trip
+        let hostController = TestHostController()
+
+        hostController.queue.append(
+            .command(
+                HCILowEnergyCommand.setPeriodicSyncSubevent.opcode,
+                [0x84, 0x20, 0x07, 0x02, 0x00, 0x00, 0x00, 0x02, 0x01, 0x05]))
+
+        // command complete: status + Sync_Handle
+        hostController.queue.append(.event([0x0E, 0x06, 0x01, 0x84, 0x20, 0x00, 0x02, 0x00]))
+
+        let syncHandle = try await hostController.lowEnergySetPeriodicSyncSubevent(
+            syncHandle: 0x0002,
+            periodicAdvertisingProperties: [],
+            subevents: [0x01, 0x05])
+
+        #expect(syncHandle == 0x0002)
+    }
+
+    @Test func periodicAdvertisingSubeventDataRequest() {
+
+        let data = Data([0x01, 0x02, 0x03])
+
+        guard let event = HCILEPeriodicAdvertisingSubeventDataRequest(data: data)
+        else {
+            Issue.record("Could not decode event")
+            return
+        }
+
+        #expect(HCILEPeriodicAdvertisingSubeventDataRequest.event.rawValue == 0x27)
+        #expect(event.advertisingHandle == 0x01)
+        #expect(event.subeventStart == 0x02)
+        #expect(event.subeventDataCount == 0x03)
+
+        #expect(HCILEPeriodicAdvertisingSubeventDataRequest(data: Data([0x01])) == nil)
+    }
+
+    @Test func periodicAdvertisingResponseReport() {
+
+        let data = Data([
+            0x01,  // Advertising_Handle
+            0x02,  // Subevent
+            0x00,  // Tx_Status (transmitted)
+            0x02,  // Num_Responses
+            // response 0
+            0x14,  // Tx_Power (20)
+            0xC4,  // RSSI (-60)
+            0x00,  // CTE_Type
+            0x03,  // Response_Slot
+            0x00,  // Data_Status (complete)
+            0x02,  // Data_Length
+            0xAA, 0xBB,  // Data
+            // response 1 (failed, no data)
+            0x7F,  // Tx_Power (not available)
+            0x7F,  // RSSI (not available)
+            0x00,  // CTE_Type
+            0x04,  // Response_Slot
+            0xFF,  // Data_Status (failed)
+            0x00  // Data_Length
+        ])
+
+        guard let event = HCILEPeriodicAdvertisingResponseReport<[UInt8]>(data: data)
+        else {
+            Issue.record("Could not decode event")
+            return
+        }
+
+        #expect(HCILEPeriodicAdvertisingResponseReport<[UInt8]>.event.rawValue == 0x28)
+        #expect(event.advertisingHandle == 0x01)
+        #expect(event.subevent == 0x02)
+        #expect(event.txStatus == .transmitted)
+        #expect(event.responses.count == 2)
+        #expect(event.responses[0].txPower?.rawValue == 20)
+        #expect(event.responses[0].rssi?.rawValue == -60)
+        #expect(event.responses[0].responseSlot == 0x03)
+        #expect(event.responses[0].dataStatus == .complete)
+        #expect(event.responses[0].data == [0xAA, 0xBB])
+        #expect(event.responses[1].txPower == nil)
+        #expect(event.responses[1].rssi == nil)
+        #expect(event.responses[1].dataStatus == .failed)
+        #expect(event.responses[1].data.isEmpty)
+
+        // truncated
+        #expect(HCILEPeriodicAdvertisingResponseReport<[UInt8]>(data: data.prefix(8)) == nil)
+    }
+
+    @Test func periodicAdvertisingSyncEstablishedV2() {
+
+        let data = Data([
+            0x00,  // Status
+            0x02, 0x00,  // Sync_Handle
+            0x05,  // Advertising_SID
+            0x00,  // Advertiser_Address_Type
+            0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0,  // Advertiser_Address
+            0x01,  // Advertiser_PHY
+            0x80, 0x00,  // Periodic_Advertising_Interval
+            0x00,  // Advertiser_Clock_Accuracy
+            0x03,  // Num_Subevents
+            0x08,  // Subevent_Interval
+            0x02,  // Response_Slot_Delay
+            0x04  // Response_Slot_Spacing
+        ])
+
+        guard let event = HCILEPeriodicAdvertisingSyncEstablishedV2(data: data)
+        else {
+            Issue.record("Could not decode event")
+            return
+        }
+
+        #expect(HCILEPeriodicAdvertisingSyncEstablishedV2.event.rawValue == 0x24)
+        #expect(event.status == .success)
+        #expect(event.syncHandle == 0x0002)
+        #expect(event.advertisingSID == 0x05)
+        #expect(event.advertiserAddress == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.advertiserPHY == .le1m)
+        #expect(event.periodicAdvertisingInterval.rawValue == 0x0080)
+        #expect(event.numberOfSubevents == 0x03)
+        #expect(event.subeventInterval == 0x08)
+        #expect(event.responseSlotDelay == 0x02)
+        #expect(event.responseSlotSpacing == 0x04)
+    }
+
+    @Test func periodicAdvertisingReportV2() {
+
+        let data = Data([
+            0x02, 0x00,  // Sync_Handle
+            0x14,  // Tx_Power
+            0xC4,  // RSSI (-60)
+            0x00,  // CTE_Type
+            0x34, 0x12,  // Periodic_Event_Counter
+            0x01,  // Subevent
+            0x00,  // Data_Status (complete)
+            0x03,  // Data_Length
+            0xAA, 0xBB, 0xCC  // Data
+        ])
+
+        guard let event = HCILEPeriodicAdvertisingReportV2<[UInt8]>(data: data)
+        else {
+            Issue.record("Could not decode event")
+            return
+        }
+
+        #expect(HCILEPeriodicAdvertisingReportV2<[UInt8]>.event.rawValue == 0x25)
+        #expect(event.syncHandle == 0x0002)
+        #expect(event.txPower.rawValue == 20)
+        #expect(event.rssi.rawValue == -60)
+        #expect(event.periodicEventCounter == 0x1234)
+        #expect(event.subevent == 0x01)
+        #expect(event.dataStatus == .complete)
+        #expect(event.data == [0xAA, 0xBB, 0xCC])
+
+        // truncated data
+        #expect(HCILEPeriodicAdvertisingReportV2<[UInt8]>(data: data.prefix(11)) == nil)
+    }
+
+    @Test func periodicAdvertisingSyncTransferReceivedV2() {
+
+        let data = Data([
+            0x00,  // Status
+            0x03, 0x00,  // Connection_Handle
+            0x22, 0x11,  // Service_Data
+            0x02, 0x00,  // Sync_Handle
+            0x05,  // Advertising_SID
+            0x00,  // Advertiser_Address_Type
+            0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0,  // Advertiser_Address
+            0x01,  // Advertiser_PHY
+            0x80, 0x00,  // Periodic_Advertising_Interval
+            0x00,  // Advertiser_Clock_Accuracy
+            0x03,  // Num_Subevents
+            0x08,  // Subevent_Interval
+            0x02,  // Response_Slot_Delay
+            0x04  // Response_Slot_Spacing
+        ])
+
+        guard let event = HCILEPeriodicAdvertisingSyncTransferReceivedV2(data: data)
+        else {
+            Issue.record("Could not decode event")
+            return
+        }
+
+        #expect(HCILEPeriodicAdvertisingSyncTransferReceivedV2.event.rawValue == 0x26)
+        #expect(event.status == .success)
+        #expect(event.connectionHandle == 0x0003)
+        #expect(event.serviceData == 0x1122)
+        #expect(event.syncHandle == 0x0002)
+        #expect(event.advertiserAddress == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.numberOfSubevents == 0x03)
+        #expect(event.responseSlotSpacing == 0x04)
+    }
+
+    @Test func enhancedConnectionCompleteV2() {
+
+        let data = Data([
+            0x00,  // Status
+            0x03, 0x00,  // Connection_Handle
+            0x00,  // Role (central)
+            0x00,  // Peer_Address_Type
+            0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0,  // Peer_Address
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // Local_Resolvable_Private_Address
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // Peer_Resolvable_Private_Address
+            0x28, 0x00,  // Connection_Interval
+            0x00, 0x00,  // Peripheral_Latency
+            0x2A, 0x00,  // Supervision_Timeout
+            0x00,  // Central_Clock_Accuracy
+            0x01,  // Advertising_Handle
+            0x02, 0x00  // Sync_Handle
+        ])
+
+        guard let event = HCILEEnhancedConnectionCompleteV2(data: data)
+        else {
+            Issue.record("Could not decode event")
+            return
+        }
+
+        #expect(HCILEEnhancedConnectionCompleteV2.event.rawValue == 0x29)
+        #expect(event.status == .success)
+        #expect(event.connectionHandle == 0x0003)
+        #expect(event.peerAddress == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.advertisingHandle == 0x01)
+        #expect(event.syncHandle == 0x0002)
+    }
 }
 
 @_silgen_name("swift_bluetooth_parse_event")
