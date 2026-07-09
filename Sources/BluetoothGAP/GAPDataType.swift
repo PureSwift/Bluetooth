@@ -156,6 +156,30 @@ public extension GAPDataType {
     /// Mesh Beacon
     static let meshBeacon: GAPDataType = 0x2B
 
+    /// BIGInfo
+    static let bigInfo: GAPDataType = 0x2C
+
+    /// Broadcast_Code
+    static let broadcastCode: GAPDataType = 0x2D
+
+    /// Resolvable Set Identifier
+    static let resolvableSetIdentifier: GAPDataType = 0x2E
+
+    /// Advertising Interval - long
+    static let advertisingIntervalLong: GAPDataType = 0x2F
+
+    /// Broadcast_Name
+    static let broadcastName: GAPDataType = 0x30
+
+    /// Encrypted Advertising Data
+    static let encryptedAdvertisingData: GAPDataType = 0x31
+
+    /// Periodic Advertising Response Timing Information
+    static let periodicAdvertisingResponseTimingInformation: GAPDataType = 0x32
+
+    /// Electronic Shelf Label
+    static let electronicShelfLabel: GAPDataType = 0x34
+
     /// 3D Information Data
     static let informationData3D: GAPDataType = 0x3D
 
@@ -230,6 +254,14 @@ extension GAPDataType: CustomStringConvertible {
             .pbAdv: "PB-ADV",
             .meshMessage: "Mesh Message",
             .meshBeacon: "Mesh Beacon",
+            .bigInfo: "BIGInfo",
+            .broadcastCode: "Broadcast_Code",
+            .resolvableSetIdentifier: "Resolvable Set Identifier",
+            .advertisingIntervalLong: "Advertising Interval - long",
+            .broadcastName: "Broadcast_Name",
+            .encryptedAdvertisingData: "Encrypted Advertising Data",
+            .periodicAdvertisingResponseTimingInformation: "Periodic Advertising Response Timing Information",
+            .electronicShelfLabel: "Electronic Shelf Label",
             .informationData3D: "3D Information Data",
             .manufacturerSpecificData: "Manufacturer Specific Data"
         ]
