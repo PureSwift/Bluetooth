@@ -3179,6 +3179,74 @@ import Foundation
         #expect(event.status.rawValue == 0x00)
         #expect(event.address == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
     }
+
+    @Test func setDefaultPhyOpcode() {
+
+        // LE Set Default PHY is 0x0031; Read PHY is 0x0030
+        #expect(HCILESetDefaultPhy.command == .setDefaultPhy)
+        #expect(HCILESetDefaultPhy.command.rawValue == 0x0031)
+    }
+
+    @Test func setEventFilter() {
+
+        let address = BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!
+        let addressBytes: [UInt8] = [0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0]
+
+        guard let classOfDevice = ClassOfDevice(data: Data([0x0c, 0x02, 0x7a]))
+        else {
+            Issue.record("Unable to init classOfDevice")
+            return
+        }
+        let classOfDeviceBytes = [UInt8](Data(classOfDevice))
+        let mask: UInt24 = 0xFFFFFF
+
+        // Clear All Filters
+        #expect(Data(HCISetEventFilter(filter: .clearAll)) == Data([0x00]))
+
+        // Inquiry Result: all devices
+        #expect(Data(HCISetEventFilter(filter: .inquiryResult(.all))) == Data([0x01, 0x00]))
+
+        // Inquiry Result: specific Class of Device
+        #expect(
+            Data(HCISetEventFilter(filter: .inquiryResult(.classOfDevice(classOfDevice, mask: mask))))
+                == Data([0x01, 0x01] + classOfDeviceBytes + [0xff, 0xff, 0xff]))
+
+        // Inquiry Result: specific address
+        #expect(
+            Data(HCISetEventFilter(filter: .inquiryResult(.address(address))))
+                == Data([0x01, 0x02] + addressBytes))
+
+        // Connection Setup: all devices, auto accept with role switch
+        #expect(
+            Data(HCISetEventFilter(filter: .connectionSetup(.all, autoAccept: .onWithRoleSwitch)))
+                == Data([0x02, 0x00, 0x03]))
+
+        // Connection Setup: specific Class of Device, no auto accept
+        #expect(
+            Data(HCISetEventFilter(filter: .connectionSetup(.classOfDevice(classOfDevice, mask: mask), autoAccept: .off)))
+                == Data([0x02, 0x01] + classOfDeviceBytes + [0xff, 0xff, 0xff, 0x01]))
+
+        // Connection Setup: specific address, auto accept
+        #expect(
+            Data(HCISetEventFilter(filter: .connectionSetup(.address(address), autoAccept: .on)))
+                == Data([0x02, 0x02] + addressBytes + [0x02]))
+    }
+
+    @Test func setEventFilterCommand() async throws {
+
+        let hostController = TestHostController()
+
+        // clear all filters: opcode 0x0C05, parameter [0x00]
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.setEventFilter.opcode,
+                [0x05, 0x0C, 0x01, 0x00]))
+
+        // command complete
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x05, 0x0C, 0x00]))
+
+        try await hostController.setEventFilter(.clearAll)
+    }
 }
 
 @_silgen_name("swift_bluetooth_parse_event")

@@ -18,16 +18,15 @@ public struct HCILEAdvertisingReport: HCIEventParameter, Equatable, Hashable, Se
 
     public static var event: LowEnergyEvent { .advertisingReport }  // 0x02
 
-    internal static var minLength: Int { 1 + Report.length }  // must have at least one report
-
-    // TODO: Allow variable size
-    public static var length: Int { Self.minLength }
+    /// The event is variable-length and may contain up to 25 reports;
+    /// this is the minimum valid size (a single report with no response data).
+    public static var length: Int { 1 + Report.length }
 
     public let reports: [Report]
 
     public init?<Data: DataContainer>(data: Data) {
 
-        guard data.count >= Self.minLength
+        guard data.count >= Self.length
         else { return nil }
 
         // Number of responses in event.
