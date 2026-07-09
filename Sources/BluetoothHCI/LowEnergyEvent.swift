@@ -70,6 +70,9 @@ public enum LowEnergyEvent: UInt8, HCIEvent {
     /// LE Channel Selection Algorithm Event
     case channelSelectionAlgorithm = 0x14
 
+    /// LE Periodic Advertising Sync Transfer Received Event
+    case periodicAdvertisingSyncTransferReceived = 0x18
+
     /// LE Periodic Advertising Sync Established Event (v2)
     case periodicAdvertisingSyncEstablishedV2 = 0x24
 
@@ -116,6 +119,7 @@ public extension LowEnergyEvent {
         case .advertisingSetTerminated: return "LE Advertising Set Terminated Event"
         case .scanRequestReceived: return "LE Scan Request Received Event"
         case .channelSelectionAlgorithm: return "LE Channel Selection Algorithm Event"
+        case .periodicAdvertisingSyncTransferReceived: return "LE Periodic Advertising Sync Transfer Received Event"
         case .periodicAdvertisingSyncEstablishedV2: return "LE Periodic Advertising Sync Established Event V2"
         case .periodicAdvertisingReportV2: return "LE Periodic Advertising Report Event V2"
         case .periodicAdvertisingSyncTransferReceivedV2: return "LE Periodic Advertising Sync Transfer Received Event V2"

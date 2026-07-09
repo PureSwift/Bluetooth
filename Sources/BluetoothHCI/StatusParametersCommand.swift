@@ -29,37 +29,39 @@ public enum StatusParametersCommand: UInt16, HCICommand {
     /// Read RSSI Command
     ///
     /// This command reads the Received Signal Strength Indication (RSSI) value from a Controller.
-    case readRSSI
+    ///
+    /// - Note: OCF 0x0004 is unused/reserved by the specification; Read RSSI is 0x0005.
+    case readRSSI = 0x05
 
     /// Read AFH Channel Map Command
     ///
     /// This command returns the values for the AFH_Mode and AFH_Channel_Map for the specified Connection_Handle
-    case readAFHChannelMap
+    case readAFHChannelMap = 0x06
 
     /// Read Clock Command
     ///
     /// This command reads the estimate of the value of the Bluetooth Clock from the BR/EDR Controller.
-    case readClock
+    case readClock = 0x07
 
     /// Read Encryption Key Size Command
     ///
     /// This command reads the current encryption key size associated with the Connection_Handle
-    case readEncryptionKeySize
+    case readEncryptionKeySize = 0x08
 
     /// Read Local AMP Info Command
     ///
     /// This command returns information about the AMP Controller.
-    case readLocalAMPInfo
+    case readLocalAMPInfo = 0x09
 
     /// Read Local AMP ASSOC Command
     ///
     /// This command returns a fragment of the AMP_ASSOC structure
-    case readLocalAMPASSOC
+    case readLocalAMPASSOC = 0x0A
 
     /// Write Remote AMP ASSOC Command
     ///
     /// This command writes an AMP_ASSOC fragment to the AMP Controller
-    case writeRemoteAMPASSOC
+    case writeRemoteAMPASSOC = 0x0B
 }
 
 // MARK: - Name
