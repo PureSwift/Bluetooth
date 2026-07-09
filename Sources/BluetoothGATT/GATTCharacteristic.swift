@@ -8,7 +8,6 @@
 
 import Foundation
 import Bluetooth
-import Foundation
 
 /// GATT Characteristic protocol.
 ///

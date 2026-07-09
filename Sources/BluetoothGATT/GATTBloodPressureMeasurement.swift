@@ -1,13 +1,11 @@
 //
-//  GATTBloodPressureManagement.swift
+//  GATTBloodPressureMeasurement.swift
 //  Bluetooth
 //
 //  Created by Carlos Duclos on 6/13/18.
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-import Foundation
-import Bluetooth
 import Foundation
 import Bluetooth
 
