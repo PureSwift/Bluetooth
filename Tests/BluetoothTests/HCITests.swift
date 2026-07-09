@@ -3247,6 +3247,90 @@ import Foundation
 
         try await hostController.setEventFilter(.clearAll)
     }
+
+    @Test func extendedAdvertisingParametersOpcode() {
+
+        // LE Set Extended Advertising Parameters is 0x0036;
+        // LE Set Advertising Set Random Address is 0x0035
+        #expect(HCILESetExtendedAdvertisingParameters.command == .setExtendedAdvertisingParameters)
+        #expect(HCILESetExtendedAdvertisingParameters.command.rawValue == 0x0036)
+        #expect(HCILESetExtendedAdvertisingParametersV2.command.rawValue == 0x007F)
+    }
+
+    @Test func extendedAdvertisingParametersV2() {
+
+        let parameters = HCILESetExtendedAdvertisingParameters(
+            advertisingHandle: 0x01,
+            advertisingEventProperties: .connectableAdvertising,
+            primaryAdvertising: .init(rawValue: 0xA0...0xA0),
+            primaryAdvertisingChannelMap: .channel37,
+            ownAddressType: .publicDeviceAddress,
+            peerAddressType: .publicDeviceAddress,
+            peerAddress: BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!,
+            advertisingFilterPolicy: .processScanFromAllDevices,
+            advertisingTxPower: LowEnergyTxPower(rawValue: 0x14)!,
+            primaryAdvertisingPhy: .le1M,
+            secondaryAdvertisingMaxSkip: 0x00,
+            secondaryAdvertisingPhy: .le1M,
+            advertisingSid: 0x00,
+            scanRequestNotificationEnable: .disabled)
+
+        let v1Data = Data([
+            0x01,  // Advertising_Handle
+            0x01, 0x00,  // Advertising_Event_Properties
+            0xA0, 0x00, 0x00,  // Primary_Advertising_Interval_Min
+            0xA0, 0x00, 0x00,  // Primary_Advertising_Interval_Max
+            0x01,  // Primary_Advertising_Channel_Map
+            0x00,  // Own_Address_Type
+            0x00,  // Peer_Address_Type
+            0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0,  // Peer_Address
+            0x00,  // Advertising_Filter_Policy
+            0x14,  // Advertising_Tx_Power
+            0x01,  // Primary_Advertising_PHY
+            0x00,  // Secondary_Advertising_Max_Skip
+            0x01,  // Secondary_Advertising_PHY
+            0x00,  // Advertising_SID
+            0x00  // Scan_Request_Notification_Enable
+        ])
+
+        #expect(Data(parameters) == v1Data)
+
+        // v2 appends the two PHY options octets
+        let v2 = HCILESetExtendedAdvertisingParametersV2(
+            parameters: parameters,
+            primaryAdvertisingPhyOptions: .requireS8,
+            secondaryAdvertisingPhyOptions: .preferS2)
+
+        #expect(Data(v2) == v1Data + Data([0x04, 0x01]))
+
+        // default options
+        let v2Default = HCILESetExtendedAdvertisingParametersV2(parameters: parameters)
+        #expect(Data(v2Default) == v1Data + Data([0x00, 0x00]))
+    }
+
+    @Test func lowEnergyFeatureBits() {
+
+        // Bluetooth 5.4 feature bits (Vol 6 Part B 4.6)
+        #expect(LowEnergyFeature.advertisingCodingSelection.rawValue == 1 << 40)
+        #expect(LowEnergyFeature.advertisingCodingSelectionHostSupport.rawValue == 1 << 41)
+        #expect(LowEnergyFeature.periodicAdvertisingWithResponsesAdvertiser.rawValue == 1 << 43)
+        #expect(LowEnergyFeature.periodicAdvertisingWithResponsesScanner.rawValue == 1 << 44)
+
+        // 5.1 - 5.3 bits
+        #expect(LowEnergyFeature.connectionCTERequest.rawValue == 1 << 17)
+        #expect(LowEnergyFeature.periodicAdvertisingSyncTransferSender.rawValue == 1 << 24)
+        #expect(LowEnergyFeature.connectedIsochronousStreamHostSupport.rawValue == 1 << 32)
+        #expect(LowEnergyFeature.connectionSubrating.rawValue == 1 << 37)
+
+        // every case must have a name entry (would fatalError otherwise)
+        for feature in LowEnergyFeature.allCases {
+            #expect(feature.name.isEmpty == false)
+        }
+
+        // raw values must be unique
+        let rawValues = LowEnergyFeature.allCases.map { $0.rawValue }
+        #expect(Set(rawValues).count == rawValues.count)
+    }
 }
 
 @_silgen_name("swift_bluetooth_parse_event")

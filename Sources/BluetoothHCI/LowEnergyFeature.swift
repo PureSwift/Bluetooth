@@ -68,6 +68,90 @@ public enum LowEnergyFeature: UInt64, BitMaskOption {
     /// Minimum Number of Used Channels Procedure
     case minimumNumberofUsedChannelsProcedure = 0b1_00000000_00000000
 
+    /// Connection CTE Request
+    case connectionCTERequest = 0x0002_0000
+
+    /// Connection CTE Response
+    case connectionCTEResponse = 0x0004_0000
+
+    /// Connectionless CTE Transmitter
+    case connectionlessCTETransmitter = 0x0008_0000
+
+    /// Connectionless CTE Receiver
+    case connectionlessCTEReceiver = 0x0010_0000
+
+    /// Antenna Switching During CTE Transmission (AoD)
+    case antennaSwitchingDuringCTETransmission = 0x0020_0000
+
+    /// Antenna Switching During CTE Reception (AoA)
+    case antennaSwitchingDuringCTEReception = 0x0040_0000
+
+    /// Receiving Constant Tone Extensions
+    case receivingConstantToneExtensions = 0x0080_0000
+
+    /// Periodic Advertising Sync Transfer - Sender
+    case periodicAdvertisingSyncTransferSender = 0x0100_0000
+
+    /// Periodic Advertising Sync Transfer - Recipient
+    case periodicAdvertisingSyncTransferRecipient = 0x0200_0000
+
+    /// Sleep Clock Accuracy Updates
+    case sleepClockAccuracyUpdates = 0x0400_0000
+
+    /// Remote Public Key Validation
+    case remotePublicKeyValidation = 0x0800_0000
+
+    /// Connected Isochronous Stream - Central
+    case connectedIsochronousStreamCentral = 0x1000_0000
+
+    /// Connected Isochronous Stream - Peripheral
+    case connectedIsochronousStreamPeripheral = 0x2000_0000
+
+    /// Isochronous Broadcaster
+    case isochronousBroadcaster = 0x4000_0000
+
+    /// Synchronized Receiver
+    case synchronizedReceiver = 0x8000_0000
+
+    /// Connected Isochronous Stream (Host Support)
+    case connectedIsochronousStreamHostSupport = 0x0001_0000_0000
+
+    /// LE Power Control Request
+    case powerControlRequest = 0x0002_0000_0000
+
+    /// LE Power Change Indication
+    case powerChangeIndication = 0x0004_0000_0000
+
+    /// LE Path Loss Monitoring
+    case pathLossMonitoring = 0x0008_0000_0000
+
+    /// Periodic Advertising ADI support
+    case periodicAdvertisingADISupport = 0x0010_0000_0000
+
+    /// Connection Subrating
+    case connectionSubrating = 0x0020_0000_0000
+
+    /// Connection Subrating (Host Support)
+    case connectionSubratingHostSupport = 0x0040_0000_0000
+
+    /// Channel Classification
+    case channelClassification = 0x0080_0000_0000
+
+    /// Advertising Coding Selection
+    case advertisingCodingSelection = 0x0100_0000_0000
+
+    /// Advertising Coding Selection (Host Support)
+    case advertisingCodingSelectionHostSupport = 0x0200_0000_0000
+
+    /// Decision-Based Advertising Filtering
+    case decisionBasedAdvertisingFiltering = 0x0400_0000_0000
+
+    /// Periodic Advertising with Responses - Advertiser
+    case periodicAdvertisingWithResponsesAdvertiser = 0x0800_0000_0000
+
+    /// Periodic Advertising with Responses - Scanner
+    case periodicAdvertisingWithResponsesScanner = 0x1000_0000_0000
+
     public static let allCases: [LowEnergyFeature] = [
         .encryption,
         .connectionParametersRequestProcedure,
@@ -85,7 +169,35 @@ public enum LowEnergyFeature: UInt64, BitMaskOption {
         .periodicAdvertising,
         .channelSelectionAlgorithm2,
         .powerClass1,
-        .minimumNumberofUsedChannelsProcedure
+        .minimumNumberofUsedChannelsProcedure,
+        .connectionCTERequest,
+        .connectionCTEResponse,
+        .connectionlessCTETransmitter,
+        .connectionlessCTEReceiver,
+        .antennaSwitchingDuringCTETransmission,
+        .antennaSwitchingDuringCTEReception,
+        .receivingConstantToneExtensions,
+        .periodicAdvertisingSyncTransferSender,
+        .periodicAdvertisingSyncTransferRecipient,
+        .sleepClockAccuracyUpdates,
+        .remotePublicKeyValidation,
+        .connectedIsochronousStreamCentral,
+        .connectedIsochronousStreamPeripheral,
+        .isochronousBroadcaster,
+        .synchronizedReceiver,
+        .connectedIsochronousStreamHostSupport,
+        .powerControlRequest,
+        .powerChangeIndication,
+        .pathLossMonitoring,
+        .periodicAdvertisingADISupport,
+        .connectionSubrating,
+        .connectionSubratingHostSupport,
+        .channelClassification,
+        .advertisingCodingSelection,
+        .advertisingCodingSelectionHostSupport,
+        .decisionBasedAdvertisingFiltering,
+        .periodicAdvertisingWithResponsesAdvertiser,
+        .periodicAdvertisingWithResponsesScanner
     ]
 }
 
@@ -145,7 +257,35 @@ internal let featureSet: [LowEnergyFeature: (isValid: Bool, name: String)] = [
     .periodicAdvertising: (false, "LE Periodic Advertising"),
     .channelSelectionAlgorithm2: (true, "Channel Selection Algorithm #2"),
     .powerClass1: (true, "LE Power Class 1"),
-    .minimumNumberofUsedChannelsProcedure: (false, "Minimum Number of Used Channels Procedure")
+    .minimumNumberofUsedChannelsProcedure: (false, "Minimum Number of Used Channels Procedure"),
+    .connectionCTERequest: (true, "Connection CTE Request"),
+    .connectionCTEResponse: (true, "Connection CTE Response"),
+    .connectionlessCTETransmitter: (false, "Connectionless CTE Transmitter"),
+    .connectionlessCTEReceiver: (false, "Connectionless CTE Receiver"),
+    .antennaSwitchingDuringCTETransmission: (false, "Antenna Switching During CTE Transmission (AoD)"),
+    .antennaSwitchingDuringCTEReception: (false, "Antenna Switching During CTE Reception (AoA)"),
+    .receivingConstantToneExtensions: (true, "Receiving Constant Tone Extensions"),
+    .periodicAdvertisingSyncTransferSender: (true, "Periodic Advertising Sync Transfer - Sender"),
+    .periodicAdvertisingSyncTransferRecipient: (true, "Periodic Advertising Sync Transfer - Recipient"),
+    .sleepClockAccuracyUpdates: (true, "Sleep Clock Accuracy Updates"),
+    .remotePublicKeyValidation: (false, "Remote Public Key Validation"),
+    .connectedIsochronousStreamCentral: (true, "Connected Isochronous Stream - Central"),
+    .connectedIsochronousStreamPeripheral: (true, "Connected Isochronous Stream - Peripheral"),
+    .isochronousBroadcaster: (false, "Isochronous Broadcaster"),
+    .synchronizedReceiver: (false, "Synchronized Receiver"),
+    .connectedIsochronousStreamHostSupport: (false, "Connected Isochronous Stream (Host Support)"),
+    .powerControlRequest: (true, "LE Power Control Request"),
+    .powerChangeIndication: (true, "LE Power Change Indication"),
+    .pathLossMonitoring: (false, "LE Path Loss Monitoring"),
+    .periodicAdvertisingADISupport: (false, "Periodic Advertising ADI support"),
+    .connectionSubrating: (true, "Connection Subrating"),
+    .connectionSubratingHostSupport: (false, "Connection Subrating (Host Support)"),
+    .channelClassification: (true, "Channel Classification"),
+    .advertisingCodingSelection: (false, "Advertising Coding Selection"),
+    .advertisingCodingSelectionHostSupport: (false, "Advertising Coding Selection (Host Support)"),
+    .decisionBasedAdvertisingFiltering: (false, "Decision-Based Advertising Filtering"),
+    .periodicAdvertisingWithResponsesAdvertiser: (false, "Periodic Advertising with Responses - Advertiser"),
+    .periodicAdvertisingWithResponsesScanner: (false, "Periodic Advertising with Responses - Scanner")
 ]
 // swiftlint:enable colon
 
