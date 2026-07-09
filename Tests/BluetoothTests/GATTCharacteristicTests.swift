@@ -1594,6 +1594,67 @@ import Bluetooth
         #expect(GATTObjectID.uuid == BluetoothUUID.Characteristic.objectId)
         #expect(GATTObjectID(data: data) == GATTObjectID(data: data))
     }
+
+    @Test func encryptedDataKeyMaterial() {
+
+        // 16-byte session key (little endian) + 8-byte IV (little endian)
+        let data = Data([
+            // Session Key
+            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+            // IV
+            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17
+        ])
+
+        guard let characteristic = GATTEncryptedDataKeyMaterial(data: data)
+        else {
+            Issue.record("Could not decode from bytes")
+            return
+        }
+
+        roundTrip(characteristic, encodes: data)
+        #expect(characteristic.initializationVector == 0x1716_1514_1312_1110)
+        #expect(GATTEncryptedDataKeyMaterial.uuid == BluetoothUUID.Characteristic.encryptedDataKeyMaterial)
+        #expect(GATTEncryptedDataKeyMaterial(data: data) == GATTEncryptedDataKeyMaterial(data: data))
+
+        // invalid length
+        #expect(GATTEncryptedDataKeyMaterial(data: Data([0x00])) == nil)
+        #expect(GATTEncryptedDataKeyMaterial(data: data.prefix(23)) == nil)
+    }
+
+    @Test func leSecurityLevels() {
+
+        // LE security mode 1 level 4, mode 2 level 2
+        let data = Data([0x01, 0x04, 0x02, 0x02])
+
+        guard let characteristic = GATTLESecurityLevels(data: data)
+        else {
+            Issue.record("Could not decode from bytes")
+            return
+        }
+
+        roundTrip(characteristic, encodes: data)
+        #expect(characteristic.requirements.count == 2)
+        #expect(characteristic.requirements[0] == GATTLESecurityLevels.Requirement(mode: 0x01, level: 0x04))
+        #expect(characteristic.requirements[1] == GATTLESecurityLevels.Requirement(mode: 0x02, level: 0x02))
+        #expect(GATTLESecurityLevels.uuid == BluetoothUUID.Characteristic.leGattSecurityLevels)
+        #expect(GATTLESecurityLevels(data: data) == GATTLESecurityLevels(data: data))
+
+        // single pair
+        let single = Data([0x01, 0x02])
+        guard let singleCharacteristic = GATTLESecurityLevels(data: single)
+        else {
+            Issue.record("Could not decode from bytes")
+            return
+        }
+        roundTrip(singleCharacteristic, encodes: single)
+
+        // invalid: empty or odd length
+        #expect(GATTLESecurityLevels(data: Data()) == nil)
+        #expect(GATTLESecurityLevels(data: Data([0x01])) == nil)
+        #expect(GATTLESecurityLevels(data: Data([0x01, 0x04, 0x02])) == nil)
+        #expect(GATTLESecurityLevels(requirements: []) == nil)
+    }
 }
 
 internal extension GATTCharacteristic {
