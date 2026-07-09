@@ -37,7 +37,7 @@ public extension BluetoothHostControllerInterface {
 @frozen
 public struct HCILESetDefaultPhy: HCICommandParameter {
 
-    public static let command = HCILowEnergyCommand.readPhy  //0x0031
+    public static let command = HCILowEnergyCommand.setDefaultPhy  // 0x0031
 
     public let allPhys: LowEnergyAllPhys
     public let txPhys: LowEnergyTxPhys

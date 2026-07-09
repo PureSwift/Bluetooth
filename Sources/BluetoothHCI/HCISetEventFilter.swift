@@ -40,19 +40,60 @@
 ///
 /// If there is a contradiction between event filters, the latest set event filter will override older ones. An example is an incoming connection attempt where more than one Connection Setup filter matches the incoming connection attempt, but the Auto-Accept_Flag has different values in the different filters.
 @frozen
-public struct HCISetEventFilter: HCICommandParameter {
+public struct HCISetEventFilter: HCICommandParameter, Equatable, Sendable {
 
     public static let command = HostControllerBasebandCommand.setEventFilter
 
-    ///
-    public var filterType: FilterType  // Filter_Type
+    /// The event filter to set.
+    public var filter: Filter
+
+    public init(filter: Filter) {
+
+        self.filter = filter
+    }
 
     public func append<Data: DataContainer>(to data: inout Data) {
 
-        fatalError("\(#function) TODO")
+        switch filter {
+
+        case .clearAll:
+            data += FilterType.clearAll.rawValue
+
+        case let .inquiryResult(condition):
+            data += FilterType.inquiryResult.rawValue
+            switch condition {
+            case .all:
+                data += InquiryResultFilterConditionType.all.rawValue
+            case let .classOfDevice(classOfDevice, mask):
+                data += InquiryResultFilterConditionType.classOfDevice.rawValue
+                classOfDevice.append(to: &data)
+                let maskBytes = mask.littleEndian.bytes
+                data += [maskBytes.0, maskBytes.1, maskBytes.2]
+            case let .address(address):
+                data += InquiryResultFilterConditionType.address.rawValue
+                data += address.littleEndian
+            }
+
+        case let .connectionSetup(condition, autoAccept):
+            data += FilterType.connectionSetup.rawValue
+            switch condition {
+            case .all:
+                data += ConnectionSetupFilterConditionType.all.rawValue
+            case let .classOfDevice(classOfDevice, mask):
+                data += ConnectionSetupFilterConditionType.classOfDevice.rawValue
+                classOfDevice.append(to: &data)
+                let maskBytes = mask.littleEndian.bytes
+                data += [maskBytes.0, maskBytes.1, maskBytes.2]
+            case let .address(address):
+                data += ConnectionSetupFilterConditionType.address.rawValue
+                data += address.littleEndian
+            }
+            data += autoAccept.rawValue
+        }
     }
 
-    public enum FilterType: UInt8 {
+    /// Event filter and its filter condition.
+    public enum Filter: Equatable, Sendable {
 
         /// Clear All Filters
         ///
@@ -60,6 +101,19 @@ public struct HCISetEventFilter: HCICommandParameter {
         /// they should have a length of 0 octets.
         ///
         /// Filter_Type should be the only parameter.
+        case clearAll
+
+        /// Inquiry Result.
+        case inquiryResult(InquiryResultFilterCondition)
+
+        /// Connection Setup
+        case connectionSetup(ConnectionSetupFilterCondition, autoAccept: AutoAcceptFlag)
+    }
+
+    /// Filter_Type
+    public enum FilterType: UInt8 {
+
+        /// Clear All Filters
         case clearAll = 0x00
 
         /// Inquiry Result.
@@ -69,7 +123,8 @@ public struct HCISetEventFilter: HCICommandParameter {
         case connectionSetup = 0x02
     }
 
-    public enum InquiryResultFilterConditionType: UInt8 {
+    /// Filter condition for the Inquiry Result filter.
+    public enum InquiryResultFilterCondition: Equatable, Sendable {
 
         /// Return responses from all devices during the Inquiry process.
         ///
@@ -79,9 +134,84 @@ public struct HCISetEventFilter: HCICommandParameter {
         case all
 
         /// A device with a specific Class of Device responded to the Inquiry process.
-        case classOfDevice
+        case classOfDevice(ClassOfDevice, mask: UInt24)
 
         /// A device with a specific `BD_ADDR` responded to the Inquiry process.
-        case address
+        case address(BluetoothAddress)
+    }
+
+    /// Filter condition for the Connection Setup filter.
+    public enum ConnectionSetupFilterCondition: Equatable, Sendable {
+
+        /// Allow Connections from all devices.
+        case all
+
+        /// Allow Connections from a device with a specific Class of Device.
+        case classOfDevice(ClassOfDevice, mask: UInt24)
+
+        /// Allow Connections from a device with a specific `BD_ADDR`.
+        case address(BluetoothAddress)
+    }
+
+    /// Filter_Condition_Type for the Inquiry Result filter.
+    public enum InquiryResultFilterConditionType: UInt8 {
+
+        /// Return responses from all devices during the Inquiry process.
+        case all = 0x00
+
+        /// A device with a specific Class of Device responded to the Inquiry process.
+        case classOfDevice = 0x01
+
+        /// A device with a specific `BD_ADDR` responded to the Inquiry process.
+        case address = 0x02
+    }
+
+    /// Filter_Condition_Type for the Connection Setup filter.
+    public enum ConnectionSetupFilterConditionType: UInt8 {
+
+        /// Allow Connections from all devices.
+        case all = 0x00
+
+        /// Allow Connections from a device with a specific Class of Device.
+        case classOfDevice = 0x01
+
+        /// Allow Connections from a device with a specific `BD_ADDR`.
+        case address = 0x02
+    }
+
+    /// Auto_Accept_Flag
+    ///
+    /// Specifies what action should be done when a Connection Setup filter condition is met.
+    public enum AutoAcceptFlag: UInt8, Equatable, Hashable, Sendable {
+
+        /// Do NOT Auto accept the connection. (Auto accept is off)
+        case off = 0x01
+
+        /// Do Auto accept the connection with role switch disabled. (Auto accept is on)
+        case on = 0x02
+
+        /// Do Auto accept the connection with role switch enabled. (Auto accept is on)
+        ///
+        /// - Note: When auto accepting an incoming SCO or eSCO connection, this option shall be
+        /// treated the same as `on`.
+        case onWithRoleSwitch = 0x03
+    }
+}
+
+// MARK: - Method
+
+public extension BluetoothHostControllerInterface {
+
+    /// Set Event Filter Command
+    ///
+    /// Used by the Host to specify different event filters.
+    func setEventFilter(
+        _ filter: HCISetEventFilter.Filter,
+        timeout: HCICommandTimeout = .default
+    ) async throws {
+
+        let command = HCISetEventFilter(filter: filter)
+
+        try await deviceRequest(command, timeout: timeout)
     }
 }
