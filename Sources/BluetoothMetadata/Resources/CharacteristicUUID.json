@@ -178,7 +178,7 @@
     {
       "uuid": 10794,
       "name": "IEEE 11073-20601 Regulatory Certification Data List",
-      "id": "org.bluetooth.characteristic.ieee_11073-20601_regulatory_certification_data_list"
+      "id": "org.bluetooth.characteristic.ieee_11073_20601_regulatory_certification_data_list"
     },
     {
       "uuid": 10795,
@@ -2157,8 +2157,8 @@
     },
     {
       "uuid": 11250,
-      "name": "Current Elapsed Time",
-      "id": "org.bluetooth.characteristic.current_elapsed_time"
+      "name": "Elapsed Time",
+      "id": "org.bluetooth.characteristic.elapsed_time"
     },
     {
       "uuid": 11251,
@@ -2223,7 +2223,7 @@
     {
       "uuid": 11263,
       "name": "UDI for Medical Devices",
-      "id": "org.bluetooth.characteristic.medical_devices"
+      "id": "org.bluetooth.characteristic.udi_for_medical_devices"
     },
     {
       "uuid": 11264,
@@ -2354,6 +2354,171 @@
       "uuid": 11289,
       "name": "Ranging Data Overwritten",
       "id": "org.bluetooth.characteristic.ranging_data_overwritten"
+    },
+    {
+      "uuid": 11290,
+      "name": "Coordinated Set Name",
+      "id": "org.bluetooth.characteristic.coordinated_set_name"
+    },
+    {
+      "uuid": 11291,
+      "name": "Humidity 8",
+      "id": "org.bluetooth.characteristic.humidity_8"
+    },
+    {
+      "uuid": 11292,
+      "name": "Illuminance 16",
+      "id": "org.bluetooth.characteristic.illuminance_16"
+    },
+    {
+      "uuid": 11293,
+      "name": "Acceleration - 3D",
+      "id": "org.bluetooth.characteristic.acceleration_3d"
+    },
+    {
+      "uuid": 11294,
+      "name": "Precise Acceleration - 3D",
+      "id": "org.bluetooth.characteristic.precise_acceleration_3d"
+    },
+    {
+      "uuid": 11295,
+      "name": "Acceleration Detection Status",
+      "id": "org.bluetooth.characteristic.acceleration_detection_status"
+    },
+    {
+      "uuid": 11296,
+      "name": "Door/Window Status",
+      "id": "org.bluetooth.characteristic.door_window_status"
+    },
+    {
+      "uuid": 11297,
+      "name": "Pushbutton Status 8",
+      "id": "org.bluetooth.characteristic.pushbutton_status_8"
+    },
+    {
+      "uuid": 11298,
+      "name": "Contact Status 8",
+      "id": "org.bluetooth.characteristic.contact_status_8"
+    },
+    {
+      "uuid": 11299,
+      "name": "HID ISO Properties",
+      "id": "org.bluetooth.characteristic.hid_iso_properties"
+    },
+    {
+      "uuid": 11300,
+      "name": "LE HID Operation Mode",
+      "id": "org.bluetooth.characteristic.le_hid_operation_mode"
+    },
+    {
+      "uuid": 11301,
+      "name": "Cookware Description",
+      "id": "org.bluetooth.characteristic.cookware_description"
+    },
+    {
+      "uuid": 11302,
+      "name": "Recipe Control",
+      "id": "org.bluetooth.characteristic.recipe_control"
+    },
+    {
+      "uuid": 11303,
+      "name": "Recipe Parameters",
+      "id": "org.bluetooth.characteristic.recipe_parameters"
+    },
+    {
+      "uuid": 11304,
+      "name": "Cooking Step Status",
+      "id": "org.bluetooth.characteristic.cooking_step_status"
+    },
+    {
+      "uuid": 11305,
+      "name": "Cooking Zone Capabilities",
+      "id": "org.bluetooth.characteristic.cooking_zone_capabilities"
+    },
+    {
+      "uuid": 11306,
+      "name": "Cooking Zone Desired Cooking Conditions",
+      "id": "org.bluetooth.characteristic.cooking_zone_desired_cooking_conditions"
+    },
+    {
+      "uuid": 11307,
+      "name": "Cooking Zone Actual Cooking Conditions",
+      "id": "org.bluetooth.characteristic.cooking_zone_actual_cooking_conditions"
+    },
+    {
+      "uuid": 11308,
+      "name": "Cookware Sensor Data",
+      "id": "org.bluetooth.characteristic.cookware_sensor_data"
+    },
+    {
+      "uuid": 11309,
+      "name": "Cookware Sensor Aggregate",
+      "id": "org.bluetooth.characteristic.cookware_sensor_aggregate"
+    },
+    {
+      "uuid": 11310,
+      "name": "Cooking Temperature",
+      "id": "org.bluetooth.characteristic.cooking_temperature"
+    },
+    {
+      "uuid": 11311,
+      "name": "Cooking Zone Perceived Power",
+      "id": "org.bluetooth.characteristic.cooking_zone_preceived_power"
+    },
+    {
+      "uuid": 11312,
+      "name": "Kitchen Appliance Airflow",
+      "id": "org.bluetooth.characteristic.kitchen_appliance_airflow"
+    },
+    {
+      "uuid": 11313,
+      "name": "Voice Assistant Name",
+      "id": "org.bluetooth.characteristic.voice_assistant_name"
+    },
+    {
+      "uuid": 11314,
+      "name": "Voice Assistant UUID",
+      "id": "org.bluetooth.characteristic.voice_assistant_uuid"
+    },
+    {
+      "uuid": 11315,
+      "name": "Voice Assistant Service Control Point",
+      "id": "org.bluetooth.characteristic.voice_assistant_service_control_point"
+    },
+    {
+      "uuid": 11316,
+      "name": "Installed Location",
+      "id": "org.bluetooth.characteristic.installed_location"
+    },
+    {
+      "uuid": 11317,
+      "name": "Voice Assistant Session State",
+      "id": "org.bluetooth.characteristic.voice_assistant_session_state"
+    },
+    {
+      "uuid": 11318,
+      "name": "Voice Assistant Session Flag",
+      "id": "org.bluetooth.characteristic.voice_assistant_session_flag"
+    },
+    {
+      "uuid": 11319,
+      "name": "Voice Assistant Supported Languages",
+      "id": "org.bluetooth.characteristic.voice_assistant_supported_languages"
+    },
+    {
+      "uuid": 11320,
+      "name": "Voice Assistant Supported Features",
+      "id": "org.bluetooth.characteristic.voice_assistant_supported_features"
+    },
+    {
+      "uuid": 11321,
+      "name": "HID SCI Mode",
+      "id": "org.bluetooth.characteristic.hid_sci_mode"
+    },
+    {
+      "uuid": 11322,
+      "name": "HID SCI Information",
+      "id": "org.bluetooth.characteristic.hid_sci_information"
     }
   ]
 }

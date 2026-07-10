@@ -129,10 +129,6 @@
       "name": "Anhui Huami Information Technology Co., Ltd."
     },
     {
-      "uuid": 65247,
-      "name": "Design SHIFT"
-    },
-    {
       "uuid": 65246,
       "name": "Coin, Inc."
     },
@@ -371,14 +367,6 @@
     {
       "uuid": 65187,
       "name": "ITT Industries"
-    },
-    {
-      "uuid": 65186,
-      "name": "Intrepid Control Systems, Inc."
-    },
-    {
-      "uuid": 65185,
-      "name": "Intrepid Control Systems, Inc."
     },
     {
       "uuid": 65184,
@@ -797,14 +785,6 @@
       "name": "TTS Tooltechnic Systems AG & Co. KG"
     },
     {
-      "uuid": 65080,
-      "name": "Spaceek LTD"
-    },
-    {
-      "uuid": 65079,
-      "name": "Spaceek LTD"
-    },
-    {
       "uuid": 65078,
       "name": "HUAWEI Technologies Co., Ltd"
     },
@@ -1186,7 +1166,7 @@
     },
     {
       "uuid": 64983,
-      "name": "Emerson"
+      "name": "Copeland Cold Chain LP"
     },
     {
       "uuid": 64982,
@@ -1299,14 +1279,6 @@
     {
       "uuid": 64955,
       "name": "Profoto"
-    },
-    {
-      "uuid": 64954,
-      "name": "Comcast Cable Corporation"
-    },
-    {
-      "uuid": 64953,
-      "name": "Comcast Cable Corporation"
     },
     {
       "uuid": 64952,
@@ -1471,10 +1443,6 @@
     {
       "uuid": 64912,
       "name": "Guangzhou SuperSound Information Technology Co.,Ltd"
-    },
-    {
-      "uuid": 64911,
-      "name": "Matrix ComSec Pvt. Ltd."
     },
     {
       "uuid": 64910,
@@ -2250,7 +2218,7 @@
     },
     {
       "uuid": 64717,
-      "name": "Zound Industries International AB"
+      "name": "Marshall Group AB"
     },
     {
       "uuid": 64715,
@@ -2441,16 +2409,12 @@
       "name": "Lenovo (Singapore) Pte Ltd."
     },
     {
-      "uuid": 64668,
-      "name": "Binary Power, Inc."
-    },
-    {
       "uuid": 64667,
       "name": "Merry Electronics (S) Pte Ltd"
     },
     {
       "uuid": 64666,
-      "name": "Plockat Solutions AB"
+      "name": "Koppli AB"
     },
     {
       "uuid": 64665,
@@ -2506,7 +2470,7 @@
     },
     {
       "uuid": 64652,
-      "name": "SES-Imagotag"
+      "name": "VusionGroup"
     },
     {
       "uuid": 64651,
@@ -2663,6 +2627,206 @@
     {
       "uuid": 64613,
       "name": "Robor Electronics B.V."
+    },
+    {
+      "uuid": 64612,
+      "name": "Volvo Technology AB"
+    },
+    {
+      "uuid": 64611,
+      "name": "Volvo Technology AB"
+    },
+    {
+      "uuid": 64610,
+      "name": "SPRiNTUS GmbH"
+    },
+    {
+      "uuid": 64609,
+      "name": "QIKCONNEX LLC"
+    },
+    {
+      "uuid": 64608,
+      "name": "Ohme Operations UK Limited"
+    },
+    {
+      "uuid": 64607,
+      "name": "PI-CRYSTAL INC."
+    },
+    {
+      "uuid": 64606,
+      "name": "KUBU SMART LIMITED"
+    },
+    {
+      "uuid": 64605,
+      "name": "GP Acoustics International Limited"
+    },
+    {
+      "uuid": 64604,
+      "name": "PLASTIC RESEARCH AND DEVELOPMENT CORPORATION"
+    },
+    {
+      "uuid": 64603,
+      "name": "Time Location Systems AS"
+    },
+    {
+      "uuid": 64602,
+      "name": "LAST LOCK INC."
+    },
+    {
+      "uuid": 64601,
+      "name": "Ant Group Co., Ltd."
+    },
+    {
+      "uuid": 64600,
+      "name": "Shenzhen Minew Technologies Co., Ltd."
+    },
+    {
+      "uuid": 64599,
+      "name": "Ambient Life Inc."
+    },
+    {
+      "uuid": 64598,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64597,
+      "name": "BYD Company Limited"
+    },
+    {
+      "uuid": 64596,
+      "name": "Shenzhen Yinwang Intelligent Technologies Co., Ltd."
+    },
+    {
+      "uuid": 64595,
+      "name": "LEGIC Identsystems AG"
+    },
+    {
+      "uuid": 64594,
+      "name": "LG Electronics Inc."
+    },
+    {
+      "uuid": 64593,
+      "name": "Ant Group Co., Ltd."
+    },
+    {
+      "uuid": 64592,
+      "name": "Ant Group Co., Ltd."
+    },
+    {
+      "uuid": 64591,
+      "name": "WaveRF, Corp."
+    },
+    {
+      "uuid": 64590,
+      "name": "Lodestar Technology Inc."
+    },
+    {
+      "uuid": 64589,
+      "name": "Lodestar Technology Inc."
+    },
+    {
+      "uuid": 64588,
+      "name": "HP Inc."
+    },
+    {
+      "uuid": 64587,
+      "name": "WinMagic Inc."
+    },
+    {
+      "uuid": 64586,
+      "name": "Shenzhen Shokz Co.,Ltd."
+    },
+    {
+      "uuid": 64585,
+      "name": "Golioth, Inc."
+    },
+    {
+      "uuid": 64584,
+      "name": "Michelin"
+    },
+    {
+      "uuid": 64583,
+      "name": "Shanghai Ingeek Technology Co., Ltd."
+    },
+    {
+      "uuid": 64582,
+      "name": "Xiaomi"
+    },
+    {
+      "uuid": 64581,
+      "name": "Mitsubishi Electric Corporation"
+    },
+    {
+      "uuid": 64580,
+      "name": "Block, Inc."
+    },
+    {
+      "uuid": 64579,
+      "name": "Atmosic Technologies, Inc."
+    },
+    {
+      "uuid": 64577,
+      "name": "Yoto Limited"
+    },
+    {
+      "uuid": 64575,
+      "name": "Milwaukee Electric Tools"
+    },
+    {
+      "uuid": 64574,
+      "name": "Google LLC"
+    },
+    {
+      "uuid": 64573,
+      "name": "Reelables, Inc."
+    },
+    {
+      "uuid": 64572,
+      "name": "Eforthink Technology Co., Ltd."
+    },
+    {
+      "uuid": 64571,
+      "name": "BONX INC."
+    },
+    {
+      "uuid": 64570,
+      "name": "C.O.B.O. SpA"
+    },
+    {
+      "uuid": 64569,
+      "name": "Harman International"
+    },
+    {
+      "uuid": 64568,
+      "name": "SetPoint Medical"
+    },
+    {
+      "uuid": 64567,
+      "name": "TANlock GmbH"
+    },
+    {
+      "uuid": 64566,
+      "name": "PharmaSens AG"
+    },
+    {
+      "uuid": 64565,
+      "name": "Metabowerke GmbH"
+    },
+    {
+      "uuid": 64564,
+      "name": "Mitsubishi Electric Corporation"
+    },
+    {
+      "uuid": 64562,
+      "name": "InPlay, Inc."
+    },
+    {
+      "uuid": 64561,
+      "name": "Ford Motor Company"
+    },
+    {
+      "uuid": 64560,
+      "name": "Arashi Vision Inc."
     }
   ]
 }

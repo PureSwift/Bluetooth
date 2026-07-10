@@ -629,6 +629,11 @@
       "uuid": 10184,
       "name": "Electrical Apparent Power (volt ampere)",
       "id": "org.bluetooth.unit.power.volt_ampere"
+    },
+    {
+      "uuid": 10185,
+      "name": "Gravity (g\\textsubscript{n})",
+      "id": "org.bluetooth.unit.power.gravity_gn"
     }
   ]
 }

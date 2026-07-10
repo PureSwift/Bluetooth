@@ -1,6 +1,2074 @@
 {
   "companyIdentifiers": [
     {
+      "value": 4331,
+      "name": "Fontaine Fifth Wheel Company"
+    },
+    {
+      "value": 4330,
+      "name": "Guangdong Youhong Medical Technology Co.,Ltd"
+    },
+    {
+      "value": 4329,
+      "name": "Hankook Tire & Technology Co., Ltd."
+    },
+    {
+      "value": 4328,
+      "name": "Liontron GmbH & Co. KG"
+    },
+    {
+      "value": 4327,
+      "name": "Placenet Internet of Places S.L."
+    },
+    {
+      "value": 4326,
+      "name": "KWANG YANG MOTOR CO., LTD."
+    },
+    {
+      "value": 4325,
+      "name": "Durin, inc."
+    },
+    {
+      "value": 4324,
+      "name": "Smart Technologies ULC"
+    },
+    {
+      "value": 4323,
+      "name": "Vybe Audio LLC"
+    },
+    {
+      "value": 4322,
+      "name": "CAREHAWK INC."
+    },
+    {
+      "value": 4321,
+      "name": "Neurable, Inc"
+    },
+    {
+      "value": 4320,
+      "name": "Arnold & Richter Cine Technik GmbH & Co. Betriebs KG"
+    },
+    {
+      "value": 4319,
+      "name": "Hawkeye Surgical Lighting LLC"
+    },
+    {
+      "value": 4318,
+      "name": "Gastron Co.,Ltd"
+    },
+    {
+      "value": 4317,
+      "name": "Triumph Designs Ltd"
+    },
+    {
+      "value": 4316,
+      "name": "Spectra Precision (Kaiserslautern) GmbH"
+    },
+    {
+      "value": 4315,
+      "name": "SZ Avinox Innovation Co., Ltd."
+    },
+    {
+      "value": 4314,
+      "name": "SKAIChips Co.,Ltd"
+    },
+    {
+      "value": 4313,
+      "name": "Liebherr-Hausgeraete GmbH"
+    },
+    {
+      "value": 4312,
+      "name": "Westfalen Aktiengesellschaft"
+    },
+    {
+      "value": 4311,
+      "name": "Arashi Vision Inc."
+    },
+    {
+      "value": 4310,
+      "name": "UltronSMART Inc."
+    },
+    {
+      "value": 4309,
+      "name": "IntelliDesign Pty Ltd"
+    },
+    {
+      "value": 4308,
+      "name": "Victor Hasselblad AB"
+    },
+    {
+      "value": 4307,
+      "name": "AGCO Corporation"
+    },
+    {
+      "value": 4306,
+      "name": "Hehku Company Oy"
+    },
+    {
+      "value": 4305,
+      "name": "Acer Inc."
+    },
+    {
+      "value": 4304,
+      "name": "Band24, LLC"
+    },
+    {
+      "value": 4303,
+      "name": "Tempur World, LLC"
+    },
+    {
+      "value": 4302,
+      "name": "Inito Health Inc."
+    },
+    {
+      "value": 4301,
+      "name": "Kumho Tire"
+    },
+    {
+      "value": 4300,
+      "name": "Linde GmbH"
+    },
+    {
+      "value": 4299,
+      "name": "The90, Inc."
+    },
+    {
+      "value": 4298,
+      "name": "FairPhone B.V"
+    },
+    {
+      "value": 4297,
+      "name": "Tractian Technologies Inc."
+    },
+    {
+      "value": 4296,
+      "name": "mylife Diabetes Care AG"
+    },
+    {
+      "value": 4295,
+      "name": "CHIYODA TECHNOL CORPORATION"
+    },
+    {
+      "value": 4294,
+      "name": "Piscisea Tech Inc"
+    },
+    {
+      "value": 4293,
+      "name": "Cardinal Scale Mfg"
+    },
+    {
+      "value": 4292,
+      "name": "OPICA GmbH"
+    },
+    {
+      "value": 4291,
+      "name": "TECH FASS s.r.o."
+    },
+    {
+      "value": 4290,
+      "name": "SainStore Technology Co., Ltd."
+    },
+    {
+      "value": 4289,
+      "name": "Shenzhen ECO-NEWLEAF CO., LTD"
+    },
+    {
+      "value": 4288,
+      "name": "Minda Corporation Ltd"
+    },
+    {
+      "value": 4287,
+      "name": "All Inspire Health, Inc."
+    },
+    {
+      "value": 4286,
+      "name": "UNIVERSAL REMOTE CONTROL, INC."
+    },
+    {
+      "value": 4285,
+      "name": "Variowell Development GmbH"
+    },
+    {
+      "value": 4284,
+      "name": "Harley-Davidson Motor Company"
+    },
+    {
+      "value": 4283,
+      "name": "VERGESENSE INC"
+    },
+    {
+      "value": 4282,
+      "name": "Noble HiFi, LLC"
+    },
+    {
+      "value": 4281,
+      "name": "CYNC Labs, Inc."
+    },
+    {
+      "value": 4280,
+      "name": "Palarum LLC"
+    },
+    {
+      "value": 4279,
+      "name": "Fosilicon Co., Ltd"
+    },
+    {
+      "value": 4278,
+      "name": "SHENZHEN CHINA MICRO SEMICON CO.,LIMITED"
+    },
+    {
+      "value": 4277,
+      "name": "SpartanLync Technologies Corp."
+    },
+    {
+      "value": 4276,
+      "name": "Solabs Technology (HK) Co., Limited"
+    },
+    {
+      "value": 4275,
+      "name": "HOSEOTELNET Co., Ltd."
+    },
+    {
+      "value": 4274,
+      "name": "Shenzhen Xunzong Zhilian Technology Co., Ltd."
+    },
+    {
+      "value": 4273,
+      "name": "Senops Tracker, LLC"
+    },
+    {
+      "value": 4272,
+      "name": "VSC Synapse LLC"
+    },
+    {
+      "value": 4271,
+      "name": "Hangzhou SDIC Microelectronics Inc."
+    },
+    {
+      "value": 4270,
+      "name": "Raycon Inc."
+    },
+    {
+      "value": 4269,
+      "name": "CoreHW Semiconductor Oy"
+    },
+    {
+      "value": 4268,
+      "name": "ATsens Co.,Ltd."
+    },
+    {
+      "value": 4267,
+      "name": "ObjectSpectrum, LLC"
+    },
+    {
+      "value": 4266,
+      "name": "Sigenergy Technology Co., Ltd."
+    },
+    {
+      "value": 4265,
+      "name": "Mallow"
+    },
+    {
+      "value": 4264,
+      "name": "Zhejiang Wanyou Intelligent Technology Co., Ltd."
+    },
+    {
+      "value": 4263,
+      "name": "Pedigree Technologies, LLC"
+    },
+    {
+      "value": 4262,
+      "name": "Lightnovo ApS"
+    },
+    {
+      "value": 4261,
+      "name": "Cebreo Medical A/S"
+    },
+    {
+      "value": 4260,
+      "name": "RAPIDISE TECHNOLOGY PRIVATE LIMITED"
+    },
+    {
+      "value": 4259,
+      "name": "BQT Solutions (NZ) Limited"
+    },
+    {
+      "value": 4258,
+      "name": "Audio Research Corporation"
+    },
+    {
+      "value": 4257,
+      "name": "flexlog GmbH"
+    },
+    {
+      "value": 4256,
+      "name": "inContAlert GmbH"
+    },
+    {
+      "value": 4255,
+      "name": "Shenzhen Hali-Power Industrial Co., Ltd."
+    },
+    {
+      "value": 4254,
+      "name": "SHIBAURA ELECTRONICS CO., LTD."
+    },
+    {
+      "value": 4253,
+      "name": "terumo"
+    },
+    {
+      "value": 4252,
+      "name": "KIBLE"
+    },
+    {
+      "value": 4251,
+      "name": "Tensoli GmbH"
+    },
+    {
+      "value": 4250,
+      "name": "MONNIT CORPORATION"
+    },
+    {
+      "value": 4249,
+      "name": "Selco GmbH"
+    },
+    {
+      "value": 4248,
+      "name": "smart-TEC GmbH & Co. KG"
+    },
+    {
+      "value": 4247,
+      "name": "Knox Associates, Inc."
+    },
+    {
+      "value": 4246,
+      "name": "Aktv8 LLC"
+    },
+    {
+      "value": 4245,
+      "name": "CardiaMetrics"
+    },
+    {
+      "value": 4244,
+      "name": "Personal Products Co., Ltd."
+    },
+    {
+      "value": 4243,
+      "name": "Mindspire Limited"
+    },
+    {
+      "value": 4242,
+      "name": "BXB DIGITAL PTY LIMITED"
+    },
+    {
+      "value": 4241,
+      "name": "COSEL ELEKTRONIK OTOMASYON SISTEMLERI SANAYI VE TICARET LIMITED SIRKETI"
+    },
+    {
+      "value": 4240,
+      "name": "NAGANO KEIKI CO., LTD."
+    },
+    {
+      "value": 4239,
+      "name": "SkyCell AG"
+    },
+    {
+      "value": 4238,
+      "name": "Industrial Computing Limited"
+    },
+    {
+      "value": 4237,
+      "name": "DEWINE Labs GmbH"
+    },
+    {
+      "value": 4236,
+      "name": "Tiny Displays Inc."
+    },
+    {
+      "value": 4235,
+      "name": "PERUN TECH SP. Z O.O."
+    },
+    {
+      "value": 4234,
+      "name": "Grayhill Inc."
+    },
+    {
+      "value": 4233,
+      "name": "DEER MANAGEMENT SYSTEMS, LLC"
+    },
+    {
+      "value": 4232,
+      "name": "Sesame AI, Inc."
+    },
+    {
+      "value": 4231,
+      "name": "Matisse Interactif inc."
+    },
+    {
+      "value": 4230,
+      "name": "M3SH TECHNOLOGY INC."
+    },
+    {
+      "value": 4229,
+      "name": "FUTURE INTELLIGENCE TECHNOLOGY SINGAPORE PTE. LTD."
+    },
+    {
+      "value": 4228,
+      "name": "24x8, LLC"
+    },
+    {
+      "value": 4227,
+      "name": "SYSTEM LOCO LTD"
+    },
+    {
+      "value": 4226,
+      "name": "AIR PRODUCTS AND CHEMICALS, INC."
+    },
+    {
+      "value": 4225,
+      "name": "Australis Scientific Pty Ltd."
+    },
+    {
+      "value": 4224,
+      "name": "Knit Sound Company"
+    },
+    {
+      "value": 4223,
+      "name": "Anton Paar ConsumerTec GmbH"
+    },
+    {
+      "value": 4222,
+      "name": "Belford investment holdings pty ltd"
+    },
+    {
+      "value": 4221,
+      "name": "IMPACT-BZ LTD"
+    },
+    {
+      "value": 4220,
+      "name": "Martin.Care GmbH"
+    },
+    {
+      "value": 4219,
+      "name": "E.J. Brooks Company"
+    },
+    {
+      "value": 4218,
+      "name": "CodaHD LLC"
+    },
+    {
+      "value": 4217,
+      "name": "Digimax Innovative Products LTD."
+    },
+    {
+      "value": 4216,
+      "name": "augment AI Inc."
+    },
+    {
+      "value": 4215,
+      "name": "Shenzhen Muyu Technology Co., Ltd."
+    },
+    {
+      "value": 4214,
+      "name": "ALPHADIF"
+    },
+    {
+      "value": 4213,
+      "name": "TM-TECHNOLOGIES, JSC"
+    },
+    {
+      "value": 4212,
+      "name": "CenTrak, Inc."
+    },
+    {
+      "value": 4211,
+      "name": "Hong Kong Future lntelligent Technology Co., Limited"
+    },
+    {
+      "value": 4210,
+      "name": "ALTESSA SOLUTIONS INC."
+    },
+    {
+      "value": 4209,
+      "name": "IZYBAT"
+    },
+    {
+      "value": 4208,
+      "name": "TLV Co.,LTD."
+    },
+    {
+      "value": 4207,
+      "name": "Prosaris Solutions Ltd."
+    },
+    {
+      "value": 4206,
+      "name": "STRYDE LIMITED"
+    },
+    {
+      "value": 4205,
+      "name": "Rokstar Holdings Limited"
+    },
+    {
+      "value": 4204,
+      "name": "Global Electronics"
+    },
+    {
+      "value": 4203,
+      "name": "GORDON MURRAY GROUP LIMITED"
+    },
+    {
+      "value": 4202,
+      "name": "OSKEY"
+    },
+    {
+      "value": 4201,
+      "name": "Remoticom B.V."
+    },
+    {
+      "value": 4200,
+      "name": "Hotron Co., Ltd."
+    },
+    {
+      "value": 4199,
+      "name": "Shenzhen FHX Precision Hardware & Plastic Co., Ltd."
+    },
+    {
+      "value": 4198,
+      "name": "Algiz AS"
+    },
+    {
+      "value": 4197,
+      "name": "HIGH HIT ENTERPRISE CO., LTD."
+    },
+    {
+      "value": 4196,
+      "name": "Shearwater Research Inc."
+    },
+    {
+      "value": 4195,
+      "name": "Field Line Automation Ltd"
+    },
+    {
+      "value": 4194,
+      "name": "Framason Audio S.A"
+    },
+    {
+      "value": 4193,
+      "name": "VCS Vision Control Solutions GmbH"
+    },
+    {
+      "value": 4192,
+      "name": "TOMOE VALVE CO.,LTD"
+    },
+    {
+      "value": 4191,
+      "name": "Chip-pump Microelectronics"
+    },
+    {
+      "value": 4190,
+      "name": "Zuuka Limited"
+    },
+    {
+      "value": 4189,
+      "name": "Williams Sound, LLC"
+    },
+    {
+      "value": 4188,
+      "name": "YANMAR HOLDINGS CO., LTD."
+    },
+    {
+      "value": 4187,
+      "name": "Fairbanks Scales Inc."
+    },
+    {
+      "value": 4186,
+      "name": "ArjoHuntleigh AB"
+    },
+    {
+      "value": 4185,
+      "name": "Shenzhen Shuye Technology Co.,Ltd."
+    },
+    {
+      "value": 4184,
+      "name": "Gravity (Shenzhen)Space Technology Co., Ltd"
+    },
+    {
+      "value": 4183,
+      "name": "RSA Security LLC"
+    },
+    {
+      "value": 4182,
+      "name": "CLM-Solutions"
+    },
+    {
+      "value": 4181,
+      "name": "NewNet, Inc."
+    },
+    {
+      "value": 4180,
+      "name": "Romcor Pty Ltd"
+    },
+    {
+      "value": 4179,
+      "name": "Sensorworx, Inc."
+    },
+    {
+      "value": 4178,
+      "name": "CHOZEN International CO., LTD."
+    },
+    {
+      "value": 4177,
+      "name": "UnlimitedIRL LLC"
+    },
+    {
+      "value": 4176,
+      "name": "Hangzhou Sneuro Medical Co., Ltd."
+    },
+    {
+      "value": 4175,
+      "name": "Safety Lighting Research Pty Ltd"
+    },
+    {
+      "value": 4174,
+      "name": "LSC Control Systems Pty Ltd"
+    },
+    {
+      "value": 4173,
+      "name": "BUND MEDIA PTY. LTD."
+    },
+    {
+      "value": 4172,
+      "name": "LAUMAS Elettronica S.r.l."
+    },
+    {
+      "value": 4171,
+      "name": "Yoto Limited"
+    },
+    {
+      "value": 4170,
+      "name": "Mueller-BBM Rail Technologies GmbH"
+    },
+    {
+      "value": 4169,
+      "name": "Anhui Ubico Advanced Manufacture Co., Ltd."
+    },
+    {
+      "value": 4168,
+      "name": "Ferrari s.p.a."
+    },
+    {
+      "value": 4167,
+      "name": "Yamaha Motor eBike Systems GmbH"
+    },
+    {
+      "value": 4166,
+      "name": "EXELIO S.R.L."
+    },
+    {
+      "value": 4165,
+      "name": "VOTRONIC Elektronik-Systeme GmbH"
+    },
+    {
+      "value": 4164,
+      "name": "Rotarex S.A."
+    },
+    {
+      "value": 4163,
+      "name": "Shanghai Holychip Electronic Co., Ltd."
+    },
+    {
+      "value": 4162,
+      "name": "Namara Water Technologies, Inc"
+    },
+    {
+      "value": 4161,
+      "name": "Shenzhen Huasheng Jiaye Technology Co., Ltd"
+    },
+    {
+      "value": 4160,
+      "name": "Raspberry Pi"
+    },
+    {
+      "value": 4159,
+      "name": "infyni"
+    },
+    {
+      "value": 4158,
+      "name": "Nextorage Corporation"
+    },
+    {
+      "value": 4157,
+      "name": "Blahaj Ltd"
+    },
+    {
+      "value": 4154,
+      "name": "FOSS Analytical A/S"
+    },
+    {
+      "value": 4060,
+      "name": "Beijing Hongsi Electronic Technology Co.,Ltd."
+    },
+    {
+      "value": 4058,
+      "name": "NIVELCO PROCESS CONTROL CO."
+    },
+    {
+      "value": 4057,
+      "name": "REMDEVICE S.R.L."
+    },
+    {
+      "value": 4056,
+      "name": "SIVA Inotec Limited"
+    },
+    {
+      "value": 4055,
+      "name": "Hondata, Inc."
+    },
+    {
+      "value": 4054,
+      "name": "LIOTYS"
+    },
+    {
+      "value": 4053,
+      "name": "Telemacy Ltd"
+    },
+    {
+      "value": 4052,
+      "name": "QRITAGYA LLP"
+    },
+    {
+      "value": 4051,
+      "name": "YDIIT Co., Ltd"
+    },
+    {
+      "value": 4050,
+      "name": "Domteknika S.A"
+    },
+    {
+      "value": 4049,
+      "name": "Auranova LLC"
+    },
+    {
+      "value": 4048,
+      "name": "Stark Future SL"
+    },
+    {
+      "value": 4047,
+      "name": "Nestlab AS"
+    },
+    {
+      "value": 4046,
+      "name": "NOJA Power"
+    },
+    {
+      "value": 4045,
+      "name": "Wimate Technology Solutions Pvt Ltd"
+    },
+    {
+      "value": 4044,
+      "name": "Neurotherapeutics Ltd"
+    },
+    {
+      "value": 4043,
+      "name": "Biocorp Production"
+    },
+    {
+      "value": 4042,
+      "name": "Legato Audio, Inc."
+    },
+    {
+      "value": 4041,
+      "name": "Zirbel Bike GmbH"
+    },
+    {
+      "value": 4040,
+      "name": "Eforthink Technology Co., Ltd."
+    },
+    {
+      "value": 4039,
+      "name": "Pharox B.V."
+    },
+    {
+      "value": 4038,
+      "name": "ASD Lighting PLC"
+    },
+    {
+      "value": 4037,
+      "name": "Hypershell Co., Ltd"
+    },
+    {
+      "value": 4036,
+      "name": "FulScience Automotive Electronics Co., Ltd."
+    },
+    {
+      "value": 4035,
+      "name": "Shenzhen Jimi loT Co.,Ltd"
+    },
+    {
+      "value": 4034,
+      "name": "ISSPRO, INC"
+    },
+    {
+      "value": 4033,
+      "name": "Air Automotive tracking Inc."
+    },
+    {
+      "value": 4032,
+      "name": "Littlebird Connected Care, Inc."
+    },
+    {
+      "value": 4031,
+      "name": "Tridentify AB"
+    },
+    {
+      "value": 4030,
+      "name": "TaigaIoT"
+    },
+    {
+      "value": 4029,
+      "name": "Locus Robotics Corp."
+    },
+    {
+      "value": 4028,
+      "name": "ATANS TECHNOLOGY INC."
+    },
+    {
+      "value": 4027,
+      "name": "Rollease Acmeda, Inc."
+    },
+    {
+      "value": 4026,
+      "name": "Cosonic Intelligent Technologies Co., Ltd."
+    },
+    {
+      "value": 4025,
+      "name": "Shenzhen Mutual Technology Co., Ltd"
+    },
+    {
+      "value": 4024,
+      "name": "SITERWELL ELECTRONICS CO.,LIMITED"
+    },
+    {
+      "value": 4023,
+      "name": "Hapn Holdings, LLC"
+    },
+    {
+      "value": 4022,
+      "name": "TQ-Systems GmbH"
+    },
+    {
+      "value": 4021,
+      "name": "Hangzhou Nano IC Technologies Co,. Ltd"
+    },
+    {
+      "value": 4020,
+      "name": "StoneDevices"
+    },
+    {
+      "value": 4019,
+      "name": "Hooked Society Oy Ltd"
+    },
+    {
+      "value": 4018,
+      "name": "PLAUD Inc."
+    },
+    {
+      "value": 4017,
+      "name": "Avivomed Inc."
+    },
+    {
+      "value": 4016,
+      "name": "General Resistance, LLC"
+    },
+    {
+      "value": 4015,
+      "name": "Terasite Technologies"
+    },
+    {
+      "value": 4014,
+      "name": "Capacite"
+    },
+    {
+      "value": 4013,
+      "name": "The AI Toy Company"
+    },
+    {
+      "value": 4012,
+      "name": "Flitsmeister B.V."
+    },
+    {
+      "value": 4011,
+      "name": "Geo Radar AI Private Limited"
+    },
+    {
+      "value": 4010,
+      "name": "Suzhou Fanxi Technology Co., Ltd."
+    },
+    {
+      "value": 4009,
+      "name": "Ranch Systems, Inc."
+    },
+    {
+      "value": 4008,
+      "name": "Senti Technologies Private Limited"
+    },
+    {
+      "value": 4007,
+      "name": "spheretek japan"
+    },
+    {
+      "value": 4006,
+      "name": "Ugreen Group Limited"
+    },
+    {
+      "value": 4005,
+      "name": "Avanos Medical, Inc."
+    },
+    {
+      "value": 4004,
+      "name": "Nice Spa"
+    },
+    {
+      "value": 4003,
+      "name": "B.E.G. Brueck Electronic GmbH"
+    },
+    {
+      "value": 4002,
+      "name": "BIA NEUROSCIENCE INC."
+    },
+    {
+      "value": 4001,
+      "name": "PALRED RETAIL PRIVATE LIMITED"
+    },
+    {
+      "value": 4000,
+      "name": "DP IOT"
+    },
+    {
+      "value": 3999,
+      "name": "Seiko Future Creation Inc."
+    },
+    {
+      "value": 3998,
+      "name": "Hibino Corporation"
+    },
+    {
+      "value": 3997,
+      "name": "IRTrans GmbH"
+    },
+    {
+      "value": 3996,
+      "name": "WePower Technologies LLC"
+    },
+    {
+      "value": 3995,
+      "name": "Hanshow Technology Co.,Ltd."
+    },
+    {
+      "value": 3994,
+      "name": "Eiritsu Electronics Industry Co., Ltd."
+    },
+    {
+      "value": 3993,
+      "name": "DEZINE GROUP LLC"
+    },
+    {
+      "value": 3992,
+      "name": "Fitnexa Inc"
+    },
+    {
+      "value": 3991,
+      "name": "SPX Aids to Navigation Oy"
+    },
+    {
+      "value": 3990,
+      "name": "SEIKOIST, INC"
+    },
+    {
+      "value": 3989,
+      "name": "Dongguang Huasoo Automation Technology Company Limited"
+    },
+    {
+      "value": 3988,
+      "name": "IDX Company, Ltd."
+    },
+    {
+      "value": 3987,
+      "name": "Aktiebolaget Ebeco"
+    },
+    {
+      "value": 3986,
+      "name": "Ethos Group, Inc."
+    },
+    {
+      "value": 3985,
+      "name": "Valostra Digital Ventures LLP"
+    },
+    {
+      "value": 3984,
+      "name": "MOBI7 TECNOLOGIA EM MOBILIDADE S.A."
+    },
+    {
+      "value": 3983,
+      "name": "SIGNUM INTELLIGENCE LTD"
+    },
+    {
+      "value": 3982,
+      "name": "Biceek Inc"
+    },
+    {
+      "value": 3981,
+      "name": "JUREN CO., LTD."
+    },
+    {
+      "value": 3980,
+      "name": "ROYAL PARTS CO.,LTD"
+    },
+    {
+      "value": 3979,
+      "name": "A.Y. McDonald Mfg. Co."
+    },
+    {
+      "value": 3978,
+      "name": "Innogando S.L."
+    },
+    {
+      "value": 3977,
+      "name": "STOREIO TECHNOLOGIES LTD"
+    },
+    {
+      "value": 3976,
+      "name": "Kohler Ventures, Inc."
+    },
+    {
+      "value": 3975,
+      "name": "Anacove Inc."
+    },
+    {
+      "value": 3974,
+      "name": "Lakecrest Pty Ltd"
+    },
+    {
+      "value": 3973,
+      "name": "Hangzhou Sciener Smart Technology Co., Ltd."
+    },
+    {
+      "value": 3972,
+      "name": "KT Micro, Inc."
+    },
+    {
+      "value": 3971,
+      "name": "Calpeda S.p.A."
+    },
+    {
+      "value": 3970,
+      "name": "Amon Co.Ltd."
+    },
+    {
+      "value": 3969,
+      "name": "IN Phase International lTD"
+    },
+    {
+      "value": 3968,
+      "name": "Hydro Electronic Devices, Inc."
+    },
+    {
+      "value": 3967,
+      "name": "Badass eBikes GmbH"
+    },
+    {
+      "value": 3966,
+      "name": "shenzhen Holyiot Technology Co.,Ltd"
+    },
+    {
+      "value": 3965,
+      "name": "eQ-3 AG"
+    },
+    {
+      "value": 3964,
+      "name": "Polk Audio"
+    },
+    {
+      "value": 3963,
+      "name": "SKYROAM, INC."
+    },
+    {
+      "value": 3962,
+      "name": "SHENZHEN GUANG QI GUO CHUANG TECHNOLOGY CO.,LTD"
+    },
+    {
+      "value": 3961,
+      "name": "Walter Mueller Inc. for Industrial Electronics"
+    },
+    {
+      "value": 3960,
+      "name": "Also, Inc."
+    },
+    {
+      "value": 3959,
+      "name": "CROSS BRAIN CO.,Ltd."
+    },
+    {
+      "value": 3958,
+      "name": "simatec ag"
+    },
+    {
+      "value": 3957,
+      "name": "Senseonics, Incorporated"
+    },
+    {
+      "value": 3956,
+      "name": "Sperry Labs LLC"
+    },
+    {
+      "value": 3955,
+      "name": "Keycafe Inc."
+    },
+    {
+      "value": 3954,
+      "name": "FLORLINK, INC."
+    },
+    {
+      "value": 3953,
+      "name": "PIRITIZ LLC"
+    },
+    {
+      "value": 3952,
+      "name": "TECHFLITTER SOLUTIONS PRIVATE LIMITED"
+    },
+    {
+      "value": 3951,
+      "name": "onanoff limited"
+    },
+    {
+      "value": 3950,
+      "name": "iSi Wearable Safety GmbH"
+    },
+    {
+      "value": 3949,
+      "name": "MODRETRO, INC."
+    },
+    {
+      "value": 3948,
+      "name": "Biogents AG"
+    },
+    {
+      "value": 3947,
+      "name": "Skywalk Inc."
+    },
+    {
+      "value": 3946,
+      "name": "Roam Devices LLC"
+    },
+    {
+      "value": 3945,
+      "name": "Ancoe Industry Corporation"
+    },
+    {
+      "value": 3944,
+      "name": "Navico"
+    },
+    {
+      "value": 3943,
+      "name": "White Eagle Sonic Technologies, Inc."
+    },
+    {
+      "value": 3942,
+      "name": "BIGREDBEE, LLC"
+    },
+    {
+      "value": 3941,
+      "name": "CZV, Inc"
+    },
+    {
+      "value": 3940,
+      "name": "SafeNow GmbH"
+    },
+    {
+      "value": 3939,
+      "name": "WATTER, Inc."
+    },
+    {
+      "value": 3938,
+      "name": "Kehwin Technologies Co. Ltd."
+    },
+    {
+      "value": 3937,
+      "name": "HyolimXE Co., Ltd."
+    },
+    {
+      "value": 3936,
+      "name": "Quilt Systems, Inc."
+    },
+    {
+      "value": 3935,
+      "name": "ROBSON SRL"
+    },
+    {
+      "value": 3934,
+      "name": "WUXI WEIDA INTELLIGENT ELECTRONICS CO.,LTD."
+    },
+    {
+      "value": 3933,
+      "name": "Leapcraft ApS"
+    },
+    {
+      "value": 3932,
+      "name": "Micro Technology Services, Inc."
+    },
+    {
+      "value": 3931,
+      "name": "shanghai fudan electronics group company Co. Ltd"
+    },
+    {
+      "value": 3930,
+      "name": "Vibe Energy B.V."
+    },
+    {
+      "value": 3929,
+      "name": "Silicon Vandals PTY LTD"
+    },
+    {
+      "value": 3928,
+      "name": "Shenzhen Guo-link Technology Co.,Ltd."
+    },
+    {
+      "value": 3927,
+      "name": "Silverlake Technologies"
+    },
+    {
+      "value": 3926,
+      "name": "Astute Access Group Limited"
+    },
+    {
+      "value": 3925,
+      "name": "Sensoteq Ltd"
+    },
+    {
+      "value": 3924,
+      "name": "ContiTech Deutschland GmbH"
+    },
+    {
+      "value": 3923,
+      "name": "Fledt & Meiton Marin AB"
+    },
+    {
+      "value": 3922,
+      "name": "Shenzhen Yunke Intelligent Co.Ltd"
+    },
+    {
+      "value": 3921,
+      "name": "ebm-papst Mulfingen GmbH & Co. KGaA & Co. KG"
+    },
+    {
+      "value": 3920,
+      "name": "Lantern Innovations Incorporated"
+    },
+    {
+      "value": 3919,
+      "name": "G-Vision GmbH"
+    },
+    {
+      "value": 3918,
+      "name": "Ningbo Dooya Mechanic & Electronic Technology Co., Ltd"
+    },
+    {
+      "value": 3917,
+      "name": "Qulinda AB"
+    },
+    {
+      "value": 3916,
+      "name": "JL WORLD CORPORATION LIMITED"
+    },
+    {
+      "value": 3915,
+      "name": "desamisCo.,Ltd."
+    },
+    {
+      "value": 3914,
+      "name": "Mitsubishi Motors Corporation"
+    },
+    {
+      "value": 3913,
+      "name": "IYO INC."
+    },
+    {
+      "value": 3912,
+      "name": "Shenzhen Xinfeiyi Technology Co., Ltd."
+    },
+    {
+      "value": 3911,
+      "name": "Lodestar Technology Inc."
+    },
+    {
+      "value": 3910,
+      "name": "Huizhou Meicanxin Electronics Technology Co.,Ltd"
+    },
+    {
+      "value": 3909,
+      "name": "Tactica Defense LLC"
+    },
+    {
+      "value": 3908,
+      "name": "MAVERICK ENERGY SOLUTIONS INTERNATIONAL,INC"
+    },
+    {
+      "value": 3907,
+      "name": "12mm Health Technology (Hainan) Co., Ltd."
+    },
+    {
+      "value": 3906,
+      "name": "LINKEDCHIP TECHNOLOGY INC"
+    },
+    {
+      "value": 3905,
+      "name": "BONX INC."
+    },
+    {
+      "value": 3904,
+      "name": "Health Data Insight C.I.C."
+    },
+    {
+      "value": 3903,
+      "name": "Landig + Lava GmbH & Co. KG"
+    },
+    {
+      "value": 3902,
+      "name": "Salyx Medical Inc."
+    },
+    {
+      "value": 3901,
+      "name": "Vitio Medical S.L."
+    },
+    {
+      "value": 3900,
+      "name": "Mobile Technology Solutions LLC"
+    },
+    {
+      "value": 3899,
+      "name": "SANWA NEWTEC CO.,LTD."
+    },
+    {
+      "value": 3898,
+      "name": "Southern Audio Services, Inc"
+    },
+    {
+      "value": 3897,
+      "name": "Seitron Spa"
+    },
+    {
+      "value": 3896,
+      "name": "GILL INSTRUMENTS LIMITED"
+    },
+    {
+      "value": 3895,
+      "name": "Schueco International KG"
+    },
+    {
+      "value": 3894,
+      "name": "NODER Joint Stock Company"
+    },
+    {
+      "value": 3893,
+      "name": "Audeze LLC"
+    },
+    {
+      "value": 3892,
+      "name": "NINGBO SHARKWARD ELECTRONICS CO.,LTD"
+    },
+    {
+      "value": 3891,
+      "name": "TETNET"
+    },
+    {
+      "value": 3890,
+      "name": "FLINTEC UK LIMITED"
+    },
+    {
+      "value": 3889,
+      "name": "TECHNOLOGIES FOR FREERIDE s.r.o"
+    },
+    {
+      "value": 3888,
+      "name": "Opal Camera, Inc."
+    },
+    {
+      "value": 3887,
+      "name": "ThingCo Limited"
+    },
+    {
+      "value": 3886,
+      "name": "BRITZ INTERNATIONAL CO.,LTD"
+    },
+    {
+      "value": 3885,
+      "name": "ClipsClips LLC"
+    },
+    {
+      "value": 3884,
+      "name": "Vision Group Inc."
+    },
+    {
+      "value": 3883,
+      "name": "ElitEngineering LLC"
+    },
+    {
+      "value": 3882,
+      "name": "KELLER Druckmesstechnik AG"
+    },
+    {
+      "value": 3881,
+      "name": "Trezor Company s.r.o."
+    },
+    {
+      "value": 3880,
+      "name": "Amp Fit Israel LTD"
+    },
+    {
+      "value": 3879,
+      "name": "Global Link Distribution Corp."
+    },
+    {
+      "value": 3878,
+      "name": "Centromere Holding B.V."
+    },
+    {
+      "value": 3877,
+      "name": "Sichuan Changhong Neonet Technologies Co.,Ltd."
+    },
+    {
+      "value": 3876,
+      "name": "Easy Measure Co., Ltd."
+    },
+    {
+      "value": 3875,
+      "name": "Yuquan Semiconductor (Xiamen) Co., Ltd."
+    },
+    {
+      "value": 3874,
+      "name": "ONESPACE TECHNOLOGIES (PTY) LTD"
+    },
+    {
+      "value": 3873,
+      "name": "Rokk Limited"
+    },
+    {
+      "value": 3872,
+      "name": "Beijing Spring Creation Technology Co., Ltd."
+    },
+    {
+      "value": 3871,
+      "name": "Ninebot (Changzhou) Tech Co., Ltd."
+    },
+    {
+      "value": 3870,
+      "name": "Yolni Inc."
+    },
+    {
+      "value": 3869,
+      "name": "ZIMMERMANN PV-Steel Group GmbH & Co. KG"
+    },
+    {
+      "value": 3868,
+      "name": "Edge Semiconductors Inc."
+    },
+    {
+      "value": 3867,
+      "name": "PalatiumCare LLC"
+    },
+    {
+      "value": 3866,
+      "name": "FLO SCIENCES, LLC"
+    },
+    {
+      "value": 3865,
+      "name": "Shenzhen SuperSound Technology Co.,Ltd"
+    },
+    {
+      "value": 3864,
+      "name": "iKeyless, LLC"
+    },
+    {
+      "value": 3863,
+      "name": "RORENTECH Co., Ltd."
+    },
+    {
+      "value": 3862,
+      "name": "ADHD Friendly co.Ltd"
+    },
+    {
+      "value": 3861,
+      "name": "Oval Corporation"
+    },
+    {
+      "value": 3860,
+      "name": "PreEvnt, LLC"
+    },
+    {
+      "value": 3859,
+      "name": "Freshape SA"
+    },
+    {
+      "value": 3858,
+      "name": "Endur ID, Inc."
+    },
+    {
+      "value": 3857,
+      "name": "Deep and Steep LLC"
+    },
+    {
+      "value": 3856,
+      "name": "ShenZhen Doctors of Intelligence & Technology Co.,Ltd"
+    },
+    {
+      "value": 3855,
+      "name": "caive Inc."
+    },
+    {
+      "value": 3854,
+      "name": "IDEATRONIK Limited Liability Company"
+    },
+    {
+      "value": 3853,
+      "name": "Maennl Elektronik GmbH"
+    },
+    {
+      "value": 3852,
+      "name": "Hitachi Industrial Equipment Systems Co.,Ltd."
+    },
+    {
+      "value": 3851,
+      "name": "Brightway Innovation Intelligent Technology (Suzhou) Co., Ltd."
+    },
+    {
+      "value": 3850,
+      "name": "LION GROUP, INC."
+    },
+    {
+      "value": 3849,
+      "name": "ANC CHINA LIMITED"
+    },
+    {
+      "value": 3848,
+      "name": "Lezyne USA Inc."
+    },
+    {
+      "value": 3847,
+      "name": "Tech OVN Private Limited"
+    },
+    {
+      "value": 3846,
+      "name": "SHENZHEN POWEROAK NEWENER CO., LTD"
+    },
+    {
+      "value": 3845,
+      "name": "SHENZHEN GWSTAI TECHNOLOGY CO.,LTD"
+    },
+    {
+      "value": 3844,
+      "name": "Lumen Labs (HK) Ltd"
+    },
+    {
+      "value": 3843,
+      "name": "Olibra LLC"
+    },
+    {
+      "value": 3842,
+      "name": "GE HEALTHCARE TECHNOLOGIES INC."
+    },
+    {
+      "value": 3841,
+      "name": "HAPPLABS SOFTWARE PRIVATE LIMITED"
+    },
+    {
+      "value": 3840,
+      "name": "TRACERCO LIMITED"
+    },
+    {
+      "value": 3839,
+      "name": "Healthcare Technology Limited"
+    },
+    {
+      "value": 3838,
+      "name": "Teledyne Instruments, Inc."
+    },
+    {
+      "value": 3837,
+      "name": "PRIMES GmbH"
+    },
+    {
+      "value": 3836,
+      "name": "Jano Life Inc."
+    },
+    {
+      "value": 3835,
+      "name": "BLUEPROVIDERZ LLC"
+    },
+    {
+      "value": 3834,
+      "name": "Sensear Pty Ltd"
+    },
+    {
+      "value": 3833,
+      "name": "Aseptico, Inc."
+    },
+    {
+      "value": 3832,
+      "name": "IoT Solutions Malta Limited"
+    },
+    {
+      "value": 3831,
+      "name": "Trackonomy Systems, Inc."
+    },
+    {
+      "value": 3830,
+      "name": "Shenzhen Cyber Innovation Technology Co., Ltd."
+    },
+    {
+      "value": 3829,
+      "name": "LS ELECTRIC Co., Ltd."
+    },
+    {
+      "value": 3827,
+      "name": "Monil AS"
+    },
+    {
+      "value": 3826,
+      "name": "CAPTAIN BLINK"
+    },
+    {
+      "value": 3825,
+      "name": "Wuxi Does IOT Co., Ltd"
+    },
+    {
+      "value": 3824,
+      "name": "Seaward Electronic"
+    },
+    {
+      "value": 3823,
+      "name": "Q42 Internet B.V."
+    },
+    {
+      "value": 3822,
+      "name": "ELLEA INGEGNERIA SRL UNIPERSONALE"
+    },
+    {
+      "value": 3821,
+      "name": "BBC Bircher AG"
+    },
+    {
+      "value": 3820,
+      "name": "Willow Laboratories, Inc."
+    },
+    {
+      "value": 3819,
+      "name": "Fujita Electric Works, Ltd"
+    },
+    {
+      "value": 3818,
+      "name": "Core Devices LLC"
+    },
+    {
+      "value": 3817,
+      "name": "PIXEL TI IND. E COM PROD ELETRONICOS"
+    },
+    {
+      "value": 3816,
+      "name": "SG Armaturen AS"
+    },
+    {
+      "value": 3815,
+      "name": "RICKARD AIR DIFFUSION (PTY) LTD"
+    },
+    {
+      "value": 3814,
+      "name": "NOCTRIX HEALTH, INC"
+    },
+    {
+      "value": 3813,
+      "name": "Ambient Life Inc."
+    },
+    {
+      "value": 3812,
+      "name": "CAPTEMP, LDA"
+    },
+    {
+      "value": 3811,
+      "name": "TAMRON Co., Ltd."
+    },
+    {
+      "value": 3810,
+      "name": "shenzhen hongever technology Co,. Ltd"
+    },
+    {
+      "value": 3809,
+      "name": "MA MICRO LIMITED"
+    },
+    {
+      "value": 3808,
+      "name": "MAERSK CONTAINER INDUSTRY A/S"
+    },
+    {
+      "value": 3807,
+      "name": "Dynaudio A/S"
+    },
+    {
+      "value": 3806,
+      "name": "Sony Honda Mobility Inc."
+    },
+    {
+      "value": 3805,
+      "name": "Ceridwen Limited"
+    },
+    {
+      "value": 3804,
+      "name": "Shenzhen Zoqin Technology Co., Ltd."
+    },
+    {
+      "value": 3803,
+      "name": "ShenZhen BoYiChuangXin"
+    },
+    {
+      "value": 3802,
+      "name": "Kodira GmbH"
+    },
+    {
+      "value": 3801,
+      "name": "Overhead Door Corporation"
+    },
+    {
+      "value": 3800,
+      "name": "DORAN MFG. LLC"
+    },
+    {
+      "value": 3799,
+      "name": "CS INSTRUMENTS GmbH & Co.KG"
+    },
+    {
+      "value": 3798,
+      "name": "Quintessential Design, Inc."
+    },
+    {
+      "value": 3797,
+      "name": "Relish Technologies Limited"
+    },
+    {
+      "value": 3796,
+      "name": "Goerdyna Group Co., Ltd"
+    },
+    {
+      "value": 3795,
+      "name": "Lichens Innovation inc."
+    },
+    {
+      "value": 3794,
+      "name": "SHENZHEN BESTWAY ELECTRONICS CO.,LTD"
+    },
+    {
+      "value": 3793,
+      "name": "VINYL MATT MEDIA LIMITED"
+    },
+    {
+      "value": 3792,
+      "name": "Gibson, Inc."
+    },
+    {
+      "value": 3791,
+      "name": "GGEC America, Inc."
+    },
+    {
+      "value": 3790,
+      "name": "Guangzhou Honor Microelectronic Co.,Ltd."
+    },
+    {
+      "value": 3789,
+      "name": "Nature Inc."
+    },
+    {
+      "value": 3788,
+      "name": "Shenzhen NEOECO Technology Co., Ltd."
+    },
+    {
+      "value": 3787,
+      "name": "Zhong Shan City Richsound Electronic Industrial Ltd."
+    },
+    {
+      "value": 3786,
+      "name": "NexRev LLC"
+    },
+    {
+      "value": 3785,
+      "name": "NeuroPace Inc"
+    },
+    {
+      "value": 3784,
+      "name": "Codie LLC"
+    },
+    {
+      "value": 3783,
+      "name": "Canyon Bicycles GmbH"
+    },
+    {
+      "value": 3782,
+      "name": "AuthGate B.V."
+    },
+    {
+      "value": 3781,
+      "name": "Alibaba (China) Co., Ltd."
+    },
+    {
+      "value": 3780,
+      "name": "PACIFIC MARINE BATTERIES PTY. LIMITED"
+    },
+    {
+      "value": 3779,
+      "name": "Herschel Infrared Ltd"
+    },
+    {
+      "value": 3778,
+      "name": "High Entropy, LLC"
+    },
+    {
+      "value": 3777,
+      "name": "Crossdoor"
+    },
+    {
+      "value": 3776,
+      "name": "WEST inx Ltd."
+    },
+    {
+      "value": 3775,
+      "name": "Schulte-Schlagbaum AG"
+    },
+    {
+      "value": 3774,
+      "name": "Deity Acoustic Technology Co."
+    },
+    {
+      "value": 3773,
+      "name": "Tongfang Health Technology (Beijing) Co., Ltd."
+    },
+    {
+      "value": 3772,
+      "name": "GP Acoustics International Limited"
+    },
+    {
+      "value": 3771,
+      "name": "Asahi Denso Co.,Ltd."
+    },
+    {
+      "value": 3770,
+      "name": "THERMY LTD"
+    },
+    {
+      "value": 3769,
+      "name": "egojin co,.ltd"
+    },
+    {
+      "value": 3767,
+      "name": "Embedded Solutions LLC"
+    },
+    {
+      "value": 3766,
+      "name": "Server Products, Inc."
+    },
+    {
+      "value": 3765,
+      "name": "Preseed Japan Corporation"
+    },
+    {
+      "value": 3764,
+      "name": "BLUEFIN DATA, LLC"
+    },
+    {
+      "value": 3763,
+      "name": "Zucchetti Axess"
+    },
+    {
+      "value": 3762,
+      "name": "PRADCO Outdoor Brands"
+    },
+    {
+      "value": 3761,
+      "name": "WearNex Limited"
+    },
+    {
+      "value": 3760,
+      "name": "FactorySense"
+    },
+    {
+      "value": 3759,
+      "name": "Unfolded Circle ApS"
+    },
+    {
+      "value": 3758,
+      "name": "BHClears Microelectronics (Shanghai) Co., Ltd."
+    },
+    {
+      "value": 3757,
+      "name": "OPTRON Co., Ltd."
+    },
+    {
+      "value": 3756,
+      "name": "Dynetrex Solutions Inc."
+    },
+    {
+      "value": 3755,
+      "name": "STEYR Sport GmbH"
+    },
+    {
+      "value": 3754,
+      "name": "Hive Soundz inc."
+    },
+    {
+      "value": 3753,
+      "name": "Makichie Co., Ltd."
+    },
+    {
+      "value": 3752,
+      "name": "Dongguan Trangjan Industrial Co., Ltd"
+    },
+    {
+      "value": 3751,
+      "name": "BrickXter GmbH"
+    },
+    {
+      "value": 3750,
+      "name": "AMG Lab LLC"
+    },
+    {
+      "value": 3748,
+      "name": "BiTECH Automotive (Wuhu) Co.,Ltd"
+    },
+    {
+      "value": 3747,
+      "name": "OLIS ELECTRONICS, LLC"
+    },
+    {
+      "value": 3746,
+      "name": "QIKCONNEX LLC"
+    },
+    {
+      "value": 3745,
+      "name": "Culligan International Company"
+    },
+    {
+      "value": 3744,
+      "name": "ENLESS WIRELESS"
+    },
+    {
+      "value": 3743,
+      "name": "Owlet Baby Care Inc."
+    },
+    {
+      "value": 3742,
+      "name": "Travelxp India Private Limited"
+    },
+    {
+      "value": 3741,
+      "name": "Audinor ApS"
+    },
+    {
+      "value": 3740,
+      "name": "Andrews & Arnold Ltd"
+    },
+    {
+      "value": 3739,
+      "name": "Panasonic Automotive Systems Co., Ltd."
+    },
+    {
+      "value": 3738,
+      "name": "Scanbro OU"
+    },
+    {
+      "value": 3737,
+      "name": "Medibound, Inc."
+    },
+    {
+      "value": 3736,
+      "name": "Chromatic Inc."
+    },
+    {
+      "value": 3735,
+      "name": "kokoromil Inc."
+    },
+    {
+      "value": 3734,
+      "name": "Skeed,co,Ltd."
+    },
+    {
+      "value": 3733,
+      "name": "Viaanix, Inc."
+    },
+    {
+      "value": 3732,
+      "name": "Tactrix"
+    },
+    {
+      "value": 3731,
+      "name": "MIV ELECTRONICS, LTD"
+    },
+    {
+      "value": 3730,
+      "name": "Glutz AG"
+    },
+    {
+      "value": 3729,
+      "name": "Identita Inc."
+    },
+    {
+      "value": 3728,
+      "name": "RainMaker Solutions, Inc."
+    },
+    {
+      "value": 3727,
+      "name": "Avetos Design LLC"
+    },
+    {
+      "value": 3726,
+      "name": "Nobest Inc"
+    },
+    {
+      "value": 3725,
+      "name": "Celebrities Management Private Limited"
+    },
+    {
+      "value": 3724,
+      "name": "Gopod Group Holding Limited"
+    },
+    {
+      "value": 3723,
+      "name": "Allgon AB"
+    },
+    {
+      "value": 3722,
+      "name": "Tele-Radio i Lysekil AB"
+    },
+    {
+      "value": 3721,
+      "name": "Brudden"
+    },
+    {
+      "value": 3720,
+      "name": "Skewered Fencing, LLC"
+    },
+    {
+      "value": 3719,
+      "name": "OpenTech Alliance, Inc."
+    },
+    {
+      "value": 3718,
+      "name": "Mercury Marine, a division of Brunswick Corporation"
+    },
+    {
+      "value": 3717,
+      "name": "TigerLight, Inc."
+    },
+    {
+      "value": 3716,
+      "name": "Tymphany HK Ltd"
+    },
+    {
       "value": 3715,
       "name": "SPRiNTUS GmbH"
     },
@@ -85,14 +2153,6 @@
       "name": "OpConnect, Inc."
     },
     {
-      "value": 3694,
-      "name": "I.M.LAB Inc"
-    },
-    {
-      "value": 3693,
-      "name": "FEVOS LIMITED"
-    },
-    {
       "value": 3692,
       "name": "RIGH, INC."
     },
@@ -107,10 +2167,6 @@
     {
       "value": 3689,
       "name": "Megatronix (Beijing) Technology Co., Ltd"
-    },
-    {
-      "value": 3688,
-      "name": "EarTex Ltd"
     },
     {
       "value": 3687,
@@ -158,7 +2214,7 @@
     },
     {
       "value": 3676,
-      "name": "Amimon Ltd."
+      "name": "Rocoto Ltd"
     },
     {
       "value": 3675,
@@ -190,7 +2246,7 @@
     },
     {
       "value": 3668,
-      "name": "Relief Technologies AS"
+      "name": "After Technologies AS"
     },
     {
       "value": 3667,
@@ -382,6 +2438,10 @@
     },
     {
       "value": 3620,
+      "name": "Avedis Zildjian Co."
+    },
+    {
+      "value": 3619,
       "name": "MS kajak7 UG (limited liability)"
     },
     {
@@ -465,10 +2525,6 @@
       "name": "SenseWorks Tecnologia Ltda."
     },
     {
-      "value": 3598,
-      "name": "ALOGIC CORPORATION PTY LTD"
-    },
-    {
       "value": 3597,
       "name": "FrontAct Co., Ltd."
     },
@@ -479,10 +2535,6 @@
     {
       "value": 3595,
       "name": "Sounding Audio Industrial Ltd."
-    },
-    {
-      "value": 3594,
-      "name": "PRINT INTERNATIONAL LIMITED"
     },
     {
       "value": 3593,
@@ -681,10 +2733,6 @@
       "name": "SCHELL GmbH & Co. KG"
     },
     {
-      "value": 3544,
-      "name": "Granchip IoT Technology (Guangzhou) Co.,Ltd"
-    },
-    {
       "value": 3543,
       "name": "Xiant Technologies, Inc."
     },
@@ -706,7 +2754,7 @@
     },
     {
       "value": 3538,
-      "name": "Sitecom Europe B.V."
+      "name": "Fresh n Rebel B.V."
     },
     {
       "value": 3537,
@@ -853,10 +2901,6 @@
       "name": "TITUM AUDIO, INC."
     },
     {
-      "value": 3501,
-      "name": "linktop"
-    },
-    {
       "value": 3500,
       "name": "ITALTRACTOR ITM S.P.A."
     },
@@ -953,10 +2997,6 @@
       "name": "Hunter Industries Incorporated"
     },
     {
-      "value": 3476,
-      "name": "Shrooly Inc"
-    },
-    {
       "value": 3475,
       "name": "HagerEnergy GmbH"
     },
@@ -999,10 +3039,6 @@
     {
       "value": 3465,
       "name": "Nanohex Corp"
-    },
-    {
-      "value": 3464,
-      "name": "Geocene Inc."
     },
     {
       "value": 3463,
@@ -1177,10 +3213,6 @@
       "name": "Stogger B.V."
     },
     {
-      "value": 3420,
-      "name": "Pison Technology, Inc."
-    },
-    {
       "value": 3419,
       "name": "Axis Communications AB"
     },
@@ -1239,10 +3271,6 @@
     {
       "value": 3405,
       "name": "Optec, LLC"
-    },
-    {
-      "value": 3404,
-      "name": "IotGizmo Corporation"
     },
     {
       "value": 3403,
@@ -1477,10 +3505,6 @@
       "name": "Spartek Systems Inc."
     },
     {
-      "value": 3345,
-      "name": "Great Dane LLC"
-    },
-    {
       "value": 3344,
       "name": "JVC KENWOOD Corporation"
     },
@@ -1545,20 +3569,12 @@
       "name": "KEEPEN"
     },
     {
-      "value": 3328,
-      "name": "Sparkpark AS"
-    },
-    {
       "value": 3327,
       "name": "Ergodriven Inc"
     },
     {
       "value": 3326,
       "name": "Thule Group AB"
-    },
-    {
-      "value": 3325,
-      "name": "Wuhan Woncan Construction Technologies Co., Ltd."
     },
     {
       "value": 3324,
@@ -1599,10 +3615,6 @@
     {
       "value": 3315,
       "name": "Radio Sound"
-    },
-    {
-      "value": 3314,
-      "name": "BestSens AG"
     },
     {
       "value": 3313,
@@ -1679,10 +3691,6 @@
     {
       "value": 3295,
       "name": "SHENZHEN CHENYUN ELECTRONICS  CO., LTD"
-    },
-    {
-      "value": 3294,
-      "name": "RESPONSE TECHNOLOGIES, LTD."
     },
     {
       "value": 3293,
@@ -1829,10 +3837,6 @@
       "name": "seca GmbH & Co. KG"
     },
     {
-      "value": 3256,
-      "name": "Shanghai Proxy Network Technology Co., Ltd."
-    },
-    {
       "value": 3255,
       "name": "Cucumber Lighting Controls Limited"
     },
@@ -1957,10 +3961,6 @@
       "name": "Vire Health Oy"
     },
     {
-      "value": 3224,
-      "name": "MiX Telematics International (PTY) LTD"
-    },
-    {
       "value": 3223,
       "name": "Deako"
     },
@@ -2061,10 +4061,6 @@
       "name": "Rochester Sensors, LLC"
     },
     {
-      "value": 3198,
-      "name": "BOOMING OF THINGS"
-    },
-    {
       "value": 3197,
       "name": "3ALogics, Inc."
     },
@@ -2091,10 +4087,6 @@
     {
       "value": 3191,
       "name": "TEAC Corporation"
-    },
-    {
-      "value": 3190,
-      "name": "Shenzhen Gwell Times Technology Co. , Ltd"
     },
     {
       "value": 3189,
@@ -2155,10 +4147,6 @@
     {
       "value": 3175,
       "name": "TRACKTING S.R.L."
-    },
-    {
-      "value": 3174,
-      "name": "DEN Smart Home B.V."
     },
     {
       "value": 3173,
@@ -2285,10 +4273,6 @@
       "name": "Epsilon Electronics,lnc"
     },
     {
-      "value": 3142,
-      "name": "Granwin IoT Technology (Guangzhou) Co.,Ltd"
-    },
-    {
       "value": 3141,
       "name": "Brose Verwaltung SE, Bamberg"
     },
@@ -2333,10 +4317,6 @@
       "name": "ORB Innovations Ltd"
     },
     {
-      "value": 3130,
-      "name": "Equinosis, LLC"
-    },
-    {
       "value": 3129,
       "name": "TIGER CORPORATION"
     },
@@ -2347,10 +4327,6 @@
     {
       "value": 3127,
       "name": "SignalQuest, LLC"
-    },
-    {
-      "value": 3126,
-      "name": "Cosmicnode BV"
     },
     {
       "value": 3125,
@@ -2593,10 +4569,6 @@
       "name": "CleanBands Systems Ltd."
     },
     {
-      "value": 3065,
-      "name": "Alio, Inc"
-    },
-    {
       "value": 3064,
       "name": "Innovacionnye Resheniya"
     },
@@ -2611,10 +4583,6 @@
     {
       "value": 3061,
       "name": "T5 tek, Inc."
-    },
-    {
-      "value": 3060,
-      "name": "ER Lab LLC"
     },
     {
       "value": 3059,
@@ -2643,10 +4611,6 @@
     {
       "value": 3053,
       "name": "CORAL-TAIYI Co. Ltd."
-    },
-    {
-      "value": 3052,
-      "name": "Miracle-Ear, Inc."
     },
     {
       "value": 3051,
@@ -2689,10 +4653,6 @@
       "name": "OTC engineering"
     },
     {
-      "value": 3041,
-      "name": "Back40 Precision"
-    },
-    {
       "value": 3040,
       "name": "Koizumi Lighting Technology corp."
     },
@@ -2710,7 +4670,7 @@
     },
     {
       "value": 3036,
-      "name": "Ledworks S.r.l."
+      "name": "TWINKLY SRL"
     },
     {
       "value": 3035,
@@ -2721,16 +4681,8 @@
       "name": "Aardex Ltd."
     },
     {
-      "value": 3033,
-      "name": "Elics Basis Ltd."
-    },
-    {
       "value": 3032,
       "name": "PURA SCENTS, INC."
-    },
-    {
-      "value": 3031,
-      "name": "VINFAST TRADING AND PRODUCTION JOINT STOCK COMPANY"
     },
     {
       "value": 3030,
@@ -2831,10 +4783,6 @@
     {
       "value": 3006,
       "name": "SAAB Aktiebolag"
-    },
-    {
-      "value": 3005,
-      "name": "ETHEORY PTY LTD"
     },
     {
       "value": 3004,
@@ -2969,10 +4917,6 @@
       "name": "Komatsu Ltd."
     },
     {
-      "value": 2971,
-      "name": "GISMAN"
-    },
-    {
       "value": 2970,
       "name": "Beijing Wisepool Infinite Intelligence Technology Co.,Ltd"
     },
@@ -2993,10 +4937,6 @@
       "name": "Telecom Design"
     },
     {
-      "value": 2965,
-      "name": "Netwake GmbH"
-    },
-    {
       "value": 2964,
       "name": "Dreem SAS"
     },
@@ -3005,16 +4945,8 @@
       "name": "Hangzhou BroadLink Technology Co., Ltd."
     },
     {
-      "value": 2962,
-      "name": "Citisend Solutions, SL"
-    },
-    {
       "value": 2961,
       "name": "Alfen ICU B.V."
-    },
-    {
-      "value": 2960,
-      "name": "Ineos Automotive Limited"
     },
     {
       "value": 2959,
@@ -3145,10 +5077,6 @@
       "name": "JDRF Electromag Engineering Inc"
     },
     {
-      "value": 2927,
-      "name": "Shenzhen Malide Technology Co.,Ltd"
-    },
-    {
       "value": 2926,
       "name": "React Mobile"
     },
@@ -3221,20 +5149,8 @@
       "name": "Fujian Newland Auto-ID Tech. Co., Ltd."
     },
     {
-      "value": 2908,
-      "name": "Exponential Power, Inc."
-    },
-    {
       "value": 2907,
       "name": "Shenzhen ImagineVision Technology Limited"
-    },
-    {
-      "value": 2906,
-      "name": "H.P. Shelby Manufacturing, LLC."
-    },
-    {
-      "value": 2905,
-      "name": "Versa Group B.V."
     },
     {
       "value": 2904,
@@ -3307,10 +5223,6 @@
     {
       "value": 2887,
       "name": "Gentex Corporation"
-    },
-    {
-      "value": 2886,
-      "name": "Bird Rides, Inc."
     },
     {
       "value": 2885,
@@ -3421,16 +5333,8 @@
       "name": "MAINBOT"
     },
     {
-      "value": 2858,
-      "name": "ACL Airshop B.V."
-    },
-    {
       "value": 2857,
       "name": "Tech-Venom Entertainment Private Limited"
-    },
-    {
-      "value": 2856,
-      "name": "CHACON"
     },
     {
       "value": 2855,
@@ -3457,10 +5361,6 @@
       "name": "Hygiene IQ, LLC."
     },
     {
-      "value": 2849,
-      "name": "ams AG"
-    },
-    {
       "value": 2848,
       "name": "TKH Security B.V."
     },
@@ -3479,10 +5379,6 @@
     {
       "value": 2844,
       "name": "Nanoleq AG"
-    },
-    {
-      "value": 2843,
-      "name": "Enerpac Tool Group Corp."
     },
     {
       "value": 2842,
@@ -3534,7 +5430,7 @@
     },
     {
       "value": 2830,
-      "name": "Honda Lock Mfg. Co.,Ltd."
+      "name": "Minebea Access Solutions Inc."
     },
     {
       "value": 2829,
@@ -3553,10 +5449,6 @@
       "name": "Belun Technology Company Limited"
     },
     {
-      "value": 2825,
-      "name": "soonisys"
-    },
-    {
       "value": 2824,
       "name": "Shenzhen Qianfenyi Intelligent Technology Co., LTD"
     },
@@ -3571,10 +5463,6 @@
     {
       "value": 2821,
       "name": "Marquardt GmbH"
-    },
-    {
-      "value": 2820,
-      "name": "I-PERCUT"
     },
     {
       "value": 2819,
@@ -3709,18 +5597,6 @@
       "name": "GlobalMed"
     },
     {
-      "value": 2786,
-      "name": "IMATRIX SYSTEMS, INC."
-    },
-    {
-      "value": 2785,
-      "name": "ChengDu ForThink Technology Co., Ltd."
-    },
-    {
-      "value": 2784,
-      "name": "Viceroy Devices Corporation"
-    },
-    {
       "value": 2783,
       "name": "Douglas Dynamics L.L.C."
     },
@@ -3743,10 +5619,6 @@
     {
       "value": 2778,
       "name": "Codefabrik GmbH"
-    },
-    {
-      "value": 2777,
-      "name": "Shenzhen Aimore. Co.,Ltd"
     },
     {
       "value": 2776,
@@ -3981,10 +5853,6 @@
       "name": "ista International GmbH"
     },
     {
-      "value": 2718,
-      "name": "LifePlus, Inc."
-    },
-    {
       "value": 2717,
       "name": "Canon Finetech Nisca Inc."
     },
@@ -4007,14 +5875,6 @@
     {
       "value": 2712,
       "name": "Foil, Inc."
-    },
-    {
-      "value": 2711,
-      "name": "SensTek"
-    },
-    {
-      "value": 2710,
-      "name": "Lightricity Ltd"
     },
     {
       "value": 2709,
@@ -4066,7 +5926,7 @@
     },
     {
       "value": 2697,
-      "name": "SES-Imagotag"
+      "name": "VusionGroup"
     },
     {
       "value": 2696,
@@ -4205,20 +6065,12 @@
       "name": "Beijing SuperHexa Century Technology CO. Ltd"
     },
     {
-      "value": 2662,
-      "name": "JUSTMORPH PTE. LTD."
-    },
-    {
       "value": 2661,
       "name": "Lytx, INC."
     },
     {
       "value": 2660,
       "name": "Geopal system A/S"
-    },
-    {
-      "value": 2659,
-      "name": "Gremsy JSC"
     },
     {
       "value": 2658,
@@ -4235,10 +6087,6 @@
     {
       "value": 2655,
       "name": "stryker"
-    },
-    {
-      "value": 2654,
-      "name": "LaceClips llc"
     },
     {
       "value": 2653,
@@ -4321,10 +6169,6 @@
       "name": "Map Large, Inc."
     },
     {
-      "value": 2633,
-      "name": "Venture Research Inc."
-    },
-    {
       "value": 2632,
       "name": "JRC Mobility Inc."
     },
@@ -4357,16 +6201,8 @@
       "name": "OPEX Corporation"
     },
     {
-      "value": 2624,
-      "name": "GEWISS S.p.A."
-    },
-    {
       "value": 2623,
       "name": "Shenzhen Yopeak Optoelectronics Technology Co., Ltd."
-    },
-    {
-      "value": 2622,
-      "name": "Hefei Yunlian Semiconductor Co., Ltd"
     },
     {
       "value": 2621,
@@ -4429,10 +6265,6 @@
       "name": "Instamic, Inc."
     },
     {
-      "value": 2606,
-      "name": "Zuma Array Limited"
-    },
-    {
       "value": 2605,
       "name": "Shenzhen Feasycom Technology Co., Ltd."
     },
@@ -4455,10 +6287,6 @@
     {
       "value": 2600,
       "name": "NanoFlex Power Corporation"
-    },
-    {
-      "value": 2599,
-      "name": "AYU DEVICES PRIVATE LIMITED"
     },
     {
       "value": 2598,
@@ -4577,10 +6405,6 @@
       "name": "Volan Technology Inc."
     },
     {
-      "value": 2569,
-      "name": "ECCT"
-    },
-    {
       "value": 2568,
       "name": "Oras Oy"
     },
@@ -4623,10 +6447,6 @@
     {
       "value": 2558,
       "name": "Lichtvision Engineering GmbH"
-    },
-    {
-      "value": 2557,
-      "name": "Keep Technologies, Inc."
     },
     {
       "value": 2556,
@@ -4733,16 +6553,8 @@
       "name": "Friday Home Aps"
     },
     {
-      "value": 2530,
-      "name": "Wuhan Linptech Co.,Ltd."
-    },
-    {
       "value": 2529,
       "name": "Tag-N-Trac Inc"
-    },
-    {
-      "value": 2528,
-      "name": "Preddio Technologies Inc."
     },
     {
       "value": 2527,
@@ -4755,10 +6567,6 @@
     {
       "value": 2525,
       "name": "Innoware Development AB"
-    },
-    {
-      "value": 2524,
-      "name": "AON2 Ltd."
     },
     {
       "value": 2523,
@@ -4793,10 +6601,6 @@
       "name": "ORBIS Inc."
     },
     {
-      "value": 2515,
-      "name": "HeartHero, inc."
-    },
-    {
       "value": 2514,
       "name": "Temperature Sensitive Solutions Systems Sweden AB"
     },
@@ -4815,10 +6619,6 @@
     {
       "value": 2510,
       "name": "Julius Blum GmbH"
-    },
-    {
-      "value": 2509,
-      "name": "Blyott"
     },
     {
       "value": 2508,
@@ -5073,10 +6873,6 @@
       "name": "ADVEEZ"
     },
     {
-      "value": 2445,
-      "name": "C3-WIRELESS, LLC"
-    },
-    {
       "value": 2444,
       "name": "bGrid B.V."
     },
@@ -5181,10 +6977,6 @@
       "name": "Popit Oy"
     },
     {
-      "value": 2418,
-      "name": "Closed Joint Stock Company \"Zavod Flometr\" (\"Zavod Flometr\" CJSC)"
-    },
-    {
       "value": 2417,
       "name": "GA"
     },
@@ -5193,20 +6985,12 @@
       "name": "IBA Dosimetry GmbH"
     },
     {
-      "value": 2415,
-      "name": "Lund Motion Products, Inc."
-    },
-    {
       "value": 2414,
       "name": "Band Industries, inc."
     },
     {
       "value": 2413,
       "name": "Gunwerks, LLC"
-    },
-    {
-      "value": 2412,
-      "name": "9374-7319 Quebec inc"
     },
     {
       "value": 2411,
@@ -5275,10 +7059,6 @@
     {
       "value": 2395,
       "name": "Lismore Instruments Limited"
-    },
-    {
-      "value": 2394,
-      "name": "Selekt Bilgisayar, lletisim Urunleri lnsaat Sanayi ve Ticaret Limited Sirketi"
     },
     {
       "value": 2393,
@@ -5433,10 +7213,6 @@
       "name": "SRAM"
     },
     {
-      "value": 2354,
-      "name": "BarVision, LLC"
-    },
-    {
       "value": 2353,
       "name": "BREATHINGS Co., Ltd."
     },
@@ -5503,10 +7279,6 @@
     {
       "value": 2337,
       "name": "KAHA PTE. LTD."
-    },
-    {
-      "value": 2336,
-      "name": "Omnisense Limited"
     },
     {
       "value": 2335,
@@ -5657,10 +7429,6 @@
       "name": "Darkglass Electronics Oy"
     },
     {
-      "value": 2298,
-      "name": "Troo Corporation"
-    },
-    {
       "value": 2297,
       "name": "Spacelabs Medical Inc."
     },
@@ -5801,10 +7569,6 @@
       "name": "Inovonics Corp"
     },
     {
-      "value": 2262,
-      "name": "Nome Oy"
-    },
-    {
       "value": 2261,
       "name": "KEYes"
     },
@@ -5865,16 +7629,8 @@
       "name": "Monadnock Systems Ltd."
     },
     {
-      "value": 2246,
-      "name": "Integra Optics Inc"
-    },
-    {
       "value": 2245,
       "name": "J. Wagner GmbH"
-    },
-    {
-      "value": 2244,
-      "name": "CellAssist, LLC"
     },
     {
       "value": 2243,
@@ -5931,10 +7687,6 @@
     {
       "value": 2230,
       "name": "Boehringer Ingelheim Vetmedica GmbH"
-    },
-    {
-      "value": 2229,
-      "name": "TransferFi"
     },
     {
       "value": 2228,
@@ -5997,10 +7749,6 @@
       "name": "Intelligenceworks Inc."
     },
     {
-      "value": 2213,
-      "name": "UMEHEAL Ltd"
-    },
-    {
       "value": 2212,
       "name": "Realme Chongqing Mobile Telecommunications Corp., Ltd."
     },
@@ -6049,10 +7797,6 @@
       "name": "SFS unimarket AG"
     },
     {
-      "value": 2200,
-      "name": "Sensibo, Inc."
-    },
-    {
       "value": 2199,
       "name": "Current Lighting Solutions LLC"
     },
@@ -6089,10 +7833,6 @@
       "name": "Tait International Limited"
     },
     {
-      "value": 2190,
-      "name": "GIGA-TMS INC"
-    },
-    {
       "value": 2189,
       "name": "Soliton Systems K.K."
     },
@@ -6123,10 +7863,6 @@
     {
       "value": 2182,
       "name": "Movella Technologies B.V."
-    },
-    {
-      "value": 2181,
-      "name": "LEVOLOR INC"
     },
     {
       "value": 2180,
@@ -6182,7 +7918,7 @@
     },
     {
       "value": 2167,
-      "name": "Tome, Inc."
+      "name": "Valtech"
     },
     {
       "value": 2166,
@@ -6275,10 +8011,6 @@
     {
       "value": 2144,
       "name": "Alflex Products B.V."
-    },
-    {
-      "value": 2143,
-      "name": "COMPEGPS TEAM,SOCIEDAD LIMITADA"
     },
     {
       "value": 2142,
@@ -6463,10 +8195,6 @@
     {
       "value": 2097,
       "name": "Foxble, LLC"
-    },
-    {
-      "value": 2096,
-      "name": "Core Health and Fitness LLC"
     },
     {
       "value": 2095,
@@ -6781,10 +8509,6 @@
       "name": "Alfred Kaercher SE & Co. KG"
     },
     {
-      "value": 2017,
-      "name": "Lucie Labs"
-    },
-    {
       "value": 2016,
       "name": "Edifier International Limited"
     },
@@ -6873,10 +8597,6 @@
       "name": "West Pharmaceutical Services, Inc."
     },
     {
-      "value": 1994,
-      "name": "Modul-System HH AB"
-    },
-    {
       "value": 1993,
       "name": "Skullcandy, Inc."
     },
@@ -6909,10 +8629,6 @@
       "name": "Radinn AB"
     },
     {
-      "value": 1985,
-      "name": "A.W. Chesterton Company"
-    },
-    {
       "value": 1984,
       "name": "Biral AG"
     },
@@ -6929,20 +8645,12 @@
       "name": "Genedrive Diagnostics Ltd"
     },
     {
-      "value": 1980,
-      "name": "KD CIRCUITS LLC"
-    },
-    {
       "value": 1979,
       "name": "EPIC S.R.L."
     },
     {
       "value": 1978,
       "name": "Battery-Biz Inc."
-    },
-    {
-      "value": 1977,
-      "name": "Epona Biotec Limited"
     },
     {
       "value": 1976,
@@ -7029,16 +8737,8 @@
       "name": "Xiamen Mage Information Technology Co., Ltd."
     },
     {
-      "value": 1955,
-      "name": "Comcast Cable"
-    },
-    {
       "value": 1954,
       "name": "Roku, Inc."
-    },
-    {
-      "value": 1953,
-      "name": "Apollo Neuroscience, Inc."
     },
     {
       "value": 1952,
@@ -7141,10 +8841,6 @@
       "name": "BubblyNet, LLC"
     },
     {
-      "value": 1927,
-      "name": "Pangaea Solution"
-    },
-    {
       "value": 1926,
       "name": "HLP Controls Pty Limited"
     },
@@ -7189,10 +8885,6 @@
       "name": "radius co., ltd."
     },
     {
-      "value": 1915,
-      "name": "AmaterZ, Inc."
-    },
-    {
       "value": 1914,
       "name": "Niruha Systems Private Limited"
     },
@@ -7219,10 +8911,6 @@
     {
       "value": 1908,
       "name": "C-MAX Asia Limited"
-    },
-    {
-      "value": 1907,
-      "name": "Echoflex Solutions Inc."
     },
     {
       "value": 1906,
@@ -7377,10 +9065,6 @@
       "name": "Amtech Systems, LLC"
     },
     {
-      "value": 1868,
-      "name": "iopool s.a."
-    },
-    {
       "value": 1867,
       "name": "Sarvavid Software Solutions LLP"
     },
@@ -7425,10 +9109,6 @@
       "name": "MAC SRL"
     },
     {
-      "value": 1856,
-      "name": "HITIQ LIMITED"
-    },
-    {
       "value": 1855,
       "name": "Beijing Unisoc Technologies Co., Ltd."
     },
@@ -7439,10 +9119,6 @@
     {
       "value": 1853,
       "name": "Beijing Hao Heng Tian Tech Co., Ltd."
-    },
-    {
-      "value": 1852,
-      "name": "Acubit ApS"
     },
     {
       "value": 1851,
@@ -7525,10 +9201,6 @@
       "name": "Eli Lilly and Company"
     },
     {
-      "value": 1831,
-      "name": "STALKIT AS"
-    },
-    {
       "value": 1830,
       "name": "PHC Corporation"
     },
@@ -7587,10 +9259,6 @@
     {
       "value": 1816,
       "name": "IDIBAIX enginneering"
-    },
-    {
-      "value": 1815,
-      "name": "iQsquare BV"
     },
     {
       "value": 1814,
@@ -7753,16 +9421,8 @@
       "name": "ALCARE Co., Ltd."
     },
     {
-      "value": 1774,
-      "name": "Avantis Systems Limited"
-    },
-    {
       "value": 1773,
       "name": "J Neades Ltd"
-    },
-    {
-      "value": 1772,
-      "name": "Sigur"
     },
     {
       "value": 1771,
@@ -7857,14 +9517,6 @@
       "name": "Sensirion AG"
     },
     {
-      "value": 1748,
-      "name": "DYNAKODE TECHNOLOGY PRIVATE LIMITED"
-    },
-    {
-      "value": 1747,
-      "name": "TriTeq Lock and Security, LLC"
-    },
-    {
       "value": 1746,
       "name": "CeoTronics AG"
     },
@@ -7875,10 +9527,6 @@
     {
       "value": 1744,
       "name": "Etekcity Corporation"
-    },
-    {
-      "value": 1743,
-      "name": "Belparts N.V."
     },
     {
       "value": 1742,
@@ -7909,10 +9557,6 @@
       "name": "Storz & Bickel GmbH & Co. KG"
     },
     {
-      "value": 1735,
-      "name": "Somatix Inc"
-    },
-    {
       "value": 1734,
       "name": "Simm Tronic Limited"
     },
@@ -7939,10 +9583,6 @@
     {
       "value": 1728,
       "name": "CAME S.p.A."
-    },
-    {
-      "value": 1727,
-      "name": "Delcom Products Inc."
     },
     {
       "value": 1726,
@@ -7987,10 +9627,6 @@
     {
       "value": 1716,
       "name": "Sencilion Oy"
-    },
-    {
-      "value": 1715,
-      "name": "The Hablab ApS"
     },
     {
       "value": 1714,
@@ -8077,10 +9713,6 @@
       "name": "Delta Electronics, Inc."
     },
     {
-      "value": 1693,
-      "name": "Vakaros LLC"
-    },
-    {
       "value": 1692,
       "name": "Noomi AB"
     },
@@ -8141,14 +9773,6 @@
       "name": "Razer Inc."
     },
     {
-      "value": 1677,
-      "name": "JetBeep Inc."
-    },
-    {
-      "value": 1676,
-      "name": "Changzhou Sound Dragon Electronics and Acoustics Co., Ltd"
-    },
-    {
       "value": 1675,
       "name": "Jiangsu Teranovo Tech Co., Ltd."
     },
@@ -8201,10 +9825,6 @@
       "name": "NETGRID S.N.C. DI BISSOLI MATTEO, CAMPOREALE SIMONE, TOGNETTI FEDERICO"
     },
     {
-      "value": 1662,
-      "name": "MbientLab Inc"
-    },
-    {
       "value": 1661,
       "name": "Form Athletica Inc."
     },
@@ -8235,10 +9855,6 @@
     {
       "value": 1654,
       "name": "Expai Solutions Private Limited"
-    },
-    {
-      "value": 1653,
-      "name": "Deco Enterprises, Inc."
     },
     {
       "value": 1652,
@@ -8346,7 +9962,7 @@
     },
     {
       "value": 1626,
-      "name": "Zound Industries International AB"
+      "name": "Marshall Group AB"
     },
     {
       "value": 1625,
@@ -8537,10 +10153,6 @@
       "name": "MinebeaMitsumi Inc."
     },
     {
-      "value": 1578,
-      "name": "Lunatico Astronomia SL"
-    },
-    {
       "value": 1577,
       "name": "PHONEPE PVT LTD"
     },
@@ -8563,10 +10175,6 @@
     {
       "value": 1572,
       "name": "Biovotion AG"
-    },
-    {
-      "value": 1571,
-      "name": "Philadelphia Scientific (U.K.) Limited"
     },
     {
       "value": 1570,
@@ -8611,10 +10219,6 @@
     {
       "value": 1560,
       "name": "Audio-Technica Corporation"
-    },
-    {
-      "value": 1559,
-      "name": "WIZCONNECTED COMPANY LIMITED"
     },
     {
       "value": 1558,
@@ -8687,10 +10291,6 @@
     {
       "value": 1541,
       "name": "FMW electronic Futterer u. Maier-Wolf OHG"
-    },
-    {
-      "value": 1540,
-      "name": "Cell2Jack LLC"
     },
     {
       "value": 1539,
@@ -8775,10 +10375,6 @@
     {
       "value": 1519,
       "name": "SIKOM AS"
-    },
-    {
-      "value": 1518,
-      "name": "Wristcam Inc."
     },
     {
       "value": 1517,
@@ -8937,10 +10533,6 @@
       "name": "Lippert Components, INC"
     },
     {
-      "value": 1478,
-      "name": "Smart Animal Training Systems, LLC"
-    },
-    {
       "value": 1477,
       "name": "SELVE GmbH & Co. KG"
     },
@@ -8967,10 +10559,6 @@
     {
       "value": 1471,
       "name": "Real-World-Systems Corporation"
-    },
-    {
-      "value": 1470,
-      "name": "RFID Global by Softwork SrL"
     },
     {
       "value": 1469,
@@ -9217,10 +10805,6 @@
       "name": "LYS TECHNOLOGIES LTD"
     },
     {
-      "value": 1408,
-      "name": "ARANZ Medical Limited"
-    },
-    {
       "value": 1407,
       "name": "Scuf Gaming International, LLC"
     },
@@ -9243,10 +10827,6 @@
     {
       "value": 1402,
       "name": "OMNI Remotes"
-    },
-    {
-      "value": 1401,
-      "name": "Ensemble Tech Private Limited"
     },
     {
       "value": 1400,
@@ -9309,10 +10889,6 @@
       "name": "Flipnavi Co.,Ltd."
     },
     {
-      "value": 1385,
-      "name": "Audionics System, INC."
-    },
-    {
       "value": 1384,
       "name": "Bodyport Inc."
     },
@@ -9325,16 +10901,12 @@
       "name": "CORE TRANSPORT TECHNOLOGIES NZ LIMITED"
     },
     {
-      "value": 1381,
-      "name": "Beijing Smartspace Technologies Inc."
-    },
-    {
       "value": 1380,
       "name": "Beghelli Spa"
     },
     {
       "value": 1379,
-      "name": "Steinel Vertrieb GmbH"
+      "name": "Steinel GmbH"
     },
     {
       "value": 1378,
@@ -9409,10 +10981,6 @@
       "name": "Sylero"
     },
     {
-      "value": 1360,
-      "name": "Versa Networks, Inc."
-    },
-    {
       "value": 1359,
       "name": "Sinnoz"
     },
@@ -9451,10 +11019,6 @@
     {
       "value": 1350,
       "name": "Apexar Technologies S.A."
-    },
-    {
-      "value": 1349,
-      "name": "Candy Hoover Group s.r.l"
     },
     {
       "value": 1348,
@@ -9619,10 +11183,6 @@
     {
       "value": 1308,
       "name": "EDPS"
-    },
-    {
-      "value": 1307,
-      "name": "Angee Technologies Ltd."
     },
     {
       "value": 1306,
@@ -9805,10 +11365,6 @@
       "name": "Auxivia"
     },
     {
-      "value": 1261,
-      "name": "R9 Technology, Inc."
-    },
-    {
       "value": 1260,
       "name": "Motorola Solutions"
     },
@@ -9829,10 +11385,6 @@
       "name": "STABILO International"
     },
     {
-      "value": 1255,
-      "name": "REHABTRONICS INC."
-    },
-    {
       "value": 1254,
       "name": "Smart Solution Technology, Inc."
     },
@@ -9847,10 +11399,6 @@
     {
       "value": 1251,
       "name": "Under Armour"
-    },
-    {
-      "value": 1250,
-      "name": "EllieGrid"
     },
     {
       "value": 1249,
@@ -9906,7 +11454,7 @@
     },
     {
       "value": 1236,
-      "name": "5th Element Ltd"
+      "name": "TASKA PROSTHETICS LIMITED"
     },
     {
       "value": 1235,
@@ -9935,10 +11483,6 @@
     {
       "value": 1229,
       "name": "Safetech Products LLC"
-    },
-    {
-      "value": 1228,
-      "name": "Enflux Inc."
     },
     {
       "value": 1227,
@@ -10049,10 +11593,6 @@
       "name": "Kartographers Technologies Pvt. Ltd."
     },
     {
-      "value": 1200,
-      "name": "Weba Sport und Med. Artikel GmbH"
-    },
-    {
       "value": 1199,
       "name": "BIOROWER Handelsagentur GmbH"
     },
@@ -10075,10 +11615,6 @@
     {
       "value": 1194,
       "name": "LINKIO SAS"
-    },
-    {
-      "value": 1193,
-      "name": "DISCOVERY SOUND TECHNOLOGY, LLC"
     },
     {
       "value": 1192,
@@ -10107,14 +11643,6 @@
     {
       "value": 1186,
       "name": "ovrEngineered, LLC"
-    },
-    {
-      "value": 1185,
-      "name": "PNI Sensor Corporation"
-    },
-    {
-      "value": 1184,
-      "name": "Vypin, LLC"
     },
     {
       "value": 1183,
@@ -10157,10 +11685,6 @@
       "name": "Polymorphic Labs LLC"
     },
     {
-      "value": 1173,
-      "name": "LMT Mercer Group, Inc"
-    },
-    {
       "value": 1172,
       "name": "SENNHEISER electronic GmbH & Co. KG"
     },
@@ -10197,10 +11721,6 @@
       "name": "Vectronix AG"
     },
     {
-      "value": 1163,
-      "name": "CP Electronics Limited"
-    },
-    {
       "value": 1162,
       "name": "Taelek Oy"
     },
@@ -10229,20 +11749,12 @@
       "name": "Revol Technologies Inc"
     },
     {
-      "value": 1155,
-      "name": "Multi Care Systems B.V."
-    },
-    {
       "value": 1154,
       "name": "POS Tuning Udo Vosshenrich GmbH & Co. KG"
     },
     {
       "value": 1153,
       "name": "Quintrax Limited"
-    },
-    {
-      "value": 1152,
-      "name": "Dynometrics Inc."
     },
     {
       "value": 1151,
@@ -10255,10 +11767,6 @@
     {
       "value": 1149,
       "name": "Occly LLC"
-    },
-    {
-      "value": 1148,
-      "name": "POWERMAT LTD"
     },
     {
       "value": 1147,
@@ -10279,10 +11787,6 @@
     {
       "value": 1143,
       "name": "Blue Spark Technologies"
-    },
-    {
-      "value": 1142,
-      "name": "Oxstren Wearable Technologies Private Limited"
     },
     {
       "value": 1141,
@@ -10345,10 +11849,6 @@
       "name": "Codenex Oy"
     },
     {
-      "value": 1126,
-      "name": "CycleLabs Solutions inc."
-    },
-    {
       "value": 1125,
       "name": "International Forte Group LLC"
     },
@@ -10389,16 +11889,8 @@
       "name": "Delta T Corporation"
     },
     {
-      "value": 1115,
-      "name": "SPACEEK LTD"
-    },
-    {
       "value": 1114,
       "name": "2048450 Ontario Inc"
-    },
-    {
-      "value": 1113,
-      "name": "Lumenetix, Inc"
     },
     {
       "value": 1112,
@@ -10411,10 +11903,6 @@
     {
       "value": 1110,
       "name": "Nemik Consulting Inc"
-    },
-    {
-      "value": 1109,
-      "name": "Atomation"
     },
     {
       "value": 1108,
@@ -10493,10 +11981,6 @@
       "name": "SECOM CO., LTD."
     },
     {
-      "value": 1089,
-      "name": "iProtoXi Oy"
-    },
-    {
       "value": 1088,
       "name": "Valencell, Inc."
     },
@@ -10511,10 +11995,6 @@
     {
       "value": 1085,
       "name": "Coiler Corporation"
-    },
-    {
-      "value": 1084,
-      "name": "DeLaval"
     },
     {
       "value": 1083,
@@ -10665,14 +12145,6 @@
       "name": "SODA GmbH"
     },
     {
-      "value": 1045,
-      "name": "Uber Technologies Inc"
-    },
-    {
-      "value": 1044,
-      "name": "Lightning Protection International Pty Ltd"
-    },
-    {
       "value": 1043,
       "name": "Wireless Cables Inc"
     },
@@ -10701,10 +12173,6 @@
       "name": "NorthStar Battery Company, LLC"
     },
     {
-      "value": 1036,
-      "name": "Senix Corporation"
-    },
-    {
       "value": 1035,
       "name": "Jana Care Inc."
     },
@@ -10723,10 +12191,6 @@
     {
       "value": 1031,
       "name": "Swiss Audio SA"
-    },
-    {
-      "value": 1030,
-      "name": "Airtago"
     },
     {
       "value": 1029,
@@ -10801,10 +12265,6 @@
       "name": "PAL Technologies Ltd"
     },
     {
-      "value": 1011,
-      "name": "Flowscape AB"
-    },
-    {
       "value": 1010,
       "name": "WindowMaster A/S"
     },
@@ -10843,10 +12303,6 @@
     {
       "value": 1001,
       "name": "SHENZHEN LEMONJOY TECHNOLOGY CO., LTD."
-    },
-    {
-      "value": 1000,
-      "name": "Reiner Kartengeraete GmbH & Co. KG."
     },
     {
       "value": 999,
@@ -11085,20 +12541,12 @@
       "name": "XiQ"
     },
     {
-      "value": 940,
-      "name": "Smablo LTD"
-    },
-    {
       "value": 939,
       "name": "Meizu Technology Co., Ltd."
     },
     {
       "value": 938,
       "name": "Exon Sp. z o.o."
-    },
-    {
-      "value": 937,
-      "name": "THINKERLY SRL"
     },
     {
       "value": 936,
@@ -11181,10 +12629,6 @@
       "name": "SDATAWAY"
     },
     {
-      "value": 916,
-      "name": "Netclearance Systems, Inc."
-    },
-    {
       "value": 915,
       "name": "LAVAZZA S.p.A."
     },
@@ -11243,10 +12687,6 @@
     {
       "value": 901,
       "name": "Embedded Electronic Solutions Ltd. dba e2Solutions"
-    },
-    {
-      "value": 900,
-      "name": "OCOSMOS Co., Ltd."
     },
     {
       "value": 899,
@@ -11321,10 +12761,6 @@
       "name": "Nixie Labs, Inc."
     },
     {
-      "value": 881,
-      "name": "ORBCOMM"
-    },
-    {
       "value": 880,
       "name": "Wazombi Labs OÜ"
     },
@@ -11359,10 +12795,6 @@
     {
       "value": 872,
       "name": "Metormote AB"
-    },
-    {
-      "value": 871,
-      "name": "Saphe International"
     },
     {
       "value": 870,
@@ -11461,10 +12893,6 @@
       "name": "Heartland Payment Systems"
     },
     {
-      "value": 846,
-      "name": "SafeTrust Inc."
-    },
-    {
       "value": 845,
       "name": "TASER International, Inc."
     },
@@ -11477,16 +12905,8 @@
       "name": "Libratone A/S"
     },
     {
-      "value": 842,
-      "name": "Vaddio"
-    },
-    {
       "value": 841,
       "name": "VersaMe"
-    },
-    {
-      "value": 840,
-      "name": "Arioneo"
     },
     {
       "value": 839,
@@ -11517,10 +12937,6 @@
       "name": "Etesian Technologies LLC"
     },
     {
-      "value": 832,
-      "name": "Letsense s.r.l."
-    },
-    {
       "value": 831,
       "name": "Automation Components, Inc."
     },
@@ -11531,10 +12947,6 @@
     {
       "value": 829,
       "name": "TPV Technology Limited"
-    },
-    {
-      "value": 828,
-      "name": "Virtuosys"
     },
     {
       "value": 827,
@@ -11571,10 +12983,6 @@
     {
       "value": 819,
       "name": "Mul-T-Lock"
-    },
-    {
-      "value": 818,
-      "name": "Electrocompaniet A.S."
     },
     {
       "value": 817,
@@ -11625,24 +13033,12 @@
       "name": "Healthwear Technologies (Changzhou)Ltd"
     },
     {
-      "value": 805,
-      "name": "Amotus Solutions"
-    },
-    {
       "value": 804,
       "name": "Astro, Inc."
     },
     {
       "value": 803,
       "name": "Rotor Bike Components"
-    },
-    {
-      "value": 802,
-      "name": "Compumedics Limited"
-    },
-    {
-      "value": 801,
-      "name": "Jewelbots"
     },
     {
       "value": 800,
@@ -11717,10 +13113,6 @@
       "name": "Shortcut Labs"
     },
     {
-      "value": 782,
-      "name": "Deviceworx"
-    },
-    {
       "value": 781,
       "name": "Devdata S.r.l."
     },
@@ -11785,10 +13177,6 @@
       "name": "Lierda Science & Technology Group Co., Ltd."
     },
     {
-      "value": 765,
-      "name": "Uwanna, Inc."
-    },
-    {
       "value": 764,
       "name": "Shanghai Frequen Microelectronics Co., Ltd."
     },
@@ -11797,20 +13185,12 @@
       "name": "Clarius Mobile Health Corp."
     },
     {
-      "value": 762,
-      "name": "CoSTAR TEchnologies"
-    },
-    {
       "value": 761,
       "name": "IMAGINATION TECHNOLOGIES LTD"
     },
     {
       "value": 760,
       "name": "Runteq Oy Ltd"
-    },
-    {
-      "value": 759,
-      "name": "DreamVisions co., Ltd."
     },
     {
       "value": 758,
@@ -11981,10 +13361,6 @@
       "name": "BMA ergonomics b.v."
     },
     {
-      "value": 716,
-      "name": "Eijkelkamp Soil & Water"
-    },
-    {
       "value": 715,
       "name": "AINA-Wireless Inc."
     },
@@ -12033,10 +13409,6 @@
       "name": "Dash Robotics"
     },
     {
-      "value": 703,
-      "name": "Redbird Flight Simulations"
-    },
-    {
       "value": 702,
       "name": "Seguro Technology Sp. z o.o."
     },
@@ -12050,7 +13422,7 @@
     },
     {
       "value": 699,
-      "name": "Koha.,Co.Ltd"
+      "name": "YOKOWO CO., LTD."
     },
     {
       "value": 698,
@@ -12109,10 +13481,6 @@
       "name": "Rx Networks, Inc."
     },
     {
-      "value": 684,
-      "name": "RTB Elektronik GmbH & Co. KG"
-    },
-    {
       "value": 683,
       "name": "BBPOS Limited"
     },
@@ -12151,10 +13519,6 @@
     {
       "value": 674,
       "name": "Sera4 Ltd."
-    },
-    {
-      "value": 673,
-      "name": "InventureTrack Systems"
     },
     {
       "value": 672,
@@ -12213,10 +13577,6 @@
       "name": "Blue Bite"
     },
     {
-      "value": 658,
-      "name": "SwiftSensors"
-    },
-    {
       "value": 657,
       "name": "CliniCloud Inc"
     },
@@ -12233,10 +13593,6 @@
       "name": "RF Digital Corp"
     },
     {
-      "value": 653,
-      "name": "IF, LLC"
-    },
-    {
       "value": 652,
       "name": "NANOLINK APS"
     },
@@ -12251,10 +13607,6 @@
     {
       "value": 649,
       "name": "SK Telecom"
-    },
-    {
-      "value": 648,
-      "name": "Willowbank Electronics Ltd"
     },
     {
       "value": 647,
@@ -12413,10 +13765,6 @@
       "name": "SECVRE GmbH"
     },
     {
-      "value": 608,
-      "name": "SensaRx"
-    },
-    {
       "value": 607,
       "name": "Yardarm Technologies"
     },
@@ -12505,10 +13853,6 @@
       "name": "Uwatec AG"
     },
     {
-      "value": 585,
-      "name": "Transcranial Ltd"
-    },
-    {
       "value": 584,
       "name": "Parker Hannifin Corp"
     },
@@ -12533,10 +13877,6 @@
       "name": "Masimo Corp"
     },
     {
-      "value": 578,
-      "name": "16Lab Inc"
-    },
-    {
       "value": 577,
       "name": "Bragi GmbH"
     },
@@ -12555,10 +13895,6 @@
     {
       "value": 573,
       "name": "ViCentra B.V."
-    },
-    {
-      "value": 572,
-      "name": "Awarepoint"
     },
     {
       "value": 571,
@@ -12607,10 +13943,6 @@
     {
       "value": 560,
       "name": "Foster Electric Company, Ltd"
-    },
-    {
-      "value": 559,
-      "name": "Huami (Shanghai) Culture Communication CO., LTD"
     },
     {
       "value": 558,
@@ -12701,10 +14033,6 @@
       "name": "DOTT Limited"
     },
     {
-      "value": 536,
-      "name": "Hiotech AB"
-    },
-    {
       "value": 535,
       "name": "Tech4home, Lda"
     },
@@ -12745,10 +14073,6 @@
       "name": "Omron Healthcare Co., LTD"
     },
     {
-      "value": 525,
-      "name": "Simplo Technology Co., LTD"
-    },
-    {
       "value": 524,
       "name": "CoroWare Technologies, Inc"
     },
@@ -12775,14 +14099,6 @@
     {
       "value": 518,
       "name": "Otter Products, LLC"
-    },
-    {
-      "value": 517,
-      "name": "Smartbotics Inc."
-    },
-    {
-      "value": 516,
-      "name": "Tapcentive Inc."
     },
     {
       "value": 515,
@@ -12873,32 +14189,12 @@
       "name": "Valeo Service"
     },
     {
-      "value": 493,
-      "name": "CuteCircuit LTD"
-    },
-    {
       "value": 492,
       "name": "Spreadtrum Communications Shanghai Ltd"
     },
     {
-      "value": 491,
-      "name": "AutoMap LLC"
-    },
-    {
       "value": 490,
       "name": "Advanced Application Design, Inc."
-    },
-    {
-      "value": 489,
-      "name": "Sano, Inc."
-    },
-    {
-      "value": 488,
-      "name": "STIR"
-    },
-    {
-      "value": 487,
-      "name": "IPS Group Inc."
     },
     {
       "value": 486,
@@ -12915,10 +14211,6 @@
     {
       "value": 483,
       "name": "Caterpillar Inc"
-    },
-    {
-      "value": 482,
-      "name": "Lectronix, Inc."
     },
     {
       "value": 481,
@@ -12941,10 +14233,6 @@
       "name": "Koninklijke Philips N.V."
     },
     {
-      "value": 476,
-      "name": "iParking Ltd."
-    },
-    {
       "value": 475,
       "name": "Innblue Consulting"
     },
@@ -12959,10 +14247,6 @@
     {
       "value": 472,
       "name": "Code Corporation"
-    },
-    {
-      "value": 471,
-      "name": "Squadrone Systems Inc."
     },
     {
       "value": 470,
@@ -13041,20 +14325,12 @@
       "name": "DME Microelectronics"
     },
     {
-      "value": 451,
-      "name": "Bunch"
-    },
-    {
       "value": 450,
       "name": "Transenergooil AG"
     },
     {
       "value": 449,
       "name": "BRADATECH Corp."
-    },
-    {
-      "value": 448,
-      "name": "pironex GmbH"
     },
     {
       "value": 447,
@@ -13078,7 +14354,7 @@
     },
     {
       "value": 442,
-      "name": "Stages Cycling LLC"
+      "name": "SPIA Cycling Inc."
     },
     {
       "value": 441,
@@ -13125,10 +14401,6 @@
       "name": "Sunrise Micro Devices, Inc."
     },
     {
-      "value": 430,
-      "name": "Earlens Corporation"
-    },
-    {
       "value": 429,
       "name": "FlightSafety International"
     },
@@ -13167,10 +14439,6 @@
     {
       "value": 420,
       "name": "MSA Innovation, LLC"
-    },
-    {
-      "value": 419,
-      "name": "EROAD"
     },
     {
       "value": 418,
@@ -13249,10 +14517,6 @@
       "name": "Intelletto Technologies Inc."
     },
     {
-      "value": 399,
-      "name": "Fireflies Systems"
-    },
-    {
       "value": 398,
       "name": "Google LLC"
     },
@@ -13285,24 +14549,12 @@
       "name": "Seraphim Sense Ltd"
     },
     {
-      "value": 390,
-      "name": "CORE Lighting Ltd"
-    },
-    {
-      "value": 389,
-      "name": "bel'apps LLC"
-    },
-    {
       "value": 388,
       "name": "Nectar"
     },
     {
       "value": 387,
       "name": "Walt Disney"
-    },
-    {
-      "value": 386,
-      "name": "HOP Ubiquitous"
     },
     {
       "value": 385,
@@ -13569,10 +14821,6 @@
       "name": "Alpine Electronics (China) Co., Ltd"
     },
     {
-      "value": 319,
-      "name": "B&B Manufacturing Company"
-    },
-    {
       "value": 318,
       "name": "Nod, Inc."
     },
@@ -13721,10 +14969,6 @@
       "name": "Qualcomm Labs, Inc."
     },
     {
-      "value": 281,
-      "name": "Wize Technology Co., Ltd."
-    },
-    {
       "value": 280,
       "name": "Radius Networks, Inc."
     },
@@ -13739,10 +14983,6 @@
     {
       "value": 277,
       "name": "e.solutions"
-    },
-    {
-      "value": 276,
-      "name": "Xensr"
     },
     {
       "value": 275,
@@ -13849,20 +15089,12 @@
       "name": "Crystal Alarm AB"
     },
     {
-      "value": 249,
-      "name": "StickNFind"
-    },
-    {
       "value": 248,
       "name": "AceUni Corp., Ltd."
     },
     {
       "value": 247,
       "name": "VSN Technologies, Inc."
-    },
-    {
-      "value": 246,
-      "name": "Elcometer Limited"
     },
     {
       "value": 245,
@@ -13910,7 +15142,7 @@
     },
     {
       "value": 234,
-      "name": "www.vtracksystems.com"
+      "name": "Nielsen-Kellerman"
     },
     {
       "value": 233,
@@ -13923,10 +15155,6 @@
     {
       "value": 231,
       "name": "KS Technologies"
-    },
-    {
-      "value": 230,
-      "name": "Freshtemp"
     },
     {
       "value": 229,
@@ -13995,10 +15223,6 @@
     {
       "value": 213,
       "name": "Austco Communication Systems"
-    },
-    {
-      "value": 212,
-      "name": "Kawantech"
     },
     {
       "value": 211,
@@ -14301,10 +15525,6 @@
       "name": "GN Hearing A/S"
     },
     {
-      "value": 136,
-      "name": "Ecotest"
-    },
-    {
       "value": 135,
       "name": "Garmin International, Inc."
     },
@@ -14341,16 +15561,8 @@
       "name": "Autonet Mobile"
     },
     {
-      "value": 126,
-      "name": "Sports Tracking Technologies Ltd."
-    },
-    {
       "value": 125,
       "name": "Seers Technology Co., Ltd."
-    },
-    {
-      "value": 124,
-      "name": "A & R Cambridge"
     },
     {
       "value": 123,
@@ -14409,10 +15621,6 @@
       "name": "Summit Data Communications, Inc."
     },
     {
-      "value": 109,
-      "name": "BriarTek, Inc"
-    },
-    {
       "value": 108,
       "name": "Beautiful Enterprise Co., Ltd."
     },
@@ -14434,11 +15642,7 @@
     },
     {
       "value": 103,
-      "name": "GN Audio A/S"
-    },
-    {
-      "value": 102,
-      "name": "9Solutions Oy"
+      "name": "GN Hearing"
     },
     {
       "value": 101,
@@ -14546,7 +15750,7 @@
     },
     {
       "value": 75,
-      "name": "Continental Automotive Systems"
+      "name": "AUMOVIO Systems, Inc."
     },
     {
       "value": 74,
@@ -14631,10 +15835,6 @@
     {
       "value": 54,
       "name": "Renesas Electronics Corporation"
-    },
-    {
-      "value": 53,
-      "name": "Eclipse (HQ Espana) S.L."
     },
     {
       "value": 52,
