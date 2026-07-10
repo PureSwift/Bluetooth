@@ -1655,6 +1655,76 @@ import Bluetooth
         #expect(GATTLESecurityLevels(data: Data([0x01, 0x04, 0x02])) == nil)
         #expect(GATTLESecurityLevels(requirements: []) == nil)
     }
+
+    @Test func serviceChanged() {
+
+        // affected handle range 0x0001 - 0xFFFF
+        let data = Data([0x01, 0x00, 0xFF, 0xFF])
+
+        guard let characteristic = GATTServiceChanged(data: data)
+        else {
+            Issue.record("Could not decode from bytes")
+            return
+        }
+
+        roundTrip(characteristic, encodes: data)
+        #expect(characteristic.start == 0x0001)
+        #expect(characteristic.end == 0xFFFF)
+        #expect(GATTServiceChanged.uuid == BluetoothUUID.Characteristic.serviceChanged)
+        #expect(GATTServiceChanged(data: data) == GATTServiceChanged(data: data))
+
+        // invalid length
+        #expect(GATTServiceChanged(data: Data([0x01, 0x00])) == nil)
+        #expect(GATTServiceChanged(data: Data([0x01, 0x00, 0xFF, 0xFF, 0x00])) == nil)
+    }
+
+    @Test func clientSupportedFeatures() {
+
+        // Robust Caching + Multiple Handle Value Notifications
+        let data = Data([0b101])
+
+        guard let characteristic = GATTClientSupportedFeatures(data: data)
+        else {
+            Issue.record("Could not decode from bytes")
+            return
+        }
+
+        roundTrip(characteristic, encodes: data)
+        #expect(characteristic.features.contains(.robustCaching))
+        #expect(characteristic.features.contains(.enhancedATT) == false)
+        #expect(characteristic.features.contains(.multipleHandleValueNotifications))
+        #expect(GATTClientSupportedFeatures.uuid == BluetoothUUID.Characteristic.clientSupportedFeatures)
+
+        // all features
+        let allFeatures = GATTClientSupportedFeatures(features: [.robustCaching, .enhancedATT, .multipleHandleValueNotifications])
+        roundTrip(allFeatures, encodes: Data([0b111]))
+
+        // invalid: empty
+        #expect(GATTClientSupportedFeatures(data: Data()) == nil)
+    }
+
+    @Test func databaseHash() {
+
+        let data = Data([
+            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
+        ])
+
+        guard let characteristic = GATTDatabaseHash(data: data)
+        else {
+            Issue.record("Could not decode from bytes")
+            return
+        }
+
+        roundTrip(characteristic, encodes: data)
+        #expect(GATTDatabaseHash.uuid == BluetoothUUID.Characteristic.databaseHash)
+        #expect(GATTDatabaseHash(data: data) == GATTDatabaseHash(data: data))
+
+        // invalid length
+        #expect(GATTDatabaseHash(data: Data([0x00])) == nil)
+        #expect(GATTDatabaseHash(data: data.prefix(15)) == nil)
+        #expect(GATTDatabaseHash(data: data + Data([0x00])) == nil)
+    }
 }
 
 internal extension GATTCharacteristic {
