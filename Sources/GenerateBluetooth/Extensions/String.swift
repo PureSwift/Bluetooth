@@ -53,6 +53,11 @@ public extension String {
 
         // remove diacritics
         name = name.applyingTransform(.stripDiacritics, reverse: false)!
+        // unwrap LaTeX commands (e.g. "CO\textsubscript{2}" -> "CO2")
+        name = latexCommandRegex.stringByReplacingMatches(
+            in: name,
+            range: NSRange(location: 0, length: name.utf16.count),
+            withTemplate: "$1")
         // remove company name suffixes
         if let range = name.firstMatch(of: formerlyRegex) {
             name.removeSubrange(range)
@@ -159,3 +164,5 @@ public extension String {
 }
 
 let formerlyRegex = try! NSRegularExpression(pattern: #" \(formerly [^()]+\)\Z"#)
+
+let latexCommandRegex = try! NSRegularExpression(pattern: #"\\[a-zA-Z]+\{([^{}]*)\}"#)
