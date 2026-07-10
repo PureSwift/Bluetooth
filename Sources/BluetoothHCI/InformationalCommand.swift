@@ -58,6 +58,12 @@ public enum InformationalCommand: UInt16, HCICommand {
     /// This command reads a list of the Bluetooth SIG approved codecs supported by the Controller, as well as vendor specific codecs,
     /// which are defined by an individual manufacturer.
     case readLocalSupportedCodecs = 0x000B
+
+    /// Read Local Supported Commands (v2)
+    ///
+    /// This version of the command (Bluetooth 6.3) returns all octets of the
+    /// Supported_Commands configuration parameter, including octets 64 and above.
+    case readLocalSupportedCommandsV2 = 0x0010
 }
 
 // MARK: - Name
@@ -75,6 +81,7 @@ public extension InformationalCommand {
         case .readDeviceAddress: return "Read Device Address"
         case .readDataBlockSize: return "Read Data Block Size"
         case .readLocalSupportedCodecs: return "Read Local Supported Codecs"
+        case .readLocalSupportedCommandsV2: return "Read Local Supported Commands V2"
         }
     }
 }

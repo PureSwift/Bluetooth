@@ -3883,6 +3883,109 @@ import Foundation
         #expect(event.advertiserPHY == .le1m)
         #expect(event.periodicAdvertisingInterval.rawValue == 0x0080)
     }
+
+    @Test func lowEnergyEventMaskBits() {
+
+        // Core 6.3 Vol 4 Part E 7.8.1 bit assignments
+        #expect(HCILESetEventMask.Event.connectionlessIQReport.rawValue == 1 << 20)
+        #expect(HCILESetEventMask.Event.periodicAdvertisingSyncTransferReceived.rawValue == 1 << 23)
+        #expect(HCILESetEventMask.Event.subrateChange.rawValue == 1 << 34)
+        #expect(HCILESetEventMask.Event.periodicAdvertisingSyncEstablishedV2.rawValue == 1 << 35)
+        #expect(HCILESetEventMask.Event.enhancedConnectionCompleteV2.rawValue == 1 << 40)
+        #expect(HCILESetEventMask.Event.csReadRemoteSupportedCapabilitiesComplete.rawValue == 1 << 43)
+        #expect(HCILESetEventMask.Event.connectionRateChange.rawValue == 1 << 54)
+        #expect(HCILESetEventMask.Event.csReadRemoteSupportedCapabilitiesCompleteV2.rawValue == 1 << 55)
+
+        // raw values must be unique
+        let rawValues = HCILESetEventMask.Event.allCases.map { $0.rawValue }
+        #expect(Set(rawValues).count == rawValues.count)
+
+        // every case must have a description
+        for event in HCILESetEventMask.Event.allCases {
+            #expect(event.description.isEmpty == false)
+        }
+
+        // mapped LowEnergyEvent equivalents
+        #expect(HCILESetEventMask.Event.periodicAdvertisingSyncTransferReceived.event == .periodicAdvertisingSyncTransferReceived)
+        #expect(HCILESetEventMask.Event.enhancedConnectionCompleteV2.event == .enhancedConnectionCompleteV2)
+        #expect(HCILESetEventMask.Event.csSubeventResult.event == nil)
+    }
+
+    @Test func lowEnergySetEventMaskV2() {
+
+        #expect(HCILESetEventMaskV2.command.rawValue == 0x00A4)
+
+        let parameters = HCILESetEventMaskV2(eventMask: [.connectionComplete, .periodicAdvertisingSyncEstablishedV2])
+
+        // 255 octets: bits 0 and 35 set, all others zero
+        let expected = Data([0x01, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00]) + Data(repeating: 0x00, count: 247)
+
+        #expect(Data(parameters) == expected)
+        #expect(Data(parameters).count == 255)
+
+        // default mask
+        #expect(Data(HCILESetEventMaskV2()) == Data([0x1F]) + Data(repeating: 0x00, count: 254))
+    }
+
+    @Test func readLocalSupportedCommands() async throws {
+
+        #expect(HCIReadLocalSupportedCommandsReturn.command.opcode == 0x1002)
+        #expect(HCIReadLocalSupportedCommandsV2Return.command.opcode == 0x1010)
+
+        // v1: 64 octets; octet 0 bit 0 (Inquiry) and octet 14 bit 7 (LE Read Buffer Size) set
+        var octets = [UInt8](repeating: 0, count: 64)
+        octets[0] = 0b1
+        octets[14] = 0b1000_0000
+
+        guard let returnParameter = HCIReadLocalSupportedCommandsReturn(data: Data(octets))
+        else {
+            Issue.record("Could not decode return parameter")
+            return
+        }
+
+        #expect(returnParameter.supportedCommands.isSupported(octet: 0, bit: 0))
+        #expect(returnParameter.supportedCommands.isSupported(octet: 0, bit: 1) == false)
+        #expect(returnParameter.supportedCommands.isSupported(octet: 14, bit: 7))
+        #expect(returnParameter.supportedCommands.isSupported(octet: 63, bit: 0) == false)
+        // out of range reads as unsupported
+        #expect(returnParameter.supportedCommands.isSupported(octet: 64, bit: 0) == false)
+
+        // invalid lengths
+        #expect(HCIReadLocalSupportedCommandsReturn(data: Data(repeating: 0, count: 63)) == nil)
+        #expect(HCIReadLocalSupportedCommandsReturn(data: Data(repeating: 0, count: 251)) == nil)
+
+        // v2: 251 octets, bits above octet 63 readable
+        var v2Octets = [UInt8](repeating: 0, count: 251)
+        v2Octets[64] = 0b1
+        v2Octets[250] = 0b1000_0000
+
+        guard let v2ReturnParameter = HCIReadLocalSupportedCommandsV2Return(data: Data(v2Octets))
+        else {
+            Issue.record("Could not decode return parameter")
+            return
+        }
+
+        #expect(v2ReturnParameter.supportedCommands.isSupported(octet: 64, bit: 0))
+        #expect(v2ReturnParameter.supportedCommands.isSupported(octet: 250, bit: 7))
+        #expect(HCIReadLocalSupportedCommandsV2Return(data: Data(repeating: 0, count: 64)) == nil)
+
+        // mock host controller round trip (v1)
+        let hostController = TestHostController()
+
+        hostController.queue.append(
+            .command(
+                InformationalCommand.readLocalSupportedCommands.opcode,
+                [0x02, 0x10, 0x00]))
+
+        // command complete: status + 64 octets
+        hostController.queue.append(
+            .event([0x0E, 0x45, 0x01, 0x02, 0x10, 0x00] + octets))
+
+        let supportedCommands = try await hostController.readLocalSupportedCommands()
+
+        #expect(supportedCommands.isSupported(octet: 0, bit: 0))
+        #expect(supportedCommands.isSupported(octet: 14, bit: 7))
+    }
 }
 
 @_silgen_name("swift_bluetooth_parse_event")
