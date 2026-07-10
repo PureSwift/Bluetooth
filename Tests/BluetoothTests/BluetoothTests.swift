@@ -240,8 +240,7 @@ import BluetoothGATT
                 .advertisingReport,
                 .connectionUpdateComplete,
                 .readRemoteFeaturesComplete,
-                .longTermKeyRequest,
-                .remoteConnectionParameterRequest
+                .longTermKeyRequest
             ],
             "The default is for bits 0 to 4 inclusive (the value 0x0000 0000 0000 001F) to be set.")
     }
