@@ -3642,6 +3642,247 @@ import Foundation
         #expect(event.advertisingHandle == 0x01)
         #expect(event.syncHandle == 0x0002)
     }
+
+    @Test func readRSSI() async throws {
+
+        let parameters = HCIReadRSSI(handle: 0x0002)
+
+        #expect(HCIReadRSSI.command.opcode == 0x1405)
+        #expect(Data(parameters) == Data([0x02, 0x00]))
+
+        guard let returnParameter = HCIReadRSSIReturn(data: Data([0x02, 0x00, 0xC4]))
+        else {
+            Issue.record("Could not decode return parameter")
+            return
+        }
+
+        #expect(returnParameter.handle == 0x0002)
+        #expect(returnParameter.rssi.rawValue == -60)
+
+        // mock host controller round trip
+        let hostController = TestHostController()
+
+        hostController.queue.append(
+            .command(
+                StatusParametersCommand.readRSSI.opcode,
+                [0x05, 0x14, 0x02, 0x02, 0x00]))
+
+        // command complete: status + Connection_Handle + RSSI
+        hostController.queue.append(.event([0x0E, 0x06, 0x01, 0x05, 0x14, 0x00, 0x02, 0x00, 0xC4]))
+
+        let rssi = try await hostController.readRSSI(handle: 0x0002)
+
+        #expect(rssi.rawValue == -60)
+    }
+
+    @Test func readTransmitPowerLevel() {
+
+        let parameters = HCIReadTransmitPowerLevel(handle: 0x0001, type: .current)
+
+        #expect(HCIReadTransmitPowerLevel.command.opcode == 0x0C2D)
+        #expect(Data(parameters) == Data([0x01, 0x00, 0x00]))
+
+        let maxParameters = HCIReadTransmitPowerLevel(handle: 0x0001, type: .maximum)
+        #expect(Data(maxParameters) == Data([0x01, 0x00, 0x01]))
+
+        guard let returnParameter = HCIReadTransmitPowerLevelReturn(data: Data([0x01, 0x00, 0x0A]))
+        else {
+            Issue.record("Could not decode return parameter")
+            return
+        }
+
+        #expect(returnParameter.handle == 0x0001)
+        #expect(returnParameter.transmitPowerLevel == 10)
+    }
+
+    @Test func setEventMask() async throws {
+
+        let parameters = HCISetEventMask(eventMask: [.inquiryComplete, .disconnectionComplete, .lowEnergyMeta])
+
+        #expect(HCISetEventMask.command.opcode == 0x0C01)
+        #expect(
+            Data(parameters)
+                == Data([0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20]))
+
+        // default value
+        let defaultParameters = HCISetEventMask()
+        #expect(Data(defaultParameters) == Data([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x1F, 0x00, 0x00]))
+
+        // all cases must be unique bits
+        let rawValues = HCISetEventMask.Event.allCases.map { $0.rawValue }
+        #expect(Set(rawValues).count == rawValues.count)
+
+        // mock host controller round trip
+        let hostController = TestHostController()
+
+        hostController.queue.append(
+            .command(
+                HostControllerBasebandCommand.setEventMask.opcode,
+                [0x01, 0x0C, 0x08, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x1F, 0x00, 0x00]))
+
+        // command complete
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x01, 0x0C, 0x00]))
+
+        try await hostController.setEventMask(HCISetEventMask.EventMask(rawValue: 0x0000_1FFF_FFFF_FFFF))
+    }
+
+    @Test func periodicAdvertisingSyncTransfer() {
+
+        let parameters = HCILEPeriodicAdvertisingSyncTransfer(
+            connectionHandle: 0x0003,
+            serviceData: 0x1122,
+            syncHandle: 0x0002)
+
+        #expect(HCILEPeriodicAdvertisingSyncTransfer.command.rawValue == 0x005A)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x03, 0x00,  // Connection_Handle
+                    0x22, 0x11,  // Service_Data
+                    0x02, 0x00  // Sync_Handle
+                ]))
+
+        guard let returnParameter = HCILEPeriodicAdvertisingSyncTransferReturn(data: Data([0x03, 0x00]))
+        else {
+            Issue.record("Could not decode return parameter")
+            return
+        }
+
+        #expect(returnParameter.connectionHandle == 0x0003)
+    }
+
+    @Test func periodicAdvertisingSetInfoTransfer() {
+
+        let parameters = HCILEPeriodicAdvertisingSetInfoTransfer(
+            connectionHandle: 0x0003,
+            serviceData: 0x1122,
+            advertisingHandle: 0x01)
+
+        #expect(HCILEPeriodicAdvertisingSetInfoTransfer.command.rawValue == 0x005B)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x03, 0x00,  // Connection_Handle
+                    0x22, 0x11,  // Service_Data
+                    0x01  // Advertising_Handle
+                ]))
+
+        guard let returnParameter = HCILEPeriodicAdvertisingSetInfoTransferReturn(data: Data([0x03, 0x00]))
+        else {
+            Issue.record("Could not decode return parameter")
+            return
+        }
+
+        #expect(returnParameter.connectionHandle == 0x0003)
+    }
+
+    @Test func setPeriodicAdvertisingSyncTransferParameters() async throws {
+
+        let parameters = HCILESetPeriodicAdvertisingSyncTransferParameters(
+            connectionHandle: 0x0003,
+            mode: .syncWithReportsEnabled,
+            skip: 0x0010,
+            syncTimeout: .init(rawValue: 0x0100)!,
+            cteType: [.noAOA])
+
+        #expect(HCILESetPeriodicAdvertisingSyncTransferParameters.command.rawValue == 0x005C)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x03, 0x00,  // Connection_Handle
+                    0x02,  // Mode
+                    0x10, 0x00,  // Skip
+                    0x00, 0x01,  // Sync_Timeout
+                    0x01  // CTE_Type
+                ]))
+
+        // mock host controller round trip
+        let hostController = TestHostController()
+
+        hostController.queue.append(
+            .command(
+                HCILowEnergyCommand.setPeriodicAdvertisingSyncTransferParameters.opcode,
+                [0x5C, 0x20, 0x08, 0x03, 0x00, 0x02, 0x10, 0x00, 0x00, 0x01, 0x01]))
+
+        // command complete: status + Connection_Handle
+        hostController.queue.append(.event([0x0E, 0x06, 0x01, 0x5C, 0x20, 0x00, 0x03, 0x00]))
+
+        let connectionHandle = try await hostController.lowEnergySetPeriodicAdvertisingSyncTransferParameters(
+            connectionHandle: 0x0003,
+            mode: .syncWithReportsEnabled,
+            skip: 0x0010,
+            syncTimeout: .init(rawValue: 0x0100)!,
+            cteType: [.noAOA])
+
+        #expect(connectionHandle == 0x0003)
+    }
+
+    @Test func setDefaultPeriodicAdvertisingSyncTransferParameters() async throws {
+
+        let parameters = HCILESetDefaultPeriodicAdvertisingSyncTransferParameters(
+            mode: .sync,
+            skip: 0x0010,
+            syncTimeout: .init(rawValue: 0x0100)!,
+            cteType: [])
+
+        #expect(HCILESetDefaultPeriodicAdvertisingSyncTransferParameters.command.rawValue == 0x005D)
+        #expect(
+            Data(parameters)
+                == Data([
+                    0x01,  // Mode
+                    0x10, 0x00,  // Skip
+                    0x00, 0x01,  // Sync_Timeout
+                    0x00  // CTE_Type
+                ]))
+
+        // mock host controller round trip
+        let hostController = TestHostController()
+
+        hostController.queue.append(
+            .command(
+                HCILowEnergyCommand.setDefaultPeriodicAdvertisingSyncTransferParameters.opcode,
+                [0x5D, 0x20, 0x06, 0x01, 0x10, 0x00, 0x00, 0x01, 0x00]))
+
+        // command complete
+        hostController.queue.append(.event([0x0E, 0x04, 0x01, 0x5D, 0x20, 0x00]))
+
+        try await hostController.lowEnergySetDefaultPeriodicAdvertisingSyncTransferParameters(
+            mode: .sync,
+            skip: 0x0010,
+            syncTimeout: .init(rawValue: 0x0100)!,
+            cteType: [])
+    }
+
+    @Test func periodicAdvertisingSyncTransferReceived() {
+
+        let data = Data([
+            0x00,  // Status
+            0x03, 0x00,  // Connection_Handle
+            0x22, 0x11,  // Service_Data
+            0x02, 0x00,  // Sync_Handle
+            0x05,  // Advertising_SID
+            0x00,  // Advertiser_Address_Type
+            0xaf, 0xd2, 0x06, 0x2d, 0x70, 0xb0,  // Advertiser_Address
+            0x01,  // Advertiser_PHY
+            0x80, 0x00,  // Periodic_Advertising_Interval
+            0x00  // Advertiser_Clock_Accuracy
+        ])
+
+        guard let event = HCILEPeriodicAdvertisingSyncTransferReceived(data: data)
+        else {
+            Issue.record("Could not decode event")
+            return
+        }
+
+        #expect(HCILEPeriodicAdvertisingSyncTransferReceived.event.rawValue == 0x18)
+        #expect(event.status == .success)
+        #expect(event.connectionHandle == 0x0003)
+        #expect(event.serviceData == 0x1122)
+        #expect(event.syncHandle == 0x0002)
+        #expect(event.advertiserAddress == BluetoothAddress(rawValue: "B0:70:2D:06:D2:AF")!)
+        #expect(event.advertiserPHY == .le1m)
+        #expect(event.periodicAdvertisingInterval.rawValue == 0x0080)
+    }
 }
 
 @_silgen_name("swift_bluetooth_parse_event")

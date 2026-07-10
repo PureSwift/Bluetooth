@@ -243,6 +243,18 @@ public enum HCILowEnergyCommand: UInt16, HCICommand {
     /// LE Set Privacy Mode Command
     case setPrivacyMode = 0x004E
 
+    /// LE Periodic Advertising Sync Transfer Command
+    case periodicAdvertisingSyncTransfer = 0x005A
+
+    /// LE Periodic Advertising Set Info Transfer Command
+    case periodicAdvertisingSetInfoTransfer = 0x005B
+
+    /// LE Set Periodic Advertising Sync Transfer Parameters Command
+    case setPeriodicAdvertisingSyncTransferParameters = 0x005C
+
+    /// LE Set Default Periodic Advertising Sync Transfer Parameters Command
+    case setDefaultPeriodicAdvertisingSyncTransferParameters = 0x005D
+
     /// LE Set Extended Advertising Parameters Command (v2)
     case setExtendedAdvertisingParametersV2 = 0x007F
 
@@ -337,6 +349,10 @@ public extension HCILowEnergyCommand {
         case .readRFPathCompensation: return "LE Read RF Path Compensation Command"
         case .writeRFPathCompensation: return "LE Write RF Path Compensation Command"
         case .setPrivacyMode: return "LE Set Privacy Mode Command"
+        case .periodicAdvertisingSyncTransfer: return "LE Periodic Advertising Sync Transfer Command"
+        case .periodicAdvertisingSetInfoTransfer: return "LE Periodic Advertising Set Info Transfer Command"
+        case .setPeriodicAdvertisingSyncTransferParameters: return "LE Set Periodic Advertising Sync Transfer Parameters Command"
+        case .setDefaultPeriodicAdvertisingSyncTransferParameters: return "LE Set Default Periodic Advertising Sync Transfer Parameters Command"
         case .setExtendedAdvertisingParametersV2: return "LE Set Extended Advertising Parameters V2"
         case .setPeriodicAdvertisingSubeventData: return "LE Set Periodic Advertising Subevent Data"
         case .setPeriodicAdvertisingResponseData: return "LE Set Periodic Advertising Response Data"
