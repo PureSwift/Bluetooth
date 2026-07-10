@@ -109,6 +109,16 @@
       "uuid": 10517,
       "name": "IMD Trigger Setting",
       "id": "org.bluetooth.descriptor.imd_trigger_setting"
+    },
+    {
+      "uuid": 10518,
+      "name": "Cooking Sensor Info",
+      "id": "org.bluetooth.descriptor.cooking_sensor_info"
+    },
+    {
+      "uuid": 10519,
+      "name": "Cooking Trigger Setting",
+      "id": "org.bluetooth.descriptor.cooking_trigger_setting"
     }
   ]
 }

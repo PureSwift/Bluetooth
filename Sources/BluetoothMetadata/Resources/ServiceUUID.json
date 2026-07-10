@@ -354,6 +354,26 @@
       "uuid": 6235,
       "name": "Ranging",
       "id": "org.bluetooth.service.ranging"
+    },
+    {
+      "uuid": 6236,
+      "name": "HID ISO",
+      "id": "org.bluetooth.service.hid_iso"
+    },
+    {
+      "uuid": 6237,
+      "name": "Cookware",
+      "id": "org.bluetooth.service.cookware"
+    },
+    {
+      "uuid": 6238,
+      "name": "Voice Assistant",
+      "id": "org.bluetooth.service.voice_assistant"
+    },
+    {
+      "uuid": 6239,
+      "name": "Generic Voice Assistant",
+      "id": "org.bluetooth.service.generic_voice_assistant"
     }
   ]
 }
