@@ -1189,6 +1189,98 @@ import Foundation
             }
         }
     }
+
+    @Test func readMultipleVariableLengthRequest() {
+
+        #expect(ATTOpcode.readMultipleVariableLengthRequest.type == .request)
+        #expect(ATTOpcode.readMultipleVariableLengthRequest.response == .readMultipleVariableLengthResponse)
+        #expect(ATTOpcode.readMultipleVariableLengthResponse.request == .readMultipleVariableLengthRequest)
+
+        // requires at least 2 handles
+        #expect(ATTReadMultipleVariableLengthRequest(handles: []) == nil)
+        #expect(ATTReadMultipleVariableLengthRequest(handles: [0x0003]) == nil)
+
+        let data = Data([0x20, 0x03, 0x00, 0x05, 0x00])
+
+        guard let request = ATTReadMultipleVariableLengthRequest(data: data)
+        else {
+            Issue.record("Could not parse")
+            return
+        }
+
+        #expect(request.handles == [0x0003, 0x0005])
+        #expect(request.data == data)
+        #expect(request.dataLength == data.count)
+
+        // truncated / odd handle bytes
+        #expect(ATTReadMultipleVariableLengthRequest(data: Data([0x20, 0x03, 0x00])) == nil)
+        #expect(ATTReadMultipleVariableLengthRequest(data: Data([0x20, 0x03, 0x00, 0x05, 0x00, 0x07])) == nil)
+        // wrong opcode
+        #expect(ATTReadMultipleVariableLengthRequest(data: Data([0x0E, 0x03, 0x00, 0x05, 0x00])) == nil)
+    }
+
+    @Test func readMultipleVariableLengthResponse() {
+
+        #expect(ATTOpcode.readMultipleVariableLengthResponse.type == .response)
+
+        // (Length: 2, Value: 0xAA BB), (Length: 0), (Length: 1, Value: 0xCC)
+        let data = Data([0x21, 0x02, 0x00, 0xAA, 0xBB, 0x00, 0x00, 0x01, 0x00, 0xCC])
+
+        guard let response = ATTReadMultipleVariableLengthResponse<Data>(data: data)
+        else {
+            Issue.record("Could not parse")
+            return
+        }
+
+        #expect(response.values.count == 3)
+        #expect(response.values[0] == Data([0xAA, 0xBB]))
+        #expect(response.values[1].isEmpty)
+        #expect(response.values[2] == Data([0xCC]))
+        #expect(response.data == data)
+        #expect(response.dataLength == data.count)
+
+        // empty response (no values)
+        let empty = ATTReadMultipleVariableLengthResponse<Data>(values: [])
+        #expect(empty.data == Data([0x21]))
+
+        // truncated length prefix
+        #expect(ATTReadMultipleVariableLengthResponse<Data>(data: Data([0x21, 0x02])) == nil)
+        // truncated value
+        #expect(ATTReadMultipleVariableLengthResponse<Data>(data: Data([0x21, 0x02, 0x00, 0xAA])) == nil)
+    }
+
+    @Test func handleValueMultipleNotification() {
+
+        #expect(ATTOpcode.handleValueMultipleNotification.type == .notification)
+
+        // requires at least 1 notification
+        #expect(ATTHandleValueMultipleNotification<Data>(notifications: []) == nil)
+
+        // (Handle: 0x0021, Length: 2, Value: 0x01 0x02), (Handle: 0x0025, Length: 0)
+        let data = Data([0x23, 0x21, 0x00, 0x02, 0x00, 0x01, 0x02, 0x25, 0x00, 0x00, 0x00])
+
+        guard let notification = ATTHandleValueMultipleNotification<Data>(data: data)
+        else {
+            Issue.record("Could not parse")
+            return
+        }
+
+        #expect(notification.notifications.count == 2)
+        #expect(notification.notifications[0].handle == 0x0021)
+        #expect(notification.notifications[0].value == Data([0x01, 0x02]))
+        #expect(notification.notifications[1].handle == 0x0025)
+        #expect(notification.notifications[1].value.isEmpty)
+        #expect(notification.data == data)
+        #expect(notification.dataLength == data.count)
+
+        // round trip through non-Foundation container
+        #expect(ATTHandleValueMultipleNotification<[UInt8]>(data: [UInt8](data))?.data == data)
+
+        // truncated tuple header
+        #expect(ATTHandleValueMultipleNotification<Data>(data: Data([0x23, 0x21, 0x00, 0x02])) == nil)
+        // truncated value
+        #expect(ATTHandleValueMultipleNotification<Data>(data: Data([0x23, 0x21, 0x00, 0x02, 0x00, 0x01])) == nil)
+    }
 }
 
 internal extension ATTProtocolDataUnit {

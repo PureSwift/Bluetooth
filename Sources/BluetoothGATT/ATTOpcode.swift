@@ -65,6 +65,13 @@ public enum ATTOpcode: UInt8, Sendable, CaseIterable {
     case handleValueNotification = 0x1B
     case handleValueIndication = 0x1D
     case handleValueConfirmation = 0x1E
+
+    // Read Multiple Variable Length
+    case readMultipleVariableLengthRequest = 0x20
+    case readMultipleVariableLengthResponse = 0x21
+
+    // Handle Value Multiple
+    case handleValueMultipleNotification = 0x23
 }
 
 // MARK: - CustomStringConvertible
@@ -126,6 +133,9 @@ public extension ATTOpcode {
         case .handleValueNotification: return .notification
         case .handleValueIndication: return .indication
         case .handleValueConfirmation: return .confirmation
+        case .readMultipleVariableLengthRequest: return .request
+        case .readMultipleVariableLengthResponse: return .response
+        case .handleValueMultipleNotification: return .notification
         }
     }
 
@@ -154,7 +164,8 @@ private extension ATTOpcode {
         (readByGroupTypeRequest, readByGroupTypeResponse),
         (writeRequest, writeResponse),
         (preparedWriteRequest, preparedWriteResponse),
-        (executeWriteRequest, executeWriteResponse)
+        (executeWriteRequest, executeWriteResponse),
+        (readMultipleVariableLengthRequest, readMultipleVariableLengthResponse)
     ]
     // swiftlint:enable comma
 
