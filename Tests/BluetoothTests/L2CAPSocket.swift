@@ -7,7 +7,11 @@
 //
 
 #if canImport(BluetoothGATT)
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Bluetooth
 
 internal final class TestL2CAPServer: L2CAPServer, Sendable {

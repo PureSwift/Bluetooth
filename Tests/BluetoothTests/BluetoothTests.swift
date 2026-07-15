@@ -7,7 +7,11 @@
 //
 
 import Testing
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 @testable import Bluetooth
 #if canImport(BluetoothHCI)
 import BluetoothHCI

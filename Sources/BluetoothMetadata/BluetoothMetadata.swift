@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 1/11/25.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public protocol BluetoothMetadataFile: Codable {
 

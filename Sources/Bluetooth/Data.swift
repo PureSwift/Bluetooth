@@ -6,7 +6,11 @@
 //
 
 #if canImport(Foundation)
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 #endif
 
 /// Data container type.

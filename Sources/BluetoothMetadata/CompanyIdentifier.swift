@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 1/12/25.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Bluetooth SIG Company Identifier Metadata
 public struct CompanyIdentifier: Equatable, Hashable, Codable, Sendable, Identifiable {

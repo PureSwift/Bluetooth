@@ -7,7 +7,11 @@
 //
 
 #if canImport(BluetoothHCI)
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Bluetooth
 import BluetoothHCI
 

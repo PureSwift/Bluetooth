@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 11/5/24.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import BluetoothMetadata
 
 extension GenerateTool {

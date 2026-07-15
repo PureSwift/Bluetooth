@@ -6,7 +6,11 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Bluetooth
 
 /// Bluetooth HCI controller.

@@ -8,7 +8,11 @@
 
 #if canImport(BluetoothGATT)
 import Testing
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Bluetooth
 @testable import BluetoothGATT
 

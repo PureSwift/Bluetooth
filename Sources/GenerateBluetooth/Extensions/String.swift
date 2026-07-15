@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 6/12/22.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public extension String {
 

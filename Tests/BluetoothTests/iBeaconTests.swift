@@ -8,7 +8,11 @@
 
 #if canImport(BluetoothGAP) && canImport(BluetoothHCI)
 import Testing
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Bluetooth
 @testable import BluetoothGAP
 import BluetoothHCI
