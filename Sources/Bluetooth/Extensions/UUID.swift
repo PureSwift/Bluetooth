@@ -46,7 +46,7 @@ extension UUID: DataConvertible {
 }
 
 #if canImport(Foundation)
-public extension Foundation.UUID {
+public extension UUID {
 
     typealias ByteValue = uuid_t
 }
