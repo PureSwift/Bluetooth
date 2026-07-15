@@ -50,7 +50,7 @@ import Bluetooth
 
             let bluetooth: BluetoothUUID
 
-            let foundation: Foundation.UUID
+            let foundation: UUID
 
             let bytes: UInt128.ByteValue
         }
