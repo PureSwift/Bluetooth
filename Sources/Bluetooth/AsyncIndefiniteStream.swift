@@ -5,13 +5,6 @@
 //  Created by Alsey Coleman Miller on 4/12/22.
 //
 
-#if canImport(Foundation)
-#if canImport(FoundationEssentials)
-import FoundationEssentials
-#else
-import Foundation
-#endif
-
 /// Async Stream that will produce values until `stop()` is called or task is cancelled.
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public struct AsyncIndefiniteStream<Element: Sendable>: AsyncSequence, Sendable {
@@ -146,7 +139,7 @@ internal extension AsyncIndefiniteStream {
 
         var _isExecuting = true
 
-        let lock = NSLock()
+        let lock = Lock()
 
         var stream: AsyncThrowingStream<Element, Error>!
 
@@ -176,4 +169,55 @@ internal extension AsyncIndefiniteStream {
         }
     }
 }
+
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#elseif canImport(Android)
+import Android
+#elseif canImport(WinSDK)
+import WinSDK
 #endif
+
+/// A minimal cross-platform mutex, avoiding a dependency on Foundation's `NSLock`.
+internal final class Lock: @unchecked Sendable {
+
+    #if canImport(WinSDK)
+    private var criticalSection = CRITICAL_SECTION()
+    #else
+    private var mutex = pthread_mutex_t()
+    #endif
+
+    init() {
+        #if canImport(WinSDK)
+        InitializeCriticalSection(&criticalSection)
+        #else
+        pthread_mutex_init(&mutex, nil)
+        #endif
+    }
+
+    deinit {
+        #if canImport(WinSDK)
+        DeleteCriticalSection(&criticalSection)
+        #else
+        pthread_mutex_destroy(&mutex)
+        #endif
+    }
+
+    func lock() {
+        #if canImport(WinSDK)
+        EnterCriticalSection(&criticalSection)
+        #else
+        pthread_mutex_lock(&mutex)
+        #endif
+    }
+
+    func unlock() {
+        #if canImport(WinSDK)
+        LeaveCriticalSection(&criticalSection)
+        #else
+        pthread_mutex_unlock(&mutex)
+        #endif
+    }
+}
