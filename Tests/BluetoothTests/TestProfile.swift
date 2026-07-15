@@ -7,7 +7,11 @@
 //
 
 #if canImport(BluetoothGATT)
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Bluetooth
 import BluetoothGATT
 

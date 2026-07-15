@@ -6,7 +6,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        swift: ["6.1.2"]
+        swift: ["6.3.2"]
         config: ["debug", "release"]
     steps:
       - uses: compnerd/gha-setup-swift@main

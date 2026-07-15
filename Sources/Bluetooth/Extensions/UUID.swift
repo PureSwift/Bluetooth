@@ -7,7 +7,11 @@
 //
 
 #if canImport(Foundation)
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 #endif
 
 internal extension UUID {
@@ -42,7 +46,7 @@ extension UUID: DataConvertible {
 }
 
 #if canImport(Foundation)
-public extension Foundation.UUID {
+public extension UUID {
 
     typealias ByteValue = uuid_t
 }

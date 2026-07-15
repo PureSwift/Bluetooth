@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        swift: ["6.0.3"]
+        swift: ["6.3.2"]
         config: ["debug", "release"]
     container: swift:${{ matrix.swift }}
     steps:
@@ -14,6 +14,14 @@ jobs:
         uses: actions/checkout@v4
       - name: Swift Version
         run: swift --version
-      - uses: swiftwasm/setup-swiftwasm@v2
+      - name: Install dependencies
+        run: apt-get update -y && apt-get install -y curl
+      - name: Install WASM SDK
+        run: |
+          set -eux
+          url="https://download.swift.org/swift-${{ matrix.swift }}-release/wasm-sdk/swift-${{ matrix.swift }}-RELEASE/swift-${{ matrix.swift }}-RELEASE_wasm.artifactbundle.tar.gz"
+          curl -fsSL "$url" -o wasm.artifactbundle.tar.gz
+          swift sdk install wasm.artifactbundle.tar.gz
+          swift sdk list
       - name: Build
-        run: SWIFTPM_BLUETOOTH_METADATA=0 SWIFTPM_ENABLE_PLUGINS=0 SWIFTPM_ENABLE_MACROS=0 swift build --target Bluetooth -c ${{ matrix.config }} --swift-sdk wasm32-unknown-wasi
+        run: SWIFTPM_BLUETOOTH_METADATA=0 SWIFTPM_ENABLE_PLUGINS=0 SWIFTPM_ENABLE_MACROS=0 swift build --target Bluetooth -c ${{ matrix.config }} --swift-sdk swift-${{ matrix.swift }}-RELEASE_wasm

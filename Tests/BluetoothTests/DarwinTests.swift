@@ -8,7 +8,11 @@
 
 #if os(macOS)
 import Testing
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 @testable import Bluetooth
 import BluetoothGAP
 import CoreBluetooth

@@ -6,7 +6,11 @@
 //
 
 #if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import BluetoothMetadata
 
 public extension CompanyIdentifier {

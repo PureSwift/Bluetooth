@@ -6,7 +6,11 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Testing
 #if canImport(BluetoothGATT)
 import Bluetooth
@@ -46,7 +50,7 @@ import Bluetooth
 
             let bluetooth: BluetoothUUID
 
-            let foundation: Foundation.UUID
+            let foundation: UUID
 
             let bytes: UInt128.ByteValue
         }

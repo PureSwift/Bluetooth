@@ -148,9 +148,9 @@ internal final class TestL2CAPSocket: L2CAPConnection, @unchecked Sendable {
     /// Target socket.
     private weak var target: TestL2CAPSocket?
 
-    fileprivate(set) var receivedData = [Foundation.Data]()
+    fileprivate(set) var receivedData = [Data]()
 
-    private(set) var cache = [Foundation.Data]()
+    private(set) var cache = [Data]()
 
     // MARK: - Initialization
 
