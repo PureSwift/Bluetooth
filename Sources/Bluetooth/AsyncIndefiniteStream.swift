@@ -185,14 +185,14 @@ internal final class Lock: @unchecked Sendable {
 
     #if canImport(WinSDK)
     private var criticalSection = CRITICAL_SECTION()
-    #else
+    #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
     private var mutex = pthread_mutex_t()
     #endif
 
     init() {
         #if canImport(WinSDK)
         InitializeCriticalSection(&criticalSection)
-        #else
+        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
         pthread_mutex_init(&mutex, nil)
         #endif
     }
@@ -200,7 +200,7 @@ internal final class Lock: @unchecked Sendable {
     deinit {
         #if canImport(WinSDK)
         DeleteCriticalSection(&criticalSection)
-        #else
+        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
         pthread_mutex_destroy(&mutex)
         #endif
     }
@@ -208,15 +208,16 @@ internal final class Lock: @unchecked Sendable {
     func lock() {
         #if canImport(WinSDK)
         EnterCriticalSection(&criticalSection)
-        #else
+        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
         pthread_mutex_lock(&mutex)
         #endif
+        // Single-threaded platforms (e.g. WASI) need no locking.
     }
 
     func unlock() {
         #if canImport(WinSDK)
         LeaveCriticalSection(&criticalSection)
-        #else
+        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
         pthread_mutex_unlock(&mutex)
         #endif
     }
