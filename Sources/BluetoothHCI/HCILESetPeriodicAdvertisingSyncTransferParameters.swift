@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Periodic Advertising Sync Transfer Parameters Command
@@ -36,6 +37,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.connectionHandle
     }
 }
+#endif
 
 // MARK: - Command
 

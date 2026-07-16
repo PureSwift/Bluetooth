@@ -8,6 +8,7 @@
 
 // MARK: - BluetoothHostControllerInterface
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Event Mask Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameter, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - HCI Command
 

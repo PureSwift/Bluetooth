@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Clock Offset Command
@@ -27,6 +28,7 @@ public extension BluetoothHostControllerInterface {
         ).clockOffset
     }
 }
+#endif
 
 // MARK: - Command
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Class of Device Command
@@ -18,6 +19,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCIReadClassOfDeviceReturn.self, timeout: timeout).classOfDevice
     }
 }
+#endif
 
 // MARK: - Return Parameter
 

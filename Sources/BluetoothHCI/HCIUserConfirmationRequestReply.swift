@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// User Confirmation Request Reply Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, HCIUserConfirmationRequestReplyReturn.self, timeout: timeout).address
     }
 }
+#endif
 
 /// User Confirmation Request Reply Command
 ///

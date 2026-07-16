@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Remove Device From White List Command
@@ -19,6 +20,7 @@ public extension BluetoothHostControllerInterface {
     }
 
 }
+#endif
 
 // MARK: - Command
 

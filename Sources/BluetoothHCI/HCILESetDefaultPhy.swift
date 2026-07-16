@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Default PHY Command
@@ -26,6 +27,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

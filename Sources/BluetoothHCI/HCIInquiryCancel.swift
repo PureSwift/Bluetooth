@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Inquiry Cancel Command
@@ -19,3 +20,4 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(LinkControlCommand.inquiryCancel, timeout: timeout)
     }
 }
+#endif

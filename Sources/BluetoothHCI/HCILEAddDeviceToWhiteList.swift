@@ -10,6 +10,7 @@ import Bluetooth
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Add Device To White List Command
@@ -21,6 +22,7 @@ public extension BluetoothHostControllerInterface {
     }
 
 }
+#endif
 
 // MARK: - Command
 

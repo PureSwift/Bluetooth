@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Link Key Request Reply Command
@@ -24,6 +25,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, HCILinkKeyRequestNegativeReplyReturn.self, timeout: timeout).address
     }
 }
+#endif
 
 /// Link Key Request Negative Reply Command
 ///

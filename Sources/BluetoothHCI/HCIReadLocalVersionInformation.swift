@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// This command reads the values for the version information for the local Controller.
@@ -16,6 +17,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCILocalVersionInformation.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Maximum Advertising Data Length Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return value.maximumAdvertisingDataLength
     }
 }
+#endif
 
 // MARK: - Return parameter
 

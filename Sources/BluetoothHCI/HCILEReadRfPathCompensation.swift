@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read RF Path Compensation Command
@@ -18,6 +19,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCILEReadRfPathCompensation.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Return parameter
 

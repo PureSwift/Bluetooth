@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Delete Stored Link Key Command
@@ -24,6 +25,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, HCIDeleteStoredLinkKeyReturn.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

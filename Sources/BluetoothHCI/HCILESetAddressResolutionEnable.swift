@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Address Resolution Enable Command
@@ -20,6 +21,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

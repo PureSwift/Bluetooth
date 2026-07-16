@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Periodic Advertising Parameters Command (v2)
@@ -25,6 +26,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.advertisingHandle
     }
 }
+#endif
 
 // MARK: - Command
 

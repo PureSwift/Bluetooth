@@ -9,6 +9,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// QoS Setup Command
@@ -37,6 +38,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, HCIQoSSetupComplete.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

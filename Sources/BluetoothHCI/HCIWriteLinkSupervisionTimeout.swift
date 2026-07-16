@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Write Link Supervision Timeout Command
@@ -29,6 +30,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, HCIWriteLinkSupervisionTimeoutReturn.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Local Resolvable Address Command
@@ -28,6 +29,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.localResolvableAddress
     }
 }
+#endif
 
 // MARK: - Command
 

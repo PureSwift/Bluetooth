@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Used by the Host to set the LE Random Device Address in the Controller.
@@ -17,6 +18,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(commandParameter, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

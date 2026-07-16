@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Remote Supported Features Command
@@ -27,6 +28,7 @@ public extension BluetoothHostControllerInterface {
         ).features
     }
 }
+#endif
 
 // MARK: - Command
 

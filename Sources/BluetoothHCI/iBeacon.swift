@@ -8,6 +8,7 @@
 import Bluetooth
 import BluetoothGAP
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Enable iBeacon functionality.
@@ -35,3 +36,4 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(advertisingDataCommand, timeout: timeout)
     }
 }
+#endif

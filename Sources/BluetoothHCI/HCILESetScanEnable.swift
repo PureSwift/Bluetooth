@@ -6,11 +6,17 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #else
 import Foundation
 #endif
+#endif
+
+// Relies on Swift Concurrency (Task, async/await) and AsyncIndefiniteStream,
+// neither of which Embedded Swift currently supports.
+#if !hasFeature(Embedded)
 
 // MARK: - Method
 
@@ -108,6 +114,8 @@ public struct AsyncLowEnergyScanStream: AsyncSequence, Sendable {
         stream.stop()
     }
 }
+
+#endif
 
 // MARK: - Command
 

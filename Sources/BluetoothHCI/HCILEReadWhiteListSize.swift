@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read White List Size Command
@@ -20,6 +21,7 @@ public extension BluetoothHostControllerInterface {
         return Int(sizeReturnParameter.size)
     }
 }
+#endif
 
 // MARK: - Return parameter
 

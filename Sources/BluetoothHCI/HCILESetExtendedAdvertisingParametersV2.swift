@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Extended Advertising Parameters Command (v2)
@@ -24,6 +25,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.selectedTxPower
     }
 }
+#endif
 
 // MARK: - Command
 

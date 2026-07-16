@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Start Encryption Command
@@ -89,6 +90,7 @@ public extension BluetoothHostControllerInterface {
          */
     }
 }
+#endif
 
 // MARK: - Command
 

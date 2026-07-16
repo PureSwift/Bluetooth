@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Exit Periodic Inquiry Mode Command
@@ -18,3 +19,4 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(LinkControlCommand.exitPeriodicInquiry, timeout: timeout)
     }
 }
+#endif

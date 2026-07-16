@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     func lowEnergyCreateConnection(
@@ -46,6 +47,7 @@ public extension BluetoothHostControllerInterface {
     }
 
 }
+#endif
 
 // MARK: - Command
 

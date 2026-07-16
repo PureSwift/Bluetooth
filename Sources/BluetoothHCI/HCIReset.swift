@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Reset Command
@@ -20,3 +21,4 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HostControllerBasebandCommand.reset, timeout: timeout)
     }
 }
+#endif

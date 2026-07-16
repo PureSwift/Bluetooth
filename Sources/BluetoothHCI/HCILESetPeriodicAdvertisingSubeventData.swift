@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Periodic Advertising Subevent Data Command
@@ -30,6 +31,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.advertisingHandle
     }
 }
+#endif
 
 // MARK: - Command
 

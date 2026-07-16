@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Advertising Enable
@@ -25,6 +26,7 @@ public extension BluetoothHostControllerInterface {
     }
 
 }
+#endif
 
 // MARK: - Command
 

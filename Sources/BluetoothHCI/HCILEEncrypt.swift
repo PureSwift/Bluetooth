@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Encrypt Command
@@ -27,6 +28,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.encryptedData
     }
 }
+#endif
 
 // MARK: - Command
 

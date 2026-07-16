@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Channel Map Command
@@ -24,6 +25,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.channelMap
     }
 }
+#endif
 
 // MARK: - Command
 

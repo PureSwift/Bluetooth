@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read PHY Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return value
     }
 }
+#endif
 
 // MARK: - Command
 

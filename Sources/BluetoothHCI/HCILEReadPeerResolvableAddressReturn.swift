@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Peer Resolvable Address Command
@@ -24,6 +25,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.peerResolvableAddress
     }
 }
+#endif
 
 // MARK: - Command
 

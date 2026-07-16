@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Set Connection Encryption Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(connectionEncryption, HCIEncryptionChange.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Clear Resolving List Command
@@ -16,3 +17,4 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(HCILowEnergyCommand.clearResolvedList, timeout: timeout)
     }
 }
+#endif

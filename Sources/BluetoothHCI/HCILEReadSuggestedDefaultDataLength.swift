@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Suggested Default Data Length Command
@@ -19,6 +20,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCILEReadSuggestedDefaultDataLength.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Return parameter
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Long Term Key Request Negative Reply Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.connectionHandle
     }
 }
+#endif
 
 // MARK: - Command
 

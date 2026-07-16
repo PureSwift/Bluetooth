@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Transmit Power Level Command
@@ -29,6 +30,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.transmitPowerLevel
     }
 }
+#endif
 
 // MARK: - Command
 

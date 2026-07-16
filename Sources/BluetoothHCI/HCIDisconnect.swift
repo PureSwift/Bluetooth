@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Disconnect Command
@@ -25,6 +26,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(disconnect, HCIDisconnectionComplete.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

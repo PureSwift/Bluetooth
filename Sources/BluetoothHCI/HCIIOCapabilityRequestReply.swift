@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// IO Capability Request Reply Command
@@ -34,6 +35,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, HCIIOCapabilityRequestReplyReturn.self, timeout: timeout).address
     }
 }
+#endif
 
 // MARK: - Command
 

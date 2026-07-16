@@ -200,6 +200,7 @@ public struct HCISetEventFilter: HCICommandParameter, Equatable, Sendable {
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Set Event Filter Command
@@ -215,3 +216,4 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(command, timeout: timeout)
     }
 }
+#endif

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Number of Supported Advertising Sets Command
@@ -25,6 +26,7 @@ public extension BluetoothHostControllerInterface {
         return value.numSupportedAdvertisingSets
     }
 }
+#endif
 
 // MARK: - Return parameter
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Local Name Command
@@ -21,6 +22,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(command, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

@@ -87,40 +87,40 @@ public final class GATTServer<Socket: L2CAPConnection>: @unchecked Sendable {
     private func registerATTHandlers() {
 
         // Exchange MTU
-        connection.register { [weak self] in self?.exchangeMTU($0) }
+        connection.register { self.exchangeMTU($0) }
 
         // Read By Group Type
-        connection.register { [weak self] in self?.readByGroupType($0) }
+        connection.register { self.readByGroupType($0) }
 
         // Read By Type
-        connection.register { [weak self] in self?.readByType($0) }
+        connection.register { self.readByType($0) }
 
         // Find Information
-        connection.register { [weak self] in self?.findInformation($0) }
+        connection.register { self.findInformation($0) }
 
         // Find By Type Value
-        connection.register { [weak self] in self?.findByTypeValue($0) }
+        connection.register { self.findByTypeValue($0) }
 
         // Write Request
-        connection.register { [weak self] in self?.writeRequest($0) }
+        connection.register { self.writeRequest($0) }
 
         // Write Command
-        connection.register { [weak self] in self?.writeCommand($0) }
+        connection.register { self.writeCommand($0) }
 
         // Read Request
-        connection.register { [weak self] in self?.readRequest($0) }
+        connection.register { self.readRequest($0) }
 
         // Read Blob Request
-        connection.register { [weak self] in self?.readBlobRequest($0) }
+        connection.register { self.readBlobRequest($0) }
 
         // Read Multiple Request
-        connection.register { [weak self] in self?.readMultipleRequest($0) }
+        connection.register { self.readMultipleRequest($0) }
 
         // Prepare Write Request
-        connection.register { [weak self] in self?.prepareWriteRequest($0) }
+        connection.register { self.prepareWriteRequest($0) }
 
         // Execute Write Request
-        connection.register { [weak self] in self?.executeWriteRequest($0) }
+        connection.register { self.executeWriteRequest($0) }
     }
 
     private func errorResponse(_ opcode: ATTOpcode, _ error: ATTError, _ handle: UInt16 = 0) {
@@ -284,12 +284,12 @@ public final class GATTServer<Socket: L2CAPConnection>: @unchecked Sendable {
                         attribute: attribute,
                         maximumTransmissionUnit: connection.maximumTransmissionUnit
                     )
-                    send(indication) { [weak self] result in
+                    send(indication) { result in
                         switch result {
                         case .success(let confirmation):
-                            self?.log?("Confirmation: \(confirmation)")
+                            self.log?("Confirmation: \(confirmation)")
                         case .failure(let error):
-                            self?.log?("Confirmation error: \(error)")
+                            self.log?("Confirmation error: \(error)")
                         }
                     }
                 }
