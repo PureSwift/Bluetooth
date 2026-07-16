@@ -132,12 +132,26 @@ extension UInt512: ByteSwap {
 
 // MARK: - ExpressibleByIntegerLiteral
 
+@available(macOS 13.3, iOS 16.4, watchOS 9.4, tvOS 16.4, *)
 extension UInt512: ExpressibleByIntegerLiteral {
 
-    public init(integerLiteral value: UInt64) {
-        // TODO: Implement `StaticBigInt`
-        let bytes = value.bigEndian.bytes
-        self = UInt512(bigEndian: UInt512(bytes: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7)))
+    public init(integerLiteral value: StaticBigInt) {
+        precondition(
+            value.signum() >= 0,
+            "\(value) overflows when stored into UInt512")
+        precondition(
+            value.bitWidth <= UInt512.bitWidth,
+            "\(value) overflows when stored into UInt512")
+        var bytes = [UInt8](repeating: 0, count: UInt512.bitWidth / 8)
+        let wordSize = UInt.bitWidth / 8
+        for wordIndex in 0..<(UInt512.bitWidth / UInt.bitWidth) {
+            let word = value[wordIndex]
+            let byteOffset = wordIndex * wordSize
+            for (index, byte) in word.bytes.enumerated() {
+                bytes[byteOffset + index] = byte
+            }
+        }
+        self = UInt512(data: bytes)!
     }
 }
 
