@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Periodic Advertising Parameters Command
@@ -25,6 +26,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

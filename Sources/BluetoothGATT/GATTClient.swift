@@ -8,6 +8,10 @@
 
 import Bluetooth
 
+// GATTClient is an actor and relies on Swift Concurrency (Task, CheckedContinuation),
+// neither of which Embedded Swift currently supports.
+#if !hasFeature(Embedded)
+
 /// GATT Client
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public actor GATTClient<Socket: L2CAPConnection>: Sendable {
@@ -1213,3 +1217,5 @@ internal extension GATTClient {
         }
     }
 }
+
+#endif

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     // MARK: - Return parameter
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return value
     }
 }
+#endif
 
 // MARK: - Return parameter
 

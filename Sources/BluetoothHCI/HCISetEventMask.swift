@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Set Event Mask Command
@@ -27,6 +28,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameter, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

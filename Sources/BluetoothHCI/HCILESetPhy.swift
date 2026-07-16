@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set PHY Command
@@ -47,6 +48,7 @@ public extension BluetoothHostControllerInterface {
         }
     }
 }
+#endif
 
 // MARK: - Command
 

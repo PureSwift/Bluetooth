@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Write Local Name Command
@@ -22,6 +23,7 @@ public extension BluetoothHostControllerInterface {
         return value.localName
     }
 }
+#endif
 
 // MARK: - Command
 

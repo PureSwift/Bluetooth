@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Authentication Requested Command
@@ -28,6 +29,7 @@ public extension BluetoothHostControllerInterface {
         )
     }
 }
+#endif
 
 // MARK: - Command
 

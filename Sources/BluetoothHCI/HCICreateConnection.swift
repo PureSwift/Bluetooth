@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Create Connection Command
@@ -32,6 +33,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(createConnection, HCIConnectionComplete.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

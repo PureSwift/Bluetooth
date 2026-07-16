@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Write Class of Device Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

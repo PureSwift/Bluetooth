@@ -29,6 +29,7 @@ public struct HCICommandTimeout: RawRepresentable, Equatable, Hashable, Sendable
     public static var `default`: HCICommandTimeout { 1000 }
 }
 
+#if canImport(Foundation)
 public extension HCICommandTimeout {
 
     /// Duration in seconds.
@@ -36,6 +37,7 @@ public extension HCICommandTimeout {
         return TimeInterval(rawValue) / 1000.0
     }
 }
+#endif
 
 // MARK: - ExpressibleByIntegerLiteral
 
@@ -51,6 +53,10 @@ extension HCICommandTimeout: ExpressibleByIntegerLiteral {
 extension HCICommandTimeout: CustomStringConvertible {
 
     public var description: String {
+        #if canImport(Foundation)
         return "\(duration)s"
+        #else
+        return "\(rawValue)ms"
+        #endif
     }
 }

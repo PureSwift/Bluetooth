@@ -6,6 +6,7 @@
 //  Copyright © 2017 PureSwift. All rights reserved.
 //
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Clear White List Command
@@ -18,3 +19,4 @@ public extension BluetoothHostControllerInterface {
     }
 
 }
+#endif

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Inquiry Command
@@ -39,6 +40,7 @@ public extension BluetoothHostControllerInterface {
         }*/
     }
 }
+#endif
 
 // MARK: - Command
 

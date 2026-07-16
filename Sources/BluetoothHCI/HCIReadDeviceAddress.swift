@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Device Address
@@ -16,6 +17,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCIReadDeviceAddress.self, timeout: timeout).address
     }
 }
+#endif
 
 // MARK: - Return Parameter
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read RSSI Command
@@ -34,6 +35,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.rssi
     }
 }
+#endif
 
 // MARK: - Command
 

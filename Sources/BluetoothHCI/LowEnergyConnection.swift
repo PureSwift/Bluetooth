@@ -6,6 +6,7 @@
 //  Copyright © 2017 PureSwift. All rights reserved.
 //
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Create Connection Cancel Command
@@ -41,3 +42,4 @@ public extension BluetoothHostControllerInterface {
         }
     }
 }
+#endif

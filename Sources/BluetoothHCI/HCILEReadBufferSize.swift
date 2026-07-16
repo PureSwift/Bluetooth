@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Buffer Size Command
@@ -20,6 +21,7 @@ public extension BluetoothHostControllerInterface {
         return bufferSizeReturnParameter
     }
 }
+#endif
 
 // MARK: - Return parameters
 

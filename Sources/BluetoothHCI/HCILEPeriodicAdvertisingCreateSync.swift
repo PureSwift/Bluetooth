@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Periodic Advertising Create Sync Command
@@ -22,6 +23,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

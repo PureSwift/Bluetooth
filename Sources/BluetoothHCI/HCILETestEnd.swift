@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Test End Command
@@ -22,6 +23,7 @@ public extension BluetoothHostControllerInterface {
         return value.numberOfPackets
     }
 }
+#endif
 
 // MARK: - Return parameter
 

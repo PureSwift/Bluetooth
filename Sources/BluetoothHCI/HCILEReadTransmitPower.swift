@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Transmit Power Command
@@ -18,6 +19,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCILEReadTransmitPower.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Return parameter
 

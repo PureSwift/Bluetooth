@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// HCI Remote Name Request
@@ -33,6 +34,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(remoteNameRequest, HCIRemoteNameRequestComplete.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

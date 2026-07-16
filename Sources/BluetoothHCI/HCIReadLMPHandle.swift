@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read LMP Handle Command
@@ -27,6 +28,7 @@ public extension BluetoothHostControllerInterface {
         ).lmpHandle
     }
 }
+#endif
 
 // MARK: - Command
 

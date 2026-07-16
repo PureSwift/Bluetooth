@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Periodic Sync Subevent Command
@@ -32,6 +33,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.syncHandle
     }
 }
+#endif
 
 // MARK: - Command
 

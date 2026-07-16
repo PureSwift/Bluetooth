@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Supported States
@@ -20,6 +21,7 @@ public extension BluetoothHostControllerInterface {
         return returValue.state
     }
 }
+#endif
 
 // MARK: - Return parameter
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Data Block Size
@@ -19,6 +20,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCIReadDataBlockSizeReturn.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Return Parameter
 

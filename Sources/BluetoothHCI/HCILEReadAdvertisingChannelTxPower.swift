@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Advertising Channel Tx Power Command
@@ -22,6 +23,7 @@ public extension BluetoothHostControllerInterface {
         return value.transmitPowerLevel
     }
 }
+#endif
 
 // MARK: - Return parameter
 

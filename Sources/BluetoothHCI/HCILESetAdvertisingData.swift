@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Advertising Data Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameter, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

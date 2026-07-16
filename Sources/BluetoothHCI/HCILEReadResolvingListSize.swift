@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Resolving List Size Command
@@ -23,6 +24,7 @@ public extension BluetoothHostControllerInterface {
         return value.resolvingListSize
     }
 }
+#endif
 
 // MARK: - Return parameter
 

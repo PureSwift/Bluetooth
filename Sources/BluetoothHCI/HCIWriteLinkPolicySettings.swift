@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Write Link Policy Settings Command
@@ -27,6 +28,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(command, HCIWriteLinkPolicySettingsReturn.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

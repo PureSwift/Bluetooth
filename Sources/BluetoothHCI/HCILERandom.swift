@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Rand Command
@@ -20,6 +21,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.randomNumber
     }
 }
+#endif
 
 // MARK: - Return parameter
 

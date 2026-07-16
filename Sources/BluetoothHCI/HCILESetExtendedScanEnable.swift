@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Extended Scan Enable Command
@@ -30,6 +31,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(parameters, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

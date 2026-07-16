@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Reject Connection Command
@@ -24,6 +25,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(rejectConnectionCancel, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

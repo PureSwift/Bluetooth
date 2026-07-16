@@ -6,6 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Accept Connection Command
@@ -29,6 +30,7 @@ public extension BluetoothHostControllerInterface {
         }
     }
 }
+#endif
 
 // MARK: - Command
 

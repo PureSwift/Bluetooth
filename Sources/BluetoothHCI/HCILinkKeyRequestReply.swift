@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Link Key Request Reply Command
@@ -25,6 +26,7 @@ public extension BluetoothHostControllerInterface {
         try await deviceRequest(linkKeyRequestReply, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

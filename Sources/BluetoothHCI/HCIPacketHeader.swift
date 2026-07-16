@@ -6,10 +6,12 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #else
 import Foundation
+#endif
 #endif
 
 // MARK: - HCI Packet structures
@@ -62,6 +64,7 @@ public struct HCICommandHeader: HCIPacketHeader {  // hci_command_hdr (packed)
         self.parameterLength = parameterLength
     }
 
+    #if canImport(Foundation)
     public static func from<T: HCICommandParameter>(_ commandParameter: T) -> (HCICommandHeader, Data) {
 
         let command = type(of: commandParameter).command
@@ -73,6 +76,7 @@ public struct HCICommandHeader: HCIPacketHeader {  // hci_command_hdr (packed)
 
         return (header, parameterData)
     }
+    #endif
 
     public init?<Data: DataContainer>(data: Data) {
 

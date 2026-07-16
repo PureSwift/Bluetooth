@@ -6,10 +6,12 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #else
 import Foundation
+#endif
 #endif
 import Bluetooth
 
@@ -61,10 +63,15 @@ public enum BluetoothHostControllerError: Error, Sendable {
     /// The second error is the error while trying to restore the filter.
     case couldNotRestoreFilter(Error, Error)
 
+    #if canImport(Foundation)
     /// The received data could not be parsed correctly.
     case garbageResponse(Data)
+    #endif
 }
 
+// Excluded from Embedded Swift: triggers a compiler crash (SILGen crash lowering
+// an async computed property getter in a protocol extension under Embedded).
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     static var `default`: Self? {
@@ -73,3 +80,4 @@ public extension BluetoothHostControllerInterface {
         }
     }
 }
+#endif

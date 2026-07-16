@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Local Supported Commands Command
@@ -33,6 +34,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameter.supportedCommands
     }
 }
+#endif
 
 // MARK: - Supported Commands
 

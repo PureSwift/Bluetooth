@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Remote Version Information Command
@@ -26,6 +27,7 @@ public extension BluetoothHostControllerInterface {
             timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Read Page Timeout Command
@@ -18,6 +19,7 @@ public extension BluetoothHostControllerInterface {
         return try await deviceRequest(HCIReadPageTimeoutReturn.self, timeout: timeout)
     }
 }
+#endif
 
 // MARK: - Command
 

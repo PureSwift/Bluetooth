@@ -6,10 +6,12 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
+#if canImport(Foundation)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #else
 import Foundation
+#endif
 #endif
 import Bluetooth
 
@@ -77,6 +79,7 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
         return Self.length
     }
 
+    #if canImport(Foundation)
     public var characteristic: GATTAttribute<Data>.Characteristic {
 
         return GATTAttribute<Data>.Characteristic(
@@ -86,6 +89,7 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
             properties: [.notify],
             descriptors: [])
     }
+    #endif
 }
 
 public extension GATTAlertNotificationControlPoint {

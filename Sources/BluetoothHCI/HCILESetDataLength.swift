@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Set Data Length Command
@@ -31,6 +32,7 @@ public extension BluetoothHostControllerInterface {
         return returnParameters.connectionHandle
     }
 }
+#endif
 
 // MARK: - Command
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Read Local Supported Features Command
@@ -20,6 +21,7 @@ public extension BluetoothHostControllerInterface {
         return returValue.features
     }
 }
+#endif
 
 // MARK: - Return parameter
 

@@ -8,6 +8,7 @@
 
 // MARK: - Method
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// Change Connection Packet Type Command
@@ -28,6 +29,7 @@ public extension BluetoothHostControllerInterface {
         ).status
     }
 }
+#endif
 
 // MARK: - Command
 

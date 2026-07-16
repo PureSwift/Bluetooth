@@ -8,6 +8,7 @@
 
 // MARK: - BluetoothHostControllerInterface
 
+#if !hasFeature(Embedded)
 public extension BluetoothHostControllerInterface {
 
     /// LE Clear Advertising Sets Command
@@ -47,3 +48,4 @@ public extension BluetoothHostControllerInterface {
     }
 
 }
+#endif
