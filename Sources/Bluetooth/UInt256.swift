@@ -99,12 +99,26 @@ extension UInt256: ByteSwap {
 
 // MARK: - ExpressibleByIntegerLiteral
 
+@available(macOS 13.3, iOS 16.4, watchOS 9.4, tvOS 16.4, *)
 extension UInt256: ExpressibleByIntegerLiteral {
 
-    public init(integerLiteral value: UInt64) {
-        // TODO: Implement `StaticBigInt`
-        let bytes = value.bigEndian.bytes
-        self = UInt256(bigEndian: UInt256(bytes: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5, bytes.6, bytes.7)))
+    public init(integerLiteral value: StaticBigInt) {
+        precondition(
+            value.signum() >= 0,
+            "\(value) overflows when stored into UInt256")
+        precondition(
+            value.bitWidth <= UInt256.bitWidth,
+            "\(value) overflows when stored into UInt256")
+        var bytes = [UInt8](repeating: 0, count: UInt256.bitWidth / 8)
+        let wordSize = UInt.bitWidth / 8
+        for wordIndex in 0..<(UInt256.bitWidth / UInt.bitWidth) {
+            let word = value[wordIndex]
+            let byteOffset = wordIndex * wordSize
+            for (index, byte) in word.bytes.enumerated() {
+                bytes[byteOffset + index] = byte
+            }
+        }
+        self = UInt256(data: bytes)!
     }
 }
 
