@@ -63,7 +63,10 @@ jobs:
   android-build:
       name: Android (${{ matrix.arch }}, build)
       runs-on: ubuntu-latest
-      container: swift:6.2
+      # The container Swift version must EXACTLY match the Swift version the
+      # Android SDK bundle was built with (Swift SDK .swiftmodule files are not
+      # cross-compiler-compatible), so pin both to 6.1.3.
+      container: swift:6.1.3
       strategy:
         fail-fast: false
         matrix:
@@ -75,6 +78,6 @@ jobs:
       steps:
         - uses: actions/checkout@v4
         - name: Install Android Swift SDK
-          run: swift sdk install https://github.com/finagolfin/swift-android-sdk/releases/download/6.2/swift-6.2-RELEASE-android-24-0.1.artifactbundle.tar.gz --checksum c26ebfd4e32c0ca1beabcc45729b62042da57ee76d7d043f63f2235da90dc491
+          run: swift sdk install https://github.com/finagolfin/swift-android-sdk/releases/download/6.1.3/swift-6.1.3-RELEASE-android-24-0.1.artifactbundle.tar.gz --checksum 440d09d539bda5b94807598b00696ac5d3893cb515b24715ac8868d62130b6d5
         - name: Build tests for Android ${{ matrix.arch }}
           run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk ${{ matrix.sdk }}
