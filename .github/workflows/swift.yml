@@ -17,7 +17,7 @@ jobs:
     - name: Build
       run: ${{ matrix.options }} swift build -c ${{ matrix.config }}
     - name: Test
-      run: ${{ matrix.options }} swift test -c ${{ matrix.config }}
+      run: ${{ matrix.options }} swift test -c ${{ matrix.config }} --no-parallel
   
   linux:
     name: Linux
@@ -36,7 +36,7 @@ jobs:
     - name: Build
       run: ${{ matrix.options }} swift build -c ${{ matrix.config }}
     - name: Test
-      run: ${{ matrix.options }} swift test -c ${{ matrix.config }}
+      run: ${{ matrix.options }} swift test -c ${{ matrix.config }} --no-parallel
 
   # Run the full test suite on the Android x86_64 emulator with the official
   # Swift 6.3.2 Android SDK. x86_64 is the only Android ABI that GitHub-hosted
@@ -57,6 +57,7 @@ jobs:
             run-tests: true
             build-tests: true
             free-disk-space: true
+            swift-test-flags: --no-parallel
 
   # Cross-compile the package and its tests for 64-bit ARM (aarch64) with the
   # official Swift 6.3.2 Android SDK. ARM ABIs cannot be executed on hosted
