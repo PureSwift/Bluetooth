@@ -38,9 +38,10 @@ jobs:
     - name: Test
       run: ${{ matrix.options }} swift test -c ${{ matrix.config }}
 
-  # Run the full test suite on the Android x86_64 emulator. x86_64 is the only
-  # Android ABI that GitHub-hosted runners can hardware-accelerate (KVM), so it
-  # is the one architecture where the tests actually execute in CI.
+  # Run the full test suite on the Android x86_64 emulator with the official
+  # Swift 6.3.2 Android SDK. x86_64 is the only Android ABI that GitHub-hosted
+  # runners can hardware-accelerate (KVM), so it is the one architecture where
+  # the tests actually execute in CI.
   android-test:
       name: Android (x86_64, test)
       runs-on: ubuntu-latest
@@ -52,32 +53,36 @@ jobs:
           env:
             SWIFT_BLUETOOTH_C_SHIMS: 0
           with:
+            swift-version: 6.3.2
             run-tests: true
             build-tests: true
             free-disk-space: true
 
-  # Cross-compile the package and its tests for the 32-bit (armv7) and 64-bit
-  # (aarch64) ARM ABIs. These cannot be executed on hosted runners (no KVM for
-  # ARM emulators, and armv7 emulator system images are unavailable), so this
-  # is a compile-verification step — matching the official Swift Android SDK CI.
-  android-build:
-      name: Android (${{ matrix.arch }}, build)
+  # Cross-compile the package and its tests for 64-bit ARM (aarch64) with the
+  # official Swift 6.3.2 Android SDK. ARM ABIs cannot be executed on hosted
+  # runners (no KVM for ARM emulators), so this is a compile-verification step.
+  android-build-arm64:
+      name: Android (aarch64, build)
       runs-on: ubuntu-latest
-      # The container Swift version must EXACTLY match the Swift version the
-      # Android SDK bundle was built with (Swift SDK .swiftmodule files are not
-      # cross-compiler-compatible), so pin both to 6.1.3.
+      container: swift:6.3.2
+      steps:
+        - uses: actions/checkout@v4
+        - name: Install Android Swift SDK
+          run: swift sdk install https://download.swift.org/swift-6.3.2-release/android/swift-6.3.2-RELEASE/swift-6.3.2-RELEASE_android-0.1.artifactbundle.tar.gz --checksum 939e933549d12d28f2e0bf71019d734d309859e9773c572657ce565a81f85d68
+        - name: Build tests for Android aarch64
+          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk aarch64-unknown-linux-android24
+
+  # The official Swift 6.3.2 Android SDK ships only x86_64 and arm64, so 32-bit
+  # ARM (armv7) is cross-compiled with finagolfin's 6.1.3 SDK instead — the
+  # newest community Android SDK whose exact Swift version matches a published
+  # Docker image (Swift SDK .swiftmodule files require an exact compiler match).
+  android-build-armv7:
+      name: Android (armv7, build)
+      runs-on: ubuntu-latest
       container: swift:6.1.3
-      strategy:
-        fail-fast: false
-        matrix:
-          include:
-            - arch: aarch64
-              sdk: aarch64-unknown-linux-android24
-            - arch: armv7
-              sdk: armv7-unknown-linux-androideabi24
       steps:
         - uses: actions/checkout@v4
         - name: Install Android Swift SDK
           run: swift sdk install https://github.com/finagolfin/swift-android-sdk/releases/download/6.1.3/swift-6.1.3-RELEASE-android-24-0.1.artifactbundle.tar.gz --checksum 440d09d539bda5b94807598b00696ac5d3893cb515b24715ac8868d62130b6d5
-        - name: Build tests for Android ${{ matrix.arch }}
-          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk ${{ matrix.sdk }}
+        - name: Build tests for Android armv7
+          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk armv7-unknown-linux-androideabi24
