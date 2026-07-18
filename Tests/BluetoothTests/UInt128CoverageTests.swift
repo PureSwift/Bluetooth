@@ -14,6 +14,11 @@ import Foundation
 #endif
 @testable import Bluetooth
 
+// The manual UInt128 implementation (with _low/_high/_value and init(_low:_high:))
+// only exists on Darwin; elsewhere UInt128 is a typealias to Swift.UInt128, which
+// the standard library already tests. These tests target that manual implementation.
+#if canImport(Darwin)
+
 @Suite struct UInt128CoverageTests {
 
     // MARK: - Constants
@@ -400,3 +405,5 @@ import Foundation
         #expect(value == Bluetooth.UInt128(_low: 1, _high: 1))
     }
 }
+
+#endif
