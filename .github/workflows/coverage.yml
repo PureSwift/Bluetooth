@@ -14,7 +14,7 @@ jobs:
     - name: Swift Version
       run: swift --version
     - name: Export coverage and enforce threshold
-      run: Scripts/coverage.sh 70
+      run: Scripts/coverage.sh 82
     - name: Upload coverage to GitHub Code Quality
       uses: actions/upload-code-coverage@v1
       with:
