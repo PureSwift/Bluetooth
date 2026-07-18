@@ -85,7 +85,7 @@ import Foundation
 
         // onTermination runs asynchronously; give it a moment.
         try await Task.sleep(nanoseconds: 10_000_000)
-        await #expect(flag.get())
+        #expect(await flag.get())
     }
 
     /// The Continuation can finish the stream with an error.
