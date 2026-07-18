@@ -126,11 +126,11 @@ import Bluetooth
         #expect(slice.first == database.first)
     }
 
-    @Test func writeAttributeValue() {
+    @Test func writeAttributeValue() throws {
         var database = GATTDatabase(services: [Self.batteryService])
         // find the battery level value attribute
         let valueAttribute = database.first { $0.uuid == Self.batteryLevelUUID }
-        let handle = try! #require(valueAttribute?.handle)
+        let handle = try #require(valueAttribute?.handle)
 
         let newValue = Data([0x2A])
         database.write(newValue, forAttribute: handle)
