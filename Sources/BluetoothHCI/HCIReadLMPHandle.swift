@@ -64,9 +64,9 @@ public struct HCIReadLMPHandleReturn: HCICommandReturnParameter {
 
     public static let command = LinkControlCommand.readLMPHandle
 
-    public static let length: Int = 8
-
-    public let status: HCIStatus
+    /// Connection_Handle (2 bytes) + LMP_Handle (1 byte) + Reserved (4 bytes).
+    /// The status byte is stripped by the HCI transport before decoding.
+    public static let length: Int = 7
 
     public let connectionHandle: UInt16
 
@@ -74,16 +74,11 @@ public struct HCIReadLMPHandleReturn: HCICommandReturnParameter {
 
     public init?<Data: DataContainer>(data: Data) {
 
-        guard data.count == HCIEncryptionChange.length
+        guard data.count == HCIReadLMPHandleReturn.length
         else { return nil }
 
-        let handle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
-
-        guard let status = HCIStatus(rawValue: data[2])
-        else { return nil }
-
-        self.status = status
-        self.connectionHandle = handle
-        self.lmpHandle = data[3]
+        self.connectionHandle = UInt16(littleEndian: UInt16(bytes: (data[0], data[1])))
+        self.lmpHandle = data[2]
+        // data[3...6] is reserved
     }
 }
