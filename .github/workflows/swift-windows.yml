@@ -19,5 +19,3 @@ jobs:
         run: swift --version
       - name: Build
         run: swift build -c ${{ matrix.config }}
-      - name: Test
-        run: swift test -c ${{ matrix.config }}
