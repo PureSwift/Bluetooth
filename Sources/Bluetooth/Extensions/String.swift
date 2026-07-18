@@ -9,7 +9,7 @@
 import Darwin
 #endif
 
-internal extension String {
+package extension String {
 
     /// Initialize from UTF8 data.
     init?<Data: DataContainer>(utf8 data: Data) {
