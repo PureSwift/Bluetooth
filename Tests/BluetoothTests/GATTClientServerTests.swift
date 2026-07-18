@@ -129,10 +129,9 @@ struct GATTClientServerTests {
         let (_, characteristics) = try await Self.discover(pair)
         let write = try #require(characteristics.first { $0.uuid == TestProfile.Write.uuid })
         try await pair.client.writeCharacteristic(write, data: TestProfile.WriteValue, withResponse: true)
-        try await Task.sleep(nanoseconds: 1_000_000)
         // server database should reflect the write
-        let stored = pair.server.database.first { $0.uuid == TestProfile.Write.uuid }
-        #expect(stored?.value == TestProfile.WriteValue)
+        let stored = try await Self.waitForValue(pair, uuid: TestProfile.Write.uuid, equals: TestProfile.WriteValue)
+        #expect(stored == TestProfile.WriteValue)
     }
 
     @Test func writeLongCharacteristic() async throws {
@@ -141,9 +140,24 @@ struct GATTClientServerTests {
         let (_, characteristics) = try await Self.discover(pair)
         let writeBlob = try #require(characteristics.first { $0.uuid == TestProfile.WriteBlob.uuid })
         try await pair.client.writeCharacteristic(writeBlob, data: TestProfile.WriteBlobValue, withResponse: true)
-        try await Task.sleep(nanoseconds: 5_000_000)
-        let stored = pair.server.database.first { $0.uuid == TestProfile.WriteBlob.uuid }
-        #expect(stored?.value == TestProfile.WriteBlobValue)
+        let stored = try await Self.waitForValue(pair, uuid: TestProfile.WriteBlob.uuid, equals: TestProfile.WriteBlobValue)
+        #expect(stored == TestProfile.WriteBlobValue)
+    }
+
+    /// Poll the server database for a characteristic value, up to ~5 seconds.
+    /// Write-without-response has no acknowledgement, so the server applies it
+    /// asynchronously and a fixed sleep would be racy under CI load.
+    static func waitForValue(
+        _ pair: Pair,
+        uuid: BluetoothUUID,
+        equals expected: Data
+    ) async throws -> Data? {
+        for _ in 0..<500 {
+            let stored = pair.server.database.first { $0.uuid == uuid }?.value
+            if stored == expected { return stored }
+            try await Task.sleep(nanoseconds: 10_000_000)  // 10ms
+        }
+        return pair.server.database.first { $0.uuid == uuid }?.value
     }
 
     @Test func writeWithoutResponse() async throws {
@@ -152,9 +166,8 @@ struct GATTClientServerTests {
         let write = try #require(characteristics.first { $0.uuid == TestProfile.WriteWithoutResponse.uuid })
         let value = Data("cmd".utf8)
         try await pair.client.writeCharacteristic(write, data: value, withResponse: false)
-        try await Task.sleep(nanoseconds: 1_000_000)
-        let stored = pair.server.database.first { $0.uuid == TestProfile.WriteWithoutResponse.uuid }
-        #expect(stored?.value == value)
+        let stored = try await Self.waitForValue(pair, uuid: TestProfile.WriteWithoutResponse.uuid, equals: value)
+        #expect(stored == value)
     }
 
     @Test func readWriteOnlyCharacteristicReturnsError() async throws {
