@@ -45,7 +45,7 @@ fi
 # 1. Run the tests with coverage instrumentation.
 if [ "${SKIP_TEST:-0}" != "1" ]; then
     echo "==> Running tests with code coverage"
-    swift test --enable-code-coverage
+    swift test --enable-code-coverage --no-parallel
 fi
 
 # 2. Locate the coverage artifacts SwiftPM produced.
