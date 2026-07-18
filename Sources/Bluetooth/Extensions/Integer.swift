@@ -6,7 +6,7 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-internal extension UInt16 {
+package extension UInt16 {
 
     /// Initializes value from two bytes.
     init(bytes: (UInt8, UInt8)) {
@@ -19,7 +19,7 @@ internal extension UInt16 {
     }
 }
 
-internal extension UInt32 {
+package extension UInt32 {
 
     /// Initializes value from four bytes.
     init(bytes: (UInt8, UInt8, UInt8, UInt8)) {
@@ -32,7 +32,7 @@ internal extension UInt32 {
     }
 }
 
-internal extension UInt64 {
+package extension UInt64 {
 
     /// Initializes value from four bytes.
     init(bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)) {
@@ -45,7 +45,7 @@ internal extension UInt64 {
     }
 }
 
-internal extension BinaryInteger {
+package extension BinaryInteger {
 
     @inlinable
     var bytes: [UInt8] {
@@ -59,7 +59,7 @@ internal extension BinaryInteger {
     }
 }
 
-internal extension UInt8 {
+package extension UInt8 {
 
     /// Initialize a byte from 2 bit enums.
     static func bit2(_ enum1: UInt8, _ enum2: UInt8, _ enum3: UInt8, _ enum4: UInt8) -> UInt8 {
@@ -77,7 +77,7 @@ internal extension UInt8 {
     }
 }
 
-internal extension UInt64 {
+package extension UInt64 {
 
     /// The value of the characteristic is a bit mask implemented as an array of unsigned 8 bit integers.
     init?<Data: DataContainer>(bitmaskArray data: Data) {

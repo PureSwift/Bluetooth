@@ -6,7 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
-internal extension FixedWidthInteger {
+package extension FixedWidthInteger {
 
     func toHexadecimal() -> String {
         let length = MemoryLayout<Self>.size * 2
@@ -32,7 +32,7 @@ internal extension FixedWidthInteger {
     }
 }
 
-internal extension String {
+package extension String {
 
     /// Converts a byte to its uppercase hexadecimal representation.
     init(hexadecimal byte: UInt8) {
@@ -53,7 +53,7 @@ internal extension String {
     }
 }
 
-internal extension Collection where Element: FixedWidthInteger {
+package extension Collection where Element: FixedWidthInteger {
 
     func toHexadecimal() -> String {
         let length = count * MemoryLayout<Element>.size * 2
@@ -65,7 +65,7 @@ internal extension Collection where Element: FixedWidthInteger {
     }
 }
 
-internal extension FixedWidthInteger {
+package extension FixedWidthInteger {
 
     init?<S: StringProtocol>(parse string: S, radix: Self) {
         #if !hasFeature(Embedded)
@@ -121,7 +121,7 @@ internal extension FixedWidthInteger {
 }
 
 #if !hasFeature(Embedded)
-internal extension String.UTF16View.Element {
+package extension String.UTF16View.Element {
 
     // Convert 0 ... 9, a ... f, A ...F to their decimal value,
     // return nil for all other input characters
@@ -139,7 +139,7 @@ internal extension String.UTF16View.Element {
     }
 }
 
-internal extension [UInt8] {
+package extension [UInt8] {
 
     init?<S: StringProtocol>(hexadecimal string: S) {
 

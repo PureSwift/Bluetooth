@@ -65,6 +65,6 @@ public struct HCILETransmitterTest: HCICommandParameter {
 
     public func append<Data: DataContainer>(to data: inout Data) {
 
-        data += [txChannel.rawValue, packetPayload.rawValue]
+        data += [txChannel.rawValue, lengthOfTestData, packetPayload.rawValue]
     }
 }

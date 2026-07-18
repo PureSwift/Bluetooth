@@ -22,13 +22,13 @@ import Bionic
 // Declares the required C functions
 #if hasFeature(Embedded)
 @_silgen_name("memcmp")
-internal func _memcmp(
+package func _memcmp(
     _ p1: UnsafeRawPointer?,
     _ p2: UnsafeRawPointer?,
     _ size: Int
 ) -> Int32
 #else
-internal func _memcmp(
+package func _memcmp(
     _ p1: UnsafeRawPointer,
     _ p2: UnsafeRawPointer,
     _ size: Int
@@ -39,7 +39,7 @@ internal func _memcmp(
 
 #if hasFeature(Embedded)
 @_silgen_name("snprintf")
-internal func _snprintf_uint8_t(
+package func _snprintf_uint8_t(
     _ pointer: UnsafeMutablePointer<CChar>,
     _ length: Int,
     _ format: UnsafePointer<CChar>,

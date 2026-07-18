@@ -107,6 +107,7 @@ public struct HCILEReadLocalResolvableAddressReturn: HCICommandReturnParameter {
         guard data.count == Self.length
         else { return nil }
 
-        self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))))
+        // Local_Resolvable_Address is a 6-octet address; widen to UInt64.
+        self.localResolvableAddress = UInt64(littleEndian: UInt64(bytes: ((data[0], data[1], data[2], data[3], data[4], data[5], 0, 0))))
     }
 }

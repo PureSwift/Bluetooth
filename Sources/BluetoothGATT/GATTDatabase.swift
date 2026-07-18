@@ -116,6 +116,7 @@ public struct GATTDatabase<Data: DataContainer>: Equatable, Hashable, Sendable {
                 include: includedService,
                 handle: handle
             )
+            includedServicesHandles.append(handle)
             attributes.append(includedServiceAttribute.attribute)
         }
         assert(includedServicesHandles.count == service.includedServices.count)

@@ -92,15 +92,15 @@ var package = Package(
                 ),
                 .target(
                     name: "BluetoothGAP",
-                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows, .android])
                 ),
                 .target(
                     name: "BluetoothGATT",
-                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows, .android])
                 ),
                 .target(
                     name: "BluetoothHCI",
-                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows, .android])
                 )
             ]
         )
