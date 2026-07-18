@@ -6,7 +6,7 @@
 //  Copyright © 2018 PureSwift. All rights reserved.
 //
 
-internal extension Bool {
+package extension Bool {
 
     init?(byteValue: UInt8) {
 
