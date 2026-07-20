@@ -1138,7 +1138,17 @@ struct GATTTests {
                 server.writeValue(data, forCharacteristic: notificationCharacteristic.uuid)
             }
 
-            try await Task.sleep(nanoseconds: 1_000_000)
+            // Notifications are delivered by detached tasks, so a fixed sleep is
+            // racy under CI load — poll until the expected count arrives, up to ~5 seconds.
+            let expectsNotifications = notificationCharacteristic.properties.contains(.notify)
+            for _ in 0..<500 {
+                let receivedCount =
+                    expectsNotifications
+                    ? await notificationData.receivedNotifications.count
+                    : await notificationData.receivedIndications.count
+                if receivedCount >= newData.count { break }
+                try await Task.sleep(nanoseconds: 10_000_000)  // 10ms
+            }
 
             // stop notifications
             try await client.clientCharacteristicConfiguration(
