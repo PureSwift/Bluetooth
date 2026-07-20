@@ -18,7 +18,8 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bloodPressureMeasurement }
 
-    internal static let length = MemoryLayout<UInt8>.size
+    /// Flags plus the mandatory Blood Pressure Measurement Compound Value.
+    internal static let length = MemoryLayout<UInt8>.size + (MemoryLayout<SFloat>.size * 3)
 
     /// The Flags field is included in the Blood Pressure Measurement characteristic.
     /// Reserved for Future Use (RFU) bits in the Flags field shall be set to 0.
@@ -145,7 +146,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
 
         } else {
 
-            self.pulseRate = nil
+            self.userIdentifier = nil
         }
 
         if flags.contains(.measurementStatus) {
@@ -159,7 +160,7 @@ public struct GATTBloodPressureMeasurement: GATTCharacteristic {
 
         } else {
 
-            self.pulseRate = nil
+            self.measurementStatus = nil
         }
     }
 

@@ -280,6 +280,60 @@ import Bluetooth
         #expect(Array(GATTBloodPressureMeasurement(data: characteristic.data)?.data ?? Data()) == Array(characteristic.data))
     }
 
+    @Test func bloodPressureMeasurementTruncated() {
+
+        // The mandatory flags + compound value occupy 7 bytes; anything shorter must be rejected
+        // rather than read out of bounds.
+        let valid = GATTBloodPressureMeasurement(
+            compoundValue: .init(
+                unit: .mmHg,
+                systolic: SFloat(bitPattern: 0x0078),
+                diastolic: SFloat(bitPattern: 0x0050),
+                meanArterialPressure: SFloat(bitPattern: 0x005D)
+            )
+        ).data
+
+        #expect(GATTBloodPressureMeasurement(data: valid) != nil)
+
+        for count in 0..<valid.count {
+            #expect(
+                GATTBloodPressureMeasurement(data: Data(valid.prefix(count))) == nil,
+                "Decoded a \(count) byte value"
+            )
+        }
+    }
+
+    @Test func bloodPressureMeasurementOptionalFields() {
+
+        // Pulse rate without a user ID previously had the pulse rate cleared while decoding.
+        let characteristic = GATTBloodPressureMeasurement(
+            compoundValue: .init(
+                unit: .mmHg,
+                systolic: SFloat(bitPattern: 0x0078),
+                diastolic: SFloat(bitPattern: 0x0050),
+                meanArterialPressure: SFloat(bitPattern: 0x005D)
+            ),
+            pulseRate: SFloat(bitPattern: 0x003C)
+        )
+
+        let decoded = GATTBloodPressureMeasurement(data: characteristic.data)
+        #expect(decoded?.pulseRate == characteristic.pulseRate)
+        #expect(decoded?.userIdentifier == nil)
+        #expect(decoded?.measurementStatus == nil)
+
+        // User ID without a measurement status.
+        let withUser = GATTBloodPressureMeasurement(
+            compoundValue: characteristic.compoundValue,
+            pulseRate: SFloat(bitPattern: 0x003C),
+            userIdentifier: 0x1B
+        )
+
+        let decodedWithUser = GATTBloodPressureMeasurement(data: withUser.data)
+        #expect(decodedWithUser?.pulseRate == withUser.pulseRate)
+        #expect(decodedWithUser?.userIdentifier == 0x1B)
+        #expect(decodedWithUser?.measurementStatus == nil)
+    }
+
     @Test func altitude() {
 
         let data = Data([0x00, 0x00])
