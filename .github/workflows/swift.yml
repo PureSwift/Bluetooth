@@ -57,7 +57,10 @@ jobs:
             run-tests: true
             build-tests: true
             free-disk-space: true
-            swift-test-flags: --no-parallel
+            # No --no-parallel here: the flags are passed verbatim to the on-device
+            # test runner binaries, and the XCTest runner rejects that option.
+            # Serial-execution races are instead fixed at the source by polling in
+            # the affected tests.
 
   # Cross-compile the package and its tests for 64-bit ARM (aarch64) with the
   # official Swift 6.3.2 Android SDK. ARM ABIs cannot be executed on hosted
@@ -69,7 +72,7 @@ jobs:
       steps:
         - uses: actions/checkout@v4
         - name: Install Android Swift SDK
-          run: swift sdk install https://download.swift.org/swift-6.3.2-release/android/swift-6.3.2-RELEASE/swift-6.3.2-RELEASE_android-0.1.artifactbundle.tar.gz --checksum 939e933549d12d28f2e0bf71019d734d309859e9773c572657ce565a81f85d68
+          run: swift sdk install https://download.swift.org/swift-6.3.2-release/android-sdk/swift-6.3.2-RELEASE/swift-6.3.2-RELEASE_android.artifactbundle.tar.gz --checksum 939e933549d12d28f2e0bf71019d734d309859e9773c572657ce565a81f85d68
         - name: Build tests for Android aarch64
           run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk aarch64-unknown-linux-android24
 
