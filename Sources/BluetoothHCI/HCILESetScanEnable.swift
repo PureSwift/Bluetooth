@@ -12,6 +12,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 
 // Relies on Swift Concurrency (Task, async/await) and AsyncIndefiniteStream,
