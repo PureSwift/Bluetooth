@@ -65,6 +65,7 @@ jobs:
   # Cross-compile the package and its tests for 64-bit ARM (aarch64) with the
   # official Swift 6.3.2 Android SDK. ARM ABIs cannot be executed on hosted
   # runners (no KVM for ARM emulators), so this is a compile-verification step.
+  # API 28 is the lowest level the official SDK ships (it offers 28 through 36).
   android-build-arm64:
       name: Android (aarch64, build)
       runs-on: ubuntu-latest
@@ -74,12 +75,13 @@ jobs:
         - name: Install Android Swift SDK
           run: swift sdk install https://download.swift.org/swift-6.3.2-release/android-sdk/swift-6.3.2-RELEASE/swift-6.3.2-RELEASE_android.artifactbundle.tar.gz --checksum 939e933549d12d28f2e0bf71019d734d309859e9773c572657ce565a81f85d68
         - name: Build tests for Android aarch64
-          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk aarch64-unknown-linux-android24
+          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk aarch64-unknown-linux-android28
 
-  # The official Swift 6.3.2 Android SDK ships only x86_64 and arm64, so 32-bit
-  # ARM (armv7) is cross-compiled with finagolfin's 6.1.3 SDK instead — the
-  # newest community Android SDK whose exact Swift version matches a published
-  # Docker image (Swift SDK .swiftmodule files require an exact compiler match).
+  # 32-bit ARM (armv7) is cross-compiled with finagolfin's 6.1.3 SDK — the newest
+  # community Android SDK whose exact Swift version matches a published Docker
+  # image (Swift SDK .swiftmodule files require an exact compiler match).
+  # The official 6.3.2 SDK now also ships armv7 (API 28+), so this job could be
+  # folded into the 6.3.2 container above; left as-is until that is verified.
   android-build-armv7:
       name: Android (armv7, build)
       runs-on: ubuntu-latest
