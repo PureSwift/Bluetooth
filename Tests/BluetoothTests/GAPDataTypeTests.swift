@@ -119,7 +119,7 @@ import Bluetooth
         #expect(GAPSecurityManagerOOBFlags(data: Data()) == nil, "Can only initialize from 1 byte")
         #expect(GAPSecurityManagerOOBFlags(data: Data([0x01, 0x02])) == nil, "Can only initialize from 1 byte")
 
-        #expect(GAPSecurityManagerOOBFlags().flags == 0)
+        #expect(GAPSecurityManagerOOBFlags().flags == [])
         #expect(GAPSecurityManagerOOBFlags().data == Data([0x00]))
         #expect(GAPSecurityManagerOOBFlags().dataLength == 1)
 
@@ -140,7 +140,7 @@ import Bluetooth
         #expect(flags.dataLength == data.count)
         #expect(flags == [.oobFlagsField, .supportedLE, .simultaneousLEandBREDR, .addressType])
         #expect(flags != GAPSecurityManagerOOBFlags())
-        #expect(flags.hashValue == GAPSecurityManagerOOBFlags(flags: 0b1111).hashValue)
+        #expect(flags.hashValue == GAPSecurityManagerOOBFlags(flags: GAPSecurityManagerOOBFlag(rawValue: 0b1111)).hashValue)
         #expect(flags.description.isEmpty == false)
 
         let singleFlag: GAPSecurityManagerOOBFlags = [.oobFlagsField]

@@ -61,16 +61,24 @@ public extension GAPLERole {
 public extension GAPLERole {
 
     /// Bluetooth LE Role (e.g. Central or peripheral).
-    enum Role: UInt8, BitMaskOption, CaseIterable {  // not part of BT spec
+    struct Role: OptionSet, Hashable, Sendable, CaseIterable {  // not part of BT spec
 
-        case central = 0b01
-        case peripheral = 0b10
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
+
+        public static let central = Role(rawValue: 0b01)
+        public static let peripheral = Role(rawValue: 0b10)
+
+        public static let allCases: [Role] = [.central, .peripheral]
     }
 }
 
 public extension GAPLERole {
 
-    var supported: BitMaskOptionSet<Role> {
+    var supported: Role {
 
         switch self {
         case .onlyPeripheralRoleSupported:
