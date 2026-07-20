@@ -117,10 +117,9 @@ if buildMetadata {
 
 if embeddedFoundation {
     package.dependencies += [
-        // TODO: Switch to a versioned release once one includes the full Data API
         .package(
             url: "https://github.com/PureSwift/swift-embedded-foundation.git",
-            branch: "master"
+            from: "0.2.0"
         )
     ]
     let foundationEmbedded: PackageDescription.Target.Dependency = .product(
