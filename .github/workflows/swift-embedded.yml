@@ -10,6 +10,7 @@ jobs:
         swift: ["6.3.2"]
         target: ["Bluetooth", "BluetoothGAP", "BluetoothGATT", "BluetoothHCI"]
         config: ["debug", "release"]
+        foundation: ["0", "1"]
     container: swift:${{ matrix.swift }}
     steps:
       - name: Checkout
@@ -26,4 +27,4 @@ jobs:
           swift sdk install wasm.artifactbundle.tar.gz
           swift sdk list
       - name: Build
-        run: SWIFTPM_BLUETOOTH_METADATA=0 SWIFTPM_ENABLE_MACROS=0 swift build --target ${{ matrix.target }} -c ${{ matrix.config }} --swift-sdk swift-${{ matrix.swift }}-RELEASE_wasm-embedded
+        run: SWIFTPM_BLUETOOTH_METADATA=0 SWIFTPM_ENABLE_MACROS=0 SWIFTPM_EMBEDDED_FOUNDATION=${{ matrix.foundation }} swift build --target ${{ matrix.target }} -c ${{ matrix.config }} --swift-sdk swift-${{ matrix.swift }}-RELEASE_wasm-embedded

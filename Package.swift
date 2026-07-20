@@ -8,6 +8,7 @@ let buildMetadata = Context.environment["SWIFTPM_BLUETOOTH_METADATA"] != "0"
 let generateCode = Context.environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
 let enableMacros = Context.environment["SWIFTPM_ENABLE_MACROS"] != "0"
 let buildDocs = Context.environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
+let embeddedFoundation = Context.environment["SWIFTPM_EMBEDDED_FOUNDATION"] == "1"
 
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
@@ -112,6 +113,27 @@ if buildMetadata {
     package.targets[0].dependencies += [
         "BluetoothMetadata"
     ]
+}
+
+if embeddedFoundation {
+    package.dependencies += [
+        .package(
+            url: "https://github.com/PureSwift/swift-embedded-foundation.git",
+            from: "0.2.0"
+        )
+    ]
+    let foundationEmbedded: PackageDescription.Target.Dependency = .product(
+        name: "FoundationEmbedded",
+        package: "swift-embedded-foundation"
+    )
+    for name in ["Bluetooth", "BluetoothGAP", "BluetoothGATT", "BluetoothHCI"] {
+        guard let index = package.targets.firstIndex(where: { $0.name == name }) else {
+            fatalError("Missing target \(name)")
+        }
+        package.targets[index].dependencies += [
+            foundationEmbedded
+        ]
+    }
 }
 
 // SwiftPM plugins

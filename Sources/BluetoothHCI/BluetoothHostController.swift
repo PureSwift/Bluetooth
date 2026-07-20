@@ -12,6 +12,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 import Bluetooth
 
@@ -63,7 +65,7 @@ public enum BluetoothHostControllerError: Error, Sendable {
     /// The second error is the error while trying to restore the filter.
     case couldNotRestoreFilter(Error, Error)
 
-    #if canImport(Foundation)
+    #if canImport(Foundation) || canImport(FoundationEmbedded)
     /// The received data could not be parsed correctly.
     case garbageResponse(Data)
     #endif

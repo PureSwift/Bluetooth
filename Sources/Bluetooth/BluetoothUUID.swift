@@ -12,6 +12,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 
 /// Bluetooth UUID

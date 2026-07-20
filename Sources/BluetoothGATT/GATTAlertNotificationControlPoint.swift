@@ -12,6 +12,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 import Bluetooth
 
@@ -79,7 +81,7 @@ public struct GATTAlertNotificationControlPoint: GATTCharacteristic {
         return Self.length
     }
 
-    #if canImport(Foundation)
+    #if canImport(Foundation) || canImport(FoundationEmbedded)
     public var characteristic: GATTAttribute<Data>.Characteristic {
 
         return GATTAttribute<Data>.Characteristic(

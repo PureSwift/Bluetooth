@@ -12,6 +12,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 
 internal extension UUID {
@@ -50,7 +52,9 @@ public extension UUID {
 
     typealias ByteValue = uuid_t
 }
+#endif
 
+#if canImport(Foundation) || canImport(FoundationEmbedded)
 /// Internal UUID type.
 internal struct _UUID: Sendable {
 
