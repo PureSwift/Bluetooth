@@ -12,6 +12,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 
 // MARK: - HCI Packet structures
@@ -64,7 +66,7 @@ public struct HCICommandHeader: HCIPacketHeader {  // hci_command_hdr (packed)
         self.parameterLength = parameterLength
     }
 
-    #if canImport(Foundation)
+    #if canImport(Foundation) || canImport(FoundationEmbedded)
     public static func from<T: HCICommandParameter>(_ commandParameter: T) -> (HCICommandHeader, Data) {
 
         let command = type(of: commandParameter).command
