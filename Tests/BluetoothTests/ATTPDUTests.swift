@@ -232,7 +232,7 @@ import Foundation
         #expect(characteristic.features.contains(.multipleBond) == false)
 
         // all features
-        let allFeatures = BitMaskOptionSet<GATTBloodPressureFeature.Feature>(GATTBloodPressureFeature.Feature.allCases)
+        let allFeatures = GATTBloodPressureFeature.Feature.all
         let allFeaturesCharacteristic = GATTBloodPressureFeature(features: allFeatures)
         roundTrip(allFeaturesCharacteristic, encodes: Data([0x3F, 0x00]))
         #expect(GATTBloodPressureFeature.Feature.allCases.count == 6)

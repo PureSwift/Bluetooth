@@ -20,9 +20,9 @@ public struct GATTIndoorPositioningConfiguration: GATTCharacteristic {
 
     internal static let length = MemoryLayout<UInt8>.size
 
-    public var configurations: BitMaskOptionSet<Configuration>
+    public var configurations: Configuration
 
-    public init(configurations: BitMaskOptionSet<Configuration>) {
+    public init(configurations: Configuration) {
 
         self.configurations = configurations
     }
@@ -32,7 +32,7 @@ public struct GATTIndoorPositioningConfiguration: GATTCharacteristic {
         guard data.count == Self.length
         else { return nil }
 
-        self.init(configurations: BitMaskOptionSet<Configuration>(rawValue: data[0]))
+        self.init(configurations: Configuration(rawValue: data[0]))
     }
 
     public func append<Data: DataContainer>(to data: inout Data) {
@@ -48,25 +48,31 @@ public struct GATTIndoorPositioningConfiguration: GATTCharacteristic {
 
 extension GATTIndoorPositioningConfiguration {
 
-    public enum Configuration: UInt8, BitMaskOption {
+    public struct Configuration: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
 
         /// Presence of coordinates in advertising packets
-        case coordinates = 0b01
+        public static let coordinates = Configuration(rawValue: 0b01)
 
         /// Coordinate system used in advertising packets
-        case coordinateSystemUsed = 0b10
+        public static let coordinateSystemUsed = Configuration(rawValue: 0b10)
 
         /// Presence of Tx Power field in advertising packets
-        case txPowerField = 0b100
+        public static let txPowerField = Configuration(rawValue: 0b100)
 
         /// Presence of Altitude field in advertising packets
-        case altitudeField = 0b1000
+        public static let altitudeField = Configuration(rawValue: 0b1000)
 
         /// Presence of Floor Number in advertising packets
-        case floorNumber = 0b10000
+        public static let floorNumber = Configuration(rawValue: 0b10000)
 
         //Location Name available in the GATT database
-        case locationName = 0b100000
+        public static let locationName = Configuration(rawValue: 0b100000)
 
         public static var allCases: [Configuration] {
             [

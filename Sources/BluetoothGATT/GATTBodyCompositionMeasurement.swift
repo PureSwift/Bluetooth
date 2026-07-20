@@ -18,9 +18,9 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.bodyCompositionMeasurement }
 
-    internal var flags: BitMaskOptionSet<Flag> {
+    internal var flags: Flag {
 
-        var flags = BitMaskOptionSet<Flag>()
+        var flags = Flag()
 
         if timestamp != nil {
 
@@ -147,7 +147,7 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
         guard data.count >= Self.minimumLength
         else { return nil }
 
-        let flags = BitMaskOptionSet<Flag>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        let flags = Flag(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
 
         massUnit = flags.contains(.measurementUnitImperial) ? .pound : .kilogram
 
@@ -456,52 +456,58 @@ public struct GATTBodyCompositionMeasurement: GATTCharacteristic {
     }
 
     /// These flags define which data fields are present in the Characteristic value.
-    internal enum Flag: UInt16, BitMaskOption {
+    internal struct Flag: OptionSet, Hashable, Sendable, CaseIterable {
+
+        internal let rawValue: UInt16
+
+        internal init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
 
         /// Measurement Units
         /// SI
-        case measurementUnitSI = 0b00
+        internal static let measurementUnitSI = Flag(rawValue: 0b00)
 
         /// Imperial
-        case measurementUnitImperial = 0b01
+        internal static let measurementUnitImperial = Flag(rawValue: 0b01)
 
         /// Time Stamp Present
-        case timestamp = 0b10
+        internal static let timestamp = Flag(rawValue: 0b10)
 
         /// User ID present
-        case userID = 0b100
+        internal static let userID = Flag(rawValue: 0b100)
 
         /// Basal Metabolism present
-        case basalMetabolism = 0b1000
+        internal static let basalMetabolism = Flag(rawValue: 0b1000)
 
         /// Muscle Percentage present
-        case musclePercentage = 0b10000
+        internal static let musclePercentage = Flag(rawValue: 0b10000)
 
         /// Muscle Mass present
-        case muscleMass = 0b100000
+        internal static let muscleMass = Flag(rawValue: 0b100000)
 
         /// Fat Free Mass present
-        case fatFreeMass = 0b1000000
+        internal static let fatFreeMass = Flag(rawValue: 0b1000000)
 
         /// Soft Lean Mass present
-        case softLeanMass = 0b10000000
+        internal static let softLeanMass = Flag(rawValue: 0b10000000)
 
         /// Body Water Mass present
-        case bodyWaterMass = 0b100000000
+        internal static let bodyWaterMass = Flag(rawValue: 0b100000000)
 
         /// Impedance present
-        case impedance = 0b10_00000000
+        internal static let impedance = Flag(rawValue: 0b10_00000000)
 
         /// Weight present
-        case weight = 0b100_00000000
+        internal static let weight = Flag(rawValue: 0b100_00000000)
 
         /// Height present
-        case height = 0b1000_00000000
+        internal static let height = Flag(rawValue: 0b1000_00000000)
 
         /// Multiple Packet Measurement
-        case multiplePacket = 0b10000_00000000
+        internal static let multiplePacket = Flag(rawValue: 0b10000_00000000)
 
-        public static let allCases: [Flag] = [
+        internal static let allCases: [Flag] = [
             .measurementUnitSI,
             .measurementUnitImperial,
             .timestamp,

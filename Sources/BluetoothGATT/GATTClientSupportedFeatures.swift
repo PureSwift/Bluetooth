@@ -21,9 +21,9 @@ public struct GATTClientSupportedFeatures: GATTCharacteristic, Equatable, Hashab
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.clientSupportedFeatures }
 
     /// The features supported by the client.
-    public var features: BitMaskOptionSet<Feature>
+    public var features: Feature
 
-    public init(features: BitMaskOptionSet<Feature> = []) {
+    public init(features: Feature = []) {
 
         self.features = features
     }
@@ -33,7 +33,7 @@ public struct GATTClientSupportedFeatures: GATTCharacteristic, Equatable, Hashab
         guard let bitmask = Feature.RawValue(bitmaskArray: data)
         else { return nil }
 
-        self.features = BitMaskOptionSet<Feature>(rawValue: bitmask)
+        self.features = Feature(rawValue: bitmask)
     }
 
     public func append<Data: DataContainer>(to data: inout Data) {
@@ -47,22 +47,29 @@ public struct GATTClientSupportedFeatures: GATTCharacteristic, Equatable, Hashab
     }
 
     /// GATT client features.
-    public enum Feature: UInt64, BitMaskOption {
+    @frozen
+    public struct Feature: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt64
+
+        public init(rawValue: UInt64) {
+            self.rawValue = rawValue
+        }
 
         /// Robust Caching
         ///
         /// The client supports robust caching.
-        case robustCaching = 0b001
+        public static let robustCaching = Feature(rawValue: 0b001)
 
         /// Enhanced ATT bearer
         ///
         /// The client supports the Enhanced ATT bearer (EATT).
-        case enhancedATT = 0b010
+        public static let enhancedATT = Feature(rawValue: 0b010)
 
         /// Multiple Handle Value Notifications
         ///
         /// The client supports receiving `ATT_MULTIPLE_HANDLE_VALUE_NTF` PDUs.
-        case multipleHandleValueNotifications = 0b100
+        public static let multipleHandleValueNotifications = Feature(rawValue: 0b100)
 
         public static var allCases: [Feature] {
             [

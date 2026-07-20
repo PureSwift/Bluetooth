@@ -20,9 +20,9 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
 
     internal static let length = MemoryLayout<UInt16>.size
 
-    public var features: BitMaskOptionSet<Feature>
+    public var features: Feature
 
-    public init(features: BitMaskOptionSet<Feature>) {
+    public init(features: Feature) {
 
         self.features = features
     }
@@ -32,7 +32,7 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
         guard data.count >= Self.length
         else { return nil }
 
-        let features = BitMaskOptionSet<Feature>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+        let features = Feature(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
 
         self.init(features: features)
     }
@@ -51,27 +51,33 @@ public struct GATTBloodPressureFeature: GATTCharacteristic {
     }
 
     /// Blood Pressure Feature
-    public enum Feature: UInt16, BitMaskOption {
+    public struct Feature: OptionSet, Hashable, Sendable, CaseIterable {
 
         internal static let length = MemoryLayout<UInt16>.size
 
+        public let rawValue: UInt16
+
+        public init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
+
         /// Body Movement Detection Support
-        case bodyMovement = 0b01
+        public static let bodyMovement = Feature(rawValue: 0b01)
 
         /// Cuff Fit Detection Support
-        case cuttFit = 0b10
+        public static let cuttFit = Feature(rawValue: 0b10)
 
         /// Irregular Pulse Detection Support
-        case irregularPulse = 0b100
+        public static let irregularPulse = Feature(rawValue: 0b100)
 
         /// Pulse Rate Range Detection Support
-        case pulseRateRage = 0b1000
+        public static let pulseRateRage = Feature(rawValue: 0b1000)
 
         /// Measurement Position Detection Support
-        case measurementPosition = 0b10000
+        public static let measurementPosition = Feature(rawValue: 0b10000)
 
         /// Multiple Bond Support
-        case multipleBond = 0b100000
+        public static let multipleBond = Feature(rawValue: 0b100000)
 
         public static var allCases: [Feature] {
             [
