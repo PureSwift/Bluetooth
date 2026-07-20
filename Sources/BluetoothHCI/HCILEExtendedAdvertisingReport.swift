@@ -59,7 +59,7 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
 
         public static var length: Int { 2 + 1 + 6 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 6 + 1 }
 
-        public let eventType: BitMaskOptionSet<EventType>
+        public let eventType: EventType
 
         public let addressType: AddressType
 
@@ -88,7 +88,7 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
             guard data.count >= Report.length
             else { return nil }
 
-            let eventType = BitMaskOptionSet<EventType>(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
+            let eventType = EventType(rawValue: UInt16(littleEndian: UInt16(bytes: (data[0], data[1]))))
 
             guard let addressType = AddressType(rawValue: data[2])
             else { return nil }
@@ -247,33 +247,53 @@ public struct HCILEExtendedAdvertisingReport<ReportData: DataContainer>: HCIEven
     }
 
     /// Event Type
-    public enum EventType: UInt16, BitMaskOption, CaseIterable {
+    public struct EventType: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt16
+
+        public init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
+
+        // Nested inside a generic type, so these are computed rather than stored.
 
         /// Connectable advertising
-        case connectableAdvertising = 0b00000000_00000001
+        public static var connectableAdvertising: EventType { EventType(rawValue: 0b00000000_00000001) }
 
         /// Scannable advertising
-        case scannableAdvertising = 0b00000000_00000010
+        public static var scannableAdvertising: EventType { EventType(rawValue: 0b00000000_00000010) }
 
         /// Directed advertising
-        case directedAdvertising = 0b00000000_00000100
+        public static var directedAdvertising: EventType { EventType(rawValue: 0b00000000_00000100) }
 
         /// Scan response
-        case scanResponse = 0b00000000_00001000
+        public static var scanResponse: EventType { EventType(rawValue: 0b00000000_00001000) }
 
         /// Legacy advertising PDUs used
-        case legacyAdvertisingPDU = 0b00000000_00010000
+        public static var legacyAdvertisingPDU: EventType { EventType(rawValue: 0b00000000_00010000) }
 
         /// Data status: Complete
-        case dataStatusComplete = 0b00000000_00000000
+        public static var dataStatusComplete: EventType { EventType(rawValue: 0b00000000_00000000) }
 
         /// Data status: Incomplete, more data to come
-        case dataStatusIncompleteMoreData = 0b00000000_00100000
+        public static var dataStatusIncompleteMoreData: EventType { EventType(rawValue: 0b00000000_00100000) }
 
         /// Data status: Incomplete, data truncated, no more to come
-        case dataStatusIncompleteTruncated = 0b00000000_01000000
+        public static var dataStatusIncompleteTruncated: EventType { EventType(rawValue: 0b00000000_01000000) }
 
         /// Data status: Reserved for future use
-        case dataStatusReserved = 0b00000000_01100000
+        public static var dataStatusReserved: EventType { EventType(rawValue: 0b00000000_01100000) }
+
+        public static var allCases: [EventType] { [
+            .connectableAdvertising,
+            .scannableAdvertising,
+            .directedAdvertising,
+            .scanResponse,
+            .legacyAdvertisingPDU,
+            .dataStatusComplete,
+            .dataStatusIncompleteMoreData,
+            .dataStatusIncompleteTruncated,
+            .dataStatusReserved
+        ] }
     }
 }

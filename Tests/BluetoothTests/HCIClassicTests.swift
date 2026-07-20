@@ -76,14 +76,14 @@ import Foundation
         #expect(LMPFeature.extendedFeatures.name == "Extended features")
 
         // bit mask option set
-        let features: BitMaskOptionSet<LMPFeature> = [.encryption, .roleSwitch]
+        let features: LMPFeature = [.encryption, .roleSwitch]
         #expect(features.rawValue == 0b100100)
         #expect(features.contains(.encryption))
         #expect(features.contains(.roleSwitch))
         #expect(features.contains(.slotPackets3) == false)
 
-        let allFeatures = BitMaskOptionSet<LMPFeature>.all
-        #expect(allFeatures.contains(LMPFeature.allCases))
+        let allFeatures = LMPFeature.all
+        #expect(allFeatures.isSuperset(of: LMPFeature.all))
     }
 
     // MARK: - Events

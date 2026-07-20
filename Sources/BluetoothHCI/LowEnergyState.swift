@@ -8,31 +8,37 @@
 
 /// Possible Low Energy States and roles.
 @frozen
-public enum LowEnergyState: Int, BitMaskOption {
+public struct LowEnergyState: OptionSet, Hashable, Sendable, CaseIterable {
+
+    public let rawValue: Int
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
 
     /// Scannable Advertising State
-    case scannableAdvertising = 0b01  // 0x0001  // LE_STATE_SCAN_ADV
+    public static let scannableAdvertising = LowEnergyState(rawValue: 0b01)  // 0x0001  // LE_STATE_SCAN_ADV
 
     /// Connectable Advertising State
-    case connectableAdvertising = 0b10  // 0x0002  // LE_STATE_CONN_ADV
+    public static let connectableAdvertising = LowEnergyState(rawValue: 0b10)  // 0x0002  // LE_STATE_CONN_ADV
 
     /// Non-Connectable Advertising State
-    case nonConnectableAdvertising = 0b100  // 0x0004 // LE_STATE_NONCONN_ADV
+    public static let nonConnectableAdvertising = LowEnergyState(rawValue: 0b100)  // 0x0004 // LE_STATE_NONCONN_ADV
 
     /// High Duty Cycle Directed Advertising State
-    case highDutyCycleDirectedAdvertising = 0b1000  // LE_STATE_HIGH_DIRECT_ADV 0x0008
+    public static let highDutyCycleDirectedAdvertising = LowEnergyState(rawValue: 0b1000)  // LE_STATE_HIGH_DIRECT_ADV 0x0008
 
-    case lowDutyCycleDirectedAdvertising = 0b10000  // LE_STATE_LOW_DIRECT_ADV 0x0010
+    public static let lowDutyCycleDirectedAdvertising = LowEnergyState(rawValue: 0b10000)  // LE_STATE_LOW_DIRECT_ADV 0x0010
 
-    case activeScanning = 0b100000  // LE_STATE_ACTIVE_SCAN 0x0020
+    public static let activeScanning = LowEnergyState(rawValue: 0b100000)  // LE_STATE_ACTIVE_SCAN 0x0020
 
-    case passiveScanning = 0b1000000  // LE_STATE_PASSIVE_SCAN 0x0040
+    public static let passiveScanning = LowEnergyState(rawValue: 0b1000000)  // LE_STATE_PASSIVE_SCAN 0x0040
 
-    case initiating = 0b10000000  // LE_STATE_INITIATING 0x0080
+    public static let initiating = LowEnergyState(rawValue: 0b10000000)  // LE_STATE_INITIATING 0x0080
 
-    case connectionMaster = 0b100000000  // LE_STATE_MASTER_MASTER 0x0100
+    public static let connectionMaster = LowEnergyState(rawValue: 0b100000000)  // LE_STATE_MASTER_MASTER 0x0100
 
-    case connectionSlave = 0b10_00000000  // LE_STATE_SLAVE_SLAVE 0x0200
+    public static let connectionSlave = LowEnergyState(rawValue: 0b10_00000000)  // LE_STATE_SLAVE_SLAVE 0x0200
 
     public static let allCases: [LowEnergyState] = [
         .scannableAdvertising,
@@ -63,7 +69,11 @@ extension LowEnergyState: CustomStringConvertible {
 
     public var description: String {
 
-        return name
+        // A single state resolves to its name; a combination lists the contained states.
+        if let name = lowEnergyStateNames[self] {
+            return name
+        }
+        return "[" + elements.map { $0.description }.joined(separator: ", ") + "]"
     }
 }
 
@@ -119,7 +129,7 @@ public enum LowEnergyStateSet: UInt64 {
 
 public extension LowEnergyStateSet {
 
-    var states: BitMaskOptionSet<LowEnergyState> {
+    var states: LowEnergyState {
 
         guard let states = lowEnergyStates[self]
         else { fatalError("Invalid state \(self)") }
@@ -130,7 +140,7 @@ public extension LowEnergyStateSet {
 
 // MARK: - Private Values
 
-internal let lowEnergyStates: [LowEnergyStateSet: (BitMaskOptionSet<LowEnergyState>)] = [
+internal let lowEnergyStates: [LowEnergyStateSet: (LowEnergyState)] = [
 
     .state0: ([.nonConnectableAdvertising]),
     .state1: ([.scannableAdvertising]),

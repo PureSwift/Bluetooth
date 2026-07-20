@@ -8,169 +8,175 @@
 
 /// Bluetooth LMP Feature
 @frozen
-public enum LMPFeature: UInt64, BitMaskOption {
+public struct LMPFeature: OptionSet, Hashable, Sendable, CaseIterable {
+
+    public let rawValue: UInt64
+
+    public init(rawValue: UInt64) {
+        self.rawValue = rawValue
+    }
 
     /// 3 slot packets
-    case slotPackets3 = 0b01
+    public static let slotPackets3 = LMPFeature(rawValue: 0b01)
 
     /// 5 slot packets
-    case slotPackets5 = 0b10
+    public static let slotPackets5 = LMPFeature(rawValue: 0b10)
 
     /// Encryption
-    case encryption = 0b100
+    public static let encryption = LMPFeature(rawValue: 0b100)
 
     /// Slot offset
-    case slotOffset = 0b1000
+    public static let slotOffset = LMPFeature(rawValue: 0b1000)
 
     /// Timing accuracy
-    case timingAccuracy = 0b10000
+    public static let timingAccuracy = LMPFeature(rawValue: 0b10000)
 
     /// Role switch
-    case roleSwitch = 0b100000
+    public static let roleSwitch = LMPFeature(rawValue: 0b100000)
 
     // Hold mode
-    case holdMode = 0b1000000
+    public static let holdMode = LMPFeature(rawValue: 0b1000000)
 
     // Sniff mode
-    case sniffMode = 0b10000000
+    public static let sniffMode = LMPFeature(rawValue: 0b10000000)
 
     /// Park state
-    case parkState = 0b1_00000000
+    public static let parkState = LMPFeature(rawValue: 0b1_00000000)
 
     /// Power control requests
-    case powerControlRequests = 0b010_00000000
+    public static let powerControlRequests = LMPFeature(rawValue: 0b010_00000000)
 
     // Channel quality driven data rate
-    case channelQualityDrivenDataRate = 0b100_00000000
+    public static let channelQualityDrivenDataRate = LMPFeature(rawValue: 0b100_00000000)
 
     /// SCO link
-    case scoLink = 0b1000_00000000
+    public static let scoLink = LMPFeature(rawValue: 0b1000_00000000)
 
     /// HV2 Packets
-    case hv2Packets = 0b10000_00000000
+    public static let hv2Packets = LMPFeature(rawValue: 0b10000_00000000)
 
     /// HV3 Packets
-    case hv3Packets = 0b100000_00000000
+    public static let hv3Packets = LMPFeature(rawValue: 0b100000_00000000)
 
     /// u-law log synchronous data
-    case uLawLogSynchronousData = 0b1000000_00000000
+    public static let uLawLogSynchronousData = LMPFeature(rawValue: 0b1000000_00000000)
 
     /// A-law log synchronous data
-    case aLawLogSynchronousData = 0b10000000_00000000
+    public static let aLawLogSynchronousData = LMPFeature(rawValue: 0b10000000_00000000)
 
     /// CVSD synchronous data
-    case csvdSynchronousData = 0b1_00000000_00000000
+    public static let csvdSynchronousData = LMPFeature(rawValue: 0b1_00000000_00000000)
 
     /// Paging parameter negotiation
-    case pagingParameterNegotiation = 0b10_00000000_00000000
+    public static let pagingParameterNegotiation = LMPFeature(rawValue: 0b10_00000000_00000000)
 
     /// Power Control
-    case powerControl = 0b100_00000000_00000000
+    public static let powerControl = LMPFeature(rawValue: 0b100_00000000_00000000)
 
     // Transparent synchronous data
-    case transparentSynchronousData = 0b1000_00000000_00000000
+    public static let transparentSynchronousData = LMPFeature(rawValue: 0b1000_00000000_00000000)
 
     // Flow control lag (least significant bit)
-    case flowControlLag = 0b1110000_00000000_00000000
+    public static let flowControlLag = LMPFeature(rawValue: 0b1110000_00000000_00000000)
 
     /// Broadcast Encryption
-    case broadcastEncryption = 0b10000000_00000000_00000000
+    public static let broadcastEncryption = LMPFeature(rawValue: 0b10000000_00000000_00000000)
 
     // Enhanced Data Rate ACL 2 Mbps mode
-    case enhancedDataRateACL2mbpsMode = 0b10_00000000_00000000_00000000
+    public static let enhancedDataRateACL2mbpsMode = LMPFeature(rawValue: 0b10_00000000_00000000_00000000)
 
     // Enhanced Data Rate ACL 3 Mbps mode
-    case enhancedDataRateACL3mbpsMode = 0b100_00000000_00000000_00000000
+    public static let enhancedDataRateACL3mbpsMode = LMPFeature(rawValue: 0b100_00000000_00000000_00000000)
 
     // Enhanced inquiry scan
-    case enhancedInquiryScan = 0b1000_00000000_00000000_00000000
+    public static let enhancedInquiryScan = LMPFeature(rawValue: 0b1000_00000000_00000000_00000000)
 
     // Interlaced inquiry scan
-    case interlacedInquiryScan = 0b10000_00000000_00000000_00000000
+    public static let interlacedInquiryScan = LMPFeature(rawValue: 0b10000_00000000_00000000_00000000)
 
     // Interlaced page scan
-    case interlacedPageScan = 0b100000_00000000_00000000_00000000
+    public static let interlacedPageScan = LMPFeature(rawValue: 0b100000_00000000_00000000_00000000)
 
     // RSSI with inquiry results
-    case rssiWithInquiryResults = 0b1000000_00000000_00000000_00000000
+    public static let rssiWithInquiryResults = LMPFeature(rawValue: 0b1000000_00000000_00000000_00000000)
 
     // Extended SCO link (EV3 packets)
-    case ev3Packets = 0b10000000_00000000_00000000_00000000
+    public static let ev3Packets = LMPFeature(rawValue: 0b10000000_00000000_00000000_00000000)
 
     // EV4 packets
-    case ev4Packets = 0b1_00000000_00000000_00000000_00000000
+    public static let ev4Packets = LMPFeature(rawValue: 0b1_00000000_00000000_00000000_00000000)
 
     // EV5 packets
-    case ev5Packets = 0b10_00000000_00000000_00000000_00000000
+    public static let ev5Packets = LMPFeature(rawValue: 0b10_00000000_00000000_00000000_00000000)
 
     // AFH capable slave
-    case afhCapableSlave = 0b1000_00000000_00000000_00000000_00000000
+    public static let afhCapableSlave = LMPFeature(rawValue: 0b1000_00000000_00000000_00000000_00000000)
 
     // AFH classification slave
-    case afhClassificationSlave = 0b10000_00000000_00000000_00000000_00000000
+    public static let afhClassificationSlave = LMPFeature(rawValue: 0b10000_00000000_00000000_00000000_00000000)
 
     // BR/EDR Not Supported
-    case brEdrNotSupported = 0b100000_00000000_00000000_00000000_00000000
+    public static let brEdrNotSupported = LMPFeature(rawValue: 0b100000_00000000_00000000_00000000_00000000)
 
     // LE Supported (Controller)
-    case leSupported = 0b1000000_00000000_00000000_00000000_00000000
+    public static let leSupported = LMPFeature(rawValue: 0b1000000_00000000_00000000_00000000_00000000)
 
     // 3-slot Enhanced Data Rate ACL packets
-    case slot3EnhancedDataRateACLPackets = 0b10000000_00000000_00000000_00000000_00000000
+    public static let slot3EnhancedDataRateACLPackets = LMPFeature(rawValue: 0b10000000_00000000_00000000_00000000_00000000)
 
     // 5-slot Enhanced Data Rate ACL packets
-    case slot5EnhancedDataRateACLPackets = 0b1_00000000_00000000_00000000_00000000_00000000
+    public static let slot5EnhancedDataRateACLPackets = LMPFeature(rawValue: 0b1_00000000_00000000_00000000_00000000_00000000)
 
     // Sniff subrating
-    case sniffSubrating = 0b10_00000000_00000000_00000000_00000000_00000000
+    public static let sniffSubrating = LMPFeature(rawValue: 0b10_00000000_00000000_00000000_00000000_00000000)
 
     // Pause encryption
-    case pauseEncryption = 0b100_00000000_00000000_00000000_00000000_00000000
+    public static let pauseEncryption = LMPFeature(rawValue: 0b100_00000000_00000000_00000000_00000000_00000000)
 
     // AFH capable master
-    case afhCapableMaster = 0b1000_00000000_00000000_00000000_00000000_00000000
+    public static let afhCapableMaster = LMPFeature(rawValue: 0b1000_00000000_00000000_00000000_00000000_00000000)
 
     // AFH classification master
-    case afhClassificationMaster = 0b10000_00000000_00000000_00000000_00000000_00000000
+    public static let afhClassificationMaster = LMPFeature(rawValue: 0b10000_00000000_00000000_00000000_00000000_00000000)
 
     // Enhanced Data Rate eSCO 2 Mbps mode
-    case enhancedDataRateeSCO2mbpsMode = 0b100000_00000000_00000000_00000000_00000000_00000000
+    public static let enhancedDataRateeSCO2mbpsMode = LMPFeature(rawValue: 0b100000_00000000_00000000_00000000_00000000_00000000)
 
     // Enhanced Data Rate eSCO 3 Mbps mode
-    case enhancedDataRateeSCO3mbpsMode = 0b1000000_00000000_00000000_00000000_00000000_00000000
+    public static let enhancedDataRateeSCO3mbpsMode = LMPFeature(rawValue: 0b1000000_00000000_00000000_00000000_00000000_00000000)
 
     // 3-slot Enhanced Data Rate eSCO packets
-    case slot3EnhancedDataRateeSCOPackets = 0b10000000_00000000_00000000_00000000_00000000_00000000
+    public static let slot3EnhancedDataRateeSCOPackets = LMPFeature(rawValue: 0b10000000_00000000_00000000_00000000_00000000_00000000)
 
     // Extended Inquiry Response
-    case extendedInquiryResponse = 0b1_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let extendedInquiryResponse = LMPFeature(rawValue: 0b1_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Simultaneous LE and BR/EDR to Same Device Capable (Controller)
-    case simultanousLEandBREDR = 0b10_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let simultanousLEandBREDR = LMPFeature(rawValue: 0b10_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Secure Simple Pairing
-    case secureSimplePairing = 0b1000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let secureSimplePairing = LMPFeature(rawValue: 0b1000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Encapsulated PDU
-    case encapsulatedPDU = 0b10000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let encapsulatedPDU = LMPFeature(rawValue: 0b10000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Erroneous Data Reporting
-    case erroneousDataReporting = 0b100000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let erroneousDataReporting = LMPFeature(rawValue: 0b100000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Non-flushable Packet Boundary Flag
-    case nonFlushablePacketBoundaryFlag = 0b1000000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let nonFlushablePacketBoundaryFlag = LMPFeature(rawValue: 0b1000000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Link Supervision Timeout Changed Event
-    case linkSupervisionTimeoutChangedEvent = 0b1_00000000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let linkSupervisionTimeoutChangedEvent = LMPFeature(rawValue: 0b1_00000000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Inquiry TX Power Level
-    case inquiryTXPowerLevel = 0b10_00000000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let inquiryTXPowerLevel = LMPFeature(rawValue: 0b10_00000000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Enhanced Power Control
-    case enhancedPowerControl = 0b100_00000000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let enhancedPowerControl = LMPFeature(rawValue: 0b100_00000000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     // Extended features
-    case extendedFeatures = 0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000
+    public static let extendedFeatures = LMPFeature(rawValue: 0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000)
 
     public static let allCases: [LMPFeature] = [
         .slotPackets3,
@@ -289,6 +295,7 @@ public extension LMPFeature {
         case .inquiryTXPowerLevel: return "Inquiry TX Power Level"
         case .enhancedPowerControl: return "Enhanced Power Control"
         case .extendedFeatures: return "Extended features"
+        default: return "0b" + String(rawValue, radix: 2)
         }
     }
 }

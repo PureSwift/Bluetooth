@@ -927,7 +927,7 @@ import Foundation
         }
 
         #expect(reportEvent.reports.count == 1)
-        #expect(report.eventType.map { $0 } == [.connectableAdvertising, .scannableAdvertising, .legacyAdvertisingPDU])
+        #expect(report.eventType.elements == [.connectableAdvertising, .scannableAdvertising, .legacyAdvertisingPDU])
         #expect(report.addressType == .publicDeviceAddress)
         #expect(report.address.description == "A4:C1:38:2D:7A:27")
         #expect(report.primaryPHY == .le1M)
@@ -1779,7 +1779,7 @@ import Foundation
             address: address,
             packetType: 0xCC18,
             pageScanRepetitionMode: pageScanRepetitionMode,
-            clockOffset: BitMaskOptionSet<ClockOffset>(rawValue: 0x0000),
+            clockOffset: ClockOffset(rawValue: 0x0000),
             allowRoleSwitch: allowSwitchRole)
 
         #expect(event.address == address)
@@ -2114,9 +2114,9 @@ import Foundation
         hostController.queue.append(.event([0x0b, 0x0b, 0x00, 0x0d, 0x00, 0xbd, 0x02, 0x04, 0x38, 0x08, 0x00, 0x00, 0x00]))
 
         let value: UInt64 = 0x0000_0008_3804_02bd
-        let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
+        let features = LMPFeature(rawValue: value)
 
-        var lmpFeatures: BitMaskOptionSet<LMPFeature>?
+        var lmpFeatures: LMPFeature?
         lmpFeatures = try await hostController.readRemoteSupportedFeatures(handle: 0x000D)
         #expect(lmpFeatures == features)
     }
@@ -2248,7 +2248,7 @@ import Foundation
         */
         hostController.queue.append(.event([0x0f, 0x04, 0x00, 0x01, 0x0f, 0x04]))
 
-        let packetType: PacketType = .acl(BitMaskOptionSet<ACLPacketType>(rawValue: 0xcc18))
+        let packetType: PacketType = .acl(ACLPacketType(rawValue: 0xcc18))
         var caughtError: Error?
         do { let _ = try await hostController.changeConnectionPacketType(handle: 0x000D, packetType: packetType) } catch { caughtError = error }
         #expect(caughtError != nil)
@@ -2447,7 +2447,7 @@ import Foundation
 
         let event = try await hostController.writeLinkPolicySettings(
             connectionHandle: 0x000D,
-            settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>(rawValue: 0x000F))
+            settings: HCIWriteLinkPolicySettings.LinkPolicySettings(rawValue: 0x000F))
         #expect(event.connectionHandle == 0x000D)
     }
 
@@ -2716,9 +2716,9 @@ import Foundation
             ]))
 
         let value: UInt64 = 0x877b_ffdb_fecf_febf
-        let features = BitMaskOptionSet<LMPFeature>(rawValue: value)
+        let features = LMPFeature(rawValue: value)
 
-        var lmpFeatures: BitMaskOptionSet<LMPFeature>?
+        var lmpFeatures: LMPFeature?
         lmpFeatures = try await hostController.readLocalSupportedFeatures()
         #expect(lmpFeatures == features)
     }

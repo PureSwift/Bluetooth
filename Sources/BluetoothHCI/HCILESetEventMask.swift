@@ -41,7 +41,7 @@ public extension BluetoothHostControllerInterface {
 @frozen
 public struct HCILESetEventMask: HCICommandParameter {
 
-    public typealias EventMask = BitMaskOptionSet<Event>
+    public typealias EventMask = Event
 
     public static let command = HCILowEnergyCommand.setEventMask  // 0x0001
 
@@ -50,7 +50,7 @@ public struct HCILESetEventMask: HCICommandParameter {
 
     /// The value with all bits set to 0 indicates that no events are specified.
     /// The default is for bits 0 to 4 inclusive (the value 0x0000 0000 0000 001F) to be set.
-    public init(eventMask: EventMask = 0x0000_0000_0000_001F) {
+    public init(eventMask: EventMask = Event(rawValue: 0x0000_0000_0000_001F)) {
 
         self.eventMask = eventMask
     }
@@ -80,175 +80,181 @@ public extension HCILESetEventMask {
     /// The default is for bits 0 to 4 inclusive (the value `0x0000 0000 0000 001F`) to be set.
     ///
     /// All bits not listed in this table are reserved for future use.
-    enum Event: UInt64, BitMaskOption, CustomStringConvertible {
+    struct Event: OptionSet, Hashable, Sendable, CaseIterable, CustomStringConvertible {
+
+        public let rawValue: UInt64
+
+        public init(rawValue: UInt64) {
+            self.rawValue = rawValue
+        }
 
         /// LE Connection Complete Event
-        case connectionComplete = 0b1
+        public static let connectionComplete = Event(rawValue: 0b1)
 
         /// LE Advertising Report Event
-        case advertisingReport = 0b10
+        public static let advertisingReport = Event(rawValue: 0b10)
 
         /// LE Connection Update Complete Event
-        case connectionUpdateComplete = 0b100
+        public static let connectionUpdateComplete = Event(rawValue: 0b100)
 
         /// LE Read Remote Features Complete Event
-        case readRemoteFeaturesComplete = 0b1000
+        public static let readRemoteFeaturesComplete = Event(rawValue: 0b1000)
 
         /// LE Long Term Key Request Event
-        case longTermKeyRequest = 0b10000
+        public static let longTermKeyRequest = Event(rawValue: 0b10000)
 
         /// LE Remote Connection Parameter Request Event
-        case remoteConnectionParameterRequest = 0b100000
+        public static let remoteConnectionParameterRequest = Event(rawValue: 0b100000)
 
         /// LE Data Length Change Event
-        case dataLengthChange = 0b1000000
+        public static let dataLengthChange = Event(rawValue: 0b1000000)
 
         /// LE Read Local P-256 Public Key Complete Event
-        case readLocalP256PublicKeyComplete = 0b10000000
+        public static let readLocalP256PublicKeyComplete = Event(rawValue: 0b10000000)
 
         /// LE Generate DHKey Complete Event
-        case generateDHKeyComplete = 0b1_00000000
+        public static let generateDHKeyComplete = Event(rawValue: 0b1_00000000)
 
         /// LE Enhanced Connection Complete Event
-        case enhancedConnectionComplete = 0b10_00000000
+        public static let enhancedConnectionComplete = Event(rawValue: 0b10_00000000)
 
         /// LE Directed Advertising Report Event
-        case directedAdvertisingReport = 0b100_00000000
+        public static let directedAdvertisingReport = Event(rawValue: 0b100_00000000)
 
         /// LE PHY Update Complete Event
-        case phyUpdateComplete = 0b1000_00000000
+        public static let phyUpdateComplete = Event(rawValue: 0b1000_00000000)
 
         /// LE Extended Advertising Report Event
-        case extendedAdvertisingReport = 0b10000_00000000
+        public static let extendedAdvertisingReport = Event(rawValue: 0b10000_00000000)
 
         /// LE Periodic Advertising Sync Established Event
-        case periodicAdvertisingSyncEstablished = 0b100000_00000000
+        public static let periodicAdvertisingSyncEstablished = Event(rawValue: 0b100000_00000000)
 
         /// LE Periodic Advertising Report Event
-        case periodicAdvertisingReport = 0b1000000_00000000
+        public static let periodicAdvertisingReport = Event(rawValue: 0b1000000_00000000)
 
         /// LE Periodic Advertising Sync Lost Event
-        case periodicAdvertisingSyncLost = 0b10000000_00000000
+        public static let periodicAdvertisingSyncLost = Event(rawValue: 0b10000000_00000000)
 
         /// LE Extended Scan Timeout Event
-        case extendedScanTimeout = 0b1_00000000_00000000
+        public static let extendedScanTimeout = Event(rawValue: 0b1_00000000_00000000)
 
         /// LE Extended Advertising Set Terminated Event
-        case extendedAdvertisingSetTerminated = 0b10_00000000_00000000
+        public static let extendedAdvertisingSetTerminated = Event(rawValue: 0b10_00000000_00000000)
 
         /// LE Scan Request Received Event
-        case scanRequestReceived = 0b100_00000000_00000000
+        public static let scanRequestReceived = Event(rawValue: 0b100_00000000_00000000)
 
         /// LE Channel Selection Algorithm Event
-        case channelSelectionAlgorithm = 0b1000_00000000_00000000
+        public static let channelSelectionAlgorithm = Event(rawValue: 0b1000_00000000_00000000)
 
         /// LE Connectionless IQ Report Event
-        case connectionlessIQReport = 0x10_0000
+        public static let connectionlessIQReport = Event(rawValue: 0x10_0000)
 
         /// LE Connection IQ Report Event
-        case connectionIQReport = 0x20_0000
+        public static let connectionIQReport = Event(rawValue: 0x20_0000)
 
         /// LE CTE Request Failed Event
-        case cteRequestFailed = 0x40_0000
+        public static let cteRequestFailed = Event(rawValue: 0x40_0000)
 
         /// LE Periodic Advertising Sync Transfer Received Event
-        case periodicAdvertisingSyncTransferReceived = 0x80_0000
+        public static let periodicAdvertisingSyncTransferReceived = Event(rawValue: 0x80_0000)
 
         /// LE CIS Established Event
-        case cisEstablished = 0x100_0000
+        public static let cisEstablished = Event(rawValue: 0x100_0000)
 
         /// LE CIS Request Event
-        case cisRequest = 0x200_0000
+        public static let cisRequest = Event(rawValue: 0x200_0000)
 
         /// LE Create BIG Complete Event
-        case createBIGComplete = 0x400_0000
+        public static let createBIGComplete = Event(rawValue: 0x400_0000)
 
         /// LE Terminate BIG Complete Event
-        case terminateBIGComplete = 0x800_0000
+        public static let terminateBIGComplete = Event(rawValue: 0x800_0000)
 
         /// LE BIG Sync Established Event
-        case bigSyncEstablished = 0x1000_0000
+        public static let bigSyncEstablished = Event(rawValue: 0x1000_0000)
 
         /// LE BIG Sync Lost Event
-        case bigSyncLost = 0x2000_0000
+        public static let bigSyncLost = Event(rawValue: 0x2000_0000)
 
         /// LE Request Peer SCA Complete Event
-        case requestPeerSCAComplete = 0x4000_0000
+        public static let requestPeerSCAComplete = Event(rawValue: 0x4000_0000)
 
         /// LE Path Loss Threshold Event
-        case pathLossThreshold = 0x8000_0000
+        public static let pathLossThreshold = Event(rawValue: 0x8000_0000)
 
         /// LE Transmit Power Reporting Event
-        case transmitPowerReporting = 0x1_0000_0000
+        public static let transmitPowerReporting = Event(rawValue: 0x1_0000_0000)
 
         /// LE BIGInfo Advertising Report Event
-        case bigInfoAdvertisingReport = 0x2_0000_0000
+        public static let bigInfoAdvertisingReport = Event(rawValue: 0x2_0000_0000)
 
         /// LE Subrate Change Event
-        case subrateChange = 0x4_0000_0000
+        public static let subrateChange = Event(rawValue: 0x4_0000_0000)
 
         /// LE Periodic Advertising Sync Established Event (v2)
-        case periodicAdvertisingSyncEstablishedV2 = 0x8_0000_0000
+        public static let periodicAdvertisingSyncEstablishedV2 = Event(rawValue: 0x8_0000_0000)
 
         /// LE Periodic Advertising Report Event (v2)
-        case periodicAdvertisingReportV2 = 0x10_0000_0000
+        public static let periodicAdvertisingReportV2 = Event(rawValue: 0x10_0000_0000)
 
         /// LE Periodic Advertising Sync Transfer Received Event (v2)
-        case periodicAdvertisingSyncTransferReceivedV2 = 0x20_0000_0000
+        public static let periodicAdvertisingSyncTransferReceivedV2 = Event(rawValue: 0x20_0000_0000)
 
         /// LE Periodic Advertising Subevent Data Request Event
-        case periodicAdvertisingSubeventDataRequest = 0x40_0000_0000
+        public static let periodicAdvertisingSubeventDataRequest = Event(rawValue: 0x40_0000_0000)
 
         /// LE Periodic Advertising Response Report Event
-        case periodicAdvertisingResponseReport = 0x80_0000_0000
+        public static let periodicAdvertisingResponseReport = Event(rawValue: 0x80_0000_0000)
 
         /// LE Enhanced Connection Complete Event (v2)
-        case enhancedConnectionCompleteV2 = 0x100_0000_0000
+        public static let enhancedConnectionCompleteV2 = Event(rawValue: 0x100_0000_0000)
 
         /// LE CIS Established Event (v2)
-        case cisEstablishedV2 = 0x200_0000_0000
+        public static let cisEstablishedV2 = Event(rawValue: 0x200_0000_0000)
 
         /// LE Read All Remote Features Complete Event
-        case readAllRemoteFeaturesComplete = 0x400_0000_0000
+        public static let readAllRemoteFeaturesComplete = Event(rawValue: 0x400_0000_0000)
 
         /// LE CS Read Remote Supported Capabilities Complete Event
-        case csReadRemoteSupportedCapabilitiesComplete = 0x800_0000_0000
+        public static let csReadRemoteSupportedCapabilitiesComplete = Event(rawValue: 0x800_0000_0000)
 
         /// LE CS Read Remote FAE Table Complete Event
-        case csReadRemoteFAETableComplete = 0x1000_0000_0000
+        public static let csReadRemoteFAETableComplete = Event(rawValue: 0x1000_0000_0000)
 
         /// LE CS Security Enable Complete Event
-        case csSecurityEnableComplete = 0x2000_0000_0000
+        public static let csSecurityEnableComplete = Event(rawValue: 0x2000_0000_0000)
 
         /// LE CS Config Complete Event
-        case csConfigComplete = 0x4000_0000_0000
+        public static let csConfigComplete = Event(rawValue: 0x4000_0000_0000)
 
         /// LE CS Procedure Enable Complete Event
-        case csProcedureEnableComplete = 0x8000_0000_0000
+        public static let csProcedureEnableComplete = Event(rawValue: 0x8000_0000_0000)
 
         /// LE CS Subevent Result Event
-        case csSubeventResult = 0x1_0000_0000_0000
+        public static let csSubeventResult = Event(rawValue: 0x1_0000_0000_0000)
 
         /// LE CS Subevent Result Continue Event
-        case csSubeventResultContinue = 0x2_0000_0000_0000
+        public static let csSubeventResultContinue = Event(rawValue: 0x2_0000_0000_0000)
 
         /// LE CS Test End Complete Event
-        case csTestEndComplete = 0x4_0000_0000_0000
+        public static let csTestEndComplete = Event(rawValue: 0x4_0000_0000_0000)
 
         /// LE Monitored Advertisers Report Event
-        case monitoredAdvertisersReport = 0x8_0000_0000_0000
+        public static let monitoredAdvertisersReport = Event(rawValue: 0x8_0000_0000_0000)
 
         /// LE Frame Space Update Complete Event
-        case frameSpaceUpdateComplete = 0x10_0000_0000_0000
+        public static let frameSpaceUpdateComplete = Event(rawValue: 0x10_0000_0000_0000)
 
         /// LE UTP Receive Event
-        case utpReceive = 0x20_0000_0000_0000
+        public static let utpReceive = Event(rawValue: 0x20_0000_0000_0000)
 
         /// LE Connection Rate Change Event
-        case connectionRateChange = 0x40_0000_0000_0000
+        public static let connectionRateChange = Event(rawValue: 0x40_0000_0000_0000)
 
         /// LE CS Read Remote Supported Capabilities Complete Event (v2)
-        case csReadRemoteSupportedCapabilitiesCompleteV2 = 0x80_0000_0000_0000
+        public static let csReadRemoteSupportedCapabilitiesCompleteV2 = Event(rawValue: 0x80_0000_0000_0000)
 
         public static var allCases: [Event] {
             [
