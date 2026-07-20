@@ -12,6 +12,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 
 /// The duration of an HCI command.
@@ -29,7 +31,7 @@ public struct HCICommandTimeout: RawRepresentable, Equatable, Hashable, Sendable
     public static var `default`: HCICommandTimeout { 1000 }
 }
 
-#if canImport(Foundation)
+#if canImport(Foundation) || canImport(FoundationEmbedded)
 public extension HCICommandTimeout {
 
     /// Duration in seconds.
@@ -53,7 +55,7 @@ extension HCICommandTimeout: ExpressibleByIntegerLiteral {
 extension HCICommandTimeout: CustomStringConvertible {
 
     public var description: String {
-        #if canImport(Foundation)
+        #if canImport(Foundation) || canImport(FoundationEmbedded)
         return "\(duration)s"
         #else
         return "\(rawValue)ms"
