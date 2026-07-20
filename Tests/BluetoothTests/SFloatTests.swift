@@ -53,7 +53,8 @@ import Testing
         #expect(SFloat(Float.nan).isNaN)
         #expect(SFloat(Float.infinity).bitPattern == 0x07FE)
         #expect(SFloat(-Float.infinity).bitPattern == 0x0802)
-        #expect(SFloat(0).bitPattern == 0)
+        // Explicitly typed: on platforms with Float16 a bare literal is ambiguous.
+        #expect(SFloat(Float(0)).bitPattern == 0)
     }
 
     @Test func roundTrip() {
