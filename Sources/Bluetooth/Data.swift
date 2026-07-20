@@ -11,6 +11,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+#elseif canImport(FoundationEmbedded)
+import FoundationEmbedded
 #endif
 
 /// Data container type.
@@ -40,11 +42,24 @@ public protocol DataContainer: RandomAccessCollection where Self.Index == Int, S
     func subdata(in range: Range<Index>) -> Self
 }
 
-#if canImport(Foundation)
+#if canImport(Foundation) || canImport(FoundationEmbedded)
 extension Data: DataContainer {
 
     public static func += (lhs: inout Data, rhs: UInt8) {
         lhs.append(rhs)
+    }
+}
+#endif
+
+#if canImport(FoundationEmbedded) && !canImport(Foundation)
+extension Data {
+
+    public mutating func append(_ pointer: UnsafePointer<UInt8>, count: Int) {
+        self.append(contentsOf: UnsafeBufferPointer(start: pointer, count: count))
+    }
+
+    public static func += <C: Collection>(lhs: inout Data, rhs: C) where C.Element == UInt8 {
+        lhs.append(contentsOf: rhs)
     }
 }
 #endif
