@@ -62,33 +62,33 @@ jobs:
             # Serial-execution races are instead fixed at the source by polling in
             # the affected tests.
 
-  # Cross-compile the package and its tests for 64-bit ARM (aarch64) with the
-  # official Swift 6.3.2 Android SDK. ARM ABIs cannot be executed on hosted
-  # runners (no KVM for ARM emulators), so this is a compile-verification step.
-  # API 28 is the lowest level the official SDK ships (it offers 28 through 36).
-  android-build-arm64:
-      name: Android (aarch64, build)
-      runs-on: ubuntu-latest
-      container: swift:6.3.2
-      steps:
-        - uses: actions/checkout@v4
-        - name: Install Android Swift SDK
-          run: swift sdk install https://download.swift.org/swift-6.3.2-release/android-sdk/swift-6.3.2-RELEASE/swift-6.3.2-RELEASE_android.artifactbundle.tar.gz --checksum 939e933549d12d28f2e0bf71019d734d309859e9773c572657ce565a81f85d68
-        - name: Build tests for Android aarch64
-          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk aarch64-unknown-linux-android28
-
-  # 32-bit ARM (armv7) is cross-compiled with finagolfin's 6.1.3 SDK — the newest
-  # community Android SDK whose exact Swift version matches a published Docker
-  # image (Swift SDK .swiftmodule files require an exact compiler match).
-  # The official 6.3.2 SDK now also ships armv7 (API 28+), so this job could be
-  # folded into the 6.3.2 container above; left as-is until that is verified.
-  android-build-armv7:
-      name: Android (armv7, build)
+  # Cross-compile the package and its tests for the ARM ABIs, which cannot be
+  # executed on hosted runners (no KVM for ARM emulators), so these are
+  # compile-verification steps only.
+  #
+  # Both use finagolfin's 6.1.3 SDK — the newest community Android SDK whose
+  # exact Swift version matches a published Docker image (Swift SDK .swiftmodule
+  # files require an exact compiler match). The official swift.org Android SDK is
+  # deliberately not used here: it declares `sdkRootPath: ndk-sysroot` but ships
+  # no sysroot of its own, so it needs a separately installed Android NDK and
+  # fails with "'semaphore.h' file not found" in a plain toolchain container.
+  # (The x86_64 job above can use the official SDK because swift-android-action
+  # installs and wires up the NDK for it.)
+  android-build-arm:
+      name: Android (${{ matrix.arch }}, build)
       runs-on: ubuntu-latest
       container: swift:6.1.3
+      strategy:
+        fail-fast: false
+        matrix:
+          include:
+            - arch: aarch64
+              triple: aarch64-unknown-linux-android24
+            - arch: armv7
+              triple: armv7-unknown-linux-androideabi24
       steps:
         - uses: actions/checkout@v4
         - name: Install Android Swift SDK
           run: swift sdk install https://github.com/finagolfin/swift-android-sdk/releases/download/6.1.3/swift-6.1.3-RELEASE-android-24-0.1.artifactbundle.tar.gz --checksum 440d09d539bda5b94807598b00696ac5d3893cb515b24715ac8868d62130b6d5
-        - name: Build tests for Android armv7
-          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk armv7-unknown-linux-androideabi24
+        - name: Build tests for Android ${{ matrix.arch }}
+          run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk ${{ matrix.triple }}
