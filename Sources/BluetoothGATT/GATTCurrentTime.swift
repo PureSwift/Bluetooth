@@ -20,9 +20,9 @@ public struct GATTCurrentTime: GATTCharacteristic, Equatable {
 
     public var exactTime: GATTExactTime256
 
-    public var adjustReason: BitMaskOptionSet<Flag>
+    public var adjustReason: Flag
 
-    public init(exactTime: GATTExactTime256, adjustReason: BitMaskOptionSet<Flag>) {
+    public init(exactTime: GATTExactTime256, adjustReason: Flag) {
 
         self.exactTime = exactTime
         self.adjustReason = adjustReason
@@ -36,7 +36,7 @@ public struct GATTCurrentTime: GATTCharacteristic, Equatable {
         guard let exactTime = GATTExactTime256(data: data.subdata(in: (0..<GATTExactTime256.length)))
         else { return nil }
 
-        let adjustReason = BitMaskOptionSet<Flag>(rawValue: data[GATTExactTime256.length])
+        let adjustReason = Flag(rawValue: data[GATTExactTime256.length])
 
         self.init(exactTime: exactTime, adjustReason: adjustReason)
     }
@@ -55,19 +55,26 @@ public struct GATTCurrentTime: GATTCharacteristic, Equatable {
 
 extension GATTCurrentTime {
 
-    public enum Flag: UInt8, BitMaskOption {
+    @frozen
+    public struct Flag: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
 
         /// Manual time update
-        case manualTimeUpdate = 0b01
+        public static let manualTimeUpdate = Flag(rawValue: 0b01)
 
         /// External reference time update
-        case externalReference = 0b10
+        public static let externalReference = Flag(rawValue: 0b10)
 
         /// Change of time zone
-        case timeZoneChange = 0b100
+        public static let timeZoneChange = Flag(rawValue: 0b100)
 
         /// Change of DST (daylight savings time)
-        case dstChange = 0b1000
+        public static let dstChange = Flag(rawValue: 0b1000)
 
         public static var allCases: [Flag] {
             [

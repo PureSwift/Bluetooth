@@ -127,10 +127,16 @@ public struct HCILESetPeriodicAdvertisingParameters: HCICommandParameter {
 
     /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
     /// and its basic properties.
-    public enum AdvertisingEventProperties: UInt16, BitMaskOption {
+    public struct AdvertisingEventProperties: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt16
+
+        public init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
 
         /// Include TxPower in the extended header of the advertising PDU
-        case includeTxPower = 0b100000
+        public static let includeTxPower = AdvertisingEventProperties(rawValue: 0b100000)
 
         public static var allCases: [HCILESetPeriodicAdvertisingParameters.AdvertisingEventProperties] {
             [

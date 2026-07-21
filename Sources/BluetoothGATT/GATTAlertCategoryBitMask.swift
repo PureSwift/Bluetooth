@@ -24,14 +24,14 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.alertCategoryIdBitMask }
 
     /// This field shows the category of the new alert.
-    public var categories: BitMaskOptionSet<Category>
+    public var categories: Category
 
     public init?<Data: DataContainer>(data: Data) {
 
         guard let bitmask = Category.RawValue(bitmaskArray: data)
         else { return nil }
 
-        self.categories = BitMaskOptionSet<Category>(rawValue: bitmask)
+        self.categories = Category(rawValue: bitmask)
     }
 
     public func append<Data: DataContainer>(to data: inout Data) {
@@ -47,31 +47,37 @@ public struct GATTAlertCategoryBitMask: GATTCharacteristic, Equatable, Hashable 
 
 public extension GATTAlertCategoryBitMask {
 
-    enum Category: UInt64, BitMaskOption {
+    struct Category: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt64
+
+        public init(rawValue: UInt64) {
+            self.rawValue = rawValue
+        }
 
         // 1st byte
 
-        case simpleAlert = 0b01
+        public static let simpleAlert = Category(rawValue: 0b01)
 
-        case email = 0b10
+        public static let email = Category(rawValue: 0b10)
 
-        case news = 0b100
+        public static let news = Category(rawValue: 0b100)
 
-        case call = 0b1000
+        public static let call = Category(rawValue: 0b1000)
 
-        case missedCall = 0b10000
+        public static let missedCall = Category(rawValue: 0b10000)
 
-        case sms = 0b100000
+        public static let sms = Category(rawValue: 0b100000)
 
-        case voiceMail = 0b1000000
+        public static let voiceMail = Category(rawValue: 0b1000000)
 
-        case schedule = 0b10000000
+        public static let schedule = Category(rawValue: 0b10000000)
 
         // 2nd byte
 
-        case highPrioritized = 0b100000000
+        public static let highPrioritized = Category(rawValue: 0b100000000)
 
-        case instantMessage = 0b10_00000000
+        public static let instantMessage = Category(rawValue: 0b10_00000000)
 
         public static var allCases: [Category] {
             [

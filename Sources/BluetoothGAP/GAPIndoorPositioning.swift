@@ -65,9 +65,9 @@ public struct GAPIndoorPositioning: GAPData, Equatable, Hashable, Sendable {
 
 internal extension GAPIndoorPositioning {
 
-    var flags: BitMaskOptionSet<Flag> {
+    var flags: Flag {
 
-        var flags = BitMaskOptionSet<Flag>()
+        var flags = Flag()
 
         if let coordinates = coordinates {
 
@@ -114,7 +114,7 @@ public extension GAPIndoorPositioning {
         guard data.isEmpty == false
         else { return }
 
-        let flags = BitMaskOptionSet<Flag>(rawValue: data[0])
+        let flags = Flag(rawValue: data[0])
 
         var offset = 1
 
@@ -280,35 +280,41 @@ extension GAPIndoorPositioning.Coordinates {
 internal extension GAPIndoorPositioning {
 
     /// GAP Indoor Positioning Flag
-    enum Flag: UInt8, BitMaskOption {
+    struct Flag: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
 
         /// Presence of coordinates in advertising packets
         /// (0 = coordinates are not present, 1 = coordinates are present)
-        case coordinates = 0b00000001
+        public static let coordinates = Flag(rawValue: 0b00000001)
 
         /// Coordinate system used in advertising packets
         /// (0 = WGS84 coordinate system, 1 = Local coordinate system)
-        case coordinateSystemUsed = 0b00000010
+        public static let coordinateSystemUsed = Flag(rawValue: 0b00000010)
 
         /// Presence of Tx Power field in advertising packets
         /// (0 = Tx Power is not present, 1 = Tx Power is present)
-        case txPower = 0b00000100
+        public static let txPower = Flag(rawValue: 0b00000100)
 
         /// Presence of Altitude field in advertising packets
         /// (0 = Altitude is not present, 1 = Altitude is present)
-        case altitude = 0b00001000
+        public static let altitude = Flag(rawValue: 0b00001000)
 
         /// Presence of Floor Number in advertising packets
         /// (0 = Floor Number is not present, 1 = Floor Number is present)
-        case floorNumber = 0b00010000
+        public static let floorNumber = Flag(rawValue: 0b00010000)
 
         /// Presence of Uncertainty in advertising packets
         /// (0 = Uncertainty is not present, 1 = Uncertainty is present)
-        case uncertainty = 0b00100000
+        public static let uncertainty = Flag(rawValue: 0b00100000)
 
         /// Location Name available in the GATT database.
         /// (0 = Location Name is not present, 1 = Location Name is present)
-        case locationName = 0b01000000
+        public static let locationName = Flag(rawValue: 0b01000000)
 
         public static let allCases: [Flag] = [
             .coordinates,

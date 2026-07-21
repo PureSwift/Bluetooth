@@ -17,7 +17,7 @@ public extension BluetoothHostControllerInterface {
     /// The default value is the value set by the Write Default Link Policy Settings Command.
     func writeLinkPolicySettings(
         connectionHandle: UInt16,
-        settings: BitMaskOptionSet<HCIWriteLinkPolicySettings.LinkPolicySettings>,
+        settings: HCIWriteLinkPolicySettings.LinkPolicySettings,
         timeout: HCICommandTimeout = .default
     ) async throws -> HCIWriteLinkPolicySettingsReturn {
 
@@ -45,9 +45,9 @@ public struct HCIWriteLinkPolicySettings: HCICommandParameter {
 
     public var connectionHandle: UInt16
 
-    public var settings: BitMaskOptionSet<LinkPolicySettings>
+    public var settings: LinkPolicySettings
 
-    public init(connectionHandle: UInt16, settings: BitMaskOptionSet<LinkPolicySettings>) {
+    public init(connectionHandle: UInt16, settings: LinkPolicySettings) {
 
         self.connectionHandle = connectionHandle
         self.settings = settings
@@ -70,19 +70,25 @@ public struct HCIWriteLinkPolicySettings: HCICommandParameter {
 extension HCIWriteLinkPolicySettings {
 
     /// Link Policy Settings
-    public enum LinkPolicySettings: UInt16, BitMaskOption {
+    public struct LinkPolicySettings: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt16
+
+        public init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
 
         /// Enable Role Switch.
-        case enableRoleSwitch = 0x0001
+        public static let enableRoleSwitch = LinkPolicySettings(rawValue: 0x0001)
 
         /// Enable Hold Mode.
-        case enableHoldMode = 0x0002
+        public static let enableHoldMode = LinkPolicySettings(rawValue: 0x0002)
 
         /// Enable Sniff Mode.
-        case enableSniffMode = 0x0004
+        public static let enableSniffMode = LinkPolicySettings(rawValue: 0x0004)
 
         /// Enable Park State.
-        case enableParkState = 0x0008
+        public static let enableParkState = LinkPolicySettings(rawValue: 0x0008)
 
         public static var allCases: [LinkPolicySettings] {
             [

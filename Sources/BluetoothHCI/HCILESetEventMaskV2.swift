@@ -57,7 +57,7 @@ public struct HCILESetEventMaskV2: HCICommandParameter {
 
     /// The value with all bits set to 0 indicates that no events are specified.
     /// The default is for bits 0 to 4 inclusive (the value 0x0000 0000 0000 001F) to be set.
-    public init(eventMask: EventMask = 0x0000_0000_0000_001F) {
+    public init(eventMask: EventMask = EventMask(rawValue: 0x0000_0000_0000_001F)) {
 
         self.eventMask = eventMask
     }

@@ -59,7 +59,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
     /// Public Device Address or Random Device Address of the device to be connected.
     public var directAddress: BluetoothAddress
 
-    public var channelMap: BitMaskOptionSet<ChannelMap>
+    public var channelMap: ChannelMap
 
     public var filterPolicy: FilterPolicy
 
@@ -69,7 +69,7 @@ public struct HCILESetAdvertisingParameters: HCICommandParameter {
         ownAddressType: LowEnergyAddressType = .public,
         directAddresssType: LowEnergyAddressType = .public,
         directAddress: BluetoothAddress = .zero,
-        channelMap: BitMaskOptionSet<ChannelMap> = .all,
+        channelMap: ChannelMap = .all,
         filterPolicy: FilterPolicy = .any
     ) {
 
@@ -136,16 +136,22 @@ public extension HCILESetAdvertisingParameters {
     }
 
     /// Channel Map
-    enum ChannelMap: UInt8, BitMaskOption {
+    struct ChannelMap: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
 
         /// Enable channel 37 use
-        case channel37 = 0b00000001
+        public static let channel37 = ChannelMap(rawValue: 0b00000001)
 
         /// Enable channel 38 use
-        case channel38 = 0b00000010
+        public static let channel38 = ChannelMap(rawValue: 0b00000010)
 
         /// Enable channel 39 use
-        case channel39 = 0b00000100
+        public static let channel39 = ChannelMap(rawValue: 0b00000100)
 
         public static var allCases: [ChannelMap] { [.channel37, .channel38, .channel39] }
     }

@@ -254,16 +254,22 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
 
     /// The Primary_Advertising_Channel_Map is a bit field that indicates the advertising channels that shall be used
     /// when transmitting advertising packets. At least one channel bit shall be set in the Primary_Advertising_Channel_Map parameter.
-    public enum PrimaryAdvertisingChannelMap: UInt8, BitMaskOption {
+    public struct PrimaryAdvertisingChannelMap: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
 
         /// Channel 37 shall be used
-        case channel37 = 0b1
+        public static let channel37 = PrimaryAdvertisingChannelMap(rawValue: 0b1)
 
         /// Channel 38 shall be used
-        case channel38 = 0b10
+        public static let channel38 = PrimaryAdvertisingChannelMap(rawValue: 0b10)
 
         /// Channel 39 shall be used
-        case channel39 = 0b100
+        public static let channel39 = PrimaryAdvertisingChannelMap(rawValue: 0b100)
 
         public static var allCases: [PrimaryAdvertisingChannelMap] {
             [
@@ -298,28 +304,34 @@ public struct HCILESetExtendedAdvertisingParameters: HCICommandParameter {  //HC
 
     /// The Advertising_Event_Properties parameter describes the type of advertising event that is being configured
     /// and its basic properties.
-    public enum AdvertisingEventProperties: UInt16, BitMaskOption {
+    public struct AdvertisingEventProperties: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt16
+
+        public init(rawValue: UInt16) {
+            self.rawValue = rawValue
+        }
 
         /// Connectable advertising
-        case connectableAdvertising = 0b1
+        public static let connectableAdvertising = AdvertisingEventProperties(rawValue: 0b1)
 
         /// Scannable advertising
-        case scannableAdvertising = 0b10
+        public static let scannableAdvertising = AdvertisingEventProperties(rawValue: 0b10)
 
         /// Directed advertising
-        case directedAdvertising = 0b100
+        public static let directedAdvertising = AdvertisingEventProperties(rawValue: 0b100)
 
         /// High Duty Cycle Directed Connectable advertising (≤ 3.75 ms Advertis- ing Interval)
-        case highDutyCycleDirectedConnectableAdvertising = 0b1000
+        public static let highDutyCycleDirectedConnectableAdvertising = AdvertisingEventProperties(rawValue: 0b1000)
 
         /// Use legacy advertising PDUs
-        case useLegacyAdvertisingPDUs = 0b10000
+        public static let useLegacyAdvertisingPDUs = AdvertisingEventProperties(rawValue: 0b10000)
 
         /// Omit advertiser's address from all PDUs ("anonymous advertising")
-        case omitAdvertisingAddress = 0b100000
+        public static let omitAdvertisingAddress = AdvertisingEventProperties(rawValue: 0b100000)
 
         /// Include TxPower in the extended header of the advertising PDU
-        case includeTxPower = 0b1000000
+        public static let includeTxPower = AdvertisingEventProperties(rawValue: 0b1000000)
 
         public static var allCases: [HCILESetExtendedAdvertisingParameters.AdvertisingEventProperties] {
             [

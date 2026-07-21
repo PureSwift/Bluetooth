@@ -38,7 +38,7 @@ public extension BluetoothHostControllerInterface {
 @frozen
 public struct HCISetEventMask: HCICommandParameter {
 
-    public typealias EventMask = BitMaskOptionSet<Event>
+    public typealias EventMask = Event
 
     public static let command = HostControllerBasebandCommand.setEventMask  // 0x0001
 
@@ -46,7 +46,7 @@ public struct HCISetEventMask: HCICommandParameter {
     public var eventMask: EventMask
 
     /// The default value is for bits 0 to 44 inclusive (the value `0x00001FFFFFFFFFFF`) to be set.
-    public init(eventMask: EventMask = 0x0000_1FFF_FFFF_FFFF) {
+    public init(eventMask: EventMask = Event(rawValue: 0x0000_1FFF_FFFF_FFFF)) {
 
         self.eventMask = eventMask
     }
@@ -75,155 +75,161 @@ public extension HCISetEventMask {
     /// Bit assignments of the Event_Mask parameter (Bluetooth Core Specification Vol 4, Part E, 7.3.1).
     ///
     /// Bits not listed here (13, 14, 18, 30, 35-42, 54, 57, 62, 63) are reserved for future use.
-    enum Event: UInt64, BitMaskOption {
+    struct Event: OptionSet, Hashable, Sendable, CaseIterable {
+
+        public let rawValue: UInt64
+
+        public init(rawValue: UInt64) {
+            self.rawValue = rawValue
+        }
 
         /// Inquiry Complete Event
-        case inquiryComplete = 0x1
+        public static let inquiryComplete = Event(rawValue: 0x1)
 
         /// Inquiry Result Event
-        case inquiryResult = 0x2
+        public static let inquiryResult = Event(rawValue: 0x2)
 
         /// Connection Complete Event
-        case connectionComplete = 0x4
+        public static let connectionComplete = Event(rawValue: 0x4)
 
         /// Connection Request Event
-        case connectionRequest = 0x8
+        public static let connectionRequest = Event(rawValue: 0x8)
 
         /// Disconnection Complete Event
-        case disconnectionComplete = 0x10
+        public static let disconnectionComplete = Event(rawValue: 0x10)
 
         /// Authentication Complete Event
-        case authenticationComplete = 0x20
+        public static let authenticationComplete = Event(rawValue: 0x20)
 
         /// Remote Name Request Complete Event
-        case remoteNameRequestComplete = 0x40
+        public static let remoteNameRequestComplete = Event(rawValue: 0x40)
 
         /// Encryption Change Event
-        case encryptionChange = 0x80
+        public static let encryptionChange = Event(rawValue: 0x80)
 
         /// Change Connection Link Key Complete Event
-        case changeConnectionLinkKeyComplete = 0x100
+        public static let changeConnectionLinkKeyComplete = Event(rawValue: 0x100)
 
         /// Master Link Key Complete Event
-        case masterLinkKeyComplete = 0x200
+        public static let masterLinkKeyComplete = Event(rawValue: 0x200)
 
         /// Read Remote Supported Features Complete Event
-        case readRemoteSupportedFeaturesComplete = 0x400
+        public static let readRemoteSupportedFeaturesComplete = Event(rawValue: 0x400)
 
         /// Read Remote Version Information Complete Event
-        case readRemoteVersionInformationComplete = 0x800
+        public static let readRemoteVersionInformationComplete = Event(rawValue: 0x800)
 
         /// QoS Setup Complete Event
-        case qosSetupComplete = 0x1000
+        public static let qosSetupComplete = Event(rawValue: 0x1000)
 
         /// Hardware Error Event
-        case hardwareError = 0x8000
+        public static let hardwareError = Event(rawValue: 0x8000)
 
         /// Flush Occurred Event
-        case flushOccurred = 0x1_0000
+        public static let flushOccurred = Event(rawValue: 0x1_0000)
 
         /// Role Change Event
-        case roleChange = 0x2_0000
+        public static let roleChange = Event(rawValue: 0x2_0000)
 
         /// Mode Change Event
-        case modeChange = 0x8_0000
+        public static let modeChange = Event(rawValue: 0x8_0000)
 
         /// Return Link Keys Event
-        case returnLinkKeys = 0x10_0000
+        public static let returnLinkKeys = Event(rawValue: 0x10_0000)
 
         /// PIN Code Request Event
-        case pinCodeRequest = 0x20_0000
+        public static let pinCodeRequest = Event(rawValue: 0x20_0000)
 
         /// Link Key Request Event
-        case linkKeyRequest = 0x40_0000
+        public static let linkKeyRequest = Event(rawValue: 0x40_0000)
 
         /// Link Key Notification Event
-        case linkKeyNotification = 0x80_0000
+        public static let linkKeyNotification = Event(rawValue: 0x80_0000)
 
         /// Loopback Command Event
-        case loopbackCommand = 0x100_0000
+        public static let loopbackCommand = Event(rawValue: 0x100_0000)
 
         /// Data Buffer Overflow Event
-        case dataBufferOverflow = 0x200_0000
+        public static let dataBufferOverflow = Event(rawValue: 0x200_0000)
 
         /// Max Slots Change Event
-        case maxSlotsChange = 0x400_0000
+        public static let maxSlotsChange = Event(rawValue: 0x400_0000)
 
         /// Read Clock Offset Complete Event
-        case readClockOffsetComplete = 0x800_0000
+        public static let readClockOffsetComplete = Event(rawValue: 0x800_0000)
 
         /// Connection Packet Type Changed Event
-        case connectionPacketTypeChanged = 0x1000_0000
+        public static let connectionPacketTypeChanged = Event(rawValue: 0x1000_0000)
 
         /// QoS Violation Event
-        case qosViolation = 0x2000_0000
+        public static let qosViolation = Event(rawValue: 0x2000_0000)
 
         /// Page Scan Repetition Mode Change Event
-        case pageScanRepetitionModeChange = 0x8000_0000
+        public static let pageScanRepetitionModeChange = Event(rawValue: 0x8000_0000)
 
         /// Flow Specification Complete Event
-        case flowSpecificationComplete = 0x1_0000_0000
+        public static let flowSpecificationComplete = Event(rawValue: 0x1_0000_0000)
 
         /// Inquiry Result with RSSI Event
-        case inquiryResultWithRSSI = 0x2_0000_0000
+        public static let inquiryResultWithRSSI = Event(rawValue: 0x2_0000_0000)
 
         /// Read Remote Extended Features Complete Event
-        case readRemoteExtendedFeaturesComplete = 0x4_0000_0000
+        public static let readRemoteExtendedFeaturesComplete = Event(rawValue: 0x4_0000_0000)
 
         /// Synchronous Connection Complete Event
-        case synchronousConnectionComplete = 0x800_0000_0000
+        public static let synchronousConnectionComplete = Event(rawValue: 0x800_0000_0000)
 
         /// Synchronous Connection Changed Event
-        case synchronousConnectionChanged = 0x1000_0000_0000
+        public static let synchronousConnectionChanged = Event(rawValue: 0x1000_0000_0000)
 
         /// Sniff Subrating Event
-        case sniffSubrating = 0x2000_0000_0000
+        public static let sniffSubrating = Event(rawValue: 0x2000_0000_0000)
 
         /// Extended Inquiry Result Event
-        case extendedInquiryResult = 0x4000_0000_0000
+        public static let extendedInquiryResult = Event(rawValue: 0x4000_0000_0000)
 
         /// Encryption Key Refresh Complete Event
-        case encryptionKeyRefreshComplete = 0x8000_0000_0000
+        public static let encryptionKeyRefreshComplete = Event(rawValue: 0x8000_0000_0000)
 
         /// IO Capability Request Event
-        case ioCapabilityRequest = 0x1_0000_0000_0000
+        public static let ioCapabilityRequest = Event(rawValue: 0x1_0000_0000_0000)
 
         /// IO Capability Response Event
-        case ioCapabilityResponse = 0x2_0000_0000_0000
+        public static let ioCapabilityResponse = Event(rawValue: 0x2_0000_0000_0000)
 
         /// User Confirmation Request Event
-        case userConfirmationRequest = 0x4_0000_0000_0000
+        public static let userConfirmationRequest = Event(rawValue: 0x4_0000_0000_0000)
 
         /// User Passkey Request Event
-        case userPasskeyRequest = 0x8_0000_0000_0000
+        public static let userPasskeyRequest = Event(rawValue: 0x8_0000_0000_0000)
 
         /// Remote OOB Data Request Event
-        case remoteOOBDataRequest = 0x10_0000_0000_0000
+        public static let remoteOOBDataRequest = Event(rawValue: 0x10_0000_0000_0000)
 
         /// Simple Pairing Complete Event
-        case simplePairingComplete = 0x20_0000_0000_0000
+        public static let simplePairingComplete = Event(rawValue: 0x20_0000_0000_0000)
 
         /// Link Supervision Timeout Changed Event
-        case linkSupervisionTimeoutChanged = 0x80_0000_0000_0000
+        public static let linkSupervisionTimeoutChanged = Event(rawValue: 0x80_0000_0000_0000)
 
         /// Enhanced Flush Complete Event
-        case enhancedFlushComplete = 0x100_0000_0000_0000
+        public static let enhancedFlushComplete = Event(rawValue: 0x100_0000_0000_0000)
 
         /// User Passkey Notification Event
-        case userPasskeyNotification = 0x400_0000_0000_0000
+        public static let userPasskeyNotification = Event(rawValue: 0x400_0000_0000_0000)
 
         /// Keypress Notification Event
-        case keypressNotification = 0x800_0000_0000_0000
+        public static let keypressNotification = Event(rawValue: 0x800_0000_0000_0000)
 
         /// Remote Host Supported Features Notification Event
-        case remoteHostSupportedFeaturesNotification = 0x1000_0000_0000_0000
+        public static let remoteHostSupportedFeaturesNotification = Event(rawValue: 0x1000_0000_0000_0000)
 
         /// LE Meta Event
         ///
         /// For LE events to be generated, this bit shall also be set.
         /// If this bit is not set, then LE events shall not be generated, regardless of how the
         /// LE Event Mask (see LE Set Event Mask command) is set.
-        case lowEnergyMeta = 0x2000_0000_0000_0000
+        public static let lowEnergyMeta = Event(rawValue: 0x2000_0000_0000_0000)
 
         public static var allCases: [Event] {
             [

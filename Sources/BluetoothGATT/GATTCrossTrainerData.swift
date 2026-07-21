@@ -19,9 +19,9 @@ public struct GATTCrossTrainerData: GATTCharacteristic {
 
     public static var uuid: BluetoothUUID { BluetoothUUID.Characteristic.crossTrainerData }
 
-    internal var flags: BitMaskOptionSet<Flag> {
+    internal var flags: Flag {
 
-        var flags = BitMaskOptionSet<Flag>()
+        var flags = Flag()
 
         if instantaneousSpeed != nil {
 
@@ -192,7 +192,7 @@ public struct GATTCrossTrainerData: GATTCharacteristic {
         guard data.count >= Self.minimumLength
         else { return nil }
 
-        let flags = BitMaskOptionSet<Flag>(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], 0))))
+        let flags = Flag(rawValue: UInt32(littleEndian: UInt32(bytes: (data[0], data[1], data[2], 0))))
 
         var index = 2  // flags size
 
@@ -636,57 +636,63 @@ public struct GATTCrossTrainerData: GATTCharacteristic {
     }
 
     /// These flags define which data fields are present in the Characteristic value.
-    internal enum Flag: UInt32, BitMaskOption {
+    internal struct Flag: OptionSet, Hashable, Sendable, CaseIterable {
+
+        internal let rawValue: UInt32
+
+        internal init(rawValue: UInt32) {
+            self.rawValue = rawValue
+        }
 
         /// More Data
-        case moreData = 0b01
+        internal static let moreData = Flag(rawValue: 0b01)
 
         /// Average Speed present
-        case averageSpeed = 0b10
+        internal static let averageSpeed = Flag(rawValue: 0b10)
 
         /// Total Distance Present
-        case totalDistance = 0b100
+        internal static let totalDistance = Flag(rawValue: 0b100)
 
         /// Step Count present
-        case stepCount = 0b1000
+        internal static let stepCount = Flag(rawValue: 0b1000)
 
         /// Stride Count present
-        case strideCount = 0b10000
+        internal static let strideCount = Flag(rawValue: 0b10000)
 
         /// Elevation Gain present
-        case elevationGain = 0b100000
+        internal static let elevationGain = Flag(rawValue: 0b100000)
 
         /// Inclination and Ramp Angle Setting present
-        case inclinationAndRampAngleSetting = 0b1000000
+        internal static let inclinationAndRampAngleSetting = Flag(rawValue: 0b1000000)
 
         /// Resistance Level Present
-        case resistanceLevel = 0b10000000
+        internal static let resistanceLevel = Flag(rawValue: 0b10000000)
 
         /// Instantaneous Power present
-        case instantaneousPower = 0b100000000
+        internal static let instantaneousPower = Flag(rawValue: 0b100000000)
 
         /// Average Power present
-        case averagePower = 0b10_00000000
+        internal static let averagePower = Flag(rawValue: 0b10_00000000)
 
         /// Expended Energy present
-        case expendedEnergy = 0b100_00000000
+        internal static let expendedEnergy = Flag(rawValue: 0b100_00000000)
 
         /// Heart Rate present
-        case heartRate = 0b1000_00000000
+        internal static let heartRate = Flag(rawValue: 0b1000_00000000)
 
         /// Metabolic Equivalent present
-        case metabolicEquivalent = 0b10000_00000000
+        internal static let metabolicEquivalent = Flag(rawValue: 0b10000_00000000)
 
         // Elapsed Time present
-        case elapsedTime = 0b100000_00000000
+        internal static let elapsedTime = Flag(rawValue: 0b100000_00000000)
 
         // Remaining Time present
-        case remainingTime = 0b1000000_00000000
+        internal static let remainingTime = Flag(rawValue: 0b1000000_00000000)
 
         // Movement Direction
-        case movementDirection = 0b10000000_00000000
+        internal static let movementDirection = Flag(rawValue: 0b10000000_00000000)
 
-        public static let allCases: [Flag] = [
+        internal static let allCases: [Flag] = [
             .moreData,
             .averageSpeed,
             .totalDistance,

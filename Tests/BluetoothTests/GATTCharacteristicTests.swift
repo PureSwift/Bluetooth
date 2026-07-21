@@ -478,7 +478,7 @@ import Bluetooth
         #expect(characteristic.states.contains(.ringer))
         #expect(characteristic.states.contains(.displayAlert))
         #expect(characteristic.states.contains(.vibrate))
-        #expect(characteristic.states.contains(GATTAlertStatus.State.allCases))
+        #expect(characteristic.states.isSuperset(of: GATTAlertStatus.State.all))
         #expect(characteristic.description == "55")
         #expect(GATTAlertStatus.uuid == BluetoothUUID.Characteristic.alertStatus)
         #expect(GATTAlertStatus(data: data) == GATTAlertStatus(data: data))
@@ -1021,7 +1021,7 @@ import Bluetooth
             return
         }
 
-        let configurations: BitMaskOptionSet<Configuration> = [.coordinates, .coordinateSystemUsed, .txPowerField, .altitudeField, .floorNumber, .locationName]
+        let configurations: Configuration = [.coordinates, .coordinateSystemUsed, .txPowerField, .altitudeField, .floorNumber, .locationName]
         roundTrip(characteristic, encodes: data)
         #expect(characteristic.configurations == configurations, "The value 0x03 is interpreted as “Simple Alert and Email bits set")
         #expect(GATTIndoorPositioningConfiguration.uuid == BluetoothUUID.Characteristic.indoorPositioningConfiguration)
@@ -1443,7 +1443,7 @@ import Bluetooth
                     elapsedTime: 1285,
                     remainingTime: 1285) == characteristic)
 
-            #expect(characteristic.flags == BitMaskOptionSet<GATTCrossTrainerData.Flag>(rawValue: UInt32(bytes: (0b11111111, 0b01111111, 0x00, 0x00))))
+            #expect(characteristic.flags == GATTCrossTrainerData.Flag(rawValue: UInt32(bytes: (0b11111111, 0b01111111, 0x00, 0x00))))
             roundTrip(characteristic, encodes: data)
         }
     }
@@ -1515,7 +1515,7 @@ import Bluetooth
 
         roundTrip(characteristic, encodes: data)
         #expect(characteristic.exactTime == GATTExactTime256(data: Data([203, 7, 4, 24, 12, 5, 30, 7, 245])))
-        #expect(characteristic.adjustReason == BitMaskOptionSet<GATTCurrentTime.Flag>(rawValue: 0b00001111))
+        #expect(characteristic.adjustReason == GATTCurrentTime.Flag(rawValue: 0b00001111))
         #expect(GATTCurrentTime.uuid == BluetoothUUID.Characteristic.currentTime)
         #expect(GATTCurrentTime(data: data) == GATTCurrentTime(data: data))
 

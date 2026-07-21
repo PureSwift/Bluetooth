@@ -25,9 +25,9 @@ public struct GAPSecurityManagerOOBFlags: GAPData, Equatable, Hashable {
 
     public static let dataType: GAPDataType = .securityManagerOutOfBandFlags
 
-    public let flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>
+    public let flags: GAPSecurityManagerOOBFlag
 
-    public init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag> = 0) {
+    public init(flags: GAPSecurityManagerOOBFlag = []) {
 
         self.flags = flags
     }
@@ -40,7 +40,7 @@ public extension GAPSecurityManagerOOBFlags {
         guard data.count == 1
         else { return nil }
 
-        self.flags = BitMaskOptionSet<GAPSecurityManagerOOBFlag>(rawValue: data[0])
+        self.flags = GAPSecurityManagerOOBFlag(rawValue: data[0])
     }
 
     func append<Data: DataContainer>(to data: inout Data) {
@@ -60,7 +60,7 @@ extension GAPSecurityManagerOOBFlags: ExpressibleByArrayLiteral {
 
     public init(arrayLiteral elements: GAPSecurityManagerOOBFlag...) {
 
-        self.init(flags: BitMaskOptionSet<GAPSecurityManagerOOBFlag>(elements))
+        self.init(flags: GAPSecurityManagerOOBFlag(elements))
     }
 }
 
@@ -80,27 +80,33 @@ extension GAPSecurityManagerOOBFlags: CustomStringConvertible {
 ///
 /// The Security Manager Out of Band data type size is 1 octet.
 @frozen
-public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
+public struct GAPSecurityManagerOOBFlag: OptionSet, Hashable, Sendable, CaseIterable {
+
+    public let rawValue: UInt8
+
+    public init(rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
 
     /// OOB Flags Field
     ///
     /// 0 = OOB data not present, 1 = OOB data present
-    case oobFlagsField = 0b01
+    public static let oobFlagsField = GAPSecurityManagerOOBFlag(rawValue: 0b01)
 
     /// LE supported (Host)
     ///
     /// bit 65 of LMP Extended Feature bits (Page 1)
-    case supportedLE = 0b10
+    public static let supportedLE = GAPSecurityManagerOOBFlag(rawValue: 0b10)
 
     /// Simultaneous LE and BR/EDR to Same Device Capable (Host)
     ///
     /// bit 66 of LMP Extended Feature bits (Page 1)
-    case simultaneousLEandBREDR = 0b100
+    public static let simultaneousLEandBREDR = GAPSecurityManagerOOBFlag(rawValue: 0b100)
 
     /// Address type
     ///
     /// 0 = Public Address, 1 = Random Address
-    case addressType = 0b1000
+    public static let addressType = GAPSecurityManagerOOBFlag(rawValue: 0b1000)
 
     public static let allCases: [GAPSecurityManagerOOBFlag] = [
         .oobFlagsField,
@@ -108,4 +114,11 @@ public enum GAPSecurityManagerOOBFlag: UInt8, BitMaskOption {
         .simultaneousLEandBREDR,
         .addressType
     ]
+}
+
+extension GAPSecurityManagerOOBFlag: CustomStringConvertible {
+
+    public var description: String {
+        "0b" + String(rawValue, radix: 2)
+    }
 }
