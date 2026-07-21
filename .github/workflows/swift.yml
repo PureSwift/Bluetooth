@@ -23,7 +23,7 @@ jobs:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.0.3", "swift:6.1.2", "swift:6.2.3", "swift:6.3.2"]
+        container: ["swift:6.2.3", "swift:6.3.2"]
         config: ["debug", "release"]
         options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     runs-on: ubuntu-latest
@@ -66,7 +66,7 @@ jobs:
   # executed on hosted runners (no KVM for ARM emulators), so these are
   # compile-verification steps only.
   #
-  # Both use finagolfin's 6.1.3 SDK — the newest community Android SDK whose
+  # Both use finagolfin's 6.2 SDK — the newest community Android SDK whose
   # exact Swift version matches a published Docker image (Swift SDK .swiftmodule
   # files require an exact compiler match). The official swift.org Android SDK is
   # deliberately not used here: it declares `sdkRootPath: ndk-sysroot` but ships
@@ -77,7 +77,7 @@ jobs:
   android-build-arm:
       name: Android (${{ matrix.arch }}, build)
       runs-on: ubuntu-latest
-      container: swift:6.1.3
+      container: swift:6.2.0
       strategy:
         fail-fast: false
         matrix:
@@ -89,6 +89,6 @@ jobs:
       steps:
         - uses: actions/checkout@v4
         - name: Install Android Swift SDK
-          run: swift sdk install https://github.com/finagolfin/swift-android-sdk/releases/download/6.1.3/swift-6.1.3-RELEASE-android-24-0.1.artifactbundle.tar.gz --checksum 440d09d539bda5b94807598b00696ac5d3893cb515b24715ac8868d62130b6d5
+          run: swift sdk install https://github.com/finagolfin/swift-android-sdk/releases/download/6.2/swift-6.2-RELEASE-android-24-0.1.artifactbundle.tar.gz --checksum c26ebfd4e32c0ca1beabcc45729b62042da57ee76d7d043f63f2235da90dc491
         - name: Build tests for Android ${{ matrix.arch }}
           run: SWIFT_BLUETOOTH_C_SHIMS=0 swift build --build-tests --swift-sdk ${{ matrix.triple }}
