@@ -288,6 +288,7 @@ public final class GATTServer<Socket: L2CAPConnection>: @unchecked Sendable {
                         switch result {
                         case .success(let confirmation):
                             self.log?("Confirmation: \(confirmation)")
+                            self.callback.didConfirm?(attribute.uuid, attribute.handle)
                         case .failure(let error):
                             self.log?("Confirmation error: \(error)")
                         }
@@ -786,6 +787,10 @@ public extension GATTServer {
         public var willWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data, _ newValue: Data) -> ATTError?)?
 
         public var didWrite: ((_ uuid: BluetoothUUID, _ handle: UInt16, _ value: Data) -> Void)?
+
+        /// Callback invoked when the connected central acknowledges (confirms) an
+        /// indication for the specified characteristic.
+        public var didConfirm: ((_ uuid: BluetoothUUID, _ handle: UInt16) -> Void)?
 
         public init() {}
     }
